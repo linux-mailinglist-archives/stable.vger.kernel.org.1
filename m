@@ -1,54 +1,62 @@
-Return-Path: <stable+bounces-209231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35269D2701B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:00:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1288ED27900
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:31:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7144C301C3BC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:31:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9018C3164C82
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E903D1CA8;
-	Thu, 15 Jan 2026 17:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADC83BF30A;
+	Thu, 15 Jan 2026 17:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UR5ChWhg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJnKM7nP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486CB3BFE3C;
-	Thu, 15 Jan 2026 17:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2A03BFE5D;
+	Thu, 15 Jan 2026 17:46:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498107; cv=none; b=FzhiAWoz1Ypi3HXs03gCvNrZjOvkC6VHXPuIQLUxZbPF1X/EdlwfDo60JhtNk8lnYzObEnEk+EfflT41uTDw2aHo+lLMTYFtqwHb+fmnsU82stxCr1LlJ+LlVGKEkAJPxLExuYWWXcFbm8y2sLoi8RGVYv/pNkVAgEh1O/ZtHYA=
+	t=1768499212; cv=none; b=rfnAqigN4I4RIsObAcl34WJ8ob4hOcWgmfVH48t2Soot45xfTWr2SvDo/VSsZxpD0KdoXYAsnposneJbhMD7RjTNa5G3WflyHV23SW9DX3ZE5ygBSiBQSe2JUGLZfa2euaMVH33nF+5JhKZHECpfiTDaA6PIEM4Ufnc74g+eA/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498107; c=relaxed/simple;
-	bh=FS985oOkl/X8pPcasQ7IRXVFJ+GePShIWqoBeWCyZo4=;
+	s=arc-20240116; t=1768499212; c=relaxed/simple;
+	bh=zhO00BepGUpjnfHlKXK4G0w7uIt5DzxFkWUTk0XY8UM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a39JIflPWLrJ163jQDVhX3bb/le2Oag8gvONwi7DJiBy/sZEmhgW2uUDzhfaB6FVOVNWou1nkatpwkOw8boSHJ6q0kM4wMd6GWSOGMgs0QH8jmJatfwEvD+XUTM40v7JbB1YJqlCFQAVdp1MofziuNJspWueXgfWSBu9tlNSFTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UR5ChWhg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA760C116D0;
-	Thu, 15 Jan 2026 17:28:26 +0000 (UTC)
+	 MIME-Version; b=GQBTQufU8eOm81U32T6HOtqTY3QSHvk4w8jmENy8coXFlXO6TcjX5T7UKwAaYhOkK+8bc5zRzU8ng+e+Bkk9yNzz+eqg1rDauY+PT8+1/bV8TOUdUnbCVZ2/Mrt/HSfwXdKPuCD8PWj47DBQ2fM1V8AFwhA6CTLoCbXnT7gOc7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJnKM7nP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F277C116D0;
+	Thu, 15 Jan 2026 17:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498107;
-	bh=FS985oOkl/X8pPcasQ7IRXVFJ+GePShIWqoBeWCyZo4=;
+	s=korg; t=1768499212;
+	bh=zhO00BepGUpjnfHlKXK4G0w7uIt5DzxFkWUTk0XY8UM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UR5ChWhgpxuClcW86qbjP787onkAbJlxPu3fcOY/k4TnLArh2QQqP5zMJ5N7YL9Iy
-	 dZx3eKVU0oXW97hV61VgfN8WIVrGozgWlYZLQu3VGmDPpBi//ZvdVuJN4KNBHvk5cF
-	 wTs4YVEeDKLOLncKGaScdKHdk6f2ePJD30QKRDTo=
+	b=HJnKM7nPCX7GyKj0Ku0KKqGwSTCIm3qkqhzRzTPFIZaWKIQNwWhQjo0ZcqhZNAfx2
+	 6ifmnpGwPAEiXR0h2P5jWMPlTGEM00y5TBcbmTss7HF2DN3AUfk50+asrbK9SA3iDw
+	 aiEscYR6VLdu7Gge38+HXpxJ3rsg/91G+xhm+URo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Warthog9 Hawley <warthog9@kernel.org>,
-	"John W. Krahn" <jwkrahn@shaw.ca>,
-	Steven Rostedt <rostedt@goodmis.org>
-Subject: [PATCH 5.15 282/554] ktest.pl: Fix uninitialized var in config-bisect.pl
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 147/451] ocfs2: fix memory leak in ocfs2_merge_rec_left()
 Date: Thu, 15 Jan 2026 17:45:48 +0100
-Message-ID: <20260115164256.436434748@linuxfoundation.org>
+Message-ID: <20260115164236.233677052@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +68,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit d3042cbe84a060b4df764eb6c5300bbe20d125ca upstream.
+[ Upstream commit 2214ec4bf89d0fd27717322d3983a2f3b469c7f3 ]
 
-The error path of copying the old config used the wrong variable in the
-error message:
+In 'ocfs2_merge_rec_left()', do not reset 'left_path' to NULL after
+move, thus allowing 'ocfs2_free_path()' to free it before return.
 
- $ mkdir /tmp/build
- $ ./tools/testing/ktest/config-bisect.pl -b /tmp/build config-good /tmp/config-bad
- $ chmod 0 /tmp/build
- $ ./tools/testing/ktest/config-bisect.pl -b /tmp/build config-good /tmp/config-bad good
- cp /tmp/build//.config config-good.tmp ... [0 seconds] FAILED!
- Use of uninitialized value $config in concatenation (.) or string at ./tools/testing/ktest/config-bisect.pl line 744.
- failed to copy  to config-good.tmp
-
-When it should have shown:
-
- failed to copy /tmp/build//.config to config-good.tmp
-
-Cc: stable@vger.kernel.org
-Cc: John 'Warthog9' Hawley <warthog9@kernel.org>
-Fixes: 0f0db065999cf ("ktest: Add standalone config-bisect.pl program")
-Link: https://patch.msgid.link/20251203180924.6862bd26@gandalf.local.home
-Reported-by: "John W. Krahn" <jwkrahn@shaw.ca>
-Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20251205065159.392749-1-dmantipov@yandex.ru
+Fixes: 677b975282e4 ("ocfs2: Add support for cross extent block")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cfc7cab3bb6eaa7c4de2
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/ktest/config-bisect.pl |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ocfs2/alloc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/tools/testing/ktest/config-bisect.pl
-+++ b/tools/testing/ktest/config-bisect.pl
-@@ -741,9 +741,9 @@ if ($start) {
- 	die "Can not find file $bad\n";
-     }
-     if ($val eq "good") {
--	run_command "cp $output_config $good" or die "failed to copy $config to $good\n";
-+	run_command "cp $output_config $good" or die "failed to copy $output_config to $good\n";
-     } elsif ($val eq "bad") {
--	run_command "cp $output_config $bad" or die "failed to copy $config to $bad\n";
-+	run_command "cp $output_config $bad" or die "failed to copy $output_config to $bad\n";
-     }
- }
- 
+diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+index 94c7acfebe183..9f61a6d64cbce 100644
+--- a/fs/ocfs2/alloc.c
++++ b/fs/ocfs2/alloc.c
+@@ -3649,7 +3649,6 @@ static int ocfs2_merge_rec_left(struct ocfs2_path *right_path,
+ 			 * So we use the new rightmost path.
+ 			 */
+ 			ocfs2_mv_path(right_path, left_path);
+-			left_path = NULL;
+ 		} else
+ 			ocfs2_complete_edge_insert(handle, left_path,
+ 						   right_path, subtree_index);
+-- 
+2.51.0
+
 
 
 
