@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-208787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5E5D262C4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3427D2758F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5E531303B2A5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B275231EBFF1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19ED260569;
-	Thu, 15 Jan 2026 17:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3683BF2EA;
+	Thu, 15 Jan 2026 17:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0GKrf71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njqwsosG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41B32D238A;
-	Thu, 15 Jan 2026 17:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FA52D9494;
+	Thu, 15 Jan 2026 17:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496841; cv=none; b=NT8vWT25EirFPxBULglr8vjbReI/17pw0Ot7MLgEwn9JxzYvEP8zHvKrCNGeFQbqB+uUCE6cdQ2kBEffp2b9+fiSEE0wmnmeX1V+AYPTaRiYI77E0AWxUPzDr6mLMs6Vz2Mwd46ULb/+erMXPpY7Np6lL+nBBYm6K3J5IfuX1yU=
+	t=1768498431; cv=none; b=nf19fbBGt5ykBHIhA/NyiL/hjaeInC1qKpzqVvPNbtfSYmBj45sR1LW2/Q/bl8oE0Iwh9/EslD1BAQAqm+t8RsUVR3DSoJ8VPw0HzxdKsmRgu6a4/DLCxXdOPRwO2VqHsZ+9uXqF0HbCOEQfhxw30cQXHXPVHFUM1DZRhF2Db+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496841; c=relaxed/simple;
-	bh=gJ4vDONHW44ykY/zdv+vUyA3i2C68NQfvOghd7ubZHY=;
+	s=arc-20240116; t=1768498431; c=relaxed/simple;
+	bh=WXGOImubF+m4Qfl9EOErqBUKcfE9YbTP6uQw/PQmE+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+uiPo2RokTkcgPSr/kXBIWmiZtGq1GFSfgqJsivKY/MtFYzQWheQ0JDV2GF7fy5kxSAsvHGfpCqqt7lRGvPL41FQesJSyh4kvj/LvHMVgA96Wzh9JRK11eGgfPBdNzAWu6DY1WvIEZxQinswAXUj+VbxZSS8HQrwM/0lLtdnDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0GKrf71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3738AC116D0;
-	Thu, 15 Jan 2026 17:07:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=STYcMnoTp4VAhi+7evz+uabdq6Svi6JkEgML5yMQKT4BbTwe8ocoa/zZPksE7HT3X91n30b6KDbU7CzyyAfNCOpoK4lq9amiGdpBgntuEwugf1ZM9s1nSKtGjMYL9XuawElg8zvs/AVXcZy50tpzcgjWBuvJIeYWalGCTDWpCs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njqwsosG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F392FC116D0;
+	Thu, 15 Jan 2026 17:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496841;
-	bh=gJ4vDONHW44ykY/zdv+vUyA3i2C68NQfvOghd7ubZHY=;
+	s=korg; t=1768498431;
+	bh=WXGOImubF+m4Qfl9EOErqBUKcfE9YbTP6uQw/PQmE+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0GKrf71EEObfRQEKDkaZCBYb6lpX/wzi6r9GIcdv0pwgRpJ5QwGXxa1exGengn3M
-	 bvaW6fyEeQg7NFq337QPglBqoRnUwObGAgyNiztQ6nJp+rPcixx5iCwhTgd1lkXaj4
-	 FZHJYXIP6b0pQ1dcW9ZOhQCbeLSl/O/Rm3hVQpFA=
+	b=njqwsosGGm5dKrujAd5zombiux7edsWdyl27rcBUK5FPCJXzpj4UwplsT2+kaLoU/
+	 bIgkQ8gTuGxnD9Tf4ON7BGOR8jfjC5EzS4h52kY0ltkZD0IZuYdhAi3Zj0YSjtS2Y2
+	 2TmH29u7lOljJ6TKsEdBoz49duHPGgQRsZr8SJvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	stable <stable@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 33/88] NFS: Fix up the automount fs_context to use the correct cred
+Subject: [PATCH 5.15 430/554] xhci: dbgtty: fix device unregister
 Date: Thu, 15 Jan 2026 17:48:16 +0100
-Message-ID: <20260115164147.510908758@linuxfoundation.org>
+Message-ID: <20260115164301.824187086@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,46 +58,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Łukasz Bartosik <ukaszb@chromium.org>
 
-[ Upstream commit a2a8fc27dd668e7562b5326b5ed2f1604cb1e2e9 ]
+[ Upstream commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f ]
 
-When automounting, the fs_context should be fixed up to use the cred
-from the parent filesystem, since the operation is just extending the
-namespace. Authorisation to enter that namespace will already have been
-provided by the preceding lookup.
+When DbC is disconnected then xhci_dbc_tty_unregister_device()
+is called. However if there is any user space process blocked
+on write to DbC terminal device then it will never be signalled
+and thus stay blocked indifinitely.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
+The tty_vhangup() wakes up any blocked writers and causes subsequent
+write attempts to DbC terminal device to fail.
+
+Cc: stable <stable@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/namespace.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/host/xhci-dbgtty.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
-index 923b5c1eb47e9..99ef1146096fe 100644
---- a/fs/nfs/namespace.c
-+++ b/fs/nfs/namespace.c
-@@ -170,6 +170,11 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 	if (!ctx->clone_data.fattr)
- 		goto out_fc;
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -489,6 +489,12 @@ static void xhci_dbc_tty_unregister_devi
  
-+	if (fc->cred != server->cred) {
-+		put_cred(fc->cred);
-+		fc->cred = get_cred(server->cred);
-+	}
+ 	if (!port->registered)
+ 		return;
++	/*
++	 * Hang up the TTY. This wakes up any blocked
++	 * writers and causes subsequent writes to fail.
++	 */
++	tty_vhangup(port->port.tty);
 +
- 	if (fc->net_ns != client->cl_net) {
- 		put_net(fc->net_ns);
- 		fc->net_ns = get_net(client->cl_net);
--- 
-2.51.0
-
+ 	tty_unregister_device(dbc_tty_driver, port->minor);
+ 	xhci_dbc_tty_exit_port(port);
+ 	port->registered = false;
 
 
 
