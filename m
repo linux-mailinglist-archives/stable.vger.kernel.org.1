@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9157AD26B4E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3E11D263F5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3458311BDA0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C14E431841D8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0631E2D0610;
-	Thu, 15 Jan 2026 17:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806843BC4FE;
+	Thu, 15 Jan 2026 17:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QseKIE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlM14JKh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD171A2389;
-	Thu, 15 Jan 2026 17:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3212F1A08AF;
+	Thu, 15 Jan 2026 17:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498591; cv=none; b=m9tSZroJDep6HMibIwrmUGqIoepq3n2kBa2l6suvwuZmy4dELoc2CnJZ22kSv9xmBh6EFk1wP0EUWyWUqlqJpuwd1FT3gRLiKNKPrzytb8DvwtlJ7TZfCJSXijDMsXAZQb1iSRSSniIAtQdbk1aZkZ0pt/NcncBXi9JzweM4ywM=
+	t=1768496918; cv=none; b=qFXYPqkOMHN6+AdqMNOzQjGCMHhoUIS+4IEdUsk66u+v3QjH3Y1gkymJEMctfDIa3r6QPYGRNJoEJ0nF2xQNtPVtMbzGTlgo0OeH04usUctnFcoky0cKvXfLMV/LrPvb1/0+dheZIcSK4BT25gjBtM5asSabcBEsrr66Hv13P3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498591; c=relaxed/simple;
-	bh=qaq3enyYAbCuNJBzVyP/hXb6U0B6MvTPzFSmvkeiUhY=;
+	s=arc-20240116; t=1768496918; c=relaxed/simple;
+	bh=aOpyejXPggMSDFwBlAgrRPLMD9b4//h3iBFxA33DjV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3Vkhv93DCZeB9KYBThPDgph+yYqcF8BPt5rMHxX/soI7MMT7/5bHSX3bkaJ9PFur6supBrigYmLlNH6MHxhxvZrPsMPnhMYbKtjJZDSVqBQRnTF+qZZwuWfolZUjuIIKmc00+riWIp31bocwitQZW28OShHhoJHamZ61VR0D1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QseKIE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489FFC116D0;
-	Thu, 15 Jan 2026 17:36:31 +0000 (UTC)
+	 MIME-Version; b=A95G+XdjsWFTbb3y7vpp70VW/jB/QmTU7U4wg86BUu1NDn0YelajIWcoQqf0aftlexWyRmqDAq1vN+ZOA8rRm2Cw2K3+320FaMdKZ4TuiNVDJMG6BzOutg/LYeHz3VhJGEBTZeB0smQ6lNOrLhMW50nSaQlzs8pZ6YZY5st1Cms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlM14JKh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B338AC116D0;
+	Thu, 15 Jan 2026 17:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498591;
-	bh=qaq3enyYAbCuNJBzVyP/hXb6U0B6MvTPzFSmvkeiUhY=;
+	s=korg; t=1768496918;
+	bh=aOpyejXPggMSDFwBlAgrRPLMD9b4//h3iBFxA33DjV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1QseKIE6Rid1egxKfenoNETYrMsxW4KIOMCq1vb8jkJwL/Uam7WKm0zLy+kc7RT/p
-	 bIyyYDdqFQ9LK4vVhG/SCD/rkXmFJA61nA9JcfZd+ZYOAmZHZJY1jtaVyJTu9Xzv+q
-	 saDbdtvVfrhlIIB2UOvoNMa0HnOdc9B++TRREvBs=
+	b=xlM14JKhrv51g5hzlR/gyE8SxSVFlPZLPPvDGf8U4qrqKiYYfmCxwd3p9p0uzsqFm
+	 z4tHGwJASpDd+LLSjmidlFtdKFTnz8yRtabNc0o72RMJQv0b90QShwYsdX9Hrde5Gv
+	 jKHjDIEiQX2NbnVnco4L8sCj9ubzBC1+qqn4EgFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 458/554] media: verisilicon: Protect G2 HEVC decoder against invalid DPB index
+Subject: [PATCH 6.6 61/88] net/sched: sch_qfq: Fix NULL deref when deactivating inactive aggregate in qfq_reset
 Date: Thu, 15 Jan 2026 17:48:44 +0100
-Message-ID: <20260115164302.857771460@linuxfoundation.org>
+Message-ID: <20260115164148.521092231@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 47825b1646a6a9eca0f90baa3d4f98947c2add96 ]
+[ Upstream commit c1d73b1480235731e35c81df70b08f4714a7d095 ]
 
-Fix the Hantro G2 HEVC decoder so that we use DPB index 0 whenever a
-ninvalid index is received from user space. This protects the hardware
-from doing faulty memory access which then leads to bus errors.
+`qfq_class->leaf_qdisc->q.qlen > 0` does not imply that the class
+itself is active.
 
-To be noted that when a reference is missing, userspace such as GStreamer
-passes an invalid DPB index of 255. This issue was found by seeking to a
-CRA picture using GStreamer. The framework is currently missing the code
-to skip over RASL pictures placed after the CRA. This situation can also
-occur while doing live streaming over lossy transport.
+Two qfq_class objects may point to the same leaf_qdisc. This happens
+when:
 
-Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+1. one QFQ qdisc is attached to the dev as the root qdisc, and
+
+2. another QFQ qdisc is temporarily referenced (e.g., via qdisc_get()
+/ qdisc_put()) and is pending to be destroyed, as in function
+tc_new_tfilter.
+
+When packets are enqueued through the root QFQ qdisc, the shared
+leaf_qdisc->q.qlen increases. At the same time, the second QFQ
+qdisc triggers qdisc_put and qdisc_destroy: the qdisc enters
+qfq_reset() with its own q->q.qlen == 0, but its class's leaf
+qdisc->q.qlen > 0. Therefore, the qfq_reset would wrongly deactivate
+an inactive aggregate and trigger a null-deref in qfq_deactivate_agg:
+
+[    0.903172] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[    0.903571] #PF: supervisor write access in kernel mode
+[    0.903860] #PF: error_code(0x0002) - not-present page
+[    0.904177] PGD 10299b067 P4D 10299b067 PUD 10299c067 PMD 0
+[    0.904502] Oops: Oops: 0002 [#1] SMP NOPTI
+[    0.904737] CPU: 0 UID: 0 PID: 135 Comm: exploit Not tainted 6.19.0-rc3+ #2 NONE
+[    0.905157] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+[    0.905754] RIP: 0010:qfq_deactivate_agg (include/linux/list.h:992 (discriminator 2) include/linux/list.h:1006 (discriminator 2) net/sched/sch_qfq.c:1367 (discriminator 2) net/sched/sch_qfq.c:1393 (discriminator 2))
+[    0.906046] Code: 0f 84 4d 01 00 00 48 89 70 18 8b 4b 10 48 c7 c2 ff ff ff ff 48 8b 78 08 48 d3 e2 48 21 f2 48 2b 13 48 8b 30 48 d3 ea 8b 4b 18 0
+
+Code starting with the faulting instruction
+===========================================
+   0:	0f 84 4d 01 00 00    	je     0x153
+   6:	48 89 70 18          	mov    %rsi,0x18(%rax)
+   a:	8b 4b 10             	mov    0x10(%rbx),%ecx
+   d:	48 c7 c2 ff ff ff ff 	mov    $0xffffffffffffffff,%rdx
+  14:	48 8b 78 08          	mov    0x8(%rax),%rdi
+  18:	48 d3 e2             	shl    %cl,%rdx
+  1b:	48 21 f2             	and    %rsi,%rdx
+  1e:	48 2b 13             	sub    (%rbx),%rdx
+  21:	48 8b 30             	mov    (%rax),%rsi
+  24:	48 d3 ea             	shr    %cl,%rdx
+  27:	8b 4b 18             	mov    0x18(%rbx),%ecx
+	...
+[    0.907095] RSP: 0018:ffffc900004a39a0 EFLAGS: 00010246
+[    0.907368] RAX: ffff8881043a0880 RBX: ffff888102953340 RCX: 0000000000000000
+[    0.907723] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[    0.908100] RBP: ffff888102952180 R08: 0000000000000000 R09: 0000000000000000
+[    0.908451] R10: ffff8881043a0000 R11: 0000000000000000 R12: ffff888102952000
+[    0.908804] R13: ffff888102952180 R14: ffff8881043a0ad8 R15: ffff8881043a0880
+[    0.909179] FS:  000000002a1a0380(0000) GS:ffff888196d8d000(0000) knlGS:0000000000000000
+[    0.909572] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.909857] CR2: 0000000000000000 CR3: 0000000102993002 CR4: 0000000000772ef0
+[    0.910247] PKRU: 55555554
+[    0.910391] Call Trace:
+[    0.910527]  <TASK>
+[    0.910638]  qfq_reset_qdisc (net/sched/sch_qfq.c:357 net/sched/sch_qfq.c:1485)
+[    0.910826]  qdisc_reset (include/linux/skbuff.h:2195 include/linux/skbuff.h:2501 include/linux/skbuff.h:3424 include/linux/skbuff.h:3430 net/sched/sch_generic.c:1036)
+[    0.911040]  __qdisc_destroy (net/sched/sch_generic.c:1076)
+[    0.911236]  tc_new_tfilter (net/sched/cls_api.c:2447)
+[    0.911447]  rtnetlink_rcv_msg (net/core/rtnetlink.c:6958)
+[    0.911663]  ? __pfx_rtnetlink_rcv_msg (net/core/rtnetlink.c:6861)
+[    0.911894]  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+[    0.912100]  netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1344)
+[    0.912296]  ? __alloc_skb (net/core/skbuff.c:706)
+[    0.912484]  netlink_sendmsg (net/netlink/af_netlink.c:1894)
+[    0.912682]  sock_write_iter (net/socket.c:727 (discriminator 1) net/socket.c:742 (discriminator 1) net/socket.c:1195 (discriminator 1))
+[    0.912880]  vfs_write (fs/read_write.c:593 fs/read_write.c:686)
+[    0.913077]  ksys_write (fs/read_write.c:738)
+[    0.913252]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+[    0.913438]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:131)
+[    0.913687] RIP: 0033:0x424c34
+[    0.913844] Code: 89 02 48 c7 c0 ff ff ff ff eb bd 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 80 3d 2d 44 09 00 00 74 13 b8 01 00 00 00 0f 05 9
+
+Code starting with the faulting instruction
+===========================================
+   0:	89 02                	mov    %eax,(%rdx)
+   2:	48 c7 c0 ff ff ff ff 	mov    $0xffffffffffffffff,%rax
+   9:	eb bd                	jmp    0xffffffffffffffc8
+   b:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+  12:	00 00 00
+  15:	90                   	nop
+  16:	f3 0f 1e fa          	endbr64
+  1a:	80 3d 2d 44 09 00 00 	cmpb   $0x0,0x9442d(%rip)        # 0x9444e
+  21:	74 13                	je     0x36
+  23:	b8 01 00 00 00       	mov    $0x1,%eax
+  28:	0f 05                	syscall
+  2a:	09                   	.byte 0x9
+[    0.914807] RSP: 002b:00007ffea1938b78 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+[    0.915197] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 0000000000424c34
+[    0.915556] RDX: 000000000000003c RSI: 000000002af378c0 RDI: 0000000000000003
+[    0.915912] RBP: 00007ffea1938bc0 R08: 00000000004b8820 R09: 0000000000000000
+[    0.916297] R10: 0000000000000001 R11: 0000000000000202 R12: 00007ffea1938d28
+[    0.916652] R13: 00007ffea1938d38 R14: 00000000004b3828 R15: 0000000000000001
+[    0.917039]  </TASK>
+[    0.917158] Modules linked in:
+[    0.917316] CR2: 0000000000000000
+[    0.917484] ---[ end trace 0000000000000000 ]---
+[    0.917717] RIP: 0010:qfq_deactivate_agg (include/linux/list.h:992 (discriminator 2) include/linux/list.h:1006 (discriminator 2) net/sched/sch_qfq.c:1367 (discriminator 2) net/sched/sch_qfq.c:1393 (discriminator 2))
+[    0.917978] Code: 0f 84 4d 01 00 00 48 89 70 18 8b 4b 10 48 c7 c2 ff ff ff ff 48 8b 78 08 48 d3 e2 48 21 f2 48 2b 13 48 8b 30 48 d3 ea 8b 4b 18 0
+
+Code starting with the faulting instruction
+===========================================
+   0:	0f 84 4d 01 00 00    	je     0x153
+   6:	48 89 70 18          	mov    %rsi,0x18(%rax)
+   a:	8b 4b 10             	mov    0x10(%rbx),%ecx
+   d:	48 c7 c2 ff ff ff ff 	mov    $0xffffffffffffffff,%rdx
+  14:	48 8b 78 08          	mov    0x8(%rax),%rdi
+  18:	48 d3 e2             	shl    %cl,%rdx
+  1b:	48 21 f2             	and    %rsi,%rdx
+  1e:	48 2b 13             	sub    (%rbx),%rdx
+  21:	48 8b 30             	mov    (%rax),%rsi
+  24:	48 d3 ea             	shr    %cl,%rdx
+  27:	8b 4b 18             	mov    0x18(%rbx),%ecx
+	...
+[    0.918902] RSP: 0018:ffffc900004a39a0 EFLAGS: 00010246
+[    0.919198] RAX: ffff8881043a0880 RBX: ffff888102953340 RCX: 0000000000000000
+[    0.919559] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[    0.919908] RBP: ffff888102952180 R08: 0000000000000000 R09: 0000000000000000
+[    0.920289] R10: ffff8881043a0000 R11: 0000000000000000 R12: ffff888102952000
+[    0.920648] R13: ffff888102952180 R14: ffff8881043a0ad8 R15: ffff8881043a0880
+[    0.921014] FS:  000000002a1a0380(0000) GS:ffff888196d8d000(0000) knlGS:0000000000000000
+[    0.921424] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.921710] CR2: 0000000000000000 CR3: 0000000102993002 CR4: 0000000000772ef0
+[    0.922097] PKRU: 55555554
+[    0.922240] Kernel panic - not syncing: Fatal exception
+[    0.922590] Kernel Offset: disabled
+
+Fixes: 0545a3037773 ("pkt_sched: QFQ - quick fair queue scheduler")
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Link: https://patch.msgid.link/20260106034100.1780779-1-xmei5@asu.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/media/hantro/hantro_g2_hevc_dec.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ net/sched/sch_qfq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/staging/media/hantro/hantro_g2_hevc_dec.c
-+++ b/drivers/staging/media/hantro/hantro_g2_hevc_dec.c
-@@ -264,6 +264,15 @@ static void set_params(struct hantro_ctx
- 	hantro_reg_write(vpu, &g2_apf_threshold, 8);
- }
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index 69fdbbbb3b634..29847c28ffaca 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -1484,7 +1484,7 @@ static void qfq_reset_qdisc(struct Qdisc *sch)
  
-+static u32 get_dpb_index(const struct v4l2_ctrl_hevc_decode_params *decode_params,
-+			 const u32 index)
-+{
-+	if (index > decode_params->num_active_dpb_entries)
-+		return 0;
-+
-+	return index;
-+}
-+
- static void set_ref_pic_list(struct hantro_ctx *ctx)
- {
- 	const struct hantro_hevc_dec_ctrls *ctrls = &ctx->hevc_dec.ctrls;
-@@ -336,8 +345,10 @@ static void set_ref_pic_list(struct hant
- 		list1[j++] = list1[i++];
+ 	for (i = 0; i < q->clhash.hashsize; i++) {
+ 		hlist_for_each_entry(cl, &q->clhash.hash[i], common.hnode) {
+-			if (cl->qdisc->q.qlen > 0)
++			if (cl_is_active(cl))
+ 				qfq_deactivate_class(q, cl);
  
- 	for (i = 0; i < V4L2_HEVC_DPB_ENTRIES_NUM_MAX; i++) {
--		hantro_reg_write(vpu, &ref_pic_regs0[i], list0[i]);
--		hantro_reg_write(vpu, &ref_pic_regs1[i], list1[i]);
-+		hantro_reg_write(vpu, &ref_pic_regs0[i],
-+				 get_dpb_index(decode_params, list0[i]));
-+		hantro_reg_write(vpu, &ref_pic_regs1[i],
-+				 get_dpb_index(decode_params, list1[i]));
- 	}
- }
- 
+ 			qdisc_reset(cl->qdisc);
+-- 
+2.51.0
+
 
 
 
