@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-208548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B0CD25EED
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90E9D25EFC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0E8D3302C84B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4154F3003486
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9713AE6E2;
-	Thu, 15 Jan 2026 16:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EA23AE6E2;
+	Thu, 15 Jan 2026 16:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nun6OIOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mj8nOkLn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8CF274B43;
-	Thu, 15 Jan 2026 16:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F72274B43;
+	Thu, 15 Jan 2026 16:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496162; cv=none; b=ZG3Hz4KXQpulQlQt3Y5SP4dS+L1mlVyQVrUIzclNSkWnzuIHXc/l4G+I+qynqg4vAoujVTeKZibskhHmKhhmAh1w8MdXubhyyY8jlLP6HcaZmRjiHN5P8ONjnJUu/fUwKE4i39q0r83rluKZTtPuMGtY+nl0R/jUZAtzrBrzW9o=
+	t=1768496168; cv=none; b=ma9lsdXyOXZsSZ1bYjOP4ORi0FBotPHrWVNyNqbbvYG6YV9TLIadIk9SiGraujChx6q5pbfIuUdIhJu7QirpnjkKrTXNzlHXaXtxz+N7HytjNce7CmXTG3WB25y99EWC6wZNhkSzazrhIJlk8r5EkR0/pCJTQVlhLSXJolHE6ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496162; c=relaxed/simple;
-	bh=/KpZFH33uDTI0ho4gtR1f3YfXBWYr1iXiQwyWbEZzoM=;
+	s=arc-20240116; t=1768496168; c=relaxed/simple;
+	bh=EjL3rN0RduJpaYBx5PWbS+kCsep3VKXLmNfpPcq5fX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+o0nUBZl5RwYvoxsohT8/24Y0xLkToZKm5/DeT7ByUO9Ikj7rFRBNJ1Y/xWqjzCObB4ZWjzbsQYIIcjui5AdUNGFvdK2VtArjahwMXTjauvIi+yxo7dAak0sIHL5IOCZz5vrKsZnAzBGR0XgVQx1gwXigIwr6FZVYbDKDtwvSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nun6OIOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFC5C16AAE;
-	Thu, 15 Jan 2026 16:56:01 +0000 (UTC)
+	 MIME-Version; b=sXkusgLIRNfBRXFO+TBWnI+/7RAYUHDEWdF6MbVsbVCCwlWna/TC5xAjeV3cglRngjVu3l9/wzrFCaYGyzD0qrTXz0ElgJTkDSORz2ly79HHE8u2DBV5K2+u10CUJ4j0jtUnS/FzxduWeZSsrbFjP1BcX+FPcLZH0eMRA4DCBFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mj8nOkLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB0CC116D0;
+	Thu, 15 Jan 2026 16:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496162;
-	bh=/KpZFH33uDTI0ho4gtR1f3YfXBWYr1iXiQwyWbEZzoM=;
+	s=korg; t=1768496167;
+	bh=EjL3rN0RduJpaYBx5PWbS+kCsep3VKXLmNfpPcq5fX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nun6OIODDVOvsrhVSDzg/nFnbkIF8CfcXTPv6d040COPh9O3Af9iGICjCOEie0IdG
-	 uf8IkgmF+fNjXq9Q2n4yVkBoK9o0Ofg7jnOjqHB/CYFB5yB1UcePRx548bygd+cRaz
-	 O6pqXWMiOAAB/SHEG3cY/q1JALh/lprTRF1GwzNk=
+	b=Mj8nOkLntD0ovKg/GxIfrJonR6t5J0VTLDwdGyeqCV+E2zyMFM/PvOXGQjmAaoKft
+	 jdCf45PVfCRcdYHKBR8TcLdw4a+i8+H3qH+nmoPZMvWy+XNKXd/8oaN3luZzeruY/2
+	 d4Tte5ow6LIZoB9LxLkbX2lkX7gvtRJNxwu5/5eU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Radaelli <stefano.r@variscite.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 099/181] net: phy: mxl-86110: Add power management and soft reset support
-Date: Thu, 15 Jan 2026 17:47:16 +0100
-Message-ID: <20260115164205.894960408@linuxfoundation.org>
+Subject: [PATCH 6.18 100/181] net: sock: fix hardened usercopy panic in sock_recv_errqueue
+Date: Thu, 15 Jan 2026 17:47:17 +0100
+Message-ID: <20260115164205.929863570@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -64,45 +66,112 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefano Radaelli <stefano.r@variscite.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 62f7edd59964eb588e96fce1ad35a2327ea54424 ]
+[ Upstream commit 2a71a1a8d0ed718b1c7a9ac61f07e5755c47ae20 ]
 
-Implement soft_reset, suspend, and resume callbacks using
-genphy_soft_reset(), genphy_suspend(), and genphy_resume()
-to fix PHY initialization and power management issues.
+skbuff_fclone_cache was created without defining a usercopy region,
+[1] unlike skbuff_head_cache which properly whitelists the cb[] field.
+[2] This causes a usercopy BUG() when CONFIG_HARDENED_USERCOPY is
+enabled and the kernel attempts to copy sk_buff.cb data to userspace
+via sock_recv_errqueue() -> put_cmsg().
 
-The soft_reset callback is needed to properly recover the PHY after an
-ifconfig down/up cycle. Without it, the PHY can remain in power-down
-state, causing MDIO register access failures during config_init().
-The soft reset ensures the PHY is operational before configuration.
+The crash occurs when: 1. TCP allocates an skb using alloc_skb_fclone()
+   (from skbuff_fclone_cache) [1]
+2. The skb is cloned via skb_clone() using the pre-allocated fclone
+[3] 3. The cloned skb is queued to sk_error_queue for timestamp
+reporting 4. Userspace reads the error queue via recvmsg(MSG_ERRQUEUE)
+5. sock_recv_errqueue() calls put_cmsg() to copy serr->ee from skb->cb
+[4] 6. __check_heap_object() fails because skbuff_fclone_cache has no
+   usercopy whitelist [5]
 
-The suspend/resume callbacks enable proper power management during
-system suspend/resume cycles.
+When cloned skbs allocated from skbuff_fclone_cache are used in the
+socket error queue, accessing the sock_exterr_skb structure in skb->cb
+via put_cmsg() triggers a usercopy hardening violation:
 
-Fixes: b2908a989c59 ("net: phy: add driver for MaxLinear MxL86110 PHY")
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
-Link: https://patch.msgid.link/20251223120940.407195-1-stefano.r@variscite.com
+[    5.379589] usercopy: Kernel memory exposure attempt detected from SLUB object 'skbuff_fclone_cache' (offset 296, size 16)!
+[    5.382796] kernel BUG at mm/usercopy.c:102!
+[    5.383923] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+[    5.384903] CPU: 1 UID: 0 PID: 138 Comm: poc_put_cmsg Not tainted 6.12.57 #7
+[    5.384903] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[    5.384903] RIP: 0010:usercopy_abort+0x6c/0x80
+[    5.384903] Code: 1a 86 51 48 c7 c2 40 15 1a 86 41 52 48 c7 c7 c0 15 1a 86 48 0f 45 d6 48 c7 c6 80 15 1a 86 48 89 c1 49 0f 45 f3 e8 84 27 88 ff <0f> 0b 490
+[    5.384903] RSP: 0018:ffffc900006f77a8 EFLAGS: 00010246
+[    5.384903] RAX: 000000000000006f RBX: ffff88800f0ad2a8 RCX: 1ffffffff0f72e74
+[    5.384903] RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffffffff87b973a0
+[    5.384903] RBP: 0000000000000010 R08: 0000000000000000 R09: fffffbfff0f72e74
+[    5.384903] R10: 0000000000000003 R11: 79706f6372657375 R12: 0000000000000001
+[    5.384903] R13: ffff88800f0ad2b8 R14: ffffea00003c2b40 R15: ffffea00003c2b00
+[    5.384903] FS:  0000000011bc4380(0000) GS:ffff8880bf100000(0000) knlGS:0000000000000000
+[    5.384903] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    5.384903] CR2: 000056aa3b8e5fe4 CR3: 000000000ea26004 CR4: 0000000000770ef0
+[    5.384903] PKRU: 55555554
+[    5.384903] Call Trace:
+[    5.384903]  <TASK>
+[    5.384903]  __check_heap_object+0x9a/0xd0
+[    5.384903]  __check_object_size+0x46c/0x690
+[    5.384903]  put_cmsg+0x129/0x5e0
+[    5.384903]  sock_recv_errqueue+0x22f/0x380
+[    5.384903]  tls_sw_recvmsg+0x7ed/0x1960
+[    5.384903]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    5.384903]  ? schedule+0x6d/0x270
+[    5.384903]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    5.384903]  ? mutex_unlock+0x81/0xd0
+[    5.384903]  ? __pfx_mutex_unlock+0x10/0x10
+[    5.384903]  ? __pfx_tls_sw_recvmsg+0x10/0x10
+[    5.384903]  ? _raw_spin_lock_irqsave+0x8f/0xf0
+[    5.384903]  ? _raw_read_unlock_irqrestore+0x20/0x40
+[    5.384903]  ? srso_alias_return_thunk+0x5/0xfbef5
+
+The crash offset 296 corresponds to skb2->cb within skbuff_fclones:
+  - sizeof(struct sk_buff) = 232 - offsetof(struct sk_buff, cb) = 40 -
+  offset of skb2.cb in fclones = 232 + 40 = 272 - crash offset 296 =
+  272 + 24 (inside sock_exterr_skb.ee)
+
+This patch uses a local stack variable as a bounce buffer to avoid the hardened usercopy check failure.
+
+[1] https://elixir.bootlin.com/linux/v6.12.62/source/net/ipv4/tcp.c#L885
+[2] https://elixir.bootlin.com/linux/v6.12.62/source/net/core/skbuff.c#L5104
+[3] https://elixir.bootlin.com/linux/v6.12.62/source/net/core/skbuff.c#L5566
+[4] https://elixir.bootlin.com/linux/v6.12.62/source/net/core/skbuff.c#L5491
+[5] https://elixir.bootlin.com/linux/v6.12.62/source/mm/slub.c#L5719
+
+Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251223203534.1392218-2-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mxl-86110.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/sock.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/mxl-86110.c b/drivers/net/phy/mxl-86110.c
-index e5d137a37a1d4..42a5fe3f115f4 100644
---- a/drivers/net/phy/mxl-86110.c
-+++ b/drivers/net/phy/mxl-86110.c
-@@ -938,6 +938,9 @@ static struct phy_driver mxl_phy_drvs[] = {
- 		PHY_ID_MATCH_EXACT(PHY_ID_MXL86110),
- 		.name			= "MXL86110 Gigabit Ethernet",
- 		.config_init		= mxl86110_config_init,
-+		.suspend		= genphy_suspend,
-+		.resume			= genphy_resume,
-+		.soft_reset		= genphy_soft_reset,
- 		.get_wol		= mxl86110_get_wol,
- 		.set_wol		= mxl86110_set_wol,
- 		.led_brightness_set	= mxl86110_led_brightness_set,
+diff --git a/net/core/sock.c b/net/core/sock.c
+index dc03d4b5909a2..5a38837a58384 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3836,7 +3836,7 @@ void sock_enable_timestamp(struct sock *sk, enum sock_flags flag)
+ int sock_recv_errqueue(struct sock *sk, struct msghdr *msg, int len,
+ 		       int level, int type)
+ {
+-	struct sock_exterr_skb *serr;
++	struct sock_extended_err ee;
+ 	struct sk_buff *skb;
+ 	int copied, err;
+ 
+@@ -3856,8 +3856,9 @@ int sock_recv_errqueue(struct sock *sk, struct msghdr *msg, int len,
+ 
+ 	sock_recv_timestamp(msg, sk, skb);
+ 
+-	serr = SKB_EXT_ERR(skb);
+-	put_cmsg(msg, level, type, sizeof(serr->ee), &serr->ee);
++	/* We must use a bounce buffer for CONFIG_HARDENED_USERCOPY=y */
++	ee = SKB_EXT_ERR(skb)->ee;
++	put_cmsg(msg, level, type, sizeof(ee), &ee);
+ 
+ 	msg->msg_flags |= MSG_ERRQUEUE;
+ 	err = copied;
 -- 
 2.51.0
 
