@@ -1,186 +1,255 @@
-Return-Path: <stable+bounces-208413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DACCD2248A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 04:20:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10761D22564
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 04:56:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5B15A30239D3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 03:20:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3ACE302EAEB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 03:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBCE1283FD4;
-	Thu, 15 Jan 2026 03:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74AFC2C028B;
+	Thu, 15 Jan 2026 03:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="btlUjL16"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M1SIDzwu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC1A86334
-	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 03:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE062BD587
+	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 03:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768447222; cv=none; b=CfSYAvH3SsGHjyZceJTXHhQzQ8IBiI4Q45H6FGEV9Vzep2pz9ylk6etBKybM+Lb/MpgqKf/o14s0YnpvjnhCtYoT74BGRT3o7fFc0pHlj28/CWEM3+PqpR4OkQ6A2b30qXAp2fvqIY+biXBKVbuoQBeMB0LAzCLqKKUgJHoAOr0=
+	t=1768449389; cv=none; b=GNShLRw5XlIx19NuA1k12h+4ZPnB7tFNFYfk3I92wxjF4zR1yQWuzDuiU0msbZJ9CgnlMK1jIA29PuThMwISS0KTzxj/yQHzjHQ0Wk+3GBzQWsqfHIDt7DwYa/6Fo94el7kqgtkkURpZRn4TlXxiN3ET3NYm2YxTNV3cW0C0wig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768447222; c=relaxed/simple;
-	bh=upkeY48wkxEI/Uops1fgvv5r4MWDRauu4M3UNZQqQZY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aGBQVympfYFyherd3qcNDvMQ74QrtzlwpXLGkKcW+qEGaF7DcCP3b8hVUDJwz/lnXGn20ModDcegoW04Zv68LJAV+/O9iZJl35JQCHwvo5F86T9+3zTvLNBdyJyT2XHz1slB2BmamnOvgGBNBhmHTa+MMln784vyz13DJP/VuUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=btlUjL16; arc=none smtp.client-ip=209.85.210.171
+	s=arc-20240116; t=1768449389; c=relaxed/simple;
+	bh=8PTo8WdG2gqkNTQA+6lOZMx1DT70AMXpIpI6P3k7Qdg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tmH/Zk/+SlpXz21WzV26uaZYVQVO7tKdZGnr9ry+COgsrN8T8+MZsBtJ5Owk5jPlFbMiPAoKUob6nuW96u5Y2WTGFCMOd8B3EcoAdqyJbL42irF89Hi3whHSOph+WUJPT3IGXqOMRZOJTjEaJgTI7Kjlx55IlIe6kLH3OTLhses=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M1SIDzwu; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-81e821c3d4eso386848b3a.3
-        for <stable@vger.kernel.org>; Wed, 14 Jan 2026 19:20:20 -0800 (PST)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-430f9ffd4e8so689162f8f.0
+        for <stable@vger.kernel.org>; Wed, 14 Jan 2026 19:56:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768447220; x=1769052020; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Trq+zKapUs2OXgXptR+lx0STbGwE8yhsbG9H7N7gDZA=;
-        b=btlUjL16twScFn4A5mn6NDY4QczL9O5+hgCpTWqWgP0Fm+QhZ8IeDEJburpKEvHyf0
-         dIS5HX0X7tETeNGzU72migLV6cU/VSZ4CUFWyrJ2exhQd3MFYddhnfCdkdSoCbwBGHv/
-         Y93JaGGB197EFHPw7e1+CfELPVtDGJR7WBBzr9/hOw1/6dTGYOslQoycIkPB4vtT9kCW
-         jl+/l2/SQETYQWG8F97qThthLk/BuMpT5DAvz89BMtEcAd+EmsoGyzGadaRHAk69i+RN
-         K4z34s+kX6O3UeYEAppuSIF2Wv9W9hEsvptatc4Cgga1e4wD0tNMcbDbu9UK6m1oYnkt
-         /5zg==
+        d=gmail.com; s=20230601; t=1768449385; x=1769054185; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z8h4CNT/vCdwT2WHgzViB1V6HoWHqUEOSKi1RhGen4M=;
+        b=M1SIDzwu04IjMHIs24nruMNHqFUH4Yc6g2jEFTS9kv3MWpmj6J/3RFu9P0Df0PLFEM
+         JG6efR7rvUEJ6ejqW+Rvy++sMXQ0/echeGRJzgaMHOancqohJWfL+xpUBv/L3SYZYr7K
+         tngw4rIg1UdEvziBcV0Ic3ZobRhaOyA4xLOG9dI4HpgsHrTaigAWG8zz/CSkz/E2ahrg
+         HED+MCRXkWT3ZxLLRiQEDj1FxLQ22MbY1N0Hn0Kocyutn0MXu4Bd/qYe7bufH85/NpXZ
+         NIiv76SnMUne3VMUkt9C2EPD9H68WUDpnJabRIZYkX4u8p0EhQdkRfGbmkGOZgAdK6/4
+         +cmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768447220; x=1769052020;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Trq+zKapUs2OXgXptR+lx0STbGwE8yhsbG9H7N7gDZA=;
-        b=w5omZ7lqk5LrpcEtU60w8EsFqzF51NCWpUo8e7NqR6xcmRoADY22JO+FsqC0xWiB6Q
-         d1aNQocIQVPzOcx7FhcERSuT/HTuWEKYhsxkVVKksndivkKkydu7A6bnJVpEQpVVyWgT
-         e44uonubFK8kA8+M4TuaT9oy21nSRdcWBmqrRDm6nrNj5+q9/kOEBL9GdD76sfHK/m6z
-         J70SRIdO/ncNGeOt2hz03mlxl0xkCcTDok+DjUpq2gI2XmhmHKemQn80TtN4+93u7PIg
-         Jlz17dWzY0+Kd6lfbkqYFWTs/OI4o9Zn1bopasTBwyBpccIsWPjPYVglKLBLAqI8I9g9
-         F1Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCW46G7MQZlrF/hNBe5sF3CE7e6vr9uTyN0mXvOlkjMXIfkl8j1TDx50cBEzuOYXMrvsb/MWfD4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyH3sU1TQp5xWpgqFdOYPhpMvb2LmE+NzrA4mhKL9CB9+6Dpdc
-	MGFFFNy+KNNf3LzfAkKFPV4E4pXT8Loeg4tkyetRXoURyn1sWvg2HlA/
-X-Gm-Gg: AY/fxX6Mo4M0SXimyYNh1PWeo+QYqk9JJ8xWZdSmggu2KTr6lZwWY6g9pV2Arc6O0DU
-	pG5PgVG+GhWFpbiQGLr/RANDs2vLxmNdbfHQRqwjNfpAtGqfYvbO9mcdqewb9vO+57P4T2+5md8
-	FtH3uqSyF1suRbYa56F1wnMkoqThuNKRwLy0UdAV1rUkfT/igZdBABQXOa09GVfLuIptEHUOEd6
-	nZ12o8rTFBoW2fDYsllakpafAUoiEhHU//EhFU0UA2JOypXWAvjhx4lET9Aq7f0B7g9y/WUnr+H
-	CDVao5x5CHU2G79ZTAkQGppW6MVHYr2bFGp2rQvl2WQ5bHqw4v3PrB+gXzfSlgc2ogN2OXgdctC
-	kGQi+gWXiMBveWMcJ9FizMpiMQNzxquDXGDvSyVKUrR3X3f36FOOB/BwcR/m16NY+QrluZnlsrr
-	mC36LRxNASKeo=
-X-Received: by 2002:a05:6a00:a24c:b0:81f:4063:f1ef with SMTP id d2e1a72fcca58-81f83d5e4b5mr3914019b3a.54.1768447220095;
-        Wed, 14 Jan 2026 19:20:20 -0800 (PST)
-Received: from inspiron ([111.125.235.106])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81f8e381d7csm963637b3a.0.2026.01.14.19.20.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 19:20:19 -0800 (PST)
-Date: Thu, 15 Jan 2026 08:50:12 +0530
-From: Prithvi <activprithvi@gmail.com>
-To: martin.petersen@oracle.com
-Cc: linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, hch@lst.de, jlbec@evilplan.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: target: Fix recursive locking in
- __configfs_open_file()
-Message-ID: <20260115032012.yb5ylmumcirrmsbr@inspiron>
-References: <20260108191523.303114-1-activprithvi@gmail.com>
+        d=1e100.net; s=20230601; t=1768449385; x=1769054185;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Z8h4CNT/vCdwT2WHgzViB1V6HoWHqUEOSKi1RhGen4M=;
+        b=q4gMD8/YNBUVw1MmVU8brUo5tCNuQxiReu9i1tqoYbM+raoN0k1XcM6ayAd5Nv139l
+         n9WBHal3xJTZQUJ1RqY/LCPqqtqhE84VEXLiEIfszroE7ZbyG06MkXtrC9akFNee2lfS
+         CR5gokq/m8HVBMQe092YICiRtxLQDpT+vjCSLPBDa3euEYJ5vVdCbnmxqCB4vrTmMiol
+         Xq/FNmWp2xKBsPPi0NE582oJMD5w/rBSMU0B7LPdA9D0lVR9cWA3iB/JLjXDkYNMWmmY
+         /ca1o6oLoy8yUyjwXZw3N6Q60H1so3HdIGNm/RN9lBMFFQiLelsjaMV9ml19plqmdimX
+         7mqg==
+X-Forwarded-Encrypted: i=1; AJvYcCWjnBhxoRH/HKUGOAHK1G5LSrmopZ/86ylEUdnMYG5FkpmMMY1tyaUYxtxphrNqv3cBQLC+tdw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvDzXS+eZfMmup1nCGoeM221mAgXyIpZJTCSrHwpJ6ByXb5Yd7
+	L/+iCzS6c8+/ROXu0Iak6dK35oD7aOrzCACfX4tW3mha0mSOyA0iOC9ZnCxWFbpNuTnmE+LAREM
+	VlqR2cIBh+Jg11YrjBaHyRoPmMF/ziT0=
+X-Gm-Gg: AY/fxX4qKJUX2qftWLHGyymtLLXkzcBfCPuEpPQRNae8pbOpKeOBb9xHNr9sRysMkL6
+	OYgAQdUiXfpG+HOrbXKPr+iOPasJIJyi/DKg4Qx2xZxDq8bTcSJTl6nI7WEVT9GfdUhuNdz7g9W
+	E/vYtcyV7yahMHm3G+/a0UvBYi88auS1kunD3M6nD/mE2/mBtgKbMZSWt+x4l0v9cae8OsrL2Jc
+	dS+QTH52ug2sdHXZBV2MsXwCdPrxu+nsDofJvkvKwBad+5f5HfDmRRG6x5LJdGj9QexoXhJplM6
+	Hsxl1Bz/0lt772KgfIRo7ajvEB8YpA==
+X-Received: by 2002:a05:6000:2f82:b0:431:1c7:f967 with SMTP id
+ ffacd0b85a97d-434d7580e3cmr1957942f8f.17.1768449384919; Wed, 14 Jan 2026
+ 19:56:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260108191523.303114-1-activprithvi@gmail.com>
+References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
+ <20260113191516.31015-1-ryabinin.a.a@gmail.com>
+In-Reply-To: <20260113191516.31015-1-ryabinin.a.a@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Thu, 15 Jan 2026 04:56:14 +0100
+X-Gm-Features: AZwV_Qj2HFEg_msWenRDyDr9jlnYYzEBrAIjJPlBfTu53BTl1ZMgAQjnko_IfdI
+Message-ID: <CA+fCnZe0RQOv8gppvs7PoH2r4QazWs+PJTpw+S-Krj6cx22qbA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm/kasan: Fix KASAN poisoning in vrealloc()
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
+	Maciej Wieczor-Retman <m.wieczorretman@pm.me>, Alexander Potapenko <glider@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	kasan-dev@googlegroups.com, Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, joonki.min@samsung-slsi.corp-partner.google.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 09, 2026 at 12:45:23AM +0530, Prithvi Tambewagh wrote:
-> In flush_write_buffer, &p->frag_sem is acquired and then the loaded store
-> function is called, which, here, is target_core_item_dbroot_store().
-> This function called filp_open(), following which these functions were
-> called (in reverse order), according to the call trace:
-> 
-> down_read
-> __configfs_open_file
-> do_dentry_open
-> vfs_open
-> do_open
-> path_openat
-> do_filp_open
-> file_open_name
-> filp_open
-> target_core_item_dbroot_store
-> flush_write_buffer
-> configfs_write_iter
-> 
-> Hence ultimately, __configfs_open_file() was called, indirectly by
-> target_core_item_dbroot_store(), and it also attempted to acquire
-> &p->frag_sem, which was already held by the same thread, acquired earlier
-> in flush_write_buffer. This poses a possibility of recursive locking,
-> which triggers the lockdep warning.
-> 
-> Fix this by modifying target_core_item_dbroot_store() to use kern_path()
-> instead of filp_open() to avoid opening the file using filesystem-specific
-> function __configfs_open_file(), and further modifying it to make this
-> fix compatible.
-> 
-> Reported-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=f6e8174215573a84b797
-> Tested-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
+On Tue, Jan 13, 2026 at 8:16=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@gmail=
+.com> wrote:
+>
+> A KASAN warning can be triggered when vrealloc() changes the requested
+> size to a value that is not aligned to KASAN_GRANULE_SIZE.
+>
+>     ------------[ cut here ]------------
+>     WARNING: CPU: 2 PID: 1 at mm/kasan/shadow.c:174 kasan_unpoison+0x40/0=
+x48
+>     ...
+>     pc : kasan_unpoison+0x40/0x48
+>     lr : __kasan_unpoison_vmalloc+0x40/0x68
+>     Call trace:
+>      kasan_unpoison+0x40/0x48 (P)
+>      vrealloc_node_align_noprof+0x200/0x320
+>      bpf_patch_insn_data+0x90/0x2f0
+>      convert_ctx_accesses+0x8c0/0x1158
+>      bpf_check+0x1488/0x1900
+>      bpf_prog_load+0xd20/0x1258
+>      __sys_bpf+0x96c/0xdf0
+>      __arm64_sys_bpf+0x50/0xa0
+>      invoke_syscall+0x90/0x160
+>
+> Introduce a dedicated kasan_vrealloc() helper that centralizes
+> KASAN handling for vmalloc reallocations. The helper accounts for KASAN
+> granule alignment when growing or shrinking an allocation and ensures
+> that partial granules are handled correctly.
+>
+> Use this helper from vrealloc_node_align_noprof() to fix poisoning
+> logic.
+>
+> Reported-by: Maciej =C5=BBenczykowski <maze@google.com>
+> Reported-by: <joonki.min@samsung-slsi.corp-partner.google.com>
+> Closes: https://lkml.kernel.org/r/CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm=
+08oLO3odYFrA@mail.gmail.com
+> Fixes: d699440f58ce ("mm: fix vrealloc()'s KASAN poisoning logic")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+> Signed-off-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
 > ---
->  drivers/target/target_core_configfs.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-> index b19acd662726..f29052e6a87d 100644
-> --- a/drivers/target/target_core_configfs.c
-> +++ b/drivers/target/target_core_configfs.c
-> @@ -108,8 +108,8 @@ static ssize_t target_core_item_dbroot_store(struct config_item *item,
->  					const char *page, size_t count)
->  {
->  	ssize_t read_bytes;
-> -	struct file *fp;
->  	ssize_t r = -EINVAL;
-> +	struct path path = {};
->  
->  	mutex_lock(&target_devices_lock);
->  	if (target_devices) {
-> @@ -131,17 +131,18 @@ static ssize_t target_core_item_dbroot_store(struct config_item *item,
->  		db_root_stage[read_bytes - 1] = '\0';
->  
->  	/* validate new db root before accepting it */
-> -	fp = filp_open(db_root_stage, O_RDONLY, 0);
-> -	if (IS_ERR(fp)) {
-> +	r = kern_path(db_root_stage, LOOKUP_FOLLOW, &path);
-> +	if (r) {
->  		pr_err("db_root: cannot open: %s\n", db_root_stage);
->  		goto unlock;
->  	}
-> -	if (!S_ISDIR(file_inode(fp)->i_mode)) {
-> -		filp_close(fp, NULL);
-> +	if (!d_is_dir(path.dentry)) {
-> +		path_put(&path);
->  		pr_err("db_root: not a directory: %s\n", db_root_stage);
-> +		r = -ENOTDIR;
->  		goto unlock;
->  	}
-> -	filp_close(fp, NULL);
-> +	path_put(&path);
->  
->  	strscpy(db_root, db_root_stage);
->  	pr_debug("Target_Core_ConfigFS: db_root set to %s\n", db_root);
-> 
-> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-> -- 
-> 2.34.1
-> 
+>  include/linux/kasan.h |  6 ++++++
+>  mm/kasan/shadow.c     | 24 ++++++++++++++++++++++++
+>  mm/vmalloc.c          |  7 ++-----
+>  3 files changed, 32 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+> index 9c6ac4b62eb9..ff27712dd3c8 100644
+> --- a/include/linux/kasan.h
+> +++ b/include/linux/kasan.h
+> @@ -641,6 +641,9 @@ kasan_unpoison_vmap_areas(struct vm_struct **vms, int=
+ nr_vms,
+>                 __kasan_unpoison_vmap_areas(vms, nr_vms, flags);
+>  }
+>
+> +void kasan_vrealloc(const void *start, unsigned long old_size,
+> +               unsigned long new_size);
+> +
+>  #else /* CONFIG_KASAN_VMALLOC */
+>
+>  static inline void kasan_populate_early_vm_area_shadow(void *start,
+> @@ -670,6 +673,9 @@ kasan_unpoison_vmap_areas(struct vm_struct **vms, int=
+ nr_vms,
+>                           kasan_vmalloc_flags_t flags)
+>  { }
+>
+> +static inline void kasan_vrealloc(const void *start, unsigned long old_s=
+ize,
+> +                               unsigned long new_size) { }
+> +
+>  #endif /* CONFIG_KASAN_VMALLOC */
+>
+>  #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && =
+\
+> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> index 32fbdf759ea2..e9b6b2d8e651 100644
+> --- a/mm/kasan/shadow.c
+> +++ b/mm/kasan/shadow.c
+> @@ -651,6 +651,30 @@ void __kasan_poison_vmalloc(const void *start, unsig=
+ned long size)
+>         kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
+>  }
+>
+> +void kasan_vrealloc(const void *addr, unsigned long old_size,
+> +               unsigned long new_size)
+> +{
+> +       if (!kasan_enabled())
+> +               return;
 
-Hello all,
+Please move this check to include/linux/kasan.h and add
+__kasan_vrealloc, similar to other hooks.
 
-Just a gentle ping on this thread.
+Otherwise, these kasan_enabled() checks eventually start creeping into
+lower-level KASAN functions, and this makes the logic hard to follow.
+We recently cleaned up most of these checks.
 
-Thanks, 
-Prithvi
+> +
+> +       if (new_size < old_size) {
+> +               kasan_poison_last_granule(addr, new_size);
+> +
+> +               new_size =3D round_up(new_size, KASAN_GRANULE_SIZE);
+> +               old_size =3D round_up(old_size, KASAN_GRANULE_SIZE);
+> +               if (new_size < old_size)
+> +                       __kasan_poison_vmalloc(addr + new_size,
+> +                                       old_size - new_size);
+> +       } else if (new_size > old_size) {
+> +               old_size =3D round_down(old_size, KASAN_GRANULE_SIZE);
+> +               __kasan_unpoison_vmalloc(addr + old_size,
+> +                                       new_size - old_size,
+> +                                       KASAN_VMALLOC_PROT_NORMAL |
+> +                                       KASAN_VMALLOC_VM_ALLOC |
+> +                                       KASAN_VMALLOC_KEEP_TAG);
+> +       }
+> +}
+> +
+>  #else /* CONFIG_KASAN_VMALLOC */
+>
+>  int kasan_alloc_module_shadow(void *addr, size_t size, gfp_t gfp_mask)
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 41dd01e8430c..2536d34df058 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4322,7 +4322,7 @@ void *vrealloc_node_align_noprof(const void *p, siz=
+e_t size, unsigned long align
+>                 if (want_init_on_free() || want_init_on_alloc(flags))
+>                         memset((void *)p + size, 0, old_size - size);
+>                 vm->requested_size =3D size;
+> -               kasan_poison_vmalloc(p + size, old_size - size);
+> +               kasan_vrealloc(p, old_size, size);
+>                 return (void *)p;
+>         }
+>
+> @@ -4330,16 +4330,13 @@ void *vrealloc_node_align_noprof(const void *p, s=
+ize_t size, unsigned long align
+>          * We already have the bytes available in the allocation; use the=
+m.
+>          */
+>         if (size <=3D alloced_size) {
+> -               kasan_unpoison_vmalloc(p + old_size, size - old_size,
+> -                                      KASAN_VMALLOC_PROT_NORMAL |
+> -                                      KASAN_VMALLOC_VM_ALLOC |
+> -                                      KASAN_VMALLOC_KEEP_TAG);
+>                 /*
+>                  * No need to zero memory here, as unused memory will hav=
+e
+>                  * already been zeroed at initial allocation time or duri=
+ng
+>                  * realloc shrink time.
+>                  */
+>                 vm->requested_size =3D size;
+> +               kasan_vrealloc(p, old_size, size);
+>                 return (void *)p;
+>         }
+>
+> --
+> 2.52.0
+>
+
+With the change mentioned above:
+
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+
+Thank you!
 
