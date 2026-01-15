@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5187D27565
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:19:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF5FD272B3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B86003118F2A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2997F305846C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76223C1983;
-	Thu, 15 Jan 2026 17:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9B33D410B;
+	Thu, 15 Jan 2026 17:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydxwauPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhJFv/Mf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84213BC4D8;
-	Thu, 15 Jan 2026 17:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4693C1FD5;
+	Thu, 15 Jan 2026 17:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498337; cv=none; b=jFplv1yCFyN0bbpnxDbzPdo65cxAXl4sxzWV6ZckBlBlQaHzwyBYT38Sna+sMllmF3fmOSOYH/RB5zhJF7F2umgHpDPpOpDW3apcm50oZ/AI+Tso1o19aix/WkVO9WFlEfj7DAqG2XWCxeLR0FAD5MLUIAHViNSVfQ9qOkWn4EU=
+	t=1768499542; cv=none; b=KqEFIBrgXRQKcHUEJrHxOM1V/N/m0MDGFlrTAf1r0waCG0bt41o9iorOYjfD17GxmEh8qGnYg+94xNoYT5za5HFop5VSYFfrd9chA0OKUX38qwv5RLjL17bI3jJj8jcsJeifrWo9u3XEylQ0jWUyOPRTLIRzerWgVHj7PmYwrJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498337; c=relaxed/simple;
-	bh=fS2M4Q9RDbXwjF6GiB4DoNTlTQ5DREpoOhsYnmeaiHw=;
+	s=arc-20240116; t=1768499542; c=relaxed/simple;
+	bh=eoGYVXKZKwBGlArttvkfvVwcXJQniuhtQv+JoZOc+cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j81SyiFO5shCML6fYERCIX/gOcftzSo1IXtCXhnIfSjInuFKQlzXvCjf1AsuJeL3y1uwzulbwPyu4IqXQi8g8oQyLOjMuMamRUpk1y/53m7q3ach6yAkBG3wmpj8/Xv563jZI+pzqJQeK67nImDqWDt7DoBQi/dPIrHgK8vvYAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydxwauPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAC6C116D0;
-	Thu, 15 Jan 2026 17:32:17 +0000 (UTC)
+	 MIME-Version; b=myO4gv+k0gPW9Dq3PHDkTKXPGDpjI/rDn41lLWjYFwwPqSZcSFIsAYslxKgtLy6ab+5tFh4QmHWysIIbdOfVI3p8XlqIcUcOjj0Rhnr451vaqqCiU9yw+N7HA30VvyU6HfMukch6vKn+3rbwjSu1MObqBda/vNsGsdW3rLq9YvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhJFv/Mf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CED0C116D0;
+	Thu, 15 Jan 2026 17:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498337;
-	bh=fS2M4Q9RDbXwjF6GiB4DoNTlTQ5DREpoOhsYnmeaiHw=;
+	s=korg; t=1768499542;
+	bh=eoGYVXKZKwBGlArttvkfvVwcXJQniuhtQv+JoZOc+cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydxwauPI5VixCzCsm3yHOTfblxabCfIfu/GnII5hG94w+5fBZwpUoiYD1SMrWKgJ3
-	 PNi+VGGfi0a4P5v3W5xJbdbIntvM6xS5iqplJswAxUpSHDt0dyCSY8NJ645uxR5u/C
-	 8qo+vUXrAM20DxJA8e0IVdGb0/YF5aKLY5MTMsKg=
+	b=lhJFv/MfYtIUhHhduyXm5V72xRgxaNZLzL2pL30ri7ewLhNynxDUt0Nya+StMpNOa
+	 4lI7z9iTvAL6LTC7l09MppaUyE+7np9OyAT2bzdgolNW9hDbz47Vcf2r+zA2nFQpyR
+	 gKesyydvVf737rCfQjlDS60B0H65Cqxys07X1Oxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.15 397/554] media: TDA1997x: Remove redundant cancel_delayed_work in probe
+	syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com,
+	Prithvi Tambewagh <activprithvi@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 262/451] io_uring: fix filename leak in __io_openat_prep()
 Date: Thu, 15 Jan 2026 17:47:43 +0100
-Message-ID: <20260115164300.604473405@linuxfoundation.org>
+Message-ID: <20260115164240.364183352@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Prithvi Tambewagh <activprithvi@gmail.com>
 
-commit 29de195ca39fc2ac0af6fd45522994df9f431f80 upstream.
+ __io_openat_prep() allocates a struct filename using getname(). However,
+for the condition of the file being installed in the fixed file table as
+well as having O_CLOEXEC flag set, the function returns early. At that
+point, the request doesn't have REQ_F_NEED_CLEANUP flag set. Due to this,
+the memory for the newly allocated struct filename is not cleaned up,
+causing a memory leak.
 
-The delayed_work delayed_work_enable_hpd is initialized with
-INIT_DELAYED_WORK(), but it is never scheduled in tda1997x_probe().
+Fix this by setting the REQ_F_NEED_CLEANUP for the request just after the
+successful getname() call, so that when the request is torn down, the
+filename will be cleaned up, along with other resources needing cleanup.
 
-Calling cancel_delayed_work() on a work that has never been
-scheduled is redundant and unnecessary, as there is no pending
-work to cancel.
-
-Remove the redundant cancel_delayed_work() from error handling
-path in tda1997x_probe() to avoid potential confusion.
-
-Fixes: 9ac0038db9a7 ("media: i2c: Add TDA1997x HDMI receiver driver")
+Reported-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=00e61c43eb5e4740438f
+Tested-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+Fixes: b9445598d8c6 ("io_uring: openat directly into fixed fd table")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/tda1997x.c |    1 -
- 1 file changed, 1 deletion(-)
+ io_uring/io_uring.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/tda1997x.c
-+++ b/drivers/media/i2c/tda1997x.c
-@@ -2780,7 +2780,6 @@ err_free_media:
- err_free_handler:
- 	v4l2_ctrl_handler_free(&state->hdl);
- err_free_mutex:
--	cancel_delayed_work(&state->delayed_work_enable_hpd);
- 	mutex_destroy(&state->page_lock);
- 	mutex_destroy(&state->lock);
- err_free_state:
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -4178,13 +4178,13 @@ static int __io_openat_prep(struct io_ki
+ 		req->open.filename = NULL;
+ 		return ret;
+ 	}
++	req->flags |= REQ_F_NEED_CLEANUP;
+ 
+ 	req->open.file_slot = READ_ONCE(sqe->file_index);
+ 	if (req->open.file_slot && (req->open.how.flags & O_CLOEXEC))
+ 		return -EINVAL;
+ 
+ 	req->open.nofile = rlimit(RLIMIT_NOFILE);
+-	req->flags |= REQ_F_NEED_CLEANUP;
+ 	return 0;
+ }
+ 
 
 
 
