@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58424D26C84
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:49:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF42D276AA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCFCF30CB9E1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D416330AE2AD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CD22C21F4;
-	Thu, 15 Jan 2026 17:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7880B3E8C58;
+	Thu, 15 Jan 2026 17:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtjbRU2O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czZO/mAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBF52D7DED;
-	Thu, 15 Jan 2026 17:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3004C3D34A6;
+	Thu, 15 Jan 2026 17:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498786; cv=none; b=npXBb2aNaxOMkx7+QKbiuMN0EVQ7mQ2UNzsC3fCUXUmjcu1o62IpHC9fUqM58XoUZuVs7NVsh9lGvY5nQjOe6OvOqZnv8p60mzlgNv8zXlooZDVNr6pQ17CV3VqJxBKkQYxxvB6S3jZL7Rq9eP0E6LcfdHgM+Mygm6r+FGoWsGM=
+	t=1768499986; cv=none; b=r0JL1AevH/ddNirg4MV1bfpKoPTpF1LI/3DqfZxAHhRjX4JresBBaEpm38bzSAj/hQn7BzJMwyj71yWzs3yyPBdE5JW6H8hXp8eE95nCWSCNU3qBVKjhN+VwnXT2OUTyz2irBYNsNxQcCl/vlbTJYycf0KiUjPx6RAnzn3ei4rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498786; c=relaxed/simple;
-	bh=aJLPi4KrQ3tRgKbXosSMM/Rt31GASwMDC2pcoUQ5FSo=;
+	s=arc-20240116; t=1768499986; c=relaxed/simple;
+	bh=WahuQp7OlmkZKQa8ad0UT9VC/rGTwoB8TGrJPTHc5A8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uun584ImA9v+JWGNRpo39WiDa4ycdw4deRH9IH+Yw5V2DxkKSGE2WiOlWBjS4c8qg148NgHJ2rPZsOlXx3jXJSuRTvJrVkbVnesvLrB9aaqjTzvInKjUUcw65ItZJrizgpZqmeRXPEUfU1RolWpKwqp3pTeldmJfw5ek86kFdcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtjbRU2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B86C116D0;
-	Thu, 15 Jan 2026 17:39:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mERElSubBHL1Zzf4zfJgX0zGgx1BW2sejmcZt9SnR5podXSl44+QYYVj7BXnyr5DVtLBDfrG1Ss2CU40074UkLBJAIYd23Y3+ddbZbDlK0K1hnadfx+ITnwwBXTwEccz5y0/TnlLEXCarGwCQ5W9BaedyZdMPy+cPnWKy+fPMIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czZO/mAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4A47C116D0;
+	Thu, 15 Jan 2026 17:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498786;
-	bh=aJLPi4KrQ3tRgKbXosSMM/Rt31GASwMDC2pcoUQ5FSo=;
+	s=korg; t=1768499986;
+	bh=WahuQp7OlmkZKQa8ad0UT9VC/rGTwoB8TGrJPTHc5A8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LtjbRU2OIZ/FzAH14u9shi1uEu/sivIf/NvqFextIryL5B7nDZGvqFt9aMxJbrmwD
-	 JTiBJOLOIkYboqOo81amh6N5MPZ3zgqjQGYOudpS6D0FLdilR5TnyMXHBp4rFQKYzV
-	 UOJvGE+kuBPVHYNl3aBB8QLkfYPAkRGlUNqcuDiM=
+	b=czZO/mADRcdxv4FDWO8CidqpfahuQiqrZCWSPXruJx7SF/IqhhsvdI+IC4H31nVi4
+	 LVmNYi8g80Zf6jaN2Rh0Rea/4gEtomgEw4OaKOsx37q9MpBIaOmjVAt4B/di46PFjL
+	 DUqGTORRj1SiVG1ZV0ZtIy31ZhlwUiIlcbzLiK3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 553/554] ASoC: fsl_sai: Add missing registers to cache default
-Date: Thu, 15 Jan 2026 17:50:19 +0100
-Message-ID: <20260115164306.346171962@linuxfoundation.org>
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	=?UTF-8?q?David=20Nystr=C3=B6m?= <david.nystrom@est.tech>
+Subject: [PATCH 5.10 419/451] ext4: introduce ITAIL helper
+Date: Thu, 15 Jan 2026 17:50:20 +0100
+Message-ID: <20260115164246.094920155@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,62 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 90ed688792a6b7012b3e8a2f858bc3fe7454d0eb ]
+[ Upstream commit 69f3a3039b0d0003de008659cafd5a1eaaa0a7a4 ]
 
-Drivers does cache sync during runtime resume, setting all writable
-registers. Not all writable registers are set in cache default, resulting
-in the erorr message:
-  fsl-sai 30c30000.sai: using zero-initialized flat cache, this may cause
-  unexpected behavior
+Introduce ITAIL helper to get the bound of xattr in inode.
 
-Fix this by adding missing writable register defaults.
-
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://patch.msgid.link/20251216102246.676181-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250208063141.1539283-2-yebin@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: David Nyström <david.nystrom@est.tech>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_sai.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/xattr.c |   10 +++++-----
+ fs/ext4/xattr.h |    3 +++
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 45d8ef029a638..82911e5ed1796 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -779,6 +779,7 @@ static struct reg_default fsl_sai_reg_defaults_ofs0[] = {
- 	{FSL_SAI_TDR6, 0},
- 	{FSL_SAI_TDR7, 0},
- 	{FSL_SAI_TMR, 0},
-+	{FSL_SAI_TTCTL, 0},
- 	{FSL_SAI_RCR1(0), 0},
- 	{FSL_SAI_RCR2(0), 0},
- 	{FSL_SAI_RCR3(0), 0},
-@@ -802,12 +803,14 @@ static struct reg_default fsl_sai_reg_defaults_ofs8[] = {
- 	{FSL_SAI_TDR6, 0},
- 	{FSL_SAI_TDR7, 0},
- 	{FSL_SAI_TMR, 0},
-+	{FSL_SAI_TTCTL, 0},
- 	{FSL_SAI_RCR1(8), 0},
- 	{FSL_SAI_RCR2(8), 0},
- 	{FSL_SAI_RCR3(8), 0},
- 	{FSL_SAI_RCR4(8), 0},
- 	{FSL_SAI_RCR5(8), 0},
- 	{FSL_SAI_RMR, 0},
-+	{FSL_SAI_RTCTL, 0},
- 	{FSL_SAI_MCTL, 0},
- 	{FSL_SAI_MDIV, 0},
- };
--- 
-2.51.0
-
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -599,7 +599,7 @@ ext4_xattr_ibody_get(struct inode *inode
+ 		return error;
+ 	raw_inode = ext4_raw_inode(&iloc);
+ 	header = IHDR(inode, raw_inode);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	error = xattr_check_inode(inode, header, end);
+ 	if (error)
+ 		goto cleanup;
+@@ -744,7 +744,7 @@ ext4_xattr_ibody_list(struct dentry *den
+ 		return error;
+ 	raw_inode = ext4_raw_inode(&iloc);
+ 	header = IHDR(inode, raw_inode);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	error = xattr_check_inode(inode, header, end);
+ 	if (error)
+ 		goto cleanup;
+@@ -826,7 +826,7 @@ int ext4_get_inode_usage(struct inode *i
+ 			goto out;
+ 		raw_inode = ext4_raw_inode(&iloc);
+ 		header = IHDR(inode, raw_inode);
+-		end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++		end = ITAIL(inode, raw_inode);
+ 		ret = xattr_check_inode(inode, header, end);
+ 		if (ret)
+ 			goto out;
+@@ -2219,7 +2219,7 @@ int ext4_xattr_ibody_find(struct inode *
+ 	header = IHDR(inode, raw_inode);
+ 	is->s.base = is->s.first = IFIRST(header);
+ 	is->s.here = is->s.first;
+-	is->s.end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	is->s.end = ITAIL(inode, raw_inode);
+ 	if (ext4_test_inode_state(inode, EXT4_STATE_XATTR)) {
+ 		error = xattr_check_inode(inode, header, is->s.end);
+ 		if (error)
+@@ -2743,7 +2743,7 @@ retry:
+ 	 */
+ 
+ 	base = IFIRST(header);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	min_offs = end - base;
+ 	total_ino = sizeof(struct ext4_xattr_ibody_header) + sizeof(u32);
+ 
+--- a/fs/ext4/xattr.h
++++ b/fs/ext4/xattr.h
+@@ -68,6 +68,9 @@ struct ext4_xattr_entry {
+ 		((void *)raw_inode + \
+ 		EXT4_GOOD_OLD_INODE_SIZE + \
+ 		EXT4_I(inode)->i_extra_isize))
++#define ITAIL(inode, raw_inode) \
++	((void *)(raw_inode) + \
++	 EXT4_SB((inode)->i_sb)->s_inode_size)
+ #define IFIRST(hdr) ((struct ext4_xattr_entry *)((hdr)+1))
+ 
+ /*
 
 
 
