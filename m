@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B70D268D1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628CED27A67
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:38:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1F208306FB4D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:29:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB46233C8E99
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929D03D3303;
-	Thu, 15 Jan 2026 17:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE943D6476;
+	Thu, 15 Jan 2026 17:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YACemIPT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3NcexK4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502353C1FCF;
-	Thu, 15 Jan 2026 17:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5083D6465;
+	Thu, 15 Jan 2026 17:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498041; cv=none; b=ixxJHn+BzYeFUNdmQ6hCIimGj4eM2oJEhFhWi5tQwAoBXnSMGdtg6NNGUXImFbKVrjt888LSqBcBwUjv9SLaiQB/rYteFnDBW5X70DZnNKuFolQbgRBXMgdWrryODsnpQRnn35BfAdaa6J+jy4cZliACIaSF8SUyhhinWermX+g=
+	t=1768499368; cv=none; b=SDuH+g8Gbm1ow+ia5CLukxQm2n25xBa6+W1TZ71vjPYTZV28bL1RLTZiesOdKOJOUInVqMiTOXXi4NWpP93IqTeUYs1ivLJ7V8gSMm+XsV+v+1FLF9vCv99rNpUaVZS0Hu9clwRzZrurAevhX0gf5EuiB/yGqCI27QGlITcmP58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498041; c=relaxed/simple;
-	bh=riFspxXY7twKrQ9etHXz0mj240TQVtN9+koNJcDStoo=;
+	s=arc-20240116; t=1768499368; c=relaxed/simple;
+	bh=H7ojO6amcCifPlF4BSQWhFlgxF1TVM8LFtVY9BroH1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O31xZW/AZmNQPVxphp/nPwcyYTIHTgeZU0rOemvftE0zRzKU7k2rMyEuuAgHRmFCNOqhYuXHN1RkhRIyNTpGK/OkzD6FIeUDd3AE3qGc4o4YlHfrdNCX9OHyXehcH248+3E9cdG/iZnBKzyCd74FShF8QCQLfNFkWl5nMq+KnIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YACemIPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D522CC116D0;
-	Thu, 15 Jan 2026 17:27:20 +0000 (UTC)
+	 MIME-Version; b=MKb20qPATA5U1iw3Rnf/KGY9kynzHbM7RXagzDzFpCdDmWvYQSHcYz9JzJHjDph/wQnoy8wW873HGC/YNuxBgH5TX3b8mdN7LcZOSBaTuLsjXm8oehnDQmGjSf9W6SvO8Ke1bd7hzZcPn94hewAyBKPRKr1vRKTO8fJ8MrW+VaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3NcexK4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37080C116D0;
+	Thu, 15 Jan 2026 17:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498041;
-	bh=riFspxXY7twKrQ9etHXz0mj240TQVtN9+koNJcDStoo=;
+	s=korg; t=1768499368;
+	bh=H7ojO6amcCifPlF4BSQWhFlgxF1TVM8LFtVY9BroH1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YACemIPThJR6agRVJyFRpnnj9aK//7HLia2x+EL0AxsRX7KfEcr/nlSIm5fJo/Y7e
-	 hWa9lPkDPPBnimrhRrBPaCVSSV5S0EvlRdlwzsMHGQvr5EsH/BKNvAV7j9E+KSfJn0
-	 cn4fbVeb3B9oiBvifiDV/cYSXkyz+Hp6V8dW58XY=
+	b=q3NcexK4uutaqhKdwkbCjBrUqqgFIKrF4sJOSawEFeQjcjMs2B8QxgfByVuzM1+Zv
+	 OvjLlyLfd0G67EuUAofVZwzQST29NJgZSQVqzTHiCwUfvvdAd9BJFm8CTe8afM6nW3
+	 UmrVGX/yaT2dsaBgpxbWJWmtbDlqA5WWwCSR4lSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ma Ke <make24@iscas.ac.cn>
-Subject: [PATCH 5.15 293/554] USB: lpc32xx_udc: Fix error handling in probe
-Date: Thu, 15 Jan 2026 17:45:59 +0100
-Message-ID: <20260115164256.833440153@linuxfoundation.org>
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 159/451] ACPI: property: Use ACPI functions in acpi_graph_get_next_endpoint() only
+Date: Thu, 15 Jan 2026 17:46:00 +0100
+Message-ID: <20260115164236.663419198@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,105 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit c84117912bddd9e5d87e68daf182410c98181407 upstream.
+[ Upstream commit 5d010473cdeaabf6a2d3a9e2aed2186c1b73c213 ]
 
-lpc32xx_udc_probe() acquires an i2c_client reference through
-isp1301_get_client() but fails to release it in both error handling
-paths and the normal removal path. This could result in a reference
-count leak for the I2C device, preventing proper cleanup and potentially
-leading to resource exhaustion. Add put_device() to release the
-reference in the probe failure path and in the remove function.
+Calling fwnode_get_next_child_node() in ACPI implementation of the fwnode
+property API is somewhat problematic as the latter is used in the
+impelementation of the former. Instead of using
+fwnode_get_next_child_node() in acpi_graph_get_next_endpoint(), call
+acpi_get_next_subnode() directly instead.
 
-Calling path: isp1301_get_client() -> of_find_i2c_device_by_node() ->
-i2c_find_device_by_fwnode(). As comments of i2c_find_device_by_fwnode()
-says, 'The user must call put_device(&client->dev) once done with the
-i2c client.'
-
-Found by code review.
-
-Cc: stable <stable@kernel.org>
-Fixes: 24a28e428351 ("USB: gadget driver for LPC32xx")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patch.msgid.link/20251215020931.15324-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251001104320.1272752-3-sakari.ailus@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/lpc32xx_udc.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/acpi/property.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/gadget/udc/lpc32xx_udc.c
-+++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
-@@ -3025,7 +3025,7 @@ static int lpc32xx_udc_probe(struct plat
- 	pdev->dev.dma_mask = &lpc32xx_usbd_dmamask;
- 	retval = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (retval)
--		return retval;
-+		goto i2c_fail;
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 7c3d98fae457d..3a3efd15b8497 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1188,7 +1188,7 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
  
- 	udc->board = &lpc32xx_usbddata;
+ 	if (!prev) {
+ 		do {
+-			port = fwnode_get_next_child_node(fwnode, port);
++			port = acpi_get_next_subnode(fwnode, port);
+ 			/*
+ 			 * The names of the port nodes begin with "port@"
+ 			 * followed by the number of the port node and they also
+@@ -1206,13 +1206,13 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
+ 	if (!port)
+ 		return NULL;
  
-@@ -3043,28 +3043,32 @@ static int lpc32xx_udc_probe(struct plat
- 	/* Get IRQs */
- 	for (i = 0; i < 4; i++) {
- 		udc->udp_irq[i] = platform_get_irq(pdev, i);
--		if (udc->udp_irq[i] < 0)
--			return udc->udp_irq[i];
-+		if (udc->udp_irq[i] < 0) {
-+			retval = udc->udp_irq[i];
-+			goto i2c_fail;
-+		}
+-	endpoint = fwnode_get_next_child_node(port, prev);
++	endpoint = acpi_get_next_subnode(port, prev);
+ 	while (!endpoint) {
+-		port = fwnode_get_next_child_node(fwnode, port);
++		port = acpi_get_next_subnode(fwnode, port);
+ 		if (!port)
+ 			break;
+ 		if (is_acpi_graph_node(port, "port"))
+-			endpoint = fwnode_get_next_child_node(port, NULL);
++			endpoint = acpi_get_next_subnode(port, NULL);
  	}
  
- 	udc->udp_baseaddr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(udc->udp_baseaddr)) {
- 		dev_err(udc->dev, "IO map failure\n");
--		return PTR_ERR(udc->udp_baseaddr);
-+		retval = PTR_ERR(udc->udp_baseaddr);
-+		goto i2c_fail;
- 	}
- 
- 	/* Get USB device clock */
- 	udc->usb_slv_clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(udc->usb_slv_clk)) {
- 		dev_err(udc->dev, "failed to acquire USB device clock\n");
--		return PTR_ERR(udc->usb_slv_clk);
-+		retval = PTR_ERR(udc->usb_slv_clk);
-+		goto i2c_fail;
- 	}
- 
- 	/* Enable USB device clock */
- 	retval = clk_prepare_enable(udc->usb_slv_clk);
- 	if (retval < 0) {
- 		dev_err(udc->dev, "failed to start USB device clock\n");
--		return retval;
-+		goto i2c_fail;
- 	}
- 
- 	/* Setup deferred workqueue data */
-@@ -3166,6 +3170,8 @@ dma_alloc_fail:
- 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
- 			  udc->udca_v_base, udc->udca_p_base);
- i2c_fail:
-+	if (udc->isp1301_i2c_client)
-+		put_device(&udc->isp1301_i2c_client->dev);
- 	clk_disable_unprepare(udc->usb_slv_clk);
- 	dev_err(udc->dev, "%s probe failed, %d\n", driver_name, retval);
- 
-@@ -3191,6 +3197,9 @@ static int lpc32xx_udc_remove(struct pla
- 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
- 			  udc->udca_v_base, udc->udca_p_base);
- 
-+	if (udc->isp1301_i2c_client)
-+		put_device(&udc->isp1301_i2c_client->dev);
-+
- 	clk_disable_unprepare(udc->usb_slv_clk);
- 
- 	return 0;
+ 	/*
+-- 
+2.51.0
+
 
 
 
