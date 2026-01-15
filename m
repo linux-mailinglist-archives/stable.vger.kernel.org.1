@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A7CD26261
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3EFD26939
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48AEB30935C4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B03F30C8904
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82E333F390;
-	Thu, 15 Jan 2026 17:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C833D1CA7;
+	Thu, 15 Jan 2026 17:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kb2deSng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2J9MHbQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B44729ACDD;
-	Thu, 15 Jan 2026 17:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7280E3BF2FF;
+	Thu, 15 Jan 2026 17:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496483; cv=none; b=MOVfIgIaSmi+HcatRoOhULEeR5/LaTmD2oGaaAVhLVU7s8z1nuAUV1NHlM5zu55sk/kdIFSBm6ZnR04w9P6jftmBaLtuCvA+PQZ+petpoEPwr8wAWLESIQdc0I/VTxrA33ugCXBrSL74B1VcLkoN7zri+CP+wCc3tG19NeToSK4=
+	t=1768498306; cv=none; b=K3/ASAyCj555alD6h3vBoCVC08z/OzyAAK42yRX6tIOaooKkyTTQKYUN3jGn1tAFcuPPOWobCIN2uZlxnm1Lcdu9x7wN5boR8B9zTDOwYI890KTB0ktNqlALWuqBb34h9rqwYN/Ds+t1HDrfQhz6e7spsLlZibSw8tZB7ZnkXcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496483; c=relaxed/simple;
-	bh=sV8X1fOOl6IOzUChg+BDGHVkXfzVQv/4pdKF/WYT+Ro=;
+	s=arc-20240116; t=1768498306; c=relaxed/simple;
+	bh=a7Pjjg0Gv7vYzeBZmn5cy0lLoFB0TKhoJMQOW7cvqws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLeAVg7uCmgf6Dpo9Mt/Qq0/f/bIEORHFJUmld2Dh+ytWUVgH1IcxroWUrBvWMLdtZd+wjaLwWjFJRJ3HcQZ8n4f6NjEk5fl/8LX0F/JkzJTGJwHKpemFXUqndCXHfqxpzKl8obyBKGgc8xPzi+culov7RSetBEZPiD0fhRsb48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kb2deSng; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44B3C116D0;
-	Thu, 15 Jan 2026 17:01:22 +0000 (UTC)
+	 MIME-Version; b=qeKqJruGbOsadfM1Qn+vERnduZja+kxoXO0x/kAYgPGQ4FgM93RXTdJT/jCWgsHn49so3L2L4ELtanaltmchaPKn/TccRUvhWo+X4zQbarhrE+6zWB4t7HAnIhIRJtR+i0LdcMQGHH1leVTqC2u0Dj8gz3m6d5HQfB4QwvoF9rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2J9MHbQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0071AC16AAE;
+	Thu, 15 Jan 2026 17:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496483;
-	bh=sV8X1fOOl6IOzUChg+BDGHVkXfzVQv/4pdKF/WYT+Ro=;
+	s=korg; t=1768498306;
+	bh=a7Pjjg0Gv7vYzeBZmn5cy0lLoFB0TKhoJMQOW7cvqws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kb2deSngxTP3g6ZIDnAWy5qvyR1eGhlFlv3Y2ZScSdA8/7Qh5+9cfkCa3g1FIygTv
-	 6yDPY/vVIwXxo5wGLeadYxxPMjI4B0Ecp8aFxmjVIQpvZWIvD1CwuGIgFOF6Q9WGg0
-	 4R4j2AivYZYTci2x8QV8kFVJC73YYx0ko8CICgNM=
+	b=y2J9MHbQ+rfWkCXvPNxqkfYBzbRsDb1Qk/E0m+95C7HzCj1P7iCufHY52IKGJMKrQ
+	 wGKhVQM72oD5XE601rilscry08IGiX1DafEks/5dvrjkck00alA5tfRa7kfakrf59R
+	 B67THAPvBk/nI2NH4CtUn/hLht7/DRtiCa9KxnY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 003/119] nfsd: use correct loop termination in nfsd4_revoke_states()
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 352/554] firewire: nosy: Fix dma_free_coherent() size
 Date: Thu, 15 Jan 2026 17:46:58 +0100
-Message-ID: <20260115164152.080393358@linuxfoundation.org>
+Message-ID: <20260115164258.969216536@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit fb321998de7639f1954430674475e469fb529d9c upstream.
+[ Upstream commit c48c0fd0e19684b6ecdb4108a429e3a4e73f5e21 ]
 
-The loop in nfsd4_revoke_states() stops one too early because
-the end value given is CLIENT_HASH_MASK where it should be
-CLIENT_HASH_SIZE.
+It looks like the buffer allocated and mapped in add_card() is done
+with size RCV_BUFFER_SIZE which is 16 KB and 4KB.
 
-This means that an admin request to drop all locks for a filesystem will
-miss locks held by clients which hash to the maximum possible hash value.
-
-Fixes: 1ac3629bf012 ("nfsd: prepare for supporting admin-revocation of state")
-Cc: stable@vger.kernel.org
-Signed-off-by: NeilBrown <neil@brown.name>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 286468210d83 ("firewire: new driver: nosy - IEEE 1394 traffic sniffer")
+Co-developed-by: Thomas Fourier <fourier.thomas@gmail.com>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Co-developed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/20251216165420.38355-2-fourier.thomas@gmail.com
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firewire/nosy.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1764,7 +1764,7 @@ void nfsd4_revoke_states(struct net *net
- 	sc_types = SC_TYPE_OPEN | SC_TYPE_LOCK | SC_TYPE_DELEG | SC_TYPE_LAYOUT;
+diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
+index ea31ac7ac1ca..e59053738a43 100644
+--- a/drivers/firewire/nosy.c
++++ b/drivers/firewire/nosy.c
+@@ -36,6 +36,8 @@
  
- 	spin_lock(&nn->client_lock);
--	for (idhashval = 0; idhashval < CLIENT_HASH_MASK; idhashval++) {
-+	for (idhashval = 0; idhashval < CLIENT_HASH_SIZE; idhashval++) {
- 		struct list_head *head = &nn->conf_id_hashtbl[idhashval];
- 		struct nfs4_client *clp;
- 	retry:
+ static char driver_name[] = KBUILD_MODNAME;
+ 
++#define RCV_BUFFER_SIZE (16 * 1024)
++
+ /* this is the physical layout of a PCL, its size is 128 bytes */
+ struct pcl {
+ 	__le32 next;
+@@ -517,16 +519,14 @@ remove_card(struct pci_dev *dev)
+ 			  lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
+ 	dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
+ 			  lynx->rcv_pcl, lynx->rcv_pcl_bus);
+-	dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE, lynx->rcv_buffer,
+-			  lynx->rcv_buffer_bus);
++	dma_free_coherent(&lynx->pci_device->dev, RCV_BUFFER_SIZE,
++			  lynx->rcv_buffer, lynx->rcv_buffer_bus);
+ 
+ 	iounmap(lynx->registers);
+ 	pci_disable_device(dev);
+ 	lynx_put(lynx);
+ }
+ 
+-#define RCV_BUFFER_SIZE (16 * 1024)
+-
+ static int
+ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
+ {
+@@ -680,7 +680,7 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
+ 		dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
+ 				  lynx->rcv_pcl, lynx->rcv_pcl_bus);
+ 	if (lynx->rcv_buffer)
+-		dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE,
++		dma_free_coherent(&lynx->pci_device->dev, RCV_BUFFER_SIZE,
+ 				  lynx->rcv_buffer, lynx->rcv_buffer_bus);
+ 	iounmap(lynx->registers);
+ 
+-- 
+2.51.0
+
 
 
 
