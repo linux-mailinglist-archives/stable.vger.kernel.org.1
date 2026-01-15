@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-209520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD07D27A6A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:38:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AED91D267BE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C63D130F0637
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D17A43052493
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E23D4A3C;
-	Thu, 15 Jan 2026 17:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069053BF2F1;
+	Thu, 15 Jan 2026 17:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRfSMX8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXhfRpSG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBF12D7DED;
-	Thu, 15 Jan 2026 17:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4253A1E86;
+	Thu, 15 Jan 2026 17:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498930; cv=none; b=FIa7JVQFfO5NN8I2q93y3lvQUoT4l/p1YdJCjS855LHmUUTv5bXbY5G7qJcDtgePUTLrQLvURWGRcM6WsJ7MrOJof/8rP9aHYmZK9g3oU1dfN5GiO/Cb6CQSAR+q1EAhp9K113pXXexphnkWRxPRWy0HmNGjMSsc7xR0Hfum9PI=
+	t=1768497727; cv=none; b=smtnKAo4rtLiffp04VnWYacPA50PISGzdYqb4WJcY/VUTfBkFIxvAE7TWKuIgr7Tn6MrbkwlE7VpZlVVOVwIcWOtcd7puNcgAFMqA1ZDt+3mppGJ+10yGZOnlYabo63mQw/ooFppZ7/oebGRlC5j6/I5l8KoQUzBR0FwMqTEiJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498930; c=relaxed/simple;
-	bh=vls6bn0BebndsqCnsUA+5bSg6Njri4NJ3slRJz21Qo4=;
+	s=arc-20240116; t=1768497727; c=relaxed/simple;
+	bh=HBa6/vKzK28gCQpHEMe/7/tCvrzofvByhHP/B0f8fcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxVKzVlnyOqLaPTWwpUXOquxW3YGjQ2PwNKZXWL3EP7Pd7HLHtxnPQJsPcll+LgJnNerctcqcw+yzYJibxVU+J8XWDBNU7EMbBblib3zzOZuUQkuOgFzwUhPdhNoHKmNV3HYXboq2tPRy8RUiNpu8SxjoGwmCJvwwWfrGwpzldQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRfSMX8t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C088BC116D0;
-	Thu, 15 Jan 2026 17:42:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EvyKqSr4CRW+AtF5IjFpECO26OSvaomXoDBG9YNUHR45sWxM06WLOwb1U+KgScGqbfxgJmYwddYKAiqZ8ENQ6BlEsk40gL01X138NLSfurAz4hKkIPYY0DNZ5PctPB9ZbPOrYfpvZwEWb2DCw4vS6Y3dtXAJRZ76lb7FEac+cts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXhfRpSG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4706DC116D0;
+	Thu, 15 Jan 2026 17:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498930;
-	bh=vls6bn0BebndsqCnsUA+5bSg6Njri4NJ3slRJz21Qo4=;
+	s=korg; t=1768497727;
+	bh=HBa6/vKzK28gCQpHEMe/7/tCvrzofvByhHP/B0f8fcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRfSMX8tDDY6uiNFv9ERNC5Xm6PFXf+nhWMkdvy/XGTkCk2zffBd769KVPZotUI9I
-	 oBS0EkhEu5m2Ge3VBi1fSBfpE8D6PDyrMIc0FoEN8h8e1l5upkgOsscoTmEl1EWdMk
-	 cQmyyOJO+XMl+gYxTjV/4boTdzuDz9552YTE2B1c=
+	b=QXhfRpSGRoIISOJS6AUQ5TXB2EKTNQsLGUhTUBI3sJfiHvFTRq9ZCtJjoEKQpqtMO
+	 vW+4GcLYe/CaG2J87oyZdLuNc1YIlA/dX9bDKTuHo+mP86CJcU+A/Z/8wM8TcCPcez
+	 JVg6ruVaae6aYCAdXig9q/089fG6ROp43MFQVPpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Anton Khirnov <anton@khirnov.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Denis Benato <benato.denis96@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 047/451] pinctrl: stm32: fix hwspinlock resource leak in probe function
-Date: Thu, 15 Jan 2026 17:44:08 +0100
-Message-ID: <20260115164232.600360166@linuxfoundation.org>
+Subject: [PATCH 5.15 183/554] platform/x86: asus-wmi: use brightness_set_blocking() for kbd led
+Date: Thu, 15 Jan 2026 17:44:09 +0100
+Message-ID: <20260115164252.887224013@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Anton Khirnov <anton@khirnov.net>
 
-[ Upstream commit 002679f79ed605e543fbace465557317cd307c9a ]
+[ Upstream commit ccb61a328321ba3f8567e350664c9ca7a42b6c70 ]
 
-In stm32_pctl_probe(), hwspin_lock_request_specific() is called to
-request a hwspinlock, but the acquired lock is not freed on multiple
-error paths after this call. This causes resource leakage when the
-function fails to initialize properly.
+kbd_led_set() can sleep, and so may not be used as the brightness_set()
+callback.
 
-Use devm_hwspin_lock_request_specific() instead of
-hwspin_lock_request_specific() to automatically manage the hwspinlock
-resource lifecycle.
+Otherwise using this led with a trigger leads to system hangs
+accompanied by:
+BUG: scheduling while atomic: acpi_fakekeyd/2588/0x00000003
+CPU: 4 UID: 0 PID: 2588 Comm: acpi_fakekeyd Not tainted 6.17.9+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.17.9-1
+Hardware name: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B9403CVAR/B9403CVAR, BIOS B9403CVAR.311 12/24/2024
+Call Trace:
+ <TASK>
+ [...]
+ schedule_timeout+0xbd/0x100
+ __down_common+0x175/0x290
+ down_timeout+0x67/0x70
+ acpi_os_wait_semaphore+0x57/0x90
+ [...]
+ asus_wmi_evaluate_method3+0x87/0x190 [asus_wmi]
+ led_trigger_event+0x3f/0x60
+ [...]
 
-Fixes: 97cfb6cd34f2 ("pinctrl: stm32: protect configuration registers with a hwspinlock")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 9fe44fc98ce4 ("platform/x86: asus-wmi: Simplify the keyboard brightness updating process")
+Signed-off-by: Anton Khirnov <anton@khirnov.net>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Denis Benato <benato.denis96@gmail.com>
+Link: https://patch.msgid.link/20251129101307.18085-3-anton@khirnov.net
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/stm32/pinctrl-stm32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/asus-wmi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-index 6b6fdb7116590..0094ccb4c63c8 100644
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -1494,7 +1494,7 @@ int stm32_pctl_probe(struct platform_device *pdev)
- 		if (hwlock_id == -EPROBE_DEFER)
- 			return hwlock_id;
- 	} else {
--		pctl->hwlock = hwspin_lock_request_specific(hwlock_id);
-+		pctl->hwlock = devm_hwspin_lock_request_specific(dev, hwlock_id);
- 	}
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index d9933d3718129..7714a8327021f 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -822,14 +822,14 @@ static void do_kbd_led_set(struct led_classdev *led_cdev, int value)
+ 	kbd_led_update(asus);
+ }
  
- 	spin_lock_init(&pctl->irqmux_lock);
+-static void kbd_led_set(struct led_classdev *led_cdev,
+-			enum led_brightness value)
++static int kbd_led_set(struct led_classdev *led_cdev, enum led_brightness value)
+ {
+ 	/* Prevent disabling keyboard backlight on module unregister */
+ 	if (led_cdev->flags & LED_UNREGISTERING)
+-		return;
++		return 0;
+ 
+ 	do_kbd_led_set(led_cdev, value);
++	return 0;
+ }
+ 
+ static void kbd_led_set_by_kbd(struct asus_wmi *asus, enum led_brightness value)
+@@ -966,7 +966,7 @@ static int asus_wmi_led_init(struct asus_wmi *asus)
+ 		asus->kbd_led_wk = led_val;
+ 		asus->kbd_led.name = "asus::kbd_backlight";
+ 		asus->kbd_led.flags = LED_BRIGHT_HW_CHANGED;
+-		asus->kbd_led.brightness_set = kbd_led_set;
++		asus->kbd_led.brightness_set_blocking = kbd_led_set;
+ 		asus->kbd_led.brightness_get = kbd_led_get;
+ 		asus->kbd_led.max_brightness = 3;
+ 
 -- 
 2.51.0
 
