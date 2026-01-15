@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F9CD26359
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:15:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E90BED27120
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 918153029F8E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E83933055366
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D193ACA65;
-	Thu, 15 Jan 2026 17:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848C53BF314;
+	Thu, 15 Jan 2026 17:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTycfnBv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fu9WC+9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E202B3BF2EA;
-	Thu, 15 Jan 2026 17:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464A34C81;
+	Thu, 15 Jan 2026 17:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497035; cv=none; b=L3xq2jcr270LzGDptnycuRtUqhRqEdIO+CHlNqpaRb7vRT2/KNqqNuY3eJlhA3bsRvy2C+JAT+yeSQdQFaaWYbSS3WO1cYLpubzZj6Ycw535XK/29t0dV+zCUy3w+OT7IQtCRkVqugWRIMupgs2zbb95XehKJ3uFZruA4Z8McYE=
+	t=1768498454; cv=none; b=HyHZiufJzyIn8pLstTlBD/xTQfwT3jhqATxJdPjx+XzT8zL54NiKOk0+ZuIhg6Dxkm8nhR5IFGnc7i4QFzWP31rqHmLoktU5D0rLZowivbMhu4SRsgrYlCG8QAmQdWnBVdetsFIZVv5H1PfM4FGMDmR65Enwf0no2H7nkgWty/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497035; c=relaxed/simple;
-	bh=9pGft+KvU2jqwD80DUxbb+8nRyzlY5dqAV/Q4chIuWg=;
+	s=arc-20240116; t=1768498454; c=relaxed/simple;
+	bh=4hSmZEmB1SWtQf/0MNv1gqQHH3VkPG2gJbcn6ePNUMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qvar8RqyZMXFwELbNaqgDLI2RKGWvmgQHSP1elawuuHbaQuvZGGbAuYvMLC7bw784O6vhAa/dVBxHfNoTkPIDl3kTR9ovnbs6kZ86TtrHeY0m2F08DrtPINVRSRR9LQgG3XiiZYeQILpzVQOMxKoh4BOVCRexX/8xaeHII/OWZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTycfnBv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C5DC116D0;
-	Thu, 15 Jan 2026 17:10:34 +0000 (UTC)
+	 MIME-Version; b=GK+ngkt5PaA1b+Z8iEG240Y9Lx9WqT0MUeR8XapkEHfNoYtxe4lL2eDcGbUYg2kVifUlgEE1crBrmxd72zdAr6eREURgGc+GDiZiyxMsqLzGqoB19N8B9Kr6cDKXs+fme74ywBejio08aZBuoiRwPf+jbxya0SKxZKYcHAD0oYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fu9WC+9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CE4C116D0;
+	Thu, 15 Jan 2026 17:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497034;
-	bh=9pGft+KvU2jqwD80DUxbb+8nRyzlY5dqAV/Q4chIuWg=;
+	s=korg; t=1768498453;
+	bh=4hSmZEmB1SWtQf/0MNv1gqQHH3VkPG2gJbcn6ePNUMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aTycfnBv06muqLwFyP2q1Oh8y4ptXDqaG3FSiVkMpTzxUiph0VQCUXLxiBssqkpbd
-	 6vV+rdxr82z80feNnYblsUuJgTdqzcbU9lr9Xtz9RNWXg1zW4kfKEPE27I7MuDaWHw
-	 hLtRRE1PZcIowi+8TXhqJ8zw16IFXMyaAAiG+RSg=
+	b=fu9WC+9gVJxPAiq2N18lNsPQPdjcKey/xEpj92pmSvsWJI0qxSNFH2+Crt0SjsnB2
+	 OyzkD/Nrl8fJxrqoML5fLIWUW4m+P/eLSun8P+FwXHce9Gikqac82YmV8S1Ggb5B5u
+	 ltX2pT/fzfnP/ueAN03GQpVmp0K6PRzirDfqfufM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Subject: [PATCH 6.1 14/72] libceph: make calc_target() set t->paused, not just clear it
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 438/554] NFSD: Clear SECLABEL in the suppattr_exclcreat bitmap
 Date: Thu, 15 Jan 2026 17:48:24 +0100
-Message-ID: <20260115164144.008365617@linuxfoundation.org>
+Message-ID: <20260115164302.117584581@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit c0fe2994f9a9d0a2ec9e42441ea5ba74b6a16176 upstream.
+[ Upstream commit 27d17641cacfedd816789b75d342430f6b912bd2 ]
 
-Currently calc_target() clears t->paused if the request shouldn't be
-paused anymore, but doesn't ever set t->paused even though it's able to
-determine when the request should be paused.  Setting t->paused is left
-to __submit_request() which is fine for regular requests but doesn't
-work for linger requests -- since __submit_request() doesn't operate
-on linger requests, there is nowhere for lreq->t.paused to be set.
-One consequence of this is that watches don't get reestablished on
-paused -> unpaused transitions in cases where requests have been paused
-long enough for the (paused) unwatch request to time out and for the
-subsequent (re)watch request to enter the paused state.  On top of the
-watch not getting reestablished, rbd_reregister_watch() gets stuck with
-rbd_dev->watch_mutex held:
+>>From RFC 8881:
 
-  rbd_register_watch
-    __rbd_register_watch
-      ceph_osdc_watch
-        linger_reg_commit_wait
+5.8.1.14. Attribute 75: suppattr_exclcreat
 
-It's waiting for lreq->reg_commit_wait to be completed, but for that to
-happen the respective request needs to end up on need_resend_linger list
-and be kicked when requests are unpaused.  There is no chance for that
-if the request in question is never marked paused in the first place.
+> The bit vector that would set all REQUIRED and RECOMMENDED
+> attributes that are supported by the EXCLUSIVE4_1 method of file
+> creation via the OPEN operation. The scope of this attribute
+> applies to all objects with a matching fsid.
 
-The fact that rbd_dev->watch_mutex remains taken out forever then
-prevents the image from getting unmapped -- "rbd unmap" would inevitably
-hang in D state on an attempt to grab the mutex.
+There's nothing in RFC 8881 that states that suppattr_exclcreat is
+or is not allowed to contain bits for attributes that are clear in
+the reported supported_attrs bitmask. But it doesn't make sense for
+an NFS server to indicate that it /doesn't/ implement an attribute,
+but then also indicate that clients /are/ allowed to set that
+attribute using OPEN(create) with EXCLUSIVE4_1.
 
+Ensure that the SECURITY_LABEL and ACL bits are not set in the
+suppattr_exclcreat bitmask when they are also not set in the
+supported_attrs bitmask.
+
+Fixes: 8c18f2052e75 ("nfsd41: SUPPATTR_EXCLCREAT attribute")
 Cc: stable@vger.kernel.org
-Reported-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/osd_client.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4xdr.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/ceph/osd_client.c
-+++ b/net/ceph/osd_client.c
-@@ -1529,6 +1529,7 @@ static enum calc_target_result calc_targ
- 	struct ceph_pg_pool_info *pi;
- 	struct ceph_pg pgid, last_pgid;
- 	struct ceph_osds up, acting;
-+	bool should_be_paused;
- 	bool is_read = t->flags & CEPH_OSD_FLAG_READ;
- 	bool is_write = t->flags & CEPH_OSD_FLAG_WRITE;
- 	bool force_resend = false;
-@@ -1597,10 +1598,16 @@ static enum calc_target_result calc_targ
- 				 &last_pgid))
- 		force_resend = true;
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3409,6 +3409,11 @@ out_acl:
+ 		u32 supp[3];
  
--	if (t->paused && !target_should_be_paused(osdc, t, pi)) {
--		t->paused = false;
-+	should_be_paused = target_should_be_paused(osdc, t, pi);
-+	if (t->paused && !should_be_paused) {
- 		unpaused = true;
- 	}
-+	if (t->paused != should_be_paused) {
-+		dout("%s t %p paused %d -> %d\n", __func__, t, t->paused,
-+		     should_be_paused);
-+		t->paused = should_be_paused;
-+	}
+ 		memcpy(supp, nfsd_suppattrs[minorversion], sizeof(supp));
++		if (!IS_POSIXACL(d_inode(dentry)))
++			supp[0] &= ~FATTR4_WORD0_ACL;
++		if (!contextsupport)
++			supp[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
 +
- 	legacy_change = ceph_pg_compare(&t->pgid, &pgid) ||
- 			ceph_osds_changed(&t->acting, &acting,
- 					  t->used_replica || any_change);
+ 		supp[0] &= NFSD_SUPPATTR_EXCLCREAT_WORD0;
+ 		supp[1] &= NFSD_SUPPATTR_EXCLCREAT_WORD1;
+ 		supp[2] &= NFSD_SUPPATTR_EXCLCREAT_WORD2;
 
 
 
