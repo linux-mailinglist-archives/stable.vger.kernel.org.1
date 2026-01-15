@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-208703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E03D262D4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A29D27234
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB27C30313D3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F856314D37E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737F0345758;
-	Thu, 15 Jan 2026 17:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF3A3EDD4C;
+	Thu, 15 Jan 2026 17:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4GKRFCO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMbdyV2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379742C028F;
-	Thu, 15 Jan 2026 17:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4673D348B;
+	Thu, 15 Jan 2026 17:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496606; cv=none; b=WdOvMZarHS+vZXGRQJnGqUqK96JMeHgnPKaDpDgxRDFRosqQpi3KLw8YuiFmYubvom84SSiQqP4FTeMQB4wdsHxFlxqkJSb89J2hgC148Xz3X8pBUm1zsDfup5jOT5zZvwQHNkpTc0/oHbh/HweycjJeFwixTljWj8ScufrnSiA=
+	t=1768499479; cv=none; b=kaY6c8NhCQKqJeckMmClXZXFCZzUovM9DshCJQStHnHxYscYYoy5rqzW7g2J0lmPlstSHH/xfZvDM0bIuvL/oMbh3ZuBkJuAAEsCkRXG/MwqHxeWoc3optHAvjs75BsBXxTrWdSLSaqAkMattoAQBc22INd5TMKa92GErIRs558=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496606; c=relaxed/simple;
-	bh=uK0YCUxU1cQ1FjF0QgFuGGdy+RtKfTUEnVOsPKOgSkk=;
+	s=arc-20240116; t=1768499479; c=relaxed/simple;
+	bh=8pcQWL6WMULg7KE45SZI9B3cTNkNAsDIsT+jlIvUANY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qgBq7mn+fG66txxjLoLCjkFH7mtfXer43aja4IRTvcWPFslYWuq/szPOxqwfQu9xrOzYjM4iWc2S71So5okVUd8XqzFo+15Qm5Wz+klxG1plrFY1luDkbZxwmF5OQvwa4pidAk+Gl8bs63fKzNZyKEx9MksyJzgKowFOnc78y84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4GKRFCO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC63BC116D0;
-	Thu, 15 Jan 2026 17:03:25 +0000 (UTC)
+	 MIME-Version; b=o5ntQAwATlRA28o0HN37fnRKK2VvISzYb2FsmqbOKEKV6VpHQciuBJYsaN6FL9RfzNWOS6o0XR6XGBXapBLL+PdpR07/PHmYjx9moxg7jLnEnqguzPdUkHo3izq7zlHIIkjLU6KPQokpD58N6n+GGLriQh9cRxG4A241RfjrtXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMbdyV2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B93C116D0;
+	Thu, 15 Jan 2026 17:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496606;
-	bh=uK0YCUxU1cQ1FjF0QgFuGGdy+RtKfTUEnVOsPKOgSkk=;
+	s=korg; t=1768499479;
+	bh=8pcQWL6WMULg7KE45SZI9B3cTNkNAsDIsT+jlIvUANY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4GKRFCOYzh6kOz48zQzYxtfvLlHyI7iG8w0laRqydnaGx8zsRTm59MGyQhDYDUp8
-	 76LNQii/IObSWYAGOhzZKhGmzFYt97xvkZDtkUXHDFoH/D1h2wZz3TRl+8IpsRd5Za
-	 XjKWDLlHloi3Yw5lv1n/t+0Gzj2gEdleN0gYqtAU=
+	b=eMbdyV2/iz/fqQ3VdIW7HfeX54enukUwKE27s0aXih8FPwO5RmTVhDibrOhZQUrPP
+	 oZptWUDlStYbF+mCW7QepfdJZbHPiBSgXKnetmXy20n4BZvRccdqX3FvfnDSviYFKM
+	 WQNKHwoAFStejANO0gRTrIzu8FTWqKwqIUTeQojE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 6.12 028/119] tls: Use __sk_dst_get() and dst_dev_rcu() in get_netdev_for_sock().
+	Dai Ngo <dai.ngo@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 242/451] NFSD: use correct reservation type in nfsd4_scsi_fence_client
 Date: Thu, 15 Jan 2026 17:47:23 +0100
-Message-ID: <20260115164152.977835045@linuxfoundation.org>
+Message-ID: <20260115164239.647668868@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-commit c65f27b9c3be2269918e1cbad6d8884741f835c5 upstream.
+commit 6f52063db9aabdaabea929b1e998af98c2e8d917 upstream.
 
-get_netdev_for_sock() is called during setsockopt(),
-so not under RCU.
+The reservation type argument for the pr_preempt call should match the
+one used in nfsd4_block_get_device_info_scsi.
 
-Using sk_dst_get(sk)->dev could trigger UAF.
-
-Let's use __sk_dst_get() and dst_dev_rcu().
-
-Note that the only ->ndo_sk_get_lower_dev() user is
-bond_sk_get_lower_dev(), which uses RCU.
-
-Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250916214758.650211-6-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Keerthana: Backport to v6.12.y ]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Fixes: f99d4fbdae67 ("nfsd: add SCSI layout support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_device.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ fs/nfsd/blocklayout.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -123,17 +123,19 @@ static void tls_device_queue_ctx_destruc
- /* We assume that the socket is already connected */
- static struct net_device *get_netdev_for_sock(struct sock *sk)
- {
--	struct dst_entry *dst = sk_dst_get(sk);
--	struct net_device *netdev = NULL;
-+	struct net_device *dev, *lowest_dev = NULL;
-+	struct dst_entry *dst;
+--- a/fs/nfsd/blocklayout.c
++++ b/fs/nfsd/blocklayout.c
+@@ -410,7 +410,8 @@ nfsd4_scsi_fence_client(struct nfs4_layo
+ 	struct block_device *bdev = ls->ls_file->nf_file->f_path.mnt->mnt_sb->s_bdev;
  
--	if (likely(dst)) {
--		netdev = netdev_sk_get_lowest_dev(dst->dev, sk);
--		dev_hold(netdev);
-+	rcu_read_lock();
-+	dst = __sk_dst_get(sk);
-+	dev = dst ? dst_dev_rcu(dst) : NULL;
-+	if (likely(dev)) {
-+		lowest_dev = netdev_sk_get_lowest_dev(dev, sk);
-+		dev_hold(lowest_dev);
- 	}
-+	rcu_read_unlock();
- 
--	dst_release(dst);
--
--	return netdev;
-+	return lowest_dev;
+ 	bdev->bd_disk->fops->pr_ops->pr_preempt(bdev, NFSD_MDS_PR_KEY,
+-			nfsd4_scsi_pr_key(clp), 0, true);
++			nfsd4_scsi_pr_key(clp),
++			PR_EXCLUSIVE_ACCESS_REG_ONLY, true);
  }
  
- static void destroy_record(struct tls_record_info *record)
+ const struct nfsd4_layout_ops scsi_layout_ops = {
 
 
 
