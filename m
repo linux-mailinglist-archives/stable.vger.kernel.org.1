@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-208780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C42CD26197
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9442FD262DB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A0FB93028565
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9E7F30D0313
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE083BC4E8;
-	Thu, 15 Jan 2026 17:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A04F2C028F;
+	Thu, 15 Jan 2026 17:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LJXZJMx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuSD266L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3CA394487;
-	Thu, 15 Jan 2026 17:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F4A3BC4DA;
+	Thu, 15 Jan 2026 17:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496821; cv=none; b=i3e7oLWHZiLqA4QxjARQOIaqFaLZmASXHho4oQYT3DnmHf6wLD/pF05gr9P1ybfQVZUvlDnUbCGEEjTnCCGM6MD1rsNn4bVKeoQM+galqmXiUJAYfRXNGFZFcaZXrJERfi4mgdDQH8THe3qOajYDREiB5eg6RuxuDDVXIv3amSk=
+	t=1768496617; cv=none; b=VGbYEb+gtEqZXugRWX8xS01Jcu8RoZI8xHe5xqgj3H1wECoDwptMf2/UHEw7FRzqRGHhUiV27ybqUJwSb83q6qHQlDVeWa1CsEP7D+zpfK8b51zY39yO4Ti8ZRJiS11d20ql1dnsUYbLuO4pU9f75Xwwnx9xUEMDSTHlcK9aNL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496821; c=relaxed/simple;
-	bh=mdS5ntGW1jM+JJTXVEtauXW0o+yt1TEIeyqQkQSORqQ=;
+	s=arc-20240116; t=1768496617; c=relaxed/simple;
+	bh=MguM8u2zeY9UgYN8sDflQnN2rnbyz2lw+RIOlDyuhjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHCdLsIYdAIQvfGR+kwJDlBKAkN9Y8ZF/F3OrFJDrzRLrBy0s2j+0ka3wTRA7ECyNkxi5scEdnHcF22b4xGtnNzsKnaeXZaa7nX8UOxiLRrUG19HG64SpMUNs3v40bXJVNC9wqJC9cKPpQnldrU0x0f2ftvgZkRVMHulr9Eiblk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LJXZJMx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380B9C116D0;
-	Thu, 15 Jan 2026 17:07:01 +0000 (UTC)
+	 MIME-Version; b=ufBSO12TfIWD4Sor9fTepqObwZtfG3geKCq9AKQ+a09Bf65u2Rcl21G7GAYDehruaqV+OBLUrmcAcdXKzex52x2ixSzqGqtspvvYc0/SqKAW+inmu4yoM1knvrLKGAhhe+8GGr15AenaR+zdG+If5fIaR9XJeyCsAsawAs/EdMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuSD266L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285C8C116D0;
+	Thu, 15 Jan 2026 17:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496821;
-	bh=mdS5ntGW1jM+JJTXVEtauXW0o+yt1TEIeyqQkQSORqQ=;
+	s=korg; t=1768496617;
+	bh=MguM8u2zeY9UgYN8sDflQnN2rnbyz2lw+RIOlDyuhjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LJXZJMxfzcJrAJI6QTaH2gdalIBD6RqVDfaLzyhROh2GdG6fjzK6+PWkqOkmjD2q
-	 bh2cjU7bhCcp+Fbf50b/KR9g5tqyN8m3w1FpWskNQY1Q0V5HeX+nbhu2yGORxTGaXj
-	 xkwxwOp+9cZGpbJkWdQ4oiQ+hCB+fB3GS4WDRCdE=
+	b=CuSD266L0oidnfdr5wnSuZgaQDCcfUG3UArv5zCCp0JFWTB9DYrcvgS975Uh49+xQ
+	 1sGizSTxPgV/41eq/KE2/wGYVQFg3nZukZRc2ofH641Q8jkY+Jy+GjIjfBcIDctnFr
+	 nDy2/zxBYCepU/E0NE5VXBpOKg5Dy6fJFgmNuGhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
+	Mohammad Heib <mheib@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 6.6 27/88] tls: Use __sk_dst_get() and dst_dev_rcu() in get_netdev_for_sock().
-Date: Thu, 15 Jan 2026 17:48:10 +0100
-Message-ID: <20260115164147.296215915@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 076/119] net: fix memory leak in skb_segment_list for GRO packets
+Date: Thu, 15 Jan 2026 17:48:11 +0100
+Message-ID: <20260115164154.695566474@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Mohammad Heib <mheib@redhat.com>
 
-commit c65f27b9c3be2269918e1cbad6d8884741f835c5 upstream.
+[ Upstream commit 238e03d0466239410b72294b79494e43d4fabe77 ]
 
-get_netdev_for_sock() is called during setsockopt(),
-so not under RCU.
+When skb_segment_list() is called during packet forwarding, it handles
+packets that were aggregated by the GRO engine.
 
-Using sk_dst_get(sk)->dev could trigger UAF.
+Historically, the segmentation logic in skb_segment_list assumes that
+individual segments are split from a parent SKB and may need to carry
+their own socket memory accounting. Accordingly, the code transfers
+truesize from the parent to the newly created segments.
 
-Let's use __sk_dst_get() and dst_dev_rcu().
+Prior to commit ed4cccef64c1 ("gro: fix ownership transfer"), this
+truesize subtraction in skb_segment_list() was valid because fragments
+still carry a reference to the original socket.
 
-Note that the only ->ndo_sk_get_lower_dev() user is
-bond_sk_get_lower_dev(), which uses RCU.
+However, commit ed4cccef64c1 ("gro: fix ownership transfer") changed
+this behavior by ensuring that fraglist entries are explicitly
+orphaned (skb->sk = NULL) to prevent illegal orphaning later in the
+stack. This change meant that the entire socket memory charge remained
+with the head SKB, but the corresponding accounting logic in
+skb_segment_list() was never updated.
 
-Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250916214758.650211-6-kuniyu@google.com
+As a result, the current code unconditionally adds each fragment's
+truesize to delta_truesize and subtracts it from the parent SKB. Since
+the fragments are no longer charged to the socket, this subtraction
+results in an effective under-count of memory when the head is freed.
+This causes sk_wmem_alloc to remain non-zero, preventing socket
+destruction and leading to a persistent memory leak.
+
+The leak can be observed via KMEMLEAK when tearing down the networking
+environment:
+
+unreferenced object 0xffff8881e6eb9100 (size 2048):
+  comm "ping", pid 6720, jiffies 4295492526
+  backtrace:
+    kmem_cache_alloc_noprof+0x5c6/0x800
+    sk_prot_alloc+0x5b/0x220
+    sk_alloc+0x35/0xa00
+    inet6_create.part.0+0x303/0x10d0
+    __sock_create+0x248/0x640
+    __sys_socket+0x11b/0x1d0
+
+Since skb_segment_list() is exclusively used for SKB_GSO_FRAGLIST
+packets constructed by GRO, the truesize adjustment is removed.
+
+The call to skb_release_head_state() must be preserved. As documented in
+commit cf673ed0e057 ("net: fix fraglist segmentation reference count
+leak"), it is still required to correctly drop references to SKB
+extensions that may be overwritten during __copy_skb_header().
+
+Fixes: ed4cccef64c1 ("gro: fix ownership transfer")
+Signed-off-by: Mohammad Heib <mheib@redhat.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260104213101.352887-1-mheib@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Keerthana: Backport to v6.6.y ]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_device.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ net/core/skbuff.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -125,17 +125,19 @@ static void tls_device_queue_ctx_destruc
- /* We assume that the socket is already connected */
- static struct net_device *get_netdev_for_sock(struct sock *sk)
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 6a92c03ee6f42..c3e1395d8ac5c 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4585,12 +4585,14 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
  {
--	struct dst_entry *dst = sk_dst_get(sk);
--	struct net_device *netdev = NULL;
-+	struct net_device *dev, *lowest_dev = NULL;
-+	struct dst_entry *dst;
+ 	struct sk_buff *list_skb = skb_shinfo(skb)->frag_list;
+ 	unsigned int tnl_hlen = skb_tnl_header_len(skb);
+-	unsigned int delta_truesize = 0;
+ 	unsigned int delta_len = 0;
+ 	struct sk_buff *tail = NULL;
+ 	struct sk_buff *nskb, *tmp;
+ 	int len_diff, err;
  
--	if (likely(dst)) {
--		netdev = netdev_sk_get_lowest_dev(dst->dev, sk);
--		dev_hold(netdev);
-+	rcu_read_lock();
-+	dst = __sk_dst_get(sk);
-+	dev = dst ? dst_dev_rcu(dst) : NULL;
-+	if (likely(dev)) {
-+		lowest_dev = netdev_sk_get_lowest_dev(dev, sk);
-+		dev_hold(lowest_dev);
++	/* Only skb_gro_receive_list generated skbs arrive here */
++	DEBUG_NET_WARN_ON_ONCE(!(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST));
++
+ 	skb_push(skb, -skb_network_offset(skb) + offset);
+ 
+ 	/* Ensure the head is writeable before touching the shared info */
+@@ -4604,8 +4606,9 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
+ 		nskb = list_skb;
+ 		list_skb = list_skb->next;
+ 
++		DEBUG_NET_WARN_ON_ONCE(nskb->sk);
++
+ 		err = 0;
+-		delta_truesize += nskb->truesize;
+ 		if (skb_shared(nskb)) {
+ 			tmp = skb_clone(nskb, GFP_ATOMIC);
+ 			if (tmp) {
+@@ -4648,7 +4651,6 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
+ 			goto err_linearize;
  	}
-+	rcu_read_unlock();
  
--	dst_release(dst);
--
--	return netdev;
-+	return lowest_dev;
- }
+-	skb->truesize = skb->truesize - delta_truesize;
+ 	skb->data_len = skb->data_len - delta_len;
+ 	skb->len = skb->len - delta_len;
  
- static void destroy_record(struct tls_record_info *record)
+-- 
+2.51.0
+
 
 
 
