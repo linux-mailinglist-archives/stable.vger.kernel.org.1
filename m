@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDBAD26AD6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3342D26E01
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90D8D3262EE6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B55DB302F6B0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DE83A7E07;
-	Thu, 15 Jan 2026 17:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403A42D541B;
+	Thu, 15 Jan 2026 17:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iM1sTx7P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCltAzIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9F221CC5A;
-	Thu, 15 Jan 2026 17:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F4C3195F9;
+	Thu, 15 Jan 2026 17:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497878; cv=none; b=FtUOACA5j0TQrivaUlXMOBGaOuhhxrC28O1PPPJqob4Ig2d2iy9lnr0m7q4gtZZPP/QFVY16o8Cl9w7GWggbEg4jjedwOLd0AoIKrKUXKHGhQT2suZrWyqT6IlagSm+L8QzWlgDfWVOegR1LTmGK8ftBxvXmwM7Gk1dpnIJcZSo=
+	t=1768499073; cv=none; b=I/4EOnBW90G9l4zd9uszfo8DAHfnV/RNS8IWa4UebL2ruqJ7za/7lMHhm8MoH6XMZzwrQom9fOmL66gHtBHcYJd2ghDa5G8dachuqRpWGim4+HwNB3/K2lZLAlygEQ0aL1Lp5JN7O7D744rDhIFezGKZv1qGRn+RN5li7v0n5vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497878; c=relaxed/simple;
-	bh=4Djij3PQ+srSlaVBzY6Smv+QSX22XeRqL2j1TqAMxGU=;
+	s=arc-20240116; t=1768499073; c=relaxed/simple;
+	bh=hDB+6DhL2ntWjfNbCBrQc1Olr7mN1XmNcHtPZQOkrek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LM6LhZu3dEFy84KEgkxuen4+2L9990Yfugz5c4+73xu73PCrhLZn920H9ifX83/4o7LX8eslmkY3gaOjQPupupawju2clHPcQTQ0e2/hsBZbTIAvH2L+PsPRquIMfgszk7xvYQRpBVTupxlEoNiGDFSPxFjk0YAzzvncz2Yer/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iM1sTx7P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D905C116D0;
-	Thu, 15 Jan 2026 17:24:38 +0000 (UTC)
+	 MIME-Version; b=G/eIMEq78aFbZGuhrChFO/cMDBY75m/2JBMtV48l3znFCWQCYYayoTgzr7v7YaSMT5H19wvv687Edsqoxm7As8jcZyJasCc49CRLLjntzpsDZEEbuy7wLfleeYKCrsZ3/AZHdC0//ithejmg+bYyzPfFxAdnurYK3qwrAiqBRkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCltAzIc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE99C116D0;
+	Thu, 15 Jan 2026 17:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497878;
-	bh=4Djij3PQ+srSlaVBzY6Smv+QSX22XeRqL2j1TqAMxGU=;
+	s=korg; t=1768499072;
+	bh=hDB+6DhL2ntWjfNbCBrQc1Olr7mN1XmNcHtPZQOkrek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iM1sTx7PODmIXs6dExPbgUevzPlwfDgVpXz3mg+uHLdeeFgwOzoHYqHEQ1/00ZZ+E
-	 lcxwPK7Wb2ZFNiGdcC+rAXwBzmEVdsurk2xq2wSEBajx7oAXA9peFfzqxDNcw5hDu4
-	 b4RWu4BQcRgXY1ojpvA2VotjWchjC36ei+pFOqn4=
+	b=qCltAzIc0vXDiTllddh2Rqi84Wks1LtUcWOOpJ7Fcg1vQPg+PwdVY5czV5DUUKstk
+	 H5hCFShEKD+Mf5683sXiXo82GPIfq9N7tuvRtr5/5DxtkgMa7S5lUsy83ol7xsiyDJ
+	 MOEEs99qpAQOUfJ30fa7+AdJmmi7Fxr/cvhrM+4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ria Thomas <ria.thomas@morsemicro.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 234/554] nfc: pn533: Fix error code in pn533_acr122_poweron_rdr()
+Subject: [PATCH 5.10 099/451] wifi: ieee80211: correct FILS status codes
 Date: Thu, 15 Jan 2026 17:45:00 +0100
-Message-ID: <20260115164254.717025009@linuxfoundation.org>
+Message-ID: <20260115164234.498718413@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Ria Thomas <ria.thomas@morsemicro.com>
 
-[ Upstream commit 885bebac9909994050bbbeed0829c727e42bd1b7 ]
+[ Upstream commit 24d4da5c2565313c2ad3c43449937a9351a64407 ]
 
-Set the error code if "transferred != sizeof(cmd)" instead of
-returning success.
+The FILS status codes are set to 108/109, but the IEEE 802.11-2020
+spec defines them as 112/113. Update the enum so it matches the
+specification and keeps the kernel consistent with standard values.
 
-Fixes: dbafc28955fa ("NFC: pn533: don't send USB data off of the stack")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/aTfIJ9tZPmeUF4W1@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a3caf7440ded ("cfg80211: Add support for FILS shared key authentication offload")
+Signed-off-by: Ria Thomas <ria.thomas@morsemicro.com>
+Reviewed-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251124125637.3936154-1-ria.thomas@morsemicro.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/pn533/usb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/ieee80211.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nfc/pn533/usb.c b/drivers/nfc/pn533/usb.c
-index 47d423cc26081..11d3c4045c1e1 100644
---- a/drivers/nfc/pn533/usb.c
-+++ b/drivers/nfc/pn533/usb.c
-@@ -407,7 +407,7 @@ static int pn533_acr122_poweron_rdr(struct pn533_usb_phy *phy)
- 	if (rc || (transferred != sizeof(cmd))) {
- 		nfc_err(&phy->udev->dev,
- 			"Reader power on cmd error %d\n", rc);
--		return rc;
-+		return rc ?: -EINVAL;
- 	}
- 
- 	rc =  usb_submit_urb(phy->in_urb, GFP_KERNEL);
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 770408b2fdafb..f12357c7ea364 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2627,8 +2627,8 @@ enum ieee80211_statuscode {
+ 	WLAN_STATUS_DENIED_WITH_SUGGESTED_BAND_AND_CHANNEL = 99,
+ 	WLAN_STATUS_DENIED_DUE_TO_SPECTRUM_MANAGEMENT = 103,
+ 	/* 802.11ai */
+-	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 108,
+-	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 109,
++	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 112,
++	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 113,
+ 	WLAN_STATUS_SAE_HASH_TO_ELEMENT = 126,
+ 	WLAN_STATUS_SAE_PK = 127,
+ };
 -- 
 2.51.0
 
