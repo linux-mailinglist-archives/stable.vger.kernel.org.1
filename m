@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38183D266A5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE4DD26EE4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:56:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A74D30834F4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E720431C20E3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7C3E56A;
-	Thu, 15 Jan 2026 17:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA0B39E6EA;
+	Thu, 15 Jan 2026 17:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2QTC/Dt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyekQ/a3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5144D3A0E9A;
-	Thu, 15 Jan 2026 17:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CED72D94A7;
+	Thu, 15 Jan 2026 17:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497784; cv=none; b=r5YAobtJmp5VHcOHlDYpU1YEphEBJktDk9J+jRcCwXfiN4ATvdSDQfISc8MnugwMHiLCbECos0Fwx+f884cbPJPdO6YOtiKPa0lcCMsFdYtd1n72vTW7jUcYGJiy4+OV3b6S0lY8l+8BdfvEwRodMuWNBBAieAYu6765jRA/IrM=
+	t=1768498981; cv=none; b=YCbmw1HOKPOwxqbIknRLQ4x3zmbvebItCuNdvZOrA2eduBQ681F/VldB6a7t3V9P4CgO/FLa7DSuZQdQmicUWfkkYdomIo+5+2HI3+BOpEMHYdaxaft0ywI2aUwHZr62iRdb52RTLl/sjo9zYpft6RiRkHs2WWsgycdg+dhY1bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497784; c=relaxed/simple;
-	bh=cmTueW8AgUpAOIoP6kZ6k3zSG3y5PL7hfGTmDcq4FsU=;
+	s=arc-20240116; t=1768498981; c=relaxed/simple;
+	bh=g1u/u/U1TQ5ui0onGY3Dnnw22E8ymj42Jc+QEFFmu1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccHd2ZhV0EBiGujLqID7uPHzq6sj5jmS5MjTRF5/tmcMvwVngpGJtSE70lG76DUqdAwGwC7I3/LU2P1gK2A6WgZ/DstIbEjYkW0VfkxZgUUEuX4pvE2POCo6R6ykW4jN2EXVW0OfxpuqR6OKYyeqiRLLREgIhq/QQfu3gLaEAkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2QTC/Dt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2173C116D0;
-	Thu, 15 Jan 2026 17:23:03 +0000 (UTC)
+	 MIME-Version; b=OMFNdBrETl/WPHGr0B2Igc3OJFN6pY3WPQnVr012K4z5JkVIobCfr86884Y4ERMI2c033fkIJy1hKy3AiCm5KfBjDCEgjtDfEVLMaLsAAHLGZJHijktHZOsMJjh1V2XGGPWRDGFk2WGOAHdTNyx4g79kkfFO8KprJ8se6vdcOBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyekQ/a3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9110C116D0;
+	Thu, 15 Jan 2026 17:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497784;
-	bh=cmTueW8AgUpAOIoP6kZ6k3zSG3y5PL7hfGTmDcq4FsU=;
+	s=korg; t=1768498981;
+	bh=g1u/u/U1TQ5ui0onGY3Dnnw22E8ymj42Jc+QEFFmu1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2QTC/DtQE9rZbi782fVo1WC0bCHqYKLTSRmGqKkur+0ei1SVTtgEhUJWgoZ5xsuq
-	 1mNO7NPwhT81xEgecQ0zEbDY9t3ZcF3W4qKS4rD54tTX/xdbJfzmRvbSxe5uDjswPN
-	 FC3UdRnmw+01UYNaNZWSgnbEHnHmEGncTk/uGT1k=
+	b=XyekQ/a39nw0cgW1/wozGPW7yeerPvkSEsVBaYlAw4VJ7oLXkGXGqrzSnXaYmEnd8
+	 dmhPk2K9vsHjflfhVtoWQQO5d+61V/JZuHxzygnOFu6+eM8SGUQXwW61AK7NgZYrkk
+	 i2zL53hZ+7BP4hPRki6q9qL+fMyzqcNrlJM97K2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 201/554] ASoC: fsl_xcvr: get channel status data when PHY is not exists
-Date: Thu, 15 Jan 2026 17:44:27 +0100
-Message-ID: <20260115164253.532512299@linuxfoundation.org>
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 067/451] wifi: cw1200: Fix potential memory leak in cw1200_bh_rx_helper()
+Date: Thu, 15 Jan 2026 17:44:28 +0100
+Message-ID: <20260115164233.325936744@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-commit ca592e20659e0304ebd8f4dabb273da4f9385848 upstream.
+[ Upstream commit 5e88e864118c20e63a1571d0ff0a152e5d684959 ]
 
-There is no PHY for the XCVR module on i.MX93, the channel status needs
-to be obtained from FSL_XCVR_RX_CS_DATA_* registers. And channel status
-acknowledge (CSA) bit should be set once channel status is processed.
+In one of the error paths, the memory allocated for skb_rx is not freed.
+Fix that by freeing it before returning.
 
-Fixes: e240b9329a30 ("ASoC: fsl_xcvr: Add support for i.MX93 platform")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250710030405.3370671-2-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Link: https://patch.msgid.link/20251110175316.106591-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_xcvr.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/net/wireless/st/cw1200/bh.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -1165,6 +1165,26 @@ static irqreturn_t irq0_isr(int irq, voi
- 				/* clear CS control register */
- 				writel_relaxed(0, reg_ctrl);
- 			}
-+		} else {
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_0,
-+				    (u32 *)&xcvr->rx_iec958.status[0]);
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_1,
-+				    (u32 *)&xcvr->rx_iec958.status[4]);
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_2,
-+				    (u32 *)&xcvr->rx_iec958.status[8]);
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_3,
-+				    (u32 *)&xcvr->rx_iec958.status[12]);
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_4,
-+				    (u32 *)&xcvr->rx_iec958.status[16]);
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_5,
-+				    (u32 *)&xcvr->rx_iec958.status[20]);
-+			for (i = 0; i < 6; i++) {
-+				val = *(u32 *)(xcvr->rx_iec958.status + i * 4);
-+				*(u32 *)(xcvr->rx_iec958.status + i * 4) =
-+					bitrev32(val);
-+			}
-+			regmap_set_bits(xcvr->regmap, FSL_XCVR_RX_DPTH_CTRL,
-+					FSL_XCVR_RX_DPTH_CTRL_CSA);
- 		}
+diff --git a/drivers/net/wireless/st/cw1200/bh.c b/drivers/net/wireless/st/cw1200/bh.c
+index 361fef6e1eeaa..61916e202f20b 100644
+--- a/drivers/net/wireless/st/cw1200/bh.c
++++ b/drivers/net/wireless/st/cw1200/bh.c
+@@ -320,10 +320,12 @@ static int cw1200_bh_rx_helper(struct cw1200_common *priv,
+ 
+ 	if (wsm_id & 0x0400) {
+ 		int rc = wsm_release_tx_buffer(priv, 1);
+-		if (WARN_ON(rc < 0))
++		if (WARN_ON(rc < 0)) {
++			dev_kfree_skb(skb_rx);
+ 			return rc;
+-		else if (rc > 0)
++		} else if (rc > 0) {
+ 			*tx = 1;
++		}
  	}
- 	if (isr & FSL_XCVR_IRQ_NEW_UD) {
+ 
+ 	/* cw1200_wsm_rx takes care on SKB livetime */
+-- 
+2.51.0
+
 
 
 
