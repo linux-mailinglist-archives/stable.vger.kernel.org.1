@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D04D266AC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9C4D27786
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 35BD33041711
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EE60311D07D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42172D6E72;
-	Thu, 15 Jan 2026 17:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F37F2D9488;
+	Thu, 15 Jan 2026 17:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2f10M0x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh61QXIK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70914C81;
-	Thu, 15 Jan 2026 17:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AC12C0F83;
+	Thu, 15 Jan 2026 17:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497798; cv=none; b=UuSB+K4qHwOfPTIzd3SEXKeMFZQXcIYxxpY+orPWaKMiZGcZbYOgHSbfgDK8//yDumkwaARsO+7SPuxIWzWLsuR2q6jritaMBIMt1gNE0JM65YVwabrZ2WAky3STB0H6D3i/iMWQvIjBuN+9rKsou1myNRJ20LucJz9nAxVdlLs=
+	t=1768498904; cv=none; b=vDz7RqRz2aWRwz4fNUd2qNKCx4SeIckpMyM94VRg27TVMw3q30YSeYOBbmMqr71iGU25iXdbNuaSxbv/VIrRT6xOa8O12JsG65hCv9qmdfjtftEhX14774xDsxz/ygBdB3phY5IsMaHp9nXuX/+wsWbwGlA1o/mc9SgMqx1wqQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497798; c=relaxed/simple;
-	bh=+XwIigOvCxM10Ub5tBv0ee2M4YxAfyac/U2L5UHG54s=;
+	s=arc-20240116; t=1768498904; c=relaxed/simple;
+	bh=fsYfpPAP3SteP2jjhrn/47NXIT8lEhaYGHdVhoTHx2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MW4jRGOpTTvari5vSvNOoGRE/p5Kzk3qC7uh+zmh4fXDCIaz6ESCfjRa42kbzNo7u5ZrF3SV/JZMcggaLuRxG+h91HpL4cepVP+BmSLGYLVjX9f45It5IYV5nVYTFwpJy76EkmMumJvJxnToSwwjdt3540RJPpmD4afDL8n+Ndk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2f10M0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264A3C116D0;
-	Thu, 15 Jan 2026 17:23:17 +0000 (UTC)
+	 MIME-Version; b=RC+f9jIQHOr1430UKQFfNzFZvzpboA2AA39xhxkE3TMM7fqf2OAsj8Y7AzroHSUQsivi/tHXSkWmNkG+7gBlzQyN+Tp9VpU07bSaQUdBXH5LvTCHy7LzcFL2WgSU7eEYvnOQP+wowsm+a/fAqz8i4rlVttqNxc1HRVY+qyl6/eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fh61QXIK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A6EC19425;
+	Thu, 15 Jan 2026 17:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497798;
-	bh=+XwIigOvCxM10Ub5tBv0ee2M4YxAfyac/U2L5UHG54s=;
+	s=korg; t=1768498904;
+	bh=fsYfpPAP3SteP2jjhrn/47NXIT8lEhaYGHdVhoTHx2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2f10M0xHdxEoBIsLJ/NrR6ZGNTGXm97G3PC7MJRUOuqbhiE/Zu8Vf+Guw/Ez4oWT
-	 qO6wHz0wQxCNQMCb71Wd5H9wV/sf00V1FMXNp96dMg/mjFJP8BhqZwEqeXU+9P2T+6
-	 BgIFG6udJOyn9C0Xpbp69MbHoteLTpAWpQwtlFaA=
+	b=Fh61QXIKwmM5YjASQH/t/IhFQ0XjsIq4CImL4SaceedNmsXpEfs+cZAEbiDYNXkhT
+	 5x1nbCMmewihcDdxsf/+WJhpXKmFkEU5ATKkaOIsqJkmXEqKN+kngSFQuoflZvWO8A
+	 QbwkFkw8R4mehPPuZe5x5F4MfBM1GYktcFJTpNyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Mete Durlu <meted@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 174/554] NFS: Fix the verifier for case sensitive filesystem in nfs_atomic_open()
+Subject: [PATCH 5.10 039/451] s390/smp: Fix fallback CPU detection
 Date: Thu, 15 Jan 2026 17:44:00 +0100
-Message-ID: <20260115164252.564681858@linuxfoundation.org>
+Message-ID: <20260115164232.306669384@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 68eaba4ca924a97a863c5c81c0b23a11dcb6db90 ]
+[ Upstream commit 07a75d08cfa1b883a6e1256666e5f0617ee99231 ]
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Stable-dep-of: 518c32a1bc4f ("NFS: Initialise verifiers for visible dentries in nfs_atomic_open()")
+In case SCLP CPU detection does not work a fallback mechanism using SIGP is
+in place. Since a cleanup this does not work correctly anymore: new CPUs
+are only considered if their type matches the boot CPU.
+
+Before the cleanup the information if a CPU type should be considered was
+also part of a structure generated by the fallback mechanism and indicated
+that a CPU type should not be considered when adding CPUs.
+
+Since the rework a global SCLP state is used instead. If the global SCLP
+state indicates that the CPU type should be considered and the fallback
+mechanism is used, there may be a mismatch with CPU types if CPUs are
+added. This can lead to a system with only a single CPU even tough there
+are many more CPUs.
+
+Address this by simply copying the boot cpu type into the generated data
+structure from the fallback mechanism.
+
+Reported-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Fixes: d08d94306e90 ("s390/smp: cleanup core vs. cpu in the SCLP interface")
+Reviewed-by: Mete Durlu <meted@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/s390/kernel/smp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 2a325a79327bc..dc0c50b97643b 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1887,6 +1887,7 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
- 	struct iattr attr = { .ia_valid = ATTR_OPEN };
- 	struct inode *inode;
- 	unsigned int lookup_flags = 0;
-+	unsigned long dir_verifier;
- 	bool switched = false;
- 	int created = 0;
- 	int err;
-@@ -1960,7 +1961,11 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
- 		switch (err) {
- 		case -ENOENT:
- 			d_splice_alias(NULL, dentry);
--			nfs_set_verifier(dentry, nfs_save_change_attribute(dir));
-+			if (nfs_server_capable(dir, NFS_CAP_CASE_INSENSITIVE))
-+				dir_verifier = inode_peek_iversion_raw(dir);
-+			else
-+				dir_verifier = nfs_save_change_attribute(dir);
-+			nfs_set_verifier(dentry, dir_verifier);
- 			break;
- 		case -EISDIR:
- 		case -ENOTDIR:
+diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
+index 2e0c3b0a5a58a..253774d155a1f 100644
+--- a/arch/s390/kernel/smp.c
++++ b/arch/s390/kernel/smp.c
+@@ -732,6 +732,7 @@ static void __ref smp_get_core_info(struct sclp_core_info *info, int early)
+ 				continue;
+ 			info->core[info->configured].core_id =
+ 				address >> smp_cpu_mt_shift;
++			info->core[info->configured].type = boot_core_type;
+ 			info->configured++;
+ 		}
+ 		info->combined = info->configured;
 -- 
 2.51.0
 
