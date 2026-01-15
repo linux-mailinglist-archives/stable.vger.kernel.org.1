@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ECF0D26210
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA6FD261D6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 35EF23008C7E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 67EA7300BA20
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E52E3BFE3A;
-	Thu, 15 Jan 2026 17:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E133A1A08AF;
+	Thu, 15 Jan 2026 17:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YW2IyLjY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDMx+cY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29A83195F9;
-	Thu, 15 Jan 2026 17:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CEC2820C6;
+	Thu, 15 Jan 2026 17:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496742; cv=none; b=UzuYWYWvZ5WpG5Je8mAYG+xJzRE37riHfnCjlKW6Y3ENV025pMWSBRUkDwJwPdLoU44CMzaUH9STcWaSRw77IWY3OeF5ou+FM3nRHfgBRP6i/t69fNEXJmxItnvYcg6LBTVKVlkfyk3kNK93Vs5+W3WYpiY/ptS+ZOcf8h2HleI=
+	t=1768496895; cv=none; b=lY6q7jfhn5ex1xG0sjXMAJW0907yi31RAu/5UWhbUOhSSVrw4XOgaPBqhG3IKWwFNP4+iC6v/Bp4KCGceMik7S7hazzn//jZbmunOJPYozCT23fDlrbLWQ2UqWQ8Dn5tifiQL7wH9P6nVmIF95+Y/0oOM2c2Blkyv2uPjAZ/VjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496742; c=relaxed/simple;
-	bh=JgmpXDJhKzgtF6IgReCGuYHwm18rBAHHk/1QOhGvCiA=;
+	s=arc-20240116; t=1768496895; c=relaxed/simple;
+	bh=Cohrf5cIcy+9jpKbP6KRakHn+i/oRyNEoNNnYc/Zqs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V30liKeN4E/GJqpX8Gv+IQZO2ga9y7QQmLo9xIk5xj75dEuwkTbsjOOyTWXf44CXebXQlNkKLuG1U5nvgE/iziJS0OQdmiq9Lb+97213SmxRQ0/L50cbo2O1p9TB0uQ6gY+bRmOG0b4Ktzxhh8oQjl4bUX4hA14LetR5B4nxCL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YW2IyLjY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204F8C19423;
-	Thu, 15 Jan 2026 17:05:41 +0000 (UTC)
+	 MIME-Version; b=kpMQ9H1M87i7ifa+GiwC6mArNXRnIXOP6VfPJNMEMpxrszCrD3E2R3zRarjx2WA6lVzn0Bn6MNQoZQqskBAckIvENzN7XrtprZuf+LX2Y3XPMQilOhz6iN2WN3XZSNSkukC9inboINkQzGnW83R7bjxsVXUQfz7ADFPoo4XFPeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDMx+cY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FE0C116D0;
+	Thu, 15 Jan 2026 17:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496742;
-	bh=JgmpXDJhKzgtF6IgReCGuYHwm18rBAHHk/1QOhGvCiA=;
+	s=korg; t=1768496895;
+	bh=Cohrf5cIcy+9jpKbP6KRakHn+i/oRyNEoNNnYc/Zqs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YW2IyLjYnU2T93n6wYkl+gc0d/CSV1zdaBfv00heffPD50R3ALeauFEwf/m3yvYcb
-	 BtNbvq1a0+3MlDkfiRR+X3SG7+vEmfx6AQe+ItCMGYRlEM4/ij5WhkWiAneM0VGRhg
-	 xtBV69r/O0dOVPsg7RKAnSXyhkljw/5DKHoUCnb0=
+	b=EDMx+cY+9KEU786BuKcyQq2KsJ9NQbePnzL0lolJiKPBeLrHF4sATdOy1DPyxr9YM
+	 qzg2oKg/96cBLNtOQMVB9GwQ80Jaqq/DO+MuNY4r8sh1YSh8oE7U8vwYTjCC3vMAYW
+	 3gI8veC15x6CRtuY6kfNy/ZAyYkxzpPUsm9K7ylQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Hughes <marcus.hughes@betterinternet.ltd>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/119] net: sfp: extend Potron XGSPON quirk to cover additional EEPROM variant
+Subject: [PATCH 6.6 54/88] net: sock: fix hardened usercopy panic in sock_recv_errqueue
 Date: Thu, 15 Jan 2026 17:48:37 +0100
-Message-ID: <20260115164155.634677965@linuxfoundation.org>
+Message-ID: <20260115164148.269612275@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcus Hughes <marcus.hughes@betterinternet.ltd>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 71cfa7c893a05d09e7dc14713b27a8309fd4a2db ]
+[ Upstream commit 2a71a1a8d0ed718b1c7a9ac61f07e5755c47ae20 ]
 
-Some Potron SFP+ XGSPON ONU sticks are shipped with different EEPROM
-vendor ID and vendor name strings, but are otherwise functionally
-identical to the existing "Potron SFP+ XGSPON ONU Stick" handled by
-sfp_quirk_potron().
+skbuff_fclone_cache was created without defining a usercopy region,
+[1] unlike skbuff_head_cache which properly whitelists the cb[] field.
+[2] This causes a usercopy BUG() when CONFIG_HARDENED_USERCOPY is
+enabled and the kernel attempts to copy sk_buff.cb data to userspace
+via sock_recv_errqueue() -> put_cmsg().
 
-These modules, including units distributed under the "Better Internet"
-branding, use the same UART pin assignment and require the same
-TX_FAULT/LOS behaviour and boot delay. Re-use the existing Potron
-quirk for this EEPROM variant.
+The crash occurs when: 1. TCP allocates an skb using alloc_skb_fclone()
+   (from skbuff_fclone_cache) [1]
+2. The skb is cloned via skb_clone() using the pre-allocated fclone
+[3] 3. The cloned skb is queued to sk_error_queue for timestamp
+reporting 4. Userspace reads the error queue via recvmsg(MSG_ERRQUEUE)
+5. sock_recv_errqueue() calls put_cmsg() to copy serr->ee from skb->cb
+[4] 6. __check_heap_object() fails because skbuff_fclone_cache has no
+   usercopy whitelist [5]
 
-Signed-off-by: Marcus Hughes <marcus.hughes@betterinternet.ltd>
-Link: https://patch.msgid.link/20251207210355.333451-1-marcus.hughes@betterinternet.ltd
+When cloned skbs allocated from skbuff_fclone_cache are used in the
+socket error queue, accessing the sock_exterr_skb structure in skb->cb
+via put_cmsg() triggers a usercopy hardening violation:
+
+[    5.379589] usercopy: Kernel memory exposure attempt detected from SLUB object 'skbuff_fclone_cache' (offset 296, size 16)!
+[    5.382796] kernel BUG at mm/usercopy.c:102!
+[    5.383923] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+[    5.384903] CPU: 1 UID: 0 PID: 138 Comm: poc_put_cmsg Not tainted 6.12.57 #7
+[    5.384903] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[    5.384903] RIP: 0010:usercopy_abort+0x6c/0x80
+[    5.384903] Code: 1a 86 51 48 c7 c2 40 15 1a 86 41 52 48 c7 c7 c0 15 1a 86 48 0f 45 d6 48 c7 c6 80 15 1a 86 48 89 c1 49 0f 45 f3 e8 84 27 88 ff <0f> 0b 490
+[    5.384903] RSP: 0018:ffffc900006f77a8 EFLAGS: 00010246
+[    5.384903] RAX: 000000000000006f RBX: ffff88800f0ad2a8 RCX: 1ffffffff0f72e74
+[    5.384903] RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffffffff87b973a0
+[    5.384903] RBP: 0000000000000010 R08: 0000000000000000 R09: fffffbfff0f72e74
+[    5.384903] R10: 0000000000000003 R11: 79706f6372657375 R12: 0000000000000001
+[    5.384903] R13: ffff88800f0ad2b8 R14: ffffea00003c2b40 R15: ffffea00003c2b00
+[    5.384903] FS:  0000000011bc4380(0000) GS:ffff8880bf100000(0000) knlGS:0000000000000000
+[    5.384903] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    5.384903] CR2: 000056aa3b8e5fe4 CR3: 000000000ea26004 CR4: 0000000000770ef0
+[    5.384903] PKRU: 55555554
+[    5.384903] Call Trace:
+[    5.384903]  <TASK>
+[    5.384903]  __check_heap_object+0x9a/0xd0
+[    5.384903]  __check_object_size+0x46c/0x690
+[    5.384903]  put_cmsg+0x129/0x5e0
+[    5.384903]  sock_recv_errqueue+0x22f/0x380
+[    5.384903]  tls_sw_recvmsg+0x7ed/0x1960
+[    5.384903]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    5.384903]  ? schedule+0x6d/0x270
+[    5.384903]  ? srso_alias_return_thunk+0x5/0xfbef5
+[    5.384903]  ? mutex_unlock+0x81/0xd0
+[    5.384903]  ? __pfx_mutex_unlock+0x10/0x10
+[    5.384903]  ? __pfx_tls_sw_recvmsg+0x10/0x10
+[    5.384903]  ? _raw_spin_lock_irqsave+0x8f/0xf0
+[    5.384903]  ? _raw_read_unlock_irqrestore+0x20/0x40
+[    5.384903]  ? srso_alias_return_thunk+0x5/0xfbef5
+
+The crash offset 296 corresponds to skb2->cb within skbuff_fclones:
+  - sizeof(struct sk_buff) = 232 - offsetof(struct sk_buff, cb) = 40 -
+  offset of skb2.cb in fclones = 232 + 40 = 272 - crash offset 296 =
+  272 + 24 (inside sock_exterr_skb.ee)
+
+This patch uses a local stack variable as a bounce buffer to avoid the hardened usercopy check failure.
+
+[1] https://elixir.bootlin.com/linux/v6.12.62/source/net/ipv4/tcp.c#L885
+[2] https://elixir.bootlin.com/linux/v6.12.62/source/net/core/skbuff.c#L5104
+[3] https://elixir.bootlin.com/linux/v6.12.62/source/net/core/skbuff.c#L5566
+[4] https://elixir.bootlin.com/linux/v6.12.62/source/net/core/skbuff.c#L5491
+[5] https://elixir.bootlin.com/linux/v6.12.62/source/mm/slub.c#L5719
+
+Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251223203534.1392218-2-bestswngs@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/sock.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index f1827a1bd7a59..964aad00dc87c 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -491,6 +491,8 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK("ALCATELLUCENT", "3FE46541AA", sfp_quirk_2500basex,
- 		  sfp_fixup_nokia),
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 91f101231309d..8e4c87a39dc87 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3653,7 +3653,7 @@ void sock_enable_timestamp(struct sock *sk, enum sock_flags flag)
+ int sock_recv_errqueue(struct sock *sk, struct msghdr *msg, int len,
+ 		       int level, int type)
+ {
+-	struct sock_exterr_skb *serr;
++	struct sock_extended_err ee;
+ 	struct sk_buff *skb;
+ 	int copied, err;
  
-+	SFP_QUIRK_F("BIDB", "X-ONU-SFPP", sfp_fixup_potron),
-+
- 	// FLYPRO SFP-10GT-CS-30M uses Rollball protocol to talk to the PHY.
- 	SFP_QUIRK_F("FLYPRO", "SFP-10GT-CS-30M", sfp_fixup_rollball),
+@@ -3673,8 +3673,9 @@ int sock_recv_errqueue(struct sock *sk, struct msghdr *msg, int len,
  
+ 	sock_recv_timestamp(msg, sk, skb);
+ 
+-	serr = SKB_EXT_ERR(skb);
+-	put_cmsg(msg, level, type, sizeof(serr->ee), &serr->ee);
++	/* We must use a bounce buffer for CONFIG_HARDENED_USERCOPY=y */
++	ee = SKB_EXT_ERR(skb)->ee;
++	put_cmsg(msg, level, type, sizeof(ee), &ee);
+ 
+ 	msg->msg_flags |= MSG_ERRQUEUE;
+ 	err = copied;
 -- 
 2.51.0
 
