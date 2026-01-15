@@ -1,55 +1,49 @@
-Return-Path: <stable+bounces-208415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A77D225D7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 05:22:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E655ED2265E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 05:55:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9513E302921D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 04:21:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10B02302AB92
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 04:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9658F19CC28;
-	Thu, 15 Jan 2026 04:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="fcl9z4SI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E720A2D3ED1;
+	Thu, 15 Jan 2026 04:55:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447BBE555;
-	Thu, 15 Jan 2026 04:21:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818F426ED25;
+	Thu, 15 Jan 2026 04:55:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768450917; cv=none; b=FTp6vWX81X6yoPEIP9Mw5D7H9smTdvYD2BAGSlrBNZA8ZwEwYfLP3cmKiavwXon0+mtx5BOKpoGMLtFZ3X8kFl3Fmjg2cS6tK4mPajrZx9Tdku70NfVLtWYDwrRa9Ceb1ZVY0DxYcctRubNOrDr5wcmmxojhxHhkzsd0miGfdXA=
+	t=1768452938; cv=none; b=r7BlqJAVRxgt4wWXu5hdCHCVEUpp5ALBUBmju2OqRx6+xtVgvmyzrqDwKDHorwRzFXwLud0x5jiKh4iz3Qs1rWfbCj9ZHGfC6wGRO3xa1jS4D87S0OXbcfjDPczO+Asu8epM4R7L3G42f8gZ3weWCPVCbUi/HmWATKz6dPAy3W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768450917; c=relaxed/simple;
-	bh=976gSRyCKaODIP02eo6OMC27csqr721T9bqwWYZao4Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ey7Q4PnOpvowTE0kcjQaN6oMSxGRr2pvyu7mMo4I+w4AXYHVuu3+V+b+rYfP/6PsKvOhoOILtwWcuJgO8DahOrH+Y1qCGTaVfQJQR/6+xNwUt4CSPA01G4aAoq0yxrk9KC7Yc/IEgNlj3rFEn6AmuOInKf3CKH/WwD8nNKsXWbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=fcl9z4SI; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=0x
-	N5qkpBt16NXoa/mY6LU4Sk6kdGvDC2qt19ietR/PE=; b=fcl9z4SIFys1nhlbnF
-	R4rkcAte0gF8buU9jaGzMEUdr4NAwttk1ZYsfT8GXxr6B3rWc2ST5hl5R4Nj5SDX
-	9QVM7X7oUnLaN0KMM09oVwHZhc/oazcSGyQqmIiBZnFJzHhR+gsn45T62q794Le2
-	qdYq3QOzyWDf3NWSi87EKWscQ=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wDX_gnKamhpwpQWGA--.42068S2;
-	Thu, 15 Jan 2026 12:19:23 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
-To: gregkh@linuxfoundation.org,
+	s=arc-20240116; t=1768452938; c=relaxed/simple;
+	bh=M3vM7wuGXUDGMOm1gsHecMoC3vq28dry1w+H07aPvu4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bMdD5GAEDm+OawiM8TSgS428BYdIl01Bf6qMrJ3N4vzk0EnoPsel1zZ4SssLNDSBMr+Ai/IRLO2JP+PA3zNLQozACyttEoWVg7Oy1TlKScuDBe98Fxj8dRSJRrt3qgH1ViGXPL3QOdRX2/nId07Qyh+868OkIqt02U7PzEo4r0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.223])
+	by APP-01 (Coremail) with SMTP id qwCowAAn0Gs9c2hpAMHBBA--.30272S2;
+	Thu, 15 Jan 2026 12:55:25 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: mturquette@baylibre.com,
+	sboyd@kernel.org,
+	bmasney@redhat.com,
+	mturquette@linaro.org,
+	pankaj.dev@st.com,
+	gabriel.fernandez@st.com
+Cc: linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
 	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH v6.1] drm/amd/display: Check dce_hwseq before dereferencing it
-Date: Thu, 15 Jan 2026 12:19:19 +0800
-Message-Id: <20260115041919.825845-1-black.hawk@163.com>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH] clk: st: clkgen-pll: Fix a memory leak in clkgen_odf_register()
+Date: Thu, 15 Jan 2026 12:55:24 +0800
+Message-Id: <20260115045524.640427-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,54 +51,53 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDX_gnKamhpwpQWGA--.42068S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur17Gr4UGFyUJry5Xw1kKrg_yoW8CFWUpr
-	n3Gw1rWws7A3WUZa4DJ3W8uFW5uaykJF43GFZFy3Z5u3sIyFW8X39Yyan7GryxuF1DZ3Wa
-	qFsxGFWxtF1YkrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pimLvdUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+gtB2mloastrngAA3-
+X-CM-TRANSID:qwCowAAn0Gs9c2hpAMHBBA--.30272S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKFyftw4rGr45XF4rCF4xXrb_yoWfGFcEy3
+	y7X3sav34rCF43A3WUAw47ZryF93Wkurn3Wa1SyFW5K345XryUKrWFqrZ5Jr15WFWrGryD
+	Gws7Aw15Cr47AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VU13ku3UUUUU==
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwkIE2loPJu0FQAAsS
 
-From: Alex Hung <alex.hung@amd.com>
+If clk_register_composite() fails, call kfree() to release
+div and gate.
 
-[ Upstream b669507b637eb6b1aaecf347f193efccc65d756e commit ]
-
-[WHAT]
-
-hws was checked for null earlier in dce110_blank_stream, indicating hws
-can be null, and should be checked whenever it is used.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 79db43611ff61280b6de58ce1305e0b2ecf675ad)
+Fixes: b9b8e614b580 ("clk: st: Support for PLLs inside ClockGenA(s)")
 Cc: stable@vger.kernel.org
-[ The context change is due to the commit 8e7b3f5435b3
-("drm/amd/display: Add control flag to dc_stream_state to skip eDP BL off/link off")
-and the commit a8728dbb4ba2 ("drm/amd/display: Refactor edp power
-control") and the proper adoption is done. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 ---
- drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/st/clkgen-pll.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-index 508f5fe26848..c542d2ab9160 100644
---- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-@@ -1233,7 +1233,8 @@ void dce110_blank_stream(struct pipe_ctx *pipe_ctx)
- 	struct dce_hwseq *hws = link->dc->hwseq;
+diff --git a/drivers/clk/st/clkgen-pll.c b/drivers/clk/st/clkgen-pll.c
+index c258ff87a171..a7d605b52cf3 100644
+--- a/drivers/clk/st/clkgen-pll.c
++++ b/drivers/clk/st/clkgen-pll.c
+@@ -742,8 +742,11 @@ static struct clk * __init clkgen_odf_register(const char *parent_name,
+ 				     &div->hw, &clk_divider_ops,
+ 				     &gate->hw, &clk_gate_ops,
+ 				     flags);
+-	if (IS_ERR(clk))
++	if (IS_ERR(clk)) {
++		kfree(div);
++		kfree(gate);
+ 		return clk;
++	}
  
- 	if (link->local_sink && link->local_sink->sink_signal == SIGNAL_TYPE_EDP) {
--		hws->funcs.edp_backlight_control(link, false);
-+		if (hws)
-+			hws->funcs.edp_backlight_control(link, false);
- 		link->dc->hwss.set_abm_immediate_disable(pipe_ctx);
- 	}
- 
+ 	pr_debug("%s: parent %s rate %lu\n",
+ 			__clk_get_name(clk),
 -- 
-2.34.1
+2.25.1
 
 
