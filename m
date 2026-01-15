@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FDD9D270D3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:02:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3148ED26745
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7C068305C430
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:52:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 17CA9302E60E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2F13C1FE3;
-	Thu, 15 Jan 2026 17:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C58D3D1CCB;
+	Thu, 15 Jan 2026 17:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwnQC8XA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7PpLWtx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE6203C199E;
-	Thu, 15 Jan 2026 17:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A613C1FC0;
+	Thu, 15 Jan 2026 17:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499348; cv=none; b=pvWZQhNbfErgWyRmdeq3JybMd0IATopOH+tHxewjTFthrsn3hyh5ivJ5Aev/Et5VkoAgpze7xKdxmsd2/6NtiqFKx6BEGOUBHWDvowFbOO0BcX1wJIjXcIPtojTX6WPCXFZ7j5GmpZQ1kUEH1WERYeQV21td41cDOLv+gH4xz/o=
+	t=1768498147; cv=none; b=iPJNn/V8mo4MAJ7m2M5BC9NDuRq0jonmLWByVPKBeMK0IsBtqLzO0moZBnsQ/t5q+Ok9KSpxCTtvG11/voJXoFFNNi8lL0iIBA1peCClbGdjamMSEq98k8P/9hSDUdm0bqsxPYD5yThyu4uRXH+8O5JBUdqsrJDoo1Po2rhcig0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499348; c=relaxed/simple;
-	bh=D2fhQRl8nIyBeu8G7KJClajydlARN3xkICyYwxiNbTI=;
+	s=arc-20240116; t=1768498147; c=relaxed/simple;
+	bh=esxFdlw711sLKfkavkpANskiV9t6um5j8HNo7TYlvPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMKLMcCe/PS4s/oQQoE1kiBMbhu6fXPEv+5FmBOJzbOHAD0PJGvajpInVYwd8hy+EDAnkAzw/xUT5HLrHVyh0FFnKCCXcCiWSTqwWq9htCTzUHfP2WynlhJyB4VWyvJFUfr4Fl9TXyTLOmp5GKv1mwexcOpYcAt53Q6zbC0iNqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwnQC8XA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272B6C19422;
-	Thu, 15 Jan 2026 17:49:07 +0000 (UTC)
+	 MIME-Version; b=ut24dFlaiAhMfAzqxCUQWGyQprJKNtzYbtEdDuLG2rE9FE8CEZwnJdV6VaaNnMyNtT7jc8GWTcBPiY/q3dgrQx1f9gC3t/9qq9+ylr12neKhLzyL3lSSPBqt7swCM3e3wpReeXZSe++Ol2FVeB+HHpwphSQIvNwLePYb9b9BJiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7PpLWtx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD0EC116D0;
+	Thu, 15 Jan 2026 17:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499348;
-	bh=D2fhQRl8nIyBeu8G7KJClajydlARN3xkICyYwxiNbTI=;
+	s=korg; t=1768498146;
+	bh=esxFdlw711sLKfkavkpANskiV9t6um5j8HNo7TYlvPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwnQC8XAIPFZx9qlRU5oopnVvAuzJ8B1fwU5R312PCGjMMN019sq0t1Sy8JWnN71m
-	 7xVzckE9sIlQuQASsfPY3MVDgtYMfvaMWPo5TkyTEKINlQjrqLn6Jbgs5QdEL+LqZY
-	 C/Chfp3kNecVtIFjqQqIurNphZXh9269XqNKJIRA=
+	b=P7PpLWtxczJkY4g68T+nRfbn7j3EB4G3BG9TlEqScp71Ldmf5IrQCKTX9oeyNwK5P
+	 8bspnS6cJdU1pO80vcfVZfuHVslUf8ayWfWrzC6JxBZ1DfBvLONBL58wHcOLT/QAJf
+	 R4l9Wls8yXhQhXEOuYFbiNBFTvv2Ic74MU86uVjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	stable@kernel.org,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.10 194/451] HID: input: map HID_GD_Z to ABS_DISTANCE for stylus/pen
-Date: Thu, 15 Jan 2026 17:46:35 +0100
-Message-ID: <20260115164237.919563295@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 330/554] rpmsg: glink: fix rpmsg device leak
+Date: Thu, 15 Jan 2026 17:46:36 +0100
+Message-ID: <20260115164258.176190432@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 7953794f741e94d30df9dafaaa4c031c85b891d6 upstream.
+commit a53e356df548f6b0e82529ef3cc6070f42622189 upstream.
 
-HID_GD_Z is mapped to ABS_Z for stylus and pen in hid-input.c. But HID_GD_Z
-should be used to report ABS_DISTANCE for stylus and pen as described at:
-Documentation/input/event-codes.rst#n226
+While testing rpmsg-char interface it was noticed that duplicate sysfs
+entries are getting created and below warning is noticed.
 
-* ABS_DISTANCE:
+Reason for this is that we are leaking rpmsg device pointer, setting it
+null without actually unregistering device.
+Any further attempts to unregister fail because rpdev is NULL,
+resulting in a leak.
 
-  - Used to describe the distance of a tool from an interaction surface. This
-    event should only be emitted while the tool is hovering, meaning in close
-    proximity of the device and while the value of the BTN_TOUCH code is 0. If
-    the input device may be used freely in three dimensions, consider ABS_Z
-    instead.
-  - BTN_TOOL_<name> should be set to 1 when the tool comes into detectable
-    proximity and set to 0 when the tool leaves detectable proximity.
-    BTN_TOOL_<name> signals the type of tool that is currently detected by the
-    hardware and is otherwise independent of ABS_DISTANCE and/or BTN_TOUCH.
+Fix this by unregistering rpmsg device before removing its reference
+from rpmsg channel.
 
-This patch makes the correct mapping. The ABS_DISTANCE is currently not mapped
-by any HID usage in hid-generic driver.
+sysfs: cannot create duplicate filename '/devices/platform/soc@0/3700000.remot
+eproc/remoteproc/remoteproc1/3700000.remoteproc:glink-edge/3700000.remoteproc:
+glink-edge.adsp_apps.-1.-1'
+[  114.115347] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not
+ tainted 6.16.0-rc4 #7 PREEMPT
+[  114.115355] Hardware name: Qualcomm Technologies, Inc. Robotics RB3gen2 (DT)
+[  114.115358] Workqueue: events qcom_glink_work
+[  114.115371] Call trace:8
+[  114.115374]  show_stack+0x18/0x24 (C)
+[  114.115382]  dump_stack_lvl+0x60/0x80
+[  114.115388]  dump_stack+0x18/0x24
+[  114.115393]  sysfs_warn_dup+0x64/0x80
+[  114.115402]  sysfs_create_dir_ns+0xf4/0x120
+[  114.115409]  kobject_add_internal+0x98/0x260
+[  114.115416]  kobject_add+0x9c/0x108
+[  114.115421]  device_add+0xc4/0x7a0
+[  114.115429]  rpmsg_register_device+0x5c/0xb0
+[  114.115434]  qcom_glink_work+0x4bc/0x820
+[  114.115438]  process_one_work+0x148/0x284
+[  114.115446]  worker_thread+0x2c4/0x3e0
+[  114.115452]  kthread+0x12c/0x204
+[  114.115457]  ret_from_fork+0x10/0x20
+[  114.115464] kobject: kobject_add_internal failed for 3700000.remoteproc:
+glink-edge.adsp_apps.-1.-1 with -EEXIST, don't try to register things with
+the same name in the same directory.
+[  114.250045] rpmsg 3700000.remoteproc:glink-edge.adsp_apps.-1.-1:
+device_add failed: -17
 
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Cc: stable@kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 835764ddd9af ("rpmsg: glink: Move the common glink protocol implementation to glink_native.c")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250822100043.2604794-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-input.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/rpmsg/qcom_glink_native.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -718,7 +718,7 @@ static void hidinput_configure_usage(str
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -1244,6 +1244,7 @@ static void qcom_glink_destroy_ept(struc
+ {
+ 	struct glink_channel *channel = to_glink_channel(ept);
+ 	struct qcom_glink *glink = channel->glink;
++	struct rpmsg_channel_info chinfo;
+ 	unsigned long flags;
  
- 		switch (usage->hid) {
- 		/* These usage IDs map directly to the usage codes. */
--		case HID_GD_X: case HID_GD_Y: case HID_GD_Z:
-+		case HID_GD_X: case HID_GD_Y:
- 		case HID_GD_RX: case HID_GD_RY: case HID_GD_RZ:
- 			if (field->flags & HID_MAIN_ITEM_RELATIVE)
- 				map_rel(usage->hid & 0xf);
-@@ -726,6 +726,22 @@ static void hidinput_configure_usage(str
- 				map_abs_clear(usage->hid & 0xf);
- 			break;
+ 	spin_lock_irqsave(&channel->recv_lock, flags);
+@@ -1251,6 +1252,13 @@ static void qcom_glink_destroy_ept(struc
+ 	spin_unlock_irqrestore(&channel->recv_lock, flags);
  
-+		case HID_GD_Z:
-+			/* HID_GD_Z is mapped to ABS_DISTANCE for stylus/pen */
-+			if (field->flags & HID_MAIN_ITEM_RELATIVE) {
-+				map_rel(usage->hid & 0xf);
-+			} else {
-+				if (field->application == HID_DG_PEN ||
-+				    field->physical == HID_DG_PEN ||
-+				    field->logical == HID_DG_STYLUS ||
-+				    field->physical == HID_DG_STYLUS ||
-+				    field->application == HID_DG_DIGITIZER)
-+					map_abs_clear(ABS_DISTANCE);
-+				else
-+					map_abs_clear(usage->hid & 0xf);
-+			}
-+			break;
+ 	/* Decouple the potential rpdev from the channel */
++	if (channel->rpdev) {
++		strscpy_pad(chinfo.name, channel->name, sizeof(chinfo.name));
++		chinfo.src = RPMSG_ADDR_ANY;
++		chinfo.dst = RPMSG_ADDR_ANY;
 +
- 		case HID_GD_WHEEL:
- 			if (field->flags & HID_MAIN_ITEM_RELATIVE) {
- 				set_bit(REL_WHEEL, input->relbit);
++		rpmsg_unregister_device(glink->dev, &chinfo);
++	}
+ 	channel->rpdev = NULL;
+ 
+ 	qcom_glink_send_close_req(glink, channel);
 
 
 
