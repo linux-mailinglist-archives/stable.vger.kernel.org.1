@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-209515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35263D26D4C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E7CDD26525
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 146DC305085F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 33C123031D57
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AEB2D94A7;
-	Thu, 15 Jan 2026 17:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930052D6E72;
+	Thu, 15 Jan 2026 17:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvuPsT6m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/wGJFNc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A683271F2;
-	Thu, 15 Jan 2026 17:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CB04C81;
+	Thu, 15 Jan 2026 17:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498916; cv=none; b=HQ8905/4V/bSQ8cvMDe4DvXKsAdij0o49FjVwSE463r6pr0zXRbYORT7Fomq0Q6UmFJmq5sPnGZ6rAqKoMlouB9yVrMJOuFtuam0axcdsos/O6MK9uqhHBU49ZsK82BWinvo2zsr+PUUd8P//EoOh9UjjvOvBili5PmRBKx29Wk=
+	t=1768497716; cv=none; b=PYQunwEMM11bqFf47KGCrHC/9x+mK5szGKyMsTUWRft01LFmOSDPKUV6cLan3ojPV/OOO56EGRk5ntahgGmd58B//N93+8pigm4MeNw1G0hU3KSxpXDvMNSfdcmuc8ySLOYcRFqG8TIYquA7OxXp9DVkmrvN2VSDrZBgVF9HXS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498916; c=relaxed/simple;
-	bh=awOEpI+q1G3yIokUWW0M5YlA5Xi3fJA6Fql86X0oT4U=;
+	s=arc-20240116; t=1768497716; c=relaxed/simple;
+	bh=uQi6Luv4GitAOA5gKIZgj3wuNd44bYBtzK+6QGwkAO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGf3d+0k80nCzEbsEL3rw3tharRWXU9yvyOcg3r7N4Zc4kVTbzw801JjTFiSocGIvAhdjVznmISSrsFoffCsJmaNSCHhrCav89yIrDQaaecNFQgDjuPLOWsnASziArj84ic1rCPYVa8+MjcFLhSiccw92D3xrWecrHU7CUw47oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvuPsT6m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890FAC116D0;
-	Thu, 15 Jan 2026 17:41:55 +0000 (UTC)
+	 MIME-Version; b=C5bHqfunRNL0KyeZ3Ar5Hf1Wrq9qr26d6uA2gY9R95Kgy75S2Izs9o+ZMeJ2YQWr/NdG95gxR2BtCkb2St1ik+vGRw1gCvqVmJX7xeqXPAeV0OXo10oqO7G08NHVSJBY+3bVZnICbbEQW42CLO9qRIqc33M4fIklZz3/1vydLyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/wGJFNc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B89C116D0;
+	Thu, 15 Jan 2026 17:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498916;
-	bh=awOEpI+q1G3yIokUWW0M5YlA5Xi3fJA6Fql86X0oT4U=;
+	s=korg; t=1768497716;
+	bh=uQi6Luv4GitAOA5gKIZgj3wuNd44bYBtzK+6QGwkAO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wvuPsT6m3vHKqBSGdHtIu35HT+FvyxnwWBc+S7JQJSqOdiQld++FWIVVJ+J5tVphZ
-	 QxKQFrZabKJ28JNca49v4fnt7T3DNVdzHpIN4xPJQMysyg8HWtwXQ+zCIJ7fmyh6qf
-	 Fx2R/XcUL+/KXZqEUvsJ9XzJW20dptYxo5Drvnzk=
+	b=1/wGJFNcZo6IITNjKSgS/5SvAEK/H+Vqcs2GScuZfg34oAi3L5q7CP/AEMZIa26IH
+	 66HB80RGclhHs9AX0dJcvqP6ymIm8lJsdehjDuN6KKmURqRy1OyZ17dleRk1MaTvlk
+	 I0uclspW3bWXfhOCU171SgyuFJwUpCD7b38zwo/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Will Deacon <will@kernel.org>,
-	Arvind Sankar <nivedita@alum.mit.edu>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	llvm@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Marco Elver <elver@google.com>,
+	Alkis Georgopoulos <alkisg@gmail.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 043/451] compiler-gcc.h: Define __SANITIZE_ADDRESS__ under hwaddress sanitizer
-Date: Thu, 15 Jan 2026 17:44:04 +0100
-Message-ID: <20260115164232.451882189@linuxfoundation.org>
+Subject: [PATCH 5.15 179/554] Revert "nfs: ignore SB_RDONLY when mounting nfs"
+Date: Thu, 15 Jan 2026 17:44:05 +0100
+Message-ID: <20260115164252.745028179@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 9a48e7564ac83fb0f1d5b0eac5fe8a7af62da398 ]
+[ Upstream commit d4a26d34f1946142f9d32e540490e4926ae9a46b ]
 
-When Clang is using the hwaddress sanitizer, it sets __SANITIZE_ADDRESS__
-explicitly:
+This reverts commit 52cb7f8f177878b4f22397b9c4d2c8f743766be3.
 
- #if __has_feature(address_sanitizer) || __has_feature(hwaddress_sanitizer)
- /* Emulate GCC's __SANITIZE_ADDRESS__ flag */
- #define __SANITIZE_ADDRESS__
- #endif
+Silently ignoring the "ro" and "rw" mount options causes user confusion,
+and regressions.
 
-Once hwaddress sanitizer was added to GCC, however, a separate define
-was created, __SANITIZE_HWADDRESS__. The kernel is expecting to find
-__SANITIZE_ADDRESS__ in either case, though, and the existing string
-macros break on supported architectures:
-
- #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
-          !defined(__SANITIZE_ADDRESS__)
-
-where as other architectures (like arm32) have no idea about hwaddress
-sanitizer and just check for __SANITIZE_ADDRESS__:
-
- #if defined(CONFIG_KASAN) && !defined(__SANITIZE_ADDRESS__)
-
-This would lead to compiler foritfy self-test warnings when building
-with CONFIG_KASAN_SW_TAGS=y:
-
-warning: unsafe memmove() usage lacked '__read_overflow2' symbol in lib/test_fortify/read_overflow2-memmove.c
-warning: unsafe memcpy() usage lacked '__write_overflow' symbol in lib/test_fortify/write_overflow-memcpy.c
-...
-
-Sort this out by also defining __SANITIZE_ADDRESS__ in GCC under the
-hwaddress sanitizer.
-
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Arvind Sankar <nivedita@alum.mit.edu>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: llvm@lists.linux.dev
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Marco Elver <elver@google.com>
-Link: https://lore.kernel.org/r/20211020200039.170424-1-keescook@chromium.org
-Stable-dep-of: ced37e9ceae5 ("x86/dumpstack: Prevent KASAN false positive warnings in __show_regs()")
+Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
+Cc: Li Lingfeng <lilingfeng3@huawei.com>
+Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/compiler-gcc.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/nfs/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/compiler-gcc.h b/include/linux/compiler-gcc.h
-index ae9a8e17287ce..faf0fd509cb5a 100644
---- a/include/linux/compiler-gcc.h
-+++ b/include/linux/compiler-gcc.h
-@@ -140,6 +140,14 @@
- #define __no_sanitize_coverage
- #endif
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 00066057b1415..fc0a34e488617 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -11,7 +11,7 @@
+ #include <linux/nfs_page.h>
+ #include <linux/wait_bit.h>
  
-+/*
-+ * Treat __SANITIZE_HWADDRESS__ the same as __SANITIZE_ADDRESS__ in the kernel,
-+ * matching the defines used by Clang.
-+ */
-+#ifdef __SANITIZE_HWADDRESS__
-+#define __SANITIZE_ADDRESS__
-+#endif
-+
- /*
-  * Turn individual warnings and errors on and off locally, depending
-  * on version.
+-#define NFS_SB_MASK (SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
++#define NFS_SB_MASK (SB_RDONLY|SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
+ 
+ extern const struct export_operations nfs_export_ops;
+ 
 -- 
 2.51.0
 
