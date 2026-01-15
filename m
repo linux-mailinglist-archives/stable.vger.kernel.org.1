@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C251D268B7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE46D26175
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 080B130B2756
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50F4030FFB19
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC15B3C00B7;
-	Thu, 15 Jan 2026 17:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74C2350A05;
+	Thu, 15 Jan 2026 17:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGgmzYbd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5xHfqip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBB33C00AC;
-	Thu, 15 Jan 2026 17:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A78529ACDD;
+	Thu, 15 Jan 2026 17:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498255; cv=none; b=IaPrqzjT4Z1M3/vIPKUKgDHJxHVBjA17yq7KePZxi1W0wSk+O+uX4geB9M9nRtFIqk8kCTGQtv6AnFfaoFARBPfleJEDlIwqh/v0fdqn+CLkmG2t44HbSociVhzvxexE46OnPWFJXrErW6KhYPkzfHGckT5A4ue8EIIkn52PheQ=
+	t=1768496454; cv=none; b=FCfLQiDuBIGVGwv4kYDLR5noRVz9tsyHMMCcEfQMWDizYGx0bBv0xv/Rrm02Oy2iFily2eemRUIZk8rm/svEXcSZNZsU2bFy9sEh6tyRy75vb+9Q9ByY9Q4Z5J+aVg9cuVWvzH/rgBxJvqNoJOxzagdeYwW3NSsd9ibIMM8MV4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498255; c=relaxed/simple;
-	bh=fXjIEwNFt495WvzauHeW1JJf3JFKiyZSG1tF5SHRllA=;
+	s=arc-20240116; t=1768496454; c=relaxed/simple;
+	bh=OJuO1XyNyxHEjTsk04N495K/L/Ih+viNw3vQ5NcP7mQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjaOMoeURMpCQcqJEhsBtER6ety+TdZI4B3dg2V7JD3qcfL1+69PdTxHmie6TGi698zlgg2dC3RqMzU058lMZ6TkVS9snOcjKgi9TKWhOFxfE8yi+dRurqfLuiihxRHhMUzrQCv2WrbWq4c7ifp01m9NdK5nq33J77HOFgovM3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGgmzYbd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B105AC116D0;
-	Thu, 15 Jan 2026 17:30:54 +0000 (UTC)
+	 MIME-Version; b=q1MqBnXVFp6ZGv2xncxBJDPxzEcraNvomeqDvLCVmHypxFn5SjJqUA7wDXgCn+caLRcctiIWa+qbV9X88PAoiVJcwysYf1ERaAV2jyp+c36P6wCIhAja+iGmM84zLYU33BZmrn/5diQNVSC2Q/azJqfHeWunOI0ip2Dm5LX6oyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5xHfqip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22944C116D0;
+	Thu, 15 Jan 2026 17:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498255;
-	bh=fXjIEwNFt495WvzauHeW1JJf3JFKiyZSG1tF5SHRllA=;
+	s=korg; t=1768496454;
+	bh=OJuO1XyNyxHEjTsk04N495K/L/Ih+viNw3vQ5NcP7mQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGgmzYbdzcoWN7clFcck13xNcXkpgbvRW3zCWbYj9ZdOpwkT/ELzppE75NugEnwx4
-	 L8n2fp1cSFZv3CnI0KYuCLmNdk6QLZty0/cLUDKLGl5Gs9gK9mTBZ4sJU7BUwlJF9R
-	 KG53tRrULiUxZLnJcXcGikJkM7WcPP1i9iJiWmtU=
+	b=q5xHfqipr/kZeFiHxIHIDiDJ6mmlVyEH9MgCkzV1TI3y+4MIhEMulqksO5628So07
+	 JDvCRCw1YFen3Ui7Ho5NWj2oAvPrJINGjWVa7nHln5ADWi2DXYSen0ZOemMP96n1Co
+	 pem+lAbBiDPNDM56MH1UpY4Az2vevlB/nLDHmatY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 367/554] RDMA/bnxt_re: fix dma_free_coherent() pointer
-Date: Thu, 15 Jan 2026 17:47:13 +0100
-Message-ID: <20260115164259.509076112@linuxfoundation.org>
+	Val Packett <val@packett.cool>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Linus Walleij <linusw@kernel.org>
+Subject: [PATCH 6.12 019/119] pinctrl: qcom: lpass-lpi: mark the GPIO controller as sleeping
+Date: Thu, 15 Jan 2026 17:47:14 +0100
+Message-ID: <20260115164152.655534501@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit fcd431a9627f272b4c0bec445eba365fe2232a94 ]
+commit ebc18e9854e5a2b62a041fb57b216a903af45b85 upstream.
 
-The dma_alloc_coherent() allocates a dma-mapped buffer, pbl->pg_arr[i].
-The dma_free_coherent() should pass the same buffer to
-dma_free_coherent() and not page-aligned.
+The gpio_chip settings in this driver say the controller can't sleep
+but it actually uses a mutex for synchronization. This triggers the
+following BUG():
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20251230085121.8023-2-fourier.thomas@gmail.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[    9.233659] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:281
+[    9.233665] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 554, name: (udev-worker)
+[    9.233669] preempt_count: 1, expected: 0
+[    9.233673] RCU nest depth: 0, expected: 0
+[    9.233688] Tainted: [W]=WARN
+[    9.233690] Hardware name: Dell Inc. Latitude 7455/0FK7MX, BIOS 2.10.1 05/20/2025
+[    9.233694] Call trace:
+[    9.233696]  show_stack+0x24/0x38 (C)
+[    9.233709]  dump_stack_lvl+0x40/0x88
+[    9.233716]  dump_stack+0x18/0x24
+[    9.233722]  __might_resched+0x148/0x160
+[    9.233731]  __might_sleep+0x38/0x98
+[    9.233736]  mutex_lock+0x30/0xd8
+[    9.233749]  lpi_config_set+0x2e8/0x3c8 [pinctrl_lpass_lpi]
+[    9.233757]  lpi_gpio_direction_output+0x58/0x90 [pinctrl_lpass_lpi]
+[    9.233761]  gpiod_direction_output_raw_commit+0x110/0x428
+[    9.233772]  gpiod_direction_output_nonotify+0x234/0x358
+[    9.233779]  gpiod_direction_output+0x38/0xd0
+[    9.233786]  gpio_shared_proxy_direction_output+0xb8/0x2a8 [gpio_shared_proxy]
+[    9.233792]  gpiod_direction_output_raw_commit+0x110/0x428
+[    9.233799]  gpiod_direction_output_nonotify+0x234/0x358
+[    9.233806]  gpiod_configure_flags+0x2c0/0x580
+[    9.233812]  gpiod_find_and_request+0x358/0x4f8
+[    9.233819]  gpiod_get_index+0x7c/0x98
+[    9.233826]  devm_gpiod_get+0x34/0xb0
+[    9.233829]  reset_gpio_probe+0x58/0x128 [reset_gpio]
+[    9.233836]  auxiliary_bus_probe+0xb0/0xf0
+[    9.233845]  really_probe+0x14c/0x450
+[    9.233853]  __driver_probe_device+0xb0/0x188
+[    9.233858]  driver_probe_device+0x4c/0x250
+[    9.233863]  __driver_attach+0xf8/0x2a0
+[    9.233868]  bus_for_each_dev+0xf8/0x158
+[    9.233872]  driver_attach+0x30/0x48
+[    9.233876]  bus_add_driver+0x158/0x2b8
+[    9.233880]  driver_register+0x74/0x118
+[    9.233886]  __auxiliary_driver_register+0x94/0xe8
+[    9.233893]  init_module+0x34/0xfd0 [reset_gpio]
+[    9.233898]  do_one_initcall+0xec/0x300
+[    9.233903]  do_init_module+0x64/0x260
+[    9.233910]  load_module+0x16c4/0x1900
+[    9.233915]  __arm64_sys_finit_module+0x24c/0x378
+[    9.233919]  invoke_syscall+0x4c/0xe8
+[    9.233925]  el0_svc_common+0x8c/0xf0
+[    9.233929]  do_el0_svc+0x28/0x40
+[    9.233934]  el0_svc+0x38/0x100
+[    9.233938]  el0t_64_sync_handler+0x84/0x130
+[    9.233943]  el0t_64_sync+0x17c/0x180
+
+Mark the controller as sleeping.
+
+Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
+Cc: stable@vger.kernel.org
+Reported-by: Val Packett <val@packett.cool>
+Closes: https://lore.kernel.org/all/98c0f185-b0e0-49ea-896c-f3972dd011ca@packett.cool/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index 76fbe52a957c..2bdb428fd273 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -70,9 +70,7 @@ static void __free_pbl(struct bnxt_qplib_res *res, struct bnxt_qplib_pbl *pbl,
- 		for (i = 0; i < pbl->pg_count; i++) {
- 			if (pbl->pg_arr[i])
- 				dma_free_coherent(&pdev->dev, pbl->pg_size,
--						  (void *)((unsigned long)
--						   pbl->pg_arr[i] &
--						  PAGE_MASK),
-+						  pbl->pg_arr[i],
- 						  pbl->pg_map_arr[i]);
- 			else
- 				dev_warn(&pdev->dev,
--- 
-2.51.0
-
+--- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+@@ -484,7 +484,7 @@ int lpi_pinctrl_probe(struct platform_de
+ 	pctrl->chip.base = -1;
+ 	pctrl->chip.ngpio = data->npins;
+ 	pctrl->chip.label = dev_name(dev);
+-	pctrl->chip.can_sleep = false;
++	pctrl->chip.can_sleep = true;
+ 
+ 	mutex_init(&pctrl->lock);
+ 
 
 
 
