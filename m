@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA31D26B93
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7C1D265F0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 74E7C314646B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 924BD301F4A8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB83027B340;
-	Thu, 15 Jan 2026 17:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C033C0091;
+	Thu, 15 Jan 2026 17:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRfpHKnY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmrrIVuD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6DC2C21F4;
-	Thu, 15 Jan 2026 17:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE412F619D;
+	Thu, 15 Jan 2026 17:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498690; cv=none; b=TzNUOiK8DHLkaatMZ0wxZzpQROYyG2Q7ZEmnQ8Or3VDYmJy4BHWZhtFgdOdSPgMXUxbhK6Iu7BjohPhpDrNNbiqwn8zxNLcqSbPQxk+Nom1BqjUhLW5l+egR7Djsdaeh/DhEgeMFRlOa9kS9/QV9Y6GNOxjKhdybMCMMr5tn2c8=
+	t=1768497192; cv=none; b=QqDLS4l8I3+Slec3BIuvol1IUoJHx/yLdXGgve9cRbeakEDErSlirhBHigs7UsdTsCFO8EaGnbK2YAGgNmDJh74RtYEmr1rz+n27KPuXFNE4KpQTbS4v4Ix0hLbjpuXSrkrnUQcExTp7oz2mZpZcZDOAVURqCCHk3iWhqzeFRj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498690; c=relaxed/simple;
-	bh=JlW/HzosNDTyr28SGTzV/WvYBKZFSE/8xbeHWMAsGDY=;
+	s=arc-20240116; t=1768497192; c=relaxed/simple;
+	bh=0T/WwvwFyz+0FrmyfKN35UDrX4I+jcWCb0xYJK/nXwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eoA51fC0iXdg5CNufxgmM9d/GNU9rfB1vPnGLPxbfC95LJ/kYAW9LV18lhNJHtgDzlWr3NIopVGIJn4PYP/w/qFImG6G8SDvb7VWVOf316Ff0RUVJYiVd+3gj0+mUsHw8fTolNMBRUOqYnTfvcgGSRimDhOerMR1kMucIDu9Vc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRfpHKnY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10178C116D0;
-	Thu, 15 Jan 2026 17:38:09 +0000 (UTC)
+	 MIME-Version; b=Nq4JkZ9f7l3/kFqYF4GXPwC9rhJq2V49Y7WxLKXr6g2bQshmmUuKk7fxkPVUYCYJl7EQMeyVz20JbpS8aYfnSJcFfDnTdJ7W3Fj6q++FC4KMpMjIfLe7ZH+g0+wk36axzQ87m2yLCvf5P7/rk3NJ+ackz5ytweE1S8Siee9jGdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmrrIVuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4302C116D0;
+	Thu, 15 Jan 2026 17:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498690;
-	bh=JlW/HzosNDTyr28SGTzV/WvYBKZFSE/8xbeHWMAsGDY=;
+	s=korg; t=1768497192;
+	bh=0T/WwvwFyz+0FrmyfKN35UDrX4I+jcWCb0xYJK/nXwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRfpHKnYvwxGSkjsGYQqPX9JqcLuXeMrNgCJOjwjNIOCDVSu+HuF3smJXHRY3K+nB
-	 HEoswJHsqqKupjeQGcYu+8wgOjkJUsiPkPMQmqlTfWBwiWZYB2RN8tDgvzf9HmKg+5
-	 uRocWWPwdoHBZX2AD5fRcHdvFa9qcGSw2U/TVPzk=
+	b=mmrrIVuDLCM6lzm1DbyK5f99qua5S7LKWFyuUHC/m4bp/L2PSMqXu/z8mfs52nPMq
+	 NW/EqmX1oYD+ot7ShnM1VgsLSqJIVgAtQ4P/TZO6g+6wTe67kWdXzDgWF+Ia5Vf3wa
+	 efnzZFBRp+qyX5hLPuSa4U1r5KC5dBXQ4hcNEubA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=F6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 5.15 493/554] pwm: stm32: Always program polarity
+	Andrew Elantsev <elantsew.andrew@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 69/72] ASoC: amd: yc: Add quirk for Honor MagicBook X16 2025
 Date: Thu, 15 Jan 2026 17:49:19 +0100
-Message-ID: <20260115164304.162076252@linuxfoundation.org>
+Message-ID: <20260115164146.005464311@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,43 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Andrew Elantsev <elantsew.andrew@gmail.com>
 
-Commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling") triggered a
-regression where PWM polarity changes could be ignored.
+[ Upstream commit e2cb8ef0372665854fca6fa7b30b20dd35acffeb ]
 
-stm32_pwm_set_polarity() was skipped due to a mismatch between the
-cached pwm->state.polarity and the actual hardware state, leaving the
-hardware polarity unchanged.
+Add a DMI quirk for the Honor MagicBook X16 2025 laptop
+fixing the issue where the internal microphone was
+not detected.
 
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Cc: stable@vger.kernel.org # <= 6.12
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Co-developed-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Andrew Elantsev <elantsew.andrew@gmail.com>
+Link: https://patch.msgid.link/20251210203800.142822-1-elantsew.andrew@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -458,8 +458,7 @@ static int stm32_pwm_apply(struct pwm_ch
- 		return 0;
- 	}
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index fce918a089e37..cbb2a1d1a823c 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -521,6 +521,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7UCX"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HONOR"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "GOH-X"),
++		}
++	},
+ 	{}
+ };
  
--	if (state->polarity != pwm->state.polarity)
--		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-+	stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
- 
- 	ret = stm32_pwm_config(priv, pwm->hwpwm,
- 			       state->duty_cycle, state->period);
+-- 
+2.51.0
+
 
 
 
