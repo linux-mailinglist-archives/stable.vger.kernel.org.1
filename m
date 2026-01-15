@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-209397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A24D26B3D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584E3D264AC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:20:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECC96311B2CF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0C3A93037BF2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A923C196C;
-	Thu, 15 Jan 2026 17:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEA83BF30A;
+	Thu, 15 Jan 2026 17:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmIZIqEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTpA/Nk8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A3E3C1967;
-	Thu, 15 Jan 2026 17:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215583A7F43;
+	Thu, 15 Jan 2026 17:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498580; cv=none; b=GNyuwi6M7jeK77zkqNMMXIK8SxsZpEslptZBTMzY0d5Plfyc7Zu+Pa08cDHt0mW/0Y1tyTSgjMFq8EUcfY4dQRiQdiiinUqKlBekNUkDLvRyoLEHj9R3DKDwm2DwddQx/hZYm1FQcwkeG5Mcd8H+ryP8fyskznO9bNllbHOIIEw=
+	t=1768497215; cv=none; b=beO/lMMxkv8FbhYajt89sBLzra31YrudyGdxilL2/yjmNjRj6VCJmPEJvfHFaTGCKCyNx7nHXOqa+T8Bnatqiv7RKO8zjIErAHbFM5sV7DQn0ytFEHc3gw6yYuq4YxPFrS552/xjz16zT9now9h1Sd6FDwQF3BrFnL7zgw4NRV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498580; c=relaxed/simple;
-	bh=aXt5T0utGYiJ2+OyNvS8VRTynbEVwPQYB+JY9cd8TDY=;
+	s=arc-20240116; t=1768497215; c=relaxed/simple;
+	bh=zhdAjaqfAJDNUWeJjrAxIN6XN0Wi78N9oPYFqt4zc4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YqoTrZpHdhBYHevcEtOJAEU+XzFOHZBDBQAEs9sak0Y+RcN3bPYKDeNMFQggV62OYPv4q2JqBZSAuCQaQuJVhLpH0L1zE5wzyH6GGz5UIbyJ5uK9itZdjPfSotosFc6WOO+JDP+CioHLCPSKLh9lzdhMhVC+PWR9B3zgw6W+ASg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmIZIqEe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F179AC116D0;
-	Thu, 15 Jan 2026 17:36:19 +0000 (UTC)
+	 MIME-Version; b=p7Clqt/YOQUp6lGZkCZ2ENMEs09dZmAI6XsYXENQ9TquITYOAld1+Pv9l7Uru4L6C2PQePat6kr3ZY8wzWctqwKjRhWdPF25iQRjzegz1ONTYYyO/WtxOr744yhVUz5pxt4YoA2yLdwWY0pZYORS18Qgtyu8FvhOcHJsXW0a4Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTpA/Nk8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987A6C116D0;
+	Thu, 15 Jan 2026 17:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498580;
-	bh=aXt5T0utGYiJ2+OyNvS8VRTynbEVwPQYB+JY9cd8TDY=;
+	s=korg; t=1768497215;
+	bh=zhdAjaqfAJDNUWeJjrAxIN6XN0Wi78N9oPYFqt4zc4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qmIZIqEeWjKmXa7u2gAUH2gPrP5eLfHK1VlxT/OnBUxYgWME/KGnvV8brljTJMZWB
-	 1aglMuzMSkYkYbqzy6Xn3leDT6BFITLKuINK9Ym/X7R2yg6JPNuTJn2zpH7LtQ3evA
-	 FSlKhKFrPgoEFXln3eH52Vv2tRKD9yCsnX3urdQw=
+	b=tTpA/Nk8jNzZXelRgaOQB9JFBa4KWwzJBabxcsH5apQxu3o+dXXx88EupSmlCBNOy
+	 2u5o4G5g7sRZPyUQobhzM2GeZdoKJ0WDNVeIu5Sk9l5SLaNJsJpE3/UjI8u+ruiZ0A
+	 e6mfO1ZDhP7cUS4Vfl5CoHAzKcIQpDGW03axuNeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	yan kang <kangyan91@outlook.com>,
-	yue sun <samsun1006219@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 481/554] net: Remove RTNL dance for SIOCBRADDIF and SIOCBRDELIF.
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 57/72] nfsd: provide locking for v4_end_grace
 Date: Thu, 15 Jan 2026 17:49:07 +0100
-Message-ID: <20260115164303.719529035@linuxfoundation.org>
+Message-ID: <20260115164145.566276294@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,294 +62,188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: NeilBrown <neil@brown.name>
 
-commit ed3ba9b6e280e14cc3148c1b226ba453f02fa76c upstream.
+[ Upstream commit 2857bd59feb63fcf40fe4baf55401baea6b4feb4 ]
 
-SIOCBRDELIF is passed to dev_ioctl() first and later forwarded to
-br_ioctl_call(), which causes unnecessary RTNL dance and the splat
-below [0] under RTNL pressure.
+Writing to v4_end_grace can race with server shutdown and result in
+memory being accessed after it was freed - reclaim_str_hashtbl in
+particularly.
 
-Let's say Thread A is trying to detach a device from a bridge and
-Thread B is trying to remove the bridge.
+We cannot hold nfsd_mutex across the nfsd4_end_grace() call as that is
+held while client_tracking_op->init() is called and that can wait for
+an upcall to nfsdcltrack which can write to v4_end_grace, resulting in a
+deadlock.
 
-In dev_ioctl(), Thread A bumps the bridge device's refcnt by
-netdev_hold() and releases RTNL because the following br_ioctl_call()
-also re-acquires RTNL.
+nfsd4_end_grace() is also called by the landromat work queue and this
+doesn't require locking as server shutdown will stop the work and wait
+for it before freeing anything that nfsd4_end_grace() might access.
 
-In the race window, Thread B could acquire RTNL and try to remove
-the bridge device.  Then, rtnl_unlock() by Thread B will release RTNL
-and wait for netdev_put() by Thread A.
+However, we must be sure that writing to v4_end_grace doesn't restart
+the work item after shutdown has already waited for it.  For this we
+add a new flag protected with nn->client_lock.  It is set only while it
+is safe to make client tracking calls, and v4_end_grace only schedules
+work while the flag is set with the spinlock held.
 
-Thread A, however, must hold RTNL after the unlock in dev_ifsioc(),
-which may take long under RTNL pressure, resulting in the splat by
-Thread B.
+So this patch adds a nfsd_net field "client_tracking_active" which is
+set as described.  Another field "grace_end_forced", is set when
+v4_end_grace is written.  After this is set, and providing
+client_tracking_active is set, the laundromat is scheduled.
+This "grace_end_forced" field bypasses other checks for whether the
+grace period has finished.
 
-  Thread A (SIOCBRDELIF)           Thread B (SIOCBRDELBR)
-  ----------------------           ----------------------
-  sock_ioctl                       sock_ioctl
-  `- sock_do_ioctl                 `- br_ioctl_call
-     `- dev_ioctl                     `- br_ioctl_stub
-        |- rtnl_lock                     |
-        |- dev_ifsioc                    '
-        '  |- dev = __dev_get_by_name(...)
-           |- netdev_hold(dev, ...)      .
-       /   |- rtnl_unlock  ------.       |
-       |   |- br_ioctl_call       `--->  |- rtnl_lock
-  Race |   |  `- br_ioctl_stub           |- br_del_bridge
-  Window   |     |                       |  |- dev = __dev_get_by_name(...)
-       |   |     |  May take long        |  `- br_dev_delete(dev, ...)
-       |   |     |  under RTNL pressure  |     `- unregister_netdevice_queue(dev, ...)
-       |   |     |               |       `- rtnl_unlock
-       \   |     |- rtnl_lock  <-'          `- netdev_run_todo
-           |     |- ...                        `- netdev_run_todo
-           |     `- rtnl_unlock                   |- __rtnl_unlock
-           |                                      |- netdev_wait_allrefs_any
-           |- netdev_put(dev, ...)  <----------------'
-                                                Wait refcnt decrement
-                                                and log splat below
+This resolves a race which can result in use-after-free.
 
-To avoid blocking SIOCBRDELBR unnecessarily, let's not call
-dev_ioctl() for SIOCBRADDIF and SIOCBRDELIF.
-
-In the dev_ioctl() path, we do the following:
-
-  1. Copy struct ifreq by get_user_ifreq in sock_do_ioctl()
-  2. Check CAP_NET_ADMIN in dev_ioctl()
-  3. Call dev_load() in dev_ioctl()
-  4. Fetch the master dev from ifr.ifr_name in dev_ifsioc()
-
-3. can be done by request_module() in br_ioctl_call(), so we move
-1., 2., and 4. to br_ioctl_stub().
-
-Note that 2. is also checked later in add_del_if(), but it's better
-performed before RTNL.
-
-SIOCBRADDIF and SIOCBRDELIF have been processed in dev_ioctl() since
-the pre-git era, and there seems to be no specific reason to process
-them there.
-
-[0]:
-unregister_netdevice: waiting for wpan3 to become free. Usage count = 2
-ref_tracker: wpan3@ffff8880662d8608 has 1/1 users at
-     __netdev_tracker_alloc include/linux/netdevice.h:4282 [inline]
-     netdev_hold include/linux/netdevice.h:4311 [inline]
-     dev_ifsioc+0xc6a/0x1160 net/core/dev_ioctl.c:624
-     dev_ioctl+0x255/0x10c0 net/core/dev_ioctl.c:826
-     sock_do_ioctl+0x1ca/0x260 net/socket.c:1213
-     sock_ioctl+0x23a/0x6c0 net/socket.c:1318
-     vfs_ioctl fs/ioctl.c:51 [inline]
-     __do_sys_ioctl fs/ioctl.c:906 [inline]
-     __se_sys_ioctl fs/ioctl.c:892 [inline]
-     __x64_sys_ioctl+0x1a4/0x210 fs/ioctl.c:892
-     do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-     do_syscall_64+0xcb/0x250 arch/x86/entry/common.c:83
-     entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Fixes: 893b19587534 ("net: bridge: fix ioctl locking")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Reported-by: yan kang <kangyan91@outlook.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Closes: https://lore.kernel.org/netdev/SY8P300MB0421225D54EB92762AE8F0F2A1D32@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250316192851.19781-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[cascardo: fixed conflict at dev_ifsioc]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
+Closes: https://lore.kernel.org/linux-nfs/20250623030015.2353515-1-neil@brown.name/T/#t
+Fixes: 7f5ef2e900d9 ("nfsd: add a v4_end_grace file to /proc/fs/nfsd")
+Cc: stable@vger.kernel.org
+Signed-off-by: NeilBrown <neil@brown.name>
+Tested-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/if_bridge.h |    6 ++----
- net/bridge/br_ioctl.c     |   36 +++++++++++++++++++++++++++++++++---
- net/bridge/br_private.h   |    3 +--
- net/core/dev_ioctl.c      |   15 ---------------
- net/socket.c              |   19 +++++++++----------
- 5 files changed, 45 insertions(+), 34 deletions(-)
+ fs/nfsd/netns.h     |    2 ++
+ fs/nfsd/nfs4state.c |   42 ++++++++++++++++++++++++++++++++++++++++--
+ fs/nfsd/nfsctl.c    |    3 +--
+ fs/nfsd/state.h     |    2 +-
+ 4 files changed, 44 insertions(+), 5 deletions(-)
 
---- a/include/linux/if_bridge.h
-+++ b/include/linux/if_bridge.h
-@@ -62,11 +62,9 @@ struct br_ip_list {
- #define BR_DEFAULT_AGEING_TIME	(300 * HZ)
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -64,6 +64,8 @@ struct nfsd_net {
  
- struct net_bridge;
--void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
--			     unsigned int cmd, struct ifreq *ifr,
-+void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
- 			     void __user *uarg));
--int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg);
-+int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg);
+ 	struct lock_manager nfsd4_manager;
+ 	bool grace_ended;
++	bool grace_end_forced;
++	bool client_tracking_active;
+ 	time64_t boot_time;
  
- #if IS_ENABLED(CONFIG_BRIDGE) && IS_ENABLED(CONFIG_BRIDGE_IGMP_SNOOPING)
- int br_multicast_list_adjacent(struct net_device *dev,
---- a/net/bridge/br_ioctl.c
-+++ b/net/bridge/br_ioctl.c
-@@ -368,10 +368,26 @@ static int old_deviceless(struct net *ne
- 	return -EOPNOTSUPP;
+ 	struct dentry *nfsd_client_dir;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -84,7 +84,7 @@ static u64 current_sessionid = 1;
+ /* forward declarations */
+ static bool check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner);
+ static void nfs4_free_ol_stateid(struct nfs4_stid *stid);
+-void nfsd4_end_grace(struct nfsd_net *nn);
++static void nfsd4_end_grace(struct nfsd_net *nn);
+ static void _free_cpntf_state_locked(struct nfsd_net *nn, struct nfs4_cpntf_state *cps);
+ static void nfsd4_file_hash_remove(struct nfs4_file *fi);
+ 
+@@ -5882,7 +5882,7 @@ nfsd4_renew(struct svc_rqst *rqstp, stru
+ 	return nfs_ok;
  }
  
--int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg)
-+int br_ioctl_stub(struct net *net, unsigned int cmd, void __user *uarg)
+-void
++static void
+ nfsd4_end_grace(struct nfsd_net *nn)
  {
- 	int ret = -EOPNOTSUPP;
-+	struct ifreq ifr;
-+
-+	if (cmd == SIOCBRADDIF || cmd == SIOCBRDELIF) {
-+		void __user *data;
-+		char *colon;
-+
-+		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
-+			return -EPERM;
-+
-+		if (get_user_ifreq(&ifr, &data, uarg))
-+			return -EFAULT;
-+
-+		ifr.ifr_name[IFNAMSIZ - 1] = 0;
-+		colon = strchr(ifr.ifr_name, ':');
-+		if (colon)
-+			*colon = 0;
-+	}
- 
- 	rtnl_lock();
- 
-@@ -404,7 +420,21 @@ int br_ioctl_stub(struct net *net, struc
- 		break;
- 	case SIOCBRADDIF:
- 	case SIOCBRDELIF:
--		ret = add_del_if(br, ifr->ifr_ifindex, cmd == SIOCBRADDIF);
-+	{
-+		struct net_device *dev;
-+
-+		dev = __dev_get_by_name(net, ifr.ifr_name);
-+		if (!dev || !netif_device_present(dev)) {
-+			ret = -ENODEV;
-+			break;
-+		}
-+		if (!netif_is_bridge_master(dev)) {
-+			ret = -EOPNOTSUPP;
-+			break;
-+		}
-+
-+		ret = add_del_if(netdev_priv(dev), ifr.ifr_ifindex, cmd == SIOCBRADDIF);
-+	}
- 		break;
- 	}
- 
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -875,8 +875,7 @@ br_port_get_check_rtnl(const struct net_
- /* br_ioctl.c */
- int br_dev_siocdevprivate(struct net_device *dev, struct ifreq *rq,
- 			  void __user *data, int cmd);
--int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg);
-+int br_ioctl_stub(struct net *net, unsigned int cmd, void __user *uarg);
- 
- /* br_multicast.c */
- #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -375,19 +375,6 @@ static int dev_ifsioc(struct net *net, s
- 	case SIOCWANDEV:
- 		return dev_siocwandev(dev, &ifr->ifr_settings);
- 
--	case SIOCBRADDIF:
--	case SIOCBRDELIF:
--		if (!netif_device_present(dev))
--			return -ENODEV;
--		if (!netif_is_bridge_master(dev))
--			return -EOPNOTSUPP;
--		dev_hold(dev);
--		rtnl_unlock();
--		err = br_ioctl_call(net, netdev_priv(dev), cmd, ifr, NULL);
--		dev_put(dev);
--		rtnl_lock();
--		return err;
--
- 	case SIOCSHWTSTAMP:
- 		err = net_hwtstamp_validate(ifr);
- 		if (err)
-@@ -574,8 +561,6 @@ int dev_ioctl(struct net *net, unsigned
- 	case SIOCBONDRELEASE:
- 	case SIOCBONDSETHWADDR:
- 	case SIOCBONDCHANGEACTIVE:
--	case SIOCBRADDIF:
--	case SIOCBRDELIF:
- 	case SIOCSHWTSTAMP:
- 		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			return -EPERM;
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -1097,12 +1097,10 @@ static ssize_t sock_write_iter(struct ki
-  */
- 
- static DEFINE_MUTEX(br_ioctl_mutex);
--static int (*br_ioctl_hook)(struct net *net, struct net_bridge *br,
--			    unsigned int cmd, struct ifreq *ifr,
-+static int (*br_ioctl_hook)(struct net *net, unsigned int cmd,
- 			    void __user *uarg);
- 
--void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
--			     unsigned int cmd, struct ifreq *ifr,
-+void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
- 			     void __user *uarg))
- {
- 	mutex_lock(&br_ioctl_mutex);
-@@ -1111,8 +1109,7 @@ void brioctl_set(int (*hook)(struct net
+ 	/* do nothing if grace period already ended */
+@@ -5915,6 +5915,33 @@ nfsd4_end_grace(struct nfsd_net *nn)
+ 	 */
  }
- EXPORT_SYMBOL(brioctl_set);
  
--int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
--		  struct ifreq *ifr, void __user *uarg)
-+int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg)
- {
- 	int err = -ENOPKG;
++/**
++ * nfsd4_force_end_grace - forcibly end the NFSv4 grace period
++ * @nn: network namespace for the server instance to be updated
++ *
++ * Forces bypass of normal grace period completion, then schedules
++ * the laundromat to end the grace period immediately. Does not wait
++ * for the grace period to fully terminate before returning.
++ *
++ * Return values:
++ *   %true: Grace termination schedule
++ *   %false: No action was taken
++ */
++bool nfsd4_force_end_grace(struct nfsd_net *nn)
++{
++	if (!nn->client_tracking_ops)
++		return false;
++	spin_lock(&nn->client_lock);
++	if (nn->grace_ended || !nn->client_tracking_active) {
++		spin_unlock(&nn->client_lock);
++		return false;
++	}
++	WRITE_ONCE(nn->grace_end_forced, true);
++	mod_delayed_work(laundry_wq, &nn->laundromat_work, 0);
++	spin_unlock(&nn->client_lock);
++	return true;
++}
++
+ /*
+  * If we've waited a lease period but there are still clients trying to
+  * reclaim, wait a little longer to give them a chance to finish.
+@@ -5924,6 +5951,8 @@ static bool clients_still_reclaiming(str
+ 	time64_t double_grace_period_end = nn->boot_time +
+ 					   2 * nn->nfsd4_lease;
  
-@@ -1121,7 +1118,7 @@ int br_ioctl_call(struct net *net, struc
++	if (READ_ONCE(nn->grace_end_forced))
++		return false;
+ 	if (nn->track_reclaim_completes &&
+ 			atomic_read(&nn->nr_reclaim_complete) ==
+ 			nn->reclaim_str_hashtbl_size)
+@@ -8131,6 +8160,8 @@ static int nfs4_state_create_net(struct
+ 	nn->unconf_name_tree = RB_ROOT;
+ 	nn->boot_time = ktime_get_real_seconds();
+ 	nn->grace_ended = false;
++	nn->grace_end_forced = false;
++	nn->client_tracking_active = false;
+ 	nn->nfsd4_manager.block_opens = true;
+ 	INIT_LIST_HEAD(&nn->nfsd4_manager.list);
+ 	INIT_LIST_HEAD(&nn->client_lru);
+@@ -8207,6 +8238,10 @@ nfs4_state_start_net(struct net *net)
+ 		return ret;
+ 	locks_start_grace(net, &nn->nfsd4_manager);
+ 	nfsd4_client_tracking_init(net);
++	/* safe for laundromat to run now */
++	spin_lock(&nn->client_lock);
++	nn->client_tracking_active = true;
++	spin_unlock(&nn->client_lock);
+ 	if (nn->track_reclaim_completes && nn->reclaim_str_hashtbl_size == 0)
+ 		goto skip_grace;
+ 	printk(KERN_INFO "NFSD: starting %lld-second grace period (net %x)\n",
+@@ -8253,6 +8288,9 @@ nfs4_state_shutdown_net(struct net *net)
  
- 	mutex_lock(&br_ioctl_mutex);
- 	if (br_ioctl_hook)
--		err = br_ioctl_hook(net, br, cmd, ifr, uarg);
-+		err = br_ioctl_hook(net, cmd, uarg);
- 	mutex_unlock(&br_ioctl_mutex);
+ 	unregister_shrinker(&nn->nfsd_client_shrinker);
+ 	cancel_work_sync(&nn->nfsd_shrinker_work);
++	spin_lock(&nn->client_lock);
++	nn->client_tracking_active = false;
++	spin_unlock(&nn->client_lock);
+ 	cancel_delayed_work_sync(&nn->laundromat_work);
+ 	locks_end_grace(&nn->nfsd4_manager);
  
- 	return err;
-@@ -1218,7 +1215,9 @@ static long sock_ioctl(struct file *file
- 		case SIOCSIFBR:
- 		case SIOCBRADDBR:
- 		case SIOCBRDELBR:
--			err = br_ioctl_call(net, NULL, cmd, NULL, argp);
-+		case SIOCBRADDIF:
-+		case SIOCBRDELIF:
-+			err = br_ioctl_call(net, cmd, argp);
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1117,9 +1117,8 @@ static ssize_t write_v4_end_grace(struct
+ 		case 'Y':
+ 		case 'y':
+ 		case '1':
+-			if (!nn->nfsd_serv)
++			if (!nfsd4_force_end_grace(nn))
+ 				return -EBUSY;
+-			nfsd4_end_grace(nn);
  			break;
- 		case SIOCGIFVLAN:
- 		case SIOCSIFVLAN:
-@@ -3321,6 +3320,8 @@ static int compat_sock_ioctl_trans(struc
- 	case SIOCGPGRP:
- 	case SIOCBRADDBR:
- 	case SIOCBRDELBR:
-+	case SIOCBRADDIF:
-+	case SIOCBRDELIF:
- 	case SIOCGIFVLAN:
- 	case SIOCSIFVLAN:
- 	case SIOCGSKNS:
-@@ -3358,8 +3359,6 @@ static int compat_sock_ioctl_trans(struc
- 	case SIOCGIFPFLAGS:
- 	case SIOCGIFTXQLEN:
- 	case SIOCSIFTXQLEN:
--	case SIOCBRADDIF:
--	case SIOCBRDELIF:
- 	case SIOCGIFNAME:
- 	case SIOCSIFNAME:
- 	case SIOCGMIIPHY:
+ 		default:
+ 			return -EINVAL;
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -719,7 +719,7 @@ static inline void get_nfs4_file(struct
+ struct nfsd_file *find_any_file(struct nfs4_file *f);
+ 
+ /* grace period management */
+-void nfsd4_end_grace(struct nfsd_net *nn);
++bool nfsd4_force_end_grace(struct nfsd_net *nn);
+ 
+ /* nfs4recover operations */
+ extern int nfsd4_client_tracking_init(struct net *net);
 
 
 
