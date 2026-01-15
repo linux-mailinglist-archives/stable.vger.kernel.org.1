@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6886FD278E6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:30:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C276D27331
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:11:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED1003176A81
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52AE6323B68E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C000C3BFE2E;
-	Thu, 15 Jan 2026 17:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687C13BF307;
+	Thu, 15 Jan 2026 17:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WV4neIIS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACRLohq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C25A3BF30A;
-	Thu, 15 Jan 2026 17:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B93D3BF301;
+	Thu, 15 Jan 2026 17:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499158; cv=none; b=ccxO2ZOcrUyQRoOUVHLfvt8vxvuw/x0WxIBrhjE3cgx5VRuqKo4Oc70zaIWVL0rHTehwZPox2kh9wQbuM34lVJeS8F4A/1ZFGRIdDgUSKOiaqqpsf3YwwYAj6L4z+wyr0ie6B2TPFfEW9DVi+FPQpAlIqzU4YSjerVoCkLmMLOg=
+	t=1768497864; cv=none; b=spiRhJlx2wj7hatWuqX4qHKm4RAR8kAHHL1z5gOojRyU77U5Z3ck8IZaRfVrbxiNv9ghaogSfL9HpocXSi+5MDimnx/sirVkGmWaYlrzh7xMhCn2svApXk9MwwRood0LgObpiHnuMq59/PlIJKYlBmlu2lIdoGt/8saF1vBweIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499158; c=relaxed/simple;
-	bh=aULPh9lBLsVh8DRG8HyCilfBdAr0hSZPbAuZ5ifTIgk=;
+	s=arc-20240116; t=1768497864; c=relaxed/simple;
+	bh=JjS2eXUeQ+oVuD2Rqn2YZueiIrnfdleappuqT2qmxVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GT/Iwolq5VZbQPLzk1F1dfXL2jytZVTiVMLLPMD/Bdw9CDIDPzZLXaenubyqKtfQ78jC7qzElzbGs1BCBpqXdIRlAYoEcCljzdPH/HT7kpV4Bb/Q500OjNFEjgL1LfnQesK6RbyNeP09EwOxD5R4Hne1s6hfruZ4fYZcoxE2fQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WV4neIIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BB3C19422;
-	Thu, 15 Jan 2026 17:45:57 +0000 (UTC)
+	 MIME-Version; b=dSP4F4d4DP7lqcwNmpGgypw7J/y50Y4adMiB7hjpwXiQrOGJrayno727GKwTH5gV/JuYtdyJ3PPgcD7NCSp0NeZYyf0m/P8KZUBPVlD8C5mcV4NmRKqjFVVP1nc0UGHhsCJAcVM7v5DbWdjFHn8u7iR6wxVsjIFeNB4GmhMMm/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACRLohq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7C3C16AAE;
+	Thu, 15 Jan 2026 17:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499158;
-	bh=aULPh9lBLsVh8DRG8HyCilfBdAr0hSZPbAuZ5ifTIgk=;
+	s=korg; t=1768497864;
+	bh=JjS2eXUeQ+oVuD2Rqn2YZueiIrnfdleappuqT2qmxVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WV4neIISx/sNLEX0JL+3vbtOidT1+FHsQRjzT3hkLovxOhKZpEVMsWpXQNtDISK3D
-	 tOi3QHf++D7HbOx0SGyFDxzuZHZwlm1o+xgAvfxLdVQ8yCzQSH119XF0vNMC2hGK9u
-	 kWrYjc8AGJ2cFytlLyaqqUeJ/AmOcV+9EDhYIPfo=
+	b=ACRLohq+8BHyXbbxxgJp/xZlwfzftiFU0uxVyFs7WwTu7uZiLTO+nH0Ay93o8Ep6w
+	 nsbKQsIxDN7mDLSnUi48QAtXe6/ljaKsarnLgq1xB6vaxsvKTjMzApitGCZl5X7dpS
+	 3/VPbtJFAEgWPChId85kGUaR5+xYU4fz0Uahc4XY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 095/451] selftests/bpf: Improve reliability of test_perf_branches_no_hw()
+Subject: [PATCH 5.15 230/554] netfilter: nf_conncount: fix leaked ct in error paths
 Date: Thu, 15 Jan 2026 17:44:56 +0100
-Message-ID: <20260115164234.354128485@linuxfoundation.org>
+Message-ID: <20260115164254.570847542@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +60,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit ae24fc8a16b0481ea8c5acbc66453c49ec0431c4 ]
+[ Upstream commit 2e2a720766886190a6d35c116794693aabd332b6 ]
 
-Currently, test_perf_branches_no_hw() relies on the busy loop within
-test_perf_branches_common() being slow enough to allow at least one
-perf event sample tick to occur before starting to tear down the
-backing perf event BPF program. With a relatively small fixed
-iteration count of 1,000,000, this is not guaranteed on modern fast
-CPUs, resulting in the test run to subsequently fail with the
-following:
+There are some situations where ct might be leaked as error paths are
+skipping the refcounted check and return immediately. In order to solve
+it make sure that the check is always called.
 
-bpf_testmod.ko is already unloaded.
-Loading bpf_testmod.ko...
-Successfully loaded bpf_testmod.ko.
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_good_sample:PASS:output not valid 0 nsec
-check_good_sample:PASS:read_branches_size 0 nsec
-check_good_sample:PASS:read_branches_stack 0 nsec
-check_good_sample:PASS:read_branches_stack 0 nsec
-check_good_sample:PASS:read_branches_global 0 nsec
-check_good_sample:PASS:read_branches_global 0 nsec
-check_good_sample:PASS:read_branches_size 0 nsec
-test_perf_branches_no_hw:PASS:perf_event_open 0 nsec
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_bad_sample:FAIL:output not valid no valid sample from prog
-Summary: 0/1 PASSED, 0 SKIPPED, 1 FAILED
-Successfully unloaded bpf_testmod.ko.
-
-On a modern CPU (i.e. one with a 3.5 GHz clock rate), executing 1
-million increments of a volatile integer can take significantly less
-than 1 millisecond. If the spin loop and detachment of the perf event
-BPF program elapses before the first 1 ms sampling interval elapses,
-the perf event will never end up firing. Fix this by bumping the loop
-iteration counter a little within test_perf_branches_common(), along
-with ensuring adding another loop termination condition which is
-directly influenced by the backing perf event BPF program
-executing. Notably, a concious decision was made to not adjust the
-sample_freq value as that is just not a reliable way to go about
-fixing the problem. It effectively still leaves the race window open.
-
-Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251119143540.2911424-1-mattbobrowski@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: be102eb6a0e7 ("netfilter: nf_conncount: rework API to use sk_buff directly")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/perf_branches.c     | 16 ++++++++++++++--
- .../selftests/bpf/progs/test_perf_branches.c     |  3 +++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conncount.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-index e35c444902a71..464753f6e0f26 100644
---- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-@@ -15,6 +15,10 @@ static void check_good_sample(struct test_perf_branches *skel)
- 	int pbe_size = sizeof(struct perf_branch_entry);
- 	int duration = 0;
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 97b631a81484d..c00b8e522c5a7 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -172,14 +172,14 @@ static int __nf_conncount_add(struct net *net,
+ 	struct nf_conn *found_ct;
+ 	unsigned int collect = 0;
+ 	bool refcounted = false;
++	int err = 0;
  
-+	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
-+		  "checked sample validity before prog run"))
-+		return;
-+
- 	if (CHECK(!skel->bss->valid, "output not valid",
- 		 "no valid sample from prog"))
- 		return;
-@@ -45,6 +49,10 @@ static void check_bad_sample(struct test_perf_branches *skel)
- 	int written_stack = skel->bss->written_stack_out;
- 	int duration = 0;
+ 	if (!get_ct_or_tuple_from_skb(net, skb, l3num, &ct, &tuple, &zone, &refcounted))
+ 		return -ENOENT;
  
-+	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
-+		  "checked sample validity before prog run"))
-+		return;
-+
- 	if (CHECK(!skel->bss->valid, "output not valid",
- 		 "no valid sample from prog"))
- 		return;
-@@ -83,8 +91,12 @@ static void test_perf_branches_common(int perf_fd,
- 	err = pthread_setaffinity_np(pthread_self(), sizeof(cpu_set), &cpu_set);
- 	if (CHECK(err, "set_affinity", "cpu #0, err %d\n", err))
- 		goto out_destroy;
--	/* spin the loop for a while (random high number) */
--	for (i = 0; i < 1000000; ++i)
-+
-+	/* Spin the loop for a while by using a high iteration count, and by
-+	 * checking whether the specific run count marker has been explicitly
-+	 * incremented at least once by the backing perf_event BPF program.
-+	 */
-+	for (i = 0; i < 100000000 && !*(volatile int *)&skel->bss->run_cnt; ++i)
- 		++j;
+ 	if (ct && nf_ct_is_confirmed(ct)) {
+-		if (refcounted)
+-			nf_ct_put(ct);
+-		return -EEXIST;
++		err = -EEXIST;
++		goto out_put;
+ 	}
  
- 	test_perf_branches__detach(skel);
-diff --git a/tools/testing/selftests/bpf/progs/test_perf_branches.c b/tools/testing/selftests/bpf/progs/test_perf_branches.c
-index a1ccc831c882f..05ac9410cd68c 100644
---- a/tools/testing/selftests/bpf/progs/test_perf_branches.c
-+++ b/tools/testing/selftests/bpf/progs/test_perf_branches.c
-@@ -8,6 +8,7 @@
- #include <bpf/bpf_tracing.h>
+ 	if ((u32)jiffies == list->last_gc)
+@@ -231,12 +231,16 @@ static int __nf_conncount_add(struct net *net,
+ 	}
  
- int valid = 0;
-+int run_cnt = 0;
- int required_size_out = 0;
- int written_stack_out = 0;
- int written_global_out = 0;
-@@ -24,6 +25,8 @@ int perf_branches(void *ctx)
- 	__u64 entries[4 * 3] = {0};
- 	int required_size, written_stack, written_global;
+ add_new_node:
+-	if (WARN_ON_ONCE(list->count > INT_MAX))
+-		return -EOVERFLOW;
++	if (WARN_ON_ONCE(list->count > INT_MAX)) {
++		err = -EOVERFLOW;
++		goto out_put;
++	}
  
-+	++run_cnt;
-+
- 	/* write to stack */
- 	written_stack = bpf_read_branch_records(ctx, entries, sizeof(entries), 0);
- 	/* ignore spurious events */
+ 	conn = kmem_cache_alloc(conncount_conn_cachep, GFP_ATOMIC);
+-	if (conn == NULL)
+-		return -ENOMEM;
++	if (conn == NULL) {
++		err = -ENOMEM;
++		goto out_put;
++	}
+ 
+ 	conn->tuple = tuple;
+ 	conn->zone = *zone;
+@@ -249,7 +253,7 @@ static int __nf_conncount_add(struct net *net,
+ out_put:
+ 	if (refcounted)
+ 		nf_ct_put(ct);
+-	return 0;
++	return err;
+ }
+ 
+ int nf_conncount_add_skb(struct net *net,
+@@ -446,11 +450,10 @@ insert_tree(struct net *net,
+ 
+ 		rb_link_node_rcu(&rbconn->node, parent, rbnode);
+ 		rb_insert_color(&rbconn->node, root);
+-
+-		if (refcounted)
+-			nf_ct_put(ct);
+ 	}
+ out_unlock:
++	if (refcounted)
++		nf_ct_put(ct);
+ 	spin_unlock_bh(&nf_conncount_locks[hash]);
+ 	return count;
+ }
 -- 
 2.51.0
 
