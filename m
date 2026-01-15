@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-209332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4218AD270EC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:03:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C71D2628B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2091B303AF2A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5E02230256A4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90FC3D1CBB;
-	Thu, 15 Jan 2026 17:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE50B3BF312;
+	Thu, 15 Jan 2026 17:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytHEPSx4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTE4OJY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1633C1FE0;
-	Thu, 15 Jan 2026 17:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939E23BF2E8;
+	Thu, 15 Jan 2026 17:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498394; cv=none; b=JzPWQfu/MgE3bO6WLJQhL6eDzFLQVLmqjSq60MJp8CDT+Up8nauKbPQolEA7sK2CRS15caQBmC6ALkGB2CHrVdsET6msfWKqxou/Q/ur4hjBNQ7WAcsrjEGe97Z1yumYa9pv8kjFz91N+8VtvtetYQT8Tgn02GUe4J8lt0Pffwc=
+	t=1768496793; cv=none; b=LYI8HkBBnrUjBh94dJ2JMiiiiGf+0oAm/o+HbKvDHk23YqzgUN2XllnzqtizSwEd/MiZ3TyRehz2J3ppFwBzN/Pw8Sb/GmvTush45D/CAN5Seog9u4ZKcmi2XBOKiWkz8CGmEkKbcASXnCmGAbVYKMb6ZtgK96PvRZw+Xa75hNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498394; c=relaxed/simple;
-	bh=gJ59L8hCo+Adkyq+ZTMthQO2VWExKukWvpsWUcxo22s=;
+	s=arc-20240116; t=1768496793; c=relaxed/simple;
+	bh=Po2zZdTll1sSYjvi1umm2DAEQfMP0beYAd1+hw/Pe6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmDLBlOQoKl0mQUmkY9fBWSIUuMf0obvkdRQFOSEXNgMx53DX4KXAUjK5Qy7r+6KZY6vEH9EY52SO/1gsnyBc99W+ScXAWcnDvRQKYNb4Sc7+awTH8preKHeu5vw0GZgH+LFnwLGZxqXrfzdURtACb1++fiCaAw2Cz47J/7Pmpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytHEPSx4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA05FC116D0;
-	Thu, 15 Jan 2026 17:33:13 +0000 (UTC)
+	 MIME-Version; b=ZrupC3dmvX+kR9uUFLNO5NQbykIgo3Ge9EV+AcjEnhpIBoVELPfutt8gFMiOKSv9VFWj+zojIvdqVavoc3Lb6x21r94Eu3dD9Uj3nFRsOxvkXnqIWfT6/g6J6/mYUqlNmyd4XDMV/nFhldCYc8IXYZcqK/ZaO3M2/KUR56jv9UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTE4OJY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F229C19422;
+	Thu, 15 Jan 2026 17:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498394;
-	bh=gJ59L8hCo+Adkyq+ZTMthQO2VWExKukWvpsWUcxo22s=;
+	s=korg; t=1768496793;
+	bh=Po2zZdTll1sSYjvi1umm2DAEQfMP0beYAd1+hw/Pe6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ytHEPSx4zcCan7saONAM7wUdu0iQXnTXfdIS4wmkSyv6BPYi4y3wXO4tZvRwwgDHX
-	 eSizCKDZJAFjQA2asEUtNsb1OyMbmxVZ3cJ4SWPUwLCcsKWOms3VYt/j0W7YCvIwG3
-	 rcZ3cFihwQa5Vk00S3qRySsgVoYjeCJ1HpGvQ63o=
+	b=ZTE4OJY0t9c8EbO/Rmz3lNfRLKR4Nno4eqGKH/Sx9nuprjtDAJukbqMYafF2M1/Ri
+	 eg+eZS6C4+NRXEWmCN+Vac3sVNM18WmGjl8SlyowJeOePWXmEnx1Cl5Cht1t+Dfnyq
+	 fRGHqN/S5n7zhV35oGJrwktESRyLwkmZ8Vvhirqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 415/554] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_test_split_evenly_succ()
+	Ilya Dryomov <idryomov@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Subject: [PATCH 6.6 18/88] libceph: return the handler error from mon_handle_auth_done()
 Date: Thu, 15 Jan 2026 17:48:01 +0100
-Message-ID: <20260115164301.260543627@linuxfoundation.org>
+Message-ID: <20260115164146.976240827@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +59,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 0a63a0e7570b9b2631dfb8d836dc572709dce39e upstream.
+commit e84b48d31b5008932c0a0902982809fbaa1d3b70 upstream.
 
-damon_test_split_evenly_succ() is assuming all dynamic memory allocation
-in it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+Currently any error from ceph_auth_handle_reply_done() is propagated
+via finish_auth() but isn't returned from mon_handle_auth_done().  This
+results in higher layers learning that (despite the monitor considering
+us to be successfully authenticated) something went wrong in the
+authentication phase and reacting accordingly, but msgr2 still trying
+to proceed with establishing the session in the background.  In the
+case of secure mode this can trigger a WARN in setup_crypto() and later
+lead to a NULL pointer dereference inside of prepare_auth_signature().
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-20-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: cd1a677cad99 ("libceph, ceph: implement msgr2.1 protocol (crc and secure modes)")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/vaddr-test.h |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/ceph/mon_client.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -290,10 +290,17 @@ static void damon_test_split_evenly_succ
- 	unsigned long start, unsigned long end, unsigned int nr_pieces)
- {
- 	struct damon_target *t = damon_new_target(42);
--	struct damon_region *r = damon_new_region(start, end);
-+	struct damon_region *r;
- 	unsigned long expected_width = (end - start) / nr_pieces;
- 	unsigned long i = 0;
+--- a/net/ceph/mon_client.c
++++ b/net/ceph/mon_client.c
+@@ -1417,7 +1417,7 @@ static int mon_handle_auth_done(struct c
+ 	if (!ret)
+ 		finish_hunting(monc);
+ 	mutex_unlock(&monc->mutex);
+-	return 0;
++	return ret;
+ }
  
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
-+	r = damon_new_region(start, end);
-+	if (!r) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
- 	damon_add_region(r, t);
- 	KUNIT_EXPECT_EQ(test,
- 			damon_va_evenly_split_region(t, r, nr_pieces), 0);
+ static int mon_handle_auth_bad_method(struct ceph_connection *con,
 
 
 
