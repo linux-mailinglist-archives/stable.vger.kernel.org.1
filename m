@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9D0D26F87
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:58:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A87D27B61
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:43:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 07BB23029142
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:29:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E169C3029AC7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049B83C1FD0;
-	Thu, 15 Jan 2026 17:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F98D3C0091;
+	Thu, 15 Jan 2026 17:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRpMejL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnaqbKP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA73E2D94A7;
-	Thu, 15 Jan 2026 17:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FFA3BFE5F;
+	Thu, 15 Jan 2026 17:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498038; cv=none; b=TEQzO8gO6UrnZLNcTZ/R6Kc4nw83AcPcM3KGDrsBafnUcQcE4ZiFyhTZiC4676wr/cPe99BZesUzeLrpex119C7u05qAKukUncsNGM/E8jG2YOkYoBMUPsboCGi+T/3YwDCFO2cuFpvQAg/G/dSPdlpr7AqXJlauqlesEhP2+cA=
+	t=1768499246; cv=none; b=lmGMvWoqpkJf7Ho5VxbCPDDqxbTSgmStOhyvcEh/AHaPj7FIe8vZ2zqZdWXTOAlO8REyeZrzbtoiiGJo6mFFxg9yyahIdjiaHTBgGrW/+A4lIdvGgFJDRi0+BC10UyIPkutHwkoYT22/vWXNZHMgFaI9KgXxGDcvq4u2IhDHzl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498038; c=relaxed/simple;
-	bh=HtjX9BKPJD8/ww0Xr6+EVXQIXn1//2UtofgV95+YbV0=;
+	s=arc-20240116; t=1768499246; c=relaxed/simple;
+	bh=IqFVyBuSvbQmtGbm6aZ7Kga6fRuGKnDw4q77sso3uVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mizNuK7AvCSmnMyC33faE70J5zk5stDu2sXZYgt5/icmnjaDlZX0f1ehQJtaByxmKVKXWh1Rtu0b82/atYVvdSbWvIZ3gFZg4NO6ba9CKGq9ANaHy5IcEgAKdHFdB0P6UX3C2/sXyuGyEF3gZEIt44nylUEkmjGgDZ18IwDM5TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRpMejL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 081E2C19422;
-	Thu, 15 Jan 2026 17:27:17 +0000 (UTC)
+	 MIME-Version; b=lABNqBAaqKzmq2i7op2NKyXaI5HrOEPDCz7+jslClrIOdIgRZ99TBp4PTW+LHacrqqj3GlpmT7eQy6STih6nZiqK1ZOQwAyLEhpLxFbUCbZglT7gY+9yiliiKpGlPyF/Zn7+ga9wq+1WAoRMnxqmssKqvga6soWwHgTjXHhgi8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnaqbKP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836BFC116D0;
+	Thu, 15 Jan 2026 17:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498038;
-	bh=HtjX9BKPJD8/ww0Xr6+EVXQIXn1//2UtofgV95+YbV0=;
+	s=korg; t=1768499245;
+	bh=IqFVyBuSvbQmtGbm6aZ7Kga6fRuGKnDw4q77sso3uVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BRpMejL+PfKVPuPzmDiRafaWvy4LFAaUDK7uRRUO/80jTsHo3hCPfhnH5e8wtfyRL
-	 HnBoIvDct2iZo6090a4FXCmmlOKiOjD1VSTFpYBGAB8ah3fUrohGC1b5N9/V/wIVCX
-	 MveDydKjBHjU2TDefXbtTD9LRMZqyMKXUS6saQn0=
+	b=ZnaqbKP8qjSGh0k5OesJhVXZ9zvjL7yrfU8O8loMvwCLSh7DbUmIt7Vb8cI3V7qDr
+	 YfA1L3I4PdS6eIP+6ct5HO/T8g3vh4JFvHF2PjLbOP131+zGweLKBkG3xNsJ+8h9e/
+	 0OhgoUetZreDOp75j/1EudThahOMgSMoGu+0SSMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 292/554] phy: broadcom: bcm63xx-usbh: fix section mismatches
-Date: Thu, 15 Jan 2026 17:45:58 +0100
-Message-ID: <20260115164256.795689878@linuxfoundation.org>
+	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
+	WangYuli <wangyl5933@chinaunicom.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 158/451] ACPICA: Avoid walking the Namespace if start_node is NULL
+Date: Thu, 15 Jan 2026 17:45:59 +0100
+Message-ID: <20260115164236.627662622@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
 
-commit 356d1924b9a6bc2164ce2bf1fad147b0c37ae085 upstream.
+[ Upstream commit 9d6c58dae8f6590c746ac5d0012ffe14a77539f0 ]
 
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function and match table must not live in init.
+Although commit 0c9992315e73 ("ACPICA: Avoid walking the ACPI Namespace
+if it is not there") fixed the situation when both start_node and
+acpi_gbl_root_node are NULL, the Linux kernel mainline now still crashed
+on Honor Magicbook 14 Pro [1].
 
-Fixes: 783f6d3dcf35 ("phy: bcm63xx-usbh: Add BCM63xx USBH driver")
-Cc: stable@vger.kernel.org	# 5.9
-Cc: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20251017054537.6884-1-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+That happens due to the access to the member of parent_node in
+acpi_ns_get_next_node().  The NULL pointer dereference will always
+happen, no matter whether or not the start_node is equal to
+ACPI_ROOT_OBJECT, so move the check of start_node being NULL
+out of the if block.
+
+Unfortunately, all the attempts to contact Honor have failed, they
+refused to provide any technical support for Linux.
+
+The bad DSDT table's dump could be found on GitHub [2].
+
+DMI: HONOR FMB-P/FMB-P-PCB, BIOS 1.13 05/08/2025
+
+Link: https://github.com/acpica/acpica/commit/1c1b57b9eba4554cb132ee658dd942c0210ed20d
+Link: https://gist.github.com/Cryolitia/a860ffc97437dcd2cd988371d5b73ed7 [1]
+Link: https://github.com/denis-bb/honor-fmb-p-dsdt [2]
+Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+Reviewed-by: WangYuli <wangyl5933@chinaunicom.cn>
+[ rjw: Subject adjustment, changelog edits ]
+Link: https://patch.msgid.link/20251125-acpica-v1-1-99e63b1b25f8@linux.dev
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/broadcom/phy-bcm63xx-usbh.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/acpica/nswalk.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/phy/broadcom/phy-bcm63xx-usbh.c
-+++ b/drivers/phy/broadcom/phy-bcm63xx-usbh.c
-@@ -374,7 +374,7 @@ static struct phy *bcm63xx_usbh_phy_xlat
- 	return of_phy_simple_xlate(dev, args);
- }
+diff --git a/drivers/acpi/acpica/nswalk.c b/drivers/acpi/acpica/nswalk.c
+index 901fa5ca284d2..91c4dc9026bf1 100644
+--- a/drivers/acpi/acpica/nswalk.c
++++ b/drivers/acpi/acpica/nswalk.c
+@@ -169,9 +169,12 @@ acpi_ns_walk_namespace(acpi_object_type type,
  
--static int __init bcm63xx_usbh_phy_probe(struct platform_device *pdev)
-+static int bcm63xx_usbh_phy_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct bcm63xx_usbh_phy	*usbh;
-@@ -431,7 +431,7 @@ static int __init bcm63xx_usbh_phy_probe
- 	return 0;
- }
+ 	if (start_node == ACPI_ROOT_OBJECT) {
+ 		start_node = acpi_gbl_root_node;
+-		if (!start_node) {
+-			return_ACPI_STATUS(AE_NO_NAMESPACE);
+-		}
++	}
++
++	/* Avoid walking the namespace if the StartNode is NULL */
++
++	if (!start_node) {
++		return_ACPI_STATUS(AE_NO_NAMESPACE);
+ 	}
  
--static const struct of_device_id bcm63xx_usbh_phy_ids[] __initconst = {
-+static const struct of_device_id bcm63xx_usbh_phy_ids[] = {
- 	{ .compatible = "brcm,bcm6318-usbh-phy", .data = &usbh_bcm6318 },
- 	{ .compatible = "brcm,bcm6328-usbh-phy", .data = &usbh_bcm6328 },
- 	{ .compatible = "brcm,bcm6358-usbh-phy", .data = &usbh_bcm6358 },
-@@ -442,7 +442,7 @@ static const struct of_device_id bcm63xx
- };
- MODULE_DEVICE_TABLE(of, bcm63xx_usbh_phy_ids);
- 
--static struct platform_driver bcm63xx_usbh_phy_driver __refdata = {
-+static struct platform_driver bcm63xx_usbh_phy_driver = {
- 	.driver	= {
- 		.name = "bcm63xx-usbh-phy",
- 		.of_match_table = bcm63xx_usbh_phy_ids,
+ 	/* Null child means "get first node" */
+-- 
+2.51.0
+
 
 
 
