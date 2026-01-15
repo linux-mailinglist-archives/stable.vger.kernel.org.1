@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-208406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D00D21FED
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 02:20:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0B6D21FD5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 02:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3283B30F7C57
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 01:15:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 36D3E301F23E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 01:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268202C158D;
-	Thu, 15 Jan 2026 01:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A619C26D4C3;
+	Thu, 15 Jan 2026 01:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ARbW/+gH"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FPxphtO3"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D3A257824
-	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 01:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD7A264602
+	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 01:14:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768439646; cv=none; b=reQU0KGx/jEHHc6JuOipw3pQO6XcBMg0M6u4X1H8wNe2hmq82Wn8VNrGJHlWt9dzx7SUtOhWz3D+q66ny3M7gQOPLmJKQdNAsohKmN3ZybmQ/p1t/X98arx9mFhZFNvce7dylwxx6XDOpC/lFcegPT8qbx405qHRHHFiyc891F8=
+	t=1768439650; cv=none; b=Q+3n/0SbaygIF5ZVktNjtiNpIDCftZtEKt3ZcnkuMvftL0fKeCM1MYrOT3pe9/A8WAGrp3eKYfV5uVftH6hbtzA/tk15CyZKUMMJnVTkHytNc94Xj5SZZPlFACG8TbfLjjBrhzOoSk13zaC+32xsXjWAbjbSYgkj9/xuoRUg0yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768439646; c=relaxed/simple;
-	bh=/iYHmwrHBc4Z/9o/cwPY7owGtq7bxTWgmkTdkDT1YjY=;
+	s=arc-20240116; t=1768439650; c=relaxed/simple;
+	bh=lCwWYrC+i/WlW0FzLo8Y3vpJnW3WvFax7tAQm04Kw6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R0RbFTqKjz20RLS0uZkfKmQm7Z/ORHxkrv8zxigh/FGCABT1JRJu8OjfA7x9HvehsK5085wiWaXnqnjtYGFTvs/LAG0dS9JEPCIpUqXu7ocNtdP+tKMGecu5YQvx7i7orpSytnWwZJcTbhHC4dltemgsTJhr6+aN1u9nq2tc9jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ARbW/+gH; arc=none smtp.client-ip=91.218.175.181
+	 MIME-Version:Content-Type; b=Fd8vuyX9py1OWwwHym06EXI7SZcmLD4wBTkX/ceeKHLQFS507vMqoB0cSwiXU47fnAlALkLgKAM7LEd/Y61V6LN3Z4JAHHaJ4FEA01u0NL0J9/6fuLffeeBQwTZRIKzlgjYPMyArrJLzNWFM6KmODZNyB50TLb8w42uA2ByenWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FPxphtO3; arc=none smtp.client-ip=91.218.175.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768439640;
+	t=1768439641;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3ZxEkfJ4v9hif4brlpeOid1QR0PaBxuKeB/A2Sc7/9E=;
-	b=ARbW/+gHbrqorKGryMkW2O2qsapZy/78qr+4wDB8fXh3TdRSrjzhZm0f0GmvvRHAIpeST7
-	c0AMv3Bl2O9g4k6Ti5dzBnBCH7zWK9HPDoi7ZM1gOWPEKGNLuzqwoAW8T6KDa61OPgnW5F
-	Sl02kS4gmDfp2A5zqcc/vGLeXaxlVC4=
+	bh=STHpibAtHQzZNIIE51mSVp+HkDDjwfWOOM+rEzu4sw8=;
+	b=FPxphtO3yej0lCJwlU+g+l42a2h+GLF27VJXEpUFDUH8qTSDZ8hUCTyiq5PfWBZ0ArOKiu
+	hcL+maaH3xQjTJR7aBfXH69E5UxIRwM6sZqfPa1ByqZHlaVhag5NBG5Iw/FFlJFAXErt8+
+	JnjlY+/4LQj9lxJiBiSoQFQkH8z6sFk=
 From: Yosry Ahmed <yosry.ahmed@linux.dev>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -47,9 +47,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	stable@vger.kernel.org
-Subject: [PATCH v4 18/26] KVM: nSVM: Add missing consistency check for EFER, CR0, CR4, and CS
-Date: Thu, 15 Jan 2026 01:13:04 +0000
-Message-ID: <20260115011312.3675857-19-yosry.ahmed@linux.dev>
+Subject: [PATCH v4 19/26] KVM: nSVM: Add missing consistency check for event_inj
+Date: Thu, 15 Jan 2026 01:13:05 +0000
+Message-ID: <20260115011312.3675857-20-yosry.ahmed@linux.dev>
 In-Reply-To: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 Precedence: bulk
@@ -62,62 +62,107 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-According to the APM Volume #2, 15.5, Canonicalization and Consistency
-Checks (24593—Rev. 3.42—March 2024), the following condition (among
-others) results in a #VMEXIT with VMEXIT_INVALID (aka SVM_EXIT_ERR):
+According to the APM Volume #2, 15.20 (24593—Rev. 3.42—March 2024):
 
-  EFER.LME, CR0.PG, CR4.PAE, CS.L, and CS.D are all non-zero.
+  VMRUN exits with VMEXIT_INVALID error code if either:
+  • Reserved values of TYPE have been specified, or
+  • TYPE = 3 (exception) has been specified with a vector that does not
+    correspond to an exception (this includes vector 2, which is an NMI,
+    not an exception).
 
-Add the missing consistency check. This is functionally a nop because
-the nested VMRUN results in SVM_EXIT_ERR in HW, which is forwarded to
-L1, but KVM makes all consistency checks before a VMRUN is actually
-attempted.
+Add the missing consistency checks to KVM. For the second point, inject
+VMEXIT_INVALID if the vector is anything but the vectors defined by the
+APM for exceptions. Reserved vectors are also considered invalid, which
+matches the HW behavior. Vector 9 (i.e. #CSO) is considered invalid
+because it is reserved on modern CPUs, and according to LLMs no CPUs
+exist supporting SVM and producing #CSOs.
+
+Defined exceptions could be different between virtual CPUs as new CPUs
+define new vectors. In a best effort to dynamically define the valid
+vectors, make all currently defined vectors as valid except those
+obviously tied to a CPU feature: SHSTK -> #CP and SEV-ES -> #VC. As new
+vectors are defined, they can similarly be tied to corresponding CPU
+features.
+
+Invalid vectors on specific (e.g. old) CPUs that are missed by KVM
+should be rejected by HW anyway.
 
 Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
-Cc: stable@vger.kernel.org
+CC: stable@vger.kernel.org
 Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 ---
- arch/x86/kvm/svm/nested.c | 7 +++++++
- arch/x86/kvm/svm/svm.h    | 1 +
- 2 files changed, 8 insertions(+)
+ arch/x86/kvm/svm/nested.c | 51 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 72db46b5126d..d8c79b3ea55e 100644
+index d8c79b3ea55e..79db1e1c8b2a 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -398,6 +398,11 @@ static bool nested_vmcb_check_save(struct kvm_vcpu *vcpu,
- 		    CC(!(save->cr0 & X86_CR0_PE)) ||
- 		    CC(!kvm_vcpu_is_legal_cr3(vcpu, save->cr3)))
- 			return false;
+@@ -342,6 +342,54 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
+ 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
+ }
+ 
++static bool nested_svm_event_inj_valid_exept(struct kvm_vcpu *vcpu, u8 vector)
++{
++	/*
++	 * Vectors that do not correspond to a defined exception are invalid
++	 * (including #NMI and reserved vectors). In a best effort to define
++	 * valid exceptions based on the virtual CPU, make all exceptions always
++	 * valid except those obviously tied to a CPU feature.
++	 */
++	switch (vector) {
++	case DE_VECTOR: case DB_VECTOR: case BP_VECTOR: case OF_VECTOR:
++	case BR_VECTOR: case UD_VECTOR: case NM_VECTOR: case DF_VECTOR:
++	case TS_VECTOR: case NP_VECTOR: case SS_VECTOR: case GP_VECTOR:
++	case PF_VECTOR: case MF_VECTOR: case AC_VECTOR: case MC_VECTOR:
++	case XM_VECTOR: case HV_VECTOR: case SX_VECTOR:
++		return true;
++	case CP_VECTOR:
++		return guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK);
++	case VC_VECTOR:
++		return guest_cpu_cap_has(vcpu, X86_FEATURE_SEV_ES);
++	}
++	return false;
++}
 +
-+		if (CC((save->cr4 & X86_CR4_PAE) &&
-+		       (save->cs.attrib & SVM_SELECTOR_L_MASK) &&
-+		       (save->cs.attrib & SVM_SELECTOR_DB_MASK)))
-+			return false;
++/*
++ * According to the APM, VMRUN exits with SVM_EXIT_ERR if SVM_EVTINJ_VALID is
++ * set and:
++ * - The type of event_inj is not one of the defined values.
++ * - The type is SVM_EVTINJ_TYPE_EXEPT, but the vector is not a valid exception.
++ */
++static bool nested_svm_check_event_inj(struct kvm_vcpu *vcpu, u32 event_inj)
++{
++	u32 type = event_inj & SVM_EVTINJ_TYPE_MASK;
++	u8 vector = event_inj & SVM_EVTINJ_VEC_MASK;
++
++	if (!(event_inj & SVM_EVTINJ_VALID))
++		return true;
++
++	if (type != SVM_EVTINJ_TYPE_INTR && type != SVM_EVTINJ_TYPE_NMI &&
++	    type != SVM_EVTINJ_TYPE_EXEPT && type != SVM_EVTINJ_TYPE_SOFT)
++		return false;
++
++	if (type == SVM_EVTINJ_TYPE_EXEPT &&
++	    !nested_svm_event_inj_valid_exept(vcpu, vector))
++		return false;
++
++	return true;
++}
++
+ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 				       struct vmcb_ctrl_area_cached *control,
+ 				       unsigned long l1_cr0)
+@@ -371,6 +419,9 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 		return false;
  	}
  
- 	/* Note, SVM doesn't have any additional restrictions on CR4. */
-@@ -494,6 +499,8 @@ static void __nested_copy_vmcb_save_to_cache(struct vmcb_save_area_cached *to,
- 	 * Copy only fields that are validated, as we need them
- 	 * to avoid TOC/TOU races.
- 	 */
-+	to->cs = from->cs;
++	if (CC(!nested_svm_check_event_inj(vcpu, control->event_inj)))
++		return false;
 +
- 	to->efer = from->efer;
- 	to->cr0 = from->cr0;
- 	to->cr3 = from->cr3;
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 3e3dcd671aad..dc0ce2141d5f 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -139,6 +139,7 @@ struct kvm_vmcb_info {
- };
+ 	return true;
+ }
  
- struct vmcb_save_area_cached {
-+	struct vmcb_seg cs;
- 	u64 efer;
- 	u64 cr4;
- 	u64 cr3;
 -- 
 2.52.0.457.g6b5491de43-goog
 
