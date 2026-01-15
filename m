@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A24D26FF6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:59:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547BFD27937
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D65B5312EB46
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:31:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4538A3342922
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D6F3C0085;
-	Thu, 15 Jan 2026 17:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46753BFE25;
+	Thu, 15 Jan 2026 17:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17BFZMgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKtjtxNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C7453BFE31;
-	Thu, 15 Jan 2026 17:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886CA2750ED;
+	Thu, 15 Jan 2026 17:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498081; cv=none; b=GRCynun+lVR5KtMC4Z138iOJTM9aLmlpKawa70Twf9D1KumhVDQvPWdPHG2qS3O4txc4YOenCzJChN/ZAod8gnznTOzYlbPXLHQfbkADXtoqKbqnDX+xTaz0TefaXQcMgW5hVZMPNZ3O3462NjmjeCUTJTRWTB13KgT4sR7TTl0=
+	t=1768499274; cv=none; b=rVC0TDi4d6Gi9pY0yRxFRjF88D5QBGoqB26FmjHTiZalYI9OPWDHAaPwD4yi5piCSxbi0jBhJt17triekuCHPkW0DG/K2iE2sYFvZq1dS/p+T+VI70mH/rQKhmsthdQuDr//ccTuguVoub2XUtiDAmjOqdw2gDWTzWYs6mvjAIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498081; c=relaxed/simple;
-	bh=QqSwRmLHAwpHNrkJCXlCDtqxfWvmie3rDfLwMtksdIE=;
+	s=arc-20240116; t=1768499274; c=relaxed/simple;
+	bh=THs/jDWDNYpFGtLWOLkbyYZhExH6g2n+/Zg8mHwks+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nLd2sRg+STTLuWH5lZ0xMoL6mTghxycmyfXA2+eNmi1bflXY9KLjwcy46g5uHYfxZagXTt2y2bOmYFCrKLi5DfxPpCFXEg5IFKmFCyEcFen9pZU25nCmfMEn4QfVrp1fQZdI/ypy4TxYy+Qiu9051EDN/VGbC4Op5FZcw3m0p30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17BFZMgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AADC19422;
-	Thu, 15 Jan 2026 17:28:00 +0000 (UTC)
+	 MIME-Version; b=JZZYzgt83tJ2Fgg8BbFaugIfKXsDIYqPzd1ykCP8bpmXg8OwwgDtRdeAaSBXeCx+s0NfXreKLqfZoMPxEN5aUGLtS0Y9wIWgLyQhDqia9Xz6ZDDhhGf2bLW+aHI++Y27LSUm80i9Wf3auAq+Ry/uwtt1S2wuVuf9NmE1g6h8Aoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKtjtxNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFB0C116D0;
+	Thu, 15 Jan 2026 17:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498081;
-	bh=QqSwRmLHAwpHNrkJCXlCDtqxfWvmie3rDfLwMtksdIE=;
+	s=korg; t=1768499274;
+	bh=THs/jDWDNYpFGtLWOLkbyYZhExH6g2n+/Zg8mHwks+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17BFZMgbZqs8fYmlV9EsNFVGBrjDQOqKYIbXtAIZvffbq2yZdXy5ONMoi7Q8cwHxz
-	 HAHqYGoJhwRKNN3WzMZ9XFk3BJBORic/+yLbLjmd3Rfga+8Wkw9jSG2avDLGZPtwlB
-	 4O3T6rg7EoR6hX3Z91GgodEwJbQlIATUP0jST498=
+	b=hKtjtxNC0p9fcK1j+/58KhbXnWzRUf+sMDdHMrYLcnEzMNcaW5bNPYzt06EP0RRbL
+	 aMq0mPGbp00jGE8VP77xJwyO20Be6G9ofiPKewql4y0Q1rGNkZIhvffEe52m/h/CWb
+	 yJj+N/ObDk8+ePfiBRiCJguJRNCbIzkWgFvKg/cQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+632cf32276a9a564188d@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 5.15 305/554] f2fs: invalidate dentry cache on failed whiteout creation
+	Dmitry Skorodumov <skorodumov.dmitry@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 170/451] ipvlan: Ignore PACKET_LOOPBACK in handle_mode_l2()
 Date: Thu, 15 Jan 2026 17:46:11 +0100
-Message-ID: <20260115164257.270766972@linuxfoundation.org>
+Message-ID: <20260115164237.056922551@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,96 +58,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
 
-commit d33f89b34aa313f50f9a512d58dd288999f246b0 upstream.
+[ Upstream commit 0c57ff008a11f24f7f05fa760222692a00465fec ]
 
-F2FS can mount filesystems with corrupted directory depth values that
-get runtime-clamped to MAX_DIR_HASH_DEPTH. When RENAME_WHITEOUT
-operations are performed on such directories, f2fs_rename performs
-directory modifications (updating target entry and deleting source
-entry) before attempting to add the whiteout entry via f2fs_add_link.
+Packets with pkt_type == PACKET_LOOPBACK are captured by
+handle_frame() function, but they don't have L2 header.
+We should not process them in handle_mode_l2().
 
-If f2fs_add_link fails due to the corrupted directory structure, the
-function returns an error to VFS, but the partial directory
-modifications have already been committed to disk. VFS assumes the
-entire rename operation failed and does not update the dentry cache,
-leaving stale mappings.
+This doesn't affect old L2 functionality, since handling
+was anyway incorrect.
 
-In the error path, VFS does not call d_move() to update the dentry
-cache. This results in new_dentry still pointing to the old inode
-(new_inode) which has already had its i_nlink decremented to zero.
-The stale cache causes subsequent operations to incorrectly reference
-the freed inode.
+Handle them the same way as in br_handle_frame():
+just pass the skb.
 
-This causes subsequent operations to use cached dentry information that
-no longer matches the on-disk state. When a second rename targets the
-same entry, VFS attempts to decrement i_nlink on the stale inode, which
-may already have i_nlink=0, triggering a WARNING in drop_nlink().
+To observe invalid behaviour, just start "ping -b" on bcast address
+of port-interface.
 
-Example sequence:
-1. First rename (RENAME_WHITEOUT): file2 → file1
-   - f2fs updates file1 entry on disk (points to inode 8)
-   - f2fs deletes file2 entry on disk
-   - f2fs_add_link(whiteout) fails (corrupted directory)
-   - Returns error to VFS
-   - VFS does not call d_move() due to error
-   - VFS cache still has: file1 → inode 7 (stale!)
-   - inode 7 has i_nlink=0 (already decremented)
-
-2. Second rename: file3 → file1
-   - VFS uses stale cache: file1 → inode 7
-   - Tries to drop_nlink on inode 7 (i_nlink already 0)
-   - WARNING in drop_nlink()
-
-Fix this by explicitly invalidating old_dentry and new_dentry when
-f2fs_add_link fails during whiteout creation. This forces VFS to
-refresh from disk on subsequent operations, ensuring cache consistency
-even when the rename partially succeeds.
-
-Reproducer:
-1. Mount F2FS image with corrupted i_current_depth
-2. renameat2(file2, file1, RENAME_WHITEOUT)
-3. renameat2(file3, file1, 0)
-4. System triggers WARNING in drop_nlink()
-
-Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
-Reported-by: syzbot+632cf32276a9a564188d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=632cf32276a9a564188d
-Suggested-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/all/20251022233349.102728-1-kartikey406@gmail.com/ [v1]
-Cc: stable@vger.kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
+Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+Link: https://patch.msgid.link/20251202103906.4087675-1-skorodumov.dmitry@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/namei.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ipvlan/ipvlan_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -1017,9 +1017,11 @@ static int f2fs_rename(struct inode *old
- 	if (whiteout) {
- 		set_inode_flag(whiteout, FI_INC_LINK);
- 		err = f2fs_add_link(old_dentry, whiteout);
--		if (err)
-+		if (err) {
-+			d_invalidate(old_dentry);
-+			d_invalidate(new_dentry);
- 			goto put_out_dir;
--
-+		}
- 		spin_lock(&whiteout->i_lock);
- 		whiteout->i_state &= ~I_LINKABLE;
- 		spin_unlock(&whiteout->i_lock);
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index d04b1450875b6..a113a06c98a55 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -726,6 +726,9 @@ static rx_handler_result_t ipvlan_handle_mode_l2(struct sk_buff **pskb,
+ 	struct ethhdr *eth = eth_hdr(skb);
+ 	rx_handler_result_t ret = RX_HANDLER_PASS;
+ 
++	if (unlikely(skb->pkt_type == PACKET_LOOPBACK))
++		return RX_HANDLER_PASS;
++
+ 	if (is_multicast_ether_addr(eth->h_dest)) {
+ 		if (ipvlan_external_frame(skb, port)) {
+ 			struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
+-- 
+2.51.0
+
 
 
 
