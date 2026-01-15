@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-208538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46944D25E85
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38AE3D25EB3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F79D300A34B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 796B6300751C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156CD3BF2F1;
-	Thu, 15 Jan 2026 16:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77637349B0A;
+	Thu, 15 Jan 2026 16:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5z+5s/H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6cN1SV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464303BF2F7;
-	Thu, 15 Jan 2026 16:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B12325228D;
+	Thu, 15 Jan 2026 16:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496135; cv=none; b=kkQcSX0/d8dfQpGed8dJcK1qo6nc0Fdk0Iqym8WhbgUAPzz1q22q3aTyA/aluVXgMz36V/bkkjWUan9iMUrBPfUbKOKbzAr2qZqc6vgf4jZS/JFBhN9EyA5vYiHqnOe0WRvAPAXZOADFPV599qhzIEPvvpDViU42ag+M4+JvDaI=
+	t=1768496165; cv=none; b=Ty3GLIJq8jYIC37PhUDyd3HgtP6mvprAbQd3PzHfhPYM+PZoTFy04lhg6BoyxHgMTM13HYBMLACtAZv5NL9bEbDU1GRr8taELT+Y7DKzt6lHLhRRrg6rVv3GrwTH7oeJD10JngXlXa0IcAFXFLEsUHZyctqet6Q9tm8V2m56M/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496135; c=relaxed/simple;
-	bh=zRODUFtwzKtPQ8WLS4If7B4OpXGpX2YJt/nt3N5ffYQ=;
+	s=arc-20240116; t=1768496165; c=relaxed/simple;
+	bh=sjq8KJ4oENh2JYLAmw04qFNVg0QdgAgDpCnIJSJrhkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+PAdeaHQyswixs8ZiXMY8PvCVsw2on54TQICQDUZQb4CZ4d81ROcd6pnIm98ltXP1rJnk+Ty3KxivbW0QVf7PjSpKtSdSMqc0FKL+2BmGX+u0CsoYqpNMpma/gBEB8+PMcgWsZNlvkWPLcC9FLHhYveal1CNYxUNjy70jwxsfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5z+5s/H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDBA5C116D0;
-	Thu, 15 Jan 2026 16:55:33 +0000 (UTC)
+	 MIME-Version; b=RAC7l+ovC6PJWxJ94F3pz/r2lL8fZT73zLq1KT36JkOYBkQrCGbIsUp3SSZ41Ah53Zth6toOnN1j582UpxvhMOw3LKytxZGbl5vDqw6G9d4Kr6/zICUAfxP7yQtc7TYhJisoHNUsyP3fCvfAJdjSBS9ASjXcLSYPgfOUi4+C3LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6cN1SV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0254C116D0;
+	Thu, 15 Jan 2026 16:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496134;
-	bh=zRODUFtwzKtPQ8WLS4If7B4OpXGpX2YJt/nt3N5ffYQ=;
+	s=korg; t=1768496165;
+	bh=sjq8KJ4oENh2JYLAmw04qFNVg0QdgAgDpCnIJSJrhkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5z+5s/H/kW1tx4dvpRZFDT3WKeZChmso6NwvsbbLV/QP+zHA6hvrfv3DLBVHUUFf
-	 Am3LWkClFruAERlSgstfz+NRR8bxfzpURssm7W2G9RCLE7+YE1/udZgU8U1HqvUglY
-	 riCotAMEztExL6sEvjU1sICboubclbtXScuJs+O8=
+	b=h6cN1SV20QNxITOvRpPyzt9cT1I26O69m5eMKJ1pXStugYTsIC+Apza73oah1dew7
+	 GqGrSq6Zpt/W8kzP8emHvRyw4liPu/NLaFZCY5Eox0OxfPNcgR0lH/d+4/8zpBpTtm
+	 5EsxHcVX3C29HP48Xt00g4awzDxzMt1vT0y3IkwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alyssa Ross <hi@alyssa.is>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
+	Daniel Gibson <daniel@gibson.sh>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 072/181] gpu: nova-core: select RUST_FW_LOADER_ABSTRACTIONS
-Date: Thu, 15 Jan 2026 17:46:49 +0100
-Message-ID: <20260115164204.923028209@linuxfoundation.org>
+Subject: [PATCH 6.18 073/181] gpio: it87: balance superio enter/exit calls in error path
+Date: Thu, 15 Jan 2026 17:46:50 +0100
+Message-ID: <20260115164204.959139064@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -65,43 +64,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexandre Courbot <acourbot@nvidia.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit 3d3352e73a55a4ccf110f8b3419bbe2fbfd8a030 ]
+[ Upstream commit a05543d6b05ba998fdbb4b383319ae5121bb7407 ]
 
-RUST_FW_LOADER_ABSTRACTIONS was depended on by NOVA_CORE, but NOVA_CORE
-is selected by DRM_NOVA. This creates a situation where, if DRM_NOVA is
-selected, NOVA_CORE gets enabled but not RUST_FW_LOADER_ABSTRACTIONS,
-which results in a build error.
+We always call superio_enter() in it87_gpio_direction_out() but only
+call superio_exit() if the call to it87_gpio_set() succeeds. Move the
+label to balance the calls in error path as well.
 
-Since the firmware loader is an implementation detail of the driver, it
-should be enabled along with it, so change the "depends on" to a
-"select".
-
-Fixes: 54e6baf123fd ("gpu: nova-core: add initial driver stub")
-Closes: https://lore.kernel.org/oe-kbuild-all/202512061721.rxKGnt5q-lkp@intel.com/
-Tested-by: Alyssa Ross <hi@alyssa.is>
-Acked-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patch.msgid.link/20251106-b4-select-rust-fw-v3-2-771172257755@nvidia.com
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
+Fixes: ef877a159072 ("gpio: it87: use new line value setter callbacks")
+Reported-by: Daniel Gibson <daniel@gibson.sh>
+Closes: https://lore.kernel.org/all/bd0a00e3-9b8c-43e8-8772-e67b91f4c71e@gibson.sh/
+Link: https://lore.kernel.org/r/20251210055026.23146-1-bartosz.golaszewski@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/nova-core/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-it87.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/nova-core/Kconfig b/drivers/gpu/nova-core/Kconfig
-index 20d3e6d0d796e..527920f9c4d39 100644
---- a/drivers/gpu/nova-core/Kconfig
-+++ b/drivers/gpu/nova-core/Kconfig
-@@ -3,7 +3,7 @@ config NOVA_CORE
- 	depends on 64BIT
- 	depends on PCI
- 	depends on RUST
--	depends on RUST_FW_LOADER_ABSTRACTIONS
-+	select RUST_FW_LOADER_ABSTRACTIONS
- 	select AUXILIARY_BUS
- 	default n
- 	help
+diff --git a/drivers/gpio/gpio-it87.c b/drivers/gpio/gpio-it87.c
+index 5d677bcfccf26..2ad3c239367bc 100644
+--- a/drivers/gpio/gpio-it87.c
++++ b/drivers/gpio/gpio-it87.c
+@@ -12,6 +12,7 @@
+ 
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/cleanup.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -241,23 +242,17 @@ static int it87_gpio_direction_out(struct gpio_chip *chip,
+ 	mask = 1 << (gpio_num % 8);
+ 	group = (gpio_num / 8);
+ 
+-	spin_lock(&it87_gpio->lock);
++	guard(spinlock)(&it87_gpio->lock);
+ 
+ 	rc = superio_enter();
+ 	if (rc)
+-		goto exit;
++		return rc;
+ 
+ 	/* set the output enable bit */
+ 	superio_set_mask(mask, group + it87_gpio->output_base);
+ 
+ 	rc = it87_gpio_set(chip, gpio_num, val);
+-	if (rc)
+-		goto exit;
+-
+ 	superio_exit();
+-
+-exit:
+-	spin_unlock(&it87_gpio->lock);
+ 	return rc;
+ }
+ 
 -- 
 2.51.0
 
