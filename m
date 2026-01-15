@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29420D2691C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:38:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FA2D26103
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CCCF030C146E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BAD0E3040D1C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441D23D1CA2;
-	Thu, 15 Jan 2026 17:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63667350A05;
+	Thu, 15 Jan 2026 17:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnTKlwl+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/6vEo3h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F0C86334;
-	Thu, 15 Jan 2026 17:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192282D73A0;
+	Thu, 15 Jan 2026 17:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498298; cv=none; b=W1Xu/vgMrzfWnn1F47w+CJIj0mlyHWYPgFsm0hggcgOO6g05iabtUugKPE6PkY7WAN6lBFFQkw4dd478E7B5VZ2XFuLM8K808P8AnAaIn8piJEbe7Hf7vSR2pupw9QBfWAAMHw78tJg2mAi0fRsgdEQmD6S5aA6PFKfMmzd4zA0=
+	t=1768496589; cv=none; b=s2LsPMS4A/7aTtVIQfxwj9qC1Rd7lSAodUCNX0FLLxkeBDtD8rR3HBOpa/buKeAXYozdnOxRbz2F3hp1YseHGdjWonaXSucRZ0AQ9d5+kSdkB3qrgbh3MMHBVwRogjnUDMxcsSWqiXIiFBiPYm3nag9wXRsQkaMoziTE9TbW80E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498298; c=relaxed/simple;
-	bh=r1uLr4GVlwuCuH2FIJmpP5XqlqEhnP4l10NeqD8fhs8=;
+	s=arc-20240116; t=1768496589; c=relaxed/simple;
+	bh=rBKttZ3+1MCMUY/2XohaR47LjW5TDjppH509OEEUKt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gspsFJWOCe4ZndthnepdnQvOHLJ3Y5h51h8ByJDfOmimIMj6ED3LC9SB/HdYUEs/icCMEqxx1UNdh4CNe5KAsWq+gOogT7hMrg0Hm2a9h/34OLxvu7g6XsVMor3xUa3vC7AoYHMGt/r7pe/NSQfHyS5CDUSD8Rn1LUIduSgmkzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnTKlwl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E4BC116D0;
-	Thu, 15 Jan 2026 17:31:37 +0000 (UTC)
+	 MIME-Version; b=ZoF3xlLBJYv+/7ic78bh1df9toZd4bb6aYVFqic8dM0z25tYYFCYIU5sQwHqH4By7eUpEHg1G9JdytQh7ySMxuWr8sPi81K5A54NxZmn3kBTVJuMC9RcvrI0scr9sx7xZkR42ZiOGhluczb4VTbGKrQ2Ga16/i4XRXL3KzMdg8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/6vEo3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8E9C16AAE;
+	Thu, 15 Jan 2026 17:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498297;
-	bh=r1uLr4GVlwuCuH2FIJmpP5XqlqEhnP4l10NeqD8fhs8=;
+	s=korg; t=1768496589;
+	bh=rBKttZ3+1MCMUY/2XohaR47LjW5TDjppH509OEEUKt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnTKlwl+6fTqACVkBfOI5uMMrr5Az7E/hSpCZqab41I9dof4fy0oR5oniBa6JTymj
-	 IqwCWwUcefdE2bA4dk949Si6NvIOpf+urS9QPs2xBKHSwEiM7otAW5ncYAMoCjUu4g
-	 x/FGFwpNfDCm2wK6C/ET1k1RutQJxL6Tqf8OmdK4=
+	b=p/6vEo3hibcD8KjvV+HvpkNELazsNBrTEW/WZxCJHL1pcU+oFmWbMMiBwNVqcjCMi
+	 Gr3gWxyboSCM/LAYkCU9M2GDVAWswJpg1ivggFM8WSZRd7TPmIpbejaxaqZPJE2jOs
+	 yPNe/xOltQBwThIS8SLGHBUfml6JaBqFinib7Slo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.15 381/554] HID: logitech-dj: Remove duplicate error logging
+	Linus Walleij <linus.walleij@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 032/119] ARM: 9461/1: Disable HIGHPTE on PREEMPT_RT kernels
 Date: Thu, 15 Jan 2026 17:47:27 +0100
-Message-ID: <20260115164300.028126340@linuxfoundation.org>
+Message-ID: <20260115164153.121790390@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,168 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit ca389a55d8b2d86a817433bf82e0602b68c4d541 upstream.
+[ Upstream commit fedadc4137234c3d00c4785eeed3e747fe9036ae ]
 
-logi_dj_recv_query_paired_devices() and logi_dj_recv_switch_to_dj_mode()
-both have 2 callers which all log an error if the function fails. Move
-the error logging to inside these 2 functions to remove the duplicated
-error logging in the callers.
+gup_pgd_range() is invoked with disabled interrupts and invokes
+__kmap_local_page_prot() via pte_offset_map(), gup_p4d_range().
+With HIGHPTE enabled, __kmap_local_page_prot() invokes kmap_high_get()
+which uses a spinlock_t via lock_kmap_any(). This leads to an
+sleeping-while-atomic error on PREEMPT_RT because spinlock_t becomes a
+sleeping lock and must not be acquired in atomic context.
 
-While at it also move the logi_dj_recv_send_report() call error handling
-in logi_dj_recv_switch_to_dj_mode() to directly after the call. That call
-only fails if the report cannot be found and in that case it does nothing,
-so the msleep() is not necessary on failures.
+The loop in map_new_virtual() uses wait_queue_head_t for wake up which
+also is using a spinlock_t.
 
-Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since HIGHPTE is rarely needed at all, turn it off for PREEMPT_RT
+to allow the use of get_user_pages_fast().
+
+[arnd: rework patch to turn off HIGHPTE instead of HAVE_PAST_GUP]
+
+Co-developed-by: Arnd Bergmann <arnd@arndb.de>
+
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-dj.c |   56 +++++++++++++++++-------------------------
- 1 file changed, 23 insertions(+), 33 deletions(-)
+ arch/arm/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -805,7 +805,6 @@ static void delayedwork_callback(struct
- 	struct dj_workitem workitem;
- 	unsigned long flags;
- 	int count;
--	int retval;
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index d5bf16462bdba..cc8beccc4e86d 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1229,7 +1229,7 @@ config HIGHMEM
  
- 	dbg_hid("%s\n", __func__);
- 
-@@ -842,11 +841,7 @@ static void delayedwork_callback(struct
- 		logi_dj_recv_destroy_djhid_device(djrcv_dev, &workitem);
- 		break;
- 	case WORKITEM_TYPE_UNKNOWN:
--		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
--		if (retval) {
--			hid_err(djrcv_dev->hidpp, "%s: logi_dj_recv_query_paired_devices error: %d\n",
--				__func__, retval);
--		}
-+		logi_dj_recv_query_paired_devices(djrcv_dev);
- 		break;
- 	case WORKITEM_TYPE_EMPTY:
- 		dbg_hid("%s: device list is empty\n", __func__);
-@@ -1239,8 +1234,10 @@ static int logi_dj_recv_query_paired_dev
- 
- 	djrcv_dev->last_query = jiffies;
- 
--	if (djrcv_dev->type != recvr_type_dj)
--		return logi_dj_recv_query_hidpp_devices(djrcv_dev);
-+	if (djrcv_dev->type != recvr_type_dj) {
-+		retval = logi_dj_recv_query_hidpp_devices(djrcv_dev);
-+		goto out;
-+	}
- 
- 	dj_report = kzalloc(sizeof(struct dj_report), GFP_KERNEL);
- 	if (!dj_report)
-@@ -1250,6 +1247,10 @@ static int logi_dj_recv_query_paired_dev
- 	dj_report->report_type = REPORT_TYPE_CMD_GET_PAIRED_DEVICES;
- 	retval = logi_dj_recv_send_report(djrcv_dev, dj_report);
- 	kfree(dj_report);
-+out:
-+	if (retval < 0)
-+		hid_err(djrcv_dev->hidpp, "%s error:%d\n", __func__, retval);
-+
- 	return retval;
- }
- 
-@@ -1275,6 +1276,8 @@ static int logi_dj_recv_switch_to_dj_mod
- 								(u8)timeout;
- 
- 		retval = logi_dj_recv_send_report(djrcv_dev, dj_report);
-+		if (retval)
-+			goto out;
- 
- 		/*
- 		 * Ugly sleep to work around a USB 3.0 bug when the receiver is
-@@ -1283,11 +1286,6 @@ static int logi_dj_recv_switch_to_dj_mod
- 		 * 50 msec should gives enough time to the receiver to be ready.
- 		 */
- 		msleep(50);
--
--		if (retval) {
--			kfree(dj_report);
--			return retval;
--		}
- 	}
- 
- 	/*
-@@ -1313,7 +1311,12 @@ static int logi_dj_recv_switch_to_dj_mod
- 			HIDPP_REPORT_SHORT_LENGTH, HID_OUTPUT_REPORT,
- 			HID_REQ_SET_REPORT);
- 
-+out:
- 	kfree(dj_report);
-+
-+	if (retval < 0)
-+		hid_err(hdev, "%s error:%d\n", __func__, retval);
-+
- 	return retval;
- }
- 
-@@ -1835,11 +1838,8 @@ static int logi_dj_probe(struct hid_devi
- 
- 	if (has_hidpp) {
- 		retval = logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
--		if (retval < 0) {
--			hid_err(hdev, "%s: logi_dj_recv_switch_to_dj_mode returned error:%d\n",
--				__func__, retval);
-+		if (retval < 0)
- 			goto switch_to_dj_mode_fail;
--		}
- 	}
- 
- 	/* This is enabling the polling urb on the IN endpoint */
-@@ -1857,15 +1857,11 @@ static int logi_dj_probe(struct hid_devi
- 		spin_lock_irqsave(&djrcv_dev->lock, flags);
- 		djrcv_dev->ready = true;
- 		spin_unlock_irqrestore(&djrcv_dev->lock, flags);
--		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
--		if (retval < 0) {
--			hid_err(hdev, "%s: logi_dj_recv_query_paired_devices error:%d\n",
--				__func__, retval);
--			/*
--			 * This can happen with a KVM, let the probe succeed,
--			 * logi_dj_recv_queue_unknown_work will retry later.
--			 */
--		}
-+		/*
-+		 * This can fail with a KVM. Ignore errors to let the probe
-+		 * succeed, logi_dj_recv_queue_unknown_work will retry later.
-+		 */
-+		logi_dj_recv_query_paired_devices(djrcv_dev);
- 	}
- 
- 	return 0;
-@@ -1882,18 +1878,12 @@ hid_hw_start_fail:
- #ifdef CONFIG_PM
- static int logi_dj_reset_resume(struct hid_device *hdev)
- {
--	int retval;
- 	struct dj_receiver_dev *djrcv_dev = hid_get_drvdata(hdev);
- 
- 	if (!djrcv_dev || djrcv_dev->hidpp != hdev)
- 		return 0;
- 
--	retval = logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
--	if (retval < 0) {
--		hid_err(hdev, "%s: logi_dj_recv_switch_to_dj_mode returned error:%d\n",
--			__func__, retval);
--	}
--
-+	logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
- 	return 0;
- }
- #endif
+ config HIGHPTE
+ 	bool "Allocate 2nd-level pagetables from highmem" if EXPERT
+-	depends on HIGHMEM
++	depends on HIGHMEM && !PREEMPT_RT
+ 	default y
+ 	help
+ 	  The VM uses one page of physical memory for each page table.
+-- 
+2.51.0
+
 
 
 
