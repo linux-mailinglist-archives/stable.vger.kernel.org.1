@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264DDD27397
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:12:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1217FD26DEE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 25098325332C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:26:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29A5C308FEF0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66553A63F1;
-	Thu, 15 Jan 2026 17:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0283BC4EB;
+	Thu, 15 Jan 2026 17:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7W6nEqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4HcEeTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4F83BF2FA;
-	Thu, 15 Jan 2026 17:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3A927B340;
+	Thu, 15 Jan 2026 17:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497927; cv=none; b=KAzdK46WE6a7XinHjYiRNVKB4gcqZFdYmos5PIpWBzbYaRHydFd4RxFOoAB4qT4NuY6PxI1CmMgD1OpTv60VsvjUDIXUz7wRsbynJuwHOoLato9O1OjTQe7wYwgSjHu/JdDYJ4yvTnrD4PhPv3/34P+1oDFJ4ujMLqJhY0utM9w=
+	t=1768499135; cv=none; b=ix4G5/mY07KyIOGjsPaCkgJT1unuLtfgf8pxfJbqIoUBXOj+XJ5yP5vCuGR9XzwnYUkYtGI6wDu5vkrpggVr3zsTPPFbS31xSWC+O5GXik6Mko8YBT5jO63dYD5TJwJEz4xmh3aNr1wiHW1y83N/rep4bVOLcPWxCOHLIuVj2sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497927; c=relaxed/simple;
-	bh=fSmUgqVO4AZHfjeLoMId4EdfbOD+tYYhZQesCQQ4vFo=;
+	s=arc-20240116; t=1768499135; c=relaxed/simple;
+	bh=CpvYQ6JiB86W3G9kbECVp9Fm1HvJGolhNDeCGB/X5eQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZPtICkPeg0YdcGv3JqlbWsH0kA9kU026j0GGQR7uLwzXyCU0Bsf1Cwx4wF0K1GK34rA2GRdtV+Z0U99wCn/yQThZsZ6zFYSyGForf8RWOFCNS2nWuntdgDuRICvnIGqxDmixbNgA1FBSMtUOYcemqDBzr/5DyKYMhL/hfUvetg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7W6nEqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 057AAC116D0;
-	Thu, 15 Jan 2026 17:25:26 +0000 (UTC)
+	 MIME-Version; b=k7xJvwqzt7JK9irVes2FZooGfIyHlqKuAOpghZUD0bnvN5bbUR1OPSIIixY0jTQ/R8KqAryHfmeNFZxUYO1yu1nNGSRL8J6vpZZL2EGA0G6tvTAzKoW0MhDPgdC7abNM3pL8ZNFdsH0bHdlDEJNk59WZBfNwCff4JM8D5JSkGWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4HcEeTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08708C116D0;
+	Thu, 15 Jan 2026 17:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497927;
-	bh=fSmUgqVO4AZHfjeLoMId4EdfbOD+tYYhZQesCQQ4vFo=;
+	s=korg; t=1768499135;
+	bh=CpvYQ6JiB86W3G9kbECVp9Fm1HvJGolhNDeCGB/X5eQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7W6nEqmZwT5IjBv+vs8V+MA9V9Ax7dKmKN68TpfMsAN/3dtsEp3i03X1svPhTzFQ
-	 5yA64puZCKfzYOHk6D87Dncs+woFHsrvVgecg+PF3BgTZ+CuvvQLOpe7pj9ZZdMgA4
-	 VP1XM6WdSRmi+pmDi24y6VPFZ23w5V1juLQAwNho=
+	b=M4HcEeTdTrhm6iLIikijaQhSVwNpyALXG0ACsCpPgJcF0mAiHPsBHbLti4q7NIgop
+	 Cq08lQc2pYktIBH4y/8QsOIjzZHXffB1LxZvdAggnSm3WCxq31Pw756x4lZ0MxDcaP
+	 QTC3gukosr1tnuzy7qYK3lbkD1oMPX5yrt/+wINQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 253/554] ALSA: vxpocket: Fix resource leak in vxpocket_probe error path
-Date: Thu, 15 Jan 2026 17:45:19 +0100
-Message-ID: <20260115164255.394837801@linuxfoundation.org>
+Subject: [PATCH 5.10 119/451] fbdev: ssd1307fb: fix potential page leak in ssd1307fb_probe()
+Date: Thu, 15 Jan 2026 17:45:20 +0100
+Message-ID: <20260115164235.228752137@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 2a03b40deacbd293ac9aed0f9b11197dad54fe5f ]
+[ Upstream commit 164312662ae9764b83b84d97afb25c42eb2be473 ]
 
-When vxpocket_config() fails, vxpocket_probe() returns the error code
-directly without freeing the sound card resources allocated by
-snd_card_new(), which leads to a memory leak.
+The page allocated for vmem using __get_free_pages() is not freed on the
+error paths after it. Fix that by adding a corresponding __free_pages()
+call to the error path.
 
-Add proper error handling to free the sound card and clear the
-allocation bit when vxpocket_config() fails.
-
-Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251215042652.695-1-vulab@iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: facd94bc458a ("fbdev: ssd1307fb: Allocate page aligned video memory.")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pcmcia/vx/vxpocket.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/ssd1307fb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pcmcia/vx/vxpocket.c b/sound/pcmcia/vx/vxpocket.c
-index 7a0f0e73ceb2..867a477d53ae 100644
---- a/sound/pcmcia/vx/vxpocket.c
-+++ b/sound/pcmcia/vx/vxpocket.c
-@@ -295,7 +295,13 @@ static int vxpocket_probe(struct pcmcia_device *p_dev)
+diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+index eda448b7a0c9d..fd26d368fdf5c 100644
+--- a/drivers/video/fbdev/ssd1307fb.c
++++ b/drivers/video/fbdev/ssd1307fb.c
+@@ -676,7 +676,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
+ 	if (!ssd1307fb_defio) {
+ 		dev_err(dev, "Couldn't allocate deferred io.\n");
+ 		ret = -ENOMEM;
+-		goto fb_alloc_error;
++		goto fb_defio_error;
+ 	}
  
- 	vxp->p_dev = p_dev;
- 
--	return vxpocket_config(p_dev);
-+	err = vxpocket_config(p_dev);
-+	if (err < 0) {
-+		card_alloc &= ~(1 << i);
-+		snd_card_free(card);
-+		return err;
-+	}
-+	return 0;
- }
- 
- static void vxpocket_detach(struct pcmcia_device *link)
+ 	ssd1307fb_defio->delay = HZ / refreshrate;
+@@ -756,6 +756,8 @@ static int ssd1307fb_probe(struct i2c_client *client)
+ 		regulator_disable(par->vbat_reg);
+ reset_oled_error:
+ 	fb_deferred_io_cleanup(info);
++fb_defio_error:
++	__free_pages(vmem, get_order(vmem_size));
+ fb_alloc_error:
+ 	framebuffer_release(info);
+ 	return ret;
 -- 
 2.51.0
 
