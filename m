@@ -1,84 +1,104 @@
-Return-Path: <stable+bounces-210120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7D8D38906
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 22:56:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE885D3890A
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 22:58:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A457030021CC
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 21:56:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DD92030060C8
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 21:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CC930BB88;
-	Fri, 16 Jan 2026 21:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644FE30C603;
+	Fri, 16 Jan 2026 21:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="UU6S+GdT"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="DBNnH6nu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDB22FDC3D
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 21:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768600567; cv=none; b=QnwzRYIkdoROZGBLU7REHbLTSmEWZuF5Wmfdl31Tkcng9tPrzOsp8rtT5Zarj+hFdkjemnmDzU2rAXuBKVHTVonfjrT/tvlPUsPtzBK72veAc/3YT6DSXB1iKSSjoDXawNk/f/A88DNkclc3QUhR89CgjRSUbVnJ770r61RqB+U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768600567; c=relaxed/simple;
-	bh=jQKYgO1fO+h99uxsyrogt/jaI/NAbt/f7mqYugBO8fo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8712F3618
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 21:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768600705; cv=pass; b=dDLORvaEnu7LEM8Bu5rRIs5CKpFIJh2uHCzkyAxBW9hV1+hFyCYfke7U0tS1Y3h6uAcRCxWfj4qIRXtXiZaIH9+arXjDRBacR25mj1oZZcAiWEtABKNdQQM5kQ0+CnUjMvJQY1tWnO8ULn9Ejn7e3IbTGD/O1gMA04BFDtP0lH4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768600705; c=relaxed/simple;
+	bh=bPaRwJS1RrJBMlnVDNPm7dxe49RmumTjqinBhkL9jf8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AeWrivleaPWcMlOxefsLquTfPazxHYfqNCuilhLkEn12u9SMbv2d5zZZU0x7Sw3uvbRS/4phXSWZNx6cq1mXVmfBVFligS2/+Y18ankkA9hrg8LRVFsMjdv3JG5UdgpYqTRpm1LIKAOgGDEJoL8tj/vQBhBvuxLqIUg1AdSrZEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=UU6S+GdT; arc=none smtp.client-ip=209.85.222.181
+	 To:Cc:Content-Type; b=bvl6BjPo0lMvPNTKjtfEznLiEuZmBWfBfSClwKG9Q8925a9zr7TzrFrs7QwiXDQWl88neeZrUXRFoNagoxRWxX52biXSu1ZCl+OJRAedyMaoRipCSkizeFinjOQHDzRVid1uMd4Dj2U4Ny/OJ97rxobbzwSzDUnYFODJnWXGHKc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=DBNnH6nu; arc=pass smtp.client-ip=209.85.219.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8c0f13e4424so300051685a.1
-        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 13:56:06 -0800 (PST)
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8888a1c50e8so30597096d6.0
+        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 13:58:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768600702; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EVJez+tOlpr8EInuAvo+ZyW3+mdKPwgHku5RiuQMlze/tKV74vaFh3BJEP9F70siNB
+         a7QGVnrH6clbVxplIlSjhGNmQNGeCh4+R1qVqKrkj5QQ60joc1krWcPPcfdBoXljisTO
+         EzinXdUH2amSfNbPSeFEN2DrZOYLBO0BvpPXPY7YdOuaOUpAMt63kUBLnC/znjHIYtiu
+         MjKB7EehOeLUoitfAJzG/MahkpF/XrH+uYJWZDu4DumdrADcHIiV61xqHYVYtmLskq8E
+         8cfTsgIXKNN3AU1pk+FhOQnebKcWyU2fuqXSeq0JUgRqse99ndRELrJX70vW+S0i96yH
+         BKqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ci3VzwquJj/225WD6QeakQESZUt5GcqZi1oxdxkAGbA=;
+        fh=bN1N9u37F9sfpeWZ2mDRMBHW5qqsdrFlcOzPW13gTq4=;
+        b=Fm+a33pdEkXKy7PQF+t0zEVyHY2MYYE5qYlTyp+f2cQhgrGmvbRaImS2YtVxkyVfpS
+         VXA/ilAKc/UtLFg47FGoYrM9Un1uhWi/HeCFOnjFk3CM6VztrtugXeKxBp78N6pH2VCQ
+         703LpkIrUuWtRYTpbcArkuL6hQJOsKkfBYd+b9JU4ZX1oGMvOh9PFnlpu9NASZOs4l+Z
+         0r6lvYzFVe4f7h/BuEU1DfDNh8VQZqbaVQC9zZEj4fMKnH9fsBfQZCyLTeFPe0E4lzux
+         VBsRnxoEB6FNhDIX2z3aAu01jDQI/tfGSA2Lm/2cuYeYYaGiGD7lOet0OLzFkC5GiH9h
+         oi1A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1768600565; x=1769205365; darn=vger.kernel.org;
+        d=ciq.com; s=s1; t=1768600702; x=1769205502; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8eZ9D0LRjF1zjIiPIQ4+n55pi2/vjND0r4M2Z8nEoV4=;
-        b=UU6S+GdTAMjvtN1HGuHI4KLUymcUTI+Iz91AYDt1xbuQ/lm1wR6ipkfLKPO6+h0sf3
-         O4jBMkcO/U1qX0RWdGLAWxwymkFLZxutT+VEc7j/q/9T0gcIdDXKF51jLF7cBkZzL6Ii
-         xxJ3tmuBDshcQFjEnDj6Cy5BSbcii+o0xUYHT4PM8nn7+QFXti/GsOlOXmywgoAok/TF
-         DKtcli2nUxx1AeUPqjlwD2lsx36HysyumnjJVHPq25mdZ+q4diDsdo2cb40T+Pa5L6YZ
-         fj5etf5EnqcESP1eyrP0XGOGJ3dVkI8DRCp5s/c6UxxgLfDj5bBLXEsrgPL15Pu9DVBH
-         zOTg==
+        bh=ci3VzwquJj/225WD6QeakQESZUt5GcqZi1oxdxkAGbA=;
+        b=DBNnH6nuWyly5Dk7tQ4h+6pGTF0GZ/cKlDat4Jo0MRKshf6ugRVP1zF2pA5byt/2RM
+         mk3lscumiDFGOzWfPZeH9i/V+SMRZ347kuY+7zl8h5PILjhr9Ve8XKcihgoOJJHa1LBM
+         7uUQTOI9TCh5kFmjkq33uJbMdb8TEw26u2p7bhhDPdkBYvrZiIqKnkwEo/bEDatS94zf
+         k+n2LCXD73XJyKVUsjnB6HF3agqQBKpLngU+gFmP28MVxG25UGSvTzDo1uLiYX3gNgkR
+         HgQn3KuYoTKpm3SJvcbMXiWtDURegDl1VENw6S8uI6VjEHcJm0YU7/Fq6YFBiBg0ZnFA
+         ux1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768600565; x=1769205365;
+        d=1e100.net; s=20230601; t=1768600702; x=1769205502;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8eZ9D0LRjF1zjIiPIQ4+n55pi2/vjND0r4M2Z8nEoV4=;
-        b=dRwKFlkZqU2S2tJ+z8dwTHA7sRhms6rPHEV+lks/0wa8hZ+T6Q9XWJwuyeFAI62vXF
-         ZON6knjBzv0BP8h8kBfLfWDzUlpUP7xAi0EAJBfD1biuJ29y7WZSr+GTFY2IYDplDU70
-         rKncefHIu8IqPeTNp5fuCL71J2D7WVmyrI3vUOS3NY4RLH0DkEHlpvOnqomHu9En4Hpf
-         GK1kIzo5UBxzrXKx74wBJuSZT9ldwGa9knQR7h2KM0TbtReh6lipUn++q7NjonDkAXJT
-         RRO/Pjx/eY/nanfW/h3GGqHY474Vyc0+wLcBELBaTS8RDaFveh1zzYyFepSL8ankChWm
-         jXLA==
-X-Gm-Message-State: AOJu0Yz04LTlQBEWk8RW7OrukWKHnhLchFO+Iug0ttedxvkSEXaE4z31
-	no8YzhkNYnMsuBU3i0kenZy9NkIWs3DnlkiKyRa9cJ6jh6V6aqNfO9Se4XDjNovFt4Ej48ClC19
-	K3Ukp0Wy3L45Jqf7nPTabxt5lmSw2qszXuPr4uCu8MlJbURbKJm3IT/cbPw==
-X-Gm-Gg: AY/fxX4cFEV985XiHE9zAGFRRt4TMFo+UqCxzuuh0sJM0WmDbsD1U3nWEXgivBqONs9
-	t8gAFsqz39FIKenLaYI4/RyTvvv8yYPpdQ8gdlIwvOXdBwfrzzX2yv1JhQu70qNUS3NYUaF8SEB
-	vB9gl0XldETmda3SESVtBS2xhLpqg2IPwx7Hj7jUf1hkXIc0QY2OGwfwUOezAICa+oFp6cJI4Ft
-	ymRdzQlL5KRmE1CJCtxMnCekFSgLOa89jxfthNdyJdiiMQLoBoXrv8Awi5D3QEbxZlAgDGkXPiM
-	x3uliiM=
-X-Received: by 2002:a05:620a:4054:b0:8b1:110a:e14 with SMTP id
- af79cd13be357-8c6a67648cdmr581602085a.55.1768600565283; Fri, 16 Jan 2026
- 13:56:05 -0800 (PST)
+        bh=ci3VzwquJj/225WD6QeakQESZUt5GcqZi1oxdxkAGbA=;
+        b=kOyvxiBGfXgdTdZS277ZXckLQaXhFJGnDvPe126qcV7CHgk2qCWROY+PjlBEM5FPrw
+         iKqnTOERhiAwyrNtFoONRmm/0TdSk1/X8WT/pNBTOvaprUWOq9lG8ZFA1E5P6LZJ2rNf
+         KsEbV7dkaTzUn/rgK0pNshPQh8sm3GPv/7JAaRdfhGKYMUhrrHxBRkdhCHyUHzccLBm/
+         fKVY1QFJuF31h6lqExo6nmW7GprBQw+Uuk9KTb46TPcSiv448bNAeiQrGeTTX8zp174q
+         +qsAOr9DmnmBtma3suH0knisg0ulYrTS/HAnXaQhVVq/KIfkDKsfKHxDIrwahCqzQML3
+         PNsQ==
+X-Gm-Message-State: AOJu0YwrnlE59OMJi3+TqSwSZoNEl5q/J/cv0O4qFtPykUMiuNwLMJd4
+	ZzHIcIUC1+3UhQPbPq9dpe2sMXzl2MzT7FJZjo8aLWsa+Nqo6fxv+FtjAzHzycjvlT15Ke/1zWY
+	stN63fKYZphn72oiEcAG2PcFG9w8G+inIBA75GiYYqQ==
+X-Gm-Gg: AY/fxX4yCeN+1PRfyf7/MK1EzwO86EfSO+fXX+DuohpuKg3pUVhpho6z1A/raEyOlVY
+	AF2tYZbHhLDRZrWaLXSNS98yB+Q+FqS+BJcZQAzdb7oe+qCCMYStdFD8IFNowO0+uXO7e3Oc0Tg
+	F08xJlGaGNsil4hndN5ZPAhn38bOv8n67dbITBnpIABGO31hhx5Ywg/yX257uo5b5yP9jXL33Hb
+	7Zwai/wsM5rKYi26Nc6utHEF6tYuL+lIVjX8oszDP6dusV+W5imJhwzdNnTwiqmOysoFVtR
+X-Received: by 2002:a05:6214:1d22:b0:888:57f3:ac07 with SMTP id
+ 6a1803df08f44-8942dd9d671mr63198166d6.54.1768600702129; Fri, 16 Jan 2026
+ 13:58:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115164202.305475649@linuxfoundation.org>
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
 From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Fri, 16 Jan 2026 16:55:54 -0500
-X-Gm-Features: AZwV_Qg7i-GTu8egevic-3fB-43vNln4v5HedxwZ0L7EIgpkOdNYwGQZdioya5M
-Message-ID: <CAOBMUvjRY_U-hu+nk+Nc4n5WRwaFSM34YFqP8P1SvSp1uSSzeA@mail.gmail.com>
-Subject: Re: [PATCH 6.18 000/181] 6.18.6-rc1 review
+Date: Fri, 16 Jan 2026 16:58:11 -0500
+X-Gm-Features: AZwV_QgX9Dh_WA66C1bE9X16GWaQKsScdv4wLDbHYHjFqcvYSeDOuQ1DXsIvl9A
+Message-ID: <CAOBMUvgaE4fiZw=d9jWNxvcYQuFtifR5AqL-nCDDR=aS4bXTNg@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/119] 6.12.66-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
@@ -90,11 +110,11 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 15, 2026 at 11:54=E2=80=AFAM Greg Kroah-Hartman
+On Thu, Jan 15, 2026 at 12:03=E2=80=AFPM Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.18.6 release.
-> There are 181 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.12.66 release.
+> There are 119 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -103,10 +123,10 @@ On Thu, Jan 15, 2026 at 11:54=E2=80=AFAM Greg Kroah-Hartman
 >
 > The whole patch series can be found in one patch at:
 >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.18.6-rc1.gz
+6.12.66-rc1.gz
 > or in the git tree and branch at:
 >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.18.y
+-rc.git linux-6.12.y
 > and the diffstat can be found below.
 >
 > thanks,
@@ -114,7 +134,8 @@ On Thu, Jan 15, 2026 at 11:54=E2=80=AFAM Greg Kroah-Hartman
 > greg k-h
 >
 
-Builds successfully.  Boots and works on qemu and Intel Core i7-10810U
+Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
+Intel Core i7-12600H
 
 Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
