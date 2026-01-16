@@ -1,109 +1,124 @@
-Return-Path: <stable+bounces-210049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D87AD31CD8
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 14:27:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADF07D31CC0
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 14:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7789730D5A18
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 13:24:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 718093047185
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 13:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE752265CA8;
-	Fri, 16 Jan 2026 13:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4FD26FD93;
+	Fri, 16 Jan 2026 13:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JbzIsiTi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G9ISgBeH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C691258EE0
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 13:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6CB26FA4B
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 13:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768569884; cv=none; b=dknH9DMxvjOWIKIEcG2h8RFpy7Efmoi51kKYOfWg48Z1prePjEG5VDohN4jT7654/c8O21rMImzYT/ZK/4IqEC09vjti3+oC65uzqOSH+QVaOr5qsBDuBwGrRfrfhGOb1Nrfh7Adm9veNExMJsaPnhkU/gbrLl4yyQ0PrU9VLko=
+	t=1768569965; cv=none; b=ePZhDDWByJSNxwi3Z8GCWLVjW+xRFtKgjU81GbQxQgNfldDrNMO3Fzcowo9/Laz2j9D9cC8J3K2DbRiTHLXNBrfNWm4ug4UY5shhguEDZ7+BYnBVc44jGbhW1r/QH+7c2ymo7WJreKQ368i5tua6j0sQ3izgX20a0J0dLpd0VaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768569884; c=relaxed/simple;
-	bh=5/BOHiJVlAIIj9Ft1n94EaDNmmyW4A7EG9Skfl9jGNg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Oa7htxgwyOrKJ3+UM3QWo/2oa/OHyjBbx9G+nh+cFdt9terhesM9eRKkSjM3ZZMRW/HMzF3KOLPjC9ffsaxhPTv1HP8OtO1Ig7MTdcxUucFgmxi8r+1+5arqjMPX1xrfcob0I8PIMUjQSgmMC0ukgGxYB1NEvnAfwrqtabPUFUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JbzIsiTi; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47ee974e230so18290335e9.2
-        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 05:24:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768569881; x=1769174681; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=5/BOHiJVlAIIj9Ft1n94EaDNmmyW4A7EG9Skfl9jGNg=;
-        b=JbzIsiTiqZFUi1c6Uedg62vCW/lzJDrGF3NZ+Eo9/dhpj4dT5WvoK3DQQx3v2Mn9Z/
-         qcnV0kxN/flBfqin30BLBdJ46/bgvAWZ81S5xfiw2jwk48RCrZLF5tpmJYHGOS+iBqdQ
-         8nDAu9tBQAkD6TB7OjRaP9dfJvkphVxQc5TkKwn6W7B7Ewx/d1IUo2QbiCqFTJQl/x2Y
-         KHagy30EIS2BTZRF//MEcjbsLQTEFK9fDQ5vLfAPbFtghSARPkDZ7HpcyjcE62qc8A3K
-         FwzoZCYLAJrpsLEol9y245af8SzjjRlUnADKrwr+3k5SzXOM4iP1u29SeEe9PdXKYS34
-         VBkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768569881; x=1769174681;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5/BOHiJVlAIIj9Ft1n94EaDNmmyW4A7EG9Skfl9jGNg=;
-        b=sLIFmdf/F3T39Eulh8cewTRR/99Y75TMgwYzd8dt1vZvwaxiScusw6MbiOSJbfIFoe
-         9HPl6QVe2lz+tvTcQVwWbeOUNWiX4JO/5/CxBM3ogY2XtGgqFRkMj9haeVZB3rDfiQ+P
-         42CJ5GElB82jZO5lv89ffAYpCEFk1rvRjS6ez6TIkqQPFrrK9rhMUQ+WnKwbZCqeMqJo
-         P92dY/T7D5X0GrY31dZtlrUDl61aG2CCQOpjZwFZvRKYSXt3k8eeEszOGF/W4MNNn7dQ
-         lslQ/yyzc//Tmr726sq9LJ9bX1EafWkOzz/n4qOAFaSpi9cEHpCYWQi8xfrZzYH5KgWG
-         OTrg==
-X-Gm-Message-State: AOJu0YzreVTY3d8k98ntJtSZekWS/dOTXbowD8hVI+3j+BP8D4QvglLE
-	Y/KjV2dNCmiYq5UfeErsrkVstf6zAv7wrH7b2VnyvOgNkECCkzZ8qVaS
-X-Gm-Gg: AY/fxX6xfQV0WS0WUAD/vljhSGwr7sFUlh6D+6PBO1vvummi2d4avPQIa6yjgVuGiP3
-	WpZenCJU5QEXgm53jlklDyW2udcyHOC1awfJMrf3iZlhO8M4pm6BfqlxGmSV1D5O6uPHJZ6aXyY
-	W0izL1a1wyacszeIE9mcol3NxbtymFocKHeAV+NDunuqyKENvHjajJ5ABjF1YSE0OEl/558SrmO
-	NK8Olr8fiLl/RErtx/GB36Vw1JnegzMV7Z1qEBm/h5rUeuXZ74yKsx/gt8g/ICDlCJoP34lDRiJ
-	psyZIDMNzOBnjmomOYOhbYv3fKvzseQc0njJ6zxAVCuHhgKEwqlIiOu02QGq6Jr7jluWOPVwnyj
-	/UhH5FaH2PuSOGe77AqJTiBSts7ie77+1lcm1as14sYmpLjzFRuWdwm2ETHoL0P0f9lLhXYO4kn
-	TwxuHbQuAZ6iSIYTrgoeWdSlCtw0QA3k2i8p3MGXg4KsLX
-X-Received: by 2002:a05:600c:3ba6:b0:47a:7fd0:9eea with SMTP id 5b1f17b1804b1-4801e2f3013mr36677445e9.3.1768569881304;
-        Fri, 16 Jan 2026 05:24:41 -0800 (PST)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47f429071besm97537275e9.10.2026.01.16.05.24.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 05:24:40 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 5C428BE2EE7; Fri, 16 Jan 2026 14:24:39 +0100 (CET)
-Date: Fri, 16 Jan 2026 14:24:39 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: stable <stable@vger.kernel.org>
-Cc: Benjamin Tissoires <bentiss@kernel.org>,
-	Sam Halliday <sam.halliday@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>, 1122193@bugs.debian.org
-Subject: Please apply commit f28beb69c515 ("HID: usbhid: paper over wrong
- bNumDescriptor field") to down at least 6.12.y
-Message-ID: <aWo8F_XxsfmmpAYz@eldamar.lan>
+	s=arc-20240116; t=1768569965; c=relaxed/simple;
+	bh=IR3KwNWNKGPtS44m5xlCPYzSAGbubcbp6zpZ8tb6nAo=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jZ8gTkNVbB8SOrPouisIBLeHLu8IOVKD6UYZWZy+rDSugggdYAUpzAAavpeGxLN/wbkrS+jNLUCQvsvWosIqEX7yuHv+f8JngncoOM0kRGnbpPuOmw1pQPT5EyZWWkDSrqWreMJnZ1n2sKYBtFgcJ8InFDhnFcqaPNLL2P6Cltk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G9ISgBeH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8634C4AF0B
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 13:26:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768569964;
+	bh=IR3KwNWNKGPtS44m5xlCPYzSAGbubcbp6zpZ8tb6nAo=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=G9ISgBeH8iyNsYYQXxnHbuiQa9xxaDmZa76j7YBGuWtUjZXFWtSltx+/fBfC4B3Zl
+	 PMcpgMnWQFn19cmPvXHw9+KdCBUhtPK/2B3AMpCi1cCbdwNW8XbZj8kLgMCEAg/mjT
+	 VIzNk1nJDRY6NKxGID7e5QlrBs7sm+Yw6PTzWwntoHfV52XgP6DQlaryMdDGwW53dd
+	 kksWm/yK9d8kbIkPwNJ8IsBK+AfgfbNDQMlnqZ78QIvdtlUP++ZxHFzhn9y5g6ieqo
+	 Ux/d0iFx87+lBKHrGU0MaNxEWHKFdQyuSoMhmIlZM1XWMe4QsPbmnXLEy04NdH93qs
+	 uofvgtfAeac5w==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-59b6f52eea8so1783298e87.3
+        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 05:26:04 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVzVLw7U/VPl/cVkml/GHEIyjDIawQ/zKQTCqBo5UvViBqFrFntoddE51ojhbfe/h0hvw7bOXk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIF+/1JLmTpgsewhRiec+2uLqxSVZAUvR+7rexjNYYwrwgEEOV
+	I1EMzEwELc7tscdF14V/VPWskKiJKY7qaXe2M3gMHSLykqFpe6ymgeg+qCCGy9OJ6DOts+bV459
+	b/zcBg/ZPgeJkRX0Nupo3QyptDfk29GpEyrqp7sWk1w==
+X-Received: by 2002:a05:6512:3f20:b0:59b:2670:aa5 with SMTP id
+ 2adb3069b0e04-59baffd29famr758352e87.37.1768569963190; Fri, 16 Jan 2026
+ 05:26:03 -0800 (PST)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 16 Jan 2026 13:26:01 +0000
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 16 Jan 2026 13:26:01 +0000
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <20260116081036.352286-5-tzungbi@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260116081036.352286-1-tzungbi@kernel.org> <20260116081036.352286-5-tzungbi@kernel.org>
+Date: Fri, 16 Jan 2026 13:26:01 +0000
+X-Gmail-Original-Message-ID: <CAMRc=Mc4UoXif=vwUQG1jYW8G3QziZwbdcfvZGquytdrd4SBpg@mail.gmail.com>
+X-Gm-Features: AZwV_QgiwcYDrwjaLeT09nufbHbwRGBProJRFcLW2Iu2MBC1N5SlHrenV-Bc4z4
+Message-ID: <CAMRc=Mc4UoXif=vwUQG1jYW8G3QziZwbdcfvZGquytdrd4SBpg@mail.gmail.com>
+Subject: Re: [PATCH 04/23] gpiolib: Fix resource leaks on errors in lineinfo_changed_notify()
+To: Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
+	linux-kselftest@vger.kernel.org, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
+	Dan Williams <dan.j.williams@intel.com>, Jason Gunthorpe <jgg@nvidia.com>, linux-gpio@vger.kernel.org, 
+	stable@vger.kernel.org, Benson Leung <bleung@chromium.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij <linusw@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Dear stable maintainers and Benjamin,
+On Fri, 16 Jan 2026 09:10:17 +0100, Tzung-Bi Shih <tzungbi@kernel.org> said:
+> On error handling paths, lineinfo_changed_notify() doesn't free the
+> allocated resources which results leaks.  Fix it.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: d4cd0902c156 ("gpio: cdev: make sure the cdev fd is still active before emitting events")
+> Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> ---
+>  drivers/gpio/gpiolib-cdev.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+> index ba1eae15852d..6196aab5ed74 100644
+> --- a/drivers/gpio/gpiolib-cdev.c
+> +++ b/drivers/gpio/gpiolib-cdev.c
+> @@ -2549,7 +2549,7 @@ static int lineinfo_changed_notify(struct notifier_block *nb,
+>  	ctx = kzalloc(sizeof(*ctx), GFP_ATOMIC);
+>  	if (!ctx) {
+>  		pr_err("Failed to allocate memory for line info notification\n");
+> -		return NOTIFY_DONE;
+> +		goto err_put_fp;
+>  	}
+>
+>  	ctx->chg.event_type = action;
+> @@ -2563,6 +2563,9 @@ static int lineinfo_changed_notify(struct notifier_block *nb,
+>  	queue_work(ctx->gdev->line_state_wq, &ctx->work);
+>
+>  	return NOTIFY_OK;
+> +err_put_fp:
+> +	fput(fp);
+> +	return NOTIFY_DONE;
+>  }
+>
+>  static int gpio_device_unregistered_notify(struct notifier_block *nb,
+> --
+> 2.52.0.457.g6b5491de43-goog
+>
+>
 
-Back on beginning of december Sam Halliday reported an issue with ZWO
-EFWmini in Debian (https://bugs.debian.org/1122193) which got reported
-in https://lore.kernel.org/linux-usb/aT7TPAInuBOXctEZ@eldamar.lan/ and
-subsequently fixed by Benjamin with f28beb69c515 ("HID: usbhid: paper
-over wrong bNumDescriptor field").
+There's only one place where you need this fput(), please do it directly in
+the error path of kzalloc() and drop the label.
 
-The fix landed in 6.19-rc5, can you pick it please as well for stable
-series, at least down to 6.12.y (but not checked for older ones, maybe
-Benjamin can confirm until to which stable series it should go).
-
-Thanks in advance,
-Regards,
-Salvatore
+Bart
 
