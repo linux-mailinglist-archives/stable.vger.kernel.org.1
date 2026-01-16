@@ -1,122 +1,119 @@
-Return-Path: <stable+bounces-210008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7A5D2EA5E
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 10:20:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE5CD2EE16
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 10:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8E04E30341A1
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 09:20:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9075730F031B
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 09:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5A734D396;
-	Fri, 16 Jan 2026 09:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06C0357A5C;
+	Fri, 16 Jan 2026 09:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwW+mmyc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKADkw/f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854E534B187
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 09:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AF9357A37;
+	Fri, 16 Jan 2026 09:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768555235; cv=none; b=C9PouT5LOMJrJtp4UlsAghSdewbM6Jb/3CfnYkMtNJoChbQUw9Sh6CLHSdYeS7iILSU5qQqzZM8jv+5u7itEqfGq8QMobWZfRY1IACnMWTmhzRH2YjmZ7mGBSTrqfkNxnP44yYq29P1O3ByRu7wOi/mqB+hIXnt4poejWDkyaA8=
+	t=1768556230; cv=none; b=UJpOjiNEtv8WDCafLeNS95QAd39DZqgxgJJlEBRgEsAu2xCUfogXfdC7NcUY1g99kB5RxhXcUJ097WRa2BL/nzOuI0rpP+l9EMSseyMYygJaKs1pGUUYK86bo+L9LYyFE0xK739yPrmuyL9zJYKW5WG35jtueJ0mAkh3YJpKJXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768555235; c=relaxed/simple;
-	bh=ykRh+caslnsL7rs3PRC0EI48axBYUPyRgjOFudUhuYM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A7hSr2Cd5oLUBufB5ylJ1DZQwl70dU89i2R7GVsaUqX+TeTPpivva89gJwc/xbO3xB5KRh6rH19/znNOCLYY1wD+FEbkpWspv7/DKtOv+YCEWKybRd/JarDawUEt+9QiTqiy+etbsZsYeemBg5FIC3mkLo8F38nGeowza3h/Ud8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwW+mmyc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35178C116C6
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 09:20:35 +0000 (UTC)
+	s=arc-20240116; t=1768556230; c=relaxed/simple;
+	bh=zUduGCxVwQP0KumLu36joq1fjzu91IDcm5g6mdZhwPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qvvqO8V45gYgTtusiXm6RPt7KxLu/x8Vx+kMr+Kpv0FxNhF9vv4NmBLjzRolkXsIMQ5NVpjUUJIt60TqifmDkMsKjlvIS0/eI5ENfZDwtyqJ0RkJIhfxaV/mhqVfqhk1dQhFGsWm5FklYTRGPtd1oajCymwKFqb3MgAVQvL24CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKADkw/f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36944C19425;
+	Fri, 16 Jan 2026 09:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768555235;
-	bh=ykRh+caslnsL7rs3PRC0EI48axBYUPyRgjOFudUhuYM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=pwW+mmycTpxJZI9IEqLurTYErdQ4YW6yt0VzoNAH6d6bFEJSGsltF8G8qrai/CC5r
-	 0Q9kSssclk25DUgTSyUvM+PSVHdw9aFNTd2hrMpUw3f2gnbtdOXUamB4Bb0PbL9DH9
-	 YVYzxJytEkYdHKyIvvxYPrFkJMHA+ejyCM8JkkrG0QXGZbaRuBJ46XqbDXa9oqH4cI
-	 D5wzdJCjXgkkxHlWMsofNYdoHkXcu9DK9tk4k/tg1j1mGHthcLoCpufRgTCgvDvF9p
-	 Wv+3/EKfbvq2ILdAt8KxBuaB2CQGW1Ualu2PJOChld7ZhxxdPZ5JlpuuLH24jlxiab
-	 I8i0lFM1fktrw==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-59b79f700a1so1730782e87.0
-        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 01:20:35 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXM6SlyicayZ6BjiUc2Ps3q3lo3bzfBvCDSLLzm6dP7p/brUhF0cDJFxRZtkQlwzgWwTTbZKQ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6EQ2LKAGkQKPnnylCzQZ6o16eW7u16YrFJ/p63r2iBnDAwLKb
-	LOLpt5PIBgBI/vLWt4obj2JafJUWhuezH2f2g/CkGLr/7Z7BZmnKRhCclkeaMNAzinuOJ69rc3l
-	JKcxMs30t6bvG7DNSsVNcuwjiaUkHUXcpghxkWsrmlw==
-X-Received: by 2002:a05:6512:2c91:b0:59b:9ac4:2afe with SMTP id
- 2adb3069b0e04-59ba718ebacmr1882399e87.12.1768555233917; Fri, 16 Jan 2026
- 01:20:33 -0800 (PST)
+	s=k20201202; t=1768556230;
+	bh=zUduGCxVwQP0KumLu36joq1fjzu91IDcm5g6mdZhwPs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FKADkw/fp7j5p1fU3GRILCaD8FF9JHFv5LSBAij5d5qjSLMJF2AhhfoHJjKV3OxnP
+	 xNdDNV+oVKRSbqWwIeBFShGh81ji0fluSF8J46jJG2UrGD2YawH0KbYIBMlmMvKn+X
+	 +GPG60M5d2Qtic48dbkRBIKDnZRRy2VTgykd6OS9PfrBBY2Nhhahe3m647tna7cU06
+	 e6Ayp8LACiKaHPzQjQyzdMjz9mg9N7yj7Rg7ozyK9GPsA0rrPEy8KeAayRANHSAfZX
+	 lZLHQ+ClBRC+6fxcXuOnI1/QmXPo3t5WNQGPpanG1v7DN8p2YY2ukQTL8cJygBl6FV
+	 jHnc7faId4ZWA==
+Date: Fri, 16 Jan 2026 09:37:07 +0000
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] scsi: core: Correct wrong kfree() usage for `kobj->name`
+Message-ID: <aWoGw8PEKj_5mncV@google.com>
+References: <20260116081359.353256-1-tzungbi@kernel.org>
+ <2026011614-exile-raisin-0ec4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251107033924.3707495-1-quic_shuaz@quicinc.com>
- <CAMRc=Mce4KU_zWzbmM=gNzHi4XOGQWdA_MTPBRt15GfnSX5Crg@mail.gmail.com> <212ec89d-0acd-4759-a793-3f25a5fbe778@oss.qualcomm.com>
-In-Reply-To: <212ec89d-0acd-4759-a793-3f25a5fbe778@oss.qualcomm.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Fri, 16 Jan 2026 10:20:21 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MdoUvcMrMga6nNYt8d-o8P-r3M_xY_JHznP3ffmZv8vkQ@mail.gmail.com>
-X-Gm-Features: AZwV_QimTjzwHL8e3FnSCZ-a4okZnUriTz72sgP41cuJac4rqIKVV5VOYmjNOT8
-Message-ID: <CAMRc=MdoUvcMrMga6nNYt8d-o8P-r3M_xY_JHznP3ffmZv8vkQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] Fix SSR unable to wake up bug
-To: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
-Cc: Shuai Zhang <quic_shuaz@quicinc.com>, linux-arm-msm@vger.kernel.org, 
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2026011614-exile-raisin-0ec4@gregkh>
 
-On Fri, Jan 16, 2026 at 9:37=E2=80=AFAM Shuai Zhang
-<shuai.zhang@oss.qualcomm.com> wrote:
->
-> Hi Bartosz
->
-> On 11/7/2025 11:37 PM, Bartosz Golaszewski wrote:
-> > On Fri, 7 Nov 2025 04:39:22 +0100, Shuai Zhang <quic_shuaz@quicinc.com>=
- said:
-> >> This patch series fixes delayed hw_error handling during SSR.
-> >>
-> >> Patch 1 adds a wakeup to ensure hw_error is processed promptly after c=
-oredump collection.
-> >> Patch 2 corrects the timeout unit from jiffies to ms.
-> >>
-> >> Changes v3:
-> >> - patch2 add Fixes tag
-> >> - Link to v2
-> >>    https://lore.kernel.org/all/20251106140103.1406081-1-quic_shuaz@qui=
-cinc.com/
-> >>
-> >> Changes v2:
-> >> - Split timeout conversion into a separate patch.
-> >> - Clarified commit messages and added test case description.
-> >> - Link to v1
-> >>    https://lore.kernel.org/all/20251104112601.2670019-1-quic_shuaz@qui=
-cinc.com/
-> >>
-> >> Shuai Zhang (2):
-> >>    Bluetooth: qca: Fix delayed hw_error handling due to missing wakeup
-> >>      during SSR
-> >>    Bluetooth: hci_qca: Convert timeout from jiffies to ms
-> >>
-> >>   drivers/bluetooth/hci_qca.c | 6 +++---
-> >>   1 file changed, 3 insertions(+), 3 deletions(-)
-> >>
-> >> --
-> > Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->
->   Just a gentle ping. This patch series has been Acked but I haven=E2=80=
-=99t
-> seen it picked up by linux-next.
->
-> Do you need anything else from me?
+On Fri, Jan 16, 2026 at 10:00:11AM +0100, Greg KH wrote:
+> On Fri, Jan 16, 2026 at 08:13:59AM +0000, Tzung-Bi Shih wrote:
+> > `kobj->name` should be freed by kfree_const()[1][2].  Correct it.
+> > 
+> > [1] https://elixir.bootlin.com/linux/v6.18/source/lib/kasprintf.c#L41
+> > [2] https://elixir.bootlin.com/linux/v6.18/source/lib/kobject.c#L695
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: b49493f99690 ("Fix a memory leak in scsi_host_dev_release()")
+> > Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> > ---
+> >  drivers/scsi/hosts.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+> > index e047747d4ecf..50ec782cf9f4 100644
+> > --- a/drivers/scsi/hosts.c
+> > +++ b/drivers/scsi/hosts.c
+> > @@ -373,7 +373,7 @@ static void scsi_host_dev_release(struct device *dev)
+> >  		 * name as well as the proc dir structure are leaked.
+> >  		 */
+> >  		scsi_proc_hostdir_rm(shost->hostt);
+> > -		kfree(dev_name(&shost->shost_dev));
+> > +		kfree_const(dev_name(&shost->shost_dev));
+> 
+> Shouldn't the struct device name be freed by the driver core for this
+> device when it goes out of scope?  Why is it being manually freed here
+> at all?
 
-I don't pick up bluetooth patches, Luiz or Marcel do.
+Ah, correct.  I think the following patch is what it really needs:
 
-Thanks,
-Bartosz
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index 1b3fbd328277..e3362f445f93 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -373,7 +373,6 @@ static void scsi_host_dev_release(struct device *dev)
+ 		 * name as well as the proc dir structure are leaked.
+ 		 */
+ 		scsi_proc_hostdir_rm(shost->hostt);
+-		kfree(dev_name(&shost->shost_dev));
+ 	}
+
+ 	kfree(shost->shost_data);
+@@ -548,11 +547,7 @@ struct Scsi_Host *scsi_host_alloc(const struct scsi_host_template *sht, int priv
+ 		goto fail;
+ 	return shost;
+  fail:
+-	/*
+-	 * Host state is still SHOST_CREATED and that is enough to release
+-	 * ->shost_gendev. scsi_host_dev_release() will free
+-	 * dev_name(&shost->shost_dev).
+-	 */
++	put_device(&shost->shost_dev);
+ 	put_device(&shost->shost_gendev);
+
+ 	return NULL;
 
