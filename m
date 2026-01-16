@@ -1,105 +1,123 @@
-Return-Path: <stable+bounces-210029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3422D2FEE1
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 11:54:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8062D30015
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 12:00:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36ED63065AAB
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 10:51:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D41A330B53F7
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 10:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FEF36215F;
-	Fri, 16 Jan 2026 10:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A1335FF54;
+	Fri, 16 Jan 2026 10:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szxW9VX8"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="aj8IYQkX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F403612E0;
-	Fri, 16 Jan 2026 10:51:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC4434EF0C
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 10:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768560681; cv=none; b=gpNL0mypeEHSIKXXd81E5YW74jwWUXHDJxQ4dWyXkgbadE8xOpLZEX7PDSwp98lj3ANBTNTy/H3L4epishgFJ/KFvGff0eS/qv7C3NVXY61DIBvDjRqhquUjp1kiHH4rIKCyH6BvqcLol3EvPq4emJe6qaFJRL+DY8g8+sMNiKk=
+	t=1768561042; cv=none; b=HThaV4fKi/zSMehHDookMo0G7rFz30qECk92lTtAk3jhYTWBh0R4XeRkl18uK1fDn60bJGeXYLGuxrs7sHd3uV3jBKItBh2YsE/3QCzBPed1g8NlEM07LSnwsZRw+u/YbVwQZGwrPFvNl8Wrv1krQk7d9HlKbami7t9j/pWRmX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768560681; c=relaxed/simple;
-	bh=C/iOXXypU3ALZ5u2DCCVNIJDpsdSLXv3Ax1IBS55cr4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CTn5dxSjF8imALFFpqUvJsEN2I4PZNEUZQTltPKC4yTRYRyEKHHM2fyqgCg73CXVR0ZixD3YZggVAyQpgFdAVOE/ra1xLk5rfCs14FihYogx5vhw8RCSRdf2g7dY7vD48BoMayA24+k/g4k73NeHhp6379S2bR42QkWr/drQXXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szxW9VX8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F015DC116C6;
-	Fri, 16 Jan 2026 10:51:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768560680;
-	bh=C/iOXXypU3ALZ5u2DCCVNIJDpsdSLXv3Ax1IBS55cr4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=szxW9VX83GZ5NfKf/wbY6UGayDmRZBjaljza7alCN+tZWa4T6Mt/gdUThn+eftMSF
-	 DvwVhtxzO/cS6dtMplHjETyHXn/x1akB9QTzvUD4Meec8uzaTVPQA5Ug5tc9+/dxS1
-	 FJ4kBmmsOf7klsE3uR5y7/3xjeIyiw9j7cLbsdG0=
-Date: Fri, 16 Jan 2026 11:51:12 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ron Economos <re@w6rz.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 00/88] 6.6.121-rc1 review
-Message-ID: <2026011656-yodel-explode-757d@gregkh>
-References: <20260115164146.312481509@linuxfoundation.org>
- <ee407adc-5458-4bc9-9a26-f6026488fcca@w6rz.net>
+	s=arc-20240116; t=1768561042; c=relaxed/simple;
+	bh=Q6KPtS8bMf1oIQyxx4s284r/Pyia3SrLlRaC8p0pSyg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U9Xv+KOj3a/+EsGCvY56YE+tBkQ5jv1/SNUAdGLu9M53XxvE52YAuThhTgGtTyvkacHrsyqIp5CdcvKGEHwFieEca5tg8i88rdQ4lM/JNaO472O8Dk4S7hsWN0n1xTW5PB2z28zSg4niKi2A2pKy/Kra10up4lg9O+6xYOlF+nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=aj8IYQkX; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4801bc328easo12506625e9.3
+        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 02:57:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1768561030; x=1769165830; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e9CJ5lCqudHPL16t4ANvhZIDowXgIqEc1GchaTXvUDg=;
+        b=aj8IYQkXgfrqC04lBV9gefos/MgCmz5TGl5WNpwX8de702nM5ZJM/UvGuyh3e7xr0g
+         joYaVijuVUyQ4wZ9EAhdYuc0V/gjIepZ2sVtcFtWkeNv9ACZnPjgL6mEXXRzvHWikIJw
+         i1GEie+W01oN79Pzqo16QwJ3MmbOwdZ2tIq/64HhnLzNTktQK7C/MNkeLyKzFifsIWxN
+         FKeBDc0wBSnA23l5XIAe9h9+ezOdPM4cRbUvzf5doMUfystnWEufGsEoPAPmSpLIxta0
+         HQrC0d2PP8JLXwVkwILn57fzWdl0VmGSNk2qRd+T2BaCzMt8mGW7XQ8Le6f+IWFm8Fz8
+         vTaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768561030; x=1769165830;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e9CJ5lCqudHPL16t4ANvhZIDowXgIqEc1GchaTXvUDg=;
+        b=ZJ4Kn0wqpgTrLxCd2b/36YkDMjvtM8HBc2Bx423Q1ksDvI1YOsqpmZ3qIXg5KOrkod
+         /5GJOG18nalKyHqioROFSHaoqWx71Bqqj/qngXo1000hauQTfczD85EP7bT4WvHq67jX
+         7GcJqmyISBSs+T1aOiUEA03D1S6PvgJkCdAL1ZaKPivRdTMRvoOchokAc3fX8LJZ4+9K
+         9Cq9er/ZiP1EoRi1Bernihuf2+EE7xuByT5P6zvkB7SWgpxw0/MOm8nZy263LdAccRQP
+         tTBO/r+1hqYABrng/3mnH73TmupVvqtYbAZUEIqxftRX5yTnt9arSYjEtQKgHDnVQjMj
+         6Ilw==
+X-Forwarded-Encrypted: i=1; AJvYcCWTIfXkXsj8930Pqg6l3pzbV3qo3sgnE6ZM7dXW4I6Jvj3R10/rtVoGcWOf+hBvsYvJkTU0OGQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMag3+112PEpEYSeRc1FRL/85mWsUJZlPB1shWXrQ8oKhfydjV
+	djdLA3Ag4vVMzr9IGJMnQ62nlLpahGHTy6wjnP4/R56+cHzW5bDSCKE=
+X-Gm-Gg: AY/fxX5gLlqSp+ZnpjZXakAYsgp/7UbMFxXEZ2s4PGMJGqeBpy1aajOi7Qua13qo17K
+	F/2Vt9QYj0N8dvx+eQngb4q78ewL79z/EIqDsVI5O9N3nDlVp/cUyd802WLYbKZ+IkIPkE42t/8
+	hJNa2BN3JrcVHWZuGitVY+hPYwonlD/aYxBDqSl7PZioU+5v5hCP2b++WZu82CRQzeJd4o89EbA
+	SUm9EgdAH/22K1SpgF4W4dVc0kahw3dglgnpxEeKjRUvSsZk40HXwGfQRu5G3rddeAOz+n8qVrT
+	+Pqberz18Ybe1xprCcVHBwcLmKWom8V2jHntpZiqM19YtmIMSnv1zoCkCeMUHx6VL6UgR9acXYS
+	NJ7KFZWPibAGX+xMJLyWwjq4SFjSe4zZ50btab+hH4xzHVztNd/nE9+JM0VcczEaub+QxtnJVEy
+	+ip11DKU6Wr3O7VjaJ4U/Uhxcd2KsJg+IrryHK1AKI0qfP8fgR68iJfXVDrgXT3HMQ
+X-Received: by 2002:a05:600c:3acf:b0:47d:403e:4eaf with SMTP id 5b1f17b1804b1-4801eabef96mr22225685e9.10.1768561029680;
+        Fri, 16 Jan 2026 02:57:09 -0800 (PST)
+Received: from [192.168.1.3] (p5b2ac8bd.dip0.t-ipconnect.de. [91.42.200.189])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801e9432cdsm15436715e9.0.2026.01.16.02.57.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Jan 2026 02:57:09 -0800 (PST)
+Message-ID: <5a12b63f-d518-4cb9-8ced-e3f70965e90d@googlemail.com>
+Date: Fri, 16 Jan 2026 11:57:08 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 00/88] 6.6.121-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260115164146.312481509@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ee407adc-5458-4bc9-9a26-f6026488fcca@w6rz.net>
 
-On Fri, Jan 16, 2026 at 02:17:49AM -0800, Ron Economos wrote:
-> On 1/15/26 08:47, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.6.121 release.
-> > There are 88 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Sat, 17 Jan 2026 16:41:26 +0000.
-> > Anything received after that time might be too late.
-> > 
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.121-rc1.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> > and the diffstat can be found below.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
-> 
-> There is a new warning caused by commit "riscv: uprobes: Add missing fence.i after building the XOL buffer"
-> 
-> arch/riscv/kernel/probes/uprobes.c: In function 'arch_uprobe_copy_ixol':
-> arch/riscv/kernel/probes/uprobes.c:170:23: warning: unused variable 'start' [-Wunused-variable]
-> † 170 |† † † † †unsigned long start = (unsigned long)dst;
-> † † † |† † † † † † † † † † † †^~~~~
-> 
-> This can be fixed by adding the upstream companion commit "riscv: Replace
-> function-like macro by static inline function", commit id
-> 121f34341d396b666d8a90b24768b40e08ca0d61
+Am 15.01.2026 um 17:47 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.121 release.
+> There are 88 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-I would, but it doesn't apply cleanly :(
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-Can you provide a working backport?
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-thanks,
 
-greg k-h
+Beste Gr√º√üe,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
