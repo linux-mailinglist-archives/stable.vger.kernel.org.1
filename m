@@ -1,144 +1,279 @@
-Return-Path: <stable+bounces-210056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0956D32CC9
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 15:43:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE12D32CF6
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 15:45:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A935130A28C2
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 14:38:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDF0B300EA2B
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 14:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C420393407;
-	Fri, 16 Jan 2026 14:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5D4C3019DC;
+	Fri, 16 Jan 2026 14:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/srJcu2"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="W2cXZQcE";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mQqovt8b";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="W2cXZQcE";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="mQqovt8b"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87ED63358C0
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 14:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C10B38F22E
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 14:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768574331; cv=none; b=flBi6ddsPoUK1FsE9ia0I9+WzOAiTMzKbLDWFc1ZK4IFI+k4NEHp2j21JbC33MT/aihTMu6BBAJSx4kjGxkjdC7i4mXORSgxEdXreJQZKZwSxREnk0Kn7GR2WJ2S5eaMlUuGLdECRtJAZddSjEcM43BycHprZaFvyBopRvbLnfw=
+	t=1768574441; cv=none; b=QS42uhlt5xF4cAXZN/0DjZEUv1rawAKjpO+/OfhD/ZhtD2pz+zmQCS5xPHWiWRKKRXCM8cis1qmsJg0uAsdLSCN2EbAGNKIw6veipyXKYq/2/ELvUW3nkXfHqVzmdZMYPuZjwjezQKx4C+GZobOyBZvJI2DkvLjJ8J0ifXPpFrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768574331; c=relaxed/simple;
-	bh=CeYWVW8VfM0P+9OVOOOqSKgq9221JvmOkwmMFowPykI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G1OV0TRknb7G3mDkEeQe9Vv1UWPBYKZY8A2fO6HRhYXT4AXZH9xfR/DB0r3Vk2DeYpX8+zg7y1NhVXc1GCPfJdyz/KjGRiN2JyNivYEfLsOuxFFuZ2dS3HXVGKPQLPEQ68VsaynrVUjQusppTRPEVFVGK9Kj+WwzAzrZOcm8q10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/srJcu2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164CCC16AAE
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 14:38:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768574331;
-	bh=CeYWVW8VfM0P+9OVOOOqSKgq9221JvmOkwmMFowPykI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=B/srJcu2r3cvdNI6HK8d6Kg+l8A/v0Bq/olfgH6KG4o4xi62a0HXFRi5TFQmV5H1e
-	 Lwi5/BvbmXsSS7NPOUaYqpumCEL4zeX6crZaRQD7MiDre21uViPRRmmffUkxIzV44b
-	 LpBtlAFE6FRI1B6MLnK9FQVcLCg/fadTDmAsh8vycF7ga6NY/js9LXphuCkn2lsuZJ
-	 sF6JvSaoZ5O5bV364tAHmRJEKNwHyyUkaWz6i7uua79W42zncyDuvWzR+b+AIcjfCg
-	 WttAs6nIuC81VUD48JLawqHW4N4IiIh1Fekt7D/S9sqtjKe7ey+awNDDL8iStuOnlC
-	 AlUXeDS+LReJA==
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-59b6c89d302so1831329e87.1
-        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 06:38:50 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUjcBFNPYWg1TYvCXW+5w1qDBLcAzARIuT2yJ2jZjGmSECL3IxjL2tBes+EwnKG5tardI7R+74=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1ogZrEsToa7zfRjrUHeTTMg7EqvXls0S6tbmU22G1U+NK+buk
-	gZlQQS8Cx+zfA9oQpVjqI9kXff35HQABsv2b5igwPl8oGOkwqXSdyrCzZOg6il2G0zB8ffatXBx
-	7HdhYQRmJRRlyu+Ec2UBvEChIksnssJugArPb9DfxWg==
-X-Received: by 2002:a05:6512:2209:b0:595:910c:8eea with SMTP id
- 2adb3069b0e04-59baeedb8d0mr1047903e87.32.1768574329704; Fri, 16 Jan 2026
- 06:38:49 -0800 (PST)
+	s=arc-20240116; t=1768574441; c=relaxed/simple;
+	bh=JZcEFwJ6RAjn5Bni337pJYN+ViD4/3sb2QCcQVYuJWM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RCOinO6Z06uwVPKt63dxu0immoEYgr+cjgT+SGrwHIUWd80x5I+Q8iXyshNA8HXgNdlOYE9SNY3wFY87st3gXxGS+yVrPyzxTmPPEdStQGKKfVpo7K1pBNi9XwmEgUablYu+azph550V39JrpL2c6JO5zkRdUoibZvP20CIKhME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=W2cXZQcE; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mQqovt8b; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=W2cXZQcE; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=mQqovt8b; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C65233789;
+	Fri, 16 Jan 2026 14:40:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768574436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=D8kSMH2gta+Yma3QMnDCuvguK/0toKW9byQx/lVBXFU=;
+	b=W2cXZQcEu58tSojqQz9KrhUQuTTHIf2SZB58nYl5bifW0498hXY2R8FUkgVcUCV3D4aHSc
+	7Vp96ID2AwEdP+Oq8p6TTHOsU6eNo2KQ9+IKdfqboaDiIF+T37UWYQvfa+Fw7ZGNPduSSj
+	wppsJ6GqSXVZEsXbtfGkwnbrK81hX34=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768574436;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=D8kSMH2gta+Yma3QMnDCuvguK/0toKW9byQx/lVBXFU=;
+	b=mQqovt8blj77FthhSHtvbjI5Mo4ea5I324sOFniBk/DkDhDDHK0u7NoVURt7NmD9/e1Ur1
+	KiJ38IwZcc3cRBDA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W2cXZQcE;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mQqovt8b
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768574436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=D8kSMH2gta+Yma3QMnDCuvguK/0toKW9byQx/lVBXFU=;
+	b=W2cXZQcEu58tSojqQz9KrhUQuTTHIf2SZB58nYl5bifW0498hXY2R8FUkgVcUCV3D4aHSc
+	7Vp96ID2AwEdP+Oq8p6TTHOsU6eNo2KQ9+IKdfqboaDiIF+T37UWYQvfa+Fw7ZGNPduSSj
+	wppsJ6GqSXVZEsXbtfGkwnbrK81hX34=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768574436;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=D8kSMH2gta+Yma3QMnDCuvguK/0toKW9byQx/lVBXFU=;
+	b=mQqovt8blj77FthhSHtvbjI5Mo4ea5I324sOFniBk/DkDhDDHK0u7NoVURt7NmD9/e1Ur1
+	KiJ38IwZcc3cRBDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 46A2D3EA63;
+	Fri, 16 Jan 2026 14:40:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sj7VEORNamnydgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 14:40:36 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH v3 00/21] slab: replace cpu (partial) slabs with sheaves
+Date: Fri, 16 Jan 2026 15:40:20 +0100
+Message-Id: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260116081036.352286-1-tzungbi@kernel.org> <20260116081036.352286-2-tzungbi@kernel.org>
- <20260116141356.GI961588@nvidia.com>
-In-Reply-To: <20260116141356.GI961588@nvidia.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Fri, 16 Jan 2026 15:38:37 +0100
-X-Gmail-Original-Message-ID: <CAMRc=MfNHuTYsZJ+_RqPN1TtLOHsenv2neD5wvhA18NH6m7XjA@mail.gmail.com>
-X-Gm-Features: AZwV_QgKGGwLD0w6o4kmw7zFNYd6T1XDEchQCsf09zNM0M9ftM2EdmkAv3QwV20
-Message-ID: <CAMRc=MfNHuTYsZJ+_RqPN1TtLOHsenv2neD5wvhA18NH6m7XjA@mail.gmail.com>
-Subject: Re: [PATCH 01/23] gpiolib: Correct wrong kfree() usage for `kobj->name`
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Tzung-Bi Shih <tzungbi@kernel.org>, Benson Leung <bleung@chromium.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Linus Walleij <linusw@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <shuah@kernel.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	chrome-platform@lists.linux.dev, linux-kselftest@vger.kernel.org, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
-	Dan Williams <dan.j.williams@intel.com>, linux-gpio@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANVNamkC/2WOQQ6CMBBFr0K6tqYdKIIr72Fc1GEqTQiQjjYq4
+ e4WonHB8k3y3p9JMAVPLI7ZJAJFz37oE+S7TGBr+xtJ3yQWoMBopUBySzYSSzcEabtOVqVFnTd
+ YHKwRyRoDOf9ci+dL4tbzfQivdSDq5fptQb5pRS2VLJ2zgHVdaFQnfjDt8S2WUoSfXSqtt59ES
+ HZdARh0V6PQ/e15nj//IYhq6gAAAA==
+X-Change-ID: 20251002-sheaves-for-all-86ac13dc47a5
+To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
+ Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Spam-Score: -4.51
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FREEMAIL_CC(0.00)[linux.dev,linux-foundation.org,gmail.com,oracle.com,google.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,suse.cz,intel.com];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_RATELIMIT(0.00)[to_ip_from(RLfsjnp7neds983g95ihcnuzgq)];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 8C65233789
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
 
-On Fri, Jan 16, 2026 at 3:14=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
-ote:
->
-> On Fri, Jan 16, 2026 at 08:10:14AM +0000, Tzung-Bi Shih wrote:
-> > `kobj->name` should be freed by kfree_const()[1][2].  Correct it.
-> >
-> > [1] https://elixir.bootlin.com/linux/v6.18/source/lib/kasprintf.c#L41
-> > [2] https://elixir.bootlin.com/linux/v6.18/source/lib/kobject.c#L695
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: c351bb64cbe6 ("gpiolib: free device name on error path to fix km=
-emleak")
-> > Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> > ---
-> >  drivers/gpio/gpiolib.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> > index 5eb918da7ea2..ba9323432e3a 100644
-> > --- a/drivers/gpio/gpiolib.c
-> > +++ b/drivers/gpio/gpiolib.c
-> > @@ -1263,7 +1263,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *=
-gc, void *data,
-> >  err_free_descs:
-> >       kfree(gdev->descs);
-> >  err_free_dev_name:
-> > -     kfree(dev_name(&gdev->dev));
-> > +     kfree_const(dev_name(&gdev->dev));
-> >  err_free_ida:
-> >       ida_free(&gpio_ida, gdev->id);
-> >  err_free_gdev:
->         kfree(gdev);
->
-> I don't think users should be open coding this, put_device() frees the
-> dev_name properly. The issue here is that the code doesn't call
-> device_initialize() before doing dev_set_name() and then tries to
-> fiddle a weird teardown sequence when it eventually does get initialized:
->
-> err_remove_from_list:
->         if (gdev->dev.release) {
->                 /* release() has been registered by gpiochip_setup_dev() =
-*/
->                 gpio_device_put(gdev);
->                 goto err_print_message;
->         }
->
-> If gpiochip_add_data_with_key() is split into two functions, one that
-> does kzalloc(), some initialization and then ends with
-> device_initialize(), then a second function that calls the first and
-> does the rest of the initialization and error unwinds with
-> put_device() it will work a lot better.
->
+Percpu sheaves caching was introduced as opt-in but the goal was to
+eventually move all caches to them. This is the next step, enabling
+sheaves for all caches (except the two bootstrap ones) and then removing
+the per cpu (partial) slabs and lots of associated code.
 
-In theory yes but you wouldn't be the first one to attempt to improve
-it. This code is very brittle when it comes to GPIO chips that need to
-be initialized very early into the boot process. I'm talking old
-drivers in arch which call this function without even an associated
-parent struct device. When I'm looking at it now, it does seem
-possible to call device_initialize() early but whether that will work
-correctly for all existing users is a bigger question.
+Besides (hopefully) improved performance, this removes the rather
+complicated code related to the lockless fastpaths (using
+this_cpu_try_cmpxchg128/64) and its complications with PREEMPT_RT or
+kmalloc_nolock().
 
-I'm open to trying it after v7.0-rc1 is tagged. This would give it
-enough time in linux-next to make sure it works.
+The lockless slab freelist+counters update operation using
+try_cmpxchg128/64 remains and is crucial for freeing remote NUMA objects
+without repeating the "alien" array flushing of SLUB, and to allow
+flushing objects from sheaves to slabs mostly without the node
+list_lock.
 
-Bartosz
+This v3 is the first non-RFC (for real). I plan to expose the series to
+linux-next at this point. Because of the ongoing troubles with
+kmalloc_nolock() that are solved with sheaves, I think it's worth aiming
+for 7.0 if it passes linux-next testing.
+
+Git branch for the v3
+  https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=sheaves-for-all-v3
+
+Which is a snapshot of:
+  https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/sheaves-for-all
+
+Based on:
+  https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/log/?h=slab/for-7.0/sheaves
+  - includes a sheaves optimization that seemed minor but there was lkp
+    test robot result with significant improvements:
+    https://lore.kernel.org/all/202512291555.56ce2e53-lkp@intel.com/
+    (could be an uncommon corner case workload though)
+  - includes the kmalloc_nolock() fix commit a4ae75d1b6a2 that is undone
+    as part of this series
+
+Significant (but not critical) remaining TODOs:
+- Integration of rcu sheaves handling with kfree_rcu batching.
+  - Currently the kfree_rcu batching is almost completely bypassed. I'm
+    thinking it could be adjusted to handle rcu sheaves in addition to
+    individual objects, to get the best of both.
+- Performance evaluation. Petr Tesarik has been doing that on the RFC
+  with some promising results (thanks!) and also found a memory leak.
+
+Note that as many things, this caching scheme change is a tradeoff, as
+summarized by Christoph:
+
+  https://lore.kernel.org/all/f7c33974-e520-387e-9e2f-1e523bfe1545@gentwo.org/
+
+- Objects allocated from sheaves should have better temporal locality
+  (likely recently freed, thus cache hot) but worse spatial locality
+  (likely from many different slabs, increasing memory usage and
+  possibly TLB pressure on kernel's direct map).
+
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+---
+Changes in v3:
+- Rebase to current slab/for-7.0/sheaves which itself is rebased to
+  slab/for-next-fixes to include commit a4ae75d1b6a2 ("slab: fix
+  kmalloc_nolock() context check for PREEMPT_RT")
+- Revert a4ae75d1b6a2 as part of "slab: simplify kmalloc_nolock()" as
+  it's no longer necessary.
+- Add cache_has_sheaves() helper to test for s->sheaf_capacity, use it
+  in more places instead of s->cpu_sheaves tests that were missed
+  (Hao Li)
+- Fix a bug where kmalloc_nolock() could end up trying to allocate empty
+  sheaf (not compatible with !allow_spin) in __pcs_replace_full_main()
+  (Hao Li)
+- Fix missing inc_slabs_node() in ___slab_alloc() ->
+  alloc_from_new_slab() path. (Hao Li)
+  - Also a bug where refill_objects() -> alloc_from_new_slab ->
+    free_new_slab_nolock() (previously defer_deactivate_slab()) would
+    do inc_slabs_node() without matching dec_slabs_node()
+- Make __free_slab call free_frozen_pages_nolock() when !allow_spin.
+  This was correct in the first RFC. (Hao Li)
+- Add patch to make SLAB_CONSISTENCY_CHECKS prevent merging.
+- Add tags from sveral people (thanks!)
+- Fix checkpatch warnings.
+- Link to v2: https://patch.msgid.link/20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz
+
+Changes in v2:
+- Rebased to v6.19-rc1+slab.git slab/for-7.0/sheaves
+  - Some of the preliminary patches from the RFC went in there.
+- Incorporate feedback/reports from many people (thanks!), including:
+  - Make caches with sheaves mergeable.
+  - Fix a major memory leak.
+- Cleanup of stat items.
+- Link to v1: https://patch.msgid.link/20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz
+
+---
+Vlastimil Babka (21):
+      mm/slab: add rcu_barrier() to kvfree_rcu_barrier_on_cache()
+      slab: add SLAB_CONSISTENCY_CHECKS to SLAB_NEVER_MERGE
+      mm/slab: move and refactor __kmem_cache_alias()
+      mm/slab: make caches with sheaves mergeable
+      slab: add sheaves to most caches
+      slab: introduce percpu sheaves bootstrap
+      slab: make percpu sheaves compatible with kmalloc_nolock()/kfree_nolock()
+      slab: handle kmalloc sheaves bootstrap
+      slab: add optimized sheaf refill from partial list
+      slab: remove cpu (partial) slabs usage from allocation paths
+      slab: remove SLUB_CPU_PARTIAL
+      slab: remove the do_slab_free() fastpath
+      slab: remove defer_deactivate_slab()
+      slab: simplify kmalloc_nolock()
+      slab: remove struct kmem_cache_cpu
+      slab: remove unused PREEMPT_RT specific macros
+      slab: refill sheaves from all nodes
+      slab: update overview comments
+      slab: remove frozen slab checks from __slab_free()
+      mm/slub: remove DEACTIVATE_TO_* stat items
+      mm/slub: cleanup and repurpose some stat items
+
+ include/linux/slab.h |    6 -
+ mm/Kconfig           |   11 -
+ mm/internal.h        |    1 +
+ mm/page_alloc.c      |    5 +
+ mm/slab.h            |   53 +-
+ mm/slab_common.c     |   61 +-
+ mm/slub.c            | 2631 +++++++++++++++++---------------------------------
+ 7 files changed, 972 insertions(+), 1796 deletions(-)
+---
+base-commit: aa2ab7f1e8dc9d27b9130054e48b0c6accddfcba
+change-id: 20251002-sheaves-for-all-86ac13dc47a5
+
+Best regards,
+-- 
+Vlastimil Babka <vbabka@suse.cz>
+
 
