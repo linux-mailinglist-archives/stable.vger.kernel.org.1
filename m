@@ -1,133 +1,162 @@
-Return-Path: <stable+bounces-209986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B448D2BB28
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 06:00:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC40D2BB63
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 06:02:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 340BE300EA29
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 05:00:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC1FA30373BA
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 05:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62790346ACF;
-	Fri, 16 Jan 2026 05:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DE5349B16;
+	Fri, 16 Jan 2026 05:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqI1kM87"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QF84nhio"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57E2346E4C;
-	Fri, 16 Jan 2026 05:00:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBCC381C4;
+	Fri, 16 Jan 2026 05:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768539652; cv=none; b=HdFpurBYe2BC/7OJLKUXsUfEFJGD6fWMnMWVzC6K4BKoWA8BgPnQ55CVCcWraH4AOR/AUY3GoJNMwnnFPtK7hQiFbkHXUBaCEQ6eC6gdfE3kq0AJIReeghtUvnh0bpP3IdjjxAFT2iixIqV5XHVIc4wbZNDQK5gv4gFIeAlnh54=
+	t=1768539755; cv=none; b=Hm/VcQHnNz7LXX0flhn04NcseC5kGjappXIcdqq6Azq0uvUxxnHmNM+hv53eH0f/maDYv5zet6bqaItz0++w5uuMFvL6hjNaz1OxpgUWdphJYfq4P2jOjcTD66FSxfWV1YoD+glZTBbZvBgGj18lN55Xr3j6krf3TEXxpO18I/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768539652; c=relaxed/simple;
-	bh=xSptFaBZ/Dy9J1LxiE5xyKBnbnA4K005bsuBlQwSzdc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RGKgEv9luXf9+NQFQVA0AozQnFkx02l11IvhyghnMof84AXNTo4HJK75gxS7XSPNMiNds7KYGsIb2a9eWaElNJVTkA+tIa4m6wkmn5y6RQdyZXdzMODUh8ulQXUCC88n6DHOoi7k7EVQa04Ym7U/KkfQC2WuhSmCS6blLLlaYLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqI1kM87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98074C116C6;
-	Fri, 16 Jan 2026 05:00:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768539652;
-	bh=xSptFaBZ/Dy9J1LxiE5xyKBnbnA4K005bsuBlQwSzdc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eqI1kM87ra5XPhHD+gzZ9ZLCwxmr3Ap+6tr+veXwQVeOr0dNQkS677oxFC+Et47fE
-	 dJS/xVxYl3ZW0a/LdIvtMmQQYdY918oqjox0s6zWJeCn0vhSfHg4Mel4xygvuw7X5+
-	 bpSzQmfRmtMEnNl20e7y6HhCCTP2eVC5ikZGs9fZAzF1X8EV1buTs/w66BK6iHEwmo
-	 x6qNCi4kLU/bqp84B4Pfdi1Rd+IFfHcHh3jlMyWzBrEUxZoq8wUCcBp+w95jOC/+7J
-	 LphKeRVkzXVG9PBklURl9pJQZ3uzhkS3oSMvxolIShrjV2ryAMkzGjMOaowmmzscM4
-	 4Dgacl6kXevKg==
-Date: Thu, 15 Jan 2026 22:00:46 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kbuild@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] rust: kbuild: give `--config-path` to `rustfmt` in
- `.rsi` target
-Message-ID: <20260116050046.GA1452322@ax162>
-References: <20260115183832.46595-1-ojeda@kernel.org>
+	s=arc-20240116; t=1768539755; c=relaxed/simple;
+	bh=2lzUz9h1vua/H2JQTmqw5HA3FkojC1JTpQPO7x8oVY0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Klk2/Cc1oVYS+x96n77QASt/+Zm5jTOa6OHDwF4Yvl2XNlgLRRnpaVuk2bqcvBaYwl/ltFHvImHg0szn9wlfiT5Uh40bV5M1Qi+WS4Wp6vLuR+9YqkDq72dq7713HEG53Wv6gDhEAvH0QZo+ONZ/nBvzCFJZHn88qoR8+XtKtI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QF84nhio; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=xDzU4ApYApKN39wDu9fSahS1bVmty/puJiOGtVwxREg=;
+	b=QF84nhiosDjCdPxB5bqnBCO4p9oyZSP+22awo7nFdzq4rliUzFsw4sbmC/Ah1l
+	KUtC7M5YA6KuIjaayS7ZshIIgWLU3uboH8wc8PDz7AMQ5XRFIJRsO9afHKz4OiJz
+	8hSZvIAvZzuAwq7KLqE0dbgazXt1Jcslrb1mhs6U01zdk=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wAHb3NPxmlp82WtHA--.35186S2;
+	Fri, 16 Jan 2026 13:02:08 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH v5.15] drm/ttm: fix undefined behavior in bit shift for TTM_TT_FLAG_PRIV_POPULATED
+Date: Fri, 16 Jan 2026 13:02:05 +0800
+Message-Id: <20260116050205.2296956-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115183832.46595-1-ojeda@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAHb3NPxmlp82WtHA--.35186S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxZr43tr43trW8ZF13uw13CFg_yoWrXFWrpa
+	15G343Ar45trs8uw4xXFy0ya4qyanrtF4DZrs5Ar1xZrs2yr129FWDKw13WFyUGrWUJryf
+	XFnayr95Z3Wq9aDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pM0PfUUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+RJ6FGlpxlKV0wAA3X
 
-On Thu, Jan 15, 2026 at 07:38:32PM +0100, Miguel Ojeda wrote:
-> `rustfmt` is configured via the `.rustfmt.toml` file in the source tree,
-> and we apply `rustfmt` to the macro expanded sources generated by the
-> `.rsi` target.
-> 
-> However, under an `O=` pointing to an external folder (i.e. not just
-> a subdir), `rustfmt` will not find the file when checking the parent
-> folders. Since the edition is configured in this file, this can lead to
-> errors when it encounters newer syntax, e.g.
-> 
->     error: expected one of `!`, `.`, `::`, `;`, `?`, `where`, `{`, or an operator, found `"rust_minimal"`
->       --> samples/rust/rust_minimal.rsi:29:49
->        |
->     28 | impl ::kernel::ModuleMetadata for RustMinimal {
->        |                                               - while parsing this item list starting here
->     29 |     const NAME: &'static ::kernel::str::CStr = c"rust_minimal";
->        |                                                 ^^^^^^^^^^^^^^ expected one of 8 possible tokens
->     30 | }
->        | - the item list ends here
->        |
->        = note: you may be trying to write a c-string literal
->        = note: c-string literals require Rust 2021 or later
->        = help: pass `--edition 2024` to `rustc`
->        = note: for more on editions, read https://doc.rust-lang.org/edition-guide
-> 
-> A workaround is to use `RUSTFMT=n`, which is documented in the `Makefile`
-> help for cases where macro expanded source may happen to break `rustfmt`
-> for other reasons, but this is not one of those cases.
-> 
-> One solution would be to pass `--edition`, but we want `rustfmt` to
-> use the entire configuration, even if currently we essentially use the
-> default configuration.
-> 
-> Thus explicitly give the path to the config file to `rustfmt` instead.
-> 
-> Reported-by: Alice Ryhl <aliceryhl@google.com>
-> Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+[ Upstream 387659939c00156f8d6bab0fbc55b4eaf2b6bc5b commit ]
 
-I assume you will take this via the Rust tree?
+Shifting signed 32-bit value by 31 bits is undefined, so changing
+significant bit to unsigned. The UBSAN warning calltrace like below:
 
-> ---
->  scripts/Makefile.build | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index 5037f4715d74..0c838c467c76 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -356,7 +356,7 @@ $(obj)/%.o: $(obj)/%.rs FORCE
->  quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
->        cmd_rustc_rsi_rs = \
->  	$(rust_common_cmd) -Zunpretty=expanded $< >$@; \
-> -	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) $@
-> +	command -v $(RUSTFMT) >/dev/null && $(RUSTFMT) --config-path $(srctree)/.rustfmt.toml $@
->  
->  $(obj)/%.rsi: $(obj)/%.rs FORCE
->  	+$(call if_changed_dep,rustc_rsi_rs)
-> 
-> base-commit: 74e15ac34b098934895fd27655d098971d2b43d9
-> -- 
-> 2.52.0
-> 
+UBSAN: shift-out-of-bounds in ./include/drm/ttm/ttm_tt.h:122:26
+left shift of 1 by 31 places cannot be represented in type 'int'
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x7d/0xa5
+ dump_stack+0x15/0x1b
+ ubsan_epilogue+0xe/0x4e
+ __ubsan_handle_shift_out_of_bounds+0x1e7/0x20c
+ ttm_bo_move_memcpy+0x3b4/0x460 [ttm]
+ bo_driver_move+0x32/0x40 [drm_vram_helper]
+ ttm_bo_handle_move_mem+0x118/0x200 [ttm]
+ ttm_bo_validate+0xfa/0x220 [ttm]
+ drm_gem_vram_pin_locked+0x70/0x1b0 [drm_vram_helper]
+ drm_gem_vram_pin+0x48/0xb0 [drm_vram_helper]
+ drm_gem_vram_plane_helper_prepare_fb+0x53/0xe0 [drm_vram_helper]
+ drm_gem_vram_simple_display_pipe_prepare_fb+0x26/0x30 [drm_vram_helper]
+ drm_simple_kms_plane_prepare_fb+0x4d/0xe0 [drm_kms_helper]
+ drm_atomic_helper_prepare_planes+0xda/0x210 [drm_kms_helper]
+ drm_atomic_helper_commit+0xc3/0x1e0 [drm_kms_helper]
+ drm_atomic_commit+0x9c/0x160 [drm]
+ drm_client_modeset_commit_atomic+0x33a/0x380 [drm]
+ drm_client_modeset_commit_locked+0x77/0x220 [drm]
+ drm_client_modeset_commit+0x31/0x60 [drm]
+ __drm_fb_helper_restore_fbdev_mode_unlocked+0xa7/0x170 [drm_kms_helper]
+ drm_fb_helper_set_par+0x51/0x90 [drm_kms_helper]
+ fbcon_init+0x316/0x790
+ visual_init+0x113/0x1d0
+ do_bind_con_driver+0x2a3/0x5c0
+ do_take_over_console+0xa9/0x270
+ do_fbcon_takeover+0xa1/0x170
+ do_fb_registered+0x2a8/0x340
+ fbcon_fb_registered+0x47/0xe0
+ register_framebuffer+0x294/0x4a0
+ __drm_fb_helper_initial_config_and_unlock+0x43c/0x880 [drm_kms_helper]
+ drm_fb_helper_initial_config+0x52/0x80 [drm_kms_helper]
+ drm_fbdev_client_hotplug+0x156/0x1b0 [drm_kms_helper]
+ drm_fbdev_generic_setup+0xfc/0x290 [drm_kms_helper]
+ bochs_pci_probe+0x6ca/0x772 [bochs]
+ local_pci_probe+0x4d/0xb0
+ pci_device_probe+0x119/0x320
+ really_probe+0x181/0x550
+ __driver_probe_device+0xc6/0x220
+ driver_probe_device+0x32/0x100
+ __driver_attach+0x195/0x200
+ bus_for_each_dev+0xbb/0x120
+ driver_attach+0x27/0x30
+ bus_add_driver+0x22e/0x2f0
+ driver_register+0xa9/0x190
+ __pci_register_driver+0x90/0xa0
+ bochs_pci_driver_init+0x52/0x1000 [bochs]
+ do_one_initcall+0x76/0x430
+ do_init_module+0x61/0x28a
+ load_module+0x1f82/0x2e50
+ __do_sys_finit_module+0xf8/0x190
+ __x64_sys_finit_module+0x23/0x30
+ do_syscall_64+0x58/0x80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+ </TASK>
+
+Fixes: 3312be8f6fc8 ("drm/ttm: move populated state into page flags")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20221031113350.4180975-1-cuigaosheng1@huawei.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+[ The context change is due to the commit 43d46f0b78bb
+("drm/ttm: s/FLAG_SG/FLAG_EXTERNAL/") in v5.16
+which is irrelevant to the logic of this patch.
+In addition, v6.1 has included the fix. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+---
+ include/drm/ttm/ttm_tt.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/drm/ttm/ttm_tt.h b/include/drm/ttm/ttm_tt.h
+index b20e89d321b0..4c35802209c4 100644
+--- a/include/drm/ttm/ttm_tt.h
++++ b/include/drm/ttm/ttm_tt.h
+@@ -43,7 +43,7 @@ struct ttm_operation_ctx;
+ #define TTM_PAGE_FLAG_SG              (1 << 8)
+ #define TTM_PAGE_FLAG_NO_RETRY	      (1 << 9)
+ 
+-#define TTM_PAGE_FLAG_PRIV_POPULATED  (1 << 31)
++#define TTM_PAGE_FLAG_PRIV_POPULATED  (1U << 31)
+ 
+ /**
+  * struct ttm_tt
+-- 
+2.34.1
+
 
