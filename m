@@ -1,214 +1,166 @@
-Return-Path: <stable+bounces-210058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFB3D32EBB
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 15:54:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC46ED32F7B
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 15:58:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00FF1306CD9C
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 14:41:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1534131D4590
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 14:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5F22727FC;
-	Fri, 16 Jan 2026 14:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8C439524E;
+	Fri, 16 Jan 2026 14:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="VIx4ysKc";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lUDMhmHY";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="VIx4ysKc";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lUDMhmHY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rxm/VcE3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AC0394480
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 14:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF4E39449B
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 14:42:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768574455; cv=none; b=puJA4JralEZs20Giw9fTv6VZAS2ezjQVoF2zPcCjSaehhX0akHJZYVpoMSr/EvkFGQ6uN+Nvnpq/VP9Xto+C6+nbKOrVS8c4slxENfL7C2ouZAYodWaT7SYasomsDL+GSHWvMrQDsD4GxYwhqUiZ7j/fiAkvi6dbLefSs6xSSkU=
+	t=1768574554; cv=none; b=E33SO3u/Ulz697WvZ2Fiemr/LKJA8d7xH6Q6gMcLTfJBOIEc+VR7SDUKkBTe1pgpstRpYlcsaXc0Ba9KSxrznonekiZd/POVBsOnsc3f2SoCjXjzIbEbrc1vEdcvkf4Xps5mOn+8oVO305cuuB9SGsvkRSPCWBVi1YrDAOl8DSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768574455; c=relaxed/simple;
-	bh=2dxN373nd33A36HYKm5zAqxbXMPp7koH+IgdNry5g9s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mzAa4Tlxoya/3YzVIcq5+wypWgF+yymjlVeIZNB0mQx0QwxXHsg/UYz0rv78iDAqM7ydzZ0cBqyPHjAfxORh6gL3g0zFYruhHPt7XT3e/y8Fzn7VlPk7EaiE0lam9n6AvoFI6pVpoyT6xjflJbyPHFv0eVE2gVykTPpoGRamXAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=VIx4ysKc; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lUDMhmHY; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=VIx4ysKc; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=lUDMhmHY; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id AF381337C8;
-	Fri, 16 Jan 2026 14:40:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768574436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N3DPRc87aFtnpwc8583i8li1YmCTDsn4GBRi/xoPavM=;
-	b=VIx4ysKcVd45gYQ05wOQxYUCWqZWv0RkE8KFAngIZWuPyVPw/A3nlnjsZJ3Pu9JOmeYdzO
-	az79Ytn2bavsmsW42oA7p5lHvewH6Ys3FmoRoP4OlXN2mS3dnOQlq4HJLsewwYypRi9OsG
-	P2FSirPQ7oaRxHt8wVMxtCvzOCoST2o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768574436;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N3DPRc87aFtnpwc8583i8li1YmCTDsn4GBRi/xoPavM=;
-	b=lUDMhmHYsrl4K7lNpMBUcqhJq2GaLk9ZOMCidLB2S6PYZPd5WWdyL0SImiMebL5HArMOph
-	/D8S4kbBtC4qu2AA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VIx4ysKc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lUDMhmHY
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768574436; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N3DPRc87aFtnpwc8583i8li1YmCTDsn4GBRi/xoPavM=;
-	b=VIx4ysKcVd45gYQ05wOQxYUCWqZWv0RkE8KFAngIZWuPyVPw/A3nlnjsZJ3Pu9JOmeYdzO
-	az79Ytn2bavsmsW42oA7p5lHvewH6Ys3FmoRoP4OlXN2mS3dnOQlq4HJLsewwYypRi9OsG
-	P2FSirPQ7oaRxHt8wVMxtCvzOCoST2o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768574436;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N3DPRc87aFtnpwc8583i8li1YmCTDsn4GBRi/xoPavM=;
-	b=lUDMhmHYsrl4K7lNpMBUcqhJq2GaLk9ZOMCidLB2S6PYZPd5WWdyL0SImiMebL5HArMOph
-	/D8S4kbBtC4qu2AA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8A1043EA65;
-	Fri, 16 Jan 2026 14:40:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uMFpIeRNamnydgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 16 Jan 2026 14:40:36 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 16 Jan 2026 15:40:21 +0100
-Subject: [PATCH v3 01/21] mm/slab: add rcu_barrier() to
- kvfree_rcu_barrier_on_cache()
+	s=arc-20240116; t=1768574554; c=relaxed/simple;
+	bh=KX2IErmnbLgLJTuS0TqC6Ce02SpKwHVKEysgCsr18GE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XVrFjuWUSzLpCNC0DlZpY3iQWhgR/D8jQLj0NP/i/RKxIirhkFlTuK00oZWb7Su1ckzqDOJeVHD6wE8E3FXNlsPw6gvD314UFPN85L6WqHQxiueYZM6FdP61zMVCiJaT2xhcOJqWn8X1vGY28aZkenx8iKk+Fy7OOJlP3pMI9r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rxm/VcE3; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-78c6a53187dso21300317b3.2
+        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 06:42:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768574552; x=1769179352; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y0Wu6AiQkkS9+nilzgzJB3rMYTbS0yo7XGq1n41xVt8=;
+        b=Rxm/VcE32t8SMJh3xjpZeY8t3pVt4CmxUbjEl9LWH+rgZso13cQ4bCS/kVpVtLkxRX
+         yZu9GEelMDIa2tDnC8ycKTSELBaHkpwR8hQc8EpGiL7nbAJvCZy9z3tMFVnLdN71Fuo+
+         q1euxx3NAmv0hvfssy6YGSuQh4KAz1Mu+JlIKR30bMhkUUXAJvWfdOVdulfQCcgITKD9
+         M1Nc4bX4RnSvlcgk2OdktrtHUmKb75SNVnEhBNzLJz9s5+bTLvB0SK0Cqt4CGC1sYFr6
+         ZiFoeRkR+ywalXaRESedd8XycHDuK89wOJYd+z5M1mPtkSUOao/TkO7AHw3zZu53oYpQ
+         eB+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768574552; x=1769179352;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Y0Wu6AiQkkS9+nilzgzJB3rMYTbS0yo7XGq1n41xVt8=;
+        b=ZpetsPsStQS+5TRWVjbh+cHZbib4SQkM6tSd/fSnBYvrDjNLPhgRmPXuxYEUg9hQ3O
+         veDA5e+8Uf20cQrSq5QH1NK63vCKHhywSEmLbX+SjNFxXQooEV1HVuZkKvAFECrwcxsO
+         7rF2TSHj0xNfjgiXM0qtTWkAF6y8hx702wU02X6IetD6xuRrHLQqDAwAY8SwyvsgZfcf
+         CEZBkil0azWteKZryk+0i+duEJwWUGmgo+0Fjj69UGQNhx1XQ+kTNjcWd7J0Y5uGKw1W
+         K5XpSj/F/o6baRGx3Wjdj9DalXNhxudvliWQaB2Lmmr8Y5h8NXZ3N71fmE7IEar6b9Zg
+         Zo1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWxvfAy5hw0SS/gFMuEp3LnEtGtZToa3hvCWj3OJ6oaxZ41pp4Yjl3ZIqjChhLfCG0xa8dWl5g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxI0DX7v2vADIdC5VIydfm2u5LSeJvlaBEMRxMK/ygGBrHzDoHp
+	Cx36xXu308EAvlsAHYTQD8zOarY5A4iogWAL8eKuQM1KVO8gVlEJcOYd0DAZOAFeP7pLli2SVHg
+	22wNLyn9aWr2/Z1aJybL5MQTPeMwbya9gXre2
+X-Gm-Gg: AY/fxX6Nr6bQFqJAVqOvL+0+A1cUWr573626qsijlfOuTI5Af6B2nuzt2tdejOQbHr2
+	1nuFWxgqY6pGM2tF8euo511ruS2BRqmjNadorZUHcck+z8EDcWmXfAU1ijqpjdN8Xu1sdsq/ebm
+	7qLhUjZJZhV+AAf0Wbf2sYT/ddhgTRSseVAUIA0pgrzy/+EGnjmS7MwIQszs4iwr5WcpxeQSK4I
+	CKhp4qxzzIYn7os0fqt3LFxhjdY14pv62TtucO27PpYmqdWztzorQTGiExi4njb7mE9fKDGA+eO
+	MFY9YX0zhSBBVfi0BwJgATpChFp9bqJwhk8CpX2qVdVa0PWN7wwRYq7ir0axUuyUNuHn
+X-Received: by 2002:a05:690c:6609:b0:792:7828:b709 with SMTP id
+ 00721157ae682-793c66f4bd6mr24042237b3.22.1768574551609; Fri, 16 Jan 2026
+ 06:42:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-sheaves-for-all-v3-1-5595cb000772@suse.cz>
-References: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
-In-Reply-To: <20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz>
-To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Suren Baghdasaryan <surenb@google.com>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
- bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
- Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linux.dev,linux-foundation.org,gmail.com,oracle.com,google.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,suse.cz,intel.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_RATELIMIT(0.00)[to_ip_from(RLfsjnp7neds983g95ihcnuzgq)];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email]
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: AF381337C8
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Level: 
+References: <20251107033924.3707495-1-quic_shuaz@quicinc.com>
+ <CAMRc=Mce4KU_zWzbmM=gNzHi4XOGQWdA_MTPBRt15GfnSX5Crg@mail.gmail.com>
+ <212ec89d-0acd-4759-a793-3f25a5fbe778@oss.qualcomm.com> <CAMRc=MdoUvcMrMga6nNYt8d-o8P-r3M_xY_JHznP3ffmZv8vkQ@mail.gmail.com>
+ <96472b7c-9288-4f81-9673-d91376189a18@oss.qualcomm.com>
+In-Reply-To: <96472b7c-9288-4f81-9673-d91376189a18@oss.qualcomm.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Fri, 16 Jan 2026 09:42:20 -0500
+X-Gm-Features: AZwV_QhPiDz6MueN4sUXp8m2kkBxLdWM5NMAxLszIhWWEfsuGtFDaz5gEkCX6YU
+Message-ID: <CABBYNZ+5ry0FWFSgOskw60jja9mE6WG5AwOi2pKxrkzqMn9bkQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] Fix SSR unable to wake up bug
+To: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Shuai Zhang <quic_shuaz@quicinc.com>, 
+	linux-arm-msm@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-After we submit the rcu_free sheaves to call_rcu() we need to make sure
-the rcu callbacks complete. kvfree_rcu_barrier() does that via
-flush_all_rcu_sheaves() but kvfree_rcu_barrier_on_cache() doesn't. Fix
-that.
+Hi Shuai,
 
-This currently causes no issues because the caches with sheaves we have
-are never destroyed. The problem flagged by kernel test robot was
-reported for a patch that enables sheaves for (almost) all caches, and
-occurred only with CONFIG_KASAN. Harry Yoo found the root cause [1]:
+On Fri, Jan 16, 2026 at 4:48=E2=80=AFAM Shuai Zhang
+<shuai.zhang@oss.qualcomm.com> wrote:
+>
+> Hi Luiz, Marcel
+>
+> On 1/16/2026 5:20 PM, Bartosz Golaszewski wrote:
+> > On Fri, Jan 16, 2026 at 9:37=E2=80=AFAM Shuai Zhang
+> > <shuai.zhang@oss.qualcomm.com> wrote:
+> >> Hi Bartosz
+> >>
+> >> On 11/7/2025 11:37 PM, Bartosz Golaszewski wrote:
+> >>> On Fri, 7 Nov 2025 04:39:22 +0100, Shuai Zhang <quic_shuaz@quicinc.co=
+m> said:
+> >>>> This patch series fixes delayed hw_error handling during SSR.
+> >>>>
+> >>>> Patch 1 adds a wakeup to ensure hw_error is processed promptly after=
+ coredump collection.
+> >>>> Patch 2 corrects the timeout unit from jiffies to ms.
+> >>>>
+> >>>> Changes v3:
+> >>>> - patch2 add Fixes tag
+> >>>> - Link to v2
+> >>>>     https://lore.kernel.org/all/20251106140103.1406081-1-quic_shuaz@=
+quicinc.com/
+> >>>>
+> >>>> Changes v2:
+> >>>> - Split timeout conversion into a separate patch.
+> >>>> - Clarified commit messages and added test case description.
+> >>>> - Link to v1
+> >>>>     https://lore.kernel.org/all/20251104112601.2670019-1-quic_shuaz@=
+quicinc.com/
+> >>>>
+> >>>> Shuai Zhang (2):
+> >>>>     Bluetooth: qca: Fix delayed hw_error handling due to missing wak=
+eup
+> >>>>       during SSR
+> >>>>     Bluetooth: hci_qca: Convert timeout from jiffies to ms
+> >>>>
+> >>>>    drivers/bluetooth/hci_qca.c | 6 +++---
+> >>>>    1 file changed, 3 insertions(+), 3 deletions(-)
+> >>>>
+> >>>> --
+> >>> Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> >>    Just a gentle ping. This patch series has been Acked but I haven=E2=
+=80=99t
+> >> seen it picked up by linux-next.
+> >>
+> >> Do you need anything else from me?
+> > I don't pick up bluetooth patches, Luiz or Marcel do.
+> >
+> > Thanks,
+> > Bartosz
+>
+> Could you please help clarify this?
 
-  It turns out the object freed by sheaf_flush_unused() was in KASAN
-  percpu quarantine list (confirmed by dumping the list) by the time
-  __kmem_cache_shutdown() returns an error.
+There were no Fixes: or Cc: Stable in your changes to indicate they
+need to be applied to the currently RC and stable trees, in which case
+it will only be merged to next-next at a later stage.
 
-  Quarantined objects are supposed to be flushed by kasan_cache_shutdown(),
-  but things go wrong if the rcu callback (rcu_free_sheaf_nobarn()) is
-  processed after kasan_cache_shutdown() finishes.
+If that is not correct then lets us know if that needs either a Fixes
+or stable tag so I can send a pull request immediately.
 
-  That's why rcu_barrier() in __kmem_cache_shutdown() didn't help,
-  because it's called after kasan_cache_shutdown().
+>
+> Thanks=EF=BC=8C
+>
+> Shuai
+>
 
-  Calling rcu_barrier() in kvfree_rcu_barrier_on_cache() guarantees
-  that it'll be added to the quarantine list before kasan_cache_shutdown()
-  is called. So it's a valid fix!
 
-[1] https://lore.kernel.org/all/aWd6f3jERlrB5yeF@hyeyoo/
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202601121442.c530bed3-lkp@intel.com
-Fixes: 0f35040de593 ("mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction")
-Cc: stable@vger.kernel.org
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Tested-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
- mm/slab_common.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index eed7ea556cb1..ee994ec7f251 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -2133,8 +2133,11 @@ EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
-  */
- void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
- {
--	if (s->cpu_sheaves)
-+	if (s->cpu_sheaves) {
- 		flush_rcu_sheaves_on_cache(s);
-+		rcu_barrier();
-+	}
-+
- 	/*
- 	 * TODO: Introduce a version of __kvfree_rcu_barrier() that works
- 	 * on a specific slab cache.
-
--- 
-2.52.0
-
+--=20
+Luiz Augusto von Dentz
 
