@@ -1,220 +1,161 @@
-Return-Path: <stable+bounces-210065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 160E5D3333E
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 16:32:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF28D33374
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 16:35:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B25A630A7D57
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 15:27:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 97BB7300A2A5
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 15:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9891A338916;
-	Fri, 16 Jan 2026 15:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231C4337B84;
+	Fri, 16 Jan 2026 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QHC3Brnq";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="N/XKr/9s"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HzhOhPu3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QWmDJhWi"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B2E204F93;
-	Fri, 16 Jan 2026 15:27:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEA6284890
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 15:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768577243; cv=none; b=Q26loyGHhjcYsmjrJh60zF8C5nrZ3Vdk4ZpZtSpaauNho7yLDBP1+P8HMhi3bT+4cxB9+rZC5igcIavvj7sLb5/RVmt5mNIdXgKPKSIeCJd63mBk+Kn8YuWhsF39ahcWyAvUAWPc69/xI2RXwV1QuIIrr/pGU9XBtSEf9j0HiXY=
+	t=1768577370; cv=none; b=AokmfZeChfa+m6pCEafEFO+o6ZSdty2H/8ty/t7O9l/nOdUPVOkWSroyxfewO7PoExuQjq8kFhEmScWk3+Nmjec5zGOuBc/jX1P5HYs/H+gujbfXEMZagPi9ngrASX5OQbQPqc8BACQ4ubKoFfX+2bnM8AIYHMsb+WU6cZTQtcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768577243; c=relaxed/simple;
-	bh=31c1DeC91a09f42O0ek5nz13JU6eqdoFA/urQj3o8VA=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=crplepFIKOq6HaYReDmCBn9dzrDQySRO/KKkospVjgsFBg3Q/dJOtWJGjMHPNwFe+3zhTeNP1gALWBOCbCQc1rQ9vJOQ04ULCd/N3tTG4y2P0k7iMtpGAg3Fc5WgREvOHN2lf7EjH2QDtgrEqagCs4JUeDqI3PXVkQh+bKcS1m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QHC3Brnq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=N/XKr/9s; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 16 Jan 2026 15:27:18 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768577240;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20240116; t=1768577370; c=relaxed/simple;
+	bh=sSSS54Xj0ShsXOZuK37+sEwwv3XAEF1W6I/qaNYc2oE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y94RVeNYueczmJlN0mGkLfaikM+56wchO8aMxJHcL49RgcobnGofGo3v55EvcrsV+xRxSd5FFLSUOMoxGZLWQhWPcNjTggnx1k4kb5Z+HiMl2tc6y2JeZEFvV37UBzyYSV5HvUL5UOPrDsSl1kbwcAvB6YTWBZ72K4qdoAoBWr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HzhOhPu3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QWmDJhWi; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768577368;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HtY0sgtQTI5Q94iRvgcX3+6Tm2+EaMbLFKclrW6HaKE=;
-	b=QHC3BrnqvuGF0DGOJSoq4/+9sZy6yq6g7cIq6ZSNCffhuAQNkOcWsm9xgPTEd1PQu1sGqk
-	r9eNn4m1NvMykQNVxHms3dsrrYH4heBCTlK67WvlJ6blTMvbKlyTvDgvxrvaxFm8RIY6yA
-	qJHN3sAWzHA3Jbwff3zDIpKrDpX6ISWkKGqCeroXqou5svJnA+/lHavEdCpxrkJa841ixa
-	Fy+t7tmh273UuZXD705ogPK+EB7keyfGbD0V7b/RjBpgPMBfCsjDXtMXxUjpNroNdggBRU
-	aBmy9n9gCRjNgoU3fiXuZDMqy04T1MnMVX9AyixQPsIgvuxmJ6BfH1a6p+xJ4g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768577240;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HtY0sgtQTI5Q94iRvgcX3+6Tm2+EaMbLFKclrW6HaKE=;
-	b=N/XKr/9sK18bbtAV9n7uT2locscTiaK5ztWj5AO9fT0Rhkwf5Y6T1rjVNFxG4HFsvs/ZCb
-	sez971OE2cvbegDA==
-From: "tip-bot2 for Oleg Nesterov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: perf/core] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
-Cc: Paulo Andrade <pandrade@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
- "Peter Zijlstra (Intel)" <peterz@infradead.org>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <aWO7Fdxn39piQnxu@redhat.com>
-References: <aWO7Fdxn39piQnxu@redhat.com>
+	bh=HcYNjtrM1tx5MNCL5NpuqMAZtAxO/Nx7W07L/efi2Ek=;
+	b=HzhOhPu3FBwcWPCzKBL8MkJXEsYcAqUNMTcpuoiHT/HPMq/4SmdaFxOcn0B7N3BG+9+6Xs
+	xwvM+jg0wGp8C6MW6TPn8eddk8J1u2GXyTZciSBYh79VwKnNKVcRJ0l3l6tpwNML6xzU+E
+	cD4oMzPgRKbRr0GzjGcp2mSLWYdHJeQ=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-631-WZuZIWFEOWikw1c6gGGGSw-1; Fri, 16 Jan 2026 10:29:26 -0500
+X-MC-Unique: WZuZIWFEOWikw1c6gGGGSw-1
+X-Mimecast-MFC-AGG-ID: WZuZIWFEOWikw1c6gGGGSw_1768577366
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-88a344b86f7so56507586d6.0
+        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 07:29:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1768577366; x=1769182166; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HcYNjtrM1tx5MNCL5NpuqMAZtAxO/Nx7W07L/efi2Ek=;
+        b=QWmDJhWizZeQX7ThvA+HEBcNpD1udgrGnfEz/3IN/acHKmkPs1b2+ISDWgTqiDaPU5
+         zqCahOiL0M/eq6XLqxRXcVqKjkjPQcjk3IGhJppZHbQe/T9zzdPCvP4mPf/kLBwPdVPJ
+         z+Qom/dk5p78WgiYyyuFupRmpSopFcoolW5HayQ2amZ2X1KMNpt9bMO1BUN/DTFXVmDi
+         zX8W+01EnDd4L3uQ3asFML+5/U6jxueoWhLT4QugsZ2kNzEKrK9Al0fxQ5fV2L3bwAwK
+         OiwxWS8kwlVMhd1+9BmMVZ+EpWVIynBKLDC1963Kewt0ZT+vVvsbQhzQMKNd0LpUw72Y
+         R31Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768577366; x=1769182166;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HcYNjtrM1tx5MNCL5NpuqMAZtAxO/Nx7W07L/efi2Ek=;
+        b=KjwdKV2w0vcpY2mBlQJQbZFq7wvJ3jOxYZeJgX3PePbJvPay56siMLdHmLt/xcS95j
+         o3/e/g8KwrkBgcn7bzz4L/33Gpo6JW8aPuu58XMWdgjx/wYiq/H3TWq0OMUyID6bQhZt
+         HYLfglF0bDT4QdogCjdFyXdsTlXRu7GF8Yhk4nW4zDM18IvB6JLiY8Qan33Nrui1cn4/
+         s2TBW8CqrmPdCk4nRkMVG2yyaSnnKfDJauKWy1GmLkN9e2ECrdayjh2UqsuteADqWCcF
+         owcvaAz/je7XU3DWbLCwaWvbs4cIFSftA0mHycWwghHwSnmxP+dU9VDNhBurcotbAnt6
+         k0+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVrZhRIv0sMwEVZCG0XtU92e1uZFFGZ1soBRe5JhawuoT2YPdtex2E5OKg43raKb4iebFi5bGA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPzY+R7+BkZJdaWf5g2p/VypmfV/puMTNicL+m7i9BfmGhtwbN
+	PXsW6W8MhXAi+x+xrR3DAoqHUEaL/gTNXR3k2ZoUwbRS0x9jMYcvmXQhuPKuBF1bg+zGnnm8SgQ
+	wvCUmVvS1Hh+w7bvLYS9BFUkWDi9d25ZLrfQ7m9zUgQAdm3cOnGhCcjD6Lg==
+X-Gm-Gg: AY/fxX505jcfnUxyyX59DAeuw8KlelF89hdnaFK9+GnuDn3Z45Rs+/VFa7NVt318mLG
+	QDYNMbS8sBoIExnMCWZCRBlFrYBW2UmC3GAVf+japfzSy6BuCu7uzvCAsKFKsocoe6Ns/VRP52b
+	HbYEK4VhzqXMB7YRRCyarDwMLUlGDUbFeXtoN5C40bWkitRN5yzlsgk5yki7vDRWSOz54uU84pZ
+	KoVUJq7p2f0McSS+pxVvzGtS7Ms3l4YeLmMVk3CIlU+7lvC2J+tD0Gz0+zi6gz1GXFbUyGpnXcy
+	QY8wd5OJQ8IOSvfEkaZbDmZ7WB4mMy64BfnV6g3WQ6ltp/uZrOnUeE4wwi1Dz6TANeU9dTzMTSW
+	4H9fzIp+svHmQuPYYXA8vhWV9DO+W7aHYwcGgPaYwUKhP
+X-Received: by 2002:a05:6214:2305:b0:88a:589b:5dad with SMTP id 6a1803df08f44-8942dd07f96mr46350776d6.27.1768577365739;
+        Fri, 16 Jan 2026 07:29:25 -0800 (PST)
+X-Received: by 2002:a05:6214:2305:b0:88a:589b:5dad with SMTP id 6a1803df08f44-8942dd07f96mr46350456d6.27.1768577365381;
+        Fri, 16 Jan 2026 07:29:25 -0800 (PST)
+Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6cd63esm24958956d6.49.2026.01.16.07.29.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jan 2026 07:29:24 -0800 (PST)
+Date: Fri, 16 Jan 2026 10:29:23 -0500
+From: Brian Masney <bmasney@redhat.com>
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Cc: mturquette@baylibre.com, sboyd@kernel.org, linux-clk@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/7] clk: st: clkgen-pll: Fix a memory leak in
+ clkgen_odf_register()
+Message-ID: <aWpZUz46SQLGf8WX@redhat.com>
+References: <20260116113847.1827694-1-lihaoxiang@isrc.iscas.ac.cn>
+ <20260116113847.1827694-2-lihaoxiang@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176857723836.510.4242271338759775529.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260116113847.1827694-2-lihaoxiang@isrc.iscas.ac.cn>
+User-Agent: Mutt/2.2.14 (2025-02-20)
 
-The following commit has been merged into the perf/core branch of tip:
+On Fri, Jan 16, 2026 at 07:38:41PM +0800, Haoxiang Li wrote:
+> If clk_register_composite() fails, call kfree() to release
+> div and gate.
+> 
+> Fixes: b9b8e614b580 ("clk: st: Support for PLLs inside ClockGenA(s)")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-Commit-ID:     d55c571e4333fac71826e8db3b9753fadfbead6a
-Gitweb:        https://git.kernel.org/tip/d55c571e4333fac71826e8db3b9753fadfb=
-ead6a
-Author:        Oleg Nesterov <oleg@redhat.com>
-AuthorDate:    Sun, 11 Jan 2026 16:00:37 +01:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Fri, 16 Jan 2026 16:23:54 +01:00
+Reviewed-by: Brian Masney <bmasney@redhat.com>
 
-x86/uprobes: Fix XOL allocation failure for 32-bit tasks
+Note for next time: I sent out a Reviewed-by tag on this patch on the
+previous version. Please include those tags on the future versions.
+The only time it's appropriate to not include the tag is if you make
+changes to the patch beyond a trivial change.
 
-This script
+Also you may want to consider using b4 for your workflow since it really
+simplifies your workflow. There's some documentation available at:
 
-	#!/usr/bin/bash
+https://b4.docs.kernel.org/en/latest/
 
-	echo 0 > /proc/sys/kernel/randomize_va_space
+Basically, here's a quick workflow of what I do:
 
-	echo 'void main(void) {}' > TEST.c
+    # Start with a clean branch (say today's linux-next)
+    # Create a new b4-managed branch
+    b4 prep -n my-branch-name
+    # Apply your patches
+    b4 prep --edit-cover
+    b4 prep --auto-to-cc
+    b4 prep --check
+    b4 send --dry-run
+    # Send out your patch series for real
+    b4 send
 
-	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
-	gcc -m32 -fcf-protection=3Dbranch TEST.c -o test
+Later if you need to send out a new version, just use the same b4
+managed branch. It'll track the patch version number for you (the
+PATCH v2 in the subject).
 
-	bpftrace -e 'uprobe:./test:main {}' -c ./test
+You can use 'b4 trailers'
+(https://b4.docs.kernel.org/en/latest/contributor/trailers.html) to pick
+up tags from the list.
 
-"hangs", the probed ./test task enters an endless loop.
+There's also a b4 web submission endpoint you can use instead of sending
+it through a SMTP server:
 
-The problem is that with randomize_va_space =3D=3D 0
-get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
-just return the "addr =3D=3D TASK_SIZE - PAGE_SIZE" hint, this addr is used
-by the stack vma.
+https://b4.docs.kernel.org/en/latest/contributor/send.html
 
-arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
-in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
-vm_unmapped_area() happily returns the high address > TASK_SIZE and then
-get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
-check.
+Brian
 
-handle_swbp() doesn't report this failure (probably it should) and silently
-restarts the probed insn. Endless loop.
-
-I think that the right fix should change the x86 get_unmapped_area() paths
-to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
-CONFIG_X86_X32_ABI=3Dy, in_x32_syscall() falsely returns true in this case
-because ->orig_ax =3D -1.
-
-But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
-the probed task is 32-bit to make in_ia32_syscall() true.
-
-Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
-Reported-by: Paulo Andrade <pandrade@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
----
- arch/x86/kernel/uprobes.c | 24 ++++++++++++++++++++++++
- include/linux/uprobes.h   |  1 +
- kernel/events/uprobes.c   | 10 +++++++---
- 3 files changed, 32 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/kernel/uprobes.c b/arch/x86/kernel/uprobes.c
-index 7be8e36..619dddf 100644
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -1823,3 +1823,27 @@ bool is_uprobe_at_func_entry(struct pt_regs *regs)
-=20
- 	return false;
- }
-+
-+#ifdef CONFIG_IA32_EMULATION
-+unsigned long arch_uprobe_get_xol_area(void)
-+{
-+	struct thread_info *ti =3D current_thread_info();
-+	unsigned long vaddr;
-+
-+	/*
-+	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
-+	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
-+	 * vm_unmapped_area_info.high_limit.
-+	 *
-+	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=3Dy case,
-+	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
-+	 * (falsely) returns true because ->orig_ax =3D=3D -1.
-+	 */
-+	if (test_thread_flag(TIF_ADDR32))
-+		ti->status |=3D TS_COMPAT;
-+	vaddr =3D get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+	ti->status &=3D ~TS_COMPAT;
-+
-+	return vaddr;
-+}
-+#endif
-diff --git a/include/linux/uprobes.h b/include/linux/uprobes.h
-index ee3d36e..f548fea 100644
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -242,6 +242,7 @@ extern void arch_uprobe_clear_state(struct mm_struct *mm);
- extern void arch_uprobe_init_state(struct mm_struct *mm);
- extern void handle_syscall_uprobe(struct pt_regs *regs, unsigned long bp_vad=
-dr);
- extern void arch_uprobe_optimize(struct arch_uprobe *auprobe, unsigned long =
-vaddr);
-+extern unsigned long arch_uprobe_get_xol_area(void);
- #else /* !CONFIG_UPROBES */
- struct uprobes_state {
- };
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index a7d7d83..dfbce02 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1694,6 +1694,12 @@ static const struct vm_special_mapping xol_mapping =3D=
- {
- 	.mremap =3D xol_mremap,
- };
-=20
-+unsigned long __weak arch_uprobe_get_xol_area(void)
-+{
-+	/* Try to map as high as possible, this is only a hint. */
-+	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+}
-+
- /* Slot allocation for XOL */
- static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
- {
-@@ -1709,9 +1715,7 @@ static int xol_add_vma(struct mm_struct *mm, struct xol=
-_area *area)
- 	}
-=20
- 	if (!area->vaddr) {
--		/* Try to map as high as possible, this is only a hint. */
--		area->vaddr =3D get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
--						PAGE_SIZE, 0, 0);
-+		area->vaddr =3D arch_uprobe_get_xol_area();
- 		if (IS_ERR_VALUE(area->vaddr)) {
- 			ret =3D area->vaddr;
- 			goto fail;
 
