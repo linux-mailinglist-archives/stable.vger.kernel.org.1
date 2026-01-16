@@ -1,147 +1,165 @@
-Return-Path: <stable+bounces-210089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4EAD3848F
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 19:44:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB270D38494
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 19:45:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 17D1F300EDBA
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 18:44:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 048AE3007518
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 18:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C9534D4CF;
-	Fri, 16 Jan 2026 18:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7272533C50D;
+	Fri, 16 Jan 2026 18:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w0PZAKZc"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0dKO9GNo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902BC2040B6
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 18:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768589068; cv=none; b=COilVF8LqCC8UigQecF2ydKtMOxXnaUSltdlXtolnXVZvV7GG6EWszSoxe/ngJtSD5h4xJv2/5E5Bh8c7vgTY5AMa6lXUCVFL5qx3HkfBmduNEolmra+wT0Ls+7UkKtqCKIdxXaWZUNKlF2WX1FgCMFXvCuateHq7AL/F15jbHg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768589068; c=relaxed/simple;
-	bh=2cjH3BeJKr7kySKTSNu9Jkp6nte4kPc6qcz0FqlQDnU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=o+cEBGOshAAcq+fEnJsZme6mPpvkSdlnJmfy0NFavU3CCRMD5YQ4U07CUAHgn7fs8mIp6eHZ09HU7d87qnK4vWmTaRNDfHk5w6M9ZJ6qD9GVyRjqgEcYOvmEAEATBcroBNpcQer8lBV7+C/PwYScbWf9KbOycaYNsuQuXz1Klbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w0PZAKZc; arc=none smtp.client-ip=74.125.82.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C678F1AC44D
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 18:45:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768589144; cv=pass; b=GSZ9TUCI5looAabFXTu6PmFJwZrtXHqApKl02xf8PaZ0kNAICUW4wlnq0kLAaVoBDi4gV4mGp06LfBmBEuKuf8mYuKApsfgYM0Mv+kboCu0MtAFw1QxudF91Yn4ZFLzV7y63lkQ8jUwIRJcJWgL0uixaJhALNatf9i9ctXT9oxY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768589144; c=relaxed/simple;
+	bh=hMmiW8zfRsv2dvkHvXYKEE/1e1KgEYzpKKHi4QV047o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eXfyF9L3sSSl+aW4GTaxxKSpOYoUpdDJnZDwQiFI3hE2s0DdFrDyqIei54f/U20Jh5a/zTrs2ROfwcxaPh/LrpvCn+GGte18x0ZdgW6FsQRt0n3zclaiLtN0gPuA/3FV/bpMq+AlVQ6Hh2Sd72JUZ/J1oPGs1E+laj1uM5CdHKw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0dKO9GNo; arc=pass smtp.client-ip=209.85.160.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
-Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-1233b91de6bso4302327c88.1
-        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 10:44:27 -0800 (PST)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-501511aa012so30661cf.0
+        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 10:45:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768589142; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TqKN0Eq/D175RjDVSuIY5WpY5UPUHMrbl0poQTIDJ8hXuv4l5QMLcg4FLsyLNLz6BK
+         O40Uwn1tXs41IN7C0ZiPJGnUVVhxVQe1hEZJwafjQQ4UIvkd125HbSK7KSGTA5FNNTcG
+         Ru3AnTi9b0VEuA1zcF1nJe7oknnEeK8hRwwGnJ0QCMzJsNOUW7SDdv4gDOoAyZUuIalV
+         WrvDEXaROENjb9tRHd35b6yMwj0cElJ9zobcaDlbAeg78T1tTyrFyJN9qDIQQyfceJAz
+         3Yof1d6++SZxCs3TQq9bAT5ZhsEwBZL9Tx2vqzsKsRMz0lXpp/4ha2FkAyuwamWpRSkA
+         JfEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=N6bLqjwmicKmcvJcfCMzcrC4HuJd8fUxKurXeY12ItM=;
+        fh=b0rvvWs6una0DVT+enBUSbrDgSlDSWD3ghDTasYK7jI=;
+        b=XC1znQgJM8Z2REnx5pDMXhyUu3xaQGLoW+LdPaQ/Tl+yFX6wgj0YPxqti+Y4S/+VzF
+         khiOFVbOcbDQ6FprqDhbyQUfh5BcozyxmOgesVS4HYHykE1EiKZUWPH9ab7jsEHsWJ2p
+         Xn4iTJJORpCV6xMs5R3qSWeR8j+1RXXBT9iboJ4p9Iw5aIDKF4y4lPZG0l9KU4QbLWrw
+         aw4N+QegCLUCr8NmPB+DLfmH2Iqn5qODfQR6TGzGl3zVR6ORvUXe2wOpauYsr8fHNA4w
+         fEbAclRj4T/o64FLX47OxFILxRUqFIW9p1SSqKgJYo1GCPiM1rO/LXIMc6qaVGEbnqCB
+         vIkQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768589067; x=1769193867; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vR+hsRwa2XjjiaLZeoNzi5LCSQhiLxUxHN38JIbsMBo=;
-        b=w0PZAKZcWBRBakOutw8zklWtbO7j9/e1fFwLJ/9OEsODNJwZ0BjMWgP/GBp3vLlaaZ
-         wvAoc6yLahCpHqh6fsX160Udk4dEixfU2RtTJs56bbcfkemILMZKecV6aa7rvN6dlIcr
-         D6xZauu0FZl1S4pFuB1yXKnPJPkyWXCDYlNiKkydXW9ilW3ZgtiylZS0q9pU7PurPzLM
-         RLwXFox9N3kWW05a9p2AxlwZ7Stbup0is8Oey3hDrVM/oBT5ULVwWhFUyiDGXZpwYIgY
-         hy0gE7sbd0XRTcMboi4JqWjF3nRmDKjrbTBkfhY7s6JgasKsl/HdtQsQzkwiNn+UNejg
-         Gp4w==
+        d=google.com; s=20230601; t=1768589142; x=1769193942; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N6bLqjwmicKmcvJcfCMzcrC4HuJd8fUxKurXeY12ItM=;
+        b=0dKO9GNosxJwKOhDFPCxbI1v6KtQqJGOSN15jyPdKJGAgNWorYyaWau1wdmq5CQF4o
+         u1E6tQcfqxZct3D7nKj+gOBXqZTFHI6fpNh1G6s3AmjTSeg8rszn4vbKk1CV43zM6khn
+         rA8ql4i0FkaFE2oe87/t+s+wStgHZczBN1LRDDJwQMqGnGRVWQr5GGmqZDPFX2OAofhg
+         Xgoo2pWfBjGkKFXkyyIakCYZHW5AG8dDetCYrpR9cqJtuNpTPfvk8X5sfp+FZwQMhCRI
+         X6/j8yWWoE8T+IUIBwrkYxgWdj9NbsjHMKL8wXKaLPQiVqhd6qscNd6kulc0pG/jJu5E
+         zmuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768589067; x=1769193867;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vR+hsRwa2XjjiaLZeoNzi5LCSQhiLxUxHN38JIbsMBo=;
-        b=qqJhsZA3PpLEtlyJRw3XkepGMhrEx0eBK2FRMAJCCv74AJpESfcnQNE2lEg+8GjCdd
-         LQtXf6k0vYFaSQ/X0clpdUuQkP8WHr1Tf/+NnlY8qGpBidDRsXv1y9RHw7T0HqvubNVe
-         kYDuauPdBQ1qiT5dw8GYiPuqlP914BnpNknGI+aInRn2XfzUmqgPj9JPke3dNWchOKwf
-         zuQAmTnD91/f1XIkwJaiPEVH7yz67uTq3NS+AfB5sEeci06AL6K25aQivbCaF9aCRn7m
-         YgojvGxcGb2u5t2D7/yXghmXg0nWoqoybR1pWjGWvEO5YCeEM2wcBb++6YoeWkG+1rzU
-         rxlw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1pl5Tjrzy/Z4EzPb9pmmXuMfF6NVSDXMzergyx3SF+81lth7UTe3OKOEh9AHCk9fZ+g6Gm20=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFNc1/Eb29SNmiWDCAV7LLWVSTH4bORO5/Oghma8jdz5WClc3B
-	6QQiAIH1kk3hUh3NNzEGz2vvk8xjIo6tpavPkEGlDJ0lMU031gKgctgdyN2wEcoKVlKuyd5AjW2
-	HGQvVSA==
-X-Received: from dlbps11.prod.google.com ([2002:a05:7023:88b:b0:123:2dd9:db4])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7022:e16:b0:11a:342e:8a98
- with SMTP id a92af1059eb24-1244b282f14mr3555854c88.0.1768589066553; Fri, 16
- Jan 2026 10:44:26 -0800 (PST)
-Date: Fri, 16 Jan 2026 10:44:23 -0800
+        d=1e100.net; s=20230601; t=1768589142; x=1769193942;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=N6bLqjwmicKmcvJcfCMzcrC4HuJd8fUxKurXeY12ItM=;
+        b=aEpKj8/TNtsReqTJaABuqC4qRLplkEcYzIV0I8WqqzPfiU/a7E1atIipRp3S3rDgh6
+         ATppQEMje6rVboU0ZVH0bNbOyE/PL2Sj3n3zALqmy7utPw1Q4kSB6h+aG5uYJjvnv1qp
+         a8fZ3b8MK23jt3k2SoUSvriE1rml2IxmbQEYR7HSUHQUJGNLNeZvvTEdC+IIKcoEy1NB
+         1I9T/f/g3CW6BtUaEHRnSdK4ibIXrfgk9S4/iKHXR66VzcvrBbjB/h5UnBfeQwd3IV+J
+         J388wLoswWgHkcCZ7aXqhgBitPgidNi8aW9X+2exQ5k6QncqpiEVdsPU/ez6gbsavcrN
+         gl2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXlSkg25XyhWApwEazoZm8S016SDA22fcGv7/EG2gUK8PxFtl+eoTedjgHT29wETEq3q3k28PU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDdWwyXUbpjmeOsl/UASg08r6rWseESd3ETZB5PvvmIHc+DumQ
+	9WgxfM2NQhRenTB9U6Hxvl7RWBnzJNVXs9yZ4FAWEdHb18b0frAurb7O8HPrY35jKeLJNIXXO0Z
+	k5PMe192OfNCo2Ppf2Sbjz6dcG9fGv4ztwp9nIVNS6kSpHgzds2+n55uRSjo=
+X-Gm-Gg: AY/fxX6rRgSR1KUXYnnVNG3XhMFqFzr5YDKKdaT6m81H10LImj74Cpae0q2keKKYYu3
+	npqSpbAIbJk+yrws1EcUummPwM7rv0pwwC8s5CLxmM7MR4zUmv7sc/Bq28mu+LWzOMVUAVGXWvb
+	p+AxxDq12VSe7UNPpO9lf8fSW39RG4PSdOfY0QR4GtSnRCbVDVIlHGoDwp34EwV3Ta+bEms7UgD
+	JIdUqzuj0PgftCWAwfCCnHhAEn0tPOew4aWfyFF42O6TPbVJJbrO/gxgwGmxPXO8j91zQ==
+X-Received: by 2002:ac8:5a08:0:b0:4ff:c0e7:be9c with SMTP id
+ d75a77b69052e-502af8fc780mr566291cf.0.1768589139933; Fri, 16 Jan 2026
+ 10:45:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260116184423.2708363-1-surenb@google.com>
-Subject: [PATCH v2 1/1] Docs/mm/allocation-profiling: describe sysctrl
- limitations in debug mode
+MIME-Version: 1.0
+References: <CAJuCfpEQZMVCz0WUQ9SOP6TBKxaT3ajpHi24Aqdd73RCsmi8rg@mail.gmail.com>
+ <20260116021835.71770-1-sj@kernel.org> <CAJuCfpFevUwXxwOrpH3+VOibjJw0rBw3=QL-nqeKreNEky7_Gg@mail.gmail.com>
+In-Reply-To: <CAJuCfpFevUwXxwOrpH3+VOibjJw0rBw3=QL-nqeKreNEky7_Gg@mail.gmail.com>
 From: Suren Baghdasaryan <surenb@google.com>
-To: akpm@linux-foundation.org
-Cc: kent.overstreet@linux.dev, corbet@lwn.net, willy@infradead.org, 
-	sj@kernel.org, ranxiaokai627@163.com, ran.xiaokai@zte.com.cn, 
-	surenb@google.com, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, stable@vger.kernel.org
+Date: Fri, 16 Jan 2026 10:45:28 -0800
+X-Gm-Features: AZwV_QhozlK7uakvTFIi3gMT5z1ESm9uu7kKs6NCK1JEMKW6K3c69hS_mesSIW4
+Message-ID: <CAJuCfpGS_Kw7O1tTWAVs_6dHMPjewh9NLSB2TNRTKXTcwbq0xw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] Docs/mm/allocation-profiling: describe sysctrl
+ limitations in debug mode
+To: SeongJae Park <sj@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, akpm@linux-foundation.org, 
+	kent.overstreet@linux.dev, corbet@lwn.net, ranxiaokai627@163.com, 
+	ran.xiaokai@zte.com.cn, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When CONFIG_MEM_ALLOC_PROFILING_DEBUG=y, /proc/sys/vm/mem_profiling is
-read-only to avoid debug warnings in a scenario when an allocation is
-made while profiling is disabled (allocation does not get an allocation
-tag), then profiling gets enabled and allocation gets freed (warning due
-to the allocation missing allocation tag).
+On Fri, Jan 16, 2026 at 10:30=E2=80=AFAM Suren Baghdasaryan <surenb@google.=
+com> wrote:
+>
+> On Thu, Jan 15, 2026 at 6:18=E2=80=AFPM SeongJae Park <sj@kernel.org> wro=
+te:
+> >
+> > On Thu, 15 Jan 2026 09:05:25 -0800 Suren Baghdasaryan <surenb@google.co=
+m> wrote:
+> >
+> > > On Wed, Jan 14, 2026 at 9:57=E2=80=AFPM Matthew Wilcox <willy@infrade=
+ad.org> wrote:
+> > > >
+> > > > On Wed, Jan 14, 2026 at 09:45:57PM -0800, Suren Baghdasaryan wrote:
+> > > > > +  warnings produces by allocations made while profiling is disab=
+led and freed
+> > > >
+> > > > "produced"
+> > >
+> > > Thanks! I'll wait for a day and if there are no other objections, I
+> > > will post a fixed version.
+> >
+> > Assuming Matthiew's good finding will be fixed,
+> >
+> > Acked-by: SeongJae Park <sj@kernel.org>
+>
+> Thanks!
+>
+> >
+> > Fwiw, the typo is also on the .../sysctl/vm.rst part.
+>
+> Correct, I'll fix in both places.
 
-Fixes: ebdf9ad4ca98 ("memprofiling: documentation")
-Reported-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: SeongJae Park <sj@kernel.org>
-Cc: stable@vger.kernel.org
----
-Based on mm-new
+v2 is posted at
+https://lore.kernel.org/all/20260116184423.2708363-1-surenb@google.com/
 
-Changes since v1 [1]:
-- Fixed a typo, per Matthew Wilcox
-- Added Acked-by, per SeongJae Park
-
-[1] https://lore.kernel.org/all/20260115054557.2127777-1-surenb@google.com/
-
- Documentation/admin-guide/sysctl/vm.rst   |  4 ++++
- Documentation/mm/allocation-profiling.rst | 10 ++++++++++
- 2 files changed, 14 insertions(+)
-
-diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
-index 9096e2d77c2a..b98ccb5cb210 100644
---- a/Documentation/admin-guide/sysctl/vm.rst
-+++ b/Documentation/admin-guide/sysctl/vm.rst
-@@ -487,6 +487,10 @@ memory allocations.
- 
- The default value depends on CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT.
- 
-+When CONFIG_MEM_ALLOC_PROFILING_DEBUG=y, this control is read-only to avoid
-+warnings produced by allocations made while profiling is disabled and freed
-+when it's enabled.
-+
- 
- memory_failure_early_kill
- =========================
-diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
-index 316311240e6a..5389d241176a 100644
---- a/Documentation/mm/allocation-profiling.rst
-+++ b/Documentation/mm/allocation-profiling.rst
-@@ -33,6 +33,16 @@ Boot parameter:
- sysctl:
-   /proc/sys/vm/mem_profiling
- 
-+  1: Enable memory profiling.
-+
-+  0: Disable memory profiling.
-+
-+  The default value depends on CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT.
-+
-+  When CONFIG_MEM_ALLOC_PROFILING_DEBUG=y, this control is read-only to avoid
-+  warnings produced by allocations made while profiling is disabled and freed
-+  when it's enabled.
-+
- Runtime info:
-   /proc/allocinfo
- 
-
-base-commit: eeb33083cc4749bdb61582eaeb5c200702607703
--- 
-2.52.0.457.g6b5491de43-goog
-
+>
+> > And from the finding, I
+> > was wondering if it is better to put the description only one of two do=
+cuments
+> > rather than having the duplication, and further if the 'Usage:' part of
+> > allocation-profiling.rst is better to be moved to
+> > 'Documentation/admin-guide/mm/'.  But I ended up thinking those are too=
+ trivial
+> > and small things.
+>
+> Yes, I didn't want to complicate reader's life by adding a reference
+> for a couple of sentences.
+>
+> >
+> >
+> > Thanks,
+> > SJ
 
