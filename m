@@ -1,128 +1,157 @@
-Return-Path: <stable+bounces-210048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8C4D31B1A
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 14:18:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24999D31CA6
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 14:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F015430F4375
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 13:15:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0E0B5301E230
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 13:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F3923BD06;
-	Fri, 16 Jan 2026 13:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE35265CC2;
+	Fri, 16 Jan 2026 13:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XgcXouMJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="okh4yN8c"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697BA22D7B6
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 13:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FE126C3A2
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 13:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768569320; cv=none; b=ZY+ValHNW6yxEksWqneyA305HhDWpdN+CcQ1fiOxVqnNwli+3SFiNXpeNfVBk8EXig0LnQ4CRisoNLqJKKCSthmsfa/h8ItQLUjF8qdnpeVHI+9zHBqOkwZivDkzhT4p52JBVoGD2xkRoSiR3RSNBD0uB7JEuXN87x75Bogu7mI=
+	t=1768569903; cv=none; b=S8gqijg36PylJzLe84+QUqoha5SpE68GQO8R4wr303rKesjtnMdjBDimBClH2FljaLlENm9QbmbPjCT/d3i+Eo91tR5CVupnrFGGh2qlg/537PbQ7xnUngvuni8nBQJTKj1PSgzDM6uTuJFPGtNDtJaL47QJsmQIoPdB8c8wB1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768569320; c=relaxed/simple;
-	bh=F0zejtQsFxq+RFGdR3iowVouDSNSub03rMOOO/DadmM=;
-	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b3V8dbQuaEf7RA9dnV6Bhua5sIjaDdeLTLI8jxPibzn6N64HIsQUNGu32YzFjGV8Aof4QR35MyYV6YTdKV4y+DxeDwVMTDVgCpPvGbqvRTOAjR20izhpWUno6PkpM5mso8c6g4VSdf63ynVfymbNMKbWTWoQVKDvc8mUgf72O8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XgcXouMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30729C19423
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 13:15:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768569320;
-	bh=F0zejtQsFxq+RFGdR3iowVouDSNSub03rMOOO/DadmM=;
-	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
-	b=XgcXouMJNUoG6WpBiXxL9gT9CCq/mOISBP6ZpjC5wQxLiE1J5koGWpNtEjVRyWJbL
-	 DE9pVJJM607nFdFx7SfyyXD4DjGUZwbpPlIhA3Bsji+L+yhKzYQa5B/Pks/8JsIeY+
-	 GbR7PwJgiVlwN9n4REV6Vriu2Wptoop1OcQPJMTH5S4XpUtQ5LSGqkKr4CuaksRFLT
-	 lRnbhQxFmg+ebNYejENnbG8ecxX1v/ORJbesoD4Xk5fBFTvJx802KY8yYNdQ3RzNor
-	 b5yGG4pW7oae+1qbdONKqATe32iX/xjVKoY9zlsr1AkcnbNhTC0Hs28FN65XWIOB+m
-	 F3qHNnauKyWGA==
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-59b855a4700so1896999e87.0
-        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 05:15:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVNCgIS3cERIHIOqsugEgtPV/GsurJB50Y4h8qzzREtJeBGwSDCE0/NUpqACRsU3ZY+7yq34Eo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycjMIA2MyYJRGqvR+8Wdj2KK+L9wrLYuYRtbLR2Nr+lTAzgUao
-	eCrOrahETkfRSs3J2udaeP94dQ8Z980F28F/JVaXFgQfp+T1QuSNLfziYbz5ICePOhtn76JoyrA
-	6L2iYSrk053i9l4hngA+fr3NiKEgvUO7tkPY4d3xqxA==
-X-Received: by 2002:a05:6512:32c8:b0:598:eef2:e209 with SMTP id
- 2adb3069b0e04-59baeec26ebmr1143109e87.5.1768569318553; Fri, 16 Jan 2026
- 05:15:18 -0800 (PST)
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 16 Jan 2026 13:15:17 +0000
-Received: from 969154062570 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 16 Jan 2026 13:15:17 +0000
-From: Bartosz Golaszewski <brgl@kernel.org>
-In-Reply-To: <20260116081036.352286-2-tzungbi@kernel.org>
+	s=arc-20240116; t=1768569903; c=relaxed/simple;
+	bh=6nvAT2nizZukeyYIo3PfjaccCYmiXFZJhWUMJuDRU0U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mItKHLtUJJgqqDhYH74ZORD5IytaWFZVbN5QiOdVztAha/5CnKhPiSU1hKhu9bqr1UQK63i0sJsPSAMfrs4V5gnJbaqsoAh37NJpCaaYfYMyE+jB00t/WIqkw3cexnx3Gj+Pnqagcyz0Ea1s9aAqJl7Cz8yPn9Q+jpDybzTTM48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=okh4yN8c; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6003b.ext.cloudfilter.net ([10.0.30.175])
+	by cmsmtp with ESMTPS
+	id gjEOvihIlipkCgjoyvucoZ; Fri, 16 Jan 2026 13:25:00 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id gjoyvSBCzhoT4gjoyvoikc; Fri, 16 Jan 2026 13:25:00 +0000
+X-Authority-Analysis: v=2.4 cv=XZyJzJ55 c=1 sm=1 tr=0 ts=696a3c2c
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=h0uksLzaAAAA:8 a=HaFmDPmJAAAA:8 a=djn8nBB36KeQ6tMeFF8A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=MSi_79tMYmZZG2gvAgS0:22 a=nmWuMzfKamIsx3l42hEX:22
+ a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=gzY9T/wOxG/DeCeifioZfFDO1q/aXoaa8lYWCbgpxgY=; b=okh4yN8cnWwvtolNMSGTmfKjYh
+	88w44fVc82dU10XN97d5Q39K2xGHyQybPtSCX7ZpzYycCgVyvgyp7Y2Ocnnf08DVi7E21hxKp55XG
+	iJINMDdX5jUT78wZbURE8DYd858WgyJPSqDVqcRZycifa4fJkh4/+otYlDLIDgdpZKJSlqZhhNhdv
+	/OCYYh4noPXx3ph2NqFz9C5mXE0y80woyesz/WInIASYu+DttmPh550n4bIvOGQl+eSs5dV9Ko4kP
+	qYwFKcXi+DTfq+LO4o0ClEmYEHdpckT9aabPevz1ntfcFdSxm9vm1ZZz+Iv75LtLuRjdhvGKGrw3j
+	kGctm/QA==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:56854 helo=beavis.silicon)
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vgjox-00000001U44-3B3G;
+	Fri, 16 Jan 2026 06:24:59 -0700
+From: Ron Economos <re@w6rz.net>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Ron Economos <re@w6rz.net>
+Subject: [PATCH 6.6] riscv: Replace function-like macro by static inline function
+Date: Fri, 16 Jan 2026 05:24:38 -0800
+Message-ID: <20260116132438.964314-1-re@w6rz.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260116081036.352286-1-tzungbi@kernel.org> <20260116081036.352286-2-tzungbi@kernel.org>
-Date: Fri, 16 Jan 2026 13:15:17 +0000
-X-Gmail-Original-Message-ID: <CAMRc=MeiQho5mfxGsL1AZ60brCzfox64XQao=xWnxMsdHF2-vA@mail.gmail.com>
-X-Gm-Features: AZwV_QjtzprOMqG2qDnke0_Bxhon5JnActWvxaD629LTW7BB9RenENKWKCocUJE
-Message-ID: <CAMRc=MeiQho5mfxGsL1AZ60brCzfox64XQao=xWnxMsdHF2-vA@mail.gmail.com>
-Subject: Re: [PATCH 01/23] gpiolib: Correct wrong kfree() usage for `kobj->name`
-To: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
-	linux-kselftest@vger.kernel.org, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
-	Dan Williams <dan.j.williams@intel.com>, Jason Gunthorpe <jgg@nvidia.com>, linux-gpio@vger.kernel.org, 
-	stable@vger.kernel.org, Benson Leung <bleung@chromium.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Linus Walleij <linusw@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1vgjox-00000001U44-3B3G
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net (beavis.silicon) [73.92.56.26]:56854
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 6
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJIprIH4WQwrrS8cQ6cSOiDzGhC/1a9U4xapm3LYEbFoVgWsJbx2/XqsHBkjw0XY1nOGwjoGH4HxJmIT314WCM3eSKYkqU7BmsxG1sGOPkPna17VllBP
+ ukJOwasrYj+TdUELpk4zAPDAQe3OsZUlZLG1Cnr5b2seQ9Oe1MvcJbJAwWFxoCy5Bc6ShQ5S5raDaA==
 
-On Fri, 16 Jan 2026 09:10:14 +0100, Tzung-Bi Shih <tzungbi@kernel.org> said:
-> `kobj->name` should be freed by kfree_const()[1][2].  Correct it.
->
-> [1] https://elixir.bootlin.com/linux/v6.18/source/lib/kasprintf.c#L41
-> [2] https://elixir.bootlin.com/linux/v6.18/source/lib/kobject.c#L695
->
+From: Björn Töpel <bjorn@rivosinc.com>
 
-Please don't add links third-party groks to git commit messages.
+[ upstream commit 121f34341d396b666d8a90b24768b40e08ca0d61 ]
 
-> Cc: stable@vger.kernel.org
-> Fixes: c351bb64cbe6 ("gpiolib: free device name on error path to fix kmemleak")
-> Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> ---
->  drivers/gpio/gpiolib.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index 5eb918da7ea2..ba9323432e3a 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -1263,7 +1263,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
->  err_free_descs:
->  	kfree(gdev->descs);
->  err_free_dev_name:
-> -	kfree(dev_name(&gdev->dev));
-> +	kfree_const(dev_name(&gdev->dev));
->  err_free_ida:
->  	ida_free(&gpio_ida, gdev->id);
->  err_free_gdev:
-> --
-> 2.52.0.457.g6b5491de43-goog
->
->
+The flush_icache_range() function is implemented as a "function-like
+macro with unused parameters", which can result in "unused variables"
+warnings.
 
-I've never paid attention to this bit but it really looks broken. I understand
-that this string won't get freed until we initialize refcounting on the
-underlying kobject but reaching two abstraction layers below to get the string
-for freeing out of the kobject looks incorrect to me.
+Replace the macro with a static inline function, as advised by
+Documentation/process/coding-style.rst.
 
-It's also one of only two instances of doing kfree(dev_name(dev)), the other
-one being in drivers/scsi/hosts.c.
+Fixes: 08f051eda33b ("RISC-V: Flush I$ when making a dirty page executable")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250419111402.1660267-1-bjorn@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Ron Economos <re@w6rz.net>
+---
+ arch/riscv/include/asm/cacheflush.h | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-It looks to me that the device name is not really used in
-gpiochip_add_data_with_key(). Can we move dev_set_name() after
-device_initialize()?
+diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
+index 3f65acd0ef75..2b7f5da96c50 100644
+--- a/arch/riscv/include/asm/cacheflush.h
++++ b/arch/riscv/include/asm/cacheflush.h
+@@ -34,11 +34,6 @@ static inline void flush_dcache_page(struct page *page)
+ 	flush_dcache_folio(page_folio(page));
+ }
+ 
+-/*
+- * RISC-V doesn't have an instruction to flush parts of the instruction cache,
+- * so instead we just flush the whole thing.
+- */
+-#define flush_icache_range(start, end) flush_icache_all()
+ #define flush_icache_user_page(vma, pg, addr, len) \
+ 	flush_icache_mm(vma->vm_mm, 0)
+ 
+@@ -59,6 +54,16 @@ void flush_icache_mm(struct mm_struct *mm, bool local);
+ 
+ #endif /* CONFIG_SMP */
+ 
++/*
++ * RISC-V doesn't have an instruction to flush parts of the instruction cache,
++ * so instead we just flush the whole thing.
++ */
++#define flush_icache_range flush_icache_range
++static inline void flush_icache_range(unsigned long start, unsigned long end)
++{
++	flush_icache_all();
++}
++
+ extern unsigned int riscv_cbom_block_size;
+ extern unsigned int riscv_cboz_block_size;
+ void riscv_init_cbo_blocksizes(void);
+-- 
+2.43.0
 
-Bart
 
