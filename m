@@ -1,78 +1,88 @@
-Return-Path: <stable+bounces-210114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC1ED387AC
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 21:40:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B59F2D387B4
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 21:40:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 01BF730128D0
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 20:40:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0A3EB30024E0
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 20:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2F22EFD8C;
-	Fri, 16 Jan 2026 20:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24742EACF2;
+	Fri, 16 Jan 2026 20:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="oh1Gk0wT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d0FA/kil"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B9B2609FD;
-	Fri, 16 Jan 2026 20:40:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD042EB860
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 20:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768596010; cv=none; b=UOM7YugC5xnRZ/QwuT8xHViKuLasPvFtW67OsS6ij7mrV2ru+xVA5ggizKhZ8VzPBLcJNdJKpfWgOjSPNIDt0xRagoBSantXLcwQLcZ+E86jlgYq19XTRqHYr3KSRAkUNXlZ1nzMAD7Xoh6KEcTiG/V7YkFh2EU8gU2NiEN/okg=
+	t=1768596040; cv=none; b=EhEiLjHUn82vfpDirBZKxr3hbtcCql94H/Fn/WVUlsIneJS2hBpfJyoYOfwLR1Qeval+SfYSyio96fIvBDnxBTNSmQw4WcWwg8wywbk0GrqSWfAISntM9sxCbaVe46qv7KtHwQa61DvuGrH/z1xdvze7CivMUUvH7wy2uSgSXTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768596010; c=relaxed/simple;
-	bh=OnqDKgnOUsetcSvvnbBUi8oR3OJNQssalACqwFlTR4I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhvwNj6RCFY1UrdMUWN1ejioHH5E2RvYikehyKx56EaVec70CeEE96BLQADWqEQoOG+w+IgBzH/+67FmpUJoCkN9Db48zlWShP1H1pO0npxcfvG9+gWq3YEbqiHquKWMICNLA/7rzxtJKgb83ca+0mdpcwn5Z9R+O62Tu3PGv6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=oh1Gk0wT; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60GKb0V73839187;
-	Fri, 16 Jan 2026 20:38:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=PJgG6
-	l0Amdkwy+w0l87obtGT6Q5vG5xjNv8DqWki1Kc=; b=oh1Gk0wTgKF65PBN8pz+C
-	UM7mb9/uNMQo0f5mtJ4fhjKyyNOgoEYSOEBKEROxAMejQ51Cq2dTugYlodV6oaq8
-	bJ5nLU96z8ESBC7qUxQKot4uU66lxZSmg/mdcCCAHkw7PQ1F7Nvlv7OH2s531xOx
-	eHc/skdZeHdnNH/QGcjdTEh0vHqk2Hym0qWqgrSMCrrGrciW9Qho4fBn5ON81NcB
-	oF5TI2sgbrZQcQP+1gJ9VuUY53K79ilDHMc6E/PErcKTuQrM9hkJHwu5bPi3F5jg
-	hQBKsU7x2HgZdQj2Z12pvYDFVAG3o9c74mFyXsk3mrbz1VbxC9+LiAtb0dfUrUqu
-	w==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bqvh7g068-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Jan 2026 20:38:54 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60GKKjWI011135;
-	Fri, 16 Jan 2026 20:38:53 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bqv9m0gh2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 16 Jan 2026 20:38:53 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60GKclNN019846;
-	Fri, 16 Jan 2026 20:38:53 GMT
-Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4bqv9m0gen-2;
-	Fri, 16 Jan 2026 20:38:53 +0000
-From: Jane Chu <jane.chu@oracle.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
-        osalvador@suse.de, david@kernel.org, linmiaohe@huawei.com,
-        jiaqiyan@google.com, william.roche@oracle.com, rientjes@google.com,
-        akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
-        Liam.Howlett@Oracle.com, rppt@kernel.org, surenb@google.com,
-        mhocko@suse.com, willy@infradead.org, clm@meta.com
-Subject: [PATCH v6 2/2] mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
-Date: Fri, 16 Jan 2026 13:38:33 -0700
-Message-ID: <20260116203834.3179551-2-jane.chu@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260116203834.3179551-1-jane.chu@oracle.com>
-References: <20260116203834.3179551-1-jane.chu@oracle.com>
+	s=arc-20240116; t=1768596040; c=relaxed/simple;
+	bh=F9y/hUlElgS4/q5TL+nwejP7LZRYllGQ+bR8klfBFc4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=maENz9OsxojpB69tq6Zrhc1jl1FR2qyGu0eeWR8tqFB7qq/NuqOfaMvJkqT/68+XXGg3OxsFmi5f4Q5AEXAeFcqRU1UYVyBFGKrUGYWT7DWNWQ/4DWP2IQYDiP13nYst7gGGnwxCgw6HQ6Z7oWS20pcJfWNNEUmU4jQbKw1QrmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d0FA/kil; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-78fba1a1b1eso39839177b3.1
+        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 12:40:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768596038; x=1769200838; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=plLru19BPw4Gzl5/9w7riKopb0P86akIwhjnuskNV1s=;
+        b=d0FA/kilqJCsYv7zaqQ/DF9QXT/eIxuDpqa0Bgc/1tlwQ0jMgR53oXqRPXGLcOCqXJ
+         ajV2gwh6IUcllzawrA03I5x6F0u6QfppbK32qusRSyHIH1zCV45P9n+9DalMMIh+FpsO
+         YCY0DyF8VGl2MZQSh4+QaxhkAF+83743/R/riG3D69F3M0fcxPcm0tk5w9MioibTAhmK
+         +yjyfjD2yiCehVntU//YLsEColGNKy6Lso3/UT91Zq2Kc3e8hRneYDUo6xDp1iEbZhko
+         lqsj0gWt4uVfsOkHtxRqO+/0ANjUwNFZBPX6PcF+LolHrBVIY1/qHzofAqUX3V4xDpvy
+         HwaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768596038; x=1769200838;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=plLru19BPw4Gzl5/9w7riKopb0P86akIwhjnuskNV1s=;
+        b=ELxSpDRgYTDtP1LtS3Ar0sCoMye8qodWOFIQ6BcjiuZ/ODArbzWiYXN6vTXNNp+4Nr
+         n9ycJFXiHBHXnhQRpSat2IoLsyEcEnphHq54u/sFW8k9daZXF4mXapyGfzJRm87W07R2
+         abWqtooGHpzvKGDrz2m4gz7KPIrMw2k3fskqkLJ5rzVRww/RGazmpLLTMNF8+wPFhTIa
+         eKBW028apcKSBM544Z3M/PKAQRGM1KkPO7COMfP4ZzdEPbu6n+o03/pb/9rooj6AW7Ns
+         5OI9J+2uoQ5AaqO80xhMtGyRVPSHVgXiK8DK63ioceTUbCN3YP5gvklJrXPg1dlNI0eJ
+         3RLw==
+X-Forwarded-Encrypted: i=1; AJvYcCVe+ZrPqKBS+YsQtV4XL6azYoRKEKKT7/M5lDtCGTQ0DWDddfWt5whMGArdlXSB7WRlOX204/M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzW3FNb+GmczZcxsCpGhfiSq+02O/XqM3FDnLORrf8CZRluu5UD
+	bdSp6BlpuwF6rGitrpIMNZFuHTWIYS1ZssNx/erFPQDg6qBi7yk+qiw0
+X-Gm-Gg: AY/fxX70RoMdmYG64i1tHJtQCttEzaR+cfwmSnF2gdE4f8aXxA6V6AjbDO35QUFFyzz
+	n275MKeia+2zA806G762r/ApknFfSq9XNMB+bL9oqeSerliOQzOpKBTvxVQnENBfyqCBCRBhze3
+	VGqCPZzPjpFLhjoO7OXKSHPThL5mN/USB4A/iSafTi130BlzKZD5F+macbqN4CrYLpXQrIqZMPJ
+	wY3pgIR5LoXyabixVhyF82pzMK+NfFFX1EJ0KHYEnxUAk7EPvF8nOGJQ7LhkCQcOY7Q7XMyqBgz
+	KNy917mxoLrcxgUbgXbYT1laua2T4/tqNBPOlY5QT5oMMqWbjXWVcaZA1o/CrLRIxx3gZew3k1L
+	lfEWUAMKlx9LQfzacOnMo2UvJNkF2XlGLSXExh3yqshZqjPCoT94neq5t0XwxgBsKCdNhCU1XUr
+	Eple39gqqzpQ==
+X-Received: by 2002:a05:690c:10d:b0:793:c7df:9dd5 with SMTP id 00721157ae682-793c7df9e51mr26768467b3.33.1768596038285;
+        Fri, 16 Jan 2026 12:40:38 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:51::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-793c66c72bcsm13184287b3.2.2026.01.16.12.40.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jan 2026 12:40:37 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Wupeng Ma <mawupeng1@huawei.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v2] mm/hugetlb: Restore failed global reservations to subpool
+Date: Fri, 16 Jan 2026 15:40:36 -0500
+Message-ID: <20260116204037.2270096-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,101 +90,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-16_07,2026-01-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- phishscore=0 bulkscore=0 mlxscore=0 spamscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2601150000 definitions=main-2601160154
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE2MDE1NCBTYWx0ZWRfX+8DAjX7b6/G6
- uc0jAwOOjy75t+rz1RgrhZVcuzzsMvCf91Gj740HGgnRDbAI2C60LEHweDDIT3BFElGU1VIpaZ2
- IyjdHsdgJ4U/R81j76L/3ECGAOTMjQ17e8V0StRSRPQIm0l02ECZ7tgCTeOnGlJsMHr7dN4jbAz
- FuC/PE5d4U4ARVgpaV3H0UFF4pOdxF0Ca6fsgDQf31MZm3qvMWaNYITlvEuv8dWOtcKOwYGfTeC
- OaoJcOniVQuxoSWrQf0ITRWFNU+lI8tOtha+6ZF/3ehK1P59EJKs/gMa+y4RfJ+wSrGiD9nwbDY
- pFd2utEu5nO1/R1vhGmW2TVXfufX8w2s6WuMMXcXI1JBmLSbj5bt7RTJ9DXYIjeaRepPsUBObUK
- 1+lyiKp1qZFui2cDK41Z3OEC7fO0oKffZM377Ko55PDEF7fyV82maDccss+Pf0HJ6aX46dmcCVY
- i7tn6x60dxovIDHEMcw==
-X-Proofpoint-ORIG-GUID: co0pzrNzwGword2GpAv5iFPpblfIQj5y
-X-Proofpoint-GUID: co0pzrNzwGword2GpAv5iFPpblfIQj5y
-X-Authority-Analysis: v=2.4 cv=A9lh/qWG c=1 sm=1 tr=0 ts=696aa1de cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8
- a=yPCof4ZbAAAA:8 a=1XWaLZrsAAAA:8 a=i0EeH86SAAAA:8 a=PxEJfYR7Scfl-YKRXAAA:9
- a=1CNFftbPRP8L7MoqJWF3:22
 
-When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
-passed head pfn to kill_accessing_process(), that is not right.
-The precise pfn of the poisoned page should be used in order to
-determine the precise vaddr as the SIGBUS payload.
+Commit a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+fixed an underflow error for hstate->resv_huge_pages caused by
+incorrectly attributing globally requested pages to the subpool's
+reservation.
 
-This issue has already been taken care of in the normal path, that is,
-hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
-correctly in the hugetlb repoisoning case, it's essential to inform
-VM the precise poisoned page, not the head page.
+Unfortunately, this fix also introduced the opposite problem, which would
+leave spool->used_hpages elevated if the globally requested pages could
+not be acquired. This is because while a subpool's reserve pages only
+accounts for what is requested and allocated from the subpool, its
+"used" counter keeps track of what is consumed in total, both from the
+subpool and globally. Thus, we need to adjust spool->used_hpages in the
+other direction, and make sure that globally requested pages are
+uncharged from the subpool's used counter.
 
-[1] https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
-[2] https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
-[3] https://lore.kernel.org/lkml/20251116013223.1557158-1-jiaqiyan@google.com/
+Each failed allocation attempt increments the used_hpages counter by
+how many pages were requested from the global pool. Ultimately, this
+renders the subpool unusable, as used_hpages approaches the max limit.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+The issue can be reproduced as follows:
+1. Allocate 4 hugetlb pages
+2. Create a hugetlb mount with max=4, min=2
+3. Consume 2 pages globally
+4. Request 3 pages from the subpool (2 from subpool + 1 from global)
+	4.1 hugepage_subpool_get_pages(spool, 3) succeeds.
+		used_hpages += 3
+	4.2 hugetlb_acct_memory(h, 1) fails: no global pages left
+		used_hpages -= 2
+5. Subpool now has used_hpages = 1, despite not being able to
+   successfully allocate any hugepages. It believes it can now only
+   allocate 3 more hugepages, not 4.
+
+Repeating this process will ultimately render the subpool unable to
+allocate any hugepages, since it believes that it is using the maximum
+number of hugepages that the subpool has been allotted.
+
+The underflow issue that the original commit fixes still remains fixed
+as well.
+
+Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: stable@vger.kernel.org
 ---
-v5 -> v6:
-  comment from Miaohe, add an acked-by.
-v5, v4: No change.
-v2 -> v3:
-  incorporated suggestions from Miaohe and Matthew.
-v1 -> v2:
-  pickup R-B, add stable to cc list.
----
- mm/memory-failure.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+v1 --> v2
+- Moved "unsigned long flags" definition into the if statement it is used in
+- Separated fix patch from cleanup patches for easier backporting for stable.
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 49ced16e9c1a..2d330176364a 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -692,6 +692,8 @@ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
- 				unsigned long poisoned_pfn, struct to_kill *tk)
- {
- 	unsigned long pfn = 0;
-+	unsigned long hwpoison_vaddr;
-+	unsigned long mask;
- 
- 	if (pte_present(pte)) {
- 		pfn = pte_pfn(pte);
-@@ -702,10 +704,12 @@ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
- 			pfn = softleaf_to_pfn(entry);
+ mm/hugetlb.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 5a147026633f..e48ff0c771f8 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6713,6 +6713,15 @@ long hugetlb_reserve_pages(struct inode *inode,
+ 		 */
+ 		hugetlb_acct_memory(h, -gbl_resv);
  	}
- 
--	if (!pfn || pfn != poisoned_pfn)
-+	mask = ~((1UL << (shift - PAGE_SHIFT)) - 1);
-+	if (!pfn || pfn != (poisoned_pfn & mask))
- 		return 0;
- 
--	set_to_kill(tk, addr, shift);
-+	hwpoison_vaddr = addr + ((poisoned_pfn - pfn) << PAGE_SHIFT);
-+	set_to_kill(tk, hwpoison_vaddr, shift);
- 	return 1;
- }
- 
-@@ -2050,10 +2054,8 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
- 	case MF_HUGETLB_FOLIO_PRE_POISONED:
- 	case MF_HUGETLB_PAGE_PRE_POISONED:
- 		rv = -EHWPOISON;
--		if (flags & MF_ACTION_REQUIRED) {
--			folio = page_folio(p);
--			rv = kill_accessing_process(current, folio_pfn(folio), flags);
--		}
-+		if (flags & MF_ACTION_REQUIRED)
-+			rv = kill_accessing_process(current, pfn, flags);
- 		if (res == MF_HUGETLB_PAGE_PRE_POISONED)
- 			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
- 		else
--- 
-2.43.5
++	/* Restore used_hpages for pages that failed global reservation */
++	if (gbl_reserve && spool) {
++		unsigned long flags;
++
++		spin_lock_irqsave(&spool->lock, flags);
++		if (spool->max_hpages != -1)
++			spool->used_hpages -= gbl_reserve;
++		unlock_or_release_subpool(spool, flags);
++	}
+ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
 
+base-commit: c1a60bf0f6df5c8a6cb6840a0d2fb0e9caf9f7cc
+-- 
+2.47.3
 
