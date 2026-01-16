@@ -1,105 +1,77 @@
-Return-Path: <stable+bounces-209981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C81D2A3DD
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 03:40:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C12BD2A5C0
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 03:51:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 766DB300FD61
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 02:40:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 13B543020C6B
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 02:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B5E336EE0;
-	Fri, 16 Jan 2026 02:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829D5341653;
+	Fri, 16 Jan 2026 02:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Sm3Lg0qg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mPUDrH5m"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F2221ABB9;
-	Fri, 16 Jan 2026 02:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC07336ECB;
+	Fri, 16 Jan 2026 02:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768531236; cv=none; b=t6BjZ658VDpepY+MzZrNhlAiLHHL7AFmF4nXOXDtoLtKWPVEQHg8mLupWIWDN4/MqpC1NV9ivwIdVDXKS+3+iraUpZNZRs3Wucwnr+JI9uDVSmZmkjDj+/l+8ygHiHgS+0v4Ggevyx29fMuauIXYrIQyShWK7M/+uSbkz9Ottyk=
+	t=1768531832; cv=none; b=oo2DcqYEYGOrU8YmZxLuMnT2xw1vpqOa/hvgeV4MqSqHXh4gIIgGqoz20sd8BucUTUUqIdof33m55sGPpkQiZoz9yjDsS2+6v+4HtywFYZaXqtjJXFNDj+KNu7FzDRgfbr4APZ5tg7QqRdTCtsQ0E9/nOpO4QtQRKWs5YNIkj9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768531236; c=relaxed/simple;
-	bh=BMl6wYBEdAu/FmR8lpxBoYYXTmXk6bnUmky0WVbWwDM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rXrGdAXn9KqOjBhRDoCxKyBQbJ9axQBwoq50L0mF8N2VCiLcNinRbXDoRTIuTSD2t4DQ/a3p+NBy1U7XhdsI+DPj7eiFfyvIX3ct05MrCZv2iQMLLohh8Z80pJvPNN1233kDIzGoST/Td5bxJhzYwLh6+Hc7oJ3pqRg34OdWzZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Sm3Lg0qg; arc=none smtp.client-ip=117.135.210.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Z6
-	lZ+BrBAbLkCyZas3+4InPi/c+HxqLyNXj0gl5XhbA=; b=Sm3Lg0qgqcohu3EDjW
-	hkTTZy8F2wkA3Fu7E4mhMk4Lb3TxVtuBzrYgyPC0K3Wl6NHimvnlXPtKJsJo8pgZ
-	UYMc/sc08LJDq0V677MAkHROMXhFCP+LUdOl6uE1W6DVASYHlDeAJYYv7p6K8Iza
-	DPBf7Y5AS5PnYQdWVUo4lbz8A=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDHCBT9pGlpqauOFw--.661S2;
-	Fri, 16 Jan 2026 10:39:59 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH v6.6] drm/amd/display: Check dce_hwseq before dereferencing it
-Date: Fri, 16 Jan 2026 10:39:56 +0800
-Message-Id: <20260116023956.142238-1-black.hawk@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1768531832; c=relaxed/simple;
+	bh=mGq6lq6CX8A0vkqW4EaPcUBUnxO3Dn8wywcn5lCiB9Y=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=JavuwaqBj7I7JYj5v2m15E/SWKnL9yrhN9LQXsTDGTfVzzCdJqJse9rfhHnQ+d2D/Kw9iuWF3d/Y0Ovd5B3Eh8KMnHoIRDuqK1zL0zsZoResdu/z4ZSGlRTi5gqZ3cAWflevwnD8MCanWSvy5cwljZuNoHrc3ITmwlLpwp/Hwh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mPUDrH5m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301A0C116D0;
+	Fri, 16 Jan 2026 02:50:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768531832;
+	bh=mGq6lq6CX8A0vkqW4EaPcUBUnxO3Dn8wywcn5lCiB9Y=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=mPUDrH5m/i7VJ8eJhQMRp0aA8plTZVx1lHaXswg5cxrmD2OUAxcoJRNvorM1c3A25
+	 r+Ojg6h4Th+dS4YtcNFiVXd7ubnvwxwsvC2Rfw1yh6+nQ5SRDyOO1VZ3G2DjK/IMZB
+	 S0ouoLeRU30bhpLpuEf2Cr9msvUMy1HbRFFQJBkuAkT1mcIt2cp8XGagLqpniUbjmb
+	 Q4MQGfd9UL7LehymhT+dlg2oQ1iBxdOX1Lbub96dRiDT40svtEicpP012a2jjfydaS
+	 0mWI8gAX83RrghFMnTVsx9+jiM9ZHFPrA9K7m1CcqNPNCmLz32Ar3Q1VJmGGNfGFZq
+	 I78JHOb4Rcy+g==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHCBT9pGlpqauOFw--.661S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur17Gr4UGFyUJry5Xw1kKrg_yoW8Ww1kpr
-	s3Gr1rJ397Z3WUZa4DJF18ZFWUWaykXF4fGFsrA3Z5ur9IyFW0qr98ArsrGrykuFn8Z3Wa
-	qF13GFyxtF1akrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pR45dNUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3h8dtmlppP+SZwAA3E
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20251231-clk-apple-nco-t8103-base-compat-v1-1-6459e65b6299@jannau.net>
+References: <20251231-clk-apple-nco-t8103-base-compat-v1-1-6459e65b6299@jannau.net>
+Subject: Re: [PATCH] clk: clk-apple-nco: Add "apple,t8103-nco" compatible
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Janne Grunau <j@jannau.net>
+To: Janne Grunau <j@jannau.net>, Martin =?utf-8?q?Povi=C5=A1er?= <povik+lin@cutebit.org>, Michael Turquette <mturquette@baylibre.com>, Neal Gompa <neal@gompa.dev>, Sven Peter <sven@kernel.org>
+Date: Thu, 15 Jan 2026 19:50:30 -0700
+Message-ID: <176853183042.4027.16837126295266775570@lazor>
+User-Agent: alot/0.11
 
-From: Alex Hung <alex.hung@amd.com>
+Quoting Janne Grunau (2025-12-31 05:22:00)
+> After discussion with the devicetree maintainers we agreed to not extend
+> lists with the generic compatible "apple,nco" anymore [1]. Use
+> "apple,t8103-nco" as base compatible as it is the SoC the driver and
+> bindings were written for.
+>=20
+> [1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@k=
+ernel.org/
+>=20
+> Fixes: 6641057d5dba ("clk: clk-apple-nco: Add driver for Apple NCO")
+> Cc: stable@vger.kernel.org
+> Acked-by: Stephen Boyd <sboyd@kernel.org>
+> Reviewed-by: Neal Gompa <neal@gompa.dev>
+> Signed-off-by: Janne Grunau <j@jannau.net>
+> ---
 
-[ Upstream b669507b637eb6b1aaecf347f193efccc65d756e commit ]
-
-[WHAT]
-
-hws was checked for null earlier in dce110_blank_stream, indicating hws
-can be null, and should be checked whenever it is used.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 79db43611ff61280b6de58ce1305e0b2ecf675ad)
-Cc: stable@vger.kernel.org
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
----
- drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-index d389eeb264a7..fb18a2a9378c 100644
---- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-@@ -1228,7 +1228,7 @@ void dce110_blank_stream(struct pipe_ctx *pipe_ctx)
- 	struct dce_hwseq *hws = link->dc->hwseq;
- 
- 	if (link->local_sink && link->local_sink->sink_signal == SIGNAL_TYPE_EDP) {
--		if (!link->skip_implict_edp_power_control)
-+		if (!link->skip_implict_edp_power_control && hws)
- 			hws->funcs.edp_backlight_control(link, false);
- 		link->dc->hwss.set_abm_immediate_disable(pipe_ctx);
- 	}
--- 
-2.34.1
-
+Applied to clk-next
 
