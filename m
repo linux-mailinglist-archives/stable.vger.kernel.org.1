@@ -1,71 +1,54 @@
-Return-Path: <stable+bounces-210002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B0CD2DCA7
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 09:13:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA2CD2DE38
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 09:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8DD330D2D05
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 08:11:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 808BC3091542
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 08:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690DB2F3624;
-	Fri, 16 Jan 2026 08:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAC72F49F8;
+	Fri, 16 Jan 2026 08:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D3XUOT9x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOKzf8jX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81412F1FFE;
-	Fri, 16 Jan 2026 08:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F522F1FC2;
+	Fri, 16 Jan 2026 08:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768551080; cv=none; b=QPfnGJgiLtiw0d5pmPx+31iH1nrcdp95H1Regc1Gpkq4EoE5DZ/NmraCM9vKAo+KevJLzPkfBSoW65HgdsPZId23rRFkMQi+5fBtIcWurTcp6yT5DDjR/6I2+nbBcypJlr2oa++UsglbGwduIcdJDN17OgtTa3wDYL4StAaHR70=
+	t=1768551257; cv=none; b=Qig7EaNdQW/6BUcPoxMoIVY2lFKY61D/nm8iv1RK23xvYdOwrEt+Flhsa60ZE+LC0dvGs9ngW6pjVgohDGhqC/m+EGuMV5sCqiLfhBoXT0Tvz0/N3bHumC1oDtSq3X3e9LqJ8D40PgFFOxzxS1W3JFqwnHcqsDxLXk9/Tft6QW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768551080; c=relaxed/simple;
-	bh=+pdsJdnw0e6CgNzg4q3pECB1UCPt4pkMgJeLtx5zHPM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cl0ZkKNIcppmVLJzgS/W4fuEXZ8semiiqCPUTxLVQDV/PplVLdem4UK5hjNjHp4OjfpjcWmMbZYwlugUegnDFZjjQinw7lPb0kOJ8YOSYxhLn35FXzB3167L6cNBxxxH+UyDMvPbN/BKe3PX/p8WL8WcUd+9Mx7VGac0FNVGnAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D3XUOT9x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB24C116C6;
-	Fri, 16 Jan 2026 08:11:16 +0000 (UTC)
+	s=arc-20240116; t=1768551257; c=relaxed/simple;
+	bh=2eZrDfubXFMgUViM+5QQHkkdicFnc5S2ceEH8GCSr5U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LWePai0We3yFvfazVt+KcT05phKB4cWYRybgqak3lBiDg+mYAuqO5D+Sy9PdlJuXSDKBIJ2oVhnz4etz/wBhmQPgRfc/lpi/62zFOXeN7109urGluh60QjiFOkvT8wjCUw+Ay+lFUwQmASNC36kWTOaAPZmK5pAvzK2zXGXCBBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOKzf8jX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBC8C116C6;
+	Fri, 16 Jan 2026 08:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768551079;
-	bh=+pdsJdnw0e6CgNzg4q3pECB1UCPt4pkMgJeLtx5zHPM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3XUOT9xkwKqkmdAffSWXldXJj0/+eo4FlbnGu9FSNVe23hh4Yci+1vufQ1v7M2Qf
-	 yMBri8mq3HgNjuPUkmu7CEeyx/28lMXjbzAOUspPGN2oo0yeXdcxPOJKessZWrIVdO
-	 RASo0ccdkF/obM744J79YH6y3oqKxwOB1CvMgdqf4mEo5ZhbqT8NRjj3CcNS6xnq9X
-	 h/2lsQsbbrLQytmCMTle/47vpetVTJDItPOA2d+BUYuS2VeJYlO7UA1oE0QKSHpZAR
-	 gmcMdlaYwnY/DgNJSaRJq31wKKrHF+/ovN2xZ23DBp9qtbxe0vgaJJY8ge6gmdZSdF
-	 BOsNZ2a7SB8yg==
+	s=k20201202; t=1768551257;
+	bh=2eZrDfubXFMgUViM+5QQHkkdicFnc5S2ceEH8GCSr5U=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OOKzf8jXSh67YIcPVMj2cEUwGkyf7U4lqgyafcZOQQvgXsmekcJ89fGL6w1gGbK7u
+	 pUFNSiS2CsfTNN+aORdcxc6Qque83ExwisJNvnmIvy8cFN+1zZg+2tAZyHR7jx5BEW
+	 dtLRmopFmjXZKDvl7zb3/x0z6r/ehRmQu6gMFkmhog40UHOxWvSvwDqCJK3ONCcntT
+	 zNdtR3jQHdGmouwvYtMRvmK+22U86SDs499Kq0VUUZatCSZetPQsH8uvSq4muZZvai
+	 DmZaaAZbWcTKF3F0I4uVEdO3zYRc+bCUut0nXh91JSMxdWLZCtV9DaZ39ZjEOyZhhW
+	 53XR1K29fcNRQ==
 From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: Benson Leung <bleung@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Linus Walleij <linusw@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-doc@vger.kernel.org,
+To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	chrome-platform@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
 	tzungbi@kernel.org,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	linux-gpio@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 04/23] gpiolib: Fix resource leaks on errors in lineinfo_changed_notify()
-Date: Fri, 16 Jan 2026 08:10:17 +0000
-Message-ID: <20260116081036.352286-5-tzungbi@kernel.org>
+Subject: [PATCH] scsi: core: Correct wrong kfree() usage for `kobj->name`
+Date: Fri, 16 Jan 2026 08:13:59 +0000
+Message-ID: <20260116081359.353256-1-tzungbi@kernel.org>
 X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-In-Reply-To: <20260116081036.352286-1-tzungbi@kernel.org>
-References: <20260116081036.352286-1-tzungbi@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,39 +57,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On error handling paths, lineinfo_changed_notify() doesn't free the
-allocated resources which results leaks.  Fix it.
+`kobj->name` should be freed by kfree_const()[1][2].  Correct it.
+
+[1] https://elixir.bootlin.com/linux/v6.18/source/lib/kasprintf.c#L41
+[2] https://elixir.bootlin.com/linux/v6.18/source/lib/kobject.c#L695
 
 Cc: stable@vger.kernel.org
-Fixes: d4cd0902c156 ("gpio: cdev: make sure the cdev fd is still active before emitting events")
+Fixes: b49493f99690 ("Fix a memory leak in scsi_host_dev_release()")
 Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/hosts.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index ba1eae15852d..6196aab5ed74 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -2549,7 +2549,7 @@ static int lineinfo_changed_notify(struct notifier_block *nb,
- 	ctx = kzalloc(sizeof(*ctx), GFP_ATOMIC);
- 	if (!ctx) {
- 		pr_err("Failed to allocate memory for line info notification\n");
--		return NOTIFY_DONE;
-+		goto err_put_fp;
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index e047747d4ecf..50ec782cf9f4 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -373,7 +373,7 @@ static void scsi_host_dev_release(struct device *dev)
+ 		 * name as well as the proc dir structure are leaked.
+ 		 */
+ 		scsi_proc_hostdir_rm(shost->hostt);
+-		kfree(dev_name(&shost->shost_dev));
++		kfree_const(dev_name(&shost->shost_dev));
  	}
  
- 	ctx->chg.event_type = action;
-@@ -2563,6 +2563,9 @@ static int lineinfo_changed_notify(struct notifier_block *nb,
- 	queue_work(ctx->gdev->line_state_wq, &ctx->work);
- 
- 	return NOTIFY_OK;
-+err_put_fp:
-+	fput(fp);
-+	return NOTIFY_DONE;
- }
- 
- static int gpio_device_unregistered_notify(struct notifier_block *nb,
+ 	kfree(shost->shost_data);
 -- 
 2.52.0.457.g6b5491de43-goog
 
