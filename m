@@ -1,151 +1,124 @@
-Return-Path: <stable+bounces-209977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920D1D29789
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 01:57:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 110F1D2994B
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 02:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 810F230101C4
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 00:57:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9283630B785E
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 01:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B68630FC20;
-	Fri, 16 Jan 2026 00:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8481132B994;
+	Fri, 16 Jan 2026 01:22:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D3O+Lmbf";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QPhHSctN"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EFC305976
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 00:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473E0329E75
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 01:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768525068; cv=none; b=bLqjq2x+myJkahNP2XKeOi2sc4xqpfEUuI3dJxdAlvgNq9qqin5a3TQz8ouBBOfCaT/9JN59apXIyvmHWWVF7Xr//TTLrDYzv732pVlrc/EV8mw5WInNPchydta07Dy6C2ugsG9915E0W7ZMRAkni7n7lzHMyZCEOC3m9pblxjM=
+	t=1768526552; cv=none; b=FEIIgjfpFnd2NPMLkxHg7HybU0VzzU7mFM8dfUNIo8ZLC0P/5dLT0flffxUHtyn4sxftxr2SZ2fEs1XJ3ZmpCBa/VAG2Hz+5vNMVU49IJghahPyLpuRgb5j2ZnFlYN2VFSFxT4+GfnrOuG8UBRKtcetgzAR6Txen79iGSpTy4cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768525068; c=relaxed/simple;
-	bh=CYIzBzA7YcsDmxuPnO86plE0WUYV+YhL90uub8NSlSQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qTBClW3WXDZF9WzmHlac8xJkeyqNDwQ6ODdtxFHylHP+p1iBdcYlX41fWyfRNu12bYgfvPOJAN7ubQ7b5eIcLzbFoSC+Bo8RQDFcTycYSBfUEnryCYq9CfeOF+bF5UJr+oLo4M4FDWGI2eOYctGf6glG0HfMkGqo/NKS2L0Ir2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dshJJ0X1gzKHMbS
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 08:56:48 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 73BA84058F
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 08:57:42 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgAniPgFjWlpSm7SDw--.8246S2;
-	Fri, 16 Jan 2026 08:57:42 +0800 (CST)
-Message-ID: <24d50280-3cbc-473a-90e9-d749d25f40f6@huaweicloud.com>
-Date: Fri, 16 Jan 2026 08:57:40 +0800
+	s=arc-20240116; t=1768526552; c=relaxed/simple;
+	bh=JmS6hXMultdM7kSpg6pUvdv6eOkt62ucLYun6fJOFVk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k7SMcr9WagTSxU5X3Ylws8ukKMCF4Hs3nZOSQ835HUHSxENlK/UkqWB7wlwrYuEomwJ+TLkDGfoFHuCNIFEhd/NeC2MBR8Dl9d+3aabrVpBq7mtddMiiVrf8f/k/6e/YWELy7Z8+0EPVQkzr1x+wZVzM/rVjfe7oFBXzO339NA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D3O+Lmbf; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QPhHSctN; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768526534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I/7QQfPExfoLaF42b72uhslOlKfH5M9xECrEdJSFRnQ=;
+	b=D3O+Lmbfn5BMLtCvDvnvAuInalzKgcpCxFBk+hYLzm6TVn3iqF4wgNa1kEizFsQHXdhGrq
+	CuFyRrqrgJlXfy5Qh1WiLkrWhyW5QnuA6nE4bK056KvVuYAy0RD3DBrGRspmB3LSxT2521
+	Jh7rhy7Oq4kNimISBi25zwaFwTsosV0=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-54-qLScrXtqPyiFMPo8zQcVeg-1; Thu, 15 Jan 2026 20:22:13 -0500
+X-MC-Unique: qLScrXtqPyiFMPo8zQcVeg-1
+X-Mimecast-MFC-AGG-ID: qLScrXtqPyiFMPo8zQcVeg_1768526533
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-502a341e108so5481541cf.1
+        for <stable@vger.kernel.org>; Thu, 15 Jan 2026 17:22:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1768526533; x=1769131333; darn=vger.kernel.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I/7QQfPExfoLaF42b72uhslOlKfH5M9xECrEdJSFRnQ=;
+        b=QPhHSctNPh0zq6+b6NTKFI7bwJZcLf0srIPUKlG/RoeZas0fUbeDgk5dbWLGm43WF5
+         TDobeTjglupgpUr79wWK8j3Qr5jyAR8WmvOAcqOjHHdPCjVeAI85D/iXy0cRFzanpqwW
+         sIFKdvs+HaY0kcW61gfnA/BOHer1tWam6Bj5c/BuYqHDAyljXSMvGNSG3WQ6N68luADX
+         99Rd/jyBJjljMRyWh+oEK554iF2wt/ZVgai8xTAZI5/KHd+VPRuC/XN9Q0t//BqNB5jg
+         /mOJVvmwOdOiuT3TZhjFjYnZBNoVA0EsIdYW7MVEDfc7Qp+S2O88QWCBMYsxFrjv0tcs
+         IVBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768526533; x=1769131333;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=I/7QQfPExfoLaF42b72uhslOlKfH5M9xECrEdJSFRnQ=;
+        b=Rr3SiCvTQtMBPhE8TqOK7adP6ooZPAW+ooRccifAqhOhiUaFWlyuUCAzB4DenZvKes
+         EgGfK8+7wywauK8GRMhiI75JYD2s8knuG/0lbnLIJVD4uG+vp5CL5GbUsZuaTloFW4Nr
+         q/ChctFsf+dYI2EMvZa/WcpsW6S2+ABD5M58sUJ7AsA0AVF3FZRDMjdyjLLr149IPwjW
+         DMQVFlD9wFOhEHm6/m/ikrKSajnKxMRzN6NB4nRQVhs8EqtwafoyzcrihQSrIwWL/xHy
+         Hu2aVqllaXieWnw2m+pAQwQdv/XTn4ykuaEJUbeelcKTJ6NqHKAB+z8fUnvbDsnSMANH
+         ki4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUV84UHKhTrrIT8xXOtjRScntsQKOIDhyvSlvARJt29sp4D7aMqOaTbeAVz4DPWwOLndbagf4k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/KbOdJRwDvN6cRkEiD8ImzGdUDPS4xFRCLk31z5cvXz3bHfXK
+	ZMvNCG0bufgpNxaxe5ZSkxgOX7nArCsR2JQ+uCD2noKuGw75Zi2GQFhbtI+v6sul39asjFlYML/
+	NzrPr+jUlJ2v/tydILc92ENHdVDh528pY+p8UKgJ0J7vs5OIGaz7pAqIbMA==
+X-Gm-Gg: AY/fxX4MtCfxzH973ZCHz5Uu5rfB9jVlvH+bIAjZeCZLPmFkyqMDJHci8cdlChP0J5x
+	eGHaYr3eZzguLflxj5TtKLI98cHxUOTF5WW3MUuXPxqg+YZ3YIPuDM6oRTnx2dgrQHz+gzw1V9w
+	53BxZqrx7JHS+RiSo3RQqKg4UxqS5Yhqq7xoDElKZ0FJbX9PG0tl52ldrckOIbBZKyppP1vLBCT
+	yhOnLiSXgF8vK3clt1lYSJZ7xPiyXd1VG6gc+yvJ7AQY3mZWnyz5mvXOd/VpAoGUBV1dKlBgsTj
+	VV1hUmIZBnWvamuV3c6INbJS8k70acDBylxfbiZ0n1472aNmcHhOQGNGk+RE1fQkSFyQSMGAbpN
+	/tpJ8cGlFpBoWFabvzsEPSiHVQRbn9/O+i5AlGP9sBOHB
+X-Received: by 2002:a05:622a:95:b0:501:466b:5141 with SMTP id d75a77b69052e-502a164b881mr20881661cf.18.1768526532861;
+        Thu, 15 Jan 2026 17:22:12 -0800 (PST)
+X-Received: by 2002:a05:622a:95:b0:501:466b:5141 with SMTP id d75a77b69052e-502a164b881mr20881511cf.18.1768526532495;
+        Thu, 15 Jan 2026 17:22:12 -0800 (PST)
+Received: from redhat.com (c-73-183-52-120.hsd1.pa.comcast.net. [73.183.52.120])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-502a1d9f2a1sm9622621cf.10.2026.01.15.17.22.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jan 2026 17:22:11 -0800 (PST)
+Date: Thu, 15 Jan 2026 20:22:09 -0500
+From: Brian Masney <bmasney@redhat.com>
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Cc: pdeschrijver@nvidia.com, pgaikwad@nvidia.com, mturquette@baylibre.com,
+	sboyd@kernel.org, thierry.reding@gmail.com, jonathanh@nvidia.com,
+	mperttunen@nvidia.com, tomeu@tomeuvizoso.net,
+	linux-clk@vger.kernel.org, linux-tegra@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] clk: tegra: tegra124-emc: Fix potential memory leak in
+ tegra124_clk_register_emc()
+Message-ID: <aWmSwcza6Qv2aQBO@redhat.com>
+References: <20260115050542.647890-1-lihaoxiang@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH stable] cpuset: Fix missing adaptation for
- cpuset_is_populated
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>,
- stable@vger.kernel.org, lujialin4@huawei.com
-References: <2026011258-raving-unlovable-5059@gregkh>
- <20260114015129.1156361-1-chenridong@huaweicloud.com>
- <bb71a754-ed2e-4535-aa20-c8d0a9ec4be1@huaweicloud.com>
- <2026011510-untouched-widen-8f33@gregkh>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <2026011510-untouched-widen-8f33@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgAniPgFjWlpSm7SDw--.8246S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WFykJF4fCryxWFWktry5Jwb_yoW8Kr1fpF
-	WUWF1aya90gFy3C3yqga1Fga4Fyw4xGF1jqF1DKryrZw17JF12krW0gws0gry8WF4xC345
-	ZFsI9rZaga1qyFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUymb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
-	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
-	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jjVbkUUUUU=
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260115050542.647890-1-lihaoxiang@isrc.iscas.ac.cn>
+User-Agent: Mutt/2.2.14 (2025-02-20)
 
-
-
-On 2026/1/15 22:54, Greg KH wrote:
-> On Wed, Jan 14, 2026 at 10:13:16AM +0800, Chen Ridong wrote:
->>
->>
->> On 2026/1/14 9:51, Chen Ridong wrote:
->>> From: Chen Ridong <chenridong@huawei.com>
->>>
->>> Commit b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
->>> was backported to the long‑term support (LTS) branches. However, because
->>> commit d5cf4d34a333 ("cgroup/cpuset: Don't track # of local child
->>> partitions") was not backported, a corresponding adaptation to the
->>> backported code is still required.
->>>
->>> To ensure correct behavior, replace cgroup_is_populated with
->>> cpuset_is_populated in the partition_is_populated function.
->>>
->>> Cc: stable@vger.kernel.org	# 6.1+
->>> Fixes: b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
->>> Signed-off-by: Chen Ridong <chenridong@huawei.com>
->>> ---
->>>  kernel/cgroup/cpuset.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
->>> index f61dde0497f3..3c466e742751 100644
->>> --- a/kernel/cgroup/cpuset.c
->>> +++ b/kernel/cgroup/cpuset.c
->>> @@ -486,7 +486,7 @@ static inline bool partition_is_populated(struct cpuset *cs,
->>>  	    cs->attach_in_progress)
->>>  		return true;
->>>  	if (!excluded_child && !cs->nr_subparts_cpus)
->>> -		return cgroup_is_populated(cs->css.cgroup);
->>> +		return cpuset_is_populated(cs);
->>>  
->>>  	rcu_read_lock();
->>>  	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
->>
->> Hi Greg,
->>
->> Is this patch suitable for applying?
->> It needs approval from the maintainers of this file.
+On Thu, Jan 15, 2026 at 01:05:42PM +0800, Haoxiang Li wrote:
+> If clk_register() fails, call kfree to release "tegra".
 > 
+> Fixes: 2db04f16b589 ("clk: tegra: Add EMC clock driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-Hi, Longman,
-
-I appreciate you could have a review.
-
->> Note:  Because the corresponding commit varies between LTS branches,, the Fixes tag points to a
->> mainline commit.
-> 
-> As this is only for 6.1.y, why not point it at the commit there?
-> 
-
-This fix (commit b1bcaed1e39a "cpuset: Treat cpusets in attaching as populated") was backported to
-the stable branches v6.1 and later. The latest LTS(v6.18) has this issue, so it should be v6.1+.
-
-Cc: stable@vger.kernel.org # v6.1+
-
-> Or is this for other branches?  If so, which ones?  It might be best to
-> provide a backport for all of the relevant ones so that we get it right.
-> 
-> thanks,
-> 
-> greg k-h
-
--- 
-Best regards,
-Ridong
+Reviewed-by: Brian Masney <bmasney@redhat.com>
 
 
