@@ -1,133 +1,85 @@
-Return-Path: <stable+bounces-210082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A419D37AC0
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 18:51:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07EB3D37AAD
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 18:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D92E53159EC6
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 17:48:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BB7CE3016662
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 17:49:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3978A39A7F7;
-	Fri, 16 Jan 2026 17:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9DF39B48E;
+	Fri, 16 Jan 2026 17:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HKGxuR9t"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Es4OUeiQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45E334026B;
-	Fri, 16 Jan 2026 17:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C568433F38F;
+	Fri, 16 Jan 2026 17:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768585710; cv=none; b=L2Yw5WgRHVm66qACGQ0xeql+hZZ3d7rH0htgRXnNNmZeUz/PuuZb0nA14pnRAJ0+o7noojw4AxA7f1URGMnJRdOkproR4FXHXu1y/tQphu1wrixjVuw7JG2QK89wWsgTGcV86kwYcM4MeJEOA6Fvn4vkrtvS1JpSxguacRZVYEA=
+	t=1768585750; cv=none; b=N9QzOOe4lgtZnn0ndVqB6lYBNdH8gWft4+GAecvbHtzi+d8suadbgZ4TEhKP0wRLo2TZJGaMgQbUIj+ZOCmf/EHhdfffBlJqIQZ6eHJlcGbBm2Fy9AjCxgT0FJfhPjci73mgcazbRrNWMqxN9O0d9773AShtgPEf4FD6oPoWfT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768585710; c=relaxed/simple;
-	bh=mZwJPl5VQFqlNa5iiOuI2qG74d5RfCNxPwmtvkK98oY=;
-	h=Date:To:From:Subject:Message-Id; b=f0+OjTAKq+RXrvntxBgWGQZxTiQSgLm4PomzHjca4J8XVqeRgC1JNBtazdb9AEqgqnm0v/Put4ryo0z7TCYspVUoGbyuJSuE5a6rdf/bcPUgkDHaEZLRle9lxaGrJ/vZckrhZzp4US7GJdhMwkYLBFmUfFKMcUPnHGr7x3DOt7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HKGxuR9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FE8C116C6;
-	Fri, 16 Jan 2026 17:48:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768585708;
-	bh=mZwJPl5VQFqlNa5iiOuI2qG74d5RfCNxPwmtvkK98oY=;
-	h=Date:To:From:Subject:From;
-	b=HKGxuR9tmGWLwCvWLsA0yRG8SmK73X8V5PsZmzab1N0rram4HGMN8sahzXmvhItmb
-	 Co8gMCB9uweW/Gy7AUidRoR2J9FVgcq3vfBUx1NAptPPLAO/IUm9z3q68LYF8SWTWK
-	 CnsVK2SQko+GbJKH6FU7JCtJKCFyip6iaXn/vjU8=
-Date: Fri, 16 Jan 2026 09:48:27 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jcmvbkbc@gmail.com,chris@zankel.net,williamt@cadence.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-highmem-fix-__kmap_to_page-build-error.patch added to mm-new branch
-Message-Id: <20260116174828.48FE8C116C6@smtp.kernel.org>
+	s=arc-20240116; t=1768585750; c=relaxed/simple;
+	bh=E7T4z4b9y9SCIxQWSxl5atYYJrAu/uDb/fibor0jowc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dqSnqYBkoBPIvq+Jpz0Oe6iNbpXxlKSOSqaTwdPWeqMPrfJ+xCT2otHSlvpUUvmzYCg8+tIciuWWzH+ZQlGTP11vGqa6J3BP5MEkhvQFSyCN0sW1UNiZgsy5kAQ0L2tKuz2kNARq3AktvvZZO2CjXVaXsK8QZHwlQ3Tm6eYg1A0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Es4OUeiQ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1158)
+	id 7D7FC20B7165; Fri, 16 Jan 2026 09:49:09 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7D7FC20B7165
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1768585749;
+	bh=E7T4z4b9y9SCIxQWSxl5atYYJrAu/uDb/fibor0jowc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Es4OUeiQ3A+EQpK6yvdYuw5Cd/JLbplQSRz5MRIHO00rnG0eyd2HSTAnOkZ5erKNm
+	 lggCoKA8O3JEXIPgr+9lAizmfWDHk7BzuuGzafAzh9BMW44I9Wx5XfqnhItQG33w8o
+	 Dm8Ia6EileEv1ovBtjyancfxJ7n+HBTvlHIzmans=
+From: Hardik Garg <hargar@linux.microsoft.com>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Hardik Garg <hargar@linux.microsoft.com>
+Subject: Re: [PATCH 6.12 000/119] 6.12.66-rc1 review
+Date: Fri, 16 Jan 2026 09:48:59 -0800
+Message-ID: <20260116174859.274262-1-hargar@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+
+The kernel, bpf tool, perf tool, and kselftest builds fine for v6.12.66-rc1
+on x86 and arm64 Azure VM.
 
 
-The patch titled
-     Subject: mm/highmem: fix __kmap_to_page() build error
-has been added to the -mm mm-new branch.  Its filename is
-     mm-highmem-fix-__kmap_to_page-build-error.patch
+Tested-by: Hardik Garg <hargar@linux.microsoft.com>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-highmem-fix-__kmap_to_page-build-error.patch
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-The mm-new branch of mm.git is not included in linux-next
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: William Tambe <williamt@cadence.com>
-Subject: mm/highmem: fix __kmap_to_page() build error
-Date: Thu, 11 Dec 2025 12:38:19 -0800
-
-This changes fixes following build error which is a miss from ef6e06b2ef87
-("highmem: fix kmap_to_page() for kmap_local_page() addresses").
-
-mm/highmem.c:184:66: error: 'pteval' undeclared (first use in this
-function); did you mean 'pte_val'?
-184 | idx =3D arch_kmap_local_map_idx(i, pte_pfn(pteval));
-
-In __kmap_to_page(), pteval is used but does not exist in the function.
-
-(akpm: affects xtensa only)
-
-Link: https://lkml.kernel.org/r/SJ0PR07MB86317E00EC0C59DA60935FDCD18DA@SJ0PR07MB8631.namprd07.prod.outlook.com
-Fixes: ef6e06b2ef87 ("highmem: fix kmap_to_page() for kmap_local_page() addresses")
-Signed-off-by: William Tambe <williamt@cadence.com>
-Reviewed-by: Max Filippov <jcmvbkbc@gmail.com>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/highmem.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/mm/highmem.c~mm-highmem-fix-__kmap_to_page-build-error
-+++ a/mm/highmem.c
-@@ -180,12 +180,13 @@ struct page *__kmap_to_page(void *vaddr)
- 		for (i = 0; i < kctrl->idx; i++) {
- 			unsigned long base_addr;
- 			int idx;
-+			pte_t pteval = kctrl->pteval[i];
- 
- 			idx = arch_kmap_local_map_idx(i, pte_pfn(pteval));
- 			base_addr = __fix_to_virt(FIX_KMAP_BEGIN + idx);
- 
- 			if (base_addr == base)
--				return pte_page(kctrl->pteval[i]);
-+				return pte_page(pteval);
- 		}
- 	}
- 
-_
-
-Patches currently in -mm which might be from williamt@cadence.com are
-
-mm-highmem-fix-__kmap_to_page-build-error.patch
-
+Thanks,
+Hardik
 
