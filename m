@@ -1,70 +1,127 @@
-Return-Path: <stable+bounces-210104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D010D38609
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 20:38:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FF3D3862A
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 20:44:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9BA9730A13EC
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 19:36:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43ADB30E8D45
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 19:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495F23A0B19;
-	Fri, 16 Jan 2026 19:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="eipR8nkF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B48F3A1A3A;
+	Fri, 16 Jan 2026 19:43:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C722D73A0;
-	Fri, 16 Jan 2026 19:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A78846F
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 19:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768592172; cv=none; b=YFGRoaYaUdf+Hfal/68tuPS617PkCKio5ykT6CH8GbiytHHZ3UspW6YyKjyBYbA3K/FctP/iMQAtzXxeo/JDB2b3DuDUM9DJLkERnnAVPEmwx6M6kN2oC0Z5MteUlcgdV0kWFTMRNG2uNwTzujdDyduu9ZydZ/6sz1f4nIHlcd8=
+	t=1768592618; cv=none; b=Ldwc8pgLN03sDqe6qqewcD2Blo1LmRUOUmrfzJCaFmx7SgsaaYl0o8R0jSp9pLe9/eq+baPI+nhMpJLe0+QHq+o63lvxi3UkGxeYSKaDJwbkxUJFabKdR791bl4JMCli7g1fLJxt8rnUXRKf+X52fj+Aw+7Asb/37W6DFhJh1N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768592172; c=relaxed/simple;
-	bh=OQSJm71mqejadmYLuc9oR3EA6Ci2x9fyJh28nlhxIAk=;
+	s=arc-20240116; t=1768592618; c=relaxed/simple;
+	bh=poKp5vX8lh2pR6Sf5S5sLyzNO3n9ufpfwRDGKymvID0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZF3MHxm0zaTZmgbvk2fUTD3lgLqEWoIuw4alK1y69MJa6qICyLNN24H+CLue9Og89vGrP3iggAAheSaRtHg+hD6bgABrSZWzoysulA8Tcah3blt7jI+fzQahKP7/WV9oUqrHw6ZAGLwe+5jNSG0dvlYKS5ftDlH7cP8KXERjv1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=eipR8nkF; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost (unknown [79.139.240.21])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 13AE8406E9AC;
-	Fri, 16 Jan 2026 19:36:07 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 13AE8406E9AC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1768592167;
-	bh=OQSJm71mqejadmYLuc9oR3EA6Ci2x9fyJh28nlhxIAk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eipR8nkFgonMZ0n64yvPbJX/6Wgk9zLkrakH217z2AeUnob+YL12wincysZJ5kGhB
-	 q5ksCVN4Z+o/RJ1bYIl/rj8j2rgi7fMxBwIFH+e/1OgNVAhp8f5/5mESegzUUqR5jY
-	 qD8/d+p0Gkstvqu+/KrVM1iwqMXIoNZLpt2SqvUo=
-Date: Fri, 16 Jan 2026 22:36:06 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	stable@vger.kernel.org
-Cc: Christian Koenig <christian.koenig@amd.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Simon Richter <Simon.Richter@hogyros.de>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org
-Subject: Re: [PATCH 6.1] drm/ttm: fix up length check inside
- ttm_bo_vm_access()
-Message-ID: <aWqS00tHXSsh_rwL@fedora>
-References: <20260116185007.1243557-1-pchelkin@ispras.ru>
+	 Content-Type:Content-Disposition:In-Reply-To; b=AtjOr6ccF8EZTlMttVCrRxedR7MIRdDhhve0SDSY6D4dL8BnOdyXy9fkhrQi2SrpVlvE4o+JoVDfeSTyRzSRgxR/lWzFZ3MnRvQi+pMkbbkCbgIKZq/ohHULNNa9esvs8qH8JpDSQ5nGXm7GJLY3W3FygiJZvLbQX24Uz0Quclg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vgpj9-0001K9-8u; Fri, 16 Jan 2026 20:43:23 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vgpj9-000yKs-0R;
+	Fri, 16 Jan 2026 20:43:22 +0100
+Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 1EBCA4CEF29;
+	Fri, 16 Jan 2026 19:43:22 +0000 (UTC)
+Date: Fri, 16 Jan 2026 20:43:21 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Vincent Mailhol <mailhol@kernel.org>, 
+	Wolfgang Grandegger <wg@grandegger.com>, Sebastian Haas <haas@ems-wuensche.com>, 
+	"David S. Miller" <davem@davemloft.net>, Frank Jungclaus <frank.jungclaus@esd.eu>, socketcan@esd.eu, 
+	Yasushi SHOJI <yashi@spacecubics.com>, Daniel Berglund <db@kvaser.com>, 
+	Olivier Sobrie <olivier@sobrie.be>, 
+	Remigiusz =?utf-8?B?S2/FgsWCxIV0YWo=?= <remigiusz.kollataj@mobica.com>, Bernd Krumboeck <b.krumboeck@gmail.com>
+Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH can v2 0/5] can: usb: fix URB memory leaks
+Message-ID: <20260116-manipulative-wine-pillbug-0b5a36-mkl@pengutronix.de>
+References: <20260116-can_usb-fix-memory-leak-v2-0-4b8cb2915571@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="s33jddrzvg4u2542"
 Content-Disposition: inline
-In-Reply-To: <20260116185007.1243557-1-pchelkin@ispras.ru>
+In-Reply-To: <20260116-can_usb-fix-memory-leak-v2-0-4b8cb2915571@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Fri, 16. Jan 21:50, Fedor Pchelkin wrote:
-> The backport of 491adc6a0f99 ("drm/ttm: Avoid NULL pointer deref for
-> evicted BOs") is currently in 5.10-5.15 queues and it may be fixed up in
-> place.
 
-That's actually in queue for 5.15 only, not 5.10.
+--s33jddrzvg4u2542
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH can v2 0/5] can: usb: fix URB memory leaks
+MIME-Version: 1.0
+
+On 16.01.2026 20:35:13, Marc Kleine-Budde wrote:
+> An URB memory leak [1][2] was recently fixed in the gs_usb driver. The
+> driver did not take into account that completed URBs are no longer
+> anchored, causing them to be lost during ifdown. The memory leak was fixed
+> by re-anchoring the URBs in the URB completion callback.
+>
+> Several USB CAN drivers are affected by the same error. Fix them
+> accordingly.
+>
+> [1] https://lore.kernel.org/all/20260109135311.576033-3-mkl@pengutronix.d=
+e/
+> [2] https://lore.kernel.org/all/20260116-can_usb-fix-reanchor-v1-1-9d74e7=
+289225@pengutronix.de/
+>
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+
+Applied to linux-can.
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--s33jddrzvg4u2542
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmlqlNYACgkQDHRl3/mQ
+kZzxLQgAgeUPHXAwM23AMfM8vIOSylgiuf8STuzdfNSM+ObuEJMcPsgr75cAprgs
+Q3vHP7PRR911LqYtaIjw4dcwEqWC3IlE2kiTgJ1CqHdkyEFpqjg0s/rhIywR+O1E
+LfAPNjXiiN/79mBoHuphWv8DwmWstcWCrJIcrGH+MtV81QnPBwUN651SilPpqoL3
+Yn/uX0Qk+Ix1qF3csrqzq4YUd7zpfgvz+7piyEzTXdKBcck5mZUT4St1WmeMRkw6
+Ue/Z6AEKoE0+Yd1xltfnd8/kkr4HU7yexnT7/YlI9ZCW2CGo+Fz+hzJYY9XLwY+R
+QQRrJbygJlEcHFz7EmR6G+t1U5IxDQ==
+=wUnh
+-----END PGP SIGNATURE-----
+
+--s33jddrzvg4u2542--
 
