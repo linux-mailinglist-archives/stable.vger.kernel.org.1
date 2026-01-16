@@ -1,149 +1,133 @@
-Return-Path: <stable+bounces-210117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 671D0D387FE
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 21:53:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4BCD3880C
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 21:56:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E826C30D615F
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 20:53:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E59530242B3
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 20:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED4F25EF9C;
-	Fri, 16 Jan 2026 20:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E6F2FDC5D;
+	Fri, 16 Jan 2026 20:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kcHkbaNO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V6/akdSM"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FB01799F
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 20:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307F62D595B
+	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 20:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768596789; cv=none; b=u7GaAx+COwo9gvp2pQiJXgU8UYIbrkhYjglXS4kkHmH7nmHABZv8Z3BGwWJaulzl3T3X6vfTxcVuNHpffHvO9VF0MvaEXXf4aXtyBlZ1KE79dHos5ywyuKHiON1YwVzF/PjlqlZvFV1ISzYKrcPURtsW1oyFLtdm/os4Vd1I4GE=
+	t=1768597009; cv=none; b=UksDFRvZ4m8nQXFtL1Xc5mQZ7Znqq3XTdciQliwgh4U7t9lOIsCh/0lPifVxxLQCk8ASoQZ6TzQfSoGTOHu5XuuPPg07+bpV1Var14kZPmowHt+UP2PjutVhy37Vmup0EskoX6QmU+2/ZE2VPFNAa+P1rFyx2rouCxJ2o/77fcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768596789; c=relaxed/simple;
-	bh=cihrYZNRdjJIuXr0piHB7e8pdjojNx9Q3HggmsK01AY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hCoTA+hbl2twojByFnnpAHCIlqGdAi5hY0PJPSIwAPmHP7SRenyR6EbVSx1lc91hXtKHMZd9SOmvzW34kQRzz3GEXDrf1DCbpLC63ZEYTvfYKQvjE63+Euqf7AFwD/C4cfYz7O++qTubUyd4SEgiVeqnnrhGDzyKTbT3xPzThNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kcHkbaNO; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768596786;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=tfmijTxxqbRMuICsoRtTverNeZ8jwLHJm8kbNLNJYC4=;
-	b=kcHkbaNOCn+GafJjIS7kkYKMxNb3mCgXzXJr/82xwYjAxL6ENTLg3HG5Jl53QiozqjlgTK
-	J87kA9WkOkTx+qirmSaM/Bn4RTxWN+XmXZeJxqpOnVc6dAO9enpaEmrRvQ085bBEWR7q9p
-	5S06TvUh7TM4SJhuaPDbnA7kmaXWf2o=
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm: Restore per-memcg proactive reclaim with !CONFIG_NUMA
-Date: Fri, 16 Jan 2026 20:52:47 +0000
-Message-ID: <20260116205247.928004-1-yosry.ahmed@linux.dev>
+	s=arc-20240116; t=1768597009; c=relaxed/simple;
+	bh=KW+YCk3jL0wohXBu5HKQJ96I7hqVok5gvj63pqpLlVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Zbn9yMVCdkX6QzoyXiTf/OszUWye/zQbedt4Uak+rtPPS7ounrst6ZDeszv3tPAN6loNRHBD19RfbFPZMrau4dXQf/wrsbQq65z1rnCYZGNbvw6rQY0SeOjdx0De5OJLyCgK8eaIfEkR045DB3tTpxG+X0GE9raTsDgmOjXxbtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V6/akdSM; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4801d24d91bso14812765e9.2
+        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 12:56:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768597006; x=1769201806; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=0wPmsoU/VWwpse+1kjZEJCcgwRAW25UoomdQPrwRwsY=;
+        b=V6/akdSMrv3LtNSJ7P/XS1ooNMsn02YYkQFWMXmtVasJirS5qObWN9zb0ZfSrO4hDg
+         bPTLQo0Uq0XuaaP5nxnXnT7DiidCPc6Jd42Z8QkN+W6ZPqAVFBcI7SFn4jkH5vHN7+lO
+         p1YpHZQBu/D+8WRaIWroQWt3Fr+QF97jWuYEs6Ekg6VC/n4hd2y0qannOCleVuqB8Ngg
+         QhKoK3yb5lbjfCWQwbA9CJXDD4PuMzHMUOdb3B1vfVdQ9MQ0g1RH921/88DIPByP+KfN
+         VtMfxm21hgwS01CCzhLNA4a3RTl1JS1Uut/ka4CVzGCEsWt20DuIHPQjL4MKNNUWi5Ty
+         j96w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768597006; x=1769201806;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0wPmsoU/VWwpse+1kjZEJCcgwRAW25UoomdQPrwRwsY=;
+        b=ASOpVPdjYXVaqqr0EwFW4dRyjMbBcaY3GvhPu+eooa3mfCkrJsuaJFgdd/GgVuRrSO
+         OwL1AoTxWO0QqE4Pzdxh/hJntX7ZxlXg4uamnNIBffAIU4Vn2PChhIObSL/iMBHPShuX
+         MGbIhBRYbfR+Gbf3lZwDxpfqgT/NJ+RNfYCblnC0kVC2slJTGxM4OhPytpGJk7JO+C1F
+         aIALRw53HxTLRwu4lonZwmHNo7dgdXlN1aGvtIWBGy+GlqSvhCRVcuYOxyznfdn4HFz8
+         rcjsxMWObsaZZzPXkzZ6sLlhBkWO5lPUrTjD9PFKKA3TkjoexXPvwpnKh7cOmeMKf+87
+         hxSg==
+X-Gm-Message-State: AOJu0YzcrucJ532FWLjvhBG0NJP7iGx2nD0PyYmh8ic/XVc+L54uqFsg
+	RCsWstnUYAAZ9sLY43WU5Ld8z0UdoMYfw6s/EYU4yHEIN4h/nPWHZLTo
+X-Gm-Gg: AY/fxX6zxd9LqID9FZOnNB5rhS+JNbHaB0y4OFFB0XjM91yAaeG4oa1eH9u2Jlky3/i
+	2MZg0lWyh5aKwh/TtCZg9QIqPcjLiVs6zLBxYmzZ0kHQGKl/qB1T5zzApDkMviFkx6yK3qdo3xk
+	3ppeO64u+h3LD3JK7h5GoG3s1v3D7PfRiFkEcbfDi7N7x4kpnA+LWITibGlShVAOeRn97dj0eTy
+	9e4dUsIBTB3AgvgMy46fK4ec8HKhtLQbaC7wonloIR1RGFSwimdKNnA2purljX53Dgka3Zgokg/
+	MuM8SkwNSQGffuWpyMhGgQq0CeajM3/f20bxnG8rJpXPvMODoWJ3sHrj4C8WsPS7FXFtCwihOY3
+	/5MO81NHAPlvW6sihaxNvuFJNnfofYxh43v/dK7Nc47kw8b3EXgbvQ6V9z3DZxKm+yovnTsejyE
+	CxJjl2dzNItqfsneXykhA8jdBJjHs/CrFE2mOYjnMFfT1C
+X-Received: by 2002:a05:600c:8b08:b0:47d:5d27:2a7f with SMTP id 5b1f17b1804b1-4801e347d3amr55463295e9.26.1768597006226;
+        Fri, 16 Jan 2026 12:56:46 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801ea19f94sm26535935e9.3.2026.01.16.12.56.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jan 2026 12:56:45 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 53213BE2EE7; Fri, 16 Jan 2026 21:56:44 +0100 (CET)
+Date: Fri, 16 Jan 2026 21:56:44 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: stable@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>, ritesh.list@gmail.com,
+	hbathini@linux.ibm.com, mpe@ellerman.id.au,
+	regressions@lists.linux.dev, benh@debian.org
+Subject: [regression 6.1.y] Backport of 353d7a84c214f18
+ ("powerpc/64s/radix/kfence: map __kfence_pool at page granularity") to
+ stable versions 6.1 causes build failure
+Message-ID: <aWqmDHdHVLs5M3HQ@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Commit 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
-moved proactive reclaim logic from memory.reclaim handler to a generic
-user_proactive_reclaim() helper to be used for per-node proactive
-reclaim.
+Hi,
 
-However, user_proactive_reclaim() was only defined under CONFIG_NUMA,
-with a stub always returning 0 otherwise. This broke memory.reclaim on
-!CONFIG_NUMA configs, causing it to report success without actually
-attempting reclaim.
+In v6.1.160 353d7a84c214f18 ("powerpc/64s/radix/kfence: map
+__kfence_pool at page granularity") was backported. But this now
+causes a build failure:
 
-Move the definition of user_proactive_reclaim() outside CONFIG_NUMA, and
-instead define a stub for __node_reclaim() in the !CONFIG_NUMA case.
-__node_reclaim() is only called from user_proactive_reclaim() when a
-write is made to sys/devices/system/node/nodeX/reclaim, which is only
-defined with CONFIG_NUMA.
+make KERNELRELEASE=6.1.159+ ARCH=powerpc        KBUILD_BUILD_VERSION=3 -f ./Makefile
+  CALL    scripts/checksyscalls.sh
+  UPD     init/utsversion-tmp.h
+  CC      init/version.o
+  AR      init/built-in.a
+  CC      arch/powerpc/mm/book3s64/radix_pgtable.o
+In file included from arch/powerpc/mm/book3s64/radix_pgtable.c:35:
+./arch/powerpc/include/asm/kfence.h: In function 'kfence_protect_page':
+./arch/powerpc/include/asm/kfence.h:37:9: error: implicit declaration of function '__kernel_map_pages'; did you mean 'hash__kernel_map_pages'? [-Werror=implicit-function-declaration]
+   37 |         __kernel_map_pages(page, 1, !protect);
+      |         ^~~~~~~~~~~~~~~~~~
+      |         hash__kernel_map_pages
+cc1: some warnings being treated as errors
+make[7]: *** [scripts/Makefile.build:250: arch/powerpc/mm/book3s64/radix_pgtable.o] Error 1
+make[6]: *** [scripts/Makefile.build:503: arch/powerpc/mm/book3s64] Error 2
 
-Fixes: 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
----
- mm/internal.h |  8 --------
- mm/vmscan.c   | 13 +++++++++++--
- 2 files changed, 11 insertions(+), 10 deletions(-)
+This is because 8f14a96386b2 ("mm: page_poison: always declare
+__kernel_map_pages() function") is missing from 6.1.y (it was only
+included in 6.5-rc1).
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 33eb0224f461..9508dbaf47cd 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -615,16 +615,8 @@ extern unsigned long highest_memmap_pfn;
- bool folio_isolate_lru(struct folio *folio);
- void folio_putback_lru(struct folio *folio);
- extern void reclaim_throttle(pg_data_t *pgdat, enum vmscan_throttle_state reason);
--#ifdef CONFIG_NUMA
- int user_proactive_reclaim(char *buf,
- 			   struct mem_cgroup *memcg, pg_data_t *pgdat);
--#else
--static inline int user_proactive_reclaim(char *buf,
--			   struct mem_cgroup *memcg, pg_data_t *pgdat)
--{
--	return 0;
--}
--#endif
- 
- /*
-  * in mm/rmap.c:
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 7b28018ac995..d9918f24dea0 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -7849,6 +7849,17 @@ int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
- 	return ret;
- }
- 
-+#else
-+
-+static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
-+				    unsigned long nr_pages,
-+				    struct scan_control *sc)
-+{
-+	return 0;
-+}
-+
-+#endif
-+
- enum {
- 	MEMORY_RECLAIM_SWAPPINESS = 0,
- 	MEMORY_RECLAIM_SWAPPINESS_MAX,
-@@ -7956,8 +7967,6 @@ int user_proactive_reclaim(char *buf,
- 	return 0;
- }
- 
--#endif
--
- /**
-  * check_move_unevictable_folios - Move evictable folios to appropriate zone
-  * lru list
--- 
-2.52.0.457.g6b5491de43-goog
+Cherry-picking 8f14a96386b2 fixes the build failure on powerpc.
 
+#regzbot introduced 36c1dc122eb3b917cd2c343029ff60a366a00539
+
+Marking as regression for 36c1dc122eb3 ("powerpc/64s/radix/kfence: map
+__kfence_pool at page granularity"), for the 6.1.y specific commit
+causing the regression.
+
+Regards,
+Salvatore
 
