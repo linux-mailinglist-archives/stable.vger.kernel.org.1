@@ -1,133 +1,175 @@
-Return-Path: <stable+bounces-210118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4BCD3880C
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 21:56:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEB8D388CD
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 22:46:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E59530242B3
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 20:56:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E2745300DDA3
+	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 21:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E6F2FDC5D;
-	Fri, 16 Jan 2026 20:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F24F3090FE;
+	Fri, 16 Jan 2026 21:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V6/akdSM"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1eF+/GTo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011018.outbound.protection.outlook.com [52.101.52.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307F62D595B
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 20:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768597009; cv=none; b=UksDFRvZ4m8nQXFtL1Xc5mQZ7Znqq3XTdciQliwgh4U7t9lOIsCh/0lPifVxxLQCk8ASoQZ6TzQfSoGTOHu5XuuPPg07+bpV1Var14kZPmowHt+UP2PjutVhy37Vmup0EskoX6QmU+2/ZE2VPFNAa+P1rFyx2rouCxJ2o/77fcw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768597009; c=relaxed/simple;
-	bh=KW+YCk3jL0wohXBu5HKQJ96I7hqVok5gvj63pqpLlVg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Zbn9yMVCdkX6QzoyXiTf/OszUWye/zQbedt4Uak+rtPPS7ounrst6ZDeszv3tPAN6loNRHBD19RfbFPZMrau4dXQf/wrsbQq65z1rnCYZGNbvw6rQY0SeOjdx0De5OJLyCgK8eaIfEkR045DB3tTpxG+X0GE9raTsDgmOjXxbtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V6/akdSM; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4801d24d91bso14812765e9.2
-        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 12:56:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768597006; x=1769201806; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=0wPmsoU/VWwpse+1kjZEJCcgwRAW25UoomdQPrwRwsY=;
-        b=V6/akdSMrv3LtNSJ7P/XS1ooNMsn02YYkQFWMXmtVasJirS5qObWN9zb0ZfSrO4hDg
-         bPTLQo0Uq0XuaaP5nxnXnT7DiidCPc6Jd42Z8QkN+W6ZPqAVFBcI7SFn4jkH5vHN7+lO
-         p1YpHZQBu/D+8WRaIWroQWt3Fr+QF97jWuYEs6Ekg6VC/n4hd2y0qannOCleVuqB8Ngg
-         QhKoK3yb5lbjfCWQwbA9CJXDD4PuMzHMUOdb3B1vfVdQ9MQ0g1RH921/88DIPByP+KfN
-         VtMfxm21hgwS01CCzhLNA4a3RTl1JS1Uut/ka4CVzGCEsWt20DuIHPQjL4MKNNUWi5Ty
-         j96w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768597006; x=1769201806;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0wPmsoU/VWwpse+1kjZEJCcgwRAW25UoomdQPrwRwsY=;
-        b=ASOpVPdjYXVaqqr0EwFW4dRyjMbBcaY3GvhPu+eooa3mfCkrJsuaJFgdd/GgVuRrSO
-         OwL1AoTxWO0QqE4Pzdxh/hJntX7ZxlXg4uamnNIBffAIU4Vn2PChhIObSL/iMBHPShuX
-         MGbIhBRYbfR+Gbf3lZwDxpfqgT/NJ+RNfYCblnC0kVC2slJTGxM4OhPytpGJk7JO+C1F
-         aIALRw53HxTLRwu4lonZwmHNo7dgdXlN1aGvtIWBGy+GlqSvhCRVcuYOxyznfdn4HFz8
-         rcjsxMWObsaZZzPXkzZ6sLlhBkWO5lPUrTjD9PFKKA3TkjoexXPvwpnKh7cOmeMKf+87
-         hxSg==
-X-Gm-Message-State: AOJu0YzcrucJ532FWLjvhBG0NJP7iGx2nD0PyYmh8ic/XVc+L54uqFsg
-	RCsWstnUYAAZ9sLY43WU5Ld8z0UdoMYfw6s/EYU4yHEIN4h/nPWHZLTo
-X-Gm-Gg: AY/fxX6zxd9LqID9FZOnNB5rhS+JNbHaB0y4OFFB0XjM91yAaeG4oa1eH9u2Jlky3/i
-	2MZg0lWyh5aKwh/TtCZg9QIqPcjLiVs6zLBxYmzZ0kHQGKl/qB1T5zzApDkMviFkx6yK3qdo3xk
-	3ppeO64u+h3LD3JK7h5GoG3s1v3D7PfRiFkEcbfDi7N7x4kpnA+LWITibGlShVAOeRn97dj0eTy
-	9e4dUsIBTB3AgvgMy46fK4ec8HKhtLQbaC7wonloIR1RGFSwimdKNnA2purljX53Dgka3Zgokg/
-	MuM8SkwNSQGffuWpyMhGgQq0CeajM3/f20bxnG8rJpXPvMODoWJ3sHrj4C8WsPS7FXFtCwihOY3
-	/5MO81NHAPlvW6sihaxNvuFJNnfofYxh43v/dK7Nc47kw8b3EXgbvQ6V9z3DZxKm+yovnTsejyE
-	CxJjl2dzNItqfsneXykhA8jdBJjHs/CrFE2mOYjnMFfT1C
-X-Received: by 2002:a05:600c:8b08:b0:47d:5d27:2a7f with SMTP id 5b1f17b1804b1-4801e347d3amr55463295e9.26.1768597006226;
-        Fri, 16 Jan 2026 12:56:46 -0800 (PST)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801ea19f94sm26535935e9.3.2026.01.16.12.56.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 12:56:45 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 53213BE2EE7; Fri, 16 Jan 2026 21:56:44 +0100 (CET)
-Date: Fri, 16 Jan 2026 21:56:44 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, ritesh.list@gmail.com,
-	hbathini@linux.ibm.com, mpe@ellerman.id.au,
-	regressions@lists.linux.dev, benh@debian.org
-Subject: [regression 6.1.y] Backport of 353d7a84c214f18
- ("powerpc/64s/radix/kfence: map __kfence_pool at page granularity") to
- stable versions 6.1 causes build failure
-Message-ID: <aWqmDHdHVLs5M3HQ@eldamar.lan>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581C12D7DE9;
+	Fri, 16 Jan 2026 21:45:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.18
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768599960; cv=fail; b=oC+Id9kESPbe2lR5NQzd0InTRsrd4e3SRKYpCJkL7KPMwniTDHdQA5XGXpiMMlQ4VrkE4dsRVyKZHPUjXL6QZCzRIHWRt+UEHheue4BA2be0BGacDN6/mO9r18VZsoYdZqxk0QnouCAi85dl9GF3UCUyBgf3RKy4DIR5D+Z4ib0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768599960; c=relaxed/simple;
+	bh=7CKtM+qcmg/aOyPjOfsLqQVGyd1Ljfl4/ShdI+QE+hI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bGDYZk1bmt8uFTgaqyavRQwUN/0UKJ44B213ksVkvdnFjUTJ61ogkUuVJfSiWRcFVg45yggsT62wjerrGuMbl9pR7H4hC7wMNf17/Ou696myhj0dQ9cNOBVcHbtEch2IGWSHKrjlHk9tqpkblAzeKezrxFt0nZUf2SRvwpEB2kA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1eF+/GTo; arc=fail smtp.client-ip=52.101.52.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FKsGf/VTqInRgZp1XUtb3JIuwF8sXqGNUg5fHyTHuYKpIdJBc6I+sV/I03Jybi7TnDO0QCUBOOEnP4R6J22BbE5rPgXsJj0t6H6ASduMmegQm+vQF8NignXGciWAdZM1+n038aVrU+2c01uwedBM9VBL89O7UCOimfN4zBzXWAgmJDmphyljxqxbKeF6UFolsK157QAYrqZ9SBhrTj0RAHn5iOGIJtpVU9WxKpyUvK0qWqaEse5JShhfovebNAQjycOfoEnyofgF3jr0fGrrp5QgcuEvcHd8cNoLbe8yEW8rMeLKKib6Sljx65tYdP0Q/T3/iWS03k/wDE4OFx+jVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U2nLixL5av2BhUEhiBW3s8VMS5GAg3rfym2igcvq99A=;
+ b=T7f5p/COnoNTLkCkUC5Ucqypf/7dPSSy04Xa8dgt/qxFhMmixOGIHmrtLNJ76JMBIYyA90lp1LutkLIeVFGkLs7WW60+VuQZSghGRmnBx7SYokNKV0zP/arUA0zXDhs7i47z63IMUs9eCMcNn+YCJj98CeVwVd3hYc4oq57RbY+8h5es5RmbNp9TrF+A3FSQ5PnArvHY4AXc1ZJwf3lq767jK219yya4hhUO5hlCpK7mVlUwAe6x432Kwf0niDvkonUepX27qwvwbvDeUm5sHdYaMoHm5EBWkcW3B5JMXORo1ZCmwQxe1l7a+M0BmPPlLKYeXRKn5pyv55m9iXqRzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U2nLixL5av2BhUEhiBW3s8VMS5GAg3rfym2igcvq99A=;
+ b=1eF+/GToIOm5p13angYOxTEDgN2UIKkTl3SrgjYFCUrUtZZjgrPJsHina284hVzET5125kfq5umppL0mjmclTwQO9t7XyR/uZJV70K9LFuLnf50mamWQyyu5Pg+3wKfnSs9vth3sIUX+L1XXCSse2Ru9wyfhYWRsM7hPJ5vrqaY=
+Received: from MN2PR03CA0003.namprd03.prod.outlook.com (2603:10b6:208:23a::8)
+ by IA0PPF316EEACD8.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bcb) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.4; Fri, 16 Jan
+ 2026 21:45:47 +0000
+Received: from BL02EPF0001A0FA.namprd03.prod.outlook.com
+ (2603:10b6:208:23a:cafe::9c) by MN2PR03CA0003.outlook.office365.com
+ (2603:10b6:208:23a::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.8 via Frontend Transport; Fri,
+ 16 Jan 2026 21:45:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL02EPF0001A0FA.mail.protection.outlook.com (10.167.242.101) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.4 via Frontend Transport; Fri, 16 Jan 2026 21:45:47 +0000
+Received: from AUSJUANMART02.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 16 Jan
+ 2026 15:45:46 -0600
+From: Juan Martinez <juan.martinez@amd.com>
+To: <Ray.Huang@amd.com>, <gautham.shenoy@amd.com>, <Mario.Limonciello@amd.com>
+CC: <rafael@kernel.org>, <viresh.kumar@linaro.org>, <Perry.Yuan@amd.com>,
+	<linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>, <Juan.Martinez@amd.com>, <Kaushik.ReddyS@amd.com>,
+	Juan Martinez <juan.martinez@amd.com>
+Subject: [PATCH] cpufreq/amd-pstate: Add comment explaining nominal_perf usage for performance policy
+Date: Fri, 16 Jan 2026 15:45:39 -0600
+Message-ID: <20260116214539.8139-1-juan.martinez@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0FA:EE_|IA0PPF316EEACD8:EE_
+X-MS-Office365-Filtering-Correlation-Id: c96e6e37-9827-4b2a-fdd4-08de55489be2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?F1uHi5cIYLGyu+W7i0BWf4yjrRx8c+6EJLe31lVLwSS/J63b2adXIomVqiOf?=
+ =?us-ascii?Q?Tzv1c2Q4f5ceFlyNNaubBcFJd/l0MzS9k7M3zNgFS37hduDecXhvVkkaLl40?=
+ =?us-ascii?Q?NZmloYwhlOr0sFlOVmp0xzEzdnvqtlRnzYjpFzJAPwu/VLNuHuMlhkJxdEkr?=
+ =?us-ascii?Q?LstnRCsbeUa2j+tJfWUzrg62G3qkKcpIyys6sFUcEP+AwfHa8Rl7XeI0moik?=
+ =?us-ascii?Q?hIuOodLQXLB94YILxA+A5EyC0MsINwuj9UTFR7/QaR45LpkBabZpa0IgPprZ?=
+ =?us-ascii?Q?Eq5XlKFjzaQtyNcT31nJaI7eGE0LmXYdQGeH0Yr8ldHXEi1wt14l3S/woOya?=
+ =?us-ascii?Q?TKBitH1wQLxstlyiMQsf1l+Ie2WfURlTUJu/W7hDSWdetObx7lBgC4GJ26nP?=
+ =?us-ascii?Q?IMFu7LiHWejVmjtCbxU7MP9rlKDWXH6E/vX+PlpYtemPoPJI52RZPp0hJ5eP?=
+ =?us-ascii?Q?2p59MS1mHlSNR1AD4CX9OdsKLYlefzcEL9YgW2bkvoV45byHQGeNu5DaoyIy?=
+ =?us-ascii?Q?1NWnBns7AIh8K0lAnA8SUS5/L0GZfcLkS/qeIUbq54n2Db3j0UwF7B0X9O82?=
+ =?us-ascii?Q?glnIAvtJ3lyzlrImaATVnaDsCpebJncInuLxNDjKUs6cbqQ0MK3RD4tA6Jlm?=
+ =?us-ascii?Q?7SUhMItBLqLOFjsuvlqQjWyqAeEZxPcQ7l6f4yqMTCbYtMLjwP0lTBKDctHU?=
+ =?us-ascii?Q?AtnJX813lQkIZngnKAcL6i5cabj0gJZ9Pr5atfDSZQj6izjHzRmbiEr8eI1M?=
+ =?us-ascii?Q?hbtv+wjyS6x1POSWeTQXB7U3RADt8KDMEZGyWapOHJoV58K3RvoYFpfjM/Kl?=
+ =?us-ascii?Q?r7zfkL8TQhyD9vnoxw9x9Fhxx4x2BSKR+B9iHY2kobhF28p7MXTFdGqP2LGt?=
+ =?us-ascii?Q?A7gusB2T3edIztnXWQFF1z5kpVfvj6fPxoLn3jJBscyADfQ7wqTMyYaShwWf?=
+ =?us-ascii?Q?KwkvjDAeCHY3js8mtkK300hKDqEB3oYaLRQ9bOBxdeS5p7JXd6u4NE5c23VH?=
+ =?us-ascii?Q?mUD8mf/OV3RtACVlENLpRcdd1/Z/uMxp1LZbZGNNHUZkpzaIUpOMYaBMqUGc?=
+ =?us-ascii?Q?WJwSLeYuC8QDWlztuBENIljAXlGeP06N5QLeEp+20+uFcyScLtK2k8KZ9cvy?=
+ =?us-ascii?Q?bDSN/s94tyg+7ZS+JorlqcfaY21FnoDN6sjEs+tMZx5Oh8f26aeytKdz4FAu?=
+ =?us-ascii?Q?wK/BsDqazyeAzqGSgpuu8xorpHJ8oNCqFSw+K0yy5bJ2PDHiL6HSsf6Ff6XS?=
+ =?us-ascii?Q?Q+uOxRjJlB+ollRJEtKQAJeDmBsQL/JMiPkR7ZLl+gMc9XhQMASbrXpuuffQ?=
+ =?us-ascii?Q?RAK8Cdd69fh/9qDYnR5qF/2jYq7jzSqx1QGrsbnSUORe0QSQFNcxlPsUyMiM?=
+ =?us-ascii?Q?HfuQdAcB7IWROIW8wtFVCu10sQU5fdj1HxeuHl+OqOYoXhVtsFmOW2XXKfMq?=
+ =?us-ascii?Q?nuL/9GOpS6z6kRHJbfpPd7tY2mH+TZawB07PJv/eiXUzKZKI+kLZwQnNu8m/?=
+ =?us-ascii?Q?B9F+0bkpyX3q+e6ZNm+TbPWqwhxa7lRbDGb7ky62ECCsDwltkP7902Q7V7/M?=
+ =?us-ascii?Q?l3vAYdF9JB1xhvfj/mSxnqEQ1KpkxyGqcgBbfs3ra9MEe+LTkLAGvJw7xPvk?=
+ =?us-ascii?Q?kq6FT5RfayM5+AzD5Navh5zlDrZqKrJsTGzg6QQYz5iTCSFP/Y85YOifd4YW?=
+ =?us-ascii?Q?jok4Eg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jan 2026 21:45:47.4094
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c96e6e37-9827-4b2a-fdd4-08de55489be2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0FA.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF316EEACD8
 
-Hi,
+Add comment explaining why nominal_perf is used for MinPerf when the
+CPU frequency policy is set to CPUFREQ_POLICY_PERFORMANCE, rather than
+using highest_perf or lowest_nonlinear_perf.
 
-In v6.1.160 353d7a84c214f18 ("powerpc/64s/radix/kfence: map
-__kfence_pool at page granularity") was backported. But this now
-causes a build failure:
+Signed-off-by: Juan Martinez <juan.martinez@amd.com>
+---
+ drivers/cpufreq/amd-pstate.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-make KERNELRELEASE=6.1.159+ ARCH=powerpc        KBUILD_BUILD_VERSION=3 -f ./Makefile
-  CALL    scripts/checksyscalls.sh
-  UPD     init/utsversion-tmp.h
-  CC      init/version.o
-  AR      init/built-in.a
-  CC      arch/powerpc/mm/book3s64/radix_pgtable.o
-In file included from arch/powerpc/mm/book3s64/radix_pgtable.c:35:
-./arch/powerpc/include/asm/kfence.h: In function 'kfence_protect_page':
-./arch/powerpc/include/asm/kfence.h:37:9: error: implicit declaration of function '__kernel_map_pages'; did you mean 'hash__kernel_map_pages'? [-Werror=implicit-function-declaration]
-   37 |         __kernel_map_pages(page, 1, !protect);
-      |         ^~~~~~~~~~~~~~~~~~
-      |         hash__kernel_map_pages
-cc1: some warnings being treated as errors
-make[7]: *** [scripts/Makefile.build:250: arch/powerpc/mm/book3s64/radix_pgtable.o] Error 1
-make[6]: *** [scripts/Makefile.build:503: arch/powerpc/mm/book3s64] Error 2
-
-This is because 8f14a96386b2 ("mm: page_poison: always declare
-__kernel_map_pages() function") is missing from 6.1.y (it was only
-included in 6.5-rc1).
-
-Cherry-picking 8f14a96386b2 fixes the build failure on powerpc.
-
-#regzbot introduced 36c1dc122eb3b917cd2c343029ff60a366a00539
-
-Marking as regression for 36c1dc122eb3 ("powerpc/64s/radix/kfence: map
-__kfence_pool at page granularity"), for the 6.1.y specific commit
-causing the regression.
-
-Regards,
-Salvatore
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index c45bc98721d2..88b26f36937b5 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -636,6 +636,19 @@ static void amd_pstate_update_min_max_limit(struct cpufreq_policy *policy)
+ 	WRITE_ONCE(cpudata->max_limit_freq, policy->max);
+ 
+ 	if (cpudata->policy == CPUFREQ_POLICY_PERFORMANCE) {
++		/*
++		 * For performance policy, set MinPerf to nominal_perf rather than
++		 * highest_perf or lowest_nonlinear_perf.
++		 *
++		 * Per commit 0c411b39e4f4c, using highest_perf was observed
++		 * to cause frequency throttling on power-limited platforms, leading to
++		 * performance regressions. Using lowest_nonlinear_perf would limit
++		 * performance too much for HPC workloads requiring high frequency
++		 * operation and minimal wakeup latency from idle states.
++		 *
++		 * nominal_perf therefore provides a balance by avoiding throttling
++		 * while still maintaining enough performance for HPC workloads.
++		 */
+ 		perf.min_limit_perf = min(perf.nominal_perf, perf.max_limit_perf);
+ 		WRITE_ONCE(cpudata->min_limit_freq, min(cpudata->nominal_freq, cpudata->max_limit_freq));
+ 	} else {
 
