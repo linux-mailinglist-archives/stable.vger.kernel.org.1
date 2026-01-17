@@ -1,135 +1,131 @@
-Return-Path: <stable+bounces-210181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AF1D390A9
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 20:48:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA5DD390AF
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 20:58:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 32B4F3005584
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 19:48:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B204F3011404
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 19:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB1F2DAFB5;
-	Sat, 17 Jan 2026 19:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AVywj7BY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB492D7DC8;
+	Sat, 17 Jan 2026 19:58:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D94F243956;
-	Sat, 17 Jan 2026 19:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E5E1EB5C2;
+	Sat, 17 Jan 2026 19:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768679323; cv=none; b=J4q7A+iOTPRPxn/EykrO6IBAV15JGRrYmjrJ3j+DTKiLmqnYs/CBPTQie/8MP9CnQQrB/9X58ZbGZH8eGjSedhF3kfMgEKy5h8SBetGrSMIAYAqx4o3awWd7PCGi+Nt8kdtTa4RRrEa3l8+wQlIlMfw2vcfbTdhDY/Qy335isZA=
+	t=1768679897; cv=none; b=TITBx1hzz+e47H45xCNcB8SDk66bE4uS3O9ZIqusnGW+ep6kOa61z05HRF1tndPn7QQBH7GLL1lN/LA2TP0g2B6nbP/RoIbengdSvw3QDJXXdG/23VKzEOlTl3ORlo10Co3iPO4xcJngbMrzwpcH473Oo2kej58jff6TIQk9gZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768679323; c=relaxed/simple;
-	bh=/C/tBm2xi0H4+4EGIjq5H8w+8b7Ugn1WXndTijHdt+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qmEFQ23vas8lb/vYb7t1mphQX8BNMZADAZ2g2DbouwOTYp/jjY4eJiVapGdXQBtuAMSyG/+jlv3Qv4DTsdL4pygAcYcrDU0pZjEt0GOJVaFwqqG5EFxYPiQn2aU/1/WIX90hIvMgZrUQor63qVH6tvyB2BmA+Yk31DfPUzz+YJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AVywj7BY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB582C4CEF7;
-	Sat, 17 Jan 2026 19:48:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768679323;
-	bh=/C/tBm2xi0H4+4EGIjq5H8w+8b7Ugn1WXndTijHdt+Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AVywj7BYfi3XpQB9ewRMlQHR6EoquyThPql6ayPHJKU1S0B9tOlTn+7yktLzJvcVt
-	 nMaG4VtxGVW30s/fk0Bo8OfMymu6MUGU9HjuZhgBxOHI94Q0olQGOEa1IW4Nt35gGt
-	 Es11NrvJoQrA1WDpZZMLgnQiYpxpEGWthMHvPVN7WWAQy6yOPeP+5BKvPn4f2VHiVs
-	 kkDskXWghzQcIMUAa2ZCHVd/a+i2eeZoWP7iIaBnpJM9TNJD9mcO5RtQjZ6XOo5nvK
-	 WvbsyealisWqqNcBOfR5zwpr9XHDrQgOO4+rQhUh5tionzAInvoWYNgLv1LsU3QUz5
-	 2krkj1+ttd0Cw==
-Date: Sun, 18 Jan 2026 03:48:38 +0800
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: core: Correct wrong kfree() usage for `kobj->name`
-Message-ID: <aWvnloUA2smmmi9v@tzungbi-laptop>
-References: <20260116081359.353256-1-tzungbi@kernel.org>
- <2026011614-exile-raisin-0ec4@gregkh>
- <aWoGw8PEKj_5mncV@google.com>
- <2026011658-fervor-possibly-4af2@gregkh>
+	s=arc-20240116; t=1768679897; c=relaxed/simple;
+	bh=8JaLyiTLAVD4NbqbnmukE12QWy9ijKB0HPrzz/uyMHc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OGS6F9A6BgjJnlB6XgLEDwkcacg0zY78IPI9U+LrM0t32aWszTQqCaJNTp7Veukmj6gmnkGh6nuiwN1pm+jFGqH6c22DtzXim0rcmYNR7WPf5ZkraL8v72X6rnAVhlAuChebbLXrF6ur7+qVTs/xxsBwnF+tt9173qbd2WI9YKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhCQy-0011Yw-3C;
+	Sat, 17 Jan 2026 19:58:07 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhCQw-00000000jSy-2GaG;
+	Sat, 17 Jan 2026 20:58:06 +0100
+Message-ID: <188e82d04a1d73b08044831678066b2e5e5f9c3a.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 183/451] ethtool: Avoid overflowing userspace
+ buffer on stats query
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Gal Pressman <gal@nvidia.com>, Paolo Abeni <pabeni@redhat.com>
+Cc: patches@lists.linux.dev, Dragos Tatulea <dtatulea@nvidia.com>, Tariq
+ Toukan	 <tariqt@nvidia.com>, Sasha Levin <sashal@kernel.org>, Greg
+ Kroah-Hartman	 <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>
+Date: Sat, 17 Jan 2026 20:58:01 +0100
+In-Reply-To: <20260115164237.523595757@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
+	 <20260115164237.523595757@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-B1UzyVeyb18RZR3pMk11"
+User-Agent: Evolution 3.56.2-8 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026011658-fervor-possibly-4af2@gregkh>
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 
-On Fri, Jan 16, 2026 at 11:50:15AM +0100, Greg KH wrote:
-> On Fri, Jan 16, 2026 at 09:37:07AM +0000, Tzung-Bi Shih wrote:
-> > On Fri, Jan 16, 2026 at 10:00:11AM +0100, Greg KH wrote:
-> > > On Fri, Jan 16, 2026 at 08:13:59AM +0000, Tzung-Bi Shih wrote:
-> > > > `kobj->name` should be freed by kfree_const()[1][2].  Correct it.
-> > > > 
-> > > > [1] https://elixir.bootlin.com/linux/v6.18/source/lib/kasprintf.c#L41
-> > > > [2] https://elixir.bootlin.com/linux/v6.18/source/lib/kobject.c#L695
-> > > > 
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: b49493f99690 ("Fix a memory leak in scsi_host_dev_release()")
-> > > > Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> > > > ---
-> > > >  drivers/scsi/hosts.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-> > > > index e047747d4ecf..50ec782cf9f4 100644
-> > > > --- a/drivers/scsi/hosts.c
-> > > > +++ b/drivers/scsi/hosts.c
-> > > > @@ -373,7 +373,7 @@ static void scsi_host_dev_release(struct device *dev)
-> > > >  		 * name as well as the proc dir structure are leaked.
-> > > >  		 */
-> > > >  		scsi_proc_hostdir_rm(shost->hostt);
-> > > > -		kfree(dev_name(&shost->shost_dev));
-> > > > +		kfree_const(dev_name(&shost->shost_dev));
-> > > 
-> > > Shouldn't the struct device name be freed by the driver core for this
-> > > device when it goes out of scope?  Why is it being manually freed here
-> > > at all?
-> > 
-> > Ah, correct.  I think the following patch is what it really needs:
-> > 
-> > diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-> > index 1b3fbd328277..e3362f445f93 100644
-> > --- a/drivers/scsi/hosts.c
-> > +++ b/drivers/scsi/hosts.c
-> > @@ -373,7 +373,6 @@ static void scsi_host_dev_release(struct device *dev)
-> >  		 * name as well as the proc dir structure are leaked.
-> >  		 */
-> >  		scsi_proc_hostdir_rm(shost->hostt);
-> > -		kfree(dev_name(&shost->shost_dev));
-> >  	}
-> > 
-> >  	kfree(shost->shost_data);
-> > @@ -548,11 +547,7 @@ struct Scsi_Host *scsi_host_alloc(const struct scsi_host_template *sht, int priv
-> >  		goto fail;
-> >  	return shost;
-> >   fail:
-> > -	/*
-> > -	 * Host state is still SHOST_CREATED and that is enough to release
-> > -	 * ->shost_gendev. scsi_host_dev_release() will free
-> > -	 * dev_name(&shost->shost_dev).
-> > -	 */
-> > +	put_device(&shost->shost_dev);
-> >  	put_device(&shost->shost_gendev);
-> > 
-> >  	return NULL;
 
-The patch doesn't work well.  It can cause an underflow on the reference
-count of `&shost->shost_gendev`.  [3] is a more appropriate fix.
+--=-B1UzyVeyb18RZR3pMk11
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Can you test this to verify that the leak you were seeing is actually
-> now handled?
+On Thu, 2026-01-15 at 17:46 +0100, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Gal Pressman <gal@nvidia.com>
+>=20
+> [ Upstream commit 7b07be1ff1cb6c49869910518650e8d0abc7d25f ]
+>=20
+> The ethtool -S command operates across three ioctl calls:
+> ETHTOOL_GSSET_INFO for the size, ETHTOOL_GSTRINGS for the names, and
+> ETHTOOL_GSTATS for the values.
+>=20
+> If the number of stats changes between these calls (e.g., due to device
+> reconfiguration), userspace's buffer allocation will be incorrect,
+> potentially leading to buffer overflow.
+[...]
 
-To clarify, the patch wasn't motivated by the leak.  But I can reproduce
-the leak by reverting b49493f99690, manual fault injection, rebinding the
-driver, and kmemleak.  [3] is tested by the scenario.
+This seems like it could cause a regression for the DPDK driver for
+mlx5, which sets ethtool_stats::n_stats to a "maximum" value:
+https://sources.debian.org/src/dpdk/25.11-2/drivers/net/mlx5/linux/mlx5_eth=
+dev_os.c?hl=3D1324#L1324
 
-[3] https://lore.kernel.org/all/20260117193221.152540-1-tzungbi@kernel.org/
+Everything else I could find with Debian codesearch does seem to
+initialise ethtool_gstrings::len and ethtool_stats::n_stats as you
+expect, though.
+
+This change should be documented in include/uapi/linux/ethtool.h, which
+currently specifies these fields as output only.
+
+Ben.
+
+--=20
+Ben Hutchings
+The obvious mathematical breakthrough [to break modern encryption]
+would be development of an easy way to factor large prime numbers.
+                                                           - Bill Gates
+
+--=-B1UzyVeyb18RZR3pMk11
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmlr6ckACgkQ57/I7JWG
+EQlu3A/9GL8S4EmGc+DRXu21BGe8vrxzeJu9+FJqSB5rZr7LK8/M6SJPkN+I0wmg
+hYYAYvqo4AD9ul+1HXsFMhNiY5ZrVdfm3dGNMRovD79CeB90OScpNe70Sf+T1y7m
+Y/NUJutB1OQ0Ae9L+jWh7lU96Xa4glwbqp0gB+7WlA8Uf3GKeyz31ytCa5CuWcHB
+2mGYutgBihOrgXyplkNVX3kBPRBgQ3/AP1EttpNY0Kyrb+tBsS/vceemg52c45TP
+XYgJ0XU5OlIXPWuRpxWZZOmAC7kvL5QJmrIiXvP9xrUPVcqgJLE94XP8eSNjV66T
+7DJR/b59YmmqnUoNWeC0P34Gfo56YDKHDc5oGWIdd5iqZ0edniynDvgBiu+F7eG8
+Lt1r1O40fP0pu4CuDeIyjY2ImfYi0ufShbySzD/Kt0lbEy5GJuuAsKLO5LZi8Ntf
+FCpQOKsvWQJTkbpd1++cZ/MRv6wjL7IDcMu3oNM31qlGYnYEXVPMnb7RL8BVNBsX
+xBxLT0O430gmpFpQm8wifA3uy421W4rhv8iHJ9825+Fy9ntd2Zd9+9x8N7sPETXX
+Suk5F8CPhyK/yXllig0SenKihtu5CJJI6cW8U8o8EY4M/rbJ6SUb12gxe9jt4YNx
+pxFrAmEhTGsO6JSrSYysKNRyyO+dm0qFoUJxrRaFT5SGzrD4Kqk=
+=VcGg
+-----END PGP SIGNATURE-----
+
+--=-B1UzyVeyb18RZR3pMk11--
 
