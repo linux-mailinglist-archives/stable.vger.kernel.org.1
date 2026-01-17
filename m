@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-210180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1EBDD39073
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 20:07:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AF1D390A9
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 20:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0934630194F8
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 19:07:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 32B4F3005584
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 19:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0E527E7F0;
-	Sat, 17 Jan 2026 19:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB1F2DAFB5;
+	Sat, 17 Jan 2026 19:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UZUj950c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AVywj7BY"
 X-Original-To: stable@vger.kernel.org
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA13500941
-	for <stable@vger.kernel.org>; Sat, 17 Jan 2026 19:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D94F243956;
+	Sat, 17 Jan 2026 19:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768676852; cv=none; b=ptPEiBFD2yv3QXo5d1aZTkkkgTReljDFP20ODIyJcVrnMv9hPXy4Xgja0ee6VPOLLiA2UMLML3gjhNwxgASaLimTS1PcW3KXiWWn5VQz0e0Rm3rfYfKKbSjuDTjR03gWNn4K3qrSNcrpBaJGRsjuJLonfGP+LiePfrLab9u4oVI=
+	t=1768679323; cv=none; b=J4q7A+iOTPRPxn/EykrO6IBAV15JGRrYmjrJ3j+DTKiLmqnYs/CBPTQie/8MP9CnQQrB/9X58ZbGZH8eGjSedhF3kfMgEKy5h8SBetGrSMIAYAqx4o3awWd7PCGi+Nt8kdtTa4RRrEa3l8+wQlIlMfw2vcfbTdhDY/Qy335isZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768676852; c=relaxed/simple;
-	bh=fOr6S+Nr0FL5LzD5dnr5L5yvFlFWMJGeFVhrGfyYSfE=;
+	s=arc-20240116; t=1768679323; c=relaxed/simple;
+	bh=/C/tBm2xi0H4+4EGIjq5H8w+8b7Ugn1WXndTijHdt+Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DKz0M8pQXhNTyzQ+MR3wz+EpU+Xk5nAuRJO5qBQwP8XrYfuD76A/WnghfoWmb1wtV4WsSV5oBAE8qeeQUhIfy0M+8ZrOyZnizUVZWF7Au93uydFLGzMAVpHhBVOh3Q1ys/TO9PQq4/E4ZyV95l0k4IekhvA67EAZeX7A+wm+SE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UZUj950c; arc=none smtp.client-ip=95.215.58.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Sat, 17 Jan 2026 11:07:20 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768676847;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M9AsgKoyuk5x5jqoqUUIpz4N+GGQWQ6kYKehHA6kLds=;
-	b=UZUj950cYM2sG20WuMnfBLNltdFlln/CD5j6vZQXpuBTpi9FW+vhC6TBKMzhqgKjcqCBA5
-	0mMrHzOBQ2mUM6b6fm6AfAuvFHFCipucaZOaq4cg3arU/XUoZutB9BGyaLCxJ0KCQq+SM5
-	fCyds5QIg5zAVFS+AHxYdi7LaExhBW8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Davidlohr Bueso <dave@stgolabs.net>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: Restore per-memcg proactive reclaim with !CONFIG_NUMA
-Message-ID: <nqhi5o3viu4dv7wgjklmh6ssvpimjuecnmsf4hhjxvr3u23epg@iaau6lairrkb>
-References: <20260116205247.928004-1-yosry.ahmed@linux.dev>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qmEFQ23vas8lb/vYb7t1mphQX8BNMZADAZ2g2DbouwOTYp/jjY4eJiVapGdXQBtuAMSyG/+jlv3Qv4DTsdL4pygAcYcrDU0pZjEt0GOJVaFwqqG5EFxYPiQn2aU/1/WIX90hIvMgZrUQor63qVH6tvyB2BmA+Yk31DfPUzz+YJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AVywj7BY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB582C4CEF7;
+	Sat, 17 Jan 2026 19:48:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768679323;
+	bh=/C/tBm2xi0H4+4EGIjq5H8w+8b7Ugn1WXndTijHdt+Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AVywj7BYfi3XpQB9ewRMlQHR6EoquyThPql6ayPHJKU1S0B9tOlTn+7yktLzJvcVt
+	 nMaG4VtxGVW30s/fk0Bo8OfMymu6MUGU9HjuZhgBxOHI94Q0olQGOEa1IW4Nt35gGt
+	 Es11NrvJoQrA1WDpZZMLgnQiYpxpEGWthMHvPVN7WWAQy6yOPeP+5BKvPn4f2VHiVs
+	 kkDskXWghzQcIMUAa2ZCHVd/a+i2eeZoWP7iIaBnpJM9TNJD9mcO5RtQjZ6XOo5nvK
+	 WvbsyealisWqqNcBOfR5zwpr9XHDrQgOO4+rQhUh5tionzAInvoWYNgLv1LsU3QUz5
+	 2krkj1+ttd0Cw==
+Date: Sun, 18 Jan 2026 03:48:38 +0800
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] scsi: core: Correct wrong kfree() usage for `kobj->name`
+Message-ID: <aWvnloUA2smmmi9v@tzungbi-laptop>
+References: <20260116081359.353256-1-tzungbi@kernel.org>
+ <2026011614-exile-raisin-0ec4@gregkh>
+ <aWoGw8PEKj_5mncV@google.com>
+ <2026011658-fervor-possibly-4af2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,29 +60,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260116205247.928004-1-yosry.ahmed@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <2026011658-fervor-possibly-4af2@gregkh>
 
-On Fri, Jan 16, 2026 at 08:52:47PM +0000, Yosry Ahmed wrote:
-> Commit 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
-> moved proactive reclaim logic from memory.reclaim handler to a generic
-> user_proactive_reclaim() helper to be used for per-node proactive
-> reclaim.
-> 
-> However, user_proactive_reclaim() was only defined under CONFIG_NUMA,
-> with a stub always returning 0 otherwise. This broke memory.reclaim on
-> !CONFIG_NUMA configs, causing it to report success without actually
-> attempting reclaim.
-> 
-> Move the definition of user_proactive_reclaim() outside CONFIG_NUMA, and
-> instead define a stub for __node_reclaim() in the !CONFIG_NUMA case.
-> __node_reclaim() is only called from user_proactive_reclaim() when a
-> write is made to sys/devices/system/node/nodeX/reclaim, which is only
-> defined with CONFIG_NUMA.
-> 
-> Fixes: 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+On Fri, Jan 16, 2026 at 11:50:15AM +0100, Greg KH wrote:
+> On Fri, Jan 16, 2026 at 09:37:07AM +0000, Tzung-Bi Shih wrote:
+> > On Fri, Jan 16, 2026 at 10:00:11AM +0100, Greg KH wrote:
+> > > On Fri, Jan 16, 2026 at 08:13:59AM +0000, Tzung-Bi Shih wrote:
+> > > > `kobj->name` should be freed by kfree_const()[1][2].  Correct it.
+> > > > 
+> > > > [1] https://elixir.bootlin.com/linux/v6.18/source/lib/kasprintf.c#L41
+> > > > [2] https://elixir.bootlin.com/linux/v6.18/source/lib/kobject.c#L695
+> > > > 
+> > > > Cc: stable@vger.kernel.org
+> > > > Fixes: b49493f99690 ("Fix a memory leak in scsi_host_dev_release()")
+> > > > Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+> > > > ---
+> > > >  drivers/scsi/hosts.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+> > > > index e047747d4ecf..50ec782cf9f4 100644
+> > > > --- a/drivers/scsi/hosts.c
+> > > > +++ b/drivers/scsi/hosts.c
+> > > > @@ -373,7 +373,7 @@ static void scsi_host_dev_release(struct device *dev)
+> > > >  		 * name as well as the proc dir structure are leaked.
+> > > >  		 */
+> > > >  		scsi_proc_hostdir_rm(shost->hostt);
+> > > > -		kfree(dev_name(&shost->shost_dev));
+> > > > +		kfree_const(dev_name(&shost->shost_dev));
+> > > 
+> > > Shouldn't the struct device name be freed by the driver core for this
+> > > device when it goes out of scope?  Why is it being manually freed here
+> > > at all?
+> > 
+> > Ah, correct.  I think the following patch is what it really needs:
+> > 
+> > diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+> > index 1b3fbd328277..e3362f445f93 100644
+> > --- a/drivers/scsi/hosts.c
+> > +++ b/drivers/scsi/hosts.c
+> > @@ -373,7 +373,6 @@ static void scsi_host_dev_release(struct device *dev)
+> >  		 * name as well as the proc dir structure are leaked.
+> >  		 */
+> >  		scsi_proc_hostdir_rm(shost->hostt);
+> > -		kfree(dev_name(&shost->shost_dev));
+> >  	}
+> > 
+> >  	kfree(shost->shost_data);
+> > @@ -548,11 +547,7 @@ struct Scsi_Host *scsi_host_alloc(const struct scsi_host_template *sht, int priv
+> >  		goto fail;
+> >  	return shost;
+> >   fail:
+> > -	/*
+> > -	 * Host state is still SHOST_CREATED and that is enough to release
+> > -	 * ->shost_gendev. scsi_host_dev_release() will free
+> > -	 * dev_name(&shost->shost_dev).
+> > -	 */
+> > +	put_device(&shost->shost_dev);
+> >  	put_device(&shost->shost_gendev);
+> > 
+> >  	return NULL;
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+The patch doesn't work well.  It can cause an underflow on the reference
+count of `&shost->shost_gendev`.  [3] is a more appropriate fix.
+
+> Can you test this to verify that the leak you were seeing is actually
+> now handled?
+
+To clarify, the patch wasn't motivated by the leak.  But I can reproduce
+the leak by reverting b49493f99690, manual fault injection, rebinding the
+driver, and kmemleak.  [3] is tested by the scenario.
+
+[3] https://lore.kernel.org/all/20260117193221.152540-1-tzungbi@kernel.org/
 
