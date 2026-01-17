@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-210123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D9AED38BBE
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 03:44:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A266DD38BC3
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 03:53:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 380DC301F26F
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 02:44:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 023813020CFA
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 02:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F97199FB0;
-	Sat, 17 Jan 2026 02:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2460F322B84;
+	Sat, 17 Jan 2026 02:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tu8rr7jl"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RU49QWB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1452230C35C;
-	Sat, 17 Jan 2026 02:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC3562D661C;
+	Sat, 17 Jan 2026 02:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768617895; cv=none; b=akGDIXQpiyZqnOh+x0NqA4E+sLRkS8pwimMavcXE+YNpwSKgshG1SEIci1XmBiS+GqDCwGrNFKMz/ksBZPCKAzSDlylSphaE7Z77QBKKikV78hNUSL0okyPk6zuhyRXM+Gp1UtPE6mSIahzqgcwRTxQjMczzV5m4ngL7nRV//V8=
+	t=1768618435; cv=none; b=LH6fG/4FFYwTp/NzoZYCqiXw9gZ2RXtQZhTSjX3WC4GzgL6lgyZqWTWPCqh+G19FRbLqagZR7VNBuFfDSKRgbwCKVsXlERPR4FjVR5cjNHJTgnfuRRdz1/uk4TS7EO1Rz0ZsMkKZDSlqFDxza6ofn6HRdGBbBQDNiOwC/WL2Itw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768617895; c=relaxed/simple;
-	bh=gPjWkW8379/mhEUrTwjImL8/8fy28t/gJimZCEwbmuE=;
-	h=Date:To:From:Subject:Message-Id; b=UQPTnTH6RLTOTrf8LlnzVueNnNr+vWpbvZYKbsr7hIKTx51nv1LUBVxMXT5v3tNupgXuvJCek6DvVSXJy0M/NMidWGlk3XXbqz9/CrkZ0iba7Dbp1F/J6zqxUOued9grYVf5d1rSgPVUR+AApLWM0zdppZreeIlQSmLuVLnvBRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tu8rr7jl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6B8C116C6;
-	Sat, 17 Jan 2026 02:44:54 +0000 (UTC)
+	s=arc-20240116; t=1768618435; c=relaxed/simple;
+	bh=JQm5DIRXYiCtzOhWiwjD7Wh+YLz0zu1WzfkxRRNEKas=;
+	h=Date:To:From:Subject:Message-Id; b=MPxoacMbvccVNPsxCSSK35g7hafvhq5AHCzaXDV9S4b//WM73aejmFB+ChwkrJ7uB2MzGMe3+PRG75kAsVU/GlfeVS5IkFuYNQiWGKGhciD8jQcW49W6ouzW0tFAkJNpkmqcO9VhGHW8E723+ajqtjPy+AcxvXWxlp3XYHOjkY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RU49QWB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2FDBC116C6;
+	Sat, 17 Jan 2026 02:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768617894;
-	bh=gPjWkW8379/mhEUrTwjImL8/8fy28t/gJimZCEwbmuE=;
+	s=korg; t=1768618435;
+	bh=JQm5DIRXYiCtzOhWiwjD7Wh+YLz0zu1WzfkxRRNEKas=;
 	h=Date:To:From:Subject:From;
-	b=tu8rr7jlaa4c8F1DdZYPNcZWXZEypXKhCn6RaEsFIYNrQGTLkSpF/bVAkz5yKv9/m
-	 OdUJ+JJfKPcfwgZhPnk2dM9fN5+Ds5FkbBElRtVYTyuqbu9W36N/XqkH2ocvVPH80s
-	 ACehpoau2oOv/4Wqzr6vJmIqVEgF9I3Pl6G6Clpc=
-Date: Fri, 16 Jan 2026 18:44:53 -0800
-To: mm-commits@vger.kernel.org,ubizjak@gmail.com,stable@vger.kernel.org,morbo@google.com,justinstitt@google.com,nathan@kernel.org,akpm@linux-foundation.org
+	b=RU49QWB0nKgmEkSEn6DseN/sLdnFDafBqeNdpmNSl7LLTuq20Cns/CMBd7Rm3PmTk
+	 Z38W0tIoFs2jSnoLvLZDSsCxpos9M7rwNQse94TgrsiXnDMHsfnqjcdhgGMZAHanbK
+	 nqJ+yk6o5baqtk53+IYtPAJH4W6Mti0FCWX1NxPQ=
+Date: Fri, 16 Jan 2026 18:53:54 -0800
+To: mm-commits@vger.kernel.org,zhengqi.arch@bytedance.com,yuanchu@google.com,weixugc@google.com,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,rppt@kernel.org,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,hannes@cmpxchg.org,david@kernel.org,dave@stgolabs.net,axelrasmussen@google.com,yosry.ahmed@linux.dev,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__.patch added to mm-nonmm-unstable branch
-Message-Id: <20260117024454.6C6B8C116C6@smtp.kernel.org>
+Subject: + mm-restore-per-memcg-proactive-reclaim-with-config_numa.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260117025355.A2FDBC116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,14 +48,14 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: compiler-clang.h: Require LLVM 19.1.0 or higher for __typeof_unqual__
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__.patch
+     Subject: mm: restore per-memcg proactive reclaim with !CONFIG_NUMA
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-restore-per-memcg-proactive-reclaim-with-config_numa.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-restore-per-memcg-proactive-reclaim-with-config_numa.patch
 
-This patch will later appear in the mm-nonmm-unstable branch at
+This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 Before you just go and hit "reply", please:
@@ -71,70 +71,103 @@ branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there most days
 
 ------------------------------------------------------
-From: Nathan Chancellor <nathan@kernel.org>
-Subject: compiler-clang.h: Require LLVM 19.1.0 or higher for __typeof_unqual__
-Date: Fri, 16 Jan 2026 16:26:27 -0700
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: mm: restore per-memcg proactive reclaim with !CONFIG_NUMA
+Date: Fri, 16 Jan 2026 20:52:47 +0000
 
-When building the kernel using a version of LLVM between llvmorg-19-init
-(the first commit of the LLVM 19 development cycle) and the change in
-LLVM that actually added __typeof_unqual__ for all C modes [1], which
-might happen during a bisect of LLVM, there is a build failure:
+Commit 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
+moved proactive reclaim logic from memory.reclaim handler to a generic
+user_proactive_reclaim() helper to be used for per-node proactive reclaim.
 
-  In file included from arch/x86/kernel/asm-offsets.c:9:
-  In file included from include/linux/crypto.h:15:
-  In file included from include/linux/completion.h:12:
-  In file included from include/linux/swait.h:7:
-  In file included from include/linux/spinlock.h:56:
-  In file included from include/linux/preempt.h:79:
-  arch/x86/include/asm/preempt.h:61:2: error: call to undeclared function '__typeof_unqual__'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     61 |         raw_cpu_and_4(__preempt_count, ~PREEMPT_NEED_RESCHED);
-        |         ^
-  arch/x86/include/asm/percpu.h:478:36: note: expanded from macro 'raw_cpu_and_4'
-    478 | #define raw_cpu_and_4(pcp, val)                         percpu_binary_op(4, , "and", (pcp), val)
-        |                                                         ^
-  arch/x86/include/asm/percpu.h:210:3: note: expanded from macro 'percpu_binary_op'
-    210 |                 TYPEOF_UNQUAL(_var) pto_tmp__;                          \
-        |                 ^
-  include/linux/compiler.h:248:29: note: expanded from macro 'TYPEOF_UNQUAL'
-    248 | # define TYPEOF_UNQUAL(exp) __typeof_unqual__(exp)
-        |                             ^
+However, user_proactive_reclaim() was only defined under CONFIG_NUMA, with
+a stub always returning 0 otherwise.  This broke memory.reclaim on
+!CONFIG_NUMA configs, causing it to report success without actually
+attempting reclaim.
 
-The current logic of CC_HAS_TYPEOF_UNQUAL just checks for a major
-version of 19 but half of the 19 development cycle did not have support
-for __typeof_unqual__.
+Move the definition of user_proactive_reclaim() outside CONFIG_NUMA, and
+instead define a stub for __node_reclaim() in the !CONFIG_NUMA case. 
+__node_reclaim() is only called from user_proactive_reclaim() when a write
+is made to sys/devices/system/node/nodeX/reclaim, which is only defined
+with CONFIG_NUMA.
 
-Harden the logic of CC_HAS_TYPEOF_UNQUAL to avoid this error by only
-using __typeof_unqual__ with a released version of LLVM 19, which is
-greater than or equal to 19.1.0 with LLVM's versioning scheme that
-matches GCC's [2].
-
-Link: https://github.com/llvm/llvm-project/commit/cc308f60d41744b5920ec2e2e5b25e1273c8704b [1]
-Link: https://github.com/llvm/llvm-project/commit/4532617ae420056bf32f6403dde07fb99d276a49 [2]
-Link: https://lkml.kernel.org/r/20260116-require-llvm-19-1-for-typeof_unqual-v1-1-3b9a4a4b212b@kernel.org
-Fixes: ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Cc: Bill Wendling <morbo@google.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: Uros Bizjak <ubizjak@gmail.com>
+Link: https://lkml.kernel.org/r/20260116205247.928004-1-yosry.ahmed@linux.dev
+Fixes: 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/compiler-clang.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/internal.h |    8 --------
+ mm/vmscan.c   |   13 +++++++++++--
+ 2 files changed, 11 insertions(+), 10 deletions(-)
 
---- a/include/linux/compiler-clang.h~compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__
-+++ a/include/linux/compiler-clang.h
-@@ -153,4 +153,4 @@
-  * Bindgen uses LLVM even if our C compiler is GCC, so we cannot
-  * rely on the auto-detected CONFIG_CC_HAS_TYPEOF_UNQUAL.
-  */
--#define CC_HAS_TYPEOF_UNQUAL (__clang_major__ >= 19)
-+#define CC_HAS_TYPEOF_UNQUAL (__clang_major__ > 19 || (__clang_major__ == 19 && __clang_minor__ > 0))
+--- a/mm/internal.h~mm-restore-per-memcg-proactive-reclaim-with-config_numa
++++ a/mm/internal.h
+@@ -538,16 +538,8 @@ extern unsigned long highest_memmap_pfn;
+ bool folio_isolate_lru(struct folio *folio);
+ void folio_putback_lru(struct folio *folio);
+ extern void reclaim_throttle(pg_data_t *pgdat, enum vmscan_throttle_state reason);
+-#ifdef CONFIG_NUMA
+ int user_proactive_reclaim(char *buf,
+ 			   struct mem_cgroup *memcg, pg_data_t *pgdat);
+-#else
+-static inline int user_proactive_reclaim(char *buf,
+-			   struct mem_cgroup *memcg, pg_data_t *pgdat)
+-{
+-	return 0;
+-}
+-#endif
+ 
+ /*
+  * in mm/rmap.c:
+--- a/mm/vmscan.c~mm-restore-per-memcg-proactive-reclaim-with-config_numa
++++ a/mm/vmscan.c
+@@ -7707,6 +7707,17 @@ int node_reclaim(struct pglist_data *pgd
+ 	return ret;
+ }
+ 
++#else
++
++static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
++				    unsigned long nr_pages,
++				    struct scan_control *sc)
++{
++	return 0;
++}
++
++#endif
++
+ enum {
+ 	MEMORY_RECLAIM_SWAPPINESS = 0,
+ 	MEMORY_RECLAIM_SWAPPINESS_MAX,
+@@ -7814,8 +7825,6 @@ int user_proactive_reclaim(char *buf,
+ 	return 0;
+ }
+ 
+-#endif
+-
+ /**
+  * check_move_unevictable_folios - Move evictable folios to appropriate zone
+  * lru list
 _
 
-Patches currently in -mm which might be from nathan@kernel.org are
+Patches currently in -mm which might be from yosry.ahmed@linux.dev are
 
-compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__.patch
+mm-restore-per-memcg-proactive-reclaim-with-config_numa.patch
+zsmalloc-simplify-read-begin-end-logic.patch
 
 
