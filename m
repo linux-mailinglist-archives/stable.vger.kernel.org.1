@@ -1,55 +1,74 @@
-Return-Path: <stable+bounces-210128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64186D38BC9
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 04:03:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E557D38C26
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 05:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EF80530274D6
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 03:03:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97EF3302DC85
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 04:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF969228CA9;
-	Sat, 17 Jan 2026 03:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F1629DB6C;
+	Sat, 17 Jan 2026 04:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pydZAKNP"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="O8xnILv8";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="bdMuThe8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A740114A91;
-	Sat, 17 Jan 2026 03:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B967929CB57
+	for <stable@vger.kernel.org>; Sat, 17 Jan 2026 04:24:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768619014; cv=none; b=mCBJqMMrA0t1gjgPB8/dp6OZoiLTdnvF7myjjXoAhMIx9qgRTd8Utg+rxjwUJl2UBaZxRNTiImWVx3VrT87+p9vFG2yi5nBOXfeemdKoUgQCxT6KAQhLA21GBMAhs06O0gLDpUlEZDNtfGj4uEdH/Ywa44bAA0lj2tyefSWPfKo=
+	t=1768623877; cv=none; b=YtfZCvE87E+dUJXIKW67YlKEHRV5jrhPSfaqz2ifxtWWFoQJDJGfozoakQs/V3NSn6SVT8Gkmw4TqlaFga6KvDacoIp/nO8M0cRWikTsL32JGE6d5V2uaA1T1wKVbpJAIvBiMnTGiwVZAnsq4mp7NOzTNm8777EgEbL80as9NV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768619014; c=relaxed/simple;
-	bh=5a1WgP/Qg2izGvJGBk/tBOl6Nj20ZHzFu58PWB8StLA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=at19hV6QNN4/Nf4AR5ZGIpuaF3EMWlvjKG/UrVXvywMA1uC5B0jC5nVIdaN/Tv6nhhYT0jF261b0wUQBTySMZYWVCq2IWXnUi8JubYtTzjLedYs6BO8dde8Rn0IRrt9efyocNZESdXy7Iw6TUFzY8XBGJnq3MnUyDCEVL3bIxFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pydZAKNP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58E1C116C6;
-	Sat, 17 Jan 2026 03:03:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768619014;
-	bh=5a1WgP/Qg2izGvJGBk/tBOl6Nj20ZHzFu58PWB8StLA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pydZAKNPweCLWsmd3hbrw+9IBGSZWK/Z0P5xULc4PJApowrT4MYjx820A+lw6DcK0
-	 eAqmuG4OdrYPMmzWzLXC/+GzU9HxBtlpTGoDOqCa46lDMYCM0wGrKeAsCUuRSbB/e0
-	 PqhG8e+Lz3KowIBmyRJGOriahaMlcGslGjFs68lcEwpNtODgAdpNBM/I83wrFt9KAf
-	 PfIpoCEOr9NWuP7qZYpIVB9evVXPM4xYSUD/P9MP09o+L6eeVKuDaJAlQzUO+4BRjy
-	 usRonrCu7oQEW0b9nYs3VwIGGD7L1utMadBoXxZrEzcx8Z+7ZYnUDEpsg1ursdBFN3
-	 dQMB5s5g7U9Tg==
-From: Eric Biggers <ebiggers@kernel.org>
-To: dm-devel@lists.linux.dev,
-	Alasdair Kergon <agk@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Benjamin Marzinski <bmarzins@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] dm: fix excessive blk-crypto operations for invalid keys
-Date: Fri, 16 Jan 2026 19:02:36 -0800
-Message-ID: <20260117030236.96871-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1768623877; c=relaxed/simple;
+	bh=Q6ieHGb/57Kj41pNhS4FsBr/8TR9RUPq/EWNaXpWb+Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mRzHi8m5lJPg/nZ39rNi0TKc7072vGDQeavr8X2gqSQiCbUuqkHJNKUY0cVML9FqRtse9H+u3pMExTD1gvzdl82U8BMpb8VwKHFzKErM/FuXSpUD7lzJnXYjycp7fydd46jSoTFLxkflTrH98XeRnuhogP/MSi/73VLlf8jbdME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=O8xnILv8; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=bdMuThe8; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F29055BCC9;
+	Sat, 17 Jan 2026 04:24:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1768623874; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=qRcqozDCjZtL6k9/IJ1ZR8Qvtva2xuC8/1DNkNDwhVE=;
+	b=O8xnILv8Ni761p77ok6axk+nFuc3LzOLKkL20YSYyI/uH9y6s/HLUxK+ogcs1OqLdhvzIi
+	FMsF8WC+Q82C4/R3p9ZLtZ1P8hONqdiQEE6xAShfFlRqMUvxAlUVsi8mQKnlDRxE/sq6XB
+	kXFi79PvmxAZ++MV8UW9rfi+ASRo7gY=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=bdMuThe8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1768623873; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=qRcqozDCjZtL6k9/IJ1ZR8Qvtva2xuC8/1DNkNDwhVE=;
+	b=bdMuThe8F06w+oCJa7IKvIZU8fcvdq58xzSuyM7y8yQcm5aYkc5JVVhlODqDY2cvOBzkHK
+	qPbiHWce8BDy8FQV4LltjGXhXnCptJfd8YtopXKkBiBDJwWvEogVAfRNu3A55lypvukUes
+	mzdN2iMFm+EXwGghn0bQ7UzgK8G/RGs=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D80FD3EA63;
+	Sat, 17 Jan 2026 04:24:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id aEhiIP4Oa2nLBwAAD6G6ig
+	(envelope-from <wqu@suse.com>); Sat, 17 Jan 2026 04:24:30 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Jan Kara <jack@suse.cz>,
+	Boris Burkov <boris@bur.io>
+Subject: [PATCH v3] btrfs: do not strictly require dirty metadata threshold for metadata writepages
+Date: Sat, 17 Jan 2026 14:54:12 +1030
+Message-ID: <ada6a7cf8dbb1f4ee78343402c73b078c65a7ff7.1768623845.git.wqu@suse.com>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -58,89 +77,190 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -3.01
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:mid,suse.com:email,bur.io:email,suse.cz:email];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[suse.com:+]
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: F29055BCC9
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
 
-dm_exec_wrappedkey_op() passes through the derive_sw_secret, import_key,
-generate_key, and prepare_key blk-crypto operations to an underlying
-device.
+[BUG]
+There is an internal report that over 1000 processes are
+waiting at the io_schedule_timeout() of balance_dirty_pages(), causing
+a system hang and triggered a kernel coredump.
 
-Currently, it calls the operation on every underlying device until one
-returns success.
+The kernel is v6.4 kernel based, but the root problem still applies to
+any upstream kernel before v6.18.
 
-This logic is flawed when the operation is expected to fail, such as an
-invalid key being passed to derive_sw_secret.  That can happen if
-userspace passes an invalid key to the FS_IOC_ADD_ENCRYPTION_KEY ioctl.
+[CAUSE]
+From Jan Kara for his wisdom on the dirty page balance behavior first.
 
-When that happens on a device-mapper device that consists of many
-dm-linear targets, a lot of unnecessary key unwrapping requests get sent
-to the underlying key wrapping hardware.
+ This cgroup dirty limit was what was actually playing the role here
+ because the cgroup had only a small amount of memory and so the dirty
+ limit for it was something like 16MB.
 
-Fix this by considering the first device only.  As already documented in
-the comment, it was already checked that all underlying devices support
-wrapped keys, so this should be fine.
+ Dirty throttling is responsible for enforcing that nobody can dirty
+ (significantly) more dirty memory than there's dirty limit. Thus when
+ a task is dirtying pages it periodically enters into balance_dirty_pages()
+ and we let it sleep there to slow down the dirtying.
 
-Fixes: e93912786e50 ("dm: pass through operations on wrapped inline crypto keys")
+ When the system is over dirty limit already (either globally or within
+ a cgroup of the running task), we will not let the task exit from
+ balance_dirty_pages() until the number of dirty pages drops below the
+ limit.
+
+ So in this particular case, as I already mentioned, there was a cgroup
+ with relatively small amount of memory and as a result with dirty limit
+ set at 16MB. A task from that cgroup has dirtied about 28MB worth of
+ pages in btrfs btree inode and these were practically the only dirty
+ pages in that cgroup.
+
+So that means the only way to reduce the dirty pages of that cgroup is
+to writeback the dirty pages of btrfs btree inode, and only after that
+those processes can exit balance_dirty_pages().
+
+Now back to the btrfs part, btree_writepages() is responsible for
+writing back dirty btree inode pages.
+
+The problem here is, there is a btrfs internal threshold that if the
+btree inode's dirty bytes are below the 32M threshold, it will not
+do any writeback.
+
+This behavior is to batch as much metadata as possible so we won't write
+back those tree blocks and then later re-COW then again for another
+modification.
+
+This internal 32MiB is higher than the existing dirty page size (28MiB),
+meaning no writeback will happen, causing a deadlock between btrfs and
+cgroup:
+
+- Btrfs doesn't want to write back btree inode until more dirty pages
+
+- Cgroup/MM doesn't want more dirty pages for btrfs btree inode
+  Thus any process touching that btree inode is put into sleep until
+  the number of dirty pages is reduced.
+
+Thanks Jan Kara a lot for the analyze on the root cause.
+
+[ENHANCEMENT]
+Since kernel commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
+btree_inode"), btrfs btree inode pages will only be charged to the root
+cgroup which should have a much larger limit than btrfs' 32MiB
+threshold.
+So it should not affect newer kernels.
+
+But for all current LTS kernels, they are all affected by this problem,
+and backporting the whole AS_KERNEL_FILE may not be a good idea.
+
+Even for newer kernels I still think it's a good idea to get
+rid of the internal threshold at btree_writepages(), since for most cases
+cgroup/MM has a better view of full system memory usage than btrfs' fixed
+threshold.
+
+For internal callers using btrfs_btree_balance_dirty() since that
+function is already doing internal threshold check, we don't need to
+bother them.
+
+But for external callers of btree_writepages(), just respect their
+requests and just write back whatever they want, ignoring the internal
+btrfs threshold to avoid such deadlock on btree inode dirty page
+balancing.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
- drivers/md/dm-table.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+Changelog:
+v3:
+- Update "[FIX]" section to "[ENHANCEMENT]"
+  I totally forgot that the btree-skip-cgroup patchset is already merged,
+  thus it's no longer possible to hit this problem on v6.18+ kernels.
+  Although there is still some value to simplify the btree writeback
+  behavior, the more important part is mostly for the LTS kernels.
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index 0522cd700e0e..4b70872725d0 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -1235,13 +1235,10 @@ static int dm_wrappedkey_op_callback(struct dm_target *ti, struct dm_dev *dev,
- 	struct block_device *bdev = dev->bdev;
- 	struct blk_crypto_profile *profile =
- 		bdev_get_queue(bdev)->crypto_profile;
- 	int err = -EOPNOTSUPP;
+- Add Cc to the stable list
+
+v2:
+- Update the commit message to include more details about the
+  balance_dirty_pages() behavior
+
+- With that background knowledge explain the deadlock better
+  It's between cgroup where no more btree inode dirty pages are allowed
+  and all involved processes are put into sleep until dirty pages
+  drops, and btrfs where it won't write back any dirty pages until
+  there are more dirty pages.
+---
+ fs/btrfs/disk-io.c | 24 +-----------------------
+ 1 file changed, 1 insertion(+), 23 deletions(-)
+
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 5e4b7933ab20..9add1f287635 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -485,28 +485,6 @@ static int btree_migrate_folio(struct address_space *mapping,
+ #define btree_migrate_folio NULL
+ #endif
  
--	if (!args->err)
--		return 0;
+-static int btree_writepages(struct address_space *mapping,
+-			    struct writeback_control *wbc)
+-{
+-	int ret;
 -
- 	switch (args->op) {
- 	case DERIVE_SW_SECRET:
- 		err = blk_crypto_derive_sw_secret(
- 					bdev,
- 					args->derive_sw_secret.eph_key,
-@@ -1264,13 +1261,11 @@ static int dm_wrappedkey_op_callback(struct dm_target *ti, struct dm_dev *dev,
- 					     args->prepare_key.lt_key_size,
- 					     args->prepare_key.eph_key);
- 		break;
- 	}
- 	args->err = err;
+-	if (wbc->sync_mode == WB_SYNC_NONE) {
+-		struct btrfs_fs_info *fs_info;
 -
--	/* Try another device in case this fails. */
--	return 0;
-+	return 1; /* No need to continue the iteration. */
- }
- 
- static int dm_exec_wrappedkey_op(struct blk_crypto_profile *profile,
- 				 struct dm_wrappedkey_op_args *args)
+-		if (wbc->for_kupdate)
+-			return 0;
+-
+-		fs_info = inode_to_fs_info(mapping->host);
+-		/* this is a bit racy, but that's ok */
+-		ret = __percpu_counter_compare(&fs_info->dirty_metadata_bytes,
+-					     BTRFS_DIRTY_METADATA_THRESH,
+-					     fs_info->dirty_metadata_batch);
+-		if (ret < 0)
+-			return 0;
+-	}
+-	return btree_write_cache_pages(mapping, wbc);
+-}
+-
+ static bool btree_release_folio(struct folio *folio, gfp_t gfp_flags)
  {
-@@ -1292,18 +1287,17 @@ static int dm_exec_wrappedkey_op(struct blk_crypto_profile *profile,
- 	 * implementations of wrapped inline crypto keys on a single system.
- 	 * It was already checked earlier that support for wrapped keys was
- 	 * declared on all underlying devices.  Thus, all the underlying devices
- 	 * should support all wrapped key operations and they should behave
- 	 * identically, i.e. work with the same keys.  So, just executing the
--	 * operation on the first device on which it works suffices for now.
-+	 * operation on the first device suffices for now.
- 	 */
- 	for (i = 0; i < t->num_targets; i++) {
- 		ti = dm_table_get_target(t, i);
- 		if (!ti->type->iterate_devices)
- 			continue;
--		ti->type->iterate_devices(ti, dm_wrappedkey_op_callback, args);
--		if (!args->err)
-+		if (ti->type->iterate_devices(ti, dm_wrappedkey_op_callback, args) != 0)
- 			break;
- 	}
- out:
- 	dm_put_live_table(md, srcu_idx);
- 	return args->err;
-
-base-commit: fb8a6c18fb9a6561f7a15b58b272442b77a242dd
+ 	if (folio_test_writeback(folio) || folio_test_dirty(folio))
+@@ -584,7 +562,7 @@ static bool btree_dirty_folio(struct address_space *mapping,
+ #endif
+ 
+ static const struct address_space_operations btree_aops = {
+-	.writepages	= btree_writepages,
++	.writepages	= btree_write_cache_pages,
+ 	.release_folio	= btree_release_folio,
+ 	.invalidate_folio = btree_invalidate_folio,
+ 	.migrate_folio	= btree_migrate_folio,
 -- 
 2.52.0
 
