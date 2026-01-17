@@ -1,129 +1,189 @@
-Return-Path: <stable+bounces-210141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AFED38D78
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 10:46:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5884CD38D80
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 10:52:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9AC13301F8E5
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 09:46:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6C2063009682
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 09:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B019C32FA37;
-	Sat, 17 Jan 2026 09:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615A6334C17;
+	Sat, 17 Jan 2026 09:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bWkvCtQ5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="muv8Df7o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C82C145348
-	for <stable@vger.kernel.org>; Sat, 17 Jan 2026 09:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221FD3321AA;
+	Sat, 17 Jan 2026 09:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768643199; cv=none; b=pzlCZS6eANAsbnae7cg3mDHsRBTPZQBYyqtkHUeycmImdvqhSe5fnGXan4pp4YgC6II8kt3HNJfAlRkkhCmjuS1oCJGvhp5+irvSFfsuha46Lloqkmly54ZeoApsZvvexXUdgEwtB7a+D7njugWOuQM8MqferogwOU47x9YCu8M=
+	t=1768643531; cv=none; b=IDX0XlRr1LAujuSLjOV/3U3eqX7f04+TLYHblEcALUrf4CcZpNtmEEx1pG0nk6HMiXYnzZ6u3yxnXii+WIj7R1dRo51VBFjJh3GGTcxLYTQyWE8ZmzpoggKJApLn1X9b3/2LK0fiCwW1G8SuL/udSxwW8OB1xOmuLvI2315/bko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768643199; c=relaxed/simple;
-	bh=dzuCEr++dzV7RGNmwdbO18PEnRRvlr6DRE7R+PtL5fE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kNjpizI2F9Eff9TDCMXE3Hbw7KulbVkZ8bGhwfdA5f0ARxXV+u9UivMLG6kfJlaLaaAdugKwYwbCfYPccWIZV3GKkzCipHwdCWcFozfE6fJ16S5/bEPEBwln7CVQXRYMk1RyAGZTvF0WuQ867lsG7lEj+NEiAgQzRN7vgnt3zeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bWkvCtQ5; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-81f4c0e2b42so1515983b3a.1
-        for <stable@vger.kernel.org>; Sat, 17 Jan 2026 01:46:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768643197; x=1769247997; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XdRImgnlzumkwpGPWq3zB030HsmNVz+cDIu4+32/ft0=;
-        b=bWkvCtQ5CCXza9jRk/LsSnKU0CUkDASpkMA4/s7W5pmuWUZQOyIc7G51lzsRFGWGFR
-         eV+lkQUFA+96z8W012i/jp1woeHmebKSPLXCR147Mm1Ky6V7P0VqlZfh0iKDlM9drfC3
-         LAT6htDHHCKP5ZnLbzbsCi0RQT4B6jcizgR6ABHz0HjvmtL0BYBJFqxZKJo80nNTxZdD
-         XUg9/pBRP252AcAewqlzAUtByEY0I+4ewRg1a/39C3f7hKe001tgu5MqVtkl32PR56pI
-         XNPW9L1mpHism8H2y5tYxLXwapa6ikrsI5XCQxB+Um77Y+GkMuXceRz7l4jyURL9LihP
-         VhFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768643197; x=1769247997;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XdRImgnlzumkwpGPWq3zB030HsmNVz+cDIu4+32/ft0=;
-        b=pUoFrPkUS/2esi60i5OIPTVZLDT6l2+6l4gp/mjVB74Bsyq1sgA2fbX/Rc2HFvPonV
-         gFpjb1bAVal4OdzUE3m+fFIzebcyyJEH96lKOjXFeo/rAlT3g/wr4d88VnryQL5bwMwP
-         C6Bxb28/WdUOLzd3S3haC3pBmB9IqekSRzQ7kJH/YYLzsmrNp8duGzjyB6VkwaW5AwrY
-         zqraRq4s1eqWqz75bCu811I+AGc/JNohiFbr2TklpeJTQwebvCXM/NqX8cZErVDqXWH7
-         gJjcPjCjtAJ+CZIti21V/7mOnpIUqx9DJZzvp+Pvac6aKoR23DJB1FiKLr9IHMJVwNua
-         wOmw==
-X-Forwarded-Encrypted: i=1; AJvYcCWOhBZxNYtNQnaVjo4CVyo9Yzgb0/ikzuAwe8uc5qePk0YsnAqXXO0jxz37b3pU8FewaWWMA+c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEj2vjdrgmI+/yVKm+5kx4qEY51rUD4Iwk5hwMgdrHRzZgxO0T
-	i7rY9mcW2QrtTGrF9Djm+AdTMsRGfHm71T+Gn3jnigwcQ6GkY0+q+qU3
-X-Gm-Gg: AY/fxX4i1tSTmsS6Othrbxyta67o2Afcw/mdublPfm3qqZPR9Mtt1Xj1F1jCLDnXaUI
-	1jUt+TdvhiDga9P4/ZsU8FvBgkMElZZBMlKIfqOreVJF6BpjaxRaWmdXvrQkSiWt/iOZyTmFt/P
-	h/Cs5Rvl14d08ai4xmxug53UrrazZ+lFyPGMT1hcMFB54z9p6E6qoOKg8PuAl/dqrlTbZ3G90Io
-	naYQZvV+pByAzlZnJekCZzUBgBkzgaI3F5FoJXEtuB7J2CiJz02/CYjAdvW+pj5O1n5ZfxU2idr
-	vbnUR3x02dDF7rfuV41+MjauRIZcf+2e4lefVGYPF08MlXy5CSBmj2ckRNTYodFSXiEE54zCOQI
-	Bhpjpl37tF6EsNwUZNiDd3uIttraUx+LjipZ2DuXFqqv4pT7K7PGoxoQ3RpZODN4py+2kzSoL9m
-	DpF9O23uLnhVTJ2DkWwhZA1SgD3rrZXUMoBtwxVaXFkk9Q+E6QupZtFpeTU7IrWUhLiQ9Qy7Aqg
-	ole+bJDImxmQxuIS2YGkSQDIk6AAzTBifFRror5UW+DyD4=
-X-Received: by 2002:a05:6a00:14c5:b0:81f:3d32:fe58 with SMTP id d2e1a72fcca58-81fa01ec336mr5335959b3a.35.1768643197568;
-        Sat, 17 Jan 2026 01:46:37 -0800 (PST)
-Received: from c8971f1abf06.ap-southeast-2.compute.internal (ec2-54-252-206-51.ap-southeast-2.compute.amazonaws.com. [54.252.206.51])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa12b3165sm4063839b3a.60.2026.01.17.01.46.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 17 Jan 2026 01:46:37 -0800 (PST)
-From: Weigang He <geoffreyhe2@gmail.com>
-To: mathias.nyman@intel.com,
-	gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Weigang He <geoffreyhe2@gmail.com>
-Subject: [PATCH] usb: xhci: fix missing null termination after copy_from_user()
-Date: Sat, 17 Jan 2026 09:46:31 +0000
-Message-Id: <20260117094631.504232-1-geoffreyhe2@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1768643531; c=relaxed/simple;
+	bh=g0qCL0JoAiGU5ZstrM5vgZob9Sur8oHFKoDg1f/GvfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QMYNSjwShrRrIEm5WhoJmmHuJkVpxB6jRx0sBmVFLfQB+JiSylbNs6UQtR22//XgXHL6FuRylUv2uCVqcrm11fJCx5/lRzbbyetv6TC+A5C6zwj/OsU6G7x5LHItlJjNmrEMMa5CPCGuOr6ui6RCWyR3ZEk+nYahRpCSLN1tvhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=muv8Df7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F08C4CEF7;
+	Sat, 17 Jan 2026 09:52:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768643530;
+	bh=g0qCL0JoAiGU5ZstrM5vgZob9Sur8oHFKoDg1f/GvfI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=muv8Df7oZW6WDggzXF5rQMg8i6W4DKdVYV19H4d+9q2paaoS0WzDTTkz2uK3nGX+Y
+	 waPLwuenyScpMWfhXYcUI5dwc2nF9Ml+lAhqzO4hbvNtMftNRqXb2StIMVwjJOPMVd
+	 aSKOMi5oYfVtRMluAz3INcsdA0WxIAJWomToKdY+8Tf+jJ7WUNDDFnKxpJ9uN3WSX9
+	 54d2+8h4d7eHq86o/8HxWbwHS45svC79599OsQyrzMQ0KHpnTdsNxMsmaKqtrKNkmR
+	 BqpQzEwLhYhmXbCAmiMC4TXEorGCqErVPSSUhAyqqn3X0+iSAP8EsD2VPZFqgCM2rM
+	 eYLBePRm+grBA==
+Date: Sat, 17 Jan 2026 10:52:05 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Randy Dunlap <rdunlap@infradead.org>, Linux Doc Mailing List
+ <linux-doc@vger.kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>,
+ linux-kernel@vger.kernel.org, Jani Nikula <jani.nikula@intel.com>, Shuah
+ Khan <skhan@linuxfoundation.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 2/4] scripts/kernel-doc: avoid error_count overflows
+Message-ID: <20260117105205.14eea6e3@foz.lan>
+In-Reply-To: <87ecnpo213.fsf@trenco.lwn.net>
+References: <cover.1768395332.git.mchehab+huawei@kernel.org>
+	<68ec6027db89b15394b8ed81b3259d1dc21ab37f.1768395332.git.mchehab+huawei@kernel.org>
+	<79bb75da-5233-46d8-9590-7443806e2bd7@infradead.org>
+	<87ecnpo213.fsf@trenco.lwn.net>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The buffer 'buf' is filled by copy_from_user() but is not properly
-null-terminated before being used with strncmp(). If userspace provides
-fewer than 10 bytes, strncmp() may read beyond the copied data into
-uninitialized stack memory.
+Em Fri, 16 Jan 2026 11:17:28 -0700
+Jonathan Corbet <corbet@lwn.net> escreveu:
 
-Add explicit null termination after copy_from_user() to ensure the
-buffer is always a valid C string before string operations.
+> Randy Dunlap <rdunlap@infradead.org> writes:
+> 
+> > Mauro,
+> > The line formatting is weird on one line below
+> > (looks like 2 text lines are joined).
+> >
+> > On 1/14/26 4:57 AM, Mauro Carvalho Chehab wrote:  
+> >> The glibc library limits the return code to 8 bits. We need to
+> >> stick to this limit when using sys.exit(error_count).
+> >> 
+> >> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+> >> Cc: stable@vger.kernel.org
+> >> ---
+> >>  scripts/kernel-doc.py | 25 ++++++++++++++++++-------
+> >>  1 file changed, 18 insertions(+), 7 deletions(-)
+> >> 
+> >> diff --git a/scripts/kernel-doc.py b/scripts/kernel-doc.py
+> >> index 7a1eaf986bcd..3992ca49d593 100755
+> >> --- a/scripts/kernel-doc.py
+> >> +++ b/scripts/kernel-doc.py
+> >> @@ -116,6 +116,8 @@ SRC_DIR = os.path.dirname(os.path.realpath(__file__))
+> >>  
+> >>  sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
+> >>  
+> >> +WERROR_RETURN_CODE = 3
+> >> +
+> >>  DESC = """
+> >>  Read C language source or header FILEs, extract embedded documentation comments,
+> >>  and print formatted documentation to standard output.
+> >> @@ -176,7 +178,20 @@ class MsgFormatter(logging.Formatter):
+> >>          return logging.Formatter.format(self, record)
+> >>  
+> >>  def main():
+> >> -    """Main program"""
+> >> +    """
+> >> +    Main program
+> >> +    By default, the return value is:
+> >> +
+> >> +    - 0: success or Python version is not compatible with                                                                kernel-doc.  If -Werror is not used, it will also  
+> >
+> > Here ^^^^^
+> >  
+> Mauro, can you get me a clean copy?  It seems like we're more than ready
+> to apply this set otherwise...
 
-Fixes: 87a03802184c ("xhci: debugfs: add debugfs interface to enable compliance mode for a port")
-Cc: stable@vger.kernel.org
-Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
+Just sent.
+
+Ah, if you're curiously enough about autodoc, and don't want to apply
+the /15 patch series, or just want to check if the docstrings are OK,
+you can apply the enclosed test patch. I'm not proposing adding it
+to the series, but getting issues like the above where comments look
+weird is better caught by checking if the docstrings are properly
+formatted and parsed by Sphinx.
+
+Thanks,
+Mauro
+
 ---
- drivers/usb/host/xhci-debugfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-debugfs.c b/drivers/usb/host/xhci-debugfs.c
-index c1eb1036ede95..1e2350de77775 100644
---- a/drivers/usb/host/xhci-debugfs.c
-+++ b/drivers/usb/host/xhci-debugfs.c
-@@ -347,11 +347,13 @@ static ssize_t xhci_port_write(struct file *file,  const char __user *ubuf,
- 	struct xhci_port	*port = s->private;
- 	struct xhci_hcd		*xhci = hcd_to_xhci(port->rhub->hcd);
- 	char                    buf[32];
-+	size_t			len = min_t(size_t, sizeof(buf) - 1, count);
- 	u32			portsc;
- 	unsigned long		flags;
+[HACK] Python autodoc test
+
+This is just a minimal patch to place kernel-doc API documentation
+somewhere (at the wrong place).
+
+Goal here is just to easily allow testing autodoc.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+
+diff --git a/Documentation/conf.py b/Documentation/conf.py
+index 1ea2ae5c6276..bf16dd68bc62 100644
+--- a/Documentation/conf.py
++++ b/Documentation/conf.py
+@@ -18,6 +18,9 @@ import sphinx
+ # documentation root, use os.path.abspath to make it absolute, like shown here.
+ sys.path.insert(0, os.path.abspath("sphinx"))
  
--	if (copy_from_user(&buf, ubuf, min_t(size_t, sizeof(buf) - 1, count)))
-+	if (copy_from_user(&buf, ubuf, len))
- 		return -EFAULT;
-+	buf[len] = '\0';
++# Allow sphinx.ext.autodoc to document any pyhton files within the Kernel tree
++sys.path.append(os.path.abspath(".."))
++
+ # Minimal supported version
+ needs_sphinx = "3.4.3"
  
- 	if (!strncmp(buf, "compliance", 10)) {
- 		/* If CTC is clear, compliance is enabled by default */
--- 
-2.34.1
+@@ -151,6 +154,7 @@ extensions = [
+     "maintainers_include",
+     "parser_yaml",
+     "rstFlatTable",
++    "sphinx.ext.autodoc",
+     "sphinx.ext.autosectionlabel",
+     "sphinx.ext.ifconfig",
+     "translations",
+diff --git a/Documentation/doc-guide/kernel-doc.rst b/Documentation/doc-guide/kernel-doc.rst
+index b56128d7f5c3..7884c1297513 100644
+--- a/Documentation/doc-guide/kernel-doc.rst
++++ b/Documentation/doc-guide/kernel-doc.rst
+@@ -624,3 +624,11 @@ using SPHINXDIRS:
+ 
+    When SPHINXDIRS={subdir} is used, it will only generate man pages for
+    the files explicitly inside a ``Documentation/{subdir}/.../*.rst`` file.
++
++kernel\-doc docstrings documentation
++------------------------------------
++
++.. automodule:: scripts.kernel_doc
++   :members:
++   :show-inheritance:
++   :undoc-members:
+diff --git a/scripts/kernel-doc b/scripts/kernel-doc
+index 3b6ef807791a..47eaae84adeb 120000
+--- a/scripts/kernel-doc
++++ b/scripts/kernel-doc
+@@ -1 +1 @@
+-kernel-doc.py
+\ No newline at end of file
++kernel_doc.py
+\ No newline at end of file
+diff --git a/scripts/kernel-doc.py b/scripts/kernel_doc.py
+similarity index 100%
+rename from scripts/kernel-doc.py
+rename to scripts/kernel_doc.py
 
 
