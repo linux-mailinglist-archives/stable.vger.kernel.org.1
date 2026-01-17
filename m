@@ -1,75 +1,81 @@
-Return-Path: <stable+bounces-210129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E557D38C26
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 05:24:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D4CD38CC0
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 06:54:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97EF3302DC85
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 04:24:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B24F3301E6F3
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 05:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F1629DB6C;
-	Sat, 17 Jan 2026 04:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F8C31C576;
+	Sat, 17 Jan 2026 05:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="O8xnILv8";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="bdMuThe8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DlqBntoy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B967929CB57
-	for <stable@vger.kernel.org>; Sat, 17 Jan 2026 04:24:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75534500964
+	for <stable@vger.kernel.org>; Sat, 17 Jan 2026 05:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768623877; cv=none; b=YtfZCvE87E+dUJXIKW67YlKEHRV5jrhPSfaqz2ifxtWWFoQJDJGfozoakQs/V3NSn6SVT8Gkmw4TqlaFga6KvDacoIp/nO8M0cRWikTsL32JGE6d5V2uaA1T1wKVbpJAIvBiMnTGiwVZAnsq4mp7NOzTNm8777EgEbL80as9NV4=
+	t=1768629254; cv=none; b=TFAXCKey9Zol9LAsw4IpRbIYbJAZ4Kt87MnpMqP0D29J9KKfonUKU8kAZviFfAiRJ/OSFOUjC6M8Wd5Sqblimpf0BIeksoewvEgr4k0ZEukABPMvV6AFMQaJUSCk7k+rFty1fhCW1GchMPzgcOGBxdhMrxLzV5gT14S8iuNI4+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768623877; c=relaxed/simple;
-	bh=Q6ieHGb/57Kj41pNhS4FsBr/8TR9RUPq/EWNaXpWb+Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mRzHi8m5lJPg/nZ39rNi0TKc7072vGDQeavr8X2gqSQiCbUuqkHJNKUY0cVML9FqRtse9H+u3pMExTD1gvzdl82U8BMpb8VwKHFzKErM/FuXSpUD7lzJnXYjycp7fydd46jSoTFLxkflTrH98XeRnuhogP/MSi/73VLlf8jbdME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=O8xnILv8; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=bdMuThe8; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F29055BCC9;
-	Sat, 17 Jan 2026 04:24:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1768623874; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=qRcqozDCjZtL6k9/IJ1ZR8Qvtva2xuC8/1DNkNDwhVE=;
-	b=O8xnILv8Ni761p77ok6axk+nFuc3LzOLKkL20YSYyI/uH9y6s/HLUxK+ogcs1OqLdhvzIi
-	FMsF8WC+Q82C4/R3p9ZLtZ1P8hONqdiQEE6xAShfFlRqMUvxAlUVsi8mQKnlDRxE/sq6XB
-	kXFi79PvmxAZ++MV8UW9rfi+ASRo7gY=
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=bdMuThe8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1768623873; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=qRcqozDCjZtL6k9/IJ1ZR8Qvtva2xuC8/1DNkNDwhVE=;
-	b=bdMuThe8F06w+oCJa7IKvIZU8fcvdq58xzSuyM7y8yQcm5aYkc5JVVhlODqDY2cvOBzkHK
-	qPbiHWce8BDy8FQV4LltjGXhXnCptJfd8YtopXKkBiBDJwWvEogVAfRNu3A55lypvukUes
-	mzdN2iMFm+EXwGghn0bQ7UzgK8G/RGs=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D80FD3EA63;
-	Sat, 17 Jan 2026 04:24:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aEhiIP4Oa2nLBwAAD6G6ig
-	(envelope-from <wqu@suse.com>); Sat, 17 Jan 2026 04:24:30 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Boris Burkov <boris@bur.io>
-Subject: [PATCH v3] btrfs: do not strictly require dirty metadata threshold for metadata writepages
-Date: Sat, 17 Jan 2026 14:54:12 +1030
-Message-ID: <ada6a7cf8dbb1f4ee78343402c73b078c65a7ff7.1768623845.git.wqu@suse.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1768629254; c=relaxed/simple;
+	bh=X28oz4Hqu8C9OrNAoigAJocOtIUCqP9c5jKWoshxS8A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bU1h3Pt/eP0RY+M/jA8NHF6Xn1ONY00Cxd8BgK+34h+4bi7yKoXEgPbrYNCSdxKxoT+8jtO8TdK/o+fbJjxHi9oScOaEU2UOwMRkcqa1pd/1S1LV4nuc+J7UcL9fs15vWFngn2RU4PGu08ByWopR72Ixbd9SZ6Io5pdIPVKzHOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DlqBntoy; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a2ea96930cso16627695ad.2
+        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 21:54:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768629253; x=1769234053; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/3Y2YH3nM767IcqTvERX11GvwkdtC120hdoDxqBZKew=;
+        b=DlqBntoyK6tr01t6J5k5EKAx63R3U6KSu6cnlJXbei8pZ0uA07dZ5+6g8JPOAzcGd0
+         3lHaHgZYmB5asVcgpv1NdCtM71lWNG0B2G5aLSoF5qJPol5tmpx+4cm4IwHlAoacReR8
+         zncid74kAczGft7YjdumX2MdVq1H6A5Jra7Ulw9DdGXDneOwfCvrLszm3h5nPFce0Bzx
+         X2Euc6Qzd+gwiqySnaPfJnvrppIIYA8vMpd8fDpeH712cstl3VEI4OKoYfKSoxToTtzI
+         yve9IrFKnDOQFt0Hl01pzQUCBaSSy/Mq7YaWAt7qy/YzxTPcb6JlehJcDEz9B5p36Dg/
+         j7qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768629253; x=1769234053;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/3Y2YH3nM767IcqTvERX11GvwkdtC120hdoDxqBZKew=;
+        b=tEwNyS6dR+zG4gHU8P4Y0WNEshfGbEph3Hk6t6dKhiBtmYZsh8UN/9GF+8MqgYXbKd
+         UKFvxaoaldwASCizv2+8+MaUxYw+c7kedIwQDIkspxadLUAQ+sBZKP1nV0CP4CR8G7xh
+         evXyczyQhXc4EtM197gU8tzE9145lXxG/9SzNkcQz+o5sjM1rhQuzLBHR4ha9mCrcvYT
+         nDzZQLenp3EVcw5jMo5ETHNUzBv6CvX9J4RIn6qgq5bc61U4Gti0GpM8UlmxOdXe9VRk
+         xaIhmn7Qn62MBQH4C/a7g0V3QhJPpY/c5x+HYsx1tW1Fe9iu8UAY/fTsaAKBIdcZwNAS
+         SnoA==
+X-Gm-Message-State: AOJu0YwPykPDU1i+VJ4TsBywEpNoLRSLky1NbwcVgzU8bDPi1IXRvorX
+	Ad9P2ibmDF1fjH8J+Gniv2YCbe7SbA8nl25uAC6alnrgTuulaSPtKhEW
+X-Gm-Gg: AY/fxX6FlZBIyK4OxSmi8Dkjchk8nF3ZjTLPeRbH/O6u4NMFqBN+BT3NkFZY9yBNY1W
+	9TWzwU9H9mJaY9jTNQQbtUpEeVjvl6RwRxC1n4DsHW/FgTGgN45BP7+13T4eKj5gRo/FTyJyOyk
+	M10cPPeIv1PUlkbLWYFTDb/tmsxxiN539X5ssnocQ3ImwhwLj6WL5ylTf5V/Q282wsxKpboANHu
+	Xn3SrKtSvzhyxAUrb6XOlCa3Eb8O6oNciVwEfRsbEBvjWuh060dre3xIzf8+3ML9i+Tkd9T4NOE
+	ZDZ3V5IpSS9pRwQ9cIPa8kdFl6T1VuT0MFAMjYkAsNYBtZXl1dfRtzCPJpC5nULtGNJCW2IoVuA
+	crgpeNUdBy0ASDPR7+5mt5WaJfs3D5AUHdxBmNjos/O9VnxALN5iUg1Q5pXlZoXA7K6VKOq9eeW
+	IS5VjnOXC6dWSc8K+hq/AuA8jFKTjtNtGAIFInYe+maLPD9bUkqZkl3tDEAfyQRqXxSIOGrCCJ7
+	y4RKqMW206pLsnUW4iljG0Z09TU0czuqg3lRbVzQJX+J4EVHT+YULjZgg==
+X-Received: by 2002:a17:903:2ad0:b0:2a0:d63c:7853 with SMTP id d9443c01a7336-2a717539304mr48150415ad.16.1768629252675;
+        Fri, 16 Jan 2026 21:54:12 -0800 (PST)
+Received: from c8971f1abf06.ap-southeast-2.compute.internal (ec2-54-252-206-51.ap-southeast-2.compute.amazonaws.com. [54.252.206.51])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7193dd523sm36763495ad.62.2026.01.16.21.54.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Jan 2026 21:54:12 -0800 (PST)
+From: Weigang He <geoffreyhe2@gmail.com>
+To: geoffreyhe2@gmail.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] bus: ti-sysc: fix reference count leak in sysc_init_stdout_path()
+Date: Sat, 17 Jan 2026 05:54:07 +0000
+Message-Id: <20260117055407.415600-1-geoffreyhe2@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,191 +83,37 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.01
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:mid,suse.com:email,bur.io:email,suse.cz:email];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[suse.com:+]
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: F29055BCC9
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
 
-[BUG]
-There is an internal report that over 1000 processes are
-waiting at the io_schedule_timeout() of balance_dirty_pages(), causing
-a system hang and triggered a kernel coredump.
+of_find_node_by_path() returns a device_node with refcount incremented.
+When of_get_property() is called to get the stdout-path property, the
+reference to the "/chosen" node stored in np is either leaked if the
+property lookup fails, or overwritten when np is reassigned to the uart
+node path without releasing the "/chosen" reference first.
 
-The kernel is v6.4 kernel based, but the root problem still applies to
-any upstream kernel before v6.18.
+Add of_node_put(np) after of_get_property() to properly release the
+"/chosen" node reference before either going to the error path or
+acquiring a new reference for the uart path.
 
-[CAUSE]
-From Jan Kara for his wisdom on the dirty page balance behavior first.
-
- This cgroup dirty limit was what was actually playing the role here
- because the cgroup had only a small amount of memory and so the dirty
- limit for it was something like 16MB.
-
- Dirty throttling is responsible for enforcing that nobody can dirty
- (significantly) more dirty memory than there's dirty limit. Thus when
- a task is dirtying pages it periodically enters into balance_dirty_pages()
- and we let it sleep there to slow down the dirtying.
-
- When the system is over dirty limit already (either globally or within
- a cgroup of the running task), we will not let the task exit from
- balance_dirty_pages() until the number of dirty pages drops below the
- limit.
-
- So in this particular case, as I already mentioned, there was a cgroup
- with relatively small amount of memory and as a result with dirty limit
- set at 16MB. A task from that cgroup has dirtied about 28MB worth of
- pages in btrfs btree inode and these were practically the only dirty
- pages in that cgroup.
-
-So that means the only way to reduce the dirty pages of that cgroup is
-to writeback the dirty pages of btrfs btree inode, and only after that
-those processes can exit balance_dirty_pages().
-
-Now back to the btrfs part, btree_writepages() is responsible for
-writing back dirty btree inode pages.
-
-The problem here is, there is a btrfs internal threshold that if the
-btree inode's dirty bytes are below the 32M threshold, it will not
-do any writeback.
-
-This behavior is to batch as much metadata as possible so we won't write
-back those tree blocks and then later re-COW then again for another
-modification.
-
-This internal 32MiB is higher than the existing dirty page size (28MiB),
-meaning no writeback will happen, causing a deadlock between btrfs and
-cgroup:
-
-- Btrfs doesn't want to write back btree inode until more dirty pages
-
-- Cgroup/MM doesn't want more dirty pages for btrfs btree inode
-  Thus any process touching that btree inode is put into sleep until
-  the number of dirty pages is reduced.
-
-Thanks Jan Kara a lot for the analyze on the root cause.
-
-[ENHANCEMENT]
-Since kernel commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
-btree_inode"), btrfs btree inode pages will only be charged to the root
-cgroup which should have a much larger limit than btrfs' 32MiB
-threshold.
-So it should not affect newer kernels.
-
-But for all current LTS kernels, they are all affected by this problem,
-and backporting the whole AS_KERNEL_FILE may not be a good idea.
-
-Even for newer kernels I still think it's a good idea to get
-rid of the internal threshold at btree_writepages(), since for most cases
-cgroup/MM has a better view of full system memory usage than btrfs' fixed
-threshold.
-
-For internal callers using btrfs_btree_balance_dirty() since that
-function is already doing internal threshold check, we don't need to
-bother them.
-
-But for external callers of btree_writepages(), just respect their
-requests and just write back whatever they want, ignoring the internal
-btrfs threshold to avoid such deadlock on btree inode dirty page
-balancing.
-
+Fixes: 3bb37c8e6e6a ("bus: ti-sysc: Handle stdout-path for debug console")
 Cc: stable@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
 ---
-Changelog:
-v3:
-- Update "[FIX]" section to "[ENHANCEMENT]"
-  I totally forgot that the btree-skip-cgroup patchset is already merged,
-  thus it's no longer possible to hit this problem on v6.18+ kernels.
-  Although there is still some value to simplify the btree writeback
-  behavior, the more important part is mostly for the LTS kernels.
+ drivers/bus/ti-sysc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-- Add Cc to the stable list
-
-v2:
-- Update the commit message to include more details about the
-  balance_dirty_pages() behavior
-
-- With that background knowledge explain the deadlock better
-  It's between cgroup where no more btree inode dirty pages are allowed
-  and all involved processes are put into sleep until dirty pages
-  drops, and btrfs where it won't write back any dirty pages until
-  there are more dirty pages.
----
- fs/btrfs/disk-io.c | 24 +-----------------------
- 1 file changed, 1 insertion(+), 23 deletions(-)
-
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 5e4b7933ab20..9add1f287635 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -485,28 +485,6 @@ static int btree_migrate_folio(struct address_space *mapping,
- #define btree_migrate_folio NULL
- #endif
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 610354ce7f8f0..091cdad2f2cc6 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -696,6 +696,7 @@ static void sysc_init_stdout_path(struct sysc *ddata)
+ 		goto err;
  
--static int btree_writepages(struct address_space *mapping,
--			    struct writeback_control *wbc)
--{
--	int ret;
--
--	if (wbc->sync_mode == WB_SYNC_NONE) {
--		struct btrfs_fs_info *fs_info;
--
--		if (wbc->for_kupdate)
--			return 0;
--
--		fs_info = inode_to_fs_info(mapping->host);
--		/* this is a bit racy, but that's ok */
--		ret = __percpu_counter_compare(&fs_info->dirty_metadata_bytes,
--					     BTRFS_DIRTY_METADATA_THRESH,
--					     fs_info->dirty_metadata_batch);
--		if (ret < 0)
--			return 0;
--	}
--	return btree_write_cache_pages(mapping, wbc);
--}
--
- static bool btree_release_folio(struct folio *folio, gfp_t gfp_flags)
- {
- 	if (folio_test_writeback(folio) || folio_test_dirty(folio))
-@@ -584,7 +562,7 @@ static bool btree_dirty_folio(struct address_space *mapping,
- #endif
+ 	uart = of_get_property(np, "stdout-path", NULL);
++	of_node_put(np);
+ 	if (!uart)
+ 		goto err;
  
- static const struct address_space_operations btree_aops = {
--	.writepages	= btree_writepages,
-+	.writepages	= btree_write_cache_pages,
- 	.release_folio	= btree_release_folio,
- 	.invalidate_folio = btree_invalidate_folio,
- 	.migrate_folio	= btree_migrate_folio,
 -- 
-2.52.0
+2.34.1
 
 
