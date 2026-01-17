@@ -1,141 +1,176 @@
-Return-Path: <stable+bounces-210186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB85CD39117
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 22:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65EDED391B4
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 00:38:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DF8EC3007496
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 21:20:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4AFCC300503E
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 23:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F42A2DB785;
-	Sat, 17 Jan 2026 21:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425532DA75B;
+	Sat, 17 Jan 2026 23:38:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QFzyXSKg"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77019253B42;
-	Sat, 17 Jan 2026 21:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE4E1DB13A
+	for <stable@vger.kernel.org>; Sat, 17 Jan 2026 23:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768684812; cv=none; b=jhCUw1ZI4X3TMigvAfo1IzftJpN9bHhUXmnlE5CVC5g0HNoxQ0JBnuhgz2FmEUx+bXog8J1eCEqv24UH+RXEWrxiAoPa+nYlO+Rqj2m3N6LelOFHcx3VCSE9byJENKE91DdNMhkjdPXcopBXJbZSdmWse+J24RVAxghMYdnx+P0=
+	t=1768693101; cv=none; b=aijKZOPlzPGPO21Ihl5UsjVEsBQQKLCQdoKtUKfEr26JmwXx7cCRpYLyKnJfFLKQZiuY/tJ7iFbChf6w7ZugGNxlEPNvUtFpvwuL0mYfC39t349ommZeXIYm5i9/w0/IoMi3BT39+BuEgsWqUAvFNERey6xqvqxItiXtCL0xgQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768684812; c=relaxed/simple;
-	bh=mjzoexsq0MOUp1fzWikKTASTy+ZjbScZSE+tSilkMIw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=L4sCnoq+TQBri4XDmkcTk660PObpCuALERfwuMyogsf+OFTQwEPRIQq+BIQtl97NHJd01+LroI4lqgGmdFz2YSgKHArVRWSiNxjOKxdCdO9P9TUQcDe4P4p4qvR/mW4PFT623RNQxVodQ8/2WFDT3VZlHqSCl1jVhVzNsi1cQPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vhDiK-0011xO-39;
-	Sat, 17 Jan 2026 21:20:07 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vhDiI-00000000khs-1CzO;
-	Sat, 17 Jan 2026 22:20:06 +0100
-Message-ID: <d147f0eb71f9cefbfb7605e95d98564d7f0ed346.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 234/451] usb: phy: fsl-usb: Fix use-after-free in
- delayed work during device removal
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, stable <stable@kernel.org>, Duoming Zhou
-	 <duoming@zju.edu.cn>
-Date: Sat, 17 Jan 2026 22:19:58 +0100
-In-Reply-To: <20260115164239.360073394@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
-	 <20260115164239.360073394@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-+7H8HUOR/8ftKauSt5xn"
-User-Agent: Evolution 3.56.2-8 
+	s=arc-20240116; t=1768693101; c=relaxed/simple;
+	bh=x40IScEaCgCz1Zhs/zFJ/XU6nCoyj0uFBy7IuEeDYZg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gz7MJ8e7mv9WDNZvCwDt8UTkp0az/JK73XzZC3zIaOw4Xyc9KNKjGlCKm7cNkLw7gBWE2QMbToTM2SmnaUgrq7azSYAzQRo9+Dm15bmDIUbQPxNCJQ4TfzL3hn+/Elc/xnX3pTfIIAqjcs64hVx+b0WmJ0iN3sj/F5RpZDXdjQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QFzyXSKg; arc=none smtp.client-ip=74.125.82.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2b6bf6adc65so2297515eec.0
+        for <stable@vger.kernel.org>; Sat, 17 Jan 2026 15:38:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768693098; x=1769297898; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+jUU2EamMh4W73JXp6BOoG8AP25gnKEbVONTWYPvkjM=;
+        b=QFzyXSKgDPMgjgCLM2JcCIxt8Jt/TU+CaNJ/r4C9h8xqP2Q47qoUJJrhHHlro7+t99
+         qDBISvZ60a9E0NgADMIErndKJXpZxT4PLtspt4kVzS3YhVffufD5N+Cs9EgfqI2Q+8i6
+         eRw8/UXGV/PdJwLGFS3olTf1meZTtsSVUd50tbb/bH3Rl2xKn/6u7PSfu6SoeJSZf4iE
+         Vb4p07oRDDByYcQg5jp1/Xzq3Ke7UEBK4w5EI1ReDk9jBUwzXR2z/lvoRvz5jomcH/2Z
+         Jb0ifExXZh5tCwu62pi2SJGdSIWRMUyeTM2I0eqZdBI+/sFSQnpIQE2MNvU2NrFhFk5c
+         9SaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768693098; x=1769297898;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+jUU2EamMh4W73JXp6BOoG8AP25gnKEbVONTWYPvkjM=;
+        b=g7fmJiy/qh3yU3PZNSWh+rHkZ5KG+W3OUHIY6Ej+dpcJDvM41/rXNv0sabpmdGy3Cy
+         2Zh44Kr7b4wOxL78ierqfv/AtlN37ZM+/ufiWTFgmfIENdlt96POEab0KXjpnbOBGBsA
+         72Svp6JSuBNufoY9gIsV/XHe1uSE27Mch9Rt46lxny/JF8mZIinm7iS6WrhCktTP10Ua
+         QzanwokxMiIoKdQxKc3FnZKIeDs+JhEOUkOG+oMKIexr6wkzOgkI51+Zbo6KQPU2eaOv
+         FMfZn8/RTAP1Ti4X9WSXULyW9DNnPAuo79AFoeWxyLPGvRqxhm+i6jDaFQjiqvb322xx
+         wIgg==
+X-Gm-Message-State: AOJu0Yxg7Iclyeu3/iJAYdchLw+Rc3jvy03XU2ehXBCD9Qjw/eRo4km0
+	1r48dStZkKhy0el5Hufwq0sd6NzW5wv7AxzA8pbEEUI1ejKbXW53vsE3hTf9HA==
+X-Gm-Gg: AY/fxX466J1rFWef/HHERFDRcCaFo9Kbddou2SzkuoRFbzsvZfzcd/IJKB9fEzSrMkS
+	k+DbN7STX5GtTA5vtMenxkhXcP4/0Tqpv+wtYE+nq0Jo6UDRbGYm02dxFcbIiz9UOaaiOIwKfLu
+	qaMDpnIh4Kv3fZdZbJkCn7PZvFCboDXSQ/d34767dsguVR2nhXmnBYaq47uKFcQBaAp5Ay+EjUC
+	1T9gRH0knMFn4ciTEmYIY/uuQ0Lkr36cKs5bGAoI06M5zJ/GBHh1eW2XOsoVv/1c7Km4AkKJBfg
+	eK/CSNTocJn4eMdw+mH29dWyyCCkVBopJA9Kr5tHoCMl80LfwsSdPCf4D5BlLhZytkaxDB9pguw
+	GwKccI5o/3IQ/JO7ziwxcNtvMsH7ADFl01HZgeqWwjF1HuMSFzsEtZgaciP1BB5zibnajof2NjK
+	cNxKQ87JhznMSeT99tJJBpk1rffqUS/ZsYI7HeuHfiuytOU3y85ObIkXj0Yg==
+X-Received: by 2002:a05:7300:a54b:b0:2ae:4ffc:d84e with SMTP id 5a478bee46e88-2b6b4e64b0bmr5727236eec.28.1768693098402;
+        Sat, 17 Jan 2026 15:38:18 -0800 (PST)
+Received: from ryzoh.168.0.127 ([2804:14c:5fc8:8033:57d9:5109:d588:7feb])
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-2b6b34c0f7fsm7452064eec.3.2026.01.17.15.38.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Jan 2026 15:38:18 -0800 (PST)
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+To: stable@vger.kernel.org
+Cc: Zhi.Yang@windriver.com,
+	David Hildenbrand <david@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Peter Xu <peterx@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Subject: [PATCH 5.10.y 1/2] mm/pagewalk: add walk_page_range_vma()
+Date: Sat, 17 Jan 2026 20:38:00 -0300
+Message-ID: <20260117233801.339606-1-pedrodemargomes@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <2025112005-turmoil-elsewhere-e83d@gregkh>
+References: <2025112005-turmoil-elsewhere-e83d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 8bit
 
+From: David Hildenbrand <david@redhat.com>
 
---=-+7H8HUOR/8ftKauSt5xn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit e07cda5f232fac4de0925d8a4c92e51e41fa2f6e ]
 
-On Thu, 2026-01-15 at 17:47 +0100, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Duoming Zhou <duoming@zju.edu.cn>
->=20
-> commit 41ca62e3e21e48c2903b3b45e232cf4f2ff7434f upstream.
->=20
-> The delayed work item otg_event is initialized in fsl_otg_conf() and
-> scheduled under two conditions:
-> 1. When a host controller binds to the OTG controller.
-> 2. When the USB ID pin state changes (cable insertion/removal).
->=20
-> A race condition occurs when the device is removed via fsl_otg_remove():
-> the fsl_otg instance may be freed while the delayed work is still pending
-> or executing. This leads to use-after-free when the work function
-> fsl_otg_event() accesses the already freed memory.
->=20
-> The problematic scenario:
->=20
-> (detach thread)            | (delayed work)
-> fsl_otg_remove()           |
->   kfree(fsl_otg_dev) //FREE| fsl_otg_event()
->                            |   og =3D container_of(...) //USE
->                            |   og-> //USE
->=20
-> Fix this by calling disable_delayed_work_sync() in fsl_otg_remove()
-> before deallocating the fsl_otg structure. This ensures the delayed work
-> is properly canceled and completes execution prior to memory deallocation=
-.
-[...]
+Let's add walk_page_range_vma(), which is similar to walk_page_vma(),
+however, is only interested in a subset of the VMA range.
 
-The disable_delayed_work_sync() function was only added in 6.10 and has
-not (yet) been backported anywhere.
+To be used in KSM code to stop using follow_page() next.
 
-So for older branches, either this fix needs to be changed to use
-cancel_delayed_work_sync() (which I suspect requires reordering some of
-the cleanup, to be safe) or disable_delayed_work_sync() needs to be
-backported first.
+Link: https://lkml.kernel.org/r/20221021101141.84170-8-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: f5548c318d6 ("ksm: use range-walk function to jump over holes in scan_get_next_rmap_item")
+Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+---
+ include/linux/pagewalk.h |  3 +++
+ mm/pagewalk.c            | 20 ++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
-Ben.
+diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+index b1cb6b753abb..3670b46cedb1 100644
+--- a/include/linux/pagewalk.h
++++ b/include/linux/pagewalk.h
+@@ -99,6 +99,9 @@ int walk_page_range_novma(struct mm_struct *mm, unsigned long start,
+ 			  unsigned long end, const struct mm_walk_ops *ops,
+ 			  pgd_t *pgd,
+ 			  void *private);
++int walk_page_range_vma(struct vm_area_struct *vma, unsigned long start,
++			unsigned long end, const struct mm_walk_ops *ops,
++			void *private);
+ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
+ 		void *private);
+ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index 371ec21a1989..3f5cbd6eb4e1 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -461,6 +461,26 @@ int walk_page_range_novma(struct mm_struct *mm, unsigned long start,
+ 	return walk_pgd_range(start, end, &walk);
+ }
+ 
++int walk_page_range_vma(struct vm_area_struct *vma, unsigned long start,
++			unsigned long end, const struct mm_walk_ops *ops,
++			void *private)
++{
++	struct mm_walk walk = {
++		.ops		= ops,
++		.mm		= vma->vm_mm,
++		.vma		= vma,
++		.private	= private,
++	};
++
++	if (start >= end || !walk.mm)
++		return -EINVAL;
++	if (start < vma->vm_start || end > vma->vm_end)
++		return -EINVAL;
++
++	mmap_assert_locked(walk.mm);
++	return __walk_page_range(start, end, &walk);
++}
++
+ int walk_page_vma(struct vm_area_struct *vma, const struct mm_walk_ops *ops,
+ 		void *private)
+ {
+-- 
+2.47.3
 
---=20
-Ben Hutchings
-The obvious mathematical breakthrough [to break modern encryption]
-would be development of an easy way to factor large prime numbers.
-                                                           - Bill Gates
-
---=-+7H8HUOR/8ftKauSt5xn
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmlr/P4ACgkQ57/I7JWG
-EQnq0xAAwh5w1T/W9ykjJWBKM6q8INwGeydTrthku9JJMFmiq8d7O76aYU7DJGTC
-FpaiMMjDP3nTGnhUgG0XJeNW1WbMWclQjj0aWSsCYSjdfRTy+DNq7uzgRl5pbGcU
-UDSN9D9iWiP35CvyjuI7O43PuXJ1m+baFDKY/QvZbs69LmP/keBkjaVIT5vY8v8/
-bSCwrv+JwVz3S9HzVGQMs3Q0XSe8EjPrjRk/SVeVo5b8MV5xR2CWABrzNfaH3AGC
-0Bh69Kb0NGyrwqMLepOYHxaWERZMDTyj/DVd0J/c626E+207C+Ie86aSl0rhgWyT
-FsOzBI5VtbmD7x9AY4f4boTywT7sL5TKUuH+Z/PFv0nh3JgAtUHASpUkCNTKT82V
-r68bk7DnBfLRYT7DYrV1WjEB1l7tdDNEmaXLanVsixro1rumRp8KhShdogGwc+Xs
-wvGZnAAEuIIyqXx2CbYRUFbugXr1wtsrCQqfYOQDXdWdITKuVZY3+iBT0Fs6ioGd
-f+gd8UvqlhkKIwy7baYhVVqFLfiCaRoZiuWiidjopRVgrFSHLCkYRR+qGNm+TXlt
-m9zF16HG6qRHfVZXUrEEk2zyyXtawb8k59W8b8LLqPvzE7zAVq7A3hvgFGVSBiPb
-GvHyE3Oo8h/vfLlKTcmWK3khHsPqwQEvBw4DfWwn4Bajzku9lFg=
-=WLyj
------END PGP SIGNATURE-----
-
---=-+7H8HUOR/8ftKauSt5xn--
 
