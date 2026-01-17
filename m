@@ -1,127 +1,136 @@
-Return-Path: <stable+bounces-210133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5F5D38CDD
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 07:28:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC09CD38CEE
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 07:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 498A03030D8C
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 06:28:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DDD033008CA1
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 06:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3B632BF55;
-	Sat, 17 Jan 2026 06:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C1432E13E;
+	Sat, 17 Jan 2026 06:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cdnYvbjv"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="EktMTpjD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B05332AAA6
-	for <stable@vger.kernel.org>; Sat, 17 Jan 2026 06:28:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9070432ABE1
+	for <stable@vger.kernel.org>; Sat, 17 Jan 2026 06:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768631303; cv=none; b=HccTQpuLrKZcZ5YmXrygPYmVpXkMr/uKmPzb1Rcr4ozs88igfvGafnWNBUemogq4IhNQHj9UNR8vI9Zq5LSXRLBPWntHgSBGblxNAq7dpKUFGHbb/G17J8qdyAVLRI2JxjFSry+aUHPQXsCFGHKofPFctkZ3NCR4nwMPb6fCa7w=
+	t=1768631804; cv=none; b=BNcdTVu6dvIfKvLq8B9SI1rdqJrXwrUFhOzeia/I2PVRx1URp7+W8WAEQshZiSgVYIlFpN0zbLonx+KytG8Rz/uSz1AJvR81jC5Eg7Zr2ERVOPiyxmALFpUSQ0DDUYdzQ+1z/1u8eRScVq1gXpjfNVgIjd5Znq4SCM7jfB1sAvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768631303; c=relaxed/simple;
-	bh=M38UZrYYRaTPEGzZ/Y7eDYLQg4w1JxPNyj8pheltCPs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dIsPzYtpYrJz/zSWqKq1G8CrOVdorBF6s3CphAGZ3gA17dqpVlBDHN2aLnVD3CWr4OvSq4BZiwZVH4E9dxBUXu+ALk0iWcQ+dtBMsEdCA5wWXy1959nVLUdwe+g5rsIEIfIqhqg2gOSYGwfzFmJ/fkzq1gyaGBB/lLZn39x8dKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cdnYvbjv; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-bc29d64b39dso945274a12.3
-        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 22:28:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768631301; x=1769236101; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GXNZ8DQ6tAU6IX0W5rGA92ANtuqk4OHiR9iWzAZEaeQ=;
-        b=cdnYvbjvb2GFAev4rv0NUr6Uu61RJslyYGAuDlA6/DVMPTUOQBFvX46sFbrw3oGTcj
-         n1Et4iBSvCh6+D5JX8belrH92c7sKt4IMkip4QN8yBBKCc7Yy730WWBV8bIzM2+fxZyk
-         3omXX3D8h9/2h59rlcWO9sCmiH6c9p0G7d/WbrjBXJfndB2vhKfDS6EMVJiTaGT73vU8
-         QeEmMOpo2+XPYg2k8zi0mBQ66CwqwrB0VB2fVK2Citc5eQyfAl5I39luWuCEAC0J2HFT
-         E/06v1d/RjshQ0SPaBQbACts/N8SirRHS33S5X4iXdKLOhnHtMBJDFk5QQEkmIqUmTJa
-         nCeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768631301; x=1769236101;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GXNZ8DQ6tAU6IX0W5rGA92ANtuqk4OHiR9iWzAZEaeQ=;
-        b=L/+hOfLJGBXsUsoGDxocN0YHoappeAMvG2GTmltSMlRCDOS+tH0sUIpvNUEzddqLu3
-         kwj0G2xTxWXvICZkMNjFgEGq4TKryIgrGUmcDeD7FGGOCkQlnjksp0XKQQovmp1Knhkm
-         1oOquduxYS2LaMeu6qjTKHR8lM+WwgtAozsEJ3dG5YF5T/OFVI+45JGabkb3TYPsOEl/
-         ErWqtcWQPeR1uoBuxyba6NkO0TUX+53TwZaoXAXuO1Dwc0A04BJ5EDKtOqNIKGZmXVd8
-         nrcqpwH48/E30mO7TeYr7ZBqQbalNfg7IZNUtSwKwHLyZggnG63JQsSYa37/1RaxJllB
-         CEAw==
-X-Forwarded-Encrypted: i=1; AJvYcCUwt34qeVVXCV0QNCujpd00vzVzBupe5ylUNarJzWAjD87VG/t7drVdwnRSIyZyw59Yj+JTUaI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsKHal9eZX+K/cBHKYFVTnfDlcEglbcoFjoiELZqEIu8geGdmo
-	2Ti8XnW2ZeMWmOt2UVfbUYK0T4JTFWfigvVH5G4gjJSb8Ff9LbX5UZJZ
-X-Gm-Gg: AY/fxX4YFv2SQyJHg1hJwLyyQJ0V7Hb64GE3ZFgi08JWmEuRH7u/8seRNTahR8Fc5i5
-	rfJjFn6k1EK4rqVYfqoVB8qoTjyqvUrRNvFH90GXqK/F50qoa+XPKkuyqLCAxPl0eiwV2y263Mw
-	Bs5Y3EC6osGna5+ed18YCbT0HMpZvDoIYKqRMEJqlPjcwxbBe6HqXTK7qAsvnhJG9SUUc7TnDNA
-	Q5qhFTUXjb9AnITqLqic0VdPGSfn8dPeX0MkO1/kkvjXqTVA3HpAwNmEIN+ttDrOer9gQgfVuxh
-	rCDM3ngE9jpw3HSAUMtrHEXW2Tiq6NdyW5kvgRG839wgCPsoZ1KkLTBfpHyKVBNDCmtiXf7o6OZ
-	SheB6ZZlTU5TAUQT+EBLVAv4D8zkWQ/j6fDmil/sO35IcUCgxp7VgwtCZC9B/aeIak6EJ0bnkNo
-	I0Y4AcjuZiNflxzCSLiDBz+JY1Z2G8Mpxcb8E8e35G422mPY8cw3bLYTRzay9Q0Wvqs9ZReWsbH
-	3Av8NBEg9ZUgi/QouaTfjhFcjSEQh2ZTW17WXxC7c+5Y0wzZIuc+3Pc6Q==
-X-Received: by 2002:a05:6a21:6d88:b0:364:783:8c0f with SMTP id adf61e73a8af0-38e00c42ea3mr5018596637.33.1768631301315;
-        Fri, 16 Jan 2026 22:28:21 -0800 (PST)
-Received: from c8971f1abf06.ap-southeast-2.compute.internal (ec2-54-252-206-51.ap-southeast-2.compute.amazonaws.com. [54.252.206.51])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c5edf232f00sm3603396a12.2.2026.01.16.22.28.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 22:28:20 -0800 (PST)
-From: Weigang He <geoffreyhe2@gmail.com>
-To: tony@atomide.com,
-	aaro.koskinen@iki.fi,
-	andreas@kemnade.info,
-	khilman@baylibre.com,
-	rogerq@kernel.org
-Cc: linux-omap@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Weigang He <geoffreyhe2@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] bus: ti-sysc: fix reference count leak on module unload
-Date: Sat, 17 Jan 2026 06:28:14 +0000
-Message-Id: <20260117062814.440540-1-geoffreyhe2@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1768631804; c=relaxed/simple;
+	bh=gyCcFtdJHPJem3oNGt3wp97tqgsyCX56glmrv1tzNyg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Yzd08QWUlX2MtGGa6xBcRerH/XL3E0H7VTIppc0p/PzyulOZFt3pTRCGxOeHPm4RnQZCcunxMXMYga7pAR8sxPWDE3IFd5r5kzxO1EfelRFEJ8MDmULpQAOeTRuiVK5+hpkN46aP/p3cNsdEye14gaLNi1QOiNvA7Fht5NHNDJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=EktMTpjD; arc=none smtp.client-ip=35.89.44.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6007b.ext.cloudfilter.net ([10.0.30.166])
+	by cmsmtp with ESMTPS
+	id gwxhvthZvKjfogzvMv0Haa; Sat, 17 Jan 2026 06:36:40 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id gzvMvxYHth8QWgzvMvCbSr; Sat, 17 Jan 2026 06:36:40 +0000
+X-Authority-Analysis: v=2.4 cv=Mcdsu4/f c=1 sm=1 tr=0 ts=696b2df8
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=-Qcm0AZxhyoZnww38z8A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=mjIv8paN164TU+Lcl1WTAXTIsSMb8XQmjuh9TgIP1Eo=; b=EktMTpjDMFIr/0izhrq0Nq+6Rx
+	S7vK9t9R3aKiuD4qBMlL0VxWm5nsblClW0dNEOt73Wl1HrgF/If5ufweu6tzvW16n7rRSetgu/jrX
+	nNef5XKhfGGvPtg0wa8YUIaiK3F+36FTXvQZ9yvi9BTyYMMThu4bYksk2E7HbJHLTBpMm+ZTXQGG2
+	BYE1ni+Bs8U4TqFoaRtiWtejZ9ozjHF6gLXfyKFVO2fC5wAsEcfKPXORhvMaRvWu/Eajw2/pfquzL
+	W5b/wAnS60XCeY25HQHo1cPxg3Ysh+ySN8bpTzzB+/OuTsh+mhrbzVhHhrHHoydegopzCUOUTw+b2
+	j0Wd/JIQ==;
+Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:45768 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1vgzvL-00000003fDs-3rj2;
+	Fri, 16 Jan 2026 23:36:39 -0700
+Message-ID: <2aaa124e-4322-43cc-b155-2011b94b449c@w6rz.net>
+Date: Fri, 16 Jan 2026 22:36:37 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/551] 5.15.198-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260116111040.672107150@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260116111040.672107150@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.92.56.26
+X-Source-L: No
+X-Exim-ID: 1vgzvL-00000003fDs-3rj2
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:45768
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfOlH5dyD2Wc066NsT9WycQ9sf93eSrcVgOviOp5qroW4Oq0uy0igzyU+PlQh4LXqKEjTxtKDt00N0oNhLKlOy8Yny6W5u8iOLzI5C58GItzdqK/1wnC2
+ fuySu7R4RSXVYgOYjLPcg4tPotJP18gYzJVeqMjAY4k4uW68OZRqdv8VpWT2HCD74XGk1eAm2nKu5g==
 
-The stdout_path static variable holds a reference to a device_node
-obtained from of_find_node_by_path(). When the ti-sysc module is
-unloaded, this reference is never released, causing a reference count
-leak.
+On 1/16/26 03:13, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.198 release.
+> There are 551 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 18 Jan 2026 11:09:20 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.198-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Add of_node_put(stdout_path) in sysc_exit() to properly release the
-device_node reference when the module is unloaded.
+My HiFive Unmatched target (which has a Cadence Ethernet controller) fails to start the network interface with the following messages:
 
-Fixes: 3bb37c8e6e6a ("bus: ti-sysc: Handle stdout-path for debug console")
-Cc: stable@vger.kernel.org
-Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
----
- drivers/bus/ti-sysc.c | 3 +++
- 1 file changed, 3 insertions(+)
+[  121.778662] macb 10090000.ethernet end0: inconsistent Rx descriptor chain
+[  122.373760] macb 10090000.ethernet end0: inconsistent Rx descriptor chain
+[  122.383421] macb 10090000.ethernet end0: inconsistent Rx descriptor chain
+[  122.389481] macb 10090000.ethernet end0: inconsistent Rx descriptor chain
+[  122.610641] macb 10090000.ethernet end0: inconsistent Rx descriptor chain
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index fd631a9889c1e..822b9b1b2f6fa 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -3338,6 +3338,9 @@ module_init(sysc_init);
- 
- static void __exit sysc_exit(void)
- {
-+	if (!IS_ERR_OR_NULL(stdout_path))
-+		of_node_put(stdout_path);
-+
- 	bus_unregister_notifier(&platform_bus_type, &sysc_nb);
- 	platform_driver_unregister(&sysc_driver);
- 	sysc_cleanup_static_data();
--- 
-2.34.1
+Reverting commit "net: macb: Relocate mog_init_rings() callback from macb_mac_link_up() to macb_open()" 
+f934e5d7caad6ae0a081352e91cbd7f0284ad9b3 solves the issue.
 
 
