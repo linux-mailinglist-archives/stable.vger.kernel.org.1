@@ -1,175 +1,140 @@
-Return-Path: <stable+bounces-210122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50F1D38B10
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 02:16:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D9AED38BBE
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 03:44:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A39023034425
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 01:16:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 380DC301F26F
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 02:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEEC21146C;
-	Sat, 17 Jan 2026 01:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F97199FB0;
+	Sat, 17 Jan 2026 02:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BlKA2Vtz"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tu8rr7jl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54946D1A7
-	for <stable@vger.kernel.org>; Sat, 17 Jan 2026 01:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1452230C35C;
+	Sat, 17 Jan 2026 02:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768612588; cv=none; b=FbMLXX3TNA6xt8/ivkNKwZZnTZSIE8Yb861AlpWmUtvNguYAi90keMUKMUDvb3bqK3bL56Un2vWE3kRRM6WkA6WADI2XVB+PFQtenwmEprpoKzDIFExDdMfRlgV6tOWby2ULwTH2iXkXaF3A0kGol1cpD/rwjLdlLbEKug4brbA=
+	t=1768617895; cv=none; b=akGDIXQpiyZqnOh+x0NqA4E+sLRkS8pwimMavcXE+YNpwSKgshG1SEIci1XmBiS+GqDCwGrNFKMz/ksBZPCKAzSDlylSphaE7Z77QBKKikV78hNUSL0okyPk6zuhyRXM+Gp1UtPE6mSIahzqgcwRTxQjMczzV5m4ngL7nRV//V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768612588; c=relaxed/simple;
-	bh=ocof3UtAX0tYNJdjurWbsTwQtK/5v0lOyfVO2rM75zk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NJv29Ng7Bj2UNsM61mHep8q7BPoCODbatMA02kA2LkQrEzxvuiJP0mjx/OiIzn25iguYfnuJGPaeSaK4kUVIllES8khEuuq/qOI2gUGMEzda7EfpEYHhBNV6elkBocQkVBRlcZvqGPTeszG3qb+vVJ/X8NnHbZmUcU71Qbfo3OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BlKA2Vtz; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47ee807a4c5so19253305e9.2
-        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 17:16:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768612581; x=1769217381; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8jacRTGEGX5vlMnwDO2iTbDAhG4zdHGWsi458RG2c5M=;
-        b=BlKA2VtzLPDYRzZMaonHqJqXjciZCX9yytbinnXLZTeBOQTrE2dd3JjW94qKsUgXvp
-         m+YDPizmqxL7je+4qc0i8q4ghnfrWP6O/p2hkh4Q7uIXv35lYreyB2wOp0YN+tYWL5yq
-         VkB+1OHGSeHzbSqOVgAtDpP+oruyYjRbliLhXpYFbj3ik4O+xw0qtqYuiMygroxsiMmK
-         NyaZO6k8uWgxP0XkSWfMqiLKjgOONpvSnb7PkWMWXGSauSLYIn1W6AdAC8tE9hCfsiBG
-         TOzk4VoCFKa3SQzTTgo5v8Sm2dfScqxZwVwHxGBcZdGNF2ferpji/GpOmcLqCsonDTrL
-         87WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768612581; x=1769217381;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8jacRTGEGX5vlMnwDO2iTbDAhG4zdHGWsi458RG2c5M=;
-        b=AS+wYumisU0OiMukkGOweHiSa6Us1hWuFTodLpFMXO7+6ovNWfwe7ARMp8kRUmehGt
-         tNUi2pTPguIo2T6OGZtmDQKiDPV8LpbcWK9cWZ52+VoSM8q8CyrlqTs0jOyW4SUorzxF
-         UE6luiXwfH67nZiDFcvR0aiwmvGVsLOywqsm7N8Hv6Ph1DeYx4/ADs2+QgMwnox0sezT
-         ygeJIfD6ExRusArzoDsRAUUmk10PbtX1niSUeK68afUgpjYcs7+jyAZuV9FVYfeuYIou
-         FuAgmUNuBQ6SN0jTSdNuSFUGNS5kmZYxnNMEusvMC5qZdxpheFzDTsB4gtVQlDy1IFxI
-         2z8w==
-X-Forwarded-Encrypted: i=1; AJvYcCUZMj/HA32Kwo/1hIHUR6dQw8igUMiVbeGsVh9BKq4hEhHoYEzmt3uAX41HSBmmI4nJpC+C5I8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YypXdTiwWDzh3yd1/ilBby+ufCBv0gKFyqn1/lRHyRadihcaq5w
-	wlAL4sEyqwr+m/kyZumsULpYu/uvg2dVGoKTmk693fAY2wbzjUAuh1eIIjaudihHPVB+/6FIg3n
-	myG9JIfA2YqShBg7dEuCIpMnQyvY56G4=
-X-Gm-Gg: AY/fxX6y0oNKCabzk35OCfQ3J3wQV4FWCaXd3uDZHZ2VSWLaIh+MV+0qKMwjrbQJN8R
-	UgfiYoY3NIUc5gUYyvg5++50rVY/rROiKc3ZdEe+6se+h5zYqVjdP4woeppaI+qEnAKr6wCCvan
-	e6eHffs5LpO21qvZft6rh3IyBwtMDS1pfCS6XjDpryTfRZMOX28QyX9/vw9Eo8HiXiTFYbyXcWm
-	VMQO5nUEwMjmH+CDdeV5fSecJyTqWKLNok27FDyIc0WgKRyyHyAaY55rWSoAD2cYQsKH96yctjx
-	1bwoHvRiS7SEl9qflVq5Xn8eisoB
-X-Received: by 2002:a05:600c:45d1:b0:480:1d16:2538 with SMTP id
- 5b1f17b1804b1-4801eb03358mr43804885e9.23.1768612581229; Fri, 16 Jan 2026
- 17:16:21 -0800 (PST)
+	s=arc-20240116; t=1768617895; c=relaxed/simple;
+	bh=gPjWkW8379/mhEUrTwjImL8/8fy28t/gJimZCEwbmuE=;
+	h=Date:To:From:Subject:Message-Id; b=UQPTnTH6RLTOTrf8LlnzVueNnNr+vWpbvZYKbsr7hIKTx51nv1LUBVxMXT5v3tNupgXuvJCek6DvVSXJy0M/NMidWGlk3XXbqz9/CrkZ0iba7Dbp1F/J6zqxUOued9grYVf5d1rSgPVUR+AApLWM0zdppZreeIlQSmLuVLnvBRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=tu8rr7jl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6B8C116C6;
+	Sat, 17 Jan 2026 02:44:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768617894;
+	bh=gPjWkW8379/mhEUrTwjImL8/8fy28t/gJimZCEwbmuE=;
+	h=Date:To:From:Subject:From;
+	b=tu8rr7jlaa4c8F1DdZYPNcZWXZEypXKhCn6RaEsFIYNrQGTLkSpF/bVAkz5yKv9/m
+	 OdUJ+JJfKPcfwgZhPnk2dM9fN5+Ds5FkbBElRtVYTyuqbu9W36N/XqkH2ocvVPH80s
+	 ACehpoau2oOv/4Wqzr6vJmIqVEgF9I3Pl6G6Clpc=
+Date: Fri, 16 Jan 2026 18:44:53 -0800
+To: mm-commits@vger.kernel.org,ubizjak@gmail.com,stable@vger.kernel.org,morbo@google.com,justinstitt@google.com,nathan@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__.patch added to mm-nonmm-unstable branch
+Message-Id: <20260117024454.6C6B8C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
- <20260113191516.31015-1-ryabinin.a.a@gmail.com> <CA+fCnZe0RQOv8gppvs7PoH2r4QazWs+PJTpw+S-Krj6cx22qbA@mail.gmail.com>
- <10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
-In-Reply-To: <10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Sat, 17 Jan 2026 02:16:10 +0100
-X-Gm-Features: AZwV_Qgw2efsxw5nCGxgrSSMx3DQz0LNWwfRwrPgK6uICIY1gvifMYqiZzjGO_4
-Message-ID: <CA+fCnZeDaNG+hXq1kP2uEX1V4ZY=PNg_M8Ljfwoi9i+4qGSm6A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] mm/kasan: Fix KASAN poisoning in vrealloc()
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
-	Maciej Wieczor-Retman <m.wieczorretman@pm.me>, Alexander Potapenko <glider@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	kasan-dev@googlegroups.com, Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, joonki.min@samsung-slsi.corp-partner.google.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jan 16, 2026 at 2:26=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@gmail=
-.com> wrote:
->
-> So something like bellow I guess.
-
-Yeah, looks good.
-
-> I think this would actually have the opposite effect and make the code ha=
-rder to follow.
-> Introducing an extra wrapper adds another layer of indirection and more b=
-oilerplate, which
-> makes the control flow less obvious and the code harder to navigate and g=
-rep.
->
-> And what's the benefit here? I don't clearly see it.
-
-One functional benefit is when HW_TAGS mode enabled in .config but
-disabled via command-line, we avoid a function call into KASAN
-runtime.
-
-From the readability perspective, what we had before the recent
-clean-up was an assortment of kasan_enabled/kasan_arch_ready checks in
-lower-level KASAN functions, which made it hard to figure out what
-actually happens when KASAN is not enabled. And these high-level
-checks make it more clear. At least in my opinion.
 
 
->
-> ---
->  include/linux/kasan.h | 10 +++++++++-
->  mm/kasan/shadow.c     |  5 +----
->  2 files changed, 10 insertions(+), 5 deletions(-)
->
-> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-> index ff27712dd3c8..338a1921a50a 100644
-> --- a/include/linux/kasan.h
-> +++ b/include/linux/kasan.h
-> @@ -641,9 +641,17 @@ kasan_unpoison_vmap_areas(struct vm_struct **vms, in=
-t nr_vms,
->                 __kasan_unpoison_vmap_areas(vms, nr_vms, flags);
->  }
->
-> -void kasan_vrealloc(const void *start, unsigned long old_size,
-> +void __kasan_vrealloc(const void *start, unsigned long old_size,
->                 unsigned long new_size);
->
-> +static __always_inline void kasan_vrealloc(const void *start,
-> +                                       unsigned long old_size,
-> +                                       unsigned long new_size)
-> +{
-> +       if (kasan_enabled())
-> +               __kasan_vrealloc(start, old_size, new_size);
-> +}
-> +
->  #else /* CONFIG_KASAN_VMALLOC */
->
->  static inline void kasan_populate_early_vm_area_shadow(void *start,
-> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-> index e9b6b2d8e651..29b0d0d38b40 100644
-> --- a/mm/kasan/shadow.c
-> +++ b/mm/kasan/shadow.c
-> @@ -651,12 +651,9 @@ void __kasan_poison_vmalloc(const void *start, unsig=
-ned long size)
->         kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
->  }
->
-> -void kasan_vrealloc(const void *addr, unsigned long old_size,
-> +void __kasan_vrealloc(const void *addr, unsigned long old_size,
->                 unsigned long new_size)
->  {
-> -       if (!kasan_enabled())
-> -               return;
-> -
->         if (new_size < old_size) {
->                 kasan_poison_last_granule(addr, new_size);
->
-> --
-> 2.52.0
->
->
+The patch titled
+     Subject: compiler-clang.h: Require LLVM 19.1.0 or higher for __typeof_unqual__
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__.patch
+
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Nathan Chancellor <nathan@kernel.org>
+Subject: compiler-clang.h: Require LLVM 19.1.0 or higher for __typeof_unqual__
+Date: Fri, 16 Jan 2026 16:26:27 -0700
+
+When building the kernel using a version of LLVM between llvmorg-19-init
+(the first commit of the LLVM 19 development cycle) and the change in
+LLVM that actually added __typeof_unqual__ for all C modes [1], which
+might happen during a bisect of LLVM, there is a build failure:
+
+  In file included from arch/x86/kernel/asm-offsets.c:9:
+  In file included from include/linux/crypto.h:15:
+  In file included from include/linux/completion.h:12:
+  In file included from include/linux/swait.h:7:
+  In file included from include/linux/spinlock.h:56:
+  In file included from include/linux/preempt.h:79:
+  arch/x86/include/asm/preempt.h:61:2: error: call to undeclared function '__typeof_unqual__'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     61 |         raw_cpu_and_4(__preempt_count, ~PREEMPT_NEED_RESCHED);
+        |         ^
+  arch/x86/include/asm/percpu.h:478:36: note: expanded from macro 'raw_cpu_and_4'
+    478 | #define raw_cpu_and_4(pcp, val)                         percpu_binary_op(4, , "and", (pcp), val)
+        |                                                         ^
+  arch/x86/include/asm/percpu.h:210:3: note: expanded from macro 'percpu_binary_op'
+    210 |                 TYPEOF_UNQUAL(_var) pto_tmp__;                          \
+        |                 ^
+  include/linux/compiler.h:248:29: note: expanded from macro 'TYPEOF_UNQUAL'
+    248 | # define TYPEOF_UNQUAL(exp) __typeof_unqual__(exp)
+        |                             ^
+
+The current logic of CC_HAS_TYPEOF_UNQUAL just checks for a major
+version of 19 but half of the 19 development cycle did not have support
+for __typeof_unqual__.
+
+Harden the logic of CC_HAS_TYPEOF_UNQUAL to avoid this error by only
+using __typeof_unqual__ with a released version of LLVM 19, which is
+greater than or equal to 19.1.0 with LLVM's versioning scheme that
+matches GCC's [2].
+
+Link: https://github.com/llvm/llvm-project/commit/cc308f60d41744b5920ec2e2e5b25e1273c8704b [1]
+Link: https://github.com/llvm/llvm-project/commit/4532617ae420056bf32f6403dde07fb99d276a49 [2]
+Link: https://lkml.kernel.org/r/20260116-require-llvm-19-1-for-typeof_unqual-v1-1-3b9a4a4b212b@kernel.org
+Fixes: ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Cc: Bill Wendling <morbo@google.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: Uros Bizjak <ubizjak@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/compiler-clang.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/include/linux/compiler-clang.h~compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__
++++ a/include/linux/compiler-clang.h
+@@ -153,4 +153,4 @@
+  * Bindgen uses LLVM even if our C compiler is GCC, so we cannot
+  * rely on the auto-detected CONFIG_CC_HAS_TYPEOF_UNQUAL.
+  */
+-#define CC_HAS_TYPEOF_UNQUAL (__clang_major__ >= 19)
++#define CC_HAS_TYPEOF_UNQUAL (__clang_major__ > 19 || (__clang_major__ == 19 && __clang_minor__ > 0))
+_
+
+Patches currently in -mm which might be from nathan@kernel.org are
+
+compiler-clangh-require-llvm-1910-or-higher-for-__typeof_unqual__.patch
+
 
