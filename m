@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-210138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79DF5D38D56
-	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 10:29:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47357D38D57
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 10:29:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5576B3008C94
+	by tor.lore.kernel.org (Postfix) with ESMTP id 61ABE301E6C7
 	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 09:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485A33321DB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550C322DFB8;
 	Sat, 17 Jan 2026 09:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XJOONk13"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ytg0q7Sd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2F932FA2A;
-	Sat, 17 Jan 2026 09:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340B8332EB4;
+	Sat, 17 Jan 2026 09:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768642172; cv=none; b=tDZmVNXso5PzS/bHHpMml0jcP+kDFoFv9b7KpGGBS+P/jiQTr1ceSNaq6Tpp5iMw8jchweKFuLP38e9ktunILbC3tFKvCcMuqzR6wHQd5gIFM0XF9fu6CgoshAyRXJwCxLX8p08rBfgfxTkgPpK1cNnBjtcFInZ7IbqVlDAv1u0=
+	t=1768642173; cv=none; b=OwyxacYervPF5ddJwI29lg4J2fBH4EJtesORxTJZNrglD1NUsYeUbtczGsQL4htMqk3Yvff+jsCYZQwsahMIho4P9dXd/MrrPGtyuDFK+TtKtXR1gpjwh/3NZ//5AtUqtTSp4DemcwRDR6l/btTjlreqpoLvic00uLQGvkKzNyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768642172; c=relaxed/simple;
-	bh=TCIDBeqflVUFZ2smOAiTOF7w3v48ieHVeu+24TcmIW0=;
+	s=arc-20240116; t=1768642173; c=relaxed/simple;
+	bh=gswQgvIkCvCKkiNyrJA/gedBlbjViDDQyImQR0Lwtf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ooSAzu5ZV5zDNqpytaMFIEcnoAx4xjAokrBsNpfMXXOrqjHj5TwqHXNQFZpJykLCFRrPPOdvWKSEY0Y6c517x69F6St1uhYsGGzISFVsV3ih7FAvJ9j/hCZxYYe6ynqVKnn36nOV/Z/KxUEoELeV8zUXsoVY2tM00xjNkYOK2bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XJOONk13; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD53C19421;
+	 MIME-Version:Content-Type; b=Ao5yoP8Gb9NtSNVMfUUmfC/FTjumgbqYql+SshXlWIjO6i6Px32XvVi8dAEy/pOBDm8Zfsf6aYFf2c64qbys1CgRXdtxjrEhBUpEMQBlTOcG7Dqy86taKMVwz1Xjw65A3uzJPFtMJ3KqHwxgvL8uy9ONVtAudabC5uE/Cy+nWgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ytg0q7Sd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7DFC4AF0C;
 	Sat, 17 Jan 2026 09:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1768642172;
-	bh=TCIDBeqflVUFZ2smOAiTOF7w3v48ieHVeu+24TcmIW0=;
+	bh=gswQgvIkCvCKkiNyrJA/gedBlbjViDDQyImQR0Lwtf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJOONk13XDg+Vh6MUpiG1UvbgkqgyS6CoxXIA28gsmmRDCPYHkQ4M4zkJLGZMKesg
-	 pCeCbVZxeXOiBaofjT0jiRr7rhro8nGVmNRUSpmTVtiAR4bMIfQG7FRKq1wgALFu0Q
-	 aidhMvDvT5FgvOA97rzBvkIJ+0JSvGZU7pwFJTDrGIENQopoiB5qjVqZFjZWaWczPR
-	 thzXfRk5uXXg7tj89hCYBlvJFz7+4dJ9dlWAPY+oieII1rKxvBHYxzAobwWBquxDLp
-	 sTRM1fDbcicTQrxHip7QVN/XhHsBoShNLz6mGNwYkzOv4dGQeZyFDRU7nFhThYA4d6
-	 RerYLpykplLqw==
+	b=Ytg0q7Sda8Jtsy2t6IOq0BjFLwvPDF54IHLZ9fCwaHf8qcu+VB1SinYReE8s8cJi+
+	 Bui5o/NsgKTA4NJ7pzpT3NsDDN4YnNkfaAvJ5L2ybgxLZ+t6j2m0Kp8wuO9jPyUxod
+	 QqqZASSVpoh5yBGTC8rbE1Z9/doqBfw2Wsb3kHcFIsAXe4sSx9i2Ireu/UXakua0ty
+	 GoAv/HJMA9GistLkQSau04Iw0PfFTFj/H43WwGx+kPViEvWEv2YWYP9IqtlbO1e5e+
+	 +7Mi+KsXD/0wF+55gJyFwCiWCZkdBr7FYEiStR42BSd96kuXddZOIV3oJJNXbMgg60
+	 wJQOKnX9m4f9w==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vh2cc-00000000fnw-0Hz1;
+	id 1vh2cc-00000000fo2-0OzK;
 	Sat, 17 Jan 2026 10:29:30 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Jonathan Corbet <corbet@lwn.net>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v5 1/4] scripts/kernel-doc: fix logic to handle unissued warnings
-Date: Sat, 17 Jan 2026 10:29:23 +0100
-Message-ID: <2de5f576f4ec010962e34d8cd1868c89cce910e9.1768642102.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v5 2/4] scripts/kernel-doc: avoid error_count overflows
+Date: Sat, 17 Jan 2026 10:29:24 +0100
+Message-ID: <23206b5bc44601d0a0bce30adb77cc0f58b49234.1768642102.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1768642102.git.mchehab+huawei@kernel.org>
 References: <cover.1768642102.git.mchehab+huawei@kernel.org>
@@ -68,103 +67,70 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Changeset 469c1c9eb6c9 ("kernel-doc: Issue warnings that were silently discarded")
-didn't properly addressed the missing messages behavior, as
-it was calling directly python logger low-level function,
-instead of using the expected method to emit warnings.
+The glibc library limits the return code to 8 bits. We need to
+stick to this limit when using sys.exit(error_count).
 
-Basically, there are two methods to log messages:
-
-- self.config.log.warning() - This is the raw level to emit a
-  warning. It just writes the a message at stderr, via python
-  logging, as it is initialized as:
-
-    self.config.log = logging.getLogger("kernel-doc")
-
-- self.config.warning() - This is where we actually consider a
-  message as a warning, properly incrementing error count.
-
-Due to that, several parsing error messages are internally considered
-as success, causing -Werror to not work on such messages.
-
-While here, ensure that the last ignored entry will also be handled
-by adding an extra check at the end of the parse handler.
-
-Fixes: 469c1c9eb6c9 ("kernel-doc: Issue warnings that were silently discarded")
-Closes: https://lore.kernel.org/linux-doc/20260112091053.00cee29a@foz.lan/
-Cc: stable@vger.kernel.org
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@vger.kernel.org
 ---
- tools/lib/python/kdoc/kdoc_parser.py | 35 ++++++++++++++++++++++------
- 1 file changed, 28 insertions(+), 7 deletions(-)
+ scripts/kernel-doc.py | 26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-index a9a37519145d..c03505889dc2 100644
---- a/tools/lib/python/kdoc/kdoc_parser.py
-+++ b/tools/lib/python/kdoc/kdoc_parser.py
-@@ -295,7 +295,7 @@ class KernelEntry:
+diff --git a/scripts/kernel-doc.py b/scripts/kernel-doc.py
+index 7a1eaf986bcd..1ebb16b9bb08 100755
+--- a/scripts/kernel-doc.py
++++ b/scripts/kernel-doc.py
+@@ -116,6 +116,8 @@ SRC_DIR = os.path.dirname(os.path.realpath(__file__))
  
-     # TODO: rename to emit_message after removal of kernel-doc.pl
-     def emit_msg(self, ln, msg, *, warning=True):
--        """Emit a message"""
-+        """Emit a message."""
+ sys.path.insert(0, os.path.join(SRC_DIR, LIB_DIR))
  
-         log_msg = f"{self.fname}:{ln} {msg}"
- 
-@@ -448,18 +448,37 @@ class KernelDoc:
- 
-         self.config.log.debug("Output: %s:%s = %s", dtype, name, pformat(args))
- 
-+    def emit_unused_warnings(self):
-+        """
-+        When the parser fails to produce a valid entry, it places some
-+        warnings under `entry.warnings` that will be discarded when resetting
-+        the state.
++WERROR_RETURN_CODE = 3
 +
-+        Ensure that those warnings are not lost.
-+
-+        .. note::
-+
-+              Because we are calling `config.warning()` here, those
-+              warnings are not filtered by the `-W` parameters: they will all
-+              be produced even when `-Wreturn`, `-Wshort-desc`, and/or
-+              `-Wcontents-before-sections` are used.
-+
-+              Allowing those warnings to be filtered is complex, because it
-+              would require storing them in a buffer and then filtering them
-+              during the output step of the code, depending on the
-+              selected symbols.
-+        """
-+        if self.entry and self.entry not in self.entries:
-+            for log_msg in self.entry.warnings:
-+                self.config.warning(log_msg)
-+
-     def reset_state(self, ln):
-         """
-         Ancillary routine to create a new entry. It initializes all
-         variables used by the state machine.
-         """
+ DESC = """
+ Read C language source or header FILEs, extract embedded documentation comments,
+ and print formatted documentation to standard output.
+@@ -176,7 +178,21 @@ class MsgFormatter(logging.Formatter):
+         return logging.Formatter.format(self, record)
  
--        #
--        # Flush the warnings out before we proceed further
--        #
--        if self.entry and self.entry not in self.entries:
--            for log_msg in self.entry.warnings:
--                self.config.log.warning(log_msg)
-+        self.emit_unused_warnings()
- 
-         self.entry = KernelEntry(self.config, self.fname, ln)
- 
-@@ -1741,6 +1760,8 @@ class KernelDoc:
-                         # Hand this line to the appropriate state handler
-                         self.state_actions[self.state](self, ln, line)
- 
-+            self.emit_unused_warnings()
+ def main():
+-    """Main program"""
++    """
++    Main program.
 +
-         except OSError:
-             self.config.log.error(f"Error: Cannot open file {self.fname}")
++    By default, the return value is:
++
++    - 0: success or Python version is not compatible with
++      kernel-doc.  If -Werror is not used, it will also
++      return 0 if there are issues at kernel-doc markups;
++
++    - 1: an abnormal condition happened;
++
++    - 2: argparse issued an error;
++
++    - 3: -Werror is used, and one or more unfiltered parse warnings happened.
++    """
  
+     parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
+                                      description=DESC)
+@@ -323,16 +339,12 @@ def main():
+ 
+     if args.werror:
+         print("%s warnings as errors" % error_count)    # pylint: disable=C0209
+-        sys.exit(error_count)
++        sys.exit(WERROR_RETURN_CODE)
+ 
+     if args.verbose:
+         print("%s errors" % error_count)                # pylint: disable=C0209
+ 
+-    if args.none:
+-        sys.exit(0)
+-
+-    sys.exit(error_count)
+-
++    sys.exit(0)
+ 
+ # Call main method
+ if __name__ == "__main__":
 -- 
 2.52.0
 
