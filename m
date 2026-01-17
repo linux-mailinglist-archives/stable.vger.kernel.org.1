@@ -1,144 +1,175 @@
-Return-Path: <stable+bounces-210121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE885D3890A
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 22:58:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50F1D38B10
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 02:16:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DD92030060C8
-	for <lists+stable@lfdr.de>; Fri, 16 Jan 2026 21:58:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A39023034425
+	for <lists+stable@lfdr.de>; Sat, 17 Jan 2026 01:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644FE30C603;
-	Fri, 16 Jan 2026 21:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AEEC21146C;
+	Sat, 17 Jan 2026 01:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="DBNnH6nu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BlKA2Vtz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8712F3618
-	for <stable@vger.kernel.org>; Fri, 16 Jan 2026 21:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768600705; cv=pass; b=dDLORvaEnu7LEM8Bu5rRIs5CKpFIJh2uHCzkyAxBW9hV1+hFyCYfke7U0tS1Y3h6uAcRCxWfj4qIRXtXiZaIH9+arXjDRBacR25mj1oZZcAiWEtABKNdQQM5kQ0+CnUjMvJQY1tWnO8ULn9Ejn7e3IbTGD/O1gMA04BFDtP0lH4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768600705; c=relaxed/simple;
-	bh=bPaRwJS1RrJBMlnVDNPm7dxe49RmumTjqinBhkL9jf8=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54946D1A7
+	for <stable@vger.kernel.org>; Sat, 17 Jan 2026 01:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768612588; cv=none; b=FbMLXX3TNA6xt8/ivkNKwZZnTZSIE8Yb861AlpWmUtvNguYAi90keMUKMUDvb3bqK3bL56Un2vWE3kRRM6WkA6WADI2XVB+PFQtenwmEprpoKzDIFExDdMfRlgV6tOWby2ULwTH2iXkXaF3A0kGol1cpD/rwjLdlLbEKug4brbA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768612588; c=relaxed/simple;
+	bh=ocof3UtAX0tYNJdjurWbsTwQtK/5v0lOyfVO2rM75zk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bvl6BjPo0lMvPNTKjtfEznLiEuZmBWfBfSClwKG9Q8925a9zr7TzrFrs7QwiXDQWl88neeZrUXRFoNagoxRWxX52biXSu1ZCl+OJRAedyMaoRipCSkizeFinjOQHDzRVid1uMd4Dj2U4Ny/OJ97rxobbzwSzDUnYFODJnWXGHKc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=DBNnH6nu; arc=pass smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8888a1c50e8so30597096d6.0
-        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 13:58:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768600702; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EVJez+tOlpr8EInuAvo+ZyW3+mdKPwgHku5RiuQMlze/tKV74vaFh3BJEP9F70siNB
-         a7QGVnrH6clbVxplIlSjhGNmQNGeCh4+R1qVqKrkj5QQ60joc1krWcPPcfdBoXljisTO
-         EzinXdUH2amSfNbPSeFEN2DrZOYLBO0BvpPXPY7YdOuaOUpAMt63kUBLnC/znjHIYtiu
-         MjKB7EehOeLUoitfAJzG/MahkpF/XrH+uYJWZDu4DumdrADcHIiV61xqHYVYtmLskq8E
-         8cfTsgIXKNN3AU1pk+FhOQnebKcWyU2fuqXSeq0JUgRqse99ndRELrJX70vW+S0i96yH
-         BKqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ci3VzwquJj/225WD6QeakQESZUt5GcqZi1oxdxkAGbA=;
-        fh=bN1N9u37F9sfpeWZ2mDRMBHW5qqsdrFlcOzPW13gTq4=;
-        b=Fm+a33pdEkXKy7PQF+t0zEVyHY2MYYE5qYlTyp+f2cQhgrGmvbRaImS2YtVxkyVfpS
-         VXA/ilAKc/UtLFg47FGoYrM9Un1uhWi/HeCFOnjFk3CM6VztrtugXeKxBp78N6pH2VCQ
-         703LpkIrUuWtRYTpbcArkuL6hQJOsKkfBYd+b9JU4ZX1oGMvOh9PFnlpu9NASZOs4l+Z
-         0r6lvYzFVe4f7h/BuEU1DfDNh8VQZqbaVQC9zZEj4fMKnH9fsBfQZCyLTeFPe0E4lzux
-         VBsRnxoEB6FNhDIX2z3aAu01jDQI/tfGSA2Lm/2cuYeYYaGiGD7lOet0OLzFkC5GiH9h
-         oi1A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 To:Cc:Content-Type; b=NJv29Ng7Bj2UNsM61mHep8q7BPoCODbatMA02kA2LkQrEzxvuiJP0mjx/OiIzn25iguYfnuJGPaeSaK4kUVIllES8khEuuq/qOI2gUGMEzda7EfpEYHhBNV6elkBocQkVBRlcZvqGPTeszG3qb+vVJ/X8NnHbZmUcU71Qbfo3OM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BlKA2Vtz; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47ee807a4c5so19253305e9.2
+        for <stable@vger.kernel.org>; Fri, 16 Jan 2026 17:16:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1768600702; x=1769205502; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768612581; x=1769217381; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ci3VzwquJj/225WD6QeakQESZUt5GcqZi1oxdxkAGbA=;
-        b=DBNnH6nuWyly5Dk7tQ4h+6pGTF0GZ/cKlDat4Jo0MRKshf6ugRVP1zF2pA5byt/2RM
-         mk3lscumiDFGOzWfPZeH9i/V+SMRZ347kuY+7zl8h5PILjhr9Ve8XKcihgoOJJHa1LBM
-         7uUQTOI9TCh5kFmjkq33uJbMdb8TEw26u2p7bhhDPdkBYvrZiIqKnkwEo/bEDatS94zf
-         k+n2LCXD73XJyKVUsjnB6HF3agqQBKpLngU+gFmP28MVxG25UGSvTzDo1uLiYX3gNgkR
-         HgQn3KuYoTKpm3SJvcbMXiWtDURegDl1VENw6S8uI6VjEHcJm0YU7/Fq6YFBiBg0ZnFA
-         ux1Q==
+        bh=8jacRTGEGX5vlMnwDO2iTbDAhG4zdHGWsi458RG2c5M=;
+        b=BlKA2VtzLPDYRzZMaonHqJqXjciZCX9yytbinnXLZTeBOQTrE2dd3JjW94qKsUgXvp
+         m+YDPizmqxL7je+4qc0i8q4ghnfrWP6O/p2hkh4Q7uIXv35lYreyB2wOp0YN+tYWL5yq
+         VkB+1OHGSeHzbSqOVgAtDpP+oruyYjRbliLhXpYFbj3ik4O+xw0qtqYuiMygroxsiMmK
+         NyaZO6k8uWgxP0XkSWfMqiLKjgOONpvSnb7PkWMWXGSauSLYIn1W6AdAC8tE9hCfsiBG
+         TOzk4VoCFKa3SQzTTgo5v8Sm2dfScqxZwVwHxGBcZdGNF2ferpji/GpOmcLqCsonDTrL
+         87WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768600702; x=1769205502;
+        d=1e100.net; s=20230601; t=1768612581; x=1769217381;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ci3VzwquJj/225WD6QeakQESZUt5GcqZi1oxdxkAGbA=;
-        b=kOyvxiBGfXgdTdZS277ZXckLQaXhFJGnDvPe126qcV7CHgk2qCWROY+PjlBEM5FPrw
-         iKqnTOERhiAwyrNtFoONRmm/0TdSk1/X8WT/pNBTOvaprUWOq9lG8ZFA1E5P6LZJ2rNf
-         KsEbV7dkaTzUn/rgK0pNshPQh8sm3GPv/7JAaRdfhGKYMUhrrHxBRkdhCHyUHzccLBm/
-         fKVY1QFJuF31h6lqExo6nmW7GprBQw+Uuk9KTb46TPcSiv448bNAeiQrGeTTX8zp174q
-         +qsAOr9DmnmBtma3suH0knisg0ulYrTS/HAnXaQhVVq/KIfkDKsfKHxDIrwahCqzQML3
-         PNsQ==
-X-Gm-Message-State: AOJu0YwrnlE59OMJi3+TqSwSZoNEl5q/J/cv0O4qFtPykUMiuNwLMJd4
-	ZzHIcIUC1+3UhQPbPq9dpe2sMXzl2MzT7FJZjo8aLWsa+Nqo6fxv+FtjAzHzycjvlT15Ke/1zWY
-	stN63fKYZphn72oiEcAG2PcFG9w8G+inIBA75GiYYqQ==
-X-Gm-Gg: AY/fxX4yCeN+1PRfyf7/MK1EzwO86EfSO+fXX+DuohpuKg3pUVhpho6z1A/raEyOlVY
-	AF2tYZbHhLDRZrWaLXSNS98yB+Q+FqS+BJcZQAzdb7oe+qCCMYStdFD8IFNowO0+uXO7e3Oc0Tg
-	F08xJlGaGNsil4hndN5ZPAhn38bOv8n67dbITBnpIABGO31hhx5Ywg/yX257uo5b5yP9jXL33Hb
-	7Zwai/wsM5rKYi26Nc6utHEF6tYuL+lIVjX8oszDP6dusV+W5imJhwzdNnTwiqmOysoFVtR
-X-Received: by 2002:a05:6214:1d22:b0:888:57f3:ac07 with SMTP id
- 6a1803df08f44-8942dd9d671mr63198166d6.54.1768600702129; Fri, 16 Jan 2026
- 13:58:22 -0800 (PST)
+        bh=8jacRTGEGX5vlMnwDO2iTbDAhG4zdHGWsi458RG2c5M=;
+        b=AS+wYumisU0OiMukkGOweHiSa6Us1hWuFTodLpFMXO7+6ovNWfwe7ARMp8kRUmehGt
+         tNUi2pTPguIo2T6OGZtmDQKiDPV8LpbcWK9cWZ52+VoSM8q8CyrlqTs0jOyW4SUorzxF
+         UE6luiXwfH67nZiDFcvR0aiwmvGVsLOywqsm7N8Hv6Ph1DeYx4/ADs2+QgMwnox0sezT
+         ygeJIfD6ExRusArzoDsRAUUmk10PbtX1niSUeK68afUgpjYcs7+jyAZuV9FVYfeuYIou
+         FuAgmUNuBQ6SN0jTSdNuSFUGNS5kmZYxnNMEusvMC5qZdxpheFzDTsB4gtVQlDy1IFxI
+         2z8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUZMj/HA32Kwo/1hIHUR6dQw8igUMiVbeGsVh9BKq4hEhHoYEzmt3uAX41HSBmmI4nJpC+C5I8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypXdTiwWDzh3yd1/ilBby+ufCBv0gKFyqn1/lRHyRadihcaq5w
+	wlAL4sEyqwr+m/kyZumsULpYu/uvg2dVGoKTmk693fAY2wbzjUAuh1eIIjaudihHPVB+/6FIg3n
+	myG9JIfA2YqShBg7dEuCIpMnQyvY56G4=
+X-Gm-Gg: AY/fxX6y0oNKCabzk35OCfQ3J3wQV4FWCaXd3uDZHZ2VSWLaIh+MV+0qKMwjrbQJN8R
+	UgfiYoY3NIUc5gUYyvg5++50rVY/rROiKc3ZdEe+6se+h5zYqVjdP4woeppaI+qEnAKr6wCCvan
+	e6eHffs5LpO21qvZft6rh3IyBwtMDS1pfCS6XjDpryTfRZMOX28QyX9/vw9Eo8HiXiTFYbyXcWm
+	VMQO5nUEwMjmH+CDdeV5fSecJyTqWKLNok27FDyIc0WgKRyyHyAaY55rWSoAD2cYQsKH96yctjx
+	1bwoHvRiS7SEl9qflVq5Xn8eisoB
+X-Received: by 2002:a05:600c:45d1:b0:480:1d16:2538 with SMTP id
+ 5b1f17b1804b1-4801eb03358mr43804885e9.23.1768612581229; Fri, 16 Jan 2026
+ 17:16:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115164151.948839306@linuxfoundation.org>
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Fri, 16 Jan 2026 16:58:11 -0500
-X-Gm-Features: AZwV_QgX9Dh_WA66C1bE9X16GWaQKsScdv4wLDbHYHjFqcvYSeDOuQ1DXsIvl9A
-Message-ID: <CAOBMUvgaE4fiZw=d9jWNxvcYQuFtifR5AqL-nCDDR=aS4bXTNg@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/119] 6.12.66-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
+References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
+ <20260113191516.31015-1-ryabinin.a.a@gmail.com> <CA+fCnZe0RQOv8gppvs7PoH2r4QazWs+PJTpw+S-Krj6cx22qbA@mail.gmail.com>
+ <10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
+In-Reply-To: <10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Sat, 17 Jan 2026 02:16:10 +0100
+X-Gm-Features: AZwV_Qgw2efsxw5nCGxgrSSMx3DQz0LNWwfRwrPgK6uICIY1gvifMYqiZzjGO_4
+Message-ID: <CA+fCnZeDaNG+hXq1kP2uEX1V4ZY=PNg_M8Ljfwoi9i+4qGSm6A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm/kasan: Fix KASAN poisoning in vrealloc()
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>, 
+	Maciej Wieczor-Retman <m.wieczorretman@pm.me>, Alexander Potapenko <glider@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	kasan-dev@googlegroups.com, Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, joonki.min@samsung-slsi.corp-partner.google.com, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 15, 2026 at 12:03=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Fri, Jan 16, 2026 at 2:26=E2=80=AFPM Andrey Ryabinin <ryabinin.a.a@gmail=
+.com> wrote:
 >
-> This is the start of the stable review cycle for the 6.12.66 release.
-> There are 119 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 17 Jan 2026 16:41:26 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.66-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+> So something like bellow I guess.
 
-Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
-Intel Core i7-12600H
+Yeah, looks good.
 
-Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
+> I think this would actually have the opposite effect and make the code ha=
+rder to follow.
+> Introducing an extra wrapper adds another layer of indirection and more b=
+oilerplate, which
+> makes the control flow less obvious and the code harder to navigate and g=
+rep.
+>
+> And what's the benefit here? I don't clearly see it.
 
-Thanks,
-Brett
+One functional benefit is when HW_TAGS mode enabled in .config but
+disabled via command-line, we avoid a function call into KASAN
+runtime.
+
+From the readability perspective, what we had before the recent
+clean-up was an assortment of kasan_enabled/kasan_arch_ready checks in
+lower-level KASAN functions, which made it hard to figure out what
+actually happens when KASAN is not enabled. And these high-level
+checks make it more clear. At least in my opinion.
+
+
+>
+> ---
+>  include/linux/kasan.h | 10 +++++++++-
+>  mm/kasan/shadow.c     |  5 +----
+>  2 files changed, 10 insertions(+), 5 deletions(-)
+>
+> diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+> index ff27712dd3c8..338a1921a50a 100644
+> --- a/include/linux/kasan.h
+> +++ b/include/linux/kasan.h
+> @@ -641,9 +641,17 @@ kasan_unpoison_vmap_areas(struct vm_struct **vms, in=
+t nr_vms,
+>                 __kasan_unpoison_vmap_areas(vms, nr_vms, flags);
+>  }
+>
+> -void kasan_vrealloc(const void *start, unsigned long old_size,
+> +void __kasan_vrealloc(const void *start, unsigned long old_size,
+>                 unsigned long new_size);
+>
+> +static __always_inline void kasan_vrealloc(const void *start,
+> +                                       unsigned long old_size,
+> +                                       unsigned long new_size)
+> +{
+> +       if (kasan_enabled())
+> +               __kasan_vrealloc(start, old_size, new_size);
+> +}
+> +
+>  #else /* CONFIG_KASAN_VMALLOC */
+>
+>  static inline void kasan_populate_early_vm_area_shadow(void *start,
+> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
+> index e9b6b2d8e651..29b0d0d38b40 100644
+> --- a/mm/kasan/shadow.c
+> +++ b/mm/kasan/shadow.c
+> @@ -651,12 +651,9 @@ void __kasan_poison_vmalloc(const void *start, unsig=
+ned long size)
+>         kasan_poison(start, size, KASAN_VMALLOC_INVALID, false);
+>  }
+>
+> -void kasan_vrealloc(const void *addr, unsigned long old_size,
+> +void __kasan_vrealloc(const void *addr, unsigned long old_size,
+>                 unsigned long new_size)
+>  {
+> -       if (!kasan_enabled())
+> -               return;
+> -
+>         if (new_size < old_size) {
+>                 kasan_poison_last_granule(addr, new_size);
+>
+> --
+> 2.52.0
+>
+>
 
