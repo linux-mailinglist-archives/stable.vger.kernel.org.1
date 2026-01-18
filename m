@@ -1,154 +1,152 @@
-Return-Path: <stable+bounces-210204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F244AD39716
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 15:22:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9B5D3973E
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 15:48:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 258E93002519
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 14:22:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0ED603010FFF
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 14:48:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EBF330D29;
-	Sun, 18 Jan 2026 14:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E137F33BBBD;
+	Sun, 18 Jan 2026 14:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WaCQ26GS"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8274632A3EB;
-	Sun, 18 Jan 2026 14:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B79332F77B
+	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 14:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768746134; cv=none; b=SJB1Btv7Y0oMEWibjHbt4rOjLeXHr5FJQcBggow9+SxuqVDOhInBbs26k81PpumSCiyo/4KoJncKzdGDWYyMHakhXD+oi6D+pjYx5EkRv23Db9t9CYmwS7Z/dJ357WMCgYLb9SKAOEfHG0JKW1Sxfz1i/7zdBcFtPv8/YPJ2P78=
+	t=1768747693; cv=none; b=JF5v6zIV0TFTX4sprco1vqnyHdUEqYJTHuFYUwg0y4tYFkMzoADth13sBoB2VFQx+gkZwjGbkdznLrKQ3qvTJw9XGLdNCPRDEfrElLPbh2Tz7EEDiqIqNG3qVPkwbXIqIiAAeM3uzSIFF09C8he7z0Fn7gj0Vz0E9Aq6/WZ1xM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768746134; c=relaxed/simple;
-	bh=D45cU69mUEWEgJbqJ9hdCs9R6h04qBv0d1fY9vllBzo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WpMIzM+kaoiL6yzcdrylSzylcAQug8r1r5tCmLNuh6j8CplOWi1fGkxdvVLNTGK/rF7dKKkwjxy2CFg8ZwNjlZnwVeio+Aoh/qha7b5d5Aeu+yni3q2ZlsbAcEu9H1INvtqjsbl8pY90MVpmDMWHld3gZzNOTJPtIOJW/24IL9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vhTfO-0017gn-33;
-	Sun, 18 Jan 2026 14:22:09 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vhTfM-00000000oIX-38xK;
-	Sun, 18 Jan 2026 15:22:08 +0100
-Message-ID: <7c9592007c32c55935af212fcf6658fbab2baffe.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 326/451] media: i2c: adv7842: Remove redundant
- cancel_delayed_work in probe
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>, Hans Verkuil
-	 <hverkuil+cisco@kernel.org>
-Date: Sun, 18 Jan 2026 15:22:03 +0100
-In-Reply-To: <20260115164242.691121734@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
-	 <20260115164242.691121734@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-VeBS7nT6YVPBZDb8/2X3"
-User-Agent: Evolution 3.56.2-8 
+	s=arc-20240116; t=1768747693; c=relaxed/simple;
+	bh=OPLhgS70WXTefJGjXohzpw1kQv8W5ourc0aIIIHgcSM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e8zE3ojk+f0q72KObbh/fvFKrGSeHacSNSr9uDnD4Mxy0EvS4NeZTzyNjBvvHjO8bhSNlPUkkpJzTQpCOeBMG0w2QAIbxJ1eF6T49ZfOa52C63kwqOLjdj5t8HDWTC8YxZKlA49k3FeVEAj2/hcqMtm6ON6CRkYOokmzcCi1IoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WaCQ26GS; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b871cfb49e6so580386266b.1
+        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 06:48:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768747690; x=1769352490; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nwhHWcSuKh5FBKzHk5nDn2X2ZmAMO+jm5eGTbzgp59k=;
+        b=WaCQ26GSjJFOqNGxhGka5HgIyg1ojQ0hC7mZZLOpGO+S8yHQH/aTHXAO1kdQxfiU+u
+         3maoe5eEqgI+cXuR9zvsI1BJ0uaoqAcaaYXS1VGZJ3xIs+7t50AJOPrf1/sQ10m0TTaE
+         QG51prfeDM6GLVS9hqojb5auy92wliqUsiaxxQuxaTUuJYrhRzPhtK2FYFbX3g0uoV1R
+         qTI3yWWaVmOPaXIqkCRVN9We16yBZrbaH9BHO5mfKPP+kMOPyMy1wAZR1lLISmPPBiz4
+         Wlvjz2jJKJcgWplUfeo/e9jcdiX1J+qp/oXO9TkGfH1XJU08Q64geJBleR/QvTU9epGu
+         XvKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768747690; x=1769352490;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nwhHWcSuKh5FBKzHk5nDn2X2ZmAMO+jm5eGTbzgp59k=;
+        b=GfvV4wHRjjSZ28i3xkGHrBXXTkbgrorytj5dzQQ1Iygoe7X+1msIVUutJDOC56wXdt
+         YzfuawItWaG8pM2Ls6Jewpz7ZNGUu4SFi3C9lLVbf21KPSBWmX61Ww7MlmeV0/El1M15
+         LFFr38nDdyGUKrugM9PBRS0U6Lj8TPsJc16E0e969awXqNIDUpPHAIhzIxxGK5KHQCsF
+         nCmQdvidoqhq4Sc7mIUmFDJHqgZ/A70E5Z7S69rqU/yNoczzjG7X2PE2ewlr7ngSmiCP
+         vKdeF3f8+pEx+Rrpf+cUq00XNsJsJwT6nUUKzArVcE8p7ySGcWQCN0i64G134blL4JM1
+         T+Zw==
+X-Forwarded-Encrypted: i=1; AJvYcCXgVPG6BQLoLGZ/hKssQOmaOw0hwKQlG7kAWcR38TU8fhywbefNLdL4xYgrSnkICJ46mhSrJE4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzzxqb+fu73rqhOjXFu4/5ivkFMTr7iuWH4ag0j/vr57rNlBkia
+	5szd8cfSpTacdP0dWjYfogn++A/+MyVMtugYo79XM0sMAd7Z3pP5f9Dj
+X-Gm-Gg: AY/fxX5E5WSbYLXtvv8VCcuzjGQZwiDj/x5J+2LVZ+i5NtFn2XaKWfN0qYAHdBTzANU
+	pbAQRXRT4sqVV0/khT/MvaS/1PI/u9IsNB2VAMyx8hU5nBPyzu1BB1aIwNmKsuHz1SXp53XCggt
+	WKOUoSs4z/68PHbVRNdjO7Uc9F6tN55L4fIjog3Aoz/NUaLlVHdc2fbA3p4a6Ag0gRLlgpgbdld
+	b2joM691zCl8Qi1mLzRrGocr85VRvbNrPxYfM43Lblscli/nhEkJ/aj4oE6K8nc2PTu+FeKowOo
+	qAmwgkLIqcPkOSIsIgz2MXJaMmH8PQ2U+saO3XrBhn0JcTg/5JCig0r7isRZT+U78Dkzqwhlb9H
+	HnfM0aL/ez4bHQ6ykzjaDfhbu8K8BRkZp8kB8SYnAOx0ixWSboZtDFv/EnQyQKzRVhQ4zJdNBU/
+	DpT7qjKY386TR773AFBM/nuoZNXA==
+X-Received: by 2002:a17:907:3da8:b0:b83:8fc:c659 with SMTP id a640c23a62f3a-b87968d154dmr641819466b.3.1768747689514;
+        Sun, 18 Jan 2026 06:48:09 -0800 (PST)
+Received: from osama.. ([2a02:908:1b4:dac0:5d1e:7d5b:bff1:e1f7])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8795a31322sm853009766b.63.2026.01.18.06.48.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Jan 2026 06:48:08 -0800 (PST)
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Osama Abdelkader <osama.abdelkader@gmail.com>,
+	Sjur Braendeland <sjur.brandeland@stericsson.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] net: caif: fix memory leak in ldisc_receive
+Date: Sun, 18 Jan 2026 15:47:54 +0100
+Message-ID: <20260118144800.18747-1-osama.abdelkader@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 8bit
 
+Add NULL pointer checks for ser and ser->dev in ldisc_receive() to
+prevent memory leaks when the function is called during device close
+or in race conditions where tty->disc_data or ser->dev may be NULL.
 
---=-VeBS7nT6YVPBZDb8/2X3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The memory leak occurred because netdev_alloc_skb() would allocate an
+skb, but if ser or ser->dev was NULL, the function would return early
+without freeing the allocated skb. Additionally, ser->dev was accessed
+before checking if it was NULL, which could cause a NULL pointer
+dereference.
 
-On Thu, 2026-01-15 at 17:48 +0100, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Duoming Zhou <duoming@zju.edu.cn>
->=20
-> commit e66a5cc606c58e72f18f9cdd868a3672e918f9f8 upstream.
->=20
-> The delayed_work delayed_work_enable_hotplug is initialized with
-> INIT_DELAYED_WORK() in adv7842_probe(), but it is never scheduled
-> anywhere in the probe function.
->=20
-> Calling cancel_delayed_work() on a work that has never been
-> scheduled is redundant and unnecessary, as there is no pending
-> work to cancel.
->=20
-> Remove the redundant cancel_delayed_work() from error handling
-> path and adjust the goto label accordingly to simplify the code
-> and avoid potential confusion.
+Reported-by: syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com
+Closes:
+https://syzkaller.appspot.com/bug?extid=f9d847b2b84164fa69f3
+Fixes: 9b27105b4a44 ("net-caif-driver: add CAIF serial driver (ldisc)")
+CC: stable@vger.kernel.org
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+---
+ drivers/net/caif/caif_serial.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-I think this may have the same problem as #324, though I can't see
-exactly at what point the subdev is registered.
+diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
+index c398ac42eae9..0ec9670bd35c 100644
+--- a/drivers/net/caif/caif_serial.c
++++ b/drivers/net/caif/caif_serial.c
+@@ -152,12 +152,16 @@ static void ldisc_receive(struct tty_struct *tty, const u8 *data,
+ 	int ret;
+ 
+ 	ser = tty->disc_data;
++	if (!ser)
++		return;
+ 
+ 	/*
+ 	 * NOTE: flags may contain information about break or overrun.
+ 	 * This is not yet handled.
+ 	 */
+ 
++	if (!ser->dev)
++		return;
+ 
+ 	/*
+ 	 * Workaround for garbage at start of transmission,
+@@ -170,8 +174,6 @@ static void ldisc_receive(struct tty_struct *tty, const u8 *data,
+ 		return;
+ 	}
+ 
+-	BUG_ON(ser->dev == NULL);
+-
+ 	/* Get a suitable caif packet and copy in data. */
+ 	skb = netdev_alloc_skb(ser->dev, count+1);
+ 	if (skb == NULL)
+-- 
+2.43.0
 
-Ben.
-
-> Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-> Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  drivers/media/i2c/adv7842.c |    4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->=20
-> --- a/drivers/media/i2c/adv7842.c
-> +++ b/drivers/media/i2c/adv7842.c
-> @@ -3552,7 +3552,7 @@ static int adv7842_probe(struct i2c_clie
->  	state->pad.flags =3D MEDIA_PAD_FL_SOURCE;
->  	err =3D media_entity_pads_init(&sd->entity, 1, &state->pad);
->  	if (err)
-> -		goto err_work_queues;
-> +		goto err_i2c;
-> =20
->  	err =3D adv7842_core_init(sd);
->  	if (err)
-> @@ -3573,8 +3573,6 @@ static int adv7842_probe(struct i2c_clie
-> =20
->  err_entity:
->  	media_entity_cleanup(&sd->entity);
-> -err_work_queues:
-> -	cancel_delayed_work(&state->delayed_work_enable_hotplug);
->  err_i2c:
->  	adv7842_unregister_clients(sd);
->  err_hdl:
->=20
->=20
-
---=20
-Ben Hutchings
-Larkinson's Law: All laws are basically false.
-
---=-VeBS7nT6YVPBZDb8/2X3
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmls7IsACgkQ57/I7JWG
-EQmSFw//St7uOwgz1sv9ff7qjga6yKNeTGUNw6m7gBCsKAuPQ/8l+wkfmqvbBJ+P
-v+eU8G1okafvqa1V/qakkXt8Fo+FpUXZc6n1SdZ4ykDUx6lKEN+SAkLoxJUPJhmB
-3Rg8Jr3euLRnhaU/5qpZkIdUFSflXwINZ52623wo7XU+LSeMa/Sq/DJMKWO0EtQa
-97DaQjb0UeV4kyqQxXmg6kcDFFypjYgBY47Q8ohwH4mnKhpzDa7CW+6FrOCOxkG2
-7VaCW8h2HQR81PbvxTgrpTTCnr2eM+mZ1PcfB6e1T9oowxRbV0kA9XVY70vXPdVY
-/pLi74fEi/QP+kFUDzF0P9DykrU9TN3yQqnWNyPX77HiOcDrPxeDjJwc8xgKlU++
-XW2rdy1Dapaj5BoBGt9uwofVHZaYv6BXicishRGBmXegyJ6cyUT21xDq8HGgugxJ
-Va8fRYggLJsHt0p200YGG6i1wYhsbVGHvp11sspeV7vaLMkYDD7EhxrTnvT0X/nQ
-m4jIT/MJl5+nrN58vw+IO9RU3bnqETfKSFbl1DVLCgsSbtuqgZ87hzCo9LdbCwTR
-9K9PHcINr8tQ2o0BgeOsPyi4gap0zZhULvGwMBBjYMVi9TJgcxvLFZ1cu4zjH+XZ
-d6yYBhHnaaW77HZNhY4j7QtqV3zu1XEBGboqMN5GSOG8zAd7h+Q=
-=TPYc
------END PGP SIGNATURE-----
-
---=-VeBS7nT6YVPBZDb8/2X3--
 
