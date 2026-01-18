@@ -1,119 +1,95 @@
-Return-Path: <stable+bounces-210208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0373D39754
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 16:02:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C03D397C6
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 17:17:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4407830084EE
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 15:02:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99D5130136C4
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 16:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43677262FF8;
-	Sun, 18 Jan 2026 15:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF4F23ABBD;
+	Sun, 18 Jan 2026 16:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVJlEEbW"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="awqocaa5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DE41FC7;
-	Sun, 18 Jan 2026 15:02:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F4E219E8D
+	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 16:16:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768748568; cv=none; b=bfK3SkYOBneew4uyPw0cgnAH3lgBfuVS1Iov1owwZ19UtXT+e3RNWYWZvxxFiZkMa0/Da3p3IfYOyGc2YGrTYeuuR5yZqI4LAOQ1NHzVEa+oT4ZvcKYNM50gz6Ik2B8i9KwK7lMp7C1cxun0/UXiJ1EwbEF3B1iYppbmzu5J8kE=
+	t=1768752990; cv=none; b=MRkPXEE562ZrHdBwVvhhiMS9aHiVU2+7avcBeSuVCJGHSrpD/Q9R84SNJ3RHRwEbpklGWKlSOsGkqlx8Eo4syYSnPwuYdyg5VZzrvjKlUSrC/lFx+dejbTkJsCDUX+qiChRk3Ws0ytDdVGgeuU4yAwvDZDNO7+paQpyiqCp7/r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768748568; c=relaxed/simple;
-	bh=1ZRSWtYq+sT9Vl8/81NHJCo4yQ58u1wefI9Lpdu8cM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O+zutMt5ppytJ3Sps506HdG8qlfOoBiQnRYkjFquaYhHUsxmIrukT77Yn19bgSYJsiTcYd3wmGdfcc2BkfX0ZiY4jb4YX4zPJKzn8ST/NeO/OWC9NAPyx9rrxWK9mYV9nBz1M+BPGZ2f0RYzk2W02AJuXIeJB3xTP+gCmU9WkFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVJlEEbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E22EC116D0;
-	Sun, 18 Jan 2026 15:02:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768748567;
-	bh=1ZRSWtYq+sT9Vl8/81NHJCo4yQ58u1wefI9Lpdu8cM4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cVJlEEbWUL5fgD4iqFNfSDQ+qtAn0dn3SFLFbTjLJtrJSHcs9vG1qVWpg4o8fJ1yl
-	 IupSqG9FmVZkwtWtwjLn1DXNzVhrzs2avW09h89G9oNXF3rigmsOYxeLcIoyf19FDM
-	 UxuT7/wiO4MjgdR9j0vYfNDohOqDnVZuZCFRPGP4=
-Date: Sun, 18 Jan 2026 16:02:44 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Osama Abdelkader <osama.abdelkader@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Sjur Braendeland <sjur.brandeland@stericsson.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: caif: fix memory leak in ldisc_receive
-Message-ID: <2026011805-bamboo-disband-926a@gregkh>
-References: <20260118144800.18747-1-osama.abdelkader@gmail.com>
+	s=arc-20240116; t=1768752990; c=relaxed/simple;
+	bh=stuXfsC2R2WgtLp9fCfuUxiYdJI3HqQhBs6ki4A/LRY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c9ygjiMtQY5v/YdW2fVGNUSxExQo0ATga8IOBhJGOAVYe4T4qWN1iMVXogZk7K8EfBcwwet2AMAijUf0r4ols72I8YOs1O7xVBQnazzvTNd/ZCKSt+yvzJ0RNbBvVdjnbsOo68I/YgmRO8oe2Jfp28rGWazRlfBZo4A/ihMkVZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=awqocaa5; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768752977;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rElvZdowGvl1nqp3YNSrESkv/wHlkAfhkif6BXnCRqc=;
+	b=awqocaa5FEoKjJIenL0zwUUK5wEzvPg7+Fv36BIY6T/HNRA6b05QLghtMX9IbeNjS7bRdt
+	9Arw+6FrTewOln1N0SQfYE45SC1Ew0Z1BIjUn3wrsTLIBmVwq4VkS2eslyILeObg5sTHyY
+	kqKsNIozW+zdA7z6hd93ckQBwAkj8vY=
+From: wen.yang@linux.dev
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wen Yang <wen.yang@linux.dev>
+Subject: [PATCH 6.6 0/3] net: Backlog NAPI threading for PREEMPT_RT
+Date: Mon, 19 Jan 2026 00:15:43 +0800
+Message-Id: <cover.1768751557.git.wen.yang@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260118144800.18747-1-osama.abdelkader@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sun, Jan 18, 2026 at 03:47:54PM +0100, Osama Abdelkader wrote:
-> Add NULL pointer checks for ser and ser->dev in ldisc_receive() to
-> prevent memory leaks when the function is called during device close
-> or in race conditions where tty->disc_data or ser->dev may be NULL.
-> 
-> The memory leak occurred because netdev_alloc_skb() would allocate an
-> skb, but if ser or ser->dev was NULL, the function would return early
-> without freeing the allocated skb. Additionally, ser->dev was accessed
-> before checking if it was NULL, which could cause a NULL pointer
-> dereference.
-> 
-> Reported-by: syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com
-> Closes:
-> https://syzkaller.appspot.com/bug?extid=f9d847b2b84164fa69f3
+From: Wen Yang <wen.yang@linux.dev>
 
-Please do not wrap this line.
+Backport three upstream commits to fix a warning on PREEMPT_RT kernels
+where raising SOFTIRQ from smp_call_functio triggers WARN_ON_ONCE()
+in do_softirq_post_smp_call_flush().
 
-> Fixes: 9b27105b4a44 ("net-caif-driver: add CAIF serial driver (ldisc)")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-> ---
->  drivers/net/caif/caif_serial.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
-> index c398ac42eae9..0ec9670bd35c 100644
-> --- a/drivers/net/caif/caif_serial.c
-> +++ b/drivers/net/caif/caif_serial.c
-> @@ -152,12 +152,16 @@ static void ldisc_receive(struct tty_struct *tty, const u8 *data,
->  	int ret;
->  
->  	ser = tty->disc_data;
-> +	if (!ser)
-> +		return;
+The issue occurs when RPS sends IPIs for backlog NAPI, causing softirqs
+from irq context on PREEMPT_RT. The solution implements backlog
+NAPI threads to avoid IPI-triggered softirqs, which is required for
+PREEMPT_RT kernels.
 
-Can this ever be true?
+commit 8fcb76b934da ("net: napi_schedule_rps() cleanup") and 
+commit 56364c910691 ("net: Remove conditional threaded-NAPI wakeup based on task state.")
+are prerequisites.
 
->  	/*
->  	 * NOTE: flags may contain information about break or overrun.
->  	 * This is not yet handled.
->  	 */
->  
-> +	if (!ser->dev)
-> +		return;
+The remaining dependencies have not been backported, as they modify
+structure definitions in header files and represent optimizations
+rather than bug fixes, including:
+c59647c0dc67 net: add softnet_data.in_net_rx_action
+a1aaee7f8f79 net: make napi_threaded_poll() aware of sd->defer_list
+87eff2ec57b6 net: optimize napi_threaded_poll() vs RPS/RFS
+2b0cfa6e4956 net: add generic percpu page_pool allocator
+...
 
-Why is this check here and not just merged together with the one you
-added above?  And how can ->dev be NULL?
+Eric Dumazet (1):
+  net: napi_schedule_rps() cleanup
 
-And where is the locking to prevent this from changing right after you
-check it?
+Sebastian Andrzej Siewior (2):
+  net: Remove conditional threaded-NAPI wakeup based on task state.
+  net: Allow to use SMP threads for backlog NAPI.
 
-thanks,
+ net/core/dev.c | 162 +++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 118 insertions(+), 44 deletions(-)
 
-greg k-h
+-- 
+2.25.1
+
 
