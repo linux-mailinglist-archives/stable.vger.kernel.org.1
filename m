@@ -1,74 +1,84 @@
-Return-Path: <stable+bounces-210191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25629D3924E
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 03:58:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F110D392F1
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 06:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7C183015A9A
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 02:58:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC0B8300E7DD
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 05:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7BA1E1E04;
-	Sun, 18 Jan 2026 02:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06526234966;
+	Sun, 18 Jan 2026 05:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="P+vHeCKC";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="YLbU8e9v"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f2vTsYgJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D4818027;
-	Sun, 18 Jan 2026 02:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E08500967
+	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 05:50:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768705095; cv=none; b=BQZmF5X7XUAtSbBD4oU+Y4UDwGudQmzcovSlwrgpgeavP13kYPYTB0BbY/nDM+jXabeoD4CerTCjpwm1i7JbUwEczyvREZVF+JeT9Xya5cxihXCMxG9nDraN2g7uzVdJszCX3VibSUAgc6JQPOVUSUWFA0w9BlycU6Cy/tt2ooI=
+	t=1768715435; cv=none; b=f76a9X2bOnH+WyKtsNH+cgLoJ5WTKLMmeJs2Keh2D7ZIiGTuEz4cR5UvILkVXtnQAt3fwM3SMuN1UIBjIvZ1nkpURGCu2B4IQqPBReIeiG81L4qgX8eRC2w7bPR83as5060+DjYTRHQxq2b4u5S5mRTZnqB84Miz30Bq/rafot8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768705095; c=relaxed/simple;
-	bh=0D84M2FZ/eP13c8Lq1jhipRzuscAO6I+R0S74SpNAfU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XZ1LwEq0g4+64Vtysp+fojMZTTzKLV5w+TD257QSV/vdFqBqBiDDf5rAvAvTTlIuhIvDeu4byq4kQ5v/ssfi7cmmPKOC07Mr7pMQAXkZ1+eaoTqfjM0x2PWorKi3smCbi3MnhX5VuZpys9hNmhbVEUBzkWke3orEPv+4rcsXZ6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=P+vHeCKC; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=YLbU8e9v; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4dtyvJ2X2Yz9txg;
-	Sun, 18 Jan 2026 03:58:04 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1768705084;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=XBgeYyRcBFEHo3KdmapMBvk94SjyCGRmpPM8oaz9BZI=;
-	b=P+vHeCKCmGHbPDYIhu403/AnioFT4xGZa2ewdcumkJGIRbMCgDD7tpjaDKZCPJDj7pacdM
-	bLZ6/vyptVeTnlvfO3DHFeX2ldyz4Gp9TyqY6bz6XoAyN3RXY9pakeaVSJzNCPwYceKS5q
-	wZiVcvIfJcl1VCfblKxH0q/R71u6HT7ripS3/gOKpUIlQ6zFYIT8ZUckR08bT0DUI/8Tf8
-	4xFNlslhyoKCv34qkgkuVfuDUJFtjj85kaO1HyjOxvouFeuiypV2j+af4cDITTuwugaHt8
-	fzVoVc10cuyvyFcFzcQ0enLV9GckM5b2iuzjTNzIBmJ1CgeoWZ2pDjJZhpdz1A==
-From: Marek Vasut <marek.vasut+renesas@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1768705082;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=XBgeYyRcBFEHo3KdmapMBvk94SjyCGRmpPM8oaz9BZI=;
-	b=YLbU8e9v2oItVfNiTrSbYe0thiJ6BqRLA1fUryT8wFuJt17DNr9FdvutLAr4EUPI/JbyPS
-	fWW8s+n7rhjGasJw3huhIWLQCbQkCpcMV7JvyrOw7CLg/W0MBxay/zf/sShLAXEslBrC8p
-	TqMBjUxNIomhR1OvVpa76xhpEqCvcweBNspTfTs8G1/HajndqlyLAtLL2/CMqROyTO+Rej
-	hNw2IbUtlzB5Oyl96m69exs+WWMYuK6ttCT4HsxKGtsXOe0IpvC7la+A4qGq/cbZG7Vtth
-	RjSIdPbYXBRHOy8wx1HCYZTD5wSG2IWHqPbc/xI6AOLkjTfB6WlgLsmiX+0j/Q==
-To: linux-clk@vger.kernel.org
-Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	s=arc-20240116; t=1768715435; c=relaxed/simple;
+	bh=GfcRaK2pcsb4oVJ6XjyLGPbp0zJDY6rlyPIWDvnOnEE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L92ZxNlmjGZDPGp03+ANITnfGwDXP2vKWWuD5586YRPhGwBYxfn8U1o0WPuBfa691U1j1RVYIrVj8l6+r+skG0m9Vlsy33LzlxcFof0PoxZ8HlifS1Z9t/NrHD1SiET5I7MdOcPsKs9gwwSXDSpMtwRjE9xXJl4LOJSHCr22lfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f2vTsYgJ; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a58f2e514eso21192205ad.3
+        for <stable@vger.kernel.org>; Sat, 17 Jan 2026 21:50:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768715434; x=1769320234; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xj342H2LaLV+gyhYxrcl0PGxuK97XEMltdhcCPFun6I=;
+        b=f2vTsYgJdrpU6qu9zRwEoZTSh5yyUJvap1fdRXBotuwFsZ+6T+9yiwifl6iUSWo4PY
+         RC+dkrOdWjls2sbjtAhw3DKwcdKWonpmt/0R7DgnYONcTCC8lBzkBjZjJK9lmWdd0eA4
+         KyE0aQc6PRfHzyTVM/EM83rgya47jP+eJJG1PJNme6067+Z9gerVMeF5/YuhNFUT7vle
+         4stBkSFjrj8SF+cQnmTGW2l/aoJj1zgR/9flACK+srww/D6iWCJWHGSjFJy7m/ia2zCy
+         DERtZmcbJ+M/K1DfQPU256T9jpKQf+QfvkalAkbp8U5CUaog+jJS4STo1gz0FBCRmIK+
+         K0mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768715434; x=1769320234;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xj342H2LaLV+gyhYxrcl0PGxuK97XEMltdhcCPFun6I=;
+        b=sqJ+ksGEGlljWZsdXfyz8JPf8DVMTdIWOKtYkbf1y3zPXdG8oefLIgNcdyo3wXbwNi
+         UsXI3aVKlkxNMLdaxeGQBYeL7GpWq/ioQwJiGX32hr4xPLOkJ6Gg4z49PwJgPov3paU3
+         jQDTDfRYe+XczBB3IQ3n0VHtmpCIZanZdtJzy59GqlelymZ/wj8arHx21YM19yuiSqiH
+         Dn6lJQ/muR8l8JCJ26AdeVg1LTocZhaYQYAr/+HMlRwDkoIMuEXrjJi5NXWpjSVRLQK0
+         9ykkDxuHqg9/43dvTKLnteDpY1ajuBRzOvi+3V8f6K78caHfuqWUg79KcOi+wUtD3qw8
+         F5eg==
+X-Forwarded-Encrypted: i=1; AJvYcCXCo6WsKpZKdHLqezz2vGone+qBzFIL2U5xkWH5k0VaSkI5qB9gACuPcUdfXJRdPj0s8zqF6W0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNlze5YoKILhl1ipH2iW6lHjcNXLWRZGKPS3IID11CVewNns16
+	T6pSmGkSuVq0cS0rohIzOI9ISB8ZMmxBTreK94eB0q1iTtaXq7tasNID
+X-Gm-Gg: AY/fxX6OMiVdmpbmVhunTnE2Ulj92jhDpbNQU8HWMSt0o6ZLwOMoANirh+g7i+sWyZ3
+	YpmS3jyUr7lE2bMjAFoDeiWLnRKt0CBHNtS4WHAu8rqfrMmNJmgSDFKCRvv4+2yNhMGc2REHdk+
+	9ipmC9hXnlbC5p3prcXrDxPniuGFfILFzBmmzRZFfSrdaOqpqZeQNPk+kZItas6YWDAUOnfcSZD
+	lCLigLbTLWxpCGxeieuRqwQ9GCmwygu7OyML8sGXOIZn6N6BnHYAMG0puBdnYqS/EnwWO5SvPna
+	qAe39Y7dtCJrztKFSbQIjJyV7fdqJ+ica5w8vMTVLepdWuy/LtWvw+ZaKmgP8U7nrNtXGavLlcO
+	eFKd4hxjB/bx/esh5BVEumorypmnfY2q8V/UibH0n7vScvQmy/sX/ObViAYr4rDtCptWBK3BWSB
+	bc8XGgyh6nZ/I=
+X-Received: by 2002:a17:902:ce83:b0:2a2:d2e8:9f2d with SMTP id d9443c01a7336-2a71893cef6mr68173985ad.48.1768715433805;
+        Sat, 17 Jan 2026 21:50:33 -0800 (PST)
+Received: from vaishnav ([103.105.225.168])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a719412d38sm49794665ad.87.2026.01.17.21.50.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 17 Jan 2026 21:50:33 -0800 (PST)
+From: vaishnav.sabari.girish@gmail.com
+To: jsgirish@gmail.com
+Cc: Ilikara Zheng <ilikara@aosc.io>,
 	stable@vger.kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org
-Subject: [PATCH] clk: rs9: Reserve 8 struct clk_hw slots for for 9FGV0841
-Date: Sun, 18 Jan 2026 03:56:58 +0100
-Message-ID: <20260118025756.96377-1-marek.vasut+renesas@mailbox.org>
+	Wu Haotian <rigoligo03@gmail.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 01/10] nvme-pci: disable secondary temp for Wodposit WPBSNM8
+Date: Sun, 18 Jan 2026 11:20:16 +0530
+Message-ID: <20260118055026.14828-1-vaishnav.sabari.girish@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,52 +86,42 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 5e041f4a3df51f53915
-X-MBO-RS-META: a9agacgcgu59y9ahobcmmrs37mutbfmp
 
-The 9FGV0841 has 8 outputs and registers 8 struct clk_hw, make sure
-there are 8 slots for those newly registered clk_hw pointers, else
-there is going to be out of bounds write when pointers 4..7 are set
-into struct rs9_driver_data .clk_dif[4..7] field.
+From: Ilikara Zheng <ilikara@aosc.io>
 
-Since there are other structure members past this struct clk_hw
-pointer array, writing to .clk_dif[4..7] fields only corrupts the
-struct rs9_driver_data content, without crashing the kernel. However,
-the kernel does crash when the driver is unbound or during suspend.
+Secondary temperature thresholds (temp2_{min,max}) were not reported
+properly on this NVMe SSD. This resulted in an error while attempting to
+read these values with sensors(1):
 
-Fix this, increase the struct clk_hw pointer array size to the
-maximum output count of 9FGV0841, which is the biggest chip that
-is supported by this driver.
+  ERROR: Can't get value of subfeature temp2_min: I/O error
+  ERROR: Can't get value of subfeature temp2_max: I/O error
+
+Add the device to the nvme_id_table with the
+NVME_QUIRK_NO_SECONDARY_TEMP_THRESH flag to suppress access to all non-
+composite temperature thresholds.
 
 Cc: stable@vger.kernel.org
-Fixes: f0e5e1800204 ("clk: rs9: Add support for 9FGV0841")
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Tested-by: Wu Haotian <rigoligo03@gmail.com>
+Signed-off-by: Ilikara Zheng <ilikara@aosc.io>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 ---
-Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: Michael Turquette <mturquette@baylibre.com>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-renesas-soc@vger.kernel.org
----
- drivers/clk/clk-renesas-pcie.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/clk-renesas-pcie.c b/drivers/clk/clk-renesas-pcie.c
-index 4c3a5e4eb77ac..f94a9c4d0b670 100644
---- a/drivers/clk/clk-renesas-pcie.c
-+++ b/drivers/clk/clk-renesas-pcie.c
-@@ -64,7 +64,7 @@ struct rs9_driver_data {
- 	struct i2c_client	*client;
- 	struct regmap		*regmap;
- 	const struct rs9_chip_info *chip_info;
--	struct clk_hw		*clk_dif[4];
-+	struct clk_hw		*clk_dif[8];
- 	u8			pll_amplitude;
- 	u8			pll_ssc;
- 	u8			clk_dif_sr;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 0e4caeab739c..29e715d5b8f3 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3999,6 +3999,8 @@ static const struct pci_device_id nvme_id_table[] = {
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
+ 	{ PCI_DEVICE(0x1e49, 0x0041),   /* ZHITAI TiPro7000 NVMe SSD */
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
++	{ PCI_DEVICE(0x1fa0, 0x2283),   /* Wodposit WPBSNM8-256GTP */
++		.driver_data = NVME_QUIRK_NO_SECONDARY_TEMP_THRESH, },
+ 	{ PCI_DEVICE(0x025e, 0xf1ac),   /* SOLIDIGM  P44 pro SSDPFKKW020X7  */
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
+ 	{ PCI_DEVICE(0xc0a9, 0x540a),   /* Crucial P2 */
 -- 
-2.51.0
+2.52.0
 
 
