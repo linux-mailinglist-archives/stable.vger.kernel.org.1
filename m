@@ -1,166 +1,134 @@
-Return-Path: <stable+bounces-210241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED84D3998E
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 20:43:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBD0D39996
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 20:46:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 76FEF30021F9
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:43:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53842300B2A7
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F46291864;
-	Sun, 18 Jan 2026 19:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B4A23EAB7;
+	Sun, 18 Jan 2026 19:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JyVFMji/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a1kGETeY"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5E72C3277
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 19:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8355B1367
+	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 19:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768765398; cv=pass; b=Q67XQiMQXVIuKHTAvaY2x4C0uGNhx3UNWTR0g4w09zA+MFZFkTVklMjt7Ui/nEgPafuCSOjvCt4ZqQFI96QPj4BMa1yiVFVY5850u0Y7NDdyF7OmV1AdV23BPgKC8T+L7WAKtMQNyJBqNfoim6gz6rnJCGC0sSeuJGDERKjnPk8=
+	t=1768765558; cv=pass; b=fHUCD4dwpDHI9sUdGw1LHSqXmA/RKUMoh6Bx6jjdZba/hfK+K9dkpYxlQFOcRVAnGLf3L61Ou2O0TPYVrbKFc3UzC1IYT+bhXbl2e+vDwnznDUqe3lR34NYB+UGkFnCXg/qmtVJCfT3iLQO2PRYFpxnW5h/5oM4J4Rk8cw27fj8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768765398; c=relaxed/simple;
-	bh=YcWX4KpE5LzyFkGNlp0UmN6AScfsx8INQHNsRSOVao8=;
+	s=arc-20240116; t=1768765558; c=relaxed/simple;
+	bh=KVHaohjIpkS8RF4XW8vpNt+aWDOb9cyMHNvbV9tdgrM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d75EI9Bl2WFJ9rpQsvx2ObaQvcIV/QJ3UvLf2GcZkOXO35Y9osfVIJ73XjQtweLDjc0hDsRyao2RvG6NjgvuckkwDYVJVxQ3qHxw4docUPzloScscdvFk/4MDD7TUGNZJFCefyt3TZyjdesR4RlS0ax1vYgeufGFK8CXJBQcQHY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JyVFMji/; arc=pass smtp.client-ip=74.125.82.172
+	 To:Cc:Content-Type; b=Z+ryLaiiXvfwws/az2c1goA7WQOzyeJrdc4MLe61ejMcD6ZBnXOtzJs4dYrkWHCiZaMn/uiZFO3cMnjCyobDpujYeUGZAjH+OpysK/8TQ1JEZ3akn6GTwmOkFi62pYAcrtugqEn3lMWTkzXeS4USGN8lbu5Y9yyIFUCdgZpu3as=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a1kGETeY; arc=pass smtp.client-ip=74.125.82.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2b6ce77a2cbso50005eec.1
-        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 11:43:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768765396; cv=none;
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2b1769fda0eso381959eec.3
+        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 11:45:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768765557; cv=none;
         d=google.com; s=arc-20240605;
-        b=Ngb2ksL7hDavUB3jxbhohRpW0WuT0yKsIwWt+ajLDkh6yTrvhFs6izcZzryAFr2dh5
-         SjKnn8zcEJfnwBVoTdtUYCSoWReW8noRQage30341C28kUaN7dRx5Gseh4Sr+H+6NC6/
-         dkFlXhMBT9nvf00CnEBEonZFShU+NVRENb/QchXURw5wpHpGQEYt8gMLx119Tpw1eHz0
-         z4t6mtXNoLTg0U85Z0ww5G+1Vyg96nBoRES41/3/9Nvcqe7P+RMot+kUknZPOg3tta06
-         JOrjAgljo7GNzIPtfWJhfMldtBO3sgqRlrnM6ei2wrjyrh8hfGRSAUzeWXD5dO5FJhIc
-         ab8A==
+        b=cEJvgRgvGCE1n8hqMYkpCQOucNVfxKiwYTJAwnr/XZ+0YnumWmais5z3HAXFKUtgp0
+         0Yn4U1buPuV+QpGLm4t5OAeRQPzM2qF28GzlKr88TRH7xvzpcUhJgyVJHDyrMEwz7EbZ
+         wvNyybe/zH5UNaSBGnrDYCRoIkMnVBkCW56KCAD8hgGYvGpYE8IcvYgVRxPZz1Pw2Pd8
+         WxNRDIz0a+PoGBczK7unnxllxC6gJlBdXw3HOSxbRebJlO1NA5Kp2/W728OlvLv8qSjJ
+         VXDyUH3bnsHyvHWZcNVY2DLzi29VhLeHyPJ5cxwAZChi5Ts5RGFeNobnXIcEFSGdwzWd
+         aVSg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=3WkwnRacVzZnF9+VHDBdh2NvGD/q/Isu1ZQKlvNDN0I=;
-        fh=zBgGoH6611pVKbDWTwQgnibDv0oCebu0/schIaAYg6g=;
-        b=KSUZB13XaOXJnT+hdneI3yIVs7xA/N3W3JcITa5rMjx143zpzofRmYB7YRGgn683+U
-         tKJ0lWZszF4c9mwDdX1DUXUB7069KddlvR3xVkvzP/Iuz7BrvTnDutygV2bES2bBx35L
-         5W82quJct05ViyuajiowlHmpCRRJ23vcFm1pmrKHHIeHitRNkAIB6qWg8FL9Xif7oJLD
-         6HBJwpx7wfbBDIVfjPTme1M38IeqPaiexshfaxY/xBqNCszb4UV39BywLONgbS9BqQcx
-         S5xen1shnWZxz47SXaNLaTbSDRJfuWkkfyvvXcrF7keVuI2XpeTl5magovOJ7grM0ORx
-         R0ow==;
+        bh=ngLJEmbzzfwIyJl3HgdWne+DdSWDFYCnHseYetxWc3E=;
+        fh=BKqfmJr9SM3MIMUl1osCjn1Ytx9JyYjOMDLcIwiTFsg=;
+        b=RuKNmMAj6aG+nu4Z+47+gV9udI+iZZQLqHyFE/JQOlXqFQ2sQbhZb7ZFWeXIkin61S
+         d8Rm2ZdS64YBjIcsba8Cet1hdBLd+/N+7ZD42xwwAHqRJZsOI4U4kt90jOEkfXL6MIJ6
+         E8vHiZDwNFigj4EUSf9WZWs03mPZZgB+kF2PFicBolhwW7cWAchMlrIqlV+WYuHA3CsX
+         MzJc30ynmEIWXn36fLGzZcRgKWw2oygdsk2JxbgzY5KFDh1F+4b6X6ddGw6bW6a9x+OX
+         HTadVn/HitqThMRFwdbLJyMsjF9rsHzEosm4ZNV7uh1AXiwwlwJ0C+LxU1WS+a8zgTa8
+         n0xQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768765396; x=1769370196; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768765557; x=1769370357; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3WkwnRacVzZnF9+VHDBdh2NvGD/q/Isu1ZQKlvNDN0I=;
-        b=JyVFMji/c1eBg4LJmOVPcjNlcOenkPq7z/Ysjq3Hehh3n2JscrHBsQqoX0KD9dIj/B
-         CgGK4f6ikRvaXkaNakJpb9IqeqXcI3liEZr9ApuIuJ7hhwPV5z1v06CjEzlOiDIsqC5r
-         f9DM+zzkFTg170yiNciTf9IZoMPVzY6JrDPmytalgfSnVJga+bl9uIrIjSt70kwxPhWZ
-         lgNubit1H/r/xahYemoLlOJ9rrd8PPy4jnmXsNubOrK45nhpSEI1syOxwxUadEJ+7HSj
-         0CfCLjMTsvLkyG0lZgj8v3eDZq4Zn4N+/Kiy19W/8WQllIrTJ9Cbf7nkaUtuiES+e3iP
-         de3g==
+        bh=ngLJEmbzzfwIyJl3HgdWne+DdSWDFYCnHseYetxWc3E=;
+        b=a1kGETeYn96vfAtUMnq3WWCUyDjZfuOjIYO5KJfsxBT6XOBL2QZUW8WlSERfWCZ+4R
+         e0ThKDKGRjJJDvZLq025pLtHvGAHBPFmGRlh7DLTdTbQ/q8qqCIl1Gja4gWBeKDzzBei
+         04rmBcVo3YV5C7B4iUgHbopUVNusdCjvLjJDb8khHlngeQtBAtDmMUm4FgUMu28bMWI6
+         SY2xT1DgfE+DjPc2xE72ZtSsMjciuJlnNaa4WYlOhU0KmbyL7DKEeW1m87TPhiT7s2DD
+         3vLQMsnPtUnwrWHMlfJxSom9JF2UQtYpwmz1VfWTEAGzDq9Uxw4ZC9RNpAepSChWYcmW
+         Ar1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768765396; x=1769370196;
+        d=1e100.net; s=20230601; t=1768765557; x=1769370357;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=3WkwnRacVzZnF9+VHDBdh2NvGD/q/Isu1ZQKlvNDN0I=;
-        b=g4bdReOrVCzCHy2QLheOWb7FJUlQQ4FS1n/69fwf7F4akCIjtpr0j/udBqEae6vi7U
-         aLeO1OSmMkvZGQwegnUgRDLbLxWixwJsql8ip6UAKSE99dzfSK7hiCheDwRl7n2gCswn
-         Ls+beQBscbeZB8qHOZ172x89dt0cCoBOecF3DHKsy9dN+RIXviprjd/io5mJI34WKnvI
-         UPLLaXjV9+RWSVPgmsL+RWa5vqLDHc5pSuBbMm3OXYNBbBdUeQF3nkz0DIzGLdj0OzRV
-         3X/BwvIolqYMlvBqPq5mzvX0gdLilGrj59Ng2NYGdjgf2amBLGcCPf0WLHiWqkkZoKMS
-         pOMw==
-X-Forwarded-Encrypted: i=1; AJvYcCXbd0rYWQIe0mh40rtqgZjvOCK7ComB8/G/7f/dGdOvslc0JgAzju/usk3VqkbVpj/CQdNP/+U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztSQzuE7ngejX4zdQinghI2k/JVF5DrQmIw20WlMFyzwByJ57D
-	8KRdKcCTMCPqyC1cc+Ym0oNZrbqtITxvn60JIiHlxOydbsd8VKp0Gr+AqJ8tX/JwaM4kNkIvj3l
-	RrPcPJjXQbVUoricJMCARnIjcL0tdVn4=
-X-Gm-Gg: AY/fxX66zHyFCGlykbYoLGVBrktmpsnOc0qJ9wm0hZF4ri6W24QHXfEzQNZ+MnJLIFL
-	mKQRPFA/oI0Qb2IlehwAVoMpMcrkKFoClHnjP9zt+dVYTbZ9ZifkmUJNdIovnOphRHHi/JIoNT7
-	7/+ykJWv7VOzVXN8sSHA2tpLZ96juWjYFK60qPgMidm1KFc/C7ajU23gNYYBTKozl7szMJTaUu0
-	mMlCM02p6FcmtPDaSagkj83xoTx7s+FRlEzhVdnCMku29oZfw4ClpxBxaUE1j0lE18QdiaRKjIN
-	mSLt/bnH9p+RECBv3fSUXa+aW/HcjsjyKMUUwsM58U7JXwCwPpMAASqoLxpuhI9ATWw5uFRlfxo
-	xdACxlWIBe1Ge
-X-Received: by 2002:a05:7301:1f10:b0:2ae:5245:d50e with SMTP id
- 5a478bee46e88-2b6b4114382mr3414544eec.8.1768765396119; Sun, 18 Jan 2026
- 11:43:16 -0800 (PST)
+        bh=ngLJEmbzzfwIyJl3HgdWne+DdSWDFYCnHseYetxWc3E=;
+        b=CBqhXBui8dnP4/zrLIMz26lkMe2x7gGNGsFuGHE7cPspRLON4POXlNGuJ2ajBPto/j
+         00BCwDbWaUYYr2yj7K7K8lZJs5H1PyRU81tp0uYlRSOcF0PwvcR466d3RdFM66UubvPO
+         LLfAa36z0KWpBVcUcp1qyAKRhVVy954JkzngPJI2/+Sa5UKkrZTCsrax6MqIl0yW5lMM
+         Wijt+T10vq7sgPOBXwlb6siPIl6RB3TEIKQxITJnyT0SIKHEMwAyeK2lySn7bweBB311
+         pm8jhdrjfVC5Ui1jL4a5glrGsXFI8pn424evSK/MD8Ek2AIgBE2EBQFdJ26TUjBddgVN
+         45Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCUVuou3LDl4CEsOLMbVXJ6BCHpgiJz5g5fSVWhSZktWofpF6K9u0v+hHoiy4AIsE83TtXduz+g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBZfHh3PtzyLrW66lTL+GMva/eFtDKOZeW7SHxVuUP62g3DI9E
+	EH765gr/qUU0RQ1uepQXDZYCAM7kaAePNEY4OTpFrQLcIa85o8uOVEBiy4PRr/LY1TKfB2HgYsu
+	WZuhsiI/PbpzhIY5hLNidZ0NLBoBOooM=
+X-Gm-Gg: AY/fxX71QZh0dl1TxoGH9+JucQp8bvC2I0X+4clOQqhncNIgsO5NYYdfKm4FUkrlD2D
+	c4uK0Xx7IqEryjDRZibUWh3FnqQ3cvU6mMzmmgM9g6aOf2AEy21sqaLIaiwz4orrCd4JKLPC24b
+	2v1UaDoJf8Q9+1tccnzU0VdkkEAJIbOTyOpm42Rg8/3sPRrs2VWlNVAwnvuVOm/pRCQfakw46fI
+	nXqghayHvhVaSo82Y1sdW/S1KB5/p1KtunQxwl2tqz8+J036Cd8ZlGeiUAvF3ZXy6pigQwn6JMh
+	xREMpZ19Zx2SGUdVANhqetcH44U8mbJF0xB0wf8p7/uZJ5Bo6FOkabO7Ih/+zJd9156aTdnSm8f
+	YmQDQ9XVbEYVT
+X-Received: by 2002:a05:7301:3f19:b0:2a4:3592:cf89 with SMTP id
+ 5a478bee46e88-2b6b380ec55mr3935044eec.0.1768765556660; Sun, 18 Jan 2026
+ 11:45:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115183832.46595-1-ojeda@kernel.org>
-In-Reply-To: <20260115183832.46595-1-ojeda@kernel.org>
+References: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
+In-Reply-To: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 18 Jan 2026 20:43:03 +0100
-X-Gm-Features: AZwV_Qird-lwibLosQ8SVV1mDXaYy8TIK_gyKIQwJqqY-9VOd-kxYQI5T5v3RQE
-Message-ID: <CANiq72mRB1Hhu=m26GsFHDTdiRTditNZGT4bRYWhWo_oBWsYXA@mail.gmail.com>
-Subject: Re: [PATCH] rust: kbuild: give `--config-path` to `rustfmt` in `.rsi` target
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+Date: Sun, 18 Jan 2026 20:45:44 +0100
+X-Gm-Features: AZwV_Qij1ytH7g1-A1PT-QCFQRqVSpKUckCbAvhQA3vEU6vow4n76J5rAgj9nXw
+Message-ID: <CANiq72kvMp0KS0wXGYRiPOdNvJLoBpM45G7BHgPF_g-M9b5t_A@mail.gmail.com>
+Subject: Re: [PATCH v3 0/7] rust: build_assert: document and fix use with
+ function arguments
+To: Alexandre Courbot <acourbot@nvidia.com>
+Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, stable@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Will Deacon <will@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-pm@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 15, 2026 at 7:38=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Mon, Dec 8, 2025 at 3:47=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.c=
+om> wrote:
 >
-> `rustfmt` is configured via the `.rustfmt.toml` file in the source tree,
-> and we apply `rustfmt` to the macro expanded sources generated by the
-> `.rsi` target.
->
-> However, under an `O=3D` pointing to an external folder (i.e. not just
-> a subdir), `rustfmt` will not find the file when checking the parent
-> folders. Since the edition is configured in this file, this can lead to
-> errors when it encounters newer syntax, e.g.
->
->     error: expected one of `!`, `.`, `::`, `;`, `?`, `where`, `{`, or an =
-operator, found `"rust_minimal"`
->       --> samples/rust/rust_minimal.rsi:29:49
->        |
->     28 | impl ::kernel::ModuleMetadata for RustMinimal {
->        |                                               - while parsing th=
-is item list starting here
->     29 |     const NAME: &'static ::kernel::str::CStr =3D c"rust_minimal"=
-;
->        |                                                 ^^^^^^^^^^^^^^ e=
-xpected one of 8 possible tokens
->     30 | }
->        | - the item list ends here
->        |
->        =3D note: you may be trying to write a c-string literal
->        =3D note: c-string literals require Rust 2021 or later
->        =3D help: pass `--edition 2024` to `rustc`
->        =3D note: for more on editions, read https://doc.rust-lang.org/edi=
-tion-guide
->
-> A workaround is to use `RUSTFMT=3Dn`, which is documented in the `Makefil=
-e`
-> help for cases where macro expanded source may happen to break `rustfmt`
-> for other reasons, but this is not one of those cases.
->
-> One solution would be to pass `--edition`, but we want `rustfmt` to
-> use the entire configuration, even if currently we essentially use the
-> default configuration.
->
-> Thus explicitly give the path to the config file to `rustfmt` instead.
->
-> Reported-by: Alice Ryhl <aliceryhl@google.com>
-> Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+>       rust: bits: always inline functions using build_assert with argumen=
+ts
+>       rust: sync: refcount: always inline functions using build_assert wi=
+th arguments
+>       rust: num: bounded: add missing comment for always inlined function
 
 Applied to `rust-fixes` -- thanks everyone!
+
+The first one I will apply it into`rust-next`.
 
 Cheers,
 Miguel
