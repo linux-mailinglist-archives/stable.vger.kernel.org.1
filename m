@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-210220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2F4D39808
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 17:34:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63733D397FA
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 17:32:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE3263064362
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 16:29:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 551363002862
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 16:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C8D23EA87;
-	Sun, 18 Jan 2026 16:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD6623BF91;
+	Sun, 18 Jan 2026 16:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Aay2QiDa"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="efvEcBuQ"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C879D2248B3
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 16:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E29207A20
+	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 16:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768753767; cv=none; b=EjsdxrsqAKG1pK4yU+0p8PKfPAywyZorGR9tohU96icIwzEhx3iYPb/cco0kCGu57CF71RtYFcjH8RhhG0r1/x/q0pwxskuOMOp4l395nC8x8NHvZQ3hRqmdbLcB3SM1cMLFO9tmB9KZapaF+4nuFC1+qVsLge+dM6rqPxlXg0Y=
+	t=1768753936; cv=none; b=EQneqEqvtM7czkuEjYxn1HhVLT3N1rnW774Iran4A2NDlX2Cav/9ZYHCAdBKc2nNAyB34CuM8NDslEGNkSZjBmjdh/UZ1FOWNSc6cw/SoodFVDh2RUqNj+QCCQ5vAWTnFAbRcKP/ek30MJI//M9vdZFgTwgc+I8bLDbST784M0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768753767; c=relaxed/simple;
-	bh=+Ni6gCuqYOrk9udAtBLav2luGbFbxpfwwQMdUUJl/78=;
+	s=arc-20240116; t=1768753936; c=relaxed/simple;
+	bh=6wXP1LR54sHqLQuuvws+SCHfq+U909va1VrcCDVpiuI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EwQCptkIvnCxm/xX37qY1l5SxS7wINP2GYIgHlfnucOze7WW+zss9JYR9dsCmqoptAANQZn9wuEfOaA7/KC6DQN3huyYHcKDiN4WbZaGyYwVo967H8BKYeMvxB5Q++hajX0E4JBo/k4N3dPHKH3eIdXhjsMeVmY4lfnLRYpZWcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Aay2QiDa; arc=none smtp.client-ip=91.218.175.181
+	 MIME-Version; b=E+SIBZScuPi/wxkWBPaseIiQhkNE00BOXE2Zf3V+6acKubk6uaYdSCYo/DI6Oxo54XlNgIL7x2GNOpPDOH9NavBWvUX0H7Q1+G4OPdUTnZFrt2fdWn7OEoQu/N5ZyUEGcorHCG/pZ2akMKQhmUCf0qvXQhG5yh5aKoHuehxR9NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=efvEcBuQ; arc=none smtp.client-ip=91.218.175.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768753763;
+	t=1768753933;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TxbY9ZLicNezST4OqDkyKxpy3uvxeTOOeWefuY30ST4=;
-	b=Aay2QiDaM7EslfX0uAK2zE+3VA+SvmWTw5d0GtHg1xiV58IXSuU79ovJHimDIKvlVxvchK
-	ApwbglzxDCEKcm1fOrxnWUhizFqO25Ny83CcZo5eqnyuZmDQo8kQuhqJd4nv1Tr86liwG9
-	kGgxtRqSyS0NC9x0jbKDzYowbcMiZ18=
+	bh=bEA5kumbe6+CLic5avtlE1pQHjl/O4RKdWmfyHolhz0=;
+	b=efvEcBuQivV02VrBhqqH3+G7Uikb7FJZIW6PXkeyzUtINwOfjFGfPTcYCn+O6/LEiJ64Gz
+	5dONuFib/NEUlrjeIh6cs+rwYjPv4VoWrc1IeoR7Npf/hBfChVuOhmYvoGdc2PEL2uGo97
+	ah6XupQX1KICNKfPx7E4aIzz54sO7lw=
 From: wen.yang@linux.dev
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org,
@@ -47,9 +47,9 @@ Cc: stable@vger.kernel.org,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Wen Yang <wen.yang@linuxt.dev>
+	Wen Yang <wen.yang@linux.dev>
 Subject: [PATCH 6.1 3/3] net: Allow to use SMP threads for backlog NAPI.
-Date: Mon, 19 Jan 2026 00:28:24 +0800
+Date: Mon, 19 Jan 2026 00:31:52 +0800
 Message-Id: <997bc0de4746100bb69e1bd2ccfb25315d8f62e4.1768751557.git.wen.yang@linux.dev>
 In-Reply-To: <cover.1768751557.git.wen.yang@linux.dev>
 References: <cover.1768751557.git.wen.yang@linux.dev>
@@ -125,7 +125,7 @@ wakeup of ksoftirqd from the IPI.
 Acked-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Wen Yang <wen.yang@linuxt.dev>
+Signed-off-by: Wen Yang <wen.yang@linux.dev>
 ---
  net/core/dev.c | 130 +++++++++++++++++++++++++++++++++++++++----------
  1 file changed, 104 insertions(+), 26 deletions(-)
