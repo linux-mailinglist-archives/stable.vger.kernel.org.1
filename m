@@ -1,114 +1,160 @@
-Return-Path: <stable+bounces-210232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE7ED3993A
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:41:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CDEED3993F
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:50:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 67E31300A1F8
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 18:41:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3EF5A30012CE
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 18:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A681D2FF15B;
-	Sun, 18 Jan 2026 18:41:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mac.com header.i=@mac.com header.b="lS58KSQU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2011AF0AF;
+	Sun, 18 Jan 2026 18:50:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from outbound.mr.icloud.com (p-west2-cluster5-host3-snip4-2.eps.apple.com [57.103.71.85])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A45238C3B
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 18:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.71.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0228E50095A;
+	Sun, 18 Jan 2026 18:50:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768761707; cv=none; b=nkhH24MDloeLsGRR4rXv66PaERJqd4DaNeUpDoiKNCowEcd0HM48MFeTHb/p1W3XIlW0v5CDsOBxxVG7BHStSvGIlzKsaENCFsclfFcfl2DxMbGF3kvzj/+oMw/Ga17n3XiZyMBGWdhSCAJUyCGLkMIG8lVzhrl/xnO9w90Z+Lw=
+	t=1768762222; cv=none; b=pokW6bPK8ka37FmZhoZc+3zN+MV8LiQrzrBgTKAs8dtJrOVKHN9DnVZAed1PAkvXHb5Ik2gi7MQJXnFsPAukqPVeDui69RHRbyMrijQQaJGU5Vz86pA4EIHcue6scubbx/5SgQRNoSYTf1rSQagF89yP6puWMumZOV8xGuBWGnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768761707; c=relaxed/simple;
-	bh=pjtbuDlqoDmoMLqut2ibzsqKWg9OJwsmzEZB5/sUYBc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rISaY/xLoetTOd3XSuT5/cQxUACTLlBGNLhRXegA2jvV5OmwOR8TxwdEwOuXwLAyu+8DM6lxs7/QlNoK2TJNc1NGS/M8siLysq4sdW32+TNjV+u441RqHXy4uWj9xYQbXRE9aLzPEfaid/ne/Cl5SrEXxsjqolUK8XV0B5vOAYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mac.com; spf=pass smtp.mailfrom=mac.com; dkim=pass (2048-bit key) header.d=mac.com header.i=@mac.com header.b=lS58KSQU; arc=none smtp.client-ip=57.103.71.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mac.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mac.com
-Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-0 (Postfix) with ESMTPS id 51D0518001CC;
-	Sun, 18 Jan 2026 18:41:45 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mac.com; s=1a1hai; bh=xjvMi6GFGlbqgGmmeOFvWqPwsPoBgy/JjXDenAmtqfw=; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme; b=lS58KSQUIXGRZPrvj3fnSokrXvpFexaSb6sRzGfpY/OYR+egnKsRRmUc9ESl+eWQXWwSJNaO8I5zPqGsPL4BgPrUkllQmXj9PoPahiCP4k9ac64btshfIOPENqiABavwfnaowdyZNBFKLaR/Ww0118D2zyKduIcJ0qq4uVkm7MU1A8nOLxCmGxpQrFWNsxQBf9ko5VUlyM8ksme652oJGU92iFYlQPrEHXnDtWOMcesxDIAQ4JETW0RJ+fywKREn/1LkmgZ3tbXF81Dpv4ruurTEzlKDORLONlbiwPUo6yKMa+6ZEmg/UYFIQPaxwgfckwkedI5zQ01pVRd6rkxn0g==
-Received: from [192.168.1.216] (unknown [17.57.152.38])
-	by p00-icloudmta-asmtp-us-west-2a-60-percent-0 (Postfix) with ESMTPSA id CBF3218001FD;
-	Sun, 18 Jan 2026 18:41:43 +0000 (UTC)
-Message-ID: <4c70fe51-56c3-4292-9eda-f0f4535718fe@mac.com>
-Date: Sun, 18 Jan 2026 12:41:42 -0600
+	s=arc-20240116; t=1768762222; c=relaxed/simple;
+	bh=wE++U4ix1sHZXa5y0lRcLp/A8MvIMpuQccfPjVr6PHU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iZflO6UrpQMqHRl/zy+e5FA+lEsmhbDvuM571vgMb6+ZfKo/P0hV9i72xpOIyZl4QowQHz7YHMI0xXm7X6s+S88r3JhEgCfXLeANh7tcdQ1B8FLkVG5Yv6iBpggf8yTBGBQAibZfeyW9iu6PQ2P0iFEQ/V1YCEEb3Q0JYkyFx2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhXqt-00194N-0a;
+	Sun, 18 Jan 2026 18:50:17 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhXqq-00000000qsh-19Kv;
+	Sun, 18 Jan 2026 19:50:16 +0100
+Message-ID: <ac4bdf4fd2952f95a300b027f705dddffbe54a1e.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 393/451] NFSD: NFSv4 file creation neglects setting
+ ACL
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Chuck Lever <chuck.lever@oracle.com>
+Cc: patches@lists.linux.dev, Aurelien Couderc
+ <aurelien.couderc2002@gmail.com>,  Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>
+Date: Sun, 18 Jan 2026 19:50:11 +0100
+In-Reply-To: <20260115164245.151340252@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
+	 <20260115164245.151340252@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-a628iJZ2IuWGJ/zSUBkp"
+User-Agent: Evolution 3.56.2-8 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] powerpc: Add reloc_offset() to font bitmap pointer
- used for bootx_printf()
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>, Finn Thain <fthain@linux-m68k.org>
-Cc: Stan Johnson <userm57@yahoo.com>,
- "Dr. David Alan Gilbert" <linux@treblig.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>, stable@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <22b3b247425a052b079ab84da926706b3702c2c7.1762731022.git.fthain@linux-m68k.org>
- <176680916368.22434.818943585854783800.b4-ty@linux.ibm.com>
-Content-Language: en-US
-From: Cedar Maxwell <cedarmaxwell@mac.com>
-In-Reply-To: <176680916368.22434.818943585854783800.b4-ty@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Info: v=2.4 cv=XrP3+FF9 c=1 sm=1 tr=0 ts=696d2969
- cx=c_apl:c_apl_out:c_pps a=9OgfyREA4BUYbbCgc0Y0oA==:117
- a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=x7bEGLp0ZPQA:10 a=fPXO8E_wjBMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=JXPk7LadgWurrYbJNRoA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE4MDE2NCBTYWx0ZWRfXwERN4npg9hhe
- QcSRTksUbDg8c5Aw8/AqjSopXXaAJ0IBhSDzpPGLBk39SaKa+6Yshw4eLS2GY57C/aZbh6SYq8M
- cgYuZqXW/WGKH6k7Srg5FNe1jK49aY9oAvVAF6igfb347JBnRsgN2ZIWmvpc6g+QT3gzusEFntS
- dOUbbLq7G1rUv0scG3vSUNQYI5rMLdJyz81qyJTeunI9+Zotbj37PwcIhuhQXa93Py8rTYVOf6t
- UCiC1q5u0666KCqRIFvcl2XEyMhguV44R5MPCVuRd3Mb16D9W/UX7x2J4j121FS7vKO9FgpsaPt
- vBOKSZGQDy+W3fNQPC4
-X-Proofpoint-GUID: _RSHnb2iLwpQezYNpt68GTNW8-_s-jgY
-X-Proofpoint-ORIG-GUID: _RSHnb2iLwpQezYNpt68GTNW8-_s-jgY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-17_03,2026-01-15_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- adultscore=0 suspectscore=0 mlxscore=0 malwarescore=0 spamscore=0
- mlxlogscore=999 clxscore=1011 bulkscore=0 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
- definitions=main-2601180164
-X-JNJ: AAAAAAABp+XWJIMWjaKg1EdVIkMHUHCSmlU1XHxVWa15/VQ0U2VsLzL9GZR7Uo3OClqmbEGo8uoab8ZBBVoVjXkyAgD2Kf9OWSpiapwKQZSsGBC27ZxsHkJqQN9PdSmqs56YIWKktDCNDr19o/w804prbHwLb2gXkZmYh5Zzm11Hcu5FgCt/1PrS8/lYRhkwWjegR9wUrpSfNW/KC1hZsO2FQcbmEN6C+Hy0wdcQg3yVf7EXGp2DVmNb3QvLxTL6btjRN/G0sjC/p/fq71pFA95BlDQc9GFF7IZ6AhbhV/MCxM1xS/Zg+Xw94Kr95eLK2Y3eT+Xv2yapS4NSXziqqw1klsCr35qMCzop4TbazjYevalyoI6XRA1OALJHN7WziTwo3s5nQbMrS/z8sF74EPBep0qVeiBNllvC7+kgGIRI8LHudTtDcg43X3ylciuJPrW+BUVTERC/BYk5YfXKKaLMCjia+hO+f0HSZJN/cpA4nsTsbwEbYXt+JDdNj3YV9OEMnLrVmthgkUqsPkcP+xRZy+kkAQoDt4H6MUe7PqyaIgR1s7uXuWXRhW0Vzrfblf4LTqHsgzWulX2Jn2EVxAZApKhnDqfkUcEJ6BRV+0ZAIRszUGB57WXry25k5ycYGK5lge69BF5Imz48ht134zhv56kpbF2zCHWPLUbb6TzRGB9hnPg2192rRRVNv/gxMETmo6+HVtOzovHPMZya8RJG6/rZ/OdMt/pUKKgqHo7SDA4LHVILM612ziFLpLXeNSBKxbFKKtOT3gqJQy7D97FV6S9t15BQ23PZKdSpw2BassMoCVXhnQZNiSeM68f1Ivb9phegIw==
-
-Maddy (and everyone else),
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 
 
-Thank you all for your hard work in solving this issue!
+--=-a628iJZ2IuWGJ/zSUBkp
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, 2026-01-15 at 17:49 +0100, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Chuck Lever <chuck.lever@oracle.com>
+>=20
+> [ Upstream commit 913f7cf77bf14c13cfea70e89bcb6d0b22239562 ]
+>=20
+> An NFSv4 client that sets an ACL with a named principal during file
+> creation retrieves the ACL afterwards, and finds that it is only a
+> default ACL (based on the mode bits) and not the ACL that was
+> requested during file creation. This violates RFC 8881 section
+> 6.4.1.3: "the ACL attribute is set as given".
+>=20
+> The issue occurs in nfsd_create_setattr(). On 6.1.y, the check to
+> determine whether nfsd_setattr() should be called is simply
+> "iap->ia_valid", which only accounts for iattr changes. When only
+> an ACL is present (and no iattr fields are set), nfsd_setattr() is
+> skipped and the POSIX ACL is never applied to the inode.
+>=20
+> Subsequently, when the client retrieves the ACL, the server finds
+> no POSIX ACL on the inode and returns one generated from the file's
+> mode bits rather than returning the originally-specified ACL.
+>=20
+> Reported-by: Aurelien Couderc <aurelien.couderc2002@gmail.com>
+> Fixes: c0cbe70742f4 ("NFSD: add posix ACLs to struct nfsd_attrs")
+> Cc: stable@vger.kernel.org
+> [ cel: Adjust nfsd_create_setattr() instead of nfsd_attrs_valid() ]
+> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 
-Cedar Maxwell
+Would it make sense to also backport:
 
-On 12/26/25 10:23 PM, Madhavan Srinivasan wrote:
-> On Mon, 10 Nov 2025 10:30:22 +1100, Finn Thain wrote:
->> Since Linux v6.7, booting using BootX on an Old World PowerMac produces
->> an early crash. Stan Johnson writes, "the symptoms are that the screen
->> goes blank and the backlight stays on, and the system freezes (Linux
->> doesn't boot)."
->>
->> Further testing revealed that the failure can be avoided by disabling
->> CONFIG_BOOTX_TEXT. Bisection revealed that the regression was caused by
->> a change to the font bitmap pointer that's used when btext_init() begins
->> painting characters on the display, early in the boot process.
->>
->> [...]
-> Applied to powerpc/fixes.
->
-> [1/1] powerpc: Add reloc_offset() to font bitmap pointer used for bootx_printf()
->        https://git.kernel.org/powerpc/c/b94b73567561642323617155bf4ee24ef0d258fe
->
-> cheers
+commit 442d27ff09a218b61020ab56387dbc508ad6bfa6
+Author: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Fri May 3 09:09:06 2024 -0400
+
+    nfsd: set security label during create operations
+
+?  It seems like that's fixing a similar kind of bug, and would also
+make the upstream version of this apply cleanly.
+
+Ben.
+
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  fs/nfsd/vfs.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> --- a/fs/nfsd/vfs.c
+> +++ b/fs/nfsd/vfs.c
+> @@ -1335,7 +1335,7 @@ nfsd_create_setattr(struct svc_rqst *rqs
+>  	 * Callers expect new file metadata to be committed even
+>  	 * if the attributes have not changed.
+>  	 */
+> -	if (iap->ia_valid)
+> +	if (iap->ia_valid || attrs->na_pacl || attrs->na_dpacl)
+>  		status =3D nfsd_setattr(rqstp, resfhp, attrs, 0, (time64_t)0);
+>  	else
+>  		status =3D nfserrno(commit_metadata(resfhp));
+>=20
+>=20
+
+--=20
+Ben Hutchings
+Larkinson's Law: All laws are basically false.
+
+--=-a628iJZ2IuWGJ/zSUBkp
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmltK2MACgkQ57/I7JWG
+EQnWiQ/8CypNefSG2tAmnSiFaxRfMUtN6kIJbgF7PyPSoVbrpZerXWL6fd99mAxb
+e0HqdNdDEDfwLeL0l+0Rci+JANyiEy9vN0+gVieRuRGYlKEQ0mFL1lqsa4KuN5Q3
+wwYnJTZPu4sGVusVYLnIQMAwaFpv40sSbAiSVx5IFcIrPtkquoY82ZeyMBNj1Fz6
+Efx0Kt6qqM7iBbMhDw75RR3FPtw4ywopnHh0z3JgWPx7dE4TKP2x8mJH8BwOvzxu
+nBU93uoDlTCfA4fGkGEzkjRRsHhJ3KYlpPligLavxJRZh17jMtxK3geG7DByy4Fq
+29SOlJQC+JRgGnALiHbQr0DwFBbI9CszQksIhihLoP9VmXh7NOblldf5LYpRRD3h
+HTJfQY7ThIGIKtFSACjtYRZMlWEl+vsdbTu/HR8vDeFb5ugJBBTvYojzJZKxe2r5
+8IJX/iKLqPAKht33zqL504vAFSYuwn5OZKh0gv6wpLXbnYwiCXCE5CDYiWCrWcZn
+NYj6DxrUN14AS+74TY1ZZOix///S3yQOo/UFjvSCy4h0Gk8tL7ZYSfcit4QTHPws
++UrIzBdb6cQmcbmwsZODpHWqx3xnChzE3SxqgOxt+tU8AUwAxasQoJ7kgaz4itkA
+Hh4ga7hMj6ezHtaPR0MikBA1qGcVGchGTv3pdUBWZ97dCD6tn9s=
+=gc7W
+-----END PGP SIGNATURE-----
+
+--=-a628iJZ2IuWGJ/zSUBkp--
 
