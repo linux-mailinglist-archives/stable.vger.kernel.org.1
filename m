@@ -1,120 +1,128 @@
-Return-Path: <stable+bounces-210245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBD0D399FF
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 22:34:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC4BD39B6E
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 00:33:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2857330072BC
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 21:34:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 32C82300118A
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 23:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9533033DD;
-	Sun, 18 Jan 2026 21:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b1FyXtrq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B693331AA80;
+	Sun, 18 Jan 2026 23:33:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11412749ED
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 21:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768772039; cv=pass; b=jaKHlOAg0VeLtggWtYTicAG6nmHnnNA7b4on+U4MgwOjudpHb+2qRo8ueHraJb7Oteqy7V3JSB/AgnMb5Y2/O2N0CRVO85w/IqMcmwk+LCP8jpB3kW6ZHLkzH4UW7Iw7M2tX9jEw2zKsQNo/XRSWGBAunCMQ3qzwsrZw2aLkREY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768772039; c=relaxed/simple;
-	bh=dR5FMFlo246DjiayIr8NlGLupK4szceHEikbN1Luc1Q=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=ZyC7oUjnoYNJid2dHBt+9qcHctFshUFIrL0zbSAY+mUubwfXBfQB785c1o0oSlV35Y8w3N6TJzkoDF167Hx0XWcFE4IBJz6G5NHyuTHzlKK42wl1j9uCloKvmPY8DG2w8fhPmC1465Qm2bbxhbWDHWEd6g8wMspkkyJ8c9wBOB0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b1FyXtrq; arc=pass smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b8712507269so518372266b.3
-        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 13:33:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768772036; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TyhaTFtviMBLoGhl3pWcVCBuIE3qz7N59wsvnEZtaPE501PhfDfgPvArw4E9B73MM6
-         DSf99rtIqscpe5fHjb1O+0Ts6nRQujHVVzXNaZXkdtzhjzJ3DpfwIXzCOnp6NT9yAaAt
-         k4DtG4eCrFIPAln5HRpCFctRk5wojIDypLxN0khwU7aT5R+mFrh0FM4Q3zRlZ5uSMqgK
-         X4u7opyiiVyx2KqiU+Z32E/vkkEhrTZPgPVK0GZ/hlzoIZ4I/QAkpG/VnEfPlym/ONcY
-         Vje5pmcnAdjdBjZ21lo/x2F5UClClX8ODfaVBK/cXhu0y0rEB5hF6KtlOvdFScWQwnn5
-         UpAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=dR5FMFlo246DjiayIr8NlGLupK4szceHEikbN1Luc1Q=;
-        fh=mHmi4d1tr9bCuGf+b1Mca1QnNhphO8XUxiGZLdk5lRs=;
-        b=Yq8rbu/vlsY3qMjBVyNKIX6otFyMEMgx+ZsD+QXWZ9K5/OOloRrrrPTWawqS6dq18S
-         sRE1XSOe+j2G3TyOr4ia8zdhTlUKXG5OcFoIUNml4xq/kbhY4FO5XnO+xBY1CvXh4bEH
-         F6dhE2C4T9u4yXd6cgPeKpBW1FjXzoR0oZT9VNLlY0l0CGjZybBzyop5lkqf6cl3qFVI
-         vxMB+/vw8Lm0orGDCkFI4iWz7Xka5aa5ZT85Znff9VE1Ke+g3Zy1DX21boTqpRUzAlP3
-         rs/oJlqe+iKiFqzCeYEqu0v1vgQkGncTl0h+X2bpdBSxvtIjyXnkpGV0TfG8rv+39ifr
-         TnMQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768772036; x=1769376836; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=dR5FMFlo246DjiayIr8NlGLupK4szceHEikbN1Luc1Q=;
-        b=b1FyXtrqchzPczA8kRMiBe4/iNSTdqRY+JBmtz06IB9Yk/nvoTFCXqwSoa2bmX356H
-         PRpJ30tcsdLujyi3Z7tpfsHRakBsf1EcHlNQtZ6fKth2jD5U+GKavhv3RambwTaexvsJ
-         suZ/LOmtNYDHXCNKr/Jrt6Qj/OwZhhfTRWJOth45cVA89isxgG9QUdrwWIDWteHKiLng
-         IeDB27QRClA8zlVc+qq+cI4N+MXh5HBAy3iKq3FXnzgcFsKRMEGvuRWfJDWN0NkCZhcE
-         CzKXgGSli2dXBR5bKHag0t6bxqFnRtxj+RRyWIpoVm2/LAYD39+fGOotsjiium+kYCZc
-         8/DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768772036; x=1769376836;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dR5FMFlo246DjiayIr8NlGLupK4szceHEikbN1Luc1Q=;
-        b=FGw1L2VwRXPQveiCRERHMDrSD3yDuzgkiKTaez5PfxI4L8QNdEGoDNDB6/cMe72haj
-         62EXyzcRQK1m9Ud53zT7sDkDDsJi0tAab7ehlBxhKaertvaSHYuNIm5ieTOJXuGvwIa6
-         2Ghm8XjI+zE71/eCZDY1E6LO0BR/Il01nUOZVAobLDrcgiiOkXztldIqRgZrLEP57KMq
-         ZCj3eU4nEsM38Gii3lKK3XxkJYDQBMhrwBYYRf4ROjvJK6PLy0oDyAkDy9xx702Gw6x5
-         L2e+2P+x73QvfEmzVh5KqouRTCm+3dl3v6QhaZP62zt6Cw5fsKBh0T7UwKp+6qfAnYCu
-         RYcA==
-X-Forwarded-Encrypted: i=1; AJvYcCUQuTWIM2F0lJNfzu6ywjXtOuf1G7jJmVPTXSMeY49oE57Wxr9XFWM32FGkBgAKT6T0vKgJLrQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxANhI9+JV90N5k9w2bakzqaXbGTvl3Qkm+fBx1ZcZKo1Msflsw
-	rNulKWCQyCQFab/jFAhyF5aMF+QysxRSWELl9Shhhu5uj3VsPPnaw617hDvQTwjugabeh8q/H9n
-	pR+fsQex2ly1s/tiVtKQLkQqJFnvUX+zZGg==
-X-Gm-Gg: AY/fxX4fZi9vJJzyuC8vk2bIYPvpBsrAxWpG6nAY3Whf+W7FCxqqT3HrzgFa1v7eysR
-	EGacCBGv2yrIYjMN4pfqncin+HsNMCaAUjeHgImbiMg4pMIJWa8/aExqDT/LzxbUfr8hlUwT3h+
-	h/6QpR7VzCnvNxDLYMCV6jZLbbrtOr0TiHqbyLrQ+W5JvOugt/BVXufYTZseosOceZsAQCQanq0
-	pi9KNmoNw4Y4Vr0mUSC+UX/4uU36ueDGMnW26+X6S381fdUiHeKXlE0xG9pfgtQ7cwhAyCa51R4
-	lbdeejL5sNxx8sIs7DQT9RBJSGAxEfRF
-X-Received: by 2002:a17:907:930a:b0:b87:2d79:61c with SMTP id
- a640c23a62f3a-b8792d36328mr832751066b.8.1768772036000; Sun, 18 Jan 2026
- 13:33:56 -0800 (PST)
-Received: from 860443694158 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 18 Jan 2026 13:33:55 -0800
-Received: from 860443694158 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 18 Jan 2026 13:33:55 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A0D2609DC;
+	Sun, 18 Jan 2026 23:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768779214; cv=none; b=FRw1inPLiIqRY31Cx5e5a1jh83YKW6ZjHfaTcU5pmIjzGbuVAVTSHYdt+UNYbJqLTNTE5g0wHHV+z6cMQJazKf4riOFd6INg1f8iHhvgEYSVnCWv+lVCHnfCNF5lyEc/iCxhhS0/ZwXpEJiJ942au65g60Rr/FgT43acPiDhPHw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768779214; c=relaxed/simple;
+	bh=lvBhFtMniHKnzoLL4T2pCrSYxfOfO6hcj8XjWvQyf9I=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hdPvmh6tlZllnBd4MhvnIftppWJFUn4xatwt8lkDl3ISewf8rUYqv8qaI7dCA+woE+FDDc69LwXaVLQvLw17Rn42MGTPkMB8+Bn1k4N+B3fogeLuvBSmNTWSRUVuDby+EnTze435rXCCx/yjszxlhUsEfkOJP+S55U8bvuK0ap0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhcGr-001BF6-1Y;
+	Sun, 18 Jan 2026 23:33:24 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhcGo-00000000saV-2KSg;
+	Mon, 19 Jan 2026 00:33:22 +0100
+Message-ID: <4ca8d0770343eae44e19854cf197c76017a7c1ad.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 423/451] tls: Use __sk_dst_get() and dst_dev_rcu()
+ in get_netdev_for_sock().
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Cc: patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@google.com>, Eric
+ Dumazet <edumazet@google.com>, Sabrina Dubroca <sd@queasysnail.net>, Jakub
+ Kicinski	 <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>, Greg
+ Kroah-Hartman	 <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>
+Date: Mon, 19 Jan 2026 00:33:17 +0100
+In-Reply-To: <20260115164246.242565555@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
+	 <20260115164246.242565555@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-KdOIYA1KKbg2CZ+ImQoT"
+User-Agent: Evolution 3.56.2-8 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: zynai.founder@gmail.com
-Date: Sun, 18 Jan 2026 13:33:55 -0800
-X-Gm-Features: AZwV_QitwGRIZkGn1QroCS8h4qw7XwJi6e3jAKQi37ba990QzWONC4TZTkg9-wY
-Message-ID: <CAEnpc1b7fMJvpaub42Oge4B+h3wZo+HOAi=ombo27AwLhWwvkA@mail.gmail.com>
-Subject: Is Your Dentist Office Losing Time to Manual Workflows?
-To: gregkh@linuxfoundation.org, stable@vger.kernel.org, 
-	patches@lists.linux.dev, info@morenofamilydentistry.com
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+
+
+--=-KdOIYA1KKbg2CZ+ImQoT
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Miralda Moreno Team,
+On Thu, 2026-01-15 at 17:50 +0100, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Kuniyuki Iwashima <kuniyu@google.com>
+>=20
+> [ Upstream commit c65f27b9c3be2269918e1cbad6d8884741f835c5 ]
+>=20
+> get_netdev_for_sock() is called during setsockopt(),
+> so not under RCU.
+>=20
+> Using sk_dst_get(sk)->dev could trigger UAF.
+>=20
+> Let's use __sk_dst_get() and dst_dev_rcu().
+>=20
+> Note that the only ->ndo_sk_get_lower_dev() user is
+> bond_sk_get_lower_dev(), which uses RCU.
+[...]
 
-As a dentist office, you likely struggle with repetitive
-administrative tasks and manual lead handling. This can add up to
-hours of wasted time each week. Our AI-powered automation at ZynAI can
-help streamline these processes, freeing up more time for what
-matters.
+So should 5.10 also have a backport of commit 007feb87fb15
+("net/bonding: Implement ndo_sk_get_lower_dev")?  Or is the use of
+netdev_sk_get_lowest_dev() here not actually that important?
 
-With our solutions, your team could save 5-10 hours per week on admin
-work and focus on providing top-notch care. Would it be worth a quick
-conversation to explore how?
+It seems kind of wrong to add the netdev operation and a caller for it,
+but no implementation.
 
-Best,
-The ZynAI Team
+Ben.
+
+
+--=20
+Ben Hutchings
+Power corrupts.  Absolute power is kind of neat. - John Lehman
+
+--=-KdOIYA1KKbg2CZ+ImQoT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmltbb0ACgkQ57/I7JWG
+EQlEqxAAzFb/2fOdz1nzjo/hyFMHwIvpAh2r7qFkIWW6X0eKbeJFHwtdwuXeSZqR
+SJ6Dh+R/L8pGBAWBOny16q9pLo76EXZtwqkgUnmx2HoQIsMfcLa/o+P2wN+ynLRk
+yLYNCxWJRBsq8nLLHcn6tgqPvdtPMjXnb2vlXgXCU2fN4IX+Is41NGqBvHeWbE1Q
+7CFcZJWEWMWPcGS56DbH0DR7diEV4IpQe6QSYJ6eME7mkkhV5CMBSAGohtvrQ0JE
+h9vc+U9Z9KUPp2p9aOcF/sDPsbvvGBoXoIMR82iwXZ3eNj5mqHcXBZZ+35qqjYgU
+sddhQZCxLarR5ZDLid87BG+NywgeKSJtwtp1yJWH+2YdALBY4K+Dib/nO3rISwOW
+m+EGeOBBX1dha2OerL9Uws+Hp9s2ADjTu5u5nwzwiegGfWDE4DqbAwAQEu61rSgo
+smqA3i63LzerAauF/6G5gve9WzzpyAiyBhv6mzHwxbIN2N/D5L3B53z/j+17MvxI
+U6yX8hWZy2vgy+UdJMcOhmYBjMqupRfRXuJ0IjbdA0E03HPOB9A8I1qf1LDvgRO8
+evC7m/1tSNvxw7x5sjm/8ALvJpH2ggtnspjoyozvp2Jr5KWoyk5mt6l6v1t5BL49
+OK7TA8efA6yKVKdp6GaSLygNtDgP4qEg3ydgHl3kiI79DSXjlfI=
+=DVOP
+-----END PGP SIGNATURE-----
+
+--=-KdOIYA1KKbg2CZ+ImQoT--
 
