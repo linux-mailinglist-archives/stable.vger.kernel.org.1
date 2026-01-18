@@ -1,154 +1,122 @@
-Return-Path: <stable+bounces-210235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A93D39945
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:57:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D927CD39948
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:59:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 78ACD3001629
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 18:57:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D72F730076AE
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 18:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DAB261B8C;
-	Sun, 18 Jan 2026 18:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKAXgJ2d"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9B92253EF;
+	Sun, 18 Jan 2026 18:59:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C4A1A316E
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 18:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F8B1A316E;
+	Sun, 18 Jan 2026 18:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768762663; cv=none; b=ZLVuklAiQjwcRyrevD4qkpPQRt5ypWDg05UlVpXU75KfiKxLLBTrLfMmjg5oV7DY+Y+ZO6DHeT6pKjpveBxMG+dq6swqsxr3Fx9ekDGk8J/ftsKd4dTDYU/4yJmaAT5mChbgRKzJoCYzcBEgfgPrbAgkj4+16l1XMchfq460CKo=
+	t=1768762754; cv=none; b=liv+fIluztW9wT+FkKvv2StQD4Uafhvee9s3E1DG3A34uTFs0742RJAL5xSUXfJzTK15sm4wbaQluFzdyShaSzQppRSU3GJ+Fa5mzwOPFMXDUkpz6WSs5CRzX5rdxqhwrNC+Bx/Oa8uquFiPS24zGuOOGEN9K/TML/ee/dLiCQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768762663; c=relaxed/simple;
-	bh=uEH6tkrhwnjKM1uvdiIJIJXExMuu7hcx+AmXyWxFOOA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nI2/WoWgZmsZ9/8aC+xPUCLoIuZgdYCEyYXjNiV5te6WQ9BUnxkAUMelI0+F1zFyS4wYjx60e0tp0SMYCLrcVxr5fVRPW7H4gvPYLir45MURbUb8W0Tt0rYEKne3yU4Kk+3JenJPiyn4ldiQDd2lO8PvseDzSPCOF9nT1cEF+u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKAXgJ2d; arc=none smtp.client-ip=209.85.161.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-6611b4edbe6so1212706eaf.0
-        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 10:57:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768762660; x=1769367460; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sIn7kPGIfDc+QhgxXADc8Eo2fOwVdn5dCfxtYkZG0x8=;
-        b=kKAXgJ2d7wLGFb0j/dkkCRwufxMtPBJCUaQN6ThbCOQ6tp2Wj8fSjdAPrXIGCAPqoG
-         FafTl+jcrnm4vcEO/cgcXXsBKZQCFJtRg+zjz/3GgpGqHoMUmjqw2Ng8UyE8+Wui8UgX
-         44Mqik+9op7pPFEf4Mv/EjVxKX2BCMBVdVBWzSdiboGcHN+eCvk/XaASp3k8A64S/dob
-         7qeAfHCiXLFNcz4kAIduE9FMDe0jdE6QHx0q2Effy4gbW+u4acpQB4GijkaygAZyCn9O
-         KHJwI60ZSiSF+6kpvOsbs6Pl5X8ZAxseYzXNqINVRsyS/eJ6oU8LXytKRgrRW2mizEMp
-         PFRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768762660; x=1769367460;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=sIn7kPGIfDc+QhgxXADc8Eo2fOwVdn5dCfxtYkZG0x8=;
-        b=kvCgbW/RP+Twguh7JVF0d2W8BbXlqPP/BW2OgswS8TvbNSYae59khZQUTJyGfj1kMX
-         gMfFaPBqgSAkpGzQWovVJCpX0ryX5CnOoDXVBhsosZdCyu8mJKtab5iWr08dRaRC2QnV
-         HICBQfBoMvDpCV+KuK9A9H6yombImcdIUNm1hDtn+nVp3+K3W5R6x69OZQ7oToXyC0nc
-         q7fWU2IAo9tdjPl0Aq4FpfwemtT0UG5mz2tE85pndpC3o8TKdPHm5qoJcDhx0J4h5b60
-         gFV31oz8MgHnQIiLHpTHuD9EWYAwfQXW+PhMSttG6N7xTQoXolAEJAO0d6NcCuN15Lh3
-         bN4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUIEaOG+1+QCGWHcCSr0AHwOFDidzVxN7zfxKtipSPrUrpiekcYGPZNRzJ6cpLfqsaO1XMDTAY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywgi0Y1icsFwW8IZNcfGEZcbzOuS+exOm62kKnspVN2GvZR+JXb
-	Y6LH4MjVzz4eAw/oBIV/WOuWaClfXOyKnqy8Jg4G6+mT5Z3/VBwg7qj0
-X-Gm-Gg: AY/fxX66rpE/Dv51hoY8drb+ZBCwjxLV+0DiV953koYgVuW8FucPF4/QssE8Azl+Yhs
-	/gR1oknIBF0L7ylqUhsGmEzg27fi5uwPDEaCYZ5K83XWrZ4gL013vkjFwsRagMNEoipqpyqiRc6
-	JQp0W7jKUCYkt6LQGanTi4VpoiaeURSQ9ENyqe8X8aYfUES3hFpKjcZJMoUGdpRFGJRkC3rsV/2
-	hv37phziaIk6whZRvWAHpdLjP5qTE93LUYkrO/0prarTIiCrYEmaQKUuEhB6gECMHFZTnQ3M+Q6
-	cm27hzs9WQybT5hakT9ub980H2JbpL4FUTP7grIqIg+GnBYxIcxQTnkrDunqN5P9Rab8miUOVva
-	p9VjYJ9irNP/cj7pnFyAO9WJMw2LwC4rAsbnanu6mwrh460wF9n8S6okFWIIpbvS2aMlVdGdAzW
-	fpsyGQ5WZhYZ9zgAbCXAyBOiNpyR1zmFkie5OEVIfyTCs=
-X-Received: by 2002:a05:6820:490c:b0:660:fd8d:954e with SMTP id 006d021491bc7-661179cc735mr3331882eaf.42.1768762659937;
-        Sun, 18 Jan 2026 10:57:39 -0800 (PST)
-Received: from newman.cs.purdue.edu ([128.10.127.250])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-661187820a5sm3867685eaf.10.2026.01.18.10.57.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 10:57:39 -0800 (PST)
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-To: markus.elfring@web.de
-Cc: almaz.alexandrovich@paragon-software.com,
-	jiashengjiangcool@gmail.com,
-	linux-kernel@vger.kernel.org,
-	ntfs3@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v2] fs/ntfs3: Fix memory and resource leak in indx_find_sort
-Date: Sun, 18 Jan 2026 18:57:36 +0000
-Message-Id: <20260118185736.41529-1-jiashengjiangcool@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <17914287-640d-4500-b519-5f3d3aed2878@web.de>
-References: <17914287-640d-4500-b519-5f3d3aed2878@web.de>
+	s=arc-20240116; t=1768762754; c=relaxed/simple;
+	bh=ex/2O6cmEjo2woUmKsAcQcDXJ8an36PUKEsLQ+euTtE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=c4oZyvtMIYtf7xaLB4HuKaFUENWpFz+8PJo81084sSzALuEZ41nswgpXrA1irDBPiQoyOd1FlKUZoGQDsLjHfQeQ891dF3OoCqLy4RHjbAbyj6iV1AKAX+YxwupfRaIhBRFSCXuBcdFNEfArdHI36zvfoU18FZBhgcddInXTGUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhXzT-00196F-1s;
+	Sun, 18 Jan 2026 18:59:10 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhXzR-00000000rI7-1INo;
+	Sun, 18 Jan 2026 19:59:09 +0100
+Message-ID: <ca5a59b665e1e91b723e66b30e4692cfa13a3a31.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 394/451] mm/mprotect: use long for page accountings
+ and retval
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Peter Xu <peterx@redhat.com>, Mike Kravetz	
+ <mike.kravetz@oracle.com>, James Houghton <jthoughton@google.com>, Andrea
+ Arcangeli <aarcange@redhat.com>, Axel Rasmussen <axelrasmussen@google.com>,
+ David Hildenbrand	 <david@redhat.com>, Muchun Song
+ <songmuchun@bytedance.com>, Nadav Amit	 <nadav.amit@gmail.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Harry Yoo	 <harry.yoo@oracle.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>
+Date: Sun, 18 Jan 2026 19:59:03 +0100
+In-Reply-To: <20260115164245.186677511@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
+	 <20260115164245.186677511@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-hJdlc3SGN0eHhDMV7FtW"
+User-Agent: Evolution 3.56.2-8 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 
-The function indx_find_sort() incorrectly uses kfree(n) to cleanup the
-'struct indx_node' instance in error paths.
 
-The 'struct indx_node' is a container that manages internal allocations
-(n->index) and holds a reference to a buffer head (n->nb). Using kfree()
-directly on the node pointer only frees the container itself, resulting
-in a memory leak of the index buffer and a resource leak of the buffer
-head reference.
+--=-hJdlc3SGN0eHhDMV7FtW
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This patch replaces the incorrect kfree(n) calls with the specialized
-helper put_indx_node(n), which correctly releases the internal resources
-and the buffer head, consistent with other functions like indx_find_raw().
+On Thu, 2026-01-15 at 17:49 +0100, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Peter Xu <peterx@redhat.com>
+>=20
+> commit a79390f5d6a78647fd70856bd42b22d994de0ba2 upstream.
+>=20
+> Switch to use type "long" for page accountings and retval across the whol=
+e
+> procedure of change_protection().
+[...]
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
----
-Changelog:
+This was a dependency for a backport of commit 670ddd8cdcbd
+"mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()", but
+that's not in the queue.  It seems pointless to apply this by itself.
 
-v1 -> v2:
+Ben.
 
-1. Add a Fixes tag.
----
- fs/ntfs3/index.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index 7157cfd70fdc..c598b4b2f454 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -1248,7 +1248,7 @@ int indx_find_sort(struct ntfs_index *indx, struct ntfs_inode *ni,
- 		    sizeof(struct NTFS_DE) + sizeof(u64)) {
- 			if (n) {
- 				fnd_pop(fnd);
--				kfree(n);
-+				put_indx_node(n);
- 			}
- 			return -EINVAL;
- 		}
-@@ -1261,7 +1261,7 @@ int indx_find_sort(struct ntfs_index *indx, struct ntfs_inode *ni,
- 		/* Try next level. */
- 		e = hdr_first_de(&n->index->ihdr);
- 		if (!e) {
--			kfree(n);
-+			put_indx_node(n);
- 			return -EINVAL;
- 		}
- 
-@@ -1281,7 +1281,7 @@ int indx_find_sort(struct ntfs_index *indx, struct ntfs_inode *ni,
- 		/* Pop one level. */
- 		if (n) {
- 			fnd_pop(fnd);
--			kfree(n);
-+			put_indx_node(n);
- 		}
- 
- 		level = fnd->level;
--- 
-2.25.1
+--=20
+Ben Hutchings
+Larkinson's Law: All laws are basically false.
 
+--=-hJdlc3SGN0eHhDMV7FtW
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmltLXcACgkQ57/I7JWG
+EQk/ihAAr8ZzwpyDdJakJhjCtb1d8EW1364VNnaHGJeCCSx2ZrGl50sF5w4D4AbL
+qhiAu12Qx7f+/WV6U30dSz0ozefqTMXG+xcO+iZLDilBcOYtfqK3R9+Yx6LpPZ6h
+5i+I1RhcoLwgFa5LkZhGeAhZTtzDKeNvCfKdfXOsBHHNLtXrtM+kJCBWSusftFES
+UFHyW0qWs1y4LKIeU9s3CRdnbv+X8eWZ8dgpr0SJxY3csgp2naM/9PLejqwtgi2q
+GrrYznmaadq/O++xOek5GtugcnKNi1VLHxu+MW1sfPeTt83iJQyjWXbUNnAyv15m
+U0SXIZqV+0rL4YSeyziv2c0RvyQBOtCTOmLZMBpLgajTv20q2PNl6RD2/TXiYJTG
+NKspCwKXJHz0MxKFcl67BxGE09yybfUzAO6lT53vXZq/pR8okzfizt1cxnKzgy7c
+shHopnScCwIDg/fDiLVTUpJO+Pmqwy65+F/7E2g8orD3ZtbHBrX2of27G5NB8vWI
+E6dHemrC010FLDO8LPfOUFCfILnIf9aiLMZnh4Oku95PFS1bnIjFJ26AkJJfn1p3
+oeqk5tA084oggtX1hxb/RvLbxhtYUWXanbD4+e4UcOM7jACGBroPC9pxvGWR+nsn
+Ao9Hvx4JaWFtbQn4STnGXODzJJqc+5wZOTwk5NXqOc1ksbS6HeA=
+=/ZqA
+-----END PGP SIGNATURE-----
+
+--=-hJdlc3SGN0eHhDMV7FtW--
 
