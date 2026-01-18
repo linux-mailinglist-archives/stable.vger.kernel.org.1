@@ -1,165 +1,114 @@
-Return-Path: <stable+bounces-210231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A7FD3989E
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 18:45:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE7ED3993A
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:41:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF2613005A84
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 17:45:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67E31300A1F8
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 18:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71C621ABAA;
-	Sun, 18 Jan 2026 17:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A681D2FF15B;
+	Sun, 18 Jan 2026 18:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M3BA18oM"
+	dkim=pass (2048-bit key) header.d=mac.com header.i=@mac.com header.b="lS58KSQU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.mr.icloud.com (p-west2-cluster5-host3-snip4-2.eps.apple.com [57.103.71.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A81A2FC891
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 17:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A45238C3B
+	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 18:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.71.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768758333; cv=none; b=XMrhoss5ns4Ni1aGEQFIb+chiur3qVg+nesKPy+dCx8edqHOEAZwZr1sSxzDwSaZlDHRgzF+Sy5mfzvMHJDzijfiiO7ZbU6ujsLMsoGerRtqSv1p3VdlqSzxX5VfZkr/SzRe8YoomEbWcu5TpCotJBzLG4vurrxyK4bf19a51Ak=
+	t=1768761707; cv=none; b=nkhH24MDloeLsGRR4rXv66PaERJqd4DaNeUpDoiKNCowEcd0HM48MFeTHb/p1W3XIlW0v5CDsOBxxVG7BHStSvGIlzKsaENCFsclfFcfl2DxMbGF3kvzj/+oMw/Ga17n3XiZyMBGWdhSCAJUyCGLkMIG8lVzhrl/xnO9w90Z+Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768758333; c=relaxed/simple;
-	bh=VcjR+Y1iNWZSa1ZtxEzMaBCTuPx9pXxpzhpYI/x/o48=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pXvQIakEzIOR2D72F6mZrUGouxyeUiislyhNNuo1V8CsdStA4oX36bmDOP8nnMfOyjnISMmoIUX9XpgoYgS60vx26Sp0rXjDYwh6dsw40+JiWDiSkOyzqjTFo959oSFn8D6yN86FkA3rNxbe8vuh9fwYDchEGeVBlvoi77tJYOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M3BA18oM; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-655af782859so4600973a12.2
-        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 09:45:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768758330; x=1769363130; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PbagKvzCIQaOeLMD21+nxd4UKX2WNLT5bVzVk/tS3pc=;
-        b=M3BA18oMmjUmADEe403rh92JvTWHfJCcY48LxqKL1hxU/xNRYO4P1I+s+d5Kojjg/D
-         hY0Ioo6uA5GwfHoMf1Q1llyfqbp/liVpI7OapIk5cmoxODPRxbD8G6FfNVUALCGE1LbB
-         MDau6kmCzdF0ZVVVdOiFRX2bcCqlCQVhrVMZEr6POMGnbiICD62EO2dmcW8wLZPLW8ta
-         /A/ETvbfyys1Er8ifMxG8rrXODPLxnRalcx6HSAjp2jaj3JLgZkiaFkMRHJ7LOWtNn/8
-         lG8xtzT6T0wPkQQrBecBuuBEwF0wXmwQapECu9MaMDOCNfIV5BG7Ms9Ohz9nxQapx2va
-         Bz5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768758330; x=1769363130;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PbagKvzCIQaOeLMD21+nxd4UKX2WNLT5bVzVk/tS3pc=;
-        b=d1QsA1e4xrWyeAFQR+wp/VqsQ3Ya4Uxc7SzKdVXuQEAM0TbawhRpPm/X3ei8NaPFIK
-         VeHnQ0ALUoazatRlIaau2XFTb6PsMRPu75jp9n+Llj83Z3N0WggjRZJhctCpHKYQUBp+
-         6D8TBqZcMYjB83p4DMOI9iYRou2mKHiYFIbUJajhpgay9l8+ADIYu38VtrG4Tr+ejrG/
-         6RP4EmZSmDqrxNDnoecNsuHcLeHrHeDxlKCNvQWKS+dwGB3/4LfY0BUyccvMUtj54uHG
-         XWt642wdAOYO04OdTojcKNOyfaJB3Yqdd7P3fpmjjGRA1Qh88gvaQbFVqxjCVOevdEPP
-         qIrw==
-X-Forwarded-Encrypted: i=1; AJvYcCWWMx8xRKcFbgofWXxN1PnqV3qvkTF8TFji6WWdBhTzOvX7Mbm1ceRChBJCOxNZX4LKH+tOdp0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyvd/TdMzXUjBWsNvG70gH1nvRMzAnH6+qPmah/k21kJtVpLICB
-	lgXwC01pfK6ShM9kMDE5oGRBRfUmsPrwD747/rupwiJ0K6ehbkADv8aO
-X-Gm-Gg: AY/fxX7XjzAMosFuPpMlat13h1qu8iJPwqEyDy3FInIDuDDWemgW5JC0uNTKwHr0m7Z
-	RmX2WhFsXgUKbW6bAf+J8sJvjOdzk9WvNcr4h4FjJKyeJfBCzgVGNCc3DcDhxIlqvUijYd1xqkt
-	4P/w27yCEenNsBatOvh2bkIZN1mV1ZtSGAgvy4ejUOy+u70STsyTE70YsvUSUKxYrmOz/fjzUBL
-	OWlF34Ct9iXpuph5ccP9oEAqh36SNNgFwJRf8HqDlgVhAj0ElfrzfqigBJEtachilZ37EmiOIKS
-	Aub1Pv/EBmAL8a0EEXokkIjbRyh3QHUFNtA2nFNnqzMQJsXiEM5fouOTC5C2XQj7HI//7fT486R
-	5dYTBNkXGEjPU4zY5HDJkRyOmthJ+2eP7EEH2aEobv8ccOkBkU7TLQ5mPPo+mqV7Q2n3W7MmP0V
-	r0dBLjCGSXhTIITw==
-X-Received: by 2002:a05:6402:3491:b0:64b:5562:c8f4 with SMTP id 4fb4d7f45d1cf-654524cf27fmr7018655a12.7.1768758330277;
-        Sun, 18 Jan 2026 09:45:30 -0800 (PST)
-Received: from osama.. ([2a02:908:1b4:dac0:5466:5c6:1ae0:13b7])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-65452bce411sm8105189a12.7.2026.01.18.09.45.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 09:45:28 -0800 (PST)
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Sjur Braendeland <sjur.brandeland@stericsson.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2] net: caif: fix memory leak in ldisc_receive
-Date: Sun, 18 Jan 2026 18:44:16 +0100
-Message-ID: <20260118174422.10257-1-osama.abdelkader@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1768761707; c=relaxed/simple;
+	bh=pjtbuDlqoDmoMLqut2ibzsqKWg9OJwsmzEZB5/sUYBc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rISaY/xLoetTOd3XSuT5/cQxUACTLlBGNLhRXegA2jvV5OmwOR8TxwdEwOuXwLAyu+8DM6lxs7/QlNoK2TJNc1NGS/M8siLysq4sdW32+TNjV+u441RqHXy4uWj9xYQbXRE9aLzPEfaid/ne/Cl5SrEXxsjqolUK8XV0B5vOAYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mac.com; spf=pass smtp.mailfrom=mac.com; dkim=pass (2048-bit key) header.d=mac.com header.i=@mac.com header.b=lS58KSQU; arc=none smtp.client-ip=57.103.71.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mac.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mac.com
+Received: from outbound.mr.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-0 (Postfix) with ESMTPS id 51D0518001CC;
+	Sun, 18 Jan 2026 18:41:45 +0000 (UTC)
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mac.com; s=1a1hai; bh=xjvMi6GFGlbqgGmmeOFvWqPwsPoBgy/JjXDenAmtqfw=; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme; b=lS58KSQUIXGRZPrvj3fnSokrXvpFexaSb6sRzGfpY/OYR+egnKsRRmUc9ESl+eWQXWwSJNaO8I5zPqGsPL4BgPrUkllQmXj9PoPahiCP4k9ac64btshfIOPENqiABavwfnaowdyZNBFKLaR/Ww0118D2zyKduIcJ0qq4uVkm7MU1A8nOLxCmGxpQrFWNsxQBf9ko5VUlyM8ksme652oJGU92iFYlQPrEHXnDtWOMcesxDIAQ4JETW0RJ+fywKREn/1LkmgZ3tbXF81Dpv4ruurTEzlKDORLONlbiwPUo6yKMa+6ZEmg/UYFIQPaxwgfckwkedI5zQ01pVRd6rkxn0g==
+Received: from [192.168.1.216] (unknown [17.57.152.38])
+	by p00-icloudmta-asmtp-us-west-2a-60-percent-0 (Postfix) with ESMTPSA id CBF3218001FD;
+	Sun, 18 Jan 2026 18:41:43 +0000 (UTC)
+Message-ID: <4c70fe51-56c3-4292-9eda-f0f4535718fe@mac.com>
+Date: Sun, 18 Jan 2026 12:41:42 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] powerpc: Add reloc_offset() to font bitmap pointer
+ used for bootx_printf()
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>, Finn Thain <fthain@linux-m68k.org>
+Cc: Stan Johnson <userm57@yahoo.com>,
+ "Dr. David Alan Gilbert" <linux@treblig.org>,
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, stable@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <22b3b247425a052b079ab84da926706b3702c2c7.1762731022.git.fthain@linux-m68k.org>
+ <176680916368.22434.818943585854783800.b4-ty@linux.ibm.com>
+Content-Language: en-US
+From: Cedar Maxwell <cedarmaxwell@mac.com>
+In-Reply-To: <176680916368.22434.818943585854783800.b4-ty@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Info: v=2.4 cv=XrP3+FF9 c=1 sm=1 tr=0 ts=696d2969
+ cx=c_apl:c_apl_out:c_pps a=9OgfyREA4BUYbbCgc0Y0oA==:117
+ a=9OgfyREA4BUYbbCgc0Y0oA==:17 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
+ a=x7bEGLp0ZPQA:10 a=fPXO8E_wjBMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=JXPk7LadgWurrYbJNRoA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE4MDE2NCBTYWx0ZWRfXwERN4npg9hhe
+ QcSRTksUbDg8c5Aw8/AqjSopXXaAJ0IBhSDzpPGLBk39SaKa+6Yshw4eLS2GY57C/aZbh6SYq8M
+ cgYuZqXW/WGKH6k7Srg5FNe1jK49aY9oAvVAF6igfb347JBnRsgN2ZIWmvpc6g+QT3gzusEFntS
+ dOUbbLq7G1rUv0scG3vSUNQYI5rMLdJyz81qyJTeunI9+Zotbj37PwcIhuhQXa93Py8rTYVOf6t
+ UCiC1q5u0666KCqRIFvcl2XEyMhguV44R5MPCVuRd3Mb16D9W/UX7x2J4j121FS7vKO9FgpsaPt
+ vBOKSZGQDy+W3fNQPC4
+X-Proofpoint-GUID: _RSHnb2iLwpQezYNpt68GTNW8-_s-jgY
+X-Proofpoint-ORIG-GUID: _RSHnb2iLwpQezYNpt68GTNW8-_s-jgY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-17_03,2026-01-15_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ adultscore=0 suspectscore=0 mlxscore=0 malwarescore=0 spamscore=0
+ mlxlogscore=999 clxscore=1011 bulkscore=0 classifier=spam authscore=0
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2510240001
+ definitions=main-2601180164
+X-JNJ: AAAAAAABp+XWJIMWjaKg1EdVIkMHUHCSmlU1XHxVWa15/VQ0U2VsLzL9GZR7Uo3OClqmbEGo8uoab8ZBBVoVjXkyAgD2Kf9OWSpiapwKQZSsGBC27ZxsHkJqQN9PdSmqs56YIWKktDCNDr19o/w804prbHwLb2gXkZmYh5Zzm11Hcu5FgCt/1PrS8/lYRhkwWjegR9wUrpSfNW/KC1hZsO2FQcbmEN6C+Hy0wdcQg3yVf7EXGp2DVmNb3QvLxTL6btjRN/G0sjC/p/fq71pFA95BlDQc9GFF7IZ6AhbhV/MCxM1xS/Zg+Xw94Kr95eLK2Y3eT+Xv2yapS4NSXziqqw1klsCr35qMCzop4TbazjYevalyoI6XRA1OALJHN7WziTwo3s5nQbMrS/z8sF74EPBep0qVeiBNllvC7+kgGIRI8LHudTtDcg43X3ylciuJPrW+BUVTERC/BYk5YfXKKaLMCjia+hO+f0HSZJN/cpA4nsTsbwEbYXt+JDdNj3YV9OEMnLrVmthgkUqsPkcP+xRZy+kkAQoDt4H6MUe7PqyaIgR1s7uXuWXRhW0Vzrfblf4LTqHsgzWulX2Jn2EVxAZApKhnDqfkUcEJ6BRV+0ZAIRszUGB57WXry25k5ycYGK5lge69BF5Imz48ht134zhv56kpbF2zCHWPLUbb6TzRGB9hnPg2192rRRVNv/gxMETmo6+HVtOzovHPMZya8RJG6/rZ/OdMt/pUKKgqHo7SDA4LHVILM612ziFLpLXeNSBKxbFKKtOT3gqJQy7D97FV6S9t15BQ23PZKdSpw2BassMoCVXhnQZNiSeM68f1Ivb9phegIw==
 
-Add NULL pointer checks for ser and ser->dev in ldisc_receive() to
-prevent memory leaks when the function is called during device close
-or in race conditions where tty->disc_data or ser->dev may be NULL.
+Maddy (and everyone else),
 
-The memory leak occurred because ser->dev was accessed before checking
-if ser or ser->dev was NULL, which could cause a NULL pointer
-dereference or use of freed memory. Additionally, set tty->disc_data
-to NULL in ldisc_close() to prevent receive_buf() from using a freed
-ser pointer after the line discipline is closed.
 
-Reported-by: syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f9d847b2b84164fa69f3
-Fixes: 9b27105b4a44 ("net-caif-driver: add CAIF serial driver (ldisc)")
-CC: stable@vger.kernel.org
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
----
-v2:
-1.Combine NULL pointer checks for ser and ser->dev in ldisc_receive()
-2.Set tty->disc_data = NULL in ldisc_close() to prevent receive_buf()
-from using a freed ser pointer after close.
-3.Add NULL pointer check for ser in ldisc_close()
----
- drivers/net/caif/caif_serial.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Thank you all for your hard work in solving this issue!
 
-diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
-index c398ac42eae9..970237a3ccca 100644
---- a/drivers/net/caif/caif_serial.c
-+++ b/drivers/net/caif/caif_serial.c
-@@ -152,6 +152,8 @@ static void ldisc_receive(struct tty_struct *tty, const u8 *data,
- 	int ret;
- 
- 	ser = tty->disc_data;
-+	if (!ser || !ser->dev)
-+		return;
- 
- 	/*
- 	 * NOTE: flags may contain information about break or overrun.
-@@ -170,8 +172,6 @@ static void ldisc_receive(struct tty_struct *tty, const u8 *data,
- 		return;
- 	}
- 
--	BUG_ON(ser->dev == NULL);
--
- 	/* Get a suitable caif packet and copy in data. */
- 	skb = netdev_alloc_skb(ser->dev, count+1);
- 	if (skb == NULL)
-@@ -355,11 +355,15 @@ static void ldisc_close(struct tty_struct *tty)
- {
- 	struct ser_device *ser = tty->disc_data;
- 
-+	if (!ser)
-+		return;
-+
- 	tty_kref_put(ser->tty);
- 
- 	spin_lock(&ser_lock);
- 	list_move(&ser->node, &ser_release_list);
- 	spin_unlock(&ser_lock);
-+	tty->disc_data = NULL;
- 	schedule_work(&ser_release_work);
- }
- 
--- 
-2.43.0
 
+Cedar Maxwell
+
+On 12/26/25 10:23 PM, Madhavan Srinivasan wrote:
+> On Mon, 10 Nov 2025 10:30:22 +1100, Finn Thain wrote:
+>> Since Linux v6.7, booting using BootX on an Old World PowerMac produces
+>> an early crash. Stan Johnson writes, "the symptoms are that the screen
+>> goes blank and the backlight stays on, and the system freezes (Linux
+>> doesn't boot)."
+>>
+>> Further testing revealed that the failure can be avoided by disabling
+>> CONFIG_BOOTX_TEXT. Bisection revealed that the regression was caused by
+>> a change to the font bitmap pointer that's used when btext_init() begins
+>> painting characters on the display, early in the boot process.
+>>
+>> [...]
+> Applied to powerpc/fixes.
+>
+> [1/1] powerpc: Add reloc_offset() to font bitmap pointer used for bootx_printf()
+>        https://git.kernel.org/powerpc/c/b94b73567561642323617155bf4ee24ef0d258fe
+>
+> cheers
 
