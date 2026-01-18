@@ -1,169 +1,148 @@
-Return-Path: <stable+bounces-210202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58472D3950E
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 13:51:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D4DD3970B
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 15:19:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C5D8E3003864
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 12:51:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58843304065A
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 14:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7613127FD74;
-	Sun, 18 Jan 2026 12:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shenghaoyang.info header.i=@shenghaoyang.info header.b="LXFNRwp+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B087C2EB860;
+	Sun, 18 Jan 2026 14:05:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7C04594A
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 12:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871DD2D5C76;
+	Sun, 18 Jan 2026 14:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768740665; cv=none; b=oDq2hbbV+nH+IEKhonlPo6gOQ+Ctngn6L7gBl80B2onj9Wi7YdRUiDCUa4DW5+PlZO0qRkhpjijS2SeyYUnEXC5hBD4W0vl38seW1qpN7CwXfCa1XoRV8wrgyHPV5ebMmlPFo4biKZ9pNmqsQZA7KXEETGxiDnsw5yUKimFpyok=
+	t=1768745149; cv=none; b=X7qsCaRYwTSvYZ5bZQSf2WyZ7uHYxgafJ8xTSuZ2LvBsTwFLbfnNlIGRpIXLBqFP/ydshVX0ScdbF2SSe/w3TRHg0/E3lkPBzc0EpHxhu/h2ltlmpPl9BTUhsJCOKSBHP00Fcfr6I9ZY4kLXZ14OorexcqKfy3PwVeLdYbt4NOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768740665; c=relaxed/simple;
-	bh=eElOk8g7UCh3kELyARpOwDD+9etfEltZoJTvNohjmas=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WkAvm7mt+MpDbe0ALmQXiUo7Obqg7kEBauKCDiRATTDyb037zySgvI9uv2IiQAjCj8cbWiahgfp4t/8Tm2f8F6EicpZwNoNipNJYiVKtBrSFsMn35KutG2fkn/Zmqgyfm6GVLWHMhjMQeS/j9MGGy1XJGXWzer72hAyvrArnDBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shenghaoyang.info; spf=pass smtp.mailfrom=shenghaoyang.info; dkim=pass (2048-bit key) header.d=shenghaoyang.info header.i=@shenghaoyang.info header.b=LXFNRwp+; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shenghaoyang.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shenghaoyang.info
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-81f42cd476eso60739b3a.3
-        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 04:51:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shenghaoyang.info; s=google; t=1768740663; x=1769345463; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yf6MwQDQwh28ZBZ3XFwBnvm7ZJiNkyLpf2ZCMRITZCA=;
-        b=LXFNRwp+nMu9Pftu9Swr+0XkrOqDWHMvEc3A9JXVpZUectvZUcMpRctO+xfE30Pc1v
-         UDetew5an9CA1IUtXXKdNKvdYLUgxEOZDO7chC0YxmfIFm4qrGPSQVvSBBGeuVhgCOgl
-         fduPvzz3D4cJfVaLx9F3OnXyrqnpsAF4s/ya3RP+huEF0J2h8PdDCB7RHG0tirJk3w2R
-         tdZqPMbw8HaNYp0fqJDymqT/gM6Aa7BfmZ3nzAZQClV44u1b+mi1U4B1Ofl8sK+6iPij
-         kLFiK4EhuoWLjJtVv1F12cLmyUPgOlWQNQrAiuG8d4BvHrrwUsg37QcBjRXRThTgGrSL
-         L+gQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768740663; x=1769345463;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yf6MwQDQwh28ZBZ3XFwBnvm7ZJiNkyLpf2ZCMRITZCA=;
-        b=cStU6g1YV2jHu32Ht7rubb2PZq5evsC9JU0duauQT/c+Bc5SVLqRKBwu/3w4WwLWbS
-         fT0KrAh5iI4mW9l5jLJeYuIUNmsQ25bM6au9SgaWZgocqSXPfSJ3ZFJs0sHf1gXG2DHz
-         1eoDWfYtXTW37Eb2K7krhpdoG6UrpYSkWNFV2jC1QlQLDuG/77rciak6qujamQ5AL8Xb
-         +pblXjCcUCN7UHCcoa6lz/kCvaCmvR+RGsP0IYhg45a9d6GLhepN27YAN0Gq0doDtGUH
-         spBR3di7U9gVQoCKgWAqQWfiHX4QyXV4QzWjFEPXz4O/6t8JOyrsrf8UyOPIkxHAu8KB
-         yTpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUueA5TGP2LeHygMIH70riLTwfnu7diG8CsyevkBQusZLt/38O9eT1x7oEZToaHMNT6XMF8idA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9/Fi3uhIDm+3yP4M/4gh1iGD+K8hamBx8xmkzp2ytZPzHmMXW
-	Lfn3wZN185NLKvd3hNENpBtojcCyBPUdkvmjU+UOZXI2hzvSrChPO39TaLwotoiAtTQ=
-X-Gm-Gg: AY/fxX5rvY1BLcNnu+iBW8djyXjUJMFBFdwd62lL1sMJJZcu9HZLju6lyGkxshUL6nv
-	oEUSp6bD+xylOLCQjNxqFJLLE7OFnJiYYvIYdmku5+CQkO+mC4jROZL1E8+cOCgrd1PPAdqK6aX
-	rx7sVhfcYxF14kKs+hHg2RE1S2zc3sZP3cKKNLs2yTfzCNUOX1D0sMaOtStyNTf+eLFScTp1IrY
-	RPT3JZkn0zM7n/Vyh/s8ldPzDM6r27lUh8cdKOFMTKwjZ+qXOExbVsIs0d9lN5/qZK1dLsoCn7A
-	r16x3t/RcbYkwiGGpd/RdA74H2mE5znZU6x8JzDrVvkbD+rNEzhjrNc1yINQJlSmC4JJoLqdRIw
-	qTPcEfWy7YAtQjm/WjzPDz/dSFhKhGrv+mtLaZPHUFL8u9g7b1bALvSjpI4w2CuK+9DTRljpbfA
-	kvP/+cCpAN/CWR+G/eJxU=
-X-Received: by 2002:a05:6a00:26e8:b0:81f:4960:f2f3 with SMTP id d2e1a72fcca58-81fa03964d1mr4275410b3a.6.1768740663367;
-        Sun, 18 Jan 2026 04:51:03 -0800 (PST)
-Received: from localhost ([132.147.84.99])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-81fa1278056sm6646026b3a.34.2026.01.18.04.51.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Jan 2026 04:51:02 -0800 (PST)
-From: Shenghao Yang <me@shenghaoyang.info>
-To: Ruben Wauters <rubenru09@aol.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Shenghao Yang <me@shenghaoyang.info>,
-	stable@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH] drm/gud: fix NULL crtc dereference on display disable
-Date: Sun, 18 Jan 2026 20:50:44 +0800
-Message-ID: <20260118125044.54467-1-me@shenghaoyang.info>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1768745149; c=relaxed/simple;
+	bh=8mBL8EbFuI+wuny9f5SCHs2w+6gJ2DC2iYcnQx1TtM8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=P9sAMyyHK8VRAWfB3F+849K/gaus5SxoVMmQ/Jm1JRFN+SBG7ex4YWx1fY9fsT43xY5S1xLIpeTUCK62Mebxb0AXCwtOugBxtSBKUxaB+x0YIe2iV/jBZNp66PjAsadhrxkH20YB8dUucD2pvpTNxHzOFKQ42LsS3bGSlvPWWpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhTPV-0017bn-0M;
+	Sun, 18 Jan 2026 14:05:43 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhTPS-00000000o74-1fYt;
+	Sun, 18 Jan 2026 15:05:42 +0100
+Message-ID: <df0940555d70eb912f2962a70b59270d0f579b9b.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 324/451] media: TDA1997x: Remove redundant
+ cancel_delayed_work in probe
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>, Hans Verkuil
+	 <hverkuil+cisco@kernel.org>
+Date: Sun, 18 Jan 2026 15:05:36 +0100
+In-Reply-To: <20260115164242.620539205@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
+	 <20260115164242.620539205@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-I42sbkXvfD4K+v0URaVO"
+User-Agent: Evolution 3.56.2-8 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 
-Commit dc2d5ddb193e ("drm/gud: fix NULL fb and crtc dereferences
-on USB disconnect") [1] only fixed the initial NULL crtc dereference
-in gud_plane_atomic_update().
 
-However, planes can also be disabled in non-hotplug paths (e.g.
-display disables via the DE). The drm_dev_enter() call would not
-cause an early return in those and we'll subsequently oops on
-dereferencing crtc:
+--=-I42sbkXvfD4K+v0URaVO
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-BUG: kernel NULL pointer dereference, address: 00000000000005c8
-CPU: 6 UID: 1000 PID: 3473 Comm: kwin_wayland Not tainted 6.18.2-200.vanilla.gud.fc42.x86_64 #1 PREEMPT(lazy)
-RIP: 0010:gud_plane_atomic_update+0x148/0x470 [gud]
- <TASK>
- drm_atomic_helper_commit_planes+0x28e/0x310
- drm_atomic_helper_commit_tail+0x2a/0x70
- commit_tail+0xf1/0x150
- drm_atomic_helper_commit+0x13c/0x180
- drm_atomic_commit+0xb1/0xe0
-info ? __pfx___drm_printfn_info+0x10/0x10
- drm_mode_atomic_ioctl+0x70f/0x7c0
- ? __pfx_drm_mode_atomic_ioctl+0x10/0x10
- drm_ioctl_kernel+0xae/0x100
- drm_ioctl+0x2a8/0x550
- ? __pfx_drm_mode_atomic_ioctl+0x10/0x10
- __x64_sys_ioctl+0x97/0xe0
- do_syscall_64+0x7e/0x7f0
- ? __ct_user_enter+0x56/0xd0
- ? do_syscall_64+0x158/0x7f0
- ? __ct_user_enter+0x56/0xd0
- ? do_syscall_64+0x158/0x7f0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+On Thu, 2026-01-15 at 17:48 +0100, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Duoming Zhou <duoming@zju.edu.cn>
+>=20
+> commit 29de195ca39fc2ac0af6fd45522994df9f431f80 upstream.
+>=20
+> The delayed_work delayed_work_enable_hpd is initialized with
+> INIT_DELAYED_WORK(), but it is never scheduled in tda1997x_probe().
+>=20
 
-Add an early exit and disable the display controller if crtc is NULL.
+It seems like it can be scheduled as soon as the probe function calls
+v4l2_async_register_subdev().
 
-[1] https://lore.kernel.org/all/20251231055039.44266-1-me@shenghaoyang.info/
+> Calling cancel_delayed_work() on a work that has never been
+> scheduled is redundant and unnecessary, as there is no pending
+> work to cancel.
+>=20
+> Remove the redundant cancel_delayed_work() from error handling
+> path in tda1997x_probe() to avoid potential confusion.
 
-Cc: <stable@vger.kernel.org> # 6.18.x
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202601142159.0v8ilfVs-lkp@intel.com/
-Fixes: 73cfd166e045 ("drm/gud: Replace simple display pipe with DRM atomic helpers")
-Signed-off-by: Shenghao Yang <me@shenghaoyang.info>
----
- drivers/gpu/drm/gud/gud_pipe.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+I don't believe this is redundant at all.
 
-diff --git a/drivers/gpu/drm/gud/gud_pipe.c b/drivers/gpu/drm/gud/gud_pipe.c
-index 4b77be94348d..a69dee71490f 100644
---- a/drivers/gpu/drm/gud/gud_pipe.c
-+++ b/drivers/gpu/drm/gud/gud_pipe.c
-@@ -610,6 +610,9 @@ void gud_plane_atomic_update(struct drm_plane *plane,
- 	if (!drm_dev_enter(drm, &idx))
- 		return;
- 
-+	if (!crtc)
-+		goto ctrl_disable;
-+
- 	if (!old_state->fb)
- 		gud_usb_set_u8(gdrm, GUD_REQ_SET_CONTROLLER_ENABLE, 1);
- 
-@@ -633,7 +636,7 @@ void gud_plane_atomic_update(struct drm_plane *plane,
- 	drm_gem_fb_end_cpu_access(fb, DMA_FROM_DEVICE);
- 
- ctrl_disable:
--	if (!crtc->state->enable)
-+	if (!crtc || !crtc->state->enable)
- 		gud_usb_set_u8(gdrm, GUD_REQ_SET_CONTROLLER_ENABLE, 0);
- 
- 	drm_dev_exit(idx);
--- 
-2.52.0
+In any case, this doesn't seem to be a candidate for stable since a
+redundant cancel_delayed_work() is harmless.
 
+Ben.
+
+> Fixes: 9ac0038db9a7 ("media: i2c: Add TDA1997x HDMI receiver driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+> Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/media/i2c/tda1997x.c |    1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> --- a/drivers/media/i2c/tda1997x.c
+> +++ b/drivers/media/i2c/tda1997x.c
+> @@ -2779,7 +2779,6 @@ err_free_media:
+>  err_free_handler:
+>  	v4l2_ctrl_handler_free(&state->hdl);
+>  err_free_mutex:
+> -	cancel_delayed_work(&state->delayed_work_enable_hpd);
+>  	mutex_destroy(&state->page_lock);
+>  	mutex_destroy(&state->lock);
+>  err_free_state:
+>=20
+>=20
+
+--=20
+Ben Hutchings
+Larkinson's Law: All laws are basically false.
+
+--=-I42sbkXvfD4K+v0URaVO
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmls6LAACgkQ57/I7JWG
+EQlExRAAitkiOT43+1q5GymWb/MZwaPO1YWXNwb+Dk+JmVtESONU+cpQLVJn70v/
+bvWSwYyQR5bd4RFYw3XPgvPc4lu43WI/Trhspt6nSr/ht9JQyua6v7VHm+izSe0+
+aFWwU9WBCRo828AOBxP8VBX5UPb7o/8e+tVwLTPdPdLeKjU5MUwSvUXg9EE4d2WD
+jdMkX2/moJG9uwa0UMKWvvTFuAXvXlI703XM1nY9gXyjLGioqDLoWXHnrt5S/sE8
+4x+hr/7kdTfsuLF4atvk7uJdhrqn6FGOnL0Cdwh1rQaVmeAJbsIu8YpZhHUhFcKK
+p55jEDU6MCG9LeTvWwiSKJd2tvXFK2F7EOpfFEOLNNnPCK2N6R1DgldfXqJyZ6om
+5RRucAxahhD0Rx0O5Vje1PiYXHknsG3e0pWjMFRZk4NTa7Zp7LNPVdrXfx6Jto0k
+Oy4hwmCsPnUjO4mcyZ8HP//uXYjvW9Kl/OsuQbILHhs1BqzRZD3cZNMR1r73uLvl
+G3TwyR6dl2yL8ehA6AV0KtZXeYPvoAM7K6pfFF+fk5o9tRsTSKdqaWi21oiVjZms
+c+ST7F+P1IXUW9AKSeG8dGMTa2zkg1lDZOxr5mk89YRXyKtgHwUUgew4QQhBUcwh
+g9VQMcQXAXoLloLdMP44UYVpP2Xi8RRdmvcTxhvgq4/uY+/wy+o=
+=3Oz3
+-----END PGP SIGNATURE-----
+
+--=-I42sbkXvfD4K+v0URaVO--
 
