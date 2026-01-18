@@ -1,135 +1,130 @@
-Return-Path: <stable+bounces-210242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FBD0D39996
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 20:46:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A69D399D3
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 21:50:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53842300B2A7
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:46:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D01CF300942E
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 20:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B4A23EAB7;
-	Sun, 18 Jan 2026 19:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2CC3033E4;
+	Sun, 18 Jan 2026 20:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a1kGETeY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SwCAJYzv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8355B1367
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 19:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768765558; cv=pass; b=fHUCD4dwpDHI9sUdGw1LHSqXmA/RKUMoh6Bx6jjdZba/hfK+K9dkpYxlQFOcRVAnGLf3L61Ou2O0TPYVrbKFc3UzC1IYT+bhXbl2e+vDwnznDUqe3lR34NYB+UGkFnCXg/qmtVJCfT3iLQO2PRYFpxnW5h/5oM4J4Rk8cw27fj8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768765558; c=relaxed/simple;
-	bh=KVHaohjIpkS8RF4XW8vpNt+aWDOb9cyMHNvbV9tdgrM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z+ryLaiiXvfwws/az2c1goA7WQOzyeJrdc4MLe61ejMcD6ZBnXOtzJs4dYrkWHCiZaMn/uiZFO3cMnjCyobDpujYeUGZAjH+OpysK/8TQ1JEZ3akn6GTwmOkFi62pYAcrtugqEn3lMWTkzXeS4USGN8lbu5Y9yyIFUCdgZpu3as=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a1kGETeY; arc=pass smtp.client-ip=74.125.82.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C84027F4CA
+	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 20:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768769439; cv=none; b=TEz3KabmqulLZceg1cboXUWzvLj8NjIt4gZF82AXBUa8BzIu65MbFfTYI6nwPzWI57o22EVurDj4VF1gwdIKOJIMH0FujJ1EQm2LC0wYqJj7rC9Lb7x2WZG/KSCGoplnELKEQHD68t17UHOILQ4YTWP9ABkB7r0gL9MRr/XoG9g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768769439; c=relaxed/simple;
+	bh=12pYU0nsh1edvtQBn+62FSk6cQSXGIkciUmANowJnNo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GlmVDhppa1ogKNFKRXzsfQypLLg+IXmz9JFYyoBMNcMejOafPnaXSipPZymksHXmewgJEXfFVJ21wkgwc+lOyk5qGH1U4tQ7M7i/DnPJOwnerdmBPPt4sht4epqUxsJRUyuVR0vEYL+rstydml/gnjwujAfDF0lEgBe2xwxhkoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SwCAJYzv; arc=none smtp.client-ip=74.125.82.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2b1769fda0eso381959eec.3
-        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 11:45:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768765557; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cEJvgRgvGCE1n8hqMYkpCQOucNVfxKiwYTJAwnr/XZ+0YnumWmais5z3HAXFKUtgp0
-         0Yn4U1buPuV+QpGLm4t5OAeRQPzM2qF28GzlKr88TRH7xvzpcUhJgyVJHDyrMEwz7EbZ
-         wvNyybe/zH5UNaSBGnrDYCRoIkMnVBkCW56KCAD8hgGYvGpYE8IcvYgVRxPZz1Pw2Pd8
-         WxNRDIz0a+PoGBczK7unnxllxC6gJlBdXw3HOSxbRebJlO1NA5Kp2/W728OlvLv8qSjJ
-         VXDyUH3bnsHyvHWZcNVY2DLzi29VhLeHyPJ5cxwAZChi5Ts5RGFeNobnXIcEFSGdwzWd
-         aVSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ngLJEmbzzfwIyJl3HgdWne+DdSWDFYCnHseYetxWc3E=;
-        fh=BKqfmJr9SM3MIMUl1osCjn1Ytx9JyYjOMDLcIwiTFsg=;
-        b=RuKNmMAj6aG+nu4Z+47+gV9udI+iZZQLqHyFE/JQOlXqFQ2sQbhZb7ZFWeXIkin61S
-         d8Rm2ZdS64YBjIcsba8Cet1hdBLd+/N+7ZD42xwwAHqRJZsOI4U4kt90jOEkfXL6MIJ6
-         E8vHiZDwNFigj4EUSf9WZWs03mPZZgB+kF2PFicBolhwW7cWAchMlrIqlV+WYuHA3CsX
-         MzJc30ynmEIWXn36fLGzZcRgKWw2oygdsk2JxbgzY5KFDh1F+4b6X6ddGw6bW6a9x+OX
-         HTadVn/HitqThMRFwdbLJyMsjF9rsHzEosm4ZNV7uh1AXiwwlwJ0C+LxU1WS+a8zgTa8
-         n0xQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ae255ac8bdso6937739eec.0
+        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 12:50:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768765557; x=1769370357; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ngLJEmbzzfwIyJl3HgdWne+DdSWDFYCnHseYetxWc3E=;
-        b=a1kGETeYn96vfAtUMnq3WWCUyDjZfuOjIYO5KJfsxBT6XOBL2QZUW8WlSERfWCZ+4R
-         e0ThKDKGRjJJDvZLq025pLtHvGAHBPFmGRlh7DLTdTbQ/q8qqCIl1Gja4gWBeKDzzBei
-         04rmBcVo3YV5C7B4iUgHbopUVNusdCjvLjJDb8khHlngeQtBAtDmMUm4FgUMu28bMWI6
-         SY2xT1DgfE+DjPc2xE72ZtSsMjciuJlnNaa4WYlOhU0KmbyL7DKEeW1m87TPhiT7s2DD
-         3vLQMsnPtUnwrWHMlfJxSom9JF2UQtYpwmz1VfWTEAGzDq9Uxw4ZC9RNpAepSChWYcmW
-         Ar1Q==
+        d=gmail.com; s=20230601; t=1768769438; x=1769374238; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Puynjv+Dl13PC2EAzTsegEpQBiQKymq7P+RdFdVlq08=;
+        b=SwCAJYzvRWoDfrr3vqRiM8HdTP9joRiSQQnxKIp6oNql5aYMsNjXi/qFoaxnCpT1HQ
+         EQjIM+tMlcIWtFeJM3InTKGtEyxe8dMkHXCevz447yDZjd2+E62tk5cC8+1VKghhW0yP
+         TuMl9Fl9eAuyRdjc2n47+zvY6W9lHaz8aJafoL0h6anMah2wiwNad21YrbgPL9w3cRvp
+         I11xbRC++V6p0lO2jJ5x7OEr4gM/2P5a05GSTjszIf0L5psg7qLiX9VxjYXTMt8RFGRK
+         JBZ1YMSrdD0VSimfCvwVgd+2dpZEDt6LMAM04zoZB9PUgPkOYO6IaR1ArZF5D+opfy/N
+         Eb7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768765557; x=1769370357;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ngLJEmbzzfwIyJl3HgdWne+DdSWDFYCnHseYetxWc3E=;
-        b=CBqhXBui8dnP4/zrLIMz26lkMe2x7gGNGsFuGHE7cPspRLON4POXlNGuJ2ajBPto/j
-         00BCwDbWaUYYr2yj7K7K8lZJs5H1PyRU81tp0uYlRSOcF0PwvcR466d3RdFM66UubvPO
-         LLfAa36z0KWpBVcUcp1qyAKRhVVy954JkzngPJI2/+Sa5UKkrZTCsrax6MqIl0yW5lMM
-         Wijt+T10vq7sgPOBXwlb6siPIl6RB3TEIKQxITJnyT0SIKHEMwAyeK2lySn7bweBB311
-         pm8jhdrjfVC5Ui1jL4a5glrGsXFI8pn424evSK/MD8Ek2AIgBE2EBQFdJ26TUjBddgVN
-         45Nw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVuou3LDl4CEsOLMbVXJ6BCHpgiJz5g5fSVWhSZktWofpF6K9u0v+hHoiy4AIsE83TtXduz+g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwBZfHh3PtzyLrW66lTL+GMva/eFtDKOZeW7SHxVuUP62g3DI9E
-	EH765gr/qUU0RQ1uepQXDZYCAM7kaAePNEY4OTpFrQLcIa85o8uOVEBiy4PRr/LY1TKfB2HgYsu
-	WZuhsiI/PbpzhIY5hLNidZ0NLBoBOooM=
-X-Gm-Gg: AY/fxX71QZh0dl1TxoGH9+JucQp8bvC2I0X+4clOQqhncNIgsO5NYYdfKm4FUkrlD2D
-	c4uK0Xx7IqEryjDRZibUWh3FnqQ3cvU6mMzmmgM9g6aOf2AEy21sqaLIaiwz4orrCd4JKLPC24b
-	2v1UaDoJf8Q9+1tccnzU0VdkkEAJIbOTyOpm42Rg8/3sPRrs2VWlNVAwnvuVOm/pRCQfakw46fI
-	nXqghayHvhVaSo82Y1sdW/S1KB5/p1KtunQxwl2tqz8+J036Cd8ZlGeiUAvF3ZXy6pigQwn6JMh
-	xREMpZ19Zx2SGUdVANhqetcH44U8mbJF0xB0wf8p7/uZJ5Bo6FOkabO7Ih/+zJd9156aTdnSm8f
-	YmQDQ9XVbEYVT
-X-Received: by 2002:a05:7301:3f19:b0:2a4:3592:cf89 with SMTP id
- 5a478bee46e88-2b6b380ec55mr3935044eec.0.1768765556660; Sun, 18 Jan 2026
- 11:45:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768769438; x=1769374238;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Puynjv+Dl13PC2EAzTsegEpQBiQKymq7P+RdFdVlq08=;
+        b=jJfYpld07ZWVDhTHvMb2qNhMuNULcd7q0f6w2PNqtMV/3YsaNlqCHy3JUcUAp1pWhb
+         ME7STuRglR1f4MhMlbQ1a9pxC4jXrSyX3e7BECOOjuA4ouo4hg26+ulZI68lmBmcdl03
+         7R681zByygOfeNat3sVPiubO78J8JJbiIlnoLGwA3G7WWjoJYzqxNVpjGuGp3sNAVYX+
+         aymnK16u0cZWrjKiLLUpyD/Z0UJt87V8y/qUSoWVilVY5Ed5XppiLtb9pIX9iU5/nhqJ
+         JQpNxktOQ8U6HXdGkaccZNFf3S43mHdVG+XKigTQyWaTPZCkk7bnyxvgHghbI7MUvZTe
+         RGoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWGxdgTjYQaKjJFGZTqIKWC6MjnbF6QkqO2ruRm21OVvyV/XhwMqQQfbqQEdgXFiFLVlQwumYM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0+gTX6rwuYO2LUnwZ99Ic4t4u2/dQPsViBbFHcViYD2LMt9oV
+	D+8n3YAcve4Ai3FJoXp8hnV2v8DaWcIarROYvquqYWDRzzWyPa+FT5jT
+X-Gm-Gg: AY/fxX6Iugy8wOhP4F4PHuRnpcOWAqLBt27tYRO8oCqLtDAth8e0y7g5VgIKkE/tCFh
+	5WzP1SklPsejelMYwBTqRxchI7W7o9gfUR+I/Fqoc7BtvIhujSRrzNsNVOZAVvDWcrfpiopcwBh
+	04icQhlUKa2jkbocybJtqir/30qsdUiVNKrUZkCFxnqrC+ssYfOwz1siyboJfdfpwTbYs5RgWUn
+	z4cG13RA716RfQh6ZinrbXiZbXbmEyK5YRtI8kS1ur4GFY+nymAYCIOHv+EtzWjrUd0WSPXZ5Z+
+	dfcgRmPnWKVxsGH9iraZUvCGhOaX0au1k15C8B/RWWJwTk2iAl78zpq8ac6Cvzo8dXtearfTrej
+	5NXSCAeEdK2ILHZefyRRqEHjAOTKs6v9vpl5S5yyPeAlSTKGi+g6ssmeKipToZ0a+m4s03cFxYT
+	igtK/fJw==
+X-Received: by 2002:a05:7300:cd99:b0:2a4:3593:6474 with SMTP id 5a478bee46e88-2b6b410367bmr6876089eec.36.1768769437417;
+        Sun, 18 Jan 2026 12:50:37 -0800 (PST)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61::1001])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b3619a7bsm10167364eec.19.2026.01.18.12.50.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Jan 2026 12:50:35 -0800 (PST)
+From: Fabio Estevam <festevam@gmail.com>
+To: broonie@kernel.org
+Cc: shengjiu.wang@gmail.com,
+	linux-sound@vger.kernel.org,
+	imx@lists.linux.dev,
+	Fabio Estevam <festevam@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] ASoC: fsl: imx-card: Do not force slot width to sample width
+Date: Sun, 18 Jan 2026 17:50:30 -0300
+Message-Id: <20260118205030.1532696-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
-In-Reply-To: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 18 Jan 2026 20:45:44 +0100
-X-Gm-Features: AZwV_Qij1ytH7g1-A1PT-QCFQRqVSpKUckCbAvhQA3vEU6vow4n76J5rAgj9nXw
-Message-ID: <CANiq72kvMp0KS0wXGYRiPOdNvJLoBpM45G7BHgPF_g-M9b5t_A@mail.gmail.com>
-Subject: Re: [PATCH v3 0/7] rust: build_assert: document and fix use with
- function arguments
-To: Alexandre Courbot <acourbot@nvidia.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Viresh Kumar <viresh.kumar@linaro.org>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-pm@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 8, 2025 at 3:47=E2=80=AFAM Alexandre Courbot <acourbot@nvidia.c=
-om> wrote:
->
->       rust: bits: always inline functions using build_assert with argumen=
-ts
->       rust: sync: refcount: always inline functions using build_assert wi=
-th arguments
->       rust: num: bounded: add missing comment for always inlined function
+imx-card currently sets the slot width to the physical sample width
+for I2S links. This breaks controllers that use fixed-width slots
+(e.g. 32-bit FIFO words), causing the unused bits in the slot to
+contain undefined data when playing 16-bit streams.
 
-Applied to `rust-fixes` -- thanks everyone!
+Do not override the slot width in the machine driver and let the CPU
+DAI select an appropriate default instead. This matches the behavior
+of simple-audio-card and avoids embedding controller-specific policy
+in the machine driver.
 
-The first one I will apply it into`rust-next`.
+On an i.MX8MP-based board using SAI as the I2S master with 32-bit slots,
+playing 16-bit audio resulted in spurious frequencies and an incorrect
+SAI data waveform, as the slot width was forced to 16 bits. After this
+change, audio artifacts are eliminated and the 16-bit samples correctly
+occupy the first half of the 32-bit slot, with the remaining bits padded
+with zeroes.
 
-Cheers,
-Miguel
+Cc: stable@vger.kernel.org
+Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+ sound/soc/fsl/imx-card.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 28699d7b75ca..05b4e971a366 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -346,7 +346,6 @@ static int imx_aif_hw_params(struct snd_pcm_substream *substream,
+ 			      SND_SOC_DAIFMT_PDM;
+ 		} else {
+ 			slots = 2;
+-			slot_width = params_physical_width(params);
+ 			fmt = (rtd->dai_link->dai_fmt & ~SND_SOC_DAIFMT_FORMAT_MASK) |
+ 			      SND_SOC_DAIFMT_I2S;
+ 		}
+-- 
+2.34.1
+
 
