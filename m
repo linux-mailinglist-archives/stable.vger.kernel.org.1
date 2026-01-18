@@ -1,132 +1,167 @@
-Return-Path: <stable+bounces-210239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D4AD3995C
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 20:23:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 906C2D3996E
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 20:33:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B5F9B300252A
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:23:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 471F13009412
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596B92F3C26;
-	Sun, 18 Jan 2026 19:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3656267729;
+	Sun, 18 Jan 2026 19:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipBBsQcG"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ROsNx4kS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45062749FE
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 19:23:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4ECBB67E;
+	Sun, 18 Jan 2026 19:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768764207; cv=none; b=qSBnQaPSlXPZBOzTxl+z6/ySPcRI+vX3cqbgORziBubkLsvkegUs7zAi43JDtCWjLdS0JpyyCCU7/zeDue5alDZleedeD8v5Vx6KjPtg2DfmBKYbl+TbFP0cwPpvEKTe6fvXD5SOaRgCiux0Zj35efZvjiyuq2Tq9UkV9XQ5cvw=
+	t=1768764796; cv=none; b=rkFQyh5puvpC9nH9ijfDWJvX3vsnMW0Sbzk9dIs1HfRwHanNeP5TdkWqJ6sGIaTBNieg+vPlOEHjiGRt+EpInSXbM5fswiloJDpGxc1ap9uTynvhmLJKXdNiDC6B+JTjjgO0QjIDAgS7ACYoEfJIhij+7S/BFEKbD6DrVKOXu5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768764207; c=relaxed/simple;
-	bh=53UopOiSS5GM7ARutLD39Ovf/BQMy7Mk8S2UQAf9p18=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LwiG7WJzM6ri2SFW5wswQQiqVr/I1SbqtUNoRF2u52vtwwPSgo/l97BX/oVwdBlHWIUjn5/u18jxwdmJ2UV9JWn2fK8JJWLn4C2GoHNimrDsPPkZwyfycbQNY5S6FZXK80Nh46MvNnI5vdEt2s3EyHYhrdWAnEt8cKZ8LHikQYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipBBsQcG; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-45c92df37fdso1345583b6e.3
-        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 11:23:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768764204; x=1769369004; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bDtxksZFS0nrsjFFEzMEftEkeVqAD5J3c5aurgBd+rU=;
-        b=ipBBsQcG+7hi8OD6Ux8WsQ+AjzIwXFUXDHcuF3pWjdu7wNp1S6VUTai0HAuFEXmBA2
-         4dsWgMtzkUSHHrCOo+8UKiPNr7s+O1Rp+VpnzKPuNfX3XM4Az6dv3r8xX6b7nkOuVyym
-         KrkW2WIRsq9US+LUMNZL+ZQRLx5F+dAQ+LAWSavJdWGiLnQ3IdfVfDsXliLYzZmSow+Y
-         Zehn1xz1N22knkslJSSlt3GFDGtUYiVHuSfYoLGVc9xHxdJREmjktvu4i3e+bu0bexXk
-         wH6NtQS4UJtGCK0j7lZ04dZ62vDlIioejHy8jClGunYlNnWDd2oKqW7RDHO9693T6cuX
-         9jhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768764204; x=1769369004;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bDtxksZFS0nrsjFFEzMEftEkeVqAD5J3c5aurgBd+rU=;
-        b=K6Chq38ZGh9YyN7OqBpqbKnjcuJaZ9uqr91ZCPdlS2wOUAY4NT+iepxVx/uhn1/Fzl
-         ZQosC1qqZ5w0YEzWzW0IIemA0b9l2Yd5LGbMmeDcW8LNv00LgMjcSInobTWykya3sS+I
-         Ep6LIi6k95GMCVHCdLdkVPDTvnOPb4mFfFkVnde2zb1AJFef/W8bV9EC0YRerAEiG5aK
-         qsgSAGGE2Hbg3g477hZtHRGw+iVrcX5Fh8zyRAn0m1YtF4DQulOZBGcd6PSpPtIwPSd1
-         NsjjgzA9e5G2HXhqunbpqi3Nf6UvLf4aKeiYBjJ/velO5g+XrOxLZAgObns8yiZ0XhmD
-         TlTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXwouwvvSV7Kg8By5j6VyDaIXFPVl9PQ5ohs8fZ8MjsghGxFQO8q6nfbwnv2Ke4vsleBUPxCaI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZcSdG0vq3AgwQFhPt2GE+0IISw+QsAtWe3ZAuC9QpJMP6d53L
-	ZyJBh/KeeIe9KCFyp7yggBmV/Z5eYKhM1BWB0aixzp6ANIbeipGwhJ4N
-X-Gm-Gg: AY/fxX4U6KhvZBU4gvzXOEPz9xjHGY0+2vLoIoOfWVhSA532JAj9uQbvyol0BMw8GyU
-	iqij/22/B2ZsRyQKAPsrdf96A3hBsqYnfw31es6SEiXmEXgHUADGkJtnkxjQEK+QWkg8UNMzFwL
-	vxOMbOnm0hBfeQOcM/MtqtRtNymNzHO05Cv3xhrfFtn1zEJgtSjc6+Lr55bkYqGAm8y2ky6l7Sd
-	ombdpvosPFSjNBTXKiWQ5gJ65bznY9+pKxSG+YzZTDThyy6IW703AS9NpOV6HLL3RpQhU7OiCiI
-	8X1q47OabfpVnkNw6/pt2ncbYw1/+HcQ31IYtD3wlxlnzdiem/Dyedjk29rv5VrnsFz/fiEOLhF
-	k+gQIZ3eiXmUu7yF3HLSSr596zGSOf6kUPnrw0wDG2/PgYkCOSGtd+YClMWyjRMqzqLT9WLxIHt
-	8ntSkE38jiytcvX5YATRRLX3mdvCiwPcMF
-X-Received: by 2002:a05:6808:1986:b0:45c:90d8:c843 with SMTP id 5614622812f47-45c9c091394mr4106712b6e.37.1768764204403;
-        Sun, 18 Jan 2026 11:23:24 -0800 (PST)
-Received: from newman.cs.purdue.edu ([128.10.127.250])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7cfdf000b80sm5543917a34.0.2026.01.18.11.23.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 11:23:23 -0800 (PST)
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-To: Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	linux-kernel@vger.kernel.org
-Cc: ocfs2-devel@lists.linux.dev,
-	stable@vger.kernel.org,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Subject: [PATCH] ocfs2: fix potential OOB access in ocfs2_adjust_adjacent_records()
-Date: Sun, 18 Jan 2026 19:23:18 +0000
-Message-Id: <20260118192318.44212-1-jiashengjiangcool@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1768764796; c=relaxed/simple;
+	bh=Z+Jk8atOFmoKOV1bvDP8AmN9aAvWYcDPiNtVQJD27Ww=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=tTBZ2FbAyCTE2hnYkh1Ctwncv7u5mnMVCp1hH6IpiHfraCNIyM9VK3YqiFD6zxy7sZxdvyapSmJw96s1kkIxmavXVxPr3n3MwlC46YVld0dx7PMiKSZvhd0ltFjmr6G4RH5nCZcZUakcJ9qBChhyHuNPlXeCSmWDL6Jwg+WqS1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ROsNx4kS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EE8C116D0;
+	Sun, 18 Jan 2026 19:33:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768764796;
+	bh=Z+Jk8atOFmoKOV1bvDP8AmN9aAvWYcDPiNtVQJD27Ww=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ROsNx4kSsxCqNztbQEdn66FEa0kaCUSn1IxPqSel8tUGvT8Z+lxvVkNBXaoz8bQta
+	 jINJX8BF2Aenca5/8AusZ4SI2CHxG2oKXtsXvrKElCd2ufNCIpy8zwAfpcN4ADMCP4
+	 8t3x0GoBbUeix3TT0Jk8pHeBSPf7LBpRg7JAGW1I=
+Date: Sun, 18 Jan 2026 11:33:15 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>, Baoquan He
+ <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/shmem, swap: fix race of truncate and swap entry
+ split
+Message-Id: <20260118113315.b102a7728769f05c5aeec57c@linux-foundation.org>
+In-Reply-To: <20260119-shmem-swap-fix-v2-1-034c946fd393@tencent.com>
+References: <20260119-shmem-swap-fix-v2-1-034c946fd393@tencent.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-In ocfs2_adjust_adjacent_records(), the code dereferences
-right_child_el->l_recs[0] without verifying that the extent list
-actually contains any records.
+On Mon, 19 Jan 2026 00:55:59 +0800 Kairui Song <ryncsn@gmail.com> wrote:
 
-If right_child_el->l_next_free_rec is 0 (e.g., due to a corrupted
-filesystem image), this results in an out-of-bounds access when
-accessing l_recs[0].e_cpos.
+> From: Kairui Song <kasong@tencent.com>
+> 
+> The helper for shmem swap freeing is not handling the order of swap
+> entries correctly. It uses xa_cmpxchg_irq to erase the swap entry, but
+> it gets the entry order before that using xa_get_order without lock
+> protection, and it may get an outdated order value if the entry is split
+> or changed in other ways after the xa_get_order and before the
+> xa_cmpxchg_irq.
+> 
+> And besides, the order could grow and be larger than expected, and cause
+> truncation to erase data beyond the end border. For example, if the
+> target entry and following entries are swapped in or freed, then a large
+> folio was added in place and swapped out, using the same entry, the
+> xa_cmpxchg_irq will still succeed, it's very unlikely to happen though.
+> 
+> To fix that, open code the Xarray cmpxchg and put the order retrieval
+> and value checking in the same critical section. Also, ensure the order
+> won't exceed the end border, skip it if the entry goes across the
+> border.
+> 
+> Skipping large swap entries crosses the end border is safe here.
+> Shmem truncate iterates the range twice, in the first iteration,
+> find_lock_entries already filtered such entries, and shmem will
+> swapin the entries that cross the end border and partially truncate the
+> folio (split the folio or at least zero part of it). So in the second
+> loop here, if we see a swap entry that crosses the end order, it must
+> at least have its content erased already.
+> 
+> I observed random swapoff hangs and kernel panics when stress testing
+> ZSWAP with shmem. After applying this patch, all problems are gone.
+> 
+> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
 
-In contrast, ocfs2_adjust_rightmost_records() explicitly validates
-that l_next_free_rec is non-zero before accessing records.
+September 2024.
 
-This patch adds a check to ensure l_next_free_rec is not zero before
-proceeding. If the list is empty, we log an error and return to avoid
-reading invalid data.
+Seems about right.  A researcher recently found that kernel bugs take two years
+to fix.  https://pebblebed.com/blog/kernel-bugs?ref=itsfoss.com
 
-Fixes: dcd0538ff4e8 ("ocfs2: sparse b-tree support")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
----
- fs/ocfs2/alloc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+>
+> ...
+>
+> --- a/mm/shmem.c
+> +++ b/mm/shmem.c
+> @@ -962,17 +962,29 @@ static void shmem_delete_from_page_cache(struct folio *folio, void *radswap)
+>   * being freed).
+>   */
+>  static long shmem_free_swap(struct address_space *mapping,
+> -			    pgoff_t index, void *radswap)
+> +			    pgoff_t index, pgoff_t end, void *radswap)
+>  {
+> -	int order = xa_get_order(&mapping->i_pages, index);
+> -	void *old;
+> +	XA_STATE(xas, &mapping->i_pages, index);
+> +	unsigned int nr_pages = 0;
+> +	pgoff_t base;
+> +	void *entry;
+>  
+> -	old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
+> -	if (old != radswap)
+> -		return 0;
+> -	swap_put_entries_direct(radix_to_swp_entry(radswap), 1 << order);
+> +	xas_lock_irq(&xas);
+> +	entry = xas_load(&xas);
+> +	if (entry == radswap) {
+> +		nr_pages = 1 << xas_get_order(&xas);
+> +		base = round_down(xas.xa_index, nr_pages);
+> +		if (base < index || base + nr_pages - 1 > end)
+> +			nr_pages = 0;
+> +		else
+> +			xas_store(&xas, NULL);
+> +	}
+> +	xas_unlock_irq(&xas);
+> +
+> +	if (nr_pages)
+> +		swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
+>  
+> -	return 1 << order;
+> +	return nr_pages;
+>  }
+>  
 
-diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
-index 58bf58b68955..bc6f26613e6e 100644
---- a/fs/ocfs2/alloc.c
-+++ b/fs/ocfs2/alloc.c
-@@ -1974,6 +1974,11 @@ static void ocfs2_adjust_adjacent_records(struct ocfs2_extent_rec *left_rec,
- {
- 	u32 left_clusters, right_end;
- 
-+	if (le16_to_cpu(right_child_el->l_next_free_rec) == 0) {
-+		mlog(ML_ERROR, "Extent list has no records\n");
-+		return;
-+	}
-+
- 	/*
- 	 * Interior nodes never have holes. Their cpos is the cpos of
- 	 * the leftmost record in their child list. Their cluster
--- 
-2.25.1
+What tree was this prepared against?
+
+Both Linus mainline and mm.git have
+
+: static long shmem_free_swap(struct address_space *mapping,
+: 			    pgoff_t index, void *radswap)
+: {
+: 	int order = xa_get_order(&mapping->i_pages, index);
+: 	void *old;
+: 
+: 	old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
+: 	if (old != radswap)
+: 		return 0;
+: 	free_swap_and_cache_nr(radix_to_swp_entry(radswap), 1 << order);
+: 
+: 	return 1 << order;
+: }
+
+but that free_swap_and_cache_nr() call is absent from your tree.
+
 
 
