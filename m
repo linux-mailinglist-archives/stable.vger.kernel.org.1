@@ -1,122 +1,137 @@
-Return-Path: <stable+bounces-210236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D927CD39948
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:59:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09695D39949
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 20:01:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D72F730076AE
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 18:59:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63B243008EBF
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 19:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9B92253EF;
-	Sun, 18 Jan 2026 18:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1038D246782;
+	Sun, 18 Jan 2026 19:01:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P/h2neuv"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F8B1A316E;
-	Sun, 18 Jan 2026 18:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895A6225402
+	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 19:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768762754; cv=none; b=liv+fIluztW9wT+FkKvv2StQD4Uafhvee9s3E1DG3A34uTFs0742RJAL5xSUXfJzTK15sm4wbaQluFzdyShaSzQppRSU3GJ+Fa5mzwOPFMXDUkpz6WSs5CRzX5rdxqhwrNC+Bx/Oa8uquFiPS24zGuOOGEN9K/TML/ee/dLiCQc=
+	t=1768762910; cv=none; b=u55u11sYs1acOL5F9KRSHp1y3osaGolRLk62otP/IBlnbcqxdb3J10HSD2fOmwiPDKYDUJIva/ZxxL5Xm4xhB/BDGF7bhZspT0srZXSoRLQq8kVA2jh18hfaSNlWcW511wH9blLgGXvIfklP8Ow2+sRGqpT0RMTEFqftVGDqtlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768762754; c=relaxed/simple;
-	bh=ex/2O6cmEjo2woUmKsAcQcDXJ8an36PUKEsLQ+euTtE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=c4oZyvtMIYtf7xaLB4HuKaFUENWpFz+8PJo81084sSzALuEZ41nswgpXrA1irDBPiQoyOd1FlKUZoGQDsLjHfQeQ891dF3OoCqLy4RHjbAbyj6iV1AKAX+YxwupfRaIhBRFSCXuBcdFNEfArdHI36zvfoU18FZBhgcddInXTGUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vhXzT-00196F-1s;
-	Sun, 18 Jan 2026 18:59:10 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1vhXzR-00000000rI7-1INo;
-	Sun, 18 Jan 2026 19:59:09 +0100
-Message-ID: <ca5a59b665e1e91b723e66b30e4692cfa13a3a31.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 394/451] mm/mprotect: use long for page accountings
- and retval
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Peter Xu <peterx@redhat.com>, Mike Kravetz	
- <mike.kravetz@oracle.com>, James Houghton <jthoughton@google.com>, Andrea
- Arcangeli <aarcange@redhat.com>, Axel Rasmussen <axelrasmussen@google.com>,
- David Hildenbrand	 <david@redhat.com>, Muchun Song
- <songmuchun@bytedance.com>, Nadav Amit	 <nadav.amit@gmail.com>, Andrew
- Morton <akpm@linux-foundation.org>, Harry Yoo	 <harry.yoo@oracle.com>,
- "David Hildenbrand (Red Hat)" <david@kernel.org>
-Date: Sun, 18 Jan 2026 19:59:03 +0100
-In-Reply-To: <20260115164245.186677511@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
-	 <20260115164245.186677511@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-hJdlc3SGN0eHhDMV7FtW"
-User-Agent: Evolution 3.56.2-8 
+	s=arc-20240116; t=1768762910; c=relaxed/simple;
+	bh=nMNE6iEfpLstIa10M3kB5FyebBEQOg86SBYePsQerOs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ryJ5Lm1Mgmd6xyptSAjaScUKv4IK1QTQlvJMYk19kl5MEorAmjEOBWBvt0SrjFsgA5r4z97UBrNRG7fZMu3Gc+pG1j5RSrrBGuTmBhG2pnPQebUIQiT6ta3fJjWy+eZMRklnxeVStx52qUytqsrRATTudYoNB6As+ii6ADYM53U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P/h2neuv; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-404308dd5d6so1516093fac.1
+        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 11:01:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768762908; x=1769367708; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hNjMslMWG3mKls0Rz/DOZ4WWtAb1rKfHE/u7ZXd1FlU=;
+        b=P/h2neuv1Bz0cRKC12bIKzQLhdxWjZFdlaR4oGOEqBL9siHjXHNrWAsRxles7S26rI
+         v5r694kAn3BLPTMjgAMEGZYlz3USSfBN+WyQXGI0gxC23yX/Cv4y8IcenIVlc4E7e5iD
+         7ymYvTHBr/sBsrl9hhwRjU/D49XLLbLJillZaHZ478FUAzRECm+JGod841ne3ibSAi86
+         E0CXBilcEpJXLRYQ0QlydZyYjlwczCy288v/UVijhLv3TI7OnIkZPy5nfubR9jEhqsRw
+         WKd64BfMV1ofJ8epHAwCIrWXPvl8MNqcq98d8leudomacXkLns2uy1uWa9kX2a0uvy8/
+         3a1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768762908; x=1769367708;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hNjMslMWG3mKls0Rz/DOZ4WWtAb1rKfHE/u7ZXd1FlU=;
+        b=kH2xMuJQZTzF3UOBC7J3IlZ39phUPCJq5HJ26uCBeRJAkn941dikbAoWKBKxWiY79Y
+         imSYTcTYKPhA/Il4ZrpMKBrV/Bs4TRA+jhbnyuSDh/cE1TP69CKeN1AU24kkIwK0kTtY
+         B05k8DsnDkbUT55/U6gjQ0DWbv7UC9muDgHdsIGks/kXndPJoJSv3YHQvx2Pcp5w9a0K
+         /mPzw6iuAb0hjK4OEry6ULZiu5DWU/ew81AnOLWl9TmjXc3ZiZSAlK+irZuW8NLPnW1e
+         adluKZszvPMPOl5g+BnoMFKfaLgxKsA9jJvFLEzQxnoNKY0YFSqjvtSkFBguJCmqzpxS
+         Gtvw==
+X-Forwarded-Encrypted: i=1; AJvYcCXaKCf/2nnHMjxPNBFKw+h0ml8UtUPPngpiyzp6646DElqYXHIQBbnSle3umQV4HBUKkI5jg/E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwdexzQKDpXQFH7Y9mpNNaTDzX+oxknnYZ4rh46uxGlf35mtYw
+	x+K0cEVFTG6F9u4uKvTnj7bpsAlzrl7T8GSUgBrFtGqI55+Og7ZPRZgiiGEMuw==
+X-Gm-Gg: AY/fxX4HgfxWV0T1NGNqxvmCiLzjUCN8hz13Bijj/noeuZNbeZ/A5IgdqJuIH84TvRF
+	OnSkchIMYX7hiaeseDWMcG5zLP1qS4GKXnnIat5S5F3NOmTjG4mH2yJNrdqTc9W9NoCq95ZYvIS
+	oU7JvjPaPDvObZlxWzpT1HXaYtFa7xa1698Akb5KIb5JvFamAHXe04cIgr9rouNHFkkzdyTcaBw
+	LhrlxYmV7gsuozLWvXwI3lKpy+QbJwhMyeh0IMoWYSuW/tT6Vva5s+uixRtoLofx5gT3IBmoEfH
+	OzLuQVQrbatjlyuqODYy6albRHOw6Jw6lJPIbdXyfUkOiFas6ol6BYwvhwuIsE+1zV4R1B6y/kk
+	umSL2lxbyRDVQDdB1F/6HRf5wD1WYjdJctx74nuPtQ3Tsp4l8Si9jBvUL0FWRPR5CGvnaPjZR/H
+	DRRRqmUBik1yEuGp7EK7f7hWJWkamhwUmemi0gwU5Sr9M=
+X-Received: by 2002:a05:6871:3319:b0:2e8:f5d6:2247 with SMTP id 586e51a60fabf-4044cfc720cmr4766960fac.32.1768762908380;
+        Sun, 18 Jan 2026 11:01:48 -0800 (PST)
+Received: from newman.cs.purdue.edu ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4044bd14883sm5530224fac.12.2026.01.18.11.01.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Jan 2026 11:01:47 -0800 (PST)
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+To: markus.elfring@web.de
+Cc: almaz.alexandrovich@paragon-software.com,
+	jiashengjiangcool@gmail.com,
+	linux-kernel@vger.kernel.org,
+	ntfs3@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH v2] fs/ntfs3: Fix infinite loop in hdr_find_split due to zero-sized entry
+Date: Sun, 18 Jan 2026 19:01:45 +0000
+Message-Id: <20260118190145.41997-1-jiashengjiangcool@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <65bf90b1-8806-4f8c-b7e7-d90193d28e88@web.de>
+References: <65bf90b1-8806-4f8c-b7e7-d90193d28e88@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 8bit
 
+The function hdr_find_split iterates over index entries to calculate a
+split point. The loop increments the offset 'o' by 'esize', which is
+derived directly from the on-disk 'e->size' field.
 
---=-hJdlc3SGN0eHhDMV7FtW
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+If a corrupted or malicious filesystem image contains an index entry
+with a size of 0, the variable 'o' will fail to advance. This results
+in an infinite loop if the condition 'o < used_2' remains true, causing
+a kernel hang (Denial of Service).
 
-On Thu, 2026-01-15 at 17:49 +0100, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
->=20
-> ------------------
->=20
-> From: Peter Xu <peterx@redhat.com>
->=20
-> commit a79390f5d6a78647fd70856bd42b22d994de0ba2 upstream.
->=20
-> Switch to use type "long" for page accountings and retval across the whol=
-e
-> procedure of change_protection().
-[...]
+This patch adds a sanity check to ensure 'esize' is at least the size
+of the NTFS_DE structure, consistent with validation logic in sibling
+functions like hdr_find_e.
 
-This was a dependency for a backport of commit 670ddd8cdcbd
-"mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()", but
-that's not in the queue.  It seems pointless to apply this by itself.
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+---
+Changelog:
 
-Ben.
+v1 -> v2:
 
+1. Add a Fixes tag.
+---
+ fs/ntfs3/index.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---=20
-Ben Hutchings
-Larkinson's Law: All laws are basically false.
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 7157cfd70fdc..da6927e6d360 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -577,6 +577,9 @@ static const struct NTFS_DE *hdr_find_split(const struct INDEX_HDR *hdr)
+ 			return p;
+ 
+ 		esize = le16_to_cpu(e->size);
++
++		if (esize < sizeof(struct NTFS_DE))
++			return NULL;
+ 	}
+ 
+ 	return e;
+-- 
+2.25.1
 
---=-hJdlc3SGN0eHhDMV7FtW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmltLXcACgkQ57/I7JWG
-EQk/ihAAr8ZzwpyDdJakJhjCtb1d8EW1364VNnaHGJeCCSx2ZrGl50sF5w4D4AbL
-qhiAu12Qx7f+/WV6U30dSz0ozefqTMXG+xcO+iZLDilBcOYtfqK3R9+Yx6LpPZ6h
-5i+I1RhcoLwgFa5LkZhGeAhZTtzDKeNvCfKdfXOsBHHNLtXrtM+kJCBWSusftFES
-UFHyW0qWs1y4LKIeU9s3CRdnbv+X8eWZ8dgpr0SJxY3csgp2naM/9PLejqwtgi2q
-GrrYznmaadq/O++xOek5GtugcnKNi1VLHxu+MW1sfPeTt83iJQyjWXbUNnAyv15m
-U0SXIZqV+0rL4YSeyziv2c0RvyQBOtCTOmLZMBpLgajTv20q2PNl6RD2/TXiYJTG
-NKspCwKXJHz0MxKFcl67BxGE09yybfUzAO6lT53vXZq/pR8okzfizt1cxnKzgy7c
-shHopnScCwIDg/fDiLVTUpJO+Pmqwy65+F/7E2g8orD3ZtbHBrX2of27G5NB8vWI
-E6dHemrC010FLDO8LPfOUFCfILnIf9aiLMZnh4Oku95PFS1bnIjFJ26AkJJfn1p3
-oeqk5tA084oggtX1hxb/RvLbxhtYUWXanbD4+e4UcOM7jACGBroPC9pxvGWR+nsn
-Ao9Hvx4JaWFtbQn4STnGXODzJJqc+5wZOTwk5NXqOc1ksbS6HeA=
-=/ZqA
------END PGP SIGNATURE-----
-
---=-hJdlc3SGN0eHhDMV7FtW--
 
