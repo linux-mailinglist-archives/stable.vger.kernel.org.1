@@ -1,108 +1,169 @@
-Return-Path: <stable+bounces-210227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD28D39835
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 18:03:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12704D39858
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 18:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E95DD3009486
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 17:03:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 50226300160B
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 17:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA002236F3;
-	Sun, 18 Jan 2026 17:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="AqtYKp4K"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702CC204C36;
+	Sun, 18 Jan 2026 17:17:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0431D5CFB
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 17:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4842F18027;
+	Sun, 18 Jan 2026 17:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768755777; cv=none; b=h0SmQN7HrMeJINzJ7W40zH6dwsoSL1b6veZUO6NjwAp7ikKRykIsS3rQ/DdMHpq5wONLtin4Hl2FLLcrlymecLZdRdKXyGHZ8Bw+eExDpk/XDZNpYIdpgu5KY6mKCWTOD1rx2e+FLZqNHILc840+HY9B0k9PGU9g+uvKrNOzzgs=
+	t=1768756670; cv=none; b=fnK2ch+iPWXX0IYrBL+uiSG8lHTnU+VmOFztNfvbNMN9FPi8hu+GIAwtf7ZSs7eY6+/yB9yUu2FYsuaaR1UxwYBGkpPwdwLB0sZJZWPVuMDudLlz4lQOwvg0GbyBG94VOiWo2h4v1lXedUjziGxHSh0ktGbSZtpdI0izSew2sjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768755777; c=relaxed/simple;
-	bh=++Np939W0w+9LTtwQN5ddj4LNlIg4JvuTfXCCRly/kE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pEaYo51DINUwJBb9zBNOmBDi0NE/vjBRu7z7ARRQ9cb0RnPqvf4dS85RA0wFZrUY3N4Gy/hy7ElEWIsJDCqmcHH6fLcPEvUhWC+ahlmecQBdHruOPdarnWP5CIGroIW4QqKmMG3Sgna/nlB2Fj953gxdGBdnL8d0cN0Xi0pnTbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=AqtYKp4K; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <2f5f4a18-82b4-4f67-ae98-cdf5b7f8012b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768755773;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IHMiTnX6Q49LBdFrwHo07sttVUw6bSThK4YGNL15ubo=;
-	b=AqtYKp4Kai+NPIKDqHmhHcf104LiGy3h4QMvSTQB+3aOI/E3tDOOnCCDsspehpbgy5AwSz
-	OsWKsTWTZQ16BO/AkAleStAw0AM8yiVQyPuEqR9DlD+0USj4+h9nUAmjmszxiiLoJ+uXDn
-	FyuskXH5ZpH2q7F3MetUsrjU8Kksflc=
-Date: Mon, 19 Jan 2026 01:02:47 +0800
+	s=arc-20240116; t=1768756670; c=relaxed/simple;
+	bh=UXTVEjUXuz1tUjSdFZkW8sDsc5nSOwABa/2sCHdjcQY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lhNcxAELBzpvDLxVUVm8tSlJJhnc4bDxJXHVzMrQiVbXk+BqGpm2DWj/GXBrP5/g9Gm/zyfEwBMTbmLJfCb7scM0GqJYc/EuqRZkCRpvkqqWlCF7i1xEHeQLEJHJQnx+3c7XiNbytzl9u0VB6eOTYsek3YPOPynieXCSY8njUeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhWPJ-0018ZP-0u;
+	Sun, 18 Jan 2026 17:17:44 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1vhWPG-00000000pus-2Ppj;
+	Sun, 18 Jan 2026 18:17:42 +0100
+Message-ID: <6fe17868327207e8b850cf9f88b7dc58b2021f73.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 372/451] hwmon: (max16065) Use local variable to
+ avoid TOCTOU
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Gui-Dong Han <hanguidong02@gmail.com>, Guenter Roeck <linux@roeck-us.net>
+Cc: patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>
+Date: Sun, 18 Jan 2026 18:17:37 +0100
+In-Reply-To: <20260115164244.371233832@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
+	 <20260115164244.371233832@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-1OmL21kCMaNAg83KIYeg"
+User-Agent: Evolution 3.56.2-8 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 6.6 0/3] net: Backlog NAPI threading for PREEMPT_RT
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1768751557.git.wen.yang@linux.dev>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Wen Yang <wen.yang@linux.dev>
-In-Reply-To: <cover.1768751557.git.wen.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 
 
+--=-1OmL21kCMaNAg83KIYeg
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Sorry, we accidentally wrote 'PATCH 6.1' as' PATCH 6.6 ', please ignore 
-this series.
-We will resend the correct one, thanks.
+On Thu, 2026-01-15 at 17:49 +0100, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Gui-Dong Han <hanguidong02@gmail.com>
+>=20
+> [ Upstream commit b8d5acdcf525f44e521ca4ef51dce4dac403dab4 ]
+>=20
+> In max16065_current_show, data->curr_sense is read twice: once for the
+> error check and again for the calculation. Since
+> i2c_smbus_read_byte_data returns negative error codes on failure, if the
+> data changes to an error code between the check and the use, ADC_TO_CURR
+> results in an incorrect calculation.
+>=20
+> Read data->curr_sense into a local variable to ensure consistency.
 
---
-Best wishes,
-Wen
+Simply copying shared data to a local variable before using it cannot
+fix a data race.  The compiler is allowed to optimise away that copy and
+keep using data->curr_sense, since it can see that the current thread
+does not change data->curr_sense.
 
+You have to, at minimum, use READ_ONCE() here and WRITE_ONCE() when
+writing to max16065_data::curr_sense to ensure that the compiler does
+not optimise away the copy.
 
-On 1/19/26 00:15, wen.yang@linux.dev wrote:
-> From: Wen Yang <wen.yang@linux.dev>
-> 
-> Backport three upstream commits to fix a warning on PREEMPT_RT kernels
-> where raising SOFTIRQ from smp_call_functio triggers WARN_ON_ONCE()
-> in do_softirq_post_smp_call_flush().
-> 
-> The issue occurs when RPS sends IPIs for backlog NAPI, causing softirqs
-> from irq context on PREEMPT_RT. The solution implements backlog
-> NAPI threads to avoid IPI-triggered softirqs, which is required for
-> PREEMPT_RT kernels.
-> 
-> commit 8fcb76b934da ("net: napi_schedule_rps() cleanup") and
-> commit 56364c910691 ("net: Remove conditional threaded-NAPI wakeup based on task state.")
-> are prerequisites.
-> 
-> The remaining dependencies have not been backported, as they modify
-> structure definitions in header files and represent optimizations
-> rather than bug fixes, including:
-> c59647c0dc67 net: add softnet_data.in_net_rx_action
-> a1aaee7f8f79 net: make napi_threaded_poll() aware of sd->defer_list
-> 87eff2ec57b6 net: optimize napi_threaded_poll() vs RPS/RFS
-> 2b0cfa6e4956 net: add generic percpu page_pool allocator
-> ...
-> 
-> Eric Dumazet (1):
->    net: napi_schedule_rps() cleanup
-> 
-> Sebastian Andrzej Siewior (2):
->    net: Remove conditional threaded-NAPI wakeup based on task state.
->    net: Allow to use SMP threads for backlog NAPI.
-> 
->   net/core/dev.c | 162 +++++++++++++++++++++++++++++++++++--------------
->   1 file changed, 118 insertions(+), 44 deletions(-)
-> 
+> Note
+> that data->curr_gain is constant and safe to access directly.
+>=20
+> This aligns max16065_current_show with max16065_input_show, which
+> already uses a local variable for the same reason.
+
+Then there are 2 functions that need a further fix...
+
+Ben.
+
+> Link: https://lore.kernel.org/all/CALbr=3DLYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=
+=3Do1xxMJ8=3D5z8B-g@mail.gmail.com/
+> Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compa=
+tibles")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+> Link: https://lore.kernel.org/r/20251128124709.3876-1-hanguidong02@gmail.=
+com
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/hwmon/max16065.c |    7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>=20
+> --- a/drivers/hwmon/max16065.c
+> +++ b/drivers/hwmon/max16065.c
+> @@ -216,12 +216,13 @@ static ssize_t max16065_current_show(str
+>  				     struct device_attribute *da, char *buf)
+>  {
+>  	struct max16065_data *data =3D max16065_update_device(dev);
+> +	int curr_sense =3D data->curr_sense;
+> =20
+> -	if (unlikely(data->curr_sense < 0))
+> -		return data->curr_sense;
+> +	if (unlikely(curr_sense < 0))
+> +		return curr_sense;
+> =20
+>  	return sysfs_emit(buf, "%d\n",
+> -			  ADC_TO_CURR(data->curr_sense, data->curr_gain));
+> +			  ADC_TO_CURR(curr_sense, data->curr_gain));
+>  }
+> =20
+>  static ssize_t max16065_limit_store(struct device *dev,
+>=20
+>=20
+
+--=20
+Ben Hutchings
+Larkinson's Law: All laws are basically false.
+
+--=-1OmL21kCMaNAg83KIYeg
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmltFbEACgkQ57/I7JWG
+EQnh0RAAkLa2bHOGwfHY1FtBsy/OW/AinqjjTFMGDNKJMqAWHcNdsnv6oji2Ba+2
+QEXusb71j3WUDvQbTfnmJ13vsdevqzGCy4vKBRgGRHtC1/oOjMXzf5FB7FbO7g9/
+VSEIW+KPoH9zmbjBDXV/bRjLXr6hU+w4yxfDM1nSi9FVtlAynxoRWk+gJqoSvpdU
+eKHxodSYEFiJ9fAkzehYbEbA50EoKn8ZRRN6P0A7XscSky2tPhoqnG7VEuOY0Qil
+p7mTsuVfQQ1hSc/qETPRiyNDUOlOwQHXeFlxnr1PFdrdK4z+IlY2t44YClYngcio
+wZIUYjglcgpDJetnoirz+XW+s1xvh0jmvYPXVrrXuG/rpZwUrFCsnKjCyQyfSVCE
+oTRquHGem4oI7oqjdaAQqonWW0X7cF/gWUD+XiGb5gPSmj7qrC71HA+2wItSJ0VH
+j2lW3B34anu9DSR5vl3qy4GTt4/C4iGP+yDrOwT7LhS6ul8MTEAHyyasCJkqFIUl
+nLtIaIj4cmHfGLj3aFP8h/hpg/0OcIeE3TRNTzR2HLh8oFDsGrub5X3x0dxgeYhQ
+HNngG9nXlEQaecBJ84NBKn341mGRZ+VGkRSmImOD6QtSd7pUUMXMci/+Qqgf02T6
++acdmwHTZeKrmxYGL5E7mkgWEaU2nl1kZe3vyTxzVGXYjIHk/ho=
+=FkXz
+-----END PGP SIGNATURE-----
+
+--=-1OmL21kCMaNAg83KIYeg--
 
