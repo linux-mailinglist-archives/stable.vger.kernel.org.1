@@ -1,378 +1,239 @@
-Return-Path: <stable+bounces-210225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5559D39811
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 17:41:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2EED3982C
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 17:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F1376300BD96
-	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 16:41:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CCCDD30019C6
+	for <lists+stable@lfdr.de>; Sun, 18 Jan 2026 16:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF470238150;
-	Sun, 18 Jan 2026 16:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD44D236454;
+	Sun, 18 Jan 2026 16:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FkQgglza"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y0Lz7L1M"
 X-Original-To: stable@vger.kernel.org
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D006822CBF1
-	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 16:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1AB17A2F0
+	for <stable@vger.kernel.org>; Sun, 18 Jan 2026 16:56:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768754480; cv=none; b=jCCGFiG339iC8LrNHKKuy1s+S8hLu++qTQIPkVg3wpfGNcx5ffIagSF0bbG9Qojc2QloNYX8xYA1OijBfgJnpq2izBUF3zOTAz8zQ7QwU4aR/XwSSxq7NK4LYXrRmKsVuoLCvMdnR7Q/eHIbv1R+DAGWx+566z4IqdhBJfPYEzI=
+	t=1768755378; cv=none; b=JcLVAM6Q6Rhres+fxjyBzPxyqG2r71ZrXwZSAVavra01rPCtCvQxbPic2HR8TU+wMktV6e6JpZnr9uewL8PBIG41hmVH5+dqUFoPWfGVgtGahQ14ojIL6+mNliZp/zXCJ48ragGVKl1sulw8258urGrenMuPtkVSwRJS8EkGL0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768754480; c=relaxed/simple;
-	bh=6wXP1LR54sHqLQuuvws+SCHfq+U909va1VrcCDVpiuI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=E2I6EJVbpQ8B6aUCPbpH1ybqIIjNDrjrizplNwP2V0EYokaFIbPCwBK8oewSmyAosQ7yf42T7HSJ10R4bDkctxwMEOjg8F+lpS/eYt1K+v4jB2rVi+shOT/R7jbYvWud/Qor5U1Drmb4MTj6qvqR2JlQdpItvlHvWqjWcGegWlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FkQgglza; arc=none smtp.client-ip=91.218.175.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768754477;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bEA5kumbe6+CLic5avtlE1pQHjl/O4RKdWmfyHolhz0=;
-	b=FkQgglzaUENEMFUuvBrAWD5NMTETncWQ3ZujCx6zUGfozZU8vVj+pcRiF12nE3OkQDYib5
-	yaxjjVizBigX8MkbKE7BCqhSy3GW2NsP+iregAumlP9wnY+M5y1/YcWyJtWxmivAIzDVyh
-	CMzxUAPkLW2vA4ZmIoLnFEsgRIRb0q0=
-From: wen.yang@linux.dev
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Wen Yang <wen.yang@linux.dev>
-Subject: [PATCH 6.1 3/3] net: Allow to use SMP threads for backlog NAPI.
-Date: Mon, 19 Jan 2026 00:40:33 +0800
-Message-Id: <7f6344848b554afba64529d461904951e387011e.1768754220.git.wen.yang@linux.dev>
-In-Reply-To: <cover.1768754220.git.wen.yang@linux.dev>
-References: <cover.1768754220.git.wen.yang@linux.dev>
+	s=arc-20240116; t=1768755378; c=relaxed/simple;
+	bh=5Zii4MngEcQqkljq4Uew6I6R51Po6q4NtGvCicrQOFc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=q8aT0FHkq6dqjxMaXhQuLt/hdZhiJglHh7C65FUpU3SBf6N4nWsjPTfLBXMYnoPpiyil23ijtzS6KzGp0EJ+j4T7mR16AsV6hPhN2Nk/kSipibE8paPydjC85drd9PdsDKZT4fs9odRdsFUwgPnCraNpREbkc1xPsZWhxKZGzkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y0Lz7L1M; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a102494058so22378825ad.0
+        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 08:56:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768755375; x=1769360175; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jEppzu6eviBAXebQ+gZV8Uj3Kel+sc6ehG/jURfNuz4=;
+        b=Y0Lz7L1MCD0tlPpFFLEBP82dyXOQhIDkAAT4vWreWDt4p0sQan3H9f+ZcVxvARUIxy
+         E6ItiXuQ/3ltWbgaNrNvinQ/G9Mda4xwh1CJOrEWmirGPJPO2HRddiS80gY0kpb75GYi
+         1L1xv3p17VZrkV4/5BDTjaMnT8A0kWYH/dDUe4zspSN4xv6sBjySnjaB0L+O3PWm8TvO
+         TIidmompSZgvl1FBx4M04e+5qwUQo3RpPzQuA+VeVBwNRCjk6uG9b3ZpZEjL2PZOO5JW
+         cSnxRYH4xuONn2zYJvp5c/roP3w4hiVxXQlh1cEU8U5W892FvjxL2lCnig/K6l/SiRRr
+         ZshQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768755375; x=1769360175;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jEppzu6eviBAXebQ+gZV8Uj3Kel+sc6ehG/jURfNuz4=;
+        b=dBDTbBkcg0OD1cleEJLFkkMjmw6YVidJmQ5v3edBhux+zqm/KDNJV/K8Ugd2bvaCYy
+         5ITAH2QaSV3tyml0wUA0Vq+PLKp7z//vCvDTh4DOfyeX4R1YHlhoFnyUiHL0AAjaYHS1
+         TI2/U6NUovqIx55yPTBYkUiEA6CokskcooHeYoUaSIuFQDbJS0UDmfGNC9EFOTEvVV33
+         FqMbYdSa8hs7I5YYxI3RrJhLppjtsD232m0y5/nsJ4jEQ0oR6KZdbbHdVo4juFR1IVQn
+         dYslepvjEjYebP9v4YGD4+2fwTzbkwnivoDKnEBYj52xtDpFpngZ08JPnzLJjqDlmXG0
+         IHjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVqQpyWiPRaSvzxy8XEAl0bRKTCU7OdytwA9t/EofHWB6VXhS9bq9KPynzIoau5OSrdfw32qT8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvHbK2TtuWOKlIbWg+kMgVbdjmKSabvbfzD8lIzfwjDFCrr+qN
+	5Bcbc0fOYtyIWg3i7DhKwt+hrlDYFwqgbMq/SyNQVVjkEsAHMzZVl9Yw
+X-Gm-Gg: AY/fxX65Pd/zg/8HK1ieXbglFjkhF9PsyKQrLo2EoBOE38Lv7pfMxztnZLKlsar6I1l
+	Bmkez4IXIXf5U1HZoJneWevmQHHMlMfwM4vJX/7biMPx3SbrG/38aRuCoa3Gy5R40aaehYy60cA
+	k4II3AWTljqlZSBvxGu1Jf19rErzmIFB196HnTNccboHcKOgc72MPNMG7rB5AfPHBqr6hv9K6Sp
+	KCr0eeJyuIcIIfNC2ZzPb1QHO0+jmTlvfxAnrEtP7SC3vpn921FMB4JJjZLcQIg3qOVTcjZ+Hog
+	fFUjrKI/sT0Z/e4/GzluFujkzWHtkIv/574qzFQYjjoiWuM0oOA/0OVlVioL1djxWgPv2zuPh/i
+	+PltvldDQ6P97O5ohM8K37/SbsT+U0cDbp7Q6s+KPgoKdPin9Jnx+mNAnzlD7aKHDb61iUIDuTT
+	7/4sRWZd5CP5YBILpp2HmLI/Hx8rm0vz87iHcjZTI/oVP6mqv5
+X-Received: by 2002:a17:902:c404:b0:295:4d97:84f9 with SMTP id d9443c01a7336-2a71782679dmr81632895ad.26.1768755375428;
+        Sun, 18 Jan 2026 08:56:15 -0800 (PST)
+Received: from [127.0.0.1] ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7193dbb28sm70415175ad.49.2026.01.18.08.56.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Jan 2026 08:56:14 -0800 (PST)
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 19 Jan 2026 00:55:59 +0800
+Subject: [PATCH v2] mm/shmem, swap: fix race of truncate and swap entry
+ split
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260119-shmem-swap-fix-v2-1-034c946fd393@tencent.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/13Myw7CIBCF4VdpZu0YBmm9rHwP0wWWwbIoNECqp
+ uHdxSZuXP4nOd8KiaPjBJdmhciLSy74GnLXwDBq/2B0pjZIITtBRJjGiSdMTz2jdS88GcFSaFL
+ 31kA9zZHrvIG3vvboUg7xvfkLfdcfJf+phZBQ2IM6WmW7cyuvmf3APu+HMEFfSvkAp9SEmq4AA
+ AA=
+X-Change-ID: 20260111-shmem-swap-fix-8d0e20a14b5d
+To: linux-mm@kvack.org
+Cc: Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+ Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+ Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, 
+ Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768755372; l=4726;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=FMdqaw4ffv6MVren4jIFknJs8oVKQ1muaKKQ3HOeu28=;
+ b=QyEwzfokU53F7BKHi8UG9l+VsxsJ0dnzLTd82d6PG959EqX+nQCxfNxLIy6MTv5UxJw4AVOcU
+ LVWa5A8QldWCKwPNLVafnQK1e4nArWUErfvXejnNEedhAALQaSXnbgo
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Kairui Song <kasong@tencent.com>
 
-commit dad6b97702639fba27a2bd3e986982ad6f0db3a7 upstream.
+The helper for shmem swap freeing is not handling the order of swap
+entries correctly. It uses xa_cmpxchg_irq to erase the swap entry, but
+it gets the entry order before that using xa_get_order without lock
+protection, and it may get an outdated order value if the entry is split
+or changed in other ways after the xa_get_order and before the
+xa_cmpxchg_irq.
 
-Backlog NAPI is a per-CPU NAPI struct only (with no device behind it)
-used by drivers which don't do NAPI them self, RPS and parts of the
-stack which need to avoid recursive deadlocks while processing a packet.
+And besides, the order could grow and be larger than expected, and cause
+truncation to erase data beyond the end border. For example, if the
+target entry and following entries are swapped in or freed, then a large
+folio was added in place and swapped out, using the same entry, the
+xa_cmpxchg_irq will still succeed, it's very unlikely to happen though.
 
-The non-NAPI driver use the CPU local backlog NAPI. If RPS is enabled
-then a flow for the skb is computed and based on the flow the skb can be
-enqueued on a remote CPU. Scheduling/ raising the softirq (for backlog's
-NAPI) on the remote CPU isn't trivial because the softirq is only
-scheduled on the local CPU and performed after the hardirq is done.
-In order to schedule a softirq on the remote CPU, an IPI is sent to the
-remote CPU which schedules the backlog-NAPI on the then local CPU.
+To fix that, open code the Xarray cmpxchg and put the order retrieval
+and value checking in the same critical section. Also, ensure the order
+won't exceed the end border, skip it if the entry goes across the
+border.
 
-On PREEMPT_RT interrupts are force-threaded. The soft interrupts are
-raised within the interrupt thread and processed after the interrupt
-handler completed still within the context of the interrupt thread. The
-softirq is handled in the context where it originated.
+Skipping large swap entries crosses the end border is safe here.
+Shmem truncate iterates the range twice, in the first iteration,
+find_lock_entries already filtered such entries, and shmem will
+swapin the entries that cross the end border and partially truncate the
+folio (split the folio or at least zero part of it). So in the second
+loop here, if we see a swap entry that crosses the end order, it must
+at least have its content erased already.
 
-With force-threaded interrupts enabled, ksoftirqd is woken up if a
-softirq is raised from hardirq context. This is the case if it is raised
-from an IPI. Additionally there is a warning on PREEMPT_RT if the
-softirq is raised from the idle thread.
-This was done for two reasons:
-- With threaded interrupts the processing should happen in thread
-  context (where it originated) and ksoftirqd is the only thread for
-  this context if raised from hardirq. Using the currently running task
-  instead would "punish" a random task.
-- Once ksoftirqd is active it consumes all further softirqs until it
-  stops running. This changed recently and is no longer the case.
+I observed random swapoff hangs and kernel panics when stress testing
+ZSWAP with shmem. After applying this patch, all problems are gone.
 
-Instead of keeping the backlog NAPI in ksoftirqd (in force-threaded/
-PREEMPT_RT setups) I am proposing NAPI-threads for backlog.
-The "proper" setup with threaded-NAPI is not doable because the threads
-are not pinned to an individual CPU and can be modified by the user.
-Additionally a dummy network device would have to be assigned. Also
-CPU-hotplug has to be considered if additional CPUs show up.
-All this can be probably done/ solved but the smpboot-threads already
-provide this infrastructure.
-
-Sending UDP packets over loopback expects that the packet is processed
-within the call. Delaying it by handing it over to the thread hurts
-performance. It is not beneficial to the outcome if the context switch
-happens immediately after enqueue or after a while to process a few
-packets in a batch.
-There is no need to always use the thread if the backlog NAPI is
-requested on the local CPU. This restores the loopback throuput. The
-performance drops mostly to the same value after enabling RPS on the
-loopback comparing the IPI and the tread result.
-
-Create NAPI-threads for backlog if request during boot. The thread runs
-the inner loop from napi_threaded_poll(), the wait part is different. It
-checks for NAPI_STATE_SCHED (the backlog NAPI can not be disabled).
-
-The NAPI threads for backlog are optional, it has to be enabled via the boot
-argument "thread_backlog_napi". It is mandatory for PREEMPT_RT to avoid the
-wakeup of ksoftirqd from the IPI.
-
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Wen Yang <wen.yang@linux.dev>
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- net/core/dev.c | 130 +++++++++++++++++++++++++++++++++++++++----------
- 1 file changed, 104 insertions(+), 26 deletions(-)
+Changes in v2:
+- Fix a potential retry loop issue and improvement to code style thanks
+  to Baoling Wang. I didn't split the change into two patches because a
+  separate patch doesn't stand well as a fix.
+- Link to v1: https://lore.kernel.org/r/20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com
+---
+ mm/shmem.c | 45 ++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 34 insertions(+), 11 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 83475b8b3e9d..678848e116d2 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -78,6 +78,7 @@
- #include <linux/slab.h>
- #include <linux/sched.h>
- #include <linux/sched/mm.h>
-+#include <linux/smpboot.h>
- #include <linux/mutex.h>
- #include <linux/rwsem.h>
- #include <linux/string.h>
-@@ -217,6 +218,31 @@ static inline struct hlist_head *dev_index_hash(struct net *net, int ifindex)
- 	return &net->dev_index_head[ifindex & (NETDEV_HASHENTRIES - 1)];
- }
- 
-+#ifndef CONFIG_PREEMPT_RT
-+
-+static DEFINE_STATIC_KEY_FALSE(use_backlog_threads_key);
-+
-+static int __init setup_backlog_napi_threads(char *arg)
-+{
-+	static_branch_enable(&use_backlog_threads_key);
-+	return 0;
-+}
-+early_param("thread_backlog_napi", setup_backlog_napi_threads);
-+
-+static bool use_backlog_threads(void)
-+{
-+	return static_branch_unlikely(&use_backlog_threads_key);
-+}
-+
-+#else
-+
-+static bool use_backlog_threads(void)
-+{
-+	return true;
-+}
-+
-+#endif
-+
- static inline void rps_lock_irqsave(struct softnet_data *sd,
- 				    unsigned long *flags)
- {
-@@ -4415,6 +4441,7 @@ EXPORT_SYMBOL(__dev_direct_xmit);
- /*************************************************************************
-  *			Receiver routines
-  *************************************************************************/
-+static DEFINE_PER_CPU(struct task_struct *, backlog_napi);
- 
- int netdev_max_backlog __read_mostly = 1000;
- EXPORT_SYMBOL(netdev_max_backlog);
-@@ -4447,12 +4474,16 @@ static inline void ____napi_schedule(struct softnet_data *sd,
- 		 */
- 		thread = READ_ONCE(napi->thread);
- 		if (thread) {
-+			if (use_backlog_threads() && thread == raw_cpu_read(backlog_napi))
-+				goto use_local_napi;
-+
- 			set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
- 			wake_up_process(thread);
- 			return;
- 		}
- 	}
- 
-+use_local_napi:
- 	list_add_tail(&napi->poll_list, &sd->poll_list);
- 	__raise_softirq_irqoff(NET_RX_SOFTIRQ);
- }
-@@ -4695,6 +4726,11 @@ static void napi_schedule_rps(struct softnet_data *sd)
- 
- #ifdef CONFIG_RPS
- 	if (sd != mysd) {
-+		if (use_backlog_threads()) {
-+			__napi_schedule_irqoff(&sd->backlog);
-+			return;
-+		}
-+
- 		sd->rps_ipi_next = mysd->rps_ipi_list;
- 		mysd->rps_ipi_list = sd;
- 
-@@ -5979,7 +6015,7 @@ static void net_rps_action_and_irq_enable(struct softnet_data *sd)
- #ifdef CONFIG_RPS
- 	struct softnet_data *remsd = sd->rps_ipi_list;
- 
--	if (remsd) {
-+	if (!use_backlog_threads() && remsd) {
- 		sd->rps_ipi_list = NULL;
- 
- 		local_irq_enable();
-@@ -5994,7 +6030,7 @@ static void net_rps_action_and_irq_enable(struct softnet_data *sd)
- static bool sd_has_rps_ipi_waiting(struct softnet_data *sd)
- {
- #ifdef CONFIG_RPS
--	return sd->rps_ipi_list != NULL;
-+	return !use_backlog_threads() && sd->rps_ipi_list;
- #else
- 	return false;
- #endif
-@@ -6038,7 +6074,7 @@ static int process_backlog(struct napi_struct *napi, int quota)
- 			 * We can use a plain write instead of clear_bit(),
- 			 * and we dont need an smp_mb() memory barrier.
- 			 */
--			napi->state = 0;
-+			napi->state &= NAPIF_STATE_THREADED;
- 			again = false;
- 		} else {
- 			skb_queue_splice_tail_init(&sd->input_pkt_queue,
-@@ -6688,32 +6724,37 @@ static int napi_thread_wait(struct napi_struct *napi)
- 	return -1;
- }
- 
--static int napi_threaded_poll(void *data)
-+static void napi_threaded_poll_loop(struct napi_struct *napi)
- {
--	struct napi_struct *napi = data;
--	void *have;
--
--	while (!napi_thread_wait(napi)) {
--		unsigned long last_qs = jiffies;
-+	unsigned long last_qs = jiffies;
- 
--		for (;;) {
--			bool repoll = false;
-+	for (;;) {
-+		bool repoll = false;
-+		void *have;
- 
--			local_bh_disable();
-+		local_bh_disable();
- 
--			have = netpoll_poll_lock(napi);
--			__napi_poll(napi, &repoll);
--			netpoll_poll_unlock(have);
-+		have = netpoll_poll_lock(napi);
-+		__napi_poll(napi, &repoll);
-+		netpoll_poll_unlock(have);
- 
--			local_bh_enable();
-+		local_bh_enable();
- 
--			if (!repoll)
--				break;
-+		if (!repoll)
-+			break;
- 
--			rcu_softirq_qs_periodic(last_qs);
--			cond_resched();
--		}
-+		rcu_softirq_qs_periodic(last_qs);
-+		cond_resched();
- 	}
-+}
-+
-+static int napi_threaded_poll(void *data)
-+{
-+	struct napi_struct *napi = data;
-+
-+	while (!napi_thread_wait(napi))
-+		napi_threaded_poll_loop(napi);
-+
- 	return 0;
- }
- 
-@@ -11238,7 +11279,7 @@ static int dev_cpu_dead(unsigned int oldcpu)
- 
- 		list_del_init(&napi->poll_list);
- 		if (napi->poll == process_backlog)
--			napi->state = 0;
-+			napi->state &= NAPIF_STATE_THREADED;
- 		else
- 			____napi_schedule(sd, napi);
- 	}
-@@ -11246,12 +11287,14 @@ static int dev_cpu_dead(unsigned int oldcpu)
- 	raise_softirq_irqoff(NET_TX_SOFTIRQ);
- 	local_irq_enable();
- 
-+	if (!use_backlog_threads()) {
- #ifdef CONFIG_RPS
--	remsd = oldsd->rps_ipi_list;
--	oldsd->rps_ipi_list = NULL;
-+		remsd = oldsd->rps_ipi_list;
-+		oldsd->rps_ipi_list = NULL;
- #endif
--	/* send out pending IPI's on offline CPU */
--	net_rps_send_ipi(remsd);
-+		/* send out pending IPI's on offline CPU */
-+		net_rps_send_ipi(remsd);
-+	}
- 
- 	/* Process offline CPU's input_pkt_queue */
- 	while ((skb = __skb_dequeue(&oldsd->process_queue))) {
-@@ -11511,6 +11554,38 @@ static struct pernet_operations __net_initdata default_device_ops = {
-  *
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 0b4c8c70d017..fadd5dd33d8b 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -962,17 +962,29 @@ static void shmem_delete_from_page_cache(struct folio *folio, void *radswap)
+  * being freed).
   */
+ static long shmem_free_swap(struct address_space *mapping,
+-			    pgoff_t index, void *radswap)
++			    pgoff_t index, pgoff_t end, void *radswap)
+ {
+-	int order = xa_get_order(&mapping->i_pages, index);
+-	void *old;
++	XA_STATE(xas, &mapping->i_pages, index);
++	unsigned int nr_pages = 0;
++	pgoff_t base;
++	void *entry;
  
-+static int backlog_napi_should_run(unsigned int cpu)
-+{
-+	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
-+	struct napi_struct *napi = &sd->backlog;
+-	old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
+-	if (old != radswap)
+-		return 0;
+-	swap_put_entries_direct(radix_to_swp_entry(radswap), 1 << order);
++	xas_lock_irq(&xas);
++	entry = xas_load(&xas);
++	if (entry == radswap) {
++		nr_pages = 1 << xas_get_order(&xas);
++		base = round_down(xas.xa_index, nr_pages);
++		if (base < index || base + nr_pages - 1 > end)
++			nr_pages = 0;
++		else
++			xas_store(&xas, NULL);
++	}
++	xas_unlock_irq(&xas);
 +
-+	return test_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
-+}
-+
-+static void run_backlog_napi(unsigned int cpu)
-+{
-+	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
-+
-+	napi_threaded_poll_loop(&sd->backlog);
-+}
-+
-+static void backlog_napi_setup(unsigned int cpu)
-+{
-+	struct softnet_data *sd = per_cpu_ptr(&softnet_data, cpu);
-+	struct napi_struct *napi = &sd->backlog;
-+
-+	napi->thread = this_cpu_read(backlog_napi);
-+	set_bit(NAPI_STATE_THREADED, &napi->state);
-+}
-+
-+static struct smp_hotplug_thread backlog_threads = {
-+	.store			= &backlog_napi,
-+	.thread_should_run	= backlog_napi_should_run,
-+	.thread_fn		= run_backlog_napi,
-+	.thread_comm		= "backlog_napi/%u",
-+	.setup			= backlog_napi_setup,
-+};
-+
++	if (nr_pages)
++		swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
+ 
+-	return 1 << order;
++	return nr_pages;
+ }
+ 
  /*
-  *       This is called single threaded during boot, so no need
-  *       to take the rtnl semaphore.
-@@ -11561,7 +11636,10 @@ static int __init net_dev_init(void)
- 		init_gro_hash(&sd->backlog);
- 		sd->backlog.poll = process_backlog;
- 		sd->backlog.weight = weight_p;
-+		INIT_LIST_HEAD(&sd->backlog.poll_list);
- 	}
-+	if (use_backlog_threads())
-+		smpboot_register_percpu_thread(&backlog_threads);
+@@ -1124,8 +1136,8 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 			if (xa_is_value(folio)) {
+ 				if (unfalloc)
+ 					continue;
+-				nr_swaps_freed += shmem_free_swap(mapping,
+-							indices[i], folio);
++				nr_swaps_freed += shmem_free_swap(mapping, indices[i],
++								  end - 1, folio);
+ 				continue;
+ 			}
  
- 	dev_boot_phase = 0;
+@@ -1191,12 +1203,23 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 			folio = fbatch.folios[i];
  
+ 			if (xa_is_value(folio)) {
++				int order;
+ 				long swaps_freed;
+ 
+ 				if (unfalloc)
+ 					continue;
+-				swaps_freed = shmem_free_swap(mapping, indices[i], folio);
++				swaps_freed = shmem_free_swap(mapping, indices[i],
++							      end - 1, folio);
+ 				if (!swaps_freed) {
++					/*
++					 * If found a large swap entry cross the end border,
++					 * skip it as the truncate_inode_partial_folio above
++					 * should have at least zerod its content once.
++					 */
++					order = shmem_confirm_swap(mapping, indices[i],
++								   radix_to_swp_entry(folio));
++					if (order > 0 && indices[i] + order > end)
++						continue;
+ 					/* Swap was replaced by page: retry */
+ 					index = indices[i];
+ 					break;
+
+---
+base-commit: fe2c34b6ea5a0e1175c30d59bc1c28caafb02c62
+change-id: 20260111-shmem-swap-fix-8d0e20a14b5d
+
+Best regards,
 -- 
-2.25.1
+Kairui Song <kasong@tencent.com>
 
 
