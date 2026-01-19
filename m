@@ -1,81 +1,127 @@
-Return-Path: <stable+bounces-210394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1912BD3B70F
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 20:15:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F9CD3B863
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 21:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 823A930484A6
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 19:14:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 340D1300BBF4
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 20:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984B0366DD7;
-	Mon, 19 Jan 2026 19:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0632829B8E1;
+	Mon, 19 Jan 2026 20:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DPp4Jc4F"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HXYWR4Ad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE9D387579;
-	Mon, 19 Jan 2026 19:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF15275B05;
+	Mon, 19 Jan 2026 20:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768850094; cv=none; b=kIn035Vtveb1ga8KcrsRaTLy89Wi8rVzv6lzToznVMouTqlwJwAo/oJu1keoMNBIRvKhcILF+fX/9w06K90gZaSuuhXVjUtZZYF6KyPmYBo+rKxAc+0VWJ8Mv8LU1h95mWBQTsCbSJsF/FSGyTXf32ndChahYDHhgvvgZcOY8kw=
+	t=1768854641; cv=none; b=GH1r/I9Q6bJkGOXK5lfqMSu88AEvQYdGMfep+ItrsV6DRBgBTmRmKl9mt84u2fLtyZ17AaLPdq1MkUznUV7mM7NsDBBTxTm7lN9uFz2gaHX9+VpRjFs+3jf/AQxtAGF6tfzE2uPNFSh1uDW4aDmvR9uZG5kNam4nRc8WD9ShpY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768850094; c=relaxed/simple;
-	bh=YpvvfBGMmGHJD0VZNkSOlySrSH6aKmR+qr7PRT5JzXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j+NBy2QOFPfWHrE2+g4qEe6w3L8Ve1GVTj2ds0bgYfWe77P7aaTeRZ5FL00KPUU5Qb/v8c349GW17gicX/ayLOXQh9s14EBFAF1Hv4/AJbJaSusD1YJclCy2MrKZy513vWUqcKwT8XvqmSjhsj+H6Rf32qb5/e0eeBHZEVI55fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DPp4Jc4F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7580C116C6;
-	Mon, 19 Jan 2026 19:14:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768850093;
-	bh=YpvvfBGMmGHJD0VZNkSOlySrSH6aKmR+qr7PRT5JzXA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DPp4Jc4FquG2JfHQEu8aWrOhFVGtXuN6Hj8bvMFG5YABcg/iZaKXKfrebi4sptcaa
-	 g1FzGB3qxA4yxIxEXDmWQdZptfsz5XOSAC8aNYa+hMrGgaKw/gdLYwfQrEojZ83+bo
-	 m3O1ag6pu7Zl3vvFU7aYsyP6mxQfXc5S3mN/GTJCDPH+yKJ/6mcWyEGrY1G69HNDqj
-	 Ki1rjXxg2aUPOVr/SKOmEwNiKjXt7zhyigXtTHHuj0vLHFhNPBOO7GIJB8SIUtyq/C
-	 RWpKbLbvql6iCabgF8UVVIkCrCjj1A6WIJlMF9itXPot65kCGiqoD21YnX+CZvFuvW
-	 /k94vjioC1QBw==
-Date: Mon, 19 Jan 2026 11:14:52 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Paul Moses <p@1g4.org>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v1 3/3] net/sched: act_gate: zero-initialize netlink
- dump struct
-Message-ID: <20260119111452.37dde230@kernel.org>
-In-Reply-To: <20260116112522.159480-4-p@1g4.org>
-References: <20260116112522.159480-1-p@1g4.org>
-	<20260116112522.159480-4-p@1g4.org>
+	s=arc-20240116; t=1768854641; c=relaxed/simple;
+	bh=HFEHCiRDel003sUznNZA/cm9bXQgeWOcSJWPoEYFNAM=;
+	h=Date:To:From:Subject:Message-Id; b=idzJElFCJ79Va5dlA71keUXlLUxOgv8ur2gFE9y91o61DUpb239CFQmL41WDMdD4KHIwsHToW1O0S6vlr0plyeWoKJ6h/BWOV4Ti20UlOZgKyQZ2ZyujN2UPrhFRBI5/RGULiksM6NEvFptS/d6T0N7QuOp5D67pMv9l7Rfk4D4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HXYWR4Ad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43672C116C6;
+	Mon, 19 Jan 2026 20:30:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768854641;
+	bh=HFEHCiRDel003sUznNZA/cm9bXQgeWOcSJWPoEYFNAM=;
+	h=Date:To:From:Subject:From;
+	b=HXYWR4AdFtRPP1C2n8LX5reuTx4+hdD/4l6b6w85ZU8UkMo0m2zkb6Iamky7Qa8GA
+	 zyGkfHYgmZEVahoI9uqMAPxCmzO8n0B05co789I64tqGqGbjxWmrkQg3vDgOuSjnR6
+	 zrqUmC3xWngsN4aotMgjO8uqqmb8lVP12Txs3mI4=
+Date: Mon, 19 Jan 2026 12:30:40 -0800
+To: mm-commits@vger.kernel.org,yuzhao@google.com,willy@infradead.org,viro@zeniv.linux.org.uk,vbabka@suse.cz,tj@kernel.org,tglx@kernel.org,sweettea-kernel@dorminy.me,surenb@google.com,stable@vger.kernel.org,sj@kernel.org,shakeel.butt@linux.dev,rppt@kernel.org,rostedt@goodmis.org,roman.gushchin@linux.dev,rientjes@google.com,richard.weiyang@gmail.com,peterz@infradead.org,paulmck@kernel.org,mjguzik@gmail.com,mhocko@suse.com,mhiramat@kernel.org,lorenzo.stoakes@oracle.com,liumartin@google.com,linmiaohe@huawei.com,liam.howlett@oracle.com,hannes@cmpxchg.org,dennis@kernel.org,david@redhat.com,cl@linux.com,christian.koenig@amd.com,broonie@kernel.org,brauner@kernel.org,baolin.wang@linux.alibaba.com,aboorvad@linux.ibm.com,mathieu.desnoyers@efficios.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-add-missing-static-initializer-for-init_mm-mm_cidlock.patch removed from -mm tree
+Message-Id: <20260119203041.43672C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Fri, 16 Jan 2026 11:26:08 +0000 Paul Moses wrote:
-> -	unsigned char *b = skb_tail_pointer(skb);
->  	struct tcf_gate *gact = to_gate(a);
-> -	struct tc_gate opt = {
-> -		.index    = gact->tcf_index,
-> -		.refcnt   = refcount_read(&gact->tcf_refcnt) - ref,
-> -		.bindcnt  = atomic_read(&gact->tcf_bindcnt) - bind,
-> -	};
->  	struct tcfg_gate_entry *entry;
->  	struct tcf_gate_params *p;
->  	struct nlattr *entry_list;
-> +	struct tc_gate opt = { };
->  	struct tcf_t t;
-> +	unsigned char *b = skb_tail_pointer(skb);
 
-Why is *b moving? Please avoid unnecessary code changes in fixes.
+The quilt patch titled
+     Subject: mm: add missing static initializer for init_mm::mm_cid.lock
+has been removed from the -mm tree.  Its filename was
+     mm-add-missing-static-initializer-for-init_mm-mm_cidlock.patch
 
-Also -- we prefer the declaration lines to be sorted longest to
-shortest. If a dependency prevents that the init needs to be moved
-to the body of the function (this mostly applies to patch 2).
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Subject: mm: add missing static initializer for init_mm::mm_cid.lock
+Date: Wed, 24 Dec 2025 12:33:56 -0500
+
+Initialize the mm_cid.lock struct member of init_mm.
+
+Link: https://lkml.kernel.org/r/20251224173358.647691-2-mathieu.desnoyers@efficios.com
+Fixes: 8cea569ca785 ("sched/mmcid: Use proper data structures")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Christan König <christian.koenig@amd.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Martin Liu <liumartin@google.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/init-mm.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+--- a/mm/init-mm.c~mm-add-missing-static-initializer-for-init_mm-mm_cidlock
++++ a/mm/init-mm.c
+@@ -44,6 +44,9 @@ struct mm_struct init_mm = {
+ 	.mm_lock_seq	= SEQCNT_ZERO(init_mm.mm_lock_seq),
+ #endif
+ 	.user_ns	= &init_user_ns,
++#ifdef CONFIG_SCHED_MM_CID
++	.mm_cid.lock = __RAW_SPIN_LOCK_UNLOCKED(init_mm.mm_cid.lock),
++#endif
+ 	.cpu_bitmap	= CPU_BITS_NONE,
+ 	INIT_MM_CONTEXT(init_mm)
+ };
+_
+
+Patches currently in -mm which might be from mathieu.desnoyers@efficios.com are
+
+tsacct-skip-all-kernel-threads.patch
+mm-fix-oom-killer-inaccuracy-on-large-many-core-systems.patch
+
 
