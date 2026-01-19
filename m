@@ -1,114 +1,81 @@
-Return-Path: <stable+bounces-210393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D7FD3B70D
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 20:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1912BD3B70F
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 20:15:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3358E30E991F
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 19:12:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 823A930484A6
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 19:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A873904F9;
-	Mon, 19 Jan 2026 19:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984B0366DD7;
+	Mon, 19 Jan 2026 19:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyqqJWic"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DPp4Jc4F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7645038B9AF;
-	Mon, 19 Jan 2026 19:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE9D387579;
+	Mon, 19 Jan 2026 19:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768849961; cv=none; b=PVe7pv3xabHUxnPJ1EjDJ5PG6KLhmI6MsHYDiMks0flkPMmwLjtdFDpblgUw/s7kfsygknHVO+T7Ppf+ABLBtxebSChCYnclu8+pqScmLprhy/HinCgPW0/khICVSoizurzZD4iH3wKMi6LNMMhEjZW96rNmNwto4/8/BMhqZ8s=
+	t=1768850094; cv=none; b=kIn035Vtveb1ga8KcrsRaTLy89Wi8rVzv6lzToznVMouTqlwJwAo/oJu1keoMNBIRvKhcILF+fX/9w06K90gZaSuuhXVjUtZZYF6KyPmYBo+rKxAc+0VWJ8Mv8LU1h95mWBQTsCbSJsF/FSGyTXf32ndChahYDHhgvvgZcOY8kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768849961; c=relaxed/simple;
-	bh=b37oGfWKh15k1xUheDvl8XTRT+TdzeGUFsirBI+Fe/s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0Pf0vaggwxzDrVlGr29Zh7BRy7KHdG3qPcCYtVXdTqsc1NN1w28QQpVIAKibUf2QjvGpUcwrocuzW8F+F4viWTunCt3MxUcnHiy92S9n5pD2ZlqYacp1Tc9SgG+8q2YnSuwM2W1+Vt+syMLs1eZaLS+GvjZJyqQClhpWnMCBGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyqqJWic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E64C19422;
-	Mon, 19 Jan 2026 19:12:40 +0000 (UTC)
+	s=arc-20240116; t=1768850094; c=relaxed/simple;
+	bh=YpvvfBGMmGHJD0VZNkSOlySrSH6aKmR+qr7PRT5JzXA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j+NBy2QOFPfWHrE2+g4qEe6w3L8Ve1GVTj2ds0bgYfWe77P7aaTeRZ5FL00KPUU5Qb/v8c349GW17gicX/ayLOXQh9s14EBFAF1Hv4/AJbJaSusD1YJclCy2MrKZy513vWUqcKwT8XvqmSjhsj+H6Rf32qb5/e0eeBHZEVI55fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DPp4Jc4F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7580C116C6;
+	Mon, 19 Jan 2026 19:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768849961;
-	bh=b37oGfWKh15k1xUheDvl8XTRT+TdzeGUFsirBI+Fe/s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HyqqJWic/mHBGC8TVcZHDbkNDqil0dWmxauplZbapR/szDc6UGWreM4Hm3y+U7JXs
-	 hXnXTsxvH74eJY5gcQNiOyNpks/Q//YNCSP/4xQZzcGZ/tOhIz5IgpOnDBvbpG8JFz
-	 I6jDIr/wx8gDHng8LA/2PLYSLJ+jlRvnMnRo9OE7SXkK9IlhjOyN5AyZZrQQacIkX0
-	 yRVTPYSIinxC2GAxZIKYatOcNdyUp21kp35kBuHSlLeTKo9JEMlranX2Kw31XYojV9
-	 adsDh2I7uhm90FPnhmZW39lh/mfgsVnQPfxtI8AtDwz6A6Ux51mj/Lko5ENYJ2TWSP
-	 lA/ZOX7rzcwnw==
+	s=k20201202; t=1768850093;
+	bh=YpvvfBGMmGHJD0VZNkSOlySrSH6aKmR+qr7PRT5JzXA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DPp4Jc4FquG2JfHQEu8aWrOhFVGtXuN6Hj8bvMFG5YABcg/iZaKXKfrebi4sptcaa
+	 g1FzGB3qxA4yxIxEXDmWQdZptfsz5XOSAC8aNYa+hMrGgaKw/gdLYwfQrEojZ83+bo
+	 m3O1ag6pu7Zl3vvFU7aYsyP6mxQfXc5S3mN/GTJCDPH+yKJ/6mcWyEGrY1G69HNDqj
+	 Ki1rjXxg2aUPOVr/SKOmEwNiKjXt7zhyigXtTHHuj0vLHFhNPBOO7GIJB8SIUtyq/C
+	 RWpKbLbvql6iCabgF8UVVIkCrCjj1A6WIJlMF9itXPot65kCGiqoD21YnX+CZvFuvW
+	 /k94vjioC1QBw==
+Date: Mon, 19 Jan 2026 11:14:52 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: p@1g4.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	stable@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [net,v1,2/3] net/sched: act_gate: fix schedule updates with RCU swap
-Date: Mon, 19 Jan 2026 11:12:38 -0800
-Message-ID: <20260119191238.1240882-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260116112522.159480-3-p@1g4.org>
-References: <20260116112522.159480-3-p@1g4.org>
+To: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v1 3/3] net/sched: act_gate: zero-initialize netlink
+ dump struct
+Message-ID: <20260119111452.37dde230@kernel.org>
+In-Reply-To: <20260116112522.159480-4-p@1g4.org>
+References: <20260116112522.159480-1-p@1g4.org>
+	<20260116112522.159480-4-p@1g4.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Fri, 16 Jan 2026 11:26:08 +0000 Paul Moses wrote:
+> -	unsigned char *b = skb_tail_pointer(skb);
+>  	struct tcf_gate *gact = to_gate(a);
+> -	struct tc_gate opt = {
+> -		.index    = gact->tcf_index,
+> -		.refcnt   = refcount_read(&gact->tcf_refcnt) - ref,
+> -		.bindcnt  = atomic_read(&gact->tcf_bindcnt) - bind,
+> -	};
+>  	struct tcfg_gate_entry *entry;
+>  	struct tcf_gate_params *p;
+>  	struct nlattr *entry_list;
+> +	struct tc_gate opt = { };
+>  	struct tcf_t t;
+> +	unsigned char *b = skb_tail_pointer(skb);
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-net/sched: act_gate: fix schedule updates with RCU swap
+Why is *b moving? Please avoid unnecessary code changes in fixes.
 
-This patch switches act_gate parameters to an RCU-protected pointer and
-uses prepare-then-swap to avoid races during schedule updates.
-
-> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
-> index c1f75f272757..6934df233df5 100644
-> --- a/net/sched/act_gate.c
-> +++ b/net/sched/act_gate.c
-
-[ ... ]
-
-> +	if (!list_empty(&newp.entries)) {
-> +		list_splice_init(&newp.entries, &p->entries);
-> +		p->num_entries = newp.num_entries;
-> +	} else if (ret != ACT_P_CREATED) {
-> +		struct tcfg_gate_entry *entry, *ne;
-> +
-> +		list_for_each_entry(entry, &oldp->entries, list) {
-> +			ne = kmemdup(entry, sizeof(*ne), GFP_KERNEL);
-> +			if (!ne) {
-> +				err = -ENOMEM;
-> +				goto free_p;
-> +			}
-> +			INIT_LIST_HEAD(&ne->list);
-> +			list_add_tail(&ne->list, &p->entries);
-> +		}
-> +		p->num_entries = oldp->num_entries;
-> +	}
-
-[ ... ]
-
-> +free_p:
-> +	kfree(p);
-
-When kmemdup() fails partway through the loop copying entries from
-oldp->entries to p->entries, can the entries already added to p->entries
-be leaked? The jump to free_p calls kfree(p) but p->entries may contain
-allocated entries that are not released first.
-
-The release_entry_list() call at release_new_entries releases newp.entries
-rather than p->entries:
-
-> +release_new_entries:
-> +	release_entry_list(&newp.entries);
-
-It looks like release_entry_list(&p->entries) should be called before
-kfree(p) at the free_p label.
+Also -- we prefer the declaration lines to be sorted longest to
+shortest. If a dependency prevents that the init needs to be moved
+to the body of the function (this mostly applies to patch 2).
 
