@@ -1,134 +1,237 @@
-Return-Path: <stable+bounces-210371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A6DED3AFDB
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 17:00:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26024D3AFDA
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 17:00:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 280F23009690
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:00:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 75ED2300922B
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784C42737FC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF0726E6E8;
 	Mon, 19 Jan 2026 16:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TsgPKOc4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7D51DF26E
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 16:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F45524CEEA
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 16:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768838412; cv=none; b=jk2lnA6eHy3JJE/FKApXine+1XPA8w6Kjym47ylZeLrTtl8oPmg63TGUOt1gcE3GUCBBySTiD0qHwb/EWnHTYEfyozCmbGtFP18U8f0LZgsKw6htER3YahGm+kR687edI66Kd4XNQJFRjkHZ4EoSAl+FFwGfxb8wSCc+OIKKkVo=
+	t=1768838412; cv=none; b=hPV4wUhGBYzCDpzVHHMzN/ZXkHUerP7D1C0R9CL1ROf6Zpv3e8Ks8at1OsJWuDRJeBFESumQsvSCwBiCohRrot0OUEbscPNA2Fm+wC+ZQC25rb/BTpOs7gTObMquR8070EbeDVWaeb7y3ZoECZkB164tbHvssDAgxiKCchHohOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768838412; c=relaxed/simple;
-	bh=eb6D6/a55vm9al21kajs54FVPI2y4Ag9eZRWr0kdwgI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nWO4cKKp+562sLJD7MISn/vPFQ9uO/iyIuCYKbuXLJjaGk7DllrYZpP+oK/AilCz1RhPC/97i14Gk4nTDPlyWTIgzQfQj6zBlNrayle4qO04G9aGmPq1ltfNrbCenO06ve5J8pVpzS7cBssnq0AFdDX2e7R2i9r1QYBN6eKzPNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-5636dce976eso3451950e0c.0
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 08:00:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768838410; x=1769443210;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1hT58BDTF1pvqexWRcVDA+bO694WnbhM+to2RCxxMZI=;
-        b=cpLOjW+fxFDIKxJkEcPhDKZ2oqWin2hP4DwCoXLRUU+AvYJjvs/zsbG7LvuExZm7j1
-         KtsJpWl0c0x9LXvSYyRk5iMTC1165S///fSXFWwRpZLCuQ12rqWPytawQkpNxqQuBMev
-         ZTbawEk0S5uVkp77XAVT0e7DzTNlWSdzG1NZLtYnm29uk7VSXdLeaBYsi+IQvaIcd3/1
-         hMWRn/xDtVrJI+CirURq8UjrdD0+NFF+FrXnw3R0mdtZ1Dlu17eWfgJjakQLtm+H+8D7
-         nyM9VFkPdaTZab0PKscjUAeCEX/BLE0RGt12lQI/eWZKM4V8d5a4hyNBgsKseFX8lEiY
-         9ojw==
-X-Forwarded-Encrypted: i=1; AJvYcCUdEsdDqo1jumIKhD5M6VqHwqtMCW1HnmMoo7Bss76wMUmnO3uCOqwRHzGci1r6XoM41n+f9Qg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzOuulszAzBnGF3j79gsjSlwqplm/YijbciRJYaaSU3HysSGNE6
-	2wHzjZw7wK77Gd2oDZEcCYZv6GL3KoxFGnDhKw8CnpioB8RN7kb0AtauuDgWiSy0
-X-Gm-Gg: AY/fxX5+byFHobZPplpomoisY+teaWq8XpTwcfb7/zDWItTVm0OirSPqF4r9HamDp3R
-	M+pzS4Z9fbcli5wZ6aDyrtjz1PJK8V2oayJ8r8Guw9xq0ww/LrX16h/X0BQfalZ1DJwmbPV2ZOb
-	d1HKx5QA83xKunlueFznAttBn/00Me3rowRzif/fc0w3EteUW+Y6u06zqOXnBuwNY5xY3R1bj9S
-	2uStvPhsK8hf04U7zHaAaJQ6GHPxus5YXZPeAXlSQA5hO3dQGCQg0ZbeFH6KiIjnvwoRkJ3LuDB
-	sQ0h3SvI24v5J37XHVxxNislvgGwA7XX8wo/eSvbQtlxc0p3EaIWZf4NYzlmHCZpHOWY3Md/4yn
-	sYfPcGhYIqB+tFARVYlvlO7A4ZCN8Lupyl5XMNAM2uVBgHlee1Te7+96ozVvWdGRpQHHXuU1jJl
-	HsAerW2DgoeXd30EaskL3YaAJwWGZ3DgVHSAsY0hPh8xNx6TIPviUHoCjEZfs=
-X-Received: by 2002:a05:6122:3b0d:b0:563:5f5e:3cc with SMTP id 71dfb90a1353d-563aa8f3134mr4155430e0c.4.1768838408342;
-        Mon, 19 Jan 2026 08:00:08 -0800 (PST)
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com. [209.85.217.41])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-563b71197easm2795691e0c.19.2026.01.19.08.00.07
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 08:00:07 -0800 (PST)
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-5eea75115ceso3973069137.1
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 08:00:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWvqgLATJsCo5ermq0MfLfRhbtBLRFVoKolrgZpt+7WkXhwO/vNobUIo2YYEq4LiwYohihpnD4=@vger.kernel.org
-X-Received: by 2002:a05:6102:c54:b0:5df:abc1:e6b5 with SMTP id
- ada2fe7eead31-5f192539aa3mr5432025137.17.1768838406940; Mon, 19 Jan 2026
- 08:00:06 -0800 (PST)
+	bh=F/hzd277J2+sQOe030kb/TQGVNVvmxsy2dR5pXtGJjY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EAADg3WM2larhnLoEQa0Ab6/+rJIyhAO/jiD5cLVYEhMryIZ/1yEkMsyGWVP0O1IHx6q/669S3+xsPnRxIl2bag3fuGwpLRygi25N02vA/bJD24Rw+H9KA83SAGegF1HqtV83QEHJRgnSWZ4N6vn2PCR1MQiWDxUymcFsIw24DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TsgPKOc4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3059EC116C6;
+	Mon, 19 Jan 2026 16:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768838411;
+	bh=F/hzd277J2+sQOe030kb/TQGVNVvmxsy2dR5pXtGJjY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TsgPKOc44S6Z/alEp/gk9YGCDRxKyK6vtyhnkw2w1jofuf6z4XZlKsO6ZxmLDnLDn
+	 Edv8eY+V2+9oUBwV8whwJP2tIUBCwNyqYav+bJ/w9sdww6h1RLp7pKBRlDqozjSqUD
+	 Sk+BXso3Pjo+vhJrBkP3dn1e/aB7BaJmDWFpo04gOvIJYLzTKonfUnDglN9MehlQ/3
+	 fON3yR0iiZv8bmBzRGxzdRfxMtsybEOG+3BvGP6Y5Jlr/qDoTPEOcspfllWHNc7GWz
+	 rZ3IkM5+XrI+gekcBF9Z5WzT17NdlzKHwaOtso5O4sa6W9n+5s+yZYX4s7SSw5K+xS
+	 fFe0O1Rrlxzlg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] x86/fpu: Clear XSTATE_BV[i] in guest XSAVE state whenever XFD[i]=1
+Date: Mon, 19 Jan 2026 11:00:09 -0500
+Message-ID: <20260119160009.3069587-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026011919-violin-either-12c7@gregkh>
+References: <2026011919-violin-either-12c7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260119150242.29444-1-marek.vasut+renesas@mailbox.org>
-In-Reply-To: <20260119150242.29444-1-marek.vasut+renesas@mailbox.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 19 Jan 2026 16:59:54 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUwD9+hYbut37gnJML-Fhz+6kDqUWOcgKSo1eycZRgsvw@mail.gmail.com>
-X-Gm-Features: AZwV_QiLc3qN2dSh2kpzFDVeY21PCd07Pkeq9W0NJqI963gYqgaIk1PGN_jervk
-Message-ID: <CAMuHMdUwD9+hYbut37gnJML-Fhz+6kDqUWOcgKSo1eycZRgsvw@mail.gmail.com>
-Subject: Re: [PATCH v2] clk: rs9: Reserve 8 struct clk_hw slots for for 9FGV0841
-To: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Cc: linux-clk@vger.kernel.org, stable@vger.kernel.org, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-renesas-soc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 19 Jan 2026 at 16:02, Marek Vasut
-<marek.vasut+renesas@mailbox.org> wrote:
-> The 9FGV0841 has 8 outputs and registers 8 struct clk_hw, make sure
-> there are 8 slots for those newly registered clk_hw pointers, else
-> there is going to be out of bounds write when pointers 4..7 are set
-> into struct rs9_driver_data .clk_dif[4..7] field.
->
-> Since there are other structure members past this struct clk_hw
-> pointer array, writing to .clk_dif[4..7] fields corrupts both
-> the struct rs9_driver_data content and data around it, sometimes
-> without crashing the kernel. However, the kernel does surely
-> crash when the driver is unbound or during suspend.
->
-> Fix this, increase the struct clk_hw pointer array size to the
-> maximum output count of 9FGV0841, which is the biggest chip that
-> is supported by this driver.
->
-> Cc: stable@vger.kernel.org
-> Fixes: f0e5e1800204 ("clk: rs9: Add support for 9FGV0841")
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Sean Christopherson <seanjc@google.com>
 
-Closes: https://lore.kernel.org/CAMuHMdVyQpOBT+Ho+mXY07fndFN9bKJdaaWGn91WOFnnYErLyg@mail.gmail.com
+[ Upstream commit b45f721775947a84996deb5c661602254ce25ce6 ]
 
-> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-> ---
-> Cc: Geert Uytterhoeven <geert+renesas@glider.be>
-> Cc: Michael Turquette <mturquette@baylibre.com>
-> Cc: Stephen Boyd <sboyd@kernel.org>
-> Cc: linux-clk@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-renesas-soc@vger.kernel.org
-> ---
-> V2: - Update the commit message crash paragraph
->     - Add RB/TB from Geert
+When loading guest XSAVE state via KVM_SET_XSAVE, and when updating XFD in
+response to a guest WRMSR, clear XFD-disabled features in the saved (or to
+be restored) XSTATE_BV to ensure KVM doesn't attempt to load state for
+features that are disabled via the guest's XFD.  Because the kernel
+executes XRSTOR with the guest's XFD, saving XSTATE_BV[i]=1 with XFD[i]=1
+will cause XRSTOR to #NM and panic the kernel.
 
-Gr{oetje,eeting}s,
+E.g. if fpu_update_guest_xfd() sets XFD without clearing XSTATE_BV:
 
-                        Geert
+  ------------[ cut here ]------------
+  WARNING: arch/x86/kernel/traps.c:1524 at exc_device_not_available+0x101/0x110, CPU#29: amx_test/848
+  Modules linked in: kvm_intel kvm irqbypass
+  CPU: 29 UID: 1000 PID: 848 Comm: amx_test Not tainted 6.19.0-rc2-ffa07f7fd437-x86_amx_nm_xfd_non_init-vm #171 NONE
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:exc_device_not_available+0x101/0x110
+  Call Trace:
+   <TASK>
+   asm_exc_device_not_available+0x1a/0x20
+  RIP: 0010:restore_fpregs_from_fpstate+0x36/0x90
+   switch_fpu_return+0x4a/0xb0
+   kvm_arch_vcpu_ioctl_run+0x1245/0x1e40 [kvm]
+   kvm_vcpu_ioctl+0x2c3/0x8f0 [kvm]
+   __x64_sys_ioctl+0x8f/0xd0
+   do_syscall_64+0x62/0x940
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
 
+This can happen if the guest executes WRMSR(MSR_IA32_XFD) to set XFD[18] = 1,
+and a host IRQ triggers kernel_fpu_begin() prior to the vmexit handler's
+call to fpu_update_guest_xfd().
+
+and if userspace stuffs XSTATE_BV[i]=1 via KVM_SET_XSAVE:
+
+  ------------[ cut here ]------------
+  WARNING: arch/x86/kernel/traps.c:1524 at exc_device_not_available+0x101/0x110, CPU#14: amx_test/867
+  Modules linked in: kvm_intel kvm irqbypass
+  CPU: 14 UID: 1000 PID: 867 Comm: amx_test Not tainted 6.19.0-rc2-2dace9faccd6-x86_amx_nm_xfd_non_init-vm #168 NONE
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  RIP: 0010:exc_device_not_available+0x101/0x110
+  Call Trace:
+   <TASK>
+   asm_exc_device_not_available+0x1a/0x20
+  RIP: 0010:restore_fpregs_from_fpstate+0x36/0x90
+   fpu_swap_kvm_fpstate+0x6b/0x120
+   kvm_load_guest_fpu+0x30/0x80 [kvm]
+   kvm_arch_vcpu_ioctl_run+0x85/0x1e40 [kvm]
+   kvm_vcpu_ioctl+0x2c3/0x8f0 [kvm]
+   __x64_sys_ioctl+0x8f/0xd0
+   do_syscall_64+0x62/0x940
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+
+The new behavior is consistent with the AMX architecture.  Per Intel's SDM,
+XSAVE saves XSTATE_BV as '0' for components that are disabled via XFD
+(and non-compacted XSAVE saves the initial configuration of the state
+component):
+
+  If XSAVE, XSAVEC, XSAVEOPT, or XSAVES is saving the state component i,
+  the instruction does not generate #NM when XCR0[i] = IA32_XFD[i] = 1;
+  instead, it operates as if XINUSE[i] = 0 (and the state component was
+  in its initial state): it saves bit i of XSTATE_BV field of the XSAVE
+  header as 0; in addition, XSAVE saves the initial configuration of the
+  state component (the other instructions do not save state component i).
+
+Alternatively, KVM could always do XRSTOR with XFD=0, e.g. by using
+a constant XFD based on the set of enabled features when XSAVEing for
+a struct fpu_guest.  However, having XSTATE_BV[i]=1 for XFD-disabled
+features can only happen in the above interrupt case, or in similar
+scenarios involving preemption on preemptible kernels, because
+fpu_swap_kvm_fpstate()'s call to save_fpregs_to_fpstate() saves the
+outgoing FPU state with the current XFD; and that is (on all but the
+first WRMSR to XFD) the guest XFD.
+
+Therefore, XFD can only go out of sync with XSTATE_BV in the above
+interrupt case, or in similar scenarios involving preemption on
+preemptible kernels, and it we can consider it (de facto) part of KVM
+ABI that KVM_GET_XSAVE returns XSTATE_BV[i]=0 for XFD-disabled features.
+
+Reported-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 820a6ee944e7 ("kvm: x86: Add emulation for IA32_XFD", 2022-01-14)
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[Move clearing of XSTATE_BV from fpu_copy_uabi_to_guest_fpstate
+ to kvm_vcpu_ioctl_x86_set_xsave. - Paolo]
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/kernel/fpu/core.c | 32 +++++++++++++++++++++++++++++---
+ arch/x86/kvm/x86.c         |  9 +++++++++
+ 2 files changed, 38 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kernel/fpu/core.c b/arch/x86/kernel/fpu/core.c
+index 0068648cb7fbf..2805ce8f0259c 100644
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -294,10 +294,29 @@ EXPORT_SYMBOL_GPL(fpu_enable_guest_xfd_features);
+ #ifdef CONFIG_X86_64
+ void fpu_update_guest_xfd(struct fpu_guest *guest_fpu, u64 xfd)
+ {
++	struct fpstate *fpstate = guest_fpu->fpstate;
++
+ 	fpregs_lock();
+-	guest_fpu->fpstate->xfd = xfd;
+-	if (guest_fpu->fpstate->in_use)
+-		xfd_update_state(guest_fpu->fpstate);
++
++	/*
++	 * KVM's guest ABI is that setting XFD[i]=1 *can* immediately revert the
++	 * save state to its initial configuration.  Likewise, KVM_GET_XSAVE does
++	 * the same as XSAVE and returns XSTATE_BV[i]=0 whenever XFD[i]=1.
++	 *
++	 * If the guest's FPU state is in hardware, just update XFD: the XSAVE
++	 * in fpu_swap_kvm_fpstate will clear XSTATE_BV[i] whenever XFD[i]=1.
++	 *
++	 * If however the guest's FPU state is NOT resident in hardware, clear
++	 * disabled components in XSTATE_BV now, or a subsequent XRSTOR will
++	 * attempt to load disabled components and generate #NM _in the host_.
++	 */
++	if (xfd && test_thread_flag(TIF_NEED_FPU_LOAD))
++		fpstate->regs.xsave.header.xfeatures &= ~xfd;
++
++	fpstate->xfd = xfd;
++	if (fpstate->in_use)
++		xfd_update_state(fpstate);
++
+ 	fpregs_unlock();
+ }
+ EXPORT_SYMBOL_GPL(fpu_update_guest_xfd);
+@@ -405,6 +424,13 @@ int fpu_copy_uabi_to_guest_fpstate(struct fpu_guest *gfpu, const void *buf,
+ 	if (ustate->xsave.header.xfeatures & ~xcr0)
+ 		return -EINVAL;
+ 
++	/*
++	 * Disabled features must be in their initial state, otherwise XRSTOR
++	 * causes an exception.
++	 */
++	if (WARN_ON_ONCE(ustate->xsave.header.xfeatures & kstate->xfd))
++		return -EINVAL;
++
+ 	/*
+ 	 * Nullify @vpkru to preserve its current value if PKRU's bit isn't set
+ 	 * in the header.  KVM's odd ABI is to leave PKRU untouched in this
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 1eb685d4b452e..3d63609b91def 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5341,9 +5341,18 @@ static void kvm_vcpu_ioctl_x86_get_xsave(struct kvm_vcpu *vcpu,
+ static int kvm_vcpu_ioctl_x86_set_xsave(struct kvm_vcpu *vcpu,
+ 					struct kvm_xsave *guest_xsave)
+ {
++	union fpregs_state *xstate = (union fpregs_state *)guest_xsave->region;
++
+ 	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
+ 		return 0;
+ 
++	/*
++	 * For backwards compatibility, do not expect disabled features to be in
++	 * their initial state.  XSTATE_BV[i] must still be cleared whenever
++	 * XFD[i]=1, or XRSTOR would cause a #NM.
++	 */
++	xstate->xsave.header.xfeatures &= ~vcpu->arch.guest_fpu.fpstate->xfd;
++
+ 	return fpu_copy_uabi_to_guest_fpstate(&vcpu->arch.guest_fpu,
+ 					      guest_xsave->region,
+ 					      kvm_caps.supported_xcr0,
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.51.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
 
