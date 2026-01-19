@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-210290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEF7D3A319
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 10:31:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E03D3A31D
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 10:32:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A3C78303739E
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 09:29:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 468DC303C122
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 09:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DF43559D9;
-	Mon, 19 Jan 2026 09:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D90355804;
+	Mon, 19 Jan 2026 09:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="gieT5L7g"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bmrU6kBY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f97.google.com (mail-qv1-f97.google.com [209.85.219.97])
+Received: from mail-pl1-f226.google.com (mail-pl1-f226.google.com [209.85.214.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E113E355039
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 09:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABA92773FF
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 09:29:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768814981; cv=none; b=N2rPfFnKa2g2Zhi1DSupGY3jO7fIb2VZ5gxh0XMouByUAPq3X1PuYpSgCwyc+mBWYr8sW8N7Sw/vvF7kA6OCmTiyjRkgur8wiE5Uh5QdelhodFDgyaGaPnp9ZVfyQ69ilpJk01Yixf8AAOcNS1bI8DVpXd+PewcdCtGiHQkJhY4=
+	t=1768814991; cv=none; b=gtgFV99+AuToWS1Nc5lJRpLDn9Kn6rcgKGuHd2Ipq6AR28/VCKap9KK/cNqdhEVE6pxRBVE+Xb4Dq52HN8VeGxbW0HuiNhVqXM5AlFL7td8nCwSXDN3LKpkWZt0D6ZB1VgC9e4IlVwsV/GwRafEdVclusdrLdsAseYFUquazAa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768814981; c=relaxed/simple;
-	bh=5U08ymozzcGqOa+0/gOyD2WLxOYPTrL6M+fxBFoORbg=;
+	s=arc-20240116; t=1768814991; c=relaxed/simple;
+	bh=RWuTHL2vG6VXYYw+aleWdAzTOjFVPPbKCGWiPi4YKYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YAkPLOU99CJ43EpnEiS6wnN6N2sN/jMKgPRiL2iX7VXwfDNxph5CD2amMgNoqONegZysoiSXgKTaF3WRqO1f0SMRmCTAd3Yof9lYEHK7P2+IUGgrqupeXJyFG805q+nSHrM0ZrObp4t/7nOeN8+Gb/06cIqK8fC5xbjn7ydpe68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=gieT5L7g; arc=none smtp.client-ip=209.85.219.97
+	 MIME-Version; b=IiKS7Q/hmjrXJJqWbDZzrXYnanUNO+2qQcRwGAgy1eHJH4PN63gBdriU+kQF4WtC5HUNQzbRsSpfXe2WH14A+B77ncPE/++o9JSKwb7X80nzKa1amcfAnFQNvOm9gLkuIKQeQ+tHnOSqt/3fHtI1NenRzL0aXINuYYzNAgjVEqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bmrU6kBY; arc=none smtp.client-ip=209.85.214.226
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qv1-f97.google.com with SMTP id 6a1803df08f44-88a2ce041b2so4840556d6.0
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 01:29:39 -0800 (PST)
+Received: by mail-pl1-f226.google.com with SMTP id d9443c01a7336-2a097cc08d5so9030025ad.0
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 01:29:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768814979; x=1769419779;
+        d=1e100.net; s=20230601; t=1768814984; x=1769419784;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yz5ffcVS1QdI0IyJJ74d4ERRSZLiOHbia+pSPo7WObM=;
-        b=u7FDVJPbK/g58hZE0yI+l6DFvVcRM4FW6BU+m8CBh8Rrosu8LmxJW9FTnuhhwbM9HC
-         GfbSBGw5esh/2YadLOsgMQ8nBc37Q9bNmPdlMHVGxD4JAFoBIsMfd0KAQhARFkhKSsX8
-         5ZtlD1+HlpBOKk8HWrnirvmM03/6KHE+7CnNBT3Q6UWdpXFytfu44ZgtacxZviSjcKIC
-         e+bHf5yzmF9Ab/lxhFouqD0fI7MElFut0l++2F43036Jzks9ftkNVwgGLq9l9ahBy8of
-         pqeNkivG3t938+cyz9ob3RLiiEeQzWicJjsZJkfPya4HKqdk8DENvyZjSuzv+7+I9R8u
-         QSYw==
-X-Gm-Message-State: AOJu0Yx3DXbPyjDLOte5d+8Fky5cVaXIejKyRsCi5pn0vZcR92F+/eCw
-	9+0Y3w9Jry463Nq2TV0ASkrn1gRK9vtGxdJbL3N5K1lgNLbOz7Xu453RaXjVNB1riH11RMiJkND
-	L6uqvy7r4/kI2ToPW7mqBl0adE+3u03TqLXHW30qKmYOcdeY3Av1F8CXTEGq97MzGDUwlbBtacf
-	wxZTPfPmUXQtVDry5SxmaacjrBRzFJNeykRwhSsq9j2pOlhVnTKwrhUtPkY1C9mDom5H47hNhVJ
-	Q0/L3iNLwjkmVuVFJ5Zprc1N9c/QwA=
-X-Gm-Gg: AY/fxX6RbmM0gqhp1wNulpkBDw+IQQ8ofR4iiZcvIXTE1Ty8sRsjhRH1oNbGOzfrFFP
-	Vdi5KjT8zrrdX41F6l4M+mlX82ISFMharQzcv5EU33WuKNB/vG+4w5mZybZSXrglLICbhWjbe6o
-	x57hA3LWVtcz2fH2xWDK369bFgH0Rqw5hVP9FNMKXYKg28ixlZ+n+m6tKeWj4uV5oDxtIhwKQpx
-	2FdF72Z+M7frBMzMQ7fwZyeHcwuYNYtrXDbq5sAzmEUuieIt06RtytyHPp4YwXBj8nD1ogi3GeZ
-	rApP2b99mpzqgCq3jswqQ7+VPSN0npbVsEnRN4ejqwhL1iTMZs4nhB1M+Ur0vOGy3PYuePoCcqC
-	h1/6OmeezfA2yJqt1MCsNBzBI01IZMaAOHMlh0uCNfsxcJBKxDna22WVYonwifRSsgqDl8iubsS
-	h5bFK2GeIxThUcBX2x+POb5rWUlEGi68vIakzSWeQjeaDiSlJz07ddHvuklGKFGrQy
-X-Received: by 2002:a05:6214:610a:b0:87d:cb51:4015 with SMTP id 6a1803df08f44-8942dbfb374mr105100556d6.1.1768814978733;
-        Mon, 19 Jan 2026 01:29:38 -0800 (PST)
+        bh=y6I5h2vtJMAW+jL+bI0U3FZ65rr+yn6OcLWKLyGnstA=;
+        b=G4KqFcZs1/bNe1ohiqhYlmyTAV8lr2sBGbJ+YPbiT47ZLkS1m0iOrp7DEwofwVKR3x
+         8gI58CC0ffS2rQP4kUdxxKuvdfx9t4PLgHpi88vFmhbO8JQIxyp9WcWx2aDigA7ThOYP
+         EbRsVugxe1kEqD28FatzCifGwcUL+hhepLxSJZkxQjcBGsAk9oNyBv+kluOMDq53vzf7
+         UKgfl/XVH//MY2mW37WGXC7yn1/L+Lyx13pb4HbnI9Y+E752A93Q5OzN3tkyzkbWwlQV
+         uSOrT0NBuI86gPyiyCD6DrCZhV3cIpUE7L0MR1hfyNV7aIl42Moj/qpgrqI6BiCI0X4f
+         Me4g==
+X-Gm-Message-State: AOJu0YzlCDQJl1LA0YQ+nthnbDs1F5jJquGLSo616z6+w164ZAKpPVm8
+	p5REu2+Z52X+T8Di8Cq5YeH3qx4L/GYtjemIhJBpM3cjMpRndsC10DVBAHGCnGjh85yLBFcYsXD
+	mdSXHGsQT6wRfhooRNKrdYRvnkyYvMMgMYsrxsEKh3R67FXXk9I798g8re4F5bWb9PnFZdbUpyv
+	1Mso5KzdDCn1mvTbqRtkmp5QUi+ufV9iA3QgIEDCTkH5+LeFe4r5UlyKMjUjDJxLfxdo78CdiWj
+	JJHDj0yJ+9DjRYBC1/LGE/tP0Mb3og=
+X-Gm-Gg: AY/fxX6ycan5bpdOco32i3WtMpga3wijVNVM2GVHY5Cf+tarHDCSEzLP2UDufY7ItGJ
+	SCBnBI2glIV00BBKvgFMMnLL0gEFmzOh7Bhp0aon9qe8T9mkv37BktdFGAt4ksfqfmwQ/Siinhv
+	Vf2bLJpDIdUnppgeD4gED77uJt6wbSV8/GoSDlecl30RT3QTfoByh+B2TxJLPnZHFlvTmRqEouT
+	ZVMzFOfBgxagQP6BpqxB75YX1z7izwuXnYu6J3fG2qquI7ycGK9+86oqEiNZt1T4B0qTT/VJ2SA
+	Wdtb9E0aUlqH+Kj0U/s9Z1OXTsAC6t71xLNOfHAzX2By3L4I1M6ljkCtY8NqedpmaBNj/rBym0n
+	DVBAXPve3J1Eqm9RerndSL/SQB+fAUfOacy0ipHLz/NYL//lcNNFvTyRBPpb3Byy952Uz22r6gX
+	H9f53VM+OUYc9pvgq1sry5PSjoyAjDzYZomqTPXjlLbpAIARg2cNUUN/fbDvzdjfXo
+X-Received: by 2002:a05:6a20:12ca:b0:35f:f0fe:565b with SMTP id adf61e73a8af0-38dfe5a2e26mr7252142637.2.1768814983561;
+        Mon, 19 Jan 2026 01:29:43 -0800 (PST)
 Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-118.dlp.protect.broadcom.com. [144.49.247.118])
-        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-8942e6e3e49sm7098936d6.24.2026.01.19.01.29.38
+        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-81fa128f919sm1130345b3a.10.2026.01.19.01.29.43
         for <stable@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 19 Jan 2026 01:29:38 -0800 (PST)
+        Mon, 19 Jan 2026 01:29:43 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-88887682068so14925276d6.0
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 01:29:38 -0800 (PST)
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-88882c9b4d0so9048046d6.0
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 01:29:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1768814977; x=1769419777; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1768814981; x=1769419781; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yz5ffcVS1QdI0IyJJ74d4ERRSZLiOHbia+pSPo7WObM=;
-        b=gieT5L7gnqNMRsILTR5L8mmzeaCvwgIuAY+VgbRiXsntn2Ah2mx9iKrZVDMMAY16Ct
-         FfxWIqKo0Keprdo/G0NlRSZmppPGTbLXpY8+wjt9xH6YwhMkVVUs2hOVOD+k25gasiyy
-         kcLvJwDn9l8ylT9wBFHldQNG8WhMIUVyKz3kU=
-X-Received: by 2002:a05:6214:4c92:b0:894:2b9f:ccc6 with SMTP id 6a1803df08f44-8942dd90f52mr96288476d6.3.1768814977481;
-        Mon, 19 Jan 2026 01:29:37 -0800 (PST)
-X-Received: by 2002:a05:6214:4c92:b0:894:2b9f:ccc6 with SMTP id 6a1803df08f44-8942dd90f52mr96288106d6.3.1768814976839;
-        Mon, 19 Jan 2026 01:29:36 -0800 (PST)
+        bh=y6I5h2vtJMAW+jL+bI0U3FZ65rr+yn6OcLWKLyGnstA=;
+        b=bmrU6kBY8jgheGuW0E+kX7911OSKXZJPfgWdr6zMMr6NFEH8fHcMd7rqeAzZawHMIV
+         BTpM3jGYkKRFqAcnXVxvvSOTrpXRviMx6sY+tzy9xqpHnK/xj1D8Dez33auKxsaWIb9D
+         R5j0/wufJUvM7XC8ygefW3PspBtJPosdtHhCo=
+X-Received: by 2002:a05:6214:4c45:b0:880:4f69:e598 with SMTP id 6a1803df08f44-8942dd7fa20mr139501036d6.4.1768814981674;
+        Mon, 19 Jan 2026 01:29:41 -0800 (PST)
+X-Received: by 2002:a05:6214:4c45:b0:880:4f69:e598 with SMTP id 6a1803df08f44-8942dd7fa20mr139500646d6.4.1768814981167;
+        Mon, 19 Jan 2026 01:29:41 -0800 (PST)
 Received: from keerthanak-ph5-dev.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6ad6f3sm76917516d6.36.2026.01.19.01.29.33
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6ad6f3sm76917516d6.36.2026.01.19.01.29.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 01:29:36 -0800 (PST)
+        Mon, 19 Jan 2026 01:29:40 -0800 (PST)
 From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -117,9 +117,9 @@ Cc: j.vosburgh@gmail.com,
 	tapas.kundu@broadcom.com,
 	Tariq Toukan <tariqt@nvidia.com>,
 	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH v2 3/5] net/bonding: Implement ndo_sk_get_lower_dev
-Date: Mon, 19 Jan 2026 09:26:00 +0000
-Message-ID: <20260119092602.1414468-4-keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v2 v5.10.y 4/5] net: netdevice: Add operation ndo_sk_get_lower_dev
+Date: Mon, 19 Jan 2026 09:26:01 +0000
+Message-ID: <20260119092602.1414468-5-keerthana.kalyanasundaram@broadcom.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260119092602.1414468-1-keerthana.kalyanasundaram@broadcom.com>
 References: <20260119092602.1414468-1-keerthana.kalyanasundaram@broadcom.com>
@@ -134,156 +134,89 @@ X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 From: Tariq Toukan <tariqt@nvidia.com>
 
-[ Upstream commit 719a402cf60311b1cdff3f6320abaecdcc5e46b7 ]
+[ Upstream commit 719a402cf60311b1cdff3f6320abaecdcc5e46b7]
 
-Add ndo_sk_get_lower_dev() implementation for bond interfaces.
-
-Support only for the cases where the socket's and SKBs' hash
-yields identical value for the whole connection lifetime.
-
-Here we restrict it to L3+4 sockets only, with
-xmit_hash_policy==LAYER34 and bond modes xor/802.3ad.
+ndo_sk_get_lower_dev returns the lower netdev that corresponds to
+a given socket.
+Additionally, we implement a helper netdev_sk_get_lowest_dev() to get
+the lowest one in chain.
 
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 Reviewed-by: Boris Pismenny <borisp@nvidia.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Keerthana: Backported the patch to v5.10.y ]
 Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 ---
- drivers/net/bonding/bond_main.c | 93 +++++++++++++++++++++++++++++++++
- include/net/bonding.h           |  2 +
- 2 files changed, 95 insertions(+)
+ include/linux/netdevice.h |  4 ++++
+ net/core/dev.c            | 33 +++++++++++++++++++++++++++++++++
+ 2 files changed, 37 insertions(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index b4b2e6a7fdd4..fb30378cffce 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -301,6 +301,19 @@ netdev_tx_t bond_dev_queue_xmit(struct bonding *bond, struct sk_buff *skb,
- 	return dev_queue_xmit(skb);
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index d3a3e77a18df..c9f2a88a6c83 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -1435,6 +1435,8 @@ struct net_device_ops {
+ 	struct net_device*	(*ndo_get_xmit_slave)(struct net_device *dev,
+ 						      struct sk_buff *skb,
+ 						      bool all_slaves);
++	struct net_device*	(*ndo_sk_get_lower_dev)(struct net_device *dev,
++							struct sock *sk);
+ 	netdev_features_t	(*ndo_fix_features)(struct net_device *dev,
+ 						    netdev_features_t features);
+ 	int			(*ndo_set_features)(struct net_device *dev,
+@@ -2914,6 +2916,8 @@ int init_dummy_netdev(struct net_device *dev);
+ struct net_device *netdev_get_xmit_slave(struct net_device *dev,
+ 					 struct sk_buff *skb,
+ 					 bool all_slaves);
++struct net_device *netdev_sk_get_lowest_dev(struct net_device *dev,
++					    struct sock *sk);
+ struct net_device *dev_get_by_index(struct net *net, int ifindex);
+ struct net_device *__dev_get_by_index(struct net *net, int ifindex);
+ struct net_device *dev_get_by_index_rcu(struct net *net, int ifindex);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index c0dc524548ee..ad2be47b48a9 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -8169,6 +8169,39 @@ struct net_device *netdev_get_xmit_slave(struct net_device *dev,
  }
+ EXPORT_SYMBOL(netdev_get_xmit_slave);
  
-+bool bond_sk_check(struct bonding *bond)
++static struct net_device *netdev_sk_get_lower_dev(struct net_device *dev,
++						  struct sock *sk)
 +{
-+	switch (BOND_MODE(bond)) {
-+	case BOND_MODE_8023AD:
-+	case BOND_MODE_XOR:
-+		if (bond->params.xmit_policy == BOND_XMIT_POLICY_LAYER34)
-+			return true;
-+		fallthrough;
-+	default:
-+		return false;
-+	}
-+}
++	const struct net_device_ops *ops = dev->netdev_ops;
 +
- /*---------------------------------- VLAN -----------------------------------*/
- 
- /* In the following 2 functions, bond_vlan_rx_add_vid and bond_vlan_rx_kill_vid,
-@@ -4723,6 +4736,85 @@ static struct net_device *bond_xmit_get_slave(struct net_device *master_dev,
- 	return NULL;
- }
- 
-+static void bond_sk_to_flow(struct sock *sk, struct flow_keys *flow)
-+{
-+	switch (sk->sk_family) {
-+#if IS_ENABLED(CONFIG_IPV6)
-+	case AF_INET6:
-+		if (sk->sk_ipv6only ||
-+		    ipv6_addr_type(&sk->sk_v6_daddr) != IPV6_ADDR_MAPPED) {
-+			flow->control.addr_type = FLOW_DISSECTOR_KEY_IPV6_ADDRS;
-+			flow->addrs.v6addrs.src = inet6_sk(sk)->saddr;
-+			flow->addrs.v6addrs.dst = sk->sk_v6_daddr;
-+			break;
-+		}
-+		fallthrough;
-+#endif
-+	default: /* AF_INET */
-+		flow->control.addr_type = FLOW_DISSECTOR_KEY_IPV4_ADDRS;
-+		flow->addrs.v4addrs.src = inet_sk(sk)->inet_rcv_saddr;
-+		flow->addrs.v4addrs.dst = inet_sk(sk)->inet_daddr;
-+		break;
-+	}
-+
-+	flow->ports.src = inet_sk(sk)->inet_sport;
-+	flow->ports.dst = inet_sk(sk)->inet_dport;
++	if (!ops->ndo_sk_get_lower_dev)
++		return NULL;
++	return ops->ndo_sk_get_lower_dev(dev, sk);
 +}
 +
 +/**
-+ * bond_sk_hash_l34 - generate a hash value based on the socket's L3 and L4 fields
-+ * @sk: socket to use for headers
++ * netdev_sk_get_lowest_dev - Get the lowest device in chain given device and socket
++ * @dev: device
++ * @sk: the socket
 + *
-+ * This function will extract the necessary field from the socket and use
-+ * them to generate a hash based on the LAYER34 xmit_policy.
-+ * Assumes that sk is a TCP or UDP socket.
++ * %NULL is returned if no lower device is found.
 + */
-+static u32 bond_sk_hash_l34(struct sock *sk)
++
++struct net_device *netdev_sk_get_lowest_dev(struct net_device *dev,
++					    struct sock *sk)
 +{
-+	struct flow_keys flow;
-+	u32 hash;
++	struct net_device *lower;
 +
-+	bond_sk_to_flow(sk, &flow);
++	lower = netdev_sk_get_lower_dev(dev, sk);
++	while (lower) {
++		dev = lower;
++		lower = netdev_sk_get_lower_dev(dev, sk);
++	}
 +
-+	/* L4 */
-+	memcpy(&hash, &flow.ports.ports, sizeof(hash));
-+	/* L3 */
-+	return bond_ip_hash(hash, &flow);
++	return dev;
 +}
++EXPORT_SYMBOL(netdev_sk_get_lowest_dev);
 +
-+static struct net_device *__bond_sk_get_lower_dev(struct bonding *bond,
-+						  struct sock *sk)
-+{
-+	struct bond_up_slave *slaves;
-+	struct slave *slave;
-+	unsigned int count;
-+	u32 hash;
-+
-+	slaves = rcu_dereference(bond->usable_slaves);
-+	count = slaves ? READ_ONCE(slaves->count) : 0;
-+	if (unlikely(!count))
-+		return NULL;
-+
-+	hash = bond_sk_hash_l34(sk);
-+	slave = slaves->arr[hash % count];
-+
-+	return slave->dev;
-+}
-+
-+static struct net_device *bond_sk_get_lower_dev(struct net_device *dev,
-+						struct sock *sk)
-+{
-+	struct bonding *bond = netdev_priv(dev);
-+	struct net_device *lower = NULL;
-+
-+	rcu_read_lock();
-+	if (bond_sk_check(bond))
-+		lower = __bond_sk_get_lower_dev(bond, sk);
-+	rcu_read_unlock();
-+
-+	return lower;
-+}
-+
- static netdev_tx_t __bond_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ static void netdev_adjacent_add_links(struct net_device *dev)
  {
- 	struct bonding *bond = netdev_priv(dev);
-@@ -4859,6 +4951,7 @@ static const struct net_device_ops bond_netdev_ops = {
- 	.ndo_fix_features	= bond_fix_features,
- 	.ndo_features_check	= passthru_features_check,
- 	.ndo_get_xmit_slave	= bond_xmit_get_slave,
-+	.ndo_sk_get_lower_dev	= bond_sk_get_lower_dev,
- };
- 
- static const struct device_type bond_type = {
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 82d128c0fe6d..871920db4e51 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -273,6 +273,8 @@ struct bond_vlan_tag {
- 	unsigned short	vlan_id;
- };
- 
-+bool bond_sk_check(struct bonding *bond);
-+
- /**
-  * Returns NULL if the net_device does not belong to any of the bond's slaves
-  *
+ 	struct netdev_adjacent *iter;
 -- 
 2.43.7
 
