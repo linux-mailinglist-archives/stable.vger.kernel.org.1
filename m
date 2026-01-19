@@ -1,183 +1,133 @@
-Return-Path: <stable+bounces-210350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 086D7D3A9CA
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:02:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFEED3AA74
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA80E303E657
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 13:02:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2F7E309BC17
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 13:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29A8363C7C;
-	Mon, 19 Jan 2026 13:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4AC364026;
+	Mon, 19 Jan 2026 13:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GpxTrrCh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+TQBIoDT";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GpxTrrCh";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+TQBIoDT"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="lyXtIdlc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8CD363C6A
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 13:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EB3329E66
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 13:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768827756; cv=none; b=fdAYTmXrDg6eBi71CP86eJmt2TjDbscoojDXffpAlWqUzElhUk8Oc3bVjCuXKcBQu8BP//r9NIwRn7zORppE+rxGybLNKqDdW9xFc4Tt6sZ7OEq23BGSEktiijpL5fWJUwKbZBoBcxPsWoXI8WW8hlYSfuVpEutYeXqICbT1oWk=
+	t=1768829663; cv=none; b=gtdBu2OunChtpekkB98AF3edd2KY3f0FF1FXcy9ha9ofFN+Dk2ydZj950ZaoM3zhPKO6KWt/A0z8nn1SQfT56bSoc5EE1DFFP4FjSoUXfv8uOm2E65w20GocqFI2whMmzrKmnXV6kLN+o9TQ9qPbBjDDgKjaB7bE4zjmDU4m5KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768827756; c=relaxed/simple;
-	bh=x7EiAMW9C+Ek2ACdhqu2hp1zr3Gbl/4Dyfqpz4ikI7Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N0QmxfV4BDx+1UfkfDtOISvatY7KrsOhZWCNk9JRpLuuh43xzgnFhPqXKmGroDzjQvXPz94GpdEl9G81b2XYi/FMsh+pYLZF9A6fE8t+YSL6S/yYSGnrle6MCO1Af9ff6HP5bkgXQAZ1YAkkFVQEbNMe29iUgPZfSGJcCvHsWJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GpxTrrCh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+TQBIoDT; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GpxTrrCh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+TQBIoDT; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6061133739;
-	Mon, 19 Jan 2026 13:02:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768827750; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hrlNDf5VNjX9ELPfZ+LNgSuS5G7kdtoTlIu/QmH4T64=;
-	b=GpxTrrCh4hNsKltNDaOOfHLdTmXmbCbJuybMTEcsUAuVT9J36wmtpIF8EFlMoadWtxXtE2
-	ylRzfuhjJ+dA13jLiXffXp/Lv5zHW0Gz2UTyKBcwx4y4O/IZ5qlFd9kjXY+Uktdu6iwwcG
-	23vSKEi2y+AUIGf/fZmM1ilG0wCZhmA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768827750;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hrlNDf5VNjX9ELPfZ+LNgSuS5G7kdtoTlIu/QmH4T64=;
-	b=+TQBIoDTbAg2GSF0SfNzR8uubCOkCweGgGWruE/Tl6rbCXejkfSYemCINOKyH2tKiSesF7
-	oJ0VVgKPmpXyqEBg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768827750; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hrlNDf5VNjX9ELPfZ+LNgSuS5G7kdtoTlIu/QmH4T64=;
-	b=GpxTrrCh4hNsKltNDaOOfHLdTmXmbCbJuybMTEcsUAuVT9J36wmtpIF8EFlMoadWtxXtE2
-	ylRzfuhjJ+dA13jLiXffXp/Lv5zHW0Gz2UTyKBcwx4y4O/IZ5qlFd9kjXY+Uktdu6iwwcG
-	23vSKEi2y+AUIGf/fZmM1ilG0wCZhmA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768827750;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hrlNDf5VNjX9ELPfZ+LNgSuS5G7kdtoTlIu/QmH4T64=;
-	b=+TQBIoDTbAg2GSF0SfNzR8uubCOkCweGgGWruE/Tl6rbCXejkfSYemCINOKyH2tKiSesF7
-	oJ0VVgKPmpXyqEBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 52B243EA65;
-	Mon, 19 Jan 2026 13:02:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wok6E2YrbmlYKAAAD6G6ig
-	(envelope-from <dwagner@suse.de>); Mon, 19 Jan 2026 13:02:30 +0000
-Date: Mon, 19 Jan 2026 14:02:25 +0100
-From: Daniel Wagner <dwagner@suse.de>
-To: Ben Hutchings <ben@decadent.org.uk>
-Cc: Daniel Wagner <wagi@kernel.org>, Keith Busch <kbusch@kernel.org>, 
-	patches@lists.linux.dev, Justin Tee <justin.tee@broadcom.com>, 
-	Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>
-Subject: Re: [PATCH 5.10 219/451] nvme-fc: dont hold rport lock when putting
- ctrl
-Message-ID: <ebd16272-73ea-4aad-b603-459841068a2b@flourine.local>
-References: <20260115164230.864985076@linuxfoundation.org>
- <20260115164238.821426188@linuxfoundation.org>
- <21f26a1c5d9b0ddf0320a13bf3625642d506b11d.camel@decadent.org.uk>
+	s=arc-20240116; t=1768829663; c=relaxed/simple;
+	bh=dwWzDFV3GOIUCxfOqs9GQG2rdR7hT6Lv/em1fGGxWWA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uc3Av7zxy44c5JaOzNPwY0kgHm47Gq06tZcrfXc1ycCiiIGz0EDCBtSfn44Aacv0bygQMshNEDTnTQsWwDJ9Vvhvvh3rCRKvFX9zY3PUNghepk4Y9bmb2li73+qJ9SL//eBj4kf0zxMwS/CA6N0TgM9HnIp0sRmjj8TnBzpqHsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=lyXtIdlc; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=T74UgsmOi7s8QRwzwtqWj8hkGdBKN6XzqOPGTzVusbI=; b=lyXtIdlcFSbp100KBtd4pIhhj5
+	KO5i+BhoEaV23z9ntr2bG/Y1BmO2Wtht8VY0XoS90ypK8gYhWhq9P0VEJOqnnb/gcQFf47zYEVlpp
+	YLdb8k4EB2EvRotP7Mw+ynPykuxyVMAtrM6u26jcHH2Dr/hlHxUFy96h8Xh8V9G3qAGWue6SXaBfW
+	9p42Fp3tt4oK5LY/GMZ5OaQs50ZsO2bHl/pL7M+qyAHpkbW1BqS8t7AlfhT+2CkJs47g4ujhXQq8a
+	7pVavksfkgUPpGgGyxoI6B2zfEvpYbkElDvo/jdaYtAfddk2H4hWSTmmiS1LOh1Axs9WU44aUFtSm
+	9ghH/o3w==;
+Received: from [90.240.106.137] (helo=[192.168.0.101])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1vhpON-0079Ha-Jo; Mon, 19 Jan 2026 14:34:03 +0100
+Message-ID: <69008123-6899-49e4-9a30-b1cbff279ee4@igalia.com>
+Date: Mon, 19 Jan 2026 13:34:02 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <21f26a1c5d9b0ddf0320a13bf3625642d506b11d.camel@decadent.org.uk>
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,flourine.local:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -4.30
-X-Spam-Level: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/xe/xelp: Fix Wa_18022495364
+To: Matt Roper <matthew.d.roper@intel.com>
+Cc: intel-xe@lists.freedesktop.org, kernel-dev@igalia.com,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, stable@vger.kernel.org
+References: <20260116095040.49335-1-tvrtko.ursulin@igalia.com>
+ <20260116164624.GE458813@mdroper-desk1.amr.corp.intel.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <20260116164624.GE458813@mdroper-desk1.amr.corp.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Ben,
 
-On Sat, Jan 17, 2026 at 09:47:30PM +0100, Ben Hutchings wrote:
-> > Justin suggested use the safe list iterator variant because
-> > nvme_fc_ctrl_put will also modify the rport->list.
+On 16/01/2026 16:46, Matt Roper wrote:
+> On Fri, Jan 16, 2026 at 09:50:40AM +0000, Tvrtko Ursulin wrote:
+>> It looks I mistyped CS_DEBUG_MODE2 as CS_DEBUG_MODE1 when adding the
+>> workaround. Fix it.
 > 
-> The "safe" list iterator macros do protect against deletion of the
-> current node within the loop body, but they assume the next node won't
-> also be deleted.
+> This matches the explanation of "option 1" for the workaround, but I'm
+> wondering if we want/need this workaround at all.  Option 1 is to write
+> the CS_DEBUG_MODE2 register (as you're doing here), but Option 2 is to
+> do a constant cache invalidation (PIPE_CONTROL[DW1][Bit3]) during
+> top-of-pipe invalidation and it looks like we already do that in general
+> in emit_pipe_invalidate(), so it seems like we're implementing both
+> options at the same time.  It looks like there's similar redundancy in
+> i915 as well...
 > 
-> [...]
-> > -	list_for_each_entry(ctrl, &rport->ctrl_list, ctrl_list) {
-> > +	list_for_each_entry_safe(ctrl, tmp, &rport->ctrl_list, ctrl_list) {
-> >  		if (!nvme_fc_ctrl_get(ctrl))
-> >  			continue;
-> >  		spin_lock(&ctrl->lock);
-> > @@ -1520,7 +1520,9 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
-> >  		if (ret)
-> >  			/* leave the ctrl get reference */
-> >  			break;
-> > +		spin_unlock_irqrestore(&rport->lock, flags);
-> >  		nvme_fc_ctrl_put(ctrl);
-> > +		spin_lock_irqsave(&rport->lock, flags);
+> Are you seeing the programming of the correct register here actually
+> change/fix anything?  If so, does just deleting the programming of the
+> wrong register without programming the right one also fix the issue?
+
+So far the off-line reports from people doing the testing appear to 
+suggest this fix indeed, well, fixes it.
+
+If that is confirmed we will need to add:
+
+Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/13630
+
+As to your wider conundrum - could it be that preemption is at play? 
+When done from the indirect context the workaround will trigger after 
+preemption, unlike when done from emit_pipe_invalidate(). So perhaps 
+"Option 1" and "Option 2" you mention miss that angle?
+
+Regards,
+
+Tvrtko
+
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>> Fixes: ca33cd271ef9 ("drm/xe/xelp: Add Wa_18022495364")
+>> Cc: Matt Roper <matthew.d.roper@intel.com>
+>> Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+>> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>> Cc: <stable@vger.kernel.org> # v6.18+
+>> ---
+>>   drivers/gpu/drm/xe/xe_lrc.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
+>> index 70eae7d03a27..44f112df4eb2 100644
+>> --- a/drivers/gpu/drm/xe/xe_lrc.c
+>> +++ b/drivers/gpu/drm/xe/xe_lrc.c
+>> @@ -1200,7 +1200,7 @@ static ssize_t setup_invalidate_state_cache_wa(struct xe_lrc *lrc,
+>>   		return -ENOSPC;
+>>   
+>>   	*cmd++ = MI_LOAD_REGISTER_IMM | MI_LRI_NUM_REGS(1);
+>> -	*cmd++ = CS_DEBUG_MODE1(0).addr;
+>> +	*cmd++ = CS_DEBUG_MODE2(0).addr;
+>>   	*cmd++ = _MASKED_BIT_ENABLE(INSTRUCTION_STATE_CACHE_INVALIDATE);
+>>   
+>>   	return cmd - batch;
+>> -- 
+>> 2.52.0
+>>
 > 
-> Does anything prevent the next node (*tmp) being removed by another
-> thread while the lock is dropped here?
 
-Thanks for looking at this. There is nothing in place to prevent LS
-requests running in parallel, e.g. two dissociating controllers LS for
-one rport,
-
-	schedule_work(&rport->lsrcv_work)
-        nvme_fc_handle_ls_rqst_work
-            nvme_fc_handle_ls_rqst
-                nvme_fc_ls_disconnect_assoc
-
-What's the proper way to address this? I saw there is a list_safe_reset_next:
-
-	list_for_each_entry_safe(ctrl, tmp, &rport->ctrl_list, ctrl_list) {
-        [...]
-
-		spin_unlock_irqrestore(&rport->lock, flags);
-		nvme_fc_ctrl_put(ctrl);
-		spin_lock_irqsave(&rport->lock, flags);
-		list_safe_reset_next(ctrl, tmp, ctrl_list);
-	}
-
-Is there another common pattern? Normally, I would use the list swap
-approach but here it doesn't work, at least without a lot of changes I
-think.
-
-Thanks,
-Daniel
 
