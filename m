@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-210263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA12D39EA5
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 07:37:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93625D39EAD
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 07:38:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C7A7F30024DF
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 06:37:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 47010301473B
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 06:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129CC26FA5B;
-	Mon, 19 Jan 2026 06:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187BE270EAB;
+	Mon, 19 Jan 2026 06:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CK1lSM0v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIpr4uRG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C723A227EA8;
-	Mon, 19 Jan 2026 06:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EA01339B1;
+	Mon, 19 Jan 2026 06:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768804654; cv=none; b=kCllrfk/4EYukioRM94Ov+A1oywaKqZicHK5Ctlyc11MS1mpP2oLf4aEKomj74v6aT5CWOYvTrRJ7js/S5MdVsnvvoL6fNsjdXvSBNHPYTyEFobPlnBT/BXfh7OMr2VuAdaHbVMuMIWNtyepIiu9ht8npzCS92WkQO5U0Ekd0LY=
+	t=1768804666; cv=none; b=cpRsowXjYXdmQk2D/1y8t+zq/S1GPrnWiH1koF9FubG5gwJGTZKVVYNGOptuJyVb3r+4IYldWiI9Jyw+QNeOSPwX6P+JKycnicwBKiM3jH6e/k5z1LqdUqtp3GpZuwhrNiAKEeqyyQi8yZqrmeoql/HvFnsgqDfjbXDjB4Weq24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768804654; c=relaxed/simple;
-	bh=AhJjdOzGJVH0pvW8yjDK8PE7lWTgqcB62z0r7UIwp8g=;
+	s=arc-20240116; t=1768804666; c=relaxed/simple;
+	bh=Pd/vKHX3eu7UNTbniHeTvD5yvMnwvjior9MXth6nQiw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ilq+gCRoYAx/DHzCX9JJqO9KqUN3lPfDx51DdkdmUHiD5ZOKeYyHNnd9zQ5EeAMwYoStE3pOpF9FDBz6tMhuXnHmEkq+rPHDHWislIPPcsZ1YPr3ZrsW6mGQXvsdOxkQojoyHQr4lW33FnZr4/ubGSbP4zO8/o6XTD3zk4maEN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CK1lSM0v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2240BC116C6;
-	Mon, 19 Jan 2026 06:37:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=CBLyFBCU4HhmUbvkth3Z5jBYPcChv5XABltRls9fcHRiFne0AJS34RXwUB5cy2mTdfAVA+R1+BSTtma9vbImy6vXbOQyDNgeDurWBdYJLdCAybtdabCC0sevnDQTbjscLg0zwRGTRx5r0X0lfk68YPb9k6qAgIhWW4lEuaPWJWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIpr4uRG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A9DC116C6;
+	Mon, 19 Jan 2026 06:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768804654;
-	bh=AhJjdOzGJVH0pvW8yjDK8PE7lWTgqcB62z0r7UIwp8g=;
+	s=korg; t=1768804666;
+	bh=Pd/vKHX3eu7UNTbniHeTvD5yvMnwvjior9MXth6nQiw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CK1lSM0vzrt9HFWrd9Tn2gZ6DPYFWopypbuohFyrfc+54Buf/6H83m23A6fS+zOfY
-	 Kv6/MjTKjiSyMmHsUIWXeIzahS8GgsFpH45iIjkFa5kKS5/Z7H6R1E0x5faofvZw+n
-	 N5te5PlKph3fGb8C5zRJmAYYEy0trL364EDgHI5g=
-Date: Mon, 19 Jan 2026 07:37:29 +0100
+	b=HIpr4uRG42UdVdyCaTs7q5mgDXnawLcq0siz+m9KQoc5UwskmG3ghNG/h8LuFnVoE
+	 m4YVvlsX/RofG4CdQ9Y0N++ov0QWFYVKTXLKnhYSTRHGHevbjqN1fS8K/t9ORQcV7i
+	 uutfl9Bxvg/S2Iut/Ydn6fdu0Exn8z3Xw66kB9Zc=
+Date: Mon, 19 Jan 2026 07:37:41 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: markus.elfring@web.de, jlbec@evilplan.org, joseph.qi@linux.alibaba.com,
-	linux-kernel@vger.kernel.org, mark@fasheh.com,
-	ocfs2-devel@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v2] ocfs2: fix NULL pointer dereference in
- ocfs2_get_refcount_rec
-Message-ID: <2026011925-canon-helium-65c6@gregkh>
-References: <cfd0e0eb-894e-48c7-948e-9300a19b9db7@web.de>
- <20260118190523.42581-1-jiashengjiangcool@gmail.com>
+Cc: markus.elfring@web.de, almaz.alexandrovich@paragon-software.com,
+	linux-kernel@vger.kernel.org, ntfs3@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] fs/ntfs3: Fix infinite loop in hdr_find_split due to
+ zero-sized entry
+Message-ID: <2026011934-skyrocket-handwork-6ba9@gregkh>
+References: <65bf90b1-8806-4f8c-b7e7-d90193d28e88@web.de>
+ <20260118190145.41997-1-jiashengjiangcool@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,22 +55,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260118190523.42581-1-jiashengjiangcool@gmail.com>
+In-Reply-To: <20260118190145.41997-1-jiashengjiangcool@gmail.com>
 
-On Sun, Jan 18, 2026 at 07:05:23PM +0000, Jiasheng Jiang wrote:
-> In ocfs2_get_refcount_rec(), the 'rec' pointer is initialized to NULL.
-> If the extent list is empty (el->l_next_free_rec == 0), the loop skips
-> assignment, leaving 'rec' as NULL and 'found' as 0.
+On Sun, Jan 18, 2026 at 07:01:45PM +0000, Jiasheng Jiang wrote:
+> The function hdr_find_split iterates over index entries to calculate a
+> split point. The loop increments the offset 'o' by 'esize', which is
+> derived directly from the on-disk 'e->size' field.
 > 
-> Currently, the code skips the 'if (found)' block but proceeds directly to
-> dereference 'rec' at line 767 (le64_to_cpu(rec->e_blkno)), causing a
-> NULL pointer dereference panic.
+> If a corrupted or malicious filesystem image contains an index entry
+> with a size of 0, the variable 'o' will fail to advance. This results
+> in an infinite loop if the condition 'o < used_2' remains true, causing
+> a kernel hang (Denial of Service).
 > 
-> This patch adds an 'else' branch to the 'if (found)' check. If no valid
-> record is found, it reports a filesystem error and exits, preventing
-> the invalid memory access.
+> This patch adds a sanity check to ensure 'esize' is at least the size
+> of the NTFS_DE structure, consistent with validation logic in sibling
+> functions like hdr_find_e.
 > 
-> Fixes: e73a819db9c2 ("ocfs2: Add support for incrementing refcount in the tree.")
+> Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
 > Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 > ---
 > Changelog:
@@ -79,25 +80,23 @@ On Sun, Jan 18, 2026 at 07:05:23PM +0000, Jiasheng Jiang wrote:
 > 
 > 1. Add a Fixes tag.
 > ---
->  fs/ocfs2/refcounttree.c | 5 +++++
->  1 file changed, 5 insertions(+)
+>  fs/ntfs3/index.c | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> diff --git a/fs/ocfs2/refcounttree.c b/fs/ocfs2/refcounttree.c
-> index c92e0ea85bca..464bdd6e0a8e 100644
-> --- a/fs/ocfs2/refcounttree.c
-> +++ b/fs/ocfs2/refcounttree.c
-> @@ -1122,6 +1122,11 @@ static int ocfs2_get_refcount_rec(struct ocfs2_caching_info *ci,
+> diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+> index 7157cfd70fdc..da6927e6d360 100644
+> --- a/fs/ntfs3/index.c
+> +++ b/fs/ntfs3/index.c
+> @@ -577,6 +577,9 @@ static const struct NTFS_DE *hdr_find_split(const struct INDEX_HDR *hdr)
+>  			return p;
 >  
->  		if (cpos_end < low_cpos + len)
->  			len = cpos_end - low_cpos;
-> +	} else {
-> +		ret = ocfs2_error(sb, "Refcount tree %llu has no extent record covering cpos %u\n",
-> +				  (unsigned long long)ocfs2_metadata_cache_owner(ci),
-> +				  low_cpos);
-> +		goto out;
+>  		esize = le16_to_cpu(e->size);
+> +
+> +		if (esize < sizeof(struct NTFS_DE))
+> +			return NULL;
 >  	}
 >  
->  	ret = ocfs2_read_refcount_block(ci, le64_to_cpu(rec->e_blkno),
+>  	return e;
 > -- 
 > 2.25.1
 > 
