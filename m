@@ -1,74 +1,76 @@
-Return-Path: <stable+bounces-210280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A464DD3A1A1
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 09:30:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE030D3A1A2
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 09:31:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7FA3304B3DC
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 08:26:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B719305380A
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 08:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34A33385B5;
-	Mon, 19 Jan 2026 08:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE7F33D50A;
+	Mon, 19 Jan 2026 08:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TIxD5D5h"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UbNAL+h+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F2A33ADA9
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 08:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0985933CEB7
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 08:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768811164; cv=none; b=Yoo/6I8NgFvymRdO6mqYDNMblNrXLBTTItwUttJOJUSD3FlYZNF7ObvMV5avKA+fLSi34eLo2PwJlV3Nzl1Odlh5eplL9f6zC9Gkrxvx5tOl6qMRDXfYctiq+nBFGGfAEWQIMjCPRlkn6Bza8CWLKVSXQEvFquWAd7XaCgpmj0c=
+	t=1768811167; cv=none; b=NXw1KkFOMA1yy41GZw4p9ks3gl/jzvwclsxcHiu5R3T4DfAhamzzwi8KPqrnYnCMnou4ViJNpsYafKEEwy1IRo9uTEkiOW99Vv+Vao4bf2U58JrEut+pYcilLx0XzEpfJtsovZDqK50Z8mP2ApPNcVK0vZGmiJ0it+LkJZl1ZgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768811164; c=relaxed/simple;
-	bh=w8UP13amm384XzZzCwddmrnWJmCBemyZWN4IAg9GFDw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tbKP8tWfVze9URPSWxFCMXntZ48qaqEf8ZuVU3PgFy2Y0RsmLm4s7UueQuDXw4aD+OUsDgQe/VS3IVZBjuKmyZKG39ebRzCWeiM389y8INJc2BrUhwThU2Ywa18I574q8Szz7b9z5sv8pf00yPpjj3mXhNZa5+lOJtfTYfnuQeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TIxD5D5h; arc=none smtp.client-ip=209.85.214.177
+	s=arc-20240116; t=1768811167; c=relaxed/simple;
+	bh=LFTtV6r3Kv8hlUjLpPyuwQgn0EJVqqRO2UBgklloSc0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AW79JaZHlh2UhxjzaKYOZQJzIFw0SM+b7pTSHxFfW+nCUfpe43wnJ8Tt0J6oqWTqTncY+fERtkKgOUiJubKmc4gG+LoVs9oW3t1K6URcTsMl4ubhetzUb+B4K7PKfFhL/oY5c8tcUMPCgxkoz4wGLpv5Sid6cdDmi89i7DydCOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UbNAL+h+; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2a0833b5aeeso41642155ad.1
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 00:26:01 -0800 (PST)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2a743050256so3227205ad.3
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 00:26:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768811160; x=1769415960; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qGF3kXNpuFGfHRZ/a4i+Y3oSMznaAZtKKSwOANieht4=;
-        b=TIxD5D5ho/i0fVkwSu3crfT+G2sc94WKEkUTu9XyLloE1DKE2vEeSUcy6abgBKp8B4
-         cafaB5xGlSicP/L86qFJRdwXJHGwxdRtoHsvyyIIrU2te1Nd8N9rO8iHPIQBmwnSL4Ef
-         tah9avOGSFQ0eVdRooul5KLJA0NfVTO1UA11PjYpnOBAQPlwb8eYEtcGORJ9N38OBsik
-         trkNP9Ngp2rBLnqyyl+bVbsNMueDzJaHHNlcKR5gIM8TYoFoP0g+FEnI8fKgYMp+n0MM
-         fEG4P+M4/odq/6cYjyA8ITTYV4bRYHN8Lm0kORmeF81JOEGoXsfWfmwimOVZYYufK6kN
-         dtMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768811160; x=1769415960;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1768811165; x=1769415965; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qGF3kXNpuFGfHRZ/a4i+Y3oSMznaAZtKKSwOANieht4=;
-        b=qWfDkd0CY//Gl7vMNtbeSHjBa6k8yQgXHlLOKKVUx16qTePI1l/sY3o6TZih1KQ2Qz
-         u4wRzUSpAINNxEk+C2wXJDG8RaccWDgOlG7QWk43sMCEn5G1wBiQjdLUlnqL5SFF7TsF
-         Mbod8YahNImc5el1rzGS2psYSH0V/bxdo0+yKig6d+NFkR5eg686w5rvz1+11TYM5OCp
-         hqzwg51MJu26zhkfLe4a7cPNUFIz2+LNs0oRYktCRQF/dUZD2unHzsU2WGWZNGESqjuc
-         n9uVZt8Y1G1hX3olnOwgloebUTuJXB8fuofCx8wDV7UZhBdJhhPYEmwqPXFgShFfjJVJ
-         +V2A==
-X-Forwarded-Encrypted: i=1; AJvYcCX1l8N/0dbasdu+ycz71AN0Da55OIG7XNQ9M1wslobTvWMVt6X+KlBnPowwJBSCyBK+wHY2WrM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZn79EDOBBU+XLbecZu86QSTxafrfAHQYktM0RMykDF727J/lv
-	3+zNjiblhBJQxzf95HGOw+0HJ+4L6qQfgnDLDhV+dJZ9gaTHeoJfKGGb
-X-Gm-Gg: AZuq6aJIZSPD5MFpYiygpgjOQM7XzNooFiFfgUI6zfqkTLk82JzR+IbuUUz4brnl4kK
-	5xYUNwKgn8dxVx1PRY1a0OHzR/fxeabeshCfwD/Ox0thvpUN0SkWZL8P+aqifroDTTs0pMvAlA3
-	hus3Xf+9sYL3t33iYax/qBd1IZ5eeGxcboTM+RIl226ebri1msuFl4stce7nt4hXQ30Cak9yYxC
-	qUI+l2ycaghqPyotZfI69WMJDs9JxydlNtwiL2u/Lee263R1l9XMnt1yS313LuDKvtLVE7cznqS
-	8q8h1UqVxxyQcj297kQ2frj5S8bger2lzzRYC5tP+uo43jIqlAM7HTMnZ1mzXwufbrFt/e4dR0g
-	oU5XbLmC1Ktc5z48fLLNP3zyDfiwvgOVVdXfYWIsSJUGuTrJQUmWZAEzbmOYnBigm0aVkC7rwad
-	QSCg7FLdkqm2HMw/jfut25clxR6yoMGl0OtYbRb6d/1i+KugO9
-X-Received: by 2002:a17:903:2282:b0:2a0:de4f:cad with SMTP id d9443c01a7336-2a718954195mr91095305ad.60.1768811160125;
-        Mon, 19 Jan 2026 00:26:00 -0800 (PST)
+        bh=C1peIzucQT9u+8mHdz0lvrHZdBPLJn2LftndnROMFbg=;
+        b=UbNAL+h+UFXueXYCGrZIrrzmJZ8fz6iPkt23ighCLd19xqfGWOKIQb3JmNMAB3MjI1
+         Ckd417D1WStI4SCrES0/ytGatRoI2OwlnehixGKAMHah11rFDtBtmpVxJ+8b6W0aYvTZ
+         Dj2aEi6oDw+mGR838m8X7eyKOzvtks0pln3VH2tjLehZQhLpCpeyVIby48WTM8TbZYwE
+         ZO+KHnCCgeCFpDz1QmXPrwETdGX1wW9+4BhF+SaZ/R/01oA/WDn587YKImnBhY1SAGk9
+         mO4NLPxLU/+NI5Y3DZx98Ave7zaKGJZRRU8/bPnmzq/xOroQCTb3KP/AeVjQbtv2ITAn
+         zpkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768811165; x=1769415965;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=C1peIzucQT9u+8mHdz0lvrHZdBPLJn2LftndnROMFbg=;
+        b=KB1KBH8GZIxn4FhH1f44s30j5fhEFC5DoBm6/oHZZOXuCtzd1X4ctqN9heoWGdyiEf
+         CMSRdOvzW+YqANR3tDaqro1jvXqk3Ui2QLkoqiK3J85x3uiP2bDIBBRuY7wdv5AWgOlG
+         IAP11sURz/g0HFBWkNH0IelpH2SafHdQpJ5nQ4YbVHXShsUvdiyzOs/h1USl+g+cgPVE
+         UlRdTDhQaFtbPaR1MAUpznHpUaW5MRaK4vLwFeWIM3JR4EpsmAo/u+MSbEP/366hrLxu
+         w+GjZZap4s7JYs5dgSzOgm0FazyInwu7RFamphpFm6E7zJy1+UH/LsQzLdS3MTV2GLwM
+         d8zA==
+X-Forwarded-Encrypted: i=1; AJvYcCWR28tFcGBr2t+ccpIe+ZMqTOa/5atatpt3YfS3P5CMOkcVpnIpEa+tTVffNmI0t/PSJX214g0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIO/lM5TlLzL08uTbgr00drAB4pKH8/vAZnCfyF7GMU4GMZG0z
+	T0QTEQDLNG4EMJac2YS90F8BHvPj7T2qktX+kYsyV2geKEo1git6o8dMW5ZbPg==
+X-Gm-Gg: AZuq6aKF5+Q2QZcFjGADfnR5ERdXMS9Q5ZOFPDgJ3dYYaTDzZehXIZZYeak6LwG/z1W
+	iSTx/1n2VxKnYjxjE7F9+QEP8+5a7WqEneF1EQuhvYhBD9vL9zfuyzy9Q2ag0zaaAw+99sTiRbv
+	vKdo+VICBY7SnjKN9tDvKR7JjJCagLmFmvz78UoUqXKMcyRKNaZy0f4090qvQYLM+pjbzE//zUs
+	rLc5BlhY5PzrmbmuKn+p0iBNLdc97BAInocLIDAqk5koEDS9RYTqQvqOz0OvGM/Hk7lJuAtai6V
+	w8IcCXF2TzWxas5pmDJWM58YdI3z6fgt2RIB4F8rAgKMLk9J8ELeMxaR2p737Wl+kXaDY3G1RJ7
+	nUWQ5P1C/0AMtY1AqJF1+FdFEBDPLoJCyJFNpW/tmwSkwNfyRUcP7YZLrP+ay2wnDHPWu8VSpgl
+	nXwqbPOBci6FtSeliiKNrcBfoqHBgWbZmxWO0ikQ==
+X-Received: by 2002:a17:903:1ae4:b0:2a0:f828:24a3 with SMTP id d9443c01a7336-2a7175cc0f1mr100262275ad.28.1768811165155;
+        Mon, 19 Jan 2026 00:26:05 -0800 (PST)
 Received: from name2965-Precision-7820-Tower.. ([121.185.186.233])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190ce534sm85699645ad.27.2026.01.19.00.25.56
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7190ce534sm85699645ad.27.2026.01.19.00.26.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 00:25:59 -0800 (PST)
+        Mon, 19 Jan 2026 00:26:04 -0800 (PST)
 From: Jeongjun Park <aha310510@gmail.com>
 To: Inki Dae <inki.dae@samsung.com>,
 	Seung-Woo Kim <sw0312.kim@samsung.com>,
@@ -83,10 +85,12 @@ Cc: David Airlie <airlied@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 0/3 RESEND] drm/exynos: vidi: fix various memory corruption bugs
-Date: Mon, 19 Jan 2026 17:25:50 +0900
-Message-Id: <20260119082553.195181-1-aha310510@gmail.com>
+Subject: [PATCH 1/3 RESEND] drm/exynos: vidi: use priv->vidi_dev for ctx lookup in vidi_connection_ioctl()
+Date: Mon, 19 Jan 2026 17:25:51 +0900
+Message-Id: <20260119082553.195181-2-aha310510@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260119082553.195181-1-aha310510@gmail.com>
+References: <20260119082553.195181-1-aha310510@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,15 +99,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is a series of patches that address several memory bugs that occur
-in the Exynos Virtual Display driver.
+vidi_connection_ioctl() retrieves the driver_data from drm_dev->dev to
+obtain a struct vidi_context pointer. However, drm_dev->dev is the
+exynos-drm master device, and the driver_data contained therein is not
+the vidi component device, but a completely different device.
 
-Jeongjun Park (3):
-  drm/exynos: vidi: use priv->vidi_dev for ctx lookup in vidi_connection_ioctl()
-  drm/exynos: vidi: fix to avoid directly dereferencing user pointer
-  drm/exynos: vidi: use ctx->lock to protect struct vidi_context member variables related to memory alloc/free
+This can lead to various bugs, ranging from null pointer dereferences and
+garbage value accesses to, in unlucky cases, out-of-bounds errors,
+use-after-free errors, and more.
 
+To resolve this issue, we need to store/delete the vidi device pointer in
+exynos_drm_private->vidi_dev during bind/unbind, and then read this
+exynos_drm_private->vidi_dev within ioctl() to obtain the correct
+struct vidi_context pointer.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+---
  drivers/gpu/drm/exynos/exynos_drm_drv.h  |  1 +
- drivers/gpu/drm/exynos/exynos_drm_vidi.c | 74 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------
- 2 files changed, 64 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c | 14 +++++++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.h b/drivers/gpu/drm/exynos/exynos_drm_drv.h
+index 23646e55f142..06c29ff2aac0 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_drv.h
++++ b/drivers/gpu/drm/exynos/exynos_drm_drv.h
+@@ -199,6 +199,7 @@ struct drm_exynos_file_private {
+ struct exynos_drm_private {
+ 	struct device *g2d_dev;
+ 	struct device *dma_dev;
++	struct device *vidi_dev;
+ 	void *mapping;
+ 
+ 	/* for atomic commit */
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_vidi.c b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+index e094b8bbc0f1..1fe297d512e7 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -223,9 +223,14 @@ ATTRIBUTE_GROUPS(vidi);
+ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
+ 				struct drm_file *file_priv)
+ {
+-	struct vidi_context *ctx = dev_get_drvdata(drm_dev->dev);
++	struct exynos_drm_private *priv = drm_dev->dev_private;
++	struct device *dev = priv ? priv->vidi_dev : NULL;
++	struct vidi_context *ctx = dev ? dev_get_drvdata(dev) : NULL;
+ 	struct drm_exynos_vidi_connection *vidi = data;
+ 
++	if (!ctx)
++		return -ENODEV;
++
+ 	if (!vidi) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev,
+ 				  "user data for vidi is null.\n");
+@@ -371,6 +376,7 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
+ {
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
+ 	struct drm_device *drm_dev = data;
++	struct exynos_drm_private *priv = drm_dev->dev_private;
+ 	struct drm_encoder *encoder = &ctx->encoder;
+ 	struct exynos_drm_plane *exynos_plane;
+ 	struct exynos_drm_plane_config plane_config = { 0 };
+@@ -378,6 +384,8 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
+ 	int ret;
+ 
+ 	ctx->drm_dev = drm_dev;
++	if (priv)
++		priv->vidi_dev = dev;
+ 
+ 	plane_config.pixel_formats = formats;
+ 	plane_config.num_pixel_formats = ARRAY_SIZE(formats);
+@@ -423,8 +431,12 @@ static int vidi_bind(struct device *dev, struct device *master, void *data)
+ static void vidi_unbind(struct device *dev, struct device *master, void *data)
+ {
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
++	struct drm_device *drm_dev = data;
++	struct exynos_drm_private *priv = drm_dev->dev_private;
+ 
+ 	timer_delete_sync(&ctx->timer);
++	if (priv)
++		priv->vidi_dev = NULL;
+ }
+ 
+ static const struct component_ops vidi_component_ops = {
+--
 
