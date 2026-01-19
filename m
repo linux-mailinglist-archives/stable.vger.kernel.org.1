@@ -1,216 +1,155 @@
-Return-Path: <stable+bounces-210410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA0EFD3BA19
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 22:36:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4025D3BA1D
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 22:36:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3ECFD300A923
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 21:36:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 68FC9300A900
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 21:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C8E2F9D9A;
-	Mon, 19 Jan 2026 21:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827E52FB630;
+	Mon, 19 Jan 2026 21:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="E7W7DaI9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lDvFlQ8r"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5DA2DC77F;
-	Mon, 19 Jan 2026 21:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768858570; cv=none; b=nZpJHnjgonIn/DmOyN4TahYa62enn24ncLVUrpuPVkinsDLkTbJyRxsrnUsY6VNmVzm7foqhY8vu2dVEaKuzaFZQN/Bo5I8LAPfTcA2cfz2f5Z5lOTp70TfDpIiEiXu+Qd7WjbNjcieGXfzp8WanIyQt6PgNgCnTgaiF6GVRVUM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768858570; c=relaxed/simple;
-	bh=M+iZYSYvse0xtyUVhzFtjnmJsY3Bw1EQSFHV/8COT1E=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=p6jD1n5PHdNSiuSIFMq+//sxqwh+O/gJQJRyd3Bm+Xj3NzSu6CEh8sL7EQq4lHmgdFWt2yZ0pyLSJvmHW8VDF5ztKiRutqxDEKQtKiiLN8GKDBGCztMMnhOmMPFa3mwvlXE/tZYg41vMAmZssZmW8aRdPo5Y8WnQteXzbZEBL+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=E7W7DaI9; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60JDO0xq008318;
-	Mon, 19 Jan 2026 21:36:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=IqV0dL
-	isuLri96/Yj9hgzlEc38kjuEEeav1EHCGujsw=; b=E7W7DaI9K/TSBJFAugao26
-	i/tZ4MdAQhHlas2bNlr6oNX/rA/xN1QKvY+Fbl4T2HAY3jYpFlrLIootu6w3FuL3
-	v+iaftRf04rz28mjFttnmMVOEocrXFojreNlB5RZLypmnxB6SEIe0sWFdA8lQfnA
-	gKOWTo6oCar+/GGnaTdTdedcHczRup03EZnyWNzB0Urexct7WLUNJyOsTX/skwr6
-	sdLrRH0ywM2zEl3VMi+EtfPjvMoB9ocewEur9YC3kkp7NnrYiYXJtMt6C3jDT8lb
-	8zQ80pKsxUouw3Qu1PaCNplSUFovJu0UnFk1BfpcDe0QzXVJMpFz3Od+X6Xy9ysg
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br22u9ru7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Jan 2026 21:36:02 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60JKS4ko002002;
-	Mon, 19 Jan 2026 21:36:01 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4brpyjh0uq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Jan 2026 21:36:01 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60JLa0Zd28771024
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Jan 2026 21:36:01 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D9E7B58052;
-	Mon, 19 Jan 2026 21:36:00 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1960B58056;
-	Mon, 19 Jan 2026 21:35:59 +0000 (GMT)
-Received: from [9.111.4.31] (unknown [9.111.4.31])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 19 Jan 2026 21:35:58 +0000 (GMT)
-Message-ID: <c45037201606ef06c6e84b3e8d645ea0ea538038.camel@linux.ibm.com>
-Subject: Re: [PATCH v7 4/9] PCI: Add additional checks for flr reset
-From: Niklas Schnelle <schnelle@linux.ibm.com>
-To: Farhan Ali <alifm@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
-        stable@vger.kernel.org, mjrosato@linux.ibm.com,
-        Benjamin Block
-	 <bblock@linux.ibm.com>
-In-Reply-To: <20260107183217.1365-5-alifm@linux.ibm.com>
-References: <20260107183217.1365-1-alifm@linux.ibm.com>
-	 <20260107183217.1365-5-alifm@linux.ibm.com>
-Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Jan 2026 22:34:58 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AD1270ED2
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 21:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768858589; cv=pass; b=L60r5w6XPSE+EahknIlwJMv+ttwuWhRp8OHxcFbL7I5JkJfVMw7owdRJYu30okpubLzrFZ6EyeojOWZRBn2w6T4XYNLa96GnPxXJsfMtSUo0JIGDXEHa9VfytSN46IJntkL2vDElxo6UC8cTxyLDvAMrwokvAL2J9SjXC6elFHk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768858589; c=relaxed/simple;
+	bh=ZIySP1q5PMnveIa/i279C9yGcJJ4/61I44p5rwmCYqw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B+eL+kacpGPE3nv7rHO/Cqrk0H+3Mgl0+ILq97FnnYTfpwsCybHqZhmESOuJz3O3Qt+x/fwNowQTQbCuI8DKn4bEWyIuKqvfTYr3/CMRz1nJK/3iRNofBhDIqLjQ7iDvi+8BzFL0/hHeIGlrTEH8OQLybaKNriTMFKhZAMj7HwQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lDvFlQ8r; arc=pass smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-432d2c7dd52so4330543f8f.2
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 13:36:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768858586; cv=none;
+        d=google.com; s=arc-20240605;
+        b=C7DVfGHointDfwVSdNvfddgaGSDfh79ZnUtva9C8fieqPegqsI+4P+OTJyK104LPrI
+         /hYlB1ZCJdkCzgBVMnH9waOdrGuzjoE7zI0MVaxw9FPSbgwOOsjniAXkslMTuVdEJz+0
+         RxcgTz/D7XeueTD/1xOVTKglIeHL1VRTe8GlF3NvNFrZnr1hakL/Wxs4yRYG32F5AUNP
+         6ZeuypsvC3N3nw5VCJ8MX290BB/DoFFbZIxJR+YiwgKNoswaucfOmGo1u8v9BR58IeqX
+         JicejrYQscv2iq1u8b+q2tCamooDOF8qALs3p9Aeo4U2Porj42K1IOWCV1s4h2nv9VjB
+         0QRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZIySP1q5PMnveIa/i279C9yGcJJ4/61I44p5rwmCYqw=;
+        fh=r9uAV0ZNXhr1cm8Q+5B9PWdVG0vXYK69rZNX424O4UY=;
+        b=RB9XrJz19l2kOfF+wnFGrX3VnIadQBScrApcuAkvjKqRmA/ymDmhpceBubmWbFrYBS
+         bL/3q1kZRX50skqyKo85d2En2+WLoHdxZ2A6sb8KE+cF/lqlE7VuR5YWSDbhbDdTgPD7
+         7FkuSglSfw6IVM0L2BZKeEp5zu5NtuTNJ3TRC0uDUQs0nTD2LueXtViw/QHuifgmQmt0
+         D0cAg3AdsTBWlAqHrdcNv8b67nMRbjvN6QOh0x6xnJv/dRX4YPlknQgzRwhUs5WnQlPS
+         qCxClbz6CVc65bVZqjGq89S02lHgqgosfX/aw7ZM/Sby7Y4YI5zFxKPuBsg0HR4podIa
+         5rkQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768858586; x=1769463386; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZIySP1q5PMnveIa/i279C9yGcJJ4/61I44p5rwmCYqw=;
+        b=lDvFlQ8rY/TJOr1VLBm+8Ia/DFEM/PH7LcDmenl5MAHV2qzrX5zUev9rT4uzwUFylY
+         usqzrfFmhSZmI/RislSWLizpYoPyrjfBkgw0bEihDJULFl6+U84DzboGD61yjhmKl2aQ
+         IyKRydFp3ZbuGa475jnVS5QN6zIe7btK96mqQNCqFg8mnmjeR1FjRG01L9CPAxTh1j82
+         3ThssChlAY0yuRJ6/vDSHsJjopqm9ftDPuJFSDcu7kFUZdF/Na8rWeMohMJBA3ednJZG
+         lQgyqoTROkrqLz51V52wRsY/4+prFE7TV0HxTwELQjFykL1KxqDiDtMyEQsK11Iy1KDl
+         LoRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768858586; x=1769463386;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZIySP1q5PMnveIa/i279C9yGcJJ4/61I44p5rwmCYqw=;
+        b=t6rysERsVDG2+pU5XQENt7aOOibIp24umYL4Wb+Fl4UvATDTZLghf3kffuQq95j20p
+         ZRS4SOEvNViNUcnX4HQShj2m6GBhZhoCjQ6hLBbttIl46r9am+xvjV7yzkH/cvuSC3GG
+         E5JBNyd2IaLIiDjJ4k9UgGGDtFzKikpJEK8AnGhlZ2QwqQSAziNkA7JbnydqGatDXXtG
+         z6yKNHEUew+bc72SEH3wGq3bdIIC/uMTrLbsbpUkCj2vf/OdQViezhvPq6+6+5dqRODW
+         9LWhrI0XmwICsOZFP3oJF7D6y/6BqM/4y082KGl7UE6l4a/JET5xs9qR4DchGEecE8cb
+         HxZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWaTr/fa+fZQt7CA4LJMXtlndnS66sjCqmtCm/z+FLtHG97euscNwnFR6fyP1MpOp6r64Oxb9Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzH3zZd8ZfA6UdWis5oik8Gg44ffaWIz6lhgDQDFMGiN90skR1y
+	WeUCnpSz5lUduD9WwbqtvkoN65c7he4aTIb9cB14hVz4QDLamE0VnnBdrfTwiLA7EktjMz7oTZ2
+	X/IFkKSzcrM7R3nB0IY012jD+tZPcQP6r9rPNYlBf9Q==
+X-Gm-Gg: AZuq6aJNAwn5weLzdJqIZlyKkzpDS310j92Gn6AybAf3cBI6dDD4isKTvZpYELUfgcK
+	zu0QDpqVlUMFBM4Fh2up+XMJtdAoq9rbrrZ4HWXRx+OmurK7k9LLeLZ9fnTwfg3TFRbDiSjnW82
+	8GPwo3Zbi5et8DCE4WEyzjDAerGR+MLGKUfTA+a3veMpIhR1xfVgi1ZJolzI/7XBkLN5WuhgSsx
+	kWEAcA12Zf6tGe0ZiF+FQ2VVigGM/ZA5ePejpXB5s6LjvsQxEtdarP8fa4ciRZf8P7lr+o=
+X-Received: by 2002:a5d:5d12:0:b0:431:266:d14d with SMTP id
+ ffacd0b85a97d-43569bc5b27mr16203443f8f.47.1768858586150; Mon, 19 Jan 2026
+ 13:36:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5I7l26Eal-WD7i_Jm4KnRivhG-rcxD1B
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDE3OCBTYWx0ZWRfXxJDrRszn7CRz
- aOr0eFPjwewuEUWng01ncjUe4i6U4sk1dW3GU+3EBVfvWi+JyqWb6MXKTI5Dc/5bmtAfy8zJLLx
- HLapbqS+W0Mro21qu0moW61tDN9QEl0X/g2SZvNBnF4D0f4zrGlfEK0owZkTpaCfjh+9bArp5DF
- gAXIk7RImwJ5XzRp7c1OSbiio+quu3JSE8wtE8l27QN16UJrla56pVeMFygfWRE8vFyX8ciFyRe
- fUvcJV4ZpN/pqrbmcc+KNPAUMxGvUeuyMBOZ/2VpyZ/J7nSlb3lPzMmA600YPcF68PWUAMW1L2u
- K+3L4CtSiDr+5klC+9vST7V9+sPYg74qWBik0jM9F0o/JyMO+wzBHUaBaH+n1qCDH2BKUTWIzmb
- t4Jf8U2L2+chIwx5OdKdujRm5dAFN/T8thRB6CSr1fVuO4J7TdWxPbXcGqHYoxF3cRtWDbTgGfQ
- 3i0yRFCVcn548eXJDWw==
-X-Proofpoint-ORIG-GUID: 5I7l26Eal-WD7i_Jm4KnRivhG-rcxD1B
-X-Authority-Analysis: v=2.4 cv=Sp2dKfO0 c=1 sm=1 tr=0 ts=696ea3c2 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=3F440bxgTTIV3x7kujgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-19_05,2026-01-19_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 bulkscore=0 spamscore=0 adultscore=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 malwarescore=0 suspectscore=0
- clxscore=1011 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2601190178
+References: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
+In-Reply-To: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 19 Jan 2026 13:36:14 -0800
+X-Gm-Features: AZwV_Qh0t3pt4cR5MdFu-yA0efJKL9TMIvNsuFSc3OuE-QMB2P_HMtg_1D-vSZQ
+Message-ID: <CAKEwX=Omzgh92KHhaFi8-mnZ0myV1yi6XMTkT4FFsFPHFnueLQ@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/shmem, swap: fix race of truncate and swap entry split
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-01-07 at 10:32 -0800, Farhan Ali wrote:
-> If a device is in an error state, then any reads of device registers can
-> return error value. Add addtional checks to validate if a device is in an
-> error state before doing an flr reset.
->=20
+On Mon, Jan 19, 2026 at 8:11=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> The helper for shmem swap freeing is not handling the order of swap
+> entries correctly. It uses xa_cmpxchg_irq to erase the swap entry, but
+> it gets the entry order before that using xa_get_order without lock
+> protection, and it may get an outdated order value if the entry is split
+> or changed in other ways after the xa_get_order and before the
+> xa_cmpxchg_irq.
+>
+> And besides, the order could grow and be larger than expected, and cause
+> truncation to erase data beyond the end border. For example, if the
+> target entry and following entries are swapped in or freed, then a large
+> folio was added in place and swapped out, using the same entry, the
+> xa_cmpxchg_irq will still succeed, it's very unlikely to happen though.
+>
+> To fix that, open code the Xarray cmpxchg and put the order retrieval
+> and value checking in the same critical section. Also, ensure the order
+> won't exceed the end border, skip it if the entry goes across the
+> border.
+>
+> Skipping large swap entries crosses the end border is safe here.
+> Shmem truncate iterates the range twice, in the first iteration,
+> find_lock_entries already filtered such entries, and shmem will
+> swapin the entries that cross the end border and partially truncate the
+> folio (split the folio or at least zero part of it). So in the second
+> loop here, if we see a swap entry that crosses the end order, it must
+> at least have its content erased already.
+>
+> I observed random swapoff hangs and kernel panics when stress testing
+> ZSWAP with shmem. After applying this patch, all problems are gone.
+>
+> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
 > Cc: stable@vger.kernel.org
-> Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> ---
->  drivers/pci/pci.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->=20
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 74d21c97654d..b687f51ecc81 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -4358,12 +4358,19 @@ EXPORT_SYMBOL_GPL(pcie_flr);
->   */
->  int pcie_reset_flr(struct pci_dev *dev, bool probe)
->  {
-> +	u32 reg;
-> +
->  	if (dev->dev_flags & PCI_DEV_FLAGS_NO_FLR_RESET)
->  		return -ENOTTY;
-> =20
->  	if (!(dev->devcap & PCI_EXP_DEVCAP_FLR))
->  		return -ENOTTY;
-> =20
-> +	if (pcie_capability_read_dword(dev, PCI_EXP_DEVCAP, &reg)) {
-> +		pci_warn(dev, "Device unable to do an FLR\n");
-> +		return -ENOTTY;
-> +	}
-> +
->  	if (probe)
->  		return 0;
-> =20
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-Looks good to me. I'm not 100% convinced the additional pci_warn() is
-needed since at least aer_root_reset() already prints that the FLR
-isn't supported but there are other callers which don't and this may
-help pinpoint the new behavior in case it does affect something
-unexpectedly. So I think I'd also rather keep it.
+Good catch.
 
-Feel free to add my:
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+From the swap POV:
+
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
