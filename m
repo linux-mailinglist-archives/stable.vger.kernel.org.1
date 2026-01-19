@@ -1,114 +1,114 @@
-Return-Path: <stable+bounces-210392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6154DD3B6A3
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 20:04:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D7FD3B70D
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 20:15:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 52396300E656
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 19:03:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3358E30E991F
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 19:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399353904DB;
-	Mon, 19 Jan 2026 19:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A873904F9;
+	Mon, 19 Jan 2026 19:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L32wixaP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyqqJWic"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F297938E131;
-	Mon, 19 Jan 2026 19:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7645038B9AF;
+	Mon, 19 Jan 2026 19:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768849435; cv=none; b=RTy6HvjuBmFaebK3t1xOMWxe4cbbIayixNe4ahiW5BUvwt+TBY+NARRiIuWhZ7a9nIL0V98MMNEb7kdnO2kxIvP8scCHK4iPQfqQyWLJaIBAVokX2oC5MAIxCSCLA9xhfqaZBOrYM8L7uIChgZ4ZOkHIbqow3gVIvFfZGmz7xfI=
+	t=1768849961; cv=none; b=PVe7pv3xabHUxnPJ1EjDJ5PG6KLhmI6MsHYDiMks0flkPMmwLjtdFDpblgUw/s7kfsygknHVO+T7Ppf+ABLBtxebSChCYnclu8+pqScmLprhy/HinCgPW0/khICVSoizurzZD4iH3wKMi6LNMMhEjZW96rNmNwto4/8/BMhqZ8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768849435; c=relaxed/simple;
-	bh=4yz3B/tXTSGwq4EUu6T9yN/gjOCgR+W+WDGk6tiURU0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fChyLmiKwW2udvCIg1+Oz9HAGgFjVrVKogqJ8LWmdpO7j1RyiFgd8Gramri7Q5abCbkcomuEGKgPE8jQp7NQsLPlgv+2TzgQjDliqPKF9rJzkGsfWOIve9IZLPCmq3QioQIA/Fgj7liMCgX+3LPF57C/nwrAAYsyf1B2l4swTKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L32wixaP; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768849433; x=1800385433;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4yz3B/tXTSGwq4EUu6T9yN/gjOCgR+W+WDGk6tiURU0=;
-  b=L32wixaPkqAVkJIOKCSJbmEMCyOZNujLB3g3x3Ur3WqRvQa8wcpix14D
-   DstIONBWXyijBiQZad6HyHfuzXpZFTa7NcHaQnAUAab9Mt7VMm1tUQ4nM
-   M15y/HfEwUnKPr4EIZ+zq/PRxFs6rvg4wKdpj8QhEUkD4fQmnIgnke7o9
-   Sscgwap6no6rdb1MPnHtKivxYCyvXsCvBGPUUWNICUY0jNqdoAM/LkHCi
-   c9tyXZophQMwKl2nS0UZERqIqwlA3wQ4JicAM2phWKiSL9LEPJECPXgJv
-   CklBz+J8RDLI8b0T9cKv/oAHI8P06oEl/dSXZq9FGoDFPrTFPBINnM8WR
-   g==;
-X-CSE-ConnectionGUID: 16lOav+MTNCmktm2tlQ/hg==
-X-CSE-MsgGUID: wxj7N2WTT3uSaOj1fLUQyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="69971941"
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
-   d="scan'208";a="69971941"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 11:03:52 -0800
-X-CSE-ConnectionGUID: USVNSxneRlWz1PicI0mm1A==
-X-CSE-MsgGUID: PGtE6QkBRy+X3vLWmu/J6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
-   d="scan'208";a="205728268"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.37])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 11:03:49 -0800
-Date: Mon, 19 Jan 2026 21:03:46 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, stable@vger.kernel.org,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	Andy Shevchenko <andy@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	David Jander <david@protonic.nl>
-Subject: Re: [PATCH v1 4/8] iio: dac: ds4424: reject -128 RAW value
-Message-ID: <aW6AEszfRQzuHf6j@smile.fi.intel.com>
-References: <20260119182424.1660601-1-o.rempel@pengutronix.de>
- <20260119182424.1660601-5-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1768849961; c=relaxed/simple;
+	bh=b37oGfWKh15k1xUheDvl8XTRT+TdzeGUFsirBI+Fe/s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q0Pf0vaggwxzDrVlGr29Zh7BRy7KHdG3qPcCYtVXdTqsc1NN1w28QQpVIAKibUf2QjvGpUcwrocuzW8F+F4viWTunCt3MxUcnHiy92S9n5pD2ZlqYacp1Tc9SgG+8q2YnSuwM2W1+Vt+syMLs1eZaLS+GvjZJyqQClhpWnMCBGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyqqJWic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E64C19422;
+	Mon, 19 Jan 2026 19:12:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768849961;
+	bh=b37oGfWKh15k1xUheDvl8XTRT+TdzeGUFsirBI+Fe/s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HyqqJWic/mHBGC8TVcZHDbkNDqil0dWmxauplZbapR/szDc6UGWreM4Hm3y+U7JXs
+	 hXnXTsxvH74eJY5gcQNiOyNpks/Q//YNCSP/4xQZzcGZ/tOhIz5IgpOnDBvbpG8JFz
+	 I6jDIr/wx8gDHng8LA/2PLYSLJ+jlRvnMnRo9OE7SXkK9IlhjOyN5AyZZrQQacIkX0
+	 yRVTPYSIinxC2GAxZIKYatOcNdyUp21kp35kBuHSlLeTKo9JEMlranX2Kw31XYojV9
+	 adsDh2I7uhm90FPnhmZW39lh/mfgsVnQPfxtI8AtDwz6A6Ux51mj/Lko5ENYJ2TWSP
+	 lA/ZOX7rzcwnw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: p@1g4.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	stable@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [net,v1,2/3] net/sched: act_gate: fix schedule updates with RCU swap
+Date: Mon, 19 Jan 2026 11:12:38 -0800
+Message-ID: <20260119191238.1240882-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260116112522.159480-3-p@1g4.org>
+References: <20260116112522.159480-3-p@1g4.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260119182424.1660601-5-o.rempel@pengutronix.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 19, 2026 at 07:24:20PM +0100, Oleksij Rempel wrote:
-> The DS442x DAC uses sign-magnitude encoding, so -128 cannot be
-> represented in hardware.
-> 
-> With the previous check, userspace could pass -128, which gets converted
-> to a magnitude of 128 and then truncated by the 7-bit DAC field. This
-> ends up programming a zero magnitude with the sign bit set, i.e. an
-> unintended output (effectively 0 mA instead of -128 steps).
-> 
-> Reject -128 to avoid silently producing the wrong current.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-...
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+net/sched: act_gate: fix schedule updates with RCU swap
 
-> -		if (val < S8_MIN || val > S8_MAX)
-> +		if (val <= S8_MIN || val > S8_MAX)
->  			return -EINVAL;
+This patch switches act_gate parameters to an RCU-protected pointer and
+uses prepare-then-swap to avoid races during schedule updates.
 
-Hmm... So the range is [ -127 .. 0 .. 127 ] ?
+> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> index c1f75f272757..6934df233df5 100644
+> --- a/net/sched/act_gate.c
+> +++ b/net/sched/act_gate.c
 
-I think in such case the plain numbers would be more specific than
-the type related limits.
+[ ... ]
 
--- 
-With Best Regards,
-Andy Shevchenko
+> +	if (!list_empty(&newp.entries)) {
+> +		list_splice_init(&newp.entries, &p->entries);
+> +		p->num_entries = newp.num_entries;
+> +	} else if (ret != ACT_P_CREATED) {
+> +		struct tcfg_gate_entry *entry, *ne;
+> +
+> +		list_for_each_entry(entry, &oldp->entries, list) {
+> +			ne = kmemdup(entry, sizeof(*ne), GFP_KERNEL);
+> +			if (!ne) {
+> +				err = -ENOMEM;
+> +				goto free_p;
+> +			}
+> +			INIT_LIST_HEAD(&ne->list);
+> +			list_add_tail(&ne->list, &p->entries);
+> +		}
+> +		p->num_entries = oldp->num_entries;
+> +	}
 
+[ ... ]
 
+> +free_p:
+> +	kfree(p);
+
+When kmemdup() fails partway through the loop copying entries from
+oldp->entries to p->entries, can the entries already added to p->entries
+be leaked? The jump to free_p calls kfree(p) but p->entries may contain
+allocated entries that are not released first.
+
+The release_entry_list() call at release_new_entries releases newp.entries
+rather than p->entries:
+
+> +release_new_entries:
+> +	release_entry_list(&newp.entries);
+
+It looks like release_entry_list(&p->entries) should be called before
+kfree(p) at the free_p label.
 
