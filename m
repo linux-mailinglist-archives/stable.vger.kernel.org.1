@@ -1,136 +1,134 @@
-Return-Path: <stable+bounces-210333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A4CD3A755
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 12:48:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1B1D3A774
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 12:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C0D6B30022CE
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 11:48:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D80D33092543
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 11:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423CB318B87;
-	Mon, 19 Jan 2026 11:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163F831A077;
+	Mon, 19 Jan 2026 11:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPcq4zl1"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UxeO3Jbq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f97.google.com (mail-dl1-f97.google.com [74.125.82.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F8F3148C8
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 11:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC513191A0
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 11:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768823291; cv=none; b=SJb8Cu1kqPK8rB7ibU0o7WW/V/Jzp4kwL4bHSc9IBK+L0fkWgP2nh+JPqKRcn/itt+CgfOL6EzbaLKTbMeNzWHvXKdOr+bJR19ZgkUibQkIg1ZDVKSGesd/81/ddIEXvosT1MONRGlZAO9FYDXu+N5KwTf34n0wpHpYLLnGteVk=
+	t=1768823558; cv=none; b=PIY9xWDN+luZcr9AsYUaWNqd/thxfqlClkbWH6yATcuBRKC8LvcJDTllFQGmJg2FL4twfazXsnODX4GuEGYggforoxQEbT+a3enOKr9z+f2pqSZBG4YbpqD7fRH0+yK67Erc7TaxO0m0E9a1WIbp5dNQN0y2Eq9lmvLahymntzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768823291; c=relaxed/simple;
-	bh=oK0XHW1mMDzTLPwvnaLJAs2nrLSEJhoqhf/gNm7ahEs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q7XViuGV0Xl4t/pfYCqhkNeUo/6wz+1hXVrpAnE5e2f7++gdpumgRf5zXfqMP7uUUU06yHLqdAbKfnTSUxmxbb6oZFJa5JD7suHOoSO+X1b9yBaw5MlvT1NLE0XEVCvRm0rSB9nz7C+nxHtd1Rpn1OztJbYjzyTtEzMs0Ki7amU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPcq4zl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA25C116C6;
-	Mon, 19 Jan 2026 11:48:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768823290;
-	bh=oK0XHW1mMDzTLPwvnaLJAs2nrLSEJhoqhf/gNm7ahEs=;
-	h=Subject:To:Cc:From:Date:From;
-	b=MPcq4zl18ioed084WAqFsjubRpS7ELsnn43JGF+MQ8IdkoKfx9GsYUfpp0680ZIfX
-	 EdMQbsaDcB2mfa3EFobvZBbb/CdZ77G0rP3v+AOXeiXyTA79LBmlxaqv9YK6O62Yti
-	 QTrzN0SUtlXIFBxBf7xuHAy3lWQ79PVta7REJp+U=
-Subject: FAILED: patch "[PATCH] io_uring: move local task_work in exit cancel loop" failed to apply to 6.1-stable tree
-To: ming.lei@redhat.com,axboe@kernel.dk
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Jan 2026 12:47:57 +0100
-Message-ID: <2026011957-earful-capillary-a00a@gregkh>
+	s=arc-20240116; t=1768823558; c=relaxed/simple;
+	bh=uSEkHsH1REtKl3xcr1eJo/cD8PSr1EaGnbXhvaEtR94=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PSzzMZv6ZLLiK6vUCwOBKE5AGU6tYPMt9c0N62Vq1pCZWbAea6hPNLGrPyZJ2kvYScobUSifA27gfBGHDQbd0fiGLiM4mm6ZyPUbDl5TD3EpkvVVaWj1JjpvaoM5WNK44EW32U/cXkF6pfs0N4C3xsprjpfBDvU6VdNLFa+JUcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UxeO3Jbq; arc=none smtp.client-ip=74.125.82.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-dl1-f97.google.com with SMTP id a92af1059eb24-1233bc11279so246991c88.1
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 03:52:37 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768823557; x=1769428357;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Dc2NcPIsYn4GHcEHnwWFmYEwoZXJ29FY+pyN3/3N0k8=;
+        b=i2IdVEUsJvFliImDe/KMSAECfQS16ooHsGYi5DLG9A/JfvMu7ggORMmXbVO48j6mO8
+         2fQkD1E6AoILaD3lxE5yPonQ6z9Mq7b6HwS5tDUfUnlx16QKPnQdiuwZElPJRT6Ds+k2
+         Z+xp/cVO7U2OWpAneWvLbiQuCKUM1vcUQhYTuQkrnIJ83YV7HYwHIyx7ijxwWJUqyL3d
+         vctJSzKpobY8mHS46/HGCUILTU+UsW6K9U3dJbmRDz+Vt9O1bGDdE2i9VbF67obA+SZq
+         uDG9aL62A++QyoTT9X0U1XNlUgP3UwsRO0WX3p6nEJRTSuPtwJkzlf00xnGlq3xDor6P
+         hn5g==
+X-Gm-Message-State: AOJu0YxqcDv5ZFs+1SMmvsSW1f+stlLbhikZHLZeKc/o2Wed4bctRTIw
+	onIbAM+eqCV140DY0hE7mm8BVd904YS0B+O2u+f8QU28TtEn6VdLbDyIvHAPqv/IMy9YpfrF5r/
+	bNmyg9wGIiiS7EWted8mJWPhf4ZsssgFB6uTmqoc25uoM/btynN+svqBOHDZgFozJHO0rQIfPFs
+	99ukFcHxRTBq++D+sXL/y9Tzfi6ybfEoZrTh7xCdoQDwG6PIlaeEoZJCi86bzW5FlK/k+tOPz4s
+	2ub8dJYSzLJ51QV4TQMW1rTXE9t
+X-Gm-Gg: AY/fxX7dCdZoi0J5U3UN78IBjIpEWQUwQHHcAjv/dipbRcBiQ9k1T2R0j8Wo3h9Ho2L
+	qx9BIwPrkKYuffGXH9j3YmMBZcRLVMeXMtcsIIROF0Bd5sCUx6TnBb3jBBwu6/HEwKrH3UrRcOV
+	CoRdvrg+gc2WbEZ+p4ImjqXD3Msgfp3v1YqLR2HCreGQ6lub2PTTDTIsXwZIn5TxZW8K1s395se
+	X+Jfav7MSvcEs8KISOhmZRCfwVfnvVssqE3FGwLFIyt1uH4KK2z34oWTigKpuAgOSx32iFOMxvj
+	EyGuBZfHXEMNs7B6LjVLuLg3iGC14XPJiRD7nYQZ4gjTgFuVXZywH79r1PGlMYht3lAAjS9AOdh
+	Sxgzglt/eGdG4DeOYPY8nNMAtFOB8Dgx1MFJjeCAr4CGE+57SuNACWN1HcMSomNU2d++Ucjdl29
+	JbtvPqN1I1KhkFhHRCIm8ZyEKyUMSaCWr2mC7tneZjV+H7NnsLqu+5VJbfGLs=
+X-Received: by 2002:a05:7023:d02:b0:119:e56b:46ba with SMTP id a92af1059eb24-1244a7dd744mr4042887c88.4.1768823556509;
+        Mon, 19 Jan 2026 03:52:36 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
+        by smtp-relay.gmail.com with ESMTPS id a92af1059eb24-1244aec712esm2220838c88.5.2026.01.19.03.52.35
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 19 Jan 2026 03:52:36 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8c522c44febso92834985a.0
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 03:52:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1768823554; x=1769428354; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Dc2NcPIsYn4GHcEHnwWFmYEwoZXJ29FY+pyN3/3N0k8=;
+        b=UxeO3JbqnbXagaa7QFNEcZf0J3D1OxQh+2fttI5wqB4e5O1Z+VhtirxwdO6BOHHDSS
+         4dy36JY+NXKgQ8vLaZirHMzge6FfSOUIGoStnbud/vY0o4eQveDCtwGlCOB6BjhUI6CT
+         HnuvTQ9o7BPZfgAm6TCJSnHZ5vCb5Mi0FSRao=
+X-Received: by 2002:a05:620a:178a:b0:8b2:1f8d:f11d with SMTP id af79cd13be357-8c6a6703cdcmr1146997885a.2.1768823554273;
+        Mon, 19 Jan 2026 03:52:34 -0800 (PST)
+X-Received: by 2002:a05:620a:178a:b0:8b2:1f8d:f11d with SMTP id af79cd13be357-8c6a6703cdcmr1146994885a.2.1768823553648;
+        Mon, 19 Jan 2026 03:52:33 -0800 (PST)
+Received: from keerthanak-ph5-dev.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a71bf2b0sm772878885a.12.2026.01.19.03.52.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 03:52:32 -0800 (PST)
+From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	yoshfuji@linux-ipv6.org,
+	dsahern@kernel.org,
+	borisp@nvidia.com,
+	john.fastabend@gmail.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v5.15-v6.1 0/2] Backport fixes for CVE-2025-40149
+Date: Mon, 19 Jan 2026 11:49:08 +0000
+Message-ID: <20260119114910.1414976-1-keerthana.kalyanasundaram@broadcom.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
+Following commit is a pre-requisite for the commit c65f27b9c
+- 1dbf1d590 (net: Add locking to protect skb->dev access in ip_output)
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Kuniyuki Iwashima (1):
+  tls: Use __sk_dst_get() and dst_dev_rcu() in get_netdev_for_sock().
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Sharath Chandra Vurukala (1):
+  net: Add locking to protect skb->dev access in ip_output
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x da579f05ef0faada3559e7faddf761c75cdf85e1
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011957-earful-capillary-a00a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+ include/net/dst.h    | 12 ++++++++++++
+ net/ipv4/ip_output.c | 16 +++++++++++-----
+ net/tls/tls_device.c | 17 ++++++++++-------
+ 3 files changed, 33 insertions(+), 12 deletions(-)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From da579f05ef0faada3559e7faddf761c75cdf85e1 Mon Sep 17 00:00:00 2001
-From: Ming Lei <ming.lei@redhat.com>
-Date: Wed, 14 Jan 2026 16:54:05 +0800
-Subject: [PATCH] io_uring: move local task_work in exit cancel loop
-
-With IORING_SETUP_DEFER_TASKRUN, task work is queued to ctx->work_llist
-(local work) rather than the fallback list. During io_ring_exit_work(),
-io_move_task_work_from_local() was called once before the cancel loop,
-moving work from work_llist to fallback_llist.
-
-However, task work can be added to work_llist during the cancel loop
-itself. There are two cases:
-
-1) io_kill_timeouts() is called from io_uring_try_cancel_requests() to
-cancel pending timeouts, and it adds task work via io_req_queue_tw_complete()
-for each cancelled timeout:
-
-2) URING_CMD requests like ublk can be completed via
-io_uring_cmd_complete_in_task() from ublk_queue_rq() during canceling,
-given ublk request queue is only quiesced when canceling the 1st uring_cmd.
-
-Since io_allowed_defer_tw_run() returns false in io_ring_exit_work()
-(kworker != submitter_task), io_run_local_work() is never invoked,
-and the work_llist entries are never processed. This causes
-io_uring_try_cancel_requests() to loop indefinitely, resulting in
-100% CPU usage in kworker threads.
-
-Fix this by moving io_move_task_work_from_local() inside the cancel
-loop, ensuring any work on work_llist is moved to fallback before
-each cancel attempt.
-
-Cc: stable@vger.kernel.org
-Fixes: c0e0d6ba25f1 ("io_uring: add IORING_SETUP_DEFER_TASKRUN")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 87a87396e940..b7a077c11c21 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3003,12 +3003,12 @@ static __cold void io_ring_exit_work(struct work_struct *work)
- 			mutex_unlock(&ctx->uring_lock);
- 		}
- 
--		if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
--			io_move_task_work_from_local(ctx);
--
- 		/* The SQPOLL thread never reaches this path */
--		while (io_uring_try_cancel_requests(ctx, NULL, true, false))
-+		do {
-+			if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
-+				io_move_task_work_from_local(ctx);
- 			cond_resched();
-+		} while (io_uring_try_cancel_requests(ctx, NULL, true, false));
- 
- 		if (ctx->sq_data) {
- 			struct io_sq_data *sqd = ctx->sq_data;
+-- 
+2.43.7
 
 
