@@ -1,90 +1,77 @@
-Return-Path: <stable+bounces-210391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53EC8D3B631
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 19:51:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6154DD3B6A3
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 20:04:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DF746302CDE3
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 18:51:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 52396300E656
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 19:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E47D38F252;
-	Mon, 19 Jan 2026 18:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399353904DB;
+	Mon, 19 Jan 2026 19:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WZjKvKup"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L32wixaP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4708838B7AF
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 18:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F297938E131;
+	Mon, 19 Jan 2026 19:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768848661; cv=none; b=SDcIhQ2hMw/DagX50k/7nuQVkVWa+Ot5ar7MpiETaH6WDhLCQc92dbqFWehOXIOwS9wxG2dGZlkIwXF0EQ2XNb7RXA0szjfedWasRm3a1PREGvi50MLQV6ZU+colnCe6AdwrRxIHZAoQA6pR3iUkxXDDqDbtVaEfvMPLIrbaay8=
+	t=1768849435; cv=none; b=RTy6HvjuBmFaebK3t1xOMWxe4cbbIayixNe4ahiW5BUvwt+TBY+NARRiIuWhZ7a9nIL0V98MMNEb7kdnO2kxIvP8scCHK4iPQfqQyWLJaIBAVokX2oC5MAIxCSCLA9xhfqaZBOrYM8L7uIChgZ4ZOkHIbqow3gVIvFfZGmz7xfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768848661; c=relaxed/simple;
-	bh=GPBh2qWpyCXo1XUshP2C3TdOgUMqV76uDwXWffPXuuQ=;
+	s=arc-20240116; t=1768849435; c=relaxed/simple;
+	bh=4yz3B/tXTSGwq4EUu6T9yN/gjOCgR+W+WDGk6tiURU0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XNN8bfvr1UgVdE/0cZ/NaE2azhs5ugD2ZRI0Ohz/+UaYFLd91db4M1s+Z66hqpQeDmxvUpnFdW8i5aDsXegaqespkg9RDiMAaFjDMDV3oZOTMcriQl44Y2PWdglnf9sSusLIqeQ88hRp9wvDdMxEfccPld+qRRy7V0lq5ZzxW6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WZjKvKup; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a09d981507so34833565ad.1
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 10:51:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768848660; x=1769453460; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ELu77MSHMdAJE1MG9u8LT8LbmE4aGm6DlWdwArp/Ogc=;
-        b=WZjKvKup1JTHlU0is7A755AnqUDaFJnuJ7BlYKWTAK6s/3B5/VgzpQtbvuMlioFTEL
-         a7VVI2sd3E7Pk+KxSqCVoRbvKPqZO7ATFU7BMk+nFTEYkF1AhyFprLpTfBjLQp2XyLTB
-         y7CnBjFoJejdcSvQXhxoESKBI62eXIYN4zDM6xqV5eDMfJpVJ2fJkVlO09mmx4ylpru0
-         RZ2Lc7B0NiEkVQgSNv/Fg6WCPmgtMFqpdavO7Y1347mL8/thW/fetKhh01WW3FZFjTtj
-         fTIL+aQiEWp+SqCAJtD7sggHhq8iXPT95gMdsSHPO+XxOxfzNtTpwmdZmgzwcIQ+Dg2f
-         UxoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768848660; x=1769453460;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ELu77MSHMdAJE1MG9u8LT8LbmE4aGm6DlWdwArp/Ogc=;
-        b=LihYPtaDte5bScCBFWnTkuZRr4/GCxfUL/3hdVOiIvRfRjTX6TcJdseGg7DLLnoTvd
-         YZXZ0tZYApY9iLMjuY9cJyNigr23AyuT8c1ozVdp3G99zSO3Xlbvry5Ob3C0Hkynbf3j
-         3IR0lCMgHrEMi4XEJDxRsHeB6gdARhcc3aiWH2vZpI4j/Ga4NDpBnNMHY+G6jtVtzztQ
-         iCYoF8PG/Dea2CUsjSNlx4PkWcnolNy6Cr26kAV5yQyekJWv3sAnl5iq9coBJOtfBOIu
-         /hBrgpT4of0FcbZXWf3fjteCqHejhOGhh9rZ6VeErD3HeeBX9JEv6y7H/YqZdSxLPv/u
-         B5eg==
-X-Forwarded-Encrypted: i=1; AJvYcCUNv9A5gHFtFC0TCc0pJ8n+O+7dANfGeQH+q9hHZzV2lwetEzDKOQ1m00XB34Ub2auGKDlQlJw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTf4jX+XiLrkjSO4tzVxFpNPTxYqGIGreOWQUJNlCz+u9+1AA3
-	iu4QTG1mRbmXu7k8NgyBg7lCSZxVemVfU+XMsLpQzl4nSia6CbgFm4zd
-X-Gm-Gg: AZuq6aITNHLttn5ty3zRPC9rro9FK5qQwF4HxlZq5P3OY4/uouxzJNsNkG3iA4w7o1D
-	EQdUCj4Q6LyEiHcfZ0ObjQ+flRAv+2fsVrU9BogGVwtkJuUswk/njohHz0B98s2GRd/50i2L7GO
-	1StDdnHYGiiIhxUCG5EiCcmd3+uZkV6exiOhihiOmbi+v2SxrDL1g+bnqwyz+9PCaJELkChb6Wt
-	dUgCimw1GcW6Cgid1fhoX0PtqpbowdiWzZ2lNKyoECIhBw51mpyF4XIyuMuncP7zKyTHOvDYyhk
-	tXVnQ0g5OwhF+rGNaKOaJ4V4lD8qaO5miBo43caaTep/LLB74kPjmPhE0/fNuu4NfNA4uCvpzzl
-	Xpzpiz0yo9zB1+m68nt1sLN+9hF2eJ0JxM7ZOc3ZBBD8Xzky6WYuie71toLBKTAn5toKLpwSK4A
-	vbnqDY65rewxc=
-X-Received: by 2002:a17:902:ebc8:b0:2a0:9238:881d with SMTP id d9443c01a7336-2a700a1c29fmr150358455ad.15.1768848659415;
-        Mon, 19 Jan 2026 10:50:59 -0800 (PST)
-Received: from inspiron ([111.125.231.221])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a71941b915sm102107895ad.90.2026.01.19.10.50.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 10:50:59 -0800 (PST)
-Date: Tue, 20 Jan 2026 00:20:49 +0530
-From: Prithvi <activprithvi@gmail.com>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	hch@lst.de, jlbec@evilplan.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com, khalid@kernel.org,
-	syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: target: Fix recursive locking in
- __configfs_open_file()
-Message-ID: <20260119185049.mvcjjntdkmtdk4je@inspiron>
-References: <20260108191523.303114-1-activprithvi@gmail.com>
- <2f88aa9b-b1c2-4b02-81e8-1c43b982db1b@acm.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fChyLmiKwW2udvCIg1+Oz9HAGgFjVrVKogqJ8LWmdpO7j1RyiFgd8Gramri7Q5abCbkcomuEGKgPE8jQp7NQsLPlgv+2TzgQjDliqPKF9rJzkGsfWOIve9IZLPCmq3QioQIA/Fgj7liMCgX+3LPF57C/nwrAAYsyf1B2l4swTKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L32wixaP; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768849433; x=1800385433;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=4yz3B/tXTSGwq4EUu6T9yN/gjOCgR+W+WDGk6tiURU0=;
+  b=L32wixaPkqAVkJIOKCSJbmEMCyOZNujLB3g3x3Ur3WqRvQa8wcpix14D
+   DstIONBWXyijBiQZad6HyHfuzXpZFTa7NcHaQnAUAab9Mt7VMm1tUQ4nM
+   M15y/HfEwUnKPr4EIZ+zq/PRxFs6rvg4wKdpj8QhEUkD4fQmnIgnke7o9
+   Sscgwap6no6rdb1MPnHtKivxYCyvXsCvBGPUUWNICUY0jNqdoAM/LkHCi
+   c9tyXZophQMwKl2nS0UZERqIqwlA3wQ4JicAM2phWKiSL9LEPJECPXgJv
+   CklBz+J8RDLI8b0T9cKv/oAHI8P06oEl/dSXZq9FGoDFPrTFPBINnM8WR
+   g==;
+X-CSE-ConnectionGUID: 16lOav+MTNCmktm2tlQ/hg==
+X-CSE-MsgGUID: wxj7N2WTT3uSaOj1fLUQyg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="69971941"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
+   d="scan'208";a="69971941"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 11:03:52 -0800
+X-CSE-ConnectionGUID: USVNSxneRlWz1PicI0mm1A==
+X-CSE-MsgGUID: PGtE6QkBRy+X3vLWmu/J6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
+   d="scan'208";a="205728268"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.244.37])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 11:03:49 -0800
+Date: Mon, 19 Jan 2026 21:03:46 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, stable@vger.kernel.org,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	Andy Shevchenko <andy@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	David Jander <david@protonic.nl>
+Subject: Re: [PATCH v1 4/8] iio: dac: ds4424: reject -128 RAW value
+Message-ID: <aW6AEszfRQzuHf6j@smile.fi.intel.com>
+References: <20260119182424.1660601-1-o.rempel@pengutronix.de>
+ <20260119182424.1660601-5-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,136 +80,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2f88aa9b-b1c2-4b02-81e8-1c43b982db1b@acm.org>
+In-Reply-To: <20260119182424.1660601-5-o.rempel@pengutronix.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-On Thu, Jan 15, 2026 at 08:57:28AM -0800, Bart Van Assche wrote:
-> On 1/8/26 12:15 PM, Prithvi Tambewagh wrote:
-> > This poses a possibility of recursive locking,
-> > which triggers the lockdep warning.
+On Mon, Jan 19, 2026 at 07:24:20PM +0100, Oleksij Rempel wrote:
+> The DS442x DAC uses sign-magnitude encoding, so -128 cannot be
+> represented in hardware.
 > 
-> Patches that fix a lockdep complaint should include the full lockdep
-> complaint.
+> With the previous check, userspace could pass -128, which gets converted
+> to a magnitude of 128 and then truncated by the 7-bit DAC field. This
+> ends up programming a zero magnitude with the sign bit set, i.e. an
+> unintended output (effectively 0 mA instead of -128 steps).
 > 
-> Since the fixed lockdep complaint didn't trigger a deadlock it must be
-> a false positive complaint, isn't it? Such complaints should be fixed
-> but without additional information we can't tell what the best way is to
-> fix the complaint.
-> 
-> Thanks,
-> 
-> Bart.
+> Reject -128 to avoid silently producing the wrong current.
 
-Hello Bart,
+...
 
-Here is the full lockdep complaint, as per the syzkaller dashboard report
-for the bug:
+> -		if (val < S8_MIN || val > S8_MAX)
+> +		if (val <= S8_MIN || val > S8_MAX)
+>  			return -EINVAL;
 
-============================================
-WARNING: possible recursive locking detected
-syzkaller #0 Not tainted
---------------------------------------------
-syz.0.17/5999 is trying to acquire lock:
-ffff888140413f78 (&p->frag_sem){.+.+}-{4:4}, at: __configfs_open_file+0xe8/0x9c0 fs/configfs/file.c:304
+Hmm... So the range is [ -127 .. 0 .. 127 ] ?
 
-but task is already holding lock:
-ffff888140413f78 (&p->frag_sem){.+.+}-{4:4}, at: flush_write_buffer fs/configfs/file.c:205 [inline]
-ffff888140413f78 (&p->frag_sem){.+.+}-{4:4}, at: configfs_write_iter+0x219/0x4e0 fs/configfs/file.c:229
+I think in such case the plain numbers would be more specific than
+the type related limits.
 
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(&p->frag_sem);
-  lock(&p->frag_sem);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-4 locks held by syz.0.17/5999:
- #0: ffff888147ab0420 (sb_writers#12){.+.+}-{0:0}, at: ksys_write+0x12a/0x250 fs/read_write.c:738
- #1: ffff888077d2d688 (&buffer->mutex){+.+.}-{4:4}, at: configfs_write_iter+0x75/0x4e0 fs/configfs/file.c:226
- #2: ffff888140413f78 (&p->frag_sem){.+.+}-{4:4}, at: flush_write_buffer fs/configfs/file.c:205 [inline]
- #2: ffff888140413f78 (&p->frag_sem){.+.+}-{4:4}, at: configfs_write_iter+0x219/0x4e0 fs/configfs/file.c:229
- #3: ffffffff8f4097e8 (target_devices_lock){+.+.}-{4:4}, at: target_core_item_dbroot_store+0x21/0x350 drivers/target/target_core_configfs.c:114
-
-stack backtrace:
-CPU: 0 UID: 0 PID: 5999 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_deadlock_bug+0x1e9/0x240 kernel/locking/lockdep.c:3041
- check_deadlock kernel/locking/lockdep.c:3093 [inline]
- validate_chain kernel/locking/lockdep.c:3895 [inline]
- __lock_acquire+0x1106/0x1c90 kernel/locking/lockdep.c:5237
- lock_acquire kernel/locking/lockdep.c:5868 [inline]
- lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5825
- down_read+0x9b/0x480 kernel/locking/rwsem.c:1537
- __configfs_open_file+0xe8/0x9c0 fs/configfs/file.c:304
- do_dentry_open+0x982/0x1530 fs/open.c:965
- vfs_open+0x82/0x3f0 fs/open.c:1097
- do_open fs/namei.c:3975 [inline]
- path_openat+0x1de4/0x2cb0 fs/namei.c:4134
- do_filp_open+0x20b/0x470 fs/namei.c:4161
- file_open_name+0x2a3/0x450 fs/open.c:1381
- filp_open+0x4b/0x80 fs/open.c:1401
- target_core_item_dbroot_store+0x108/0x350 drivers/target/target_core_configfs.c:134
- flush_write_buffer fs/configfs/file.c:207 [inline]
- configfs_write_iter+0x306/0x4e0 fs/configfs/file.c:229
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x7d3/0x11d0 fs/read_write.c:686
- ksys_write+0x12a/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbf49d8eec9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd1d0ac1e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007fbf49fe5fa0 RCX: 00007fbf49d8eec9
-RDX: 0000000000000fff RSI: 0000200000000000 RDI: 0000000000000003
-RBP: 00007fbf49e11f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fbf49fe5fa0 R14: 00007fbf49fe5fa0 R15: 0000000000000003
- </TASK>
-db_root: not a directory: /sys/kernel/config/target/dbroot
+-- 
+With Best Regards,
+Andy Shevchenko
 
 
-Sorry, but I didn't get why this might be a false positive lockdep complaint,
-can you please guide? 
-
-From what I understood, in this case, the same rw_semaphore &p->frag_sem is used,
-identified by the same addresses (ffff888140413f78), for both the lock held
-as well as one being tried to be acquired. This occurs since 
-flush_write_buffer() called in configfs_write_iter() first acquires the 
-&p->frag_sem lock and then next flush_write_buffer() calls 
-target_core_item_dbroot_store(), which attempts to open file with path stored
-in db_root_stage using filp_open(). It ultimately calls __configfs_open_file() 
-which again tries to acquire exactly the same lock, &p->frag_sem. 
-
-A deadlock can arise, if a writer tries to acquire this lock after it was first
-acquired by that thread in flush_write_buffer() and before acquiring it again in
-__configfs_open_file(), trying to avoid writer starvation. After checking, I 
-found out that down_write() is called for frag_sem, the rw_semaphore in struct 
-configfs_fragment, at 3 places:
-
-1. configfs_rmdir() - calls down_write_killable(&frag->frag_sem)
-2. configfs_unregister_group() - calls down_write(&frag->frag_sem);
-3. configfs_unregister_subsystem() - calls down_write(&frag->frag_sem);
-
-I think any of these may result in a deadlock due to recursive locking, if
-the lock is acquired by a writer after being acquired by a reader and then
-again being tried to be acquired by a reader.
-
-I attempt to solve this by replaing call to filp_open() in 
-target_core_item_dbroot_store() with kern_path(), which just checks if a file 
-path exists, as required in target_core_item_dbroot_store(), rather than 
-actually opening the file and using the same frag_sem lock, which removes 
-the possiblity of recursive deadlock on this path. What do you think of this 
-approach?
-
-Best Regards,
-Prithvi 
 
