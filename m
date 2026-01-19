@@ -1,140 +1,144 @@
-Return-Path: <stable+bounces-210379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9221D3B37B
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 18:10:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 365B1D3B3B0
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 18:15:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 70DA5311FFF9
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:47:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E6AD309601F
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD43136C5A5;
-	Mon, 19 Jan 2026 16:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fen4HPZ0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4DB2DC333;
+	Mon, 19 Jan 2026 16:51:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7086E2C158F
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 16:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0A629BDB4;
+	Mon, 19 Jan 2026 16:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768840958; cv=none; b=VdNiHVaEO5VQuf8g5iD0Ntbouh6dTKr+xkD4HlyOFy0t26+jVqrHpghw5KA+GTovwSS67yg1zd3scZXuY5U9+8XRJHdbDCFPnT05h9U1hVVDLBGFNdXbl3p+klS1vleMnHA/OV6gHKDRneni/csQfIPB6+zotSXEm/EOpBZnD3Y=
+	t=1768841502; cv=none; b=Fr5TkPabHJdiHTTKDTIWaam7UFacvG/cDLjc2NMU0AOUEO4O3r6cdFmlt3KQyUpSFSS7Slam7eTmwAeya5c5iTVjFNPeRk0l2IL5lSRGCG9i2f0fR180Xif6ZOFyQOfi8+TUyOoXy7GsoTcf7bB0eg6O4AXiptbxwBAr8NADqR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768840958; c=relaxed/simple;
-	bh=UjjEHRAu9+yYAF1Q64dkhQD4EmJaSb6CQjI+XuooEBA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=npvTJirQzvCG4i2wNjy3F0Tna3IU9Mzrd5yhucctmtZQoAhGLkr3efcFNAsq+7/ui8CQ/vJJoqmkHSAjKexGzLW9nO8QKRaf62yCjQEtTJqeXcb2cFh2V5kA6G2np+6dT/pF6jaf/upPJU13Vurj2HBPQWzIu5it/4LZ6/zhTek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fen4HPZ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF9DC116C6;
-	Mon, 19 Jan 2026 16:42:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768840958;
-	bh=UjjEHRAu9+yYAF1Q64dkhQD4EmJaSb6CQjI+XuooEBA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fen4HPZ0rRugM2WGPG2TLpHYs8Qfi+Q6ZvT5xlIXe0U/jhMPzO9paD1TahRVi7SdC
-	 cSiknD692AHyiGkHR6ixcpMQvdhcLqafg9wWj3hlz5hdbr4v3YHKB+I3YLJjNv5tp/
-	 wY83g30pZSKKLOldcC9Bce8+u15mSBgsnDRIIKfP00XvgDMG17xAnhtgiNf4VM2y2X
-	 opYuDZilhqU71faN60OfgCYMGtjukx96cIFy4U+4ew90w0Y7Xm5Mw9/mURlQROEDVK
-	 5P3fE/ws92cVla1M7bIaWoz5U7ewa8PCgskXmovTP//4cwqe9KGKbFFbBz69USremq
-	 LVFn3sUGwTu/A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] ASoC: codecs: wsa883x: fix unnecessary initialisation
-Date: Mon, 19 Jan 2026 11:42:34 -0500
-Message-ID: <20260119164234.3142419-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026011909-dastardly-spiral-ae7e@gregkh>
-References: <2026011909-dastardly-spiral-ae7e@gregkh>
+	s=arc-20240116; t=1768841502; c=relaxed/simple;
+	bh=p098u2QcF7PcYF7PLCedwxsYfwpiCc19sPIk+R78juM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q0RuTnRpt2v/X+Z3OulPNjKrDc3VnCrhOWv9aKjex6LItkSgTEe1kO9t3/mb9YTM6yTmATXCTK+B4g11ayuC48WYATzaouFYoJcv2bIf9te469N5uqJoXUEh7YgkOGvyJCqs10qU3GpE3HIS41TT3ynqkaoDg5y8vXsRMMjbH/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A7A4B497;
+	Mon, 19 Jan 2026 08:51:32 -0800 (PST)
+Received: from [10.57.93.204] (unknown [10.57.93.204])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CAE0C3F632;
+	Mon, 19 Jan 2026 08:51:33 -0800 (PST)
+Message-ID: <31187502-2a11-4ef3-82b4-927a271d8b44@arm.com>
+Date: Mon, 19 Jan 2026 16:51:32 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/3] randomize_kstack: Maintain kstack_offset per task
+Content-Language: en-GB
+To: Dave Hansen <dave.hansen@intel.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Huacai Chen <chenhuacai@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Paul Walmsley <pjw@kernel.org>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Mark Rutland <mark.rutland@arm.com>,
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Jeremy Linton <jeremy.linton@arm.com>,
+ David Laight <david.laight.linux@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-hardening@vger.kernel.org, stable@vger.kernel.org
+References: <20260119130122.1283821-1-ryan.roberts@arm.com>
+ <20260119130122.1283821-2-ryan.roberts@arm.com>
+ <85d0d013-eca2-4b9f-bee3-d583d0eeb99e@intel.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <85d0d013-eca2-4b9f-bee3-d583d0eeb99e@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Johan Hovold <johan@kernel.org>
+Thanks for the review!
 
-[ Upstream commit 49aadf830eb048134d33ad7329d92ecff45d8dbb ]
+On 19/01/2026 16:10, Dave Hansen wrote:
+> On 1/19/26 05:01, Ryan Roberts wrote:
+> ...
+>> Cc: stable@vger.kernel.org
+> 
+> Since this doesn't fix any known functional issues, if it were me, I'd
+> leave stable@ alone. It isn't clear that this is stable material.
 
-The soundwire update_status() callback may be called multiple times with
-the same ATTACHED status but initialisation should only be done when
-transitioning from UNATTACHED to ATTACHED.
+I listed 2 issues in the commit log; I agree that issue 1 falls into the
+category of "don't really care", but issue 2 means that kstack randomization is
+currently trivial to defeat. That's the reason I thought it would valuable in
+stable.
 
-This avoids repeated initialisation of the codecs during boot of
-machines like the Lenovo ThinkPad X13s:
+But if you're saying don't bother and others agree, then this whole patch can be
+dropped; this is just intended to be the backportable fix. Patch 3 reimplements
+this entirely for upstream.
 
-[   11.614523] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
-[   11.618022] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
-[   11.621377] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
-[   11.624065] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
-[   11.631382] wsa883x-codec sdw:1:0:0217:0202:00:2: WSA883X Version 1_1, Variant: WSA8835_V2
-[   11.634424] wsa883x-codec sdw:1:0:0217:0202:00:2: WSA883X Version 1_1, Variant: WSA8835_V2
+I'll wait and see if others have opinions if that's ok?
 
-Fixes: 43b8c7dc85a1 ("ASoC: codecs: add wsa883x amplifier support")
-Cc: stable@vger.kernel.org	# 6.0
-Cc: Srinivas Kandagatla <srini@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260102111413.9605-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/soc/codecs/wsa883x.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> 
+>> --- a/include/linux/sched.h
+>> +++ b/include/linux/sched.h
+>> @@ -1591,6 +1591,10 @@ struct task_struct {
+>>  	unsigned long			prev_lowest_stack;
+>>  #endif
+>>  
+>> +#ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
+>> +	u32				kstack_offset;
+>> +#endif
+>> +
+>>  #ifdef CONFIG_X86_MCE
+>>  	void __user			*mce_vaddr;
+> 
+> Nit: This seems to be throwing a u32 potentially in between a couple of
+> void*/ulong sized objects.
 
-diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
-index e31b7fb104e6c..8d1393041de48 100644
---- a/sound/soc/codecs/wsa883x.c
-+++ b/sound/soc/codecs/wsa883x.c
-@@ -441,6 +441,7 @@ struct wsa883x_priv {
- 	int active_ports;
- 	int dev_mode;
- 	int comp_offset;
-+	bool hw_init;
- };
- 
- enum {
-@@ -1002,6 +1003,9 @@ static int wsa883x_init(struct wsa883x_priv *wsa883x)
- 	struct regmap *regmap = wsa883x->regmap;
- 	int variant, version, ret;
- 
-+	if (wsa883x->hw_init)
-+		return 0;
-+
- 	ret = regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
- 	if (ret)
- 		return ret;
-@@ -1044,6 +1048,8 @@ static int wsa883x_init(struct wsa883x_priv *wsa883x)
- 				   wsa883x->comp_offset);
- 	}
- 
-+	wsa883x->hw_init = true;
-+
- 	return 0;
- }
- 
-@@ -1052,6 +1058,9 @@ static int wsa883x_update_status(struct sdw_slave *slave,
- {
- 	struct wsa883x_priv *wsa883x = dev_get_drvdata(&slave->dev);
- 
-+	if (status == SDW_SLAVE_UNATTACHED)
-+		wsa883x->hw_init = false;
-+
- 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
- 		return wsa883x_init(wsa883x);
- 
--- 
-2.51.0
+Yeah, I spent a bit of time with pahole but eventually concluded that it was
+difficult to find somewhere to nestle it that would work reliably cross arch.
+Eventually I just decided to group it with other stack meta data.
+
+> 
+> It probably doesn't matter with struct randomization and it's really
+> hard to get right among the web of task_struct #ifdefs. But, it would be
+> nice to at _least_ nestle this next to another int-sized thing.
+> 
+> Does it really even need to be 32 bits? x86 has this comment:
+> 
+>>         /*
+>>          * This value will get limited by KSTACK_OFFSET_MAX(), which is 10
+>>          * bits. The actual entropy will be further reduced by the compiler
+>>          * when applying stack alignment constraints (see cc_stack_align4/8 in
+>>          * arch/x86/Makefile), which will remove the 3 (x86_64) or 2 (ia32)
+>>          * low bits from any entropy chosen here.
+>>          *
+>>          * Therefore, final stack offset entropy will be 7 (x86_64) or
+>>          * 8 (ia32) bits.
+>>          */
+
+For more recent kernels it's 6 bits shifted by 4 for 64-bit kernels or 8 bits
+shifted by 2 for 32-bit kernels regardless of arch. So could probably make it
+work with 8 bits of storage. Although I was deliberately trying to keep the
+change simple, since it was intended for backporting. Patch 3 rips it out.
+
+Overall I'd prefer to leave it all as is. But if people don't think we should
+backport, then let's just drop the whole patch.
+
+Thanks,
+Ryan
+
 
 
