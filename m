@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-210400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAE1CD3B86E
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 21:32:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CF34D3B86F
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 21:32:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D50B3033B8C
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 20:30:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 333AA304577B
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 20:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C572F067E;
-	Mon, 19 Jan 2026 20:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74506500960;
+	Mon, 19 Jan 2026 20:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VcVfl5kI"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rPxxlb0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85812DF145;
-	Mon, 19 Jan 2026 20:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379C523FC54;
+	Mon, 19 Jan 2026 20:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768854650; cv=none; b=pjCBi+oUCgGLUCQvqxZF4FGhUjtTwI9QUphFAi8gPa/eM1/xgI1+OMW445Rp/daDqspUPJDeWNFFfZ1WCpPnCTgVwv/em49lci3WdXZPkZrDXEfjvjg8R1outCMuFyxMiW3nAoH29ERyyb29MN69u6fvutGue5HlrQiyuWzNhS8=
+	t=1768854653; cv=none; b=qawYJQCkVBr0FTuN7jSySo6050Hko9o18ut0g2De8RfOPKqePxnjsivtwrjyFiqv02Kmjt8MsHuyPOtVYr1hTeNXC9eFlW9RW0DXWkUWiLrraEMFKedxgb22hBPy90abKh3DDAM3JXbpXXZKyrGvfDC6ucBtogjbEOKrk4jG9iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768854650; c=relaxed/simple;
-	bh=sUwgmvI4ntMza+u4SuFxN6NDm1ntsxZb6alTj3zNto0=;
-	h=Date:To:From:Subject:Message-Id; b=oKjxiOCnx/RGAade1SAbvJNQ6XNt4JJruIbazw6BaWYzshUCkm8IPsZI+3zbDT17m68OC7SVMGL4TLzKlTmS3Bp8dDhl0yqgjfrnilQ90jqNs4VYZJPndes5PwZg6jjH/gzXu2QQGtiz7ws2UCxU+B3LjQnHFcx52FcTAqF/82s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VcVfl5kI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482B6C116C6;
-	Mon, 19 Jan 2026 20:30:50 +0000 (UTC)
+	s=arc-20240116; t=1768854653; c=relaxed/simple;
+	bh=aQ9PnFx6gf1LOI0aEdXPFRAYjdQYr6wl0NwaRoRLkiQ=;
+	h=Date:To:From:Subject:Message-Id; b=bJXY3p2cFjytEL6JlVxTXRrWVwdqUhqMnXwaryoNYQnQAtF2ptOW2qHQMixq8tGltDz+y4ypx1Ag7lG+B/7u1lZIdVfMbh11/vH2xkut17wmVfqYSmK//ss2HqeO2fACUYngSM2nExHtyc+//7oj5Sp81vZihH58XGYXe06ggDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rPxxlb0g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051BFC116C6;
+	Mon, 19 Jan 2026 20:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768854650;
-	bh=sUwgmvI4ntMza+u4SuFxN6NDm1ntsxZb6alTj3zNto0=;
+	s=korg; t=1768854653;
+	bh=aQ9PnFx6gf1LOI0aEdXPFRAYjdQYr6wl0NwaRoRLkiQ=;
 	h=Date:To:From:Subject:From;
-	b=VcVfl5kInvr8msHDs9I41LdLo3lBSZ+XG4MfVl0XHo9Rml/SeM7v18nwgfzAbHckF
-	 NamKRD7BOOWIWrfYta8ijIIBCDG2WZHOogwuGivn6pp0jvncVzVVg24zi3SkypZ95j
-	 yqTcVhYxesVQLjvHGq/JO9nGC2TB8CJhyZj4CmWw=
-Date: Mon, 19 Jan 2026 12:30:49 -0800
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,ying.huang@linux.alibaba.com,vbabka@suse.cz,stable@vger.kernel.org,riel@surriel.com,rakie.kim@sk.com,matthew.brost@intel.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,lance.yang@linux.dev,joshua.hahnjy@gmail.com,jannh@google.com,gourry@gourry.net,david@kernel.org,byungchul@sk.com,apopple@nvidia.com,willy@infradead.org,akpm@linux-foundation.org
+	b=rPxxlb0gVXpKAuBuuj4EAnupCQVlR5H+R4No1zlySXoZ3bF5vGCApzxonjLbVVF5z
+	 i3G2WPX9llkyPpOwmdPQDXszlmY3Pd0gjIH6ToRtJUMU+AwsyabW/DWYjpL+ZuoKHg
+	 D6uKq+QjaEflOdetAeeUT0NTSQflRYJQKZXAv1/4=
+Date: Mon, 19 Jan 2026 12:30:52 -0800
+To: mm-commits@vger.kernel.org,tglx@linutronix.de,stable@vger.kernel.org,mingo@redhat.com,jannh@google.com,hpa@zytor.com,glider@google.com,elver@google.com,dvyukov@google.com,dave.hansen@linux.intel.com,bp@alien8.de,andrew.cooper3@citrix.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] migrate-correct-lock-ordering-for-hugetlb-file-folios.patch removed from -mm tree
-Message-Id: <20260119203050.482B6C116C6@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] x86-kfence-avoid-writing-l1tf-vulnerable-ptes.patch removed from -mm tree
+Message-Id: <20260119203053.051BFC116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,118 +48,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: migrate: correct lock ordering for hugetlb file folios
+     Subject: x86/kfence: avoid writing L1TF-vulnerable PTEs
 has been removed from the -mm tree.  Its filename was
-     migrate-correct-lock-ordering-for-hugetlb-file-folios.patch
+     x86-kfence-avoid-writing-l1tf-vulnerable-ptes.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: migrate: correct lock ordering for hugetlb file folios
-Date: Fri, 9 Jan 2026 04:13:42 +0000
+From: Andrew Cooper <andrew.cooper3@citrix.com>
+Subject: x86/kfence: avoid writing L1TF-vulnerable PTEs
+Date: Tue, 6 Jan 2026 18:04:26 +0000
 
-Syzbot has found a deadlock (analyzed by Lance Yang):
+For native, the choice of PTE is fine.  There's real memory backing the
+non-present PTE.  However, for XenPV, Xen complains:
 
-1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
-2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
-folio_lock.
+  (XEN) d1 L1TF-vulnerable L1e 8010000018200066 - Shadowing
 
-migrate_pages()
-  -> migrate_hugetlbs()
-    -> unmap_and_move_huge_page()     <- Takes folio_lock!
-      -> remove_migration_ptes()
-        -> __rmap_walk_file()
-          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
+To explain, some background on XenPV pagetables:
 
-hugetlbfs_fallocate()
-  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
-    -> hugetlbfs_zero_partial_page()
-     -> filemap_lock_hugetlb_folio()
-      -> filemap_lock_folio()
-        -> __filemap_get_folio        <- Waits for folio_lock!
+  Xen PV guests are control their own pagetables; they choose the new
+  PTE value, and use hypercalls to make changes so Xen can audit for
+  safety.
 
-The migration path is the one taking locks in the wrong order according to
-the documentation at the top of mm/rmap.c.  So expand the scope of the
-existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
+  In addition to a regular reference count, Xen also maintains a type
+  reference count.  e.g.  SegDesc (referenced by vGDT/vLDT), Writable
+  (referenced with _PAGE_RW) or L{1..4} (referenced by vCR3 or a lower
+  pagetable level).  This is in order to prevent e.g.  a page being
+  inserted into the pagetables for which the guest has a writable mapping.
 
-This is (mostly) how it used to be after commit c0d0381ade79.  That was
-removed by 336bf30eb765 for both file & anon hugetlb pages when it should
-only have been removed for anon hugetlb pages.
+  For non-present mappings, all other bits become software accessible,
+  and typically contain metadata rather a real frame address.  There is
+  nothing that a reference count could sensibly be tied to.  As such, even
+  if Xen could recognise the address as currently safe, nothing would
+  prevent that frame from changing owner to another VM in the future.
 
-Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
-Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
-Debugged-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
+  When Xen detects a PV guest writing a L1TF-PTE, it responds by
+  activating shadow paging.  This is normally only used for the live phase
+  of migration, and comes with a reasonable overhead.
+
+KFENCE only cares about getting #PF to catch wild accesses; it doesn't
+care about the value for non-present mappings.  Use a fully inverted PTE,
+to avoid hitting the slow path when running under Xen.
+
+While adjusting the logic, take the opportunity to skip all actions if the
+PTE is already in the right state, half the number PVOps callouts, and
+skip TLB maintenance on a !P -> P transition which benefits non-Xen cases
+too.
+
+Link: https://lkml.kernel.org/r/20260106180426.710013-1-andrew.cooper3@citrix.com
+Fixes: 1dc0da6e9ec0 ("x86, kfence: enable KFENCE for x86")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Tested-by: Marco Elver <elver@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
 Cc: Jann Horn <jannh@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/migrate.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/kfence.h |   29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
---- a/mm/migrate.c~migrate-correct-lock-ordering-for-hugetlb-file-folios
-+++ a/mm/migrate.c
-@@ -1458,6 +1458,7 @@ static int unmap_and_move_huge_page(new_
- 	int page_was_mapped = 0;
- 	struct anon_vma *anon_vma = NULL;
- 	struct address_space *mapping = NULL;
-+	enum ttu_flags ttu = 0;
+--- a/arch/x86/include/asm/kfence.h~x86-kfence-avoid-writing-l1tf-vulnerable-ptes
++++ a/arch/x86/include/asm/kfence.h
+@@ -42,10 +42,34 @@ static inline bool kfence_protect_page(u
+ {
+ 	unsigned int level;
+ 	pte_t *pte = lookup_address(addr, &level);
++	pteval_t val;
  
- 	if (folio_ref_count(src) == 1) {
- 		/* page was freed from under us. So we are done. */
-@@ -1498,8 +1499,6 @@ static int unmap_and_move_huge_page(new_
- 		goto put_anon;
+ 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
+ 		return false;
  
- 	if (folio_mapped(src)) {
--		enum ttu_flags ttu = 0;
--
- 		if (!folio_test_anon(src)) {
- 			/*
- 			 * In shared mappings, try_to_unmap could potentially
-@@ -1516,16 +1515,17 @@ static int unmap_and_move_huge_page(new_
- 
- 		try_to_migrate(src, ttu);
- 		page_was_mapped = 1;
--
--		if (ttu & TTU_RMAP_LOCKED)
--			i_mmap_unlock_write(mapping);
- 	}
- 
- 	if (!folio_mapped(src))
- 		rc = move_to_new_folio(dst, src, mode);
- 
- 	if (page_was_mapped)
--		remove_migration_ptes(src, !rc ? dst : src, 0);
-+		remove_migration_ptes(src, !rc ? dst : src,
-+				ttu ? RMP_LOCKED : 0);
++	val = pte_val(*pte);
 +
-+	if (ttu & TTU_RMAP_LOCKED)
-+		i_mmap_unlock_write(mapping);
++	/*
++	 * protect requires making the page not-present.  If the PTE is
++	 * already in the right state, there's nothing to do.
++	 */
++	if (protect != !!(val & _PAGE_PRESENT))
++		return true;
++
++	/*
++	 * Otherwise, invert the entire PTE.  This avoids writing out an
++	 * L1TF-vulnerable PTE (not present, without the high address bits
++	 * set).
++	 */
++	set_pte(pte, __pte(~val));
++
++	/*
++	 * If the page was protected (non-present) and we're making it
++	 * present, there is no need to flush the TLB at all.
++	 */
++	if (!protect)
++		return true;
++
+ 	/*
+ 	 * We need to avoid IPIs, as we may get KFENCE allocations or faults
+ 	 * with interrupts disabled. Therefore, the below is best-effort, and
+@@ -53,11 +77,6 @@ static inline bool kfence_protect_page(u
+ 	 * lazy fault handling takes care of faults after the page is PRESENT.
+ 	 */
  
- unlock_put_anon:
- 	folio_unlock(dst);
+-	if (protect)
+-		set_pte(pte, __pte(pte_val(*pte) & ~_PAGE_PRESENT));
+-	else
+-		set_pte(pte, __pte(pte_val(*pte) | _PAGE_PRESENT));
+-
+ 	/*
+ 	 * Flush this CPU's TLB, assuming whoever did the allocation/free is
+ 	 * likely to continue running on this CPU.
 _
 
-Patches currently in -mm which might be from willy@infradead.org are
+Patches currently in -mm which might be from andrew.cooper3@citrix.com are
 
-migrate-replace-rmp_-flags-with-ttu_-flags.patch
 
 
