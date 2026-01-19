@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-210261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6E6D39EBE
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 07:40:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF283D39EC2
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 07:41:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D279E30E2D52
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 06:37:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74BEE304B94C
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 06:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848AC270552;
-	Mon, 19 Jan 2026 06:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0460270EAB;
+	Mon, 19 Jan 2026 06:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZcPQA1A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anoHe/Zz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4536726E175;
-	Mon, 19 Jan 2026 06:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7178C26E71F;
+	Mon, 19 Jan 2026 06:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768804628; cv=none; b=jDAXeM9N92fcUWQ5lYoZRIwyCZ2quCIcnjTzRfwI/PLU0v2VLfmW2E0MM577JFY8HQUD/fTDxG97QcfgiErg39i1Q/tuLdZ8PaDlHKzK/NdGtNPg1n60lqCrofDeO4hQ11O9IoiRCOVkJyUgtMrnwIKr3I8XSPTed8UM2QuRyDE=
+	t=1768804642; cv=none; b=clbbVvbQjb/DwxlDmDLre3HPBjYw00RdDRZCCaigrbcNlS38JANYqHWqHPdzo12cUDcKhAVhHfbGnfJ3QhPaImYZiPWp8CIxEl25UAQIXQS6wXJyzw9G8GwetZaBkEBSshEumnicoe0zPhfQrOGhT88LQyuOvH3Jg/+p/cWNqRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768804628; c=relaxed/simple;
-	bh=98Zdz76JsHMNDUUxqEK63kVu6owZ4whUV/7PPnvwDgc=;
+	s=arc-20240116; t=1768804642; c=relaxed/simple;
+	bh=yr6uKVuCiptnlQroaAFCqju/NCHYFiKAZ0oJYz2Vf70=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M2Sqs6MK4dF5ypRvH319IB4CftvgoMKYpvDKBizcfEz6i9Bi6k5FUPF74wV5Ugc9uE7/9CdllfRqotlKcKNat/4Vt515ewqQQtgsRtwLpwEpYaZoaX14PmeE9ZgKVvTyD/P4Vo85r/quctrgYF/4PJK3YWa8iHpwGZx+e2tISho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZcPQA1A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE45C116C6;
-	Mon, 19 Jan 2026 06:37:07 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=IMk/QHvNj/hiUOrSSfVqOEgmcgdQbayit5wx9MtCfE7QbMvNFguq7PvZMGVoZU3X/vuYXLQCBF/PD2VSjriusfppkkSEzicWvs2jAREOOebfUBUc6eUMPo1nYWKEUBYAT7Pgr4kcGHilB12vNIlBVE6S5hr0cNXH5VuNyG2rKbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anoHe/Zz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF0CC116C6;
+	Mon, 19 Jan 2026 06:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768804627;
-	bh=98Zdz76JsHMNDUUxqEK63kVu6owZ4whUV/7PPnvwDgc=;
+	s=korg; t=1768804641;
+	bh=yr6uKVuCiptnlQroaAFCqju/NCHYFiKAZ0oJYz2Vf70=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SZcPQA1AkLjrpQqiwI2RmL3A9TAEumONofEqxFZnl9IjOejtbegTdm6uRNnMZxhPs
-	 O/7xusStj0elWt05wiWqkZ3XJtTSdnUfINLrsU4DyYpCMeqP8Zi8zrFK4tZZfzxJHB
-	 NhQUZguxmCzR9d/NF9zjXBqo4KoepWUgUrqTZHcA=
-Date: Mon, 19 Jan 2026 07:37:03 +0100
+	b=anoHe/ZzKZlDbxaxS1TO5UnlHqlaENmgq8PCSXEAYG5IKdsOrDf4N4Ir/ex7SHs03
+	 WS5yvz89e4VcNE+7FAtn3z/s/T7TIYgfBHu0b1uQoMfGdpKC5yzCUIX/nk4p84XoOX
+	 TGXideqqJvL8JO7zqTSuBFOqkJ1L9EOqXhIr6j+8=
+Date: Mon, 19 Jan 2026 07:37:17 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Qin Wan <qin.wan@hp.com>
-Cc: perex@perex.cz, tiwai@suse.com, sbinding@opensource.cirrus.com,
-	kailang@realtek.com, chris.chiu@canonical.com, edip@medip.dev,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, alexandru.gagniuc@hp.com,
-	Alexandru Gagniuc <mr.nuke.me@gmail.com>
-Subject: Re: [PATCH] ALSA: hda/realtek: Fix micmute led for HP ElitBook 6 G2a
-Message-ID: <2026011955-corroding-unbounded-2cb0@gregkh>
-References: <20260119034504.3047301-1-qin.wan@hp.com>
+To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Cc: Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	linux-kernel@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ocfs2: fix potential OOB access in
+ ocfs2_adjust_adjacent_records()
+Message-ID: <2026011911-baboon-gazing-3e15@gregkh>
+References: <20260118192318.44212-1-jiashengjiangcool@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,35 +55,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260119034504.3047301-1-qin.wan@hp.com>
+In-Reply-To: <20260118192318.44212-1-jiashengjiangcool@gmail.com>
 
-On Mon, Jan 19, 2026 at 11:45:04AM +0800, Qin Wan wrote:
-> This laptop uses the ALC236 codec, fixed by enabling
-> the ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk
+On Sun, Jan 18, 2026 at 07:23:18PM +0000, Jiasheng Jiang wrote:
+> In ocfs2_adjust_adjacent_records(), the code dereferences
+> right_child_el->l_recs[0] without verifying that the extent list
+> actually contains any records.
 > 
-> Signed-off-by: Qin Wan <qin.wan@hp.com>
-> Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+> If right_child_el->l_next_free_rec is 0 (e.g., due to a corrupted
+> filesystem image), this results in an out-of-bounds access when
+> accessing l_recs[0].e_cpos.
+> 
+> In contrast, ocfs2_adjust_rightmost_records() explicitly validates
+> that l_next_free_rec is non-zero before accessing records.
+> 
+> This patch adds a check to ensure l_next_free_rec is not zero before
+> proceeding. If the list is empty, we log an error and return to avoid
+> reading invalid data.
+> 
+> Fixes: dcd0538ff4e8 ("ocfs2: sparse b-tree support")
+> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 > ---
->  sound/hda/codecs/realtek/alc269.c | 4 ++++
->  1 file changed, 4 insertions(+)
+>  fs/ocfs2/alloc.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-> index 0bd9fe745807..49590926199e 100644
-> --- a/sound/hda/codecs/realtek/alc269.c
-> +++ b/sound/hda/codecs/realtek/alc269.c
-> @@ -6704,6 +6704,10 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
->  	SND_PCI_QUIRK(0x103c, 0x8ed8, "HP Merino16", ALC245_FIXUP_TAS2781_SPI_2),
->  	SND_PCI_QUIRK(0x103c, 0x8ed9, "HP Merino14W", ALC245_FIXUP_TAS2781_SPI_2),
->  	SND_PCI_QUIRK(0x103c, 0x8eda, "HP Merino16W", ALC245_FIXUP_TAS2781_SPI_2),
-> +	SND_PCI_QUIRK(0x103c, 0x8f14, "HP EliteBook 6 G2a 14", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-> +	SND_PCI_QUIRK(0x103c, 0x8f19, "HP EliteBook 6 G2a 16",  ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-> +	SND_PCI_QUIRK(0x103c, 0x8f3c, "HP EliteBook 6 G2a 14", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-> +	SND_PCI_QUIRK(0x103c, 0x8f3d, "HP EliteBook 6 G2a 16", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
->  	SND_PCI_QUIRK(0x103c, 0x8f40, "HP Lampas14", ALC287_FIXUP_TXNW2781_I2C),
->  	SND_PCI_QUIRK(0x103c, 0x8f41, "HP Lampas16", ALC287_FIXUP_TXNW2781_I2C),
->  	SND_PCI_QUIRK(0x103c, 0x8f42, "HP LampasW14", ALC287_FIXUP_TXNW2781_I2C),
+> diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+> index 58bf58b68955..bc6f26613e6e 100644
+> --- a/fs/ocfs2/alloc.c
+> +++ b/fs/ocfs2/alloc.c
+> @@ -1974,6 +1974,11 @@ static void ocfs2_adjust_adjacent_records(struct ocfs2_extent_rec *left_rec,
+>  {
+>  	u32 left_clusters, right_end;
+>  
+> +	if (le16_to_cpu(right_child_el->l_next_free_rec) == 0) {
+> +		mlog(ML_ERROR, "Extent list has no records\n");
+> +		return;
+> +	}
+> +
+>  	/*
+>  	 * Interior nodes never have holes. Their cpos is the cpos of
+>  	 * the leftmost record in their child list. Their cluster
 > -- 
-> 2.43.0
+> 2.25.1
 > 
 > 
 
