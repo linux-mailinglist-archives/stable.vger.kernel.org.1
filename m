@@ -1,160 +1,105 @@
-Return-Path: <stable+bounces-210275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85A6D3A0E1
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 09:02:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBDFD3A0F4
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 09:04:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 544503002B8E
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 08:02:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2822530056E2
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 08:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A835133ADA7;
-	Mon, 19 Jan 2026 08:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA44733AD9F;
+	Mon, 19 Jan 2026 08:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y2KWSMLJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U7UDcAmz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05BC27A10F
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 08:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768809766; cv=pass; b=gkC/4gvgnMyLzanv1CLWsM4v7QbNPeCSsYg0VsAiXhWznRmSpOkalPTGjkjTIVXBULSI2oF9Ra9ICQsUu2pOq6y/IlXKJ4fdQGS2EHRMapVgVOXq4L1qhPyRUBC9wUpze5CuvtHe7AoyVM6ctuck5ir57o60TE4lYy06IARPAD8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768809766; c=relaxed/simple;
-	bh=DAnMrLITq3eDfG7S7q6PfDGnnlrV1nfnART1Gfn3Eg0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UKkc8aRIV+EnGEVpyDNRcqOoCJ0yACZagNM9O7tNcdfc0PygJu2pO+YY7vjitFkEGO3lhL2+rWxysVJfQVngJR1Y3VT97gEzzLQgu0ujcsDNBzGgjNTJJhSxEs+Wo/u0SP2XGLs5jr7eUA26XQ5c4rR5TG2yOdqsd0+tTGqXNC4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y2KWSMLJ; arc=pass smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7DC33AD9A
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 08:04:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768809879; cv=none; b=KEdB9bRTmGaDa+UxuXHkXUlPX/xC+ygeJW50F3etkf/VHp7nDO1RFxiNwcTrsXcNRVr0f+1jFq9ihwQedIuGZv2DBBtsHbWNKL2cuREGOoklU4S9D/o3nN3RHDKr29qw6VkEmBiXep4HKHmHZJVzR416bl8dcQlAy3eulO0VO0g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768809879; c=relaxed/simple;
+	bh=fSk12Kv8vzWHPNwrVW04X+ndtNeLwKcienPDea2JogA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=tuYHKZ0arJOd4tUxFw9Qn4gw66Z6eeRn5FJAIeOeoa43U+P+rr1s81rJYAK6318VWEuszdNBEYI4ka+X9zy0g44aCR/pvIVGswjhmV8/gLmWSWFIxjmxniQ0xDwQOZK2dJXHBuZt3AwJw9brAYkSj05tELJayOcuaujldw0FusE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U7UDcAmz; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64baaa754c6so6043702a12.3
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 00:02:43 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768809761; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QEy2MCe4QUmzdjIzWJRZCcD3l7sjbVuBbwZTK/dicKaCF4GyKu18Lul02kCpa6UhAm
-         2hN8N0bPbsLQ+sTf21ddntziaEPnfuKRwMO4Fl6g3jiBDjxWjuoZi92aEWpTEIGyeW90
-         Ta6zBDoerDbPWXTDZsGuR8QoMbvRjdBQuwTEUsaNfE3aV7LZ8wA6AC09avOA7CVP8Q3U
-         5aprxTMNv5xoadZ7w2YNN16qOm4MeD6LmwAAOtW+6M/z0HBcbpnV+QRQAlFTLvQTotlc
-         1FAt3w0tCqinnIaUUHPB0kSQnOPcG8Nwd5NKnecXtCggWSOiyVW5fh2cOAnIatt2kse1
-         Pvjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=E5gMLbV/jw9kkirryyuOIwhlWMMVSVE/lAczumiLD0w=;
-        fh=9GRW6o9PjFaFXN79pO1B69cTGoXXqlZX5edYSlNra2w=;
-        b=a2wQyB73UTiBorM0r86e5aLMX3Ww8fDw4U0Jmx4V9fCl0UO/PJWD+8fBtgMc2A4CXA
-         SMFGBWXfYiWe1cLGNYwCh+bJIvS0G/nzNo4u+/7LEWF+2wAaX/jgQHpccyPmsR8VP2lp
-         ABi3n4GZ9mOAAHdRMEDUhTuih58lY2gynfBerWWfhT1JcMxeVCE/ky4P0pUPvLJTn/bL
-         idWV/Sj//elyx8hl0X7uwidlBe3zy2eN7/sKEbFRQdfA5B5wRlOGNfnQWtR76vIJURW1
-         DCBOy8jowGQzhk2GybIxhMgR3jiNUqkdXQVRniuTumbUpqT5CnCykFUQ9GoaQIF21T4T
-         Fagg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b87dba51442so74091366b.1
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 00:04:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768809761; x=1769414561; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        d=gmail.com; s=20230601; t=1768809876; x=1769414676; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=E5gMLbV/jw9kkirryyuOIwhlWMMVSVE/lAczumiLD0w=;
-        b=Y2KWSMLJiSr8UwtxLEg/2E3g6xGvjH8GeAo2fLq+zhGmI3BFvgKfSzv+Ev1+wypMbA
-         NXJCv2+hzDhuQ7UYABmvIOt1yuV+k0DUjlz0KIWEwNE7HS1+HG8H8qAKfl3yS9V1GxVY
-         lldr0wlTVTku2omz2NbvY7vUxjveC+nOxlIfpfapLnaKROtFhsvA7Wen3PLqVH6tmxDD
-         GzNnJ4LmCMyWKF8r+xcyuzw6hpZvFyOqwv3wqNLSOZd0I1Fi5zgTYNG6ttOgvuXE/4k6
-         eRkxqi44/0jQoAplKxcAMqZVKpoid3mdHXlsIb0A0Bx684ij6r/TtE3ugmizKnRJdUbx
-         Zofw==
+        bh=fSk12Kv8vzWHPNwrVW04X+ndtNeLwKcienPDea2JogA=;
+        b=U7UDcAmzCl7y/Pwj214rsFCtPgeJh5bvSJ+a4+Co8bGAjj8oM+bJNpih1kzSKO6J78
+         NG93sdvCqfMZhA7/N5vDAzNdrk79YUmn586xg+Fixmx1J5HlhiZB4IwYQgOdK4GPUMcZ
+         m7UMJec2qzUn7YOwnPSmMNak8cBsJssgswKZm0EdzQRh9HTFwOJBT7YG4tdRyoCFHsCt
+         QoLbKil+7FK46jcg6L6I/E7RwtMynwUqewz6OgeL0zXAHgA9QVx7LpGLWWsFkvSnF8bQ
+         /iVsrf3mWa0Iky+X+unoAk2YYoXx2WviXy4DmWltDx1FIpClg9andegwyE7uS/xOyBL/
+         NTEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768809761; x=1769414561;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
+        d=1e100.net; s=20230601; t=1768809876; x=1769414676;
+        h=content-transfer-encoding:to:subject:message-id:date:from
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E5gMLbV/jw9kkirryyuOIwhlWMMVSVE/lAczumiLD0w=;
-        b=UWMdJnQGO0gCjkKOUJEvUULTYJ/QIKLxm69j1VUEoqgCv1p/txFNVbpJSi8o+0kr9c
-         1wCKCTV6n4HCEO823uo1yNaeIDggcrF9FfKWJI1zIPv7iM3XYw9+0VwJMxCksw2oinbw
-         FIC/qeml5+SwUuPi/K89XXydH3jwVgFr+BXAhHN4TeOOhrDmc6WzdeJaoenU6p27rgY7
-         Y1MTtu5eEP2xrUt1qoNfrqAJAqvKJ9HzM8dCYZ7S5sTE7d/flNTS1/DhNaR49LUBqtrm
-         I5qYkIqaNA7UARM8RfxHvQW1EoskhV7vEZrrbSljcJR6+Jtrut3snzbG4aNb6mczC3RI
-         hacQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuid22j0FgjmsvIAPE1+J/FTmmYKV66ZjRPIk3dFVe1EIxbIuBgeCnFhlEOx9lhWa/rBDwSrU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3O6iAaxMRLNHB/1gplESHvE4ryZ1ntkX10yDU0PMEzqGgC7lw
-	SM4MQTVFQscdi6NyqfYODJOn3wzvJsEXGQB9kLeHzu9xeO5Z3yd8rnX9V/6/ESrrfos42eLf2l5
-	WhcdTn1LPekoIhxGymO3bbTRmK2JG6l0=
-X-Gm-Gg: AY/fxX68w4+sWJ9jzHugPiLpVFv5cTVC9fLbXNQuFiLCB/jjaRF8RlUqIStoACDOj6v
-	+uHj6vUFq8d9lpN0Kd5fRDhkviayAxYgGvB0kY6om/JW5YhbH9EaExUfyZV5pPdd8sE5O8ReCMc
-	5AmfNaLu0afsMHtztklIVEF/fMdAs9gd3KcMl39U8Rh2GPCTK9l/V0cK1cTebj4RIjgFwcnQIgX
-	OtnVWGcSOfsiL4LDbiQQaxpniUr7NcOlOsiC3fEa/w5hP+9sayzSicc5KVLa5Rw5sfzcZYt8ktH
-	uJIbUm1QOGu0Xu4N0Rwf1x5lb0jA7NWUU3oK57u/mU8p4mGlmMSAI1X/opXCjgKd3r9X/QHQA6K
-	pw8LtVp1o3A8ug+qavufcjkA3EkPBE5vS43LKhA==
-X-Received: by 2002:a05:6402:2549:b0:64b:993f:ce05 with SMTP id
- 4fb4d7f45d1cf-65452bd116fmr7271933a12.24.1768809761107; Mon, 19 Jan 2026
- 00:02:41 -0800 (PST)
+        bh=fSk12Kv8vzWHPNwrVW04X+ndtNeLwKcienPDea2JogA=;
+        b=jTQGDD37TnOE8wpKY1/U/127QVvYRF+vS9BV3Nrdgn9zaG+blGaPbo2iJ55V/T1ZAd
+         3J0NbSmp0jYTyqoPPHls8Ri4wapozFJnbl8mcsSwfxDk12QG8OAgkixNFzvjh1MAte9B
+         CiFlG9vInrivNR9vb/qAaEwk1ZAqb8/IL7Xy6VaV7PWZ9M0UrmzrbbUHRrQ6CKCK4buH
+         Jt5+EWofLsPexxdWYFfV7Z6DqmDPrgNvHRdJKun3/UwLaOZqhPjdhpmPhj6RGeZ+wJXF
+         krLGPipOZf/xDm8GiB3hRW8NK17yHnRIaw9Rlsj4fcRxyipFOBl27VBlpFRZXVYWip7r
+         5WAA==
+X-Forwarded-Encrypted: i=1; AJvYcCX+Amokxb5gR9NBhx42tGXAbPC3prcJnhdeu5ISwv18mRHZO4XIi2YuaxQ/0WPuDY1c3s5BW0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuwgNayfvZ60O1I2W6BnVNcmXGxtSZ8xFJeLA9W2aCb5EZsm7u
+	/cjzAkSna18sYXBazHKeMNhdF0XwlC1CU2N767eiSxVSFzSUWU+cRQwmoMq1+WkMrykcTZ7iSQ0
+	TKM8Q5HJT02he+rbS3WQbh/i76SP6uBw=
+X-Gm-Gg: AY/fxX4auJIQoTJAzF0DU9LUJITEk2vN0bx4BD2G3Mn/sr4jSEP2De/immd+dztxOji
+	cJrGGj0lL8f2gF2A36IolqALOVVVb+8ervra3gynWACZwjBlfoc5X6hrlqPCi9vcmKV4lyOI4ct
+	gpTenw3DdzZBw9vTBoms+M8u+pvEYvQ18WTw/Z6k34w6bM79APBxw+hKKaP2YDSsJ4iamUDexZ5
+	RLeOyPUFnEUTqFPnVciJ7zVpNQXLux6FjRfvQ9uk0XFXgrKp88eb9BtArNfpIqpIxDdCTjjN53o
+	QauJZYGIE9iPNhGDIo9FBEV2sWyRrXFAFGBq3A==
+X-Received: by 2002:a17:907:6d08:b0:b87:1a92:b621 with SMTP id
+ a640c23a62f3a-b879324e841mr878599966b.64.1768809876386; Mon, 19 Jan 2026
+ 00:04:36 -0800 (PST)
+Received: from 860443694158 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 19 Jan 2026 03:04:35 -0500
+Received: from 860443694158 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 19 Jan 2026 03:04:35 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260116151253.9223-1-jerrysteve1101@gmail.com>
-In-Reply-To: <20260116151253.9223-1-jerrysteve1101@gmail.com>
-From: Peter Robinson <pbrobinson@gmail.com>
-Date: Mon, 19 Jan 2026 08:02:29 +0000
-X-Gm-Features: AZwV_QjD9hcUQzta7ih2I8JDpblRClcNe5NlO_infM0IaHOPiePu7HjjLZlFx5U
-Message-ID: <CALeDE9OC7p6XMMwPk8_vsBe09RJHBK8KED=YAcykYqpQXzVfyQ@mail.gmail.com>
-Subject: Re: [PATCH v2] arm64: dts: rockchip: Do not enable hdmi_sound node on
- Pinebook Pro
-To: Jun Yan <jerrysteve1101@gmail.com>
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-rockchip@lists.infradead.org, heiko@sntech.de, dsimic@manjaro.org, 
-	didi.debian@cknow.org, conor+dt@kernel.org, stable@vger.kernel.org
+From: zynai.founder@gmail.com
+Date: Mon, 19 Jan 2026 03:04:35 -0500
+X-Gm-Features: AZwV_QjOh7H8oNxE7nJj4oXOSyEyHo-o-wDGfblLl6I25ugW0u8RNniD7otOyKE
+Message-ID: <CAEnpc1ZU=HtgrpTYFFE-PXgFy58C3eLQ4m7akAz=QJq6xfj6rw@mail.gmail.com>
+Subject: Dentist Time Savers: Is AI Your Secret Weapon?
+To: gregkh@linuxfoundation.org, stable@vger.kernel.org, 
+	patches@lists.linux.dev, info@morenofamilydentistry.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 16 Jan 2026 at 15:13, Jun Yan <jerrysteve1101@gmail.com> wrote:
->
-> Remove the redundant enabling of the hdmi_sound node in the Pinebook Pro
-> board dts file, because the HDMI output is unused on this device. [1][2]
->
-> This change also eliminates the following kernel log warning, which is
-> caused by the unenabled dependent node of hdmi_sound that ultimately
-> results in the node's probe failure:
->
->   platform hdmi-sound: deferred probe pending: asoc-simple-card: parse error
->
-> [1] https://files.pine64.org/doc/PinebookPro/pinebookpro_v2.1_mainboard_schematic.pdf
-> [2] https://files.pine64.org/doc/PinebookPro/pinebookpro_schematic_v21a_20220419.pdf
->
-> Cc: stable@vger.kernel.org
-> Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
-> Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
-Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
+Hi Moreno Family Dentistry Team,
 
-Looks good to me.
+As a dentist's office, you're likely no stranger to juggling
+appointment scheduling, patient communication, and administrative
+tasks. But let's face it =E2=80=93 with so much on your plate, how can you
+free up more time for what matters most: patient care?
 
->
-> ---
->
-> Changes in v2:
-> - Rewrite the description of change
-> - Link to v1: https://lore.kernel.org/linux-rockchip/20260112141300.332996-1-jerrysteve1101@gmail.com/
-> ---
->  arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 4 ----
->  1 file changed, 4 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-> index 810ab6ff4e67..753d51344954 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
-> @@ -421,10 +421,6 @@ &gpu {
->         status = "okay";
->  };
->
-> -&hdmi_sound {
-> -       status = "okay";
-> -};
-> -
->  &i2c0 {
->         clock-frequency = <400000>;
->         i2c-scl-falling-time-ns = <4>;
-> --
-> 2.52.0
->
+ZynAI helps businesses like yours save 5-10 hours per week by
+automating repetitive workflows. With our AI-powered solutions, you'll
+never have to worry about manual lead handling or tedious reporting
+again.
+
+Would it be worth a quick conversation to explore how ZynAI can
+streamline your operations and boost productivity? I'm here to help
+you discover the possibilities.
+
+-ZynAI
 
