@@ -1,78 +1,78 @@
-Return-Path: <stable+bounces-210358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D4ED3AB82
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 15:19:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B1BD3AC62
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 15:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DFAD3300722A
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:19:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5B61301E20F
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B70278753;
-	Mon, 19 Jan 2026 14:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AF423ABBD;
+	Mon, 19 Jan 2026 14:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="MCQd3MWN"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="bpFLHMub"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D7935581C
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 14:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC8C236437
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 14:34:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768832374; cv=none; b=hioBePbmfWzIPYoAVM6nEtxPj1d3UvZiLRfRLAdRROjb7NYMGUVTILJLwAJPvW9Lln4pCGBv359q+F2QKn08fwy04I/3SllvzlXtPLk0fHpZry43gaqSDRHS9QS6UlPGhmmJIFRcExDxMeRnBS/FNl76yzF9MBIZue0BuQtlwx0=
+	t=1768833297; cv=none; b=d/JeNbVBnxDRDNTUAb9WG/qe7VLknOp0fhH+LU0H8SvXYmr4GmvsK0qvL4OflnHJtaULKC6cVaatuEnRDPknTzfClznraJLExkrKSojF9ayY8CmTaWB5tjBC32Is5RydfrzCzdl4o/vIiw2PN9kQ+R0917diiUd8Tq1m0g6QnY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768832374; c=relaxed/simple;
-	bh=eiY5zy2ahVwv+O3EN5Zo+g0JqPWfEXLIa1bgVW4kVnk=;
+	s=arc-20240116; t=1768833297; c=relaxed/simple;
+	bh=ErpmyCRDhaNeApX9tefbEgk35lKxS12f4ouCrfojMWM=;
 	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=HqSzIpMo5eicjRbFPGczJphrhXHpVHWYDcss5ywFBBUbNtEvhmNR3NLEnX8pQvgYjEbmPnx2JFrFQ/ONstvI87PyZD8OZn+IozUZD96rNJB1qeFIYRUQPW3ziJTKfGfABeZAKvpGeqWNPKYZSXMT9FeiN5w5feSeC7VlnWnKVcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=MCQd3MWN; arc=none smtp.client-ip=209.85.160.47
+	 References:From:In-Reply-To; b=tPh4tvPc+hpONk6qwH39k11KDiJf5hpmbnk4pf/CpMHTXitIq5ARG4+BKMLDU90DzxAC2obI0m9QD1ZOwzrCqwHRx3P9OhpKNF92KtCD1LKGKU1KMTBPzXictmbReuYK7B+dyV326ulQzYFLcvA2QJrYntET1c8q29ELlhx2DhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=bpFLHMub; arc=none smtp.client-ip=209.85.160.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-4044854464fso2154515fac.3
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 06:19:31 -0800 (PST)
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-404308dd5d6so1825204fac.1
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 06:34:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1768832371; x=1769437171; darn=vger.kernel.org;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1768833293; x=1769438093; darn=vger.kernel.org;
         h=in-reply-to:from:content-language:references:cc:to:subject
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hXf9vDIRiMVgh0xDImJ8HE0w8I2XZd1i701AFL2L2iM=;
-        b=MCQd3MWNu5Mi5L1i2L4fkD6KM/mKNBoZP5L85+tIJ7JlAKac0hZTXMH2ORMvxQhihW
-         QLCf32of7efhyN1n/mY8CN/GajpHR3rs+j9/pHba5VYIZO2Yh/fBu2MZkcEK9jAULZHT
-         FDbj0VSL7+SSiF5HQBTOrDgU+ubyrWgTG5ErSxuw4ij18zc4X1tpMsx/P0h075nGj8mH
-         +8I/EtN5RV2z3e1+zFauvLjQMVtq8/xQiHS/n9VlhY4oY+eDIBZGcBD7CVTbyQMDKYpS
-         K7mEUH1fz/EY/v/Vz0i3ftYyDS8ypoF/sOjaZZGq8hOGXOHouAR3+wi5CVvasUCXXHJ3
-         52zw==
+        bh=/Xy8F08jkkm1eQhNSxAtuzCmDgrshKRVHjJLSMRgIHA=;
+        b=bpFLHMubSdkWsNIJze6pQze+cWMFasewyEQ2lOnOaN4V6Byn49pRskL0kZ84y28b6t
+         T6PJP0m4ziUk0yPOftoN7P4E01FwQ2ADNauMIQd5wEIQgGpP7czmip6QcIfj/6OXIb1F
+         1Yv/Yv4a4Dw2m/co3g1E4iqeTNywA40NcvsMfxT7Fdd2BjuEPqdz5Amb5sQEiyK1a4/w
+         3tE432cFFN1lPMZ5H2q6t9m48MA2QfSQKuVvevQVmSYf+qCgwejaRhay5XBZVoVFcAu3
+         cAjxLZ24qFF1waH0ktwXEEIbcZDSztiloowmrV0T031qvIXXMSVT2zeoSVz0FPLLZowk
+         65CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768832371; x=1769437171;
+        d=1e100.net; s=20230601; t=1768833293; x=1769438093;
         h=in-reply-to:from:content-language:references:cc:to:subject
          :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=hXf9vDIRiMVgh0xDImJ8HE0w8I2XZd1i701AFL2L2iM=;
-        b=JT1u3hGQDoPkUP7WX4JaUh+sJsp9vJionrGZYN6alrir0bM7VMLvdtLgjTPZslMhQ/
-         LpLI4Tcz7lwlqOxNB5n8A5Aa071+YkNHhmThnBm0rx4GL5MkKgLwJgBQz9CiElc1/Sip
-         d2iPyq9or1IanQ51cp0oyePwndLVzoFTB7+m7TFeWIBHQy1t5L+JGxeH53x4UZgqkuSm
-         KahFaX7jnJ2CJYETIc4zw9MPpU6JPHsAVR4lvdWQDbC1Ry25bsjy1AFszw08gIsN8s/Y
-         YnkCwBx1NnoppZwDzUZS2niiA0ntgyv1pc98wZaaZLPE73GSTPF3oPT5LqfS0/ZbCbBV
-         SzbA==
-X-Gm-Message-State: AOJu0YwFnin2uC/WYhBmp8HhzzLTEq5mC7fatRhYN2BeeEQkUtTWHZsP
-	W2vmHDmev89inzW/g5C6+zC5ewEIGiwkSMOaVRT8CJeCy/xqZe8Y5IRRH/Kqseo4rWs=
-X-Gm-Gg: AY/fxX5/Yt8X8S6eTgN6x9rNOMDjLeRCSOL8DyGMM5aXNlBDfnPAmp9oAAKB37G8pjH
-	xv2pb4sT0Xgf/b4yn2MzzXNlYJ+qbSVcMGS8hbdrlVmRN3bGwlG9z/+8P2FwftqYT9nGJHYfjNM
-	8yJGoG5a4uC2F6sQ7ZCIygcGu4Bq/t5PhCeO8Y2oxc2YLh+i1rK6RCwSByiPsU3SdN92jQn8ID4
-	Mrr6XILydCFKOWDTOJ+dOPg52zPJvUaXpQ2t8YRsrvx/hQPa97eZ2qS7MHzFg+RkfF83pJkM/lM
-	YTbaaqmpBDu2ib6gesyPcCnxENwGyR3ivDyud/Tj13l5W65Y7G+GUsIXfWeDDteVtSN5S0JQQUI
-	936WPJ3SmNntcTwuT/at6gPuxzpBUjsEl6MwwIDmFESNhTx76qE0er/wUDSw2c2TWW51s7XXlYz
-	N9/jC5xmoP8yt2Lhuwu7m+YHqP4H8SkAaImYS9hJTaG7D1fgu/kfQ9ZZOxIg0NZaX0mWnEow==
-X-Received: by 2002:a05:6820:16a1:b0:659:9a49:8f4d with SMTP id 006d021491bc7-6611795b68emr4982718eaf.18.1768832366178;
-        Mon, 19 Jan 2026 06:19:26 -0800 (PST)
+        bh=/Xy8F08jkkm1eQhNSxAtuzCmDgrshKRVHjJLSMRgIHA=;
+        b=aMJogYh2tqUeIyvAdXsj/2g2wrveolQuxRmnA8cfG0xlKy0Ins/PBfsrjiUNaVCh4q
+         CKAtTfFHoGUbomIxxHWQo+yq/C0axnn2o+qxdawngIgUpV4OClXYBqSRx4/yZ3awLk63
+         u3pSxTlbFhCT6vUuxbBs//Jo+HmY8AH/N6bgQoo4pN8U76qlQ3QVCinvH+cpV2xXoYvG
+         DHvDQvjnRwpTZCv+/7/Q/9tPHITZPfiX9CtFnbQcrjaltkZl64FCt0thVBoH0rR/l+XV
+         CC8Q0GkfpZ6dD32rn6xwIlQEQc/mZ2ftWOhKu2bjF1kOIXtx2auPbJc6tBBGSiIAMKK0
+         jbmQ==
+X-Gm-Message-State: AOJu0Yw5aPKbC8Cy4De++Pb082bz/9QPGTroWpM8aqjVUt+7T5JtjYv/
+	4tvsp+N2kQnkCWh4l76iAWu4xEy2isErtoonfDbl2wuMTvNYFybjqgvPUA5InxEGuAU=
+X-Gm-Gg: AZuq6aLfTFjTvMCdWM4T1YpmvrMkWnSsThcyfXtfOzjoce9ZaH5R3yYIGNxCS3OMwjR
+	c4+DfWTsy2imbBkir5PDiICRbf6W3KiFahmBOCGQ2+cyBA+ZvLmL20PFa1/y/+HW7H1jayMWKuT
+	5MGpdN9PujcYEMiKErAroQBL+DvJbie/woshVE27lZwG+Rma8Xl1XPDoPjfFNRWOCn3RNR4ni/i
+	A9MxSnrI0B38G60INfwI8ZjUJXqekUNXa6B5EScX4dIjHVRR0bMxYjTqIfVxB2q5OzHcJ/AH9VV
+	0R0w5f+/pDfQ7ZsuIouUiDLrXwMdGFEgoQF87b2VQsRqkYVik1dhfnukn0tVJKghjcjMt3/5yGj
+	qdI9OtkA80wmeA20jnkMQn6iuAVsEyBhHqcCW6ZFU7NtT/dH/hQ/UudV28zeCevSrWvY6bgjwwB
+	nxLP8UwExrtFWFw9HV5NDAlbaR2a0/CxPDjOOsfpD2QBWahleWO7igs5oEddfh4JWvng3hRA==
+X-Received: by 2002:a05:6870:ec92:b0:3fd:a9f3:a66f with SMTP id 586e51a60fabf-4044ce2ddd1mr6444987fac.14.1768833293459;
+        Mon, 19 Jan 2026 06:34:53 -0800 (PST)
 Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-661187cffbfsm4634836eaf.17.2026.01.19.06.19.25
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4044bd5d988sm6835475fac.18.2026.01.19.06.34.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 06:19:25 -0800 (PST)
-Content-Type: multipart/mixed; boundary="------------l0tVUhkSNb0YdLF1Z95xr3yC"
-Message-ID: <1807a9e4-8eec-4eed-9fcd-88b0408c152e@kernel.dk>
-Date: Mon, 19 Jan 2026 07:19:24 -0700
+        Mon, 19 Jan 2026 06:34:52 -0800 (PST)
+Content-Type: multipart/mixed; boundary="------------amEdN9J1equc9Tkjn01OEta8"
+Message-ID: <6a690ac5-1bee-444f-8ff1-4a9d67a0ba8e@kernel.dk>
+Date: Mon, 19 Jan 2026 07:34:51 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,48 +81,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: FAILED: patch "[PATCH] io_uring: move local task_work in exit
- cancel loop" failed to apply to 6.6-stable tree
+ cancel loop" failed to apply to 6.1-stable tree
 To: gregkh@linuxfoundation.org, ming.lei@redhat.com
 Cc: stable@vger.kernel.org
-References: <2026011956-unclog-language-54ed@gregkh>
+References: <2026011957-earful-capillary-a00a@gregkh>
 Content-Language: en-US
 From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2026011956-unclog-language-54ed@gregkh>
+In-Reply-To: <2026011957-earful-capillary-a00a@gregkh>
 
 This is a multi-part message in MIME format.
---------------l0tVUhkSNb0YdLF1Z95xr3yC
+--------------amEdN9J1equc9Tkjn01OEta8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 1/19/26 4:47 AM, gregkh@linuxfoundation.org wrote:
 > 
-> The patch below does not apply to the 6.6-stable tree.
+> The patch below does not apply to the 6.1-stable tree.
 > If someone wants it applied there, or to any other stable or longterm
 > tree, then please email the backport, including the original git commit
 > id to <stable@vger.kernel.org>.
 > 
 > To reproduce the conflict and resubmit, you may use the following commands:
 > 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 > git checkout FETCH_HEAD
 > git cherry-pick -x da579f05ef0faada3559e7faddf761c75cdf85e1
 > # <resolve conflicts, build, test, etc.>
 > git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011956-unclog-language-54ed@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011957-earful-capillary-a00a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-6.12 variant also applies to 6.6, attached again here for 6.6-stable.
+And here's one for 6.1-stable.
 
 -- 
 Jens Axboe
 
---------------l0tVUhkSNb0YdLF1Z95xr3yC
+--------------amEdN9J1equc9Tkjn01OEta8
 Content-Type: text/x-patch; charset=UTF-8;
  name="0001-io_uring-move-local-task_work-in-exit-cancel-loop.patch"
 Content-Disposition: attachment;
  filename*0="0001-io_uring-move-local-task_work-in-exit-cancel-loop.patch"
 Content-Transfer-Encoding: base64
 
-RnJvbSBkZGRlMWU4OTU1YzRkNzU3NGFmN2Y3OGZmYTY0Njk1NDgyZGUzZmM4IE1vbiBTZXAg
+RnJvbSBiZTBkZDE2MjhlNDk2MDhlNTJhZGFlYzZhOTRjNDk1NjcwMmVlZGQ0IE1vbiBTZXAg
 MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBNaW5nIExlaSA8bWluZy5sZWlAcmVkaGF0LmNvbT4K
 RGF0ZTogV2VkLCAxNCBKYW4gMjAyNiAxNjo1NDowNSArMDgwMApTdWJqZWN0OiBbUEFUQ0hd
 IGlvX3VyaW5nOiBtb3ZlIGxvY2FsIHRhc2tfd29yayBpbiBleGl0IGNhbmNlbCBsb29wCgpD
@@ -156,19 +156,19 @@ OiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CihjaGVycnkgcGlja2VkIGZyb20gY29t
 bWl0IGRhNTc5ZjA1ZWYwZmFhZGEzNTU5ZTdmYWRkZjc2MWM3NWNkZjg1ZTEpCi0tLQogaW9f
 dXJpbmcvaW9fdXJpbmcuYyB8IDggKysrKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2Vy
 dGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvaW9fdXJp
-bmcuYyBiL2lvX3VyaW5nL2lvX3VyaW5nLmMKaW5kZXggYWRmMmIwYTFiYjU5Li45OWIwYjFi
-YTBmZTIgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5nL2lvX3VyaW5nLmMKKysrIGIvaW9fdXJpbmcv
-aW9fdXJpbmcuYwpAQCAtMjkwNCwxMSArMjkwNCwxMSBAQCBzdGF0aWMgX19jb2xkIHZvaWQg
-aW9fcmluZ19leGl0X3dvcmsoc3RydWN0IHdvcmtfc3RydWN0ICp3b3JrKQogCQkJbXV0ZXhf
-dW5sb2NrKCZjdHgtPnVyaW5nX2xvY2spOwogCQl9CiAKLQkJaWYgKGN0eC0+ZmxhZ3MgJiBJ
-T1JJTkdfU0VUVVBfREVGRVJfVEFTS1JVTikKLQkJCWlvX21vdmVfdGFza193b3JrX2Zyb21f
-bG9jYWwoY3R4KTsKLQotCQl3aGlsZSAoaW9fdXJpbmdfdHJ5X2NhbmNlbF9yZXF1ZXN0cyhj
-dHgsIE5VTEwsIHRydWUpKQorCQlkbyB7CisJCQlpZiAoY3R4LT5mbGFncyAmIElPUklOR19T
-RVRVUF9ERUZFUl9UQVNLUlVOKQorCQkJCWlvX21vdmVfdGFza193b3JrX2Zyb21fbG9jYWwo
-Y3R4KTsKIAkJCWNvbmRfcmVzY2hlZCgpOworCQl9IHdoaWxlIChpb191cmluZ190cnlfY2Fu
-Y2VsX3JlcXVlc3RzKGN0eCwgTlVMTCwgdHJ1ZSkpOwogCiAJCWlmIChjdHgtPnNxX2RhdGEp
-IHsKIAkJCXN0cnVjdCBpb19zcV9kYXRhICpzcWQgPSBjdHgtPnNxX2RhdGE7Ci0tIAoyLjUx
-LjAKCg==
+bmcuYyBiL2lvX3VyaW5nL2lvX3VyaW5nLmMKaW5kZXggMmFhZTBkZTYxNjljLi5kMGQ5ZmY2
+Yjg3YTAgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5nL2lvX3VyaW5nLmMKKysrIGIvaW9fdXJpbmcv
+aW9fdXJpbmcuYwpAQCAtMjg2NywxMSArMjg2NywxMSBAQCBzdGF0aWMgX19jb2xkIHZvaWQg
+aW9fcmluZ19leGl0X3dvcmsoc3RydWN0IHdvcmtfc3RydWN0ICp3b3JrKQogCSAqIGFzIG5v
+Ym9keSBlbHNlIHdpbGwgYmUgbG9va2luZyBmb3IgdGhlbS4KIAkgKi8KIAlkbyB7Ci0JCWlm
+IChjdHgtPmZsYWdzICYgSU9SSU5HX1NFVFVQX0RFRkVSX1RBU0tSVU4pCi0JCQlpb19tb3Zl
+X3Rhc2tfd29ya19mcm9tX2xvY2FsKGN0eCk7Ci0KLQkJd2hpbGUgKGlvX3VyaW5nX3RyeV9j
+YW5jZWxfcmVxdWVzdHMoY3R4LCBOVUxMLCB0cnVlKSkKKwkJZG8geworCQkJaWYgKGN0eC0+
+ZmxhZ3MgJiBJT1JJTkdfU0VUVVBfREVGRVJfVEFTS1JVTikKKwkJCQlpb19tb3ZlX3Rhc2tf
+d29ya19mcm9tX2xvY2FsKGN0eCk7CiAJCQljb25kX3Jlc2NoZWQoKTsKKwkJfSB3aGlsZSAo
+aW9fdXJpbmdfdHJ5X2NhbmNlbF9yZXF1ZXN0cyhjdHgsIE5VTEwsIHRydWUpKTsKIAogCQlp
+ZiAoY3R4LT5zcV9kYXRhKSB7CiAJCQlzdHJ1Y3QgaW9fc3FfZGF0YSAqc3FkID0gY3R4LT5z
+cV9kYXRhOwotLSAKMi41MS4wCgo=
 
---------------l0tVUhkSNb0YdLF1Z95xr3yC--
+--------------amEdN9J1equc9Tkjn01OEta8--
 
