@@ -1,137 +1,131 @@
-Return-Path: <stable+bounces-210252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 378F9D39CBB
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 04:17:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A51CBD39D3E
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 04:45:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F1DF730056FF
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 03:17:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8DDB23000DF4
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 03:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDF21F239B;
-	Mon, 19 Jan 2026 03:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0DD32ED42;
+	Mon, 19 Jan 2026 03:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JtxkYyeT"
+	dkim=pass (2048-bit key) header.d=hp.com header.i=@hp.com header.b="GLN6eLE1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714C817AE11
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 03:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768792673; cv=pass; b=pfehFUDP29QmjFsBbiR0dWgZ8MEUpsfXc71w541VbotOxH1aSWaMLTYu31ahQ6QIzb2KQaC5Osy+YlamtcSnk7z56wR75TLb5zDvgrhuHzNriyt5Rqy2EnAksysvqds5E9oH/Z9OQ9Sy0BFtay3UEiB2fDRaYNEOAgBncY+dm5c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768792673; c=relaxed/simple;
-	bh=N7l/uToNinLd5hQcauiLvJ48iqlwRY90M+CsZ3ATz5g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pMW6D5tNGHj3A+QjDYIh77l1qBWOEs843pPDnQ/31g+NnfBixiauoCJ5KNPrmQYDPadWpkWKg2IHPaxIZjmI/+z+ncJcLI8PmYkH8n1IRUlFuhmZwREhc/dPW2P8FD6K67Xypa6Kg2KjIetHHkr9Rq23rJnNkKGA58H+o+CzYYU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JtxkYyeT; arc=pass smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-bc17d39ccd2so1485498a12.3
-        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 19:17:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768792672; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QaEUiTmHlsqzMFeJvgdJTYicUE80ne9ggwbJ9XGecTLrsBVe7WuWSDqgqXBvLYl3UY
-         Y2tB9I31cicoRfBEH6/6zIbYOF/EiR+v70j0vnf/Z91Ftg2w6c/IkU6bIyOq88j+5cnH
-         QWKaQ1xfxk7Jt7V1bDN3DmEkmMJnDk1dx6ebZuGnqsmTU3bmA9CoCgWAI2wiRLsMJUmj
-         MaJJHbRu1wY/4ZGuVE4m44Vk1Mz63PZcgYij9mUvMN9rPY1v+Ucwk3yhZkjIW5sF+HGq
-         rtlPBhgywbDqE/9jbPMs8xiT1GKyTmfmhZx3lQK/9t2evrm23bCN4WI904Y3yLV9YMMw
-         dc6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HnEMERETZXpYSLDDchr/WHVXPVN1Akoe4lLaRnfg5HI=;
-        fh=OAnwBAD85+NyMoWmuM0Ysym+II0KHme9XG3pL6r2STQ=;
-        b=e/dGMuLY3nqu2R+r45eL6t4c/9G3EvW2ibSqAXczHnviCWkPFxfGCWJ4tYbCo8sJC6
-         x85tbIZDvkCK3/BRcAAB4lvI2VQcfZgscwK83gqpU2nv60xp1PkaiX2nDIpYAT2Izh7s
-         NTgKgrPuGo5MUbWCrr+seVG3wDgSINoDWmhK7wmeV8CkOdqnzzjXEsvpC/8gTwlcPCAO
-         ON91+UgmWaiy/UFVH0A1mOUEd+185GTUh6gwXNgBfPlQlsTKn6rx2rGWa0LmXAhxjm4M
-         8FkuhcrVsmJ0eAHdlNBOCmHfXjzv2nAKBKEF3EckBBgAyn/u1c7o8Gqq5gzCtfQpfWNg
-         gnhQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768792672; x=1769397472; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HnEMERETZXpYSLDDchr/WHVXPVN1Akoe4lLaRnfg5HI=;
-        b=JtxkYyeT0X/zHgyeYwY34tXhvdS/4COloXrOA6vezkm++F4qUcw2ZUVhQcNsVzEpKi
-         RzHWE2OARtxV1UqbRFRqpur31KhHwtM2gOpPNeeBGySxzZ8E7F5lebwe44UHMtYBKpBd
-         awrRIq7j6w8AWf/J6jf4x4PyrydSIlUE8+atSz6CskrgfcGX4aDwc84Z8lE1xlMfvTC6
-         jrFSvRJW7jNTjBbqh1nXx6sOfWPnFiOZFRyWRRyAN7DnnXzdegyqUlO53IcRteJmONd3
-         DMh05jTRKNW547gH4m1/Ubdl1TKlMML7s/CNov7S9sgi+A1LVmhXDUVElO1dU5Nf69C4
-         fKmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768792672; x=1769397472;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HnEMERETZXpYSLDDchr/WHVXPVN1Akoe4lLaRnfg5HI=;
-        b=tlC0r+6BCyoY1sDngynaI2XJM8744XJnT7zB95pffXgFNKpAliLKvWwGIXi+HOF196
-         bsFC9yYwbWHY02OG+/vINHOv6dsr8d2J+Z9c8UdEu90azyFB9rXXFY08v/9vpFfkYYEB
-         kZSPMirpBpGzj6MdCDRPNID4LLHg/MMin1ebZ9ZCKTNOL2Th1RJmqORKuhVjXuRTh7O4
-         PamkqOM37o0j07i7QfqoRNUzQwZ5hhAVY6YYUG18JHkNAtICp8JDYVUTeyrx3/q5az58
-         egL7ddT1pPWIDWgULqXG7PXMvETFYarVknB4YYB4NMnu8RdiSh0GUrKWgci593eeBpo6
-         1auQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXjn+40PC4GDVfwVMdluiOhiR+ZTxoVKDnCf0vwoWzfo1nddx3iTFXlWe64dWsncTn0lwDsPl8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPskKUgk5KZ3+fmbW+XORRcGU/q/36rmmA4lb8qWPDqhYUcQl4
-	2n/QSxuY4lzqnPpzK/JWHjdXY23mwnbTNFFvKgEFj/TbidC6+lKoHybAtiztGoxtN1zljQjZ0Y/
-	Xxx6VDfu39sC6bR0eAmlOXgFE7HFWKjg=
-X-Gm-Gg: AY/fxX4G6jokBZGOramwn9AjU0j+vi676ebWDDE/OTEDHnPuvxJb/V7LeIYElirm/jR
-	yfUWgPR0ngUMyTo3NTuDEag34HEmEe52I/xwR/5XineJdek3WZdzmEVTSTBGJxWJhzsu3cDOAw7
-	7npR7YbMlYoO3UKo0kRMqRAXGC4KNAQJYeIxqZNCeDfzRJZUWgig7FltJkGds9r2sTeZD4fCGQY
-	7wkQMm02YeaMoo9XOOuz7oghvK1PzGepviFOpLDodQaBQBd8jnvk1bTHEPx2Ct2fK8r/WxIgB5k
-	YwZcP6lbWzCapo43nZizpY3R5Nc=
-X-Received: by 2002:a05:6a21:68a:b0:38d:f2db:ea50 with SMTP id
- adf61e73a8af0-38dfe7e53e2mr9426676637.73.1768792671736; Sun, 18 Jan 2026
- 19:17:51 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6F332E128
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 03:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.162
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768794338; cv=none; b=koZUsPFDi/PqhlzBE9q5jtdMlVz+KZGMelbHoR6hFaZXUKFrM0wji2tHWw6WCMhnP41ncP1WfnSWr5uRhzZlzHN0co64UJDdWKR6zDlkJ1b2QUlq7yEUmgZw1k4/Kh0xIKNWR6rb3X1fhPgvWTLB461ZA8RcVGh5aPgNlK8iebg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768794338; c=relaxed/simple;
+	bh=8teWPsVcmhwbWt3AJfgeYG+siE5omaKueU7yvI5UJ/w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:content-type; b=OgFzUUVX9C7yoWdNnErVJsWw8/4NFQXE9O3rzF+W9QTAdVhiGp4JfG3Px2rFciwcd53YwGHViHnJ4hGKEq30NlkMknqDhXKbmU16UBntElfpVzA57NXN7imLoHSMozbx5I6Tzj4u9zn0b1Zum6xydCAaVhmjThDyWIxLM5itp14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (2048-bit key) header.d=hp.com header.i=@hp.com header.b=GLN6eLE1; arc=none smtp.client-ip=170.10.133.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20250822;
+	t=1768794334;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=w1svD2Zx+IdAy9vBQy3HwsLBCUqh5817SLKgbIGKAHY=;
+	b=GLN6eLE1hJr8vskGjWKDSLnE9AOGC0SvJipbLqvk3TK+lV+8tRrzjQFwJF7jwIcZoQlxva
+	U4PE3G0i4ettrRn+x3VVv4km1KdhwMoLZ7ukqFzXWk4LnEG1aQVtP3btt1cO9SVXy2k6Rc
+	dlSqNNQSzFKlR08+vHwx1H8rt51N97zMycgzkTvRkBVz5bZy86RYmGH4g96gGJHzRbCKQI
+	J6aXiGYjHXMc36/kRhXZzP+lYFpZgxFcwtTd4ItqYN3SprKOSxb9ZKvi5oQcR59azvsnGz
+	yo90ppK4JQuvnVEucs85ML/21Yd94bRkwUuFcAMY/OPWrB4VdTb7zyy47XKuxA==
+Received: from g7t16451g.inc.hp.com (hpifallback.mail.core.hp.com
+ [15.73.128.137]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-344-yXmHJE0rOJeqXiS2xpQzcw-1; Sun, 18 Jan 2026 22:45:31 -0500
+X-MC-Unique: yXmHJE0rOJeqXiS2xpQzcw-1
+X-Mimecast-MFC-AGG-ID: yXmHJE0rOJeqXiS2xpQzcw_1768794330
+Received: from g7t16459g.inc.hpicorp.net (g7t16459g.inc.hpicorp.net [15.63.18.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by g7t16451g.inc.hp.com (Postfix) with ESMTPS id 83DFC600568E;
+	Mon, 19 Jan 2026 03:45:30 +0000 (UTC)
+Received: from linux-Standard-PC-i440FX-PIIX-1996 (unknown [15.36.178.76])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by g7t16459g.inc.hpicorp.net (Postfix) with ESMTPS id CFD4360000A2;
+	Mon, 19 Jan 2026 03:45:25 +0000 (UTC)
+Received: from linux-Standard-PC-i440FX-PIIX-1996.. (localhost [127.0.0.1])
+	by linux-Standard-PC-i440FX-PIIX-1996 (Postfix) with ESMTP id 729D7205FF;
+	Mon, 19 Jan 2026 11:45:06 +0800 (CST)
+From: Qin Wan <qin.wan@hp.com>
+To: perex@perex.cz,
+	tiwai@suse.com,
+	sbinding@opensource.cirrus.com,
+	kailang@realtek.com,
+	chris.chiu@canonical.com,
+	edip@medip.dev
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	alexandru.gagniuc@hp.com,
+	Qin Wan <qin.wan@hp.com>,
+	Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Subject: [PATCH] ALSA: hda/realtek: Fix micmute led for HP ElitBook 6 G2a
+Date: Mon, 19 Jan 2026 11:45:04 +0800
+Message-ID: <20260119034504.3047301-1-qin.wan@hp.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260119-shmem-swap-fix-v2-1-034c946fd393@tencent.com> <74fd3fd1-97d0-46a3-b76e-435808efff02@linux.alibaba.com>
-In-Reply-To: <74fd3fd1-97d0-46a3-b76e-435808efff02@linux.alibaba.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 19 Jan 2026 11:17:12 +0800
-X-Gm-Features: AZwV_QginFqBQArXq2rn6NQNo6CY6DV85PfDMsi4G0hCBNm7nTXd3hYpAKKCKlg
-Message-ID: <CAMgjq7Bw9Ascd5FdTg=wf8dHtQN2n=cJPqREsatBJPoDLJVG=Q@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/shmem, swap: fix race of truncate and swap entry split
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 7XAzK_cozphcaViSMysFEzfqIWsHui5Tr5gHG2DVhRQ_1768794330
+X-Mimecast-Originator: hp.com
 Content-Transfer-Encoding: quoted-printable
+content-type: text/plain; charset=WINDOWS-1252; x-default=true
 
-On Mon, Jan 19, 2026 at 11:04=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
-> On 1/19/26 12:55 AM, Kairui Song wrote:
-> > From: Kairui Song <kasong@tencent.com>
-> >
-> >                               if (!swaps_freed) {
-> > +                                     /*
-> > +                                      * If found a large swap entry cr=
-oss the end border,
-> > +                                      * skip it as the truncate_inode_=
-partial_folio above
-> > +                                      * should have at least zerod its=
- content once.
-> > +                                      */
-> > +                                     order =3D shmem_confirm_swap(mapp=
-ing, indices[i],
-> > +                                                                radix_=
-to_swp_entry(folio));
-> > +                                     if (order > 0 && indices[i] + ord=
-er > end)
-> > +                                             continue;
->
-> The latter check shoud be 'indices[i] + 1 << order > end', right?
+This laptop uses the ALC236 codec, fixed by enabling
+the ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk
 
-Yes, you are right, it should be 1 << order, thanks!
+Signed-off-by: Qin Wan <qin.wan@hp.com>
+Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+---
+ sound/hda/codecs/realtek/alc269.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/a=
+lc269.c
+index 0bd9fe745807..49590926199e 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6704,6 +6704,10 @@ static const struct hda_quirk alc269_fixup_tbl[] =3D=
+ {
+ =09SND_PCI_QUIRK(0x103c, 0x8ed8, "HP Merino16", ALC245_FIXUP_TAS2781_SPI_2=
+),
+ =09SND_PCI_QUIRK(0x103c, 0x8ed9, "HP Merino14W", ALC245_FIXUP_TAS2781_SPI_=
+2),
+ =09SND_PCI_QUIRK(0x103c, 0x8eda, "HP Merino16W", ALC245_FIXUP_TAS2781_SPI_=
+2),
++=09SND_PCI_QUIRK(0x103c, 0x8f14, "HP EliteBook 6 G2a 14", ALC236_FIXUP_HP_=
+MUTE_LED_MICMUTE_VREF),
++=09SND_PCI_QUIRK(0x103c, 0x8f19, "HP EliteBook 6 G2a 16",  ALC236_FIXUP_HP=
+_MUTE_LED_MICMUTE_VREF),
++=09SND_PCI_QUIRK(0x103c, 0x8f3c, "HP EliteBook 6 G2a 14", ALC236_FIXUP_HP_=
+MUTE_LED_MICMUTE_VREF),
++=09SND_PCI_QUIRK(0x103c, 0x8f3d, "HP EliteBook 6 G2a 16", ALC236_FIXUP_HP_=
+MUTE_LED_MICMUTE_VREF),
+ =09SND_PCI_QUIRK(0x103c, 0x8f40, "HP Lampas14", ALC287_FIXUP_TXNW2781_I2C)=
+,
+ =09SND_PCI_QUIRK(0x103c, 0x8f41, "HP Lampas16", ALC287_FIXUP_TXNW2781_I2C)=
+,
+ =09SND_PCI_QUIRK(0x103c, 0x8f42, "HP LampasW14", ALC287_FIXUP_TXNW2781_I2C=
+),
+--=20
+2.43.0
+
 
