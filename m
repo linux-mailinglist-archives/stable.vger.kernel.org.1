@@ -1,103 +1,110 @@
-Return-Path: <stable+bounces-210321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37879D3A716
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 12:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D79CD3A75F
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 12:50:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 171A6305A76B
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 11:39:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65620300A360
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 11:45:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B373148CF;
-	Mon, 19 Jan 2026 11:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D62318120;
+	Mon, 19 Jan 2026 11:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIvz5gqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOfPhSsr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BF63148B1;
-	Mon, 19 Jan 2026 11:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4521317702
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 11:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768822795; cv=none; b=dQSf5C3N6LOHQwZWIHIDoNa8cz6MwBxbgqUuHsRlc8Jl16+d3nmDx5I8numTFgIiWFyAVP2eIic9ibsOvqK0KLDFbWvBdUGpsckX6AFrYKkkFkd43T+3CW3AmbIEvjWo2tLbom36eZ/s2cXEqnkB2CbRHx4c7oMQc1HMDlHb2Ck=
+	t=1768823144; cv=none; b=JBetvycZzd6SxMITLssnImDUfpXGdaDmfpjmGuZV/3aEG/whc7uK/Ke7YluKkx71Pf4qgStkFE4NELzRm0TerQGNVA7AbEMe1rkBxJQlv7ELn7vefZDVx/9qHt5oAe7mMafg/3LpbNn5+WMXx3XkWINH/cFvfQccPBSxvXmN7G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768822795; c=relaxed/simple;
-	bh=AGjpBY9PRzOJwXFxtqhktNL8+kYSWCpGTglVyO7L64Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SWBRqeu8P7/Q00zzMstMnGyHfGZ3tdvqRbnXYSXwuep6P+xnqJkF7DGHipan5Z+LoX8Cs3HrZdqnlXqZAAuBUp2IzOulyufPmIcRR9aiYciz9SdUCMEhhAwv6imbs9ChgbFpaEvS/ljHMjsNj7wr5C5TGy4ZleOsduV3DLRmApQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIvz5gqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57BE8C116C6;
-	Mon, 19 Jan 2026 11:39:54 +0000 (UTC)
+	s=arc-20240116; t=1768823144; c=relaxed/simple;
+	bh=coQ+3GqF/Cz533dFKTrD9FgAWRYNV/tfvuHGsN+VX8o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=shozClgGbmxce0A8D4/uN+FgiHeENI9LN5bOgw1+bs0+U8MyePF742lKzcIZONNlksbUXmxB6ylUMDOL+MUWPOmnIpXqF/9VpNsZYAJPx6braWeSJLx1mzxVXE/m/GkYLWuoH81qtpdTDI21byqJDhMiJcxfxP6cIbBIFKUiXm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOfPhSsr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1109CC116C6;
+	Mon, 19 Jan 2026 11:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768822794;
-	bh=AGjpBY9PRzOJwXFxtqhktNL8+kYSWCpGTglVyO7L64Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JIvz5gqLIqjyWC1/h5tKV6dCljNMKjYphm97dzcn/VptQ8w6UY4wI/PoVMNizRprY
-	 4SU5fLHTiEXUvFDv4CUdFm0pmejFSnx2dQHSXwaZkshRPQNYuDduoLz/TEgBJQn3uI
-	 b7thoDrdWEhviXRaA7xiH3rf4GmHDQvbyoQaMTcE=
-Date: Mon, 19 Jan 2026 12:39:52 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Keerthana Kalyanasundaram <keerthana.kalyanasundaram@broadcom.com>
-Cc: patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>,
-	stable <stable@vger.kernel.org>,
-	Ben Hutchings <ben@decadent.org.uk>
-Subject: Re: [PATCH 5.10 423/451] tls: Use __sk_dst_get() and dst_dev_rcu()
- in get_netdev_for_sock().
-Message-ID: <2026011923-coat-strict-6cc4@gregkh>
-References: <20260115164230.864985076@linuxfoundation.org>
- <20260115164246.242565555@linuxfoundation.org>
- <4ca8d0770343eae44e19854cf197c76017a7c1ad.camel@decadent.org.uk>
- <CAM8uoQ-F++6iScZBzntmF=KhHRK3=rQvc-oug3KAXPddJPqR-Q@mail.gmail.com>
- <CAM8uoQ_7HD0AtJLqXsRvO=F2knq=BtrdTM2Fv0Dd4h-4oYebNw@mail.gmail.com>
- <2026011944-wielder-ignition-dee8@gregkh>
- <CAM8uoQ-NyJQatRYXty2XdiTjsuO6hRmEam_YaNrBbgEUuK6KQA@mail.gmail.com>
+	s=korg; t=1768823144;
+	bh=coQ+3GqF/Cz533dFKTrD9FgAWRYNV/tfvuHGsN+VX8o=;
+	h=Subject:To:Cc:From:Date:From;
+	b=kOfPhSsrfZIKSnliktj+kowmckTpA0ijmoj+HNUXB8GHca2VpK3Ov1jzIvKks7Bf6
+	 3y/tYq3RD5/yFky1ztHurSkEaZ1WKI7MsltPfkS8qxV7Vch4KJWqb5tYCdBjEFSg83
+	 XHLa+28pn6mkNRHxxl3m3tI6gdodSYyXsRuVFlNE=
+Subject: FAILED: patch "[PATCH] nvme-apple: add "apple,t8103-nvme-ans2" as compatible" failed to apply to 6.12-stable tree
+To: j@jannau.net,hch@lst.de,kbusch@kernel.org,neal@gompa.dev
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 19 Jan 2026 12:45:41 +0100
+Message-ID: <2026011941-doorstop-dipped-ecaf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAM8uoQ-NyJQatRYXty2XdiTjsuO6hRmEam_YaNrBbgEUuK6KQA@mail.gmail.com>
 
-On Mon, Jan 19, 2026 at 04:38:41PM +0530, Keerthana Kalyanasundaram wrote:
-> On Mon, Jan 19, 2026 at 3:36 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> 
-> > On Mon, Jan 19, 2026 at 03:09:32PM +0530, Keerthana Kalyanasundaram wrote:
-> > > Hi Greg,
-> > >
-> > > I have backported the two additional patches required for the 5.10.y tree
-> > > and submitted a v2 series. You can find the updated patches here:
-> > >
-> > https://lore.kernel.org/stable/20260119092602.1414468-1-keerthana.kalyanasundaram@broadcom.com/T/#t
-> > >
-> > >
-> > > Could you please consume these in the next version, or alternatively, add
-> > > the two missed patches (commit IDs 5b998545 and 719a402cf) to the current
-> > > queue?
-> >
-> > I've dropped them all from the 5.10.y tree now, and from the 5.15.y
-> > tree. Can you also resend that series?
-> >
-> 
-> Hi Greg,
-> 
-> The other two commits are already part of the stable 5.15.y tree, so
-> changes are only needed for the 5.10.y tree.
-> 
-> Please check my latest v2 patchset : (
-> https://lore.kernel.org/stable/20260119092602.1414468-1-keerthana.kalyanasundaram@broadcom.com/T/#t
-> )
 
-I see the series, sorry, they are now dropped.  Can you resend them for 5.15?
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 7d3fa7e954934fbda0a017ac1c305b7b10ecceef
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011941-doorstop-dipped-ecaf@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
 
 thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 7d3fa7e954934fbda0a017ac1c305b7b10ecceef Mon Sep 17 00:00:00 2001
+From: Janne Grunau <j@jannau.net>
+Date: Wed, 31 Dec 2025 11:10:57 +0100
+Subject: [PATCH] nvme-apple: add "apple,t8103-nvme-ans2" as compatible
+
+After discussion with the devicetree maintainers we agreed to not extend
+lists with the generic compatible "apple,nvme-ans2" anymore [1]. Add
+"apple,t8103-nvme-ans2" as fallback compatible as it is the SoC the
+driver and bindings were written for.
+
+[1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
+
+Cc: stable@vger.kernel.org # v6.18+
+Fixes: 5bd2927aceba ("nvme-apple: Add initial Apple SoC NVMe driver")
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Janne Grunau <j@jannau.net>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+
+diff --git a/drivers/nvme/host/apple.c b/drivers/nvme/host/apple.c
+index 15b3d07f8ccd..ed61b97fde59 100644
+--- a/drivers/nvme/host/apple.c
++++ b/drivers/nvme/host/apple.c
+@@ -1704,6 +1704,7 @@ static const struct apple_nvme_hw apple_nvme_t8103_hw = {
+ 
+ static const struct of_device_id apple_nvme_of_match[] = {
+ 	{ .compatible = "apple,t8015-nvme-ans2", .data = &apple_nvme_t8015_hw },
++	{ .compatible = "apple,t8103-nvme-ans2", .data = &apple_nvme_t8103_hw },
+ 	{ .compatible = "apple,nvme-ans2", .data = &apple_nvme_t8103_hw },
+ 	{},
+ };
+
 
