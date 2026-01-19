@@ -1,242 +1,175 @@
-Return-Path: <stable+bounces-210355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F150DD3AB3A
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 15:08:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F045AD3AB5A
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 15:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DA815300FBDE
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:05:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EAFD0300FE03
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0370376BCF;
-	Mon, 19 Jan 2026 14:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597AC32693E;
+	Mon, 19 Jan 2026 14:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DhM9txJt"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="EdV5FQjj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF77A35CB84
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 14:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C915A376BFF
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 14:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768831528; cv=none; b=Koz5wKBQ/YwqD6pWbAspjWJcYmtd95T6WUMRy3aT+ssoImSzoJmt7/aNHnMOOg5KSjUr3oS87svXobgu4IHXTEOS9gTaRP8A3lo8WnEnzMDJ7jeRdQpFYua7OJrTn893p828SmOa9iiwmDmYe4GrkSHRFX/aqRyXfe9sOGd5ipA=
+	t=1768831795; cv=none; b=YtdiulfhoYYErvX8Q9t1km+wgpXqyBhQh3VYY7XDXHKT1PW0m+uUEGezkt3HelLxJt/B+kTRCshefjKBJBNgV+iQumWmeXrSIldeeWkwbAN4ez5ocEzT+QREKYeW+bEY89X7mx7qN7Ecm3omrJR9rQdAMiUQa3S5q2UjkDBHymc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768831528; c=relaxed/simple;
-	bh=Os00fZo/Ep1VtT6RREuGctNZzOne1pfhDWIGSEScn5Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YPTb3WIWqiciEzuK9DbudM7IpRjFiBl3cgeAgIzYgm24P3Sod+/Pn7dUrDpKZ7r8lvEQZU7ilmqPYyJ/bFuXvdVp24n1AyHPmBE5vJqWGXME0XoY/DNiY8c4Zjp9Y5mduuRp0964EaK1UDa3SXAYhHzMpscl4xcgoEYwjafR2UE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DhM9txJt; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8c52c1d2a7bso590496385a.0
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 06:05:25 -0800 (PST)
+	s=arc-20240116; t=1768831795; c=relaxed/simple;
+	bh=6U8McwR52eIu6tT5JV1q0h4k03viouDmkp+RqWVDq4w=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=O7jBmYtUAEustL/I0sqKFzjO9IGl8FlUD2LxY8Z5gFf9DJors8151CDslJ3YzsNDXdD32wokpihyE2uGY65dlK6jVODFkh60fCJbIfMim+zvbpDfuMXc0meGOcaDEvYjvzpkIK8iiJxKWh31Tfoy9xUf0dQ/S4kmbCBVqYvkd4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=EdV5FQjj; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-40423dbe98bso1640751fac.2
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 06:09:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768831525; x=1769436325; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1768831790; x=1769436590; darn=vger.kernel.org;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hF78wptD7ld1V2LGnCYp+bLK7K2nBtHmiHSnMfpqB8c=;
-        b=DhM9txJtqUHEvsP3zJ+/X0cxOtzEOgOtMl6xxSA9F/o7LLCu36de3SL98u6MmCTykl
-         RDYAiYBrn/tbLfRvS6FuBPiOl6ErN7OG+ukVX6MM/dBvDDNV03gzPmBHuIPYTq130LWH
-         qC9XtY3sG5G3dbr4+eI7XaZTKnmyrsctHvDbEvPBkKQ9LgRGpVYS7R7O498xTyglJfIO
-         anw8AseGEXDacKAjINJIRSeFEWaEe6GuNbxTTh3Mw/OLloiUx86Q7n77WWdhNSuhSLz7
-         6czXRB9kAgEoGVdN5Yk6yYaiL+HXWRyr7L3eIiopfNjJxbmkmMdvov3AOQUWDWyswjK8
-         jnXg==
+        bh=Nn+kgCXo+gO3XBNdhRqVLYxyzQzS1oytNHk5Z1E3Ox8=;
+        b=EdV5FQjjS23lLIj9wjEnwvJDdkK11IQXzx9sVGTlLf6VCOc5nQ8iPWGHBnJVU0Iejw
+         D47uquxvs9xavBRGgNH8FLzAlOhATtdv04F5IxeCjirkCnfU5wVHks30ELeqaDMa3aIS
+         VNgF9wB7GfH40ucoqI5td9JnYamfUWOyqVFMq9E0Q2/2cf1Lr4+T8NQ31LAX1eJkUH5R
+         3KSoMkJM7Vc+Uipx7iJih4F0op7ElGXDrIPHQbggsuVkk1rAJkwCsrr/Z+tISuGP+oC/
+         rklMkKiAU2/tbIMml3G+moIlcwMD0LP3JcFyVUnoQ8HGwZmPlAZQt6lNSFWv8qAedYKM
+         IddQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768831525; x=1769436325;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hF78wptD7ld1V2LGnCYp+bLK7K2nBtHmiHSnMfpqB8c=;
-        b=uvWpbWaQ0cycZVFWp8937BROMRvudYOo5wjiH5ddScntLOfqhv2tRf3uzj8HUQiFFy
-         HswAPNewQDkLGn7cbH8eOo+DeTwE0h+lftmQWr9pqSU7Rf1Fk5GpEpjy+a1gjHEnYVmS
-         rg84mrYMfYcr+SS0hjLqUVQM5VsjAbF/jNXuPg1eTYA5MttHS79vNo+U+85kJusTKDC7
-         VzAkS2DbHQ+DgFcrDiFD/TQYB6tf2frwQyM2ljhu5Trg+niaJqTa9xCCjp3kvUe6nAW/
-         0emDWrVoxfzm20BV5oM/9wmXjEdGFgzXNW5HEUjas5NMsmYWv/4PXYdqH02SI4N5R8zz
-         AYew==
-X-Forwarded-Encrypted: i=1; AJvYcCWEhu9rONMUPrpcORkjQcf1KeFApMo5c4MP/v2NhS11y5RpBabMOrv0k6o9CUPhtPaaJnscmhk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFVWCzO1Y8vm3tU6EARtgjm8uRM6CN2rcIBKnQCdL7jVnXKxxX
-	taf2MlG6lFCkVesczIeuFhO7rBbB8nTF4Jf2+UKLPeDJrt61vbXgcaTjULt4ENd5eAHe/SIy1Fj
-	ZhFX5Jv2kcsvABQMAGptMNGML6rGI8Xk=
-X-Gm-Gg: AY/fxX5BFqpF+0Kwa5kBmaoNl1iP7g5mxwzyvHCnGuH++ggLB4/6GzMgj/zSxBCPbIy
-	vsq9X4qllVYRsKBjrwBFwibeRAtbpJ88NR2DEuia3SVylWGzcUVR4v7qXo93t22NRy///zP2bDL
-	XRvirGwLHmrG0jrMWiuzlJHhbEOAlrbnBmeoivWYTSSfJwMJ4fCWTuH/vb+4+3JcTF1ZHVubdAU
-	mzyCbUA+mM4uibcRr9Q1R/OofklOhNAvffy00FlR/KjPXHJocxoUrYJcUo3h2fstYR0idY3fStJ
-	4iwsimQUoggIOgGrzJq1hfexO1M=
-X-Received: by 2002:ac8:7f54:0:b0:4f1:de87:ad90 with SMTP id
- d75a77b69052e-501982dcb8bmr201855631cf.4.1768831524345; Mon, 19 Jan 2026
- 06:05:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768831790; x=1769436590;
+        h=in-reply-to:from:content-language:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Nn+kgCXo+gO3XBNdhRqVLYxyzQzS1oytNHk5Z1E3Ox8=;
+        b=lp5YDakkoPr5WEzaTEZccVUvlE0bopMzEt3Xznak1AjDY8t1KOdaB2Lz5pqEoSX9k8
+         4XBkBgXUS2MTogy32B/bFonmbAZfqIo2dSHpocdmdLMLzhI5Xc0w6nYJPippklFbSusw
+         JK0KaDj5Mt7B9hvmQnbhTQ4NIpz2WIyQsPcN5V6lSOxJbTkoBkrtSmwpTzvsLZ4b9fxF
+         PjFdj72P2FtjeNQyxaQzRBVWp1zdGWuI9RlkNmQZFryP9WnQqVsxfhTcz03zfhOvyjG/
+         Hxu9ndBCzfoKo+tXq9OGVCWzUi4yl0f6rzcoLzst1nNoBsvQ7+4kjU018gx12WfZL6xu
+         tKYA==
+X-Gm-Message-State: AOJu0Yz9uzbgrqkvSMIkT7VG8TaxkTkpYbrSh55AvidRKrzzrcWyMLQt
+	Atc9PjAp3ArmO9iwAE5PQlS/UGyB17c3GvF8dqQ0Qe6DKOGkvAPn41vCnvVPrQaSUBXsm2vYOve
+	MZfk3
+X-Gm-Gg: AY/fxX4ofFQfb3WewPUNJqeEXNZ+hZU8trb++vJaIQLLe/y0xGT0HNvt2b3LOnYo5Wi
+	WnEqvi9Xncv4RFkWrTnjsTjsnrxoWoOXnbTfeKX+yKURZ9EIt7F57LsWdu+SCmTr7ADzl9KoShJ
+	WObHve8bdcmynhLnVflme7exUa7zQd7L4+z89t+apfXLU0dLt/JFi9MqUzuQiBuHlG0JCieumKC
+	mr7AQ3f05G33gAgDnkNaVbhWpqERRrK3/29Lz01PXYwd1iBbdfOFIZLBwpTVXqIeVK/tKNkcu5/
+	Un3BA0++/sif4zhrFVJJadsXwh81iHDLfVqc5BUBF4e8RXgltjnMw7SHrugx7pyk63oMF1Ec4HY
+	h/TaWHumMHiaJGJTvacF7SlbuwTw18oofto93XGw0DL4bnVGsAM75kvwdbTYOjpNqGFkI0gQBeN
+	mL7KMwjdABo4bSOEbcRJ7nUXPhmVk+O0ICe1mZAa5BlXVctDAXL40zbsNxi0w5/XeaPWKe3Q==
+X-Received: by 2002:a05:6870:fb92:b0:3f1:644f:56b0 with SMTP id 586e51a60fabf-4044d09dfd6mr5277885fac.53.1768831789756;
+        Mon, 19 Jan 2026 06:09:49 -0800 (PST)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4044bda221asm6776158fac.20.2026.01.19.06.09.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jan 2026 06:09:48 -0800 (PST)
+Content-Type: multipart/mixed; boundary="------------0c3stn23lDdEhRSm0bpr4O18"
+Message-ID: <70e03a78-fa04-48c6-8252-7d0724c2c860@kernel.dk>
+Date: Mon, 19 Jan 2026 07:09:47 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260119-ufs-rst-v1-1-c8e96493948c@gmail.com> <b0904cb5-3659-41cc-8395-79eec9e82f01@cherry.de>
- <CABjd4YzJud4ZZQ_GrOOSnfEVG7wgHmPSf9w8oQhLVSx6WXgN5A@mail.gmail.com> <d3b5f622-36ec-42ea-90da-3c056e1b6461@cherry.de>
-In-Reply-To: <d3b5f622-36ec-42ea-90da-3c056e1b6461@cherry.de>
-From: Alexey Charkov <alchark@gmail.com>
-Date: Mon, 19 Jan 2026 18:05:16 +0400
-X-Gm-Features: AZwV_QjYhPBrmB-HzyDxfoEaeqoxWE1URl6xYqQ4XwLXLh3YQ3UlufJql0dky0Q
-Message-ID: <CABjd4YympEqbiN9-Kwv40YtaCh6bu=3PBQPyvvGgKCQbLeZmZw@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: rockchip: Explicitly request UFS reset pin on RK3576
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Shawn Lin <shawn.lin@rock-chips.com>, 
-	Manivannan Sadhasivam <mani@kernel.org>, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] io_uring: move local task_work in exit
+ cancel loop" failed to apply to 6.12-stable tree
+To: gregkh@linuxfoundation.org, ming.lei@redhat.com
+Cc: stable@vger.kernel.org
+References: <2026011955-pulmonary-transpire-4456@gregkh>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2026011955-pulmonary-transpire-4456@gregkh>
 
-On Mon, Jan 19, 2026 at 5:58=E2=80=AFPM Quentin Schulz <quentin.schulz@cher=
-ry.de> wrote:
->
-> Hi Alexey,
->
-> On 1/19/26 2:43 PM, Alexey Charkov wrote:
-> > Hi Quentin,
-> >
-> > On Mon, Jan 19, 2026 at 3:08=E2=80=AFPM Quentin Schulz <quentin.schulz@=
-cherry.de> wrote:
-> >>
-> >> Hi Alexey,
-> >>
-> >> On 1/19/26 10:22 AM, Alexey Charkov wrote:
-> >>> Rockchip RK3576 UFS controller uses a dedicated pin to reset the conn=
-ected
-> >>> UFS device, which can operate either in a hardware controlled mode or=
- as a
-> >>> GPIO pin.
-> >>>
-> >>> Power-on default is GPIO mode, but the boot ROM reconfigures it to a
-> >>> hardware controlled mode if it uses UFS to load the next boot stage.
-> >>>
-> >>> Given that existing bindings (and rk3576.dtsi) expect a GPIO-controll=
-ed
-> >>> device reset, request the required pin config explicitly.
-> >>>
-> >>> This doesn't appear to affect Linux, but it does affect U-boot:
-> >>>
-> >>> Before:
-> >>> =3D> md.l 0x2604b398
-> >>> 2604b398: 00000011 00000000 00000000 00000000  ................
-> >>> < ... snip ... >
-> >>> =3D> ufs init
-> >>> ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=3D[3, 3], lane[2, 2], =
-pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate =3D 2
-> >>> =3D> md.l 0x2604b398
-> >>> 2604b398: 00000011 00000000 00000000 00000000  ................
-> >>>
-> >>> After:
-> >>> =3D> md.l 0x2604b398
-> >>> 2604b398: 00000011 00000000 00000000 00000000  ................
-> >>> < ... snip ...>
-> >>> =3D> ufs init
-> >>> ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=3D[3, 3], lane[2, 2], =
-pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate =3D 2
-> >>> =3D> md.l 0x2604b398
-> >>> 2604b398: 00000010 00000000 00000000 00000000  ................
-> >>>
-> >>> (0x2604b398 is the respective pin mux register, with its BIT0 driving=
- the
-> >>> mode of UFS_RST: unset =3D GPIO, set =3D hardware controlled UFS_RST)
-> >>>
-> >>> This helps ensure that GPIO-driven device reset actually fires when t=
-he
-> >>> system requests it, not when whatever black box magic inside the UFSH=
-C
-> >>> decides to reset the flash chip.
-> >>>
-> >>> Cc: stable@vger.kernel.org
-> >>> Fixes: c75e5e010fef ("scsi: arm64: dts: rockchip: Add UFS support for=
- RK3576 SoC")
-> >>> Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
-> >>> Signed-off-by: Alexey Charkov <alchark@gmail.com>
-> >>> ---
-> >>> This has originally surfaced during the review of UFS patches for U-b=
-oot
-> >>> at [1], where it was found that the UFS reset line is not requested t=
-o be
-> >>> configured as GPIO but used as such. This leads in some cases to the =
-UFS
-> >>> driver appearing to control device resets, while in fact it is the
-> >>> internal controller logic that drives the reset line (perhaps in
-> >>> unexpected ways).
-> >>>
-> >>> Thanks Quentin Schulz for spotting this issue.
-> >>>
-> >>> [1] https://lore.kernel.org/u-boot/259fc358-f72b-4a24-9a71-ad90f20813=
-35@cherry.de/
-> >>> ---
-> >>>    arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi | 7 +++++++
-> >>>    arch/arm64/boot/dts/rockchip/rk3576.dtsi         | 2 +-
-> >>>    2 files changed, 8 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi b/arch/=
-arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
-> >>> index 0b0851a7e4ea..20cfd3393a75 100644
-> >>> --- a/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
-> >>> +++ b/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
-> >>> @@ -5228,6 +5228,13 @@ ufs_rst: ufs-rst {
-> >>>                                /* ufs_rstn */
-> >>>                                <4 RK_PD0 1 &pcfg_pull_none>;
-> >>>                };
-> >>> +
-> >>> +             /omit-if-no-ref/
-> >>> +             ufs_rst_gpio: ufs-rst-gpio {
-> >>> +                     rockchip,pins =3D
-> >>> +                             /* ufs_rstn */
-> >>> +                             <4 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>=
-;
-> >>
-> >> The SoC default is pull-down according to the TRM. Can you check pleas=
-e?
-> >> For example, the Rock 4D doesn't seem to have a hardware pull-up or
-> >> pull-down on the line and the UFS module only seems to have a debounce=
-r
-> >> (capacitor between the line and ground). So except if the chip itself
-> >> has a PU/PD, this may be an issue?
-> >
-> > The SoC default is indeed pull-down (as stated both in the TRM and in
-> > the reference schematic from RK3576 EVB1). Which I believe means that
-> > the attached device should be held in a reset state until the driver
-> > takes over the control of the GPIO line (which, in turn, is consistent
-> > with the observed behavior when reset handling is not enabled in the
-> > driver but the reset pin is in GPIO mode).
-> >
-> > Are you concerned that the chip might unintentionally go in or out of
-> > reset between the moment the pinctrl subsystem claims the pin and the
-> > moment the driver starts outputting a state it desires? This hasn't
->
-> Exactly that.
->
-> Imagine for some reason the driver EPROBE_DEFER, there can be a lot of
-> time between the original pinconf/pinmux and the time the GPIO is
-> actually driven.
->
-> At the same time.. I guess it may not matter much if the UFS chip gets
-> out of reset temporarily as (I assume) when the UFS controller probes
-> properly, it'll do a full reset of the UFS chip via the reset GPIO.
-> Don't know anything about UFS, so maybe there could be damage if the UFS
-> chip gets out of reset if its supplies or IO lines are in an illegal stat=
-e?
->
-> > caused any observable issues in my testing, but I guess we could
-> > explicitly set it to &pcfg_pull_down for more predictable behavior in
-> > line with what's printed on the schematic.
-> >
->
-> s/schematics/TRM/
->
-> I'll let Heiko decide but I would personally go for a PD to match the
-> default state of the SoC according to the TRM.
+This is a multi-part message in MIME format.
+--------------0c3stn23lDdEhRSm0bpr4O18
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Happy to make a v2 with an explicit pull-down. Will wait a bit for any
-other potential feedback though.
+On 1/19/26 4:47 AM, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.12-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x da579f05ef0faada3559e7faddf761c75cdf85e1
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011955-pulmonary-transpire-4456@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Thanks a lot,
-Alexey
+Here's one for 6.12-stable.
+
+-- 
+Jens Axboe
+
+--------------0c3stn23lDdEhRSm0bpr4O18
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-io_uring-move-local-task_work-in-exit-cancel-loop.patch"
+Content-Disposition: attachment;
+ filename*0="0001-io_uring-move-local-task_work-in-exit-cancel-loop.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSBkZGRlMWU4OTU1YzRkNzU3NGFmN2Y3OGZmYTY0Njk1NDgyZGUzZmM4IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBNaW5nIExlaSA8bWluZy5sZWlAcmVkaGF0LmNvbT4K
+RGF0ZTogV2VkLCAxNCBKYW4gMjAyNiAxNjo1NDowNSArMDgwMApTdWJqZWN0OiBbUEFUQ0hd
+IGlvX3VyaW5nOiBtb3ZlIGxvY2FsIHRhc2tfd29yayBpbiBleGl0IGNhbmNlbCBsb29wCgpD
+b21taXQgZGE1NzlmMDVlZjBmYWFkYTM1NTllN2ZhZGRmNzYxYzc1Y2RmODVlMSB1cHN0cmVh
+bS4KCldpdGggSU9SSU5HX1NFVFVQX0RFRkVSX1RBU0tSVU4sIHRhc2sgd29yayBpcyBxdWV1
+ZWQgdG8gY3R4LT53b3JrX2xsaXN0Cihsb2NhbCB3b3JrKSByYXRoZXIgdGhhbiB0aGUgZmFs
+bGJhY2sgbGlzdC4gRHVyaW5nIGlvX3JpbmdfZXhpdF93b3JrKCksCmlvX21vdmVfdGFza193
+b3JrX2Zyb21fbG9jYWwoKSB3YXMgY2FsbGVkIG9uY2UgYmVmb3JlIHRoZSBjYW5jZWwgbG9v
+cCwKbW92aW5nIHdvcmsgZnJvbSB3b3JrX2xsaXN0IHRvIGZhbGxiYWNrX2xsaXN0LgoKSG93
+ZXZlciwgdGFzayB3b3JrIGNhbiBiZSBhZGRlZCB0byB3b3JrX2xsaXN0IGR1cmluZyB0aGUg
+Y2FuY2VsIGxvb3AKaXRzZWxmLiBUaGVyZSBhcmUgdHdvIGNhc2VzOgoKMSkgaW9fa2lsbF90
+aW1lb3V0cygpIGlzIGNhbGxlZCBmcm9tIGlvX3VyaW5nX3RyeV9jYW5jZWxfcmVxdWVzdHMo
+KSB0bwpjYW5jZWwgcGVuZGluZyB0aW1lb3V0cywgYW5kIGl0IGFkZHMgdGFzayB3b3JrIHZp
+YSBpb19yZXFfcXVldWVfdHdfY29tcGxldGUoKQpmb3IgZWFjaCBjYW5jZWxsZWQgdGltZW91
+dDoKCjIpIFVSSU5HX0NNRCByZXF1ZXN0cyBsaWtlIHVibGsgY2FuIGJlIGNvbXBsZXRlZCB2
+aWEKaW9fdXJpbmdfY21kX2NvbXBsZXRlX2luX3Rhc2soKSBmcm9tIHVibGtfcXVldWVfcnEo
+KSBkdXJpbmcgY2FuY2VsaW5nLApnaXZlbiB1YmxrIHJlcXVlc3QgcXVldWUgaXMgb25seSBx
+dWllc2NlZCB3aGVuIGNhbmNlbGluZyB0aGUgMXN0IHVyaW5nX2NtZC4KClNpbmNlIGlvX2Fs
+bG93ZWRfZGVmZXJfdHdfcnVuKCkgcmV0dXJucyBmYWxzZSBpbiBpb19yaW5nX2V4aXRfd29y
+aygpCihrd29ya2VyICE9IHN1Ym1pdHRlcl90YXNrKSwgaW9fcnVuX2xvY2FsX3dvcmsoKSBp
+cyBuZXZlciBpbnZva2VkLAphbmQgdGhlIHdvcmtfbGxpc3QgZW50cmllcyBhcmUgbmV2ZXIg
+cHJvY2Vzc2VkLiBUaGlzIGNhdXNlcwppb191cmluZ190cnlfY2FuY2VsX3JlcXVlc3RzKCkg
+dG8gbG9vcCBpbmRlZmluaXRlbHksIHJlc3VsdGluZyBpbgoxMDAlIENQVSB1c2FnZSBpbiBr
+d29ya2VyIHRocmVhZHMuCgpGaXggdGhpcyBieSBtb3ZpbmcgaW9fbW92ZV90YXNrX3dvcmtf
+ZnJvbV9sb2NhbCgpIGluc2lkZSB0aGUgY2FuY2VsCmxvb3AsIGVuc3VyaW5nIGFueSB3b3Jr
+IG9uIHdvcmtfbGxpc3QgaXMgbW92ZWQgdG8gZmFsbGJhY2sgYmVmb3JlCmVhY2ggY2FuY2Vs
+IGF0dGVtcHQuCgpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZwpGaXhlczogYzBlMGQ2YmEy
+NWYxICgiaW9fdXJpbmc6IGFkZCBJT1JJTkdfU0VUVVBfREVGRVJfVEFTS1JVTiIpClNpZ25l
+ZC1vZmYtYnk6IE1pbmcgTGVpIDxtaW5nLmxlaUByZWRoYXQuY29tPgpTaWduZWQtb2ZmLWJ5
+OiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CihjaGVycnkgcGlja2VkIGZyb20gY29t
+bWl0IGRhNTc5ZjA1ZWYwZmFhZGEzNTU5ZTdmYWRkZjc2MWM3NWNkZjg1ZTEpCi0tLQogaW9f
+dXJpbmcvaW9fdXJpbmcuYyB8IDggKysrKy0tLS0KIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2Vy
+dGlvbnMoKyksIDQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvaW9fdXJp
+bmcuYyBiL2lvX3VyaW5nL2lvX3VyaW5nLmMKaW5kZXggYWRmMmIwYTFiYjU5Li45OWIwYjFi
+YTBmZTIgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5nL2lvX3VyaW5nLmMKKysrIGIvaW9fdXJpbmcv
+aW9fdXJpbmcuYwpAQCAtMjkwNCwxMSArMjkwNCwxMSBAQCBzdGF0aWMgX19jb2xkIHZvaWQg
+aW9fcmluZ19leGl0X3dvcmsoc3RydWN0IHdvcmtfc3RydWN0ICp3b3JrKQogCQkJbXV0ZXhf
+dW5sb2NrKCZjdHgtPnVyaW5nX2xvY2spOwogCQl9CiAKLQkJaWYgKGN0eC0+ZmxhZ3MgJiBJ
+T1JJTkdfU0VUVVBfREVGRVJfVEFTS1JVTikKLQkJCWlvX21vdmVfdGFza193b3JrX2Zyb21f
+bG9jYWwoY3R4KTsKLQotCQl3aGlsZSAoaW9fdXJpbmdfdHJ5X2NhbmNlbF9yZXF1ZXN0cyhj
+dHgsIE5VTEwsIHRydWUpKQorCQlkbyB7CisJCQlpZiAoY3R4LT5mbGFncyAmIElPUklOR19T
+RVRVUF9ERUZFUl9UQVNLUlVOKQorCQkJCWlvX21vdmVfdGFza193b3JrX2Zyb21fbG9jYWwo
+Y3R4KTsKIAkJCWNvbmRfcmVzY2hlZCgpOworCQl9IHdoaWxlIChpb191cmluZ190cnlfY2Fu
+Y2VsX3JlcXVlc3RzKGN0eCwgTlVMTCwgdHJ1ZSkpOwogCiAJCWlmIChjdHgtPnNxX2RhdGEp
+IHsKIAkJCXN0cnVjdCBpb19zcV9kYXRhICpzcWQgPSBjdHgtPnNxX2RhdGE7Ci0tIAoyLjUx
+LjAKCg==
+
+--------------0c3stn23lDdEhRSm0bpr4O18--
 
