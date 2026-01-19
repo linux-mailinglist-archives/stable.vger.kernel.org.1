@@ -1,133 +1,206 @@
-Return-Path: <stable+bounces-210351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFEED3AA74
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:36:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14FA4D3AA98
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:43:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2F7E309BC17
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 13:34:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCC9A3084F5A
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 13:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4AC364026;
-	Mon, 19 Jan 2026 13:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698CF36BCF1;
+	Mon, 19 Jan 2026 13:43:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="lyXtIdlc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MYWUkw90"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EB3329E66
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 13:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2272536BCC7
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 13:43:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768829663; cv=none; b=gtdBu2OunChtpekkB98AF3edd2KY3f0FF1FXcy9ha9ofFN+Dk2ydZj950ZaoM3zhPKO6KWt/A0z8nn1SQfT56bSoc5EE1DFFP4FjSoUXfv8uOm2E65w20GocqFI2whMmzrKmnXV6kLN+o9TQ9qPbBjDDgKjaB7bE4zjmDU4m5KU=
+	t=1768830201; cv=none; b=rJdD75nTQQRehz81VRcOz39DwUp49bKI5VB6fQyBmYm5iBrET5C26lqIZX33lztPywPV2A3TQwsXAnXFz8qZz+GWVnN6mX3ivijzMBFnypqvq+Rcc44JC8wPdFNVdP6aDkX4hhLwL9j+6afekeKp6rSh8ZoQIVUV8TQ7fn0Xnxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768829663; c=relaxed/simple;
-	bh=dwWzDFV3GOIUCxfOqs9GQG2rdR7hT6Lv/em1fGGxWWA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uc3Av7zxy44c5JaOzNPwY0kgHm47Gq06tZcrfXc1ycCiiIGz0EDCBtSfn44Aacv0bygQMshNEDTnTQsWwDJ9Vvhvvh3rCRKvFX9zY3PUNghepk4Y9bmb2li73+qJ9SL//eBj4kf0zxMwS/CA6N0TgM9HnIp0sRmjj8TnBzpqHsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=lyXtIdlc; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=T74UgsmOi7s8QRwzwtqWj8hkGdBKN6XzqOPGTzVusbI=; b=lyXtIdlcFSbp100KBtd4pIhhj5
-	KO5i+BhoEaV23z9ntr2bG/Y1BmO2Wtht8VY0XoS90ypK8gYhWhq9P0VEJOqnnb/gcQFf47zYEVlpp
-	YLdb8k4EB2EvRotP7Mw+ynPykuxyVMAtrM6u26jcHH2Dr/hlHxUFy96h8Xh8V9G3qAGWue6SXaBfW
-	9p42Fp3tt4oK5LY/GMZ5OaQs50ZsO2bHl/pL7M+qyAHpkbW1BqS8t7AlfhT+2CkJs47g4ujhXQq8a
-	7pVavksfkgUPpGgGyxoI6B2zfEvpYbkElDvo/jdaYtAfddk2H4hWSTmmiS1LOh1Axs9WU44aUFtSm
-	9ghH/o3w==;
-Received: from [90.240.106.137] (helo=[192.168.0.101])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1vhpON-0079Ha-Jo; Mon, 19 Jan 2026 14:34:03 +0100
-Message-ID: <69008123-6899-49e4-9a30-b1cbff279ee4@igalia.com>
-Date: Mon, 19 Jan 2026 13:34:02 +0000
+	s=arc-20240116; t=1768830201; c=relaxed/simple;
+	bh=glVc+vYs2e48C7e6a42YdHrlwubv61v062vq1op02/k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T3gY2tn5Af3GYYruBVA2dM5uLQnpFg5QV5RgQaeJvDz9U5yoHv+y4Uar2iduD4fWzPCrICh7JZJUZAxiWGiU4JxyUrHAcyZ7dOdiJLJgO23Ogo+MEO/vPiKe/muXioNylUlNrL5uTD1h3BbpxcyD8axx1Vb92uAPaykV6gnLGtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MYWUkw90; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5014600ad12so33091731cf.2
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 05:43:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768830198; x=1769434998; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=chB5b0rt82JcysgedumeHVaiY8n8X+8y2Qmtz5rmwLo=;
+        b=MYWUkw90jR0MXmW9XWTRwA9nAUtxotOM931CR+9Ig6nP68+9k1vdcI/k/rGp7ePHE1
+         cA1fP5BWcWKy1a/lKXtdjaFK8vWfpeILzKqyHy6MJzuSThsvWUTjrWGLZMFdZO0Pf9ci
+         e2G7uuYAvQbj3zcWIAIJcJYyaL30t8XbIv+Vkwi/ZimJGNutT8tesNhXIAQAroeCipp2
+         LdpEAw5RtrPMwEVvAw28lYDHL00iFv/yqT6zEqbOkMYPis2M26lsj+kSUgFw4oP9TkxC
+         7p0PXJLDg4ESCbyhqYTuZSG+QgdcABsGHjwBbYcnQzPYksSvkrMlPYdplLg+L4BGuhQj
+         Ir0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768830198; x=1769434998;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=chB5b0rt82JcysgedumeHVaiY8n8X+8y2Qmtz5rmwLo=;
+        b=ox4FIDwy1EEsEYG2avmY5aqDWtGvuNk0ynRXz1tQIF6Fvpek/Ff6R42lOd5ynbrTFv
+         D47QpMA48wUF2ZViHsPY0hdy+21fFsVnlukyzZ+WKo43q665dkr7ZxfEBU9E0zyJdNsM
+         JC0c3ZTl01fKgA8wVVtfGjeD+AiKIG9XLYFbU2Nvo41UZNp/SnsRXGniFp4LTasWsvuF
+         FF9OKNL6+4O4tyILhFBX+X8va1VA6G1+12+m+Rv1H5gPkIkMatHcpqzKpzOv3nipUejR
+         13QriXQxiwHfkZZM0+y+b6NsWBV+3Pqs1XAcVNketkLdEr7t9uDXXqZ1F0rLEXqPSiBO
+         L8BA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxkE7EJUG5r8kJ0Dzq25baNDQBae/k3JO4hWgdUfEPlP8aAr9ujokUlqk7fwjSiXV66mns50U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB1fjXiTP14EmwGlU/E1HvZhn7RPARZJZVnxH2s4nmW32Zb8yL
+	IcQsiDE7Tk2YwGWFKQYsycgTVv/LbgJS5gjPv9h4I/+JqN7Rcno1jAaKDQVrd4JOrqX5rhrsuuS
+	MPBdOkC5Ga/L45a8W/oKrcGcN/W0yfoMeeZOw
+X-Gm-Gg: AY/fxX4yNmAWHK3MTFM5jPFf9XyYAoD0VrfPT6Vp9mmowa1tzKYz9hA7orL5iLJsxRJ
+	nUdDWyn9um4pq+y6/ebBF6bUevHS3+DqMM99e7F7S+LUsDXKE8yidTcUusXJgGQm14zh3TL5axZ
+	e+3mPpuyWFcDQoRJlEzicVZT2Eeaxe3W+i2aDO5n2cqVunKRHekWbhAXUNnSRTLwdv88WBGE718
+	uDQ3qoZzeDEWjIvZt2ez7RQ9X6DI9lGtxlyuB50W20qGYJITCTdkQb9uLAe7MjyGB7C2cGn6Ez+
+	BC6cRahC6RMp+l0ni0zB70A1sZkBsqdDvZiElQ==
+X-Received: by 2002:ac8:5a93:0:b0:4ee:1f22:3613 with SMTP id
+ d75a77b69052e-502a179b7d7mr149743011cf.62.1768830197715; Mon, 19 Jan 2026
+ 05:43:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/xe/xelp: Fix Wa_18022495364
-To: Matt Roper <matthew.d.roper@intel.com>
-Cc: intel-xe@lists.freedesktop.org, kernel-dev@igalia.com,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, stable@vger.kernel.org
-References: <20260116095040.49335-1-tvrtko.ursulin@igalia.com>
- <20260116164624.GE458813@mdroper-desk1.amr.corp.intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <20260116164624.GE458813@mdroper-desk1.amr.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260119-ufs-rst-v1-1-c8e96493948c@gmail.com> <b0904cb5-3659-41cc-8395-79eec9e82f01@cherry.de>
+In-Reply-To: <b0904cb5-3659-41cc-8395-79eec9e82f01@cherry.de>
+From: Alexey Charkov <alchark@gmail.com>
+Date: Mon, 19 Jan 2026 17:43:09 +0400
+X-Gm-Features: AZwV_Qg3fDBDn37sLa59WhlzNgabNqw_H45Z3ujw8yrw_76pBFKSvwfPEz_39iE
+Message-ID: <CABjd4YzJud4ZZQ_GrOOSnfEVG7wgHmPSf9w8oQhLVSx6WXgN5A@mail.gmail.com>
+Subject: Re: [PATCH] arm64: dts: rockchip: Explicitly request UFS reset pin on RK3576
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Shawn Lin <shawn.lin@rock-chips.com>, 
+	Manivannan Sadhasivam <mani@kernel.org>, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Quentin,
 
-On 16/01/2026 16:46, Matt Roper wrote:
-> On Fri, Jan 16, 2026 at 09:50:40AM +0000, Tvrtko Ursulin wrote:
->> It looks I mistyped CS_DEBUG_MODE2 as CS_DEBUG_MODE1 when adding the
->> workaround. Fix it.
-> 
-> This matches the explanation of "option 1" for the workaround, but I'm
-> wondering if we want/need this workaround at all.  Option 1 is to write
-> the CS_DEBUG_MODE2 register (as you're doing here), but Option 2 is to
-> do a constant cache invalidation (PIPE_CONTROL[DW1][Bit3]) during
-> top-of-pipe invalidation and it looks like we already do that in general
-> in emit_pipe_invalidate(), so it seems like we're implementing both
-> options at the same time.  It looks like there's similar redundancy in
-> i915 as well...
-> 
-> Are you seeing the programming of the correct register here actually
-> change/fix anything?  If so, does just deleting the programming of the
-> wrong register without programming the right one also fix the issue?
+On Mon, Jan 19, 2026 at 3:08=E2=80=AFPM Quentin Schulz <quentin.schulz@cher=
+ry.de> wrote:
+>
+> Hi Alexey,
+>
+> On 1/19/26 10:22 AM, Alexey Charkov wrote:
+> > Rockchip RK3576 UFS controller uses a dedicated pin to reset the connec=
+ted
+> > UFS device, which can operate either in a hardware controlled mode or a=
+s a
+> > GPIO pin.
+> >
+> > Power-on default is GPIO mode, but the boot ROM reconfigures it to a
+> > hardware controlled mode if it uses UFS to load the next boot stage.
+> >
+> > Given that existing bindings (and rk3576.dtsi) expect a GPIO-controlled
+> > device reset, request the required pin config explicitly.
+> >
+> > This doesn't appear to affect Linux, but it does affect U-boot:
+> >
+> > Before:
+> > =3D> md.l 0x2604b398
+> > 2604b398: 00000011 00000000 00000000 00000000  ................
+> > < ... snip ... >
+> > =3D> ufs init
+> > ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=3D[3, 3], lane[2, 2], pw=
+r[FASTAUTO_MODE, FASTAUTO_MODE], rate =3D 2
+> > =3D> md.l 0x2604b398
+> > 2604b398: 00000011 00000000 00000000 00000000  ................
+> >
+> > After:
+> > =3D> md.l 0x2604b398
+> > 2604b398: 00000011 00000000 00000000 00000000  ................
+> > < ... snip ...>
+> > =3D> ufs init
+> > ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=3D[3, 3], lane[2, 2], pw=
+r[FASTAUTO_MODE, FASTAUTO_MODE], rate =3D 2
+> > =3D> md.l 0x2604b398
+> > 2604b398: 00000010 00000000 00000000 00000000  ................
+> >
+> > (0x2604b398 is the respective pin mux register, with its BIT0 driving t=
+he
+> > mode of UFS_RST: unset =3D GPIO, set =3D hardware controlled UFS_RST)
+> >
+> > This helps ensure that GPIO-driven device reset actually fires when the
+> > system requests it, not when whatever black box magic inside the UFSHC
+> > decides to reset the flash chip.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: c75e5e010fef ("scsi: arm64: dts: rockchip: Add UFS support for R=
+K3576 SoC")
+> > Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
+> > Signed-off-by: Alexey Charkov <alchark@gmail.com>
+> > ---
+> > This has originally surfaced during the review of UFS patches for U-boo=
+t
+> > at [1], where it was found that the UFS reset line is not requested to =
+be
+> > configured as GPIO but used as such. This leads in some cases to the UF=
+S
+> > driver appearing to control device resets, while in fact it is the
+> > internal controller logic that drives the reset line (perhaps in
+> > unexpected ways).
+> >
+> > Thanks Quentin Schulz for spotting this issue.
+> >
+> > [1] https://lore.kernel.org/u-boot/259fc358-f72b-4a24-9a71-ad90f2081335=
+@cherry.de/
+> > ---
+> >   arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi | 7 +++++++
+> >   arch/arm64/boot/dts/rockchip/rk3576.dtsi         | 2 +-
+> >   2 files changed, 8 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi b/arch/ar=
+m64/boot/dts/rockchip/rk3576-pinctrl.dtsi
+> > index 0b0851a7e4ea..20cfd3393a75 100644
+> > --- a/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
+> > +++ b/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
+> > @@ -5228,6 +5228,13 @@ ufs_rst: ufs-rst {
+> >                               /* ufs_rstn */
+> >                               <4 RK_PD0 1 &pcfg_pull_none>;
+> >               };
+> > +
+> > +             /omit-if-no-ref/
+> > +             ufs_rst_gpio: ufs-rst-gpio {
+> > +                     rockchip,pins =3D
+> > +                             /* ufs_rstn */
+> > +                             <4 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>;
+>
+> The SoC default is pull-down according to the TRM. Can you check please?
+> For example, the Rock 4D doesn't seem to have a hardware pull-up or
+> pull-down on the line and the UFS module only seems to have a debouncer
+> (capacitor between the line and ground). So except if the chip itself
+> has a PU/PD, this may be an issue?
 
-So far the off-line reports from people doing the testing appear to 
-suggest this fix indeed, well, fixes it.
+The SoC default is indeed pull-down (as stated both in the TRM and in
+the reference schematic from RK3576 EVB1). Which I believe means that
+the attached device should be held in a reset state until the driver
+takes over the control of the GPIO line (which, in turn, is consistent
+with the observed behavior when reset handling is not enabled in the
+driver but the reset pin is in GPIO mode).
 
-If that is confirmed we will need to add:
+Are you concerned that the chip might unintentionally go in or out of
+reset between the moment the pinctrl subsystem claims the pin and the
+moment the driver starts outputting a state it desires? This hasn't
+caused any observable issues in my testing, but I guess we could
+explicitly set it to &pcfg_pull_down for more predictable behavior in
+line with what's printed on the schematic.
 
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/13630
-
-As to your wider conundrum - could it be that preemption is at play? 
-When done from the indirect context the workaround will trigger after 
-preemption, unlike when done from emit_pipe_invalidate(). So perhaps 
-"Option 1" and "Option 2" you mention miss that angle?
-
-Regards,
-
-Tvrtko
-
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->> Fixes: ca33cd271ef9 ("drm/xe/xelp: Add Wa_18022495364")
->> Cc: Matt Roper <matthew.d.roper@intel.com>
->> Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
->> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
->> Cc: <stable@vger.kernel.org> # v6.18+
->> ---
->>   drivers/gpu/drm/xe/xe_lrc.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
->> index 70eae7d03a27..44f112df4eb2 100644
->> --- a/drivers/gpu/drm/xe/xe_lrc.c
->> +++ b/drivers/gpu/drm/xe/xe_lrc.c
->> @@ -1200,7 +1200,7 @@ static ssize_t setup_invalidate_state_cache_wa(struct xe_lrc *lrc,
->>   		return -ENOSPC;
->>   
->>   	*cmd++ = MI_LOAD_REGISTER_IMM | MI_LRI_NUM_REGS(1);
->> -	*cmd++ = CS_DEBUG_MODE1(0).addr;
->> +	*cmd++ = CS_DEBUG_MODE2(0).addr;
->>   	*cmd++ = _MASKED_BIT_ENABLE(INSTRUCTION_STATE_CACHE_INVALIDATE);
->>   
->>   	return cmd - batch;
->> -- 
->> 2.52.0
->>
-> 
-
+Best regards,
+Alexey
 
