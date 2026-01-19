@@ -1,206 +1,131 @@
-Return-Path: <stable+bounces-210352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14FA4D3AA98
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:43:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D061D3AADE
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BCC9A3084F5A
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 13:43:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2D6F63000DDB
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 13:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698CF36BCF1;
-	Mon, 19 Jan 2026 13:43:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MYWUkw90"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C250036A01D;
+	Mon, 19 Jan 2026 13:56:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2272536BCC7
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 13:43:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60DF35B144
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 13:56:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768830201; cv=none; b=rJdD75nTQQRehz81VRcOz39DwUp49bKI5VB6fQyBmYm5iBrET5C26lqIZX33lztPywPV2A3TQwsXAnXFz8qZz+GWVnN6mX3ivijzMBFnypqvq+Rcc44JC8wPdFNVdP6aDkX4hhLwL9j+6afekeKp6rSh8ZoQIVUV8TQ7fn0Xnxs=
+	t=1768830969; cv=none; b=W/Y+H4jt08e03n89zbzGNhffqJx/TalwzoQJrio8jy8y8NBmmNbM7JyycX6/5ZhiyOyb8EW+X2rpXT3TwzLinz/lah5vZ/XrONfpOgQpS0Y0oaTpA8wE9TkTqYNmxkbbXmrgBoK/cg2s9GSX0v3buHR/MGjSjWECMFfWXZGTt24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768830201; c=relaxed/simple;
-	bh=glVc+vYs2e48C7e6a42YdHrlwubv61v062vq1op02/k=;
+	s=arc-20240116; t=1768830969; c=relaxed/simple;
+	bh=USU2dfqEi8y03HM3f87V6O1i0tfjkLsCH5ivCaeDP4Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T3gY2tn5Af3GYYruBVA2dM5uLQnpFg5QV5RgQaeJvDz9U5yoHv+y4Uar2iduD4fWzPCrICh7JZJUZAxiWGiU4JxyUrHAcyZ7dOdiJLJgO23Ogo+MEO/vPiKe/muXioNylUlNrL5uTD1h3BbpxcyD8axx1Vb92uAPaykV6gnLGtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MYWUkw90; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 To:Cc:Content-Type; b=FYrceaKGH/p5qouDPOGtNxt6JVZhNtX2WUI/ZfK2coDDasIhv92IvzmN0LHyLbgVibTtaIFPhsX3jlhM/dcJik4edwWolmITZhDgpMChKCw+FdAPzZGkeDimykPla8kSEKvupVEoUH6hLw9aiC+vB6Fa9k/+GBUj6x5fMGMpM18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5014600ad12so33091731cf.2
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 05:43:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768830198; x=1769434998; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=chB5b0rt82JcysgedumeHVaiY8n8X+8y2Qmtz5rmwLo=;
-        b=MYWUkw90jR0MXmW9XWTRwA9nAUtxotOM931CR+9Ig6nP68+9k1vdcI/k/rGp7ePHE1
-         cA1fP5BWcWKy1a/lKXtdjaFK8vWfpeILzKqyHy6MJzuSThsvWUTjrWGLZMFdZO0Pf9ci
-         e2G7uuYAvQbj3zcWIAIJcJYyaL30t8XbIv+Vkwi/ZimJGNutT8tesNhXIAQAroeCipp2
-         LdpEAw5RtrPMwEVvAw28lYDHL00iFv/yqT6zEqbOkMYPis2M26lsj+kSUgFw4oP9TkxC
-         7p0PXJLDg4ESCbyhqYTuZSG+QgdcABsGHjwBbYcnQzPYksSvkrMlPYdplLg+L4BGuhQj
-         Ir0w==
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-947fea7590cso8830241.2
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 05:56:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768830198; x=1769434998;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=chB5b0rt82JcysgedumeHVaiY8n8X+8y2Qmtz5rmwLo=;
-        b=ox4FIDwy1EEsEYG2avmY5aqDWtGvuNk0ynRXz1tQIF6Fvpek/Ff6R42lOd5ynbrTFv
-         D47QpMA48wUF2ZViHsPY0hdy+21fFsVnlukyzZ+WKo43q665dkr7ZxfEBU9E0zyJdNsM
-         JC0c3ZTl01fKgA8wVVtfGjeD+AiKIG9XLYFbU2Nvo41UZNp/SnsRXGniFp4LTasWsvuF
-         FF9OKNL6+4O4tyILhFBX+X8va1VA6G1+12+m+Rv1H5gPkIkMatHcpqzKpzOv3nipUejR
-         13QriXQxiwHfkZZM0+y+b6NsWBV+3Pqs1XAcVNketkLdEr7t9uDXXqZ1F0rLEXqPSiBO
-         L8BA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxkE7EJUG5r8kJ0Dzq25baNDQBae/k3JO4hWgdUfEPlP8aAr9ujokUlqk7fwjSiXV66mns50U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB1fjXiTP14EmwGlU/E1HvZhn7RPARZJZVnxH2s4nmW32Zb8yL
-	IcQsiDE7Tk2YwGWFKQYsycgTVv/LbgJS5gjPv9h4I/+JqN7Rcno1jAaKDQVrd4JOrqX5rhrsuuS
-	MPBdOkC5Ga/L45a8W/oKrcGcN/W0yfoMeeZOw
-X-Gm-Gg: AY/fxX4yNmAWHK3MTFM5jPFf9XyYAoD0VrfPT6Vp9mmowa1tzKYz9hA7orL5iLJsxRJ
-	nUdDWyn9um4pq+y6/ebBF6bUevHS3+DqMM99e7F7S+LUsDXKE8yidTcUusXJgGQm14zh3TL5axZ
-	e+3mPpuyWFcDQoRJlEzicVZT2Eeaxe3W+i2aDO5n2cqVunKRHekWbhAXUNnSRTLwdv88WBGE718
-	uDQ3qoZzeDEWjIvZt2ez7RQ9X6DI9lGtxlyuB50W20qGYJITCTdkQb9uLAe7MjyGB7C2cGn6Ez+
-	BC6cRahC6RMp+l0ni0zB70A1sZkBsqdDvZiElQ==
-X-Received: by 2002:ac8:5a93:0:b0:4ee:1f22:3613 with SMTP id
- d75a77b69052e-502a179b7d7mr149743011cf.62.1768830197715; Mon, 19 Jan 2026
- 05:43:17 -0800 (PST)
+        d=1e100.net; s=20230601; t=1768830967; x=1769435767;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+r64VZF3kohfXXfdlR1Pb964pfqiX29JMKKPRtqCraU=;
+        b=ckgqZXIaPgv+sc1yX1Xlg8ywhwx4iklt0K2N0j5Fxyg3aIUuwInjKlOeSMPMkX/QWv
+         4+Z+vB26j7j1qt82PSowdLeadI+hlzaGqTzgBSrUynb1OOaVwdid9n19yfC/1Sfqoe2q
+         wC2RhLIB7m3P4LbJAZDUR5vBR5kWesB9LA2It70WwiMEU+PjLy+ZL9us9plNaNrnN7lY
+         LmDPa8Ix9Q06Yt7DJDzCDMNz6ed2zgT53+cMkfn1etA+Xv8x6eRi0prOh3/bGoJh4/kJ
+         gVZt/RTm8ubUEqiM3jhV1SreTkXZrnHlBlr9Rnl+fUhFwXZBXlaHKKKMn7OGRRNgu4zI
+         kSgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUtYPd31hWrAvg5RrBLb4EGmLqtjZ8rOmyJUJGHrOCggn4Ct4wHcIxroY6wBBCL8ZvPEeSXqAs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2lpzemyFY02HwfdM+iKZrLvTYSYMsTScK7cROObaVQt9SKCnE
+	hBOlxm9tSLhOGzDw6uQ/oLXCr4NuHV5y9nACXNYGoRcL6556oNdugREVmGe4SOgT
+X-Gm-Gg: AY/fxX7ap0Unh3eJ3N5txrggwAbdJITWzWOxkQZzfgyZH5b2dhua+F7CMfgMosMhRi6
+	EpENlOGP3ZEWngBKpP0BGDOFmcDg5GT6e00p4IWjy1ZdZJdAAVchkI17Gh2uUNMMBX60u7JTmsb
+	pzRjdVjgoCP4dso5vNpshK6QqlkcDJYSS5F7EK+EMFDXSksNw/TrJ/WF4qcRHSM56EMMgWEExvq
+	CZnPyN4+qEfVapDsWjUPpaBZ6AbxIYEWQn0s+krBFL8hVR+wmukfEvArOKG3+aC9NC2cbRWvlYd
+	4hc2EoDSjw6SzoMBQKayj4tniieVv/CenBQb/CsFPUflbgDgpdjOMJSBtnTsfsoeAzjBY+xYlJ+
+	rarerpeieXghVQ8UqcoSUKG/zu1eyCmMq8P/yo76ywIIOrkd6vc0bPn90y+xMb7QMVFV1p+qJVX
+	GI8chK/pFp4JK/aIAl69NVP49dRzVFtXXjqDEhbPqdmT3m5+/4FtYq
+X-Received: by 2002:a05:6102:c47:b0:5dd:b100:47df with SMTP id ada2fe7eead31-5f1a6fa452fmr2920527137.4.1768830966646;
+        Mon, 19 Jan 2026 05:56:06 -0800 (PST)
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com. [209.85.221.181])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5f1a6d3c9cdsm3457705137.9.2026.01.19.05.56.05
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jan 2026 05:56:05 -0800 (PST)
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5637886c92aso1040014e0c.0
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 05:56:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXdcB5vlq3l5zBEWePUvX02Wia2MduIXH2MbIIbjoK+nGt7DEKfp6HXO81ncVSvtDMowi16tEQ=@vger.kernel.org
+X-Received: by 2002:a05:6122:3a10:b0:559:65d6:1674 with SMTP id
+ 71dfb90a1353d-563b738c18emr2498607e0c.14.1768830964978; Mon, 19 Jan 2026
+ 05:56:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260119-ufs-rst-v1-1-c8e96493948c@gmail.com> <b0904cb5-3659-41cc-8395-79eec9e82f01@cherry.de>
-In-Reply-To: <b0904cb5-3659-41cc-8395-79eec9e82f01@cherry.de>
-From: Alexey Charkov <alchark@gmail.com>
-Date: Mon, 19 Jan 2026 17:43:09 +0400
-X-Gm-Features: AZwV_Qg3fDBDn37sLa59WhlzNgabNqw_H45Z3ujw8yrw_76pBFKSvwfPEz_39iE
-Message-ID: <CABjd4YzJud4ZZQ_GrOOSnfEVG7wgHmPSf9w8oQhLVSx6WXgN5A@mail.gmail.com>
-Subject: Re: [PATCH] arm64: dts: rockchip: Explicitly request UFS reset pin on RK3576
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Shawn Lin <shawn.lin@rock-chips.com>, 
-	Manivannan Sadhasivam <mani@kernel.org>, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260118025756.96377-1-marek.vasut+renesas@mailbox.org>
+In-Reply-To: <20260118025756.96377-1-marek.vasut+renesas@mailbox.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 19 Jan 2026 14:55:53 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVkYUwYHOCtFb==YJ=1TK9+Tz1X=teaoyoooxe42eBYFw@mail.gmail.com>
+X-Gm-Features: AZwV_QibGyBfaw9ULWtL_BEHCROa8nfd8JZ0JnZ6LzEfFQ4IkCqSKKVBJv4Vw8w
+Message-ID: <CAMuHMdVkYUwYHOCtFb==YJ=1TK9+Tz1X=teaoyoooxe42eBYFw@mail.gmail.com>
+Subject: Re: [PATCH] clk: rs9: Reserve 8 struct clk_hw slots for for 9FGV0841
+To: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Cc: linux-clk@vger.kernel.org, stable@vger.kernel.org, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Quentin,
+Hi Marek,
 
-On Mon, Jan 19, 2026 at 3:08=E2=80=AFPM Quentin Schulz <quentin.schulz@cher=
-ry.de> wrote:
+On Sun, 18 Jan 2026 at 03:58, Marek Vasut
+<marek.vasut+renesas@mailbox.org> wrote:
+> The 9FGV0841 has 8 outputs and registers 8 struct clk_hw, make sure
+> there are 8 slots for those newly registered clk_hw pointers, else
+> there is going to be out of bounds write when pointers 4..7 are set
+> into struct rs9_driver_data .clk_dif[4..7] field.
 >
-> Hi Alexey,
+> Since there are other structure members past this struct clk_hw
+> pointer array, writing to .clk_dif[4..7] fields only corrupts the
+> struct rs9_driver_data content, without crashing the kernel. However,
+
+I am not sure that is true. As the last 3 fields are just bytes, up to 3
+pointers may be written outside the structure, which is 32 or 64 bytes large.
+So any buffer overflow may corrupt another object from the 32-byte or
+64-byte slab.
+
+> the kernel does crash when the driver is unbound or during suspend.
 >
-> On 1/19/26 10:22 AM, Alexey Charkov wrote:
-> > Rockchip RK3576 UFS controller uses a dedicated pin to reset the connec=
-ted
-> > UFS device, which can operate either in a hardware controlled mode or a=
-s a
-> > GPIO pin.
-> >
-> > Power-on default is GPIO mode, but the boot ROM reconfigures it to a
-> > hardware controlled mode if it uses UFS to load the next boot stage.
-> >
-> > Given that existing bindings (and rk3576.dtsi) expect a GPIO-controlled
-> > device reset, request the required pin config explicitly.
-> >
-> > This doesn't appear to affect Linux, but it does affect U-boot:
-> >
-> > Before:
-> > =3D> md.l 0x2604b398
-> > 2604b398: 00000011 00000000 00000000 00000000  ................
-> > < ... snip ... >
-> > =3D> ufs init
-> > ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=3D[3, 3], lane[2, 2], pw=
-r[FASTAUTO_MODE, FASTAUTO_MODE], rate =3D 2
-> > =3D> md.l 0x2604b398
-> > 2604b398: 00000011 00000000 00000000 00000000  ................
-> >
-> > After:
-> > =3D> md.l 0x2604b398
-> > 2604b398: 00000011 00000000 00000000 00000000  ................
-> > < ... snip ...>
-> > =3D> ufs init
-> > ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=3D[3, 3], lane[2, 2], pw=
-r[FASTAUTO_MODE, FASTAUTO_MODE], rate =3D 2
-> > =3D> md.l 0x2604b398
-> > 2604b398: 00000010 00000000 00000000 00000000  ................
-> >
-> > (0x2604b398 is the respective pin mux register, with its BIT0 driving t=
-he
-> > mode of UFS_RST: unset =3D GPIO, set =3D hardware controlled UFS_RST)
-> >
-> > This helps ensure that GPIO-driven device reset actually fires when the
-> > system requests it, not when whatever black box magic inside the UFSHC
-> > decides to reset the flash chip.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: c75e5e010fef ("scsi: arm64: dts: rockchip: Add UFS support for R=
-K3576 SoC")
-> > Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
-> > Signed-off-by: Alexey Charkov <alchark@gmail.com>
-> > ---
-> > This has originally surfaced during the review of UFS patches for U-boo=
-t
-> > at [1], where it was found that the UFS reset line is not requested to =
-be
-> > configured as GPIO but used as such. This leads in some cases to the UF=
-S
-> > driver appearing to control device resets, while in fact it is the
-> > internal controller logic that drives the reset line (perhaps in
-> > unexpected ways).
-> >
-> > Thanks Quentin Schulz for spotting this issue.
-> >
-> > [1] https://lore.kernel.org/u-boot/259fc358-f72b-4a24-9a71-ad90f2081335=
-@cherry.de/
-> > ---
-> >   arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi | 7 +++++++
-> >   arch/arm64/boot/dts/rockchip/rk3576.dtsi         | 2 +-
-> >   2 files changed, 8 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi b/arch/ar=
-m64/boot/dts/rockchip/rk3576-pinctrl.dtsi
-> > index 0b0851a7e4ea..20cfd3393a75 100644
-> > --- a/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
-> > +++ b/arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi
-> > @@ -5228,6 +5228,13 @@ ufs_rst: ufs-rst {
-> >                               /* ufs_rstn */
-> >                               <4 RK_PD0 1 &pcfg_pull_none>;
-> >               };
-> > +
-> > +             /omit-if-no-ref/
-> > +             ufs_rst_gpio: ufs-rst-gpio {
-> > +                     rockchip,pins =3D
-> > +                             /* ufs_rstn */
-> > +                             <4 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>;
+> Fix this, increase the struct clk_hw pointer array size to the
+> maximum output count of 9FGV0841, which is the biggest chip that
+> is supported by this driver.
 >
-> The SoC default is pull-down according to the TRM. Can you check please?
-> For example, the Rock 4D doesn't seem to have a hardware pull-up or
-> pull-down on the line and the UFS module only seems to have a debouncer
-> (capacitor between the line and ground). So except if the chip itself
-> has a PU/PD, this may be an issue?
+> Cc: stable@vger.kernel.org
+> Fixes: f0e5e1800204 ("clk: rs9: Add support for 9FGV0841")
+> Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-The SoC default is indeed pull-down (as stated both in the TRM and in
-the reference schematic from RK3576 EVB1). Which I believe means that
-the attached device should be held in a reset state until the driver
-takes over the control of the GPIO line (which, in turn, is consistent
-with the observed behavior when reset handling is not enabled in the
-driver but the reset pin is in GPIO mode).
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Are you concerned that the chip might unintentionally go in or out of
-reset between the moment the pinctrl subsystem claims the pin and the
-moment the driver starts outputting a state it desires? This hasn't
-caused any observable issues in my testing, but I guess we could
-explicitly set it to &pcfg_pull_down for more predictable behavior in
-line with what's printed on the schematic.
+The crash I saw is gone, so:
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Best regards,
-Alexey
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
