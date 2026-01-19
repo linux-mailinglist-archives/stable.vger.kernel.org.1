@@ -1,155 +1,242 @@
-Return-Path: <stable+bounces-210411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4025D3BA1D
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 22:36:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D93ADD3BA55
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 23:03:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 68FC9300A900
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 21:36:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 737723048EEA
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 22:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827E52FB630;
-	Mon, 19 Jan 2026 21:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC13C270552;
+	Mon, 19 Jan 2026 22:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lDvFlQ8r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JI/7nbaF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AD1270ED2
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 21:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768858589; cv=pass; b=L60r5w6XPSE+EahknIlwJMv+ttwuWhRp8OHxcFbL7I5JkJfVMw7owdRJYu30okpubLzrFZ6EyeojOWZRBn2w6T4XYNLa96GnPxXJsfMtSUo0JIGDXEHa9VfytSN46IJntkL2vDElxo6UC8cTxyLDvAMrwokvAL2J9SjXC6elFHk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768858589; c=relaxed/simple;
-	bh=ZIySP1q5PMnveIa/i279C9yGcJJ4/61I44p5rwmCYqw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B+eL+kacpGPE3nv7rHO/Cqrk0H+3Mgl0+ILq97FnnYTfpwsCybHqZhmESOuJz3O3Qt+x/fwNowQTQbCuI8DKn4bEWyIuKqvfTYr3/CMRz1nJK/3iRNofBhDIqLjQ7iDvi+8BzFL0/hHeIGlrTEH8OQLybaKNriTMFKhZAMj7HwQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lDvFlQ8r; arc=pass smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-432d2c7dd52so4330543f8f.2
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 13:36:27 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768858586; cv=none;
-        d=google.com; s=arc-20240605;
-        b=C7DVfGHointDfwVSdNvfddgaGSDfh79ZnUtva9C8fieqPegqsI+4P+OTJyK104LPrI
-         /hYlB1ZCJdkCzgBVMnH9waOdrGuzjoE7zI0MVaxw9FPSbgwOOsjniAXkslMTuVdEJz+0
-         RxcgTz/D7XeueTD/1xOVTKglIeHL1VRTe8GlF3NvNFrZnr1hakL/Wxs4yRYG32F5AUNP
-         6ZeuypsvC3N3nw5VCJ8MX290BB/DoFFbZIxJR+YiwgKNoswaucfOmGo1u8v9BR58IeqX
-         JicejrYQscv2iq1u8b+q2tCamooDOF8qALs3p9Aeo4U2Porj42K1IOWCV1s4h2nv9VjB
-         0QRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZIySP1q5PMnveIa/i279C9yGcJJ4/61I44p5rwmCYqw=;
-        fh=r9uAV0ZNXhr1cm8Q+5B9PWdVG0vXYK69rZNX424O4UY=;
-        b=RB9XrJz19l2kOfF+wnFGrX3VnIadQBScrApcuAkvjKqRmA/ymDmhpceBubmWbFrYBS
-         bL/3q1kZRX50skqyKo85d2En2+WLoHdxZ2A6sb8KE+cF/lqlE7VuR5YWSDbhbDdTgPD7
-         7FkuSglSfw6IVM0L2BZKeEp5zu5NtuTNJ3TRC0uDUQs0nTD2LueXtViw/QHuifgmQmt0
-         D0cAg3AdsTBWlAqHrdcNv8b67nMRbjvN6QOh0x6xnJv/dRX4YPlknQgzRwhUs5WnQlPS
-         qCxClbz6CVc65bVZqjGq89S02lHgqgosfX/aw7ZM/Sby7Y4YI5zFxKPuBsg0HR4podIa
-         5rkQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768858586; x=1769463386; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZIySP1q5PMnveIa/i279C9yGcJJ4/61I44p5rwmCYqw=;
-        b=lDvFlQ8rY/TJOr1VLBm+8Ia/DFEM/PH7LcDmenl5MAHV2qzrX5zUev9rT4uzwUFylY
-         usqzrfFmhSZmI/RislSWLizpYoPyrjfBkgw0bEihDJULFl6+U84DzboGD61yjhmKl2aQ
-         IyKRydFp3ZbuGa475jnVS5QN6zIe7btK96mqQNCqFg8mnmjeR1FjRG01L9CPAxTh1j82
-         3ThssChlAY0yuRJ6/vDSHsJjopqm9ftDPuJFSDcu7kFUZdF/Na8rWeMohMJBA3ednJZG
-         lQgyqoTROkrqLz51V52wRsY/4+prFE7TV0HxTwELQjFykL1KxqDiDtMyEQsK11Iy1KDl
-         LoRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768858586; x=1769463386;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZIySP1q5PMnveIa/i279C9yGcJJ4/61I44p5rwmCYqw=;
-        b=t6rysERsVDG2+pU5XQENt7aOOibIp24umYL4Wb+Fl4UvATDTZLghf3kffuQq95j20p
-         ZRS4SOEvNViNUcnX4HQShj2m6GBhZhoCjQ6hLBbttIl46r9am+xvjV7yzkH/cvuSC3GG
-         E5JBNyd2IaLIiDjJ4k9UgGGDtFzKikpJEK8AnGhlZ2QwqQSAziNkA7JbnydqGatDXXtG
-         z6yKNHEUew+bc72SEH3wGq3bdIIC/uMTrLbsbpUkCj2vf/OdQViezhvPq6+6+5dqRODW
-         9LWhrI0XmwICsOZFP3oJF7D6y/6BqM/4y082KGl7UE6l4a/JET5xs9qR4DchGEecE8cb
-         HxZg==
-X-Forwarded-Encrypted: i=1; AJvYcCWaTr/fa+fZQt7CA4LJMXtlndnS66sjCqmtCm/z+FLtHG97euscNwnFR6fyP1MpOp6r64Oxb9Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzH3zZd8ZfA6UdWis5oik8Gg44ffaWIz6lhgDQDFMGiN90skR1y
-	WeUCnpSz5lUduD9WwbqtvkoN65c7he4aTIb9cB14hVz4QDLamE0VnnBdrfTwiLA7EktjMz7oTZ2
-	X/IFkKSzcrM7R3nB0IY012jD+tZPcQP6r9rPNYlBf9Q==
-X-Gm-Gg: AZuq6aJNAwn5weLzdJqIZlyKkzpDS310j92Gn6AybAf3cBI6dDD4isKTvZpYELUfgcK
-	zu0QDpqVlUMFBM4Fh2up+XMJtdAoq9rbrrZ4HWXRx+OmurK7k9LLeLZ9fnTwfg3TFRbDiSjnW82
-	8GPwo3Zbi5et8DCE4WEyzjDAerGR+MLGKUfTA+a3veMpIhR1xfVgi1ZJolzI/7XBkLN5WuhgSsx
-	kWEAcA12Zf6tGe0ZiF+FQ2VVigGM/ZA5ePejpXB5s6LjvsQxEtdarP8fa4ciRZf8P7lr+o=
-X-Received: by 2002:a5d:5d12:0:b0:431:266:d14d with SMTP id
- ffacd0b85a97d-43569bc5b27mr16203443f8f.47.1768858586150; Mon, 19 Jan 2026
- 13:36:26 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8096C1917ED
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 22:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768860234; cv=none; b=bJaeq93Glwu/id3pJ90Z5wUxYqz2zJNHW4/JjzQC9SeGD9VddCJydZHO9K/xgqFSOlD46CvC1OSynxRM/zItFdNShYGVntyqzuZyzOWZNAbXjnwggJV9/jDECV+pWR97PdTD0dfrNP38YEk2H0asmos0IflTv7iOGTvCwK2v0RU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768860234; c=relaxed/simple;
+	bh=bmGJAZor5pkSAPGReUaZtxy8jX5eaHdLHdoSixPdYgw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZOyY7FV0BtUsM98mfZrtbxd+KWP3zgC1UPhBJEGjh3+9JZycoy0kMjMCxHlzF5Ox8lJM72LIsgA0pEd5rLxPH64Q7NInAkgLAmbBEqLMo3MkmWZ2aaYq7oa/KJ0UU7Sa1jdgGAViwZ07qkuwljSRoUWg5lqA1QpE6HnoUR4NMYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JI/7nbaF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B5CC116C6;
+	Mon, 19 Jan 2026 22:03:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768860234;
+	bh=bmGJAZor5pkSAPGReUaZtxy8jX5eaHdLHdoSixPdYgw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JI/7nbaFZglst8nNcDUJfS+Po9n7Z6ofK//8fuqKkq2IXL103URY/upyDBpOUd4T4
+	 Gjf5Hn7mQmEQMWZSrDXYwKxAFgfbaSQMjgd3CizpurLdHOTfQWoayLbAPhQ9dLpCuX
+	 HUZBohWh+LLCf4YOZWBDo+3XV/TElobXatA8TF7TYcRiILSEvbFaQ54Sdj5ig2a7v2
+	 RKaEclBssaMMkdZZ58Jaivpq1pXhqbIaPNIRJ1UAi/fPt9n+G1h3slNIZsasytl88D
+	 Er1v2xI5d+XYdn6MljZp7muMo0crIYxnRRMbf22SR/fXAqlk2MRQz8DPT4a5EATduH
+	 mCFrQPOJCRXsg==
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	amd-gfx@lists.freedesktop.org
+Subject: [PATCH 6.12] drm/amd/display: mark static functions noinline_for_stack
+Date: Mon, 19 Jan 2026 15:02:33 -0700
+Message-ID: <20260119220232.1125319-2-nathan@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
-In-Reply-To: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Mon, 19 Jan 2026 13:36:14 -0800
-X-Gm-Features: AZwV_Qh0t3pt4cR5MdFu-yA0efJKL9TMIvNsuFSc3OuE-QMB2P_HMtg_1D-vSZQ
-Message-ID: <CAKEwX=Omzgh92KHhaFi8-mnZ0myV1yi6XMTkT4FFsFPHFnueLQ@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/shmem, swap: fix race of truncate and swap entry split
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 19, 2026 at 8:11=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> The helper for shmem swap freeing is not handling the order of swap
-> entries correctly. It uses xa_cmpxchg_irq to erase the swap entry, but
-> it gets the entry order before that using xa_get_order without lock
-> protection, and it may get an outdated order value if the entry is split
-> or changed in other ways after the xa_get_order and before the
-> xa_cmpxchg_irq.
->
-> And besides, the order could grow and be larger than expected, and cause
-> truncation to erase data beyond the end border. For example, if the
-> target entry and following entries are swapped in or freed, then a large
-> folio was added in place and swapped out, using the same entry, the
-> xa_cmpxchg_irq will still succeed, it's very unlikely to happen though.
->
-> To fix that, open code the Xarray cmpxchg and put the order retrieval
-> and value checking in the same critical section. Also, ensure the order
-> won't exceed the end border, skip it if the entry goes across the
-> border.
->
-> Skipping large swap entries crosses the end border is safe here.
-> Shmem truncate iterates the range twice, in the first iteration,
-> find_lock_entries already filtered such entries, and shmem will
-> swapin the entries that cross the end border and partially truncate the
-> folio (split the folio or at least zero part of it). So in the second
-> loop here, if we see a swap entry that crosses the end order, it must
-> at least have its content erased already.
->
-> I observed random swapoff hangs and kernel panics when stress testing
-> ZSWAP with shmem. After applying this patch, all problems are gone.
->
-> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-Good catch.
+commit a8d42cd228ec41ad99c50a270db82f0dd9127a28 upstream.
 
-From the swap POV:
+When compiling allmodconfig (CONFIG_WERROR=y) with clang-19, see the
+following errors:
 
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+.../display/dc/dml2/display_mode_core.c:6268:13: warning: stack frame size (3128) exceeds limit (3072) in 'dml_prefetch_check' [-Wframe-larger-than]
+.../display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c:7236:13: warning: stack frame size (3256) exceeds limit (3072) in 'dml_core_mode_support' [-Wframe-larger-than]
+
+Mark static functions called by dml_prefetch_check() and
+dml_core_mode_support() noinline_for_stack to avoid them become huge
+functions and thus exceed the frame size limit.
+
+A way to reproduce:
+$ git checkout next-20250107
+$ mkdir build_dir
+$ export PATH=/tmp/llvm-19.1.6-x86_64/bin:$PATH
+$ make LLVM=1 O=build_dir allmodconfig
+$ make LLVM=1 O=build_dir drivers/gpu/drm/ -j
+
+The way how it chose static functions to mark:
+[0] Unset CONFIG_WERROR in build_dir/.config.
+To get display_mode_core.o without errors.
+
+[1] Get a function list called by dml_prefetch_check().
+$ sed -n '6268,6711p' drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c \
+  | sed -n -r 's/.*\W(\w+)\(.*/\1/p' | sort -u >/tmp/syms
+
+[2] Get the non-inline function list.
+Objdump won't show the symbols if they are inline functions.
+
+$ make LLVM=1 O=build_dir drivers/gpu/drm/ -j
+$ objdump -d build_dir/.../display_mode_core.o | \
+  ./scripts/checkstack.pl x86_64 0 | \
+  grep -f /tmp/syms | cut -d' ' -f2- >/tmp/orig
+
+[3] Get the full function list.
+Append "-fno-inline" to `CFLAGS_.../display_mode_core.o` in
+drivers/gpu/drm/amd/display/dc/dml2/Makefile.
+
+$ make LLVM=1 O=build_dir drivers/gpu/drm/ -j
+$ objdump -d build_dir/.../display_mode_core.o | \
+  ./scripts/checkstack.pl x86_64 0 | \
+  grep -f /tmp/syms | cut -d' ' -f2- >/tmp/noinline
+
+[4] Get the inline function list.
+If a symbol only in /tmp/noinline but not in /tmp/orig, it is a good
+candidate to mark noinline.
+
+$ diff /tmp/orig /tmp/noinline
+
+Chosen functions and their stack sizes:
+CalculateBandwidthAvailableForImmediateFlip [display_mode_core.o]:144
+CalculateExtraLatency [display_mode_core.o]:176
+CalculateTWait [display_mode_core.o]:64
+CalculateVActiveBandwithSupport [display_mode_core.o]:112
+set_calculate_prefetch_schedule_params [display_mode_core.o]:48
+
+CheckGlobalPrefetchAdmissibility [dml2_core_dcn4_calcs.o]:544
+calculate_bandwidth_available [dml2_core_dcn4_calcs.o]:320
+calculate_vactive_det_fill_latency [dml2_core_dcn4_calcs.o]:272
+CalculateDCFCLKDeepSleep [dml2_core_dcn4_calcs.o]:208
+CalculateODMMode [dml2_core_dcn4_calcs.o]:208
+CalculateOutputLink [dml2_core_dcn4_calcs.o]:176
+
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[nathan: Fix conflicts in dml2_core_dcn4_calcs.c]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+This also addresses a warning seen in linux-6.12.y with allmodconfig and
+recent versions of clang:
+
+  drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/display_mode_core.c:6713:12: error: stack frame size (4288) exceeds limit (4096) in 'dml_core_mode_support' [-Werror,-Wframe-larger-than]
+   6713 | dml_bool_t dml_core_mode_support(struct display_mode_lib_st *mode_lib)
+        |            ^
+---
+ .../gpu/drm/amd/display/dc/dml2/display_mode_core.c  | 12 ++++++------
+ .../dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c  |  8 ++++----
+ 2 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+index d0b7fae7d73c..97852214a15d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+@@ -1736,7 +1736,7 @@ static void CalculateBytePerPixelAndBlockSizes(
+ #endif
+ } // CalculateBytePerPixelAndBlockSizes
+ 
+-static dml_float_t CalculateTWait(
++static noinline_for_stack dml_float_t CalculateTWait(
+ 		dml_uint_t PrefetchMode,
+ 		enum dml_use_mall_for_pstate_change_mode UseMALLForPStateChange,
+ 		dml_bool_t SynchronizeDRRDisplaysForUCLKPStateChangeFinal,
+@@ -4458,7 +4458,7 @@ static void CalculateSwathWidth(
+ 	}
+ } // CalculateSwathWidth
+ 
+-static  dml_float_t CalculateExtraLatency(
++static noinline_for_stack dml_float_t CalculateExtraLatency(
+ 		dml_uint_t RoundTripPingLatencyCycles,
+ 		dml_uint_t ReorderingBytes,
+ 		dml_float_t DCFCLK,
+@@ -5915,7 +5915,7 @@ static dml_uint_t DSCDelayRequirement(
+ 	return DSCDelayRequirement_val;
+ }
+ 
+-static dml_bool_t CalculateVActiveBandwithSupport(dml_uint_t NumberOfActiveSurfaces,
++static noinline_for_stack dml_bool_t CalculateVActiveBandwithSupport(dml_uint_t NumberOfActiveSurfaces,
+ 										dml_float_t ReturnBW,
+ 										dml_bool_t NotUrgentLatencyHiding[],
+ 										dml_float_t ReadBandwidthLuma[],
+@@ -6019,7 +6019,7 @@ static void CalculatePrefetchBandwithSupport(
+ #endif
+ }
+ 
+-static dml_float_t CalculateBandwidthAvailableForImmediateFlip(
++static noinline_for_stack dml_float_t CalculateBandwidthAvailableForImmediateFlip(
+ 													dml_uint_t NumberOfActiveSurfaces,
+ 													dml_float_t ReturnBW,
+ 													dml_float_t ReadBandwidthLuma[],
+@@ -6213,7 +6213,7 @@ static dml_uint_t CalculateMaxVStartup(
+ 	return max_vstartup_lines;
+ }
+ 
+-static void set_calculate_prefetch_schedule_params(struct display_mode_lib_st *mode_lib,
++static noinline_for_stack void set_calculate_prefetch_schedule_params(struct display_mode_lib_st *mode_lib,
+ 						   struct CalculatePrefetchSchedule_params_st *CalculatePrefetchSchedule_params,
+ 						   dml_uint_t j,
+ 						   dml_uint_t k)
+@@ -6265,7 +6265,7 @@ static void set_calculate_prefetch_schedule_params(struct display_mode_lib_st *m
+ 				CalculatePrefetchSchedule_params->Tno_bw = &mode_lib->ms.Tno_bw[k];
+ }
+ 
+-static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
++static noinline_for_stack void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ {
+ 	struct dml_core_mode_support_locals_st *s = &mode_lib->scratch.dml_core_mode_support_locals;
+ 	struct CalculatePrefetchSchedule_params_st *CalculatePrefetchSchedule_params = &mode_lib->scratch.CalculatePrefetchSchedule_params;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
+index 54969ba7e2b7..d18b60c9761b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
+@@ -2774,7 +2774,7 @@ static double dml_get_return_bandwidth_available(
+ 	return return_bw_mbps;
+ }
+ 
+-static void calculate_bandwidth_available(
++static noinline_for_stack void calculate_bandwidth_available(
+ 	double avg_bandwidth_available_min[dml2_core_internal_soc_state_max],
+ 	double avg_bandwidth_available[dml2_core_internal_soc_state_max][dml2_core_internal_bw_max],
+ 	double urg_bandwidth_available_min[dml2_core_internal_soc_state_max], // min between SDP and DRAM
+@@ -4066,7 +4066,7 @@ static bool ValidateODMMode(enum dml2_odm_mode ODMMode,
+ 	return true;
+ }
+ 
+-static void CalculateODMMode(
++static noinline_for_stack void CalculateODMMode(
+ 	unsigned int MaximumPixelsPerLinePerDSCUnit,
+ 	unsigned int HActive,
+ 	enum dml2_output_format_class OutFormat,
+@@ -4164,7 +4164,7 @@ static void CalculateODMMode(
+ #endif
+ }
+ 
+-static void CalculateOutputLink(
++static noinline_for_stack void CalculateOutputLink(
+ 	struct dml2_core_internal_scratch *s,
+ 	double PHYCLK,
+ 	double PHYCLKD18,
+@@ -6731,7 +6731,7 @@ static void calculate_bytes_to_fetch_required_to_hide_latency(
+ 	}
+ }
+ 
+-static void calculate_vactive_det_fill_latency(
++static noinline_for_stack void calculate_vactive_det_fill_latency(
+ 		const struct dml2_display_cfg *display_cfg,
+ 		unsigned int num_active_planes,
+ 		unsigned int bytes_required_l[],
+-- 
+2.52.0
+
 
