@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-210332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93EEDD3A768
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 12:52:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48A4CD3A755
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 12:48:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1987F30A2E61
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 11:48:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C0D6B30022CE
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 11:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C62B27E07E;
-	Mon, 19 Jan 2026 11:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423CB318B87;
+	Mon, 19 Jan 2026 11:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJn00e89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPcq4zl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590FE318EC7
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 11:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F8F3148C8
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 11:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768823288; cv=none; b=L7R80civ1yt1bcpnsELjhq+bs7xDWNQ4Hww0E6m5I08N+o+1lSWYCxQkDo9PYNx4VEXFqq17PeP1HlNH/J3AmGo/QBoPvmBsBodchOze9FVuyxif/Za2mg0DJerlxji+Wg017rt0UGz1rpiK0k9PFZPmOHrIWd6kc4+5Sz5q4VE=
+	t=1768823291; cv=none; b=SJb8Cu1kqPK8rB7ibU0o7WW/V/Jzp4kwL4bHSc9IBK+L0fkWgP2nh+JPqKRcn/itt+CgfOL6EzbaLKTbMeNzWHvXKdOr+bJR19ZgkUibQkIg1ZDVKSGesd/81/ddIEXvosT1MONRGlZAO9FYDXu+N5KwTf34n0wpHpYLLnGteVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768823288; c=relaxed/simple;
-	bh=C9kiRCfi2rQaBw+C7Bjwj2gp1qhy2Pd8RvmUtE/t8zQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hjv22l2m12p6eBclBkLasNsYWmY+cu40L13gNP++/DyCQrtChbBSgS9YIaNCcO0BcK5cT8FgqYw6RLf1JtpmrxZ2rEM/6Onq8LKKEaesWODOj7Iqjgm53FVissRvS6A08qs9ujHNtM//GhLLtBD1Uuvzb9PoMfircGo3Kwug3Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJn00e89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C640C116C6;
-	Mon, 19 Jan 2026 11:48:07 +0000 (UTC)
+	s=arc-20240116; t=1768823291; c=relaxed/simple;
+	bh=oK0XHW1mMDzTLPwvnaLJAs2nrLSEJhoqhf/gNm7ahEs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=q7XViuGV0Xl4t/pfYCqhkNeUo/6wz+1hXVrpAnE5e2f7++gdpumgRf5zXfqMP7uUUU06yHLqdAbKfnTSUxmxbb6oZFJa5JD7suHOoSO+X1b9yBaw5MlvT1NLE0XEVCvRm0rSB9nz7C+nxHtd1Rpn1OztJbYjzyTtEzMs0Ki7amU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPcq4zl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA25C116C6;
+	Mon, 19 Jan 2026 11:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768823287;
-	bh=C9kiRCfi2rQaBw+C7Bjwj2gp1qhy2Pd8RvmUtE/t8zQ=;
+	s=korg; t=1768823290;
+	bh=oK0XHW1mMDzTLPwvnaLJAs2nrLSEJhoqhf/gNm7ahEs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iJn00e897vSO7q0Rz8DxsgCOw1jfIXeagtm4yqafL1G4IDcu4g4n+wNIbWreh+vKB
-	 RrnpYuXyeajNF5ly2viGNLMfhOgSNw+HUMbNPHd7Nuh2Z939Sn2/2OUEUprtcHHRjx
-	 64ORS/UcLFfhR2Pt8eHZqljGTqoRoAFI6yUb54JM=
-Subject: FAILED: patch "[PATCH] io_uring: move local task_work in exit cancel loop" failed to apply to 6.6-stable tree
+	b=MPcq4zl18ioed084WAqFsjubRpS7ELsnn43JGF+MQ8IdkoKfx9GsYUfpp0680ZIfX
+	 EdMQbsaDcB2mfa3EFobvZBbb/CdZ77G0rP3v+AOXeiXyTA79LBmlxaqv9YK6O62Yti
+	 QTrzN0SUtlXIFBxBf7xuHAy3lWQ79PVta7REJp+U=
+Subject: FAILED: patch "[PATCH] io_uring: move local task_work in exit cancel loop" failed to apply to 6.1-stable tree
 To: ming.lei@redhat.com,axboe@kernel.dk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Jan 2026 12:47:56 +0100
-Message-ID: <2026011956-unclog-language-54ed@gregkh>
+Date: Mon, 19 Jan 2026 12:47:57 +0100
+Message-ID: <2026011957-earful-capillary-a00a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x da579f05ef0faada3559e7faddf761c75cdf85e1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011956-unclog-language-54ed@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011957-earful-capillary-a00a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
