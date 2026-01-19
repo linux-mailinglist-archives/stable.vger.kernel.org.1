@@ -1,75 +1,86 @@
-Return-Path: <stable+bounces-210271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7260D39F3C
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 08:01:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07208D39F73
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 08:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B2BCB30024DE
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 07:01:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6E7E3063F54
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 07:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 431AA296BA8;
-	Mon, 19 Jan 2026 07:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8AA2DB791;
+	Mon, 19 Jan 2026 07:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="uWnrodQu";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="uWnrodQu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M7sgr0tg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-qv1-f67.google.com (mail-qv1-f67.google.com [209.85.219.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C54757EA
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 07:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624B52D9EC8
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 07:10:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768806104; cv=none; b=rUvjkbfnGeWBU70Njoc12MAaD8FtH3j1Yxw1LdFzNkOhY7NQKFzDQU2lIyMZPET9S5Z87CamPgbDUo7d91YaxAnnREKgGM69QvY+PywkeBwFiKN/QU8PyrJt1pjw1QOsaYbKlqNAXcLjXea/xy9e4AtVtTg6H35SOYgI1r5IwLo=
+	t=1768806650; cv=none; b=OkBpw/+ZRkOjaWrX8lZW0DJE3y/GsuRkFADTFGCHuv7R5PYihIGxNxxh7W1OiAkArkQq2MaF1ECZhSMOW5xWEaloW6oS6cFu4Cr/5WWFM6n2ZMqY8nPL+tBw0v+MdNohswePMSDxYM1CjpLwzdcNQDeSFqmfte/68dIfvxoM1/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768806104; c=relaxed/simple;
-	bh=ijgr8aof7oV2AI2gKDXDVt0ciMZ5rupJI31C3Vc/4u4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o3Sxvxlg3V9nYfsKJLjxosAS1ug6moCCasWMmZTSbddlE5b6mbSg/Uz3PPYqAqr3L7UCmyiMdNZ5HA/B5AKrTi4KNHSvZQHSNFMn/ydbAOl93TCdgLV1yXO2M87v6fUQIaaEDohbBDuFn3EGOQ5ANnTo+qZRZZxU4D30d5/AKA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=uWnrodQu; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=uWnrodQu; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 38133336A4;
-	Mon, 19 Jan 2026 07:01:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1768806100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=Yx1sVwO5GGeu4t+K4A6slKpQX94kRzgbaLQ7yNRmsh0=;
-	b=uWnrodQu4mNlwV5mGshbfTKPO5XE9mk1F+N8k83+QNl3rqmj5ykH/0HXxmzf8zSQakY9ey
-	k1hhSNIuIAGM4L8NdwOEGOvHVLKfG8bUmGhKGlb/srpt0PyloBxzMl65BtDvbinAZ1vsGG
-	yiduXPTfSvxTJJxhpfCY7BERAvq32K0=
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=uWnrodQu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1768806100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=Yx1sVwO5GGeu4t+K4A6slKpQX94kRzgbaLQ7yNRmsh0=;
-	b=uWnrodQu4mNlwV5mGshbfTKPO5XE9mk1F+N8k83+QNl3rqmj5ykH/0HXxmzf8zSQakY9ey
-	k1hhSNIuIAGM4L8NdwOEGOvHVLKfG8bUmGhKGlb/srpt0PyloBxzMl65BtDvbinAZ1vsGG
-	yiduXPTfSvxTJJxhpfCY7BERAvq32K0=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 294123EA63;
-	Mon, 19 Jan 2026 07:01:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id DnnbMdHWbWlgQAAAD6G6ig
-	(envelope-from <wqu@suse.com>); Mon, 19 Jan 2026 07:01:37 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Boris Burkov <boris@bur.io>
-Subject: [PATCH v4] btrfs: do not strictly require dirty metadata threshold for metadata writepages
-Date: Mon, 19 Jan 2026 17:31:19 +1030
-Message-ID: <18474605a8d19f7a523733f8c461513c0d19a645.1768806045.git.wqu@suse.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1768806650; c=relaxed/simple;
+	bh=S3Y98FFWgoY8a3pcnPVFBrL19HFaL0F70zFtuxAOCe0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=isx+LA34EqBs+w4eC4CreMv5teaWEy5UVYEyL1RlNGaqmweLetlF5gVLtkjVo8dPVYQhIxLfQx/S8fkSCLdl3Ck2ugzGDvn3FQh0m6BqwlhVce/T6szH0chuZ9pRjCYC1C0ATNlUj5ZVmrtGFuTrLvDM9uBePic4cXy6BA4v364=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M7sgr0tg; arc=none smtp.client-ip=209.85.219.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f67.google.com with SMTP id 6a1803df08f44-888bd3bd639so47280186d6.1
+        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 23:10:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768806647; x=1769411447; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gKM15vI5ObaHuQbAnvaLHXhQIMY9SS6X3bJEvEg+p4E=;
+        b=M7sgr0tgEqxU85NZwJXA0fJ7ksaOXe6UK4eRTS1rsoNH5NYiD/ICYEV2fV4Z2JLz6l
+         Zk4FHXMO3n7O612o9SENbGsWzYCqdU6ol8hUShUZB1aNN3m3oviyUIPufkPTTwJ13121
+         RNHk7ACCZ2/tZrhcbqAH0QRRqpwYZCjjRMkWLwymPK3K2jfIw5uyGLj09Gq869sDSR8/
+         8M81UMFqjq0CaeHK6jvN0h8hMq1wIq9LTga5offRTuTcCWgFwmjM/+vsGKHOO/Z23EnB
+         +3N+TZO/YzgbAgsiQ+gTZDggeHAy4xD3kRgVlUK6/mIyLbQHJfivjL+BosbRvxibvVfs
+         Y6Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768806647; x=1769411447;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gKM15vI5ObaHuQbAnvaLHXhQIMY9SS6X3bJEvEg+p4E=;
+        b=U3kCpYufNv23idkLi4mynkMTqby2LYeiLEkYgbDCLzvomXVVBoCZ18ciAfIEYI97OF
+         MxkiHaehwTGRhqw5Ntr3y2wxBPSwoE8Ptih6xkJIy8NyTGUxILgsF9kQmwM2iteDA4bG
+         64CqSq1ey/Splb/Sl5RJMTpFmyKPf624XGXhRVLlgs4qhwLy6UTy0R8oic5nd3uZlvJP
+         5rersQgI1/w8AL1tnw49Z4QMGU7gxlsatbGs+5S89cBTZX5eZBKAqQ9duBgPdrTmuKG+
+         LbM9vhIrlS/MDCplVXHT1ASO/H2z53Q5ruO6qnHxACOHnrUpdaxxyxur0TSP8dM7hkN+
+         DXiw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJCDzbPmMYNCPV5whAjAUd3U+i5fSXHnhi0/QCEwA6tJWAVa2BTWKWnry4TsxWje86YGYJOuc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0tvLZ4MGSg8OViv7DN1Mrcq+7WCRUF9acgmRVDSqcux0MuoRK
+	LRnbslFFc/M8JcyPeoqA5gFQ/1vkrDVg8sBfNP2CfvnFk1aABDP8JqZm
+X-Gm-Gg: AY/fxX7Ca+BbY73lPdGDtYMtQAQB3N6NcWxIFFhwpYBuyZh5DohtWRQHjlfrLNVhKRe
+	6cvGp3x+w9Q6p1OIP+1u/uE4El+uE83VDVOVz4sXUYrKPioAZwntwiYcw6slmVN7PSJxv+3XTe8
+	jiUK8dKRHw7P05zez6lYvezbgTSuQsL93s75bg9fPTDeXZn8J33KbKU2udsRWEIBwVgHU6aCbB5
+	gelIdkc28A43KX6AJZqwabhyP8qLvMFk5nY6mk3idisE53ZB1QTV4cp6/ERnaokxt0tPOztBI0C
+	xwvcg8RbB/aGWVpjmznBFE1pjrG3kNZLaSdtejJB1pioKDnTu3whR4+k+Qx/VeFYP72d+UIUTTO
+	nRihzeP6rmx4GvCF/AnhzgcNduPC+THmHnIB91t7atL0T0hjRP0f5Gja9b4g1CIgWcjmb2oXYgh
+	bWRo+HsBmluwPS2KY/Av0FIbQF48c0cuAZ1s0aHQ/KBwFNmbp00jyMMDLWx5Pem6b+O9m8EwZLR
+	miNo/kkUpO05Rg7Rdbs37nKJA==
+X-Received: by 2002:a05:6214:21ef:b0:87c:19af:4b76 with SMTP id 6a1803df08f44-89398144853mr211893076d6.17.1768806647373;
+        Sun, 18 Jan 2026 23:10:47 -0800 (PST)
+Received: from abc-virtual-machine.localdomain (c-76-150-86-52.hsd1.il.comcast.net. [76.150.86.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6043a6sm79024586d6.18.2026.01.18.23.10.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Jan 2026 23:10:46 -0800 (PST)
+From: Yuhao Jiang <danisjiang@gmail.com>
+To: Jens Axboe <axboe@kernel.dk>,
+	Pavel Begunkov <asml.silence@gmail.com>
+Cc: io-uring@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yuhao Jiang <danisjiang@gmail.com>
+Subject: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing cross-buffer accounting
+Date: Mon, 19 Jan 2026 01:10:39 -0600
+Message-Id: <20260119071039.2113739-1-danisjiang@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,215 +88,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.01
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:mid,suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_TLS_ALL(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[suse.com:+]
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 38133336A4
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
 
-[BUG]
-There is an internal report that over 1000 processes are
-waiting at the io_schedule_timeout() of balance_dirty_pages(), causing
-a system hang and triggered a kernel coredump.
+When multiple registered buffers share the same compound page, only the
+first buffer accounts for the memory via io_buffer_account_pin(). The
+subsequent buffers skip accounting since headpage_already_acct() returns
+true.
 
-The kernel is v6.4 kernel based, but the root problem still applies to
-any upstream kernel before v6.18.
+When the first buffer is unregistered, the accounting is decremented,
+but the compound page remains pinned by the remaining buffers. This
+creates a state where pinned memory is not properly accounted against
+RLIMIT_MEMLOCK.
 
-[CAUSE]
-From Jan Kara for his wisdom on the dirty page balance behavior first.
+On systems with HugeTLB pages pre-allocated, an unprivileged user can
+exploit this to pin memory beyond RLIMIT_MEMLOCK by cycling buffer
+registrations. The bypass amount is proportional to the number of
+available huge pages, potentially allowing gigabytes of memory to be
+pinned while the kernel accounting shows near-zero.
 
- This cgroup dirty limit was what was actually playing the role here
- because the cgroup had only a small amount of memory and so the dirty
- limit for it was something like 16MB.
+Fix this by removing the cross-buffer accounting optimization entirely.
+Each buffer now independently accounts for its pinned pages, even if
+the same compound pages are referenced by other buffers. This prevents
+accounting underflow when buffers are unregistered in arbitrary order.
 
- Dirty throttling is responsible for enforcing that nobody can dirty
- (significantly) more dirty memory than there's dirty limit. Thus when
- a task is dirtying pages it periodically enters into balance_dirty_pages()
- and we let it sleep there to slow down the dirtying.
+The trade-off is that memory accounting may be overestimated when
+multiple buffers share compound pages, but this is safe and prevents
+the security issue.
 
- When the system is over dirty limit already (either globally or within
- a cgroup of the running task), we will not let the task exit from
- balance_dirty_pages() until the number of dirty pages drops below the
- limit.
-
- So in this particular case, as I already mentioned, there was a cgroup
- with relatively small amount of memory and as a result with dirty limit
- set at 16MB. A task from that cgroup has dirtied about 28MB worth of
- pages in btrfs btree inode and these were practically the only dirty
- pages in that cgroup.
-
-So that means the only way to reduce the dirty pages of that cgroup is
-to writeback the dirty pages of btrfs btree inode, and only after that
-those processes can exit balance_dirty_pages().
-
-Now back to the btrfs part, btree_writepages() is responsible for
-writing back dirty btree inode pages.
-
-The problem here is, there is a btrfs internal threshold that if the
-btree inode's dirty bytes are below the 32M threshold, it will not
-do any writeback.
-
-This behavior is to batch as much metadata as possible so we won't write
-back those tree blocks and then later re-COW then again for another
-modification.
-
-This internal 32MiB is higher than the existing dirty page size (28MiB),
-meaning no writeback will happen, causing a deadlock between btrfs and
-cgroup:
-
-- Btrfs doesn't want to write back btree inode until more dirty pages
-
-- Cgroup/MM doesn't want more dirty pages for btrfs btree inode
-  Thus any process touching that btree inode is put into sleep until
-  the number of dirty pages is reduced.
-
-Thanks Jan Kara a lot for the analyze on the root cause.
-
-[ENHANCEMENT]
-Since kernel commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
-btree_inode"), btrfs btree inode pages will only be charged to the root
-cgroup which should have a much larger limit than btrfs' 32MiB
-threshold.
-So it should not affect newer kernels.
-
-But for all current LTS kernels, they are all affected by this problem,
-and backporting the whole AS_KERNEL_FILE may not be a good idea.
-
-Even for newer kernels I still think it's a good idea to get
-rid of the internal threshold at btree_writepages(), since for most cases
-cgroup/MM has a better view of full system memory usage than btrfs' fixed
-threshold.
-
-For internal callers using btrfs_btree_balance_dirty() since that
-function is already doing internal threshold check, we don't need to
-bother them.
-
-But for external callers of btree_writepages(), just respect their
-requests and just write back whatever they want, ignoring the internal
-btrfs threshold to avoid such deadlock on btree inode dirty page
-balancing.
-
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Suggested-by: Pavel Begunkov <asml.silence@gmail.com>
+Fixes: de2939388be5 ("io_uring: improve registered buffer accounting for huge pages")
 Cc: stable@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
 ---
-Changelog:
-v4:
-- Align the btree writeback function name to "btree_writepages"
+Changes in v2:
+  - Remove cross-buffer accounting logic entirely
+  - Link to v1: https://lore.kernel.org/all/20251218025947.36115-1-danisjiang@gmail.com/
 
-v3:
-- Update "[FIX]" section to "[ENHANCEMENT]"
-  I totally forgot that the btree-skip-cgroup patchset is already merged,
-  thus it's no longer possible to hit this problem on v6.18+ kernels.
-  Although there is still some value to simplify the btree writeback
-  behavior, the more important part is mostly for the LTS kernels.
+ io_uring/rsrc.c | 43 -------------------------------------------
+ 1 file changed, 43 deletions(-)
 
-- Add Cc to the stable list
-
-v2:
-- Update the commit message to include more details about the
-  balance_dirty_pages() behavior
-
-- With that background knowledge explain the deadlock better
-  It's between cgroup where no more btree inode dirty pages are allowed
-  and all involved processes are put into sleep until dirty pages
-  drops, and btrfs where it won't write back any dirty pages until
-  there are more dirty pages.
----
- fs/btrfs/disk-io.c   | 22 ----------------------
- fs/btrfs/extent_io.c |  3 +--
- fs/btrfs/extent_io.h |  3 +--
- 3 files changed, 2 insertions(+), 26 deletions(-)
-
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 5e4b7933ab20..764da96ac27e 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -485,28 +485,6 @@ static int btree_migrate_folio(struct address_space *mapping,
- #define btree_migrate_folio NULL
- #endif
- 
--static int btree_writepages(struct address_space *mapping,
--			    struct writeback_control *wbc)
--{
--	int ret;
--
--	if (wbc->sync_mode == WB_SYNC_NONE) {
--		struct btrfs_fs_info *fs_info;
--
--		if (wbc->for_kupdate)
--			return 0;
--
--		fs_info = inode_to_fs_info(mapping->host);
--		/* this is a bit racy, but that's ok */
--		ret = __percpu_counter_compare(&fs_info->dirty_metadata_bytes,
--					     BTRFS_DIRTY_METADATA_THRESH,
--					     fs_info->dirty_metadata_batch);
--		if (ret < 0)
--			return 0;
--	}
--	return btree_write_cache_pages(mapping, wbc);
--}
--
- static bool btree_release_folio(struct folio *folio, gfp_t gfp_flags)
- {
- 	if (folio_test_writeback(folio) || folio_test_dirty(folio))
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index bbc55873cb16..f804131b1c78 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2306,8 +2306,7 @@ void btrfs_btree_wait_writeback_range(struct btrfs_fs_info *fs_info, u64 start,
- 	}
+diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
+index 41c89f5c616d..f35652f36c57 100644
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -619,47 +619,6 @@ int io_sqe_buffers_unregister(struct io_ring_ctx *ctx)
+ 	return 0;
  }
  
--int btree_write_cache_pages(struct address_space *mapping,
--				   struct writeback_control *wbc)
-+int btree_writepages(struct address_space *mapping, struct writeback_control *wbc)
- {
- 	struct btrfs_eb_write_context ctx = { .wbc = wbc };
- 	struct btrfs_fs_info *fs_info = inode_to_fs_info(mapping->host);
-diff --git a/fs/btrfs/extent_io.h b/fs/btrfs/extent_io.h
-index 02ebb2f238af..73571d5d3d5a 100644
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -237,8 +237,7 @@ void extent_write_locked_range(struct inode *inode, const struct folio *locked_f
- 			       u64 start, u64 end, struct writeback_control *wbc,
- 			       bool pages_dirty);
- int btrfs_writepages(struct address_space *mapping, struct writeback_control *wbc);
--int btree_write_cache_pages(struct address_space *mapping,
--			    struct writeback_control *wbc);
-+int btree_writepages(struct address_space *mapping, struct writeback_control *wbc);
- void btrfs_btree_wait_writeback_range(struct btrfs_fs_info *fs_info, u64 start, u64 end);
- void btrfs_readahead(struct readahead_control *rac);
- int set_folio_extent_mapped(struct folio *folio);
+-/*
+- * Not super efficient, but this is just a registration time. And we do cache
+- * the last compound head, so generally we'll only do a full search if we don't
+- * match that one.
+- *
+- * We check if the given compound head page has already been accounted, to
+- * avoid double accounting it. This allows us to account the full size of the
+- * page, not just the constituent pages of a huge page.
+- */
+-static bool headpage_already_acct(struct io_ring_ctx *ctx, struct page **pages,
+-				  int nr_pages, struct page *hpage)
+-{
+-	int i, j;
+-
+-	/* check current page array */
+-	for (i = 0; i < nr_pages; i++) {
+-		if (!PageCompound(pages[i]))
+-			continue;
+-		if (compound_head(pages[i]) == hpage)
+-			return true;
+-	}
+-
+-	/* check previously registered pages */
+-	for (i = 0; i < ctx->buf_table.nr; i++) {
+-		struct io_rsrc_node *node = ctx->buf_table.nodes[i];
+-		struct io_mapped_ubuf *imu;
+-
+-		if (!node)
+-			continue;
+-		imu = node->buf;
+-		for (j = 0; j < imu->nr_bvecs; j++) {
+-			if (!PageCompound(imu->bvec[j].bv_page))
+-				continue;
+-			if (compound_head(imu->bvec[j].bv_page) == hpage)
+-				return true;
+-		}
+-	}
+-
+-	return false;
+-}
+-
+ static int io_buffer_account_pin(struct io_ring_ctx *ctx, struct page **pages,
+ 				 int nr_pages, struct io_mapped_ubuf *imu,
+ 				 struct page **last_hpage)
+@@ -677,8 +636,6 @@ static int io_buffer_account_pin(struct io_ring_ctx *ctx, struct page **pages,
+ 			if (hpage == *last_hpage)
+ 				continue;
+ 			*last_hpage = hpage;
+-			if (headpage_already_acct(ctx, pages, i, hpage))
+-				continue;
+ 			imu->acct_pages += page_size(hpage) >> PAGE_SHIFT;
+ 		}
+ 	}
 -- 
-2.52.0
+2.34.1
 
 
