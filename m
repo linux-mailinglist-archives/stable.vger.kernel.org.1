@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-210330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5D5D3A74B
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 12:47:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 942F8D3A767
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 12:52:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3D89230049EE
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 11:47:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFE2530A7BDD
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 11:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58508317702;
-	Mon, 19 Jan 2026 11:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409E4318B87;
+	Mon, 19 Jan 2026 11:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GngDqLpa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wI4ccc1R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B087318B87
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 11:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28A031690D
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 11:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768823244; cv=none; b=HRfL4feVKF4VHTKUKSKpIG+swp/hE5ZHihiCw4GnxERco9bYwfAw+xL1bb7KILbKWm+aM4g5BUuSNF5BBpj/dJ6gEHB3VKbsCIyyVuN2uFky92UWMx7/MvP08tKy4DfZ/ZR7Xh22/QdoLX130W5rJzUUVAJAusu0TUy6JyAl+KQ=
+	t=1768823279; cv=none; b=ZtNm/BLC44+Z/TgX3I39zJ6e9pzeRh6vYWrlXRhW9tbU0yOCVCT37/1lHVtpiASpSAALdDzXuaY7byiUv6VW0wRjnG3qH6gX52P2Kq61NT2VhdqyjVFYmdnKA1aeV1ljtrPi/WPipGmpC/aGkkdPY1If43chLEK9Q8/x8yzrUug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768823244; c=relaxed/simple;
-	bh=i/Re297n7GTiHRIbDTmDk+t9KE/pBEI0iOoKh7YssVI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AXiBwQWvjefk/bsCWVmExVZyZsiIyPLs+6ctAVH6/t4kn5pP2c7294MUd39E4Y5hpfsiqwUe+a86H/lR5iyozjRzkZEflBCFzhaPc/5OLZRAV3LA2ifT1ENrL80qmRnx8MN57IBGN+GFyu7GhDLXhsaWRgbH603Bb33ZSLE60ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GngDqLpa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC7EC116C6;
-	Mon, 19 Jan 2026 11:47:23 +0000 (UTC)
+	s=arc-20240116; t=1768823279; c=relaxed/simple;
+	bh=eeFi7cXmZ0+wC59zJg27YxZQDKDMA8MQ91g7Gz+IxRo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dw+wlQ+modkYXdvcacOi+uc02osDJDWTKw+oT3tZJ+tPv2Mvw1ZDqaogUTvg+H4qZijqmORUEI9JbHx0e/GeOrijHnIMswe7Y3cbpbxhxsXUecTE77C7JUCnq9n1tMOJKcA8B9r8GQDT9n+rgcjbexxpSOo73OhzGHcOSLJ2xtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wI4ccc1R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B7AC116C6;
+	Mon, 19 Jan 2026 11:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768823243;
-	bh=i/Re297n7GTiHRIbDTmDk+t9KE/pBEI0iOoKh7YssVI=;
+	s=korg; t=1768823278;
+	bh=eeFi7cXmZ0+wC59zJg27YxZQDKDMA8MQ91g7Gz+IxRo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=GngDqLpayRAhaG3Vq25t6zdeNooEhi+JcVK6lKWBiPjLL0+6sKH/M4366az+ocnn6
-	 Hsjm94lkGt3qebmygcGL3xj88TrFGogRRe4ITXYqpt2HSFq1zj9dAd/X6L3DutNTbK
-	 qMi9Dz8EjlYuG8Wb0vZ2gPE26YYFHhfXLDgYB7Hc=
-Subject: FAILED: patch "[PATCH] ASoC: codecs: wsa883x: fix unnecessary initialisation" failed to apply to 6.1-stable tree
-To: johan@kernel.org,broonie@kernel.org,krzysztof.kozlowski@oss.qualcomm.com,srini@kernel.org,srinivas.kandagatla@oss.qualcomm.com
+	b=wI4ccc1RSlkRXpqVpbzAFg0NEcNGIH3A4woS0qh0O9Fqgj/bpoEJwgfoojFIpWHau
+	 EKD5CoyqBZ1Ozog5VZQ+2zjWT/PuW6PMnFqL49ZgH/xYBqYuDojP1toygg3GBVth9K
+	 wlMu8j0wSab7RKd/qD79iwZpCzevz2D8uaLqIn3Y=
+Subject: FAILED: patch "[PATCH] io_uring: move local task_work in exit cancel loop" failed to apply to 6.12-stable tree
+To: ming.lei@redhat.com,axboe@kernel.dk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Jan 2026 12:47:11 +0100
-Message-ID: <2026011910-psychic-unsaid-88e5@gregkh>
+Date: Mon, 19 Jan 2026 12:47:56 +0100
+Message-ID: <2026011955-pulmonary-transpire-4456@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 49aadf830eb048134d33ad7329d92ecff45d8dbb
+git cherry-pick -x da579f05ef0faada3559e7faddf761c75cdf85e1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011910-psychic-unsaid-88e5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011955-pulmonary-transpire-4456@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,74 +75,62 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 49aadf830eb048134d33ad7329d92ecff45d8dbb Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Fri, 2 Jan 2026 12:14:10 +0100
-Subject: [PATCH] ASoC: codecs: wsa883x: fix unnecessary initialisation
+From da579f05ef0faada3559e7faddf761c75cdf85e1 Mon Sep 17 00:00:00 2001
+From: Ming Lei <ming.lei@redhat.com>
+Date: Wed, 14 Jan 2026 16:54:05 +0800
+Subject: [PATCH] io_uring: move local task_work in exit cancel loop
 
-The soundwire update_status() callback may be called multiple times with
-the same ATTACHED status but initialisation should only be done when
-transitioning from UNATTACHED to ATTACHED.
+With IORING_SETUP_DEFER_TASKRUN, task work is queued to ctx->work_llist
+(local work) rather than the fallback list. During io_ring_exit_work(),
+io_move_task_work_from_local() was called once before the cancel loop,
+moving work from work_llist to fallback_llist.
 
-This avoids repeated initialisation of the codecs during boot of
-machines like the Lenovo ThinkPad X13s:
+However, task work can be added to work_llist during the cancel loop
+itself. There are two cases:
 
-[   11.614523] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
-[   11.618022] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
-[   11.621377] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
-[   11.624065] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
-[   11.631382] wsa883x-codec sdw:1:0:0217:0202:00:2: WSA883X Version 1_1, Variant: WSA8835_V2
-[   11.634424] wsa883x-codec sdw:1:0:0217:0202:00:2: WSA883X Version 1_1, Variant: WSA8835_V2
+1) io_kill_timeouts() is called from io_uring_try_cancel_requests() to
+cancel pending timeouts, and it adds task work via io_req_queue_tw_complete()
+for each cancelled timeout:
 
-Fixes: 43b8c7dc85a1 ("ASoC: codecs: add wsa883x amplifier support")
-Cc: stable@vger.kernel.org	# 6.0
-Cc: Srinivas Kandagatla <srini@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260102111413.9605-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+2) URING_CMD requests like ublk can be completed via
+io_uring_cmd_complete_in_task() from ublk_queue_rq() during canceling,
+given ublk request queue is only quiesced when canceling the 1st uring_cmd.
 
-diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
-index c3046e260cb9..3ffea56aeb0f 100644
---- a/sound/soc/codecs/wsa883x.c
-+++ b/sound/soc/codecs/wsa883x.c
-@@ -475,6 +475,7 @@ struct wsa883x_priv {
- 	int active_ports;
- 	int dev_mode;
- 	int comp_offset;
-+	bool hw_init;
- 	/*
- 	 * Protects temperature reading code (related to speaker protection) and
- 	 * fields: temperature and pa_on.
-@@ -1043,6 +1044,9 @@ static int wsa883x_init(struct wsa883x_priv *wsa883x)
- 	struct regmap *regmap = wsa883x->regmap;
- 	int variant, version, ret;
+Since io_allowed_defer_tw_run() returns false in io_ring_exit_work()
+(kworker != submitter_task), io_run_local_work() is never invoked,
+and the work_llist entries are never processed. This causes
+io_uring_try_cancel_requests() to loop indefinitely, resulting in
+100% CPU usage in kworker threads.
+
+Fix this by moving io_move_task_work_from_local() inside the cancel
+loop, ensuring any work on work_llist is moved to fallback before
+each cancel attempt.
+
+Cc: stable@vger.kernel.org
+Fixes: c0e0d6ba25f1 ("io_uring: add IORING_SETUP_DEFER_TASKRUN")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 87a87396e940..b7a077c11c21 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3003,12 +3003,12 @@ static __cold void io_ring_exit_work(struct work_struct *work)
+ 			mutex_unlock(&ctx->uring_lock);
+ 		}
  
-+	if (wsa883x->hw_init)
-+		return 0;
-+
- 	ret = regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
- 	if (ret)
- 		return ret;
-@@ -1085,6 +1089,8 @@ static int wsa883x_init(struct wsa883x_priv *wsa883x)
- 				   wsa883x->comp_offset);
- 	}
+-		if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
+-			io_move_task_work_from_local(ctx);
+-
+ 		/* The SQPOLL thread never reaches this path */
+-		while (io_uring_try_cancel_requests(ctx, NULL, true, false))
++		do {
++			if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
++				io_move_task_work_from_local(ctx);
+ 			cond_resched();
++		} while (io_uring_try_cancel_requests(ctx, NULL, true, false));
  
-+	wsa883x->hw_init = true;
-+
- 	return 0;
- }
- 
-@@ -1093,6 +1099,9 @@ static int wsa883x_update_status(struct sdw_slave *slave,
- {
- 	struct wsa883x_priv *wsa883x = dev_get_drvdata(&slave->dev);
- 
-+	if (status == SDW_SLAVE_UNATTACHED)
-+		wsa883x->hw_init = false;
-+
- 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
- 		return wsa883x_init(wsa883x);
- 
+ 		if (ctx->sq_data) {
+ 			struct io_sq_data *sqd = ctx->sq_data;
 
 
