@@ -1,94 +1,101 @@
-Return-Path: <stable+bounces-210366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03EB6D3AE7A
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:11:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2A1D3AE76
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EDECB30DD7B7
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 15:03:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 70D0A3029553
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 15:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928D4387379;
-	Mon, 19 Jan 2026 15:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313A538736B;
+	Mon, 19 Jan 2026 15:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="aofN5Y1g"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MSV8jNPF"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BB0361644;
-	Mon, 19 Jan 2026 15:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC76037F74E
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 15:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768835027; cv=none; b=WQiCXAUAy+FZHaI2xOempKCl7tVOVQstaIWeaBg5j7E9Nzwo9C+vD1jSwiStLKS2HSiS3gLa+MU8t/GdeafNGaLb4JcVM7T1RHKXGIm5wtHmILyS9zYO9pZq5q7muIQ+ztiYYfAWDnJcncE1tWBR3S3Xnw5QNRxOjO72+qJRFe4=
+	t=1768835386; cv=none; b=XYWKbpo8Ei1j1kz24EAEkA88xOePQbLTIBFwZPytxaJK67LuRxZEpQVJXv+yFuHa9TEGeQsIqwVSNTpxZBxAOJ0StHpxPdOFgIQfHA4hDlMlaZ19HSYhbz0ktXa+NWr7EzMo8bEsRMi2yxgYFOL2ZBHE0m+zX2v5djkb438oLUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768835027; c=relaxed/simple;
-	bh=ikF8c8MyMN7D3wgjAcZ4aJ2nbXuXypQteKPbJ/ofgCg=;
+	s=arc-20240116; t=1768835386; c=relaxed/simple;
+	bh=Q2N42fg4ImBjgiXXBeBlf0z5loLMhudAfvLVUNFNSFA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pSF8LEU0IZl6TiSVZJNDeDLwjvsMvTriJ2/HSt48cAovt+R6oBqRHHSvcapOlggXfdv9sgq6/vUSl5iwyj3Bcb2JAC4VL/an/O5p/f9uAc+yt5NXx/QS0KbBW0hPr4q+gdi2EwpVQ+ztCTnKPDGYw9aiStMsYGIRN6Q1ItSSMk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=aofN5Y1g; arc=none smtp.client-ip=80.241.56.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4dvtxz0cB0z9tZT;
-	Mon, 19 Jan 2026 16:03:35 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1768835015;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7Id+i+LQWFIhUmjzvjjC4QidOomx5hC+Mgndny8XvS8=;
-	b=aofN5Y1ghPXxxm7PZQMXkWpQGqhnPrg4d1t5cIyVoxlG48GhVxUn+TwVcRswVMPa60Hv/M
-	SDVr5y4sbe+6NRMb87hoeevuDXPylLiIq1iQDr1xRnUyoQ26QqF3XApXp5yJrmNE80kEuu
-	Kyr4IySvrrvb072Y1U2XX6P7o75CLp5idmwx0cBFeW5FsoJ8BkfC2mzQPn8Lwlwba3SUwQ
-	Vkyxe4qxpTxu/FrgC5cd0EEphY+SevteOgyEW/Rfbm2rolCXcCrfO5k9sfQXiZBQEhAplz
-	hxBOkETGc17EtR+Lvh/8afzugEMTmaeJDzwql+W+mCsgW462c6laLi59Jy90Ag==
-Message-ID: <d67b03aa-5f9f-4cc5-adc4-549cc2e71688@mailbox.org>
-Date: Mon, 19 Jan 2026 16:03:32 +0100
+	 In-Reply-To:Content-Type; b=VzBuMketxfgOT95LHltC7RfoaedKfP27wG4lYC830UiQoUTrHwFZFFT/VNAq02i8tTCxG7vCcCX1xoW9QXUAtZpCXn50uLdOQkgbg944wFi4wkMW9YbbjrjfD4is6bZ43Nv0O34pila/nTEhIuBj5zxQpfCeEwaXAOUTAsyfHgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MSV8jNPF; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768835384; x=1800371384;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Q2N42fg4ImBjgiXXBeBlf0z5loLMhudAfvLVUNFNSFA=;
+  b=MSV8jNPFa06+jbsyzwxBzaU/qoiwhOdXTb4aDUzeHxcAfMgENA+RAxUe
+   daJSnV5rD3OzvuHUXSY7GpHdzl//t1dF5LUJc2EuCzzviRaGZMCJlS+1s
+   RiV1K6iA74AYGN9hV62ePhW6cYdxtaDXohg0DjcHPI+xDaprj2TIl5jFg
+   GhOqrdKgidiDVeZJDCFKsc8ru77Mua+XdlP3Hd6G+bbM2LQBybuHkk+gl
+   RxdRhdYf6lXcpQj3AjufbRC3nuMWDXFU/hec3bLqp1FZfyDt3UIDMDZTn
+   P92aBR5LIVSdr7b2XE5ZfmI5xsKCkMUtTLNvTJ8BLxE+6A0y52qOGL5oS
+   A==;
+X-CSE-ConnectionGUID: /xQvPw0aS3Sf+N3X53F2jA==
+X-CSE-MsgGUID: hV4O0KpVSe+ICLhr7TH09A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="73676046"
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
+   d="scan'208";a="73676046"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 07:09:44 -0800
+X-CSE-ConnectionGUID: 4jnATGR3QkWYFcs4qy22Fg==
+X-CSE-MsgGUID: 4UyngVnkSh+FG3AmTxDqWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,238,1763452800"; 
+   d="scan'208";a="236562101"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO [10.245.244.99]) ([10.245.244.99])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 07:09:30 -0800
+Message-ID: <8932c16e-ab31-493f-bc1a-c540f0ae5d6f@intel.com>
+Date: Mon, 19 Jan 2026 15:09:26 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] clk: rs9: Reserve 8 struct clk_hw slots for for 9FGV0841
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-clk@vger.kernel.org, stable@vger.kernel.org,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, linux-kernel@vger.kernel.org,
- linux-renesas-soc@vger.kernel.org
-References: <20260118025756.96377-1-marek.vasut+renesas@mailbox.org>
- <CAMuHMdVkYUwYHOCtFb==YJ=1TK9+Tz1X=teaoyoooxe42eBYFw@mail.gmail.com>
-Content-Language: en-US
-From: Marek Vasut <marek.vasut@mailbox.org>
-In-Reply-To: <CAMuHMdVkYUwYHOCtFb==YJ=1TK9+Tz1X=teaoyoooxe42eBYFw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] drm/xe/uapi: disallow bind queue sharing
+To: "Mrozek, Michal" <michal.mrozek@intel.com>,
+ "Zhang, Carl" <carl.zhang@intel.com>,
+ "Brost, Matthew" <matthew.brost@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ "Souza, Jose" <jose.souza@intel.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20251120132727.575986-4-matthew.auld@intel.com>
+ <20251120132727.575986-5-matthew.auld@intel.com>
+ <fh6dgogrt3ibrod7qkguejy4bj3cmvlbnxksmedhvfx3ejglk2@nu3h6doh7sdx>
+ <cc27ae58-b579-4332-9653-c62b38f32add@intel.com>
+ <aURm1LgtNPYNxRCP@lstrano-desk.jf.intel.com>
+ <PH0PR11MB55798387B824D4101E19545E87A9A@PH0PR11MB5579.namprd11.prod.outlook.com>
+ <598d3899-5942-485b-8e76-61bcbdfa5cbe@intel.com>
+ <DS7PR11MB6271DDAE76295D9280AB5CD7E788A@DS7PR11MB6271.namprd11.prod.outlook.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <DS7PR11MB6271DDAE76295D9280AB5CD7E788A@DS7PR11MB6271.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: ddieokya95e9x34z8i8ixj3ofqgg9eii
-X-MBO-RS-ID: 3778be16ea10f389e0c
 
-On 1/19/26 2:55 PM, Geert Uytterhoeven wrote:
-
-Hello Geert,
-
-> On Sun, 18 Jan 2026 at 03:58, Marek Vasut
-> <marek.vasut+renesas@mailbox.org> wrote:
->> The 9FGV0841 has 8 outputs and registers 8 struct clk_hw, make sure
->> there are 8 slots for those newly registered clk_hw pointers, else
->> there is going to be out of bounds write when pointers 4..7 are set
->> into struct rs9_driver_data .clk_dif[4..7] field.
->>
->> Since there are other structure members past this struct clk_hw
->> pointer array, writing to .clk_dif[4..7] fields only corrupts the
->> struct rs9_driver_data content, without crashing the kernel. However,
+On 19/01/2026 14:14, Mrozek, Michal wrote:
+>>> Michal, ping on this from compute POV?
 > 
-> I am not sure that is true. As the last 3 fields are just bytes, up to 3
-> pointers may be written outside the structure, which is 32 or 64 bytes large.
-> So any buffer overflow may corrupt another object from the 32-byte or
-> 64-byte slab.
-Indeed, updated in V2, thanks.
+> Compute is not using bind queues.
+> PR is ok from compute perspective, even if we started to use those queues we would create a single queue per VM.
+> 
+> Acked-by: Michal Mrozek <michal.mrozek@intel.com>
+
+Thanks.
+
 
