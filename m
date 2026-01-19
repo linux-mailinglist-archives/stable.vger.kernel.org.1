@@ -1,188 +1,160 @@
-Return-Path: <stable+bounces-210274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBB7D3A0DB
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 09:01:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D85A6D3A0E1
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 09:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A895E3008EB7
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 08:00:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 544503002B8E
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 08:02:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BB2339861;
-	Mon, 19 Jan 2026 08:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A835133ADA7;
+	Mon, 19 Jan 2026 08:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="AvcfNyGP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y2KWSMLJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E1E339719
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 08:00:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768809607; cv=none; b=Fc8RsynJ2efoAZzODCN1Gci7nsD/Vc7EX3FLYokXkbsjSjCJq6Jq8rT8Wm1aTaTZMbegxZIZToVNPJYPQaCc15rLkuzf5zZee072foSUOJ4GPL8jBurRInWVM8SCZdaduUvFoZbkZhqnVp1eVgvg7uNNe4sOzciuIeN8Ca2PuP8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768809607; c=relaxed/simple;
-	bh=ahB5PXkdKz+OudhXzR5+oJxcANGL1gzgulL++hExJ1Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h1YXpBAjc1ha9kgx0yFiCniF2VrE029u44hV7O0mP/f9T+dAnY8fC6JOs4BD/ob26tInHEnb3ByXjShJ4z3UI39YAwyhsw6mAvpZP83PbOLL51oe/SKW66mwnRiYJAkiMHZSOqMk+3UErOQCfiWAGJkGEaEQZPzNo5WIzQxG8W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=AvcfNyGP; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4801c2fae63so22157935e9.2
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 00:00:05 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B05BC27A10F
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 08:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768809766; cv=pass; b=gkC/4gvgnMyLzanv1CLWsM4v7QbNPeCSsYg0VsAiXhWznRmSpOkalPTGjkjTIVXBULSI2oF9Ra9ICQsUu2pOq6y/IlXKJ4fdQGS2EHRMapVgVOXq4L1qhPyRUBC9wUpze5CuvtHe7AoyVM6ctuck5ir57o60TE4lYy06IARPAD8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768809766; c=relaxed/simple;
+	bh=DAnMrLITq3eDfG7S7q6PfDGnnlrV1nfnART1Gfn3Eg0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UKkc8aRIV+EnGEVpyDNRcqOoCJ0yACZagNM9O7tNcdfc0PygJu2pO+YY7vjitFkEGO3lhL2+rWxysVJfQVngJR1Y3VT97gEzzLQgu0ujcsDNBzGgjNTJJhSxEs+Wo/u0SP2XGLs5jr7eUA26XQ5c4rR5TG2yOdqsd0+tTGqXNC4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y2KWSMLJ; arc=pass smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64baaa754c6so6043702a12.3
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 00:02:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768809761; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QEy2MCe4QUmzdjIzWJRZCcD3l7sjbVuBbwZTK/dicKaCF4GyKu18Lul02kCpa6UhAm
+         2hN8N0bPbsLQ+sTf21ddntziaEPnfuKRwMO4Fl6g3jiBDjxWjuoZi92aEWpTEIGyeW90
+         Ta6zBDoerDbPWXTDZsGuR8QoMbvRjdBQuwTEUsaNfE3aV7LZ8wA6AC09avOA7CVP8Q3U
+         5aprxTMNv5xoadZ7w2YNN16qOm4MeD6LmwAAOtW+6M/z0HBcbpnV+QRQAlFTLvQTotlc
+         1FAt3w0tCqinnIaUUHPB0kSQnOPcG8Nwd5NKnecXtCggWSOiyVW5fh2cOAnIatt2kse1
+         Pvjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=E5gMLbV/jw9kkirryyuOIwhlWMMVSVE/lAczumiLD0w=;
+        fh=9GRW6o9PjFaFXN79pO1B69cTGoXXqlZX5edYSlNra2w=;
+        b=a2wQyB73UTiBorM0r86e5aLMX3Ww8fDw4U0Jmx4V9fCl0UO/PJWD+8fBtgMc2A4CXA
+         SMFGBWXfYiWe1cLGNYwCh+bJIvS0G/nzNo4u+/7LEWF+2wAaX/jgQHpccyPmsR8VP2lp
+         ABi3n4GZ9mOAAHdRMEDUhTuih58lY2gynfBerWWfhT1JcMxeVCE/ky4P0pUPvLJTn/bL
+         idWV/Sj//elyx8hl0X7uwidlBe3zy2eN7/sKEbFRQdfA5B5wRlOGNfnQWtR76vIJURW1
+         DCBOy8jowGQzhk2GybIxhMgR3jiNUqkdXQVRniuTumbUpqT5CnCykFUQ9GoaQIF21T4T
+         Fagg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768809604; x=1769414404; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jye8WAd/vE4qqlECAOAdbFTMAIss/HS1MRQD2Sijk8A=;
-        b=AvcfNyGPm4IhUqxYjIaKPc/mq/v54+N76WpR82ftvLOzy0sbvHhoB1C0enIBEsLYvG
-         wNySXbHwoqQAF+y5upOCbzI0WUUcGGN7iC301Oc4slHPgW3/hobI8FPrxoqHbgwjobLS
-         hTVeqZ0hYhgJ5F3G91ZIX+xAbSuJNGTzjFLLnVP/NB04MYo72JqWYV6Osxb882CSeFu5
-         B4qsrvQ3o9ZiSTKX7Kj+9nxld0oqk+UNegHbV70uFYHHC+tLV0s+zysHhhkV+9bvRHyi
-         3csfVIWb5m++E5qjINFxDpM8ajjsdSKx8faxJaKIRDsqGrwP9BAK4mkzxmUJ08Xr2umQ
-         A2hw==
+        d=gmail.com; s=20230601; t=1768809761; x=1769414561; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=E5gMLbV/jw9kkirryyuOIwhlWMMVSVE/lAczumiLD0w=;
+        b=Y2KWSMLJiSr8UwtxLEg/2E3g6xGvjH8GeAo2fLq+zhGmI3BFvgKfSzv+Ev1+wypMbA
+         NXJCv2+hzDhuQ7UYABmvIOt1yuV+k0DUjlz0KIWEwNE7HS1+HG8H8qAKfl3yS9V1GxVY
+         lldr0wlTVTku2omz2NbvY7vUxjveC+nOxlIfpfapLnaKROtFhsvA7Wen3PLqVH6tmxDD
+         GzNnJ4LmCMyWKF8r+xcyuzw6hpZvFyOqwv3wqNLSOZd0I1Fi5zgTYNG6ttOgvuXE/4k6
+         eRkxqi44/0jQoAplKxcAMqZVKpoid3mdHXlsIb0A0Bx684ij6r/TtE3ugmizKnRJdUbx
+         Zofw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768809604; x=1769414404;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jye8WAd/vE4qqlECAOAdbFTMAIss/HS1MRQD2Sijk8A=;
-        b=OfyvhbMoTRBXcZh3Z5xUcL4PIFaMfBZKOyLE3zJj1Oor+Z3b34bAvP1g6mhXxkP8wx
-         Ko7SMLb4afd8MQrNE5WUF3FPw1ldZhP+0P+k/4kOWVjQLD1uVYXzPmJ1nmlBJrb75ZRc
-         0VRijqumkeZelCmtYW6lw6T65BCq0Nm/AV0qsqv1sAZgrcBUS6wvJUvf2p+PP5s2vJ0n
-         Q4LrasQh6v8mCwKEr/RYgeHyBusFKPB/gTz4A2kwGk4cnsVbpabwOOc+vzP1oh0Dr4UP
-         DWBnR+E2NQm0JdHpwOFH6C6QQC9gwH0M8Ei2ul/JfZLguP8aCpW7ZkquEEUlggfVRWBP
-         Zgjg==
-X-Forwarded-Encrypted: i=1; AJvYcCXUoF1PNSpzAukI91O3hRdmyvekRwlQOYW1Yxubz79Gb+KwCjyp4Yb9+fcqat1rcxe8fiVrBPU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDXjvzndmLn3nimvP4VPFMGUxutYfqd506ejBha+3nRUZs+17h
-	OOH4IrCn4H6aRkMGBZ6HQ0R+X0qMGq4Hi5vN/4ne7Aa9VNdnRnoT/bkYH1HzBgfQYes=
-X-Gm-Gg: AY/fxX6gkeS7pnOhJcC6QE42HsISzO+FYgik+/eX4lYSNEdq9S+uStGKueWvxeCJDq1
-	PZ2WM4z3d4YqD55iwan7MFl4RzqFC6+omPoXNXtRcGKAr98VSclpwrDPfJU7jahgIbyd0nbAYWT
-	ui+JobQ4JCzoHiz/0AIfERYpX1m6C9yZ9HjefdS0AT7APBOvc+JtfwIMiT/KGXDeccO1VOrZZ0/
-	GvUdM5ioRQlYeGtkv9jqQH28bMAEfV/Zznb1akzuVFF8pvn9WpWR1f6l6LMsWKgc5ECX5EmQpty
-	4dSzMW6S6xvwy8PlRNQKzvjvA97Yv5ZjhJ+nRfpihN1mqOKI/fLqwjwKu0Jl7K/eEAaDODmu0Wu
-	GzudF5i38q7+o9kpP2kSLvCdF+qvaWLk6q5WETfC+F9eDQNpU6tlWEu+W56XilK/PfCxETXadTT
-	kiDm+VJJ70VMWHOiZoVv8ul2Z0
-X-Received: by 2002:a05:600c:3b90:b0:477:9392:8557 with SMTP id 5b1f17b1804b1-4801e33a93amr121328725e9.18.1768809604358;
-        Mon, 19 Jan 2026 00:00:04 -0800 (PST)
-Received: from localhost (109-81-91-169.rct.o2.cz. [109.81.91.169])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356997eb2asm21670271f8f.37.2026.01.19.00.00.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 00:00:03 -0800 (PST)
-Date: Mon, 19 Jan 2026 09:00:02 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Davidlohr Bueso <dave@stgolabs.net>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm: Restore per-memcg proactive reclaim with !CONFIG_NUMA
-Message-ID: <aW3kgrVhWQEyGM-G@tiehlicka>
-References: <20260116205247.928004-1-yosry.ahmed@linux.dev>
+        d=1e100.net; s=20230601; t=1768809761; x=1769414561;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E5gMLbV/jw9kkirryyuOIwhlWMMVSVE/lAczumiLD0w=;
+        b=UWMdJnQGO0gCjkKOUJEvUULTYJ/QIKLxm69j1VUEoqgCv1p/txFNVbpJSi8o+0kr9c
+         1wCKCTV6n4HCEO823uo1yNaeIDggcrF9FfKWJI1zIPv7iM3XYw9+0VwJMxCksw2oinbw
+         FIC/qeml5+SwUuPi/K89XXydH3jwVgFr+BXAhHN4TeOOhrDmc6WzdeJaoenU6p27rgY7
+         Y1MTtu5eEP2xrUt1qoNfrqAJAqvKJ9HzM8dCYZ7S5sTE7d/flNTS1/DhNaR49LUBqtrm
+         I5qYkIqaNA7UARM8RfxHvQW1EoskhV7vEZrrbSljcJR6+Jtrut3snzbG4aNb6mczC3RI
+         hacQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXuid22j0FgjmsvIAPE1+J/FTmmYKV66ZjRPIk3dFVe1EIxbIuBgeCnFhlEOx9lhWa/rBDwSrU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3O6iAaxMRLNHB/1gplESHvE4ryZ1ntkX10yDU0PMEzqGgC7lw
+	SM4MQTVFQscdi6NyqfYODJOn3wzvJsEXGQB9kLeHzu9xeO5Z3yd8rnX9V/6/ESrrfos42eLf2l5
+	WhcdTn1LPekoIhxGymO3bbTRmK2JG6l0=
+X-Gm-Gg: AY/fxX68w4+sWJ9jzHugPiLpVFv5cTVC9fLbXNQuFiLCB/jjaRF8RlUqIStoACDOj6v
+	+uHj6vUFq8d9lpN0Kd5fRDhkviayAxYgGvB0kY6om/JW5YhbH9EaExUfyZV5pPdd8sE5O8ReCMc
+	5AmfNaLu0afsMHtztklIVEF/fMdAs9gd3KcMl39U8Rh2GPCTK9l/V0cK1cTebj4RIjgFwcnQIgX
+	OtnVWGcSOfsiL4LDbiQQaxpniUr7NcOlOsiC3fEa/w5hP+9sayzSicc5KVLa5Rw5sfzcZYt8ktH
+	uJIbUm1QOGu0Xu4N0Rwf1x5lb0jA7NWUU3oK57u/mU8p4mGlmMSAI1X/opXCjgKd3r9X/QHQA6K
+	pw8LtVp1o3A8ug+qavufcjkA3EkPBE5vS43LKhA==
+X-Received: by 2002:a05:6402:2549:b0:64b:993f:ce05 with SMTP id
+ 4fb4d7f45d1cf-65452bd116fmr7271933a12.24.1768809761107; Mon, 19 Jan 2026
+ 00:02:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116205247.928004-1-yosry.ahmed@linux.dev>
+References: <20260116151253.9223-1-jerrysteve1101@gmail.com>
+In-Reply-To: <20260116151253.9223-1-jerrysteve1101@gmail.com>
+From: Peter Robinson <pbrobinson@gmail.com>
+Date: Mon, 19 Jan 2026 08:02:29 +0000
+X-Gm-Features: AZwV_QjD9hcUQzta7ih2I8JDpblRClcNe5NlO_infM0IaHOPiePu7HjjLZlFx5U
+Message-ID: <CALeDE9OC7p6XMMwPk8_vsBe09RJHBK8KED=YAcykYqpQXzVfyQ@mail.gmail.com>
+Subject: Re: [PATCH v2] arm64: dts: rockchip: Do not enable hdmi_sound node on
+ Pinebook Pro
+To: Jun Yan <jerrysteve1101@gmail.com>
+Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, heiko@sntech.de, dsimic@manjaro.org, 
+	didi.debian@cknow.org, conor+dt@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri 16-01-26 20:52:47, Yosry Ahmed wrote:
-> Commit 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
-> moved proactive reclaim logic from memory.reclaim handler to a generic
-> user_proactive_reclaim() helper to be used for per-node proactive
-> reclaim.
-> 
-> However, user_proactive_reclaim() was only defined under CONFIG_NUMA,
-> with a stub always returning 0 otherwise. This broke memory.reclaim on
-> !CONFIG_NUMA configs, causing it to report success without actually
-> attempting reclaim.
-> 
-> Move the definition of user_proactive_reclaim() outside CONFIG_NUMA, and
-> instead define a stub for __node_reclaim() in the !CONFIG_NUMA case.
-> __node_reclaim() is only called from user_proactive_reclaim() when a
-> write is made to sys/devices/system/node/nodeX/reclaim, which is only
-> defined with CONFIG_NUMA.
-> 
-> Fixes: 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
+On Fri, 16 Jan 2026 at 15:13, Jun Yan <jerrysteve1101@gmail.com> wrote:
+>
+> Remove the redundant enabling of the hdmi_sound node in the Pinebook Pro
+> board dts file, because the HDMI output is unused on this device. [1][2]
+>
+> This change also eliminates the following kernel log warning, which is
+> caused by the unenabled dependent node of hdmi_sound that ultimately
+> results in the node's probe failure:
+>
+>   platform hdmi-sound: deferred probe pending: asoc-simple-card: parse error
+>
+> [1] https://files.pine64.org/doc/PinebookPro/pinebookpro_v2.1_mainboard_schematic.pdf
+> [2] https://files.pine64.org/doc/PinebookPro/pinebookpro_schematic_v21a_20220419.pdf
+>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Fixes: 5a65505a69884 ("arm64: dts: rockchip: Add initial support for Pinebook Pro")
+> Signed-off-by: Jun Yan <jerrysteve1101@gmail.com>
+Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
 
-Ouch.
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks for catching that up.
+Looks good to me.
 
+>
 > ---
->  mm/internal.h |  8 --------
->  mm/vmscan.c   | 13 +++++++++++--
->  2 files changed, 11 insertions(+), 10 deletions(-)
-> 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 33eb0224f461..9508dbaf47cd 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -615,16 +615,8 @@ extern unsigned long highest_memmap_pfn;
->  bool folio_isolate_lru(struct folio *folio);
->  void folio_putback_lru(struct folio *folio);
->  extern void reclaim_throttle(pg_data_t *pgdat, enum vmscan_throttle_state reason);
-> -#ifdef CONFIG_NUMA
->  int user_proactive_reclaim(char *buf,
->  			   struct mem_cgroup *memcg, pg_data_t *pgdat);
-> -#else
-> -static inline int user_proactive_reclaim(char *buf,
-> -			   struct mem_cgroup *memcg, pg_data_t *pgdat)
-> -{
-> -	return 0;
-> -}
-> -#endif
->  
->  /*
->   * in mm/rmap.c:
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 7b28018ac995..d9918f24dea0 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -7849,6 +7849,17 @@ int node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask, unsigned int order)
->  	return ret;
->  }
->  
-> +#else
-> +
-> +static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
-> +				    unsigned long nr_pages,
-> +				    struct scan_control *sc)
-> +{
-> +	return 0;
-> +}
-> +
-> +#endif
-> +
->  enum {
->  	MEMORY_RECLAIM_SWAPPINESS = 0,
->  	MEMORY_RECLAIM_SWAPPINESS_MAX,
-> @@ -7956,8 +7967,6 @@ int user_proactive_reclaim(char *buf,
->  	return 0;
->  }
->  
-> -#endif
+>
+> Changes in v2:
+> - Rewrite the description of change
+> - Link to v1: https://lore.kernel.org/linux-rockchip/20260112141300.332996-1-jerrysteve1101@gmail.com/
+> ---
+>  arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts | 4 ----
+>  1 file changed, 4 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+> index 810ab6ff4e67..753d51344954 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+> +++ b/arch/arm64/boot/dts/rockchip/rk3399-pinebook-pro.dts
+> @@ -421,10 +421,6 @@ &gpu {
+>         status = "okay";
+>  };
+>
+> -&hdmi_sound {
+> -       status = "okay";
+> -};
 > -
->  /**
->   * check_move_unevictable_folios - Move evictable folios to appropriate zone
->   * lru list
-> -- 
-> 2.52.0.457.g6b5491de43-goog
-
--- 
-Michal Hocko
-SUSE Labs
+>  &i2c0 {
+>         clock-frequency = <400000>;
+>         i2c-scl-falling-time-ns = <4>;
+> --
+> 2.52.0
+>
 
