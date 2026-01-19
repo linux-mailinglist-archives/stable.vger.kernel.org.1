@@ -1,161 +1,130 @@
-Return-Path: <stable+bounces-210383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29C9DD3B2F7
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 18:01:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62E0D3B372
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 18:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 10FED303182E
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:57:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D99D130389A0
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750EE30EF63;
-	Mon, 19 Jan 2026 16:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E17B39B4BF;
+	Mon, 19 Jan 2026 16:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Dzgbg+ok"
+	dkim=pass (2048-bit key) header.d=shenghaoyang.info header.i=@shenghaoyang.info header.b="PkSc3Iq+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019A22C158F;
-	Mon, 19 Jan 2026 16:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00E139C621
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 16:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768841814; cv=none; b=OaiSbjyZbfvZrSsgw4+Z6uOipIn9eeSDsgir6JMV5Q/vGNyuVq/w1+8JzFszngTz1H4sOmD7IsredLa/GQU/yTzeARXyYzTwL2qHCA+3uzmB4qjOKR9pdkddwvQmxAOoSTcC26ECzBhxdM2HfIMXHQNaxml517oyNH1IhCcHJ1M=
+	t=1768840900; cv=none; b=LRQRioHHQ3gxvG9S5QeYydJevu1cZnFLA9KjyA6Dd/xnsxQ1orh6JPMddX2V73ZHAM70cOpRgCpwnx6kzLRrP4eucZHwjppHZW70r93J4bZiM/LHttKMZio6Ub+AVi27YvFlfHRJKRY7vovesos6Qt94xhTYxupUmoJkHkIvUdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768841814; c=relaxed/simple;
-	bh=GYLwx0Hne15W5ZSKTaTY96zz6Id4CzMzEygkuRoJRGI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=eMxKEL1hE0U1HbV5nE5RX65JSpnzXMHifoWXngiimF5n6WYtBzameub00KtXfUAh+eFRVTLWDV1CvYfEvAasRX56jIhfvgS+t4qoc3/u285vqAqLg3Y/22CvTEHfpcdw/QEqlAbQaCjJbzJV/AFdzvO2BvSjzgRus6Sv9l4Ntk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Dzgbg+ok; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60JDcHpb012605;
-	Mon, 19 Jan 2026 16:56:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=fVQAwn
-	ZY3xGcrB47UXLurStptNlnnObHCmQwjyhqQK0=; b=Dzgbg+okFzoC3e5YXfxg97
-	25+9a8+WELWr4ZfvbJ1O0Hzba2Q/AKrhOuUqf/rSNR8sGPQW97ro+nIwj0yYrD6z
-	r6VGRbnyfsafZWNQyyvp71JR4EAhiC3lUoT7to1Sp7BY/HVckMLByV04zUWGNTdc
-	wYoupwIXqc+Nh5m3gawlQZOni+4RUmQZrG5hRuWXiRZFSNwZnIgi740efmUzvl6M
-	OYYLGbp9KuZYjrl1bUBk7RNS6iKoHH9trxROQ9XQ7SntpIwoJS3KskWf4VKX2CHi
-	00v6Y89Fbt4B2wgLcrskkVMP9hGDKBcpxpnLJ0WGVXwadRFeeB21ctEKfna1ZXcg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br1x51f1k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Jan 2026 16:56:46 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60JGCjXc024583;
-	Mon, 19 Jan 2026 16:56:45 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4brxareb6r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Jan 2026 16:56:45 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60JGufBf56295776
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Jan 2026 16:56:41 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7D1D520043;
-	Mon, 19 Jan 2026 16:56:41 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4F0682004B;
-	Mon, 19 Jan 2026 16:56:41 +0000 (GMT)
-Received: from localhost (unknown [9.52.203.172])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 19 Jan 2026 16:56:41 +0000 (GMT)
+	s=arc-20240116; t=1768840900; c=relaxed/simple;
+	bh=V+ly4X6nLFmR1AJYR9jxH03Kum+GKeNv/cPwFDs+L48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mlvtk8bWhEesRyDc8R7BpLmi5bt77R3tZsfDjTzUK5V7vuFL6d1XDqZe+zlevroX3KW3vMvLIpdkAQTaTst/2XDiVfHHlrTd/bfWwPLh4YxpyQoiETnjLbw2+Fp1qwcHhm4C2qZY4rmG8sX7qNlDTGKHzADJUjGARjkrV1vc7K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shenghaoyang.info; spf=pass smtp.mailfrom=shenghaoyang.info; dkim=pass (2048-bit key) header.d=shenghaoyang.info header.i=@shenghaoyang.info header.b=PkSc3Iq+; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shenghaoyang.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shenghaoyang.info
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35290e6d2e7so40207a91.1
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 08:41:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shenghaoyang.info; s=google; t=1768840898; x=1769445698; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HcmmiqNbU3rGTkCmxroKjD8IC24Ld60SzEtjXGdLtbM=;
+        b=PkSc3Iq+APODxyT33dZL4vlVg8VkcW4feLZWDJpeNXaU6Lrz0D0iTrSw99J9eIxD4V
+         DPpnQiB9ZJFfYoko8KPeoy37RwXsN85X51cSMap+RSQPkLeZy48pDT4IKbNt/wUR4kuv
+         GglknYEyIxjwwiFujCwue4Tt3PmqdleYsR+guanIamFd1om+J+KVhgd53UCTrfdGKMoa
+         1MauZuh35OXlEvJJFboy3oZBBkYXr6DuQl2M+ZyfZbvxFu6ySJVMo4hwUALCnufSNyjm
+         x+Uptaf/vC/5L5KlrMgFOvDLH6svI5/XKe7Oqflq6xXM6oTW6RZNg6kXgfxALn1pBbiS
+         rPBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768840898; x=1769445698;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HcmmiqNbU3rGTkCmxroKjD8IC24Ld60SzEtjXGdLtbM=;
+        b=oBVNE3mPdp7oG385ZBw6/MXaP45h+Ju/DujVM5anhh2idQXAEjj2QGyp+X0N2rT1Bh
+         C0Uc/A2hRsBK21lmtDcKKWQzUqpIxqnXcX534hFzr//wiCW0e9VfPLpGDV2LOh4o/kRT
+         ckT2axalqTK2OiIHjave6nDKiNifJioOTNQSNGTquGx+9wl66Dox6+a/7037wPVNMQnU
+         PzNUrK6ECVT9v81+ARAF+Mc5UXOnKtMI05D8GAJ0cHnAyiN1Mn8CAt/iuC8vmZwlIGmQ
+         ZzKZazSutTcXYwn5dw1wKhgNje9bdvxTSDXJ0+Z3c2KuVIUh07eZBd8u74uSK4yv7C/j
+         KkTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX6vEKz/hpZ9RJBSQUjXRrG9lo3N/rIvLxgMi3xmSDZzw2H0l36lxex6WG9jY+4Z/4JsmO7JgY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqJaqsAl8qG8bQwM9k3ap6i0o3EpPWXax9/AS3d9bgAdayRSq4
+	56+qzFlYFNauncYr3NyMcgBYEx1Yq0dKHgjb26vsHLaTDeSGhghD/chfmqe0PMMI8rQ=
+X-Gm-Gg: AZuq6aJ7YYyLI5PfrtEQWxAVyuoGIM7skZ+07u/JIDDXyoSckwSYO5RSxVZFuc/HDUr
+	o4r4VoCi2FPxRqvEApnqd2a5Aix0MaCAC3kVPLsm3HU0J4GwLGdCf0baoJyLdPSijQ+Mx+5EVNO
+	CiKSX4V9z69RKoKQm5toZ/L8GImGKtjgmTTVZ49ymDwi7bfDiD0AGkNG3h+IUs8lMvb5JB0cbg5
+	s1wkx9h8RQYHJwaUXihAoS/attl7pdgrU47FgX0XbVVJQRYoBCqV/fL1Yr5gUTN9mCKKgacK55d
+	wkx31nlDS/slYTxQLFjBv8PYnM7KfmAGaUf4g8ex//IzKj3fAixqsgqJJg0TigUvbVLb6tpzmFy
+	HFEdBj0FqG6G8x8fezumsRGdwa9Uvui9dbO/6Y54Y9QTWPaZM+ImqB+AvRZrXQzg54b3nGEByK4
+	nV9gugsjXfrkQ3
+X-Received: by 2002:a17:90a:c887:b0:34a:b4a2:f0b5 with SMTP id 98e67ed59e1d1-352b5a7f82cmr160248a91.5.1768840898210;
+        Mon, 19 Jan 2026 08:41:38 -0800 (PST)
+Received: from [10.0.0.178] ([132.147.84.99])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-352677ec7dasm12316253a91.8.2026.01.19.08.41.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jan 2026 08:41:37 -0800 (PST)
+Message-ID: <cc51e712-a337-46b0-91cb-6c3af76a84c3@shenghaoyang.info>
+Date: Tue, 20 Jan 2026 00:41:33 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Subject: Re: [PATCH] drm/gud: fix NULL crtc dereference on display disable
+To: Thomas Zimmermann <tzimmermann@suse.de>, Ruben Wauters
+ <rubenru09@aol.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>
+References: <20260118125044.54467-1-me@shenghaoyang.info>
+ <fa36159a-fa41-4066-abea-60a439e944b3@suse.de>
+Content-Language: en-US
+From: Shenghao Yang <me@shenghaoyang.info>
+In-Reply-To: <fa36159a-fa41-4066-abea-60a439e944b3@suse.de>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Jan 2026 17:56:41 +0100
-Message-Id: <DFSQ35HIT6YT.3DTUUNUOEEDHM@linux.ibm.com>
-Cc: <helgaas@kernel.org>, <lukas@wunner.de>, <alex@shazbot.org>,
-        <clg@redhat.com>, <stable@vger.kernel.org>, <schnelle@linux.ibm.com>,
-        <mjrosato@linux.ibm.com>
-Subject: Re: [PATCH v7 9/9] vfio: Remove the pcie check for
- VFIO_PCI_ERR_IRQ_INDEX
-From: "Julian Ruess" <julianr@linux.ibm.com>
-To: "Farhan Ali" <alifm@linux.ibm.com>, <linux-s390@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260107183217.1365-1-alifm@linux.ibm.com>
- <20260107183217.1365-10-alifm@linux.ibm.com>
-In-Reply-To: <20260107183217.1365-10-alifm@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=R8AO2NRX c=1 sm=1 tr=0 ts=696e624e cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=Okk2yIgg9Z9Hp2RjL0IA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: QzRipjxLbY9YVaDZM2Fkn7cNSMc88EjY
-X-Proofpoint-GUID: QzRipjxLbY9YVaDZM2Fkn7cNSMc88EjY
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDE0MCBTYWx0ZWRfX2qlhnSxI8lYN
- 64rpgvPsXZnrxCNPsQNMp3dBb+j2mqVYVDz8/83NwKlu8BmqgbKzpzt3vQfLkl54MPDcgs3Wr93
- 1IkZMdEACUdzFn/lV67iNMilfQpFoenS8UNGX4Aavko4j9sbaEuk1kkLJ+GCzDxz/ZfCOlHlbKz
- u60LV3pbRv+mpNhwsgFB0CiK4ntnVZz951/eGDaipaIQyz7U8XdXTlKAStEPcBdseQY6tp6gtXb
- S/525lc1B4CQFHltL2ORIcaruSIKj9V36VvLXgITRYUBkbzfs3OsN/Ie8RN4MKLjEEBJyRvO7JW
- p/8nIzgsYs9o8ey81D/Tc0/AVxZMaXOOu0/6vdQUvvlvMRUV3ph95TqcpACrUKuay2XB7ZfZam4
- I0vU+NEqDe7bP7FzUsAKvmjPyt3upyUbfXLAwXaMKpSIsYhjZQ0HCeFlt79M6OpdSJryvJphGGm
- l9X2TNOhDGCfSbSxpow==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-19_04,2026-01-19_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 bulkscore=0 lowpriorityscore=0 adultscore=0
- spamscore=0 phishscore=0 malwarescore=0 suspectscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601190140
+Content-Transfer-Encoding: 7bit
 
-On Wed Jan 7, 2026 at 7:32 PM CET, Farhan Ali wrote:
-> We are configuring the error signaling on the vast majority of devices an=
-d
-> it's extremely rare that it fires anyway. This allows userspace to be
-> notified on errors for legacy PCI devices. The Internal Shared Memory (IS=
-M)
-> device on s390x is one such device. For PCI devices on IBM s390x error
-> recovery involves platform firmware and notification to operating system
-> is done by architecture specific way. So the ISM device can still be
-> recovered when notified of an error.
->
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c  | 6 ++----
->  drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
->  2 files changed, 3 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index c92c6c512b24..0fdce5234914 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -778,8 +778,7 @@ static int vfio_pci_get_irq_count(struct vfio_pci_cor=
-e_device *vdev, int irq_typ
->  			return (flags & PCI_MSIX_FLAGS_QSIZE) + 1;
->  		}
->  	} else if (irq_type =3D=3D VFIO_PCI_ERR_IRQ_INDEX) {
-> -		if (pci_is_pcie(vdev->pdev))
-> -			return 1;
-> +		return 1;
->  	} else if (irq_type =3D=3D VFIO_PCI_REQ_IRQ_INDEX) {
->  		return 1;
->  	}
-> @@ -1157,8 +1156,7 @@ static int vfio_pci_ioctl_get_irq_info(struct vfio_=
-pci_core_device *vdev,
->  	case VFIO_PCI_REQ_IRQ_INDEX:
->  		break;
->  	case VFIO_PCI_ERR_IRQ_INDEX:
-> -		if (pci_is_pcie(vdev->pdev))
-> -			break;
-> +		break;
->  		fallthrough;
+Hi,
 
-Isn't the fallthrough unreachable now?
+On 19/1/26 16:17, Thomas Zimmermann wrote:
+> Hi,
+> 
+> thanks for the patch.
 
--- snip --
+Thanks for taking a look. I did forget about this oops and the
+smatch failure was a good reminder!
+
+> 
+> Am 18.01.26 um 13:50 schrieb Shenghao Yang:
+>> Commit dc2d5ddb193e ("drm/gud: fix NULL fb and crtc dereferences
+>> on USB disconnect") [1] only fixed the initial NULL crtc dereference
+>> in gud_plane_atomic_update().
+>>
+>> However, planes can also be disabled in non-hotplug paths (e.g.
+>> display disables via the DE). The drm_dev_enter() call would not
+> 
+> 'DE' ?
+
+Ah - the desktop environment. I was scratching my head for why the
+box kept oops-ing on boot even after the hotplug fix. It turned out
+kscreen was applying the saved "disable display" setting.
+
+> It seems to me that all these calls to GUD_REQ_SET_CONTROLLER_ENABLE(^1) and GUD_REQ_SET_DISPLAY_ENABLEshould rather go to the CRTC's atomic_enable/atomic_disable functions. Those currently seem missing from [1]. The atomic_update helper would then be reduced to damage handling. Best regards Thomas [1] https://elixir.bootlin.com/linux/v6.18.6/source/drivers/gpu/drm/gud/gud_drv.c#L341
+> ^1: SET_CONTROLLER_ENABLE sounds like it could even be part of device probing and runtime PM management, but that is a more invasive change.
+
+That feels like it'd be much cleaner. I'll respin with that in v2.
+
+Shenghao
+
 
