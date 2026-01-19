@@ -1,235 +1,183 @@
-Return-Path: <stable+bounces-210349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C71D3A9C8
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:02:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 086D7D3A9CA
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:02:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B78EA3030208
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 13:01:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA80E303E657
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 13:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3B9328241;
-	Mon, 19 Jan 2026 13:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29A8363C7C;
+	Mon, 19 Jan 2026 13:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GpxTrrCh";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+TQBIoDT";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="GpxTrrCh";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+TQBIoDT"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B616C363C6B;
-	Mon, 19 Jan 2026 13:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8CD363C6A
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 13:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768827700; cv=none; b=VKG9fPxkOxPglAjl6UH/jgegpuULiD5lNUUvsyyI/XYjS8Mn/JmMrIlviwbY4e6xCKko4zfIGerhjm3KEpX1LFz/ARpsZ5dx0Ys+TAT6HdcHbnfuw6U49LRG7PemsO9W2XT7hmVS7tOQJhLnxsM9kT5x1edNTwLqUbVeolJldPM=
+	t=1768827756; cv=none; b=fdAYTmXrDg6eBi71CP86eJmt2TjDbscoojDXffpAlWqUzElhUk8Oc3bVjCuXKcBQu8BP//r9NIwRn7zORppE+rxGybLNKqDdW9xFc4Tt6sZ7OEq23BGSEktiijpL5fWJUwKbZBoBcxPsWoXI8WW8hlYSfuVpEutYeXqICbT1oWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768827700; c=relaxed/simple;
-	bh=JjIQdpB33auSRMly0z+AzAup61l3AMN9igfJYdLwAic=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccyq6YsZxv4DF+z5OoO5QvS9+gN20xDaxES+WuPJDJe0LZiak8Kf65a/6t2QT2Rg9RV9KNj7ggvTZFjt0FP3TB8E3ppGKsqF6ln5fTgMo8aUesqK5pskly8q9s6LipYBp4Xz9l3mVRFn6QjaJNbHg6WgCPFknqkZ9Meu5WO1msA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A144FEC;
-	Mon, 19 Jan 2026 05:01:31 -0800 (PST)
-Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A51C03F740;
-	Mon, 19 Jan 2026 05:01:34 -0800 (PST)
-From: Ryan Roberts <ryan.roberts@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	David Laight <david.laight.linux@gmail.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v4 1/3] randomize_kstack: Maintain kstack_offset per task
-Date: Mon, 19 Jan 2026 13:01:08 +0000
-Message-ID: <20260119130122.1283821-2-ryan.roberts@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260119130122.1283821-1-ryan.roberts@arm.com>
-References: <20260119130122.1283821-1-ryan.roberts@arm.com>
+	s=arc-20240116; t=1768827756; c=relaxed/simple;
+	bh=x7EiAMW9C+Ek2ACdhqu2hp1zr3Gbl/4Dyfqpz4ikI7Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N0QmxfV4BDx+1UfkfDtOISvatY7KrsOhZWCNk9JRpLuuh43xzgnFhPqXKmGroDzjQvXPz94GpdEl9G81b2XYi/FMsh+pYLZF9A6fE8t+YSL6S/yYSGnrle6MCO1Af9ff6HP5bkgXQAZ1YAkkFVQEbNMe29iUgPZfSGJcCvHsWJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GpxTrrCh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+TQBIoDT; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=GpxTrrCh; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+TQBIoDT; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 6061133739;
+	Mon, 19 Jan 2026 13:02:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1768827750; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hrlNDf5VNjX9ELPfZ+LNgSuS5G7kdtoTlIu/QmH4T64=;
+	b=GpxTrrCh4hNsKltNDaOOfHLdTmXmbCbJuybMTEcsUAuVT9J36wmtpIF8EFlMoadWtxXtE2
+	ylRzfuhjJ+dA13jLiXffXp/Lv5zHW0Gz2UTyKBcwx4y4O/IZ5qlFd9kjXY+Uktdu6iwwcG
+	23vSKEi2y+AUIGf/fZmM1ilG0wCZhmA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1768827750;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hrlNDf5VNjX9ELPfZ+LNgSuS5G7kdtoTlIu/QmH4T64=;
+	b=+TQBIoDTbAg2GSF0SfNzR8uubCOkCweGgGWruE/Tl6rbCXejkfSYemCINOKyH2tKiSesF7
+	oJ0VVgKPmpXyqEBg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1768827750; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hrlNDf5VNjX9ELPfZ+LNgSuS5G7kdtoTlIu/QmH4T64=;
+	b=GpxTrrCh4hNsKltNDaOOfHLdTmXmbCbJuybMTEcsUAuVT9J36wmtpIF8EFlMoadWtxXtE2
+	ylRzfuhjJ+dA13jLiXffXp/Lv5zHW0Gz2UTyKBcwx4y4O/IZ5qlFd9kjXY+Uktdu6iwwcG
+	23vSKEi2y+AUIGf/fZmM1ilG0wCZhmA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1768827750;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hrlNDf5VNjX9ELPfZ+LNgSuS5G7kdtoTlIu/QmH4T64=;
+	b=+TQBIoDTbAg2GSF0SfNzR8uubCOkCweGgGWruE/Tl6rbCXejkfSYemCINOKyH2tKiSesF7
+	oJ0VVgKPmpXyqEBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 52B243EA65;
+	Mon, 19 Jan 2026 13:02:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wok6E2YrbmlYKAAAD6G6ig
+	(envelope-from <dwagner@suse.de>); Mon, 19 Jan 2026 13:02:30 +0000
+Date: Mon, 19 Jan 2026 14:02:25 +0100
+From: Daniel Wagner <dwagner@suse.de>
+To: Ben Hutchings <ben@decadent.org.uk>
+Cc: Daniel Wagner <wagi@kernel.org>, Keith Busch <kbusch@kernel.org>, 
+	patches@lists.linux.dev, Justin Tee <justin.tee@broadcom.com>, 
+	Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.10 219/451] nvme-fc: dont hold rport lock when putting
+ ctrl
+Message-ID: <ebd16272-73ea-4aad-b603-459841068a2b@flourine.local>
+References: <20260115164230.864985076@linuxfoundation.org>
+ <20260115164238.821426188@linuxfoundation.org>
+ <21f26a1c5d9b0ddf0320a13bf3625642d506b11d.camel@decadent.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <21f26a1c5d9b0ddf0320a13bf3625642d506b11d.camel@decadent.org.uk>
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,flourine.local:mid]
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spam-Level: 
 
-kstack_offset was previously maintained per-cpu, but this caused a
-couple of issues. So let's instead make it per-task.
+Hi Ben,
 
-Issue 1: add_random_kstack_offset() and choose_random_kstack_offset()
-expected and required to be called with interrupts and preemption
-disabled so that it could manipulate per-cpu state. But arm64, loongarch
-and risc-v are calling them with interrupts and preemption enabled. I
-don't _think_ this causes any functional issues, but it's certainly
-unexpected and could lead to manipulating the wrong cpu's state, which
-could cause a minor performance degradation due to bouncing the cache
-lines. By maintaining the state per-task those functions can safely be
-called in preemptible context.
+On Sat, Jan 17, 2026 at 09:47:30PM +0100, Ben Hutchings wrote:
+> > Justin suggested use the safe list iterator variant because
+> > nvme_fc_ctrl_put will also modify the rport->list.
+> 
+> The "safe" list iterator macros do protect against deletion of the
+> current node within the loop body, but they assume the next node won't
+> also be deleted.
+> 
+> [...]
+> > -	list_for_each_entry(ctrl, &rport->ctrl_list, ctrl_list) {
+> > +	list_for_each_entry_safe(ctrl, tmp, &rport->ctrl_list, ctrl_list) {
+> >  		if (!nvme_fc_ctrl_get(ctrl))
+> >  			continue;
+> >  		spin_lock(&ctrl->lock);
+> > @@ -1520,7 +1520,9 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
+> >  		if (ret)
+> >  			/* leave the ctrl get reference */
+> >  			break;
+> > +		spin_unlock_irqrestore(&rport->lock, flags);
+> >  		nvme_fc_ctrl_put(ctrl);
+> > +		spin_lock_irqsave(&rport->lock, flags);
+> 
+> Does anything prevent the next node (*tmp) being removed by another
+> thread while the lock is dropped here?
 
-Issue 2: add_random_kstack_offset() is called before executing the
-syscall and expands the stack using a previously chosen random offset.
-choose_random_kstack_offset() is called after executing the syscall and
-chooses and stores a new random offset for the next syscall. With
-per-cpu storage for this offset, an attacker could force cpu migration
-during the execution of the syscall and prevent the offset from being
-updated for the original cpu such that it is predictable for the next
-syscall on that cpu. By maintaining the state per-task, this problem
-goes away because the per-task random offset is updated after the
-syscall regardless of which cpu it is executing on.
+Thanks for looking at this. There is nothing in place to prevent LS
+requests running in parallel, e.g. two dissociating controllers LS for
+one rport,
 
-Fixes: 39218ff4c625 ("stack: Optionally randomize kernel stack offset each syscall")
-Closes: https://lore.kernel.org/all/dd8c37bc-795f-4c7a-9086-69e584d8ab24@arm.com/
-Cc: stable@vger.kernel.org
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
----
- include/linux/randomize_kstack.h | 26 +++++++++++++++-----------
- include/linux/sched.h            |  4 ++++
- init/main.c                      |  1 -
- kernel/fork.c                    |  2 ++
- 4 files changed, 21 insertions(+), 12 deletions(-)
+	schedule_work(&rport->lsrcv_work)
+        nvme_fc_handle_ls_rqst_work
+            nvme_fc_handle_ls_rqst
+                nvme_fc_ls_disconnect_assoc
 
-diff --git a/include/linux/randomize_kstack.h b/include/linux/randomize_kstack.h
-index 1d982dbdd0d0..5d3916ca747c 100644
---- a/include/linux/randomize_kstack.h
-+++ b/include/linux/randomize_kstack.h
-@@ -9,7 +9,6 @@
- 
- DECLARE_STATIC_KEY_MAYBE(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
- 			 randomize_kstack_offset);
--DECLARE_PER_CPU(u32, kstack_offset);
- 
- /*
-  * Do not use this anywhere else in the kernel. This is used here because
-@@ -50,15 +49,14 @@ DECLARE_PER_CPU(u32, kstack_offset);
-  * add_random_kstack_offset - Increase stack utilization by previously
-  *			      chosen random offset
-  *
-- * This should be used in the syscall entry path when interrupts and
-- * preempt are disabled, and after user registers have been stored to
-- * the stack. For testing the resulting entropy, please see:
-- * tools/testing/selftests/lkdtm/stack-entropy.sh
-+ * This should be used in the syscall entry path after user registers have been
-+ * stored to the stack. Preemption may be enabled. For testing the resulting
-+ * entropy, please see: tools/testing/selftests/lkdtm/stack-entropy.sh
-  */
- #define add_random_kstack_offset() do {					\
- 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
- 				&randomize_kstack_offset)) {		\
--		u32 offset = raw_cpu_read(kstack_offset);		\
-+		u32 offset = current->kstack_offset;			\
- 		u8 *ptr = __kstack_alloca(KSTACK_OFFSET_MAX(offset));	\
- 		/* Keep allocation even after "ptr" loses scope. */	\
- 		asm volatile("" :: "r"(ptr) : "memory");		\
-@@ -69,9 +67,9 @@ DECLARE_PER_CPU(u32, kstack_offset);
-  * choose_random_kstack_offset - Choose the random offset for the next
-  *				 add_random_kstack_offset()
-  *
-- * This should only be used during syscall exit when interrupts and
-- * preempt are disabled. This position in the syscall flow is done to
-- * frustrate attacks from userspace attempting to learn the next offset:
-+ * This should only be used during syscall exit. Preemption may be enabled. This
-+ * position in the syscall flow is done to frustrate attacks from userspace
-+ * attempting to learn the next offset:
-  * - Maximize the timing uncertainty visible from userspace: if the
-  *   offset is chosen at syscall entry, userspace has much more control
-  *   over the timing between choosing offsets. "How long will we be in
-@@ -85,14 +83,20 @@ DECLARE_PER_CPU(u32, kstack_offset);
- #define choose_random_kstack_offset(rand) do {				\
- 	if (static_branch_maybe(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,	\
- 				&randomize_kstack_offset)) {		\
--		u32 offset = raw_cpu_read(kstack_offset);		\
-+		u32 offset = current->kstack_offset;			\
- 		offset = ror32(offset, 5) ^ (rand);			\
--		raw_cpu_write(kstack_offset, offset);			\
-+		current->kstack_offset = offset;			\
- 	}								\
- } while (0)
-+
-+static inline void random_kstack_task_init(struct task_struct *tsk)
-+{
-+	tsk->kstack_offset = 0;
-+}
- #else /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
- #define add_random_kstack_offset()		do { } while (0)
- #define choose_random_kstack_offset(rand)	do { } while (0)
-+#define random_kstack_task_init(tsk)		do { } while (0)
- #endif /* CONFIG_RANDOMIZE_KSTACK_OFFSET */
- 
- #endif
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index da0133524d08..23081a702ecf 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1591,6 +1591,10 @@ struct task_struct {
- 	unsigned long			prev_lowest_stack;
- #endif
- 
-+#ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
-+	u32				kstack_offset;
-+#endif
-+
- #ifdef CONFIG_X86_MCE
- 	void __user			*mce_vaddr;
- 	__u64				mce_kflags;
-diff --git a/init/main.c b/init/main.c
-index b84818ad9685..27fcbbde933e 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -830,7 +830,6 @@ static inline void initcall_debug_enable(void)
- #ifdef CONFIG_RANDOMIZE_KSTACK_OFFSET
- DEFINE_STATIC_KEY_MAYBE_RO(CONFIG_RANDOMIZE_KSTACK_OFFSET_DEFAULT,
- 			   randomize_kstack_offset);
--DEFINE_PER_CPU(u32, kstack_offset);
- 
- static int __init early_randomize_kstack_offset(char *buf)
- {
-diff --git a/kernel/fork.c b/kernel/fork.c
-index b1f3915d5f8e..b061e1edbc43 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -95,6 +95,7 @@
- #include <linux/thread_info.h>
- #include <linux/kstack_erase.h>
- #include <linux/kasan.h>
-+#include <linux/randomize_kstack.h>
- #include <linux/scs.h>
- #include <linux/io_uring.h>
- #include <linux/bpf.h>
-@@ -2231,6 +2232,7 @@ __latent_entropy struct task_struct *copy_process(
- 	if (retval)
- 		goto bad_fork_cleanup_io;
- 
-+	random_kstack_task_init(p);
- 	stackleak_task_init(p);
- 
- 	if (pid != &init_struct_pid) {
--- 
-2.43.0
+What's the proper way to address this? I saw there is a list_safe_reset_next:
 
+	list_for_each_entry_safe(ctrl, tmp, &rport->ctrl_list, ctrl_list) {
+        [...]
+
+		spin_unlock_irqrestore(&rport->lock, flags);
+		nvme_fc_ctrl_put(ctrl);
+		spin_lock_irqsave(&rport->lock, flags);
+		list_safe_reset_next(ctrl, tmp, ctrl_list);
+	}
+
+Is there another common pattern? Normally, I would use the list swap
+approach but here it doesn't work, at least without a lot of changes I
+think.
+
+Thanks,
+Daniel
 
