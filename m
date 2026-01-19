@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-210248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D943FD39BA5
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 01:40:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3994D39BAB
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 01:48:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DA75430078A1
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 00:40:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 441443001FC8
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 00:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2CB1B81D3;
-	Mon, 19 Jan 2026 00:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D98519FA93;
+	Mon, 19 Jan 2026 00:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GBHlbexQ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="izuf+vwR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B7618859B;
-	Mon, 19 Jan 2026 00:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507EE42050;
+	Mon, 19 Jan 2026 00:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768783253; cv=none; b=FUPhT2xQBjBlRlrJNeCPbgnbO1dJ20USdj+JdIoNX3Th2QJgFNEv7GHcflt6UiXdecHOgclFZ3Ws1t+1LeC+tynGCRcqalXpngBdArRF1icI45ADQER4SMfdsHmV5XbRiPHvNjnQVCGBEhuEuVVfz7/w6sb5hDSiPWNlJymS3cA=
+	t=1768783694; cv=none; b=RHAhr+6UxNuSHGPLI6zQMqzFChzjWz+oAoUtpYuGYSZBRWoYz2z1PX5MyGkKcrlimEIlAjvBQ2pjD+Gf0GBYQoMDSgUihT6Apl87DFAnOddzZplx5S8ZkgRJNnLl/6eijOOKdViM4l3rpEtp2pXkIfNx9KlpdG7fILeP5PS+A94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768783253; c=relaxed/simple;
-	bh=o5d1cIK9KCyPp4LwqwZ0dTGeui5QFRzjlMGckHWgW90=;
+	s=arc-20240116; t=1768783694; c=relaxed/simple;
+	bh=L1cG9GUJU2VG1pKximsbwREpSTyPGuSKjzGBFyCymtI=;
 	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=rWux8OY1+pSNAZOlvcB2JRi9pR1IVwOWG47wrn15Mdfl3kJgUPc2c5YhTvDhvvLNo4oSgL6UIcp2htYlrEwJkpvKv0nrksCvyW0deUs6nuJp8k1SknlJmcsVHVmw6vgtR27xK1Jec53hDAoFIGvKc6Nmq8+qCPX7kjOrMYC43DI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GBHlbexQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EC6C19421;
-	Mon, 19 Jan 2026 00:40:52 +0000 (UTC)
+	 Mime-Version:Content-Type; b=XhItgYatJnrnh9GDiHY/0vD9ICZ3oY65TNxxiwI/Dt1wMKeAiUf8DYZ6kAbGC0lEio9Ol4W951/KsOaUk4E6Fl9CAzHEi75pKGzRJ23i4ujLcgWVfdJP1P6ZhuKxqBFGLa53/5B6msWKQ4+upPBlKnns7ZKr2lfj82ANkZ4vtss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=izuf+vwR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58127C116D0;
+	Mon, 19 Jan 2026 00:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768783252;
-	bh=o5d1cIK9KCyPp4LwqwZ0dTGeui5QFRzjlMGckHWgW90=;
+	s=korg; t=1768783693;
+	bh=L1cG9GUJU2VG1pKximsbwREpSTyPGuSKjzGBFyCymtI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GBHlbexQ6+CtEWF2lGBRULaWx/fWd0Sj7qc41OJ/qYSvXnJTDYkZ/s45tQ8m3amMh
-	 9aYfDkBJT2IHKL7s7OuKB3Y8OU+S6TgSQjrViPmqUTQ9pCkMId2d8xMA9n66A4kFFx
-	 KFVtvESlzZa+VWAKajmajm2KqBiXUDRjBAadoWPk=
-Date: Sun, 18 Jan 2026 16:40:51 -0800
+	b=izuf+vwRKzywnW+D6nrCZpFYVxKMjSMYmWxOwMMzAgeFtoygz2PAVxF+RJ3t7zV51
+	 2kaUV1Y7cr9er9EMPR9K1Higso5pgupl6cCPn4EcrlQmsV7Yh9/VhHZL4Ixtag21J1
+	 QtkX2MCH/mD0jmwOGnbirG/wsATbtO15aN98BxeI=
+Date: Sun, 18 Jan 2026 16:48:12 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, Jan Kara <jack@suse.cz>, Joanne
- Koong <joannelkoong@gmail.com>, linux-mm@kvack.org,
- athul.krishna.kr@protonmail.com, j.neuschaefer@gmx.net, carnil@debian.org,
- linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
- in wait_sb_inodes()
-Message-Id: <20260118164051.521de8ad2758376c3e1d2d81@linux-foundation.org>
-In-Reply-To: <01ebe0c6-6135-4937-a758-93a5fc78d7fe@kernel.org>
-References: <20251215030043.1431306-1-joannelkoong@gmail.com>
-	<20251215030043.1431306-2-joannelkoong@gmail.com>
-	<ypyumqgv5p7dnxmq34q33keb6kzqnp66r33gtbm4pglgdmhma6@3oleltql2qgp>
-	<616c2e51-ff69-4ef9-9637-41f3ff8691dd@kernel.org>
-	<CAJfpeguBuHBGUq45bOFvypsyd8XXekLKycRBGO1eeqLxz3L0eA@mail.gmail.com>
-	<238ef4ab-7ea3-442a-a344-a683dd64f818@kernel.org>
-	<CAJfpegvUP5MK-xB2=djmGo4iYzmsn9LLWV3ZJXFbyyft_LsA_Q@mail.gmail.com>
-	<c39232ea-8cf0-45e6-9a5a-e2abae60134c@kernel.org>
-	<CAJfpegt0Bp5qNFPS0KsAZeU62vw4CqHv+1d53CmEOV45r-Rj0Q@mail.gmail.com>
-	<01ebe0c6-6135-4937-a758-93a5fc78d7fe@kernel.org>
+To: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Maciej =?UTF-8?B?xbtlbmN6?=
+ =?UTF-8?B?eWtvd3NraQ==?= <maze@google.com>, Maciej Wieczor-Retman
+ <m.wieczorretman@pm.me>, Alexander Potapenko <glider@google.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ kasan-dev@googlegroups.com, Uladzislau Rezki <urezki@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ joonki.min@samsung-slsi.corp-partner.google.com, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/kasan: Fix KASAN poisoning in vrealloc()
+Message-Id: <20260118164812.411f8f4f76e3a8aeec5d4704@linux-foundation.org>
+In-Reply-To: <CA+fCnZcFcpbME+a34L49pk2Z-WLbT_L25bSzZFixUiNFevJXzA@mail.gmail.com>
+References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
+	<20260113191516.31015-1-ryabinin.a.a@gmail.com>
+	<CA+fCnZe0RQOv8gppvs7PoH2r4QazWs+PJTpw+S-Krj6cx22qbA@mail.gmail.com>
+	<10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
+	<CA+fCnZeDaNG+hXq1kP2uEX1V4ZY=PNg_M8Ljfwoi9i+4qGSm6A@mail.gmail.com>
+	<CA+fCnZcFcpbME+a34L49pk2Z-WLbT_L25bSzZFixUiNFevJXzA@mail.gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,29 +62,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 6 Jan 2026 18:54:47 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
+On Sat, 17 Jan 2026 18:08:36 +0100 Andrey Konovalov <andreyknvl@gmail.com> wrote:
 
-> On 1/6/26 17:05, Miklos Szeredi wrote:
-> > On Tue, 6 Jan 2026 at 16:41, David Hildenbrand (Red Hat)
-> > <david@kernel.org> wrote:
-> > 
-> >> I assume the usual suspects, including mm/memory-failure.c.
-> >>
-> >> memory_failure() not only contains a folio_wait_writeback() but also a
-> >> folio_lock(), so twice the fun :)
-> > 
-> > As long as it's run from a workqueue it shouldn't affect the rest of
-> > the system, right?  The wq thread will consume a nontrivial amount of
-> > resources, I suppose, so it would be better to implement those waits
-> > asynchronously.
+> On Sat, Jan 17, 2026 at 2:16 AM Andrey Konovalov <andreyknvl@gmail.com> wrote:
+> >
+> > On Fri, Jan 16, 2026 at 2:26 PM Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
+> > >
+> > > So something like bellow I guess.
+> >
+> > Yeah, looks good.
+> >
+> > > I think this would actually have the opposite effect and make the code harder to follow.
+> > > Introducing an extra wrapper adds another layer of indirection and more boilerplate, which
+> > > makes the control flow less obvious and the code harder to navigate and grep.
+> > >
+> > > And what's the benefit here? I don't clearly see it.
+> >
+> > One functional benefit is when HW_TAGS mode enabled in .config but
+> > disabled via command-line, we avoid a function call into KASAN
+> > runtime.
 > 
-> Good question. I know that memory_failure() can be triggered out of 
-> various context, but I never traced it back to its origin.
+> Ah, and I just realized than kasan_vrealloc should go into common.c -
+> we also need it for HW_TAGS.
 
-I'm seeing unhappy okays from David and Jan, so I'll upstream this
-patch later in the week, unless someone stops me.
+I think I'll send this cc:stable bugfix upstream as-is.
+
+Can people please add these nice-to-have code-motion cleanup items to
+their todo lists, to be attended to in the usual fashion?
 
 
