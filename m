@@ -1,89 +1,161 @@
-Return-Path: <stable+bounces-210376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A10B0D3B2A8
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 17:55:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C9DD3B2F7
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 18:01:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B5E2B3111D3B
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:41:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 10FED303182E
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9613B5309;
-	Mon, 19 Jan 2026 16:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750EE30EF63;
+	Mon, 19 Jan 2026 16:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="OaQQHcLl";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4jRlBDX4"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Dzgbg+ok"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAB93AEF23;
-	Mon, 19 Jan 2026 16:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019A22C158F;
+	Mon, 19 Jan 2026 16:56:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768840230; cv=none; b=GDRGN28IAvRoWPyDfoBT8ehWX99yBiJEszMVN/Sb+LS0LCy9bUuAsMCr7I5EOxY/JA9tA8Oe27Np+PR1A4DKdJyD/h1e2J+EVJ+jl8hDiv3zhpKo6EC6swWG/2gdhDJ8uqq7aNEwsSQK40A99IU3VcTwUOizlMKW3HzIhxVFPgQ=
+	t=1768841814; cv=none; b=OaiSbjyZbfvZrSsgw4+Z6uOipIn9eeSDsgir6JMV5Q/vGNyuVq/w1+8JzFszngTz1H4sOmD7IsredLa/GQU/yTzeARXyYzTwL2qHCA+3uzmB4qjOKR9pdkddwvQmxAOoSTcC26ECzBhxdM2HfIMXHQNaxml517oyNH1IhCcHJ1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768840230; c=relaxed/simple;
-	bh=sdGG5M09hkzsJSFJ0MO46ADpx7k88eDsXuroOJ6H/mk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K/6SEkXddaOGbpaVIcrKScdh3lYmwFJtONNGKcl5XvgPZXwyxolAab2uM4xUa+ONUjFW4RxAn3bkXX0bpzgH7lxjxkPsd3o5GC+27xOUhmQpZwPxiQ0/pW7bHWe7iFQ6J64+mkqFdao1KyNak9jw72MuCbeC4RXbMIBr5ikraUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=OaQQHcLl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4jRlBDX4; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 19 Jan 2026 17:30:26 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768840227;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tg4r0hM12VEhzCtDP5l/YG0RGcFgSHWev83wn8qRALQ=;
-	b=OaQQHcLlxOmdqZfs1sXIjPA/cpZeHHx2LVLWa4BHY78rEH66NdRzwSNUXjLoyH/wuNW6G5
-	h9AfkNspt2tPmxsXmaaTm2LESMDQx25UIWXr4UDoSV+c3N6Sn7PEhnasGHd5www+r/+jOv
-	hlphdtbW+3yGyDIuEhnANPXevrhSTpX8oskGstD7ePtWSU9meJQFf2nIhfnmOIO9GC4o/z
-	BUkW0/WFO0iFSywaz/MWJ2IRIsuPizlZRtP7BFy5mw2gZLl3/D1QZyBcZcI+trvK3LoH31
-	LmthDXbjrW0rESdyKjp+DJOYgpFk0/rSjMmKjpJE/T/8J20CHKquk775JDbBbg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768840227;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tg4r0hM12VEhzCtDP5l/YG0RGcFgSHWev83wn8qRALQ=;
-	b=4jRlBDX4Os2TuTfYy8/9OET2fehGZJ9VPIwMUpnLH9boySdmpNXhDgs9HMABNtal+PtFOH
-	sgvjVSvusMR4YsBQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: wen.yang@linux.dev, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH 6.6 3/3] net: Allow to use SMP threads for backlog NAPI.
-Message-ID: <20260119163026.aA1PeSmP@linutronix.de>
-References: <cover.1768751557.git.wen.yang@linux.dev>
- <997bc0de4746100bb69e1bd2ccfb25315d8f62e4.1768751557.git.wen.yang@linux.dev>
- <20260119082534.1f705011@kernel.org>
+	s=arc-20240116; t=1768841814; c=relaxed/simple;
+	bh=GYLwx0Hne15W5ZSKTaTY96zz6Id4CzMzEygkuRoJRGI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=eMxKEL1hE0U1HbV5nE5RX65JSpnzXMHifoWXngiimF5n6WYtBzameub00KtXfUAh+eFRVTLWDV1CvYfEvAasRX56jIhfvgS+t4qoc3/u285vqAqLg3Y/22CvTEHfpcdw/QEqlAbQaCjJbzJV/AFdzvO2BvSjzgRus6Sv9l4Ntk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Dzgbg+ok; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60JDcHpb012605;
+	Mon, 19 Jan 2026 16:56:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=fVQAwn
+	ZY3xGcrB47UXLurStptNlnnObHCmQwjyhqQK0=; b=Dzgbg+okFzoC3e5YXfxg97
+	25+9a8+WELWr4ZfvbJ1O0Hzba2Q/AKrhOuUqf/rSNR8sGPQW97ro+nIwj0yYrD6z
+	r6VGRbnyfsafZWNQyyvp71JR4EAhiC3lUoT7to1Sp7BY/HVckMLByV04zUWGNTdc
+	wYoupwIXqc+Nh5m3gawlQZOni+4RUmQZrG5hRuWXiRZFSNwZnIgi740efmUzvl6M
+	OYYLGbp9KuZYjrl1bUBk7RNS6iKoHH9trxROQ9XQ7SntpIwoJS3KskWf4VKX2CHi
+	00v6Y89Fbt4B2wgLcrskkVMP9hGDKBcpxpnLJ0WGVXwadRFeeB21ctEKfna1ZXcg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br1x51f1k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jan 2026 16:56:46 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60JGCjXc024583;
+	Mon, 19 Jan 2026 16:56:45 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4brxareb6r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jan 2026 16:56:45 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60JGufBf56295776
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Jan 2026 16:56:41 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7D1D520043;
+	Mon, 19 Jan 2026 16:56:41 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4F0682004B;
+	Mon, 19 Jan 2026 16:56:41 +0000 (GMT)
+Received: from localhost (unknown [9.52.203.172])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 19 Jan 2026 16:56:41 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260119082534.1f705011@kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 Jan 2026 17:56:41 +0100
+Message-Id: <DFSQ35HIT6YT.3DTUUNUOEEDHM@linux.ibm.com>
+Cc: <helgaas@kernel.org>, <lukas@wunner.de>, <alex@shazbot.org>,
+        <clg@redhat.com>, <stable@vger.kernel.org>, <schnelle@linux.ibm.com>,
+        <mjrosato@linux.ibm.com>
+Subject: Re: [PATCH v7 9/9] vfio: Remove the pcie check for
+ VFIO_PCI_ERR_IRQ_INDEX
+From: "Julian Ruess" <julianr@linux.ibm.com>
+To: "Farhan Ali" <alifm@linux.ibm.com>, <linux-s390@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260107183217.1365-1-alifm@linux.ibm.com>
+ <20260107183217.1365-10-alifm@linux.ibm.com>
+In-Reply-To: <20260107183217.1365-10-alifm@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=R8AO2NRX c=1 sm=1 tr=0 ts=696e624e cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=Okk2yIgg9Z9Hp2RjL0IA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: QzRipjxLbY9YVaDZM2Fkn7cNSMc88EjY
+X-Proofpoint-GUID: QzRipjxLbY9YVaDZM2Fkn7cNSMc88EjY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDE0MCBTYWx0ZWRfX2qlhnSxI8lYN
+ 64rpgvPsXZnrxCNPsQNMp3dBb+j2mqVYVDz8/83NwKlu8BmqgbKzpzt3vQfLkl54MPDcgs3Wr93
+ 1IkZMdEACUdzFn/lV67iNMilfQpFoenS8UNGX4Aavko4j9sbaEuk1kkLJ+GCzDxz/ZfCOlHlbKz
+ u60LV3pbRv+mpNhwsgFB0CiK4ntnVZz951/eGDaipaIQyz7U8XdXTlKAStEPcBdseQY6tp6gtXb
+ S/525lc1B4CQFHltL2ORIcaruSIKj9V36VvLXgITRYUBkbzfs3OsN/Ie8RN4MKLjEEBJyRvO7JW
+ p/8nIzgsYs9o8ey81D/Tc0/AVxZMaXOOu0/6vdQUvvlvMRUV3ph95TqcpACrUKuay2XB7ZfZam4
+ I0vU+NEqDe7bP7FzUsAKvmjPyt3upyUbfXLAwXaMKpSIsYhjZQ0HCeFlt79M6OpdSJryvJphGGm
+ l9X2TNOhDGCfSbSxpow==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-19_04,2026-01-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 bulkscore=0 lowpriorityscore=0 adultscore=0
+ spamscore=0 phishscore=0 malwarescore=0 suspectscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601190140
 
-On 2026-01-19 08:25:34 [-0800], Jakub Kicinski wrote:
-> On Mon, 19 Jan 2026 00:15:46 +0800 wen.yang@linux.dev wrote:
-> > From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> > 
-> > commit dad6b97702639fba27a2bd3e986982ad6f0db3a7 upstream.
-> > 
-> > Backlog NAPI is a per-CPU NAPI struct only (with no device behind it)
-> > used by drivers which don't do NAPI them self, RPS and parts of the
-> > stack which need to avoid recursive deadlocks while processing a packet.
-> 
-> This is a rather large change to backport into LTS.
+On Wed Jan 7, 2026 at 7:32 PM CET, Farhan Ali wrote:
+> We are configuring the error signaling on the vast majority of devices an=
+d
+> it's extremely rare that it fires anyway. This allows userspace to be
+> notified on errors for legacy PCI devices. The Internal Shared Memory (IS=
+M)
+> device on s390x is one such device. For PCI devices on IBM s390x error
+> recovery involves platform firmware and notification to operating system
+> is done by architecture specific way. So the ISM device can still be
+> recovered when notified of an error.
+>
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c  | 6 ++----
+>  drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
+>  2 files changed, 3 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index c92c6c512b24..0fdce5234914 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -778,8 +778,7 @@ static int vfio_pci_get_irq_count(struct vfio_pci_cor=
+e_device *vdev, int irq_typ
+>  			return (flags & PCI_MSIX_FLAGS_QSIZE) + 1;
+>  		}
+>  	} else if (irq_type =3D=3D VFIO_PCI_ERR_IRQ_INDEX) {
+> -		if (pci_is_pcie(vdev->pdev))
+> -			return 1;
+> +		return 1;
+>  	} else if (irq_type =3D=3D VFIO_PCI_REQ_IRQ_INDEX) {
+>  		return 1;
+>  	}
+> @@ -1157,8 +1156,7 @@ static int vfio_pci_ioctl_get_irq_info(struct vfio_=
+pci_core_device *vdev,
+>  	case VFIO_PCI_REQ_IRQ_INDEX:
+>  		break;
+>  	case VFIO_PCI_ERR_IRQ_INDEX:
+> -		if (pci_is_pcie(vdev->pdev))
+> -			break;
+> +		break;
+>  		fallthrough;
 
-I agree. While I saw these patches flying by, I don't remember a mail
-where it was justified why it was needed. Did I miss it?
+Isn't the fallthrough unreachable now?
 
-Sebastian
+-- snip --
 
