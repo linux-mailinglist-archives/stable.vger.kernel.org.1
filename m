@@ -1,152 +1,137 @@
-Return-Path: <stable+bounces-210363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE3ED3ACB9
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 15:48:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDB1D3AE0C
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:03:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0F82A302ECA4
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:43:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8DDF1300103B
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 15:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93ADB37BE62;
-	Mon, 19 Jan 2026 14:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD84F37F8D9;
+	Mon, 19 Jan 2026 15:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="T9sVnaHu"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="qg6fgEkk";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="DMjiVPmy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236BF35BDAB
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 14:43:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C12C1F4CBB;
+	Mon, 19 Jan 2026 15:02:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768833814; cv=none; b=kBLKvUJ53qG3Lfd2oWI+gP4oLZUxSFnm/QqB4a2zpkjKR9PwkZRvLv6OVJ77JphTTxo5bRo32hYNdyXgNDnRJAAGzEjQVoTK8fCE9NK/7QF4TZvg8om373/eCLE/yufy4lcshjtCYBTxo7mo8H+THOWjFbYVPDBxgVqKVkLJVFo=
+	t=1768834977; cv=none; b=tmfGE4zI66xT8kbf3H1wMn4mi+ZCqmkByDAK0+NL3AGjbSnkIcH7+bUcuL1YGGS+w6RO96PFnTWSq8rjpOlRAdXQ5/00qCRkZ5HOhCAjI0DDkWrkWJtel4hbxjsdXUAHhk67JjXvUds7wXI/iSRj+HSd3z+7CkIJOIIGpQcgLaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768833814; c=relaxed/simple;
-	bh=r74QiyMl8GoaFf+6OYnD/LWemt+AkwY8ZRYKU002DU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A0A6knP2ZRG8FEp8QLKZvXMWh+TJbhR9WQuqBfkHwrSXuEQfZsBds6B4r5+9t1mUXZQO+KNbJR4/U8n9g0eIr4NsiK9UodrKsJM6TY11UdVFx6rXS+U9+DqSgHidVKxHh3VWevOGmjDHj3qIX2cJw2zORGFF16/h3G7TLdcaQEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=T9sVnaHu; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4801c632109so1759375e9.2
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 06:43:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1768833810; x=1769438610; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RR1qVFyAeEiUAQEUT2CsZi2+KLdkWNNKKDhRLKnjZFk=;
-        b=T9sVnaHu8HKWV2nja53/mX2sxq96PvFugzlb4RpV5reizs93t8+gWjvZWzrH7TN99K
-         Flxj+SROdLZbU+H1TQG1orn62gu2C8PRGyAgVjx/XpSiQqnGNV1wHubHRQjOO4sX26bJ
-         xij53RxZpKoqYadazfTMKZ1Oj//QIdHyf6sy5pJCq89wGYgHPJe77f5dAdXqdcJAX1ao
-         gt4Fl/OJX0kr5s074MKHukruJ2jDZtRJCGsCF6iRTwZjzl4SkyIlgQA7bRP2meF4ztHg
-         zk7Zfa+mhjILlKjYNVC90si0Er4Kwx7CEFv4xeEXvU+jKV7QwB6MuCNFERIKJC9ni6of
-         3NYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768833810; x=1769438610;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RR1qVFyAeEiUAQEUT2CsZi2+KLdkWNNKKDhRLKnjZFk=;
-        b=gyc4uwmpMHSlyjGvsrv0YPlDo8VcYvz8pT/+Vg1hk4hg0kkGa9b0IXcHoOFuNCPy8U
-         oQgu/ElqrjcNb5eVAA0uo8ptEPoRZEzJgq2yGaMePl9Ky9LRbTxe6uvIhnbHr3k1hy+F
-         NAw8cIyGd9eYGA8paPlJbEHEBCLQbbtN5NAsw2ILC3YpSLX+XWnqti6NoKck1ned3Yai
-         5kpUsip2/D9amT8Q2d+p41Zaoq47hX9/wh9HbOzefoVIPvPSYmiAPkKU1gn8kA1KeMU7
-         0aPmizl7m0PyMTXXK7UYdadIZjRkT7hqvs6siRWMJ8/R4Qrvz2ZLOwE6ZogPPLnmygXl
-         /3cg==
-X-Forwarded-Encrypted: i=1; AJvYcCW1CLbTFd1W6RBcObEPnx2YJ8EsDyYIpSEzzIfQo1qcgMJGVZKFhb5mW0FxoW0dTFXJiTi+sHU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPfW1eYN5X8e3MHpxOZmBklbwSLPfCgykCZBS4WzPoawaH4OUL
-	kJglVpOVE5f5LDzlsZtDMRP29oPlfPKzrLaa53kCyzDrgY8ULXG7v+APh8rqEYBCEx4=
-X-Gm-Gg: AY/fxX6qUxAk48cAG0CGP0s9OoCsh+qQSbFePjQVq8QBwv8jLw5BS8kn0FAGj8iuAod
-	5cn0LQzE0oslpjTLpBtlnFHJjRAoqnjNTOWc3AavwRpvdxMQJtLrfq1tXyN3DxAVFzlfA+EpxAf
-	LWpadI0vrTrQtFxufusC/wdcGaWK2RncHsUFtxfM0alYqN3+7Q6zXegrowV6RQkdpm4l0UHN4La
-	VHOTVuxIueNrsI+p3vkuvZSrpuDgjVqkIvHqvuTJzAFnCLENQTmuoT+XHaJoBamXuJSZY59zo21
-	AWAt0RJx58dM4HPPWeKHgm4ow9Ib7tEA9t+WF7kCym8OLHSk4o6s+Iwzpj0aZhM9ParjcGgRUJL
-	wZVwT6KzCOKnT5JJ5JITf4iXuPGkgHRv/VjrfhdH0orHyzlIu4TLezLqmDcHnqEMnXyB/8T2AmN
-	OAbRUY19NkYw==
-X-Received: by 2002:a05:600c:4f4f:b0:475:d7b8:8505 with SMTP id 5b1f17b1804b1-4801e3743famr93063515e9.7.1768833810529;
-        Mon, 19 Jan 2026 06:43:30 -0800 (PST)
-Received: from localhost ([202.127.77.110])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7193dedacsm97891305ad.58.2026.01.19.06.43.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 06:43:29 -0800 (PST)
-Date: Mon, 19 Jan 2026 22:43:26 +0800
-From: Heming Zhao <heming.zhao@suse.com>
-To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Cc: markus.elfring@web.de, jlbec@evilplan.org, joseph.qi@linux.alibaba.com, 
-	linux-kernel@vger.kernel.org, mark@fasheh.com, ocfs2-devel@lists.linux.dev, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] ocfs2: fix NULL pointer dereference in
- ocfs2_get_refcount_rec
-Message-ID: <5bflve5fog7jreyjzn4po47t2wzd6vomsmlkd6km44joogcybl@6vd2h5orgwge>
-References: <cfd0e0eb-894e-48c7-948e-9300a19b9db7@web.de>
- <20260118190523.42581-1-jiashengjiangcool@gmail.com>
+	s=arc-20240116; t=1768834977; c=relaxed/simple;
+	bh=XFex8+nsfxe7p/tz4vrunbSihbsFCkJGQgHTo246bSg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JZRWBn/6kojk46kHBJfKIFJm6t3q37KR72WnZnzTmv/YsvK8YSXUZ3pMaBFdLs6ckn2wgD+ssSjdFv1kUMlscrAFnL3QndRgv2m18SlxcFmaCFPR2EeBZ2R7Ex3y0MtcgjpGVFIC52uW35FpNfAnEhx0+9q8kjxxvWYo93wO/EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=qg6fgEkk; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=DMjiVPmy; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4dvtx35ByHz9tfv;
+	Mon, 19 Jan 2026 16:02:47 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1768834967;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GfFz6r3zQlJSWMcpbIyPBFZDkNP4Kg4PwaTgozqldJ8=;
+	b=qg6fgEkkGvvAya/RsJKdGc9KDLiTNzFXWtcDDPzhST8ZmrX37ngsnP+uxBQPfY33WE0t2E
+	p/QU8XeigG9JVb392Kk7gKT7CUkPgfhmCZ5vPwM4hsmyFflbsXzQFG8rDpQNGydnf/RpLY
+	n9O+en2Hx/EoWZYql42r3i2pFGKEuaR9VSQhY61csUfcdh6IVl3d4syHxAN5qJK/xoKf9Y
+	G7MYyKQl9Jrn36zH35y7l0rgXStk2tFEBGeinXUF/GSC44A3ieqPS/wEKCR6J9K+mHcn4O
+	XRAGOdlRLf03FoYV3B3e/0ryGkbnhml/NCe79y2GLsAdhyS+BKtWYYosGAAIkA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=DMjiVPmy;
+	spf=pass (outgoing_mbo_mout: domain of marek.vasut+renesas@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=marek.vasut+renesas@mailbox.org
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1768834965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GfFz6r3zQlJSWMcpbIyPBFZDkNP4Kg4PwaTgozqldJ8=;
+	b=DMjiVPmyWD1QSdZ6UZ/hbrLf7xKPpB1Xxqsswgjb6DQolPwZjWRNhT4gDvmoky+niFuAzI
+	9XGoHMjlzpaOD8qiP3j8txbOa2BjH1pKQVpH3MMNecdJ5fkg0RBWvOiD9PkYdvSygFnE74
+	8DQRzrRTQ6f7RoUpCFyoRrCh4TbQKLsg2xth10GLz575v4J/YE9GFzxC/2I6lNGdZzrBC3
+	6zogFNwfxB6IUcq+6xI6TCVKAAeRzT05M8gGKKQpLmaAVDsDms8kOQLINW8D29zz+h7y68
+	AUqOQ4X3AijwkpN7QJJHMJAQsN6z/ohRejV58EuQHVtT9cuai6uoMkzYccIX4A==
+To: linux-clk@vger.kernel.org
+Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	stable@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v2] clk: rs9: Reserve 8 struct clk_hw slots for for 9FGV0841
+Date: Mon, 19 Jan 2026 16:01:52 +0100
+Message-ID: <20260119150242.29444-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260118190523.42581-1-jiashengjiangcool@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: ki9bnuwa9u48nbcmqfnmor6sphi63g7b
+X-MBO-RS-ID: a31dfa1462f39022612
+X-Rspamd-Queue-Id: 4dvtx35ByHz9tfv
 
-On Sun, Jan 18, 2026 at 07:05:23PM +0000, Jiasheng Jiang wrote:
-> In ocfs2_get_refcount_rec(), the 'rec' pointer is initialized to NULL.
-> If the extent list is empty (el->l_next_free_rec == 0), the loop skips
-> assignment, leaving 'rec' as NULL and 'found' as 0.
-> 
-> Currently, the code skips the 'if (found)' block but proceeds directly to
-> dereference 'rec' at line 767 (le64_to_cpu(rec->e_blkno)), causing a
-> NULL pointer dereference panic.
+The 9FGV0841 has 8 outputs and registers 8 struct clk_hw, make sure
+there are 8 slots for those newly registered clk_hw pointers, else
+there is going to be out of bounds write when pointers 4..7 are set
+into struct rs9_driver_data .clk_dif[4..7] field.
 
-Do you have reproduction steps to support your analysis?
+Since there are other structure members past this struct clk_hw
+pointer array, writing to .clk_dif[4..7] fields corrupts both
+the struct rs9_driver_data content and data around it, sometimes
+without crashing the kernel. However, the kernel does surely
+crash when the driver is unbound or during suspend.
 
-there are two types of 'rb': leaf or tree.
-the check 'if (!(le32_to_cpu(rb->rf_flags) & OCFS2_REFCOUNT_TREE_FL))'
-handles leaf case and returns to the caller.
-the subsequent code handles the 'tree' type, therefore, in theory,
-el->l_next_free_rec should be ">= 1", and the execution should enter the
-for-loop to assign the 'rec'.
+Fix this, increase the struct clk_hw pointer array size to the
+maximum output count of 9FGV0841, which is the biggest chip that
+is supported by this driver.
 
-Thanks,
-Heming
+Cc: stable@vger.kernel.org
+Fixes: f0e5e1800204 ("clk: rs9: Add support for 9FGV0841")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+---
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org
+---
+V2: - Update the commit message crash paragraph
+    - Add RB/TB from Geert
+---
+ drivers/clk/clk-renesas-pcie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> This patch adds an 'else' branch to the 'if (found)' check. If no valid
-> record is found, it reports a filesystem error and exits, preventing
-> the invalid memory access.
-> 
-> Fixes: e73a819db9c2 ("ocfs2: Add support for incrementing refcount in the tree.")
-> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-> ---
-> Changelog:
-> 
-> v1 -> v2:
-> 
-> 1. Add a Fixes tag.
-> ---
->  fs/ocfs2/refcounttree.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/fs/ocfs2/refcounttree.c b/fs/ocfs2/refcounttree.c
-> index c92e0ea85bca..464bdd6e0a8e 100644
-> --- a/fs/ocfs2/refcounttree.c
-> +++ b/fs/ocfs2/refcounttree.c
-> @@ -1122,6 +1122,11 @@ static int ocfs2_get_refcount_rec(struct ocfs2_caching_info *ci,
->  
->  		if (cpos_end < low_cpos + len)
->  			len = cpos_end - low_cpos;
-> +	} else {
-> +		ret = ocfs2_error(sb, "Refcount tree %llu has no extent record covering cpos %u\n",
-> +				  (unsigned long long)ocfs2_metadata_cache_owner(ci),
-> +				  low_cpos);
-> +		goto out;
->  	}
->  
->  	ret = ocfs2_read_refcount_block(ci, le64_to_cpu(rec->e_blkno),
-> -- 
-> 2.25.1
-> 
-> 
+diff --git a/drivers/clk/clk-renesas-pcie.c b/drivers/clk/clk-renesas-pcie.c
+index 4c3a5e4eb77ac..f94a9c4d0b670 100644
+--- a/drivers/clk/clk-renesas-pcie.c
++++ b/drivers/clk/clk-renesas-pcie.c
+@@ -64,7 +64,7 @@ struct rs9_driver_data {
+ 	struct i2c_client	*client;
+ 	struct regmap		*regmap;
+ 	const struct rs9_chip_info *chip_info;
+-	struct clk_hw		*clk_dif[4];
++	struct clk_hw		*clk_dif[8];
+ 	u8			pll_amplitude;
+ 	u8			pll_ssc;
+ 	u8			clk_dif_sr;
+-- 
+2.51.0
+
 
