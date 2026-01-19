@@ -1,139 +1,152 @@
-Return-Path: <stable+bounces-210364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42375D3ACBB
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 15:49:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE3ED3ACB9
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 15:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54E2E30C020C
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:44:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0F82A302ECA4
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 14:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1435E35BDA2;
-	Mon, 19 Jan 2026 14:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93ADB37BE62;
+	Mon, 19 Jan 2026 14:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f0zD3sAL"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="T9sVnaHu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6439D19CCF5
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 14:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236BF35BDAB
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 14:43:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768833842; cv=none; b=SiWiqgSemIKYqzmP+WWsHSGZywNVyig3EOSzgXv9MrWuC9kR/mSlJkFvWyoqOSkNUpKP53f5DCjfkLY3RSRnX9JcM+2TDnjUR6RmDM/dsoZ75Sx97eJx/xdffTRlTXMCQ6SRWCnbrH7WhOIOYWveG0fRHsxmg85Yc9AYtGqseyM=
+	t=1768833814; cv=none; b=kBLKvUJ53qG3Lfd2oWI+gP4oLZUxSFnm/QqB4a2zpkjKR9PwkZRvLv6OVJ77JphTTxo5bRo32hYNdyXgNDnRJAAGzEjQVoTK8fCE9NK/7QF4TZvg8om373/eCLE/yufy4lcshjtCYBTxo7mo8H+THOWjFbYVPDBxgVqKVkLJVFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768833842; c=relaxed/simple;
-	bh=dtj1A8eUfZ/xb7svK+I33mpWY7sLUFcIA2x81DomNdA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KyC1yeB6cxRmDcq9j3/DJ7zObEqg9F6hkadhRDjznyiIEVtnRXyOzsvo8xSmWK8nrlsKnAvdx8geggSDQPVwe7zZJP8jnuimmubT86eO0RdKnvlvL4eGEgvY3Cri94K5hAtCr+d25KKemlDGzGmkwkSJ4fmwRFnxTbNMuX3cbJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f0zD3sAL; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-59b75f0b8ecso475908e87.3
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 06:44:01 -0800 (PST)
+	s=arc-20240116; t=1768833814; c=relaxed/simple;
+	bh=r74QiyMl8GoaFf+6OYnD/LWemt+AkwY8ZRYKU002DU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A0A6knP2ZRG8FEp8QLKZvXMWh+TJbhR9WQuqBfkHwrSXuEQfZsBds6B4r5+9t1mUXZQO+KNbJR4/U8n9g0eIr4NsiK9UodrKsJM6TY11UdVFx6rXS+U9+DqSgHidVKxHh3VWevOGmjDHj3qIX2cJw2zORGFF16/h3G7TLdcaQEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=T9sVnaHu; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4801c632109so1759375e9.2
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 06:43:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768833839; x=1769438639; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Hw8g4FncQCT0qG+FJkoHCdORpG7mMrMlB+H9ZegPebQ=;
-        b=f0zD3sALxsbBPb8f+a7zJeRhH91ZNkc2pIhX82Uf7Jatdf6NAH6wKHOLXtVnXUWino
-         /CgdqqcZpg90Hx87Nq+5thWEjXG1dmGnqhtkp9OL1bx2Cq8QMFpZLQb16GkXBqV7pXga
-         CfKEvnQdHq03l7Arydo26WofbMDpchcx8a/4bXwIdk+HKr9FXniOxnJUoCnbx+u5NPN6
-         hj/fVzVIXe5hcDkRQ6gE/T0hfRN+VSHJ+RdBbPcz5BeU3Yxt/5kjNkuW6euipNp8hDLa
-         bLY4A23TyA7568uHx7ekXWkdMiNMP0X+feJWJYwOF/yftgFizLZh9jc7pNoAJUFkP7QJ
-         2IwQ==
+        d=suse.com; s=google; t=1768833810; x=1769438610; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RR1qVFyAeEiUAQEUT2CsZi2+KLdkWNNKKDhRLKnjZFk=;
+        b=T9sVnaHu8HKWV2nja53/mX2sxq96PvFugzlb4RpV5reizs93t8+gWjvZWzrH7TN99K
+         Flxj+SROdLZbU+H1TQG1orn62gu2C8PRGyAgVjx/XpSiQqnGNV1wHubHRQjOO4sX26bJ
+         xij53RxZpKoqYadazfTMKZ1Oj//QIdHyf6sy5pJCq89wGYgHPJe77f5dAdXqdcJAX1ao
+         gt4Fl/OJX0kr5s074MKHukruJ2jDZtRJCGsCF6iRTwZjzl4SkyIlgQA7bRP2meF4ztHg
+         zk7Zfa+mhjILlKjYNVC90si0Er4Kwx7CEFv4xeEXvU+jKV7QwB6MuCNFERIKJC9ni6of
+         3NYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768833839; x=1769438639;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Hw8g4FncQCT0qG+FJkoHCdORpG7mMrMlB+H9ZegPebQ=;
-        b=vUvbaLZq/d23ZIOPDwC0rUwBBudDyjLbUfJwgN766TFAv+lWVat66Ws4KdiEgNo31e
-         o8rO4cGCqJnj09bRHbpeuwvhTvXbkg9MpUaPZk/t7RajuJp2HTAF1Btweul05mAxmBW9
-         rGCJ9eZ/8Yx85DStOY3eXFeWdAV+W0gfNFt0NzMaBJ7mKvwiV2noxaPn3lmrDuFXn2z2
-         6ZcYdoih/cXwEFk0bq0Jom46XHb+WWmaBUDYKrkYLes8YlyzicR2G2S95IK7BlvviWjl
-         or+iN9FaXC+x6wLOvUo7ML0JcTaw2m+YNO0xLCEZmVYqkrUPpDA6mAmOCMZPmgfl7/hv
-         gehA==
-X-Forwarded-Encrypted: i=1; AJvYcCWwUTUmqI1k82W9GNZltp2JJpTFCmafE+z+CaXQDoAvX7hpaTmIijDhmpTwG+pgQFjZImJ7Znk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUXC8ZqzLmEHzJszUZn1jBs4HfaicG0qieS6uNe6HcwGbpFnJZ
-	Ls9ry7FRFVCPmLbzcBHqaJnEDWk4iLyyNuoMSeTttz0Hg8sRsWVKhUqt
-X-Gm-Gg: AY/fxX41KiW7gww0AWLC2P5Xa6OC38b68VXhDg4gekdlq7MAONpmkMNoJjCAsUsPjAV
-	Sc//n6NvcVNsz8khVxOgLoJovKmHiRfTPzTElc6KmLXNj0mfkbMHFeU4meuvrlihFiDZ6c7Tf+V
-	UCAg/zROemxp+NrbEFREuIcC4oXty8dS6YBB2eLI5CFj1zO8tVRzIcfMyPscRhrD1uwDM8QX166
-	ZjSZupd54c6PjocEIb0i1WngKPVaYw8JB7+T5K/yQOfuURJGKkQSv7wqFAsOdgs4Jyfpe4vvpKI
-	q4vToho4QfOK7gZFsdgpjhfp2h6iPSmCLnw8wk9PmGBbd+WcKgDjE4Jy2OSAHofcOq4TQiys0KP
-	qqy9dQ7x639+9YiAZwCz1UCSbjJ11UgGoOwEl5f50xotOmQ6gYgnNYpitFpIRxTJwq/ooecEM2o
-	Virdw4oZmmiKvIqU6GXuy+eZ+R13yT
-X-Received: by 2002:ac2:4f14:0:b0:597:d7a1:aa9c with SMTP id 2adb3069b0e04-59baeefe804mr2049768e87.3.1768833839215;
-        Mon, 19 Jan 2026 06:43:59 -0800 (PST)
-Received: from [10.214.35.248] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59baf3a1746sm3435146e87.91.2026.01.19.06.43.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 06:43:58 -0800 (PST)
-Message-ID: <38bcbe9c-5bc6-4bfa-b4ed-e187e048d600@gmail.com>
-Date: Mon, 19 Jan 2026 15:43:02 +0100
+        d=1e100.net; s=20230601; t=1768833810; x=1769438610;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RR1qVFyAeEiUAQEUT2CsZi2+KLdkWNNKKDhRLKnjZFk=;
+        b=gyc4uwmpMHSlyjGvsrv0YPlDo8VcYvz8pT/+Vg1hk4hg0kkGa9b0IXcHoOFuNCPy8U
+         oQgu/ElqrjcNb5eVAA0uo8ptEPoRZEzJgq2yGaMePl9Ky9LRbTxe6uvIhnbHr3k1hy+F
+         NAw8cIyGd9eYGA8paPlJbEHEBCLQbbtN5NAsw2ILC3YpSLX+XWnqti6NoKck1ned3Yai
+         5kpUsip2/D9amT8Q2d+p41Zaoq47hX9/wh9HbOzefoVIPvPSYmiAPkKU1gn8kA1KeMU7
+         0aPmizl7m0PyMTXXK7UYdadIZjRkT7hqvs6siRWMJ8/R4Qrvz2ZLOwE6ZogPPLnmygXl
+         /3cg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1CLbTFd1W6RBcObEPnx2YJ8EsDyYIpSEzzIfQo1qcgMJGVZKFhb5mW0FxoW0dTFXJiTi+sHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPfW1eYN5X8e3MHpxOZmBklbwSLPfCgykCZBS4WzPoawaH4OUL
+	kJglVpOVE5f5LDzlsZtDMRP29oPlfPKzrLaa53kCyzDrgY8ULXG7v+APh8rqEYBCEx4=
+X-Gm-Gg: AY/fxX6qUxAk48cAG0CGP0s9OoCsh+qQSbFePjQVq8QBwv8jLw5BS8kn0FAGj8iuAod
+	5cn0LQzE0oslpjTLpBtlnFHJjRAoqnjNTOWc3AavwRpvdxMQJtLrfq1tXyN3DxAVFzlfA+EpxAf
+	LWpadI0vrTrQtFxufusC/wdcGaWK2RncHsUFtxfM0alYqN3+7Q6zXegrowV6RQkdpm4l0UHN4La
+	VHOTVuxIueNrsI+p3vkuvZSrpuDgjVqkIvHqvuTJzAFnCLENQTmuoT+XHaJoBamXuJSZY59zo21
+	AWAt0RJx58dM4HPPWeKHgm4ow9Ib7tEA9t+WF7kCym8OLHSk4o6s+Iwzpj0aZhM9ParjcGgRUJL
+	wZVwT6KzCOKnT5JJ5JITf4iXuPGkgHRv/VjrfhdH0orHyzlIu4TLezLqmDcHnqEMnXyB/8T2AmN
+	OAbRUY19NkYw==
+X-Received: by 2002:a05:600c:4f4f:b0:475:d7b8:8505 with SMTP id 5b1f17b1804b1-4801e3743famr93063515e9.7.1768833810529;
+        Mon, 19 Jan 2026 06:43:30 -0800 (PST)
+Received: from localhost ([202.127.77.110])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7193dedacsm97891305ad.58.2026.01.19.06.43.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jan 2026 06:43:29 -0800 (PST)
+Date: Mon, 19 Jan 2026 22:43:26 +0800
+From: Heming Zhao <heming.zhao@suse.com>
+To: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Cc: markus.elfring@web.de, jlbec@evilplan.org, joseph.qi@linux.alibaba.com, 
+	linux-kernel@vger.kernel.org, mark@fasheh.com, ocfs2-devel@lists.linux.dev, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] ocfs2: fix NULL pointer dereference in
+ ocfs2_get_refcount_rec
+Message-ID: <5bflve5fog7jreyjzn4po47t2wzd6vomsmlkd6km44joogcybl@6vd2h5orgwge>
+References: <cfd0e0eb-894e-48c7-948e-9300a19b9db7@web.de>
+ <20260118190523.42581-1-jiashengjiangcool@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/kasan: Fix KASAN poisoning in vrealloc()
-To: Andrew Morton <akpm@linux-foundation.org>,
- Andrey Konovalov <andreyknvl@gmail.com>
-Cc: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>,
- Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
- Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com,
- Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, joonki.min@samsung-slsi.corp-partner.google.com,
- stable@vger.kernel.org
-References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
- <20260113191516.31015-1-ryabinin.a.a@gmail.com>
- <CA+fCnZe0RQOv8gppvs7PoH2r4QazWs+PJTpw+S-Krj6cx22qbA@mail.gmail.com>
- <10812bb1-58c3-45c9-bae4-428ce2d8effd@gmail.com>
- <CA+fCnZeDaNG+hXq1kP2uEX1V4ZY=PNg_M8Ljfwoi9i+4qGSm6A@mail.gmail.com>
- <CA+fCnZcFcpbME+a34L49pk2Z-WLbT_L25bSzZFixUiNFevJXzA@mail.gmail.com>
- <20260118164812.411f8f4f76e3a8aeec5d4704@linux-foundation.org>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <20260118164812.411f8f4f76e3a8aeec5d4704@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260118190523.42581-1-jiashengjiangcool@gmail.com>
 
-
-
-On 1/19/26 1:48 AM, Andrew Morton wrote:
-> On Sat, 17 Jan 2026 18:08:36 +0100 Andrey Konovalov <andreyknvl@gmail.com> wrote:
+On Sun, Jan 18, 2026 at 07:05:23PM +0000, Jiasheng Jiang wrote:
+> In ocfs2_get_refcount_rec(), the 'rec' pointer is initialized to NULL.
+> If the extent list is empty (el->l_next_free_rec == 0), the loop skips
+> assignment, leaving 'rec' as NULL and 'found' as 0.
 > 
->> On Sat, Jan 17, 2026 at 2:16 AM Andrey Konovalov <andreyknvl@gmail.com> wrote:
->>>
->>> On Fri, Jan 16, 2026 at 2:26 PM Andrey Ryabinin <ryabinin.a.a@gmail.com> wrote:
->>>>
->>>> So something like bellow I guess.
->>>
->>> Yeah, looks good.
->>>
->>>> I think this would actually have the opposite effect and make the code harder to follow.
->>>> Introducing an extra wrapper adds another layer of indirection and more boilerplate, which
->>>> makes the control flow less obvious and the code harder to navigate and grep.
->>>>
->>>> And what's the benefit here? I don't clearly see it.
->>>
->>> One functional benefit is when HW_TAGS mode enabled in .config but
->>> disabled via command-line, we avoid a function call into KASAN
->>> runtime.
->>
->> Ah, and I just realized than kasan_vrealloc should go into common.c -
->> we also need it for HW_TAGS.
-> 
-> I think I'll send this cc:stable bugfix upstream as-is.
-> 
+> Currently, the code skips the 'if (found)' block but proceeds directly to
+> dereference 'rec' at line 767 (le64_to_cpu(rec->e_blkno)), causing a
+> NULL pointer dereference panic.
 
-Please, include follow-up fix before sending. We have to move kasan_vrealloc()
-to common.c as shadow.c is not compiled for CONFIG_KASAN_HW_TAGS=y.
-So without the fixup, CONFIG_KASAN_HW_TAGS=y will become broken.
+Do you have reproduction steps to support your analysis?
+
+there are two types of 'rb': leaf or tree.
+the check 'if (!(le32_to_cpu(rb->rf_flags) & OCFS2_REFCOUNT_TREE_FL))'
+handles leaf case and returns to the caller.
+the subsequent code handles the 'tree' type, therefore, in theory,
+el->l_next_free_rec should be ">= 1", and the execution should enter the
+for-loop to assign the 'rec'.
+
+Thanks,
+Heming
+
+> 
+> This patch adds an 'else' branch to the 'if (found)' check. If no valid
+> record is found, it reports a filesystem error and exits, preventing
+> the invalid memory access.
+> 
+> Fixes: e73a819db9c2 ("ocfs2: Add support for incrementing refcount in the tree.")
+> Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+> ---
+> Changelog:
+> 
+> v1 -> v2:
+> 
+> 1. Add a Fixes tag.
+> ---
+>  fs/ocfs2/refcounttree.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/fs/ocfs2/refcounttree.c b/fs/ocfs2/refcounttree.c
+> index c92e0ea85bca..464bdd6e0a8e 100644
+> --- a/fs/ocfs2/refcounttree.c
+> +++ b/fs/ocfs2/refcounttree.c
+> @@ -1122,6 +1122,11 @@ static int ocfs2_get_refcount_rec(struct ocfs2_caching_info *ci,
+>  
+>  		if (cpos_end < low_cpos + len)
+>  			len = cpos_end - low_cpos;
+> +	} else {
+> +		ret = ocfs2_error(sb, "Refcount tree %llu has no extent record covering cpos %u\n",
+> +				  (unsigned long long)ocfs2_metadata_cache_owner(ci),
+> +				  low_cpos);
+> +		goto out;
+>  	}
+>  
+>  	ret = ocfs2_read_refcount_block(ci, le64_to_cpu(rec->e_blkno),
+> -- 
+> 2.25.1
+> 
+> 
 
