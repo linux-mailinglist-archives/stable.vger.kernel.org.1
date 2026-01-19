@@ -1,130 +1,165 @@
-Return-Path: <stable+bounces-210377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62E0D3B372
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 18:10:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 261C7D3B375
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 18:10:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D99D130389A0
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:46:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DFEC6320FA11
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 16:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E17B39B4BF;
-	Mon, 19 Jan 2026 16:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE3B39A7EA;
+	Mon, 19 Jan 2026 16:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shenghaoyang.info header.i=@shenghaoyang.info header.b="PkSc3Iq+"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nj0Y258/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00E139C621
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 16:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0041D37E2F4;
+	Mon, 19 Jan 2026 16:41:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768840900; cv=none; b=LRQRioHHQ3gxvG9S5QeYydJevu1cZnFLA9KjyA6Dd/xnsxQ1orh6JPMddX2V73ZHAM70cOpRgCpwnx6kzLRrP4eucZHwjppHZW70r93J4bZiM/LHttKMZio6Ub+AVi27YvFlfHRJKRY7vovesos6Qt94xhTYxupUmoJkHkIvUdE=
+	t=1768840912; cv=none; b=mOioTsA667Atl55g2+hqu+h2ushu0CfQshnXN6D1cxA+LonFkVDPBmuTnBsW78T33mfN+Sw2GpgTzjcRAW3/quOjmAr1hV1ES2ppvbtHxOJQf2yuJdQhjgZlSRHIsxsVmjgWgkOWW0tjUfMdgE7hmgF4qxc/DDOXNQ5r+wHNVY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768840900; c=relaxed/simple;
-	bh=V+ly4X6nLFmR1AJYR9jxH03Kum+GKeNv/cPwFDs+L48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mlvtk8bWhEesRyDc8R7BpLmi5bt77R3tZsfDjTzUK5V7vuFL6d1XDqZe+zlevroX3KW3vMvLIpdkAQTaTst/2XDiVfHHlrTd/bfWwPLh4YxpyQoiETnjLbw2+Fp1qwcHhm4C2qZY4rmG8sX7qNlDTGKHzADJUjGARjkrV1vc7K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shenghaoyang.info; spf=pass smtp.mailfrom=shenghaoyang.info; dkim=pass (2048-bit key) header.d=shenghaoyang.info header.i=@shenghaoyang.info header.b=PkSc3Iq+; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=shenghaoyang.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shenghaoyang.info
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35290e6d2e7so40207a91.1
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 08:41:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shenghaoyang.info; s=google; t=1768840898; x=1769445698; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HcmmiqNbU3rGTkCmxroKjD8IC24Ld60SzEtjXGdLtbM=;
-        b=PkSc3Iq+APODxyT33dZL4vlVg8VkcW4feLZWDJpeNXaU6Lrz0D0iTrSw99J9eIxD4V
-         DPpnQiB9ZJFfYoko8KPeoy37RwXsN85X51cSMap+RSQPkLeZy48pDT4IKbNt/wUR4kuv
-         GglknYEyIxjwwiFujCwue4Tt3PmqdleYsR+guanIamFd1om+J+KVhgd53UCTrfdGKMoa
-         1MauZuh35OXlEvJJFboy3oZBBkYXr6DuQl2M+ZyfZbvxFu6ySJVMo4hwUALCnufSNyjm
-         x+Uptaf/vC/5L5KlrMgFOvDLH6svI5/XKe7Oqflq6xXM6oTW6RZNg6kXgfxALn1pBbiS
-         rPBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768840898; x=1769445698;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HcmmiqNbU3rGTkCmxroKjD8IC24Ld60SzEtjXGdLtbM=;
-        b=oBVNE3mPdp7oG385ZBw6/MXaP45h+Ju/DujVM5anhh2idQXAEjj2QGyp+X0N2rT1Bh
-         C0Uc/A2hRsBK21lmtDcKKWQzUqpIxqnXcX534hFzr//wiCW0e9VfPLpGDV2LOh4o/kRT
-         ckT2axalqTK2OiIHjave6nDKiNifJioOTNQSNGTquGx+9wl66Dox6+a/7037wPVNMQnU
-         PzNUrK6ECVT9v81+ARAF+Mc5UXOnKtMI05D8GAJ0cHnAyiN1Mn8CAt/iuC8vmZwlIGmQ
-         ZzKZazSutTcXYwn5dw1wKhgNje9bdvxTSDXJ0+Z3c2KuVIUh07eZBd8u74uSK4yv7C/j
-         KkTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX6vEKz/hpZ9RJBSQUjXRrG9lo3N/rIvLxgMi3xmSDZzw2H0l36lxex6WG9jY+4Z/4JsmO7JgY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqJaqsAl8qG8bQwM9k3ap6i0o3EpPWXax9/AS3d9bgAdayRSq4
-	56+qzFlYFNauncYr3NyMcgBYEx1Yq0dKHgjb26vsHLaTDeSGhghD/chfmqe0PMMI8rQ=
-X-Gm-Gg: AZuq6aJ7YYyLI5PfrtEQWxAVyuoGIM7skZ+07u/JIDDXyoSckwSYO5RSxVZFuc/HDUr
-	o4r4VoCi2FPxRqvEApnqd2a5Aix0MaCAC3kVPLsm3HU0J4GwLGdCf0baoJyLdPSijQ+Mx+5EVNO
-	CiKSX4V9z69RKoKQm5toZ/L8GImGKtjgmTTVZ49ymDwi7bfDiD0AGkNG3h+IUs8lMvb5JB0cbg5
-	s1wkx9h8RQYHJwaUXihAoS/attl7pdgrU47FgX0XbVVJQRYoBCqV/fL1Yr5gUTN9mCKKgacK55d
-	wkx31nlDS/slYTxQLFjBv8PYnM7KfmAGaUf4g8ex//IzKj3fAixqsgqJJg0TigUvbVLb6tpzmFy
-	HFEdBj0FqG6G8x8fezumsRGdwa9Uvui9dbO/6Y54Y9QTWPaZM+ImqB+AvRZrXQzg54b3nGEByK4
-	nV9gugsjXfrkQ3
-X-Received: by 2002:a17:90a:c887:b0:34a:b4a2:f0b5 with SMTP id 98e67ed59e1d1-352b5a7f82cmr160248a91.5.1768840898210;
-        Mon, 19 Jan 2026 08:41:38 -0800 (PST)
-Received: from [10.0.0.178] ([132.147.84.99])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-352677ec7dasm12316253a91.8.2026.01.19.08.41.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Jan 2026 08:41:37 -0800 (PST)
-Message-ID: <cc51e712-a337-46b0-91cb-6c3af76a84c3@shenghaoyang.info>
-Date: Tue, 20 Jan 2026 00:41:33 +0800
+	s=arc-20240116; t=1768840912; c=relaxed/simple;
+	bh=8Cly1GNk3mzFV8x9Zkf123bjtN9EA4JdBcM0Ptv/1Cw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=R8YdfTFe6CrMo5HUuOHor0CbFoxQQnEsrT0zhn7tWj28yUeAOXMTYSUchN42vOw4F2tNcFe6FRxJr9dIoLYaVJ9jiXcNukhwvwZo06EfzAB9oeGAmC4+uYGy0qH1oL1Y8sZzaYxjP6bV2tuISHDh0V6iX8lnRM85XvtN31RkW2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nj0Y258/; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60JD23K7021348;
+	Mon, 19 Jan 2026 16:41:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Uu1yRz
+	y+SJbnUICqN/kuc63CT+bwXeCFlWsXFTz7C44=; b=nj0Y258/iYDviv7zCPKnQG
+	WOvsMuA7krNcoa7JXMoosBTLoq99V/M5ra1P73Aha1lVAwiK03rkMm0T1pRO915O
+	yD9HIIjke8YL3puTmR3L/sswG/vGVRUPWoDfymZ918Yv21Oe/dmHDwW1NPReHqsL
+	cpSOE/pW7koJ/zGZV0riMszuAJhTjc4FE/aYdvmUfniM/NRoiGTFCPgGhqBB7OwA
+	VaFRK9/PuagTM2Zp6AuW8aJIjrv+mxnZvrSbRy1bz+aaGe2Blnc0TlBv2PQWlt9M
+	CPhmSYuyXLNhC/ag9WA4RBXJRbYkWL4OG9p8ICQwtuWWqgDUXTWyR7h9lS7K23Bg
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4br22u8pcm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jan 2026 16:41:45 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60JGBMVg016636;
+	Mon, 19 Jan 2026 16:41:44 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4brn4xr1mj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Jan 2026 16:41:44 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60JGfeZl56361256
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 19 Jan 2026 16:41:40 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9502F20049;
+	Mon, 19 Jan 2026 16:41:40 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 654F620040;
+	Mon, 19 Jan 2026 16:41:40 +0000 (GMT)
+Received: from localhost (unknown [9.52.203.172])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 19 Jan 2026 16:41:40 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH] drm/gud: fix NULL crtc dereference on display disable
-To: Thomas Zimmermann <tzimmermann@suse.de>, Ruben Wauters
- <rubenru09@aol.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
- Dan Carpenter <dan.carpenter@linaro.org>
-References: <20260118125044.54467-1-me@shenghaoyang.info>
- <fa36159a-fa41-4066-abea-60a439e944b3@suse.de>
-Content-Language: en-US
-From: Shenghao Yang <me@shenghaoyang.info>
-In-Reply-To: <fa36159a-fa41-4066-abea-60a439e944b3@suse.de>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Mon, 19 Jan 2026 17:41:40 +0100
+Message-Id: <DFSPRNLTB21S.3LEKR3G14X5XD@linux.ibm.com>
+Cc: <helgaas@kernel.org>, <lukas@wunner.de>, <alex@shazbot.org>,
+        <clg@redhat.com>, <stable@vger.kernel.org>, <schnelle@linux.ibm.com>,
+        <mjrosato@linux.ibm.com>
+Subject: Re: [PATCH v7 8/9] vfio: Add a reset_done callback for vfio-pci
+ driver
+From: "Julian Ruess" <julianr@linux.ibm.com>
+To: "Farhan Ali" <alifm@linux.ibm.com>, <linux-s390@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260107183217.1365-1-alifm@linux.ibm.com>
+ <20260107183217.1365-9-alifm@linux.ibm.com>
+In-Reply-To: <20260107183217.1365-9-alifm@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: bBJNYWwFpTr6Twf6X4K_jIcGoRKR0iga
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDEzNiBTYWx0ZWRfX2MTGIISrZrNP
+ Mxggeb+oBX0n8Dbb/yqV+d518lFaaTYf12jcLgcSUuBalASpmxm/0iOgSwT25/VsGJ5AxZbC9Ld
+ vC4/WfsC+MT8a0Oqod/t0CqTOPW4zK9PXDDPlVL7nRjSoOcC2ZDE4FKUI4sl5JBhJd/sLyN1l37
+ mKbnQG+WcuFouaK4RxMqdv51m59C9gkKayMMPjZdg+xYGpLhr8c+fooOylRmNvb+T9koJUQ1cVF
+ yQVOnB4CtFaUN93DbZbCaT7uzosNlEwypRO4Mvq4zPApVxVdr6w1QE5hf1uUM3BnsPwCMmq5YFM
+ qVRTIz9PGUTC8BdzDWOiyREc249QK5K8EvKMY7rXy3sfwR4I7Mzhv4voObf8BALK12P6orSO++t
+ rjEWM+zJ694XjF2lA9CqD+liV20g9h0OwLirGKYUP1jb+CHmJn4SLE0bVbjrZEjk/uETtItFxkQ
+ N/T+xoAZGug0K7jlkQQ==
+X-Proofpoint-ORIG-GUID: bBJNYWwFpTr6Twf6X4K_jIcGoRKR0iga
+X-Authority-Analysis: v=2.4 cv=Sp2dKfO0 c=1 sm=1 tr=0 ts=696e5ec9 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=ufQ_8dze9sbmFIOUPKIA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-19_04,2026-01-19_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 spamscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601190136
 
-Hi,
+On Wed Jan 7, 2026 at 7:32 PM CET, Farhan Ali wrote:
+> On error recovery for a PCI device bound to vfio-pci driver, we want to
+> recover the state of the device to its last known saved state. The callba=
+ck
+> restores the state of the device to its initial saved state.
+>
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index f677705921e6..c92c6c512b24 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -2249,6 +2249,17 @@ pci_ers_result_t vfio_pci_core_aer_err_detected(st=
+ruct pci_dev *pdev,
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_aer_err_detected);
+> =20
+> +static void vfio_pci_core_aer_reset_done(struct pci_dev *pdev)
+> +{
+> +	struct vfio_pci_core_device *vdev =3D dev_get_drvdata(&pdev->dev);
+> +
+> +	if (!vdev->pci_saved_state)
+> +		return;
+> +
+> +	pci_load_saved_state(pdev, vdev->pci_saved_state);
+> +	pci_restore_state(pdev);
+> +}
+> +
+>  int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+>  				  int nr_virtfn)
+>  {
+> @@ -2313,6 +2324,7 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_sriov_configure);
+> =20
+>  const struct pci_error_handlers vfio_pci_core_err_handlers =3D {
+>  	.error_detected =3D vfio_pci_core_aer_err_detected,
+> +	.reset_done =3D vfio_pci_core_aer_reset_done,
+>  };
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_err_handlers);
+> =20
 
-On 19/1/26 16:17, Thomas Zimmermann wrote:
-> Hi,
-> 
-> thanks for the patch.
+Feel free to add my
+Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
 
-Thanks for taking a look. I did forget about this oops and the
-smatch failure was a good reminder!
-
-> 
-> Am 18.01.26 um 13:50 schrieb Shenghao Yang:
->> Commit dc2d5ddb193e ("drm/gud: fix NULL fb and crtc dereferences
->> on USB disconnect") [1] only fixed the initial NULL crtc dereference
->> in gud_plane_atomic_update().
->>
->> However, planes can also be disabled in non-hotplug paths (e.g.
->> display disables via the DE). The drm_dev_enter() call would not
-> 
-> 'DE' ?
-
-Ah - the desktop environment. I was scratching my head for why the
-box kept oops-ing on boot even after the hotplug fix. It turned out
-kscreen was applying the saved "disable display" setting.
-
-> It seems to me that all these calls to GUD_REQ_SET_CONTROLLER_ENABLE(^1) and GUD_REQ_SET_DISPLAY_ENABLEshould rather go to the CRTC's atomic_enable/atomic_disable functions. Those currently seem missing from [1]. The atomic_update helper would then be reduced to damage handling. Best regards Thomas [1] https://elixir.bootlin.com/linux/v6.18.6/source/drivers/gpu/drm/gud/gud_drv.c#L341
-> ^1: SET_CONTROLLER_ENABLE sounds like it could even be part of device probing and runtime PM management, but that is a more invasive change.
-
-That feels like it'd be much cleaner. I'll respin with that in v2.
-
-Shenghao
-
+Thanks,
+Julian
 
