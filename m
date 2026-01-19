@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-210335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C06DD3A776
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 12:55:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4E5D3A77A
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 12:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B74A30A10DB
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 11:52:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D1F3D30CFAB5
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 11:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56280318EE0;
-	Mon, 19 Jan 2026 11:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558FE318ED8;
+	Mon, 19 Jan 2026 11:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LjTmYwcV"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="F23Wo5fw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f97.google.com (mail-pj1-f97.google.com [209.85.216.97])
+Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6DA319855
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 11:52:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197263191D4
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 11:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768823567; cv=none; b=bvGR+Hi/x9KpmRA7wm1Wr7NL/l6bBCy7nnoodX+eyg/bHp0swDlLtQRGChE46om9c6Ec2tZ0GS1bBL6J6E9a1I/Kk/poUSHkiYcCUk4VlXIPdpj56JrPSqkWH9tJuT4nFUBZMq881fsYjDJJUE4KuPdn1XbwZeGnc8o8Z4YeW58=
+	t=1768823573; cv=none; b=LkHJi9CyY4jio3iRodmkZ13x40gSPKd9my6DvHUytLYlUzr3hp5nYtJVIdKxcFqzj0H1zaTQOu6PV67wQywJEG1SMgB7hG6DWIxpds8Ts52DR71aD38Y/RNVQjwygZAFFuv4GsREy6PjIMJNzvVn+jRsqBdVDM1krhNtyzOcuzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768823567; c=relaxed/simple;
-	bh=7s21PiKqoDI2UWcnusRjQAy1HY+xab4PIu+TPyMO0+E=;
+	s=arc-20240116; t=1768823573; c=relaxed/simple;
+	bh=XjmEkDhy70C9BPaUIKs8e1nglyFuMhkb7Yn1iqBTdVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8GMuyebcySp1MA0E0asSEDnkxj7klJyk+NZzLUyPmake3u/hSPaaLch0IDnVI5YWikKdLGHDUezi2LLIi/qCrTW8gRYoGyuJJLciMROMGXaJj5ejUf3KJnqhgK1p3iY6IFDk577VXCq2DHNp82/+udIWRNSUDdESr5KLCpg1LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LjTmYwcV; arc=none smtp.client-ip=209.85.216.97
+	 MIME-Version; b=B1Pzs+BDXlxO+l1uY7z6HTdjDDTTOztOS/4XB/KeZwFaO6Nv8dH8bV4x+1n2Y7VOO8WU6Gg/EvbZK4OhDSGjINAdyPMKukfQz/ZhZq9sLiyPotYWk7sA9G2m/ruXCmx22m0VvatJdd2PESEKNzQbainMu5G1JRdrz0HjLDHhp8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=F23Wo5fw; arc=none smtp.client-ip=209.85.214.225
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pj1-f97.google.com with SMTP id 98e67ed59e1d1-34c567db0a9so259192a91.1
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 03:52:40 -0800 (PST)
+Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-29f3018dfc3so9092215ad.0
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 03:52:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768823560; x=1769428360;
+        d=1e100.net; s=20230601; t=1768823563; x=1769428363;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=N7MKZiatBshCjLhK/wnOMzSh/LSYhDXgYWq/2BVz61M=;
-        b=NMs0yf2NxqNhMFkV9aDYenOsSP/IeerRM6H2uKAReIzgGZE8je3sWGnlZJXftNKRE+
-         VzaR1CkczG3pRs7b+L0robQhuBisb5eNLS4rhGo6uU6YczCEqP/EeiYKrEBuKV3RCy21
-         F7s0Jdqf8n83MMrGH8IAQlymnVORRcLni/JUko4WSPnr5iV4wpDckhbuyTK0SAh2qmsX
-         +p8hpNR0j0/X0oCu/NIYoT67y9OfFecVRAMzHEX0SqukbXDJWQGJNP6w3RPOrPLetUqk
-         H33BrWReKnhfk2EBrD/rzgxh8GJ5ac9R2jNqLNimFoGFj3Q5JKWPhomWE+BKZeRG8+9M
-         Lq2w==
-X-Gm-Message-State: AOJu0YyGllEOrfhB+kxNRe3KuZxShiB6SGW+Sbo5ILpxgawx3YEvjrL2
-	fG2hiTqkffsNpAEyUY6kTrC5oMyYkecJ1QY8dMyslbhLjKrVKE0/yvVwn0NDZFUjJVCWyvTI1VF
-	qdjaSop+90GTg8c7d6l1vg+tWo9H5dyDbXM/eeuNpUHbbLWuVVkIkfShRMHfnr0Q2UTr5wW9uxf
-	YcpCDX+grwukZidHCCJMKEP2pEwF8KjHyZacUfla1e8Wrk1zCkKoFdFdxa17URiZb684Liq9HVq
-	B0wAy/e6Zmw+FT9F9ehPK1LOf3rLGY=
-X-Gm-Gg: AZuq6aJulY/lD8Y8xkxj+aPhW470mYvN91Eg1POn+egn2p2NdL31PrKPjpNzLTEBskY
-	17V0NJ+gSkAgg+XYOiERY03OYS0OJvJ8YlRd0oSTBV7fWvLH5MDM2S+ZCgVuHKEekvZYDZG6iWO
-	C6fujmfkgdFk5PQ+bxGpyucvI9/7ZYUp5oiBCgSMRmL6NvBtdsINnHYHrp/7mp+1T7kN8H3zV/7
-	f6WO/9xc4yTwhkwvwx+/dP3qdZQuAahowSDmHrtzZnvnq0rLVzZkTi0uxTYFxGwMv4tjvlFu0f/
-	MEb58PUnGu513xAlkVySutpSAydRXecbRcYZZ3bQYL1wgMDMA8WHz0Umoq/0RcgxJLhlYY+MEB9
-	bhb13FUf/B9Z18oeENwJ5JblQPPxs4RdOfHo41GIyEJulAMvzG7h0TovOqyfTAybugff+eI1SoZ
-	uocndsgaT8YTrpGV3ItmC1wWjqUQsBpMbbRhIlzOrrMnmNr1PpmBCoj6Li4FqUMOJy
-X-Received: by 2002:a17:90b:4c4f:b0:341:88c1:6a89 with SMTP id 98e67ed59e1d1-35272ec86e1mr7277727a91.2.1768823560223;
-        Mon, 19 Jan 2026 03:52:40 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-118.dlp.protect.broadcom.com. [144.49.247.118])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-352678c6aa0sm1911437a91.7.2026.01.19.03.52.39
+        bh=o/toLEsajSo6fO5hRJUdPGrIZ19DquBDTOLbcgJFlJU=;
+        b=QD7vJCsq3iZIp1eEv1baJWx0yApgPIGzA8R4xmLA2cLptS3Z+sgHHKQXVDjAAn0SiE
+         g77UeL5i+GWXkl0PlE+etTDSXUvOhqk4DoZzoX/G1LMnUnTlz2Z2xKrIVunNuw7GeGsE
+         pMN7bHkHmso4k6AVzWcespRqEaNYxKf7A3VA9ogqQ24SIq+9TqiGu9evFABg9V00YjNV
+         WnwR129Wif6A1PwFzmUBDk1dyKgjXCJrjafeXTuKBPTx4yE8V2egH6e4Gryt3ENMteqq
+         hSdB080p2/YFnNy6j68lqUMfL0ZGjEfCmi7Y4RIjaZ/lBd3ZBc5ZBNn8F7XvC71tQ1A8
+         zBEw==
+X-Gm-Message-State: AOJu0YwuAkmHqEQSxDfjC9Xy9iTQflYLBlLwUquFSwR9LgQxW61Tn8em
+	8rg6BezrVRRYuUyziO3ENyJZXYVe+410ZM43Hvt4guyhrW9J8V/xB97gxu01peL7O1wFaY/pd3m
+	Fmsq3dd3MemewUDI2Ly9tYBeSbx2qnzkGv99+wD1VKvwDd75oG0fKFITNs9MFgpsQcwuogLncUF
+	nMqSHIvhLx5Vdlj0exRBkAmkPc+U5lUWQd9V/i+zLImhKAYNofxRNL0Uf1mP/LwK5i/AQGxnnxQ
+	gdc+3DNT7PZUPQPRmDQXoZe9WDvAuM=
+X-Gm-Gg: AZuq6aI0sbX1KKUpYW7/VaHG2GZ1I/fOoESmNCklhwW1HRPkgpq6rjQc4Avy4XsG7CJ
+	93nXYD/C/N6vf9uFvOhBwLbIJMdoq8altruELoEolRFlT41JCk5/gAlgOTrpIss2ao2Ctnc1o3/
+	/UKF0bfHJTtJIb12RZF8OyWVElfCoO1M/1pZ3rWepHwtMlt1mhqDIybIOeNqFR3FfR4ICJaQBy7
+	eCS9LIBymBOSMSWuphNuxrzTLUrWzmkVt1ZVZk0i6AeKcBUCK1ZRh3U0yBEWj9oFPALbVWgyIWq
+	f3sqGwntHn/NUr4LbiHwbrjbPTalhjODXj7nahLu0lGYt2wn9n6OVsSJWc+ADX+uiTfql6/4qnF
+	KaG4dcplUHCxo9jIyV1L6ht6QmFX9ALcZ9uAPAWd3nmXmuamHJTLC5Tdi2ftO09pK6/TSREr/Er
+	KEnYfOImVNDbHQSOrjsRtF+pF/6HzSsShr5AlhyR7E1rblYucEfH3ELtz4e4hw5Q==
+X-Received: by 2002:a17:903:2287:b0:2a0:9424:7dc7 with SMTP id d9443c01a7336-2a7175c6815mr74611535ad.4.1768823563463;
+        Mon, 19 Jan 2026 03:52:43 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-72.dlp.protect.broadcom.com. [144.49.247.72])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2a7193999b3sm14928135ad.43.2026.01.19.03.52.43
         for <stable@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 19 Jan 2026 03:52:40 -0800 (PST)
+        Mon, 19 Jan 2026 03:52:43 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8c533f07450so100722385a.0
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 03:52:39 -0800 (PST)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8c532029e50so150621185a.1
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 03:52:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1768823558; x=1769428358; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1768823562; x=1769428362; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=N7MKZiatBshCjLhK/wnOMzSh/LSYhDXgYWq/2BVz61M=;
-        b=LjTmYwcVbiy5z1tti4wjFBqzYMNIgH9rd65mvU/PqU4oRqOM8NG3jBUXKOzwxC///b
-         YdNiJLiskSaJ5dug4jCA4Tuvsvi4kGSfRjlwfcZYAWMFx3LbR1i+WbXgnuxxNOuYR1Z9
-         q/QZNfyUdNcjYPjISYpFqf3JQ60rqfgxW7MVk=
-X-Received: by 2002:a05:620a:cd0:b0:8c6:a707:dae7 with SMTP id af79cd13be357-8c6a707dafdmr885240385a.1.1768823557003;
-        Mon, 19 Jan 2026 03:52:37 -0800 (PST)
-X-Received: by 2002:a05:620a:cd0:b0:8c6:a707:dae7 with SMTP id af79cd13be357-8c6a707dafdmr885236885a.1.1768823556365;
-        Mon, 19 Jan 2026 03:52:36 -0800 (PST)
+        bh=o/toLEsajSo6fO5hRJUdPGrIZ19DquBDTOLbcgJFlJU=;
+        b=F23Wo5fwQvVFRkHhHhqcR9lpNJ6LF7PVZdTf/zH3ptgW5YVd6leI4om435lU4ELIdJ
+         lazrLlWh3eyOPOy3JU0J5PevpR5f/HBipLDIARwNQSKLi2edMrSgvmjdPc7Wddpc4fNC
+         S1U+5QiGeyxjqYcJulwxt1bv7VRqYvEi3zsps=
+X-Received: by 2002:a05:620a:2a05:b0:8b2:e177:fb18 with SMTP id af79cd13be357-8c6a67bc788mr1083870785a.9.1768823561644;
+        Mon, 19 Jan 2026 03:52:41 -0800 (PST)
+X-Received: by 2002:a05:620a:2a05:b0:8b2:e177:fb18 with SMTP id af79cd13be357-8c6a67bc788mr1083863185a.9.1768823559509;
+        Mon, 19 Jan 2026 03:52:39 -0800 (PST)
 Received: from keerthanak-ph5-dev.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a71bf2b0sm772878885a.12.2026.01.19.03.52.33
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c6a71bf2b0sm772878885a.12.2026.01.19.03.52.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jan 2026 03:52:35 -0800 (PST)
+        Mon, 19 Jan 2026 03:52:38 -0800 (PST)
 From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -102,11 +102,13 @@ Cc: davem@davemloft.net,
 	vamsi-krishna.brahmajosyula@broadcom.com,
 	yin.ding@broadcom.com,
 	tapas.kundu@broadcom.com,
-	Sharath Chandra Vurukala <quic_sharathv@quicinc.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Sasha Levin <sashal@kernel.org>,
 	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH v5.15-v6.1 1/2] net: Add locking to protect skb->dev access in ip_output
-Date: Mon, 19 Jan 2026 11:49:09 +0000
-Message-ID: <20260119114910.1414976-2-keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH v5.15-v6.1 2/2] tls: Use __sk_dst_get() and dst_dev_rcu() in get_netdev_for_sock().
+Date: Mon, 19 Jan 2026 11:49:10 +0000
+Message-ID: <20260119114910.1414976-3-keerthana.kalyanasundaram@broadcom.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260119114910.1414976-1-keerthana.kalyanasundaram@broadcom.com>
 References: <20260119114910.1414976-1-keerthana.kalyanasundaram@broadcom.com>
@@ -119,120 +121,65 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 1dbf1d590d10a6d1978e8184f8dfe20af22d680a]
+[ Upstream commit c65f27b9c3be2269918e1cbad6d8884741f835c5 ]
 
-In ip_output() skb->dev is updated from the skb_dst(skb)->dev
-this can become invalid when the interface is unregistered and freed,
+get_netdev_for_sock() is called during setsockopt(),
+so not under RCU.
 
-Introduced new skb_dst_dev_rcu() function to be used instead of
-skb_dst_dev() within rcu_locks in ip_output.This will ensure that
-all the skb's associated with the dev being deregistered will
-be transnmitted out first, before freeing the dev.
+Using sk_dst_get(sk)->dev could trigger UAF.
 
-Given that ip_output() is called within an rcu_read_lock()
-critical section or from a bottom-half context, it is safe to introduce
-an RCU read-side critical section within it.
+Let's use __sk_dst_get() and dst_dev_rcu().
 
-Multiple panic call stacks were observed when UL traffic was run
-in concurrency with device deregistration from different functions,
-pasting one sample for reference.
+Note that the only ->ndo_sk_get_lower_dev() user is
+bond_sk_get_lower_dev(), which uses RCU.
 
-[496733.627565][T13385] Call trace:
-[496733.627570][T13385] bpf_prog_ce7c9180c3b128ea_cgroupskb_egres+0x24c/0x7f0
-[496733.627581][T13385] __cgroup_bpf_run_filter_skb+0x128/0x498
-[496733.627595][T13385] ip_finish_output+0xa4/0xf4
-[496733.627605][T13385] ip_output+0x100/0x1a0
-[496733.627613][T13385] ip_send_skb+0x68/0x100
-[496733.627618][T13385] udp_send_skb+0x1c4/0x384
-[496733.627625][T13385] udp_sendmsg+0x7b0/0x898
-[496733.627631][T13385] inet_sendmsg+0x5c/0x7c
-[496733.627639][T13385] __sys_sendto+0x174/0x1e4
-[496733.627647][T13385] __arm64_sys_sendto+0x28/0x3c
-[496733.627653][T13385] invoke_syscall+0x58/0x11c
-[496733.627662][T13385] el0_svc_common+0x88/0xf4
-[496733.627669][T13385] do_el0_svc+0x2c/0xb0
-[496733.627676][T13385] el0_svc+0x2c/0xa4
-[496733.627683][T13385] el0t_64_sync_handler+0x68/0xb4
-[496733.627689][T13385] el0t_64_sync+0x1a4/0x1a8
-
-Changes in v3:
-- Replaced WARN_ON() with  WARN_ON_ONCE(), as suggested by Willem de Bruijn.
-- Dropped legacy lines mistakenly pulled in from an outdated branch.
-
-Changes in v2:
-- Addressed review comments from Eric Dumazet
-- Used READ_ONCE() to prevent potential load/store tearing
-- Added skb_dst_dev_rcu() and used along with rcu_read_lock() in ip_output
-
-Signed-off-by: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
+Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250730105118.GA26100@hu-sharathv-hyd.qualcomm.com
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20250916214758.650211-6-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Keerthana: Backported the patch to v5.15-v6.1 ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Keerthana: Backport to v5.15-v6.1 ]
 Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
 ---
- include/net/dst.h    | 12 ++++++++++++
- net/ipv4/ip_output.c | 16 +++++++++++-----
- 2 files changed, 23 insertions(+), 5 deletions(-)
+ net/tls/tls_device.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/dst.h b/include/net/dst.h
-index 3a1a6f94a..20a76e532 100644
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -555,6 +555,18 @@ static inline void skb_dst_update_pmtu_no_confirm(struct sk_buff *skb, u32 mtu)
- 		dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
- }
- 
-+static inline struct net_device *dst_dev_rcu(const struct dst_entry *dst)
-+{
-+	/* In the future, use rcu_dereference(dst->dev) */
-+	WARN_ON_ONCE(!rcu_read_lock_held());
-+	return READ_ONCE(dst->dev);
-+}
-+
-+static inline struct net_device *skb_dst_dev_rcu(const struct sk_buff *skb)
-+{
-+	return dst_dev_rcu(skb_dst(skb));
-+}
-+
- struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
- void dst_blackhole_update_pmtu(struct dst_entry *dst, struct sock *sk,
- 			       struct sk_buff *skb, u32 mtu, bool confirm_neigh);
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index 543d02910..79cf1385e 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -420,17 +420,23 @@ int ip_mc_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 
- int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index c51377a15..e79bce6db 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -125,17 +125,19 @@ static void tls_device_queue_ctx_destruction(struct tls_context *ctx)
+ /* We assume that the socket is already connected */
+ static struct net_device *get_netdev_for_sock(struct sock *sk)
  {
--	struct net_device *dev = skb_dst(skb)->dev, *indev = skb->dev;
-+	struct net_device *dev, *indev = skb->dev;
-+	int ret_val;
-+
+-	struct dst_entry *dst = sk_dst_get(sk);
+-	struct net_device *netdev = NULL;
++	struct net_device *dev, *lowest_dev = NULL;
++	struct dst_entry *dst;
+ 
+-	if (likely(dst)) {
+-		netdev = netdev_sk_get_lowest_dev(dst->dev, sk);
+-		dev_hold(netdev);
 +	rcu_read_lock();
-+	dev = skb_dst_dev_rcu(skb);
- 
- 	IP_UPD_PO_STATS(net, IPSTATS_MIB_OUT, skb->len);
- 
- 	skb->dev = dev;
- 	skb->protocol = htons(ETH_P_IP);
- 
--	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
--			    net, sk, skb, indev, dev,
--			    ip_finish_output,
--			    !(IPCB(skb)->flags & IPSKB_REROUTED));
-+	ret_val = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
-+				net, sk, skb, indev, dev,
-+				ip_finish_output,
-+				!(IPCB(skb)->flags & IPSKB_REROUTED));
++	dst = __sk_dst_get(sk);
++	dev = dst ? dst_dev_rcu(dst) : NULL;
++	if (likely(dev)) {
++		lowest_dev = netdev_sk_get_lowest_dev(dev, sk);
++		dev_hold(lowest_dev);
+ 	}
 +	rcu_read_unlock();
-+	return ret_val;
- }
- EXPORT_SYMBOL(ip_output);
  
+-	dst_release(dst);
+-
+-	return netdev;
++	return lowest_dev;
+ }
+ 
+ static void destroy_record(struct tls_record_info *record)
 -- 
 2.43.7
 
