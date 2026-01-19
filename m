@@ -1,194 +1,214 @@
-Return-Path: <stable+bounces-210272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07208D39F73
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 08:13:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E16D39F75
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 08:14:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6E7E3063F54
-	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 07:10:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B2DE030047B6
+	for <lists+stable@lfdr.de>; Mon, 19 Jan 2026 07:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8AA2DB791;
-	Mon, 19 Jan 2026 07:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE152DB7AD;
+	Mon, 19 Jan 2026 07:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M7sgr0tg"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="B5bcQ3Bg";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NOtTYEBq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f67.google.com (mail-qv1-f67.google.com [209.85.219.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624B52D9EC8
-	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 07:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D192494F0
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 07:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768806650; cv=none; b=OkBpw/+ZRkOjaWrX8lZW0DJE3y/GsuRkFADTFGCHuv7R5PYihIGxNxxh7W1OiAkArkQq2MaF1ECZhSMOW5xWEaloW6oS6cFu4Cr/5WWFM6n2ZMqY8nPL+tBw0v+MdNohswePMSDxYM1CjpLwzdcNQDeSFqmfte/68dIfvxoM1/o=
+	t=1768806888; cv=none; b=nGzpq6RlKa8H8sNZ4SSC5Ab0VnnZ1uT3eo0LX4JQTESCo9v9LHRvKKJFwDudFl4DCOUtfhA1RjL9F2TzvfJNh6TBX3AymTT8nnWCBjyu9jjTWdWeetmpGG18JXRKNV32TZVJz9gu0F3xmjRNxX6fGQmMY7yeakuLpUolZ8y+tdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768806650; c=relaxed/simple;
-	bh=S3Y98FFWgoY8a3pcnPVFBrL19HFaL0F70zFtuxAOCe0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=isx+LA34EqBs+w4eC4CreMv5teaWEy5UVYEyL1RlNGaqmweLetlF5gVLtkjVo8dPVYQhIxLfQx/S8fkSCLdl3Ck2ugzGDvn3FQh0m6BqwlhVce/T6szH0chuZ9pRjCYC1C0ATNlUj5ZVmrtGFuTrLvDM9uBePic4cXy6BA4v364=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M7sgr0tg; arc=none smtp.client-ip=209.85.219.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f67.google.com with SMTP id 6a1803df08f44-888bd3bd639so47280186d6.1
-        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 23:10:48 -0800 (PST)
+	s=arc-20240116; t=1768806888; c=relaxed/simple;
+	bh=5fPllbsOf7sccFo5RXhDhCDsCKJFQkF8T9XtQ7NNf2Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZAkMIiL5Bt4YAT8uJVmyWwrBbE+SWgfXkNAHUlkRWV0CxTQgnMyRQxlGzCj2qZeRgnVjv53tL7MgyuoZe1cOWtVfQYFM4P6eg+V8H0W8SOlUbdtW29QtZ+qDxxQAZ0H5LMeWVzX782qJyDhsWQPoVdyEf3YhjVBD5rQBlTRxZeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=B5bcQ3Bg; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NOtTYEBq; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60J5V0Q13010904
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 07:14:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	5WfZUJN+4yyrEknLJ+I9YLz3L5ZjIyay+AUARwvRzZw=; b=B5bcQ3BghjX7/XIL
+	kHDxyfbB4oy+Hn29hjlD1MQUkE0orp0YfSnWgJxAL0yFPEsGPs8wOrhKKu1J70hD
+	p8a4AOIogHfI281bK4qrnL3ABK42Gowf5pcIzoc1HoMjRkaFghSL4cHFVBWZpW3k
+	BjD+2XfRBJuIuhiEkcgC1Z/ruoO/ooMi+nh80jXCBGoLLunSgrRPC691QqUs4TsJ
+	Jqhzhg3teFMcYnDN0gNpCtXW+3lkNxBShCJa++6iMBOswRmJsDTvcPfRRnZzQ+O6
+	QYRFF8j4/D4GclDY/8KnW0D662F2ZoiZSIQ3j3DcCRwhwqAV5b9V70ulMC62c8Yz
+	slEXrQ==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4br2gum44p-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 19 Jan 2026 07:14:46 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2a377e15716so82389395ad.3
+        for <stable@vger.kernel.org>; Sun, 18 Jan 2026 23:14:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768806647; x=1769411447; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gKM15vI5ObaHuQbAnvaLHXhQIMY9SS6X3bJEvEg+p4E=;
-        b=M7sgr0tgEqxU85NZwJXA0fJ7ksaOXe6UK4eRTS1rsoNH5NYiD/ICYEV2fV4Z2JLz6l
-         Zk4FHXMO3n7O612o9SENbGsWzYCqdU6ol8hUShUZB1aNN3m3oviyUIPufkPTTwJ13121
-         RNHk7ACCZ2/tZrhcbqAH0QRRqpwYZCjjRMkWLwymPK3K2jfIw5uyGLj09Gq869sDSR8/
-         8M81UMFqjq0CaeHK6jvN0h8hMq1wIq9LTga5offRTuTcCWgFwmjM/+vsGKHOO/Z23EnB
-         +3N+TZO/YzgbAgsiQ+gTZDggeHAy4xD3kRgVlUK6/mIyLbQHJfivjL+BosbRvxibvVfs
-         Y6Pg==
+        d=oss.qualcomm.com; s=google; t=1768806885; x=1769411685; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5WfZUJN+4yyrEknLJ+I9YLz3L5ZjIyay+AUARwvRzZw=;
+        b=NOtTYEBql61bpuxuM3VikKcrqZXdEBdakj8U+74QU6Gul8dKfq5mBvGwhoIaeKIDH8
+         G4xSr3jeXnJS4uUpQFZx4zl+9/5zTWiuw20yBWQyNWZHHnbdRN83Dyay35NwB7Q8iRmq
+         abOZiEMirp/67o8MaMhwnBrOdXYdnWSBoRhG3kDz0EXFIcMiaDuuzQpHIiX5ji4zWhG5
+         jPozlUlR6ReZdHgVmBMhLe2ohQHZoI+7or+HCfZRbLYtk70ZXLEHqoJRTSraPgL10b0J
+         z8YAHFNP4w0raErWKwGr7WWgebMmX9tr596WxdoLShhmGGY0lC4QctqA1iIPhQNhid1L
+         oPGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768806647; x=1769411447;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gKM15vI5ObaHuQbAnvaLHXhQIMY9SS6X3bJEvEg+p4E=;
-        b=U3kCpYufNv23idkLi4mynkMTqby2LYeiLEkYgbDCLzvomXVVBoCZ18ciAfIEYI97OF
-         MxkiHaehwTGRhqw5Ntr3y2wxBPSwoE8Ptih6xkJIy8NyTGUxILgsF9kQmwM2iteDA4bG
-         64CqSq1ey/Splb/Sl5RJMTpFmyKPf624XGXhRVLlgs4qhwLy6UTy0R8oic5nd3uZlvJP
-         5rersQgI1/w8AL1tnw49Z4QMGU7gxlsatbGs+5S89cBTZX5eZBKAqQ9duBgPdrTmuKG+
-         LbM9vhIrlS/MDCplVXHT1ASO/H2z53Q5ruO6qnHxACOHnrUpdaxxyxur0TSP8dM7hkN+
-         DXiw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJCDzbPmMYNCPV5whAjAUd3U+i5fSXHnhi0/QCEwA6tJWAVa2BTWKWnry4TsxWje86YGYJOuc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0tvLZ4MGSg8OViv7DN1Mrcq+7WCRUF9acgmRVDSqcux0MuoRK
-	LRnbslFFc/M8JcyPeoqA5gFQ/1vkrDVg8sBfNP2CfvnFk1aABDP8JqZm
-X-Gm-Gg: AY/fxX7Ca+BbY73lPdGDtYMtQAQB3N6NcWxIFFhwpYBuyZh5DohtWRQHjlfrLNVhKRe
-	6cvGp3x+w9Q6p1OIP+1u/uE4El+uE83VDVOVz4sXUYrKPioAZwntwiYcw6slmVN7PSJxv+3XTe8
-	jiUK8dKRHw7P05zez6lYvezbgTSuQsL93s75bg9fPTDeXZn8J33KbKU2udsRWEIBwVgHU6aCbB5
-	gelIdkc28A43KX6AJZqwabhyP8qLvMFk5nY6mk3idisE53ZB1QTV4cp6/ERnaokxt0tPOztBI0C
-	xwvcg8RbB/aGWVpjmznBFE1pjrG3kNZLaSdtejJB1pioKDnTu3whR4+k+Qx/VeFYP72d+UIUTTO
-	nRihzeP6rmx4GvCF/AnhzgcNduPC+THmHnIB91t7atL0T0hjRP0f5Gja9b4g1CIgWcjmb2oXYgh
-	bWRo+HsBmluwPS2KY/Av0FIbQF48c0cuAZ1s0aHQ/KBwFNmbp00jyMMDLWx5Pem6b+O9m8EwZLR
-	miNo/kkUpO05Rg7Rdbs37nKJA==
-X-Received: by 2002:a05:6214:21ef:b0:87c:19af:4b76 with SMTP id 6a1803df08f44-89398144853mr211893076d6.17.1768806647373;
-        Sun, 18 Jan 2026 23:10:47 -0800 (PST)
-Received: from abc-virtual-machine.localdomain (c-76-150-86-52.hsd1.il.comcast.net. [76.150.86.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e6043a6sm79024586d6.18.2026.01.18.23.10.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jan 2026 23:10:46 -0800 (PST)
-From: Yuhao Jiang <danisjiang@gmail.com>
-To: Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>
-Cc: io-uring@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Yuhao Jiang <danisjiang@gmail.com>
-Subject: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing cross-buffer accounting
-Date: Mon, 19 Jan 2026 01:10:39 -0600
-Message-Id: <20260119071039.2113739-1-danisjiang@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1768806885; x=1769411685;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5WfZUJN+4yyrEknLJ+I9YLz3L5ZjIyay+AUARwvRzZw=;
+        b=VzkDxQv7rSy6t1t/SBnIWDASqJxkkRmZcheMxI6izS4VnG7kH9JPT4VBaG59LGpkW0
+         55eQluZEEalwZ9ayhOY+Ja4i9+cCXLlQKszKHTp2sCa6fySkUwG6OAE/Ltpa3zXnVhZx
+         /ApcyJaQELVIQhtbkzh6hku1SaRFOpr0Hkkdj7rH53W8usfuE7/Rbai+ntghrBzAFKBt
+         UawFOd/dGn/grawPEjDG+fi7MMWEbaeSlhY3LRiQuW3V9wtr2VgiQeIiPdxxClZm6EZj
+         WGzohbmKggSds648SiT36u1SUNM0F0l7nhNHGG9zF6tt8XPH7FaWHZfJKVx8eOLnrck9
+         j6qQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQw96rnCE6rdUYQ28G2te2BHmHW7iWRe4E0pUttFY+pvI76khmAo24PaHbp/viAniw+AkWU4k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/XWz4cIhGW8L/OccvfLlh4AbLAJmvJpH7YhqGoceX37sLCCz/
+	YJfspaKJQulCyDAZPkQkU6g1agErEEoPjBBwXuXoXpHP0XhwKEh5W4vocdmv6Upwt7GsQyVvwdR
+	tBhKULZ7gMFPguSWwqQlJiw9gDQQ4VxMYDKvwCiEC0wvVtYaUP/EhMxNiJwA=
+X-Gm-Gg: AZuq6aK1YmuSuwoVSJdKRc8wSR8JvB+4fmnmxKLibFIsYUmjMu36OatY6sNKtVxnmqs
+	NOheeJzPYBmJZgNWp7yd2amvCDeqjHMf2XRTxxr80PceMz5MIiuThn5rzlEXehZwi9OmF/1i0H6
+	0msZvW+KhiukiD1BWibGCchmtA4TriIKhov1FNKlPRCvWdi3RuI/7wQGD7MtLU4hdwem9Pxnnnu
+	aJlKSjqgcjxt+w8ncJVU+eZzxFiR4dB4cnpvBS0QtqhuMt58hOlNFYX4wsJEv3/9RAlFGm/wYAS
+	r5ibgcLKM+eOb7SmEOApoWaxHZrs8k4KTb7eFP2Vp7FHU6kFwZCfLJC4bP7MSSl8QK63MEPzVBY
+	ueHbCWfBOSlm5Ryy2A2duKv+fdVmSMSBOWls=
+X-Received: by 2002:a17:902:d549:b0:297:e69d:86ac with SMTP id d9443c01a7336-2a718914867mr106392655ad.39.1768806885180;
+        Sun, 18 Jan 2026 23:14:45 -0800 (PST)
+X-Received: by 2002:a17:902:d549:b0:297:e69d:86ac with SMTP id d9443c01a7336-2a718914867mr106392405ad.39.1768806884680;
+        Sun, 18 Jan 2026 23:14:44 -0800 (PST)
+Received: from [10.239.97.158] ([114.94.8.21])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7193df75bsm67919475ad.54.2026.01.18.23.14.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 18 Jan 2026 23:14:44 -0800 (PST)
+Message-ID: <cdd9dd67-5281-472e-8e84-65a578f999a4@oss.qualcomm.com>
+Date: Mon, 19 Jan 2026 15:14:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/2] Fix SSR unable to wake up bug
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+        Shuai Zhang <quic_shuaz@quicinc.com>, linux-arm-msm@vger.kernel.org,
+        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20251107033924.3707495-1-quic_shuaz@quicinc.com>
+ <CAMRc=Mce4KU_zWzbmM=gNzHi4XOGQWdA_MTPBRt15GfnSX5Crg@mail.gmail.com>
+ <212ec89d-0acd-4759-a793-3f25a5fbe778@oss.qualcomm.com>
+ <CAMRc=MdoUvcMrMga6nNYt8d-o8P-r3M_xY_JHznP3ffmZv8vkQ@mail.gmail.com>
+ <96472b7c-9288-4f81-9673-d91376189a18@oss.qualcomm.com>
+ <CABBYNZ+5ry0FWFSgOskw60jja9mE6WG5AwOi2pKxrkzqMn9bkQ@mail.gmail.com>
+Content-Language: en-US
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+In-Reply-To: <CABBYNZ+5ry0FWFSgOskw60jja9mE6WG5AwOi2pKxrkzqMn9bkQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE5MDA1OCBTYWx0ZWRfXxm3jzmEE174j
+ SouUwUu3Y+IqU7erKY2vR83pBngTBk0xa9GloX6z5BahZicnIklZNzeMM2xQrxXgnZpjLnYgvOG
+ yNXTgdpsVqA5CesXemML0QKHxmg7hgxMbcLIepDV9Vvvlr/zqu147w98sm7/8UnR/9n6fkmTSVA
+ eIM5hVuM3uumJMXlKBwVkO3sreFpgh0/x5p3puA6E+6w+IARd3OMqOwHPwkydK8snmxjXtJduy4
+ BUykCAIYa3xvUhEvEQDu0jInrlHjsrXAcPN7Q5qfIaEXM1ZaECFBt8wY90Yb5n1Q58o4sEIUil8
+ dIz3ZBa24PuL0yAetWyDR5yLcm1e2J4yGilkat+kqDUC7SVX2xWo05qKgM9i0FCOOgl5IM8KssX
+ aBA56KGgTyGCA1VL6jOfVpGQSzmCh3sf7xlr6QkOT+ddoQPki4xJjyIBH7Q4NX+9Qe8DV51cpFn
+ LebizZCnr9u8k8EmBhg==
+X-Authority-Analysis: v=2.4 cv=Sev6t/Ru c=1 sm=1 tr=0 ts=696dd9e6 cx=c_pps
+ a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=Uz3yg00KUFJ2y2WijEJ4bw==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=EUspDBNiAAAA:8
+ a=KKAkSRfTAAAA:8 a=oRiKqNWV6AETYgLPPlIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=GvdueXVYPmCkWapjIL-Q:22 a=TjNXssC_j7lpFel5tvFf:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: aLSj-qNl7FNuyQL8MakomHORMQZjzKn6
+X-Proofpoint-ORIG-GUID: aLSj-qNl7FNuyQL8MakomHORMQZjzKn6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-19_01,2026-01-19_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 impostorscore=0 spamscore=0 bulkscore=0
+ lowpriorityscore=0 clxscore=1015 priorityscore=1501 suspectscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2601190058
 
-When multiple registered buffers share the same compound page, only the
-first buffer accounts for the memory via io_buffer_account_pin(). The
-subsequent buffers skip accounting since headpage_already_acct() returns
-true.
+Hi Luiz
 
-When the first buffer is unregistered, the accounting is decremented,
-but the compound page remains pinned by the remaining buffers. This
-creates a state where pinned memory is not properly accounted against
-RLIMIT_MEMLOCK.
+On 1/16/2026 10:42 PM, Luiz Augusto von Dentz wrote:
+> Hi Shuai,
+>
+> On Fri, Jan 16, 2026 at 4:48 AM Shuai Zhang
+> <shuai.zhang@oss.qualcomm.com> wrote:
+>> Hi Luiz, Marcel
+>>
+>> On 1/16/2026 5:20 PM, Bartosz Golaszewski wrote:
+>>> On Fri, Jan 16, 2026 at 9:37 AM Shuai Zhang
+>>> <shuai.zhang@oss.qualcomm.com> wrote:
+>>>> Hi Bartosz
+>>>>
+>>>> On 11/7/2025 11:37 PM, Bartosz Golaszewski wrote:
+>>>>> On Fri, 7 Nov 2025 04:39:22 +0100, Shuai Zhang <quic_shuaz@quicinc.com> said:
+>>>>>> This patch series fixes delayed hw_error handling during SSR.
+>>>>>>
+>>>>>> Patch 1 adds a wakeup to ensure hw_error is processed promptly after coredump collection.
+>>>>>> Patch 2 corrects the timeout unit from jiffies to ms.
+>>>>>>
+>>>>>> Changes v3:
+>>>>>> - patch2 add Fixes tag
+>>>>>> - Link to v2
+>>>>>>      https://lore.kernel.org/all/20251106140103.1406081-1-quic_shuaz@quicinc.com/
+>>>>>>
+>>>>>> Changes v2:
+>>>>>> - Split timeout conversion into a separate patch.
+>>>>>> - Clarified commit messages and added test case description.
+>>>>>> - Link to v1
+>>>>>>      https://lore.kernel.org/all/20251104112601.2670019-1-quic_shuaz@quicinc.com/
+>>>>>>
+>>>>>> Shuai Zhang (2):
+>>>>>>      Bluetooth: qca: Fix delayed hw_error handling due to missing wakeup
+>>>>>>        during SSR
+>>>>>>      Bluetooth: hci_qca: Convert timeout from jiffies to ms
+>>>>>>
+>>>>>>     drivers/bluetooth/hci_qca.c | 6 +++---
+>>>>>>     1 file changed, 3 insertions(+), 3 deletions(-)
+>>>>>>
+>>>>>> --
+>>>>> Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>     Just a gentle ping. This patch series has been Acked but I haven’t
+>>>> seen it picked up by linux-next.
+>>>>
+>>>> Do you need anything else from me?
+>>> I don't pick up bluetooth patches, Luiz or Marcel do.
+>>>
+>>> Thanks,
+>>> Bartosz
+>> Could you please help clarify this?
+> There were no Fixes: or Cc: Stable in your changes to indicate they
+> need to be applied to the currently RC and stable trees, in which case
+> it will only be merged to next-next at a later stage.
+>
+> If that is not correct then lets us know if that needs either a Fixes
+> or stable tag so I can send a pull request immediately.
 
-On systems with HugeTLB pages pre-allocated, an unprivileged user can
-exploit this to pin memory beyond RLIMIT_MEMLOCK by cycling buffer
-registrations. The bypass amount is proportional to the number of
-available huge pages, potentially allowing gigabytes of memory to be
-pinned while the kernel accounting shows near-zero.
 
-Fix this by removing the cross-buffer accounting optimization entirely.
-Each buffer now independently accounts for its pinned pages, even if
-the same compound pages are referenced by other buffers. This prevents
-accounting underflow when buffers are unregistered in arbitrary order.
+I will add Fix tags then update patch.
 
-The trade-off is that memory accounting may be overestimated when
-multiple buffers share compound pages, but this is safe and prevents
-the security issue.
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Suggested-by: Pavel Begunkov <asml.silence@gmail.com>
-Fixes: de2939388be5 ("io_uring: improve registered buffer accounting for huge pages")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuhao Jiang <danisjiang@gmail.com>
----
-Changes in v2:
-  - Remove cross-buffer accounting logic entirely
-  - Link to v1: https://lore.kernel.org/all/20251218025947.36115-1-danisjiang@gmail.com/
-
- io_uring/rsrc.c | 43 -------------------------------------------
- 1 file changed, 43 deletions(-)
-
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index 41c89f5c616d..f35652f36c57 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -619,47 +619,6 @@ int io_sqe_buffers_unregister(struct io_ring_ctx *ctx)
- 	return 0;
- }
- 
--/*
-- * Not super efficient, but this is just a registration time. And we do cache
-- * the last compound head, so generally we'll only do a full search if we don't
-- * match that one.
-- *
-- * We check if the given compound head page has already been accounted, to
-- * avoid double accounting it. This allows us to account the full size of the
-- * page, not just the constituent pages of a huge page.
-- */
--static bool headpage_already_acct(struct io_ring_ctx *ctx, struct page **pages,
--				  int nr_pages, struct page *hpage)
--{
--	int i, j;
--
--	/* check current page array */
--	for (i = 0; i < nr_pages; i++) {
--		if (!PageCompound(pages[i]))
--			continue;
--		if (compound_head(pages[i]) == hpage)
--			return true;
--	}
--
--	/* check previously registered pages */
--	for (i = 0; i < ctx->buf_table.nr; i++) {
--		struct io_rsrc_node *node = ctx->buf_table.nodes[i];
--		struct io_mapped_ubuf *imu;
--
--		if (!node)
--			continue;
--		imu = node->buf;
--		for (j = 0; j < imu->nr_bvecs; j++) {
--			if (!PageCompound(imu->bvec[j].bv_page))
--				continue;
--			if (compound_head(imu->bvec[j].bv_page) == hpage)
--				return true;
--		}
--	}
--
--	return false;
--}
--
- static int io_buffer_account_pin(struct io_ring_ctx *ctx, struct page **pages,
- 				 int nr_pages, struct io_mapped_ubuf *imu,
- 				 struct page **last_hpage)
-@@ -677,8 +636,6 @@ static int io_buffer_account_pin(struct io_ring_ctx *ctx, struct page **pages,
- 			if (hpage == *last_hpage)
- 				continue;
- 			*last_hpage = hpage;
--			if (headpage_already_acct(ctx, pages, i, hpage))
--				continue;
- 			imu->acct_pages += page_size(hpage) >> PAGE_SHIFT;
- 		}
- 	}
--- 
-2.34.1
-
+>> Thanks，
+>>
+>> Shuai
+>>
+>
 
