@@ -1,176 +1,128 @@
-Return-Path: <stable+bounces-210443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBFAD3BFE3
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 08:01:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD20D3BFF6
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 08:04:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4FAB501B8D
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 06:54:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5FD2C4FA4CB
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 06:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784BE39341F;
-	Tue, 20 Jan 2026 06:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24C437F0E5;
+	Tue, 20 Jan 2026 06:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Go5TpPle"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="x9bRt6bq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1Yd+XbN6"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4B237B40E;
-	Tue, 20 Jan 2026 06:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE25F32FA3F;
+	Tue, 20 Jan 2026 06:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768891815; cv=none; b=mOrlXdN/ne+mxb04hFXaS/fgfy6puPa1v+AeS2SKhHd7zrETCHtp579CqxGZ1pzuI/3CcEokfc0fNDZjktLUDYls/q82QvcRuja0itAoJw5TJ46+Pc+P2/GqCrZu0plYhxkqMomFtGsgHwH9JNVxNTIlK2PT1zEFy+cp68QouPk=
+	t=1768892173; cv=none; b=etez7EyPz44NuGSq1nXffOBjvZ5m+bp/2Qxjn7utMArTFkN10sXef2F+kJtO3L2Xa4I6zoITZOMrZDxu4uEJ50GPE0rjcnxXvF4GWkOnMvggkeNTwRc4LaatsLI2MpoJ2UxuJKX1du1VconpVX+oumr8nxTZ3KiXfwfQtmCuH0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768891815; c=relaxed/simple;
-	bh=La9XdNKDvIlNLu3KgpfvxzV/fhd4Lv/FNSjmGr2QPwI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CUL3Lgo8qO3gqrxXzrkYudJGmrmT6i5jv6yuRQDAYm7r7ea+llaSjWgQnON6Mfr5fMHzxzDaz58ewklJ94kQ3nsyFcB132zhxwhwdL52XBNGdSnepy5Q4FtFinbmA16U9/+IO627Zi54gxMNZeO4CdyZVr27C9YO5sFrGgxwPUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Go5TpPle; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768891809; x=1800427809;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=La9XdNKDvIlNLu3KgpfvxzV/fhd4Lv/FNSjmGr2QPwI=;
-  b=Go5TpPleIm41zYOxYQXSes7LgeeV3ZQCTP6Lcri1x0HLgrYze4cYprd6
-   cMxQgg8F9G4geZegkCBz4AoqjHd9FFBU3ouXN/6UXhsL6yR1zEhpT8bEE
-   15jldVVf4JcaswiJPs63oAsId4KzFArjqhPRLZCRKjQSRNV6z3DwyCt0J
-   dOQae0PjrNzXP+fo+dPYVkTfpLKtzZB74QXJwiUb6wno6Gce9/dbG+bXP
-   jvwVie8I5TdYP78pvYNTfd8+znZfjGJhArJ95J/9z037I6erwE2WgN2e9
-   ZnXKxE/jFK7UKwzw22oWsW8Vtvm3TjlUFtcyLLpaUbHb/KV56eVpUcWzh
-   Q==;
-X-CSE-ConnectionGUID: QXlFAZOfSd+FwTBqFMHrLg==
-X-CSE-MsgGUID: 1BWTsXc3SP6r1MntC+2c2g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="81201844"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="81201844"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 22:50:02 -0800
-X-CSE-ConnectionGUID: BJ/NJHRjTWqgV0G2QdEGdQ==
-X-CSE-MsgGUID: jHn1saJITG+v2MLV21VjKg==
-X-ExtLoop1: 1
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 22:49:59 -0800
-Message-ID: <8908354f-4962-4ecb-85f1-b1c58ce45385@linux.intel.com>
-Date: Tue, 20 Jan 2026 14:49:55 +0800
+	s=arc-20240116; t=1768892173; c=relaxed/simple;
+	bh=OgBUlue3yhxMO4wjnYKnxBSQE9/EJt/EAb8kqemi6+E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=p3dBijtRl/8mI8bQ83ZHJiNjSLgEfUWbikFYZ6O4M//ZZuxtQiNzilvpT6DYxEgT5GiYXjVbEXmCctLgzTeQTn7vcw7KU2dyxYcNB3dd7tkuLfi6JhTXksynxGN4ljAIluTQPxvSTj5aOQNvp6w3fQlW07qrxdjeouZbkf3Xwoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=x9bRt6bq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1Yd+XbN6; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1768892161;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=I1RMzRkjzzPKXpcnt4IcK3UmCNyPTPJMvmYlzb4CnBw=;
+	b=x9bRt6bquCE2QgONkScUYj7EFHC9H/o4HzV48PYxVVGTpxAxkvIi6UJHVo6jrY1RdEEt7X
+	9t/PnSMLAWmALcWyS+E2OviOWome9i4OwGmJ6AP43iaXEMMtqSxApCwl3XcKJLjb0KlORf
+	lM4YL+/ytTMeVYDm2JXAMhQ1jk/Z10f0n1JN9x2biNf9G8OBOqI5vptfr+GlxPLgmSw3Ti
+	GwHQuimjRVUgF9iuJrfQ4DesNzjWg7dVR1/ZnziGg8ikUNWSF/M5ar3BEOIqA1QH7ZqWJw
+	gWNwoiwklwoseqUV330Fabx/818nrw2aSojV52GzGPBbFDwtbmW+yc5DSPBSDQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1768892161;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=I1RMzRkjzzPKXpcnt4IcK3UmCNyPTPJMvmYlzb4CnBw=;
+	b=1Yd+XbN6uGs16+Bwmes6cNz+LN5WEEmGvm7ibFb8pEE9U39YJKiXMvQE6U4CqpiTXL7I60
+	dCXMS3fxhn69TsCg==
+Date: Tue, 20 Jan 2026 07:55:55 +0100
+Subject: [PATCH] timekeeping: Adjust the leap state for the correct
+ auxiliary timekeeper
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] iommu/vt-d: Skip dev-iotlb flush for inaccessible
- PCIe device
-To: Jinhui Guo <guojinhui.liam@bytedance.com>, dwmw2@infradead.org,
- joro@8bytes.org, will@kernel.org
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20251211035946.2071-1-guojinhui.liam@bytedance.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20251211035946.2071-1-guojinhui.liam@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260120-timekeeper-auxclock-leapstate-v1-1-5b358c6b3cfd@linutronix.de>
+X-B4-Tracking: v=1; b=H4sIAPomb2kC/x3MQQqDMBAF0KvIrB1IsrCxVykuhvjbDloNSRRBv
+ Luhy7d5J2UkRaZnc1LCrlnXpcK2DYWvLB+wjtXkjOuMtT0X/WECIhLLdoR5DRPPkJiLFLAY/3C
+ uD97AUz1iwluP//8arusGOEVchG8AAAA=
+X-Change-ID: 20260119-timekeeper-auxclock-leapstate-a087229c80e8
+To: John Stultz <jstultz@google.com>, Thomas Gleixner <tglx@linutronix.de>, 
+ Stephen Boyd <sboyd@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768892155; l=1871;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=OgBUlue3yhxMO4wjnYKnxBSQE9/EJt/EAb8kqemi6+E=;
+ b=ywObaNcz4Kv1ucvlRgfi+BgbsNq3+qPdlMUx88QkBJWxpi7Waeqc1SmLwSCWsKNorX2gOmfdp
+ +uyye56/XGAD2NoIdPQ++ftieBigLyCmLtR6zUf9qqzuEL9yH9SSfbA
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 
-On 12/11/25 11:59, Jinhui Guo wrote:
-> Hi, all
-> 
-> We hit hard-lockups when the Intel IOMMU waits indefinitely for an ATS invalidation
-> that cannot complete, especially under GDR high-load conditions.
-> 
-> 1. Hard-lock when a passthrough PCIe NIC with ATS enabled link-down in Intel IOMMU
->     non-scalable mode. Two scenarios exist: NIC link-down with an explicit link-down
->     event and link-down without any event.
-> 
->     a) NIC link-down with an explicit link-dow event.
->        Call Trace:
->         qi_submit_sync
->         qi_flush_dev_iotlb
->         __context_flush_dev_iotlb.part.0
->         domain_context_clear_one_cb
->         pci_for_each_dma_alias
->         device_block_translation
->         blocking_domain_attach_dev
->         iommu_deinit_device
->         __iommu_group_remove_device
->         iommu_release_device
->         iommu_bus_notifier
->         blocking_notifier_call_chain
->         bus_notify
->         device_del
->         pci_remove_bus_device
->         pci_stop_and_remove_bus_device
->         pciehp_unconfigure_device
->         pciehp_disable_slot
->         pciehp_handle_presence_or_link_change
->         pciehp_ist
-> 
->     b) NIC link-down without an event - hard-lock on VM destroy.
->        Call Trace:
->         qi_submit_sync
->         qi_flush_dev_iotlb
->         __context_flush_dev_iotlb.part.0
->         domain_context_clear_one_cb
->         pci_for_each_dma_alias
->         device_block_translation
->         blocking_domain_attach_dev
->         __iommu_attach_device
->         __iommu_device_set_domain
->         __iommu_group_set_domain_internal
->         iommu_detach_group
->         vfio_iommu_type1_detach_group
->         vfio_group_detach_container
->         vfio_group_fops_release
->         __fput
-> 
-> 2. Hard-lock when a passthrough PCIe NIC with ATS enabled link-down in Intel IOMMU
->     scalable mode; NIC link-down without an event hard-locks on VM destroy.
->     Call Trace:
->      qi_submit_sync
->      qi_flush_dev_iotlb
->      intel_pasid_tear_down_entry
->      device_block_translation
->      blocking_domain_attach_dev
->      __iommu_attach_device
->      __iommu_device_set_domain
->      __iommu_group_set_domain_internal
->      iommu_detach_group
->      vfio_iommu_type1_detach_group
->      vfio_group_detach_container
->      vfio_group_fops_release
->      __fput
-> 
-> Fix both issues with two patches:
-> 1. Skip dev-IOTLB flush for inaccessible devices in __context_flush_dev_iotlb() using
->     pci_device_is_present().
-> 2. Use pci_device_is_present() instead of pci_dev_is_disconnected() to decide when to
->     skip ATS invalidation in devtlb_invalidation_with_pasid().
-> 
-> Best Regards,
-> Jinhui
-> 
-> ---
-> v1:https://lore.kernel.org/all/20251210171431.1589-1- 
-> guojinhui.liam@bytedance.com/
-> 
-> Changelog in v1 -> v2 (suggested by Baolu Lu)
->   - Simplify the pci_device_is_present() check in __context_flush_dev_iotlb().
->   - Add Cc:stable@vger.kernel.org to both patches.
-> 
-> Jinhui Guo (2):
->    iommu/vt-d: Skip dev-iotlb flush for inaccessible PCIe device without
->      scalable mode
->    iommu/vt-d: Flush dev-IOTLB only when PCIe device is accessible in
->      scalable mode
+When __do_ajdtimex() was introduced to handle adjtimex for any
+timekeeper, this reference to tk_core was not updated. When called on an
+auxiliary timekeeper, the core timekeeper would be updated incorrectly.
 
-Queued for iommu next.
+This gets caught by the lock debugging diagnostics because the
+timekeepers sequence lock gets written to without holding its
+associated spinlock:
 
-Thanks,
-baolu
+WARNING: include/linux/seqlock.h:226 at __do_adjtimex+0x394/0x3b0, CPU#2: test/125
+aux_clock_adj (kernel/time/timekeeping.c:2979)
+__do_sys_clock_adjtime (kernel/time/posix-timers.c:1161 kernel/time/posix-timers.c:1173)
+do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:131)
+
+Update the correct auxiliary timekeeper.
+
+Fixes: 775f71ebedd3 ("timekeeping: Make do_adjtimex() reusable")
+Fixes: ecf3e7030491 ("timekeeping: Provide adjtimex() for auxiliary clocks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+ kernel/time/timekeeping.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kernel/time/timekeeping.c b/kernel/time/timekeeping.c
+index 3ec3daa4acab..91fa2003351c 100644
+--- a/kernel/time/timekeeping.c
++++ b/kernel/time/timekeeping.c
+@@ -2735,7 +2735,7 @@ static int __do_adjtimex(struct tk_data *tkd, struct __kernel_timex *txc,
+ 		timekeeping_update_from_shadow(tkd, TK_CLOCK_WAS_SET);
+ 		result->clock_set = true;
+ 	} else {
+-		tk_update_leap_state_all(&tk_core);
++		tk_update_leap_state_all(tkd);
+ 	}
+ 
+ 	/* Update the multiplier immediately if frequency was set directly */
+
+---
+base-commit: 3db5306b0bd562ac0fe7eddad26c60ebb6f5fdd4
+change-id: 20260119-timekeeper-auxclock-leapstate-a087229c80e8
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+
 
