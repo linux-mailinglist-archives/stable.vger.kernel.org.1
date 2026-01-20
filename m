@@ -1,89 +1,89 @@
-Return-Path: <stable+bounces-210452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF78AD3C271
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 09:46:28 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA9CD3C275
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 09:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 734C85E0162
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 08:21:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0F6184A4D42
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 08:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A043B95F2;
-	Tue, 20 Jan 2026 08:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B33134107D;
+	Tue, 20 Jan 2026 08:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QM6kXlGN"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="EfXAQxKX";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="RSr4oavw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47F53B95FE
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 08:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E2C3D6470
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 08:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768896463; cv=none; b=cCXiA13ZUJR/+TfEIKTuBtuhAJ6ZJj+otMTkY4YoQcNCA7T4lAV7pH7F6aMy0aCjasdg2y6pbS7ClkWQBuBIxhFa2alOqD4cfS0ia0NgvWrWKqk7KX9n9PPXWwE0GDXztB/SrkTQ5uB3zUQklJrP1jPzunL0bMshQf+It6P1N6E=
+	t=1768897148; cv=none; b=MpgakK/80kOnJZ1yNYazbUewMCapybgQDM8I9DPhasQtzcjB0CKT3SQW5dltptKKORXJK+C8AWStmWKM0hRS77YFseDn4WNuhA0cKB0knHbPaSI74UK73z5FsEZEL4pctK4kIfk8c2p8LQwNLKk1numxIJJ5nALtvUqJwYku6pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768896463; c=relaxed/simple;
-	bh=8cXCHWqSFqAhb/0yrvwMCQYeAmlW3lL6PDpwp+nTw6c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J5ClcEnjH7ekxPfFv4ZWwF33H/ZTwYBEhoxmCIPRpHIPu3EjVGwn+FucAC6kI4oLhd9KiNJI/CIwmestX7rDvd0bbCPCyXxXlSpwqo+0CcwblcN0BaTcWo61FcZkEXQdzPTArZ2A94zpkG+A5mPX0/x7HKTBsdKUv5eh0qZQc3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QM6kXlGN; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a0bae9aca3so34083695ad.3
-        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 00:07:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768896461; x=1769501261; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Syo4ZZwZwDuvqR8s7EAD3Gw1DEsI3pVtXVpUzZjtTyk=;
-        b=QM6kXlGNHluP18bDdUqkPr6aIDZEMXEPsLo7AHiBVPYJtXwmoAQb25suvpxtNBUeJ0
-         iwMo6g0UIHqpo/ax/YF/xeXqUh8eQWTOAopuCXCIagmapi3i0oYNVdcTsXUYAHjlhfOw
-         rTwVNoVrgGJI9IaW0IQwXuwzQyCAV7VXSl/1o9riXmpch0rSnMQIoMM+LDJW20nTfLg5
-         L2JMGD9lQNZaUQt3Y2RJ7STtbew6LOtf2IntTa4FmZx2CG/FcJOWFE8g4JldsuC44f7O
-         Z1ZVU+J7DH3oZALfybJmJsLTqEviVOk2PHhKdzxUhiVweL9UT+iLwvU7z5+J/98NMAAZ
-         mJLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768896461; x=1769501261;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Syo4ZZwZwDuvqR8s7EAD3Gw1DEsI3pVtXVpUzZjtTyk=;
-        b=QzAlv7wgjzm8VrDEI6wKXKF/aBjjTESJ4X5rvj8fDJiK8Jpw0eZCiIyVi+jXWnjHAX
-         JTqYnX4nyF0zE0ppiumX2M9GLOBPr/tUkOMsmRIi7rE3DUc+bSRPy3iaWtCcheL8gArb
-         z9/9q5ueWA3y6HdcxrhoZ7i9N+npcOa3p7UQZ9ixKtEJwLFeQSKcumckp23B5zqKIJzL
-         Mwg61aEHbSNiXUCekbSyfTL5Wut/Rn3XzHuvAVAVzDtXJRZpqmY0xIndjRYYWirb6yLG
-         tVwRYu2DYbcFB2G/vkmI6nBQAHacqlEIAZECxXKjEt1QVaP8hL3J/8qzVuOvKwTxxOuY
-         mQPA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJMrWRt4O+nTuf2vXF0vEDKGnxKdWBtHjHWfo2h36sTBvSXDUXX6lN7gqakAYKYeNOFJ0N3v0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBERF0DLpUyik9AXiciWTy4mzkFyKnG/FfgZ9dDaDurRneJoUx
-	DwsEJfNnAClt6ogb4trpQo5kQpU0jAyocO9dwEuGR4GIDLmXJaLZnwOQ
-X-Gm-Gg: AZuq6aL8IJt3L0RSRmhTETfD+9oURNBPyvvcJSw46nNdzt0bTBg67ey9cUfhkwyATzf
-	w4K3VpCCMBN+DAUwFiOFKZ4oZyYKNQ2kl1304pYxqBGNTqGdmuZvjucdh+Wfxs/W58fzbHm54a/
-	cG+uxb9qQ3aH8kDxKvxbUCpxbQEdnDJTodwIg9KVC++UOt+zVRftsLlTzDCgGjtCylUAF9klOkk
-	BfqAEQjyO/gkY1FtAXpRoz3IM76BFHH8MghdOoDXiGjXq4i1xEAaTm6bG+e6JPfG38YfW7/yaxO
-	wqj6Ws/ABU6o1bcp7GD4gOB4toAe/ovWNQauiF5rPL5Nyums6f9Ss6kOGNe2149m2OV5QWzj8tx
-	4KSiPICOxoqwVzoX/e9k5SbzGanD6v991jWMR4GX2Eo+DYp4d1cWdE2pvkpXOnUw9zC5r9bYVzQ
-	CbaTtTZveVdJoJQXqOc7r9yv3kiTX5lRESzpDu+AIyG0eTzJQt9zAGV9ndVPTepHiwaen5X9x+3
-	hNK+9M+RyUUQ7GHKHDN4+8KXOEDTSY3Wj2sKMWpJriGOg==
-X-Received: by 2002:a17:902:f544:b0:2a0:ba6d:d0ff with SMTP id d9443c01a7336-2a717533f7fmr123178715ad.16.1768896460959;
-        Tue, 20 Jan 2026 00:07:40 -0800 (PST)
-Received: from 8d75dc141a66.ap-southeast-2.compute.internal (ec2-54-252-206-51.ap-southeast-2.compute.amazonaws.com. [54.252.206.51])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a7193decfcsm115731655ad.60.2026.01.20.00.07.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 00:07:40 -0800 (PST)
-From: Wei Li <unsw.weili@gmail.com>
-To: tony@atomide.com,
-	haojian.zhuang@linaro.org,
-	linusw@kernel.org
-Cc: linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wei Li <unsw.weili@gmail.com>,
+	s=arc-20240116; t=1768897148; c=relaxed/simple;
+	bh=k5EIG7dKzDzGeCkx9DfioVh8jZio+3kZn/5ObV3jA7s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=h+ZCAHo92VUK/grrkwcmx3sEf8OBvGmAPauQPWPEJLsF2KEqmNiv+6nR+fpECg4b5BaheQy/zedbHXk+tioDSN/yp61zyLTphU5Gpl/678UT+zYVPvGQkJ56yOm/VuiMffT5I+Bzu711x4T6QwiYpP4S/6/pVFkHGUc6eTDCDy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=EfXAQxKX; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=RSr4oavw; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3A4B93371C;
+	Tue, 20 Jan 2026 08:18:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1768897138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q6cpBlQu0Ap+fT+JaqOV2zSr1RCFwBggI0A+6THe6Gs=;
+	b=EfXAQxKXDqyEMf9cenYZEuR6nv8jW6dO0w0GjGyxuTl7USuncIDKZ0gUI+iX2O2SFR4W/6
+	R0H+UFc4bASV4s+jkpnFqcOXcGnNWsG+ziWnZflyiYF6vfT1n+H+1/M3yw0E15hwgFV+Qi
+	NMZDiVjyg15VuqbuYvbNsV+qhupGMZ8=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1768897137; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q6cpBlQu0Ap+fT+JaqOV2zSr1RCFwBggI0A+6THe6Gs=;
+	b=RSr4oavwTryGeUH4FDsxzJmcUrdi3LCHkThOoABu4/hofqM2gsjEn3p1NK2eeyIxt6Mdut
+	OICwXl1OvegMF5DQOEuP9TOyeuSCngzmFF4IZUB53dKuZAWJS6F7NTBqyXDzmt3NNMXGMD
+	lI0sYPAxIHb0+guZmy9fVnq857py52E=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E39413EA65;
+	Tue, 20 Jan 2026 08:18:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2DYkNnA6b2n1bQAAD6G6ig
+	(envelope-from <tzimmermann@suse.com>); Tue, 20 Jan 2026 08:18:56 +0000
+From: Thomas Zimmermann <tzimmermann@suse.com>
+To: kernel-kabi@suse.de
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	amd-gfx@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] pinctrl: single: fix refcount leak in pcs_add_gpio_func()
-Date: Tue, 20 Jan 2026 08:07:35 +0000
-Message-Id: <20260120080735.548853-1-unsw.weili@gmail.com>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH 1/2] drm, fbcon, vga_switcheroo: Avoid race condition in fbcon setup
+Date: Tue, 20 Jan 2026 09:13:37 +0100
+Message-ID: <20260120081841.9827-2-tzimmermann@suse.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260120081841.9827-1-tzimmermann@suse.com>
+References: <20260120081841.9827-1-tzimmermann@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,45 +91,190 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,bootlin.com:url,suse.com:mid];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Level: 
+X-Spam-Flag: NO
 
-of_parse_phandle_with_args() returns a device_node pointer with refcount
-incremented in gpiospec.np. The loop iterates through all phandles but
-never releases the reference, causing a refcount leak on each iteration.
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-Add of_node_put() calls to release the reference after extracting the
-needed arguments and on the error path when devm_kzalloc() fails.
+Protect vga_switcheroo_client_fb_set() with console lock. Avoids OOB
+access in fbcon_remap_all(). Without holding the console lock the call
+races with switching outputs.
 
-This bug was detected by our static analysis tool and verified by my
-code review.
+VGA switcheroo calls fbcon_remap_all() when switching clients. The fbcon
+function uses struct fb_info.node, which is set by register_framebuffer().
+As the fb-helper code currently sets up VGA switcheroo before registering
+the framebuffer, the value of node is -1 and therefore not a legal value.
+For example, fbcon uses the value within set_con2fb_map() [1] as an index
+into an array.
 
-Fixes: a1a277eb76b3 ("pinctrl: single: create new gpio function range")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wei Li <unsw.weili@gmail.com>
+Moving vga_switcheroo_client_fb_set() after register_framebuffer() can
+result in VGA switching that does not switch fbcon correctly.
+
+Therefore move vga_switcheroo_client_fb_set() under fbcon_fb_registered(),
+which already holds the console lock. Fbdev calls fbcon_fb_registered()
+from within register_framebuffer(). Serializes the helper with VGA
+switcheroo's call to fbcon_remap_all().
+
+Although vga_switcheroo_client_fb_set() takes an instance of struct fb_info
+as parameter, it really only needs the contained fbcon state. Moving the
+call to fbcon initialization is therefore cleaner than before. Only amdgpu,
+i915, nouveau and radeon support vga_switcheroo. For all other drivers,
+this change does nothing.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://elixir.bootlin.com/linux/v6.17/source/drivers/video/fbdev/core/fbcon.c#L2942 # [1]
+Fixes: 6a9ee8af344e ("vga_switcheroo: initial implementation (v15)")
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: nouveau@lists.freedesktop.org
+Cc: amd-gfx@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v2.6.34+
+Link: https://patch.msgid.link/20251105161549.98836-1-tzimmermann@suse.de
+(cherry picked from commit eb76d0f5553575599561010f24c277cc5b31d003)
 ---
- drivers/pinctrl/pinctrl-single.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_fb_helper.c            | 6 ------
+ drivers/gpu/drm/i915/display/intel_fbdev.c | 2 --
+ drivers/gpu/drm/radeon/radeon_fbdev.c      | 3 ---
+ drivers/video/fbdev/core/fbcon.c           | 9 +++++++++
+ 4 files changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 998f23d6c3179..d85e6c1f63218 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -1359,6 +1359,7 @@ static int pcs_add_gpio_func(struct device_node *node, struct pcs_device *pcs)
+diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+index b507c1c008a3e..3915a8b17bc4c 100644
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -32,7 +32,6 @@
+ #include <linux/console.h>
+ #include <linux/pci.h>
+ #include <linux/sysrq.h>
+-#include <linux/vga_switcheroo.h>
+ 
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_drv.h>
+@@ -1668,7 +1667,6 @@ static int drm_fb_helper_find_sizes(struct drm_fb_helper *fb_helper,
+ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
+ {
+ 	struct drm_client_dev *client = &fb_helper->client;
+-	struct drm_device *dev = fb_helper->dev;
+ 	struct drm_fb_helper_surface_size sizes;
+ 	int ret;
+ 
+@@ -1687,10 +1685,6 @@ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
+ 
+ 	strcpy(fb_helper->fb->comm, "[fbcon]");
+ 
+-	/* Set the fb info for vgaswitcheroo clients. Does nothing otherwise. */
+-	if (dev_is_pci(dev->dev))
+-		vga_switcheroo_client_fb_set(to_pci_dev(dev->dev), fb_helper->info);
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/gpu/drm/i915/display/intel_fbdev.c b/drivers/gpu/drm/i915/display/intel_fbdev.c
+index 31d0d695d5671..8bad7e7909f7b 100644
+--- a/drivers/gpu/drm/i915/display/intel_fbdev.c
++++ b/drivers/gpu/drm/i915/display/intel_fbdev.c
+@@ -36,7 +36,6 @@
+ #include <linux/string.h>
+ #include <linux/sysrq.h>
+ #include <linux/tty.h>
+-#include <linux/vga_switcheroo.h>
+ 
+ #include <drm/drm_crtc.h>
+ #include <drm/drm_fb_helper.h>
+@@ -337,7 +336,6 @@ static int intelfb_create(struct drm_fb_helper *helper,
+ 	ifbdev->vma_flags = flags;
+ 
+ 	intel_runtime_pm_put(&dev_priv->runtime_pm, wakeref);
+-	vga_switcheroo_client_fb_set(pdev, info);
+ 	return 0;
+ 
+ out_unpin:
+diff --git a/drivers/gpu/drm/radeon/radeon_fbdev.c b/drivers/gpu/drm/radeon/radeon_fbdev.c
+index fb70de29545c6..730efabe05f6b 100644
+--- a/drivers/gpu/drm/radeon/radeon_fbdev.c
++++ b/drivers/gpu/drm/radeon/radeon_fbdev.c
+@@ -303,7 +303,6 @@ static void radeon_fbdev_client_unregister(struct drm_client_dev *client)
+ 	struct radeon_device *rdev = dev->dev_private;
+ 
+ 	if (fb_helper->info) {
+-		vga_switcheroo_client_fb_set(rdev->pdev, NULL);
+ 		drm_helper_force_disable_all(dev);
+ 		drm_fb_helper_unregister_info(fb_helper);
+ 	} else {
+@@ -342,8 +341,6 @@ static int radeon_fbdev_client_hotplug(struct drm_client_dev *client)
+ 	if (ret)
+ 		goto err_drm_fb_helper_fini;
+ 
+-	vga_switcheroo_client_fb_set(rdev->pdev, fb_helper->info);
+-
+ 	return 0;
+ 
+ err_drm_fb_helper_fini:
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 79525ee90e3b2..57b21b6869231 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -64,6 +64,7 @@
+ #include <linux/console.h>
+ #include <linux/string.h>
+ #include <linux/kd.h>
++#include <linux/pci.h>
+ #include <linux/slab.h>
+ #include <linux/fb.h>
+ #include <linux/fbcon.h>
+@@ -75,6 +76,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/crc32.h> /* For counting font checksums */
+ #include <linux/uaccess.h>
++#include <linux/vga_switcheroo.h>
+ #include <asm/irq.h>
+ 
+ #include "fbcon.h"
+@@ -2909,6 +2911,9 @@ void fbcon_fb_unregistered(struct fb_info *info)
+ 
+ 	console_lock();
+ 
++	if (info->device && dev_is_pci(info->device))
++		vga_switcheroo_client_fb_set(to_pci_dev(info->device), info);
++
+ 	fbcon_registered_fb[info->node] = NULL;
+ 	fbcon_num_registered_fb--;
+ 
+@@ -3042,6 +3047,10 @@ static int do_fb_registered(struct fb_info *info)
  		}
- 		range = devm_kzalloc(pcs->dev, sizeof(*range), GFP_KERNEL);
- 		if (!range) {
-+			of_node_put(gpiospec.np);
- 			ret = -ENOMEM;
- 			break;
- 		}
-@@ -1368,6 +1369,7 @@ static int pcs_add_gpio_func(struct device_node *node, struct pcs_device *pcs)
- 		mutex_lock(&pcs->mutex);
- 		list_add_tail(&range->node, &pcs->gpiofuncs);
- 		mutex_unlock(&pcs->mutex);
-+		of_node_put(gpiospec.np);
  	}
+ 
++	/* Set the fb info for vga_switcheroo clients. Does nothing otherwise. */
++	if (info->device && dev_is_pci(info->device))
++		vga_switcheroo_client_fb_set(to_pci_dev(info->device), NULL);
++
  	return ret;
  }
+ 
 -- 
-2.34.1
+2.52.0
 
 
