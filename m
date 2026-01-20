@@ -1,176 +1,185 @@
-Return-Path: <stable+bounces-210579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210580-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCsoECLPb2mgMQAAu9opvQ
-	(envelope-from <stable+bounces-210579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:53:22 +0100
+	id sJ2EN/DBb2lsMQAAu9opvQ
+	(envelope-from <stable+bounces-210580-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:57:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id D553C49D5C
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:53:21 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 971D848F40
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:57:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 487B582DE10
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:19:05 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B46FAA413E0
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE99C3A0B17;
-	Tue, 20 Jan 2026 17:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5953C1FCA;
+	Tue, 20 Jan 2026 17:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jQ7iEYlS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FYsT7x58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A643350A0E;
-	Tue, 20 Jan 2026 17:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CDE33439F;
+	Tue, 20 Jan 2026 17:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768929539; cv=none; b=pMAtqsNqhsDpOIo0LfzLEVL8l64+FGbZwFTOPMnOtd51onRv8jpCsMCLZde2QgjEV9NwkZf6ruKoDq1wzWTQczZzBpzAu2dm0WTqcm3VTk/a0F9kaL4eYFJ/Hhg1kABAL7D3TivxnOU95foF/WXpNyE4upt8lnjamFjwti/L5Mk=
+	t=1768930020; cv=none; b=Zx7JAxDOwgles5SWlSabgAqJ9u/ZttSGkOZR7ugABLvLwlzmd0Qc5PRJIR6ZuhHm4lgeqiCZAHtQu6lgCjoX4/wLpvkKv900+DdFpHmmh/kBm2ia4XP2isWFWpQBV7ZsFNBbeoV/y6lzVsvUwRN9Byr1rdXFCmPfAw3xdVwP1o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768929539; c=relaxed/simple;
-	bh=e9yDWRN6uIP000lPWKUP2Jt2rEV8HOUBMGOWaexDaRw=;
+	s=arc-20240116; t=1768930020; c=relaxed/simple;
+	bh=bc9vokYqyjabIGtTQIBJIXCFeY5ewweEqWg1TjCb27A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kuKVX/bqOIbcyObhez4L0wwYV2WLznWgYoVyfxiH9FkhXWy5run52pWoFeY30B62KIFHOax9dIQZ/dUIJEiHfGwux9ft5A7ayhXfl5jOeQLvTcqPaTdQ0z4s4dN04nPxn1FVeymH3mP7nKvDgPgpIl6qxxEVi9lV9gvMr2pY65k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jQ7iEYlS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9740FC16AAE;
-	Tue, 20 Jan 2026 17:18:56 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=jihvTaBUPPok04mnaSdYKzqa2nfxKcYrB/GMW5Gz/h591yy/XeewWhnumPhHtnJbVe2Imo4e7312besmNeDbOSX64h3/phKL1GTzXbevjYaU7MG+KRTVDFvspFmrtq5SbXINnr5FYikE10gMoCU/cUr32w15VdWtFH8NnLZjMGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FYsT7x58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8117C16AAE;
+	Tue, 20 Jan 2026 17:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768929538;
-	bh=e9yDWRN6uIP000lPWKUP2Jt2rEV8HOUBMGOWaexDaRw=;
+	s=k20201202; t=1768930020;
+	bh=bc9vokYqyjabIGtTQIBJIXCFeY5ewweEqWg1TjCb27A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jQ7iEYlSGAjrbMLVkeK28+4oWOWdDi+lbkg9Ck4ICnuTVBzjuyeF1ncVNE2iszV94
-	 n0DVAIaJp5/UMUMkwHPvdjoQ6g0XJZ1NG9GAQBExdm0SkU3/8y+ZOJu9qLYZ296gMt
-	 LH6WTZmRr5mAsAG/u8GHO0Ffx9E2QIJVZIPIr4T+wNCXAyzKAsI46WPED02fwi8i4A
-	 rzxk4UCW8kF7KyC6sh3n6Zo0xRqy2H7WVMy4LXA31vArDIejOeDYVQZf5SqJFKF2ZP
-	 RKDZpr0Yqc9aVuFqAseqEoGWRLXrBJ8NMk/JchKrj1rtYYMGgD3Cugav3uJckoE/8z
-	 SY6w+cibQWdYQ==
-Date: Tue, 20 Jan 2026 17:18:53 +0000
-From: Lee Jones <lee@kernel.org>
-To: Marek Vasut <marex@nabladev.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Pascal PAILLET-LME <p.paillet@st.com>,
-	Paul Cercueil <paul@crapouillou.net>,
-	Sean Nyekjaer <sean@geanix.com>, kernel@dh-electronics.com
-Subject: Re: [PATCH v2] mfd: stpmic1: Attempt system shutdown twice in case
- PMIC is confused
-Message-ID: <20260120171853.GH1354723@google.com>
-References: <20260115173943.85764-1-marex@nabladev.com>
+	b=FYsT7x58kimq/jRPuq+W7AWYsEzNI1Ctiv+YFo2IzrzLION8Ada5lXUnMvl59uht/
+	 jhfI6N6vkDD24p8VGh3TH39Gp5V4VTgeUpkY83OPyY5EMZWgQq9TbNDmzHXG50Bqn5
+	 4mLj+C/C5tyNO+5JHD41g+49CVdk+AkT0bv9JLJ+KaiYBAt03KfuVvx3cdCcwrJIy0
+	 66VShfBsfVYbShV7C6dbHuhMyUX0WHmhwnexU5BElx5UgiQjzcyTvde77JhGorRWMT
+	 JSjambYHWMOX82hTu7wF8JtwmBBwY8+oVRNcyHTP3jghMfW36cm99Vjnvn7lhsAs+i
+	 L2q48nshwZsrA==
+Date: Tue, 20 Jan 2026 09:26:59 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Brian Foster <bfoster@redhat.com>
+Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org,
+	Carlos Maiolino <cem@kernel.org>
+Subject: Re: [PATCH 6.12.y] xfs: set max_agbno to allow sparse alloc of last
+ full inode chunk
+Message-ID: <20260120172659.GR15551@frogsfrogsfrogs>
+References: <2026012006-doorway-print-237d@gregkh>
+ <20260120164038.137155-1-bfoster@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260115173943.85764-1-marex@nabladev.com>
-X-Spamd-Result: default: False [-1.96 / 15.00];
+In-Reply-To: <20260120164038.137155-1-bfoster@redhat.com>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	TAGGED_FROM(0.00)[bounces-210579-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210580-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,st.com:email,crapouillou.net:email,dh-electronics.com:email,geanix.com:email,nabladev.com:email]
-X-Rspamd-Queue-Id: D553C49D5C
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 971D848F40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 15 Jan 2026, Marek Vasut wrote:
-
-> Attempt to shut down again, in case the first attempt failed.
-> The STPMIC1 might get confused and the first regmap_update_bits()
-> returns with -ETIMEDOUT / -110 . If that or similar transient
-> failure occurs, try to shut down again. If the second attempt
-> fails, there is some bigger problem, report it to user.
+On Tue, Jan 20, 2026 at 11:40:38AM -0500, Brian Foster wrote:
+> Sparse inode cluster allocation sets min/max agbno values to avoid
+> allocating an inode cluster that might map to an invalid inode
+> chunk. For example, we can't have an inode record mapped to agbno 0
+> or that extends past the end of a runt AG of misaligned size.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 6e9df38f359a ("mfd: stpmic1: Add PMIC poweroff via sys-off handler")
-> Signed-off-by: Marek Vasut <marex@nabladev.com>
-> ---
-> Cc: Lee Jones <lee@kernel.org>
-> Cc: Pascal PAILLET-LME <p.paillet@st.com>
-> Cc: Paul Cercueil <paul@crapouillou.net>
-> Cc: Sean Nyekjaer <sean@geanix.com>
-> Cc: kernel@dh-electronics.com
-> ---
-> V2: - Use a retry loop
->     - Cc stable
-> ---
->  drivers/mfd/stpmic1.c | 21 ++++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
+> The initial calculation of max_agbno is unnecessarily conservative,
+> however. This has triggered a corner case allocation failure where a
+> small runt AG (i.e. 2063 blocks) is mostly full save for an extent
+> to the EOFS boundary: [2050,13]. max_agbno is set to 2048 in this
+> case, which happens to be the offset of the last possible valid
+> inode chunk in the AG. In practice, we should be able to allocate
+> the 4-block cluster at agbno 2052 to map to the parent inode record
+> at agbno 2048, but the max_agbno value precludes it.
 > 
-> diff --git a/drivers/mfd/stpmic1.c b/drivers/mfd/stpmic1.c
-> index 081827bc05961..9caf2b8740829 100644
-> --- a/drivers/mfd/stpmic1.c
-> +++ b/drivers/mfd/stpmic1.c
-> @@ -121,9 +121,24 @@ static const struct regmap_irq_chip stpmic1_regmap_irq_chip = {
->  static int stpmic1_power_off(struct sys_off_data *data)
->  {
->  	struct stpmic1 *ddata = data->cb_data;
-> -
-> -	regmap_update_bits(ddata->regmap, MAIN_CR,
-> -			   SOFTWARE_SWITCH_OFF, SOFTWARE_SWITCH_OFF);
-> +	int i, ret;
-> +
-> +	for (i = 0; i < 2; i++) {
+> Note that this can result in filesystem shutdown via dirty trans
+> cancel on stable kernels prior to commit 9eb775968b68 ("xfs: walk
+> all AGs if TRYLOCK passed to xfs_alloc_vextent_iterate_ags") because
+> the tail AG selection by the allocator sets t_highest_agno on the
+> transaction. If the inode allocator spins around and finds an inode
+> chunk with free inodes in an earlier AG, the subsequent dir name
+> creation path may still fail to allocate due to the AG restriction
+> and cancel.
+> 
+> To avoid this problem, update the max_agbno calculation to the agbno
+> prior to the last chunk aligned agbno in the AG. This is not
+> necessarily the last valid allocation target for a sparse chunk, but
+> since inode chunks (i.e. records) are chunk aligned and sparse
+> allocs are cluster sized/aligned, this allows the sb_spino_align
+> alignment restriction to take over and round down the max effective
+> agbno to within the last valid inode chunk in the AG.
+> 
+> Note that even though the allocator improvements in the
+> aforementioned commit seem to avoid this particular dirty trans
+> cancel situation, the max_agbno logic improvement still applies as
+> we should be able to allocate from an AG that has been appropriately
+> selected. The more important target for this patch however are
+> older/stable kernels prior to this allocator rework/improvement.
+> 
+> Cc: stable@vger.kernel.org # v4.2
+> Fixes: 56d1115c9bc7 ("xfs: allocate sparse inode chunks on full chunk allocation failure")
+> Signed-off-by: Brian Foster <bfoster@redhat.com>
+> Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+> Signed-off-by: Carlos Maiolino <cem@kernel.org>
+> (cherry picked from commit c360004c0160dbe345870f59f24595519008926f)
+> Signed-off-by: Brian Foster <bfoster@redhat.com>
 
-  for (int retries = 0; retries < MAX_RETIRES; retries++)
+Looks like a correct backport to me,
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 
-> +		ret = regmap_update_bits(ddata->regmap, MAIN_CR, SOFTWARE_SWITCH_OFF,
-> +					 SOFTWARE_SWITCH_OFF);
-> +		if (!ret)
-> +			return NOTIFY_DONE;
-> +
-> +		/*
-> +		 * Attempt to shut down again, in case the first attempt failed.
-> +		 * The STPMIC1 might get confused and the first regmap_update_bits()
-> +		 * returns with -ETIMEDOUT / -110 . If that or similar transient
-> +		 * failure occurs, try to shut down again. If the second attempt
-> +		 * fails, there is some bigger problem, report it to user.
-> +		 */
-> +		if (i)
-> +			dev_err(ddata->dev, "Failed to access PMIC I2C bus (%d)\n", ret);
+--D
 
-Users aren't going to care if this works on the first or second attempt.
-
-I would only issue the error once we've given up.
-
-No return error in the fail case?
-
-  define NOTIFY_DONE             0x0000          /* Don't care */
-
-Harsh!
-
-> +	}
+> ---
+>  fs/xfs/libxfs/xfs_ialloc.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/fs/xfs/libxfs/xfs_ialloc.c b/fs/xfs/libxfs/xfs_ialloc.c
+> index 6258527315f2..8223464e23e7 100644
+> --- a/fs/xfs/libxfs/xfs_ialloc.c
+> +++ b/fs/xfs/libxfs/xfs_ialloc.c
+> @@ -850,15 +850,16 @@ xfs_ialloc_ag_alloc(
+>  		 * invalid inode records, such as records that start at agbno 0
+>  		 * or extend beyond the AG.
+>  		 *
+> -		 * Set min agbno to the first aligned, non-zero agbno and max to
+> -		 * the last aligned agbno that is at least one full chunk from
+> -		 * the end of the AG.
+> +		 * Set min agbno to the first chunk aligned, non-zero agbno and
+> +		 * max to one less than the last chunk aligned agbno from the
+> +		 * end of the AG. We subtract 1 from max so that the cluster
+> +		 * allocation alignment takes over and allows allocation within
+> +		 * the last full inode chunk in the AG.
+>  		 */
+>  		args.min_agbno = args.mp->m_sb.sb_inoalignmt;
+>  		args.max_agbno = round_down(xfs_ag_block_count(args.mp,
+>  							pag->pag_agno),
+> -					    args.mp->m_sb.sb_inoalignmt) -
+> -				 igeo->ialloc_blks;
+> +					    args.mp->m_sb.sb_inoalignmt) - 1;
 >  
->  	return NOTIFY_DONE;
->  }
+>  		error = xfs_alloc_vextent_near_bno(&args,
+>  				XFS_AGB_TO_FSB(args.mp, pag->pag_agno,
 > -- 
-> 2.51.0
+> 2.52.0
 > 
-
--- 
-Lee Jones [李琼斯]
+> 
 
