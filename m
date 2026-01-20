@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-210571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210572-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NzAFZnHb2mgMQAAu9opvQ
-	(envelope-from <stable+bounces-210571-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:21:13 +0100
+	id qPUzJGW7b2kOMQAAu9opvQ
+	(envelope-from <stable+bounces-210572-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:29:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C21D74959F
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:21:12 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF03748921
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:29:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C1B589C514C
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:26:36 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A6EB56A8B29
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F83466B69;
-	Tue, 20 Jan 2026 15:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4DE43D4F3;
+	Tue, 20 Jan 2026 15:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utM2ZMdj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ne191idI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36F933CE9B;
-	Tue, 20 Jan 2026 15:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4499E438FE2;
+	Tue, 20 Jan 2026 15:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768921616; cv=none; b=bQuMVS3uT1FLtK/Yzpdf7Eoy6yCw79o8c7FFBoChWHewNLNEh+7tIdl0syJWJh3TNyYpMrhbhyBXDAid57bhYxQ/gmDqOr3IAuOLOmQylsmVBnYJ3A3PX+T2LIG5kE9mGyJI3FCtLYPQ+yG9WOaLOx5ehPQk2WsLmuUnOqzSWHU=
+	t=1768921805; cv=none; b=gkrfYlVNGHcyIQ//vysp2SyoHHVZKRQx7O5QHT13Yia42yle5HlzQAJ19fYHI5a0rzUF3Bdt0CTBq4YzcwAtQzdg/lwRfKs+yW0iM94xbmRpYccze1uIV9YlDz7LfIOm89nUJ7LTw14bTfpgJBR2OiE/ajjZcdeJJnwZ1jE2aQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768921616; c=relaxed/simple;
-	bh=vnJ/UgS3R75zwomWALzvrM/1lsqUi8WY10VHmkjmE0U=;
+	s=arc-20240116; t=1768921805; c=relaxed/simple;
+	bh=TC4meEjdm9Y60dfiMt79KUxqrb2NqckocoqdNM6v9Y4=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Ja3IsBihlexRAGzi4rLvBXis2uWl411vKHy7wgkFQ7YBIA2QwfWUeubnS8f9K36nO+W/cbYWEJl8yopB4rwN8ZkTdpIpmiLPlW8AIraRymnyUe1nw/qBHXk6wBDnWlkALhw7p1XdjfqRO1uvYC0xbCxVD2MdACyrKrOkDHt/vKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utM2ZMdj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2E8C16AAE;
-	Tue, 20 Jan 2026 15:06:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f3oMjjG3+aZy07jU+VEhI6CEamjt3G5yRhQSk22h7H8pL9SVOlejURjfm6mEVzoRX1yEeorOLqQvjP77LSBErcGkTU6QsZ5AsneLB9IRSkhhWwtou3VXu2O3W8/n1DuQxHxJT6yHzQFqTYNwjsGh1svGL2iJ5aCL634x3onjJkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ne191idI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF09C19422;
+	Tue, 20 Jan 2026 15:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768921616;
-	bh=vnJ/UgS3R75zwomWALzvrM/1lsqUi8WY10VHmkjmE0U=;
+	s=k20201202; t=1768921804;
+	bh=TC4meEjdm9Y60dfiMt79KUxqrb2NqckocoqdNM6v9Y4=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=utM2ZMdjja98+LVXH1qniXS/eZpz0ynpTj16/Fna7Hs6jgDWPXnrtPjDg2hPooKuQ
-	 bQm94wpqUz3WL3IDQUDpJZ8fzDzEJk710hW2FFu3fm6JAXfyx/sJTjixVvWRKbl+dk
-	 DTiopHzR1a1lljAv/9vznLTdfiv+UGQqHShOvVJb1pCAFazPO1ZWhyko9husgxH7Pu
-	 aKjiI9+QJSdqxUvqgqec5140yDTZ10H28byFw/vCKQMwfvHdUutxfoSo/ims47H4Jd
-	 kV3Zi1G2P+Hir0021QMOquChuJZgt6T+qLUjrjKmqaAR+KljCJZx1Tp6cXkpWt1Uxf
-	 MvJn+aWkqxjDg==
+	b=ne191idIRw4oR7RjtJ8sJcF60mBYBAUhnRfpTjBOdHE9SoAgtPuP3QBm6sU5Pavvz
+	 Nsk54N3g5SG1h2yjzLapAYzyynbVTC0EfCU9jzrvF9D1UiY4ea+Y9pbfA66fgghK8e
+	 RScoPlYxLtOSNGn7nJWIJ+Z4eJNx8U+8mPHk8k7xOTfokveH6SbETJn4oa4kUVrp2F
+	 dhPEKqQlw1u2g318HJz5/FRXDlhX3OJO5P3dGLt2OgOh5EA1TxrA/XAuy157BwKxp9
+	 WnRm1aIyFRAvnwlUOZvvHRMZ9ADRefcUw3Cl+Irhhq7B8gNFvC+MCc8BC9Bwlkwtkf
+	 qDeFGk92NqsoQ==
 From: Lee Jones <lee@kernel.org>
 To: Lee Jones <lee@kernel.org>, Johan Hovold <johan@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Andreas Kemnade <andreas@kemnade.info>, Kevin Hilman <khilman@baylibre.com>, 
+ Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
  stable@vger.kernel.org
-In-Reply-To: <20251219110947.24101-1-johan@kernel.org>
-References: <20251219110947.24101-1-johan@kernel.org>
-Subject: Re: (subset) [PATCH] mfd: qcom-pm8xxx: fix OF populate on driver
+In-Reply-To: <20251219110714.23919-1-johan@kernel.org>
+References: <20251219110714.23919-1-johan@kernel.org>
+Subject: Re: (subset) [PATCH] mfd: omap-usb-host: fix OF populate on driver
  rebind
-Message-Id: <176892161482.2265106.3930390098116884693.b4-ty@kernel.org>
-Date: Tue, 20 Jan 2026 15:06:54 +0000
+Message-Id: <176892180186.2267608.14679796695892465448.b4-ty@kernel.org>
+Date: Tue, 20 Jan 2026 15:10:01 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,30 +75,30 @@ X-Spamd-Result: default: False [-1.96 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210571-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	TAGGED_FROM(0.00)[bounces-210572-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: C21D74959F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: DF03748921
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 19 Dec 2025 12:09:47 +0100, Johan Hovold wrote:
+On Fri, 19 Dec 2025 12:07:14 +0100, Johan Hovold wrote:
 > Since commit c6e126de43e7 ("of: Keep track of populated platform
 > devices") child devices will not be created by of_platform_populate()
 > if the devices had previously been deregistered individually so that the
@@ -108,8 +111,8 @@ On Fri, 19 Dec 2025 12:09:47 +0100, Johan Hovold wrote:
 
 Applied, thanks!
 
-[1/1] mfd: qcom-pm8xxx: fix OF populate on driver rebind
-      commit: 0b6a34ca0ac3b6e02389a2594f0638e5b9c65814
+[1/1] mfd: omap-usb-host: fix OF populate on driver rebind
+      commit: 74283e1c49dd2d56e83bca070c163c56375c057d
 
 --
 Lee Jones [李琼斯]
