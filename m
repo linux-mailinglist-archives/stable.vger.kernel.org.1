@@ -1,166 +1,113 @@
-Return-Path: <stable+bounces-210582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGDFLaTeb2n8RwAAu9opvQ
-	(envelope-from <stable+bounces-210582-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:59:32 +0100
+	id 0KqlGz/ab2n8RwAAu9opvQ
+	(envelope-from <stable+bounces-210583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:40:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669A04AE91
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:59:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB32F4AA03
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:40:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8AEA986BADE
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:36:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2C119E86AA
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98373423A61;
-	Tue, 20 Jan 2026 17:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C6742EEAE;
+	Tue, 20 Jan 2026 17:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="q13IvRoH"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uB7J5VIU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5051C34B678;
-	Tue, 20 Jan 2026 17:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEE342EEB0;
+	Tue, 20 Jan 2026 17:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768930605; cv=none; b=C/fgFo7uQolwa3Cl7Nnnxaqp4TPhVwH4PG3Bxx8NM1aT6fCefq0xPY06o/pz6ryapxUecFvqK/Tc6GXhSTAR881L1iTF5Qi65qfVlAzC5p3TgTDGlAIDEXnto1wDDYEZNQfQ9eZOPo4/l9V/Ly2xow18t2sv2tRfiy8AWdJZ/1Y=
+	t=1768931178; cv=none; b=M//uCWJ8TDmZajm9oUP3NXtebtyqZq206AYI9Qbc5O/VcIrLVXmhkUxaqNdMrMBTbQLygA2DtVV0S0BS7SnTPfqKUSHaIjwU/zKLFBMvCRMSNialuFw9DCm3/T6zZ+tplc/g/g85JHuu7rWLxpHEE22kpMt0FkLmq07Z59AIrWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768930605; c=relaxed/simple;
-	bh=j2DsBhWZixGtDRhNsk7hgkQ02Tv5S/MskezpBDyC9p0=;
-	h=Date:To:From:Subject:Message-Id; b=NW3R7PjdOKyGSbx6juMuYGRasksiGj9Dlw+M4k8FWXClzf67wJaInY/PsFW7bRc3m2emKbgbh14QdaFfveITZWf5iXDWRrje6rrvWgXSUQY0lAiXzBy4+4Wmn0m+xfWzOqNETn6611fCEwRASyJCDoiCy+pzugjWl8Z7FiVmMPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=q13IvRoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6FDC16AAE;
-	Tue, 20 Jan 2026 17:36:44 +0000 (UTC)
+	s=arc-20240116; t=1768931178; c=relaxed/simple;
+	bh=d913gHiC7qyAQGtH50oI3jMK1kbHhTOj4kG7zU0QOmA=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=DlDiPT1916gFwxjK/bZQmS/0QrOmFRLszguFO41QSQHm7zyGhGj43CbzIRORQvG9WOSD9DR8iliibfJLO+IsqQ1jFy/HOcY5oF9G8a3k5Yr/XNxX1oPcouRggsEnNNDvkM+q06mhES1JNS0y1o4Jc/Nb1bN4KNOiXwxcWlDsIRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uB7J5VIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532CDC16AAE;
+	Tue, 20 Jan 2026 17:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768930604;
-	bh=j2DsBhWZixGtDRhNsk7hgkQ02Tv5S/MskezpBDyC9p0=;
-	h=Date:To:From:Subject:From;
-	b=q13IvRoHD+3DAgelnreplETcwWVpSemipJwx0jm4XiR2hVlQ0i33goLkXBhfSvAzz
-	 P/1/YRAMmwekY1XgrZPm2WO1oW9AOULxghXnqm+aMnVWe6M5qXWMk4fQHVXrzx0Mh9
-	 NDoHbO6J8cN/foIYKn9Y92/TMng2Jc3Djc5hoSak=
-Date: Tue, 20 Jan 2026 09:36:44 -0800
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,pratyush@kernel.org,pasha.tatashin@soleen.com,graf@amazon.com,ran.xiaokai@zte.com.cn,akpm@linux-foundation.org
+	s=korg; t=1768931178;
+	bh=d913gHiC7qyAQGtH50oI3jMK1kbHhTOj4kG7zU0QOmA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uB7J5VIUyJlYBEPPsxzVcA4alTvhY6C6nzyO6qsW2rXfF7KeTSdxAvdULVMLimp58
+	 e0wofVjX7CNvQNv0DM7awPKca4ol6l2pbrvVd9thyhwUrtMZz8w80mOxqX0gvitatf
+	 ODg5ErvdlaNQ3fygK7JRr98fQWgTwsd8rl8rrzXo=
+Date: Tue, 20 Jan 2026 09:46:17 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260120173644.9F6FDC16AAE@smtp.kernel.org>
+To: Pimyn Girgis <pimyn@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, elver@google.com,
+ dvyukov@google.com, glider@google.com, kasan-dev@googlegroups.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm/kfence: randomize the freelist on initialization
+Message-Id: <20260120094617.ed5a53e9ec40e8f0a91f8cb6@linux-foundation.org>
+In-Reply-To: <20260120161510.3289089-1-pimyn@google.com>
+References: <20260120161510.3289089-1-pimyn@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MV_CASE(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-210582-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-210583-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,zte.com.cn:email]
-X-Rspamd-Queue-Id: 669A04AE91
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linux-foundation.org:mid,linux-foundation.org:dkim]
+X-Rspamd-Queue-Id: CB32F4AA03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Tue, 20 Jan 2026 17:15:10 +0100 Pimyn Girgis <pimyn@google.com> wrote:
 
-The patch titled
-     Subject: kho: init alloc tags when restoring pages from reserved memory
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+> Randomize the KFENCE freelist during pool initialization to make allocation
+> patterns less predictable. This is achieved by shuffling the order in which
+> metadata objects are added to the freelist using get_random_u32_below().
+> 
+> Additionally, ensure the error path correctly calculates the address range
+> to be reset if initialization fails, as the address increment logic has
+> been moved to a separate loop.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+It isn't clear (to me) what was wrong with 0ce20dd84089, nor why a
+-stable backport is proposed.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Subject: kho: init alloc tags when restoring pages from reserved memory
-Date: Fri, 9 Jan 2026 10:42:51 +0000
-
-Memblock pages (including reserved memory) should have their allocation
-tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-released to the page allocator.  When kho restores pages through
-kho_restore_page(), missing this call causes mismatched
-allocation/deallocation tracking and below warning message:
-
-alloc_tag was not set
-WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
-RIP: 0010:___free_pages+0xb8/0x260
- kho_restore_vmalloc+0x187/0x2e0
- kho_test_init+0x3c4/0xa30
- do_one_initcall+0x62/0x2b0
- kernel_init_freeable+0x25b/0x480
- kernel_init+0x1a/0x1c0
- ret_from_fork+0x2d1/0x360
-
-Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-fix this.
-
-Link: https://lkml.kernel.org/r/20260113033403.161869-1-ranxiaokai627@163.com
-Link: https://lkml.kernel.org/r/20260109104251.157767-1-ranxiaokai627@163.com
-Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- kernel/liveupdate/kexec_handover.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/kernel/liveupdate/kexec_handover.c~kho-init-alloc-tags-when-restoring-pages-from-reserved-memory
-+++ a/kernel/liveupdate/kexec_handover.c
-@@ -255,6 +255,7 @@ static struct page *kho_restore_page(phy
- 	if (is_folio && info.order)
- 		prep_compound_page(page, info.order);
- 
-+	clear_page_tag_ref(page);
- 	adjust_managed_page_count(page, nr_pages);
- 	return page;
- }
-_
-
-Patches currently in -mm which might be from ran.xiaokai@zte.com.cn are
-
-kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
-alloc_tag-fix-rw-permission-issue-when-handling-boot-parameter.patch
-
+Can we please have a full description of the current misbehavior?  What
+are the worst-case userspace-visible effects of this flaw?
 
