@@ -1,186 +1,193 @@
-Return-Path: <stable+bounces-210576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MFsHmLLb2mgMQAAu9opvQ
-	(envelope-from <stable+bounces-210576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:37:22 +0100
+	id sNItCVi4b2kBMQAAu9opvQ
+	(envelope-from <stable+bounces-210577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:16:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F7E49933
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:37:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF01F4864E
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:16:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 57D4438D615
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 16:30:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC2C7A20EC3
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 16:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5501D31B814;
-	Tue, 20 Jan 2026 16:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D9332E6AC;
+	Tue, 20 Jan 2026 16:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gn4jbD0A"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="blpvsUyM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEC527E074
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 16:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239BA318EDC
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 16:40:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768925775; cv=none; b=aUvLonAODbfGc3TR/8PAz/6E7VvbHkEV4LeP5snvTX+L/+Xhc3R4FIFXWT83hmjIycNNGnQlIKn50njQ4Qv0kPUTmw4KzjTLQQCbqri9L6/AEgXXUlm/wBOn4reXGf9Hj5Q4oIjT5bjG9kuPHCpUt8U3lvBTBw+mHQ7rnUeQFTQ=
+	t=1768927251; cv=none; b=EJX13N84XwbhNEUcTKz6p3nvUskyL+mSu9Zjoo17nlo+qEI0knDv26oGZIr1//4p9bQ6ZmN957epPWJhKXy8FfB/rCMubyBicPI46HnR5hEjeV2XZmx7JccHrptUKwiCY0ePtR9aU1BjyDNOQGAY3s59e8ab0UyrZJx/f/CUQSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768925775; c=relaxed/simple;
-	bh=cx6fHJOVY7EpVdxfguIigjRygA1bknBX31Ik7S2yhWo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lnJG4vf7osobyq95TJ4dOZZQgLw8ecIvTMo3lzhNvKJrLh+lFFSj7fACnD5ZQHjmA/rJRx3Awa9gFyXLO4VEjcHFOiTD+bRG3phcVsFehpeg2hnQzzzEvq8GyCSKWWJ5NJi40N8EZQtCvYuQFE+RD6y4C/9YDy1s/l5PEA5v0TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pimyn.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gn4jbD0A; arc=none smtp.client-ip=209.85.128.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pimyn.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4801d21c280so33305865e9.1
-        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 08:16:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768925772; x=1769530572; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zECdq2qx8LIRzMbM9dI3FS5kU++am0Lig5cv/EMeCDY=;
-        b=gn4jbD0AapBrx1aP4Vfk5X8D1PKDZ3d5mA308Or6aYJUrlrbarSGGQ6DTA+NYCqu6/
-         HdHo8o3ZF7FJGSulNFsZLmhLfVTCTToK982rlYsnfg4NN6+7dQ13vW1guWNW5avIW8aJ
-         Cg/Awg22EaLh+uFOGowsjLENSqexklsqljTClzTAjnNWz/FcCZrmYaHUQqCFUEGCuemx
-         eiUHYs+x1keKbzdwkV91zYuY4MtqtziXXEO4V1C+If6ErrJBC1zIUu3DVY9bBpLSBwk6
-         Vlo0uuAsX5t88a/VlOhJoA7yOiKnc6+MHAjZHeMxMUHmYzVcsqJlnA0XcMFYZFNA2QJ6
-         xUfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768925772; x=1769530572;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zECdq2qx8LIRzMbM9dI3FS5kU++am0Lig5cv/EMeCDY=;
-        b=k/GpGc9/butKqJraoGW8/uBxrjSbxOPzVn2aTJjdbudXWNtMV0zSwTUGr7dGnPLxmH
-         C0Ayh2v/0TZVh5VSDhwyIPc5MdZqIb2rUUpyltXOic/zBOwJlVPcz2L8k4VXVzzchwKL
-         5HLl7psJcmq+B0KvjRlDlXrcD2gjiZPjinZsu8GG0SnIeQLZXyl03ruToS9/i1ebfvWM
-         4KozCtNyzwAyfCYvkrtdTrLCzyDWvHgbzgzJEXceNJWYsiTUoCagrttqXzKtCKnE9RmS
-         5jmoLwWmJSBHWKQ6MheoXzOflAIhgeB5z6SXRqJKmeqUW98KAgcAnSDlYs8iq+IXUYhA
-         lKlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUUlRRsdrsnxoAKCahx4FIsbcYOWvc1KuyiZ4dPz2gqn+JWvaG7Oqcfgtq1L5K7/+uQ4dqcygQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywy3r3HrnWLu2uIO+Mu5OwaPLhHSEwumLYoj04pIsloP4R2VceK
-	IA61T3zUxm2HGIuum/E9Ct9HRNLkmE3mDrZno/sCfviUdLC7o5qE6kR8joTtZCPaVFZl+BmWmDq
-	ptw==
-X-Received: from wmsm27.prod.google.com ([2002:a05:600c:3b1b:b0:477:9769:66d0])
- (user=pimyn job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:8b78:b0:47e:e8c2:905f
- with SMTP id 5b1f17b1804b1-4801e30a790mr216491795e9.8.1768925771811; Tue, 20
- Jan 2026 08:16:11 -0800 (PST)
-Date: Tue, 20 Jan 2026 17:15:10 +0100
+	s=arc-20240116; t=1768927251; c=relaxed/simple;
+	bh=3jEVM0fSGdlcPmZDbuxkAFtGF0fcGhC0jUQpxgnM5v4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DMa5WtCTGmVNp8XOoVNWxljxregKg4Js2pzxnSxQJ7UAtucVLHiPzgkRVgq4pvz/dqG5495Lj2xlrcU1yMmILMtXXhha5GqG42DtiocSUxSboD1am42BojVV4hA1IMa4tRwnFJ0049OuZ/h8nNqUMxbG4gmkETGyBqXaT+QHqnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=blpvsUyM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768927248;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=weJ5Q8NmI7MNAFeUd2SgLH+8zS7Ip+jkYCIzM55COyw=;
+	b=blpvsUyM5rfWOw/5Ufns4SPX+pjGIkMSUvzOrcpDEmFCf1fRlbNqH9g/cjQfCR+nD965Nd
+	OVokEUzOv/ROda8m0T7fhd5IHSl6Z0aFNT4iSVaSrTEl6QRgT9VOeIri8cmOmzLnhygyeR
+	9RXucqOZjjnwLApSPOQKEvJefL5SjKk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-Tyz-UouYPNetg-9uavTFqw-1; Tue,
+ 20 Jan 2026 11:40:41 -0500
+X-MC-Unique: Tyz-UouYPNetg-9uavTFqw-1
+X-Mimecast-MFC-AGG-ID: Tyz-UouYPNetg-9uavTFqw_1768927240
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8ACD1180047F;
+	Tue, 20 Jan 2026 16:40:40 +0000 (UTC)
+Received: from bfoster.redhat.com (unknown [10.22.64.128])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B92721800665;
+	Tue, 20 Jan 2026 16:40:39 +0000 (UTC)
+From: Brian Foster <bfoster@redhat.com>
+To: stable@vger.kernel.org
+Cc: linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.12.y] xfs: set max_agbno to allow sparse alloc of last full inode chunk
+Date: Tue, 20 Jan 2026 11:40:38 -0500
+Message-ID: <20260120164038.137155-1-bfoster@redhat.com>
+In-Reply-To: <2026012006-doorway-print-237d@gregkh>
+References: <2026012006-doorway-print-237d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260120161510.3289089-1-pimyn@google.com>
-Subject: [PATCH] mm/kfence: randomize the freelist on initialization
-From: Pimyn Girgis <pimyn@google.com>
-To: pimyn@google.com
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, elver@google.com, dvyukov@google.com, 
-	glider@google.com, kasan-dev@googlegroups.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Spamd-Result: default: False [-0.46 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_POLICY_ALLOW(0.00)[google.com,reject];
-	TAGGED_FROM(0.00)[bounces-210576-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pimyn@google.com,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[redhat.com,quarantine];
+	TAGGED_FROM(0.00)[bounces-210577-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bfoster@redhat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 42F7E49933
+	RCVD_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: CF01F4864E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Randomize the KFENCE freelist during pool initialization to make allocation
-patterns less predictable. This is achieved by shuffling the order in which
-metadata objects are added to the freelist using get_random_u32_below().
+Sparse inode cluster allocation sets min/max agbno values to avoid
+allocating an inode cluster that might map to an invalid inode
+chunk. For example, we can't have an inode record mapped to agbno 0
+or that extends past the end of a runt AG of misaligned size.
 
-Additionally, ensure the error path correctly calculates the address range
-to be reset if initialization fails, as the address increment logic has
-been moved to a separate loop.
+The initial calculation of max_agbno is unnecessarily conservative,
+however. This has triggered a corner case allocation failure where a
+small runt AG (i.e. 2063 blocks) is mostly full save for an extent
+to the EOFS boundary: [2050,13]. max_agbno is set to 2048 in this
+case, which happens to be the offset of the last possible valid
+inode chunk in the AG. In practice, we should be able to allocate
+the 4-block cluster at agbno 2052 to map to the parent inode record
+at agbno 2048, but the max_agbno value precludes it.
 
-Cc: stable@vger.kernel.org
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Note that this can result in filesystem shutdown via dirty trans
+cancel on stable kernels prior to commit 9eb775968b68 ("xfs: walk
+all AGs if TRYLOCK passed to xfs_alloc_vextent_iterate_ags") because
+the tail AG selection by the allocator sets t_highest_agno on the
+transaction. If the inode allocator spins around and finds an inode
+chunk with free inodes in an earlier AG, the subsequent dir name
+creation path may still fail to allocate due to the AG restriction
+and cancel.
+
+To avoid this problem, update the max_agbno calculation to the agbno
+prior to the last chunk aligned agbno in the AG. This is not
+necessarily the last valid allocation target for a sparse chunk, but
+since inode chunks (i.e. records) are chunk aligned and sparse
+allocs are cluster sized/aligned, this allows the sb_spino_align
+alignment restriction to take over and round down the max effective
+agbno to within the last valid inode chunk in the AG.
+
+Note that even though the allocator improvements in the
+aforementioned commit seem to avoid this particular dirty trans
+cancel situation, the max_agbno logic improvement still applies as
+we should be able to allocate from an AG that has been appropriately
+selected. The more important target for this patch however are
+older/stable kernels prior to this allocator rework/improvement.
+
+Cc: stable@vger.kernel.org # v4.2
+Fixes: 56d1115c9bc7 ("xfs: allocate sparse inode chunks on full chunk allocation failure")
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+(cherry picked from commit c360004c0160dbe345870f59f24595519008926f)
+Signed-off-by: Brian Foster <bfoster@redhat.com>
 ---
- mm/kfence/core.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ fs/xfs/libxfs/xfs_ialloc.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index 577a1699c553..9e8b3cfd3f76 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -596,7 +596,7 @@ static void rcu_guarded_free(struct rcu_head *h)
- static unsigned long kfence_init_pool(void)
- {
- 	unsigned long addr, start_pfn;
--	int i;
-+	int i, rand;
+diff --git a/fs/xfs/libxfs/xfs_ialloc.c b/fs/xfs/libxfs/xfs_ialloc.c
+index 6258527315f2..8223464e23e7 100644
+--- a/fs/xfs/libxfs/xfs_ialloc.c
++++ b/fs/xfs/libxfs/xfs_ialloc.c
+@@ -850,15 +850,16 @@ xfs_ialloc_ag_alloc(
+ 		 * invalid inode records, such as records that start at agbno 0
+ 		 * or extend beyond the AG.
+ 		 *
+-		 * Set min agbno to the first aligned, non-zero agbno and max to
+-		 * the last aligned agbno that is at least one full chunk from
+-		 * the end of the AG.
++		 * Set min agbno to the first chunk aligned, non-zero agbno and
++		 * max to one less than the last chunk aligned agbno from the
++		 * end of the AG. We subtract 1 from max so that the cluster
++		 * allocation alignment takes over and allows allocation within
++		 * the last full inode chunk in the AG.
+ 		 */
+ 		args.min_agbno = args.mp->m_sb.sb_inoalignmt;
+ 		args.max_agbno = round_down(xfs_ag_block_count(args.mp,
+ 							pag->pag_agno),
+-					    args.mp->m_sb.sb_inoalignmt) -
+-				 igeo->ialloc_blks;
++					    args.mp->m_sb.sb_inoalignmt) - 1;
  
- 	if (!arch_kfence_init_pool())
- 		return (unsigned long)__kfence_pool;
-@@ -647,13 +647,27 @@ static unsigned long kfence_init_pool(void)
- 		INIT_LIST_HEAD(&meta->list);
- 		raw_spin_lock_init(&meta->lock);
- 		meta->state = KFENCE_OBJECT_UNUSED;
--		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
--		list_add_tail(&meta->list, &kfence_freelist);
-+		/* Use addr to randomize the freelist. */
-+		meta->addr = i;
- 
- 		/* Protect the right redzone. */
--		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
-+		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
- 			goto reset_slab;
-+	}
-+
-+	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
-+		rand = get_random_u32_below(i);
-+		swap(kfence_metadata_init[i - 1].addr, kfence_metadata_init[rand].addr);
-+	}
- 
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		struct kfence_metadata *meta_1 = &kfence_metadata_init[i];
-+		struct kfence_metadata *meta_2 = &kfence_metadata_init[meta_1->addr];
-+
-+		list_add_tail(&meta_2->list, &kfence_freelist);
-+	}
-+	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
-+		kfence_metadata_init[i].addr = addr;
- 		addr += 2 * PAGE_SIZE;
- 	}
- 
-@@ -666,6 +680,7 @@ static unsigned long kfence_init_pool(void)
- 	return 0;
- 
- reset_slab:
-+	addr += 2 * i * PAGE_SIZE;
- 	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
- 		struct page *page;
- 
+ 		error = xfs_alloc_vextent_near_bno(&args,
+ 				XFS_AGB_TO_FSB(args.mp, pag->pag_agno,
 -- 
-2.52.0.457.g6b5491de43-goog
+2.52.0
 
 
