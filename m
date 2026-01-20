@@ -1,156 +1,198 @@
-Return-Path: <stable+bounces-210569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIHXNjyob2kZEwAAu9opvQ
-	(envelope-from <stable+bounces-210569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:07:24 +0100
+	id 6AuRNE+pb2kZEwAAu9opvQ
+	(envelope-from <stable+bounces-210573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:11:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF48E4717B
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:07:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4740C47287
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:11:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8FE6A9424C7
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:22:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B30905EC545
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EB244A720;
-	Tue, 20 Jan 2026 15:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9084542EEB7;
+	Tue, 20 Jan 2026 15:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CAqEB1q+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ew1eoVWJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276F186323
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 15:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C85444CF37;
+	Tue, 20 Jan 2026 15:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768921463; cv=none; b=fooNtTCzr3qJvST9PwfRiTL3+ExiaQtxtpMw+7Es8jZfCsrPirtNo8bz1PHDfSvWagh+tmzipK0PmmiGtxj/M+fJOh/Hjjj0ixKzv7sVnO6LK79wjfF8JQayhJAmxhqxEcPaCAzf4yp6ZqRQG53P3k6TnQc724zN16s4zAWp9Xk=
+	t=1768922649; cv=none; b=oeEzh14nTVH2RNtCM0/Nr0E06N7PIieCZXzoUIRipboZ1zQiTdcsIerrmFY4LUC6CyYyb3xKZI/0tBv0iVQm/9d6lSQqCVVkPFcEd8nwczFbvXOhs23Y69hlWd1eB2W27lI+iP9YDTXeKIhPYhnsoOFA5kXHF31yE5JULYxZJ9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768921463; c=relaxed/simple;
-	bh=nMAsCLMqZfR1eCMjF+tcvjczTGUxhVDmNdnf+q3DhTo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=euS16euEVG9rMCL8ydaOvfDqY0pZhZKXW+7iXjoQw2Oyvrih0yIbG3am+jivOUgGTeGId6yrOn4TfZah3ueqX05FNA23Cpru10rPO8LM8neMVW6hWXIR1pnr+efEvusDs7eQ/t4rWJuJP3rpuk7hghQCVGoxVBWUiO9tRGLYOlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CAqEB1q+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A834AC16AAE;
-	Tue, 20 Jan 2026 15:04:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768921463;
-	bh=nMAsCLMqZfR1eCMjF+tcvjczTGUxhVDmNdnf+q3DhTo=;
-	h=Subject:To:Cc:From:Date:From;
-	b=CAqEB1q+KjC746/FGRr/3rPCIv/xIAm4/THIEEmz9wm1hDpAV5WCv6qpZQe7p+VAE
-	 3NTfWtNc7JT+INOp62aC2IBqbK5moOQHDeRpsFYfDW6xT3QXASd/P15XCB1h2Fax2b
-	 u8twzja7KNQsH9c1PJojbVkN/AF4eC0JzeBcVnSo=
-Subject: FAILED: patch "[PATCH] dmaengine: stm32: dmamux: fix OF node leak on route" failed to apply to 5.10-stable tree
-To: johan@kernel.org,amelie.delaunay@foss.st.com,pierre-yves.mordret@foss.st.com,vkoul@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 20 Jan 2026 16:04:06 +0100
-Message-ID: <2026012006-slacks-unfrozen-a0c6@gregkh>
+	s=arc-20240116; t=1768922649; c=relaxed/simple;
+	bh=9jRhlOcB/BCAcsGAE6E2GxTLrKYlRd8V5vOhZYZPVfA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=uOu0Ivw2O3Rh2Ad29rc4fDDA69Rs/7TQRf0uxCDzm/07OKUagaunEUlByBvbysNv1VAvGYbOWllIli2YjATtxkaNqmdr1DsvTTRjOir88DK7DqEVPBWi5ReMOi21QTYppCOZ5TLn/lKNOv2qGat2DQlbRy4TCZRD9rR+nWcxOgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ew1eoVWJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F36C16AAE;
+	Tue, 20 Jan 2026 15:24:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768922649;
+	bh=9jRhlOcB/BCAcsGAE6E2GxTLrKYlRd8V5vOhZYZPVfA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ew1eoVWJ54oFj/fHJHf3R4ddG73yX/O+h1arlczZW/Y0qoDGHJK4xUDuDseOZn96J
+	 O5PSCx0qh6qm9XCIobNNDkFAlJc/IuZTCWhqVaZRjdtaId2V13S6DyE1EXJAnRbegv
+	 WSUCtHwY44USLA63eUbZcWN9+LHTjl+RVrtukk9y22GwIzUfR4J/ajXbDBIBq+JdbI
+	 mMHTgSg8nxbG0i7ru/nn/6qRH3QtOiSsUKHvu5PPQJXtC0jXMtz89tvdqxFpKhxadT
+	 lJhpskuWvRXZ1+jYaBe6qVVAGb8B6rGWrRhLtTdxic8wTFK3/nNUJ03J2fJTOcdbaI
+	 YoD49CQ1I1Q4A==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: mm-commits@vger.kernel.org, surenb@google.com, stable@vger.kernel.org,
+ rppt@kernel.org, pratyush@kernel.org, pasha.tatashin@soleen.com,
+ graf@amazon.com, ran.xiaokai@zte.com.cn
+Subject: Re: [merged mm-hotfixes-stable]
+ kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+ removed from -mm tree
+In-Reply-To: <20260119203054.70AE8C116C6@smtp.kernel.org> (Andrew Morton's
+	message of "Mon, 19 Jan 2026 12:30:53 -0800")
+References: <20260119203054.70AE8C116C6@smtp.kernel.org>
+Date: Tue, 20 Jan 2026 15:24:06 +0000
+Message-ID: <2vxzqzrke295.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.54 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Type: text/plain
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210569-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TAGGED_FROM(0.00)[bounces-210573-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[pratyush@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,msgid.link:url,st.com:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: EF48E4717B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 4740C47287
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Andrew,
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On Mon, Jan 19 2026, Andrew Morton wrote:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> The quilt patch titled
+>      Subject: kho: init alloc tags when restoring pages from reserved memory
+> has been removed from the -mm tree.  Its filename was
+>      kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+>
+> This patch was dropped because it was merged into the mm-hotfixes-stable branch
+> of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x b1b590a590af13ded598e70f0b72bc1e515787a1
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012006-slacks-unfrozen-a0c6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+This patch isn't quite complete. See [0]. It doesn't do anything wrong,
+it just doesn't fix the problem for every case.
 
-Possible dependencies:
+I suggested a re-roll of this patch based on top of my cleanup patches
+[1], since I think with those the end result is a bit nicer.
 
+I suppose we have 3 options:
 
+1. Take this patch in hotfixes and leave kho_restore_pages() path
+   unfixed. The fix the rest next merge window.
 
-thanks,
+2. Do a new version of this patch fixing kho_restore_pages() with the
+   current code, and then re-roll the clean up series to fix conflicts
+   for next merge window.
 
-greg k-h
+3. Pull in the cleanups in hotfixes too, and then do a new revision of
+   this patch on top.
 
------------------- original commit in Linus's tree ------------------
+I don't think the end result of option 2 is too horrible, so I think
+that is probably the best option, but do let me know what you'd prefer.
 
-From b1b590a590af13ded598e70f0b72bc1e515787a1 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Mon, 17 Nov 2025 17:12:53 +0100
-Subject: [PATCH] dmaengine: stm32: dmamux: fix OF node leak on route
- allocation failure
+[0] https://lore.kernel.org/linux-mm/2vxzpl7chw8d.fsf@kernel.org/
+[1] https://lore.kernel.org/linux-mm/20260116112217.915803-1-pratyush@kernel.org/T/#u
 
-Make sure to drop the reference taken to the DMA master OF node also on
-late route allocation failures.
+>
+> ------------------------------------------------------
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> Subject: kho: init alloc tags when restoring pages from reserved memory
+> Date: Fri, 9 Jan 2026 10:42:51 +0000
+>
+> Memblock pages (including reserved memory) should have their allocation
+> tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
+> released to the page allocator.  When kho restores pages through
+> kho_restore_page(), missing this call causes mismatched
+> allocation/deallocation tracking and below warning message:
+>
+> alloc_tag was not set
+> WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
+> RIP: 0010:___free_pages+0xb8/0x260
+>  kho_restore_vmalloc+0x187/0x2e0
+>  kho_test_init+0x3c4/0xa30
+>  do_one_initcall+0x62/0x2b0
+>  kernel_init_freeable+0x25b/0x480
+>  kernel_init+0x1a/0x1c0
+>  ret_from_fork+0x2d1/0x360
+>
+> Add missing clear_page_tag_ref() annotation in kho_restore_page() to
+> fix this.
+>
+> Link: https://lkml.kernel.org/r/20260113033403.161869-1-ranxiaokai627@163.com
+> Link: https://lkml.kernel.org/r/20260109104251.157767-1-ranxiaokai627@163.com
+> Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Cc: Alexander Graf <graf@amazon.com>
+> Cc: Pratyush Yadav <pratyush@kernel.org>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>
+>  kernel/liveupdate/kexec_handover.c |    1 +
+>  1 file changed, 1 insertion(+)
+>
+> --- a/kernel/liveupdate/kexec_handover.c~kho-init-alloc-tags-when-restoring-pages-from-reserved-memory
+> +++ a/kernel/liveupdate/kexec_handover.c
+> @@ -255,6 +255,7 @@ static struct page *kho_restore_page(phy
+>  	if (is_folio && info.order)
+>  		prep_compound_page(page, info.order);
+>  
+> +	clear_page_tag_ref(page);
+>  	adjust_managed_page_count(page, nr_pages);
+>  	return page;
+>  }
+> _
+>
+> Patches currently in -mm which might be from ran.xiaokai@zte.com.cn are
+>
+> alloc_tag-fix-rw-permission-issue-when-handling-boot-parameter.patch
+>
 
-Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
-Cc: stable@vger.kernel.org      # 4.15
-Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/20251117161258.10679-12-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-
-diff --git a/drivers/dma/stm32/stm32-dmamux.c b/drivers/dma/stm32/stm32-dmamux.c
-index 791179760782..2bd218dbabbb 100644
---- a/drivers/dma/stm32/stm32-dmamux.c
-+++ b/drivers/dma/stm32/stm32-dmamux.c
-@@ -143,7 +143,7 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 	ret = pm_runtime_resume_and_get(&pdev->dev);
- 	if (ret < 0) {
- 		spin_unlock_irqrestore(&dmamux->lock, flags);
--		goto error;
-+		goto err_put_dma_spec_np;
- 	}
- 	spin_unlock_irqrestore(&dmamux->lock, flags);
- 
-@@ -165,6 +165,8 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 
- 	return mux;
- 
-+err_put_dma_spec_np:
-+	of_node_put(dma_spec->np);
- error:
- 	clear_bit(mux->chan_id, dmamux->dma_inuse);
- 
-
+-- 
+Regards,
+Pratyush Yadav
 
