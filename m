@@ -1,91 +1,89 @@
-Return-Path: <stable+bounces-210481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210551-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGadDC/Jb2mgMQAAu9opvQ
-	(envelope-from <stable+bounces-210481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:27:59 +0100
+	id KJfZJVC8b2kOMQAAu9opvQ
+	(envelope-from <stable+bounces-210551-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:33:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA4A49724
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:27:58 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE747489F0
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:33:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D412C5E06FB
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 10:45:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ACF0390C0CD
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 13:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C163ED115;
-	Tue, 20 Jan 2026 10:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBDD42E01F;
+	Tue, 20 Jan 2026 13:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KdC+YUaa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aYTE3rIj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDB13F23D6
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 10:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E529142B748;
+	Tue, 20 Jan 2026 13:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768905724; cv=none; b=JXtC3rwIxZDoBVwFzZlW42+DKt+yYMuyM/oAIOdHiSTSY7GzUG/Bb7+0zjvog30y20OV4ZVm6CYAkHoXqIC8qzq+polg0LoLg9ob3kAvDGlD74kMkk0APs8DRBSqYNwhZqa5uKCh26b1pBhpP/Si7wa8wy/ALjlnOmE7ex/fomw=
+	t=1768916890; cv=none; b=Ayh0fAox7H/4+Oe0ABQ/Su81V46PrvHBOG1I/Vt16mW2SeQ6juNROOk2QwNeSei5W9/ha9o9nRguyJGeNz3wczul0O9W5u/CjY2JCAXMAClPPBr2H5w4oGEivnKxKEYva6INifmeIIipWB7TrZAAtL/rOu6a9ykKWHr0AUnEgaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768905724; c=relaxed/simple;
-	bh=0l3VHXyDJw0+QakH6PJ+JROapppkV5FjgLHShJX5VKo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o0DHwFQ4qpKX3Eb29ZbbGCNl7HDGBMbBiP8NnKqinPX/UgdO0dkcVwUc8gLPGdl7rKBMAhHJnQMwuyVAxHdMb7P9UaXRaMjd0Uo7bWHCylziQqbfy5aYIqByVYOj1JxlaLxh3pfUPULZgOWKgAVkMlMdDuylGq3q5JpfvzLZhXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KdC+YUaa; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1768916890; c=relaxed/simple;
+	bh=a8/Rp5xs6Z5wuwvztzn6bvFo/wLCNqkubH9OYQ0J7L8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aYqQbP6TSkeiKx6KHyjz/1wAFyMPJj3+D33PEEXsyCacvUt3WXwSRMeJtDT7g3MX2kNd7A8wLD1T91uEXKmjEBkQd/L1AsBuyeBkZb5Rbbjl5rI1sVGvku6SjPCw3APCk3ym2NtNPWJVq9yHaf+HPNdX5CpwV4xysvSe0p/LIEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aYTE3rIj; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768905723; x=1800441723;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=0l3VHXyDJw0+QakH6PJ+JROapppkV5FjgLHShJX5VKo=;
-  b=KdC+YUaa5N8k392IA+lE+ZykUsiP/2ZG3Flfeyu6cMr6Cea8FAsZ3uJd
-   E85Zq1JRkXWZFQYRTqSYH9JB69tvGMyHDBg1mIdWTFl5jzqheX5VB56iS
-   4oRgSUNv3hnriZt1c+Q8gG2bhlabzT2NLO3k8eNJM8ozTNOhmU5gwXlM0
-   fMZ/mVQFIQHNNbmFmt4nqp+s+FKmqkfhcOJ9DOsWZmvRMFk/EywaYuF94
-   J/IC/dB3o2nDXFtpTHXbl9oMMlERL/kjC3Vw6x3ElILDeDebbNUbppgMh
-   /seqCPEfinBpxILa2Sohbk822VLnd0vAZN75K+dIZtZ63BCOofmgiQrkz
+  t=1768916889; x=1800452889;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a8/Rp5xs6Z5wuwvztzn6bvFo/wLCNqkubH9OYQ0J7L8=;
+  b=aYTE3rIjK+YMMEq/IyeDKYPvAq1YlqGgJonUfXFvCflXhC0uRt+8YRaY
+   RXZ3hI9IaSA3PUsLY4mNq/cStZvBeojgC7Od4ROJxfJ5IPhC1O2CzXgZq
+   /uIs2CaazId1FwBmaxIDOgMPtO/yIrzs3jYrBqXTJbQgJ81t/EbGGa9vo
+   RR6Mp1X+xj3eVG3S1ntswj5Xk6ESNk5/TDS0xNfoktz7q8Z/xZai4tdEJ
+   +PQk+Ukc5W6HntmHfs6GXmPLUK0RIZGQt3kzpMQf2JivQcvtHxGNJUQIn
+   j8prLEZGpaEg4IaxcLOM4JvFokUgYawtvXZM9FbX64hW1cs3KxL9SebSv
    Q==;
-X-CSE-ConnectionGUID: PiZQSA08TI6hzx2s7mIT5Q==
-X-CSE-MsgGUID: HVEdWeMtSE+MCJac/DqhbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70164498"
+X-CSE-ConnectionGUID: Scc4nJF9S/GKnK1uHTZttg==
+X-CSE-MsgGUID: enPgc4rvRZ2xQc3rpfyPig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70027970"
 X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="70164498"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 02:42:02 -0800
-X-CSE-ConnectionGUID: AwXlz7FdQYO8TgQAfjhtbQ==
-X-CSE-MsgGUID: I1f4jfO7Rj+/ZaHDgmWDJA==
+   d="scan'208";a="70027970"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:48:08 -0800
+X-CSE-ConnectionGUID: zDdCs6T5QmWK/h0JODriCA==
+X-CSE-MsgGUID: zYWVGsq4SGmj/3v0CfQ/kw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="205889692"
-Received: from amilburn-desk.amilburn-desk (HELO [10.245.244.235]) ([10.245.244.235])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 02:42:01 -0800
-Message-ID: <654f40ab-8402-4bb1-88ff-742572a1b251@intel.com>
-Date: Tue, 20 Jan 2026 10:41:58 +0000
+   d="scan'208";a="205745921"
+Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.240])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:48:06 -0800
+Date: Tue, 20 Jan 2026 15:48:04 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Guido Trentalancia <guido@trentalancia.com>
+Cc: Raag Jadav <raag.jadav@intel.com>, mika.westerberg@linux.intel.com,
+	linusw@kernel.org, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] pinctrl: tigerlake: Add Alder Lake-P documentation
+Message-ID: <aW-HlIXTv6W6fye_@smile.fi.intel.com>
+References: <20260120110042.1021199-1-raag.jadav@intel.com>
+ <1768913556.5518.15.camel@trentalancia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] drm/buddy: Prevent BUG_ON by validating rounded
- allocation
-To: Sanjay Yadav <sanjay.kumar.yadav@intel.com>,
- dri-devel@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org, stable@vger.kernel.org,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-References: <20260108113227.2101872-4-sanjay.kumar.yadav@intel.com>
- <20260108113227.2101872-5-sanjay.kumar.yadav@intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20260108113227.2101872-5-sanjay.kumar.yadav@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1768913556.5518.15.camel@trentalancia.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
@@ -93,89 +91,49 @@ X-Spamd-Result: default: False [-1.96 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210481-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
+	TAGGED_FROM(0.00)[bounces-210551-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: CDA4A49724
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,intel.com:dkim,trentalancia.com:email,smile.fi.intel.com:mid]
+X-Rspamd-Queue-Id: CE747489F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 08/01/2026 11:32, Sanjay Yadav wrote:
-> When DRM_BUDDY_CONTIGUOUS_ALLOCATION is set, the requested size is
-> rounded up to the next power-of-two via roundup_pow_of_two().
-> Similarly, for non-contiguous allocations with large min_block_size,
-> the size is aligned up via round_up(). Both operations can produce a
-> rounded size that exceeds mm->size, which later triggers
-> BUG_ON(order > mm->max_order).
+On Tue, Jan 20, 2026 at 01:52:36PM +0100, Guido Trentalancia wrote:
+> Someone erroneously marked the bug as CLOSED INVALID, while only the
+> proposed resolution was INVALID and not the bug itself.
 > 
-> Example scenarios:
-> - 9G CONTIGUOUS allocation on 10G VRAM memory:
->    roundup_pow_of_two(9G) = 16G > 10G
-> - 9G allocation with 8G min_block_size on 10G VRAM memory:
->    round_up(9G, 8G) = 16G > 10G
-> 
-> Fix this by checking the rounded size against mm->size. For
-> non-contiguous or range allocations where size > mm->size is invalid,
-> return -EINVAL immediately. For contiguous allocations without range
-> restrictions, allow the request to fall through to the existing
-> __alloc_contig_try_harder() fallback.
-> 
-> This ensures invalid user input returns an error or uses the fallback
-> path instead of hitting BUG_ON.
-> 
-> v2: (Matt A)
-> - Add Fixes, Cc stable, and Closes tags for context
-> 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6712
-> Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
-> Cc: <stable@vger.kernel.org> # v6.7+
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-> Suggested-by: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Sanjay Yadav <sanjay.kumar.yadav@intel.com>
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-> Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+> This patch solves the issue because it informs the user on the correct
+> driver to choose for Alder Lake-P.
 
-Arun/Christian, when you get a chance could you also merge these two please?
+Yes, I was that person and I asked Raag to help with it.
+Thanks, Raag!
 
-> ---
->   drivers/gpu/drm/drm_buddy.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
-> index 2f279b46bd2c..5141348fc6c9 100644
-> --- a/drivers/gpu/drm/drm_buddy.c
-> +++ b/drivers/gpu/drm/drm_buddy.c
-> @@ -1155,6 +1155,15 @@ int drm_buddy_alloc_blocks(struct drm_buddy *mm,
->   	order = fls(pages) - 1;
->   	min_order = ilog2(min_block_size) - ilog2(mm->chunk_size);
->   
-> +	if (order > mm->max_order || size > mm->size) {
-> +		if ((flags & DRM_BUDDY_CONTIGUOUS_ALLOCATION) &&
-> +		    !(flags & DRM_BUDDY_RANGE_ALLOCATION))
-> +			return __alloc_contig_try_harder(mm, original_size,
-> +							 original_min_size, blocks);
-> +
-> +		return -EINVAL;
-> +	}
-> +
->   	do {
->   		order = min(order, (unsigned int)fls(pages) - 1);
->   		BUG_ON(order > mm->max_order);
+Now we can close it again with PATCH_AVAILABLE.
+
+> Acked-by: Guido Trentalancia <guido@trentalancia.com>
+
+Thanks for confirming!
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
