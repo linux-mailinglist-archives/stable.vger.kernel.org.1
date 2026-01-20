@@ -1,143 +1,144 @@
-Return-Path: <stable+bounces-210546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210544-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPznMbNUcGlvXQAAu9opvQ
-	(envelope-from <stable+bounces-210546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 05:23:15 +0100
+	id 8BjQIdUxcGkSXAAAu9opvQ
+	(envelope-from <stable+bounces-210544-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:54:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367A150F94
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 05:23:15 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A90A4F65D
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:54:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5C16A88980D
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 13:24:31 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A427170247E
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 13:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B826842B759;
-	Tue, 20 Jan 2026 13:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wo2hYQ9I"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40939428859;
+	Tue, 20 Jan 2026 13:22:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3607E3D4107;
-	Tue, 20 Jan 2026 13:23:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C910429809
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 13:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768915429; cv=none; b=fh84afIQ47WMp8HoCfjNN8YSOO3BwYmS9aelg74CSIq/eO1oIpDcCkVaLvnVoTnS9SBk3r+gIXhTZdWycnrhrYJhlN0Qb9LrCTa4keDJb7n5qRnsFFzFpruLenzPykNcaLLQPOXefqb0JN6OWkXpiTydbF3uZq07ar4iL2aTKM4=
+	t=1768915331; cv=none; b=se+3SufAl5QEueUvboV+qJplp2ksDsJ/nfqDLlmkNrOmk03s0EcGjF0W6AZL3BKA4alIWhk3Ecukw9yqtEWANl8epkPTcBypxYfGDNxY6Lfy6iyHx61ACgTs8ye1QS7uv+10811vkpSc4XinEHFgJr7zqOMFvm+8FArNGRpA1o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768915429; c=relaxed/simple;
-	bh=nlZ6xX2lr/u9upPVXdqofa4HpJJKRV53xTtFzmbr5jU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rxvu7BzMuxw6OP21SWjXg5Fzy5lPJRqRmskQZ2K8gTqyEY2k8OqyS5AoaXoBHPTli/dhad1anVr/G9H1n6bfce72iUSI6v0aF8xK3D+UlbutDzaG+57Tskl0zjdro1utA+xMPpIhPTkRwdcA8/ryO7qG92XWd/30OJa6c/RentI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wo2hYQ9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F70C19422;
-	Tue, 20 Jan 2026 13:23:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768915429;
-	bh=nlZ6xX2lr/u9upPVXdqofa4HpJJKRV53xTtFzmbr5jU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wo2hYQ9IkHX1d+nd3G7D/deN3G1JuLr/litsrdGAxUwLcAZErZIK/0ZexZ7juSARS
-	 0CfAZShjpS3+OvCZVedd9D1V74pNHJFpvKSrDGUxW/Tn7wEsPdIPbrfyf/QdpH2UjW
-	 uKQt2qG8jqNgzFKuM/NaWnwS+03UFhnN5g51W0Rw=
-Date: Tue, 20 Jan 2026 14:20:37 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Gui-Dong Han <hanguidong02@gmail.com>, linux-media@vger.kernel.org,
-	stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-	Jia-Ju Bai <baijiaju1990@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH v2] media: dvb_demux: fix potential TOCTOU race conditions
-Message-ID: <2026012031-frostlike-humming-b221@gregkh>
-References: <20260120121105.8959-1-hanguidong02@gmail.com>
- <88dbfb85-571a-4f65-8879-16972dd87bbd@web.de>
+	s=arc-20240116; t=1768915331; c=relaxed/simple;
+	bh=VwB2WuG0nLlJck5gZT6KO38Nkp4JD1zUrmdA7DBTOn8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p844llr+o7ukYrAXTSAnfuyyaO84ETIITKmmefNhH5vgLDmDTtTUVsLoGyyQitVoaCwWR7Rro24uG9vfn0Epgeg+saiBzG1isiifDFp7quFhwyxi2F6UphnizatcumTS0zP5wD/r1XzMTaZzP8IpnZzxvYoaAKKg28tpMSzTx2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1viBgL-0004wA-VG; Tue, 20 Jan 2026 14:22:05 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1viBgM-001ajB-1P;
+	Tue, 20 Jan 2026 14:22:05 +0100
+Received: from blackshift.org (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 8589F4D3401;
+	Tue, 20 Jan 2026 13:22:05 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: stable@vger.kernel.org,
+	linux-can@vger.kernel.org
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15.y] can: gs_usb: gs_usb_receive_bulk_callback(): fix URB memory leak
+Date: Tue, 20 Jan 2026 14:21:56 +0100
+Message-ID: <20260120132156.746174-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012023-ranged-machinist-edb4@gregkh>
+References: <2026012023-ranged-machinist-edb4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <88dbfb85-571a-4f65-8879-16972dd87bbd@web.de>
-X-Spamd-Result: default: False [2.54 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spamd-Result: default: False [0.24 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210546-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[web.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210544-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[pengutronix.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,linuxfoundation.org:dkim,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 367A150F94
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: 1A90A4F65D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jan 20, 2026 at 01:38:33PM +0100, Markus Elfring wrote:
-> …
-> > Fix this by extending the lock scope.
-> …
-> 
-> How do you think about to increase the application of scope-based resource management?
-> https://elixir.bootlin.com/linux/v6.19-rc5/source/include/linux/mutex.h#L253
-> 
-> 
-> > This possible bug was found by our experimental static analysis tool,
-> > which analyzes lock usage to detect TOCTOU issues.
-> 
-> * Do you refer to any other source code analysis approach than LR-Miner?
-> 
-> * Will any additional background information become more helpful here?
-> 
-> 
-> Regards,
-> Markus
-> 
+In gs_can_open(), the URBs for USB-in transfers are allocated, added to the
+parent->rx_submitted anchor and submitted. In the complete callback
+gs_usb_receive_bulk_callback(), the URB is processed and resubmitted. In
+gs_can_close() the URBs are freed by calling
+usb_kill_anchored_urbs(parent->rx_submitted).
 
-Hi,
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in gs_can_close().
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+Fix the memory leak by anchoring the URB in the
+gs_usb_receive_bulk_callback() to the parent->rx_submitted anchor.
 
-Markus, you seem to have sent a nonsensical or otherwise pointless
-review comment to a patch submission on a Linux kernel developer mailing
-list.  I strongly suggest that you not do this anymore.  Please do not
-bother developers who are actively working to produce patches and
-features with comments that, in the end, are a waste of time.
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+(cherry picked from commit 7352e1d5932a0e777e39fa4b619801191f57e603)
+---
+ drivers/net/can/usb/gs_usb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Patch submitter, please ignore Markus's suggestion; you do not need to
-follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and
-inability to adapt to feedback.  Please feel free to also ignore emails
-from them.
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index ffa2a4d92d01..e36745fd2d3b 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -402,6 +402,8 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 			  usbcan
+ 			  );
+ 
++	usb_anchor_urb(urb, &parent->rx_submitted);
++
+ 	rc = usb_submit_urb(urb, GFP_ATOMIC);
+ 
+ 	/* USB failure take down all interfaces */
+-- 
+2.51.0
 
-thanks,
-
-greg k-h's patch email bot
 
