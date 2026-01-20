@@ -1,145 +1,119 @@
-Return-Path: <stable+bounces-210484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210483-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDwVFAJrcGkVXwAAu9opvQ
-	(envelope-from <stable+bounces-210484-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:58:26 +0100
+	id +I0sKmFkcWmaGgAAu9opvQ
+	(envelope-from <stable+bounces-210483-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 00:42:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAF751CBD
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:58:25 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A445F9FC
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 00:42:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 13A905E9137
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 11:03:38 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 96B0F7C135D
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 11:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E89141322F;
-	Tue, 20 Jan 2026 11:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D2E40FD8A;
+	Tue, 20 Jan 2026 11:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m48fQEcT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnl04pfO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2766C39903F;
-	Tue, 20 Jan 2026 11:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC6F39903F
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 11:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768906991; cv=none; b=mtS4et+oygB0Lhn7Ln7yfaM+BimYu+IbOm8xUxbwpyBNizYO/T7XBVr1QAg04QiU/ta+Jl6UyEGDgK8YPucVeA/xIdKu0BeOdczc9++13JbRh2MjgkjrROQviUslDNU2vA/IUjPhkmkjX2IpUrJUjluYeFv4vtlhG66ktInLQNA=
+	t=1768906857; cv=none; b=klSSrWhD2RXjUoCL/BOXzDiiVW9JaQNHIBJc6QPkVIvoJZLFZOFdF0dRqgFBZdz+NeeJNBjycrl+MgOyUeVv3ShveGwfV8NCtkPJmpQCYEy0Z8RBLDkEwFW7xvGC6ruVmU++raJ8ZjvKU9ub72lLkt9eIseYyJwHbkmcOiszDJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768906991; c=relaxed/simple;
-	bh=MOlVYHiV8U/xnwdcg+LjR5LC2vh7h/sh+K0ucqRyMF0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ubIXCsgWmBnMBS40zeqoJ5qQkF3+n7NSoO3nOBZn+OayU35anU2IEU8jUFRGyUVBkTm5SwyvcYGveC7BT046ptOHpfxCd5ep1yTKg4FabPIYDDdsAFV+2DlN0SOtAxogxaqAnNM+Ua2pV4BwuWMlMfNHQFcDnaThTL5pJ6BdMQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m48fQEcT; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768906990; x=1800442990;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=MOlVYHiV8U/xnwdcg+LjR5LC2vh7h/sh+K0ucqRyMF0=;
-  b=m48fQEcT+QPF47qG3MX38vTjj6IjppqXP95G7RPGx6kWNRQxTD0ASCPX
-   zjnzKL8KMFwZfBmkpwtDzsoT3gVDPQ11oC4jrYUUEIrKyPYVFe3CB58m3
-   d+6Q2jkVPJVx/9yYUJ1wkzJWl5wYAiCZ+Mb8LPjr1g+UWWkFksLaOaEDE
-   Wl0RUAVygCrCEf/1sddyLXPZs90AJSXevY9dP33ziTBsR2R1Xg3DEvxGw
-   gO2vtGyAejworRNrhjZWPre1nzcQKwcIM7NUPwh/okU3FLbjTGCw3aY1C
-   mBRBYoZw5p1IibqroOKMsQ7NTJaNh6hrzgzqBQZ+sTifqthMSJ5yTnkNO
-   A==;
-X-CSE-ConnectionGUID: aaH+Ms/9RvO8mDow1xWXTg==
-X-CSE-MsgGUID: mLfRMpigQDymplDHuSj7tw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70083855"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="70083855"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 03:03:10 -0800
-X-CSE-ConnectionGUID: AAuJRWxgR9ieh6HtNe8Hkw==
-X-CSE-MsgGUID: 6F0HU8VTSqaAGMae1wFccg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="210237476"
-Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
-  by orviesa003.jf.intel.com with ESMTP; 20 Jan 2026 03:03:07 -0800
-From: Raag Jadav <raag.jadav@intel.com>
-To: andriy.shevchenko@linux.intel.com,
-	mika.westerberg@linux.intel.com,
-	linusw@kernel.org
-Cc: linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Raag Jadav <raag.jadav@intel.com>,
-	stable@vger.kernel.org,
-	Guido Trentalancia <guido@trentalancia.com>
-Subject: [PATCH] pinctrl: tigerlake: Add Alder Lake-P documentation
-Date: Tue, 20 Jan 2026 16:30:42 +0530
-Message-ID: <20260120110042.1021199-1-raag.jadav@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1768906857; c=relaxed/simple;
+	bh=yn5BTG+DuZvt2OZBNjq98biiKTXmNBrJkBZ9WYzifVc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Uj1GcfADjqjMQuKmMINTrxTaDXhfwUUnch4KDLnlp8LfFALicM1M+3gR3rDvyi5lyh9GprunvQ3x4XX40zU/q/8TSgQwg8fp/V9AvTlyh509bW+ZLvf0CAJOjs0MyeNBPsj/QJBtdCvGReBNJDGFqTdWUUPFwB+GrAeJse+Pg2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fnl04pfO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962F6C16AAE;
+	Tue, 20 Jan 2026 11:00:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1768906856;
+	bh=yn5BTG+DuZvt2OZBNjq98biiKTXmNBrJkBZ9WYzifVc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fnl04pfOP/XagqaGnHQfuO8Rmf5hplraQBerIHkcK6TtHfdznHbz5mGyCCioa25At
+	 CIukiEgdN4FV4Lz/aNnbDPG9kiKZAVffN/GU6gr0zbdzFGaC9kOGWCaTeuEF4I35SI
+	 XENKh4z4wuS8/uozixueG8ZPBDfVJeFmJ7SWBxtY=
+Date: Tue, 20 Jan 2026 12:00:54 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Yasushi SHOJI <yashi@spacecubics.com>
+Cc: stable@vger.kernel.org
+Subject: Re: SPI NOR: Request for Inclusion in v6.12
+Message-ID: <2026012000-sulphuric-carton-2253@gregkh>
+References: <CAGLTpnJhAgNThT=gWcpLEEFvNBwav+N=4Kf1yQK2O7T823MzEw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGLTpnJhAgNThT=gWcpLEEFvNBwav+N=4Kf1yQK2O7T823MzEw@mail.gmail.com>
+X-Rspamd-Server: lfdr
+X-Spamd-Result: default: False [3.54 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	DATE_IN_PAST(1.00)[36];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-210484-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
+	TAGGED_FROM(0.00)[bounces-210483-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[raag.jadav@intel.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,intel.com:email,intel.com:dkim,intel.com:mid,trentalancia.com:email]
-X-Rspamd-Queue-Id: 7FAF751CBD
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 12A445F9FC
 X-Rspamd-Action: no action
-X-Rspamd-Server: lfdr
 
-Intel Alder Lake-P PCH reuses pinctrl IP from Tiger Lake-LP. Add user
-friendly documentation for it.
+On Tue, Jan 20, 2026 at 07:12:32PM +0900, Yasushi SHOJI wrote:
+> Hello,
+> 
+> Please consider including the following patch series in the v6.12 LTS release.
+> These patches fix issues with the Spansion S25FS-S family of SPI NOR:
+> 
+> - e8f288a115f48: mtd: spi-nor: spansion: SMPT fixups for S25FS-S
+> - f74de390557bf: mtd: spi-nor: sfdp: introduce smpt_map_id fixup hook
+> - 653f6def567c8: mtd: spi-nor: sfdp: introduce smpt_read_dummy fixup hook
+> 
+> These patches have been tested on my Xilinx / AMD Versal boards.
+> 
+> Tudor Ambarus of SPI NOR subsystem maintainer allowed me to submit
+> to the stable tree in this conversation.
+> https://lists.infradead.org/pipermail/linux-mtd/2025-November/111104.html
 
-Cc: stable@vger.kernel.org
-Fixes: 0e793a4e2834 ("pinctrl: tigerlake: Add Alder Lake-P ACPI ID")
-Reported-by: Guido Trentalancia <guido@trentalancia.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220056
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
----
- drivers/pinctrl/intel/Kconfig | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+That seems like a "new feature", why not just use the 6.18.y kernel tree
+instead?  It is the next LTS release.
 
-diff --git a/drivers/pinctrl/intel/Kconfig b/drivers/pinctrl/intel/Kconfig
-index e4dc9ba899bd..045651fde31f 100644
---- a/drivers/pinctrl/intel/Kconfig
-+++ b/drivers/pinctrl/intel/Kconfig
-@@ -160,7 +160,9 @@ config PINCTRL_TIGERLAKE
- 	select PINCTRL_INTEL
- 	help
- 	  This pinctrl driver provides an interface that allows configuring
--	  of Intel Tiger Lake PCH pins and using them as GPIOs.
-+	  PCH pins of the following platforms and using them as GPIOs.
-+	  - Tiger Lake
-+	  - Alder Lake-P
- 
- source "drivers/pinctrl/intel/Kconfig.tng"
- endmenu
--- 
-2.43.0
+Also, we can not take patches only for older kernels, otherwise you
+would have a regression when upgrading to newer ones.
 
+thanks,
+
+greg k-h
 
