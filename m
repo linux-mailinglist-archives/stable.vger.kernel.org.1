@@ -1,156 +1,119 @@
-Return-Path: <stable+bounces-210473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163EBD3C4E7
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 11:18:41 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61946D3C513
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 11:24:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E88725CA5E0
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 09:53:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 68B0B589ACB
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 10:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AD8346AF8;
-	Tue, 20 Jan 2026 09:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6653D667C;
+	Tue, 20 Jan 2026 10:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="S3ZTfcnL";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iv+n/Nnh"
+	dkim=pass (2048-bit key) header.d=spacecubics-com.20230601.gappssmtp.com header.i=@spacecubics-com.20230601.gappssmtp.com header.b="DNY8cahH"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3FB349AE6
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 09:51:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768902708; cv=none; b=bDVFYN0DZe7WK8ESNbS13rBkoYahxufDFpjRRQlyCGZRuWBXdB99FUw+vmNE01ZLCUnCEiIGDm+5qUfWYRyrs531T7a8WXpMelITtMcJ0gxv1dtUDp1NLAAcwGBskF3wsG6GIlF0phHGgVjX4UacRWjzt7RjVKpz3ewg6LMy0C8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768902708; c=relaxed/simple;
-	bh=NieccrGv8Y3yAk5L6CmqT7DDABCkciWgrOarVxizrrI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fh1S56UTqb/y8US8f+a2lus9Z41d3Na7Flkm6QIRHteHKHqjngfOHAmDUGg1/cX4i/DleOXKxfdGB/U7Xn/mgV4UUCrH5bCPB7qbzIXdbVrpcgDAzXZZS0Z6Nq+ulwIpLg1qp0Mr/GxNStTVq4fz1cfAstKEXQmRarqKyy6mXLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=S3ZTfcnL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iv+n/Nnh; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60K33J5T3805148
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 09:51:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	mxGvupNp5SjlmR1VpxDaocdnNqxV2zg24D9F7/DU4W4=; b=S3ZTfcnLcbyRor2Z
-	rv5b/6uZKanjLL62IfALhbFP04ScBn0OLZKR+dm23KAcaThIqrY71u8jV9HLpEeb
-	orZBaUahNv9gOgyZ1zDOoI+TNYbQXfmcGoxTZjkFLgOfyWkhxAWAY9/WzRgu5G5r
-	i4mRs5u+kLzvV0Q0fATFaqX9KvdAweIWgNz0QYdamuHXm6G3FnEuvmCchiOip1DL
-	vclm8omj5XzWeDrKIptm1ANU63N7QAEEhGLEP0ATB89fYOiuWKslcVySNxsveImq
-	QaX9QMrztMSgZq6G7Zr6QpHhYv8ACH7ZnooO/O/hjeRq2eepfSjFt52PB5C36HLW
-	8yBXFA==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bt1f894hw-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 09:51:45 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8c6a87029b6so926320285a.1
-        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 01:51:45 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2884F3C008A
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 10:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768903966; cv=pass; b=upRKBcZlkhpvx3oF4yYs9ztacE84l/Td3f++Lz8bOJyFz5+rOGrQTE99BanWjb//MWF2bI5S9dCTm5SHow8fSIlGiScXbo4jLDds/WAe+luqUIHEpDE+Mvb0wZDEqPhRinqQK9R8McNXEC53IoBNCWtVlkWNSIjHDyq9qpw4kuQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768903966; c=relaxed/simple;
+	bh=QE8zcIP9hsC3ke9IyUqkzncH8PRCpWKNkwGFIBq7oUM=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=KaCxv7aoxCgd+x0rnfyf5Ns4F+rhfqjedS+fb0Q5H2CZgwtXIiCbjOhMHFezM0nvBEZcsPVmtTm2KKBR5OtBkk3tw0UyHHsBUztwc7Q5KzGBgwjOx/HtBw8uTA0NGsU1p9LhSHvviD8EZqimW2ciMlyZ/xDyN+/xpcgCopZK8jI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=spacecubics.com; spf=none smtp.mailfrom=spacecubics.com; dkim=pass (2048-bit key) header.d=spacecubics-com.20230601.gappssmtp.com header.i=@spacecubics-com.20230601.gappssmtp.com header.b=DNY8cahH; arc=pass smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=spacecubics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=spacecubics.com
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-40418578e28so1895132fac.1
+        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 02:12:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768903964; cv=none;
+        d=google.com; s=arc-20240605;
+        b=h7RjHlpt5+yPLjtDKqbcAq1LttUhe9YAHOvNJZpiMoFsMTpMhSxcy6oLwyfxNH04GV
+         5PJWUlijW7NmEyeqfBFpB4wohmkcaS+qYFDQujpRccfgLQ4uDfwTL4uuH/DOJbLXdftO
+         qLYoiBfrfpP3HMLy6mXS5C6y/Xm9yWQ8T3LMi2JirQLakwcDcHHEhfYahBMJj13VBW0z
+         QzNen+Go67xBweBDf8MbNX+lxbQpk7Et8XY2NHHI5GiOeCvuXjhsFT0WoeiAtBpLIyH6
+         6FoY4PDIttFOtHxQsOcZun6V8ajIQcAZ97EIVKG2JHOr5EuVlEduNt6X5443bBqNb6zz
+         EpDA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=Q80em5AhaoOsv/i4O9WSgxJ5iE37nwBXRddmcmckF0U=;
+        fh=RvEWwL4CdzthXqFPrJY1v5EhszSUJtREhzms1oh7XMQ=;
+        b=Iy3B2jEkf+83yVPYulABXieqGS4G4KybfDI5q44J4EbaOVHrnF2LLSmWGTWtgDRc4s
+         25RWqvsvAwzaJiUw1+pXHSqZIsK/fAVUZ6N5IftNOK92Aqe9Xr3oX0o5P802XwF8tXZ/
+         aR1e/U/r09SGYN/Qncv9Z/wC0S2m3uis0dnzInXIQIHbjOf8OUbXnfGwghcC9q34f1An
+         HS9kdvn8zcAwmAesk9lxX1k/99mCpmh6P5hY5fGFrj9DOVxQEJPFEtKzAD8JXTvAMood
+         tfnGJpP1ZQgHMEWxhn+UwLWdN3NKfKy7lUkwY6luZ7Cvkjkm2Fuf9wZ3Weujq4iBTr6f
+         ZABw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1768902704; x=1769507504; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mxGvupNp5SjlmR1VpxDaocdnNqxV2zg24D9F7/DU4W4=;
-        b=iv+n/NnhlmxycQjkj5DJCmC1O79eD/GQrGfTeJZyjmWCkONaWYkmMUa5szk0BVM+BH
-         1yxr2g19qKrBTLmDN+K6hoxL8rl3yyTMycQ+4qBRIQY76csI5w8I4UFxeFqZWscBEPru
-         jeTEkDksoyi7LRR5WDQQQNQ4RGJuttN0PZSB/IUbnEH5kEDLI+4hrWkkAcCwmcky9qeX
-         7Ka77AAr+knlglQmocbO45ZtK4r37wUnXmcS1tX22hnHkxvzlqlUMHtVzAjxD5tymv6q
-         VTa19wWQDcIDl+/Io+XJm7J26VEW1dbtl9XRo4mfwZNuPEGn5L0UUp5v2oqjiV50hUrp
-         5qvw==
+        d=spacecubics-com.20230601.gappssmtp.com; s=20230601; t=1768903964; x=1769508764; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Q80em5AhaoOsv/i4O9WSgxJ5iE37nwBXRddmcmckF0U=;
+        b=DNY8cahHdzPDCRjgO6i510NeLmT7u8ve32XxQ4Rl86komb2j433AZz2PM0+lUBJAkl
+         4/Sj2Lzdf32R+6vz4GYTxNib4pDpYrSlqp+RpKCjqIFK5Xppj+I72CtLbIzZBcqkXCa3
+         6GgPzzSoqXG49Oyjb5mcZSkUovb0UdMR93byG6vEQApFeIlHgx5Xnt4Eh70O21Che+Ga
+         BcWrkI9Ou+uVTiEGzdgog3XxxTvTuYg2D1TRAg7xrgn9rBeBwqlS5CsCmhIpkvorxCkS
+         UxZIiF1fHa2QWyF8oF99UhPLPQtEADvbrnzarI7HvCaqRbyYfyVa6E3IioS5MdxafuL6
+         QG2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768902704; x=1769507504;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mxGvupNp5SjlmR1VpxDaocdnNqxV2zg24D9F7/DU4W4=;
-        b=Os8wOazKfZE7TzNSMMp7xZ/pBKnvtXEE/Gdja5LP1OXTHSEpFb65kYjcgMWMZhyPsj
-         5i7C5SWv4FC86LKGboIzmo+yssppT//QDScyxqJoC6tUVSwcoDmahIm7goOJz8SR01K3
-         niO9QjXehN72p2nBS4ATv5QVtKkJqUG8BsXLLFzv1u67zQOmdyzpJDEApCxjWLq7elfC
-         RLNrndR4MA90ngbatIIs935YAgV7dePLqJz5XDPyVDu2jQ671tJG3OzSWN+mz6Aj9Nbp
-         P6fmjwZm4QFZNkN4rlbHnEi7MzpsXWtMvr8ahNeN60ukYGbRaofPnvG+EsTulAFGNPjj
-         Kazw==
-X-Forwarded-Encrypted: i=1; AJvYcCXGAo/pu6hCnzaG1ZVMCf3FEV03X9xFoIv8eDFTO6yNdLdD2wgTm4KLzrgdANFHQtDoD5t8zRE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSvn9KD3bapDaHX0/Lra5/PsB3NgvM9+H9p1ZxY/dD4+igUb6/
-	+2m1DT/Z4+/9kCkEw0nrskpkWhbw7V6at34/5pDzHosb6AWzZhOwzc0wJeD9NBTsqAd0vhvoNIz
-	L+/KSLhFVhYeqDl1ZIIWhI1FHnQd8SuzdPhdzUJv6/CPmGGUxZGWIv5UmMVA=
-X-Gm-Gg: AY/fxX6spypvbt0z4xxBXmZKhyhLAzE+djdPTChWh8utdWAW8ChifmkcQAhsERLnQoB
-	Fm2WiSb9CManz8qD2srbfE7u1fLx+sH8ZuFKtqMv5PiNvZu6g589Xt3kr+QCVf0VuL/qFMLMb+2
-	FtK4y0U9MqT0ouoU3+XgV5+LgFGZ/q0J9mL6bEQtodBLANUEI/ozLeI/CQSnhJXnOTMIrUq/eR0
-	6JxwC5XvjABTUTfIqZXApWaNJomWJgN/IUjHFAFUNFmj/y1fJW6tdsdSY7WwPpYBxeCMRWVM70O
-	1UMn0rUKYPrRRFgxn7LEAn2UjH9avM0oWlJ15Fb/kS4NPeNiKP6GgSSD+1wiKfbe4+EmJXZ26YH
-	Q/z6l5jt3BD8RqVmLGMl/7ShzQQNSi9VIiUMfZ8E=
-X-Received: by 2002:a05:620a:1907:b0:8c5:2ce6:dc8 with SMTP id af79cd13be357-8c6ccdab4fcmr127357285a.3.1768902704312;
-        Tue, 20 Jan 2026 01:51:44 -0800 (PST)
-X-Received: by 2002:a05:620a:1907:b0:8c5:2ce6:dc8 with SMTP id af79cd13be357-8c6ccdab4fcmr127356385a.3.1768902703919;
-        Tue, 20 Jan 2026 01:51:43 -0800 (PST)
-Received: from brgl-qcom.home ([2a01:cb1d:dc:7e00:dbd5:da08:1e47:d813])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356997e6dasm28937033f8f.32.2026.01.20.01.51.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jan 2026 01:51:43 -0800 (PST)
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-To: Bartosz Golaszewski <brgl@kernel.org>, Linus Walleij <linusw@kernel.org>,
-        Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] gpio: cdev: Fix resource leaks on errors in gpiolib_cdev_register()
-Date: Tue, 20 Jan 2026 10:51:42 +0100
-Message-ID: <176890269589.42551.4073379727829793738.b4-ty@oss.qualcomm.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260120092650.2305319-1-tzungbi@kernel.org>
-References: <20260120092650.2305319-1-tzungbi@kernel.org>
+        d=1e100.net; s=20230601; t=1768903964; x=1769508764;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q80em5AhaoOsv/i4O9WSgxJ5iE37nwBXRddmcmckF0U=;
+        b=J8YkMG/OskBR793JlZ/32NmsT698ISLDgbxJsKz65BA7GI2j3CH6GFzJEmz2Poxn0t
+         K3YTALr1LZ6mSwOcLLuy6PVnygsNc5VXCrd1kNPZZNlpBO3hnDqeWoY62ZYQPkaQDd/c
+         VUwzL5cw10dzxm8QSPkC3Ifgb1F1gDZg5HAR21qhAWF8qxpsaxO0b2tlPE8LZC0ilZsl
+         Qob2Tp1uQczMnTbQBAtxTJmiDjt8hwMRLUdsvqK+VTtHvCdmyeOLcR/GdGNpkP8DQz6O
+         CgQT86WLcuilpouT3OaG5YrVoH4V/xDm595Qf+QJ0j2w64YuuGQuj4wJK1KWau4pD4UF
+         noaA==
+X-Gm-Message-State: AOJu0Yz6b7gLyGZ30mqjhYhJHFlVjEESoxlN0qeVVjA8r9quGCUPbtV2
+	xjtpuWB6hHkhVVgWI8UuUxM5g8Wy/ZyE9IFBHi2G+BlEaO0NJFxj02XtaaSPnQDvfJ9cij3zmzA
+	DxOWbhcQUEatiuuDfgrBUbjp+apMVYQNc0NBDIG7ZfiLyxZ4z89vzr1w=
+X-Gm-Gg: AY/fxX4NCBDQdLUgaslRMkIZX/J73vVTYtVYqm5iacaSpSGzvsZgrFbITEMCjQJXoVu
+	A57J5E5wBVedw9a7PL1y1IV80/SW7/3kD8XF/XPySqFSG0yUELTJxRCFzVxCfbJrTQtPkbvZakE
+	5iQvflPqZdJKwqoGuOc61MsBExhd71mljkvvxyeAk7CkjiOKI5q7QN3jPm2oaM2lhKqZechCKv+
+	v1iBdJ5GsUiNpt2CD/fK2h47E45wGbqktxvTL8lR0KmAu7Lpcz22FTban24jXuKM333CTSX
+X-Received: by 2002:a05:6870:831f:b0:3ec:8851:54d2 with SMTP id
+ 586e51a60fabf-4044cdfb96fmr7249677fac.21.1768903963876; Tue, 20 Jan 2026
+ 02:12:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDA4MSBTYWx0ZWRfX8zymFsB9FTxm
- GRx7A5ZIq9fljF1rBhSRIp0e37EycCLOGmNaixLufky7n68j2GKnX+BwBRJgMByHC0Q11BMH80n
- RK/GPZqbm0uYS3Q/Hm05i9PeLHtsDckgNoUlQERIpvCegd37EKr3LgViAbZ8Lgzq992zf4405FF
- Z1eFCMEzDbDeCTPGm+Qyte91yrZFNDk+0Yd+JbQnpH2h9lRHwH+tPf+9bvGXGVsLM7zMcFnwHwo
- Vqw/1y7tnrt7yoGCot3GLWj6sC/0Fec2ThmPWsHtD1qxbP4dy5CrExotrMzYyKmhLExVVYs7dae
- Lorj0JPb/lyt86zEUFOioMQFS6m6YUPy9v/FSBfsJFhEzERgxdk7Ycq60xxDuVl0RViRQK3H5WB
- IcBU0lEyOtUkGiYzedlye242yjWJzfHMFeEn5ZE/TMyCudDPOBvnCEIti8NsFJH2DdKm54eSkmc
- YfAJbri/j8GqBbwtZKA==
-X-Proofpoint-GUID: jQRoa9dbDDqo8_0wJs4Pw9QGOvx3ocwb
-X-Proofpoint-ORIG-GUID: jQRoa9dbDDqo8_0wJs4Pw9QGOvx3ocwb
-X-Authority-Analysis: v=2.4 cv=LdQxKzfi c=1 sm=1 tr=0 ts=696f5031 cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=EUspDBNiAAAA:8 a=Qk74ZuyOwNiI-SMmqgUA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-20_02,2026-01-19_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 bulkscore=0 clxscore=1015 impostorscore=0 spamscore=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 suspectscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2601200081
+From: Yasushi SHOJI <yashi@spacecubics.com>
+Date: Tue, 20 Jan 2026 19:12:32 +0900
+X-Gm-Features: AZwV_Qi7i08wQscDx24eGpuwY73mWj4O6CAIEFuN8dpbtr4mBzxA3AxA0gdNtFs
+Message-ID: <CAGLTpnJhAgNThT=gWcpLEEFvNBwav+N=4Kf1yQK2O7T823MzEw@mail.gmail.com>
+Subject: SPI NOR: Request for Inclusion in v6.12
+To: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+Hello,
 
-On Tue, 20 Jan 2026 09:26:50 +0000, Tzung-Bi Shih wrote:
-> On error handling paths, gpiolib_cdev_register() doesn't free the
-> allocated resources which results leaks.  Fix it.
-> 
-> 
+Please consider including the following patch series in the v6.12 LTS release.
+These patches fix issues with the Spansion S25FS-S family of SPI NOR:
 
-Applied, thanks!
+- e8f288a115f48: mtd: spi-nor: spansion: SMPT fixups for S25FS-S
+- f74de390557bf: mtd: spi-nor: sfdp: introduce smpt_map_id fixup hook
+- 653f6def567c8: mtd: spi-nor: sfdp: introduce smpt_read_dummy fixup hook
 
-[1/1] gpio: cdev: Fix resource leaks on errors in gpiolib_cdev_register()
-      commit: 8a8c942cad4cd12f739a8bb60cac77fd173c4e07
+These patches have been tested on my Xilinx / AMD Versal boards.
+
+Tudor Ambarus of SPI NOR subsystem maintainer allowed me to submit
+to the stable tree in this conversation.
+https://lists.infradead.org/pipermail/linux-mtd/2025-November/111104.html
 
 Best regards,
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+            yashi
 
