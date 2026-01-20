@@ -1,153 +1,137 @@
-Return-Path: <stable+bounces-210550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eLRhDS5FcWn2fgAAu9opvQ
-	(envelope-from <stable+bounces-210550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 22:29:18 +0100
+	id UHdwJ8t+cGktYAAAu9opvQ
+	(envelope-from <stable+bounces-210552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 08:22:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A045E0E0
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 22:29:17 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id D50DC52C23
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 08:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 42EC590ADF1
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 13:48:13 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 97D4A725B98
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 13:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D17438FEF;
-	Tue, 20 Jan 2026 13:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64375439002;
+	Tue, 20 Jan 2026 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PXOhZkWm"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="HTe8UjMP"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F3E42EEC4;
-	Tue, 20 Jan 2026 13:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A249543634B;
+	Tue, 20 Jan 2026 13:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768916814; cv=none; b=ROc/vWLfCpintmrUyZouoCqb3+cCMAmPb2WwEYDj1sWsiqzw+i8YMmHbfcxIg3TXOPpYU9K9ZatIbBiqFSvJKJJxoP0aLEfERDZRkjpngrNbQCqGICNFsFvUHqNZMJBQotaVrlJC2P9CQzJtsaF77P6qbP9+dHsqA8w0kdpIxV0=
+	t=1768916907; cv=none; b=EAhEvJaVCXDqrhSgu2h32lBKtSiLKjGFIyGwPbDaaywYvFIvM9aTSw6jggvO+xN216JLUOYB7XIN/xY2M3K1uUqxdy7ProNy+vHp/wEpeWFk3goRyavSTPCijUrxJ1dvmD87SOgjNK6PEtFkUBe1HdkoxbyN/5BVbzPCEpWfukk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768916814; c=relaxed/simple;
-	bh=ZJcYNTdij+GVlvAMKN2o5xPtEZvqHrO1C1wRwO6SMNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a6hWlLUSQhYmSiMEJU+plToVBb7vV4vCDg5Y9QlfAUleqS+QbNehbyX1xHpUqYgBhDvRGN8+Zq0SyN299+ue9WHMLttMGY1iLhIbT88nGj/Fpdih3h6POtDkoDST4FHMxGEk9hlgQDX8O4LCtPZQUbSyByVoCFExlZxMWYrQOng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PXOhZkWm; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768916812; x=1800452812;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ZJcYNTdij+GVlvAMKN2o5xPtEZvqHrO1C1wRwO6SMNw=;
-  b=PXOhZkWmCsljm50zim7bl0cf/uWRrTWLeF7CxAlDzZTmv2NfxievYk7B
-   eWmR4PfzQRbF3WQsC7vSDVwZZlu3T5130Tjfp+j2/7hrmJf/5Yz+txPdO
-   WKoa8E4bk60em30lS38hMLjFg+XeIc96OW5BzWd5hcZLH1ZLxp+0c0lAI
-   okKethN75yY/OjsNyaO6GH6cQo0o7ilwKRos8XElcgdm76z45PPlI4Sfy
-   ymudNpgm2EAsKpxwRL40N6MoJxMvGJI0WGJdjCKTZP7h8Pio65P1VMGmQ
-   otv1sFk5C9fELQcAS3KVTZuq1Eo24TAMkuouNUPe2znbtS22c33W7qwKi
-   g==;
-X-CSE-ConnectionGUID: xUlccsRPQ/O7TOO+RbQPUQ==
-X-CSE-MsgGUID: ehHUcfN7TmOeUSfq7A6PBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70177786"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="70177786"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:46:51 -0800
-X-CSE-ConnectionGUID: zuFigJWYSvONGH+WK62IxQ==
-X-CSE-MsgGUID: VS2Y05uUTGmUsGhVKcxZJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="206162969"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.240])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:46:48 -0800
-Date: Tue, 20 Jan 2026 15:46:46 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Raag Jadav <raag.jadav@intel.com>
-Cc: mika.westerberg@linux.intel.com, linusw@kernel.org,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Guido Trentalancia <guido@trentalancia.com>
-Subject: Re: [PATCH] pinctrl: tigerlake: Add Alder Lake-P documentation
-Message-ID: <aW-HRvqc40ja60cF@smile.fi.intel.com>
-References: <20260120110042.1021199-1-raag.jadav@intel.com>
+	s=arc-20240116; t=1768916907; c=relaxed/simple;
+	bh=DdCeDquolF/w7F6B01lbUF/rIeGCTbJAYlhr8LWHkJ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KNI2YjCQxUYqED0XJSTECT7G4YqRxOszl2iv+IdTAnr86H7tGGK1M+v/mbsh9Yqo1yTW03Efr4h1Jycz4WxKK4oQn1VT719u5NGwJDUPTOopUm8gcsqEiyFWIwg8kiNEnIpNMVykMFCwbAxzT7IOEkDMh3q4wgXWU/7uTGw4WJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=HTe8UjMP; arc=none smtp.client-ip=199.89.1.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dwTDn1j0Jzlfl8N;
+	Tue, 20 Jan 2026 13:48:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1768916902; x=1771508903; bh=SOAdpbDm0eHpipCEaZSPiJYY
+	fuJseVJynyq5vsxpEV0=; b=HTe8UjMPTjFI9fuDL/EbKshTsyDMz8UC31uq9k1O
+	Cfy33tTlYI5lLEnOH0qyyH1qVdEMv+/PgjXJ8bQKvhgP9DNWjIhegnWrnqd6He9q
+	lGjsPcxa63+y29eQGndXn5GOzJ1Fav8lDjmnjcxuSo/j0FlHmMojrSR1Pn0z4WUx
+	OFvKWP7SRWTB4vZ/j2dsu/aujjuu8Mv4+wtauAAGawlQvAmKtOrrGFfqqltPyxSF
+	yzPSkobUXBU0Jrz5rNnsCRI51UVfEXB116vMtHoaqYO2R2g1YzqveQbNHCX1bBd/
+	e7q5iMjhhmSSpyGE9opMZ/+oJhBRldiPMP+4q64iaxhGQg==
+X-Virus-Scanned: by MailRoute
+Received: from 013.lax.mailroute.net ([127.0.0.1])
+ by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id TM8u1GgFmxyU; Tue, 20 Jan 2026 13:48:22 +0000 (UTC)
+Received: from [192.168.50.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dwTDf2ftVzlfpMC;
+	Tue, 20 Jan 2026 13:48:18 +0000 (UTC)
+Message-ID: <ac604919-1620-4fea-9401-869fd15f3533@acm.org>
+Date: Tue, 20 Jan 2026 05:48:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260120110042.1021199-1-raag.jadav@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Spamd-Result: default: False [-0.96 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scsi: target: Fix recursive locking in
+ __configfs_open_file()
+To: Prithvi <activprithvi@gmail.com>
+Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-kernel@vger.kernel.org, hch@lst.de,
+ jlbec@evilplan.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org,
+ david.hunter.linux@gmail.com, khalid@kernel.org,
+ syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260108191523.303114-1-activprithvi@gmail.com>
+ <2f88aa9b-b1c2-4b02-81e8-1c43b982db1b@acm.org>
+ <20260119185049.mvcjjntdkmtdk4je@inspiron>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20260119185049.mvcjjntdkmtdk4je@inspiron>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DATE_IN_PAST(1.00)[31];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[acm.org:s=mr01];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-210550-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210552-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[oracle.com,vger.kernel.org,lst.de,evilplan.org,lists.linux.dev,linuxfoundation.org,gmail.com,kernel.org,syzkaller.appspotmail.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[acm.org,reject];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 99A045E0E0
+	FROM_NEQ_ENVFROM(0.00)[bvanassche@acm.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[acm.org:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,f6e8174215573a84b797];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,acm.org:mid,acm.org:dkim]
+X-Rspamd-Queue-Id: D50DC52C23
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jan 20, 2026 at 04:30:42PM +0530, Raag Jadav wrote:
-> Intel Alder Lake-P PCH reuses pinctrl IP from Tiger Lake-LP. Add user
-> friendly documentation for it.
+On 1/19/26 10:50 AM, Prithvi wrote:
+>   Possible unsafe locking scenario:
+> 
+>         CPU0
+>         ----
+>    lock(&p->frag_sem);
+>    lock(&p->frag_sem);
+The least intrusive way to suppress this type of lockdep complaints is
+by using lockdep_register_key() and lockdep_unregister_key().
 
-Thanks for doing this!
+Thanks,
 
-Side note, though: this is not the only driver suffering of the similar issue.
-Can you address them all?
-
-...
-
->  	select PINCTRL_INTEL
->  	help
->  	  This pinctrl driver provides an interface that allows configuring
-> -	  of Intel Tiger Lake PCH pins and using them as GPIOs.
-> +	  PCH pins of the following platforms and using them as GPIOs.
-> +	  - Tiger Lake
-
-We also have letter suffix for the above. Does this driver covers _all_ Tiger
-Lake modifications?
-
-If so, I would do
-
-	  - Tiger Lake (all modifications)
-
-> +	  - Alder Lake-P
-
-I can tweak this when applying if confirmed, otherwise we would need
-a revisit v2.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Bart.
 
