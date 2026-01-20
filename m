@@ -1,145 +1,260 @@
-Return-Path: <stable+bounces-210554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CD4PBeGtb2nxEwAAu9opvQ
-	(envelope-from <stable+bounces-210554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:31:29 +0100
+	id EMWiLQu6b2kOMQAAu9opvQ
+	(envelope-from <stable+bounces-210555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:23:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B6447945
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:31:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AEF4487C2
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:23:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0C2C07826EC
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 14:41:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 21E40780765
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 14:45:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72BF40FD9D;
-	Tue, 20 Jan 2026 14:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D937A407596;
+	Tue, 20 Jan 2026 14:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IVXvK30T"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OT1RdLuF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C112340B6E2;
-	Tue, 20 Jan 2026 14:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DBE1F37D4
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 14:35:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768919572; cv=none; b=UxORc7ctpQuI9gp7RrTtSuZLvf+Dq34QhAiRrFTvgz1bTGYdxRrPxVtXsAzEckHd/WpzEGZsXGNKILNwEFsWP41s97iZ8oUr1DnXMIIs9DPr9tnpFmYaMkDB1LgH7854SjHsjrfvtQgD4pY/+NwvJwJ5osMw+RD80s4KIrCMzEg=
+	t=1768919728; cv=none; b=u+E2ng0ogYGeRqJp6Il7l478H6PisYpiv9PzSdK2JcGfDQBRRMChN0WLGxc3FmImUuz+F0reMo/GgSD5okYMrMM+mUPZJrxGk7msnn+xV+reZa0yByjlTGgHkZbNl00MlBnpx8Z7bRj2CVp3NPHImxsTh9b0S8ZcewN0j04bJSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768919572; c=relaxed/simple;
-	bh=uns2v8KH7FKm99rtF8K7XsF8bh+wgH8xOaw9xwuiFbY=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=NOWZUyCkQbVNZK8UnFKGrjtMXQAv7qQgOQ0RXAy76k0tLj01IMes8fJ144DOuQzS6JrX1pCIZSEkuk9aZLO1R9vWUTzuJwvwdwwFKGNI+QSW5PQij8JBYVA1IfUsn5qOuCtGtXW2YsDxuUk3N0p9igvq2Sqm6PHL/ju+k7N/uGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IVXvK30T; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 34C011A2965;
-	Tue, 20 Jan 2026 14:32:47 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0777B606AB;
-	Tue, 20 Jan 2026 14:32:47 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0BCC610B6B3C2;
-	Tue, 20 Jan 2026 15:32:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768919566; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=CnR4HH0qbA5JMdYprFWKRDPXqXPpkZ+LLXc3tQitS84=;
-	b=IVXvK30TnSaepMj69bYNn55/lQxwgSv1HQzFNJJIZOQbbC4QqLAHwPsE44r8RFYo9uc7AL
-	1X47C3e+f4USmaWZ9TvXrF4Jluk+xG4bUi7Pdbpt7BhP1K2QZBjaWpwt+kif1ykOyWSU/B
-	osFs2+I54bNKxMzJ0I7VCyqXKVY5NdoU+0FQz+MPUf98xintblaldXhpYdNBugVwN8sHBh
-	ZLCjOnjo8qIiK8AfGbJBQdLGQJOKjAR9QrI4NVHW93vM+/jIC4LBL7aeO7WzZAxMiyYGbp
-	UF+tiQmAUU0Yn1UdnQzF9KAy6qJjfU3O13QiG0ExWcIcQaPRAymf4dUG5290Eg==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Andy Yan <andy.yan@rock-chips.com>, 
- Osama Abdelkader <osama.abdelkader@gmail.com>
-Cc: stable@vger.kernel.org, Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260102155553.13243-1-osama.abdelkader@gmail.com>
-References: <20260102155553.13243-1-osama.abdelkader@gmail.com>
-Subject: Re: [PATCH v3] drm/bridge: synopsys: dw-dp: fix error paths of
- dw_dp_bind
-Message-Id: <176891955882.652956.206927403017627596.b4-ty@bootlin.com>
-Date: Tue, 20 Jan 2026 15:32:38 +0100
+	s=arc-20240116; t=1768919728; c=relaxed/simple;
+	bh=CcR8WWhjCXEIGjN5Z77f7XLe7vIqq2ciTdPVJ57DYQE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dz56iJ+8v74rKBBGeQA2xW/3VH0r6NG1ta2jbbZTM7VBsR/GiGEywEhVMJLwK2YuO3p+zfrb/5EN/YMIhP8Rk59p6rAR2bcdnH2yGQZlG6ir7XnpxUGjsDPgsT8tJu3jA2WWr+ibXSGLogaCxV02PmzRbjZhKuNdm9CTU8rbJI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OT1RdLuF; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768919726; x=1800455726;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=CcR8WWhjCXEIGjN5Z77f7XLe7vIqq2ciTdPVJ57DYQE=;
+  b=OT1RdLuFeiddAeYVGv/nRUJ02b6E8FQh+4s2nypuc6kNHbD/kwd2zYf5
+   TGFe7i50f6SVPFw+f678IFVwnHsFJCDnvOV++CIytrKep58i0qXm120UZ
+   a6t+Vbqn+Iv1s4R0jzzQoEoM3UPPLNQQwv+BUy/CLGdrBSnjv6TOKMTEu
+   Ih8L7hX/Wkq91mAu+udbIXNYSnBUCt/4oJsQnjssYbLqQmTQa5sHxy9G4
+   fU7xVzTh1H0HWLhj+wF1Vr/2BI9gLLb4om3ha5hijFclL8pqIDvNd4fQh
+   1Qps0RRZWw5ZaLtMQEnTtRAeBp1d641Lto1fOmvj9THO4lFiTx1AX9H/y
+   g==;
+X-CSE-ConnectionGUID: hzLMRYLDTPW9o+FCWBRhtA==
+X-CSE-MsgGUID: OshxUPrBTJiHCN11nRbVWA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11677"; a="69327962"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="69327962"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 06:35:25 -0800
+X-CSE-ConnectionGUID: Q2M738IbT/OJ/ksNIpAHYg==
+X-CSE-MsgGUID: jfckAYjmQLWCm7UsLMNjHg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="206171973"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO fedora) ([10.245.244.250])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 06:35:24 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] drm, drm/xe: Fix xe userptr in the absence of CONFIG_DEVICE_PRIVATE
+Date: Tue, 20 Jan 2026 15:34:58 +0100
+Message-ID: <20260120143459.9485-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260120143459.9485-1-thomas.hellstrom@linux.intel.com>
+References: <20260120143459.9485-1-thomas.hellstrom@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210554-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
+	TAGGED_FROM(0.00)[bounces-210555-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[rock-chips.com,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,oss.qualcomm.com,lists.freedesktop.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[bootlin.com,reject];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
 	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,bootlin.com:email,bootlin.com:dkim,bootlin.com:mid]
-X-Rspamd-Queue-Id: 98B6447945
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[thomas.hellstrom@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linux.intel.com:mid,intel.com:email,intel.com:dkim,lists.freedesktop.org:email]
+X-Rspamd-Queue-Id: 5AEF4487C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+CONFIG_DEVICE_PRIVATE is not selected by default by some distros,
+for example Fedora, and that leads to a regression in the xe driver
+since userptr support gets compiled out.
 
-On Fri, 02 Jan 2026 16:55:52 +0100, Osama Abdelkader wrote:
-> Fix several issues in dw_dp_bind() error handling:
-> 
-> 1. Missing return after drm_bridge_attach() failure - the function
->    continued execution instead of returning an error.
-> 
-> 2. Resource leak: drm_dp_aux_register() is not a devm function, so
->    drm_dp_aux_unregister() must be called on all error paths after
->    aux registration succeeds. This affects errors from:
->    - drm_bridge_attach()
->    - phy_init()
->    - devm_add_action_or_reset()
->    - platform_get_irq()
->    - devm_request_threaded_irq()
-> 
-> [...]
+It turns out that DRM_GPUSVM, which is needed for xe userptr support
+compiles also without CONFIG_DEVICE_PRIVATE, but doesn't compile
+without CONFIG_ZONE_DEVICE.
+Exclude the drm_pagemap files from compilation with !CONFIG_ZONE_DEVICE,
+and remove the CONFIG_DEVICE_PRIVATE dependency from CONFIG_DRM_GPUSVM and
+the xe driver's selection of it, re-enabling xe userptr for those configs.
 
-Applied, thanks!
+v2:
+- Don't compile the drm_pagemap files unless CONFIG_ZONE_DEVICE is set.
+- Adjust the drm_pagemap.h header accordingly.
 
-[1/1] drm/bridge: synopsys: dw-dp: fix error paths of dw_dp_bind
-      commit: 1a0f69e3c28477b97d3609569b7e8feb4b6162e8
+Fixes: 9e9787414882 ("drm/xe/userptr: replace xe_hmm with gpusvm")
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.18+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ drivers/gpu/drm/Kconfig    |  2 +-
+ drivers/gpu/drm/Makefile   |  4 +++-
+ drivers/gpu/drm/xe/Kconfig |  2 +-
+ include/drm/drm_pagemap.h  | 18 ++++++++++++++----
+ 4 files changed, 19 insertions(+), 7 deletions(-)
 
-Best regards,
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index a33b90251530..d3d52310c9cc 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -210,7 +210,7 @@ config DRM_GPUVM
+ 
+ config DRM_GPUSVM
+ 	tristate
+-	depends on DRM && DEVICE_PRIVATE
++	depends on DRM
+ 	select HMM_MIRROR
+ 	select MMU_NOTIFIER
+ 	help
+diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
+index 0deee72ef935..0c21029c446f 100644
+--- a/drivers/gpu/drm/Makefile
++++ b/drivers/gpu/drm/Makefile
+@@ -108,9 +108,11 @@ obj-$(CONFIG_DRM_EXEC) += drm_exec.o
+ obj-$(CONFIG_DRM_GPUVM) += drm_gpuvm.o
+ 
+ drm_gpusvm_helper-y := \
+-	drm_gpusvm.o\
++	drm_gpusvm.o
++drm_gpusvm_helper-$(CONFIG_ZONE_DEVICE) += \
+ 	drm_pagemap.o\
+ 	drm_pagemap_util.o
++
+ obj-$(CONFIG_DRM_GPUSVM) += drm_gpusvm_helper.o
+ 
+ obj-$(CONFIG_DRM_BUDDY) += drm_buddy.o
+diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
+index 4b288eb3f5b0..c34be1be155b 100644
+--- a/drivers/gpu/drm/xe/Kconfig
++++ b/drivers/gpu/drm/xe/Kconfig
+@@ -39,7 +39,7 @@ config DRM_XE
+ 	select DRM_TTM
+ 	select DRM_TTM_HELPER
+ 	select DRM_EXEC
+-	select DRM_GPUSVM if !UML && DEVICE_PRIVATE
++	select DRM_GPUSVM if !UML
+ 	select DRM_GPUVM
+ 	select DRM_SCHED
+ 	select MMU_NOTIFIER
+diff --git a/include/drm/drm_pagemap.h b/include/drm/drm_pagemap.h
+index 46e9c58f09e0..2baf0861f78f 100644
+--- a/include/drm/drm_pagemap.h
++++ b/include/drm/drm_pagemap.h
+@@ -243,6 +243,8 @@ struct drm_pagemap_devmem_ops {
+ 			   struct dma_fence *pre_migrate_fence);
+ };
+ 
++#if IS_ENABLED(CONFIG_ZONE_DEVICE)
++
+ int drm_pagemap_init(struct drm_pagemap *dpagemap,
+ 		     struct dev_pagemap *pagemap,
+ 		     struct drm_device *drm,
+@@ -252,17 +254,22 @@ struct drm_pagemap *drm_pagemap_create(struct drm_device *drm,
+ 				       struct dev_pagemap *pagemap,
+ 				       const struct drm_pagemap_ops *ops);
+ 
+-#if IS_ENABLED(CONFIG_DRM_GPUSVM)
++struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
+ 
+ void drm_pagemap_put(struct drm_pagemap *dpagemap);
+ 
+ #else
+ 
++static inline struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page)
++{
++	return NULL;
++}
++
+ static inline void drm_pagemap_put(struct drm_pagemap *dpagemap)
+ {
+ }
+ 
+-#endif /* IS_ENABLED(CONFIG_DRM_GPUSVM) */
++#endif /* IS_ENABLED(CONFIG_ZONE_DEVICE) */
+ 
+ /**
+  * drm_pagemap_get() - Obtain a reference on a struct drm_pagemap
+@@ -334,6 +341,8 @@ struct drm_pagemap_migrate_details {
+ 	u32 source_peer_migrates : 1;
+ };
+ 
++#if IS_ENABLED(CONFIG_ZONE_DEVICE)
++
+ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+ 				  struct mm_struct *mm,
+ 				  unsigned long start, unsigned long end,
+@@ -343,8 +352,6 @@ int drm_pagemap_evict_to_ram(struct drm_pagemap_devmem *devmem_allocation);
+ 
+ const struct dev_pagemap_ops *drm_pagemap_pagemap_ops_get(void);
+ 
+-struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
+-
+ void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
+ 			     struct device *dev, struct mm_struct *mm,
+ 			     const struct drm_pagemap_devmem_ops *ops,
+@@ -359,4 +366,7 @@ int drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
+ void drm_pagemap_destroy(struct drm_pagemap *dpagemap, bool is_atomic_or_reclaim);
+ 
+ int drm_pagemap_reinit(struct drm_pagemap *dpagemap);
++
++#endif /* IS_ENABLED(CONFIG_ZONE_DEVICE) */
++
+ #endif
 -- 
-Luca Ceresoli <luca.ceresoli@bootlin.com>
+2.52.0
 
 
