@@ -1,197 +1,191 @@
-Return-Path: <stable+bounces-210556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJ75M82zb2nHMAAAu9opvQ
-	(envelope-from <stable+bounces-210556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:56:45 +0100
+	id wLt5BeTDb2lsMQAAu9opvQ
+	(envelope-from <stable+bounces-210557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:05:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7810748114
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:56:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CC194913B
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:05:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 35647787C82
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 14:50:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AD0C47C0AE7
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285E04418FC;
-	Tue, 20 Jan 2026 14:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5B743DA26;
+	Tue, 20 Jan 2026 14:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="wlp0I5GK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHtlT1ph"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A09A3E9598;
-	Tue, 20 Jan 2026 14:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692601F1304
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 14:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768920082; cv=none; b=s37pxWtWRWKHhMoH2XWKWfoOH+LEWOxGPc0zzhQxpQQzPcnXtVTKiYZWP8x5UAPce20+UnJjNRbhGpznz1ibMm9Bv0YxRsDqN29EYP71ubHGeLcWMkF1Ks9m9ygqaD0B1+GK8ezxUd33Y4Dw+yi8lyzsZrdePk/UYgvjfivkvns=
+	t=1768921153; cv=none; b=IBaIMw6okOLDFUWVuz68c5fkoWz0zUMIFhDNS2j81G+uFjVxXzYSbp9BdqekWAYdww+98q02IPAbtUrC/qluotp3voWM6+5DSrshfTMBkarYsL7rusw0JUhMSgcDm16AGmmralgHeEZzgRHgXSydg1ipTGEnnFoSkhx3zeb+fdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768920082; c=relaxed/simple;
-	bh=0eliuaQZWNTt7WLgFve+O+VDDRcSouQfwZyXuVgVuh8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BHyWSQYAcaR7cejvhrFBrQqAo2+XS0syyEn/EJr87nQhpPPkK2MQW9II5wu05xVSvfiStSrmVd9qAiU10HUhyI9Py7yDUewT+BtvrXoeCKDF+7ArJH7Q4zHjYeyiwipBa7fLzMHOXZ/7343ktWnzrfBf5zT3qDCmi8OqZR91fW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=wlp0I5GK; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=Sag+H/BhPZ45KSkJ6zCyuoYRKvuE9xHt5nOXwQMVW40=; b=wlp0I5GKmkHGAajTVUbav838z3
-	6hqseOEREYnEOKPj/nmBZZi/VZDgF5D6MNyxqFPU0be0Ids+mGYNL/DbmmjFKW4UL4X6Tf1IlNKzw
-	2JzL/ufy7vBtteFvAA/uIQ5jhdJxU2d6EgQCECbgueW+iOAHk4zaAZpdf2gq4EPJEkAonK0ZmGJor
-	q/T/DsRgoreG3A+qEK9gcRNjJr1I2sbYzd4U6W28Wat5tRGRkkLU4d7BIM9N9WbUzE1uQBE5g4FIL
-	GgmOdXHfV96fRHsRrGuSGsgbYEwHLdEDX/quh3UR2izo/uXGz5y4QsnuixAmOxjB3EjGTaqorYDcZ
-	cG+3jzaA==;
-Received: from i53875a75.versanet.de ([83.135.90.117] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1viCuo-003T50-Vr; Tue, 20 Jan 2026 15:41:07 +0100
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: Quentin Schulz <quentin.schulz@cherry.de>,
- Alexey Charkov <alchark@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Shawn Lin <shawn.lin@rock-chips.com>,
- Manivannan Sadhasivam <mani@kernel.org>, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject:
- Re: [PATCH v2] arm64: dts: rockchip: Explicitly request UFS reset pin on
- RK3576
-Date: Tue, 20 Jan 2026 15:41:06 +0100
-Message-ID: <4830042.taCxCBeP46@diego>
-In-Reply-To:
- <CABjd4YwAMbH21jcjhks7ThoXzcF8GeOzBPYDvN+7cip0iA6stg@mail.gmail.com>
-References:
- <20260120-ufs-rst-v2-1-b5735f1996f6@gmail.com>
- <9e51b504-e0f0-4d17-baa2-387339507c86@cherry.de>
- <CABjd4YwAMbH21jcjhks7ThoXzcF8GeOzBPYDvN+7cip0iA6stg@mail.gmail.com>
+	s=arc-20240116; t=1768921153; c=relaxed/simple;
+	bh=cuL1B56TlRUvHvSctfLn/OK+DYnPscZnjnsPsUsYCC8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iyOFvkWXHQw38sd2wbvcxIcNI+AJd7HgZ+h57KYdDhT9dTldapvKKoYwSBEt5LBgHGPCS05dWVMWrxwlIixqctq+Gtb10mBJ6ZfN+6xOGT9nwVxffM4fwiBZucOEFbYCkSVFSMwiiko3fFzdkSgp6/N6aBAbTotyprqObhd4ELQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHtlT1ph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B78AC16AAE;
+	Tue, 20 Jan 2026 14:59:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1768921152;
+	bh=cuL1B56TlRUvHvSctfLn/OK+DYnPscZnjnsPsUsYCC8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=nHtlT1ph6q+c8TyBQgEa5USKPQ52hvFxiUZ7T12M1Cqvq9LirlbSmfvt7Q1DdxH4Q
+	 leMciGBb/qAhUKfDjlwmdB2cajECFmBelIZjDFQOIZVJ7J70W/RU0/2ZZwyMeidnj4
+	 pi4mMoqBTznfi9jgv17M4gOrKC7OeaaSXcdjslXU=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Initialise backlight level values from hw" failed to apply to 6.12-stable tree
+To: vivek@collabora.com,alexander.deucher@amd.com,superm1@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 20 Jan 2026 15:59:10 +0100
+Message-ID: <2026012010-maybe-province-85bf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.54 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[sntech.de:s=gloria202408];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[cherry.de,gmail.com];
-	TAGGED_FROM(0.00)[bounces-210556-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210557-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[sntech.de:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[heiko@sntech.de,stable@vger.kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[sntech.de,none];
-	TAGGED_RCPT(0.00)[stable,dt];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,cherry.de:email,sntech.de:dkim,2a2d0000:email]
-X-Rspamd-Queue-Id: 7810748114
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,collabora.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,amd.com:email,gregkh:email]
+X-Rspamd-Queue-Id: 8CC194913B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Am Dienstag, 20. Januar 2026, 14:14:48 Mitteleurop=C3=A4ische Normalzeit sc=
-hrieb Alexey Charkov:
-> On Tue, Jan 20, 2026 at 5:00=E2=80=AFPM Quentin Schulz <quentin.schulz@ch=
-erry.de> wrote:
-> >
-> > Hi Alexey,
-> >
-> > On 1/20/26 1:53 PM, Alexey Charkov wrote:
-> > > Rockchip RK3576 UFS controller uses a dedicated pin to reset the conn=
-ected
-> > > UFS device, which can operate either in a hardware controlled mode or=
- as a
-> > > GPIO pin.
-> > >
-> > > Power-on default is GPIO mode, but the boot ROM reconfigures it to a
-> > > hardware controlled mode if it uses UFS to load the next boot stage.
-> > >
-> > > Given that existing bindings (and rk3576.dtsi) expect a GPIO-controll=
-ed
-> > > device reset, request the required pin config explicitly.
-> > >
-> > > This doesn't appear to affect Linux, but it does affect U-boot:
-> > >
-> > > Before:
-> > > =3D> md.l 0x2604b398
-> > > 2604b398: 00000011 00000000 00000000 00000000  ................
-> > > < ... snip ... >
-> > > =3D> ufs init
-> > > ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=3D[3, 3], lane[2, 2], =
-pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate =3D 2
-> > > =3D> md.l 0x2604b398
-> > > 2604b398: 00000011 00000000 00000000 00000000  ................
-> > >
-> > > After:
-> > > =3D> md.l 0x2604b398
-> > > 2604b398: 00000011 00000000 00000000 00000000  ................
-> > > < ... snip ...>
-> > > =3D> ufs init
-> > > ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=3D[3, 3], lane[2, 2], =
-pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate =3D 2
-> > > =3D> md.l 0x2604b398
-> > > 2604b398: 00000010 00000000 00000000 00000000  ................
-> > >
-> > > (0x2604b398 is the respective pin mux register, with its BIT0 driving=
- the
-> > > mode of UFS_RST: unset =3D GPIO, set =3D hardware controlled UFS_RST)
-> > >
-> > > This helps ensure that GPIO-driven device reset actually fires when t=
-he
-> > > system requests it, not when whatever black box magic inside the UFSHC
-> > > decides to reset the flash chip.
-> > >
-> >
-> > Would have liked a mention on why pull-down in the commit log.
->=20
-> Indeed. Heiko, if you're going to apply this to your tree, would you
-> mind amending the commit description with something like the
-> following?
->=20
-> The pin is requested with pull-down enabled, which is in line with the
-> SoC power-on default and helps ensure that the attached UFS chip stays
-> in reset until the driver takes over the control of the respective
-> GPIO line.
 
-Will do :-)
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Heiko
+To reproduce the conflict and resubmit, you may use the following commands:
 
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 52d3d115e9cc975b90b1fc49abf6d36ad5e8847a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012010-maybe-province-85bf@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-> > In any case,
-> >
-> > Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
->=20
-> Thanks a lot!
->=20
-> Best regards,
-> Alexey
->=20
+Possible dependencies:
 
 
 
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 52d3d115e9cc975b90b1fc49abf6d36ad5e8847a Mon Sep 17 00:00:00 2001
+From: Vivek Das Mohapatra <vivek@collabora.com>
+Date: Mon, 12 Jan 2026 15:28:56 +0000
+Subject: [PATCH] drm/amd/display: Initialise backlight level values from hw
+
+Internal backlight levels are initialised from ACPI but the values
+are sometimes out of sync with the levels in effect until there has
+been a read from hardware (eg triggered by reading from sysfs).
+
+This means that the first drm_commit can cause the levels to be set
+to a different value than the actual starting one, which results in
+a sudden change in brightness.
+
+This path shows the problem (when the values are out of sync):
+
+   amdgpu_dm_atomic_commit_tail()
+   -> amdgpu_dm_commit_streams()
+   -> amdgpu_dm_backlight_set_level(..., dm->brightness[n])
+
+This patch calls the backlight ops get_brightness explicitly
+at the end of backlight registration to make sure dm->brightness[n]
+is in sync with the actual hardware levels.
+
+Fixes: 2fe87f54abdc ("drm/amd/display: Set default brightness according to ACPI")
+Signed-off-by: Vivek Das Mohapatra <vivek@collabora.com>
+Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 318b1c36d82a0cd2b06a4bb43272fa6f1bc8adc1)
+Cc: stable@vger.kernel.org
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 936c3bc3f2d6..fae88ce8327f 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -5266,6 +5266,8 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
+ 	struct amdgpu_dm_backlight_caps *caps;
+ 	char bl_name[16];
+ 	int min, max;
++	int real_brightness;
++	int init_brightness;
+ 
+ 	if (aconnector->bl_idx == -1)
+ 		return;
+@@ -5290,6 +5292,8 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
+ 	} else
+ 		props.brightness = props.max_brightness = MAX_BACKLIGHT_LEVEL;
+ 
++	init_brightness = props.brightness;
++
+ 	if (caps->data_points && !(amdgpu_dc_debug_mask & DC_DISABLE_CUSTOM_BRIGHTNESS_CURVE)) {
+ 		drm_info(drm, "Using custom brightness curve\n");
+ 		props.scale = BACKLIGHT_SCALE_NON_LINEAR;
+@@ -5308,8 +5312,20 @@ amdgpu_dm_register_backlight_device(struct amdgpu_dm_connector *aconnector)
+ 	if (IS_ERR(dm->backlight_dev[aconnector->bl_idx])) {
+ 		drm_err(drm, "DM: Backlight registration failed!\n");
+ 		dm->backlight_dev[aconnector->bl_idx] = NULL;
+-	} else
++	} else {
++		/*
++		 * dm->brightness[x] can be inconsistent just after startup until
++		 * ops.get_brightness is called.
++		 */
++		real_brightness =
++			amdgpu_dm_backlight_ops.get_brightness(dm->backlight_dev[aconnector->bl_idx]);
++
++		if (real_brightness != init_brightness) {
++			dm->actual_brightness[aconnector->bl_idx] = real_brightness;
++			dm->brightness[aconnector->bl_idx] = real_brightness;
++		}
+ 		drm_dbg_driver(drm, "DM: Registered Backlight device: %s\n", bl_name);
++	}
+ }
+ 
+ static int initialize_plane(struct amdgpu_display_manager *dm,
 
 
