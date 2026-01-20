@@ -1,66 +1,65 @@
-Return-Path: <stable+bounces-210595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wA++IcXab2n8RwAAu9opvQ
-	(envelope-from <stable+bounces-210595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:43:01 +0100
+	id iEPkLK/jb2n8RwAAu9opvQ
+	(envelope-from <stable+bounces-210597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 21:21:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AEA94AA7E
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:43:01 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5941F4B32D
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 21:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1C623882CE5
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:36:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6F3FB884C7C
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2493E4657E0;
-	Tue, 20 Jan 2026 19:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD0F47DD56;
+	Tue, 20 Jan 2026 19:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g31Z6uLH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BEVy/UHo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8B347AF6E;
-	Tue, 20 Jan 2026 19:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B7847B42D;
+	Tue, 20 Jan 2026 19:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768937704; cv=none; b=eofWHY+6UwHUcr/YQeWhQD/lsXJjtla82Iuxq3kIL27TNdSVM3PiXxLAn8/uEf4GBYKxQM7rMLIcd1qsnXMJwgJquYGYRlxwB6LrzlkJeXGIMXEa5/fUg9pi33bhk8HkMZplF1MYW/DThn/BmdF3it6KxIEDQJzseiAhnSyT4nA=
+	t=1768937708; cv=none; b=k3gdI+Uo93deioI+zO7pNrG1uCpL2KfGtBtwn35IkwxjimwtwWjIZT8Pkrl9iXuHxs65Lw2RdhbEt/ob2QqVou7jAia339I+gDdlRmqwhOni1AccFJsxjZKcsEz27Vdynn/OQujbkcbNRZpuwBw+/TAgNuwqq5jwse7PCDMgH/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768937704; c=relaxed/simple;
-	bh=lcFx5eDRBp1+97JFLWXeahJ9cdFANIDo7AWztxdtCw0=;
+	s=arc-20240116; t=1768937708; c=relaxed/simple;
+	bh=LhUtgzXOVPV8SD3R2VJ6zeG5rQgZrdms4OAVI/3ji5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mKVnpMDJ/2Y7D6aHKn7PpkC1QhifVi+pC4IAF14kaEX0CE/A+oTYQFYCgnv1eNnK7rrU4uVGX8eO167gvg96t7YyE/0KDiEsrr450AJW1TiKY5bL48B3tBzTSiPQXbQ2kihKDkqHF3cUiEGoWyscjYvotIipLFCenGLOg40b6Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g31Z6uLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D90C19422;
-	Tue, 20 Jan 2026 19:35:03 +0000 (UTC)
+	 MIME-Version; b=bhJ9meRNt0cCha9lH21urnk6yaGT3z9GNrDR/ieUbVUukJ4D2RfLXK6BKFHxNe8SPTykfNvPGXVikML6qkOcx1oEV8FxnoO8d7wno10UkpRz+hr9oJKwNTUqv+6pDfM6j06IuZmT/fvby4OZcY+NZCiUvvSESvuu/BoCMhEqG6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BEVy/UHo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2E1C19421;
+	Tue, 20 Jan 2026 19:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768937704;
-	bh=lcFx5eDRBp1+97JFLWXeahJ9cdFANIDo7AWztxdtCw0=;
+	s=k20201202; t=1768937705;
+	bh=LhUtgzXOVPV8SD3R2VJ6zeG5rQgZrdms4OAVI/3ji5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g31Z6uLHoe74I5OwDGTXT44jK+/bsbhYaVHgLWxmgMjiLCFEuUPOB9YfVmp/emhVB
-	 qVs5yci54sodlqT5gIJeMhuNhkUkWUmi6dN71k35ZxkhXhWzrwVkcx17g59aE4LXpl
-	 HhLUy6gWFdtCrFktaTspYpaXguHzwCqE/dYMrZ769hSuGf1xR9LEtEODKl+Bgdwl+m
-	 CJtft4AAxxQM4vi82IuDhz5H6hH9jgCn1jwK9DNuD7+UtrimG75teZWRVIrE5U4yWb
-	 sSkwZzqz/KXgd4dT5ePgnUBNccF7FWshJZBE3I5zkMKv6szNIypLy/GRCsO4/JRr4t
-	 hoqZo5RS+QkHw==
+	b=BEVy/UHoYyT1NPcSaM7OZOWOmpSp4fz9Om0Cj6qr09uIAdFFQCGFWFoJwEBZjZelF
+	 0s5s3uDl6t/EemYHuhJQYi02UXEaIoi+Evq+YYb29zaLur/hnFOBVC+nD9Yt2iJm9i
+	 lk1eIjzyP0wY3B+x8ZZgjXNp6oyxHmqijIoj3gzwx2ATIP5dfPPpTPHB4gMi1iT5aX
+	 6lPTff7/GyXtZswom8WOVMkaJPTGwPTEBLbiSDdprgJetN3HboA+fs0PqAhDoN7XMU
+	 9mLUGTqe3iNigiDAl894Y1WZoUaLiXdGmQUjfl7/XOISnI5+8BQvJSTg4GmXksmwXY
+	 GFUjZem7TrGQg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Chaitanya Kulkarni <ckulkarnilinux@gmail.com>,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Guodong Xu <guodong@riscstar.com>,
+	Juan Li <lijuan@linux.spacemit.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	nareshgottumukkala83@gmail.com,
-	paul.ely@broadcom.com,
-	sagi@grimberg.me,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.18-6.1] nvme-fc: release admin tagset if init fails
-Date: Tue, 20 Jan 2026 14:34:47 -0500
-Message-ID: <20260120193456.865383-4-sashal@kernel.org>
+	dlan@gentoo.org,
+	dmaengine@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.18] dmaengine: mmp_pdma: Fix race condition in mmp_pdma_residue()
+Date: Tue, 20 Jan 2026 14:34:48 -0500
+Message-ID: <20260120193456.865383-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260120193456.865383-1-sashal@kernel.org>
 References: <20260120193456.865383-1-sashal@kernel.org>
@@ -73,194 +72,233 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.6
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,redhat.com,broadcom.com,kernel.org,grimberg.me,lists.infradead.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210595-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210597-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 5AEA94AA7E
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,riscstar.com:email,spacemit.com:email]
+X-Rspamd-Queue-Id: 5941F4B32D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Chaitanya Kulkarni <ckulkarnilinux@gmail.com>
+From: Guodong Xu <guodong@riscstar.com>
 
-[ Upstream commit d1877cc7270302081a315a81a0ee8331f19f95c8 ]
+[ Upstream commit a143545855bc2c6e1330f6f57ae375ac44af00a7 ]
 
-nvme_fabrics creates an NVMe/FC controller in following path:
+Add proper locking in mmp_pdma_residue() to prevent use-after-free when
+accessing descriptor list and descriptor contents.
 
-    nvmf_dev_write()
-      -> nvmf_create_ctrl()
-        -> nvme_fc_create_ctrl()
-          -> nvme_fc_init_ctrl()
+The race occurs when multiple threads call tx_status() while the tasklet
+on another CPU is freeing completed descriptors:
 
-nvme_fc_init_ctrl() allocates the admin blk-mq resources right after
-nvme_add_ctrl() succeeds.  If any of the subsequent steps fail (changing
-the controller state, scheduling connect work, etc.), we jump to the
-fail_ctrl path, which tears down the controller references but never
-frees the admin queue/tag set.  The leaked blk-mq allocations match the
-kmemleak report seen during blktests nvme/fc.
+CPU 0                              CPU 1
+-----                              -----
+mmp_pdma_tx_status()
+mmp_pdma_residue()
+  -> NO LOCK held
+     list_for_each_entry(sw, ..)
+                                   DMA interrupt
+                                   dma_do_tasklet()
+                                     -> spin_lock(&desc_lock)
+                                        list_move(sw->node, ...)
+                                        spin_unlock(&desc_lock)
+  |                                     dma_pool_free(sw) <- FREED!
+  -> access sw->desc <- UAF!
 
-Check ctrl->ctrl.admin_tagset in the fail_ctrl path and call
-nvme_remove_admin_tag_set() when it is set so that all admin queue
-allocations are reclaimed whenever controller setup aborts.
+This issue can be reproduced when running dmatest on the same channel with
+multiple threads (threads_per_chan > 1).
 
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Chaitanya Kulkarni <ckulkarnilinux@gmail.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fix by protecting the chain_running list iteration and descriptor access
+with the chan->desc_lock spinlock.
+
+Signed-off-by: Juan Li <lijuan@linux.spacemit.com>
+Signed-off-by: Guodong Xu <guodong@riscstar.com>
+Link: https://patch.msgid.link/20251216-mmp-pdma-race-v1-1-976a224bb622@riscstar.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-This confirms the bug scenario in v6.6:
-1. `nvme_alloc_admin_tag_set()` succeeds → admin tagset is allocated
-2. `nvme_change_ctrl_state()` OR `queue_delayed_work()` fails
-3. Code goes to `fail_ctrl` label
-4. But `fail_ctrl` does NOT free the admin tagset → **MEMORY LEAK**
+This confirms the `mmp_pdma_residue()` function was added in 2014. The
+race condition has existed since then.
 
-Now let me compile my analysis:
-
-## ANALYSIS SUMMARY
+## Analysis Summary
 
 ### 1. COMMIT MESSAGE ANALYSIS
-- **Subject:** "nvme-fc: release admin tagset if init fails"
-- **Clear bug description:** The commit message clearly describes a
-  memory leak scenario where admin blk-mq resources are not freed when
-  controller initialization fails
-- **Reported-by tag:** Yi Zhang from Red Hat reported this via kmemleak
-  during blktests nvme/fc
-- **Reviewed-by:** Justin Tee from Broadcom reviewed this
-- **Testing evidence:** Discovered during blktests, so reproducible
+
+The commit message clearly describes:
+- A **use-after-free (UAF) race condition** in `mmp_pdma_residue()`
+- The race occurs between `tx_status()` (calling `mmp_pdma_residue()`)
+  and the DMA tasklet (`dma_do_tasklet()`)
+- **Clear reproduction steps**: running dmatest with `threads_per_chan >
+  1`
+- The CPU timeline diagram explicitly shows the race window between
+  unlocked list iteration and descriptor free
+
+Keywords: "Fix race condition", "use-after-free", "UAF"
 
 ### 2. CODE CHANGE ANALYSIS
-The fix is a 2-line addition:
-```c
-if (ctrl->ctrl.admin_tagset)
-    nvme_remove_admin_tag_set(&ctrl->ctrl);
-```
 
-**Bug mechanism:**
-1. `nvme_fc_init_ctrl()` allocates admin tagset after `nvme_init_ctrl()`
-   succeeds
-2. If subsequent operations (state change, work scheduling) fail, code
-   jumps to `fail_ctrl`
-3. The `fail_ctrl` path tears down controller references but never frees
-   the admin tagset
-4. Result: Memory leak of blk-mq admin queue allocations
+**The bug:** `mmp_pdma_residue()` iterates over `chan->chain_running`
+list and accesses descriptor contents (`sw->desc`) without holding the
+`desc_lock` spinlock. Meanwhile, `dma_do_tasklet()` can:
+1. Hold `desc_lock`
+2. Move descriptors from `chain_running` to `chain_cleanup` via
+   `list_move()`
+3. Release `desc_lock`
+4. Free the descriptor via `dma_pool_free()`
 
-**Why the fix is correct:**
-- The conditional check `if (ctrl->ctrl.admin_tagset)` ensures the
-  cleanup only runs if the allocation occurred
-- `nvme_remove_admin_tag_set()` properly cleans up all admin queue
-  resources
-- Placement is correct - before `nvme_uninit_ctrl()` which does the
-  reference counting teardown
+If `mmp_pdma_residue()` is iterating over the list when this happens, it
+can access freed memory (UAF).
+
+**The fix:** Adds `spin_lock_irqsave(&chan->desc_lock, flags)` before
+the `list_for_each_entry()` loop and `spin_unlock_irqrestore()` at all
+exit points from the function. This is:
+- Small (+6 lines, -0 lines of actual logic)
+- Surgical - uses the existing `desc_lock` that already protects this
+  list elsewhere
+- Follows existing driver patterns (other list operations use this lock)
 
 ### 3. CLASSIFICATION
-- **Type:** Bug fix (memory leak)
-- **Category:** Resource leak in error path
-- **Not a feature:** Does not add functionality, only fixes cleanup in
-  error path
+
+This is a **bug fix** for a **use-after-free vulnerability**. This is a
+serious memory safety issue:
+- Can cause kernel crashes/panics
+- Can lead to data corruption
+- Potential security implications (UAF bugs are commonly exploitable)
 
 ### 4. SCOPE AND RISK ASSESSMENT
-- **Lines changed:** 2 lines added
-- **Files changed:** 1 file (drivers/nvme/host/fc.c)
-- **Complexity:** Very low - simple conditional cleanup
-- **Risk:** Very low - only affects error path, adds proper cleanup that
-  was missing
-- **Subsystem:** NVMe FC driver, mature subsystem
+
+- **Lines changed**: ~10 lines (just adding lock/unlock around existing
+  code)
+- **Files touched**: 1 file
+- **Complexity**: Very low - straightforward spinlock acquisition
+- **Risk of regression**: Minimal - uses existing lock that is designed
+  for this purpose
+- **Potential issues**: Slightly increased lock contention when calling
+  `tx_status()`, but this is necessary for correctness
 
 ### 5. USER IMPACT
-- **Who is affected:** Users of NVMe over Fibre Channel
-- **Severity:** Memory leak that can exhaust kernel memory over time
-  with repeated connection failures
-- **Reproducibility:** Reproducible via blktests nvme/fc
-- **Discovery:** Found via kmemleak, indicating real-world impact
+
+- **Who is affected**: Users of MMP PDMA DMA controller (Marvell PXA/MMP
+  platforms, SpacemiT K1)
+- **Trigger conditions**: Multi-threaded DMA operations on same channel
+  (common in dmatest, may occur in real workloads)
+- **Severity**: High - UAF can cause kernel crashes or undefined
+  behavior
+- **Reproducibility**: Can be reproduced with dmatest (`threads_per_chan
+  > 1`)
 
 ### 6. STABILITY INDICATORS
-- **Reviewed-by:** Yes (Justin Tee from Broadcom)
-- **Reported-by:** Yes (Yi Zhang from Red Hat)
-- **Tested:** Implicitly through blktests discovery
-- **Signed-off-by:** Keith Busch (NVMe maintainer)
+
+- Has proper sign-offs: `Signed-off-by` from author, forwarder, and DMA
+  maintainer (Vinod Koul)
+- Link to mailing list discussion included
+- The existing lock (`desc_lock`) has been in the driver since the
+  beginning
+- The locking pattern matches other functions in the driver
 
 ### 7. DEPENDENCY CHECK
-- **Function dependency:** Requires `nvme_remove_admin_tag_set()` which
-  exists in kernels v6.1+
-- **For v5.10/v5.15/v6.0:** Would need adaptation (manual cleanup
-  instead of helper function)
-- **Structural dependency:** The code structure (admin tagset allocation
-  → fail_ctrl path) needs to exist
 
-### BACKPORTABILITY
+- No dependencies on other commits
+- The affected code (`mmp_pdma_residue()`) has existed since 2014
+- The `desc_lock` spinlock exists in all stable trees
+- Should apply cleanly to any kernel from 3.15+ (when residue reporting
+  was added)
 
-**For kernels 6.1.y and later (v6.1+):**
-- The commit applies cleanly
-- The `nvme_remove_admin_tag_set()` helper exists
-- Low risk, high value fix
+**Note**: Recent mainline commits added SpacemiT K1 support with 64-bit
+operations (`pdev->ops->get_desc_dst_addr`, etc.), but the core logic
+and the race condition existed with the original 32-bit implementation
+too. For older stable trees (pre-6.x), minor context adjustments might
+be needed due to the `pdev->ops->` refactoring, but the fix concept
+remains the same.
 
-**For kernels 5.10.y, 5.15.y, 6.0.y:**
-- Would require modification - the helper function doesn't exist
-- The fix would need to manually call the cleanup functions instead
-- The code structure is different (admin tagset allocation may happen in
-  different location)
+### Conclusion
 
-### CONCLUSION
+This commit fixes a clear **use-after-free race condition** in the MMP
+PDMA driver. The bug:
+- Can cause kernel crashes/panics
+- Has existed since 2014 (when residue reporting was added)
+- Is reproducible with standard kernel testing tools (dmatest)
 
-This is a classic stable kernel material:
-- ✅ Fixes a real bug (memory leak in error path)
-- ✅ Small, surgical fix (2 lines)
-- ✅ Obviously correct (adds missing cleanup)
-- ✅ Low risk (only affects error path)
-- ✅ Has been reviewed and tested
-- ✅ Discovered via automated testing (blktests/kmemleak)
+The fix:
+- Is small and surgical (~10 lines of spinlock additions)
+- Uses existing infrastructure (the `desc_lock` already exists for this
+  purpose)
+- Follows existing driver patterns
+- Has minimal regression risk
 
-The fix is appropriate for backporting to stable kernels that have the
-required infrastructure (v6.1+). For older kernels (v5.10, v5.15, v6.0),
-a modified version would need to be crafted.
+This is exactly the type of fix stable trees need: a clearly correct fix
+for a real bug that users can hit, with minimal risk of introducing new
+problems.
 
 **YES**
 
- drivers/nvme/host/fc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/dma/mmp_pdma.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index 8324230c53719..bf78faf1a4ffa 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -3584,6 +3584,8 @@ nvme_fc_init_ctrl(struct device *dev, struct nvmf_ctrl_options *opts,
+diff --git a/drivers/dma/mmp_pdma.c b/drivers/dma/mmp_pdma.c
+index d07229a748868..481b58c414e47 100644
+--- a/drivers/dma/mmp_pdma.c
++++ b/drivers/dma/mmp_pdma.c
+@@ -928,6 +928,7 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
+ {
+ 	struct mmp_pdma_desc_sw *sw;
+ 	struct mmp_pdma_device *pdev = to_mmp_pdma_dev(chan->chan.device);
++	unsigned long flags;
+ 	u64 curr;
+ 	u32 residue = 0;
+ 	bool passed = false;
+@@ -945,6 +946,8 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
+ 	else
+ 		curr = pdev->ops->read_src_addr(chan->phy);
  
- 	ctrl->ctrl.opts = NULL;
++	spin_lock_irqsave(&chan->desc_lock, flags);
++
+ 	list_for_each_entry(sw, &chan->chain_running, node) {
+ 		u64 start, end;
+ 		u32 len;
+@@ -989,6 +992,7 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
+ 			continue;
  
-+	if (ctrl->ctrl.admin_tagset)
-+		nvme_remove_admin_tag_set(&ctrl->ctrl);
- 	/* initiate nvme ctrl ref counting teardown */
- 	nvme_uninit_ctrl(&ctrl->ctrl);
+ 		if (sw->async_tx.cookie == cookie) {
++			spin_unlock_irqrestore(&chan->desc_lock, flags);
+ 			return residue;
+ 		} else {
+ 			residue = 0;
+@@ -996,6 +1000,8 @@ static unsigned int mmp_pdma_residue(struct mmp_pdma_chan *chan,
+ 		}
+ 	}
  
++	spin_unlock_irqrestore(&chan->desc_lock, flags);
++
+ 	/* We should only get here in case of cyclic transactions */
+ 	return residue;
+ }
 -- 
 2.51.0
 
