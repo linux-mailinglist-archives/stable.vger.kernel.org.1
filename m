@@ -1,219 +1,228 @@
-Return-Path: <stable+bounces-210609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210610-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDO2JnX9b2mUUgAAu9opvQ
-	(envelope-from <stable+bounces-210609-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 23:11:01 +0100
+	id aN1AMwAAcGmUUgAAu9opvQ
+	(envelope-from <stable+bounces-210610-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 23:21:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B14384CC92
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 23:10:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4377B4CE36
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 23:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A605C92D05D
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 21:45:54 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 80100B26853
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 22:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95963D3CF6;
-	Tue, 20 Jan 2026 21:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2983E8C5E;
+	Tue, 20 Jan 2026 22:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOWXQOxH"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KiAf9Ij7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562963D3CEB;
-	Tue, 20 Jan 2026 21:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9881632ED3F;
+	Tue, 20 Jan 2026 22:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768945523; cv=none; b=RAxF9l730RfNs6SQUuQWufNcJGA64sFgujLia6MXNgT2ejh7OfPdQJ4E/Gkr3nffwwLx1IZbmK1pl+XmAIRIAwKLzM2HAirqNofGGpy5m/JRJUkk/3xf/OLJbqRdv3Py4dGVWk7OkdkzMm15IJsYFZovImdHAZQD0Pcw/+6BI/4=
+	t=1768947247; cv=none; b=Br1fTHlCB5TaCyyiLUcQZmXi/ErcMVCos221nmmatAsvDO2Y5h1IH58jjdhKKTLHOCCd03YjDJh1kPW4/xwbCkocmD8OGgJDsU4g8SLt29NEDLRWNy5UsHRd+eal5XKbUsNsih8g3acQKH3lmy3WutXvAEieVOdxiEngYFX5Y0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768945523; c=relaxed/simple;
-	bh=iGmQTrcxjtgfmMDdD54wE5OCeQ2v++Q+BpE3G+cHjVo=;
-	h=From:Date:Content-Type:MIME-Version:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=P/WwQeXncEnvycZ+sEVfPtNR59z3XpHb5XpzeEHiBPPqlQe0wBXcSEfDqZAHnkuOHn+xsJpcu2GrQ37l8I7zrmdqT9Xboy+akQKa+4BY5EENYkG/5jChMn9xX6kvr/bUolQJGWOOyaOT2OP1DMMMgHhYpTkndz3a6EdQbiJdhBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOWXQOxH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806E8C16AAE;
-	Tue, 20 Jan 2026 21:45:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768945521;
-	bh=iGmQTrcxjtgfmMDdD54wE5OCeQ2v++Q+BpE3G+cHjVo=;
-	h=From:Date:Cc:To:In-Reply-To:References:Subject:From;
-	b=rOWXQOxHQszpyhaIrGB3VjPh14nhOZrx73IUhV7HSwSXqaI0Eh/kaSt/S8v+wtEzY
-	 pJV5DZpDpV2ekat1rC3GcyHWhK7OjurBKMMqaUuk1dmFJIrBy1tYbaU5a8rcq+b0Gk
-	 hQ92Fhi8lf6SbSSpnyTZZYuy2LYGmQLkbsSgPcDbO4Cby4B/x4uJU7xkwYhNuObMDl
-	 YTwJ8rUtwsEMM1xJoLC8a0RUJqlDvSbHwAdA47XUS6AlYSIUdlQPCQlShBzOBpTKnc
-	 WTAR7f9EefWdSztnrYPEOE13ZLC6s+yk9fW/5dOZt3KZE9XNMLlr9zPSV7TBlgFJFC
-	 XG+dbVBrKnIrg==
-From: Rob Herring <robh@kernel.org>
-Date: Tue, 20 Jan 2026 15:45:19 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1768947247; c=relaxed/simple;
+	bh=xlV0tZiT3SujZGN7YcJeiyfveVxAfZBbQAqWahZn1UA=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=qJOBwH5qMkYpS5QbZvDy9t/y8klDg2v3TaExN7YwHHxjl5VX1YfboQb5m6PbMnn851R+7zF713y+vka9XuXKz3JqfDIc4QSnJ41068wNCcG2iofZvM2XCE+zuyHkmnGAgG3Z+p88w0FRiYv1ytkGiaPlXLbGMnYraZRyD68HGzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KiAf9Ij7; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60KEkrpb021755;
+	Tue, 20 Jan 2026 22:13:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=xlV0tZ
+	iT3SujZGN7YcJeiyfveVxAfZBbQAqWahZn1UA=; b=KiAf9Ij7LM34RUy9YeveXa
+	cA8kXx7j4h0G8LoY0YGIjiuhz1+DNAfjA2Q1o0SF8cgHCEJPQ9lA6KaDMmUYSSuY
+	Ad8VJ28XdLIIMJg9g/3Vw0joYAOXUb7Do5yC2UvtV55MaBhg8Qvr3nJy2zsxZjjz
+	HUHOe6UtWsZa9v5ODkkTwP9eEzLUWqmHpifP0bLoH9b2HUG0MAbDSM+pyXS9z65h
+	LrDxQPMW16YbJs8n+dhwLav63Rvi6lzkxv3bRPX6QYsac0kZvx5Sb2VEX1pCjhN4
+	tEyICm6dlSSaMAFziZRJeGqOaeG5tddKstZbkmIM4wv92VXbFt6zgGw+13hY9juQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bt612440h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Jan 2026 22:13:50 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60KLXdh9002002;
+	Tue, 20 Jan 2026 22:13:50 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4brpyjr08v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Jan 2026 22:13:50 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60KMDm0U7209930
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Jan 2026 22:13:48 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 43BA35805A;
+	Tue, 20 Jan 2026 22:13:48 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3EED258054;
+	Tue, 20 Jan 2026 22:13:46 +0000 (GMT)
+Received: from [9.111.82.89] (unknown [9.111.82.89])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Jan 2026 22:13:46 +0000 (GMT)
+Message-ID: <439f40a5997311fc9d750f666dcfb4a32c654a75.camel@linux.ibm.com>
+Subject: Re: [PATCH v7 3/9] PCI: Avoid saving config space state if
+ inaccessible
+From: Niklas Schnelle <schnelle@linux.ibm.com>
+To: Farhan Ali <alifm@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
+        stable@vger.kernel.org, mjrosato@linux.ibm.com
+In-Reply-To: <20260107183217.1365-4-alifm@linux.ibm.com>
+References: <20260107183217.1365-1-alifm@linux.ibm.com>
+	 <20260107183217.1365-4-alifm@linux.ibm.com>
+Autocrypt: addr=schnelle@linux.ibm.com; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 20 Jan 2026 23:12:45 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Cc: devicetree@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>, 
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
- "Martin K. Petersen" <martin.petersen@oracle.com>, 
- Heiko Stuebner <heiko@sntech.de>, stable@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Manivannan Sadhasivam <mani@kernel.org>, linux-rockchip@lists.infradead.org
-To: Alexey Charkov <alchark@gmail.com>
-In-Reply-To: <20260120-ufs-rst-v2-1-b5735f1996f6@gmail.com>
-References: <20260120-ufs-rst-v2-1-b5735f1996f6@gmail.com>
-Message-Id: <176894531223.1201556.243460289333921566.robh@kernel.org>
-Subject: Re: [PATCH v2] arm64: dts: rockchip: Explicitly request UFS reset
- pin on RK3576
-X-Spamd-Result: default: False [0.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: RtJWPO6HHRI2_HveIStoh7c8cA8IWtdO
+X-Authority-Analysis: v=2.4 cv=LaIxKzfi c=1 sm=1 tr=0 ts=696ffe1e cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=4A4mnZiCKodqa3u6z9MA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
+X-Proofpoint-ORIG-GUID: RtJWPO6HHRI2_HveIStoh7c8cA8IWtdO
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDE4MiBTYWx0ZWRfX0iTocO2R2S7h
+ UA/ek4P0VFGchhMZUvQMsn3Y8Ux8ggH9n//aX8tuzTuagn1Rkao+bRHXeNqVvXpVSiQLIKfUonQ
+ CrUZ17t4ZREpuXnvox22lO2/mG2GYzn7wH5I332JFW9rWU6EQjcfYUtkfVyvoNQkV/3TvsOH7iw
+ vbYmNuXC1LkIQWdWP/EXCPKM260pBRjDUszLAcp8xoT1DTSrahJdIeVFeMVCsisVTj5PM/sGAm5
+ XRzCrZBCCs92NUE1Y0PC71wDusUOENm8eoMJ5FmeFgCFiTyMQ4eQpV+fiMTEXswqTvMBWehIG7c
+ cZFcit4cq9h/g4asgX5tYAzbFuGbyH/63OhiEadbth7u3YnTIoWuDYA1SXKx3X+GmKHt34mSLul
+ qqRESuGqr3zam7moTZOm8J93cj8iyKgDm9mX6bc5Q+HJvD1uIP5XGwY1qSv7RJlACiJS3CPcYUL
+ YHQL8fsZWEcd7hI6svw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-20_06,2026-01-20_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 impostorscore=0 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601200182
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210609-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[ibm.com,none];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210610-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,stable@vger.kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linux.ibm.com:mid,checkpatch.pl:url];
 	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: B14384CC92
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[schnelle@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 4377B4CE36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-On Tue, 20 Jan 2026 16:53:54 +0400, Alexey Charkov wrote:
-> Rockchip RK3576 UFS controller uses a dedicated pin to reset the connected
-> UFS device, which can operate either in a hardware controlled mode or as a
-> GPIO pin.
-> 
-> Power-on default is GPIO mode, but the boot ROM reconfigures it to a
-> hardware controlled mode if it uses UFS to load the next boot stage.
-> 
-> Given that existing bindings (and rk3576.dtsi) expect a GPIO-controlled
-> device reset, request the required pin config explicitly.
-> 
-> This doesn't appear to affect Linux, but it does affect U-boot:
-> 
-> Before:
-> => md.l 0x2604b398
-> 2604b398: 00000011 00000000 00000000 00000000  ................
-> < ... snip ... >
-> => ufs init
-> ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=[3, 3], lane[2, 2], pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate = 2
-> => md.l 0x2604b398
-> 2604b398: 00000011 00000000 00000000 00000000  ................
-> 
-> After:
-> => md.l 0x2604b398
-> 2604b398: 00000011 00000000 00000000 00000000  ................
-> < ... snip ...>
-> => ufs init
-> ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=[3, 3], lane[2, 2], pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate = 2
-> => md.l 0x2604b398
-> 2604b398: 00000010 00000000 00000000 00000000  ................
-> 
-> (0x2604b398 is the respective pin mux register, with its BIT0 driving the
-> mode of UFS_RST: unset = GPIO, set = hardware controlled UFS_RST)
-> 
-> This helps ensure that GPIO-driven device reset actually fires when the
-> system requests it, not when whatever black box magic inside the UFSHC
-> decides to reset the flash chip.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: c75e5e010fef ("scsi: arm64: dts: rockchip: Add UFS support for RK3576 SoC")
-> Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
-> Signed-off-by: Alexey Charkov <alchark@gmail.com>
+On Wed, 2026-01-07 at 10:32 -0800, Farhan Ali wrote:
+> The current reset process saves the device's config space state before re=
+set
+> and restores it afterward. However errors may occur unexpectedly and it m=
+ay
+> then be impossible to save config space because the device may be inacces=
+sible
+> (e.g. DPC) or config space may be corrupted. This results in saving corru=
+pted
+> values that get written back to the device during state restoration.
+>=20
+> With a reset we want to recover/restore the device into a functional
+> state. So avoid saving the state of the config space when the device conf=
+ig
+> space is inaccessible.
+>=20
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 > ---
-> This has originally surfaced during the review of UFS patches for U-boot
-> at [1], where it was found that the UFS reset line is not requested to be
-> configured as GPIO but used as such. This leads in some cases to the UFS
-> driver appearing to control device resets, while in fact it is the
-> internal controller logic that drives the reset line (perhaps in
-> unexpected ways).
-> 
-> Thanks Quentin Schulz for spotting this issue.
-> 
-> [1] https://lore.kernel.org/u-boot/259fc358-f72b-4a24-9a71-ad90f2081335@cherry.de/
-> ---
-> Changes in v2:
-> - Change default pin pull to pull-down in line with the SoC power-on default
-> - Link to v1: https://lore.kernel.org/r/20260119-ufs-rst-v1-1-c8e96493948c@gmail.com
-> ---
->  arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi | 7 +++++++
->  arch/arm64/boot/dts/rockchip/rk3576.dtsi         | 2 +-
->  2 files changed, 8 insertions(+), 1 deletion(-)
-> 
 
+Running checkpatch.pl with "--strict" on the series it pointed out that
+this commit description has lines over 75 characters.
 
-My bot found new DTB warnings on the .dts files added or changed in this
-series.
-
-Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
-are fixed by another series. Ultimately, it is up to the platform
-maintainer whether these warnings are acceptable or not. No need to reply
-unless the platform maintainer has comments.
-
-If you already ran DT checks and didn't see these error(s), then
-make sure dt-schema is up to date:
-
-  pip3 install dtschema --upgrade
-
-
-This patch series was applied (using b4) to base:
- Base: 46fe65a2c28ecf5df1a7475aba1f08ccf4c0ac1b (use --merge-base to override)
-
-If this is not the correct base, please add 'base-commit' tag
-(or use b4 which does this automatically)
-
-
-New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/rockchip/' for 20260120-ufs-rst-v2-1-b5735f1996f6@gmail.com:
-
-arch/arm64/boot/dts/rockchip/rk3576-luckfox-omni3576.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 113} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
-arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 130} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
-arch/arm64/boot/dts/rockchip/rk3576-nanopi-r76s.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 116} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
-arch/arm64/boot/dts/rockchip/rk3576-roc-pc.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 117} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
-arch/arm64/boot/dts/rockchip/rk3576-nanopi-m5.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 133} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
-arch/arm64/boot/dts/rockchip/rk3576-rock-4d.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 122} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
-arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 134} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
-arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 130} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
-arch/arm64/boot/dts/rockchip/rk3576-evb1-v10-pcie1.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 134} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
-arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5-v1.2-wifibt.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 130} is not of type 'array'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
-
-
-
-
-
+Thanks,
+Niklas
 
