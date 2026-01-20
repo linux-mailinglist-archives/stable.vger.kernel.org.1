@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-210564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id lS0RCRG3b2kBMQAAu9opvQ
-	(envelope-from <stable+bounces-210564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:10:41 +0100
+	id 6Gd+BLetb2nxEwAAu9opvQ
+	(envelope-from <stable+bounces-210567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:30:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id D272F4851C
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:10:40 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC2D478F4
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:30:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5230E7673C7
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:21:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3638F76B719
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8971F42EEAE;
-	Tue, 20 Jan 2026 15:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB6644A734;
+	Tue, 20 Jan 2026 15:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDisw5IR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXIAhQjZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18258221554
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 15:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5F444A724
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 15:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768921448; cv=none; b=e5HnUX9OJcIvre1DLpiAwhYBFx4MsLUn2Gxx9nrVIdzs6/+vuyfJL9qvu2RUmf+6BIufWbHWLYyUJfJY1RRl60L8BmzileZpMuwYTy/DsYUzimIRz6C1/Gxf4sRI1UJxP44qPa4Dm1QfoV6TSdi0qbG2m9fmqdn2V7eeDCrsA88=
+	t=1768921457; cv=none; b=FXqIT5b2JUCmAP6KHkd0JnoZ5FKY8i4PUeZtRsD8Tk38l4y19f3QU9Iam9lWRzTTrrW14jnJV2guSyY5Nq2q6m0VNGuyMyjCS+yDUIwcQq17epfetf5HZx5fQMbftcArkVOKZNxVUjB5VafX4ql9PiuPJLjk4fv0oJFslko6ldw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768921448; c=relaxed/simple;
-	bh=hv8XAjbEe5j4TFkJN0suty36lsJYjdbTWt0E7MptBg0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JN7WH9GDn3xZjDLhOhfzI8J6RPGQ/fZxHuftMGN+vfBoIt5/vWOToqI2pbXkRRDv9jWylANvEEFDGVnhdGkh10jrS8u/isjIt0huQknQo4azqzK/r6pAyTkmwETCGiaCt7K5DpRk9TWpCh5du8UbWw3cZzdjoLo0GwbOiRtaPSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDisw5IR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E92C16AAE;
-	Tue, 20 Jan 2026 15:04:07 +0000 (UTC)
+	s=arc-20240116; t=1768921457; c=relaxed/simple;
+	bh=1wzPWIDETq6q8gv7HRC5Ors9LfMVAyQRSVzrafl8RLQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i7EQ4dyGXFSoJpv0fY4cdPzpafjLKqY2qZ70UXJA4RPrvkc/Ohqd5+oftDWK4UNLB5Bh3iD0m6Fp0DFM0NK9OSyzp+yZRFeKJSd6iMFm8pYFYhPSrDtID7n2PsjQQ3JvZWNnVxxFK/lRpvhTieOYsX4JljmMERa0w/WP+cM1IUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXIAhQjZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B093FC16AAE;
+	Tue, 20 Jan 2026 15:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768921447;
-	bh=hv8XAjbEe5j4TFkJN0suty36lsJYjdbTWt0E7MptBg0=;
+	s=korg; t=1768921457;
+	bh=1wzPWIDETq6q8gv7HRC5Ors9LfMVAyQRSVzrafl8RLQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QDisw5IR7SmQrRwUSvRn/t15VaXrj5CqTi/ZGxPJUnRpzDF9YEwgIRNDkzc+CaBoi
-	 X/uIV9sIVPVnAmA2HLqUpEj9oPr6qfnd7BmMbrTw1LDDm75zFmJHueBice6V+IabIB
-	 Fj0ctshkae11kZdye+G/M3o+yoxczS527/+Vfx58=
-Subject: FAILED: patch "[PATCH] dmaengine: stm32: dmamux: fix device leak on route allocation" failed to apply to 5.15-stable tree
+	b=qXIAhQjZjWMxeM1v3vxoP+Y1BQOVnWo1+uUU7t1+pL6Z/H+ZXv5EkuzmgTbx4/Ell
+	 NMDxWSAcF0vN00MWkRGe1FV2csBTvZmHwST8GIhZz2otcyouGwsKHywANuWjpX15D8
+	 2B8gtZo82r/SDY6zYcd+hyRHvQIBGpCOO+pDKFQk=
+Subject: FAILED: patch "[PATCH] dmaengine: stm32: dmamux: fix OF node leak on route" failed to apply to 6.6-stable tree
 To: johan@kernel.org,amelie.delaunay@foss.st.com,pierre-yves.mordret@foss.st.com,vkoul@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 20 Jan 2026 16:03:57 +0100
-Message-ID: <2026012057-dumpling-bunt-afbb@gregkh>
+Date: Tue, 20 Jan 2026 16:04:05 +0100
+Message-ID: <2026012005-grid-smell-308a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,7 +66,7 @@ X-Spamd-Result: default: False [2.54 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210564-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210567-lists,stable=lfdr.de];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -80,28 +80,28 @@ X-Spamd-Result: default: False [2.54 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,gregkh:email,st.com:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D272F4851C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,msgid.link:url,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,st.com:email]
+X-Rspamd-Queue-Id: 9CC2D478F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x dd6e4943889fb354efa3f700e42739da9bddb6ef
+git cherry-pick -x b1b590a590af13ded598e70f0b72bc1e515787a1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012057-dumpling-bunt-afbb@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012005-grid-smell-308a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -113,86 +113,44 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From dd6e4943889fb354efa3f700e42739da9bddb6ef Mon Sep 17 00:00:00 2001
+From b1b590a590af13ded598e70f0b72bc1e515787a1 Mon Sep 17 00:00:00 2001
 From: Johan Hovold <johan@kernel.org>
-Date: Mon, 17 Nov 2025 17:12:52 +0100
-Subject: [PATCH] dmaengine: stm32: dmamux: fix device leak on route allocation
+Date: Mon, 17 Nov 2025 17:12:53 +0100
+Subject: [PATCH] dmaengine: stm32: dmamux: fix OF node leak on route
+ allocation failure
 
-Make sure to drop the reference taken when looking up the DMA mux
-platform device during route allocation.
-
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+Make sure to drop the reference taken to the DMA master OF node also on
+late route allocation failures.
 
 Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
-Cc: stable@vger.kernel.org	# 4.15
+Cc: stable@vger.kernel.org      # 4.15
 Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/20251117161258.10679-11-johan@kernel.org
+Link: https://patch.msgid.link/20251117161258.10679-12-johan@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 
 diff --git a/drivers/dma/stm32/stm32-dmamux.c b/drivers/dma/stm32/stm32-dmamux.c
-index 8d77e2a7939a..791179760782 100644
+index 791179760782..2bd218dbabbb 100644
 --- a/drivers/dma/stm32/stm32-dmamux.c
 +++ b/drivers/dma/stm32/stm32-dmamux.c
-@@ -90,23 +90,25 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 	struct stm32_dmamux_data *dmamux = platform_get_drvdata(pdev);
- 	struct stm32_dmamux *mux;
- 	u32 i, min, max;
--	int ret;
-+	int ret = -EINVAL;
- 	unsigned long flags;
- 
- 	if (dma_spec->args_count != 3) {
- 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
+@@ -143,7 +143,7 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
+ 	ret = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (ret < 0) {
+ 		spin_unlock_irqrestore(&dmamux->lock, flags);
+-		goto error;
++		goto err_put_dma_spec_np;
  	}
+ 	spin_unlock_irqrestore(&dmamux->lock, flags);
  
- 	if (dma_spec->args[0] > dmamux->dmamux_requests) {
- 		dev_err(&pdev->dev, "invalid mux request number: %d\n",
- 			dma_spec->args[0]);
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
+@@ -165,6 +165,8 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
  
- 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
--	if (!mux)
--		return ERR_PTR(-ENOMEM);
-+	if (!mux) {
-+		ret = -ENOMEM;
-+		goto err_put_pdev;
-+	}
- 
- 	spin_lock_irqsave(&dmamux->lock, flags);
- 	mux->chan_id = find_first_zero_bit(dmamux->dma_inuse,
-@@ -133,7 +135,6 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", i - 1);
- 	if (!dma_spec->np) {
- 		dev_err(&pdev->dev, "can't get dma master\n");
--		ret = -EINVAL;
- 		goto error;
- 	}
- 
-@@ -160,6 +161,8 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 	dev_dbg(&pdev->dev, "Mapping DMAMUX(%u) to DMA%u(%u)\n",
- 		mux->request, mux->master, mux->chan_id);
- 
-+	put_device(&pdev->dev);
-+
  	return mux;
  
++err_put_dma_spec_np:
++	of_node_put(dma_spec->np);
  error:
-@@ -167,6 +170,9 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 
- error_chan_id:
- 	kfree(mux);
-+err_put_pdev:
-+	put_device(&pdev->dev);
-+
- 	return ERR_PTR(ret);
- }
+ 	clear_bit(mux->chan_id, dmamux->dma_inuse);
  
 
 
