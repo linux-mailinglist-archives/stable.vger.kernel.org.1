@@ -1,183 +1,148 @@
-Return-Path: <stable+bounces-210558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210575-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOhVIPZOcWkvCAAAu9opvQ
-	(envelope-from <stable+bounces-210558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 23:11:02 +0100
+	id +AWYANLWb2mgMQAAu9opvQ
+	(envelope-from <stable+bounces-210575-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:26:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191F85E8D7
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 23:11:02 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 542E64A4E1
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4526570A4F7
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:17:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B06569EB31D
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 16:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93E62FC871;
-	Tue, 20 Jan 2026 15:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965BF44A728;
+	Tue, 20 Jan 2026 15:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyMooBhA"
+	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="dqGuTuRt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762422FC890
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 15:00:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AFD441048;
+	Tue, 20 Jan 2026 15:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768921225; cv=none; b=gjEN8PLrzaC3Nc+SDPaseuYai719wjwInEc72+VrcHTbsKHzR+UO4Cx9ZrWdZKr87zd/kNxFF1sY8znHeb8XGqL/BfupuOcC80HRcfo7VKNU1QhYhkOlyRva+fomRzwPYRJgoAEgc1sv0m9+0dhFZJ56o9d0pE1UEgvKbx8vdys=
+	t=1768923913; cv=none; b=jXiUJarJnwXLqot0xS7xS2sB6u9vYTJPaMnbKrpEdg5wZAuYAORNxAxiO474DSfC5HcLZsiQMOHH35Z53l5fmnt+4qqRKRDJshh2D4OoK9W5jPFWO8NOIKKoEfgtm52isGAJgv7tYnaakhgjzq+o7FkDGEIzoyb5F2dEzQREOic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768921225; c=relaxed/simple;
-	bh=1ZV6yVWFQtGkO3UdV4Urfb/HhAdnBx6bTAmUMCTfkOk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Okfkjmv/Objy4ldYQDdNsPK4WOXYsRUWWOx0/WtnXsSPAUYfgxyvMrpoooO/plgApPB+CacfDAr4q8KdJEFwoIJsRi88y2cfAn4GvOuM+AIDwVBrMQOsGil2K7A00I1cFaLVvxrzgbtt9azcI+a+Yo9BGMwYyrKUeyKprbRNk0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyMooBhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DE0C16AAE;
-	Tue, 20 Jan 2026 15:00:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768921224;
-	bh=1ZV6yVWFQtGkO3UdV4Urfb/HhAdnBx6bTAmUMCTfkOk=;
-	h=Subject:To:Cc:From:Date:From;
-	b=OyMooBhAW+WabIsjnyIDyYZ2S+KAw88bA1TpXS1gegk9wacUAvYfXEhceo+GzynOU
-	 wDgHofHh7djuWOCE73mOIjtv5Wr4PdQLgyCTNZ8lL74q9pKMDWItE0DJs8dSWX4ogw
-	 zeFC31aIHZkhjHm4FsNbB1f7DSQl9HsmUJ7En7KE=
-Subject: FAILED: patch "[PATCH] drm/amdkfd: fix a memory leak in device_queue_manager_init()" failed to apply to 6.1-stable tree
-To: lihaoxiang@isrc.iscas.ac.cn,Oak.Zeng@amd.com,alexander.deucher@amd.com,felix.kuehling@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 20 Jan 2026 16:00:22 +0100
-Message-ID: <2026012022-worst-moonstone-878a@gregkh>
+	s=arc-20240116; t=1768923913; c=relaxed/simple;
+	bh=MrzdPhBUci1zYJK7hvuXCS+eCmE9nVICFETQlx7Jbys=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Uw69M1fJ6ezjI2iQ/A30VFjFLJ55ux3FXXiQpgBUNdeFVTMfhGs1C/bTbXb2UkpT6NO0+yRgWf8bOjY+6EDqswkwBw1AjufLS7AQJnV6KGwlHWhZ/+97Zz343efNe7P+Yzkkf5hsJhTFdEAorWGxrr+GNEkpj+rV98+pw3efKCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=dqGuTuRt; arc=none smtp.client-ip=217.92.40.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 21B44148AD5A;
+	Tue, 20 Jan 2026 16:45:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
+	t=1768923909; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=7NkEtjVarcSoHp8QOC/pznn28WeOYOUP6CtTrfas8ew=;
+	b=dqGuTuRtpVogREVnWV1N6aV6D2osb3MFMfy2v/X1Xr3m2zdJAD4/z9iFtK2xFiE4pYF6lf
+	H/JVPnqCQb2mU2Exirnxo9dU7jgjJd9Z0lW4HvwxKz8BbzcPKWtK3C4FmZvk8qDCwm7R3+
+	Hn1jo0x14Ibq7/V27iGrgRh6vEjCU5UpVLnfq2TzVqJ4X5CfncXEzcbi5bhwiRlIctD8LG
+	NmJO1cR5XmHgNLPxfQ2qmE8yCtpBr4aTvl9U615wTVKvVFrITfac6Hp2bNArnoSxIbs9+T
+	b/nR7kt4Qau/tNf7RUQ7k5F1SxBL/IIAa2qFJKH/UrQk/WyWTZWYPZOAk0SWvg==
+From: Alexander Dahl <ada@thorsis.com>
+To: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Ryan Wanner <ryan.wanner@microchip.com>,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org,
+	stable@vger.kernel.org,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v3 11/19] nvmem: microchip-otpc: Fix swapped 'sleep' and 'timeout' parameters
+Date: Tue, 20 Jan 2026 16:44:45 +0100
+Message-ID: <20260120154502.1280938-5-ada@thorsis.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260120154502.1280938-1-ada@thorsis.com>
+References: <20260120143759.904013-1-ada@thorsis.com>
+ <20260120154502.1280938-1-ada@thorsis.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.54 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DATE_IN_PAST(1.00)[31];
-	MID_RHS_NOT_FQDN(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[thorsis.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210558-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a01:60a::1994:3:14:from];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NO_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
-	DNSWL_BLOCKED(0.00)[52.25.139.140:received,2a01:60a::1994:3:14:from,10.30.226.201:received];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DWL_DNSWL_BLOCKED(0.00)[linuxfoundation.org:dkim];
+	TAGGED_FROM(0.00)[bounces-210575-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[thorsis.com,quarantine];
+	DKIM_TRACE(0.00)[thorsis.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[52.25.139.140:received,10.30.226.201:received];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,amd.com:email,ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns]
-X-Rspamd-Queue-Id: 191F85E8D7
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	FROM_NEQ_ENVFROM(0.00)[ada@thorsis.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,thorsis.com:email,thorsis.com:dkim,thorsis.com:mid]
+X-Rspamd-Queue-Id: 542E64A4E1
 X-Rspamd-Action: no action
+X-Rspamd-Server: lfdr
 
+Makes no sense to have a timeout shorter than the sleep time, it would
+run into timeout right after the first sleep already.
+While at it, use a more specific macro instead of the generic one, which
+does exactly the same, but needs less parameters.
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 80614c509810fc051312d1a7ccac8d0012d6b8d0
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012022-worst-moonstone-878a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 80614c509810fc051312d1a7ccac8d0012d6b8d0 Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Thu, 8 Jan 2026 15:18:22 +0800
-Subject: [PATCH] drm/amdkfd: fix a memory leak in device_queue_manager_init()
-
-If dqm->ops.initialize() fails, add deallocate_hiq_sdma_mqd()
-to release the memory allocated by allocate_hiq_sdma_mqd().
-Move deallocate_hiq_sdma_mqd() up to ensure proper function
-visibility at the point of use.
-
-Fixes: 11614c36bc8f ("drm/amdkfd: Allocate MQD trunk for HIQ and SDMA")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Oak Zeng <Oak.Zeng@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b7cccc8286bb9919a0952c812872da1dcfe9d390)
+Fixes: 98830350d3fc ("nvmem: microchip-otpc: add support")
 Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Dahl <ada@thorsis.com>
+---
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-index d7a2e7178ea9..8af0929ca40a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -2919,6 +2919,14 @@ static int allocate_hiq_sdma_mqd(struct device_queue_manager *dqm)
- 	return retval;
+Notes:
+    v3:
+    - Reorder tags
+    - Add stable tag
+    
+    v2:
+    - Add Fixes tag
+
+ drivers/nvmem/microchip-otpc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/nvmem/microchip-otpc.c b/drivers/nvmem/microchip-otpc.c
+index e2851c63cc0b4..bf7e5167152cb 100644
+--- a/drivers/nvmem/microchip-otpc.c
++++ b/drivers/nvmem/microchip-otpc.c
+@@ -85,8 +85,8 @@ static int mchp_otpc_prepare_read(struct mchp_otpc *otpc,
+ 	writel_relaxed(MCHP_OTPC_CR_READ, otpc->base + MCHP_OTPC_CR);
+ 
+ 	/* Wait for packet to be transferred into temporary buffers. */
+-	return read_poll_timeout(readl_relaxed, tmp, !(tmp & MCHP_OTPC_SR_READ),
+-				 10000, 2000, false, otpc->base + MCHP_OTPC_SR);
++	return readl_relaxed_poll_timeout(otpc->base + MCHP_OTPC_SR, tmp,
++					  !(tmp & MCHP_OTPC_SR_READ), 2000, 10000);
  }
  
-+static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
-+				    struct kfd_mem_obj *mqd)
-+{
-+	WARN(!mqd, "No hiq sdma mqd trunk to free");
-+
-+	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
-+}
-+
- struct device_queue_manager *device_queue_manager_init(struct kfd_node *dev)
- {
- 	struct device_queue_manager *dqm;
-@@ -3042,19 +3050,14 @@ struct device_queue_manager *device_queue_manager_init(struct kfd_node *dev)
- 		return dqm;
- 	}
- 
-+	if (!dev->kfd->shared_resources.enable_mes)
-+		deallocate_hiq_sdma_mqd(dev, &dqm->hiq_sdma_mqd);
-+
- out_free:
- 	kfree(dqm);
- 	return NULL;
- }
- 
--static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
--				    struct kfd_mem_obj *mqd)
--{
--	WARN(!mqd, "No hiq sdma mqd trunk to free");
--
--	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
--}
--
- void device_queue_manager_uninit(struct device_queue_manager *dqm)
- {
- 	dqm->ops.stop(dqm);
+ /*
+-- 
+2.47.3
 
 
