@@ -1,168 +1,172 @@
-Return-Path: <stable+bounces-210446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC22D3C056
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 08:27:01 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D10ED3C045
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 08:25:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 42F4F50898E
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 07:05:50 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 504DA3E76FD
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 07:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D065E389E19;
-	Tue, 20 Jan 2026 07:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE1136166F;
+	Tue, 20 Jan 2026 07:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GJss081o"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aZmMEh80"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8CF378D6A
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 07:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26252362127
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 07:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768892736; cv=pass; b=SGXZLEzNCQHM3QQnGDanDKk7l0NZFPjjLy7zdZ0sSOFRhgWcVY+rcTROJ/DVBgiM/ZiCe5DPnu8PVXUJd799ZkscdND4YFlX8htDDNBBpcXYIEX61sPWWMUGzbDVIXrrVwEY6e0AdmSNeM2pT9LaeNlET+whAqVQQVcxVivMrEs=
+	t=1768893231; cv=pass; b=pZOHIQdgrsnSytCNO1dlfFzcAJHrHyhF10WzCCuMkwmWWxSim1ZvHWU69Y9fc65mCMKw3bN/STusn/Uhlw6zFpM6c88EECqFf8YOzOjtOlTAMwo5lRY0cCKDVLrCHQnPVq7lE9b02+h5yo8YvebDsWlO71wt2dwEGdrbh9UzyrQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768892736; c=relaxed/simple;
-	bh=7u3LFKR7PiJpIeA+QR71UF/La+iD1BubfJTWEVLv87g=;
+	s=arc-20240116; t=1768893231; c=relaxed/simple;
+	bh=m/AcdJHOfbL98COErVKQfn92HC1scPShYwrkryDi5Tc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eLe5UH47ai5e0GZDcr79H//tS6/UTZ3w27BgiTTn4DHfcWZFHYlhw7CMRfmVozJ5re3S42/lCzxxOwwy5s6Ermvyf4E0o+0PLpD0W5mV0a3IQ2W3/HTxXLxE9KmWJV2WZBLRwDYczoF0bJz4rBDZ4n2zQfR9AclJwy4UxHSvC3o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GJss081o; arc=pass smtp.client-ip=74.125.82.170
+	 To:Cc:Content-Type; b=VyiWN8iUSmBSwNLRD/8TznEqEmCWc5GuSdrr8+OOLUCPMZBRVLANESZrjjvT8j0zCCWTYS4HBzsRauDhYm6ePC0fZ7ObJuz9zdUt429YosqgqnGFBgNceqcnm2Iy/wyByOxNqJ27kNdiD8B1JLjgB2NhVTmmCD7j0rrVP6WOoOE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aZmMEh80; arc=pass smtp.client-ip=209.85.160.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b6a93d15ddso4860857eec.1
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 23:05:28 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768892726; cv=none;
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-502a26e8711so19992161cf.1
+        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 23:13:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768893223; cv=none;
         d=google.com; s=arc-20240605;
-        b=KPV14rutAnJu98891uSt0glQ2Jzwt88hKCR1s0X5jVxBM3tECvydshz61c4CGyQbAG
-         lRGA0dD9dOtQMXjPh5A9JbmzmTkYVbuumO75BPCNZbnJBJRminNAWLP7pspAVlcHxnb2
-         J86pHlMq4X0Qk5Jx4IxZ3mFsl+qoUTKldiz92IHFE9Bsr6rBZTBrrOjZM/MHWeneTEYZ
-         uLYYP4IV2bNgBnXx56+2R0ho27UQAd7nN/iwIM5uChWjr2ow+xhgEv9mlAIDtfZ2JuL9
-         ZSftWjFcJp1zAb2D5QP9PGQkrQv+q/H68t0FUs9qa4+crQ/cqzKWJmDEdxZqjTfeHULp
-         YaOw==
+        b=g9aw9Z68WP3+N9gPZQbJS56GpNPNko3EXqo+AF/7u2uEFxVyUKS5N82JFv0j2Hhm2n
+         Iww6/SJAlFymb3m9uHkADSn2SdW4eTGMglbvbFi9HJZWT8lgTNz5s4vFJFIJuqOp4/x2
+         8QxMcdXrtnJS0ivhVNlpOiotSLfiSv8FHWS88eJYt1PQ3/ApzwyCXK0RoYVsJ7uR7uNR
+         VzCEk55qZhf8ccTxh4G0fALPd1FpGEeMySphmzm0LTtM4gl4Nm6bzO/S40Iay5Foz3hp
+         ssnMPI9LyF8/Cqce2WGJ2eAbqWHiC/YxUBXl/R6Fv4Vv7upklmSYdiw2EZYma/aCw4Tx
+         2Hjw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=7u3LFKR7PiJpIeA+QR71UF/La+iD1BubfJTWEVLv87g=;
-        fh=9+VHORgPh/xbvJ7C5Xf1yUZunaffUNxbmB5zTkE46Nw=;
-        b=H/DxC+mhYelVdaEqcV1YeBeFHYsN6z/zvDPwSqU2e9i84Xed5dao5pN2uw1fHLHVaF
-         RyzPmZ0kcdU5JO/i3F6oEU9vVqaTEXbtW7KWz8n12FQWWCVpBxErOoo+FBaxmrQ1QVoM
-         088rQHwyvdHSuuvSG9RwsDxoZcAiV8g2UBRiYtY9aJrPciZj/zOyi8YfEn4sYMK7w9lh
-         z14HHfkT+lB9X1dVI1lpM34GvZS+FEF6yR8D/SyzUXsqqYoifwSnUlOI4+lLV09qWJsB
-         RwqDRw+8qvP4/b2jkyHevYqY68kDP7TI/KAuYFCyFkoPI5TVM0fbRZ04nDpTervNO3pO
-         n3gA==;
+        bh=m/AcdJHOfbL98COErVKQfn92HC1scPShYwrkryDi5Tc=;
+        fh=LV+cyTkd4JkDSD37a5blj461ItU1tzYI9ew6kwtnb3Y=;
+        b=huzql3nVry1sWG2Per397dpIRzLJedyCDOUalcoF3DxU/yDM8UVHaira1L04OqPQ54
+         AKVp2QqrTVRPGyPbhZuhA3KbYhbzYGibOJLD9pNWzjF8KEh1xJ/SIRXZ6WmTgsORSgXr
+         PIMU4w1LxL212SrCoQPBLjjM/jHx5Qp4BXlYNE/STdpcyT8pUyQJfeD94G4ISIMk353N
+         uyeQF0giIoxzBfJAHf6pI8BMEZvj3R+Iogc7eiy7/TVIeH862nLNEpErs4shkKagX4RM
+         9Fv2zMx9IXXDHaJjzUoh3lzrZNuBLb/TZT6YFwQWMmGyXT+0Cshw4m8vzCF0jrIJ6uyW
+         RJrw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768892726; x=1769497526; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1768893223; x=1769498023; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7u3LFKR7PiJpIeA+QR71UF/La+iD1BubfJTWEVLv87g=;
-        b=GJss081oG9WQMg62peZUpGJ48ed+dxIs3wbhhi/P7JPikEqK5ABWSjCgSsimnQpNFM
-         JDO8u2JY/31brT1GyqmvftZZq59quJH0GS5JnU70xnN/DrjffBt6qbC9D2ex75S9Fs84
-         +sKFhT/+OAsYyjUPXByYh2CzwpYfByxIRux5NKpNq2PynK9epxlNJnRFUeR9wijMGnhw
-         ASHLPaAPhh5Y3UyqQ2R+JxznKU4FVWJmp0J3j51Y00UCifzuDBU7DtJTexSrBrRVo6i7
-         66O+BOm9RsPDDIIiQj5EFpX49ggPHNM9LwM2jSHxPi8sU/CmnP9w59fuVXQy3ewQ3Yy6
-         ezYA==
+        bh=m/AcdJHOfbL98COErVKQfn92HC1scPShYwrkryDi5Tc=;
+        b=aZmMEh80PyWm+3sY6uWVdBMVeBpJHl1T+R0gBnEegP0HWuT8YEzgFTmtkzbkiLtDi5
+         ipWj/Lm4HqT/arhF3j8c9ayaVVENhwpjstF4GxIXzR5vA++AL1x4TauwsQDEVVx4ovKa
+         EWbrVbP15X259Fc/XPGMnIZUtguXzPRjH4Pt3O51ohjBDmTWqFEFE/uWX96WDM39ed3L
+         zipiU+U6NpKt1XSwxmWMhpxRY0pJzdhJ6BXzBfWe++kstKQQTtIMFkPm1/BBhrPxRlj9
+         nPxI+ojBo/JyBPREJczupjm1VFdGEhdct9/z7CaWOjVqO5tm8/SqRRh/1rqEUZidpaqi
+         +Qsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768892726; x=1769497526;
+        d=1e100.net; s=20230601; t=1768893223; x=1769498023;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=7u3LFKR7PiJpIeA+QR71UF/La+iD1BubfJTWEVLv87g=;
-        b=J2CxvQd2hBi9urB1lVCW0SeI5rN0PNak/mZlWUuPQrlcx8gmxTR92bM+oInXo8E+TF
-         SHQvtKrwp4jdfoP7RrCAD3ONK+2+1ymev9KnLdA3Hojh0ZvxjBYVLWH3VVXu4+LwfBD5
-         ucWvyLVhMNXdmMvQs+s3v9D34mqM5q+yaQWTyStobCICxOzO8Azj+7vkzfIUfhu37UG6
-         aUUD00HA8OzO4PVYAJMYuE1DFc7FLjS+g4O1vF4wU8ND1eU9mfflN66TffxgCFr6MBJY
-         nLL3Vbu7NwiJb0Av7rr977/PMhen0pzv6uBpja0ieeKfjAAHII8jOlzoQd1qy8fX+VOD
-         co8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUvrOCe1RlW/k3kd09Ygl1v9r3kjRqvKm8f4/pjLZhAlXo/j32aH8fkszvShtlgQbRsudIjqwg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjDjZcohR4c4JW4ftvjXBbwvvYK7RF1whwGgmya8Um8DJbDauz
-	KjN/o5/q1W7eRHqyYiahIU5GIMfHSSAGN/lVvwBY1Wz7A5pyxc5AjlMX9TIwWZrjafaniSALbYZ
-	UQ45kXlVb0emHruHT9Q8mCbIS77VlEjs=
-X-Gm-Gg: AY/fxX5zM6mp0IkszftmNk9OQUbsW/Je9N0MhDm+AovUCufuvHjOKb5x+FZ53Ln+dL1
-	/jj5gy4m1A8TpBaFY8JuQLmd74uVzP/Ulr7YiMhdV7B8AQVve04sA49RoIGcmOb5SlxVThhGh3u
-	ueRMgC5xq8uNuUuMQLY4/IT5ujtVM2/8F12bcQCilHjnbeUoMAfj+fIYUPOu8fexRVwoIR/TGSB
-	AUZcb/wT2O2asH0yG1nWLeBXZqk1WeAXgGopwe7xonUnQ0Wz6gqbWVOBBfFYpJ44IHQZMzNtipk
-	2MW5/gLS4SrWgExm/MMSlvohKMM=
-X-Received: by 2002:a05:7022:4394:b0:11c:ec20:ea1f with SMTP id
- a92af1059eb24-1246aabebb7mr790262c88.33.1768892726001; Mon, 19 Jan 2026
- 23:05:26 -0800 (PST)
+        bh=m/AcdJHOfbL98COErVKQfn92HC1scPShYwrkryDi5Tc=;
+        b=gM1Sm1/WSz9Rs5yI+eGoAwJJOvmD3yir5Dk9l2ZOJjFqhRhnsjOvq3iJ81sms5fC1H
+         tElU9FllGA2q3om11LYMLoe3lfUZMclAl9XPhfwUd1MNbewWlU9cubyocMRYwbvuvBmo
+         jblF+5BLRfpyHWIhvsXp3fyZRJybMQ6ciAn/Y3Qv28TwPrh3S2/WI4cmymn61GxNHYLe
+         Vq1KE3pQDKVfvIJ8yhDdsPQLAeDN+gIJOnK3nIvhAZt4UY2Fab3hECWRBJDHe7kJnjkX
+         c2wgUCkQ0CmXB9zsQcmrgpfLt4gGFl3Oal3hkY1UahRcYy6hs/6GWV3ofFrhoZDIWs+h
+         Hr4g==
+X-Forwarded-Encrypted: i=1; AJvYcCWC/FTfchdxZOU+pz7vgj+klfrER22DhAgNdXunmWZ2rKgc1R3/Xb9lxm/kW/QHQcV7MjmdwfE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwS+Oo7mSTxJDbNQ0VUE3e38EiI6QbLV1Lerd8uUiR+qPCw/1mA
+	G75J/KWQrl2msaMi7YZfXFTsV3NvyX0zYHsM7xFXkMfjloXH8dSkT03MzrOPRRzHH1pbj49146x
+	s6S/KEYHoXv4096zSpnMOCA/I3gEZzD4=
+X-Gm-Gg: AY/fxX4uGfhYAe5d64uUnNfO0tmtHYNZkTaei2whALbKa+8KaEMwa/eclX3/6Vmt7KQ
+	R0sYMXSiY19mF/HdCa2L4gb8z0Mn1s21cU9Jre4WnihXZwaHuXlSkVgrj/yCZjyG6Q/jH7al0nc
+	CZ4008kAoOnwbB5u2sih4OCsSnQwwE7YLEz7zcXWf7bXMaIWTeus9ZVat9Y528zmG9TSh2h5NuB
+	88TC2KzXWdmMd8IJQo6g5ubfe7cYHBnnrSxbTU9q/3mz9JRc0yoOQzf5VZijDWedr8C1Gf4bCrx
+	9VI3/jr24KUCRTUpFP8b0BF1XJ4=
+X-Received: by 2002:a05:622a:489:b0:4f1:ba0b:90 with SMTP id
+ d75a77b69052e-502d82775d1mr8090231cf.8.1768893223391; Mon, 19 Jan 2026
+ 23:13:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260119071039.2113739-1-danisjiang@gmail.com>
- <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk> <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
- <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
-In-Reply-To: <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
-From: Yuhao Jiang <danisjiang@gmail.com>
-Date: Tue, 20 Jan 2026 01:05:14 -0600
-X-Gm-Features: AZwV_Qhjs1DeQ5q3LqpnpDjn-ntJzACaBKK4Zhzd4f51YbjZA3cWNbJGpFmWlo8
-Message-ID: <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
-Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
- cross-buffer accounting
-To: Jens Axboe <axboe@kernel.dk>
-Cc: Pavel Begunkov <asml.silence@gmail.com>, io-uring@vger.kernel.org, 
+References: <20260119-ufs-rst-v1-1-c8e96493948c@gmail.com> <6479d7b8-7712-4181-9c82-0021da94d1a8@rock-chips.com>
+In-Reply-To: <6479d7b8-7712-4181-9c82-0021da94d1a8@rock-chips.com>
+From: Alexey Charkov <alchark@gmail.com>
+Date: Tue, 20 Jan 2026 11:13:34 +0400
+X-Gm-Features: AZwV_Qg9xEnym6d1IbZ761hDP0MCCZD2sOIi6gJCnx0Dbz6NZzcnmt6Sl_0hXVI
+Message-ID: <CABjd4Yx_2NPkY7U6U8XL_89uK20j7S3e4px1Cbp+JbF3FavjyQ@mail.gmail.com>
+Subject: Re: [PATCH] arm64: dts: rockchip: Explicitly request UFS reset pin on RK3576
+To: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Manivannan Sadhasivam <mani@kernel.org>, 
+	Quentin Schulz <quentin.schulz@cherry.de>, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Jens,
-
-On Mon, Jan 19, 2026 at 5:40=E2=80=AFPM Jens Axboe <axboe@kernel.dk> wrote:
+On Tue, Jan 20, 2026 at 5:39=E2=80=AFAM Shawn Lin <shawn.lin@rock-chips.com=
+> wrote:
 >
-> On 1/19/26 4:34 PM, Yuhao Jiang wrote:
-> > On Mon, Jan 19, 2026 at 11:03=E2=80=AFAM Jens Axboe <axboe@kernel.dk> w=
-rote:
-> >>
-> >> On 1/19/26 12:10 AM, Yuhao Jiang wrote:
-> >>> The trade-off is that memory accounting may be overestimated when
-> >>> multiple buffers share compound pages, but this is safe and prevents
-> >>> the security issue.
-> >>
-> >> I'd be worried that this would break existing setups. We obviously nee=
-d
-> >> to get the unmap accounting correct, but in terms of practicality, any
-> >> user of registered buffers will have had to bump distro limits manuall=
-y
-> >> anyway, and in that case it's usually just set very high. Otherwise
-> >> there's very little you can do with it.
-> >>
-> >> How about something else entirely - just track the accounted pages on
-> >> the side. If we ref those, then we can ensure that if a huge page is
-> >> accounted, it's only unaccounted when all existing "users" of it have
-> >> gone away. That means if you drop parts of it, it'll remain accounted.
-> >>
-> >> Something totally untested like the below... Yes it's not a trivial
-> >> amount of code, but it is actually fairly trivial code.
+> =E5=9C=A8 2026/01/19 =E6=98=9F=E6=9C=9F=E4=B8=80 17:22, Alexey Charkov =
+=E5=86=99=E9=81=93:
+> > Rockchip RK3576 UFS controller uses a dedicated pin to reset the connec=
+ted
+> > UFS device, which can operate either in a hardware controlled mode or a=
+s a
+> > GPIO pin.
 > >
-> > Thanks, this approach makes sense. I'll send a v3 based on this.
 >
-> Great, thanks! I think the key is tracking this on the side, and then
-> a ref to tell when it's safe to unaccount it. The rest is just
-> implementation details.
+> It's the only one 1.2V IO could be used on RK3576 to reset ufs devices,
+> except ufs refclk. So it's a dedicated pin for sure if using ufs, that's
+> why we put it into rk3576.dtsi.
 >
-> --
-> Jens Axboe
+> > Power-on default is GPIO mode, but the boot ROM reconfigures it to a
+> > hardware controlled mode if it uses UFS to load the next boot stage.
+> >
 >
+> ROM code could be specific, but the linux/loader driver is compatible=EF=
+=BC=8C
+> so for the coming SoCs, with more 1.2V IO could be used, it's more
+> flexible to use gpio-based instead of hardware controlled(of course,
+> move reset pinctrl settings into board dts).
 
-I've been implementing the xarray-based ref tracking approach for v3.
-While working on it, I discovered an issue with buffer cloning.
+Thanks Shawn, both of the above is very helpful context - I think I'll
+mention it in my next version of the U-boot patch series where this
+discussion first surfaced.
 
-If ctx1 has two buffers sharing a huge page, ctx1->hpage_acct[page] =3D 2.
-Clone to ctx2, now both have a refcount of 2. On cleanup both hit zero
-and unaccount, so we double-unaccount and user->locked_vm goes negative.
+> > Given that existing bindings (and rk3576.dtsi) expect a GPIO-controlled
+> > device reset, request the required pin config explicitly.
+> >
+> > This doesn't appear to affect Linux, but it does affect U-boot:
+> >
+>
+> IIUC, it's more or less a fix for loader, more precisely U-boot here?
+> I'm not entirely certain about the handling here, is it standard
+> convention to add a fixes tag in this context?
 
-The per-context xarray can't coordinate across clones - each context
-tracks its own refcount independently. I think we either need a global
-xarray (shared across all contexts), or just go back to v2. What do
-you think?
+Device trees are treated somewhat independently of Linux driver code,
+even though they follow the same development cycle. I believe that
+broader policy is that both bindings and device tree sources should
+equally cater to different codebases that use them, so a potential
+issue outside the Linux kernel warrants a fix. Perhaps Rob, Krzysztof
+and Conor are best positioned to confirm this or not.
 
---=20
-Yuhao Jiang
+In this particular case, the fact that the GPIO descriptor is defined
+in rk3576.dtsi, but the respective pin configuration is not, leaves
+ambiguity in the hardware description, which different codebases might
+resolve differently (and not necessarily correctly for the hardware).
+So there is a benefit in backporting the change which explicitly
+resolves the ambiguity.
+
+Best regards,
+Alexey
 
