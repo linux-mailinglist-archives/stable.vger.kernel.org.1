@@ -1,170 +1,183 @@
-Return-Path: <stable+bounces-210553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oI6yBYxYcGlvXQAAu9opvQ
-	(envelope-from <stable+bounces-210553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 05:39:40 +0100
+	id iOhVIPZOcWkvCAAAu9opvQ
+	(envelope-from <stable+bounces-210558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 23:11:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2209511C2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 05:39:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 191F85E8D7
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 23:11:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 00A73762150
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 14:25:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4526570A4F7
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C0744A701;
-	Tue, 20 Jan 2026 14:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93E62FC871;
+	Tue, 20 Jan 2026 15:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jWxVCnbC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyMooBhA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C01B43C06B;
-	Tue, 20 Jan 2026 14:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762422FC890
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 15:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768918567; cv=none; b=ELSwB50N7v3ofJnpbJ+9T7dBc0civO4e0SKHEgZDi5UCbzFvR5ERUNyW6xsQI/0t66MBftcdIG9hDyoyRb5WVdZpyi+zrSVYOcwHXeBzkFY9ge0Vm+z0ypkjubVlsI7r1+K8Z6bTctDwUayDja6n5jZvxmEorrC0N3Ut15aszEw=
+	t=1768921225; cv=none; b=gjEN8PLrzaC3Nc+SDPaseuYai719wjwInEc72+VrcHTbsKHzR+UO4Cx9ZrWdZKr87zd/kNxFF1sY8znHeb8XGqL/BfupuOcC80HRcfo7VKNU1QhYhkOlyRva+fomRzwPYRJgoAEgc1sv0m9+0dhFZJ56o9d0pE1UEgvKbx8vdys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768918567; c=relaxed/simple;
-	bh=oq4ASq6khY2rYBGz2aotRBZA10LhKXDoOCFxTvWas/0=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=pncsEdILSiJctE0eITt1ZgZYqbTpWdXTd3gq6X8Eiqpme4xT5LYWOC8dJI8AnPUI750lDY0rhZVMmVU7gRBL7WleLF0iUY/tVvMh5FcMJHzFQiqB9fnnbEIoOkd+tYKhJp1PIhxHp/26JDshdn32CqjMHmblg7mMlzhmR+ebXdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jWxVCnbC; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id A667B1A2965;
-	Tue, 20 Jan 2026 14:16:03 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 75FC1606AB;
-	Tue, 20 Jan 2026 14:16:03 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C5B5010B698AE;
-	Tue, 20 Jan 2026 15:15:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1768918562; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=+sjV4jKZbmaCgDV+GkMaLzLnPZD2hmO2N+9AYVVEwgo=;
-	b=jWxVCnbCkzG1ahCUoIe6zWU7LBpBHB9DhliiM0lM8yu2Jq6FBVXrGVmvXCS3nMRLdeGeyC
-	dhWRn6K1Rh+vjBnUoWUnJXUf4WRGtEXrsg7JshFYDmafpl8SIJdpySEakihoFFiDEqMngi
-	iAmQzHGDrXCnxIn0Kyr75uMDpgbg2kBSbohOpxxCRM7qunkgrmR88S1QiUrDxqGpQDNc0/
-	8Kr47qQmMW4s++eN70Y8Bug/+6qGCFfEInYJEtufQPtVVPjSs8Eio488J11LDjS0NqdlI+
-	oyxbmSmIfSAnD2FxMebS1yS4b5RWHr5imr2k3tGt+6EBj/9wi2F6EtA93teD7Q==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Philippe Cornu <philippe.cornu@st.com>, benjamin.gaignard@linaro.org, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Adrien Grassein <adrien.grassein@gmail.com>, Liu Ying <victor.liu@nxp.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- stable@vger.kernel.org
-In-Reply-To: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-0-8bad3ef90b9f@bootlin.com>
-References: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-0-8bad3ef90b9f@bootlin.com>
-Subject: Re: [PATCH v2 00/12] drm/bridge: convert users of
- of_drm_find_bridge(), part 2
-Message-Id: <176891855295.598401.9824700731247929118.b4-ty@bootlin.com>
-Date: Tue, 20 Jan 2026 15:15:52 +0100
+	s=arc-20240116; t=1768921225; c=relaxed/simple;
+	bh=1ZV6yVWFQtGkO3UdV4Urfb/HhAdnBx6bTAmUMCTfkOk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Okfkjmv/Objy4ldYQDdNsPK4WOXYsRUWWOx0/WtnXsSPAUYfgxyvMrpoooO/plgApPB+CacfDAr4q8KdJEFwoIJsRi88y2cfAn4GvOuM+AIDwVBrMQOsGil2K7A00I1cFaLVvxrzgbtt9azcI+a+Yo9BGMwYyrKUeyKprbRNk0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyMooBhA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DE0C16AAE;
+	Tue, 20 Jan 2026 15:00:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1768921224;
+	bh=1ZV6yVWFQtGkO3UdV4Urfb/HhAdnBx6bTAmUMCTfkOk=;
+	h=Subject:To:Cc:From:Date:From;
+	b=OyMooBhAW+WabIsjnyIDyYZ2S+KAw88bA1TpXS1gegk9wacUAvYfXEhceo+GzynOU
+	 wDgHofHh7djuWOCE73mOIjtv5Wr4PdQLgyCTNZ8lL74q9pKMDWItE0DJs8dSWX4ogw
+	 zeFC31aIHZkhjHm4FsNbB1f7DSQl9HsmUJ7En7KE=
+Subject: FAILED: patch "[PATCH] drm/amdkfd: fix a memory leak in device_queue_manager_init()" failed to apply to 6.1-stable tree
+To: lihaoxiang@isrc.iscas.ac.cn,Oak.Zeng@amd.com,alexander.deucher@amd.com,felix.kuehling@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 20 Jan 2026 16:00:22 +0100
+Message-ID: <2026012022-worst-moonstone-878a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: lfdr
+X-Spamd-Result: default: False [3.54 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DATE_IN_PAST(1.00)[31];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210553-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[30];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-210558-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,st.com,linaro.org,intel.com,ideasonboard.com,kwiboo.se,nxp.com,pengutronix.de,samsung.com,amarulasolutions.com,bootlin.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[bootlin.com,reject];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a01:60a::1994:3:14:from];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NO_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
+	DNSWL_BLOCKED(0.00)[52.25.139.140:received,2a01:60a::1994:3:14:from,10.30.226.201:received];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	DWL_DNSWL_BLOCKED(0.00)[linuxfoundation.org:dkim];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[52.25.139.140:received,10.30.226.201:received];
 	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,bootlin.com:email,bootlin.com:dkim,bootlin.com:mid]
-X-Rspamd-Queue-Id: B2209511C2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,amd.com:email,ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns]
+X-Rspamd-Queue-Id: 191F85E8D7
 X-Rspamd-Action: no action
-X-Rspamd-Server: lfdr
 
 
-On Fri, 09 Jan 2026 08:31:31 +0100, Luca Ceresoli wrote:
-> This series converts all DRM bridge drivers (*) from the now deprecated
-> of_drm_find_bridge() to its replacement of_drm_find_and_get_bridge() which
-> allows correct bridge refcounting. It also converts per-driver
-> "next_bridge" pointers to the unified drm_bridge::next_bridge which puts
-> the reference automatically on bridge deallocation.
-> 
-> This is part of the work to support hotplug of DRM bridges. The grand plan
-> was discussed in [0].
-> 
-> [...]
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Applied, thanks!
+To reproduce the conflict and resubmit, you may use the following commands:
 
-[01/12] drm: of: drm_of_panel_bridge_remove(): fix device_node leak
-        commit: a4b4385d0523e39a7c058cb5a6c8269e513126ca
-[02/12] drm: of: drm_of_panel_bridge_remove(): convert to of_drm_find_and_get_bridge()
-        commit: f675a276b84488e78287dd22c2e9461e4c008c66
-[03/12] drm/bridge: sii902x: convert to of_drm_find_and_get_bridge()
-        commit: d07490fb23958006bcecd6f2ba411571c099d104
-[04/12] drm/bridge: thc63lvd1024: convert to of_drm_find_and_get_bridge()
-        commit: 9d34e1a8cf7b643bca058a65f3441d90099b297f
-[05/12] drm/bridge: tfp410: convert to of_drm_find_and_get_bridge()
-        commit: 35dd5e1c089b6fd9f503bb15ebc1138d5a3f887e
-[06/12] drm/bridge: tpd12s015: convert to of_drm_find_and_get_bridge()
-        commit: 0bbca46cd50a527bded903ffe7f32e3761e825bd
-[07/12] drm/bridge: lt8912b: convert to of_drm_find_and_get_bridge()
-        commit: 31cb3cd7e7149983e279f3d6da3ae5757a965ea5
-[08/12] drm/bridge: imx8mp-hdmi-pvi: convert to of_drm_find_and_get_bridge()
-        commit: 7654c807f20701ebd1dc7e967270d017dcc36730
-[09/12] drm/bridge: imx8qxp-ldb: convert to of_drm_find_and_get_bridge()
-        commit: 32529d384cea3a9b939ff1b56aa30a13f8370129
-[10/12] drm/bridge: samsung-dsim: samsung_dsim_host_attach: use a temporary variable for the next bridge
-        commit: e5e1a0000746ded4d9fa16fceda0748aec2b6e6a
-[11/12] drm/bridge: samsung-dsim: samsung_dsim_host_attach: don't use the bridge pointer as an error indicator
-        commit: 33f86ac63031d0593e48eb0a738f2d1b1ee29879
-[12/12] drm/bridge: samsung-dsim: samsung_dsim_host_attach: convert to of_drm_find_and_get_bridge()
-        commit: 685d0dfc37d081e56374852165afc8ab3b3e8d5b
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 80614c509810fc051312d1a7ccac8d0012d6b8d0
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012022-worst-moonstone-878a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Best regards,
--- 
-Luca Ceresoli <luca.ceresoli@bootlin.com>
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 80614c509810fc051312d1a7ccac8d0012d6b8d0 Mon Sep 17 00:00:00 2001
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Date: Thu, 8 Jan 2026 15:18:22 +0800
+Subject: [PATCH] drm/amdkfd: fix a memory leak in device_queue_manager_init()
+
+If dqm->ops.initialize() fails, add deallocate_hiq_sdma_mqd()
+to release the memory allocated by allocate_hiq_sdma_mqd().
+Move deallocate_hiq_sdma_mqd() up to ensure proper function
+visibility at the point of use.
+
+Fixes: 11614c36bc8f ("drm/amdkfd: Allocate MQD trunk for HIQ and SDMA")
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Oak Zeng <Oak.Zeng@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b7cccc8286bb9919a0952c812872da1dcfe9d390)
+Cc: stable@vger.kernel.org
+
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+index d7a2e7178ea9..8af0929ca40a 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
+@@ -2919,6 +2919,14 @@ static int allocate_hiq_sdma_mqd(struct device_queue_manager *dqm)
+ 	return retval;
+ }
+ 
++static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
++				    struct kfd_mem_obj *mqd)
++{
++	WARN(!mqd, "No hiq sdma mqd trunk to free");
++
++	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
++}
++
+ struct device_queue_manager *device_queue_manager_init(struct kfd_node *dev)
+ {
+ 	struct device_queue_manager *dqm;
+@@ -3042,19 +3050,14 @@ struct device_queue_manager *device_queue_manager_init(struct kfd_node *dev)
+ 		return dqm;
+ 	}
+ 
++	if (!dev->kfd->shared_resources.enable_mes)
++		deallocate_hiq_sdma_mqd(dev, &dqm->hiq_sdma_mqd);
++
+ out_free:
+ 	kfree(dqm);
+ 	return NULL;
+ }
+ 
+-static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
+-				    struct kfd_mem_obj *mqd)
+-{
+-	WARN(!mqd, "No hiq sdma mqd trunk to free");
+-
+-	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
+-}
+-
+ void device_queue_manager_uninit(struct device_queue_manager *dqm)
+ {
+ 	dqm->ops.stop(dqm);
 
 
