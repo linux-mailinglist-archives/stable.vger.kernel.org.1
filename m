@@ -1,156 +1,117 @@
-Return-Path: <stable+bounces-210568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAIVBWzDb2lsMQAAu9opvQ
-	(envelope-from <stable+bounces-210568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:03:24 +0100
+	id 6NzAFZnHb2mgMQAAu9opvQ
+	(envelope-from <stable+bounces-210571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:21:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77ED44905F
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:03:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C21D74959F
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:21:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B8BB2941048
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:22:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C1B589C514C
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA7B44A72A;
-	Tue, 20 Jan 2026 15:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F83466B69;
+	Tue, 20 Jan 2026 15:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EuCLFUAG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utM2ZMdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA5544A721
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 15:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36F933CE9B;
+	Tue, 20 Jan 2026 15:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768921460; cv=none; b=jcU6VveF3Z8/7Ktgae3HupCichFmzIekb9BjLkMfwnbgNddXZjfR0i7nO1hGPGWFfogMRs6XVIjPJF8BuZWrYMoWndYGWR9Q04r5xIAgDWQxzAzw2GI4WM3kRPTJzawaw0sgIDV6RtsWCADF9GaesgV88ocAMEGKy2LqhBHz6u0=
+	t=1768921616; cv=none; b=bQuMVS3uT1FLtK/Yzpdf7Eoy6yCw79o8c7FFBoChWHewNLNEh+7tIdl0syJWJh3TNyYpMrhbhyBXDAid57bhYxQ/gmDqOr3IAuOLOmQylsmVBnYJ3A3PX+T2LIG5kE9mGyJI3FCtLYPQ+yG9WOaLOx5ehPQk2WsLmuUnOqzSWHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768921460; c=relaxed/simple;
-	bh=BFtlXYUU01PlaFHdtvuc72+igVPjTvCkeMPTxBQqGnY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pwXlVosiCy8nxPlwtFLZ0febprbNvPuTxMmtBQG/fqdpeh7R/zNhmcTMk11gs2V44OOkoaW5irlt857AyzPWHzVJBAEXBHeQDWZ48zEvNdchMbNThj5rjnH+yL03uvAUKfJytCzr8lPeB/IWIHcf0MHRC552mr61Up/t5KKk40w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EuCLFUAG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930C2C16AAE;
-	Tue, 20 Jan 2026 15:04:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768921460;
-	bh=BFtlXYUU01PlaFHdtvuc72+igVPjTvCkeMPTxBQqGnY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=EuCLFUAG2ykWVdGtEi9SL9pM6pvQG7Ydb1RYkh+xX9zeivmeRcN37MWrVw353cyYu
-	 +zakWlT+iKLRkOVRnf/qaInthGDoU5YRQKSM2lqCAtfoBdoAy4csQ4zeUsXjB2wMDf
-	 fT8pEDJLwKBU0rnLg0EXeWHGk8RfVmUZKhEmAujU=
-Subject: FAILED: patch "[PATCH] dmaengine: stm32: dmamux: fix OF node leak on route" failed to apply to 5.15-stable tree
-To: johan@kernel.org,amelie.delaunay@foss.st.com,pierre-yves.mordret@foss.st.com,vkoul@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 20 Jan 2026 16:04:06 +0100
-Message-ID: <2026012006-acquaint-canon-994b@gregkh>
+	s=arc-20240116; t=1768921616; c=relaxed/simple;
+	bh=vnJ/UgS3R75zwomWALzvrM/1lsqUi8WY10VHmkjmE0U=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Ja3IsBihlexRAGzi4rLvBXis2uWl411vKHy7wgkFQ7YBIA2QwfWUeubnS8f9K36nO+W/cbYWEJl8yopB4rwN8ZkTdpIpmiLPlW8AIraRymnyUe1nw/qBHXk6wBDnWlkALhw7p1XdjfqRO1uvYC0xbCxVD2MdACyrKrOkDHt/vKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utM2ZMdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2E8C16AAE;
+	Tue, 20 Jan 2026 15:06:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768921616;
+	bh=vnJ/UgS3R75zwomWALzvrM/1lsqUi8WY10VHmkjmE0U=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=utM2ZMdjja98+LVXH1qniXS/eZpz0ynpTj16/Fna7Hs6jgDWPXnrtPjDg2hPooKuQ
+	 bQm94wpqUz3WL3IDQUDpJZ8fzDzEJk710hW2FFu3fm6JAXfyx/sJTjixVvWRKbl+dk
+	 DTiopHzR1a1lljAv/9vznLTdfiv+UGQqHShOvVJb1pCAFazPO1ZWhyko9husgxH7Pu
+	 aKjiI9+QJSdqxUvqgqec5140yDTZ10H28byFw/vCKQMwfvHdUutxfoSo/ims47H4Jd
+	 kV3Zi1G2P+Hir0021QMOquChuJZgt6T+qLUjrjKmqaAR+KljCJZx1Tp6cXkpWt1Uxf
+	 MvJn+aWkqxjDg==
+From: Lee Jones <lee@kernel.org>
+To: Lee Jones <lee@kernel.org>, Johan Hovold <johan@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+In-Reply-To: <20251219110947.24101-1-johan@kernel.org>
+References: <20251219110947.24101-1-johan@kernel.org>
+Subject: Re: (subset) [PATCH] mfd: qcom-pm8xxx: fix OF populate on driver
+ rebind
+Message-Id: <176892161482.2265106.3930390098116884693.b4-ty@kernel.org>
+Date: Tue, 20 Jan 2026 15:06:54 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.54 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Mailer: b4 0.15-dev-52d38
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210571-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210568-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	TO_DN_NONE(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lee@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 77ED44905F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: C21D74959F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, 19 Dec 2025 12:09:47 +0100, Johan Hovold wrote:
+> Since commit c6e126de43e7 ("of: Keep track of populated platform
+> devices") child devices will not be created by of_platform_populate()
+> if the devices had previously been deregistered individually so that the
+> OF_POPULATED flag is still set in the corresponding OF nodes.
+> 
+> Switch to using of_platform_depopulate() instead of open coding so that
+> the child devices are created if the driver is rebound.
+> 
+> [...]
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Applied, thanks!
 
-To reproduce the conflict and resubmit, you may use the following commands:
+[1/1] mfd: qcom-pm8xxx: fix OF populate on driver rebind
+      commit: 0b6a34ca0ac3b6e02389a2594f0638e5b9c65814
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x b1b590a590af13ded598e70f0b72bc1e515787a1
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012006-acquaint-canon-994b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From b1b590a590af13ded598e70f0b72bc1e515787a1 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan@kernel.org>
-Date: Mon, 17 Nov 2025 17:12:53 +0100
-Subject: [PATCH] dmaengine: stm32: dmamux: fix OF node leak on route
- allocation failure
-
-Make sure to drop the reference taken to the DMA master OF node also on
-late route allocation failures.
-
-Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
-Cc: stable@vger.kernel.org      # 4.15
-Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/20251117161258.10679-12-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-
-diff --git a/drivers/dma/stm32/stm32-dmamux.c b/drivers/dma/stm32/stm32-dmamux.c
-index 791179760782..2bd218dbabbb 100644
---- a/drivers/dma/stm32/stm32-dmamux.c
-+++ b/drivers/dma/stm32/stm32-dmamux.c
-@@ -143,7 +143,7 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 	ret = pm_runtime_resume_and_get(&pdev->dev);
- 	if (ret < 0) {
- 		spin_unlock_irqrestore(&dmamux->lock, flags);
--		goto error;
-+		goto err_put_dma_spec_np;
- 	}
- 	spin_unlock_irqrestore(&dmamux->lock, flags);
- 
-@@ -165,6 +165,8 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 
- 	return mux;
- 
-+err_put_dma_spec_np:
-+	of_node_put(dma_spec->np);
- error:
- 	clear_bit(mux->chan_id, dmamux->dma_inuse);
- 
+--
+Lee Jones [李琼斯]
 
 
