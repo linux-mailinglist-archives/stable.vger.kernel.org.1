@@ -1,113 +1,105 @@
-Return-Path: <stable+bounces-210500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJNFK+ZhcWkHGgAAu9opvQ
-	(envelope-from <stable+bounces-210500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 00:31:50 +0100
+	id MFDqHLBqcGkVXwAAu9opvQ
+	(envelope-from <stable+bounces-210501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:57:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218405F8D7
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 00:31:50 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB12B51C90
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:57:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 99E298627AC
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 12:07:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F1A486CB6B9
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 12:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C05C3E9F6B;
-	Tue, 20 Jan 2026 12:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724F7426D07;
+	Tue, 20 Jan 2026 12:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e5hRf789"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZqP8j3ze"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75746427A13
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 12:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8435426681
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 12:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768910716; cv=none; b=dvd5z89sMVoXp8vHXh1x7AoPL/ctKb5M3UH0NhEuE9wDG3Y/ue6A+driyGQBP62L6oT8NnHw7RJ8uXOjTrOVzDX+s5Pi2JDpaUFUS1V22Lb7+aphCJEbMq3tjYXIMiCfwCy15C0IBnocYWP65ySZBFdLKKqTYbZ0Gd87h25LVk4=
+	t=1768911085; cv=none; b=YfknGK+OEG1B5Bjw3v1QtXaEHp8vZeN6uab2cFJaoBEk0+E6b6vAFvtze4RUVs9YzrKS4vYeWE/4khLBb84JKwHrclkXBIdEN8nuE8Ww77LBr34CWY+IGOXMCjNNPqRV4zIMLobl4MajTetEp8rEyd9Yms15OO75/zIIfe6oNzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768910716; c=relaxed/simple;
-	bh=1SUJOIbcpKZ97vROXHZbc4uywvg5mICVVTFXnu+8N0E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m7/J+jdITVZNDlwRGOv8XRaPDpTXc5NKX3c93ijJ46K34g8tX7i3qR6stExn8TyfhCRRKDVC3PiS934KSZWy+HWKej/YV4IeF3lO4YVIjsqsU+swZ6jbS7c89DPI9474GyDnvr5nz3RpjV5/i7XfHxu3Rx5iaMB/SAw/teNi0+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e5hRf789; arc=none smtp.client-ip=209.85.128.66
+	s=arc-20240116; t=1768911085; c=relaxed/simple;
+	bh=x1ZFqXPg08O8CIdkeGxwHnmW3vI6NSISVaARNwC7Hyg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IEBk1b9pbgm+36AFySGuoWEIAt1cmtoQ4+XKtZZyeY4txKp1H75UMhtaTz8+qKqyHSkwES13QF18tUmreVDgp12yJvcPBuK01deqY4Jn0lYVvfj5jZBsvU3DAHD8UU5XzpNfvLCelB+LLy7zSaeZAfxvPfr+tfq8R6e+XwHm5lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZqP8j3ze; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-47d59da3d81so30443255e9.0
-        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 04:05:14 -0800 (PST)
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7b75e366866so1518332b3a.2
+        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 04:11:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768910713; x=1769515513; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JckE27aaTC/MenhzlCHYt+N31ilQSZiKPy2PxHLLEmg=;
-        b=e5hRf789+sDFQRo4cko4z9oRXrlGElRU7lc3q4NIGtOKRke9YROX5TAjFeOGYG6zAW
-         3afOnjx6LtmlHGG8SnjkSYi60DZlm+xWEtNPl5XHhbOigMUkNQXq9Vkjk2/KUM83xdJe
-         Qr2vyCN7NhlYNZEXAyhadErhC5U7UxK8mu7qesPXXLphqQgmkfTwyKPcv0UgmLCtO3+w
-         g+K5+owI/G78G9+Buz9UkqF9jdtxHHto+udzSPwkkLdMvZ/B4qq3NFxDUjuyQaQUStO9
-         Qm1FFIHgeC/RgGVPEBVFXfQbTnr+LDxjUuqkJSa9bwCJKjns+s+IcSIgwoq0ffvymAIB
-         DKoQ==
+        d=gmail.com; s=20230601; t=1768911083; x=1769515883; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+M/fFjyuX7BH6FG6ugPKx8MXXjIS/+A8oqVRnCk5TSg=;
+        b=ZqP8j3zeuAmEfLBUtIhLGvIqC8jOaoKyGwx4VFMlvVZzCJkSGGOLAegOrg+7NxwXPH
+         pxpTQ8R15fd+fEaWbUBIF/0m9FgK/FFAl4ZYjgTpCJXRd3HPRTVZ5kuHrt7GFVaI/12s
+         T++WxC9s48Jz+LYI3p87y4B7nl/URW6aSQ7tH130tf4q/meEGgGdalfJl1klSJ8Zlav2
+         iHrkZmBlpk4PocnNHuxhm7GvYlADVecYU2A5x5VTmqgjaWrSjbgfSUd6CPuP89DovQkZ
+         n9RwHIl77hVIguIsvpDRkjBqzLx03lDYv++QHzm+JhP5djmSkL+Vvv4xpFIMwdENIKJ9
+         gXZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768910713; x=1769515513;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JckE27aaTC/MenhzlCHYt+N31ilQSZiKPy2PxHLLEmg=;
-        b=QBtiLP96vL+D4YfAWrBbJhhGEz+nA5H9CP8POPoAQPfAbTHSy4frFrT3H14qYtgDBu
-         X5hs4lDtyfCxHz08B6ushOSM+1jBEmRPxNZ70ErB9zd6FXObXlNskvZAAexrHyhEWEpp
-         LPZyl59YLTpz+bSoFVzV2CF09SzbNKIk3Cy6XIZdg8jQHLeuXAYyGebDkYIigxkLxnxE
-         T1Vprzdddc//LVvQdAE2tsXKrq+z3OXRLoRkqPiulGbNYSFRsCNYXZCGGBcRKtB9vg9V
-         3VgD2E5/ufibLnbp8J+v/teFhnNzHH9JHq2SyNiVnTdYRUUawHKrHG0FnKOcLdQmhpdg
-         5nYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXthyYgfTQn+rGrfN0xLen9wNNh2+HcWsa1yOy5ooSzmufXNmOE4thUYOV3nzXFNGfrNJpO/7g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzqv0YBW74D6AlBdADQrLAhzOoVoPt2YC9Wl8J5GR5BHDNJwP4Q
-	MwgM433KzBbSu0Hpg7iU+jM5nkLaqE0FXHbM8CP8uh3/9QObYYZlHUPz
-X-Gm-Gg: AY/fxX5eXl3fAZdYpwhK2V3qAfJmpWuiHH5hg3G64oAS0MHzp3NOKJmSjUlDOA2SJs2
-	v8goGy1dRLlQjwgdtJY2du/P31mvFSWpmLIJ1mapWrdUH15/rAfm2bgkzRUQXLvgpFw3/l0zyxV
-	w/k/1Y4e9MHixRNCeJ7xorF0WgC5t7VDA9VPIrkD6imuGYLT1sBRJ+TuHaID2AwgiV1DolsLnA7
-	0FW839mT9ZVXBoxrpsqGPQGhhD7cZjaLL1+Reb9wIsLM+oRYGmD0xnOhJNQu15lvfiM6Vc6pd4A
-	NUJGb8iq+RSBygeQfbI2qzf7s3wlbcIQ3DCOJmSrzWpjVFoMLGSVlswGCFEAgiGY2hZ7GS6agQw
-	4AxCkDr15d60dtyGA/LprSqspwyG1KIQPoF6a+nwbVkv2zcHHdz62rGhk3fkwJq7MzQLf7bNnHV
-	pdGPoj5tDrPPcziJmI1iUqu9wYdIIN5GcQgyHEfX930x2tsszqLD0iNqgO/FiqQhWR7C+6FO3Cl
-	fRAfrubg2NK7f3lytAUjYV7GfFXtoadgahiaWLGOxfU7ttfFed5749tyTEP93y1
-X-Received: by 2002:a05:600c:8b6c:b0:46e:2815:8568 with SMTP id 5b1f17b1804b1-4801e66fcc5mr167787885e9.10.1768910712480;
-        Tue, 20 Jan 2026 04:05:12 -0800 (PST)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47f4289b789sm302284295e9.1.2026.01.20.04.05.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Jan 2026 04:05:11 -0800 (PST)
-Message-ID: <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
-Date: Tue, 20 Jan 2026 12:05:09 +0000
+        d=1e100.net; s=20230601; t=1768911083; x=1769515883;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+M/fFjyuX7BH6FG6ugPKx8MXXjIS/+A8oqVRnCk5TSg=;
+        b=HGPXYs7/mJj00wehOVJN3G45X80DUiutZBsBpo3Ae6gNPDbDABjJLFrt+bM8+SHiWS
+         WARur3pNewAWHYW4sO8JJ+dyiMUDpbUzF0XjBqJd8wtW1oXmxf7m63vadmSQ3Sc7t9Bo
+         fdtpnniYhdckegWECS2K6nkHkbDYRTofq/0JB3RpaiNYJxcPns6lF+5oxgiPcmnYBdSn
+         6O2dRWX6ngEvEOVJlWGFGqaU2B2YlZsPXNPMrq3W6ovjXqC6zwvrZiOBr4y6CnZNMbQ2
+         DneWBtda8e9yjwYGKC9kGjiUNb5hgQssmxQuFuGdoTs6JUnJ1RFQnWgYKt0bm45goXES
+         uOMg==
+X-Forwarded-Encrypted: i=1; AJvYcCXvH/vC4oz88LACYrNCJ3CcdRRhAJf/1krLgFw6ybxAMpTYAj0agkADLygSqiYWxpgFCdI+KO4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxp80awd3ru7GmhwtBbGMIfubqVqZWcnUCjBqBhbJFQgtg4HBR2
+	5oouboJCB5SM6QeW87OQKnffYcLZW/h0R7gkXIs0OvvOiFBwzNigmuxu
+X-Gm-Gg: AZuq6aI9jrDHfvV0A5YN9GVRhNkkBdNUURYdmpx3Z28LNkHQUnCeoiKJ5yBU8zjOIPd
+	oeZUNlwa8y3VurFkdMnrcAJkGac22oGap2arPAdGqXU2EcmiE4jQqniR2n5NLR+3n0iPQl+pUov
+	nP80wyI5ZDPnR7D45W9+C6Kiya8M4SSj+INKKbhEda8a+h4yP7Zeny5w9kDJ9Cih6LABDLrQ2eW
+	mH+pWwrYUFI733qL9TwaV6U+0nsjGKCl62naV5jFriAoSd3CEOwx+X5w8V+63FZJZIAMymL1dwC
+	MVSqoukze5cRqk1lHz1JGJO4LIlvZ8Kq96ynYEzN5Qs+C+MwpTs835lybYV7ggLzmHUvzGjGcKF
+	+oAxt6VBeyZ2ZOos7XU3c2NTvzE5kzaRg405DtUOyJjxzrPYCmVjawsUm2cHYoNrPblU4vojJIw
+	zY90rQcx4ZftVOY4o6VuuakPnwKWxcyZJjH0vuuAKMxG4cbqGUWqfmVMcnpv7mSyyDYR6oMcHO+
+	12w8oYQw9t11UmXPCihrWlZQYFBKtW+shNtJciWya/x4rx9+HHUBBJ7/A==
+X-Received: by 2002:a05:6a00:180e:b0:7fb:e662:5b9 with SMTP id d2e1a72fcca58-81fe880897amr1744566b3a.31.1768911082919;
+        Tue, 20 Jan 2026 04:11:22 -0800 (PST)
+Received: from 2045D.localdomain (70.sub-75-229-220.myvzw.com. [75.229.220.70])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa10bdc65sm12150178b3a.21.2026.01.20.04.11.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 04:11:22 -0800 (PST)
+From: Gui-Dong Han <hanguidong02@gmail.com>
+To: mchehab@kernel.org
+Cc: hverkuil+cisco@kernel.org,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] media: dvb_demux: fix potential TOCTOU race conditions
+Date: Tue, 20 Jan 2026 20:11:05 +0800
+Message-ID: <20260120121105.8959-1-hanguidong02@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
- cross-buffer accounting
-To: Yuhao Jiang <danisjiang@gmail.com>, Jens Axboe <axboe@kernel.dk>
-Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260119071039.2113739-1-danisjiang@gmail.com>
- <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
- <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
- <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
- <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	DATE_IN_PAST(1.00)[35];
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
@@ -115,83 +107,102 @@ X-Spamd-Result: default: False [-0.96 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
-	TAGGED_FROM(0.00)[bounces-210500-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.dk];
+	TAGGED_FROM(0.00)[bounces-210501-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[hanguidong02@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 218405F8D7
+	TAGGED_RCPT(0.00)[stable,cisco];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: AB12B51C90
 X-Rspamd-Action: no action
+X-Rspamd-Server: lfdr
 
-On 1/20/26 07:05, Yuhao Jiang wrote:
-> Hi Jens,
-> 
-> On Mon, Jan 19, 2026 at 5:40 PM Jens Axboe <axboe@kernel.dk> wrote:
->>
->> On 1/19/26 4:34 PM, Yuhao Jiang wrote:
->>> On Mon, Jan 19, 2026 at 11:03 AM Jens Axboe <axboe@kernel.dk> wrote:
->>>>
->>>> On 1/19/26 12:10 AM, Yuhao Jiang wrote:
->>>>> The trade-off is that memory accounting may be overestimated when
->>>>> multiple buffers share compound pages, but this is safe and prevents
->>>>> the security issue.
->>>>
->>>> I'd be worried that this would break existing setups. We obviously need
->>>> to get the unmap accounting correct, but in terms of practicality, any
->>>> user of registered buffers will have had to bump distro limits manually
->>>> anyway, and in that case it's usually just set very high. Otherwise
->>>> there's very little you can do with it.
->>>>
->>>> How about something else entirely - just track the accounted pages on
->>>> the side. If we ref those, then we can ensure that if a huge page is
->>>> accounted, it's only unaccounted when all existing "users" of it have
->>>> gone away. That means if you drop parts of it, it'll remain accounted.
->>>>
->>>> Something totally untested like the below... Yes it's not a trivial
->>>> amount of code, but it is actually fairly trivial code.
->>>
->>> Thanks, this approach makes sense. I'll send a v3 based on this.
->>
->> Great, thanks! I think the key is tracking this on the side, and then
->> a ref to tell when it's safe to unaccount it. The rest is just
->> implementation details.
->>
->> --
->> Jens Axboe
->>
-> 
-> I've been implementing the xarray-based ref tracking approach for v3.
-> While working on it, I discovered an issue with buffer cloning.
-> 
-> If ctx1 has two buffers sharing a huge page, ctx1->hpage_acct[page] = 2.
-> Clone to ctx2, now both have a refcount of 2. On cleanup both hit zero
-> and unaccount, so we double-unaccount and user->locked_vm goes negative.
-> 
-> The per-context xarray can't coordinate across clones - each context
-> tracks its own refcount independently. I think we either need a global
-> xarray (shared across all contexts), or just go back to v2. What do
-> you think?
+The dvb_demux functions handle frontend connectivity without holding
+dvbdemux->mutex during checks, leading to TOCTOU race conditions. In
+dvbdmx_write(), a concurrent dvbdmx_disconnect_frontend() can set
+demux->frontend to NULL after the check, causing a potential NULL pointer
+dereference. In dvbdmx_connect_frontend(), a concurrent connection could
+set the frontend between the check and the lock. This allows the second
+caller to overwrite the existing frontend, leading to resource leaks.
+The dvb_demux module should use its own mutex to ensure thread safety
+for these internal state checks.
 
-The Jens' diff is functionally equivalent to your v1 and has
-exactly same problems. Global tracking won't work well. You can try
-to double account clones, or wrap it all together with the xarray
-into an object that you share b/w rings on clone. Just make sure
-it's protected right.
+Fix this by extending the lock scope. Move the frontend state checks
+inside the dvbdemux->mutex critical section to ensure the state remains
+stable during the operation.
 
+This possible bug was found by our experimental static analysis tool,
+which analyzes lock usage to detect TOCTOU issues.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+---
+v2:
+* Remove unnecessary parentheses to fix checkpatch --strict warning, as
+reported by Media CI robot.
+---
+ drivers/media/dvb-core/dvb_demux.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/media/dvb-core/dvb_demux.c b/drivers/media/dvb-core/dvb_demux.c
+index 7c4d86bfdd6c..38ffbbfef1f5 100644
+--- a/drivers/media/dvb-core/dvb_demux.c
++++ b/drivers/media/dvb-core/dvb_demux.c
+@@ -1141,15 +1141,18 @@ static int dvbdmx_write(struct dmx_demux *demux, const char __user *buf, size_t
+ 	struct dvb_demux *dvbdemux = (struct dvb_demux *)demux;
+ 	void *p;
+ 
+-	if ((!demux->frontend) || (demux->frontend->source != DMX_MEMORY_FE))
++	if (mutex_lock_interruptible(&dvbdemux->mutex))
++		return -ERESTARTSYS;
++
++	if (!demux->frontend || demux->frontend->source != DMX_MEMORY_FE) {
++		mutex_unlock(&dvbdemux->mutex);
+ 		return -EINVAL;
++	}
+ 
+ 	p = memdup_user(buf, count);
+-	if (IS_ERR(p))
++	if (IS_ERR(p)) {
++		mutex_unlock(&dvbdemux->mutex);
+ 		return PTR_ERR(p);
+-	if (mutex_lock_interruptible(&dvbdemux->mutex)) {
+-		kfree(p);
+-		return -ERESTARTSYS;
+ 	}
+ 	dvb_dmx_swfilter(dvbdemux, p, count);
+ 	kfree(p);
+@@ -1202,11 +1205,13 @@ static int dvbdmx_connect_frontend(struct dmx_demux *demux,
+ {
+ 	struct dvb_demux *dvbdemux = (struct dvb_demux *)demux;
+ 
+-	if (demux->frontend)
+-		return -EINVAL;
+-
+ 	mutex_lock(&dvbdemux->mutex);
+ 
++	if (demux->frontend) {
++		mutex_unlock(&dvbdemux->mutex);
++		return -EINVAL;
++	}
++
+ 	demux->frontend = frontend;
+ 	mutex_unlock(&dvbdemux->mutex);
+ 	return 0;
 -- 
-Pavel Begunkov
+2.43.0
 
 
