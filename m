@@ -1,139 +1,145 @@
-Return-Path: <stable+bounces-210551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJfZJVC8b2kOMQAAu9opvQ
-	(envelope-from <stable+bounces-210551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:33:04 +0100
+	id CD4PBeGtb2nxEwAAu9opvQ
+	(envelope-from <stable+bounces-210554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:31:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE747489F0
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:33:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B6447945
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:31:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ACF0390C0CD
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 13:49:14 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0C2C07826EC
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 14:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBDD42E01F;
-	Tue, 20 Jan 2026 13:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72BF40FD9D;
+	Tue, 20 Jan 2026 14:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aYTE3rIj"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IVXvK30T"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E529142B748;
-	Tue, 20 Jan 2026 13:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C112340B6E2;
+	Tue, 20 Jan 2026 14:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768916890; cv=none; b=Ayh0fAox7H/4+Oe0ABQ/Su81V46PrvHBOG1I/Vt16mW2SeQ6juNROOk2QwNeSei5W9/ha9o9nRguyJGeNz3wczul0O9W5u/CjY2JCAXMAClPPBr2H5w4oGEivnKxKEYva6INifmeIIipWB7TrZAAtL/rOu6a9ykKWHr0AUnEgaw=
+	t=1768919572; cv=none; b=UxORc7ctpQuI9gp7RrTtSuZLvf+Dq34QhAiRrFTvgz1bTGYdxRrPxVtXsAzEckHd/WpzEGZsXGNKILNwEFsWP41s97iZ8oUr1DnXMIIs9DPr9tnpFmYaMkDB1LgH7854SjHsjrfvtQgD4pY/+NwvJwJ5osMw+RD80s4KIrCMzEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768916890; c=relaxed/simple;
-	bh=a8/Rp5xs6Z5wuwvztzn6bvFo/wLCNqkubH9OYQ0J7L8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aYqQbP6TSkeiKx6KHyjz/1wAFyMPJj3+D33PEEXsyCacvUt3WXwSRMeJtDT7g3MX2kNd7A8wLD1T91uEXKmjEBkQd/L1AsBuyeBkZb5Rbbjl5rI1sVGvku6SjPCw3APCk3ym2NtNPWJVq9yHaf+HPNdX5CpwV4xysvSe0p/LIEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aYTE3rIj; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768916889; x=1800452889;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=a8/Rp5xs6Z5wuwvztzn6bvFo/wLCNqkubH9OYQ0J7L8=;
-  b=aYTE3rIjK+YMMEq/IyeDKYPvAq1YlqGgJonUfXFvCflXhC0uRt+8YRaY
-   RXZ3hI9IaSA3PUsLY4mNq/cStZvBeojgC7Od4ROJxfJ5IPhC1O2CzXgZq
-   /uIs2CaazId1FwBmaxIDOgMPtO/yIrzs3jYrBqXTJbQgJ81t/EbGGa9vo
-   RR6Mp1X+xj3eVG3S1ntswj5Xk6ESNk5/TDS0xNfoktz7q8Z/xZai4tdEJ
-   +PQk+Ukc5W6HntmHfs6GXmPLUK0RIZGQt3kzpMQf2JivQcvtHxGNJUQIn
-   j8prLEZGpaEg4IaxcLOM4JvFokUgYawtvXZM9FbX64hW1cs3KxL9SebSv
-   Q==;
-X-CSE-ConnectionGUID: Scc4nJF9S/GKnK1uHTZttg==
-X-CSE-MsgGUID: enPgc4rvRZ2xQc3rpfyPig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="70027970"
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="70027970"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:48:08 -0800
-X-CSE-ConnectionGUID: zDdCs6T5QmWK/h0JODriCA==
-X-CSE-MsgGUID: zYWVGsq4SGmj/3v0CfQ/kw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
-   d="scan'208";a="205745921"
-Received: from dhhellew-desk2.ger.corp.intel.com (HELO localhost) ([10.245.244.240])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 05:48:06 -0800
-Date: Tue, 20 Jan 2026 15:48:04 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Guido Trentalancia <guido@trentalancia.com>
-Cc: Raag Jadav <raag.jadav@intel.com>, mika.westerberg@linux.intel.com,
-	linusw@kernel.org, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] pinctrl: tigerlake: Add Alder Lake-P documentation
-Message-ID: <aW-HlIXTv6W6fye_@smile.fi.intel.com>
-References: <20260120110042.1021199-1-raag.jadav@intel.com>
- <1768913556.5518.15.camel@trentalancia.com>
+	s=arc-20240116; t=1768919572; c=relaxed/simple;
+	bh=uns2v8KH7FKm99rtF8K7XsF8bh+wgH8xOaw9xwuiFbY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=NOWZUyCkQbVNZK8UnFKGrjtMXQAv7qQgOQ0RXAy76k0tLj01IMes8fJ144DOuQzS6JrX1pCIZSEkuk9aZLO1R9vWUTzuJwvwdwwFKGNI+QSW5PQij8JBYVA1IfUsn5qOuCtGtXW2YsDxuUk3N0p9igvq2Sqm6PHL/ju+k7N/uGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IVXvK30T; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 34C011A2965;
+	Tue, 20 Jan 2026 14:32:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0777B606AB;
+	Tue, 20 Jan 2026 14:32:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0BCC610B6B3C2;
+	Tue, 20 Jan 2026 15:32:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1768919566; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=CnR4HH0qbA5JMdYprFWKRDPXqXPpkZ+LLXc3tQitS84=;
+	b=IVXvK30TnSaepMj69bYNn55/lQxwgSv1HQzFNJJIZOQbbC4QqLAHwPsE44r8RFYo9uc7AL
+	1X47C3e+f4USmaWZ9TvXrF4Jluk+xG4bUi7Pdbpt7BhP1K2QZBjaWpwt+kif1ykOyWSU/B
+	osFs2+I54bNKxMzJ0I7VCyqXKVY5NdoU+0FQz+MPUf98xintblaldXhpYdNBugVwN8sHBh
+	ZLCjOnjo8qIiK8AfGbJBQdLGQJOKjAR9QrI4NVHW93vM+/jIC4LBL7aeO7WzZAxMiyYGbp
+	UF+tiQmAUU0Yn1UdnQzF9KAy6qJjfU3O13QiG0ExWcIcQaPRAymf4dUG5290Eg==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Andy Yan <andy.yan@rock-chips.com>, 
+ Osama Abdelkader <osama.abdelkader@gmail.com>
+Cc: stable@vger.kernel.org, Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260102155553.13243-1-osama.abdelkader@gmail.com>
+References: <20260102155553.13243-1-osama.abdelkader@gmail.com>
+Subject: Re: [PATCH v3] drm/bridge: synopsys: dw-dp: fix error paths of
+ dw_dp_bind
+Message-Id: <176891955882.652956.206927403017627596.b4-ty@bootlin.com>
+Date: Tue, 20 Jan 2026 15:32:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1768913556.5518.15.camel@trentalancia.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Spamd-Result: default: False [-1.96 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
-	TAGGED_FROM(0.00)[bounces-210551-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210554-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[rock-chips.com,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,oss.qualcomm.com,lists.freedesktop.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[bootlin.com,reject];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,intel.com:dkim,trentalancia.com:email,smile.fi.intel.com:mid]
-X-Rspamd-Queue-Id: CE747489F0
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,bootlin.com:email,bootlin.com:dkim,bootlin.com:mid]
+X-Rspamd-Queue-Id: 98B6447945
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jan 20, 2026 at 01:52:36PM +0100, Guido Trentalancia wrote:
-> Someone erroneously marked the bug as CLOSED INVALID, while only the
-> proposed resolution was INVALID and not the bug itself.
+
+On Fri, 02 Jan 2026 16:55:52 +0100, Osama Abdelkader wrote:
+> Fix several issues in dw_dp_bind() error handling:
 > 
-> This patch solves the issue because it informs the user on the correct
-> driver to choose for Alder Lake-P.
+> 1. Missing return after drm_bridge_attach() failure - the function
+>    continued execution instead of returning an error.
+> 
+> 2. Resource leak: drm_dp_aux_register() is not a devm function, so
+>    drm_dp_aux_unregister() must be called on all error paths after
+>    aux registration succeeds. This affects errors from:
+>    - drm_bridge_attach()
+>    - phy_init()
+>    - devm_add_action_or_reset()
+>    - platform_get_irq()
+>    - devm_request_threaded_irq()
+> 
+> [...]
 
-Yes, I was that person and I asked Raag to help with it.
-Thanks, Raag!
+Applied, thanks!
 
-Now we can close it again with PATCH_AVAILABLE.
+[1/1] drm/bridge: synopsys: dw-dp: fix error paths of dw_dp_bind
+      commit: 1a0f69e3c28477b97d3609569b7e8feb4b6162e8
 
-> Acked-by: Guido Trentalancia <guido@trentalancia.com>
-
-Thanks for confirming!
-
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
 
