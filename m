@@ -1,93 +1,112 @@
-Return-Path: <stable+bounces-210471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F748D3C452
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 10:57:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F1CD3C4C5
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 11:14:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A23197012DD
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 09:44:59 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 97C54702F53
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 09:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81233D5245;
-	Tue, 20 Jan 2026 09:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D688F3D7D6B;
+	Tue, 20 Jan 2026 09:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="jHu/EVLQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0H6qtHG"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4FD3D5220;
-	Tue, 20 Jan 2026 09:39:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9229B3D1CCA
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 09:44:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768901979; cv=none; b=XAIYFj2Leo5+COxWkdujJN5J+SeHkfwoyCyEw4ORO8I1nZZxWAU9qYjwqm62G4OajhOrF4QRScMpPBDbOs0yBWPZL1hP3IyiD17ipaVPQrWCdGUYfrX4saVDKPQ0pcsZ3PzAuqnZdVvxL2qEttodK9GpZdJnF8ZxsisHqvlkzoo=
+	t=1768902249; cv=none; b=WgBDWONBgtKDbOKoRg31tKn/2AwluG6k6A9A2yO+6QqU1GFujm9Z9DwpuCineZhY++dq4i4IVpxH6ow0tQJOReBSFSbFIg5r9cj3HkgGbHGH6R/QGNttE3IYKPjU9Cs8iKi/h+N1ClAVew6qIaBqbkob88+tcVNKxye26qtxZQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768901979; c=relaxed/simple;
-	bh=2odh8yCUKMmU2qb+xhTR98g5Ui6wUMvjtfUEkILPuno=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ch6nizFzkRvY5d2ywBgRcytU2jgEGzJ2nmp0hStM7gXQtrP8y0k60KXiGr7X3mprfAarsJPsqmfmX4fFEJnpZSyH3IFVE/7XeTlz6CXVx+ALzKKGaCU551no5LpNxIgMmx4XXfmPgRJ3pnDazAjTc3Pdpxg6RnyjM30bmPLiQDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=jHu/EVLQ; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=7louDgFpxyU4n0BWWFhxWA7atRnSXCl4eBuC57wksqg=; b=jHu/EVLQCh4FX6xag2JDnMRWcz
-	Tqa1YrbtdVCFqoTts8BA9KJk1qEUO1QD4qzOq/JktOmezMPQM0ewCcbiCKFByEktJ2lxxW9N8E3NR
-	/obpZUzMAG6XdERx+GYKKTQrhlkcMHQkkDp+QQhznnOUWdR/grmqwPn34WBTzNvpOHMMGuWTzrmez
-	dRZ+nM/h5w4cHRnTppYQrulIELOFmXcODGkabqWxXlhHNubl3rtYGSqcXUYowXgj4YeWTFiIMjhLj
-	JCa/S12Re27rsJZ3OodC6R0MnSsxVWD7nZSJDebzk301HQ4tS7YC8REbIX5Zd+Ysk7ttZmD9kEF2H
-	Uvvc8VxQ==;
-Received: from [192.76.154.238] (helo=phil.dip.tu-dresden.de)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1vi8Cv-003KZM-Et; Tue, 20 Jan 2026 10:39:30 +0100
-From: Heiko Stuebner <heiko@sntech.de>
-To: devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	Jun Yan <jerrysteve1101@gmail.com>
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	pbrobinson@gmail.com,
-	dsimic@manjaro.org,
-	didi.debian@cknow.org,
-	conor+dt@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: dts: rockchip: Do not enable hdmi_sound node on Pinebook Pro
-Date: Tue, 20 Jan 2026 10:39:27 +0100
-Message-ID: <176890189896.310054.3689082098898178787.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20260116151253.9223-1-jerrysteve1101@gmail.com>
-References: <20260116151253.9223-1-jerrysteve1101@gmail.com>
+	s=arc-20240116; t=1768902249; c=relaxed/simple;
+	bh=MzhJ4TJTIhCH0zKb2utua0m4Nln1DRnFCX4uFZXOJbg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=leOHGZpixLz+qJz4HtC9GFvRtw9bWX2EuUneKHOU//lS3Pvt2a7ZuGlFUvuPLKf4G+esrRBrUKzW4lodsMqNIGnk+K6/vJhOatLGBMLBk07QDM8LhGlBk/5sgxzsnCZeJBmt4aUSKXuGC+RTXHZzKPagg9Wcu417O79acGE/Hyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0H6qtHG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D69BC2BCB2
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 09:44:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768902249;
+	bh=MzhJ4TJTIhCH0zKb2utua0m4Nln1DRnFCX4uFZXOJbg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=X0H6qtHG5kl+uhJX2vgPoRxxE7zM6IhzVnuWMShXWAs5LUYX4DB3bdacCNmWy/k4o
+	 kWmU4zyoACoV+Fr4ox+7ngtUwZSHAgCh5Oird3Zp6q0sX6Olv7a/hUKUb9uVyrz3Ut
+	 HDcIW5MSyu8/EFZvo87fjegUxI7Qr4rRuuBlpgJQ/SHEB4peBATv6ybMUGPJLiFVsb
+	 AOoZlJCtRUe82p7tZTsh0BIQlHqkg0NyrVq3KvzWe0qv9WqfXgmr/4oCcQBvdkGHxV
+	 dn18n3+Tpsufm9+XOg+SSQzWNHI1EKFEgNSDcyItb1PiX+tmUxTyoY20XyPLRsuTem
+	 rJuMxs/7ofCWQ==
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59b6f59c4f5so6024388e87.3
+        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 01:44:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXQccRi4pivJMtEekeW7AfH9d1bI863XLUHSpYEqXHKSnHQBCi08SxI+UP/PdD8jj31cDyaMMk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKOacmUxUdeydoUlXCclzFtLYgqun8RUJSE/sCdS9F62h7dqMh
+	XKdjTej7v6RMIVUA4uOcUfQk9AJJbmuoKPC30Fr3ZgivB5gABgkbGZzYID0O9TzCOUh5vsPTUTE
+	kkWw9U+RZmU0lQxmDScYYByvSUI+emyPbrRUM/YUvAA==
+X-Received: by 2002:ac2:4f14:0:b0:59b:7c78:a9c3 with SMTP id
+ 2adb3069b0e04-59baeebad7amr3951306e87.1.1768902247880; Tue, 20 Jan 2026
+ 01:44:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20260116081036.352286-1-tzungbi@kernel.org> <20260116081036.352286-2-tzungbi@kernel.org>
+ <20260116141356.GI961588@nvidia.com> <CAMRc=MfNHuTYsZJ+_RqPN1TtLOHsenv2neD5wvhA18NH6m7XjA@mail.gmail.com>
+ <aW8E1i6L7-fhORFA@google.com>
+In-Reply-To: <aW8E1i6L7-fhORFA@google.com>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Tue, 20 Jan 2026 10:43:55 +0100
+X-Gmail-Original-Message-ID: <CAMRc=McNVLS3qs=ZSY8T=rNGwTd8amvFbz+mOcDZeiAV6Mw-UQ@mail.gmail.com>
+X-Gm-Features: AZwV_QiCH_VHQCMm9eBe-2VB2mhwH6n8pi7RaQwW3k2VN6H-wpGYT844-9rfWL8
+Message-ID: <CAMRc=McNVLS3qs=ZSY8T=rNGwTd8amvFbz+mOcDZeiAV6Mw-UQ@mail.gmail.com>
+Subject: Re: [PATCH 01/23] gpiolib: Correct wrong kfree() usage for `kobj->name`
+To: Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Benson Leung <bleung@chromium.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Linus Walleij <linusw@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <shuah@kernel.org>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	chrome-platform@lists.linux.dev, linux-kselftest@vger.kernel.org, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
+	Dan Williams <dan.j.williams@intel.com>, linux-gpio@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Jan 20, 2026 at 5:30=E2=80=AFAM Tzung-Bi Shih <tzungbi@kernel.org> =
+wrote:
+>
+> Generally, I think we can try to move device_initialize() earlier in the
+> function.  On error handling paths, just put_device() for it.  In the
+> .release() callback, free the resource iff it has initialized.
+>
+> > In theory yes but you wouldn't be the first one to attempt to improve
+> > it. This code is very brittle when it comes to GPIO chips that need to
+> > be initialized very early into the boot process. I'm talking old
+> > drivers in arch which call this function without even an associated
+> > parent struct device. When I'm looking at it now, it does seem
+> > possible to call device_initialize() early but whether that will work
+> > correctly for all existing users is a bigger question.
+>
+> FWIW: found a very early stage calling path when I was investigating
+> `gpiolib_initialized`: start_kernel() -> init_IRQ() -> dove_init_irq() ->
+> orion_gpio_init() -> gpiochip_add_data() -> gpiochip_add_data_with_key().
+>
+> Prior to aab5c6f20023 ("gpio: set device type for GPIO chips"),
+> device_initialize() is also called in gpiochip_add_data_with_key().  It
+> seems to me it's possible to move it back to gpiochip_add_data_with_key()
+> as 03/23 does, and move it earlier in the function.
 
-On Fri, 16 Jan 2026 23:12:53 +0800, Jun Yan wrote:
-> Remove the redundant enabling of the hdmi_sound node in the Pinebook Pro
-> board dts file, because the HDMI output is unused on this device. [1][2]
-> 
-> This change also eliminates the following kernel log warning, which is
-> caused by the unenabled dependent node of hdmi_sound that ultimately
-> results in the node's probe failure:
-> 
-> [...]
+Sounds good, let's try it next cycle!
 
-Applied, thanks!
+Tzung-Bi: please make it a change separate from the wider Revocable
+series for GPIO.
 
-[1/1] arm64: dts: rockchip: Do not enable hdmi_sound node on Pinebook Pro
-      commit: b18247f9dab735c9c2d63823d28edc9011e7a1ad
-
-Best regards,
--- 
-Heiko Stuebner <heiko@sntech.de>
+Bart
 
