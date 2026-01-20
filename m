@@ -1,290 +1,196 @@
-Return-Path: <stable+bounces-210537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210539-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uy6JHUuFcGkEYQAAu9opvQ
-	(envelope-from <stable+bounces-210537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 08:50:35 +0100
+	id UCVsI5oxcGkSXAAAu9opvQ
+	(envelope-from <stable+bounces-210539-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:53:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6F8530DB
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 08:50:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0839A4F61C
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CB4906C6F1E
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 13:12:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7875274CAFF
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 13:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19436429827;
-	Tue, 20 Jan 2026 13:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65724279F2;
+	Tue, 20 Jan 2026 13:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4CAPlIv"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="MUSNSA5R"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0D942981E
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 13:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5519141B35E
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 13:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768914601; cv=none; b=XMrL/pxshNrj0dkndFbdaPGO9r6DE/QaT4rupXF46qQz5GMVqXjBbYGkwIjY6Ro5BIMp/qyj5hGKwhIaxxwevqZR8+tJOJREuXu9ebef/df/2KFdH/9zcVCy+t5mvTyLhOqlCYAVv4Oudilhd2sOcMNtcl13LSTnpGEujmOzNbo=
+	t=1768914715; cv=none; b=MXXkqv4xB5Dg6sEuxN586gZn0c14KXFOC+ObtzB8aWd4P4IlEe69AXj0/uJK7GVVzmrrLRZyKOzLGuSR3KM+1dw1N4zT3mQRLp/pWFA65mNQ5V0nczkJHXIR9qwxlDnxkLk56HH7cvME8XWhqn5FkbtGTq+B9XkynNms2JPb0k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768914601; c=relaxed/simple;
-	bh=g31BPpPKPZ6pTwuLrSPPMGs8/vSlTrgXKpo6F6/1w2Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JJp7ovFumkSLNjUxBkI8AdSg7afhgDsW7NUv786Lf03Vm2lFQHTYBLhd9/AhsZcUtCGKWoDw+bx3ezv5JXM3PavpWl0znJUv07IQyzCKUZrH+gWT/x7fxB1G0zn2GGVPbeRbJg/rtbMbnp4vqmsuiRuhIgIkbUSWMKANl7rMS6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4CAPlIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D303C19425;
-	Tue, 20 Jan 2026 13:10:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768914601;
-	bh=g31BPpPKPZ6pTwuLrSPPMGs8/vSlTrgXKpo6F6/1w2Q=;
-	h=Subject:To:Cc:From:Date:From;
-	b=P4CAPlIvWf0ChM8Wu8dZfBJObGUmWXQZiyMR2Md/kw/KtMgdf75esjTyjCRc7LU9x
-	 4FnAwf6Sm+AYFwuZoX9I+/cIo7V0kFfepIB1sGjC9nyqsHS3VzkmTooJisE7lOg/vI
-	 7R5V/1HiBlgdlQ/05Fn9yw6ITHXhb1v8ScY+ylSs=
-Subject: FAILED: patch "[PATCH] LoongArch: dts: Describe PCI sideband IRQ through" failed to apply to 6.12-stable tree
-To: me@ziyao.cc,chenhuacai@loongson.cn,zhoubinbin@loongson.cn
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 20 Jan 2026 14:09:59 +0100
-Message-ID: <2026012058-startle-lake-f751@gregkh>
+	s=arc-20240116; t=1768914715; c=relaxed/simple;
+	bh=oWxRqXkSIAdlpRXurKw8PqWkt7+sbNg3g3rpNYKoLZc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iN2bwvfW94PnleYGnQqF+ygKhfmbyx3QsdtcFoZbKUT3XsToWDaoy1uWmynYfWtaUWApIFzk6n2EkY4pSWn1/i4JaacoBTmyLyqH4geNLi1is/a6Doy7bwTNSGN1KBc1aLKSZ+MeCiTJgszrRLoyYumBtbQxuAqWypz622VJPCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=MUSNSA5R; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-88a3bba9fd4so56352826d6.2
+        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 05:11:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1768914712; x=1769519512; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AFD8dduxHdXARbhmuw3nGz+HS5/qU93piZU3w6MAoZk=;
+        b=MUSNSA5RUbC88BDrCXhLaUUsBlajOLVElMVHGXO4nqlWoSEAUrFdDQHF4AUdz2QlGv
+         IaHtT8OAuIO11l9UasTtiyO2vkiDOtiPfhWM72lEGzX8i11o2GVpTO2FfR/eVi/EZrHM
+         mW1iJaFlCMjeVCeOFcMn6uy93emB8h8ckI0iYMHUMaPzNhmK/KWKdvGJ8IB3Rs+9JQ2n
+         bfE+auGVh2LHZTA0QXX7IKARGuwLZSMZqa+XQarK28J3w78+YuYMmcYtY2uFDypLpVzG
+         mi5RtTIZcymL/NFfBfDEFHJdOf1tndHVBRoqXKfSer5cJL+W00ArCyIxXx7A5pusw/3C
+         +DHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768914712; x=1769519512;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AFD8dduxHdXARbhmuw3nGz+HS5/qU93piZU3w6MAoZk=;
+        b=uJBG9B3CmmnmfB+B0Kd8E6VtGp4YECWKxZnX4kaBB8uK2CoUGwsy4chy0V1iF1ROL7
+         NfQXGS4Uv8E/sY4Eu2rw4BnINP/CEtc0v4VdxycYlrnKhEL/6Wz6hGlaoTNbCxXawTtw
+         6P4VlmEvLTCpdIWIAJKQIlwu+Hk1ZmcxaY7JN3oLlt6Rkn86LxT/TmnyNelOJqwcXDb1
+         y4wbw0mjFo+adxotBo1TgfHtanpxJyzRAv/GCi7d0kZ+5zU4bNiTxS6Np6tpfHUl9dx4
+         cCwPbCOJNENtA/ozakEG4nMsuIzHmHxbGnzx5H+CSuAHtQKnTusTWCKcvs6wA7BJvzBX
+         wY8A==
+X-Forwarded-Encrypted: i=1; AJvYcCXk+tVrj169fmX+Ngv04Q3byi82NsK5xFMOX2Xr+VSpTnUDA7mD+OqJcZdZuWe3DiJO7yFDhN4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBUpmfErnigtzsARhYhc1CZ6sR9ZoOnR7XGmS9DPJNycIg9RSH
+	cUek3VKbgXBMwBKlBCVQqDaAwzouIxBfi85m6dz3Ko3il6E5Mp+4CXyj+e80c7s67y0=
+X-Gm-Gg: AZuq6aKkgi3d4wPY4QKbRSOUDuCvWwIZHtWeREl4fz6ELevpNaDEGBfrXZ85YUHNN+O
+	4NdOWelu2PI8zHzsUvDG+LR3iFTIfpvUa+0DdemPJJbZ+1smKB4Rq4Tr7cWtr1FHTBnJ9GVfDWI
+	ntcv0432++dKRJ9/h4K45fpaqPnK7FQeFBH6hOG42TEHJSspYiVwvqxVbrvFaMutPsTdUVoNe1O
+	n+iNsrfCWdUqFa+wcwiJO0zisl5Xg2rncZiPHGRLdZcPvNHG0s6GQHMRN7LEdMUXEN2NmuNKQiG
+	iBfTyz6IJk1FDierd49lGD5rVralYxHZQQ0Xfzad6cqMVn2KLZrgjklFJKz5B9CSYh4aAZbxJ7g
+	Mm6ICmzLRumlKD2pBgvhurj3U2T97KEXUDz5UEO/HmcgttowgZ06E2Xw7fjYry/0u2Ca/cTyH4Y
+	ZpMHHFaTuJAq2RWPd8VKlstetA2m47pqJAS6mwYE9sXQPYL0sT/jDunRzNUzUwKzhSO0k=
+X-Received: by 2002:a05:6214:21e2:b0:78d:be82:fffa with SMTP id 6a1803df08f44-89463e12ecbmr22544176d6.33.1768914711953;
+        Tue, 20 Jan 2026 05:11:51 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8942e5e5307sm104190186d6.9.2026.01.20.05.11.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 05:11:51 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1viBWQ-00000005W5W-3jR2;
+	Tue, 20 Jan 2026 09:11:50 -0400
+Date: Tue, 20 Jan 2026 09:11:50 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>, Dawei Li <dawei.li@linux.dev>,
+	joro@8bytes.org, linux-arm-kernel@lists.infradead.org,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	set_pte_at@outlook.com, stable@vger.kernel.org
+Subject: Re: [PATCH] iommu/arm-smmu-v3: Maintain valid access attributes for
+ non-coherent SMMU
+Message-ID: <20260120131150.GM961572@ziepe.ca>
+References: <20251229002354.162872-1-dawei.li@linux.dev>
+ <c25309d1-0424-495e-82af-d025b3e6d8c8@arm.com>
+ <20260105145321.GD125261@ziepe.ca>
+ <f253d6aa-1dc2-4b1a-85df-f43b06719c04@arm.com>
+ <20260105185423.GI125261@ziepe.ca>
+ <aW9xs1ko3nWq5VbS@willie-the-truck>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.54 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aW9xs1ko3nWq5VbS@willie-the-truck>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210537-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[arm.com,linux.dev,8bytes.org,lists.infradead.org,lists.linux.dev,vger.kernel.org,outlook.com];
+	DKIM_TRACE(0.00)[ziepe.ca:+];
+	TAGGED_FROM(0.00)[bounces-210539-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_NONE(0.00)[];
+	DMARC_NA(0.00)[ziepe.ca];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 1A6F8530DB
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,ziepe.ca:mid,ziepe.ca:dkim]
+X-Rspamd-Queue-Id: 0839A4F61C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Tue, Jan 20, 2026 at 12:14:43PM +0000, Will Deacon wrote:
+> I'm not against being more careful about the memory attributes used by
+> the non-coherent walker, but we shouldn't fool ourselves into thinking
+> that Linux can treat coherent devices as non-coherent and expect things
+> to work generally. 
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Probably not generally, but we will need much more flexible
+coherent/non-coherent choices for some upcoming HW that cannot support
+cachable access for certain isochronous DMA flows.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+The device driver will know this, and it will know the underlying HW
+works properly, so it can safely opt in without worrying about
+"generally".
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x 762cf75bec2ad9d17899087899a34336b1757238
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012058-startle-lake-f751@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+PCIe defined no-snoop TLPs a long time ago for these isochronous cases
+and we haven't done a great job supporting this feature in Linux so far.
 
-Possible dependencies:
+> The use of non-cacheable mappings in
+> dma_alloc_coherent() and cache invalidation in the streaming API when
+> transferring buffer ownership back to the CPU can both lead to DMA
+> corruption if the device can snoop the CPU caches.
 
+That's a bit different situation, here we are talking about the SMMU
+itself and things like the page table walker are fine if the HW does
+cachable or non-cachable because we can flush the caches and the HW
+never writes. The same argument works for the stream table and CD
+tables, but they'd have to switch away from dma_alloc_coherent().
 
+Certainly the end device driver doing DMA can't get off so easy, but
+it is also not so unreasonable to think that the driver should know
+that the SOC block it is driving has an appropriate HW implementation
+for no-snoop.
 
-thanks,
+> I think we're all agreed on that, but just wanted to make sure as this
+> is something that has come up before when talking to hardware folks
+> who seem to think that the "dma-coherent" property is a hint.
 
-greg k-h
+What I've been pushing for is that the SMMU architected cache
+properties have to be followed. If the architecture says the
+transaction must be cachable then the HW must actually cache snoop it.
 
------------------- original commit in Linus's tree ------------------
+However, this goes the other way too and if the architecture says the
+transaction should be uncached the HW can bypass the cache.
 
-From 762cf75bec2ad9d17899087899a34336b1757238 Mon Sep 17 00:00:00 2001
-From: Yao Zi <me@ziyao.cc>
-Date: Sat, 17 Jan 2026 10:56:52 +0800
-Subject: [PATCH] LoongArch: dts: Describe PCI sideband IRQ through
- interrupt-extended
+Hence my interest in this series because HW that follows the
+architected cache properties is going to be sad if Linux doesn't set
+them right.
 
-SoC integrated peripherals on LS2K1000 and LS2K2000 could be discovered
-as PCI devices, but require sideband interrupts to function, which are
-previously described by interrupts and interrupt-parent properties.
+If the HW actually implements the cache properties then the SW needs
+to select cached/non-cached on a (sub)stream basis to support
+isochronous flows. If the SW doesn't do this and just selects the
+deafult cachable then the DMAs will work and transfer the right data,
+but the realtime guarantees will fail and other parts of the system
+will have errors.
 
-However, pci/pci-device.yaml allows interrupts property to only specify
-PCI INTx interrupts, not sideband ones. Convert these devices to use
-interrupt-extended property, which describes sideband interrupts used by
-PCI devices since dt-schema commit e6ea659d2baa ("schemas: pci-device:
-Allow interrupts-extended for sideband interrupts"), eliminating
-dtbs_check warnings.
-
-Cc: stable@vger.kernel.org
-Fixes: 30a5532a3206 ("LoongArch: dts: DeviceTree for Loongson-2K1000")
-Signed-off-by: Yao Zi <me@ziyao.cc>
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-
-diff --git a/arch/loongarch/boot/dts/loongson-2k1000.dtsi b/arch/loongarch/boot/dts/loongson-2k1000.dtsi
-index 60ab425f793f..eee06b84951c 100644
---- a/arch/loongarch/boot/dts/loongson-2k1000.dtsi
-+++ b/arch/loongarch/boot/dts/loongson-2k1000.dtsi
-@@ -437,54 +437,47 @@ pcie@1a000000 {
- 
- 			gmac0: ethernet@3,0 {
- 				reg = <0x1800 0x0 0x0 0x0 0x0>;
--				interrupt-parent = <&liointc0>;
--				interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
--					     <13 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&liointc0 12 IRQ_TYPE_LEVEL_HIGH>,
-+						      <&liointc0 13 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "macirq", "eth_lpi";
- 				status = "disabled";
- 			};
- 
- 			gmac1: ethernet@3,1 {
- 				reg = <0x1900 0x0 0x0 0x0 0x0>;
--				interrupt-parent = <&liointc0>;
--				interrupts = <14 IRQ_TYPE_LEVEL_HIGH>,
--					     <15 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&liointc0 14 IRQ_TYPE_LEVEL_HIGH>,
-+						      <&liointc0 15 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "macirq", "eth_lpi";
- 				status = "disabled";
- 			};
- 
- 			ehci0: usb@4,1 {
- 				reg = <0x2100 0x0 0x0 0x0 0x0>;
--				interrupt-parent = <&liointc1>;
--				interrupts = <18 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&liointc1 18 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
- 			};
- 
- 			ohci0: usb@4,2 {
- 				reg = <0x2200 0x0 0x0 0x0 0x0>;
--				interrupt-parent = <&liointc1>;
--				interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&liointc1 19 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
- 			};
- 
- 			display@6,0 {
- 				reg = <0x3000 0x0 0x0 0x0 0x0>;
--				interrupt-parent = <&liointc0>;
--				interrupts = <28 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&liointc0 28 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
- 			};
- 
- 			hda@7,0 {
- 				reg = <0x3800 0x0 0x0 0x0 0x0>;
--				interrupt-parent = <&liointc0>;
--				interrupts = <4 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&liointc0 4 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
- 			};
- 
- 			sata: sata@8,0 {
- 				reg = <0x4000 0x0 0x0 0x0 0x0>;
--				interrupt-parent = <&liointc0>;
--				interrupts = <19 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&liointc0 19 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
- 			};
- 
-diff --git a/arch/loongarch/boot/dts/loongson-2k2000.dtsi b/arch/loongarch/boot/dts/loongson-2k2000.dtsi
-index 6c77b86ee06c..87c45f1f7cc7 100644
---- a/arch/loongarch/boot/dts/loongson-2k2000.dtsi
-+++ b/arch/loongarch/boot/dts/loongson-2k2000.dtsi
-@@ -291,65 +291,57 @@ pcie@1a000000 {
- 
- 			gmac0: ethernet@3,0 {
- 				reg = <0x1800 0x0 0x0 0x0 0x0>;
--				interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
--					     <13 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&pic 12 IRQ_TYPE_LEVEL_HIGH>,
-+						      <&pic 13 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "macirq", "eth_lpi";
--				interrupt-parent = <&pic>;
- 				status = "disabled";
- 			};
- 
- 			gmac1: ethernet@3,1 {
- 				reg = <0x1900 0x0 0x0 0x0 0x0>;
--				interrupts = <14 IRQ_TYPE_LEVEL_HIGH>,
--					     <15 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&pic 14 IRQ_TYPE_LEVEL_HIGH>,
-+						      <&pic 15 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "macirq", "eth_lpi";
--				interrupt-parent = <&pic>;
- 				status = "disabled";
- 			};
- 
- 			gmac2: ethernet@3,2 {
- 				reg = <0x1a00 0x0 0x0 0x0 0x0>;
--				interrupts = <17 IRQ_TYPE_LEVEL_HIGH>,
--					     <18 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&pic 17 IRQ_TYPE_LEVEL_HIGH>,
-+						      <&pic 18 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "macirq", "eth_lpi";
--				interrupt-parent = <&pic>;
- 				status = "disabled";
- 			};
- 
- 			xhci0: usb@4,0 {
- 				reg = <0x2000 0x0 0x0 0x0 0x0>;
--				interrupts = <48 IRQ_TYPE_LEVEL_HIGH>;
--				interrupt-parent = <&pic>;
-+				interrupts-extended = <&pic 48 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
- 			};
- 
- 			xhci1: usb@19,0 {
- 				reg = <0xc800 0x0 0x0 0x0 0x0>;
--				interrupts = <22 IRQ_TYPE_LEVEL_HIGH>;
--				interrupt-parent = <&pic>;
-+				interrupts-extended = <&pic 22 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
- 			};
- 
- 			display@6,1 {
- 				reg = <0x3100 0x0 0x0 0x0 0x0>;
--				interrupts = <28 IRQ_TYPE_LEVEL_HIGH>;
--				interrupt-parent = <&pic>;
-+				interrupts-extended = <&pic 28 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
- 			};
- 
- 			i2s@7,0 {
- 				reg = <0x3800 0x0 0x0 0x0 0x0>;
--				interrupts = <78 IRQ_TYPE_LEVEL_HIGH>,
--					     <79 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts-extended = <&pic 78 IRQ_TYPE_LEVEL_HIGH>,
-+						      <&pic 79 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "tx", "rx";
--				interrupt-parent = <&pic>;
- 				status = "disabled";
- 			};
- 
- 			sata: sata@8,0 {
- 				reg = <0x4000 0x0 0x0 0x0 0x0>;
--				interrupts = <16 IRQ_TYPE_LEVEL_HIGH>;
--				interrupt-parent = <&pic>;
-+				interrupts-extended = <&pic 16 IRQ_TYPE_LEVEL_HIGH>;
- 				status = "disabled";
- 			};
- 
-
+Jason
 
