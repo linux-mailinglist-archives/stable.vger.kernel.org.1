@@ -1,260 +1,202 @@
-Return-Path: <stable+bounces-210601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OIgHC23mb2lhUQAAu9opvQ
-	(envelope-from <stable+bounces-210601-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 21:32:45 +0100
+	id CNdMATr0b2m+UQAAu9opvQ
+	(envelope-from <stable+bounces-210602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 22:31:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE284B578
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 21:32:44 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD3AA4C4AD
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 22:31:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 41CD096384E
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:36:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3F04A8E498E
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A29347CC8E;
-	Tue, 20 Jan 2026 19:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DB23A35B9;
+	Tue, 20 Jan 2026 19:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="shnvgnac"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pf23aPVN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECF647CC8C;
-	Tue, 20 Jan 2026 19:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4211392B9A;
+	Tue, 20 Jan 2026 19:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768937713; cv=none; b=s4slKv3b832oKcsjenVQjP7zjh0pAee6Fx0d0+FlZ15F6+WgYshNQc6nSUaqykbtMBGWrjNtiezUFLmD/T8iPEqD5zFDAKEI1eovVXy36J4wJg8tDELtaqSmULgG0/E10UXXI97lgkVUtKBH1T0BfxI4uOT0hlBPpT+Gv4EZpIg=
+	t=1768938659; cv=none; b=KLq8wLFL0kJRr4T7uWd7AYkeTzRpF8BxBc64ZBISSQU4IPU1jsn1w53I68URaCtsYhrAmb8TWhe+ciKgouvcVfflBiedeVaByfdWBXNpBXKYWKX9CyKAaqcRaBYqAE5LB0XiyYwNRdI28RraTfryfK3wSyZDFE7RBu9VSuDF+J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768937713; c=relaxed/simple;
-	bh=3+RktV/VUeFhM+qWVy8bhJ59/5W85MFskK5fyREosDY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sOoX43YdUrOn5X4qAZF7d5P3MRPy7oKsmIoYbXJ6dtWfq+4/ZCmn9lxqtGJB+dKOEvOL/r2jYiNb+37EOhC5Uc/++Ir+jU7xZeOS5M2GLDZiRX4qUQfNZpt0XptKdZssj7TK/XKoiL1qRhgDrg8L4CvGW+AEIOWDbTDymRJUi5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=shnvgnac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8B1C16AAE;
-	Tue, 20 Jan 2026 19:35:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768937712;
-	bh=3+RktV/VUeFhM+qWVy8bhJ59/5W85MFskK5fyREosDY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=shnvgnacZ7ufRERKhkaK0eKVgigMFdw8HHGc/LpMjxq4qt77FNLPeNOOs8SPrM4mw
-	 Awj4iV6cuW66urt8aNB/c118aZKLS+7U8m33mKMF9Rcp3vh4yMZSsfBdG/0wb+pXY7
-	 tGO+s64Ett8b3WMz/RNIFEElw6S2zTgDNAREF2zt9PeNZxqmbPsCHoQHoWwWc1pa34
-	 yXTohXMaa/CpnlUSJqTCbW0GpB5qqtLAnviy6qCTtgWUwVE+Wn3h2+bt54eaeiYu8c
-	 a1lVFzohUrv4NdDzxshQNL7GaxLwIzZ7ygJcjRZcP7D+gUTeuX8SjjeQOndWDB16y1
-	 FUwwm6c1WxLag==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Shenghao Ding <shenghao-ding@ti.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	kevin-lu@ti.com,
-	baojun.xu@ti.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] ALSA: hda/tas2781: Add newly-released HP laptop
-Date: Tue, 20 Jan 2026 14:34:53 -0500
-Message-ID: <20260120193456.865383-10-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260120193456.865383-1-sashal@kernel.org>
-References: <20260120193456.865383-1-sashal@kernel.org>
+	s=arc-20240116; t=1768938659; c=relaxed/simple;
+	bh=w/QmKbsSvno27x0r8obIKHfKHoVFpeA+MVJe4ReN8mA=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=BAUeoVb3LbDmry6ZkJwfrYiJkEvIphxIo9e6D+edQ9h6xH7iIEp3F3uF7vR++6rXossa8RUMQ01E16LCBaWuN3f6bBNh8XJUn9em3UnOO6EsHHKLbmLS3yEhkkcWgIXvfilXoA5qJ+9QjIDq5vd2pLIVGGjW17ELWV0++RgdLcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pf23aPVN; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60KEkxSX007947;
+	Tue, 20 Jan 2026 19:50:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=4IV8oZ
+	/CfwrU8phfQTwdy5zNq3Rcawf7tSdXW++AVgg=; b=pf23aPVNNmVmLw90U16E07
+	FZquRMNh9CrNxuteoqvn0A3f7OzDPcEdAEi/42i0XjT54FzGgyrDmSsDnYgc34w5
+	DwXftidFd9SjJhCJtmRAU5Df+nGWn8jw82PVsJ7u3HDTwMd0+Aq1GXLH6Si20nHQ
+	tAfHWjk1sXyh5LVjwDm6WoIsXcaGiPlOT9Ip3RBWzkLyb9OK9s7X1lGtApQdmzVk
+	6Lbdrcku5+jle3Dhh8tY5hlh2gCw7pHDwqa6sBqjKsHxx4Fr9D3KbvJnpdNZbMCH
+	qnXzgJE4b53muFK8gSmos7V8Hy1XeIG859h+HKPer1sJfkJldAql+7HLGCkJ+VUA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bqyuk7d5u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Jan 2026 19:50:49 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60KJAhaA001162;
+	Tue, 20 Jan 2026 19:50:48 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4brpyjq70n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Jan 2026 19:50:48 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60KJolUi26477180
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Jan 2026 19:50:47 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1205D5805C;
+	Tue, 20 Jan 2026 19:50:47 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DEF7C58054;
+	Tue, 20 Jan 2026 19:50:45 +0000 (GMT)
+Received: from [9.61.246.96] (unknown [9.61.246.96])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Jan 2026 19:50:45 +0000 (GMT)
+Message-ID: <86bac48f-c22f-4e58-84cf-58d6df14ccee@linux.ibm.com>
+Date: Tue, 20 Jan 2026 11:50:45 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.6
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla Thunderbird
+From: Farhan Ali <alifm@linux.ibm.com>
+Subject: Re: [PATCH v7 3/9] PCI: Avoid saving config space state if
+ inaccessible
+To: Niklas Schnelle <schnelle@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
+        stable@vger.kernel.org, mjrosato@linux.ibm.com
+References: <20260107183217.1365-1-alifm@linux.ibm.com>
+ <20260107183217.1365-4-alifm@linux.ibm.com>
+ <abbebb0fa74a854e8c794a01659bad2583b87dc8.camel@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <abbebb0fa74a854e8c794a01659bad2583b87dc8.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIwMDE2NiBTYWx0ZWRfXwDjvlIV0zWyl
+ 1GRkl2qP8rhnudtNEDSMCOecSVHV2vYnPgBZ+OMrHoQNmKc4qpflZZ6Q1jU4Pljr6T7yE0PiTMS
+ c3pZ7FKYVXDsmiR9Mfb/pshb8rP/gQr0X04S9PQhs4/H5E/ae7MkY1iG+bZskJpJXSnyDMCcT7Q
+ DaSJfP5XhALrlmwe5yo+tLUYv97ssBwHu7PC4zWGPUhdPH1MLNCLl3sWnv7KeT7jiypSN5Zcx3K
+ vufwOU4Kfj+oTnKkFu9iadvEmbdmB6W9+cfca2Hq3PamMkjuBlVOvp3Mulxrx6Oj0y0Dva9DcN2
+ 6sLakoP01tfqxQhdFz52Ct/5LHczoPOUMFvuhGMfsptcBPlCAvCpkfxa8SdEIlsLG88BXG6eHNe
+ wqSQ9pCP/VkQGHY8T4KDxzUg54eoQlOdiuE4Mv2chJWprze2xTD1CUsS0n319wc7qZt7uawOitu
+ yXvxlu2xaiJ24PBjw4g==
+X-Authority-Analysis: v=2.4 cv=bsBBxUai c=1 sm=1 tr=0 ts=696fdc99 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=_rwwIbaFfgZrB8Kf2jEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: PdpwiDtZFd1W50dyNDJU9HzVLedYSO38
+X-Proofpoint-GUID: PdpwiDtZFd1W50dyNDJU9HzVLedYSO38
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-20_05,2026-01-20_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0
+ impostorscore=0 malwarescore=0 clxscore=1015 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601200166
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210601-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_POLICY_ALLOW(0.00)[ibm.com,none];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-210602-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linux.ibm.com:mid];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,msgid.link:url,suse.de:email,ti.com:email]
-X-Rspamd-Queue-Id: 9CE284B578
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: CD3AA4C4AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Shenghao Ding <shenghao-ding@ti.com>
 
-[ Upstream commit 46b8d0888f01f250fbd24d00ff80b755c3c42cd4 ]
+On 1/19/2026 1:23 PM, Niklas Schnelle wrote:
+> On Wed, 2026-01-07 at 10:32 -0800, Farhan Ali wrote:
+>> The current reset process saves the device's config space state before reset
+>> and restores it afterward. However errors may occur unexpectedly and it may
+>> then be impossible to save config space because the device may be inaccessible
+>> (e.g. DPC) or config space may be corrupted. This results in saving corrupted
+>> values that get written back to the device during state restoration.
+>>
+>> With a reset we want to recover/restore the device into a functional
+>> state. So avoid saving the state of the config space when the device config
+>> space is inaccessible.
+>>
+>> Signed-off-by: Farhan Ali<alifm@linux.ibm.com>
+>> ---
+>>   drivers/pci/pci.c | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+>> index c105e285cff8..74d21c97654d 100644
+>> --- a/drivers/pci/pci.c
+>> +++ b/drivers/pci/pci.c
+>> @@ -4960,6 +4960,7 @@ EXPORT_SYMBOL_GPL(pci_dev_unlock);
+>>   
+>>   static void pci_dev_save_and_disable(struct pci_dev *dev)
+>>   {
+>> +	u32 val;
+>>   	const struct pci_error_handlers *err_handler =
+>>   			dev->driver ? dev->driver->err_handler : NULL;
+>>   
+>> @@ -4980,6 +4981,12 @@ static void pci_dev_save_and_disable(struct pci_dev *dev)
+>>   	 */
+>>   	pci_set_power_state(dev, PCI_D0);
+>>   
+>> +	pci_read_config_dword(dev, PCI_COMMAND, &val);
+> Since the PCI_COMMAND field is only 16 bits I think it warrants a
+> comment that you're reading both PCI_COMMAND and PCI_STATUS and that
+> both together should never be 0xffffffff and why. I think at least
+> PCI_STATUS_PARITY should never be set in a config space we want to
+> restore.
 
-HP released the new laptop with the subid 0x103C.
+Makes sense will add a comment. Note this is the mechanism used to check 
+device config accessibility in pci_dev_wait() (for some context 
+discussed here 
+https://lore.kernel.org/all/cd1fa387-df80-4756-a2dc-5acdd0f09697@linux.ibm.com/). 
 
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://patch.msgid.link/20260115124907.629-1-shenghao-ding@ti.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
 
-LLM Generated explanations, may be completely bogus:
+Thanks
 
-Now I have a complete picture. Let me summarize the analysis:
-
-## Analysis Summary
-
-### 1. COMMIT MESSAGE ANALYSIS
-
-The commit is titled "ALSA: hda/tas2781: Add newly-released HP laptop"
-with subsystem ID 0x103C. This is a straightforward hardware enablement
-commit.
-
-- No "Fixes:" tag (expected for commits requiring manual review)
-- No "Cc: stable" tag (expected)
-- The commit enables audio hardware for HP laptops with TAS2781 codec
-
-### 2. CODE CHANGE ANALYSIS
-
-The actual code change is extremely minimal:
-1. **Copyright year update**: `2023 - 2025` → `2023 - 2026` (cosmetic,
-   harmless)
-2. **Addition of HP case in switch statement**: 3 lines added to
-   recognize HP vendor ID 0x103C and set `catlog_id = HP`
-
-The switch statement determines which EFI GUID to use for reading
-calibration data from UEFI. Without this case:
-- HP laptops (subid 0x103C) fall into the `default` case and get
-  `catlog_id = LENOVO`
-- This means they use the LENOVO EFI GUID instead of the correct HP EFI
-  GUID
-- Calibration data wouldn't be found or would be incorrect
-
-**Root cause**: Missing vendor ID case means the driver uses the wrong
-EFI GUID for calibration data, leading to audio calibration failures on
-HP laptops.
-
-### 3. CLASSIFICATION
-
-This is a **device ID/vendor ID addition** to an existing driver - one
-of the explicit exceptions listed in the stable kernel rules. This falls
-squarely into the "NEW DEVICE IDs" category:
-- Adding a vendor/subsystem ID (0x103C for HP)
-- The driver already exists and supports the TAS2781 codec
-- HP support infrastructure (enum value, EFI GUID) already exists
-- Only the vendor ID recognition is missing
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-**Lines changed**: 4 (3 functional lines + 1 cosmetic copyright update)
-**Files touched**: 1 (tas2781_hda_i2c.c)
-**Complexity**: Extremely low - simple switch case addition
-**Risk**: Minimal - only affects HP laptops (subid 0x103C); other
-laptops unaffected
-
-### 5. USER IMPACT
-
-- **Who is affected**: Users with HP laptops containing TAS2781 audio
-  codecs
-- **Severity**: Without this fix, HP laptop audio may not work properly
-  due to incorrect calibration data retrieval
-- **Impact of change**: Enables proper audio on new HP hardware
-
-### 6. STABILITY INDICATORS
-
-- Signed off by the original driver author (Shenghao Ding)
-- Accepted by ALSA maintainer (Takashi Iwai)
-- Simple, obvious change with clear purpose
-
-### 7. DEPENDENCY CHECK
-
-**Critical consideration**: The commit applies to file
-`sound/hda/codecs/side-codecs/tas2781_hda_i2c.c` which is a NEW location
-- the file was moved in commit `6014e9021b28e` ("ALSA: hda: Move codec
-drivers into sound/hda/codecs directory").
-
-Checking stable trees:
-- **6.16.y**: Has all infrastructure (HP enum, HP EFI GUID, file in old
-  location `sound/pci/hda/`). The patch could apply with path
-  adjustment.
-- **6.15.y and older**: Do NOT have HP support infrastructure - the
-  `device_catlog_id` enum only has `LENOVO=0` and `OTHERS`. No HP enum
-  value, no HP EFI GUID. **Backporting is NOT possible without
-  significant additional commits.**
-
-### 8. BACKPORT FEASIBILITY
-
-For **6.16.y stable**: The commit should be backported, but requires
-path adjustment (`sound/hda/codecs/side-codecs/` → `sound/pci/hda/`).
-All necessary infrastructure exists.
-
-For **6.15.y and older**: NOT suitable for backport. Would require
-backporting the entire HP infrastructure:
-- The HP enum value
-- The HP EFI GUID
-- Possibly other architectural changes
-
-The commit itself is clearly stable-worthy (device ID addition to
-existing driver), but its applicability is limited to kernels that
-already have the HP support infrastructure.
-
-### Conclusion
-
-This commit is a textbook example of a stable-appropriate change: a
-simple vendor ID addition to an existing driver that enables hardware
-support. It's small (3 functional lines), obviously correct, low risk,
-and addresses a real user issue (HP laptops not working properly with
-TAS2781 audio).
-
-However, the backport is only applicable to kernels 6.16+ where the HP
-infrastructure already exists. For older kernels, this would require
-additional prerequisite commits.
-
-**YES**
-
- sound/hda/codecs/side-codecs/tas2781_hda_i2c.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-index f7a7f216d5865..3da1f138a191c 100644
---- a/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-+++ b/sound/hda/codecs/side-codecs/tas2781_hda_i2c.c
-@@ -2,7 +2,7 @@
- //
- // TAS2781 HDA I2C driver
- //
--// Copyright 2023 - 2025 Texas Instruments, Inc.
-+// Copyright 2023 - 2026 Texas Instruments, Inc.
- //
- // Author: Shenghao Ding <shenghao-ding@ti.com>
- // Current maintainer: Baojun Xu <baojun.xu@ti.com>
-@@ -568,6 +568,9 @@ static int tas2781_hda_bind(struct device *dev, struct device *master,
- 	case 0x1028:
- 		tas_hda->catlog_id = DELL;
- 		break;
-+	case 0x103C:
-+		tas_hda->catlog_id = HP;
-+		break;
- 	default:
- 		tas_hda->catlog_id = LENOVO;
- 		break;
--- 
-2.51.0
+Farhan
 
 
