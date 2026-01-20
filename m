@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-210560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABvsDGrMb2mgMQAAu9opvQ
-	(envelope-from <stable+bounces-210560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:41:46 +0100
+	id GCkqF3S9b2lQMQAAu9opvQ
+	(envelope-from <stable+bounces-210562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:37:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9675149A79
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:41:45 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1EF348B21
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 18:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D912C98D3E8
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:17:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A5E4E3CCD4E
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 15:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC5D441024;
-	Tue, 20 Jan 2026 15:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B174B4418F1;
+	Tue, 20 Jan 2026 15:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhrbxwPY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxtVyqIZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDD42EBDD9
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 15:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE2C4418DC
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 15:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768921236; cv=none; b=X8/KOwyHpv6KS+lp8bmhMc4XRRA0bn8anH9ANHeAlDTBeQxj5SWE405AjVCXi6ghxXhlCkPRredUZ1vQrkgVboXfXQ4lu0d0BEo9y6OS2vtN2qj03RxW0Ds9X6ow9howCY8wLB/HnXpXom9AI7lPCNuUwO+kKjDeBV8xDyVZ2rY=
+	t=1768921374; cv=none; b=QLQTjxu0tegSDVrn/xg9aQG5/ITiGUYQ1xlzuquuWpwLao/tldaOxQpf1KdcsuEPKTcu2KV7IwCkQsXum4uird9DPXYrj3xCf3JTmh8A8p9CmRkv+IIlBmeSDx4cw0dJLrQL4jocHohI2UimtJKWF7eEr97uyArP3I+j+Yaz0u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768921236; c=relaxed/simple;
-	bh=ssqIdPnyoIlqHAGGutdO12Nc2rVGP4JucDbpYnD9hcw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=S2pR5Y8AEoG9RU0snmQvSklQgW0kGqm0/2GdMNNgtTMZ+f+XcbYdmLJB7CxZKm3RFe6HpS4x3u4LD0+w9XszdlSvJfyl6rJkuJSA+YqFGYBH4Os7qnwwKvLtKj62z/A1hWlEDd5RPWQ78uax2dh+buK4bXHpwvkehJO14+wWpP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhrbxwPY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15C6C16AAE;
-	Tue, 20 Jan 2026 15:00:35 +0000 (UTC)
+	s=arc-20240116; t=1768921374; c=relaxed/simple;
+	bh=ddolRPRftY4dgy9VfQ1rx4B8mNtq0thglOeqoHfsgUc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iN4MIFL1HnjltRaD5hDyR8mS5a0H0ZkVKj/Pm6SspBbpbJcB/ZW8YTdWxbP9CKDk+FX1GLVP3Hhh/STEbxD6rHja9VhezB1OJjR9XuUSGBc/bU7jzd91BlOQtIlvl4o6zZF6D3J8Msu+Bp609jehy4wajKAZnZT+ftHS4p0b3uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HxtVyqIZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB11C19423;
+	Tue, 20 Jan 2026 15:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768921236;
-	bh=ssqIdPnyoIlqHAGGutdO12Nc2rVGP4JucDbpYnD9hcw=;
+	s=korg; t=1768921374;
+	bh=ddolRPRftY4dgy9VfQ1rx4B8mNtq0thglOeqoHfsgUc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zhrbxwPYP+ZORIhh9blvFkt0DfaJCd9lboZVN/ngD7xwuJgYN+8Xuz0hKlEA3OcPC
-	 mlia78BtI8HSpDsisVQ7Gqp3tZ1lMFUB17oxJbhBpYUEOwLrieZj804syFzkwCfce2
-	 Z3rPhj6LEBwxA/dasAOxDqh0bBAZZ71R2a7u8mQ8=
-Subject: FAILED: patch "[PATCH] drm/amdkfd: fix a memory leak in device_queue_manager_init()" failed to apply to 5.10-stable tree
-To: lihaoxiang@isrc.iscas.ac.cn,Oak.Zeng@amd.com,alexander.deucher@amd.com,felix.kuehling@amd.com
+	b=HxtVyqIZA9vvRoQ5YT/yBdWRLqQPhpY8O7m5XMQwXn4p1Sn8v61FaMF6sk5+lPVDM
+	 ObNwK915w9D7q/cPN9kGK3jeB1BwlxJwzOrfgF2c60bENuwSn7TUT8FKcT7ruwRecW
+	 PLVTiRvh3/QmfLSVkcDXSiQIPntr/eYmGlHUyfV4=
+Subject: FAILED: patch "[PATCH] dmaengine: fsl-edma: Fix clk leak on alloc_chan_resources" failed to apply to 6.6-stable tree
+To: zhen.ni@easystack.cn,Frank.Li@nxp.com,vkoul@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 20 Jan 2026 16:00:23 +0100
-Message-ID: <2026012022-crouton-kilogram-6b06@gregkh>
+Date: Tue, 20 Jan 2026 16:02:43 +0100
+Message-ID: <2026012043-skeleton-eccentric-7e26@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,49 +59,49 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.54 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210560-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210562-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_NONE(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,gregkh:email]
-X-Rspamd-Queue-Id: 9675149A79
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:dkim,gregkh:email]
+X-Rspamd-Queue-Id: E1EF348B21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 80614c509810fc051312d1a7ccac8d0012d6b8d0
+git cherry-pick -x b18cd8b210417f90537d914ffb96e390c85a7379
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012022-crouton-kilogram-6b06@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012043-skeleton-eccentric-7e26@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -113,66 +113,38 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 80614c509810fc051312d1a7ccac8d0012d6b8d0 Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Thu, 8 Jan 2026 15:18:22 +0800
-Subject: [PATCH] drm/amdkfd: fix a memory leak in device_queue_manager_init()
+From b18cd8b210417f90537d914ffb96e390c85a7379 Mon Sep 17 00:00:00 2001
+From: Zhen Ni <zhen.ni@easystack.cn>
+Date: Tue, 14 Oct 2025 17:05:22 +0800
+Subject: [PATCH] dmaengine: fsl-edma: Fix clk leak on alloc_chan_resources
+ failure
 
-If dqm->ops.initialize() fails, add deallocate_hiq_sdma_mqd()
-to release the memory allocated by allocate_hiq_sdma_mqd().
-Move deallocate_hiq_sdma_mqd() up to ensure proper function
-visibility at the point of use.
+When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
+the error paths only free IRQs and destroy the TCD pool, but forget to
+call clk_disable_unprepare(). This causes the channel clock to remain
+enabled, leaking power and resources.
 
-Fixes: 11614c36bc8f ("drm/amdkfd: Allocate MQD trunk for HIQ and SDMA")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Oak Zeng <Oak.Zeng@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b7cccc8286bb9919a0952c812872da1dcfe9d390)
+Fix it by disabling the channel clock in the error unwind path.
+
+Fixes: d8d4355861d8 ("dmaengine: fsl-edma: add i.MX8ULP edma support")
 Cc: stable@vger.kernel.org
+Suggested-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251014090522.827726-1-zhen.ni@easystack.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-index d7a2e7178ea9..8af0929ca40a 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -2919,6 +2919,14 @@ static int allocate_hiq_sdma_mqd(struct device_queue_manager *dqm)
- 	return retval;
+diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+index a59212758029..7137f51ff6a0 100644
+--- a/drivers/dma/fsl-edma-common.c
++++ b/drivers/dma/fsl-edma-common.c
+@@ -873,6 +873,7 @@ int fsl_edma_alloc_chan_resources(struct dma_chan *chan)
+ 		free_irq(fsl_chan->txirq, fsl_chan);
+ err_txirq:
+ 	dma_pool_destroy(fsl_chan->tcd_pool);
++	clk_disable_unprepare(fsl_chan->clk);
+ 
+ 	return ret;
  }
- 
-+static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
-+				    struct kfd_mem_obj *mqd)
-+{
-+	WARN(!mqd, "No hiq sdma mqd trunk to free");
-+
-+	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
-+}
-+
- struct device_queue_manager *device_queue_manager_init(struct kfd_node *dev)
- {
- 	struct device_queue_manager *dqm;
-@@ -3042,19 +3050,14 @@ struct device_queue_manager *device_queue_manager_init(struct kfd_node *dev)
- 		return dqm;
- 	}
- 
-+	if (!dev->kfd->shared_resources.enable_mes)
-+		deallocate_hiq_sdma_mqd(dev, &dqm->hiq_sdma_mqd);
-+
- out_free:
- 	kfree(dqm);
- 	return NULL;
- }
- 
--static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
--				    struct kfd_mem_obj *mqd)
--{
--	WARN(!mqd, "No hiq sdma mqd trunk to free");
--
--	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
--}
--
- void device_queue_manager_uninit(struct device_queue_manager *dqm)
- {
- 	dqm->ops.stop(dqm);
 
 
