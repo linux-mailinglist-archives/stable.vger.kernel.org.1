@@ -1,157 +1,126 @@
-Return-Path: <stable+bounces-210487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BWOBodmcGkVXwAAu9opvQ
-	(envelope-from <stable+bounces-210487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:39:19 +0100
+	id yMreODRgcGkVXwAAu9opvQ
+	(envelope-from <stable+bounces-210488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:12:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756E5519AE
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:39:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5E5515F5
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2ED917E86BB
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 11:07:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 25F15805996
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 11:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6640E413243;
-	Tue, 20 Jan 2026 11:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE36423173;
+	Tue, 20 Jan 2026 11:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hp1wDEO8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="buGNZcfM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0E440F8E8;
-	Tue, 20 Jan 2026 11:06:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD8837F0F5;
+	Tue, 20 Jan 2026 11:20:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768907218; cv=none; b=SO4LB8bbunAlnWeOjROp/v4zBu0Ylv7PMpXUAzy8e4/fn3io0UdTzBM0Yu9pCLubCUsK7Sv6pKuznZ+YpC0e8jYfU5x3IKuoyXoqd9Mie7rjxX8fF9GwDRq8TpFm+ppCuRGMxovy8kr39lR1k/FH37SS09DR0dhxSSaTOmVyY8c=
+	t=1768908005; cv=none; b=tKfg7LFmjl9b6GZWSFvZXfmSk3AxZFJHxLfUhAFmPUkU4JB0SVcivFLGkwrF7HNbEFHms4Ow6wEOrj2wuMY0NgL2eRB1ZUMnmtUEvR/JSlt0QmlG7rCdC3nQ4rKxDd03RbWHlmJV9Yjs70a1CbDQE+s5pjHxip07GjgwClImteo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768907218; c=relaxed/simple;
-	bh=npLLoCnIsqczxNA9Hs/1wfDzzJn16pRKpJhKKxnWtJE=;
+	s=arc-20240116; t=1768908005; c=relaxed/simple;
+	bh=3YKlT/h+DxJLaBffNDx3Q/aGuxwjTJ71ZS1Qx4cQWN8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sRMTljiMzWFGkfd5dwjQ/wN/v8aSDSKzCayDu9PVVyQd6tibN+4DOMurP/9WebTFzoo2pyipvU7plD05R98diCG1HxG7h1/e+yvET2O4KC7vaIigwShpYhCNp/4Slbl2Yg1veIt+GRyB+8UZJkvbBhASlfu6lS/fPe4yJpPwv5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hp1wDEO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34483C16AAE;
-	Tue, 20 Jan 2026 11:06:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768907217;
-	bh=npLLoCnIsqczxNA9Hs/1wfDzzJn16pRKpJhKKxnWtJE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hp1wDEO8X6TAhp1ewNUDWF4k0xDeekv1YSWHreUYue4L9/K2vX+oRWoGyU87u9eBa
-	 ecId9FhBess1qZbUMOMuO/aamvKgh8aCslabA+04x9fgodcoB2+IsbiOVYzWjARlSa
-	 g99wmtVWFw0BCPWVCrN4YlSEUSKzl8LihmKWD96I=
-Date: Tue, 20 Jan 2026 12:06:50 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Rahul Sharma <black.hawk@163.com>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>
-Subject: Re: Re: [PATCH v6.1] drm/amd/display: Check dce_hwseq before
- dereferencing it
-Message-ID: <2026012033-jelly-hunger-fed8@gregkh>
-References: <20260115041919.825845-1-black.hawk@163.com>
- <2026011525-occupier-hangout-ac24@gregkh>
- <52c400f8.2ab6.19bc4bce26e.Coremail.black.hawk@163.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zz04pFwtncdlUHgz2aDravXTtBndoIs8i/wTp/TnEAq5iXtVaHC0CPHkIjK11xdNi9R3LF3167CtI8lK/TbGpxRLLjuOyYR0NmS1p+4Shfznw4rfmtgSth2XdDVY5ZI9A33fam6Dqf39pgqWA/7vXTgcmPDJpQpPJOsOOzX07/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=buGNZcfM; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768908004; x=1800444004;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3YKlT/h+DxJLaBffNDx3Q/aGuxwjTJ71ZS1Qx4cQWN8=;
+  b=buGNZcfM0Kd4YmzQ4kndsNDx/fskWczaXiCjmsgTNXsLNR+GkShZ12yO
+   jlPYIcI47yq3o0gwk3nsJ/119/K8ViVAMS08rOT4/Aq2+gc0Z8w/Y2EN+
+   Xk0SjZd+eRwvTjAEI8BRRa+B8h7nIbsOFhDldKXsghihUawztQqbwlmST
+   sKZQLJfT46v1B3M5Jw321wjQBKK2sOWP28Da9X/DARNAh50hJOgOkWHVd
+   XoZURDlW/Dg1WGJMsVY1E22gjce8PPnPWIz+F8goHFvmHpqt1KXXf3kF+
+   9x7lTacTrRSYUVuBv/FpvsLv+jV+GpBiE6D+73jFwLaDj2AUny9c2lUB0
+   g==;
+X-CSE-ConnectionGUID: 0Gc+nh3PQmKjqtSoc8Kv+g==
+X-CSE-MsgGUID: HhtRqPYNQZqcX1k+8eJyoA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="69842096"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="69842096"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jan 2026 03:20:03 -0800
+X-CSE-ConnectionGUID: uYf5AtNHQqyiJzC7Byer8g==
+X-CSE-MsgGUID: 1XfRVo1oREyKrsKNmhr7gQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="205345683"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa010.jf.intel.com with ESMTP; 20 Jan 2026 03:20:02 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1001)
+	id AB2C499; Tue, 20 Jan 2026 12:20:00 +0100 (CET)
+Date: Tue, 20 Jan 2026 12:20:00 +0100
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Raag Jadav <raag.jadav@intel.com>
+Cc: andriy.shevchenko@linux.intel.com, linusw@kernel.org,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Guido Trentalancia <guido@trentalancia.com>
+Subject: Re: [PATCH] pinctrl: tigerlake: Add Alder Lake-P documentation
+Message-ID: <20260120112000.GI2275908@black.igk.intel.com>
+References: <20260120110042.1021199-1-raag.jadav@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <52c400f8.2ab6.19bc4bce26e.Coremail.black.hawk@163.com>
-X-Spamd-Result: default: False [2.54 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+In-Reply-To: <20260120110042.1021199-1-raag.jadav@intel.com>
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210487-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210488-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[163.com];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[mika.westerberg@linux.intel.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 756E5519AE
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 5D5E5515F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Jan 16, 2026 at 10:57:51AM +0800, Rahul Sharma wrote:
+On Tue, Jan 20, 2026 at 04:30:42PM +0530, Raag Jadav wrote:
+> Intel Alder Lake-P PCH reuses pinctrl IP from Tiger Lake-LP. Add user
+> friendly documentation for it.
 > 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> 
-> At 2026-01-15 19:44:04, "Greg KH" <gregkh@linuxfoundation.org> wrote:
-> >On Thu, Jan 15, 2026 at 12:19:19PM +0800, Rahul Sharma wrote:
-> >> From: Alex Hung <alex.hung@amd.com>
-> >> 
-> >> [ Upstream b669507b637eb6b1aaecf347f193efccc65d756e commit ]
-> >> 
-> >> [WHAT]
-> >> 
-> >> hws was checked for null earlier in dce110_blank_stream, indicating hws
-> >> can be null, and should be checked whenever it is used.
-> >> 
-> >> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> >> Cc: Alex Deucher <alexander.deucher@amd.com>
-> >> Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> >> Signed-off-by: Alex Hung <alex.hung@amd.com>
-> >> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> >> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> >> (cherry picked from commit 79db43611ff61280b6de58ce1305e0b2ecf675ad)
-> >> Cc: stable@vger.kernel.org
-> >> [ The context change is due to the commit 8e7b3f5435b3
-> >> ("drm/amd/display: Add control flag to dc_stream_state to skip eDP BL off/link off")
-> >> and the commit a8728dbb4ba2 ("drm/amd/display: Refactor edp power
-> >> control") and the proper adoption is done. ]
-> >> Signed-off-by: Rahul Sharma <black.hawk@163.com>
-> >> ---
-> >>  drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c | 3 ++-
-> >>  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> >We need 6.6.y backport first, before we can take this one, for obvious
-> >reasons (i.e. you do not want to have a regression).  Can you submit
-> >that one first and then this again?
-> 
-> >
-> Thanks Greg, I have sent out the backported patch for 6.6.y.
+> Cc: stable@vger.kernel.org
+> Fixes: 0e793a4e2834 ("pinctrl: tigerlake: Add Alder Lake-P ACPI ID")
+> Reported-by: Guido Trentalancia <guido@trentalancia.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220056
+> Signed-off-by: Raag Jadav <raag.jadav@intel.com>
 
-Great, can you resend this one as well?  It's long-gone from my mail
-system.
-
-thanks,
-
-greg k-h
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
