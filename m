@@ -1,572 +1,280 @@
-Return-Path: <stable+bounces-210455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4B7D3C2B9
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 09:58:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCD0D3C284
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 09:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 552745A8D42
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 08:30:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ED3D25C7568
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 08:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D973BC4D2;
-	Tue, 20 Jan 2026 08:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6993644DA;
+	Tue, 20 Jan 2026 08:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lLqVSIbX"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="R4A+PMNi";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="R4A+PMNi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51623BBA1D
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 08:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395C733D6E2
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 08:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768897537; cv=none; b=GxNPUjFCiNk9IFMU6YRELH72a5S1rpUg6KH1AR+RAwvw7/7IRPdVYS4vK7A0XPELqmNLV19wRR2QU4wFjMTHXZpZdShF8is9yhJFdehM7ELZeIHLv3YFZmEayXZw43WmHOhCs6jv9ytFkGwnLMq+2mkEW4P/cGELigZWIZNJ5KY=
+	t=1768897733; cv=none; b=GUfy0b3NfK2r6mb7rJpPLOZEegbeUADbuF3O4izJiRWX7EvRFJU98JuW6sRtDsJQngzD+Q1oC+Dpf04UB9RQblb+xN+WgimrZInG6yjxuVS+KCtNvm1Etq+GaYAVOUBkWqcPBDhibjbJMZlcoSfwr/n3HyQT7ylIdkD29/Br7j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768897537; c=relaxed/simple;
-	bh=C43VXqk9GnJNPUWh5LRNiprjeaEeARcvp4X4kA4WuOA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M+oTbsCUYutCOue0tCwRnW/BULGYGBdmkv/bZc0L9M7zsn4U3W7oDMSJ26esXBzzlQ9xJUPbL4XC1BQONZ3qhzG9+t2/qsIgDDg1vMxkzWCdl/9xgZuToG4MQoe5wbKj0SJVDwu+n17PobWldlgibcq3HrFqy+HgpOhrkgqtMYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lLqVSIbX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3571EC2BC86
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 08:25:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768897537;
-	bh=C43VXqk9GnJNPUWh5LRNiprjeaEeARcvp4X4kA4WuOA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lLqVSIbXEUMBDpeLNYJS0Y3t/8Mlp3Uch8UyIMz9yA1N+wGkPCoBPQanE7TnizKEJ
-	 An31TdJxXx/wS4ZhvN7Qo9V5QjW1KWGoMjh9hV95xjuyhv2v9pCc6QEFUaiIYO4b0s
-	 PUAN/cr+MgPXa1HKh2RaRidHPMJH/RJzZFbtdq2w8d/4fyRlLD+vSUjfsj6iO2pUU8
-	 iNDyEelg3HqIu1hgkepyGNuPP6YvsYIP/x+XAtrQgMZpTdUODAS2vDk72t2UMpLKMA
-	 jcv+7fpsKyn/EwcVDbflSOsS8nv/tRBFiKGuNkxt/vmxfBmC8jfcQu0ESl32Q3qi2H
-	 fR4W539VSyp1Q==
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59b7882e605so6798609e87.0
-        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 00:25:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU0ZlB+INrDzlXG69EF2nf/66KDOoONRAZhamVSLVwkYij30VcYWfEAImqz9hXIi4BZjEMf21k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyoCN47H3i2DGXURew7L4xneDHfjIn2qGZhL1OJqv/1876SmC4
-	myGHJKyPqR+IjUwKMe69a5XFtRwNX3+Zg5sOjYbtw9B9nVsORn4BprvyRE1wY7Qu84iD98AeX+y
-	0HYfKGVoJq6/N3aWoiicxPX5HMhmO1uw=
-X-Received: by 2002:a05:6512:114f:b0:59b:b25d:5c38 with SMTP id
- 2adb3069b0e04-59bb25d5cdbmr4645470e87.7.1768897535467; Tue, 20 Jan 2026
- 00:25:35 -0800 (PST)
+	s=arc-20240116; t=1768897733; c=relaxed/simple;
+	bh=k5EIG7dKzDzGeCkx9DfioVh8jZio+3kZn/5ObV3jA7s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=H8hBgGtguallAPfzUETgIdd6Ui6vNZUfH9z8agvoVH225jpj6YBGqcQ3fg845tqiEww6YN1bMIqjRv+iQD4W2t43L1hwm2O1RvyMD7PkoKENTOuFgaawW6vPiyUP3GD173iNupCuOUe9nOyq1sZr5aG6sw/3Z5kdD/T9mkubySg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=R4A+PMNi; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=R4A+PMNi; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 623B2337C0;
+	Tue, 20 Jan 2026 08:28:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1768897729; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q6cpBlQu0Ap+fT+JaqOV2zSr1RCFwBggI0A+6THe6Gs=;
+	b=R4A+PMNiMN3Hwix5ayoiKJUrTVlfduigtxPZ34/x26fpUxxGJEHEIcHdjjj50H2MCfs11w
+	kwZcDIZNAzAYYt9LAEgUBYEPPUioc124NZa6/lxEcjUknpZbsxzIfnNBd5YM/7/AdwvsKJ
+	R2JGq9ed7ZoPQXSllWjffD2FbNyAm0w=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1768897729; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q6cpBlQu0Ap+fT+JaqOV2zSr1RCFwBggI0A+6THe6Gs=;
+	b=R4A+PMNiMN3Hwix5ayoiKJUrTVlfduigtxPZ34/x26fpUxxGJEHEIcHdjjj50H2MCfs11w
+	kwZcDIZNAzAYYt9LAEgUBYEPPUioc124NZa6/lxEcjUknpZbsxzIfnNBd5YM/7/AdwvsKJ
+	R2JGq9ed7ZoPQXSllWjffD2FbNyAm0w=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 23A103EA65;
+	Tue, 20 Jan 2026 08:28:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6AlSB8E8b2k0dwAAD6G6ig
+	(envelope-from <tzimmermann@suse.com>); Tue, 20 Jan 2026 08:28:49 +0000
+From: Thomas Zimmermann <tzimmermann@suse.com>
+To: kernel-kabi@suse.de
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	amd-gfx@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] drm, fbcon, vga_switcheroo: Avoid race condition in fbcon setup
+Date: Tue, 20 Jan 2026 09:28:04 +0100
+Message-ID: <20260120082841.11381-2-tzimmermann@suse.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260120082841.11381-1-tzimmermann@suse.com>
+References: <20260120082841.11381-1-tzimmermann@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAGp9LzpuyXRDa=TxqY+Xd5ZhDVvNayWbpMGDD1T0g7apkn7P0A@mail.gmail.com>
- <20260120062854.126501-1-zac@zacbowling.com> <20260120062854.126501-12-zac@zacbowling.com>
-In-Reply-To: <20260120062854.126501-12-zac@zacbowling.com>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Tue, 20 Jan 2026 02:25:23 -0600
-X-Gmail-Original-Message-ID: <CAGp9LzrcvW18xKFL-oF3wxRmb73G6PN59Y2NSA2E5idva1wtKg@mail.gmail.com>
-X-Gm-Features: AZwV_Qiq2kAii4UrcFAe4RI0CA6Ih68D7tpt-8hVRj2bSY2AWW1miq1tr9ZgKls
-Message-ID: <CAGp9LzrcvW18xKFL-oF3wxRmb73G6PN59Y2NSA2E5idva1wtKg@mail.gmail.com>
-Subject: Re: [PATCH 11/11] wifi: mt76: mt7925: fix ROC deadlocks and race conditions
-To: Zac <zac@zacbowling.com>
-Cc: deren.wu@mediatek.com, kvalo@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	lorenzo@kernel.org, nbd@nbd.name, ryder.lee@mediatek.com, 
-	sean.wang@mediatek.com, stable@vger.kernel.org, linux@frame.work, 
-	zbowling@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,suse.com:mid,imap1.dmz-prg2.suse.org:helo,suse.de:email,lists.freedesktop.org:email];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
 
-On Tue, Jan 20, 2026 at 12:29=E2=80=AFAM Zac <zac@zacbowling.com> wrote:
->
-> From: Zac Bowling <zac@zacbowling.com>
->
-> Fix multiple interrelated issues in the remain-on-channel (ROC) handling
-> that cause deadlocks, race conditions, and resource leaks.
->
-> Problems fixed:
->
-> 1. Deadlock in sta removal ROC abort path:
->    When a station is removed while a ROC operation is in progress, the
->    driver would call mt7925_roc_abort_sync() which waits for ROC completi=
-on.
->    However, the ROC work itself needs to acquire mt792x_mutex which is
->    already held during station removal, causing a deadlock.
->
->    Fix: Use async ROC abort (mt76_connac_mcu_abort_roc) when called from
->    paths that already hold the mutex, and add MT76_STATE_ROC_ABORT flag
->    to coordinate between the abort and the ROC timer.
->
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-Hi Zac,
+Protect vga_switcheroo_client_fb_set() with console lock. Avoids OOB
+access in fbcon_remap_all(). Without holding the console lock the call
+races with switching outputs.
 
-Thanks for your continued efforts on the driver.
-We=E2=80=99ve sent a patch to address the mt7925 deadlock at the link below=
-:
-https://lists.infradead.org/pipermail/linux-mediatek/2025-December/102164.h=
-tml
-We plan to send the same fix to mt7921 as well.
+VGA switcheroo calls fbcon_remap_all() when switching clients. The fbcon
+function uses struct fb_info.node, which is set by register_framebuffer().
+As the fb-helper code currently sets up VGA switcheroo before registering
+the framebuffer, the value of node is -1 and therefore not a legal value.
+For example, fbcon uses the value within set_con2fb_map() [1] as an index
+into an array.
 
-I had a couple of questions and suggestions:
-1. Would it be possible to rebase your patchset on top of this fix
-(and any other pending patches that are not yet merged)? We noticed
-some conflicts when applying the series, and rebasing it this way
-would make it easier for nbd to integrate the full patchset.
-2. Could you please elaborate on the test scenarios that would trigger
-ROC rate limiting for MLO authentication failures? If I recall
-correctly, ROC operations are typically handled sequentially unless
-multiple interfaces are created on the same physical device. In that
-case, how many virtual interfaces and which operating modes (GC/STA or
-multiple STAs) are required to reproduce the issue?
+Moving vga_switcheroo_client_fb_set() after register_framebuffer() can
+result in VGA switching that does not switch fbcon correctly.
 
-I will try to prepare an out-of-tree branch with the current pending
-patches to help your patchset integrate more smoothly. Thanks for
-collecting community issues and fixes and incorporating them into the
-driver.
+Therefore move vga_switcheroo_client_fb_set() under fbcon_fb_registered(),
+which already holds the console lock. Fbdev calls fbcon_fb_registered()
+from within register_framebuffer(). Serializes the helper with VGA
+switcheroo's call to fbcon_remap_all().
 
-             Sean
+Although vga_switcheroo_client_fb_set() takes an instance of struct fb_info
+as parameter, it really only needs the contained fbcon state. Moving the
+call to fbcon initialization is therefore cleaner than before. Only amdgpu,
+i915, nouveau and radeon support vga_switcheroo. For all other drivers,
+this change does nothing.
 
-> 2. ROC timer race during suspend:
->    The ROC timer could fire after the device started suspending but befor=
-e
->    the ROC was properly aborted, causing undefined behavior.
->
->    Fix: Delete ROC timer synchronously before suspend and check device
->    state before processing ROC timeout.
->
-> 3. ROC rate limiting for MLO auth failures:
->    Rapid ROC requests during MLO authentication can overwhelm the firmwar=
-e,
->    causing authentication timeouts. The MT7925 firmware has limited ROC
->    handling capacity.
->
->    Fix: Add rate limiting infrastructure with configurable minimum interv=
-al
->    between ROC requests. Track last ROC completion time and defer new
->    requests if they arrive too quickly.
->
-> 4. WCID leak in ROC cleanup:
->    When ROC operations are aborted, the associated WCID resources were
->    not being properly released, causing resource exhaustion over time.
->
->    Fix: Ensure WCID cleanup happens in all ROC termination paths.
->
-> 5. Async ROC abort race condition:
->    The async ROC abort could race with normal ROC completion, causing
->    double-free or use-after-free of ROC resources.
->
->    Fix: Use MT76_STATE_ROC_ABORT flag and proper synchronization to
->    prevent races between async abort and normal completion paths.
->
-> These fixes work together to provide robust ROC handling that doesn't
-> deadlock, properly releases resources, and handles edge cases during
-> suspend and MLO operations.
->
-> Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for =
-mt7925 device")
-> Signed-off-by: Zac Bowling <zac@zacbowling.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt76.h     |   1 +
->  .../net/wireless/mediatek/mt76/mt7925/main.c  | 175 ++++++++++++++++--
->  drivers/net/wireless/mediatek/mt76/mt792x.h   |   7 +
->  3 files changed, 170 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wire=
-less/mediatek/mt76/mt76.h
-> index d05e83ea1cac..91f9dd95c89e 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> @@ -511,6 +511,7 @@ enum {
->         MT76_STATE_POWER_OFF,
->         MT76_STATE_SUSPEND,
->         MT76_STATE_ROC,
-> +       MT76_STATE_ROC_ABORT,
->         MT76_STATE_PM,
->         MT76_STATE_WED_RESET,
->  };
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7925/main.c
-> index cc7ef2c17032..2404f7812897 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-> @@ -453,6 +453,24 @@ static void mt7925_roc_iter(void *priv, u8 *mac,
->         mt7925_mcu_abort_roc(phy, &mvif->bss_conf, phy->roc_token_id);
->  }
->
-> +/* Async ROC abort - safe to call while holding mutex.
-> + * Sets abort flag and lets roc_work handle cleanup without blocking.
-> + * This prevents deadlock when called from sta_remove path which holds m=
-utex.
-> + */
-> +static void mt7925_roc_abort_async(struct mt792x_dev *dev)
-> +{
-> +       struct mt792x_phy *phy =3D &dev->phy;
-> +
-> +       /* Set abort flag - roc_work checks this before acquiring mutex *=
-/
-> +       set_bit(MT76_STATE_ROC_ABORT, &phy->mt76->state);
-> +
-> +       /* Stop timer and schedule work to handle cleanup.
-> +        * Must schedule work since timer may not have fired yet.
-> +        */
-> +       timer_delete(&phy->roc_timer);
-> +       ieee80211_queue_work(phy->mt76->hw, &phy->roc_work);
-> +}
-> +
->  void mt7925_roc_abort_sync(struct mt792x_dev *dev)
->  {
->         struct mt792x_phy *phy =3D &dev->phy;
-> @@ -473,6 +491,17 @@ void mt7925_roc_work(struct work_struct *work)
->         phy =3D (struct mt792x_phy *)container_of(work, struct mt792x_phy=
-,
->                                                 roc_work);
->
-> +       /* Check abort flag BEFORE acquiring mutex to prevent deadlock.
-> +        * If abort is requested while we're in the sta_remove path (whic=
-h
-> +        * holds the mutex), we must not try to acquire it or we'll deadl=
-ock.
-> +        * Clear the flags and only notify mac80211 if ROC was actually a=
-ctive.
-> +        */
-> +       if (test_and_clear_bit(MT76_STATE_ROC_ABORT, &phy->mt76->state)) =
-{
-> +               if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state)=
-)
-> +                       ieee80211_remain_on_channel_expired(phy->mt76->hw=
-);
-> +               return;
-> +       }
-> +
->         if (!test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
->                 return;
->
-> @@ -500,14 +529,93 @@ static int mt7925_abort_roc(struct mt792x_phy *phy,
->         return err;
->  }
->
-> +/* ROC rate limiting constants - exponential backoff to prevent MCU over=
-load
-> + * when upper layers trigger rapid reconnection cycles (e.g., MLO auth f=
-ailures).
-> + * Max backoff ~1.6s, resets after 10s of no timeouts.
-> + */
-> +#define MT7925_ROC_BACKOFF_BASE_MS     100
-> +#define MT7925_ROC_BACKOFF_MAX_MS      1600
-> +#define MT7925_ROC_TIMEOUT_RESET_MS    10000
-> +#define MT7925_ROC_TIMEOUT_WARN_THRESH 5
-> +
-> +/* Check if ROC should be throttled due to recent timeouts.
-> + * Returns delay in jiffies if throttling, 0 if OK to proceed.
-> + */
-> +static unsigned long mt7925_roc_throttle_check(struct mt792x_phy *phy)
-> +{
-> +       unsigned long now =3D jiffies;
-> +
-> +       /* Reset timeout counter if it's been a while since last timeout =
-*/
-> +       if (phy->roc_timeout_count &&
-> +           time_after(now, phy->roc_last_timeout +
-> +                      msecs_to_jiffies(MT7925_ROC_TIMEOUT_RESET_MS))) {
-> +               phy->roc_timeout_count =3D 0;
-> +               phy->roc_backoff_until =3D 0;
-> +       }
-> +
-> +       /* Check if we're still in backoff period */
-> +       if (phy->roc_backoff_until && time_before(now, phy->roc_backoff_u=
-ntil))
-> +               return phy->roc_backoff_until - now;
-> +
-> +       return 0;
-> +}
-> +
-> +/* Record ROC timeout and calculate backoff period */
-> +static void mt7925_roc_record_timeout(struct mt792x_phy *phy)
-> +{
-> +       unsigned int backoff_ms;
-> +
-> +       phy->roc_last_timeout =3D jiffies;
-> +       phy->roc_timeout_count++;
-> +
-> +       /* Exponential backoff: 100ms, 200ms, 400ms, 800ms, 1600ms (cappe=
-d) */
-> +       backoff_ms =3D MT7925_ROC_BACKOFF_BASE_MS <<
-> +                    min_t(u8, phy->roc_timeout_count - 1, 4);
-> +       if (backoff_ms > MT7925_ROC_BACKOFF_MAX_MS)
-> +               backoff_ms =3D MT7925_ROC_BACKOFF_MAX_MS;
-> +
-> +       phy->roc_backoff_until =3D jiffies + msecs_to_jiffies(backoff_ms)=
-;
-> +
-> +       /* Warn if we're seeing repeated timeouts - likely upper layer is=
-sue */
-> +       if (phy->roc_timeout_count =3D=3D MT7925_ROC_TIMEOUT_WARN_THRESH)
-> +               dev_warn(phy->dev->mt76.dev,
-> +                        "mt7925: %u consecutive ROC timeouts, possible m=
-ac80211/wpa_supplicant issue (MLO key race?)\n",
-> +                        phy->roc_timeout_count);
-> +}
-> +
-> +/* Clear timeout tracking on successful ROC */
-> +static void mt7925_roc_clear_timeout(struct mt792x_phy *phy)
-> +{
-> +       phy->roc_timeout_count =3D 0;
-> +       phy->roc_backoff_until =3D 0;
-> +}
-> +
->  static int mt7925_set_roc(struct mt792x_phy *phy,
->                           struct mt792x_bss_conf *mconf,
->                           struct ieee80211_channel *chan,
->                           int duration,
->                           enum mt7925_roc_req type)
->  {
-> +       unsigned long throttle;
->         int err;
->
-> +       /* Check rate limiting - if in backoff period, wait or return bus=
-y */
-> +       throttle =3D mt7925_roc_throttle_check(phy);
-> +       if (throttle) {
-> +               /* For short backoffs, wait; for longer ones, return busy=
- */
-> +               if (throttle < msecs_to_jiffies(200)) {
-> +                       msleep(jiffies_to_msecs(throttle));
-> +               } else {
-> +                       dev_dbg(phy->dev->mt76.dev,
-> +                               "mt7925: ROC throttled, %lu ms remaining\=
-n",
-> +                               jiffies_to_msecs(throttle));
-> +                       return -EBUSY;
-> +               }
-> +       }
-> +
-> +       /* Clear stale abort flag from previous ROC */
-> +       clear_bit(MT76_STATE_ROC_ABORT, &phy->mt76->state);
-> +
->         if (test_and_set_bit(MT76_STATE_ROC, &phy->mt76->state))
->                 return -EBUSY;
->
-> @@ -523,7 +631,11 @@ static int mt7925_set_roc(struct mt792x_phy *phy,
->         if (!wait_event_timeout(phy->roc_wait, phy->roc_grant, 4 * HZ)) {
->                 mt7925_mcu_abort_roc(phy, mconf, phy->roc_token_id);
->                 clear_bit(MT76_STATE_ROC, &phy->mt76->state);
-> +               mt7925_roc_record_timeout(phy);
->                 err =3D -ETIMEDOUT;
-> +       } else {
-> +               /* Successful ROC - reset timeout tracking */
-> +               mt7925_roc_clear_timeout(phy);
->         }
->
->  out:
-> @@ -534,8 +646,27 @@ static int mt7925_set_mlo_roc(struct mt792x_phy *phy=
-,
->                               struct mt792x_bss_conf *mconf,
->                               u16 sel_links)
->  {
-> +       unsigned long throttle;
->         int err;
->
-> +       /* Check rate limiting - MLO ROC is especially prone to rapid-fir=
-e
-> +        * during reconnection cycles after MLO authentication failures.
-> +        */
-> +       throttle =3D mt7925_roc_throttle_check(phy);
-> +       if (throttle) {
-> +               if (throttle < msecs_to_jiffies(200)) {
-> +                       msleep(jiffies_to_msecs(throttle));
-> +               } else {
-> +                       dev_dbg(phy->dev->mt76.dev,
-> +                               "mt7925: MLO ROC throttled, %lu ms remain=
-ing\n",
-> +                               jiffies_to_msecs(throttle));
-> +                       return -EBUSY;
-> +               }
-> +       }
-> +
-> +       /* Clear stale abort flag from previous ROC */
-> +       clear_bit(MT76_STATE_ROC_ABORT, &phy->mt76->state);
-> +
->         if (WARN_ON_ONCE(test_and_set_bit(MT76_STATE_ROC, &phy->mt76->sta=
-te)))
->                 return -EBUSY;
->
-> @@ -550,7 +681,10 @@ static int mt7925_set_mlo_roc(struct mt792x_phy *phy=
-,
->         if (!wait_event_timeout(phy->roc_wait, phy->roc_grant, 4 * HZ)) {
->                 mt7925_mcu_abort_roc(phy, mconf, phy->roc_token_id);
->                 clear_bit(MT76_STATE_ROC, &phy->mt76->state);
-> +               mt7925_roc_record_timeout(phy);
->                 err =3D -ETIMEDOUT;
-> +       } else {
-> +               mt7925_roc_clear_timeout(phy);
->         }
->
->  out:
-> @@ -567,6 +701,7 @@ static int mt7925_remain_on_channel(struct ieee80211_=
-hw *hw,
->         struct mt792x_phy *phy =3D mt792x_hw_phy(hw);
->         int err;
->
-> +       cancel_work_sync(&phy->roc_work);
->         mt792x_mutex_acquire(phy->dev);
->         err =3D mt7925_set_roc(phy, &mvif->bss_conf,
->                              chan, duration, MT7925_ROC_REQ_ROC);
-> @@ -874,14 +1009,14 @@ static int mt7925_mac_link_sta_add(struct mt76_dev=
- *mdev,
->         if (!mlink)
->                 return -EINVAL;
->
-> -       idx =3D mt76_wcid_alloc(dev->mt76.wcid_mask, MT792x_WTBL_STA - 1)=
-;
-> -       if (idx < 0)
-> -               return -ENOSPC;
-> -
->         mconf =3D mt792x_vif_to_link(mvif, link_id);
->         if (!mconf)
->                 return -EINVAL;
->
-> +       idx =3D mt76_wcid_alloc(dev->mt76.wcid_mask, MT792x_WTBL_STA - 1)=
-;
-> +       if (idx < 0)
-> +               return -ENOSPC;
-> +
->         mt76_wcid_init(&mlink->wcid, 0);
->         mlink->wcid.sta =3D 1;
->         mlink->wcid.idx =3D idx;
-> @@ -901,14 +1036,16 @@ static int mt7925_mac_link_sta_add(struct mt76_dev=
- *mdev,
->
->         ret =3D mt76_connac_pm_wake(&dev->mphy, &dev->pm);
->         if (ret)
-> -               return ret;
-> +               goto err_wcid;
->
->         mt7925_mac_wtbl_update(dev, idx,
->                                MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
->
->         link_conf =3D mt792x_vif_to_bss_conf(vif, link_id);
-> -       if (!link_conf)
-> -               return -EINVAL;
-> +       if (!link_conf) {
-> +               ret =3D -EINVAL;
-> +               goto err_wcid;
-> +       }
->
->         /* should update bss info before STA add */
->         if (vif->type =3D=3D NL80211_IFTYPE_STATION && !link_sta->sta->td=
-ls) {
-> @@ -920,7 +1057,7 @@ static int mt7925_mac_link_sta_add(struct mt76_dev *=
-mdev,
->                         ret =3D mt7925_mcu_add_bss_info(&dev->phy, mconf-=
->mt76.ctx,
->                                                       link_conf, link_sta=
-, false);
->                 if (ret)
-> -                       return ret;
-> +                       goto err_wcid;
->         }
->
->         if (ieee80211_vif_is_mld(vif) &&
-> @@ -928,28 +1065,34 @@ static int mt7925_mac_link_sta_add(struct mt76_dev=
- *mdev,
->                 ret =3D mt7925_mcu_sta_update(dev, link_sta, vif, true,
->                                             MT76_STA_INFO_STATE_NONE);
->                 if (ret)
-> -                       return ret;
-> +                       goto err_wcid;
->         } else if (ieee80211_vif_is_mld(vif) &&
->                    link_sta !=3D mlink->pri_link) {
->                 ret =3D mt7925_mcu_sta_update(dev, mlink->pri_link, vif,
->                                             true, MT76_STA_INFO_STATE_ASS=
-OC);
->                 if (ret)
-> -                       return ret;
-> +                       goto err_wcid;
->
->                 ret =3D mt7925_mcu_sta_update(dev, link_sta, vif, true,
->                                             MT76_STA_INFO_STATE_ASSOC);
->                 if (ret)
-> -                       return ret;
-> +                       goto err_wcid;
->         } else {
->                 ret =3D mt7925_mcu_sta_update(dev, link_sta, vif, true,
->                                             MT76_STA_INFO_STATE_NONE);
->                 if (ret)
-> -                       return ret;
-> +                       goto err_wcid;
->         }
->
->         mt76_connac_power_save_sched(&dev->mphy, &dev->pm);
->
->         return 0;
-> +
-> +err_wcid:
-> +       rcu_assign_pointer(dev->mt76.wcid[idx], NULL);
-> +       mt76_wcid_mask_clear(dev->mt76.wcid_mask, idx);
-> +       mt76_connac_power_save_sched(&dev->mphy, &dev->pm);
-> +       return ret;
->  }
->
->  static int
-> @@ -1135,7 +1278,8 @@ static void mt7925_mac_link_sta_remove(struct mt76_=
-dev *mdev,
->         if (!mlink)
->                 return;
->
-> -       mt7925_roc_abort_sync(dev);
-> +       /* Async abort - caller already holds mutex */
-> +       mt7925_roc_abort_async(dev);
->
->         mt76_connac_free_pending_tx_skbs(&dev->pm, &mlink->wcid);
->         mt76_connac_pm_wake(&dev->mphy, &dev->pm);
-> @@ -1530,6 +1674,8 @@ static int mt7925_suspend(struct ieee80211_hw *hw,
->         cancel_delayed_work_sync(&dev->pm.ps_work);
->         mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
->
-> +       /* Cancel ROC before quiescing starts */
-> +       mt7925_roc_abort_sync(dev);
->         mt792x_mutex_acquire(dev);
->
->         clear_bit(MT76_STATE_RUNNING, &phy->mt76->state);
-> @@ -1876,6 +2022,8 @@ static void mt7925_mgd_prepare_tx(struct ieee80211_=
-hw *hw,
->         u16 duration =3D info->duration ? info->duration :
->                        jiffies_to_msecs(HZ);
->
-> +       cancel_work_sync(&mvif->phy->roc_work);
-> +
->         mt792x_mutex_acquire(dev);
->         mt7925_set_roc(mvif->phy, &mvif->bss_conf,
->                        mvif->bss_conf.mt76.ctx->def.chan, duration,
-> @@ -2033,6 +2181,7 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, st=
-ruct ieee80211_vif *vif,
->         if (old_links =3D=3D new_links)
->                 return 0;
->
-> +       cancel_work_sync(&phy->roc_work);
->         mt792x_mutex_acquire(dev);
->
->         for_each_set_bit(link_id, &rem, IEEE80211_MLD_MAX_NUM_LINKS) {
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wi=
-reless/mediatek/mt76/mt792x.h
-> index 8388638ed550..d9c1ea709390 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-> @@ -186,6 +186,13 @@ struct mt792x_phy {
->         wait_queue_head_t roc_wait;
->         u8 roc_token_id;
->         bool roc_grant;
-> +
-> +       /* ROC rate limiting to prevent MCU overload during rapid reconne=
-ction
-> +        * cycles (e.g., MLO authentication failures causing repeated ROC=
-).
-> +        */
-> +       u8 roc_timeout_count;           /* consecutive ROC timeouts */
-> +       unsigned long roc_last_timeout; /* jiffies of last timeout */
-> +       unsigned long roc_backoff_until;/* don't issue ROC until this tim=
-e */
->  };
->
->  struct mt792x_irq_map {
-> --
-> 2.52.0
->
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://elixir.bootlin.com/linux/v6.17/source/drivers/video/fbdev/core/fbcon.c#L2942 # [1]
+Fixes: 6a9ee8af344e ("vga_switcheroo: initial implementation (v15)")
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: nouveau@lists.freedesktop.org
+Cc: amd-gfx@lists.freedesktop.org
+Cc: linux-fbdev@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v2.6.34+
+Link: https://patch.msgid.link/20251105161549.98836-1-tzimmermann@suse.de
+(cherry picked from commit eb76d0f5553575599561010f24c277cc5b31d003)
+---
+ drivers/gpu/drm/drm_fb_helper.c            | 6 ------
+ drivers/gpu/drm/i915/display/intel_fbdev.c | 2 --
+ drivers/gpu/drm/radeon/radeon_fbdev.c      | 3 ---
+ drivers/video/fbdev/core/fbcon.c           | 9 +++++++++
+ 4 files changed, 9 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_fb_helper.c b/drivers/gpu/drm/drm_fb_helper.c
+index b507c1c008a3e..3915a8b17bc4c 100644
+--- a/drivers/gpu/drm/drm_fb_helper.c
++++ b/drivers/gpu/drm/drm_fb_helper.c
+@@ -32,7 +32,6 @@
+ #include <linux/console.h>
+ #include <linux/pci.h>
+ #include <linux/sysrq.h>
+-#include <linux/vga_switcheroo.h>
+ 
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_drv.h>
+@@ -1668,7 +1667,6 @@ static int drm_fb_helper_find_sizes(struct drm_fb_helper *fb_helper,
+ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
+ {
+ 	struct drm_client_dev *client = &fb_helper->client;
+-	struct drm_device *dev = fb_helper->dev;
+ 	struct drm_fb_helper_surface_size sizes;
+ 	int ret;
+ 
+@@ -1687,10 +1685,6 @@ static int drm_fb_helper_single_fb_probe(struct drm_fb_helper *fb_helper)
+ 
+ 	strcpy(fb_helper->fb->comm, "[fbcon]");
+ 
+-	/* Set the fb info for vgaswitcheroo clients. Does nothing otherwise. */
+-	if (dev_is_pci(dev->dev))
+-		vga_switcheroo_client_fb_set(to_pci_dev(dev->dev), fb_helper->info);
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/gpu/drm/i915/display/intel_fbdev.c b/drivers/gpu/drm/i915/display/intel_fbdev.c
+index 31d0d695d5671..8bad7e7909f7b 100644
+--- a/drivers/gpu/drm/i915/display/intel_fbdev.c
++++ b/drivers/gpu/drm/i915/display/intel_fbdev.c
+@@ -36,7 +36,6 @@
+ #include <linux/string.h>
+ #include <linux/sysrq.h>
+ #include <linux/tty.h>
+-#include <linux/vga_switcheroo.h>
+ 
+ #include <drm/drm_crtc.h>
+ #include <drm/drm_fb_helper.h>
+@@ -337,7 +336,6 @@ static int intelfb_create(struct drm_fb_helper *helper,
+ 	ifbdev->vma_flags = flags;
+ 
+ 	intel_runtime_pm_put(&dev_priv->runtime_pm, wakeref);
+-	vga_switcheroo_client_fb_set(pdev, info);
+ 	return 0;
+ 
+ out_unpin:
+diff --git a/drivers/gpu/drm/radeon/radeon_fbdev.c b/drivers/gpu/drm/radeon/radeon_fbdev.c
+index fb70de29545c6..730efabe05f6b 100644
+--- a/drivers/gpu/drm/radeon/radeon_fbdev.c
++++ b/drivers/gpu/drm/radeon/radeon_fbdev.c
+@@ -303,7 +303,6 @@ static void radeon_fbdev_client_unregister(struct drm_client_dev *client)
+ 	struct radeon_device *rdev = dev->dev_private;
+ 
+ 	if (fb_helper->info) {
+-		vga_switcheroo_client_fb_set(rdev->pdev, NULL);
+ 		drm_helper_force_disable_all(dev);
+ 		drm_fb_helper_unregister_info(fb_helper);
+ 	} else {
+@@ -342,8 +341,6 @@ static int radeon_fbdev_client_hotplug(struct drm_client_dev *client)
+ 	if (ret)
+ 		goto err_drm_fb_helper_fini;
+ 
+-	vga_switcheroo_client_fb_set(rdev->pdev, fb_helper->info);
+-
+ 	return 0;
+ 
+ err_drm_fb_helper_fini:
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 79525ee90e3b2..57b21b6869231 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -64,6 +64,7 @@
+ #include <linux/console.h>
+ #include <linux/string.h>
+ #include <linux/kd.h>
++#include <linux/pci.h>
+ #include <linux/slab.h>
+ #include <linux/fb.h>
+ #include <linux/fbcon.h>
+@@ -75,6 +76,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/crc32.h> /* For counting font checksums */
+ #include <linux/uaccess.h>
++#include <linux/vga_switcheroo.h>
+ #include <asm/irq.h>
+ 
+ #include "fbcon.h"
+@@ -2909,6 +2911,9 @@ void fbcon_fb_unregistered(struct fb_info *info)
+ 
+ 	console_lock();
+ 
++	if (info->device && dev_is_pci(info->device))
++		vga_switcheroo_client_fb_set(to_pci_dev(info->device), info);
++
+ 	fbcon_registered_fb[info->node] = NULL;
+ 	fbcon_num_registered_fb--;
+ 
+@@ -3042,6 +3047,10 @@ static int do_fb_registered(struct fb_info *info)
+ 		}
+ 	}
+ 
++	/* Set the fb info for vga_switcheroo clients. Does nothing otherwise. */
++	if (info->device && dev_is_pci(info->device))
++		vga_switcheroo_client_fb_set(to_pci_dev(info->device), NULL);
++
+ 	return ret;
+ }
+ 
+-- 
+2.52.0
+
 
