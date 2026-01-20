@@ -1,152 +1,208 @@
-Return-Path: <stable+bounces-210503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GN/KGiV1cGktYAAAu9opvQ
-	(envelope-from <stable+bounces-210503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 07:41:41 +0100
+	id GIaBOgRlcGkVXwAAu9opvQ
+	(envelope-from <stable+bounces-210504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:32:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 130595232F
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 07:41:41 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 592DC518C8
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:32:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 81121667BE2
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 12:15:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 2516788AB87
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 12:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F473E9F6E;
-	Tue, 20 Jan 2026 12:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB5E40B6CC;
+	Tue, 20 Jan 2026 12:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWlHrxNg"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="vLo/9AV/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3B33D668E;
-	Tue, 20 Jan 2026 12:14:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B663E421A0D;
+	Tue, 20 Jan 2026 12:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768911290; cv=none; b=ON+Dr6LIiKyy307LKyEmGpy3Ig5LckZDb1mLjXq23kB57QT339aRt6y4BsX8qnzrcAwGufiA0vaO+9K+IY1uYpWyG6xX+hqtMAB8Hro+uvD7rk7RHlt72ewm8fR3Z74IZUzb3tTD3iHFtYm98g4vQpGKHflu90pTDjJijzRlD1Y=
+	t=1768912725; cv=none; b=NgCXh2jomV0NGzT6eHEXFpzLvSexR0+fosBwznOqa8Ege0xV5DxukA8SD3z8tcutqGTAFwt2lPbfP2MoMDjzc6adHQGW3SOopViCvnGtf0BhpaPXvTyZkqKsVZ5uTZZ0VGaqD8mVshmXVvS1trAK5VyYXljYqXZn0+/uT15JQ0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768911290; c=relaxed/simple;
-	bh=IiflnQDxJs4RPcYs3sxwTdyuyK0ue/FTAVFF6cNAICg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o8Bo0H5JG/ulxEgzfrSR31Ss8G1eI8imt77zXOdfqI8xdtp6enFoxnq+eqJ7Ryqqx5ZwaA+E371vKCoD+Jb8t+Tlq5EwAjpm7G6x90y4UJeFmnWnc03M3WParvy+0ftxzjj+9IB2QCuOhbXQVVjYFDxNDM4VOqmTQeWgZQuSSls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWlHrxNg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF6EC19422;
-	Tue, 20 Jan 2026 12:14:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768911288;
-	bh=IiflnQDxJs4RPcYs3sxwTdyuyK0ue/FTAVFF6cNAICg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TWlHrxNgWqnpPI+Z1vQZLBDmUo9Wlf6vxXq2teccxfLdid4tvBzqGTD3v3/gM1S0b
-	 dMOL8fE7uBhRCT7Q8arm/7M9dWP2JUPE2sztXWnIIm/s2m1Ibl0ceuwf3oeKpHeh7L
-	 wimFfhq1vH/am8BNvKU+hR3kLHQkgzS7iC968GPLDFcFn+Gb1Ip6nTsYu5ZawYOv/X
-	 jsIv5x6Xh6UETvy9QdoVFr5qBWhfQOewc18u7kpYfxQlgnJCk7X1f6izLll+8W4CxR
-	 qGxdO5/y7sKhfCVJpTQbtzk0x3JMRoZVUPf6SEHp8kWf8yrUxgCOAsylNvb9KgaqMU
-	 qMGgqcqHyiMYQ==
-Date: Tue, 20 Jan 2026 12:14:43 +0000
-From: Will Deacon <will@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>, Dawei Li <dawei.li@linux.dev>,
-	joro@8bytes.org, linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	set_pte_at@outlook.com, stable@vger.kernel.org
-Subject: Re: [PATCH] iommu/arm-smmu-v3: Maintain valid access attributes for
- non-coherent SMMU
-Message-ID: <aW9xs1ko3nWq5VbS@willie-the-truck>
-References: <20251229002354.162872-1-dawei.li@linux.dev>
- <c25309d1-0424-495e-82af-d025b3e6d8c8@arm.com>
- <20260105145321.GD125261@ziepe.ca>
- <f253d6aa-1dc2-4b1a-85df-f43b06719c04@arm.com>
- <20260105185423.GI125261@ziepe.ca>
+	s=arc-20240116; t=1768912725; c=relaxed/simple;
+	bh=fFvRh5AMXPSGcJh6xJrHxwpwVlnGHpk0TlMYQmI2hGU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=Ao5S0A7l5BTAZgA7PPBwKNNtzOVF7yBHoIbji7nn2+FClgqzQpzHR8ArnZICUeXNAN3x1xO/sdSitAeSG4j/LPqE/eRUR+xzLW0y/E38YODKLDK0/cIvVtfe+0Rm7VZMB0uCUheX3CKd3opLTGWemDeSwLh0j5LMCA1wmq6FguY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=vLo/9AV/; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1768912714; x=1769517514; i=markus.elfring@web.de;
+	bh=fFvRh5AMXPSGcJh6xJrHxwpwVlnGHpk0TlMYQmI2hGU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=vLo/9AV/5nYrWg0KIHkoeGfteXtIcEUDZdBm1E/j179GCYrlqH8ot3Kq62Uozw9H
+	 66J4yMHoixdRUX41SBsgPZrm+oKtOScYR60VBoAeNCNRrqeU2nWb0ZbcxjzyemceN
+	 /oI/yjhJ7AOSzVOiR8Fp8Yr0jVmE1js6RmbEIaordjfot6Ib/EBVc16L592E3HZQA
+	 Cdam0AXoYn59FQlW50iaptIjotE1tvAdwv0q11etwfe+sWDqsixaFd0/g9zIPro+z
+	 0lAecYEN0I0SdvfofphKKATvzQvjGqRLSvzR9zkLaL4py0uLKDqTLaYyaXwK1RvgM
+	 1xDdRukRusBC0HeoWA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.179]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N4NDQ-1vpM2038Bq-00xlna; Tue, 20
+ Jan 2026 13:38:34 +0100
+Message-ID: <88dbfb85-571a-4f65-8879-16972dd87bbd@web.de>
+Date: Tue, 20 Jan 2026 13:38:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260105185423.GI125261@ziepe.ca>
-X-Spamd-Result: default: False [-1.46 / 15.00];
+User-Agent: Mozilla Thunderbird
+To: Gui-Dong Han <hanguidong02@gmail.com>, linux-media@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Jia-Ju Bai <baijiaju1990@gmail.com>, Hans Verkuil
+ <hverkuil+cisco@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>
+References: <20260120121105.8959-1-hanguidong02@gmail.com>
+Subject: Re: [PATCH v2] media: dvb_demux: fix potential TOCTOU race conditions
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20260120121105.8959-1-hanguidong02@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Z70AER369cqfOE6gOP+yDyRgsvSRLPEvgj2srIxvZOdULTw5PFJ
+ LO6Q7zY2GDUhTA/8uDCQ7R/ep4lQRie2VzmPG7hJIEjJSVkhVUVpuVJk0rGctrCfH2yE3LL
+ stdGXSCVFkw4A/hTkpkLsSgNC0u+Efxc5ePC/B9gQRGo0WVeeJNPNpz1m4mgyVSGGOXsBG2
+ geA2a04yh8O8ouCq54aDg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:WQRRH3U+ZOg=;pRBI6lsaMS0+MRTkNekFahb3gE6
+ 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
+ 2nUV5EWilMvPLPIi17xEvLRExd6sR
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[web.de:s=s29768273];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[arm.com,linux.dev,8bytes.org,lists.infradead.org,lists.linux.dev,vger.kernel.org,outlook.com];
-	TAGGED_FROM(0.00)[bounces-210503-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210504-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[web.de,quarantine];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[web.de:+];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[web.de];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[will@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[Markus.Elfring@web.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 130595232F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 592DC518C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Jan 05, 2026 at 02:54:23PM -0400, Jason Gunthorpe wrote:
-> On Mon, Jan 05, 2026 at 04:02:34PM +0000, Robin Murphy wrote:
-> 
-> > > It is reasonable that Linux will set the attributes properly based on
-> > > what it is doing. Setting the wrong attributes and expecting the HW to
-> > > ignore them seems like a hacky direction.
-> > 
-> > Oh, I'm not saying that we *shouldn't* set our attributes more exactly -
-> > this would still be needed for doing things the "right" way too - I just
-> > want to be very clear on the reasons why. 
-> 
-> At least I know of HW where the SMMU fetches covered by COHACC:
-> 
->  * Translation table walks.
->  * Fetches of L1STD, STE, L1CD and CD.
->  * Command queue, Event queue and PRI queue access.
->  * GERROR, CMD_SYNC, Event queue and PRI queue MSIs, if supported.
-> 
-> Have a mixture of coherency support. The SOC has multiple fabrics, one
-> non-coherent one specifically for isochronous traffic.  In HW some
-> SMMU sub-units (like the table walk) been wired to the isochronous
-> fabric, while others are using the normal coherent fabric.
-> 
-> So when it comes to this statement:
-> 
->  If either the SMMU or system cannot *fully* support IO-coherent
->  access to SMMU structures/queues/translations, this reads as 0.
-> 
-> The HW is "partially" IO-coherent, so COHACC is 0.
-> 
-> It has been lucky that so far the incorrect attributes haven't caused a
-> problem, but the next spin of this HW may have issue here. I'd like to
-> see it fixed.
+=E2=80=A6
+> Fix this by extending the lock scope.
+=E2=80=A6
 
-I'm not against being more careful about the memory attributes used by
-the non-coherent walker, but we shouldn't fool ourselves into thinking
-that Linux can treat coherent devices as non-coherent and expect things
-to work generally. The use of non-cacheable mappings in
-dma_alloc_coherent() and cache invalidation in the streaming API when
-transferring buffer ownership back to the CPU can both lead to DMA
-corruption if the device can snoop the CPU caches.
+How do you think about to increase the application of scope-based resource=
+ management?
+https://elixir.bootlin.com/linux/v6.19-rc5/source/include/linux/mutex.h#L2=
+53
 
-I think we're all agreed on that, but just wanted to make sure as this
-is something that has come up before when talking to hardware folks
-who seem to think that the "dma-coherent" property is a hint.
 
-Will
+> This possible bug was found by our experimental static analysis tool,
+> which analyzes lock usage to detect TOCTOU issues.
+
+* Do you refer to any other source code analysis approach than LR-Miner?
+
+* Will any additional background information become more helpful here?
+
+
+Regards,
+Markus
 
