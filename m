@@ -1,284 +1,572 @@
-Return-Path: <stable+bounces-210475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Bh8GGrzb2m+UQAAu9opvQ
-	(envelope-from <stable+bounces-210475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 22:28:10 +0100
+	id SH4uMztCcGnXXAAAu9opvQ
+	(envelope-from <stable+bounces-210478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:04:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8444C411
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 22:28:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EAF5035D
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:04:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AECBD74515E
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 10:21:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 60C98749EE3
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 10:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3743ECBC2;
-	Tue, 20 Jan 2026 10:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17E63ECBF2;
+	Tue, 20 Jan 2026 10:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cherry.de header.i=@cherry.de header.b="a55HiFpV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SSc1M5YB"
 X-Original-To: stable@vger.kernel.org
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011022.outbound.protection.outlook.com [40.107.130.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D1E3A4AB0;
-	Tue, 20 Jan 2026 10:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.22
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768904506; cv=fail; b=Q6gMH/iyPUFtkLCUlw9kRoekQmC7umIfNfHoefdcXP0b4ZEL+DOiYgYp+fqJF790qlaM0bP0t/2T5AYISkonMzTXSytOWvGpWPvwxScydv+krb3mmR/BBTgvSX7hlnxMSnF/13Tt5VFZjfAh6EH7kJcBu7atEO6cLsmhfFAfQ7w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768904506; c=relaxed/simple;
-	bh=4w3DtDHZ34IcJqlop4VbVL2jDSQ3wCnU82R9kBLEQEg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RHvrxDQ9urOd4QFnnnpmiTZcpoq2aT3BTms+jy/dX7UNPa2j2eVtcCAAjLZwRksb2ZBwsDQBc52DaQ6we8nfuZo3DcrFsLzzUNoA7U7uIVlMWTsm6cha8hRwxMBk6yyB4mF7TqB+ZFDAd//5qDk/mPaqOj1Gfc/bGJJiNlhp9wA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cherry.de; spf=pass smtp.mailfrom=cherry.de; dkim=pass (1024-bit key) header.d=cherry.de header.i=@cherry.de header.b=a55HiFpV; arc=fail smtp.client-ip=40.107.130.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cherry.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherry.de
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jHTkcu9V7jff/X5qqIMFVklgWwXjNiks0YI9EmmTLuFQ2A5AjzL1XGYuns13HSOo1uVfKl4x1zOGWPsNaLDDpY9+AJcLKeypHsk6lpEqDZAMaRp/XUHz4z4synsr6z+UbB8eq5eTnGeFM3BWLmD5aYLHBalJAeNKxJguUXZp0GdMmgTP8bEVRagrQBssX78EJpz7G1x9snE1lKZ8HK9tg5ckHeush59/xF12ZTxpNkHB2rX8Gn6F5PLIdquNRBLqLaSyUi31yrkqmnlZIM0xCRyDdei6n/t71isUF62e6wHXN4KmWXEst2yTEye03c6SpxyUnjGhKWsIrR5hIaPTPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/bfT4PfsdxcnYexI5ijl7KjBDV17MG5wDUsbfoTGaPM=;
- b=Kn++L7B1sqnS6GeidnEfdrnOqx5tjz4smE/IJBSoQSNE0/iW42RrehB5MWn+CP9Ir4HNB8DoDWP61rPnIUeuX/vDN2dPn29SjNpyWklGU39yWodKq9t/9DkIwy3EC4Lls2GMe2tl1rEuKdMuTNVum1az86Jtcxttn3RqBIn3qbar5coyq2S20eBGH10681R+YmiEWw+lEuYzf8kdnZdIJ/3JE1oBpo0j+CAhtJByHnYLkMZeCw6VZ2voEUD9sRVX0pLbpLYks19BCj1AHF4WczlkToiCNp/kv2tAUqClgUeweLVAvNszCOrRD4R23aNTXYFEVr22kAz7GnrVAVov2w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/bfT4PfsdxcnYexI5ijl7KjBDV17MG5wDUsbfoTGaPM=;
- b=a55HiFpVXCCceov1FlawD8/2s4UnBNC0AX5BC1Cx77VdZlTP3yplyJ6nASv54rUGiwBt2k9P9LYCqgezvKibPJlrK/ui0trITdvwUq9Qh6G9AH8A+bSg+Ri6lnUEww6jNQ9BHk5liqWr1kqGl6Of/tagH/SnK0VnaEavjLH2I3Q=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from GVXPR04MB12038.eurprd04.prod.outlook.com (2603:10a6:150:2be::5)
- by DBBPR04MB7561.eurprd04.prod.outlook.com (2603:10a6:10:209::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Tue, 20 Jan
- 2026 10:21:39 +0000
-Received: from GVXPR04MB12038.eurprd04.prod.outlook.com
- ([fe80::6c04:8947:f2f0:5e78]) by GVXPR04MB12038.eurprd04.prod.outlook.com
- ([fe80::6c04:8947:f2f0:5e78%6]) with mapi id 15.20.9520.011; Tue, 20 Jan 2026
- 10:21:39 +0000
-Message-ID: <8df14d73-8e20-4d89-89eb-d40f27814d2d@cherry.de>
-Date: Tue, 20 Jan 2026 11:21:34 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: rockchip: Explicitly request UFS reset pin on
- RK3576
-To: Heiko Stuebner <heiko@sntech.de>, Alexey Charkov <alchark@gmail.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Manivannan Sadhasivam <mani@kernel.org>, Shawn Lin <shawn.lin@rock-chips.com>
-Cc: devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260119-ufs-rst-v1-1-c8e96493948c@gmail.com>
- <6479d7b8-7712-4181-9c82-0021da94d1a8@rock-chips.com>
- <5743823.mogB4TqSGs@phil>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <5743823.mogB4TqSGs@phil>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR0P281CA0188.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:ab::9) To GVXPR04MB12038.eurprd04.prod.outlook.com
- (2603:10a6:150:2be::5)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190303D332A
+	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 10:29:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768904989; cv=none; b=U49iYY6Ht3Nfo5RiOEVcDTgCRWcoFAYw5sy0HS9UUqRChyEWoWVFxfgk68Quygnh2Do91ZFvOTHgqR4tMwrfButNL69JLqyli7bK3G2o3SYBIHk8+IBVXQ3qNrRJ9Jkl3w5pAJa5IesaUFvrGUIX77FAhOArfdKjAwcTiptm/ss=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768904989; c=relaxed/simple;
+	bh=JkvS9XHeAI6rhzdCoBFQiNvDoRXd1IvkZEMluID2Vzg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RWCyVcnX2ocjP97gJRRBZDyjZ0YljExVhVmR8BVDkvLqVodL6JrOQjLEkdJWCeHatsQRUrZDDQumFEBrBbvyiwFRdFjjSpr8sEMp+bZ3Kwbo2DJBaPxQZe21+wth+5d3xOWhim7JK1WbGZqRV7ACONLN/dr/oZBYTxXBKqUJ7Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SSc1M5YB; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4801d98cf39so23306165e9.1
+        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 02:29:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768904985; x=1769509785; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E83MMmphRzSQxZiwG/Y3pisB0LvG+BkMYMOQJFTTWtY=;
+        b=SSc1M5YBjBMUGaWNdcNYS3un15vsejhAicxOYSjCgz+XomtDVBUnI5KIyZ9VLQvFJ5
+         EmSvjZfymazTfXeWF/ZPNPzqf1trsA8PrLVKNVQEc5M8MpAwK88Si2Qoc+rTqFnk8wJt
+         PylhOXtCAkaYpTxwtCViNB3QbcL5mKEfdj83vk2lQlA9/irYxU1jmWKOk9Agf05fjQZm
+         GfMjWEI4uUTAdzueqAlJ1wJvXRLcTtu8I6/wxDLrxQ07Eopgq2hQCyLCk+rV3HJArOoG
+         VF5F76Ip0CJ5WpL2bUqH7QBTXPc185ao4oqcI/PYeZWtkzjJYRCntjG254j+GtZ9jBr5
+         PAUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768904985; x=1769509785;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E83MMmphRzSQxZiwG/Y3pisB0LvG+BkMYMOQJFTTWtY=;
+        b=MPMkEHAmNq16R7LbWuRnfNDmNeo13vM1qB78TgIka7nZCzH0X/TiGtalqkp8H40ZW5
+         Gu2pY70ngtiNGGMMOuxFhBiIPuocxn1fe+XtuhZW8lezys0hcjUyvKebOCVwwaK1WWDq
+         uTnQeYLcgUx6lnuz/MO9U2QfGymIMillwR8W9Y3RFDVMZbF5uCjakl4E7DBsIV6ocmFm
+         rYFJsgL6MdcjkECbZrTVwlxJiGe7XdE8stlZ37JE2Wryek9WIIyNp7zvKERPg3GVhMQN
+         c+ksZCb+gOYJ97CI0IPRUUXJpSxcCUej0OnjqAbTod9oUmC7Vl6yPT8qq3/3ObZHrjEr
+         gWyw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuRCqqoToy2CPLxWj/5XF1R6jX55z6esDT0qAzMqaqtOkikfQ29XMzAFi1i5vvXU/sy0AHDBw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1vn0/diOKTgjWt8vJu6LwXoKpGcBgjIYs4JzZeswqZE8XCOI9
+	oLryhQqUyLKpZqKR8mVy/McrHhFBX0vBpXYLyVT2Tknf9uBFchyHndNqJ9QHYjij
+X-Gm-Gg: AY/fxX7bq0HLQj+aDQSQ8cYgGkoqXa77PruKGuqgJqq7cHMHt5HFDv4GnRwg4x1kAWW
+	fDek3tcIviQ1qTqXwhRdsSxOX9o8t/S327LfAR3LIgrSBldGpGwwM0nyt/exBYZYcXemWtm93Cm
+	xOQCIYukODlEMhtHinHHm0fu1NuVm5oTIX3RxtsjimR4sOy+1uwfZmx/pbPVzV1mFlqj1kM8xRm
+	ymGg9K8+EliOv+SWvhiWx/Mz0CYAAh8JfkJ3YoFbpBNRThI0lEcv0cU1+RRP34UIVFhJAEiQ5T+
+	aOFpPCHJaFRUdt9PPY7t82P6M5vEt8HBenC8N5fPN5Vo9700vbHek/g7GHaVhDiOrHLGAh5/73E
+	wrVzGcu1inkX1aE9hOewke05ZawFR+lij7jTeisTOeDCPKQ7L7xooqVIxpp0dxPaMFWYKCx9hPW
+	fZNNHuWNBPO27Ww7mT678+Dp58hhejqDiMBw==
+X-Received: by 2002:a05:600c:3509:b0:47a:94fc:d057 with SMTP id 5b1f17b1804b1-4801eab54e2mr146879285e9.2.1768904984848;
+        Tue, 20 Jan 2026 02:29:44 -0800 (PST)
+Received: from localhost.localdomain ([185.99.26.75])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4356997e6dasm29123855f8f.32.2026.01.20.02.29.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 02:29:44 -0800 (PST)
+From: Berk Cem Goksel <berkcgoksel@gmail.com>
+To: tiwai@suse.com,
+	perex@perex.cz
+Cc: linux-sound@vger.kernel.org,
+	stable@vger.kernel.org,
+	andreyknvl@gmail.com,
+	Berk Cem Goksel <berkcgoksel@gmail.com>
+Subject: [PATCH] ALSA: usb-audio: Fix use-after-free in snd_usb_mixer_free()
+Date: Tue, 20 Jan 2026 13:28:55 +0300
+Message-Id: <20260120102855.7300-1-berkcgoksel@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: GVXPR04MB12038:EE_|DBBPR04MB7561:EE_
-X-MS-Office365-Filtering-Correlation-Id: 282caf19-a31e-444e-07c7-08de580db2e8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|10070799003|1800799024|14052099004;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QTAzNUYrU25hSlRDQW51TVJsTWpIMUNrTHhTWmtEN1dHUFVVM3ZiTCsrUFVN?=
- =?utf-8?B?dmVGNStMVTFONVRGWWcxNEhXSkhoVmY5MnBjTjBTNCtZblRXUEs3Skxac2ZD?=
- =?utf-8?B?V29ERlVQYVhRWWNlcXB5ZDhmSFlxOEFVc1UvelYrOHRWK01JVkxYd2hZeTg1?=
- =?utf-8?B?eDcrbUx1NnNLQ0ZSbDJQdzhFeEptQ1hBcHQvMTQ1VVk2NmJFZmNjTVhqV0lt?=
- =?utf-8?B?QUJlZm9ib2E1SDNSdGFZTW1QWTRFR3ZPNEptSDlHL0hSQndDb3NXZDNseGdL?=
- =?utf-8?B?NmtyWEN1SzhPQTdzNjVPa0FxZmpwTElXUzB0U29WZzBUYk1uSW8xWSt5K3Ry?=
- =?utf-8?B?TVo3QkRTZ2JYVWNYSk11aXhUdVcvUzcwMkg1d3lKaGRIUW1TTGhheS9lV3lw?=
- =?utf-8?B?N1ZUUFhpVVgwWXNOdzBrS2ZuYmxDSVl2a2VBU2VWdFErVkpXWEtrd3FWaUNy?=
- =?utf-8?B?UXRIMHF0Nms4a0dqUHFpSjlQNzdwMk9sNGtHdWtEaGhUNzFZcTQrenkwZkxq?=
- =?utf-8?B?anhiTjMzTmliQ3JRNGlreldhNS9Zdi9lWmRya29XdkJhQXFjS2dWbzQxbjNK?=
- =?utf-8?B?VjduejlqU1FYUUpuN3BVWSs2bTFhV1lobktBaDRQaFRuSGlkZk5pS1M5S2dl?=
- =?utf-8?B?TFZncjh5MDZBV05KRlZJTE5TeHcrRDEvK0dJUTBMK2lxdXBLcUJnM2E0SmRK?=
- =?utf-8?B?MW9HWUVqZUpBR1o2dzUvNTRiekFKc1prb3E0R2grNjJGSE5rc1NJWGM1NVZn?=
- =?utf-8?B?aFlZazN4dkxrNUFxUjd3bmRjRUlaVVBtd3hQekIxYWxGajNSTzFldGgzOFY4?=
- =?utf-8?B?UXgvblNPOERlSU0wWE5rUDZWMy9hRVF6N3ZaS0MvbitTdzVIRVRVZklFdjFq?=
- =?utf-8?B?djhqN0d3VzJlYVhLNnJoc0JxQ0FqQWh5bUdaMVhya2FXdWt4Z1RJQ3g1NUdM?=
- =?utf-8?B?V1Z6V3Bvb0M1SHJiN0RTK2NremxDUEZPdnhoUUdPUFlKdm44U1haOTJCK0Za?=
- =?utf-8?B?QkE3Y2NIbkFVYm9SaVZEQWlWM1NPUzBNRGJ5dVZ1OE9zTXlhNGRkZmdOeGxB?=
- =?utf-8?B?bVpSYWhyTGJ0RmNkSXAwTm1uM1JQR3BMdkNWM1oxdVM1TUQzaUhxUHNTVllz?=
- =?utf-8?B?ZWM5cVhlQkUyNnNnNmgzTXVEazlpOVJzcmsxQXY5Z2tWaVlCSGdSaloraGVU?=
- =?utf-8?B?dmw0bWxmYTFZM0JmaEhGbXVBMEJrbi90d0c5bEplZFRXZkwxeHJDeHdnNVpQ?=
- =?utf-8?B?Y0lYZjRVV0EzYTJIdEVUS3dQMmg4ZG1rYVVhREN1b0xMUWxGdSttb2ZHbldy?=
- =?utf-8?B?UlE5dTBvWW5IM1EyVUZCOEdFYjBvdmE3UVJLMlVHVktIWlNRV0hzbTdmNk9a?=
- =?utf-8?B?enMzckdiSGV0LzR5b3hJVVFVOXRuUFBJang4a09iUHJUaGFOYU10MWdnTGZU?=
- =?utf-8?B?KzR5VnJjdUdNbzZyYzl4OW1IeTgydW53L2pWemhtZE9iMmF3d2UzaEJXV2Jl?=
- =?utf-8?B?NEJzV3BpbzhZRlBUc01vN3kwbzNwdDlYYy93enV0OHVQanV4MVpoajFnZTdN?=
- =?utf-8?B?b1d1b2FiMUdQb2Ruc2pnZW01TnRabVBJMHNZN1FNeG5ndmY4VXBxU2hpaHdH?=
- =?utf-8?B?a253MVIyLzJMQW0ya0o0TWY3RjVnd0ErOGpHN1kxeGlsUmtwS3JuQWwxaUdQ?=
- =?utf-8?B?bU9ESHdNMk9rZytrZmprVTFudHdFMUt1UFhKbzVvaWtUbmNXNzNjRE9heXRv?=
- =?utf-8?B?ZitIY05vRXZERWRXM1libnRSQk9lYlBHTEhRNUllb25pSzZwa0ltRFZIYXJU?=
- =?utf-8?B?clRDZ0pmOW9qWmswKzlIRkNlaW1IMXhWOUhNcHZFQ3VvY0xWZmJlNnlZU0tz?=
- =?utf-8?B?dkt0SlZQRllMVGRNaWhWdWZ1NENNSlpKdmZYcDJYQ0QyQTg1bk9XOVZ4Lzl2?=
- =?utf-8?B?RysvRlJOMHEvMFY4R3pWRXpvUVNzaTc0KzM5RktDZno2WEJnVmVLcjJCbjFY?=
- =?utf-8?B?Sm95eGpKRG1HUkVQekNkL2NRV0wyY3FjM0tsWWhtTG1RVy9nOVl0QmJzNnJx?=
- =?utf-8?Q?vowhPW?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR04MB12038.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(10070799003)(1800799024)(14052099004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Zy9Ha1FLS2xNVDB5d1hBSmFkS2hYNDVoRCtJVjRwZ2xVQXBGNllXNDNtM1d0?=
- =?utf-8?B?cWZ3MVBsRjQvZ0drTkFEY2k4LzBnbUM5TGRhR3hDUStpSHkyeWd3V1BQSTly?=
- =?utf-8?B?WTlJK2lXcXN3SHR6ZHY2WFlKOGt6NGFLcDVnQkhQR3o5OEtiVGJhK1Jicnhv?=
- =?utf-8?B?UnRTRWdRdjJEck9zWTZvd3JKODhMczViT2VyWFFocDRlSjFMNWVFd2JRcmNO?=
- =?utf-8?B?bmdFbHVzc2lHR0lqbS80VmUwRnlGTmR5RitaUkJOZE55QXRxWnRzN2tZS2hr?=
- =?utf-8?B?VTRaTkZHZDdxcnpTQkI2RkpXNHNsS010MFpObTFnS3JTVDJKQmNWNDh0R1Nu?=
- =?utf-8?B?NGFVR3Ftb0w5VklWakJkeTlqaGloRGNuQzBreHMxU1RHWjgwbENWWjJkbWFG?=
- =?utf-8?B?aUNEV3RKdUNsM0JuZ3A1dHFPU0czQUhIeC82NGVJQkJzL3VIcElscmdvZGFa?=
- =?utf-8?B?aDAxdjZwT2lucE15YTI3Nk5tdDdsVTNSTTZEZG9IUStGQlBYVERVc3UyU3VX?=
- =?utf-8?B?NGNHM3czWUFNdEx3VzN1QkJYZVNwSkdFaVJMWGNnWnBVbXlvYnhPaC9wcGM1?=
- =?utf-8?B?WHpLS0VIdWNCejg2cXhzaVk5YVFEQUswN0J3Z0pDUStRbWtvK2QrWXJxZnVK?=
- =?utf-8?B?b3dLU1dMN0szWjNpOTRNU09odmh5b1YxS2NHSDNBa1FIV0tWZzZQT2pnaHJz?=
- =?utf-8?B?NHdXYURVNEIvT1pCNXNkT3hWY0VuOWE5aU1DVHRibWUvNWNESEhBY1FHc2tX?=
- =?utf-8?B?WHdIb1BuUlZRSGpRcFllMGNQUTEwbHVBY0tSOXFxTWdOWldaejJBWVltd3du?=
- =?utf-8?B?UFNTZHE5cjkvcFJkT2Rjd3M2VWdQWElpNStSVWJOMXl5M2ZEMTJIK0ZSc2FF?=
- =?utf-8?B?VW4xdFIraWozdndUQnNkM1JqbVJqYlRsdVdDUGpSaTliTXdvUmU4c0RSSGNi?=
- =?utf-8?B?NUtTeU05M2VLc0FjeGlWN0dHbEw1YzZJQmEwdjZiakhtMC94cHhFbjBPRVRs?=
- =?utf-8?B?RUNRVVJoUENkM0w4S3ZBT0VGbkZkNklYbEFIQ3RaMS9nYnBFSm9lOXJHVU9u?=
- =?utf-8?B?enNYK01NUUE5dzRScUIrdkUxOWVtTy9uUXNMSlkrQkR1Mk54R2VsL0swMDF5?=
- =?utf-8?B?a1dFbXdTVUdJdTR4SWw1cmtkUzV3VEtNNGdmSHFmVEFWNVBLZmNZRkRzS2R4?=
- =?utf-8?B?N3VEeWFNMHk1ZUFWOVg0MThld2xrZkh4Z0l1VWJTOC9IZG9xQjhHMVlZeFgw?=
- =?utf-8?B?Qk9GTTdCK1I2SUp3Y1UzaERCdGZTTXRKdUxIc0YwQmpQWng0Z1hVY1lOaE9x?=
- =?utf-8?B?V0lEaUxvQjVzRkN5cjh4YmUzMlpJdzV0TXloSGtjTzJES3VXY2VKMDA4MlZX?=
- =?utf-8?B?c2JaMjYrZE1MbVhJZDZzNE85MzBiWmJaK0JTWmxKM01IbVB3ZkhjRVJxSXND?=
- =?utf-8?B?V0s4UWxlZlJNWUlsTHNBYTFnaTlpcmZ0Sk9OWWYxRmhMSGIvUmVQdEpCMVNU?=
- =?utf-8?B?ZnJmT3NjMlJjd3dsNVZNL1pmaWVHemNGK3FJQnBuK3hNZWk4QVduVExtYUtm?=
- =?utf-8?B?NllxUkgzUE1kOU5WMjl1MTB3RFFoOTFHREhycENKbThhOE5LOHhOeWtQOElX?=
- =?utf-8?B?OHYxSncwam05MFQ1dDI3OHJJRlIrdVRYdXNUSFlud1NLZzVLT2dvN2thREpq?=
- =?utf-8?B?c2psVkZ0VDd1TkV2ZXY0RkRGVy94ZW0wcFRmbFpJalRxTGdzYlF4QTkrYzdE?=
- =?utf-8?B?RDlWOHJtTkYzNElsUnVWc1hpTW16a1dGTkN0ZWdLa05OVkNMc0FTZ3RISHly?=
- =?utf-8?B?c2M3UmRqSmpSZTVPRXI2SmhuaVlLcEFCYTVFSkhnbVY0ZFFFMjZ4OVZhZUpm?=
- =?utf-8?B?UlhIL1QxbGVtcWg2ZDlpOHpOZGJmdWZXQUZhMU9BdFQ0cHY3clI1MytiaEVT?=
- =?utf-8?B?V1IxblFtaVliTXNEcklzZ2YxODN5MThyQS9rT3dRaUpqa1lWTGRmRS9jMFhv?=
- =?utf-8?B?RGdrcno0YlJaSDRKRXAybWxqUUxnQUZ6K2R3VzJPcWZNQXVrWFhCQXJKUjNz?=
- =?utf-8?B?enh5M0VJeHhuY2dsWlgwY3ZKb2h5V1cwbDdMV2Zod01sSk9DbENRbGpUamxw?=
- =?utf-8?B?bzNYLzNGbHRxbW9ka1lMRG10WExqL0g3NnJ1NTNHdXgwY2RFb21EcjIzeWNQ?=
- =?utf-8?B?c2pEb2dUdVZRQ2FIZDRmSU52dzJqQXBTODZBSG1sUTJ3MnVKUHBoVEh6eXZk?=
- =?utf-8?B?VEJQZkNpRW9UeDhmYm5NZk5sYkdtQWx2SmxNY2lkTjFtUVRocW82NUVZUmJG?=
- =?utf-8?B?QlEvSXp2dE45V1JJWWdzL2M2ME1SaXFCaVpMS2ZQazNIcUM2aVNjckVjSnFm?=
- =?utf-8?Q?5sJx6n4YisDWxFThQizz01LKA01HTa+6+Ytl+?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 282caf19-a31e-444e-07c7-08de580db2e8
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR04MB12038.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2026 10:21:39.3826
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: I+AR/2ZdGQBCIhbKq329beuOE9+LKw9bebV38KQxcmSynYyXb5Dw5Wa+kIkvDFQhK4BZ0VbKt24Kp4c2hRcYgOBDykmEwhSEfnzUwdncmm0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7561
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[cherry.de:s=selector1];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210475-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[sntech.de,gmail.com,kernel.org,oracle.com,rock-chips.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[cherry.de,quarantine];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TAGGED_FROM(0.00)[bounces-210478-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[quentin.schulz@cherry.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[cherry.de:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,dt];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
+	FROM_NEQ_ENVFROM(0.00)[berkcgoksel@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[6];
 	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,u-boot.org:url]
-X-Rspamd-Queue-Id: EE8444C411
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,ev.data:url]
+X-Rspamd-Queue-Id: 47EAF5035D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Heiko,
+When snd_usb_create_mixer() fails, snd_usb_mixer_free() frees
+mixer->id_elems but the controls already added to the card still
+reference the freed memory. Later when snd_card_register() runs,
+the OSS mixer layer calls their callbacks and hits a use-after-free read.
 
-On 1/20/26 9:55 AM, Heiko Stuebner wrote:
-> Am Dienstag, 20. Januar 2026, 02:39:28 Mitteleuropäische Normalzeit schrieb Shawn Lin:
->> 在 2026/01/19 星期一 17:22, Alexey Charkov 写道:
->>> Rockchip RK3576 UFS controller uses a dedicated pin to reset the connected
->>> UFS device, which can operate either in a hardware controlled mode or as a
->>> GPIO pin.
->>>
->>
->> It's the only one 1.2V IO could be used on RK3576 to reset ufs devices,
->> except ufs refclk. So it's a dedicated pin for sure if using ufs, that's
->> why we put it into rk3576.dtsi.
->>
->>> Power-on default is GPIO mode, but the boot ROM reconfigures it to a
->>> hardware controlled mode if it uses UFS to load the next boot stage.
->>>
->>
->> ROM code could be specific, but the linux/loader driver is compatible，
->> so for the coming SoCs, with more 1.2V IO could be used, it's more
->> flexible to use gpio-based instead of hardware controlled(of course,
->> move reset pinctrl settings into board dts).
->>
->>> Given that existing bindings (and rk3576.dtsi) expect a GPIO-controlled
->>> device reset, request the required pin config explicitly.
->>>
->>> This doesn't appear to affect Linux, but it does affect U-boot:
->>>
->>
->> IIUC, it's more or less a fix for loader, more precisely U-boot here?
->> I'm not entirely certain about the handling here, is it standard
->> convention to add a fixes tag in this context?
-> 
-> Yes, a fixes tag is warranted here, in Linux it "only" fixes a potential
-> issue due to the mismatch between pinconfig and gpio during probe.
-> 
-> nce this patch then enters the kernel, it can be cherry-picked to
-> the current u-boot development cycle. I don't think u-boot is doing
-> stable releases though, so U-Boot will only profit for the next
-> version where this is included.
-> 
+Call trace:
+  get_ctl_value+0x63f/0x820 sound/usb/mixer.c:411
+  get_min_max_with_quirks.isra.0+0x240/0x1f40 sound/usb/mixer.c:1241
+  mixer_ctl_feature_info+0x26b/0x490 sound/usb/mixer.c:1381
+  snd_mixer_oss_build_test+0x174/0x3a0 sound/core/oss/mixer_oss.c:887
+  ...
+  snd_card_register+0x4ed/0x6d0 sound/core/init.c:923
+  usb_audio_probe+0x5ef/0x2a90 sound/usb/card.c:1025
 
-U-Boot only takes what's in devicetree-rebasing 
-(https://git.kernel.org/pub/scm/linux/kernel/git/devicetree/devicetree-rebasing.git), 
-so only from Linus's tree AFAICT. C.f. 
-https://docs.u-boot.org/en/latest/develop/process.html#resyncing-of-the-device-tree-subtree 
-and 
-https://docs.u-boot.org/en/latest/develop/devicetree/control.html#resyncing-with-devicetree-rebasing. 
-See also OF_UPSTREAM Kconfig symbol in U-Boot.
+Fix by calling snd_ctl_remove() for all mixer controls before freeing
+id_elems. We save the next pointer first because snd_ctl_remove()
+frees the current element.
 
-This policy does make adding support for a new board quite slow as we 
-may need to wait months before it makes it to Linus's tree, and then go 
-through the development cycle in U-Boot which can also take a few months 
-if the timing is unfortunate. For now it seems like we're sticking with 
-this policy to avoid too much in "downstream" DT in U-Boot. I know we 
-push for this aggressively for new Rockchip boards and SoCs, cannot say 
-for other vendors.
+Fixes: 6639b6c2367f ("[ALSA] usb-audio - add mixer control notifications")
+Cc: stable@vger.kernel.org
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
+---
+Tested on 6.18.5 with KASAN:
 
-Cheers,
-Quentin
+[   11.274050] ==================================================================
+[   11.274798] BUG: KASAN: slab-use-after-free in get_ctl_value+0x63f/0x820
+[   11.275503] Read of size 4 at addr ffff888003c2a438 by task kworker/1:3/96
+
+[   11.276469] CPU: 1 UID: 0 PID: 96 Comm: kworker/1:3 Not tainted 6.18.5 #2 PREEMPT(voluntary)
+[   11.276485] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+[   11.276504] Workqueue: usb_hub_wq hub_event
+[   11.276562] Call Trace:
+[   11.276582]  <TASK>
+[   11.276589]  dump_stack_lvl+0x55/0x70
+[   11.276616]  print_report+0xcb/0x610
+[   11.276666]  ? get_ctl_value+0x63f/0x820
+[   11.276669]  kasan_report+0xb8/0xf0
+[   11.276678]  ? get_ctl_value+0x63f/0x820
+[   11.276684]  get_ctl_value+0x63f/0x820
+[   11.276688]  ? kasan_save_stack+0x34/0x50
+[   11.276692]  ? kasan_save_stack+0x24/0x50
+[   11.276697]  ? kasan_save_track+0x14/0x30
+[   11.276699]  ? __kasan_kmalloc+0x7f/0x90
+[   11.276701]  ? snd_mixer_oss_build_test+0x13a/0x3a0
+[   11.276720]  ? snd_mixer_oss_notify_handler+0x356/0x880
+[   11.276737]  ? snd_card_register+0x4ed/0x6d0
+[   11.276776]  ? try_to_register_card+0x124/0x290
+[   11.276836]  ? usb_audio_probe+0x5ef/0x2a90
+[   11.276850]  ? usb_probe_interface+0x26c/0x920
+[   11.276888]  ? __pfx_get_ctl_value+0x10/0x10
+[   11.276890]  ? __device_attach_driver+0x160/0x320
+[   11.276925]  ? bus_for_each_drv+0x101/0x190
+[   11.276931]  ? __device_attach+0x198/0x3a0
+[   11.276935]  ? bus_probe_device+0x123/0x170
+[   11.276940]  ? device_add+0xcfd/0x1440
+[   11.276965]  ? usb_set_configuration+0xa7c/0x18c0
+[   11.276969]  ? usb_generic_driver_probe+0x7b/0xb0
+[   11.276982]  ? usb_probe_device+0xaa/0x2e0
+[   11.276985]  ? really_probe+0x1c6/0x6a0
+[   11.276986]  ? __driver_probe_device+0x248/0x310
+[   11.276988]  ? driver_probe_device+0x48/0x210
+[   11.276991]  ? __device_attach_driver+0x160/0x320
+[   11.276993]  get_min_max_with_quirks.isra.0+0x240/0x1f40
+[   11.277007]  ? __pfx_get_min_max_with_quirks.isra.0+0x10/0x10
+[   11.277010]  ? kasan_unpoison+0x27/0x60
+[   11.277026]  ? __kasan_slab_alloc+0x30/0x70
+[   11.277029]  ? __kmalloc_cache_noprof+0x128/0x500
+[   11.277050]  mixer_ctl_feature_info+0x26b/0x490
+[   11.277053]  ? __kasan_kmalloc+0x7f/0x90
+[   11.277056]  snd_mixer_oss_build_test+0x174/0x3a0
+[   11.277058]  ? __pfx_snd_mixer_oss_build_test+0x10/0x10
+[   11.277060]  ? driver_probe_device+0x48/0x210
+[   11.277062]  ? snd_ctl_find_id+0x75/0x510
+[   11.277076]  snd_mixer_oss_build_test_all+0xbf/0x610
+[   11.277078]  ? __pfx_snd_mixer_oss_build_test_all+0x10/0x10
+[   11.277080]  ? __pfx_snd_mixer_oss_test_id.isra.0+0x10/0x10
+[   11.277082]  ? kasan_save_track+0x14/0x30
+[   11.277085]  snd_mixer_oss_build_input+0xfe/0xca0
+[   11.277088]  ? kasan_save_track+0x14/0x30
+[   11.277090]  ? __pfx_snd_mixer_oss_build_input+0x10/0x10
+[   11.277092]  ? __kmalloc_node_track_caller_noprof+0x1c3/0x600
+[   11.277097]  ? kstrdup+0x36/0x90
+[   11.277109]  ? kstrdup+0x4f/0x90
+[   11.277110]  snd_mixer_oss_notify_handler+0x356/0x880
+[   11.277112]  ? snd_info_card_register+0x11a/0x1a0
+[   11.277131]  snd_card_register+0x4ed/0x6d0
+[   11.277134]  ? __pfx_snd_card_register+0x10/0x10
+[   11.277136]  ? _raw_spin_lock_irqsave+0x85/0xe0
+[   11.277172]  try_to_register_card+0x124/0x290
+[   11.277174]  ? __pfx_try_to_register_card+0x10/0x10
+[   11.277176]  ? pm_runtime_enable+0x1cc/0x2a0
+[   11.277190]  ? usb_driver_claim_interface+0x15e/0x3d0
+[   11.277192]  usb_audio_probe+0x5ef/0x2a90
+[   11.277196]  ? __pfx_usb_audio_probe+0x10/0x10
+[   11.277198]  ? _raw_spin_lock_irqsave+0x85/0xe0
+[   11.277200]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+[   11.277202]  ? ktime_get_mono_fast_ns+0x87/0x300
+[   11.277243]  usb_probe_interface+0x26c/0x920
+[   11.277247]  really_probe+0x1c6/0x6a0
+[   11.277248]  ? __pfx___device_attach_driver+0x10/0x10
+[   11.277250]  __driver_probe_device+0x248/0x310
+[   11.277252]  ? usb_match_id.part.0+0xe3/0x150
+[   11.277256]  driver_probe_device+0x48/0x210
+[   11.277257]  ? __pfx___device_attach_driver+0x10/0x10
+[   11.277259]  __device_attach_driver+0x160/0x320
+[   11.277261]  bus_for_each_drv+0x101/0x190
+[   11.277264]  ? __pfx_bus_for_each_drv+0x10/0x10
+[   11.277266]  __device_attach+0x198/0x3a0
+[   11.277268]  ? __pfx___device_attach+0x10/0x10
+[   11.277271]  ? kobject_get+0x54/0xf0
+[   11.277290]  bus_probe_device+0x123/0x170
+[   11.277291]  device_add+0xcfd/0x1440
+[   11.277293]  ? __pfx_device_add+0x10/0x10
+[   11.277295]  ? mutex_unlock+0x7d/0xd0
+[   11.277297]  ? __pfx_mutex_unlock+0x10/0x10
+[   11.277299]  ? kasan_save_track+0x14/0x30
+[   11.277301]  usb_set_configuration+0xa7c/0x18c0
+[   11.277305]  usb_generic_driver_probe+0x7b/0xb0
+[   11.277307]  usb_probe_device+0xaa/0x2e0
+[   11.277308]  really_probe+0x1c6/0x6a0
+[   11.277311]  ? __pfx___device_attach_driver+0x10/0x10
+[   11.277313]  __driver_probe_device+0x248/0x310
+[   11.277315]  driver_probe_device+0x48/0x210
+[   11.277317]  ? __pfx___device_attach_driver+0x10/0x10
+[   11.277319]  __device_attach_driver+0x160/0x320
+[   11.277322]  bus_for_each_drv+0x101/0x190
+[   11.277323]  ? __pfx_bus_for_each_drv+0x10/0x10
+[   11.277325]  __device_attach+0x198/0x3a0
+[   11.277328]  ? __pfx___device_attach+0x10/0x10
+[   11.277330]  ? kobject_get+0x54/0xf0
+[   11.277332]  bus_probe_device+0x123/0x170
+[   11.277335]  device_add+0xcfd/0x1440
+[   11.277338]  ? __pfx_device_add+0x10/0x10
+[   11.277340]  ? add_device_randomness+0xb2/0xe0
+[   11.277355]  usb_new_device+0x7b9/0x1060
+[   11.277359]  hub_event+0x2000/0x3e40
+[   11.277361]  ? __pfx_hub_event+0x10/0x10
+[   11.277363]  ? _raw_spin_lock_irqsave+0x85/0xe0
+[   11.277368]  ? mutex_unlock+0x7d/0xd0
+[   11.277369]  ? _raw_spin_lock_irq+0x80/0xe0
+[   11.277383]  ? __pfx__raw_spin_lock_irq+0x10/0x10
+[   11.277386]  ? __pm_runtime_suspend+0x78/0x1c0
+[   11.277399]  process_one_work+0x5c2/0xfd0
+[   11.277446]  worker_thread+0x78d/0x1240
+[   11.277450]  ? __kthread_parkme+0x95/0x170
+[   11.277460]  ? __pfx_worker_thread+0x10/0x10
+[   11.277462]  kthread+0x331/0x630
+[   11.277481]  ? __pfx_kthread+0x10/0x10
+[   11.277484]  ? __pfx__raw_spin_lock_irq+0x10/0x10
+[   11.277486]  ? finish_task_switch.isra.0+0x142/0x610
+[   11.277505]  ? __pfx_kthread+0x10/0x10
+[   11.277507]  ret_from_fork+0x11c/0x1c0
+[   11.277545]  ? __pfx_kthread+0x10/0x10
+[   11.277547]  ret_from_fork_asm+0x1a/0x30
+[   11.277567]  </TASK>
+
+[   11.338943] Allocated by task 96:
+[   11.339324]  kasan_save_stack+0x24/0x50
+[   11.339765]  kasan_save_track+0x14/0x30
+[   11.340193]  __kasan_kmalloc+0x7f/0x90
+[   11.340615]  snd_usb_create_mixer+0xe9/0x18a0
+[   11.341108]  usb_audio_probe+0x5d8/0x2a90
+[   11.341555]  usb_probe_interface+0x26c/0x920
+[   11.342036]  really_probe+0x1c6/0x6a0
+[   11.342447]  __driver_probe_device+0x248/0x310
+[   11.342952]  driver_probe_device+0x48/0x210
+[   11.343416]  __device_attach_driver+0x160/0x320
+[   11.343926]  bus_for_each_drv+0x101/0x190
+[   11.344367]  __device_attach+0x198/0x3a0
+[   11.344803]  bus_probe_device+0x123/0x170
+[   11.345245]  device_add+0xcfd/0x1440
+[   11.345648]  usb_set_configuration+0xa7c/0x18c0
+[   11.346145]  usb_generic_driver_probe+0x7b/0xb0
+[   11.346647]  usb_probe_device+0xaa/0x2e0
+[   11.347080]  really_probe+0x1c6/0x6a0
+[   11.347536]  __driver_probe_device+0x248/0x310
+[   11.348031]  driver_probe_device+0x48/0x210
+[   11.348490]  __device_attach_driver+0x160/0x320
+[   11.348991]  bus_for_each_drv+0x101/0x190
+[   11.349433]  __device_attach+0x198/0x3a0
+[   11.349869]  bus_probe_device+0x123/0x170
+[   11.350310]  device_add+0xcfd/0x1440
+[   11.350712]  usb_new_device+0x7b9/0x1060
+[   11.351146]  hub_event+0x2000/0x3e40
+[   11.351543]  process_one_work+0x5c2/0xfd0
+[   11.351997]  worker_thread+0x78d/0x1240
+[   11.352421]  kthread+0x331/0x630
+[   11.352788]  ret_from_fork+0x11c/0x1c0
+[   11.353212]  ret_from_fork_asm+0x1a/0x30
+
+[   11.353835] Freed by task 96:
+[   11.354171]  kasan_save_stack+0x24/0x50
+[   11.354599]  kasan_save_track+0x14/0x30
+[   11.355023]  __kasan_save_free_info+0x3b/0x60
+[   11.355505]  __kasan_slab_free+0x43/0x70
+[   11.355945]  kfree+0xd4/0x460
+[   11.356285]  snd_usb_create_mixer+0xb06/0x18a0
+[   11.356778]  usb_audio_probe+0x5d8/0x2a90
+[   11.357221]  usb_probe_interface+0x26c/0x920
+[   11.357696]  really_probe+0x1c6/0x6a0
+[   11.358103]  __driver_probe_device+0x248/0x310
+[   11.358597]  driver_probe_device+0x48/0x210
+[   11.359057]  __device_attach_driver+0x160/0x320
+[   11.359561]  bus_for_each_drv+0x101/0x190
+[   11.360003]  __device_attach+0x198/0x3a0
+[   11.360436]  bus_probe_device+0x123/0x170
+[   11.360887]  device_add+0xcfd/0x1440
+[   11.361286]  usb_set_configuration+0xa7c/0x18c0
+[   11.361789]  usb_generic_driver_probe+0x7b/0xb0
+[   11.362286]  usb_probe_device+0xaa/0x2e0
+[   11.362722]  really_probe+0x1c6/0x6a0
+[   11.363130]  __driver_probe_device+0x248/0x310
+[   11.363615]  driver_probe_device+0x48/0x210
+[   11.364116]  __device_attach_driver+0x160/0x320
+[   11.364626]  bus_for_each_drv+0x101/0x190
+[   11.365068]  __device_attach+0x198/0x3a0
+[   11.365505]  bus_probe_device+0x123/0x170
+[   11.365955]  device_add+0xcfd/0x1440
+[   11.366357]  usb_new_device+0x7b9/0x1060
+[   11.366798]  hub_event+0x2000/0x3e40
+[   11.367200]  process_one_work+0x5c2/0xfd0
+[   11.367650]  worker_thread+0x78d/0x1240
+[   11.368079]  kthread+0x331/0x630
+[   11.368445]  ret_from_fork+0x11c/0x1c0
+[   11.368872]  ret_from_fork_asm+0x1a/0x30
+
+[   11.369496] The buggy address belongs to the object at ffff888003c2a400
+                which belongs to the cache kmalloc-192 of size 192
+[   11.370834] The buggy address is located 56 bytes inside of
+                freed 192-byte region [ffff888003c2a400, ffff888003c2a4c0)
+
+[   11.372322] The buggy address belongs to the physical page:
+[   11.372935] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3c2a
+[   11.373782] anon flags: 0x100000000000000(node=0|zone=1)
+[   11.374367] page_type: f5(slab)
+[   11.374731] raw: 0100000000000000 ffff8880010413c0 0000000000000000 dead000000000001
+[   11.375572] raw: 0000000000000000 0000000000100010 00000000f5000000 0000000000000000
+[   11.376404] page dumped because: kasan: bad access detected
+
+[   11.377213] Memory state around the buggy address:
+[   11.377746]  ffff888003c2a300: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   11.378528]  ffff888003c2a380: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+[   11.379313] >ffff888003c2a400: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   11.380093]                                         ^
+[   11.380694]  ffff888003c2a480: fb fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
+[   11.381471]  ffff888003c2a500: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   11.382249] ==================================================================
+
+Reproducer (needs CONFIG_USB_RAW_GADGET, CONFIG_USB_DUMMY_HCD):
+
+//Use-after-free read in get_ctl_value() through OSS mixer
+
+#define _GNU_SOURCE
+#include <endian.h>
+#include <fcntl.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+#include <unistd.h>
+
+#define UDC_NAME_LENGTH_MAX 128
+
+struct usb_raw_init {
+    uint8_t driver_name[UDC_NAME_LENGTH_MAX];
+    uint8_t device_name[UDC_NAME_LENGTH_MAX];
+    uint8_t speed;
+};
+
+struct usb_raw_event {
+    uint32_t type;
+    uint32_t length;
+    uint8_t data[0];
+};
+
+struct usb_raw_ep_io {
+    uint16_t ep;
+    uint16_t flags;
+    uint32_t length;
+    uint8_t data[0];
+};
+
+#define USB_RAW_IOCTL_INIT _IOW('U', 0, struct usb_raw_init)
+#define USB_RAW_IOCTL_RUN _IO('U', 1)
+#define USB_RAW_IOCTL_EVENT_FETCH _IOR('U', 2, struct usb_raw_event)
+#define USB_RAW_IOCTL_EP0_WRITE _IOW('U', 3, struct usb_raw_ep_io)
+#define USB_RAW_IOCTL_EP0_READ _IOWR('U', 4, struct usb_raw_ep_io)
+#define USB_RAW_IOCTL_CONFIGURE _IO('U', 9)
+#define USB_RAW_IOCTL_VBUS_DRAW _IOW('U', 10, uint32_t)
+#define USB_RAW_IOCTL_EP0_STALL _IO('U', 12)
+
+static uint8_t dev_desc[] = {
+    // Device descriptor
+    0x12, 0x01, 0x00, 0x02, 0x00, 0x00, 0x00, 0x08,
+    0xe4, 0x08, 0x63, 0x01, 0x40, 0x00, 0x01, 0x02, 0x03, 0x01,
+    // Config descriptor
+    0x09, 0x02, 0x7e, 0x00, 0x03, 0x01, 0x2f, 0x40, 0x02,
+    // Interface 0 (Audio Control)
+    0x09, 0x04, 0x00, 0x00, 0x00, 0x01, 0x01, 0x00, 0x00,
+    // AC Header
+    0x0a, 0x24, 0x01, 0x04, 0x00, 0x28, 0x00, 0x02, 0x01, 0x02,
+    // Feature Unit (malformed)
+    0x09, 0x24, 0x06, 0x06, 0x01, 0x01, 0x1e, 0xea, 0x80,
+    // Input Terminal
+    0x0c, 0x24, 0x02, 0x01, 0x04, 0x02, 0x01, 0x00, 0x88, 0x8d, 0x7f, 0x09,
+    // Output Terminal
+    0x09, 0x24, 0x03, 0x03, 0x01, 0x04, 0x01, 0x06, 0x09,
+    // Interface 1 alt 0
+    0x09, 0x04, 0x01, 0x00, 0x00, 0x01, 0x02, 0x00, 0x00,
+    // Interface 1 alt 1
+    0x09, 0x04, 0x01, 0x01, 0x01, 0x01, 0x02, 0x00, 0x00,
+    // Endpoint
+    0x09, 0x05, 0x01, 0x09, 0x08, 0x00, 0x09, 0xef, 0xf4,
+    0x07, 0x25, 0x01, 0x08, 0x09, 0x03, 0x00,
+    // Interface 2 alt 0
+    0x09, 0x04, 0x02, 0x00, 0x00, 0x01, 0x02, 0x00, 0x00,
+    // Interface 2 alt 1
+    0x09, 0x04, 0x02, 0x01, 0x01, 0x01, 0x02, 0x00, 0x00,
+    // Endpoint
+    0x09, 0x05, 0x82, 0x09, 0x00, 0x04, 0x03, 0xf8, 0x03,
+    0x07, 0x25, 0x01, 0x00, 0x01, 0x4a, 0xb1
+};
+
+static uint8_t default_string[] = { 0x04, 0x03, 0x09, 0x04 };
+
+int main(void) {
+    int fd = open("/dev/raw-gadget", O_RDWR);
+    if (fd < 0) {
+        perror("open /dev/raw-gadget");
+        return 1;
+    }
+
+    struct usb_raw_init init = {0};
+    strcpy((char*)init.driver_name, "dummy_udc");
+    strcpy((char*)init.device_name, "dummy_udc.0");
+    init.speed = 2; // USB_SPEED_FULL
+
+    if (ioctl(fd, USB_RAW_IOCTL_INIT, &init) < 0) {
+        perror("USB_RAW_IOCTL_INIT");
+        return 1;
+    }
+
+    if (ioctl(fd, USB_RAW_IOCTL_RUN, 0) < 0) {
+        perror("USB_RAW_IOCTL_RUN");
+        return 1;
+    }
+
+    // Handle USB enumeration
+    for (int i = 0; i < 20; i++) {
+        struct {
+            struct usb_raw_event event;
+            uint8_t data[256];
+        } ev = {0};
+        ev.event.length = sizeof(ev.data);
+
+        if (ioctl(fd, USB_RAW_IOCTL_EVENT_FETCH, &ev) < 0)
+            break;
+
+        if (ev.event.type != 2) // USB_RAW_EVENT_CONTROL
+            continue;
+
+        struct {
+            struct usb_raw_ep_io io;
+            uint8_t data[256];
+        } resp = {0};
+
+        uint8_t bRequestType = ev.data[0];
+        uint8_t bRequest = ev.data[1];
+        uint16_t wValue = ev.data[2] | (ev.data[3] << 8);
+        uint16_t wLength = ev.data[6] | (ev.data[7] << 8);
+
+        if (bRequestType == 0x80 && bRequest == 6) { // GET_DESCRIPTOR
+            uint8_t desc_type = wValue >> 8;
+            if (desc_type == 1) { // DEVICE
+                memcpy(resp.data, dev_desc, 18);
+                resp.io.length = 18 < wLength ? 18 : wLength;
+            } else if (desc_type == 2) { // CONFIG
+                int len = sizeof(dev_desc) - 18;
+                memcpy(resp.data, dev_desc + 18, len);
+                resp.io.length = len < wLength ? len : wLength;
+            } else if (desc_type == 3) { // STRING
+                memcpy(resp.data, default_string, 4);
+                resp.io.length = 4 < wLength ? 4 : wLength;
+            } else {
+                ioctl(fd, USB_RAW_IOCTL_EP0_STALL, 0);
+                continue;
+            }
+            ioctl(fd, USB_RAW_IOCTL_EP0_WRITE, &resp);
+        } else if (bRequestType == 0x00 && bRequest == 9) { // SET_CONFIGURATION
+            ioctl(fd, USB_RAW_IOCTL_VBUS_DRAW, 2);
+            ioctl(fd, USB_RAW_IOCTL_CONFIGURE, 0);
+            resp.io.length = 0;
+            ioctl(fd, USB_RAW_IOCTL_EP0_READ, &resp);
+            break; // Done - bug should trigger during card registration
+        } else {
+            ioctl(fd, USB_RAW_IOCTL_EP0_STALL, 0);
+        }
+    }
+
+    usleep(500000);
+    close(fd);
+    return 0;
+}
+
+ sound/usb/mixer.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 3af71d42b9b9..29c2e46801df 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -2946,10 +2946,23 @@ static int parse_audio_unit(struct mixer_build *state, int unitid)
+ 
+ static void snd_usb_mixer_free(struct usb_mixer_interface *mixer)
+ {
++	struct usb_mixer_elem_list *list, *next;
++	int id;
++
+ 	/* kill pending URBs */
+ 	snd_usb_mixer_disconnect(mixer);
+ 
+-	kfree(mixer->id_elems);
++	/* Unregister controls first, snd_ctl_remove() frees the element */
++	if (mixer->id_elems) {
++		for (id = 0; id < MAX_ID_ELEMS; id++) {
++			for (list = mixer->id_elems[id]; list; list = next) {
++				next = list->next_id_elem;
++				if (list->kctl)
++					snd_ctl_remove(mixer->chip->card, list->kctl);
++			}
++		}
++		kfree(mixer->id_elems);
++	}
+ 	if (mixer->urb) {
+ 		kfree(mixer->urb->transfer_buffer);
+ 		usb_free_urb(mixer->urb);
+-- 
+2.34.1
+
 
