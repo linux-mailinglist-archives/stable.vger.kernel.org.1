@@ -1,183 +1,219 @@
-Return-Path: <stable+bounces-210608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210609-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8IubOI78b2mUUgAAu9opvQ
-	(envelope-from <stable+bounces-210608-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 23:07:10 +0100
+	id uDO2JnX9b2mUUgAAu9opvQ
+	(envelope-from <stable+bounces-210609-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 23:11:01 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F774CBD4
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 23:07:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B14384CC92
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 23:10:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 541B492C5D5
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 21:45:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A605C92D05D
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 21:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5173C197B;
-	Tue, 20 Jan 2026 21:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95963D3CF6;
+	Tue, 20 Jan 2026 21:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cOy0STUX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOWXQOxH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F72A3BBA10
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 21:45:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562963D3CEB;
+	Tue, 20 Jan 2026 21:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768945515; cv=none; b=lPwsi/fUdfPf4aHllV9TI+/mwAV7RCt5ae3QbVJZLCnE4J6fXKf1s7efHS10Xrt07x+gNq7odRasC1BUwvE9PHL6fDty+XDI41N1xk0s7ZMeIGqF4UISO6T/IfDP4AoSkrF1074Fb+2vynhakmwuzaVsNZVIen85f/gApukBC9Y=
+	t=1768945523; cv=none; b=RAxF9l730RfNs6SQUuQWufNcJGA64sFgujLia6MXNgT2ejh7OfPdQJ4E/Gkr3nffwwLx1IZbmK1pl+XmAIRIAwKLzM2HAirqNofGGpy5m/JRJUkk/3xf/OLJbqRdv3Py4dGVWk7OkdkzMm15IJsYFZovImdHAZQD0Pcw/+6BI/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768945515; c=relaxed/simple;
-	bh=IA85NpiEAZDIPExWUQuK3efPNcrbbelJ5Re9MvHChCY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=WPiWBCNGbm3xFAC2tIZH4aBT5epQjyUbaL26lTEApUCsQ39fd9OyRe+vv2ZsQBPv9tHjL9MQRU/fBsV0PgnZJdANpIjO/ZygwgpQdaPsSRKgSvUmrJcO1oIqYayRPQCB3JJK95fGF6iSWEkdq3ku6zkx3HYzXeC7lfHz296lIss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cOy0STUX; arc=none smtp.client-ip=209.85.128.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-47ee937ecf2so2231395e9.0
-        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 13:45:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768945511; x=1769550311; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=76GjIwmmNHDMhjPHVEUL/aP6yXjFQm32bCZZwJGshzI=;
-        b=cOy0STUXyfkIA+payp5Ls08sBadmogXDqpUYqFHgWdikw2AGH9R8qslDu2mrMjaCRW
-         S4RgtluReHUmRKQR+JWkZkD/r5cdaVjjHeIRDlK9wLH4Jq/X/G7L2x+qhbU1MHSh1WxA
-         aek3V90/9CI1Cfi/IeLIFNFPrTlgsSk7YfRiMF4+vUEkr4V18EJlSN/zFjsi6QO1mWS7
-         wfN/yKa337pDAh4fGByx9Zj2l2c/xwlVDS5i81luAPff9yLdSGksGjPb0RUR5fAAVcNn
-         JS2gTJ6etLB2F6Ss7t+oEIiT7iD8dJqROLlGgg384j9joMu1rkGXJQedNPyNlXHc//Oj
-         XFTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768945511; x=1769550311;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=76GjIwmmNHDMhjPHVEUL/aP6yXjFQm32bCZZwJGshzI=;
-        b=S/eupKKM9AoJUE+ItvMWJ4GJbQqMnKFhuzAw04RGw+bosfCqZGLPqdNauRg4GdCNLk
-         NHgUvwfnehaqQw5gGqISBytnmFcHY0U1CtkWxPmgfUuX+g1TZ2lD1Ffrj8bgOqEqOoC3
-         qXy1f5UfsZhhblYc2AGarVJKy7+r6aW6guLTCeO2UkSW3+7VNqi04oKAKcay7MO4vDVG
-         Tpfqc34y04hMbvFLbexWJlfc/K9h09PC8tx6dMo6z2N+9EY5hSx9Y7FlW7wH9uV+utPI
-         I08myrAsxqoCzDIXDs+O1XZFIokC50Ut1mk7SBv0cZ+0xq1drLGzEr8j96iDHZunsefJ
-         jMBA==
-X-Forwarded-Encrypted: i=1; AJvYcCVUe0/q9KYhRYfXqhFa6bMA9P5jkt/GEWJyEBBML0Sn+hTKhBoumooM2CMk0xm9whtZM4ZxHsc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytXW2w1buWivKZQu6oXhcs2lyd/5C+rz+pm8csUFXUwaSMNP/O
-	WQnuEY0+/nIU9oWbyvLgFitZoZwfp29M9SaYD9TYPzRSHZrxuSIX6Nog
-X-Gm-Gg: AY/fxX6t4hc9ERQpg8Fz7QcUg1nd4DfpPNPoANQHpKRXsI3VrUOhhzDclS8OvkfdCx7
-	Mzwn6ggngiIVbi09vBp4kql9MV2ifHBNN0scqYfEszVFwGWZOv3uSr0mSiDim9XPI6hqteDFx20
-	770BTS/v23b5OxqBH62Unm9Yql1qEAo+yVgmuTxO2YQpHOyLH8kTp/st04Ih4Se4Fgg3V+aU5ja
-	S/sl4Cu0hpcIoFkRmHqf5j7O+LkxCqjuGpHVwMkL724DDaSBB4lrJJZDnrkXyqXBmE4svMs4EnR
-	9Dzmk/RHbfiwVIQOYKFuAXbitQzHd1edTEMNqMtHy8YSfSfkv7MXYJXxCn8twStOeaxuY2tRcKD
-	jcBgZNWKYo84KwaKNHq/qK9gy6AXTXZqz6SdMlkXT4rHsinrrZKW9nxNuDrW27GUwYzS1RVh668
-	FA7qiPLIe+1PM69MOEFMUXflIa3N4uHDj7BgkFyOV45dlLSIz0p3lyrvWA1ToaP/HGRjqlxG6D7
-	AOt0so1UPriNIN9hzMN2+k8mcKT6k5ah3Ms6zL4wtpPF9bsNvnx6QYq3bwZNcGH/g==
-X-Received: by 2002:a05:600c:17d6:b0:47e:e97e:11aa with SMTP id 5b1f17b1804b1-47f4289ac52mr168292055e9.4.1768945511265;
-        Tue, 20 Jan 2026 13:45:11 -0800 (PST)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4801e886829sm264939395e9.8.2026.01.20.13.45.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Jan 2026 13:45:07 -0800 (PST)
-Message-ID: <2be71481-ac35-4ff2-b6a9-a7568f81f728@gmail.com>
-Date: Tue, 20 Jan 2026 21:45:05 +0000
+	s=arc-20240116; t=1768945523; c=relaxed/simple;
+	bh=iGmQTrcxjtgfmMDdD54wE5OCeQ2v++Q+BpE3G+cHjVo=;
+	h=From:Date:Content-Type:MIME-Version:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=P/WwQeXncEnvycZ+sEVfPtNR59z3XpHb5XpzeEHiBPPqlQe0wBXcSEfDqZAHnkuOHn+xsJpcu2GrQ37l8I7zrmdqT9Xboy+akQKa+4BY5EENYkG/5jChMn9xX6kvr/bUolQJGWOOyaOT2OP1DMMMgHhYpTkndz3a6EdQbiJdhBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOWXQOxH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806E8C16AAE;
+	Tue, 20 Jan 2026 21:45:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768945521;
+	bh=iGmQTrcxjtgfmMDdD54wE5OCeQ2v++Q+BpE3G+cHjVo=;
+	h=From:Date:Cc:To:In-Reply-To:References:Subject:From;
+	b=rOWXQOxHQszpyhaIrGB3VjPh14nhOZrx73IUhV7HSwSXqaI0Eh/kaSt/S8v+wtEzY
+	 pJV5DZpDpV2ekat1rC3GcyHWhK7OjurBKMMqaUuk1dmFJIrBy1tYbaU5a8rcq+b0Gk
+	 hQ92Fhi8lf6SbSSpnyTZZYuy2LYGmQLkbsSgPcDbO4Cby4B/x4uJU7xkwYhNuObMDl
+	 YTwJ8rUtwsEMM1xJoLC8a0RUJqlDvSbHwAdA47XUS6AlYSIUdlQPCQlShBzOBpTKnc
+	 WTAR7f9EefWdSztnrYPEOE13ZLC6s+yk9fW/5dOZt3KZE9XNMLlr9zPSV7TBlgFJFC
+	 XG+dbVBrKnIrg==
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 20 Jan 2026 15:45:19 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Pavel Begunkov <asml.silence@gmail.com>
-Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
- cross-buffer accounting
-To: Jens Axboe <axboe@kernel.dk>, Yuhao Jiang <danisjiang@gmail.com>
-Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260119071039.2113739-1-danisjiang@gmail.com>
- <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
- <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
- <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
- <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
- <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
- <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.96 / 15.00];
+Cc: devicetree@vger.kernel.org, Shawn Lin <shawn.lin@rock-chips.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>, 
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Heiko Stuebner <heiko@sntech.de>, stable@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, linux-rockchip@lists.infradead.org
+To: Alexey Charkov <alchark@gmail.com>
+In-Reply-To: <20260120-ufs-rst-v2-1-b5735f1996f6@gmail.com>
+References: <20260120-ufs-rst-v2-1-b5735f1996f6@gmail.com>
+Message-Id: <176894531223.1201556.243460289333921566.robh@kernel.org>
+Subject: Re: [PATCH v2] arm64: dts: rockchip: Explicitly request UFS reset
+ pin on RK3576
+X-Spamd-Result: default: False [0.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210608-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-210609-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.dk,gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[robh@kernel.org,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	TAGGED_RCPT(0.00)[stable,dt];
 	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: B2F774CBD4
+X-Rspamd-Queue-Id: B14384CC92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 1/20/26 17:03, Jens Axboe wrote:
-> On 1/20/26 5:05 AM, Pavel Begunkov wrote:
->> On 1/20/26 07:05, Yuhao Jiang wrote:
-...
->>>
->>> I've been implementing the xarray-based ref tracking approach for v3.
->>> While working on it, I discovered an issue with buffer cloning.
->>>
->>> If ctx1 has two buffers sharing a huge page, ctx1->hpage_acct[page] = 2.
->>> Clone to ctx2, now both have a refcount of 2. On cleanup both hit zero
->>> and unaccount, so we double-unaccount and user->locked_vm goes negative.
->>>
->>> The per-context xarray can't coordinate across clones - each context
->>> tracks its own refcount independently. I think we either need a global
->>> xarray (shared across all contexts), or just go back to v2. What do
->>> you think?
->>
->> The Jens' diff is functionally equivalent to your v1 and has
->> exactly same problems. Global tracking won't work well.
+
+On Tue, 20 Jan 2026 16:53:54 +0400, Alexey Charkov wrote:
+> Rockchip RK3576 UFS controller uses a dedicated pin to reset the connected
+> UFS device, which can operate either in a hardware controlled mode or as a
+> GPIO pin.
 > 
-> Why not? My thinking was that we just use xa_lock() for this, with
-> a global xarray. It's not like register+unregister is a high frequency
-> thing. And if they are, then we've got much bigger problems than the
-> single lock as the runtime complexity isn't ideal.
+> Power-on default is GPIO mode, but the boot ROM reconfigures it to a
+> hardware controlled mode if it uses UFS to load the next boot stage.
+> 
+> Given that existing bindings (and rk3576.dtsi) expect a GPIO-controlled
+> device reset, request the required pin config explicitly.
+> 
+> This doesn't appear to affect Linux, but it does affect U-boot:
+> 
+> Before:
+> => md.l 0x2604b398
+> 2604b398: 00000011 00000000 00000000 00000000  ................
+> < ... snip ... >
+> => ufs init
+> ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=[3, 3], lane[2, 2], pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate = 2
+> => md.l 0x2604b398
+> 2604b398: 00000011 00000000 00000000 00000000  ................
+> 
+> After:
+> => md.l 0x2604b398
+> 2604b398: 00000011 00000000 00000000 00000000  ................
+> < ... snip ...>
+> => ufs init
+> ufshcd-rockchip ufshc@2a2d0000: [RX, TX]: gear=[3, 3], lane[2, 2], pwr[FASTAUTO_MODE, FASTAUTO_MODE], rate = 2
+> => md.l 0x2604b398
+> 2604b398: 00000010 00000000 00000000 00000000  ................
+> 
+> (0x2604b398 is the respective pin mux register, with its BIT0 driving the
+> mode of UFS_RST: unset = GPIO, set = hardware controlled UFS_RST)
+> 
+> This helps ensure that GPIO-driven device reset actually fires when the
+> system requests it, not when whatever black box magic inside the UFSHC
+> decides to reset the flash chip.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: c75e5e010fef ("scsi: arm64: dts: rockchip: Add UFS support for RK3576 SoC")
+> Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
+> Signed-off-by: Alexey Charkov <alchark@gmail.com>
+> ---
+> This has originally surfaced during the review of UFS patches for U-boot
+> at [1], where it was found that the UFS reset line is not requested to be
+> configured as GPIO but used as such. This leads in some cases to the UFS
+> driver appearing to control device resets, while in fact it is the
+> internal controller logic that drives the reset line (perhaps in
+> unexpected ways).
+> 
+> Thanks Quentin Schulz for spotting this issue.
+> 
+> [1] https://lore.kernel.org/u-boot/259fc358-f72b-4a24-9a71-ad90f2081335@cherry.de/
+> ---
+> Changes in v2:
+> - Change default pin pull to pull-down in line with the SoC power-on default
+> - Link to v1: https://lore.kernel.org/r/20260119-ufs-rst-v1-1-c8e96493948c@gmail.com
+> ---
+>  arch/arm64/boot/dts/rockchip/rk3576-pinctrl.dtsi | 7 +++++++
+>  arch/arm64/boot/dts/rockchip/rk3576.dtsi         | 2 +-
+>  2 files changed, 8 insertions(+), 1 deletion(-)
+> 
 
-1. There could be quite a lot of entries even for a single ring
-with realistic amount of memory. If lots of threads start up
-at the same time taking it in a loop, it might become a chocking
-point for large systems. Should be even more spectacular for
-some numa setups.
 
-2. Most likely it'll further relax accounting (i.e. one way
-road), and I don't believe that's the right thing. Could even
-be unexpected if consolidated w/o any explicit communication
-b/w rings (like buffer cloning).
+My bot found new DTB warnings on the .dts files added or changed in this
+series.
 
-3. Map keys will need to be {page, user, mm}, so I suspect
-impl is not going to be exactly trivial either way. Maybe some
-nested xarrays + something for counting middle layer entries.
+Some warnings may be from an existing SoC .dtsi. Or perhaps the warnings
+are fixed by another series. Ultimately, it is up to the platform
+maintainer whether these warnings are acceptable or not. No need to reply
+unless the platform maintainer has comments.
 
--- 
-Pavel Begunkov
+If you already ran DT checks and didn't see these error(s), then
+make sure dt-schema is up to date:
+
+  pip3 install dtschema --upgrade
+
+
+This patch series was applied (using b4) to base:
+ Base: 46fe65a2c28ecf5df1a7475aba1f08ccf4c0ac1b (use --merge-base to override)
+
+If this is not the correct base, please add 'base-commit' tag
+(or use b4 which does this automatically)
+
+
+New warnings running 'make CHECK_DTBS=y for arch/arm64/boot/dts/rockchip/' for 20260120-ufs-rst-v2-1-b5735f1996f6@gmail.com:
+
+arch/arm64/boot/dts/rockchip/rk3576-luckfox-omni3576.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 113} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
+arch/arm64/boot/dts/rockchip/rk3576-100ask-dshanpi-a1.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 130} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
+arch/arm64/boot/dts/rockchip/rk3576-nanopi-r76s.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 116} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
+arch/arm64/boot/dts/rockchip/rk3576-roc-pc.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 117} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
+arch/arm64/boot/dts/rockchip/rk3576-nanopi-m5.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 133} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
+arch/arm64/boot/dts/rockchip/rk3576-rock-4d.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 122} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
+arch/arm64/boot/dts/rockchip/rk3576-evb1-v10.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 134} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
+arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 130} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
+arch/arm64/boot/dts/rockchip/rk3576-evb1-v10-pcie1.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 134} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
+arch/arm64/boot/dts/rockchip/rk3576-armsom-sige5-v1.2-wifibt.dtb: ufs: ufs-rst-gpio: {'rockchip,pins': [[4, 24, 0, 29]], 'phandle': 130} is not of type 'array'
+	from schema $id: http://devicetree.org/schemas/gpio/gpio-consumer.yaml
+
+
+
+
 
 
