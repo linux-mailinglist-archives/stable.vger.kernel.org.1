@@ -1,148 +1,166 @@
-Return-Path: <stable+bounces-210575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210582-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AWYANLWb2mgMQAAu9opvQ
-	(envelope-from <stable+bounces-210575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:26:10 +0100
+	id cGDFLaTeb2n8RwAAu9opvQ
+	(envelope-from <stable+bounces-210582-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:59:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542E64A4E1
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:26:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 669A04AE91
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 20:59:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B06569EB31D
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 16:05:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8AEA986BADE
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 17:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965BF44A728;
-	Tue, 20 Jan 2026 15:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98373423A61;
+	Tue, 20 Jan 2026 17:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="dqGuTuRt"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="q13IvRoH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AFD441048;
-	Tue, 20 Jan 2026 15:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5051C34B678;
+	Tue, 20 Jan 2026 17:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768923913; cv=none; b=jXiUJarJnwXLqot0xS7xS2sB6u9vYTJPaMnbKrpEdg5wZAuYAORNxAxiO474DSfC5HcLZsiQMOHH35Z53l5fmnt+4qqRKRDJshh2D4OoK9W5jPFWO8NOIKKoEfgtm52isGAJgv7tYnaakhgjzq+o7FkDGEIzoyb5F2dEzQREOic=
+	t=1768930605; cv=none; b=C/fgFo7uQolwa3Cl7Nnnxaqp4TPhVwH4PG3Bxx8NM1aT6fCefq0xPY06o/pz6ryapxUecFvqK/Tc6GXhSTAR881L1iTF5Qi65qfVlAzC5p3TgTDGlAIDEXnto1wDDYEZNQfQ9eZOPo4/l9V/Ly2xow18t2sv2tRfiy8AWdJZ/1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768923913; c=relaxed/simple;
-	bh=MrzdPhBUci1zYJK7hvuXCS+eCmE9nVICFETQlx7Jbys=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uw69M1fJ6ezjI2iQ/A30VFjFLJ55ux3FXXiQpgBUNdeFVTMfhGs1C/bTbXb2UkpT6NO0+yRgWf8bOjY+6EDqswkwBw1AjufLS7AQJnV6KGwlHWhZ/+97Zz343efNe7P+Yzkkf5hsJhTFdEAorWGxrr+GNEkpj+rV98+pw3efKCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=dqGuTuRt; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 21B44148AD5A;
-	Tue, 20 Jan 2026 16:45:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1768923909; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=7NkEtjVarcSoHp8QOC/pznn28WeOYOUP6CtTrfas8ew=;
-	b=dqGuTuRtpVogREVnWV1N6aV6D2osb3MFMfy2v/X1Xr3m2zdJAD4/z9iFtK2xFiE4pYF6lf
-	H/JVPnqCQb2mU2Exirnxo9dU7jgjJd9Z0lW4HvwxKz8BbzcPKWtK3C4FmZvk8qDCwm7R3+
-	Hn1jo0x14Ibq7/V27iGrgRh6vEjCU5UpVLnfq2TzVqJ4X5CfncXEzcbi5bhwiRlIctD8LG
-	NmJO1cR5XmHgNLPxfQ2qmE8yCtpBr4aTvl9U615wTVKvVFrITfac6Hp2bNArnoSxIbs9+T
-	b/nR7kt4Qau/tNf7RUQ7k5F1SxBL/IIAa2qFJKH/UrQk/WyWTZWYPZOAk0SWvg==
-From: Alexander Dahl <ada@thorsis.com>
-To: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	stable@vger.kernel.org,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v3 11/19] nvmem: microchip-otpc: Fix swapped 'sleep' and 'timeout' parameters
-Date: Tue, 20 Jan 2026 16:44:45 +0100
-Message-ID: <20260120154502.1280938-5-ada@thorsis.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260120154502.1280938-1-ada@thorsis.com>
-References: <20260120143759.904013-1-ada@thorsis.com>
- <20260120154502.1280938-1-ada@thorsis.com>
+	s=arc-20240116; t=1768930605; c=relaxed/simple;
+	bh=j2DsBhWZixGtDRhNsk7hgkQ02Tv5S/MskezpBDyC9p0=;
+	h=Date:To:From:Subject:Message-Id; b=NW3R7PjdOKyGSbx6juMuYGRasksiGj9Dlw+M4k8FWXClzf67wJaInY/PsFW7bRc3m2emKbgbh14QdaFfveITZWf5iXDWRrje6rrvWgXSUQY0lAiXzBy4+4Wmn0m+xfWzOqNETn6611fCEwRASyJCDoiCy+pzugjWl8Z7FiVmMPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=q13IvRoH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6FDC16AAE;
+	Tue, 20 Jan 2026 17:36:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768930604;
+	bh=j2DsBhWZixGtDRhNsk7hgkQ02Tv5S/MskezpBDyC9p0=;
+	h=Date:To:From:Subject:From;
+	b=q13IvRoHD+3DAgelnreplETcwWVpSemipJwx0jm4XiR2hVlQ0i33goLkXBhfSvAzz
+	 P/1/YRAMmwekY1XgrZPm2WO1oW9AOULxghXnqm+aMnVWe6M5qXWMk4fQHVXrzx0Mh9
+	 NDoHbO6J8cN/foIYKn9Y92/TMng2Jc3Djc5hoSak=
+Date: Tue, 20 Jan 2026 09:36:44 -0800
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,pratyush@kernel.org,pasha.tatashin@soleen.com,graf@amazon.com,ran.xiaokai@zte.com.cn,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260120173644.9F6FDC16AAE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-0.46 / 15.00];
+X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[thorsis.com:s=dkim];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-210582-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_FROM(0.00)[bounces-210575-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[thorsis.com,quarantine];
-	DKIM_TRACE(0.00)[thorsis.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	MIME_TRACE(0.00)[0:+];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	FROM_NEQ_ENVFROM(0.00)[ada@thorsis.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,thorsis.com:email,thorsis.com:dkim,thorsis.com:mid]
-X-Rspamd-Queue-Id: 542E64A4E1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,zte.com.cn:email]
+X-Rspamd-Queue-Id: 669A04AE91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Makes no sense to have a timeout shorter than the sleep time, it would
-run into timeout right after the first sleep already.
-While at it, use a more specific macro instead of the generic one, which
-does exactly the same, but needs less parameters.
 
-Fixes: 98830350d3fc ("nvmem: microchip-otpc: add support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
+The patch titled
+     Subject: kho: init alloc tags when restoring pages from reserved memory
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Subject: kho: init alloc tags when restoring pages from reserved memory
+Date: Fri, 9 Jan 2026 10:42:51 +0000
+
+Memblock pages (including reserved memory) should have their allocation
+tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
+released to the page allocator.  When kho restores pages through
+kho_restore_page(), missing this call causes mismatched
+allocation/deallocation tracking and below warning message:
+
+alloc_tag was not set
+WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
+RIP: 0010:___free_pages+0xb8/0x260
+ kho_restore_vmalloc+0x187/0x2e0
+ kho_test_init+0x3c4/0xa30
+ do_one_initcall+0x62/0x2b0
+ kernel_init_freeable+0x25b/0x480
+ kernel_init+0x1a/0x1c0
+ ret_from_fork+0x2d1/0x360
+
+Add missing clear_page_tag_ref() annotation in kho_restore_page() to
+fix this.
+
+Link: https://lkml.kernel.org/r/20260113033403.161869-1-ranxiaokai627@163.com
+Link: https://lkml.kernel.org/r/20260109104251.157767-1-ranxiaokai627@163.com
+Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
-Notes:
-    v3:
-    - Reorder tags
-    - Add stable tag
-    
-    v2:
-    - Add Fixes tag
+ kernel/liveupdate/kexec_handover.c |    1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/nvmem/microchip-otpc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/nvmem/microchip-otpc.c b/drivers/nvmem/microchip-otpc.c
-index e2851c63cc0b4..bf7e5167152cb 100644
---- a/drivers/nvmem/microchip-otpc.c
-+++ b/drivers/nvmem/microchip-otpc.c
-@@ -85,8 +85,8 @@ static int mchp_otpc_prepare_read(struct mchp_otpc *otpc,
- 	writel_relaxed(MCHP_OTPC_CR_READ, otpc->base + MCHP_OTPC_CR);
+--- a/kernel/liveupdate/kexec_handover.c~kho-init-alloc-tags-when-restoring-pages-from-reserved-memory
++++ a/kernel/liveupdate/kexec_handover.c
+@@ -255,6 +255,7 @@ static struct page *kho_restore_page(phy
+ 	if (is_folio && info.order)
+ 		prep_compound_page(page, info.order);
  
- 	/* Wait for packet to be transferred into temporary buffers. */
--	return read_poll_timeout(readl_relaxed, tmp, !(tmp & MCHP_OTPC_SR_READ),
--				 10000, 2000, false, otpc->base + MCHP_OTPC_SR);
-+	return readl_relaxed_poll_timeout(otpc->base + MCHP_OTPC_SR, tmp,
-+					  !(tmp & MCHP_OTPC_SR_READ), 2000, 10000);
++	clear_page_tag_ref(page);
+ 	adjust_managed_page_count(page, nr_pages);
+ 	return page;
  }
- 
- /*
--- 
-2.47.3
+_
+
+Patches currently in -mm which might be from ran.xiaokai@zte.com.cn are
+
+kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+alloc_tag-fix-rw-permission-issue-when-handling-boot-parameter.patch
 
 
