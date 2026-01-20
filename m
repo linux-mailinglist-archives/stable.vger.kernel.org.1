@@ -1,161 +1,442 @@
-Return-Path: <stable+bounces-210448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C862DD3C043
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 08:24:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA31DD3C0BD
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 08:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1EACD40557C
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 07:15:20 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 79DC55050A5
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 07:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D660381710;
-	Tue, 20 Jan 2026 07:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40683A1CE7;
+	Tue, 20 Jan 2026 07:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CZ30QReI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NkviSA1r"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6D13803F4
-	for <stable@vger.kernel.org>; Tue, 20 Jan 2026 07:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768893297; cv=pass; b=s8cu5Dsfv5R5ov0jjnGCjqG5q9lga1OXJDfXRc9TGbkmodU2oOR7c6xgV/Ajyib4Jy4a5CDyndTFNe9zz/SzZdDuVOgM4gANacprv/T9Xo9YbRXNCnqYHKEkaHc6m2Rw3YDidQtyNrBTTFXHpL7gIKnR9yZN4aFGhUOfc3jQ9lg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768893297; c=relaxed/simple;
-	bh=2apavE+c+60xBpwAPAfHfp3nJczltL44E4xnBaDErHQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G7/esdGU+6h+iTL32zq8Jhjq+uBo4prL4oeLNIymmPpDZK2cbtBOVRkvAxAFrAFgJKG1+o54ldMJw6ghxZcwvmQylaIWZM5lAQGGXX7gBDKYroGz4c/4FC76+JXjU/mnjyFORuFYBtDOPtyw2Kmy+5MV7Y6TNDCorrKVQmik4zA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CZ30QReI; arc=pass smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-34c1d98ba11so3695402a91.3
-        for <stable@vger.kernel.org>; Mon, 19 Jan 2026 23:14:51 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768893287; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LO6i7o81bubsapXUvKXXbh+qnDTJY2vXy0VCE5gtaQRZ9cHVRAORpYfIFDJb8AlLeA
-         glOzaq+zN3/CAvpZGub1FNH8hEKJDuD9aaz4uv0FSkusxVzmGPBr28nH82m0o2aEOjKM
-         QNuXsNch+c3FsvXrdfph9+4NsLTmhH2GjxgWHFNGmvN+JBWBHMsIUj4zF893L6YR0UpM
-         sqspDaEvqbci0HFLvRaIVtVTXkxChFjZ4jF9A4A3s5HjW2drCvFApGvgVc/3FpnppPs5
-         es6sScPfY/VdYSZSeSv7vLuTcZdzHlsrlqmlc/uhcgdICzraqzyOsisnRASTbC7wWbO+
-         0Q5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SGLQil2RG9d2Wuf3AJIGoH64VyiurRe3JNq+iqICMGc=;
-        fh=GpF4hdyUn/mVledepd/xbDtuRRXOldvB37lvTHpiUi8=;
-        b=R6SFtnXKaHRoulwmEPtIRfA3tDKFvRlFaPqbeRFkMlUvdjlksWFpKgXCptQkB1R7ME
-         tDgeI0EVXaYnANZjckLSPYRFM/FLYyQ8ol+NvlzuhH801Pml68qP7phOepHaVDx5Ajh0
-         F6ENZTmLJ8e2PdbPLpMucDxPf76Nuq2RaDSgdAT1MlF0GAKkDldSUCJRWhFmL9mUWEVj
-         MKg5sWae8YgqU/uFFCGYbw2tc//2K0zgJJuTgas7stDLORd/obe+Jo3DgTygWWSJ+Brz
-         CiJcEe5APQy7x0EUq78G6MjjgOp+2qF30nPIfWsvXZmEVVAZwasxlK6aVL1AMJZBqfQW
-         0h2g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768893287; x=1769498087; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SGLQil2RG9d2Wuf3AJIGoH64VyiurRe3JNq+iqICMGc=;
-        b=CZ30QReIxGPh1vn06dR9YnceGBbGHK4QwHyPbs5mgcvyNUXfi0Zdds6vJ16SC0ct33
-         p85bho8nxBpi+9q6OymOVPn4ItfSTDbOrvBJpISLxBFxE6HYrAtul+Bo00l8lG+BF6Bl
-         KvG8wL4hmxK8CCTERIU1kvC+zyHqppAj1eUpGbkjpQ+zOAlwSvcsKkiaaoVZeezgHNiS
-         jdz9zhGG2w2jtgM/8yKlmwI22hxHsSC1cAyh8Yr66JBdEcK52jTV413ajJLP/v24sqUG
-         b2DhGBOKTg7x1CjsrBRU7xxh4UnHA29oFMbVjK8GhMe/8tgQVMHTM1p11PcePn1y8Lgq
-         ayHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768893287; x=1769498087;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SGLQil2RG9d2Wuf3AJIGoH64VyiurRe3JNq+iqICMGc=;
-        b=IhmM4fm3wzDzsmvr9Fo/t/WK3c5Y6zwshMBwuNvdL0eSTKxfdE8eFx5gwqKFHMzsNn
-         W90VTnN4LkNA/WhO54EHPx2hMI1nfUg/Z6u2zyCHCsH+YGIULtLDZVGBBGmH9CLJlvZV
-         jVQTXPD+yxtnwohyQg0mL1rrXglzYTtA+EIJH/wsbPHMCX5vtamFe9ikIZvTDSY/qtrP
-         vbErJhpRmjMb+meQvF65ZHqt6CqMnwAwHbS+zVyWWuyz/+8tl/mvqJIm0awfW/fgk0lH
-         54nPFArwhgKjpIZkOgo6kbxXY3E5sTRzJMRQMmav8h9nMvXNUBcKLEFQwzW4g1vxRcKH
-         +4aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUPP/vyfQk1nH2aFeTM2G08n6hNt7EIp6NGl0LvOellK1k57j9xg3fjozC3OGTCdKH6ZBUiLCY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAd7Q8siIzSsJ5Ty3cttwrAGorcP5VeMwJtH/TDZ9tp1kv03Kj
-	6641V+17LFmIC+7qKVwsPPY6SeMwlViDByBPlll7xZJx0Gg8SKYb7+pTSJ3CWtX6W1NU8NtJHvc
-	aTS8FYBHiZp3WklEIdLyyjfHJX2YW5Ro=
-X-Gm-Gg: AZuq6aJY4NIord4F0tTjGyjnIPnxnCuid8KEvCAAKdcrwK55whzGov2F+ned/3+IUrc
-	9QXM0SbxUAkD/0Dp+ITAhjoANMbj+ezhJ4NK6y0BkSYQJ7v00XVyZKfGjOwsyEdRSTmuouiew5i
-	Bt4NWjxzRhj52UdqM7KQJ5VQmEDRsckWOMqXOjBncwL89lMOWB7C8NTK7WMcj9ZxBBZeh33T4/T
-	wAd6DVpzraadfhC/HUwW8KHxZrPESq8iaapAAJ+6mhBtbgxCD3+okTR50JANMAFMoJ5g7g=
-X-Received: by 2002:a17:90b:1c84:b0:343:f509:aa4a with SMTP id
- 98e67ed59e1d1-3527329c737mr11291662a91.36.1768893287413; Mon, 19 Jan 2026
- 23:14:47 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307EF200110;
+	Tue, 20 Jan 2026 07:25:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768893960; cv=none; b=OI5oVjONtkHb7MkGlAJvG89zFkMk45fZ9Y0GYj61k/3pxryN+73LqDih2wAgF4awLMeN5dAmhlM8G2BX/QxyQ9v0YLP2n3TTVF2v10m8K8WvDj0EX+vqZxvJ0QE/4ax/+BpdKZrelr4+iI4XWFVqbBb5xCRWAX+OItmF7tsXqHU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768893960; c=relaxed/simple;
+	bh=jsBRg6f0YTkrNT/9MFBOU/q5ahgIx9WSGncILIpJAlU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sGk992sQPX/1BWinv94qS3HUikrxp+KQiSkXVe6a4T1wknMhYdD0nP84FLjvrHlJExP5ztNWlUGszp5hRtDS7H0hEtR83ppv+wEgmiBWuHvpJVH2FfTdryREd94oLo0gpU+7kz3soVGQJzePICpX5LusOulJdVWus1V65CC8CfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NkviSA1r; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768893956; x=1800429956;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=jsBRg6f0YTkrNT/9MFBOU/q5ahgIx9WSGncILIpJAlU=;
+  b=NkviSA1rc4XqN9JxdYLQpbmkClElXy2IJOL/iicCJeTx1xFolqsF2q60
+   1sGjn//ZzcqlXvc88CH3oTJuA9cYODWPP6v9XHlbdWxfTyNSYMK5UJ2An
+   ezO8j6Tp9YBWqApfM06eHFf+qW0J2Kqars26gO/EjD5I4cYB/a6UaPWOM
+   Mo92YiZzJ0vv+fAmoQ2mzedVDXdqX3imeedrRKI9j+t0PWPP/9Sx/MJdB
+   JaaEEkKPi0FyLAluYrwM5Wf0kVMeL9ZH6A2j6V7Y7BfpAXXy0jXjkVVmL
+   dulh7ow83XEgo94cKNkh/ZjJycu9QKzHOVbUNYCZ4iC/TrFtqTF2tYvAz
+   w==;
+X-CSE-ConnectionGUID: Vs60q6eEQEiw0bbHZyM/Ag==
+X-CSE-MsgGUID: olHuiESSTumIUPmnXh7b2Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11676"; a="81533549"
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="81533549"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jan 2026 23:25:49 -0800
+X-CSE-ConnectionGUID: +hhkSHnqSzasGiyYpqf6CA==
+X-CSE-MsgGUID: OWy5N6TMQUKLL2Iga7twsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,240,1763452800"; 
+   d="scan'208";a="205845611"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 19 Jan 2026 23:25:46 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vi67T-00000000OgP-0oks;
+	Tue, 20 Jan 2026 07:25:43 +0000
+Date: Tue, 20 Jan 2026 15:25:40 +0800
+From: kernel test robot <lkp@intel.com>
+To: Paul Moses <p@1g4.org>, netdev@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+	Paul Moses <p@1g4.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] net/sched: act_gate: fix schedule updates with RCU
+ swap
+Message-ID: <202601201522.IMzUdE7V-lkp@intel.com>
+References: <20260120004720.1886632-2-p@1g4.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260118205030.1532696-1-festevam@gmail.com>
-In-Reply-To: <20260118205030.1532696-1-festevam@gmail.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Tue, 20 Jan 2026 15:14:35 +0800
-X-Gm-Features: AZwV_QhANuYAMbdvOcsvLwzcsqnrExKdw3Lq6AQB2yvSz6Q2_jO2O5XyvjGg3fE
-Message-ID: <CAA+D8APZ6Un4ViiO0PMDdUhnef6ny7BtJ+DUVL0d3qUkNVrMjw@mail.gmail.com>
-Subject: Re: [PATCH RESEND] ASoC: fsl: imx-card: Do not force slot width to
- sample width
-To: Fabio Estevam <festevam@gmail.com>
-Cc: broonie@kernel.org, linux-sound@vger.kernel.org, imx@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260120004720.1886632-2-p@1g4.org>
 
-On Mon, Jan 19, 2026 at 4:50=E2=80=AFAM Fabio Estevam <festevam@gmail.com> =
-wrote:
->
-> imx-card currently sets the slot width to the physical sample width
-> for I2S links. This breaks controllers that use fixed-width slots
-> (e.g. 32-bit FIFO words), causing the unused bits in the slot to
-> contain undefined data when playing 16-bit streams.
->
-> Do not override the slot width in the machine driver and let the CPU
-> DAI select an appropriate default instead. This matches the behavior
-> of simple-audio-card and avoids embedding controller-specific policy
-> in the machine driver.
->
-> On an i.MX8MP-based board using SAI as the I2S master with 32-bit slots,
-> playing 16-bit audio resulted in spurious frequencies and an incorrect
-> SAI data waveform, as the slot width was forced to 16 bits. After this
-> change, audio artifacts are eliminated and the 16-bit samples correctly
-> occupy the first half of the 32-bit slot, with the remaining bits padded
-> with zeroes.
->
-> Cc: stable@vger.kernel.org
-> Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
-> Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Hi Paul,
 
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+kernel test robot noticed the following build warnings:
 
-Best regards
-Shengjiu Wang
-> ---
->  sound/soc/fsl/imx-card.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
-> index 28699d7b75ca..05b4e971a366 100644
-> --- a/sound/soc/fsl/imx-card.c
-> +++ b/sound/soc/fsl/imx-card.c
-> @@ -346,7 +346,6 @@ static int imx_aif_hw_params(struct snd_pcm_substream=
- *substream,
->                               SND_SOC_DAIFMT_PDM;
->                 } else {
->                         slots =3D 2;
-> -                       slot_width =3D params_physical_width(params);
->                         fmt =3D (rtd->dai_link->dai_fmt & ~SND_SOC_DAIFMT=
-_FORMAT_MASK) |
->                               SND_SOC_DAIFMT_I2S;
->                 }
-> --
-> 2.34.1
->
+[auto build test WARNING on net/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Paul-Moses/net-sched-act_gate-fix-schedule-updates-with-RCU-swap/20260120-085120
+base:   net/main
+patch link:    https://lore.kernel.org/r/20260120004720.1886632-2-p%401g4.org
+patch subject: [PATCH 1/2] net/sched: act_gate: fix schedule updates with RCU swap
+config: powerpc-randconfig-001-20260120 (https://download.01.org/0day-ci/archive/20260120/202601201522.IMzUdE7V-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260120/202601201522.IMzUdE7V-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601201522.IMzUdE7V-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> net/sched/act_gate.c:499:24: warning: result of comparison of constant 9223372036854775807 with expression of type 'u32' (aka 'unsigned int') is always false [-Wtautological-constant-out-of-range-compare]
+     499 |                         if (entry->interval > (u64)S64_MAX) {
+         |                             ~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~
+   1 warning generated.
+
+
+vim +499 net/sched/act_gate.c
+
+   292	
+   293	static int tcf_gate_init(struct net *net, struct nlattr *nla,
+   294				 struct nlattr *est, struct tc_action **a,
+   295				 struct tcf_proto *tp, u32 flags,
+   296				 struct netlink_ext_ack *extack)
+   297	{
+   298		struct tc_action_net *tn = net_generic(net, act_gate_ops.net_id);
+   299		struct nlattr *tb[TCA_GATE_MAX + 1];
+   300		struct tcf_chain *goto_ch = NULL;
+   301		struct tcf_gate_params *p, *oldp;
+   302		struct tcf_gate *gact;
+   303		struct tc_gate *parm;
+   304		struct tcf_gate_params newp = { };
+   305		ktime_t start;
+   306		u64 cycletime = 0, basetime = 0, cycletime_ext = 0;
+   307		enum tk_offsets tk_offset = TK_OFFS_TAI;
+   308		s32 clockid = CLOCK_TAI;
+   309		u32 gflags = 0;
+   310		u32 index;
+   311		s32 prio = -1;
+   312		bool bind = flags & TCA_ACT_FLAGS_BIND;
+   313		bool clockid_set = false;
+   314		bool setup_timer = false;
+   315		bool update_timer = false;
+   316		int ret = 0, err;
+   317	
+   318		INIT_LIST_HEAD(&newp.entries);
+   319	
+   320		if (!nla)
+   321			return -EINVAL;
+   322	
+   323		err = nla_parse_nested(tb, TCA_GATE_MAX, nla, gate_policy, extack);
+   324		if (err < 0)
+   325			return err;
+   326	
+   327		if (!tb[TCA_GATE_PARMS])
+   328			return -EINVAL;
+   329	
+   330		if (tb[TCA_GATE_CLOCKID]) {
+   331			clockid = nla_get_s32(tb[TCA_GATE_CLOCKID]);
+   332			clockid_set = true;
+   333			switch (clockid) {
+   334			case CLOCK_REALTIME:
+   335				tk_offset = TK_OFFS_REAL;
+   336				break;
+   337			case CLOCK_MONOTONIC:
+   338				tk_offset = TK_OFFS_MAX;
+   339				break;
+   340			case CLOCK_BOOTTIME:
+   341				tk_offset = TK_OFFS_BOOT;
+   342				break;
+   343			case CLOCK_TAI:
+   344				tk_offset = TK_OFFS_TAI;
+   345				break;
+   346			default:
+   347				NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
+   348				return -EINVAL;
+   349			}
+   350		}
+   351	
+   352		parm = nla_data(tb[TCA_GATE_PARMS]);
+   353		index = parm->index;
+   354	
+   355		err = tcf_idr_check_alloc(tn, &index, a, bind);
+   356		if (err < 0)
+   357			return err;
+   358	
+   359		if (!err) {
+   360			ret = tcf_idr_create_from_flags(tn, index, est, a,
+   361							&act_gate_ops, bind, flags);
+   362			if (ret) {
+   363				tcf_idr_cleanup(tn, index);
+   364				return ret;
+   365			}
+   366	
+   367			ret = ACT_P_CREATED;
+   368			gact = to_gate(*a);
+   369		} else {
+   370			if (bind)
+   371				return ACT_P_BOUND;
+   372	
+   373			if (!(flags & TCA_ACT_FLAGS_REPLACE)) {
+   374				tcf_idr_release(*a, bind);
+   375				return -EEXIST;
+   376			}
+   377			gact = to_gate(*a);
+   378		}
+   379	
+   380		if (ret != ACT_P_CREATED)
+   381			oldp = rcu_dereference_protected(gact->param,
+   382							 lockdep_is_held(&gact->common.tcfa_lock) ||
+   383							 lockdep_is_held(&gact->tcf_lock) ||
+   384							 lockdep_rtnl_is_held());
+   385		else
+   386			oldp = NULL;
+   387	
+   388		if (tb[TCA_GATE_PRIORITY])
+   389			prio = nla_get_s32(tb[TCA_GATE_PRIORITY]);
+   390		else if (ret != ACT_P_CREATED)
+   391			prio = oldp->tcfg_priority;
+   392	
+   393		if (tb[TCA_GATE_BASE_TIME]) {
+   394			basetime = nla_get_u64(tb[TCA_GATE_BASE_TIME]);
+   395			if (basetime > (u64)S64_MAX) {
+   396				NL_SET_ERR_MSG(extack, "Base time out of range");
+   397				err = -EINVAL;
+   398				goto release_idr;
+   399			}
+   400		} else if (ret != ACT_P_CREATED) {
+   401			basetime = oldp->tcfg_basetime;
+   402		}
+   403	
+   404		if (tb[TCA_GATE_FLAGS])
+   405			gflags = nla_get_u32(tb[TCA_GATE_FLAGS]);
+   406		else if (ret != ACT_P_CREATED)
+   407			gflags = oldp->tcfg_flags;
+   408	
+   409		err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
+   410		if (err < 0)
+   411			goto release_idr;
+   412	
+   413		if (!clockid_set) {
+   414			if (ret != ACT_P_CREATED)
+   415				clockid = oldp->tcfg_clockid;
+   416			else
+   417				clockid = CLOCK_TAI;
+   418			switch (clockid) {
+   419			case CLOCK_REALTIME:
+   420				tk_offset = TK_OFFS_REAL;
+   421				break;
+   422			case CLOCK_MONOTONIC:
+   423				tk_offset = TK_OFFS_MAX;
+   424				break;
+   425			case CLOCK_BOOTTIME:
+   426				tk_offset = TK_OFFS_BOOT;
+   427				break;
+   428			case CLOCK_TAI:
+   429				tk_offset = TK_OFFS_TAI;
+   430				break;
+   431			default:
+   432				NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
+   433				err = -EINVAL;
+   434				goto put_chain;
+   435			}
+   436		}
+   437	
+   438		if (ret == ACT_P_CREATED)
+   439			update_timer = true;
+   440		else if (basetime != oldp->tcfg_basetime ||
+   441			 tk_offset != gact->tk_offset ||
+   442			 clockid != oldp->tcfg_clockid)
+   443			update_timer = true;
+   444	
+   445		if (ret == ACT_P_CREATED)
+   446			setup_timer = true;
+   447		else if (clockid != oldp->tcfg_clockid)
+   448			setup_timer = true;
+   449	
+   450		if (tb[TCA_GATE_CYCLE_TIME]) {
+   451			cycletime = nla_get_u64(tb[TCA_GATE_CYCLE_TIME]);
+   452			if (cycletime > (u64)S64_MAX) {
+   453				NL_SET_ERR_MSG(extack, "Cycle time out of range");
+   454				err = -EINVAL;
+   455				goto put_chain;
+   456			}
+   457		}
+   458	
+   459		if (tb[TCA_GATE_ENTRY_LIST]) {
+   460			err = parse_gate_list(tb[TCA_GATE_ENTRY_LIST], &newp, extack);
+   461			if (err <= 0) {
+   462				if (!err)
+   463					NL_SET_ERR_MSG(extack,
+   464						       "Missing gate schedule (entry list)");
+   465				err = -EINVAL;
+   466				goto put_chain;
+   467			}
+   468			newp.num_entries = err;
+   469		} else if (ret == ACT_P_CREATED) {
+   470			NL_SET_ERR_MSG(extack, "Missing schedule entry list");
+   471			err = -EINVAL;
+   472			goto put_chain;
+   473		}
+   474	
+   475		if (tb[TCA_GATE_CYCLE_TIME_EXT])
+   476			cycletime_ext = nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
+   477		else if (ret != ACT_P_CREATED)
+   478			cycletime_ext = oldp->tcfg_cycletime_ext;
+   479	
+   480		if (!cycletime) {
+   481			struct tcfg_gate_entry *entry;
+   482			struct list_head *entries;
+   483			u64 cycle = 0;
+   484	
+   485			if (!list_empty(&newp.entries))
+   486				entries = &newp.entries;
+   487			else if (ret != ACT_P_CREATED)
+   488				entries = &oldp->entries;
+   489			else
+   490				entries = NULL;
+   491	
+   492			if (!entries) {
+   493				NL_SET_ERR_MSG(extack, "Invalid cycle time");
+   494				err = -EINVAL;
+   495				goto release_new_entries;
+   496			}
+   497	
+   498			list_for_each_entry(entry, entries, list) {
+ > 499				if (entry->interval > (u64)S64_MAX) {
+   500					NL_SET_ERR_MSG(extack,
+   501						       "Cycle time out of range");
+   502					err = -EINVAL;
+   503					goto release_new_entries;
+   504				}
+   505				if (cycle > (u64)S64_MAX - entry->interval) {
+   506					NL_SET_ERR_MSG(extack,
+   507						       "Cycle time out of range");
+   508					err = -EINVAL;
+   509					goto release_new_entries;
+   510				}
+   511				cycle += entry->interval;
+   512			}
+   513	
+   514			cycletime = cycle;
+   515			if (!cycletime) {
+   516				NL_SET_ERR_MSG(extack, "Invalid cycle time");
+   517				err = -EINVAL;
+   518				goto release_new_entries;
+   519			}
+   520		}
+   521	
+   522		if (ret != ACT_P_CREATED &&
+   523		    (tb[TCA_GATE_ENTRY_LIST] || tb[TCA_GATE_CYCLE_TIME] ||
+   524		     cycletime != oldp->tcfg_cycletime))
+   525			update_timer = true;
+   526	
+   527		p = kzalloc(sizeof(*p), GFP_KERNEL);
+   528		if (!p) {
+   529			err = -ENOMEM;
+   530			goto release_new_entries;
+   531		}
+   532	
+   533		INIT_LIST_HEAD(&p->entries);
+   534		p->tcfg_priority = prio;
+   535		p->tcfg_basetime = basetime;
+   536		p->tcfg_cycletime = cycletime;
+   537		p->tcfg_cycletime_ext = cycletime_ext;
+   538		p->tcfg_flags = gflags;
+   539		p->tcfg_clockid = clockid;
+   540	
+   541		if (!list_empty(&newp.entries)) {
+   542			list_splice_init(&newp.entries, &p->entries);
+   543			p->num_entries = newp.num_entries;
+   544		} else if (ret != ACT_P_CREATED) {
+   545			struct tcfg_gate_entry *entry, *ne;
+   546	
+   547			list_for_each_entry(entry, &oldp->entries, list) {
+   548				ne = kmemdup(entry, sizeof(*ne), GFP_KERNEL);
+   549				if (!ne) {
+   550					err = -ENOMEM;
+   551					goto free_p;
+   552				}
+   553				INIT_LIST_HEAD(&ne->list);
+   554				list_add_tail(&ne->list, &p->entries);
+   555			}
+   556			p->num_entries = oldp->num_entries;
+   557		}
+   558	
+   559		if (update_timer && ret != ACT_P_CREATED)
+   560			hrtimer_cancel(&gact->hitimer);
+   561	
+   562		spin_lock_bh(&gact->tcf_lock);
+   563		if (setup_timer)
+   564			gate_setup_timer(gact, tk_offset, clockid);
+   565	
+   566		gate_get_start_time(gact, p, &start);
+   567		gact->current_close_time = start;
+   568		gact->next_entry = list_first_entry(&p->entries,
+   569						    struct tcfg_gate_entry, list);
+   570		gact->current_entry_octets = 0;
+   571		gact->current_gate_status = GATE_ACT_GATE_OPEN | GATE_ACT_PENDING;
+   572	
+   573		goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
+   574	
+   575		gate_start_timer(gact, start);
+   576	
+   577		oldp = rcu_replace_pointer(gact->param, p,
+   578					   lockdep_is_held(&gact->tcf_lock));
+   579	
+   580		spin_unlock_bh(&gact->tcf_lock);
+   581	
+   582		if (oldp)
+   583			call_rcu(&oldp->rcu, tcf_gate_params_release);
+   584	
+   585		if (goto_ch)
+   586			tcf_chain_put_by_act(goto_ch);
+   587	
+   588		return ret;
+   589	
+   590	free_p:
+   591		release_entry_list(&p->entries);
+   592		kfree(p);
+   593	release_new_entries:
+   594		release_entry_list(&newp.entries);
+   595	put_chain:
+   596		if (goto_ch)
+   597			tcf_chain_put_by_act(goto_ch);
+   598	release_idr:
+   599		if (ret == ACT_P_CREATED) {
+   600			p = rcu_dereference_protected(gact->param, 1);
+   601			if (p) {
+   602				release_entry_list(&p->entries);
+   603				kfree(p);
+   604				rcu_assign_pointer(gact->param, NULL);
+   605			}
+   606		}
+   607		tcf_idr_release(*a, bind);
+   608		return err;
+   609	}
+   610	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
