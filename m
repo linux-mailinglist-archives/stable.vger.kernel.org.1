@@ -1,141 +1,270 @@
-Return-Path: <stable+bounces-210591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGnACtbkb2lhUQAAu9opvQ
-	(envelope-from <stable+bounces-210591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 21:25:58 +0100
+	id wN+nJhH3b2m+UQAAu9opvQ
+	(envelope-from <stable+bounces-210592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 22:43:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A644B414
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 21:25:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A6A4C6F7
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 22:43:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 28606865F5C
-	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:21:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B7DD56DBE4
+	for <lists+stable@lfdr.de>; Tue, 20 Jan 2026 19:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A4F478870;
-	Tue, 20 Jan 2026 19:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F078D47B416;
+	Tue, 20 Jan 2026 19:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVjY7nRq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pzmS9ShC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5752338B98A;
-	Tue, 20 Jan 2026 19:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB056413256;
+	Tue, 20 Jan 2026 19:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768936904; cv=none; b=KtImM446sDyVBHfEyfgzAH4wLEgIW562O+hAgVzQ/fhSnN75oamaoU1yP1vMsYvnWTVITBjs0bu/YzaViRAbhyDHEn1RFbhtHHMZ/nFD2sv+nt14fsILkmKq/XmZOBp9IlQU5cbZ1fjpJalnjr9Ke2ESpUTQAwmdv4LOpA2q0hY=
+	t=1768937699; cv=none; b=ijMMbyLQKDoOqNozkfR0vO2+0Qks57SIWC+UQNOewvm1t+a7NlQx5GJuWMiI8KLUebcQ40i+M+945uDKfUbbY4SmA79HYoofQUxi+FtGRH0y0OkKFWNrZ1aBMAtURGiub/vPQi06oosZYouG/IeSERuqMN3A24n+u/JMdL+8nuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768936904; c=relaxed/simple;
-	bh=1sn+JESYsGbOQVrg2FdMmLiKmgF9OvuYdvrpp6ndyz4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=uT2zBxN0Nds0X2LjCp/lH6IgPe1Izi66VbAr6gVwVdkye9rnV7y2/tRBqEI3IzwrcU27Vzh16sL3hloBUAy97r8a600Z08MuPgPsMdZj/s6QoZ9quCbvhOU4SoHp+v49sM5IubhifTCCLiltjXIzABq2ZdGIEZ/AgvoynJdl2TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVjY7nRq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC854C19421;
-	Tue, 20 Jan 2026 19:21:42 +0000 (UTC)
+	s=arc-20240116; t=1768937699; c=relaxed/simple;
+	bh=+FN4NLJz2Xi8BFI9u8FMKXPFYtA0LfaOjTVZbIKOaHU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K4MLl1Nz2g+UKnQQOSoy0DKdvrB5OJ0ZMRToCOpfR0uXLkZsSk7e7tndZ2xczf2/MWHDp76G7bQiFAyv+uLeVyuaiocY+VvlksALcJm1ONER5VnGKOnTiuTc3xUWR0HxYq/fs9LkR8ds8IwLcGQ/ssQrQz7nNQ2Mn3fhixUzRXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pzmS9ShC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B42C16AAE;
+	Tue, 20 Jan 2026 19:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768936903;
-	bh=1sn+JESYsGbOQVrg2FdMmLiKmgF9OvuYdvrpp6ndyz4=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=DVjY7nRqtNJpdxO46UhkvzcpzUG7eFsGBNxeNafEMqc/0JMgTis5DEYWF1li9lQfp
-	 XKC7q+gZ76HuX4wOMZyI7gtHXQgtxe5N1GXBVGuBOajirNmkO6ar2wvcSJbnME07/i
-	 FB7WSuzXEnPK6ItLNPKL0fDNXAv3K3xU+LQspe/4n1mLXqkv+PkoFUQgFhHosDfngS
-	 Cu1FbxT9JyedPFBtmLMOUK//DPhDIn9EwKNMlOrk/8GmH5c+OOLT0MJ2r4JzMIC+NP
-	 CuxpAwwjh8TkRj57XORz559NShhifXCpIR9KFi22qpu6xaij+i9iri2+whotlhba/B
-	 b8Ih6N93rJSiw==
-From: Mark Brown <broonie@kernel.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: shengjiu.wang@gmail.com, linux-sound@vger.kernel.org, 
- imx@lists.linux.dev, stable@vger.kernel.org
-In-Reply-To: <20260118205030.1532696-1-festevam@gmail.com>
-References: <20260118205030.1532696-1-festevam@gmail.com>
-Subject: Re: [PATCH RESEND] ASoC: fsl: imx-card: Do not force slot width to
- sample width
-Message-Id: <176893690263.777973.15824025295964117427.b4-ty@kernel.org>
-Date: Tue, 20 Jan 2026 19:21:42 +0000
+	s=k20201202; t=1768937699;
+	bh=+FN4NLJz2Xi8BFI9u8FMKXPFYtA0LfaOjTVZbIKOaHU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pzmS9ShCNogwlDL+mPc/kuH6E4kexlcZZ1YGmYfGJAE2VxErxBVpMfiM/tCtGBCqF
+	 DiT4DqFqJ6uRiK6cgSZZKfL2xONseUlU0Vj33tGV8YkvGLojKvsEx0rcMSfkjiGu7g
+	 5qMJ2yM3U1WQtOweO6SL2CNKMhmLNcgEfTTQnqjtMxfi0HFgnojzTRLYB1oEzKWEzd
+	 +TRK6fhr9fP56VQx4qMDKMAOzT5PWhwLK8xwYsXsb1KrGLIP4P61T1/htRgt4Wb9RO
+	 Bf7KR1tuSJnkY0mEIgtC5Wxa3dGfTHAZ3D5TjWf8sKvpb4cTGQcMMuof1oLR2H2QLb
+	 MVdBenKhagjrg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Edward Adam Davis <eadavis@qq.com>,
+	syzbot+6db0415d6d5c635f72cb@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	quic_wcheng@quicinc.com,
+	broonie@kernel.org,
+	pierre-louis.bossart@linux.dev,
+	gregkh@linuxfoundation.org,
+	sean.anderson@linux.dev
+Subject: [PATCH AUTOSEL 6.18] ALSA: usb-audio: Prevent excessive number of frames
+Date: Tue, 20 Jan 2026 14:34:44 -0500
+Message-ID: <20260120193456.865383-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-47773
-X-Spamd-Result: default: False [-1.96 / 15.00];
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210591-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[qq.com,syzkaller.appspotmail.com,suse.de,kernel.org,quicinc.com,linux.dev,linuxfoundation.org];
+	TAGGED_FROM(0.00)[bounces-210592-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,lists.linux.dev];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 35A644B414
+	TAGGED_RCPT(0.00)[stable,6db0415d6d5c635f72cb];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,suse.de:email,msgid.link:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 11A6A4C6F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, 18 Jan 2026 17:50:30 -0300, Fabio Estevam wrote:
-> imx-card currently sets the slot width to the physical sample width
-> for I2S links. This breaks controllers that use fixed-width slots
-> (e.g. 32-bit FIFO words), causing the unused bits in the slot to
-> contain undefined data when playing 16-bit streams.
-> 
-> Do not override the slot width in the machine driver and let the CPU
-> DAI select an appropriate default instead. This matches the behavior
-> of simple-audio-card and avoids embedding controller-specific policy
-> in the machine driver.
-> 
-> [...]
+From: Edward Adam Davis <eadavis@qq.com>
 
-Applied to
+[ Upstream commit ef5749ef8b307bf8717945701b1b79d036af0a15 ]
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+In this case, the user constructed the parameters with maxpacksize 40
+for rate 22050 / pps 1000, and packsize[0] 22 packsize[1] 23. The buffer
+size for each data URB is maxpacksize * packets, which in this example
+is 40 * 6 = 240; When the user performs a write operation to send audio
+data into the ALSA PCM playback stream, the calculated number of frames
+is packsize[0] * packets = 264, which exceeds the allocated URB buffer
+size, triggering the out-of-bounds (OOB) issue reported by syzbot [1].
 
-Thanks!
+Added a check for the number of single data URB frames when calculating
+the number of frames to prevent [1].
 
-[1/1] ASoC: fsl: imx-card: Do not force slot width to sample width
-      commit: 9210f5ff6318163835d9e42ee68006be4da0f531
+[1]
+BUG: KASAN: slab-out-of-bounds in copy_to_urb+0x261/0x460 sound/usb/pcm.c:1487
+Write of size 264 at addr ffff88804337e800 by task syz.0.17/5506
+Call Trace:
+ copy_to_urb+0x261/0x460 sound/usb/pcm.c:1487
+ prepare_playback_urb+0x953/0x13d0 sound/usb/pcm.c:1611
+ prepare_outbound_urb+0x377/0xc50 sound/usb/endpoint.c:333
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+Reported-by: syzbot+6db0415d6d5c635f72cb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6db0415d6d5c635f72cb
+Tested-by: syzbot+6db0415d6d5c635f72cb@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://patch.msgid.link/tencent_9AECE6CD2C7A826D902D696C289724E8120A@qq.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+LLM Generated explanations, may be completely bogus:
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Good. `max_urb_frames` has been in the kernel since 2013. Now let me
+understand the vulnerability better and confirm the fix is appropriate:
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+## Summary of Analysis
 
-Thanks,
-Mark
+### 1. COMMIT MESSAGE ANALYSIS
+
+The commit message clearly describes:
+- A **KASAN-detected slab-out-of-bounds write** in `copy_to_urb()` at
+  sound/usb/pcm.c:1487
+- The root cause: User-controllable parameters can create a scenario
+  where `packsize[0] * packets = 264` exceeds the URB buffer size of
+  `maxpacksize * packets = 240`
+- The fix: Add a check to prevent `frames + counts` from exceeding
+  `ep->max_urb_frames`
+- It has **"Reported-by: syzbot"** and **"Tested-by: syzbot"** tags,
+  confirming this is a real bug that's been reproduced and verified as
+  fixed
+
+### 2. CODE CHANGE ANALYSIS
+
+**The bug mechanism:**
+1. URB buffer is allocated as `maxsize * packets` (e.g., 40 * 6 = 240
+   bytes)
+2. The loop iterates through `ctx->packets` (e.g., 6 packets)
+3. For each packet, `snd_usb_endpoint_next_packet_size()` returns a
+   count (e.g., alternating 22 and 23 frames)
+4. The accumulated `frames` variable sums up: 22 + 23 + 22 + 23 + ... =
+   potentially 264 frames
+5. This exceeds the 240-byte buffer, causing the OOB write in
+   `copy_to_urb()`
+
+**The fix:**
+```c
+- if (counts < 0)
++                       if (counts < 0 || frames + counts >=
+ep->max_urb_frames)
+                                break;
+```
+
+This adds a bounds check that stops the loop if adding the next packet's
+frames would exceed `max_urb_frames`. This is a **defensive check** that
+ensures the total frames never exceed what the allocated buffer can
+hold.
+
+### 3. CLASSIFICATION
+
+- **Type:** Security fix - heap buffer overflow (OOB write)
+- **Category:** Memory safety bug fix
+- **Severity:** HIGH - This is a write-based memory corruption that
+  could lead to privilege escalation or kernel crash
+
+### 4. SCOPE AND RISK ASSESSMENT
+
+- **Lines changed:** 1 line (just adds an additional condition to an
+  existing check)
+- **Files touched:** 1 file (sound/usb/pcm.c)
+- **Complexity:** Minimal - straightforward bounds check
+- **Risk of regression:** Very low - this only adds a safety check to
+  break out of a loop early; it doesn't change any other behavior
+- **Subsystem:** USB audio (widely used for USB headsets, microphones,
+  DACs)
+
+### 5. USER IMPACT
+
+- **Affected users:** Anyone using USB audio devices
+- **Attack surface:** This can be triggered through the ALSA PCM
+  interface, which is accessible to local users. The fuzzer found this
+  through the OSS compatibility layer.
+- **Severity if bug hits:** Kernel memory corruption, potential for code
+  execution or denial of service
+
+### 6. STABILITY INDICATORS
+
+- **Reported-by: syzbot** - Found by continuous kernel fuzzing
+- **Tested-by: syzbot** - Verified by the automated test infrastructure
+- **Signed-off-by: Takashi Iwai** - The USB audio maintainer accepted
+  and merged this
+
+### 7. DEPENDENCY CHECK
+
+The fix uses `ep->max_urb_frames`, which has existed since kernel 3.12
+(2013). The code path being fixed (the lowlatency playback mode with
+`snd_usb_endpoint_next_packet_size` taking 4 args including `avail`) was
+introduced in v5.16. The fix should cleanly apply to any kernel with
+this code path (5.16+).
+
+## Conclusion
+
+This commit is an **excellent candidate for stable backport**:
+
+1. ✅ **Fixes a real, serious bug**: KASAN-detected heap buffer overflow
+   (OOB write)
+2. ✅ **Security relevant**: Memory corruption that could lead to
+   privilege escalation
+3. ✅ **Small and surgical**: Single line change with minimal risk
+4. ✅ **Obviously correct**: Simple bounds check that prevents writing
+   past allocated buffer
+5. ✅ **Well tested**: Verified by syzbot, accepted by the USB audio
+   maintainer
+6. ✅ **No new features**: Pure bug fix
+7. ✅ **Clear scope**: Only affects USB audio playback URB preparation
+
+The fix prevents a heap buffer overflow that was found by syzkaller. The
+change is minimal (adding one condition to an existing check), low-risk,
+and obviously correct. It protects against a real security vulnerability
+that could be exploited by local users.
+
+**YES**
+
+ sound/usb/pcm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/usb/pcm.c b/sound/usb/pcm.c
+index 54d01dfd820fa..263abb36bb2d1 100644
+--- a/sound/usb/pcm.c
++++ b/sound/usb/pcm.c
+@@ -1553,7 +1553,7 @@ static int prepare_playback_urb(struct snd_usb_substream *subs,
+ 
+ 		for (i = 0; i < ctx->packets; i++) {
+ 			counts = snd_usb_endpoint_next_packet_size(ep, ctx, i, avail);
+-			if (counts < 0)
++			if (counts < 0 || frames + counts >= ep->max_urb_frames)
+ 				break;
+ 			/* set up descriptor */
+ 			urb->iso_frame_desc[i].offset = frames * stride;
+-- 
+2.51.0
 
 
