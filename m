@@ -1,190 +1,175 @@
-Return-Path: <stable+bounces-211180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMy2IU9acWnLGAAAu9opvQ
-	(envelope-from <stable+bounces-211180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 23:59:27 +0100
+	id 2N3dFnVhcWkHGgAAu9opvQ
+	(envelope-from <stable+bounces-211181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 00:29:57 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F59A5F2EE
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 23:59:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F7B5F877
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 00:29:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A1E4D380EC8
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 22:59:14 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 00EE56489C6
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 23:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A473ACEE9;
-	Wed, 21 Jan 2026 22:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85450326952;
+	Wed, 21 Jan 2026 23:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="r3XBay5s"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="hKPzsLD8";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="avQ2sYo5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f193.google.com (mail-dy1-f193.google.com [74.125.82.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AB833FE23
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 22:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8089C200110;
+	Wed, 21 Jan 2026 23:27:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769036349; cv=none; b=l3aYHK60XsqE4/Z9itokbYURf3QwzGe8jVPEIXI2ZrEknyOmiBZ0kl2pFpF6QX0ZxD3nrqgEOC36LblkdxryMJMs93Cq/EultuOUl9uaBbZ2iM8PkKhu3TYnAV5ART8JOinCGM/5WAlQl+d+S2xTG0A78M1lGVtucImMsdtIiyM=
+	t=1769038028; cv=none; b=X4E9Y/HEQNfnDaBkoCtXtFf9mH3jMwLfZVvRRxB9CdP5RqDhpeLKOvba72jJzPDqo5FVBda3VbNU1ny3IR+mmAV6VL4OYOcCQRClagOXU9RX3ithkj5xHdJKhbiitwGQgjqyH7u2XVbzI2CoEaRUYNdH9v0dUogDBm16zwfwiH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769036349; c=relaxed/simple;
-	bh=hqXczniP1XrMxt/O1NWCrb+E4kIFvjsv32fYaB9zdoo=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=fauKnd5xL/7xEGgnADFQPoiAuRTkbobkuz3/yQmn/aRJyW37mDSoSQwaXnMC7i6WfPvRUmyG3LEVQc6AzpfKNtPv9vMsegqXg5TAPmtWzbV5YG8VC/xkwxbIGqtdu5abptrdCcyqGu33a3sG/GNjBuGHTMAIyEl2gNMxBn4gHnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=r3XBay5s; arc=none smtp.client-ip=74.125.82.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-dy1-f193.google.com with SMTP id 5a478bee46e88-2b71347ac0aso482926eec.0
-        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 14:59:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1769036345; x=1769641145; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2NzbTMmb+O9I8/joHgGozHSAA/dFFBZJk4QkWcDo03w=;
-        b=r3XBay5sCEo0JUIynSGcoc8YRszAvdGlq8s94d11AOftbNY3uhP2t18Rjrf69t86pq
-         fDjhV1MikJyAtcHzD7xSBnXVKnZGENGNYvD6uTivyqsa8Li5SoHiYcovs7PvLfinHGqF
-         w5D/QAe5j9eCrDDt9YkLjr2iYJEb+jCDjL8YNgT80uhy1LdLHU6wyUGvy/WqzE1qihCs
-         7LgyH59V8ZRpT9RkKRC+OP/FzAONs+gis2W1RDFkwZ6G7J594e67JsR7NywUGZ0/wkjz
-         Upu2gj2h6xF6UwITcwqMp/n/ro0AAinxqm52C4S8Z61OFiRhQiW2acuDIuBz1KvXzM5J
-         Ob4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769036345; x=1769641145;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2NzbTMmb+O9I8/joHgGozHSAA/dFFBZJk4QkWcDo03w=;
-        b=GNzLTNzjUBceT/AkepHOVSJb10RDZHWclDizvFYF8dWyhZUVXxKPgVVdLQ/t1hMS3b
-         LL1s7ttoywX+IVzO7CT/kE32PvJgXCwydPm7A5P8yHHSBVfguvK5RQ/R1hxjMVshWn0p
-         3Bc43wgl7YWjzISHF39s2OJJPD+l2/ScXvxPvyIqBMUon244zpg2QJ3hYEX0B/riVMI8
-         80t8JnoWEiHrnEoU9iPu2BbekdnISOzrUWNCI9f/qrj9SPbvp0T2ulbtolMOX/4H5I4r
-         4C8heqhFi9PzK6KsZMoFBC8OFsWZvQNEKN2xtr/7WwoZZH3jm8VDMojvUL+A7rVmt8ka
-         8o/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUH1z3CMKQGHkNsiXvpctonMCH8AJQVKFsPaduU7+uzOryetnmzA/T0+O7HEds96JbfUS7Kf/o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjOi0WUbvTewlrUWrSrIQRmtOelBgLm/U/79Jx1cCPVc1v8C7/
-	fVgJBndpQ8/rDrwiu+XDLch5TdQTy3VOtXpf+MLBi1XAl0Bj+9HsYUMhp7aTk4GkmIY=
-X-Gm-Gg: AZuq6aIohOHv3x5CmGcayNKDdKYIbmNDzeBrsWMHC+lm8Lp7QrIFwOq/dsNsFCmsTqL
-	kqTnXa49rl9zTSjj0+9mVEEt9bEimW9bdakVsyumXetB+gAiq99HiHCv+e+Hj9W6kGWXarL7pjU
-	X64osEfxmwX1xC49RqQFVulo3rI9orBs5B9gbZ8way0s3iUjbXc1CfSgvsUhqFQ73sB+58q/USk
-	7ezZPsXgh1UylwNNg/04saWr4AKiEaz6upxIVB1jfsC95qPB49v86TCskbNhbhhH9L1AzKpDwNv
-	t+hqxz/AFpbxc1gxRW5MgE/HeW+PAUsyuCs1OKR4FuMgjdtN2RMQKgTChEXgsQODtBYqdsC1kvK
-	PVFJJT9hZLc4/D7nmMJ3jBoQ82fazHW8pZug5L8uwFYRXLQVb/wGoTrPnvm5r6rwdodV7Kyli40
-	XkSReb
-X-Received: by 2002:a05:693c:60c4:b0:2b7:bd6:a44 with SMTP id 5a478bee46e88-2b7247eaac3mr545195eec.16.1769036344614;
-        Wed, 21 Jan 2026 14:59:04 -0800 (PST)
-Received: from 22d5995788c3 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b3502c91sm22864040eec.9.2026.01.21.14.59.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 14:59:03 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1769038028; c=relaxed/simple;
+	bh=Ie1Haw2WtnPvlbwL6gllW4suUIrjMIZAvmGVyCVImOU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JhgEjqUETviE+ylEvjvpdYc+l+UAZ6yUrHnEIEUlU/kafpNDfZ+oJuUl+kZ6gUh+fydYGuzW/gMfaX2UyvD66iTtZjnfdfvDRdOGET0WlWx+jkdRrr33huhxlh0H8IOsZn0HoWvrUB2R4z4L5PeIhUpgvvRsImb2vakS58BoG4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=hKPzsLD8; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=avQ2sYo5; arc=none smtp.client-ip=80.241.56.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4dxL204JGkz9t0F;
+	Thu, 22 Jan 2026 00:27:04 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1769038024;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=72c8DeUN47vTutVPJIuE6RFL458UWuddRpkcj6kDtFQ=;
+	b=hKPzsLD8DzyDAyangyxy9wKY4R+FSZr8TICDt+iRJibhPvJzKUKp2ES4kwM0sDutQ06hxQ
+	+dGDNOFk9ufivMzPrha3UMZgwcJaFUjDsCgYDUNTvGpoYngr6t9iP0xSbJ5Vssz9loLdY+
+	ixCn2sbm3sgFlkyaHPmcGhDll+VYMEA5wgOK4Utd3pcIFW/LSojeEEmI8WDO2Nm1SVvJPb
+	GIBqCgQzYQrXWeyT3mDQN0MeGyNvPGMF0fSU7PLLnXcXk8Tl6RWtMJp+hmXx9guu3iYOj7
+	dHQVL40cHH+g6L8q6BdSckJwQ/tx56aeXlOpZF30xsW4S6qR4M1x6tlinuFE3Q==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=avQ2sYo5;
+	spf=pass (outgoing_mbo_mout: domain of marek.vasut+renesas@mailbox.org designates 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=marek.vasut+renesas@mailbox.org
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1769038022;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=72c8DeUN47vTutVPJIuE6RFL458UWuddRpkcj6kDtFQ=;
+	b=avQ2sYo5yrnTLKEcNIg4qWrVa47RgXp5YWweVK+u2iBtNlUAnJaaqDX6ygcd2LgkfD42Iq
+	mQb8mMYAU2cIiFsLXacRR+GahsRhn6uU38icAppKkHepVouCXDNglquxXBZfExHrJz2Fkg
+	urFQZD+OlxHjxt5G/VI5NjFcHsWbdwUqOPjO1s1dQ2LXRd+68CklDP8beUP5TEYfY7+NvA
+	RznszVZb+V0jgCe1Q6S9lVZjgyxbg2jPPkK2M/sRI+q7dTQuCHmwqe0gxQKA+DqBVidIfE
+	Fl9jL3Iz/O4kwj54bBJ4CGhxl3Dy8NKO+H0r6BpefQtPxOsY/yJwAPrMRUQLRQ==
+To: linux-clk@vger.kernel.org
+Cc: Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	stable@vger.kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org
+Subject: [PATCH v3] clk: rs9: Reserve 8 struct clk_hw slots for for 9FGV0841
+Date: Thu, 22 Jan 2026 00:26:38 +0100
+Message-ID: <20260121232657.155281-1-marek.vasut+renesas@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-5.15.y: (build) unused variable
- 'atslave'
- [-Werror,-Wunused-variable] in drivers/d...
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Wed, 21 Jan 2026 22:59:03 -0000
-Message-ID: <176903634331.621.370779796610338645@22d5995788c3>
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: o4fiikg9hpk9rrnasrfk5ai4ews1gthk
+X-MBO-RS-ID: 7f6992ab9ce530ef4aa
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-clang-21-arm-allmodconfig-69711882b2a19cc73abf1f42/.config];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_DKIM_ALLOW(-0.20)[mailbox.org:s=mail20150812];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211180-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[kernelci.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[mailbox.org,reject];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
-	TO_DN_NONE(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-211181-lists,stable=lfdr.de,renesas];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[mailbox.org:+];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[marek.vasut@mailbox.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.linux.dev:replyto]
-X-Rspamd-Queue-Id: 1F59A5F2EE
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 04F7B5F877
 X-Rspamd-Action: no action
 
+The 9FGV0841 has 8 outputs and registers 8 struct clk_hw, make sure
+there are 8 slots for those newly registered clk_hw pointers, else
+there is going to be out of bounds write when pointers 4..7 are set
+into struct rs9_driver_data .clk_dif[4..7] field.
 
+Since there are other structure members past this struct clk_hw
+pointer array, writing to .clk_dif[4..7] fields corrupts both
+the struct rs9_driver_data content and data around it, sometimes
+without crashing the kernel. However, the kernel does surely
+crash when the driver is unbound or during suspend.
 
+Fix this, increase the struct clk_hw pointer array size to the
+maximum output count of 9FGV0841, which is the biggest chip that
+is supported by this driver.
 
-
-Hello,
-
-New build issue found on stable-rc/linux-5.15.y:
-
+Cc: stable@vger.kernel.org
+Fixes: f0e5e1800204 ("clk: rs9: Add support for 9FGV0841")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Closes: https://lore.kernel.org/CAMuHMdVyQpOBT+Ho+mXY07fndFN9bKJdaaWGn91WOFnnYErLyg@mail.gmail.com
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
 ---
- unused variable 'atslave' [-Werror,-Wunused-variable] in drivers/dma/at_hdmac.o (drivers/dma/at_hdmac.c) [logspec:kbuild,kbuild.compiler.error]
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-renesas-soc@vger.kernel.org
 ---
+V2: - Update the commit message crash paragraph
+    - Add RB/TB from Geert
+V3: Add Closes:
+---
+ drivers/clk/clk-renesas-pcie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- dashboard: https://d.kernelci.org/i/maestro:93ba1651d432804bf077e72829937d24ea9768dd
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  fe0f13600dbeac5cd9f59732e9c198584bd7e7b6
+diff --git a/drivers/clk/clk-renesas-pcie.c b/drivers/clk/clk-renesas-pcie.c
+index 4c3a5e4eb77ac..f94a9c4d0b670 100644
+--- a/drivers/clk/clk-renesas-pcie.c
++++ b/drivers/clk/clk-renesas-pcie.c
+@@ -64,7 +64,7 @@ struct rs9_driver_data {
+ 	struct i2c_client	*client;
+ 	struct regmap		*regmap;
+ 	const struct rs9_chip_info *chip_info;
+-	struct clk_hw		*clk_dif[4];
++	struct clk_hw		*clk_dif[8];
+ 	u8			pll_amplitude;
+ 	u8			pll_ssc;
+ 	u8			clk_dif_sr;
+-- 
+2.51.0
 
-
-Please include the KernelCI tag when submitting a fix:
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
-
-Log excerpt:
-=====================================================
-drivers/dma/at_hdmac.c:1342:23: error: unused variable 'atslave' [-Werror,-Wunused-variable]
- 1342 |         struct at_dma_slave     *atslave;
-      |                                  ^~~~~~~
-drivers/dma/at_hdmac.c:1602:2: error: use of undeclared identifier 'atslave'
- 1602 |         atslave = chan->private;
-      |         ^~~~~~~
-drivers/dma/at_hdmac.c:1603:6: error: use of undeclared identifier 'atslave'
- 1603 |         if (atslave) {
-      |             ^~~~~~~
-drivers/dma/at_hdmac.c:1604:14: error: use of undeclared identifier 'atslave'
- 1604 |                 put_device(atslave->dma_dev);
-      |                            ^~~~~~~
-drivers/dma/at_hdmac.c:1605:9: error: use of undeclared identifier 'atslave'
- 1605 |                 kfree(atslave);
-      |                       ^~~~~~~
-5 errors generated.
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
-- compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-arm-allmodconfig-69711882b2a19cc73abf1f42/.config
-- dashboard: https://d.kernelci.org/build/maestro:69711882b2a19cc73abf1f42
-
-
-#kernelci issue maestro:93ba1651d432804bf077e72829937d24ea9768dd
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
