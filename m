@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-210905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KS/An0ocWniewAAu9opvQ
-	(envelope-from <stable+bounces-210905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:26:53 +0100
+	id cAlCJjktcWl1fAAAu9opvQ
+	(envelope-from <stable+bounces-211068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:47:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60645C211
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:26:52 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD4F5C7C0
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 019E8822C01
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:24:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 446F586767A
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57573A7853;
-	Wed, 21 Jan 2026 18:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777373ACEEC;
+	Wed, 21 Jan 2026 18:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHwF7b9x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHDQEUQT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B937318138;
-	Wed, 21 Jan 2026 18:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 306693A9632;
+	Wed, 21 Jan 2026 18:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019779; cv=none; b=ISqJsKq/UMWFcm4Qj9wwUtUQWKcxmrHw8dFErnvB+v6XYraQ+YM1mvLkzAMfLq6JWEOK24BeFvuLemeKEmPEyAjYAbUnSFl0o6iagGW5H2rlY/OLXKlqm8vNYX0c7ls4IdXCRx9X1lgYqfwYCSOlOioprV2T2mmNQ/0Nc8fzZX4=
+	t=1769020332; cv=none; b=XDw5WwMysc+hsWX+ATBr0HweetsBBSc7pZRx1lcbEPua0xBqVQUoWBXao4MtKqQ/jSz/k/HtxzY/ilIaBu71eKWAZw9FTJoqDquchvidzKVz4elgd6xfIASkiXw6JDXda538d905+v1xfYq8PzvoQ7w9Vj51lF2RARcjQua/0xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019779; c=relaxed/simple;
-	bh=4U1zRnlmhFAlZ5+ndinJU1jisJ1oYUOebfg4F1vtrn8=;
+	s=arc-20240116; t=1769020332; c=relaxed/simple;
+	bh=/mzLGMpG5D7ckKjyWIVQkqcT8gmkLAiBXvgdl+xmup4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLssstultHqmUfe26YAJM3jMrdGsgvdv1AimSqtnUiLt/WtesrLUHw8zdUWndOevhhK+XV3kD75bmoNpQt8CbtnGeT/SJp9dNTcLkDJfP8ipF5UINdqqbYlf2DfYwYGhEP6kbdK0f+WCS5B7VvoQGa2QuEHUUI4Y1v+ZgcEx9HM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHwF7b9x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D2BC4CEF1;
-	Wed, 21 Jan 2026 18:22:57 +0000 (UTC)
+	 MIME-Version; b=JGeHyPOfAbwvasrdKzDNWWiNxQ+mtlOfCZU/6jMeApS1IZdNP44Slh0uaiSZSRPLhOifn/QDJAaeB6AapeLDZqb7RGsXGaHmLiCOui8lWeK+Vm0ZT3awc4ZWAI7sJH6Ho6P8RLPOuzt+oAzSWmztYboBnQuOlWlYZjgdGyZfTns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHDQEUQT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940F7C19425;
+	Wed, 21 Jan 2026 18:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019778;
-	bh=4U1zRnlmhFAlZ5+ndinJU1jisJ1oYUOebfg4F1vtrn8=;
+	s=korg; t=1769020332;
+	bh=/mzLGMpG5D7ckKjyWIVQkqcT8gmkLAiBXvgdl+xmup4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHwF7b9xfrC6iUbkYqE96joJZxeiTHdXnEkwMGhrm1dzevq1Bk+28ECprZYr02WZ8
-	 qAMdBLZZh1P5Jg36arVqQ1uP4QRm89sA6Wu7TwAkZ7iOtPPOJ0ODr3UDOsiGalnOha
-	 mqmweRfA+DgbZsCPl/0BybnsJft9I7FI0Ww+A0Xw=
+	b=YHDQEUQTIqq5xj0qTRK4oB/MlRBSr+EIQxi+6lxCaU9OZgfz2ra1PcToJWOhbdzDY
+	 coYZSEtdRxwBSoWPV3fBKf0qdarQY7zGE4bHVzCwhaAoONRiwTCXE0MUsVovm4vEE/
+	 yfNxrlmIXOQho5x2LjqLHEWJvBAYv2WVF35s3s+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 106/139] LoongArch: dts: loongson-2k1000: Fix i2c-gpio node names
+	Wu Haotian <rigoligo03@gmail.com>,
+	Ilikara Zheng <ilikara@aosc.io>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.18 126/198] nvme-pci: disable secondary temp for Wodposit WPBSNM8
 Date: Wed, 21 Jan 2026 19:15:54 +0100
-Message-ID: <20260121181415.263546343@linuxfoundation.org>
+Message-ID: <20260121181423.084320434@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,72 +74,69 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210905-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211068-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,aosc.io,kernel.org];
+	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,qualcomm.com:email,loongson.cn:email]
-X-Rspamd-Queue-Id: A60645C211
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,aosc.io:email]
+X-Rspamd-Queue-Id: 4FD4F5C7C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Binbin Zhou <zhoubinbin@loongson.cn>
+From: Ilikara Zheng <ilikara@aosc.io>
 
-commit 14ea5a3625881d79f75418c66e3a7d98db8518e1 upstream.
+commit 340f4fc5508c2905a1f30de229e2a4b299d55735 upstream.
 
-The binding wants the node to be named "i2c-number", but those are named
-"i2c-gpio-number" instead.
+Secondary temperature thresholds (temp2_{min,max}) were not reported
+properly on this NVMe SSD. This resulted in an error while attempting to
+read these values with sensors(1):
 
-Thus rename those to i2c-0, i2c-1 to adhere to the binding and suppress
-dtbs_check warnings.
+  ERROR: Can't get value of subfeature temp2_min: I/O error
+  ERROR: Can't get value of subfeature temp2_max: I/O error
+
+Add the device to the nvme_id_table with the
+NVME_QUIRK_NO_SECONDARY_TEMP_THRESH flag to suppress access to all non-
+composite temperature thresholds.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Tested-by: Wu Haotian <rigoligo03@gmail.com>
+Signed-off-by: Ilikara Zheng <ilikara@aosc.io>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/boot/dts/loongson-2k1000.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/host/pci.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/loongarch/boot/dts/loongson-2k1000.dtsi
-+++ b/arch/loongarch/boot/dts/loongson-2k1000.dtsi
-@@ -46,7 +46,7 @@
- 	};
- 
- 	/* i2c of the dvi eeprom edid */
--	i2c-gpio-0 {
-+	i2c-0 {
- 		compatible = "i2c-gpio";
- 		scl-gpios = <&gpio0 0 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 		sda-gpios = <&gpio0 1 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-@@ -57,7 +57,7 @@
- 	};
- 
- 	/* i2c of the eeprom edid */
--	i2c-gpio-1 {
-+	i2c-1 {
- 		compatible = "i2c-gpio";
- 		scl-gpios = <&gpio0 33 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
- 		sda-gpios = <&gpio0 32 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3917,6 +3917,8 @@ static const struct pci_device_id nvme_i
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
+ 	{ PCI_DEVICE(0x1e49, 0x0041),   /* ZHITAI TiPro7000 NVMe SSD */
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
++	{ PCI_DEVICE(0x1fa0, 0x2283),   /* Wodposit WPBSNM8-256GTP */
++		.driver_data = NVME_QUIRK_NO_SECONDARY_TEMP_THRESH, },
+ 	{ PCI_DEVICE(0x025e, 0xf1ac),   /* SOLIDIGM  P44 pro SSDPFKKW020X7  */
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
+ 	{ PCI_DEVICE(0xc0a9, 0x540a),   /* Crucial P2 */
 
 
 
