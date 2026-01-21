@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-210996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILLiHUw7cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-210996-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:47:08 +0100
+	id AP0mBNAmcWl8eQAAu9opvQ
+	(envelope-from <stable+bounces-210833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:19:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FEA5D8E0
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:47:08 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73DB85C01B
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:19:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DED218651F2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:28:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0B7CBB0E824
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356DB35EDBB;
-	Wed, 21 Jan 2026 18:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9A836214D;
+	Wed, 21 Jan 2026 18:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhGHTo+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYgDBVu5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A6F354AD6;
-	Wed, 21 Jan 2026 18:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A022E330678;
+	Wed, 21 Jan 2026 18:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020086; cv=none; b=jkyFANTK3KtRerxwpIOo7yPQzqC8V/IIP9/zj8jkKxYboS7CCwNmM81s9K/NqwphJvwF77psBH+0STCIJ5ALUB6u3F0kX0vsfmBdE4l6WNjKBy56DqkjODfS0WxEB8IIsDTRzNsPbad5uQ8BV+dsD4d6MZR3pP7ZRymNzfFUX/M=
+	t=1769019536; cv=none; b=a6ekJflGrSJfROngW3bJWnzy8QjlLnPqnH4s6ZuCZcPPj9w6aGZMzyNMDJXxkRmiDxpI1q0q+qBzoxooQqCi7glYTRknP9KmH2bR7ObFAEp+eAlIieolxPJaNSal6LXfxAx0eLYjzjLgUdW4cf62lWic5VF+JcMLXglxe4ljpW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020086; c=relaxed/simple;
-	bh=gvYjolyc7bZYOLnjFQiT1JHiGgA35CVqrwyLse5XJMw=;
+	s=arc-20240116; t=1769019536; c=relaxed/simple;
+	bh=VuaRjIs6Q0TdmTLND/VF2/fIJ/APm6/m7AqbDcUuZBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O66lZ66yDij8LfJtAqjFCnG3Dk0sfhxvqJbsMVfWkg8Nb6IQyGuToOdbZN6JFMjuXfziKtbQJIkn55HrDwuThh/P3gRrVJFpq1//+cj2Z51fisLS2ael1FGHxx3j3wGdFwojD9PPAY2CA3RxDEqLmtZ3yu96V4oDGot/RuXFJrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhGHTo+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4C8C4CEF1;
-	Wed, 21 Jan 2026 18:28:06 +0000 (UTC)
+	 MIME-Version; b=rjaVBQeX3KwvLZpUisvf26XBpeoB/zaZqFfuJb46tcJjJsZ85OExc0Ki+GlnuCdUmM7SYVrycSaxMQw4InKi+6VuEtMhvuxQudmyElG/e7y+9+17s+ceAUqID98jZRKllEbSXaad2BwHl8BVJeSFL9ZZfVXmUFG1S6fxLNt7jZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYgDBVu5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D02C4CEF1;
+	Wed, 21 Jan 2026 18:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020086;
-	bh=gvYjolyc7bZYOLnjFQiT1JHiGgA35CVqrwyLse5XJMw=;
+	s=korg; t=1769019536;
+	bh=VuaRjIs6Q0TdmTLND/VF2/fIJ/APm6/m7AqbDcUuZBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhGHTo+4HC47PNX3xE8U+csh1CG3NklJ+DxjRqS++g9w+iEqALPJZ4H3VvJJ2T5Nz
-	 VrF24w90DP82rhNZG8w++kuC80upAxH9nt37CD528zuQXHUzRyKUusivMoJHHWK1Dh
-	 95Q2AmQ5lQ7kYID8J4g15LK691z+wlvbEdCaGsF4=
+	b=BYgDBVu580MFbm23yLKmL62g2wSBXzMM5fU6w5KBLMUiGVweasQBqMDQZ/1SkvtJ1
+	 Y8TP2H+VjYZHKrJV0cJmRUd3/VltxnA/314I75LMvastLRwLiqL+7viTZRu2tOvoRc
+	 EO+scBFuVB7O2xl+v+rg3pOMsFJkDzBIdAzpFKnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Cole Leavitt <cole@unwrap.rs>,
-	Mark Brown <broonie@kernel.org>,
+	Nimrod Oren <noren@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 055/198] ASoC: sdw_utils: cs42l43: Enable Headphone pin for LINEOUT jack type
+Subject: [PATCH 6.12 035/139] selftests: drv-net: fix RPS mask handling for high CPU numbers
 Date: Wed, 21 Jan 2026 19:14:43 +0100
-Message-ID: <20260121181420.534856518@linuxfoundation.org>
+Message-ID: <20260121181412.718265812@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,7 +77,7 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210996-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210833-lists,stable=lfdr.de];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -85,67 +86,59 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,cirrus.com:email]
-X-Rspamd-Queue-Id: 17FEA5D8E0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 73DB85C01B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cole Leavitt <cole@unwrap.rs>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 390caeed0897fcac75f3c414dbdd85d593183d9c ]
+[ Upstream commit cf055f8c000445aa688c53a706ef4f580818eedb ]
 
-The CS42L43 codec's load detection can return different impedance values
-that map to either HEADPHONE or LINEOUT jack types. However, the
-soc_jack_pins array only maps SND_JACK_HEADPHONE to the "Headphone" DAPM
-pin, not SND_JACK_LINEOUT.
+The RPS bitmask bounds check uses ~(RPS_MAX_CPUS - 1) which equals ~15 =
+0xfff0, only allowing CPUs 0-3.
 
-When headphones are detected with an impedance that maps to LINEOUT
-(such as impedance value 0x2), the driver reports SND_JACK_LINEOUT.
-Since this doesn't match the jack pin mask, the "Headphone" DAPM pin
-is not activated, and no audio is routed to the headphone outputs.
+Change the mask to ~((1UL << RPS_MAX_CPUS) - 1) = ~0xffff to allow CPUs
+0-15.
 
-Fix by adding SND_JACK_LINEOUT to the Headphone pin mask, so that both
-headphone and line-out detection properly enable the headphone output
-path.
-
-This fixes no audio output on devices like the Lenovo ThinkPad P16 Gen 3
-where headphones are detected with LINEOUT impedance.
-
-Fixes: d74bad3b7452 ("ASoC: intel: sof_sdw_cs42l43: Create separate jacks for hp and mic")
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Cole Leavitt <cole@unwrap.rs>
-Link: https://patch.msgid.link/20260114025518.28519-1-cole@unwrap.rs
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 5ebfb4cc3048 ("selftests/net: toeplitz test")
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260112173715.384843-3-gal@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sdw_utils/soc_sdw_cs42l43.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/toeplitz.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sdw_utils/soc_sdw_cs42l43.c b/sound/soc/sdw_utils/soc_sdw_cs42l43.c
-index b415d45d520d0..3e8e2e3bdf7c5 100644
---- a/sound/soc/sdw_utils/soc_sdw_cs42l43.c
-+++ b/sound/soc/sdw_utils/soc_sdw_cs42l43.c
-@@ -44,7 +44,7 @@ static const struct snd_soc_dapm_route cs42l43_dmic_map[] = {
- static struct snd_soc_jack_pin soc_jack_pins[] = {
- 	{
- 		.pin    = "Headphone",
--		.mask   = SND_JACK_HEADPHONE,
-+		.mask   = SND_JACK_HEADPHONE | SND_JACK_LINEOUT,
- 	},
- 	{
- 		.pin    = "Headset Mic",
+diff --git a/tools/testing/selftests/net/toeplitz.c b/tools/testing/selftests/net/toeplitz.c
+index 9ba03164d73a6..5099157f01b9a 100644
+--- a/tools/testing/selftests/net/toeplitz.c
++++ b/tools/testing/selftests/net/toeplitz.c
+@@ -473,8 +473,8 @@ static void parse_rps_bitmap(const char *arg)
+ 
+ 	bitmap = strtoul(arg, NULL, 0);
+ 
+-	if (bitmap & ~(RPS_MAX_CPUS - 1))
+-		error(1, 0, "rps bitmap 0x%lx out of bounds 0..%lu",
++	if (bitmap & ~((1UL << RPS_MAX_CPUS) - 1))
++		error(1, 0, "rps bitmap 0x%lx out of bounds, max cpu %lu",
+ 		      bitmap, RPS_MAX_CPUS - 1);
+ 
+ 	for (i = 0; i < RPS_MAX_CPUS; i++)
 -- 
 2.51.0
 
