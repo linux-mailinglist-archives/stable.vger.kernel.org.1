@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-211043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210848-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBMfIqIscWl1fAAAu9opvQ
-	(envelope-from <stable+bounces-211043-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:44:34 +0100
+	id CHf7JcwdcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210848-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:41:16 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA585C6FB
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:44:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B6E05B6A8
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0814D7AD63D
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:31:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9D2837AC5FE
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067E93A4F5D;
-	Wed, 21 Jan 2026 18:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8996F39E17E;
+	Wed, 21 Jan 2026 18:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkMe6AtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuaTcZb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5953E36A020;
-	Wed, 21 Jan 2026 18:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7454D190664;
+	Wed, 21 Jan 2026 18:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020245; cv=none; b=YpYzGI9f4HR0OWdGtWvpiFeEeOz66o4qZccbD3n1D7Mqdy/ezRiWXQoQXP5cdwOv6ezcZyZfnwaZVk6W5bkNEOugz/Otqp5sDFDrLpQGmCQQA3NUnH2fl9ETSfHE+2qUQQ13n3bkoGzDRzFKxNLidXHbk103ugry5Wap9RDX9Tc=
+	t=1769019588; cv=none; b=H9xotEYydsLV1KF1H6Pnc9pQ6f3xzhSH2gwy3okYwHoRV8zthhLQZi/byRG6A1B5Sgwe8uhgb2FgMH0JR84mnD4oISaRhDKgg980He1uld1wus5hp8S3/VrpcoXcQgX7+eQtvA6JbuFzIbNUwaD6iuDapglkAEF9766527tVCdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020245; c=relaxed/simple;
-	bh=LCeDyh2gzMOPLfLBxep+i+MQICqkYjvX3ZPr7OM8CL4=;
+	s=arc-20240116; t=1769019588; c=relaxed/simple;
+	bh=QLzBiliieaZG3rMf+RYdtbM3Ljlz4le89WnY9k7Ssig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqyItBPAtYkXNPVaUdVljW3litVniwwpw/N7Cm9r/GRkVsPl6SdutBdPz3AvtCEkBYetQNIn+y0QUSDz1hSDoBBjuz7Cvs+H6plNSMLG3Sif7zjyL43K9khv7NzoEZWdFnHom+emg/17QG+SArhvJaVd4bU/u/d1yvHSPsx17wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkMe6AtD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2594C4CEF1;
-	Wed, 21 Jan 2026 18:30:44 +0000 (UTC)
+	 MIME-Version; b=G3PtsHsppA8ttAjJ4DTacczYxbEBANKwvCsNu2eEdzR+dTI5+6ANEK2MvCrm1LsboY4y+YZS2lIP2gzz7bXdm7NoZcPvTEphP3tILsufxcNaGAhRH0KEQDL1HUZ4+5CL/MPZQtNge8LWEngoMX0HJQtcjTUyPmcWBdbdoOseEc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuaTcZb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242B2C4CEF1;
+	Wed, 21 Jan 2026 18:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020245;
-	bh=LCeDyh2gzMOPLfLBxep+i+MQICqkYjvX3ZPr7OM8CL4=;
+	s=korg; t=1769019587;
+	bh=QLzBiliieaZG3rMf+RYdtbM3Ljlz4le89WnY9k7Ssig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkMe6AtDd1V55LuLN6dyQzJX+/s9I7sROUMBHlnz+372wkVbom7W0Lo4+kXVtMkhW
-	 5z5llfCRIiXj3PAzIZ0YhNRU1MfCg7l+oSfhluUT8u/6E5TmAWax5J09bJ+NRypjqV
-	 Dy07i/wcpgG/57H7DDMg6bSEwuvXrbR8kKOyZjyI=
+	b=NuaTcZb2YFrn1+2FuLRho0fCWaxqLOFd2P6cmS+4Mwl/tJlCqzE6ObrDN7Sy780Cb
+	 eDXJLXs3mGAK15M9ckhGWwCzOy1HYkGoReOSpomuMuksZkaDGVmpJwVVA4Pop5rYWX
+	 AxZrmCjlNgb6xzc5FMErdthCwh08OJ43e1KPfP6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Guodong Xu <guodong@riscstar.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.18 069/198] dmaengine: mmp_pdma: fix DMA mask handling
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 049/139] phy: drop probe registration printks
 Date: Wed, 21 Jan 2026 19:14:57 +0100
-Message-ID: <20260121181421.041889903@linuxfoundation.org>
+Message-ID: <20260121181413.219627860@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +66,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
@@ -77,134 +75,231 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211043-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210848-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_PROHIBIT(0.00)[0.0.0.7:email];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linaro.org:email]
-X-Rspamd-Queue-Id: 4EA585C6FB
+	TAGGED_RCPT(0.00)[stable,linaro];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,a:email,fd00:email]
+X-Rspamd-Queue-Id: 3B6E05B6A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guodong Xu <guodong@riscstar.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 49400b701eca849c1b53717b1f5d779a8d066ec0 ]
+[ Upstream commit 95463cbb4fe6489921fb8c72890113dca54ce83f ]
 
-The driver's existing logic for setting the DMA mask for "marvell,pdma-1.0"
-was flawed. It incorrectly relied on pdev->dev->coherent_dma_mask instead
-of declaring the hardware's fixed addressing capability. A cleaner and
-more correct approach is to define the mask directly based on the hardware
-limitations.
+Drivers should generally be quiet on successful probe, but this is not
+followed by some PHY drivers, for example:
 
-The MMP/PXA PDMA controller is a 32-bit DMA engine. This is supported by
-datasheets and various dtsi files for PXA25x, PXA27x, PXA3xx, and MMP2,
-all of which are 32-bit systems.
+	snps-eusb2-hsphy 88e1000.phy: Registered Snps-eUSB2 phy
+	qcom-eusb2-repeater c432000.spmi:pmic@7:phy@fd00: Registered Qcom-eUSB2 repeater
+	qcom-eusb2-repeater c432000.spmi:pmic@a:phy@fd00: Registered Qcom-eUSB2 repeater
+	qcom-eusb2-repeater c432000.spmi:pmic@b:phy@fd00: Registered Qcom-eUSB2 repeater
+	snps-eusb2-hsphy fd3000.phy: Registered Snps-eUSB2 phy
+	snps-eusb2-hsphy fd9000.phy: Registered Snps-eUSB2 phy
+	snps-eusb2-hsphy fde000.phy: Registered Snps-eUSB2 phy
+	snps-eusb2-hsphy 88e0000.phy: Registered Snps-eUSB2 phy
+	snps-eusb2-hsphy 88e2000.phy: Registered Snps-eUSB2 phy
 
-This patch simplifies the driver's logic by replacing the 'u64 dma_mask'
-field with a simpler 'u32 dma_width' to store the addressing capability
-in bits. The complex if/else block in probe() is then replaced with a
-single, clear call to dma_set_mask_and_coherent(). This sets a fixed
-32-bit DMA mask for "marvell,pdma-1.0" and a 64-bit mask for
-"spacemit,k1-pdma," matching each device's hardware capabilities.
+Drop (or demote to debug level) unnecessary registration info messages
+to make boot logs a little less noisy.
 
-Finally, this change also works around a specific build error encountered
-with clang-20 on x86_64 allyesconfig. The shift-count-overflow error is
-caused by a known clang compiler issue where the DMA_BIT_MASK(n) macro's
-ternary operator is not correctly evaluated in static initializers. By
-moving the macro's evaluation into the probe() function, the driver avoids
-this compiler bug.
-
-Fixes: 5cfe585d8624 ("dmaengine: mmp_pdma: Add SpacemiT K1 PDMA support with 64-bit addressing")
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Closes: https://lore.kernel.org/lkml/CA+G9fYsPcMfW-e_0_TRqu4cnwqOqYF3aJOeKUYk6Z4qRStdFvg@mail.gmail.com
-Suggested-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Guodong Xu <guodong@riscstar.com>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Tested-by: Nathan Chancellor <nathan@kernel.org> # build
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20250523085112.11287-1-johan+linaro@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 1ca52c0983c3 ("phy: qcom-qusb2: Fix NULL pointer dereference on early suspend")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mmp_pdma.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/phy/broadcom/phy-bcm-ns2-pcie.c        | 2 --
+ drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c      | 1 -
+ drivers/phy/broadcom/phy-bcm-sr-pcie.c         | 2 --
+ drivers/phy/broadcom/phy-brcm-sata.c           | 2 +-
+ drivers/phy/marvell/phy-pxa-usb.c              | 1 -
+ drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c | 2 --
+ drivers/phy/qualcomm/phy-qcom-m31.c            | 2 --
+ drivers/phy/qualcomm/phy-qcom-qusb2.c          | 4 +---
+ drivers/phy/qualcomm/phy-qcom-snps-eusb2.c     | 2 --
+ drivers/phy/st/phy-stih407-usb.c               | 2 --
+ drivers/phy/st/phy-stm32-usbphyc.c             | 4 ++--
+ drivers/phy/ti/phy-twl4030-usb.c               | 1 -
+ 12 files changed, 4 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/dma/mmp_pdma.c b/drivers/dma/mmp_pdma.c
-index d07229a748868..86661eb3cde1f 100644
---- a/drivers/dma/mmp_pdma.c
-+++ b/drivers/dma/mmp_pdma.c
-@@ -152,8 +152,8 @@ struct mmp_pdma_phy {
-  *
-  * Controller Configuration:
-  * @run_bits:   Control bits in DCSR register for channel start/stop
-- * @dma_mask:   DMA addressing capability of controller. 0 to use OF/platform
-- *              settings, or explicit mask like DMA_BIT_MASK(32/64)
-+ * @dma_width:  DMA addressing width in bits (32 or 64). Determines the
-+ *              DMA mask capability of the controller hardware.
-  */
- struct mmp_pdma_ops {
- 	/* Hardware Register Operations */
-@@ -173,7 +173,7 @@ struct mmp_pdma_ops {
+diff --git a/drivers/phy/broadcom/phy-bcm-ns2-pcie.c b/drivers/phy/broadcom/phy-bcm-ns2-pcie.c
+index 2eaa41f8fc70c..67a6ae5ecba02 100644
+--- a/drivers/phy/broadcom/phy-bcm-ns2-pcie.c
++++ b/drivers/phy/broadcom/phy-bcm-ns2-pcie.c
+@@ -61,8 +61,6 @@ static int ns2_pci_phy_probe(struct mdio_device *mdiodev)
+ 		return PTR_ERR(provider);
+ 	}
  
- 	/* Controller Configuration */
- 	u32 run_bits;
--	u64 dma_mask;
-+	u32 dma_width;
- };
+-	dev_info(dev, "%s PHY registered\n", dev_name(dev));
+-
+ 	return 0;
+ }
  
- struct mmp_pdma_device {
-@@ -1172,7 +1172,7 @@ static const struct mmp_pdma_ops marvell_pdma_v1_ops = {
- 	.get_desc_src_addr = get_desc_src_addr_32,
- 	.get_desc_dst_addr = get_desc_dst_addr_32,
- 	.run_bits = (DCSR_RUN),
--	.dma_mask = 0,			/* let OF/platform set DMA mask */
-+	.dma_width = 32,
- };
+diff --git a/drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c b/drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c
+index 36ad02c33ac55..8473fa5745296 100644
+--- a/drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c
++++ b/drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c
+@@ -395,7 +395,6 @@ static int ns2_drd_phy_probe(struct platform_device *pdev)
  
- static const struct mmp_pdma_ops spacemit_k1_pdma_ops = {
-@@ -1185,7 +1185,7 @@ static const struct mmp_pdma_ops spacemit_k1_pdma_ops = {
- 	.get_desc_src_addr = get_desc_src_addr_64,
- 	.get_desc_dst_addr = get_desc_dst_addr_64,
- 	.run_bits = (DCSR_RUN | DCSR_LPAEEN),
--	.dma_mask = DMA_BIT_MASK(64),	/* force 64-bit DMA addr capability */
-+	.dma_width = 64,
- };
+ 	platform_set_drvdata(pdev, driver);
  
- static const struct of_device_id mmp_pdma_dt_ids[] = {
-@@ -1314,13 +1314,9 @@ static int mmp_pdma_probe(struct platform_device *op)
- 	pdev->device.directions = BIT(DMA_MEM_TO_DEV) | BIT(DMA_DEV_TO_MEM);
- 	pdev->device.residue_granularity = DMA_RESIDUE_GRANULARITY_DESCRIPTOR;
+-	dev_info(dev, "Registered NS2 DRD Phy device\n");
+ 	queue_delayed_work(system_power_efficient_wq, &driver->wq_extcon,
+ 			   driver->debounce_jiffies);
  
--	/* Set DMA mask based on ops->dma_mask, or OF/platform */
--	if (pdev->ops->dma_mask)
--		dma_set_mask(pdev->dev, pdev->ops->dma_mask);
--	else if (pdev->dev->coherent_dma_mask)
--		dma_set_mask(pdev->dev, pdev->dev->coherent_dma_mask);
+diff --git a/drivers/phy/broadcom/phy-bcm-sr-pcie.c b/drivers/phy/broadcom/phy-bcm-sr-pcie.c
+index ff9b3862bf7af..706e1d83b4cee 100644
+--- a/drivers/phy/broadcom/phy-bcm-sr-pcie.c
++++ b/drivers/phy/broadcom/phy-bcm-sr-pcie.c
+@@ -277,8 +277,6 @@ static int sr_pcie_phy_probe(struct platform_device *pdev)
+ 		return PTR_ERR(provider);
+ 	}
+ 
+-	dev_info(dev, "Stingray PCIe PHY driver initialized\n");
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/phy/broadcom/phy-brcm-sata.c b/drivers/phy/broadcom/phy-brcm-sata.c
+index 228100357054d..d52dd065e8622 100644
+--- a/drivers/phy/broadcom/phy-brcm-sata.c
++++ b/drivers/phy/broadcom/phy-brcm-sata.c
+@@ -832,7 +832,7 @@ static int brcm_sata_phy_probe(struct platform_device *pdev)
+ 		return PTR_ERR(provider);
+ 	}
+ 
+-	dev_info(dev, "registered %d port(s)\n", count);
++	dev_dbg(dev, "registered %d port(s)\n", count);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/phy/marvell/phy-pxa-usb.c b/drivers/phy/marvell/phy-pxa-usb.c
+index 6c98eb9608e9c..c0bb71f80c042 100644
+--- a/drivers/phy/marvell/phy-pxa-usb.c
++++ b/drivers/phy/marvell/phy-pxa-usb.c
+@@ -325,7 +325,6 @@ static int pxa_usb_phy_probe(struct platform_device *pdev)
+ 		phy_create_lookup(pxa_usb_phy->phy, "usb", "mv-otg");
+ 	}
+ 
+-	dev_info(dev, "Marvell PXA USB PHY");
+ 	return 0;
+ }
+ 
+diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+index c173c6244d9e5..3b68d20142e01 100644
+--- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
++++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+@@ -241,8 +241,6 @@ static int eusb2_repeater_probe(struct platform_device *pdev)
+ 	if (IS_ERR(phy_provider))
+ 		return PTR_ERR(phy_provider);
+ 
+-	dev_info(dev, "Registered Qcom-eUSB2 repeater\n");
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/phy/qualcomm/phy-qcom-m31.c b/drivers/phy/qualcomm/phy-qcom-m31.c
+index 8b0f8a3a059c2..168ea980fda03 100644
+--- a/drivers/phy/qualcomm/phy-qcom-m31.c
++++ b/drivers/phy/qualcomm/phy-qcom-m31.c
+@@ -311,8 +311,6 @@ static int m31usb_phy_probe(struct platform_device *pdev)
+ 	phy_set_drvdata(qphy->phy, qphy);
+ 
+ 	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+-	if (!IS_ERR(phy_provider))
+-		dev_info(dev, "Registered M31 USB phy\n");
+ 
+ 	return PTR_ERR_OR_ZERO(phy_provider);
+ }
+diff --git a/drivers/phy/qualcomm/phy-qcom-qusb2.c b/drivers/phy/qualcomm/phy-qcom-qusb2.c
+index c52655a383cef..531c3860c3160 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qusb2.c
++++ b/drivers/phy/qualcomm/phy-qcom-qusb2.c
+@@ -1084,9 +1084,7 @@ static int qusb2_phy_probe(struct platform_device *pdev)
+ 	phy_set_drvdata(generic_phy, qphy);
+ 
+ 	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+-	if (!IS_ERR(phy_provider))
+-		dev_info(dev, "Registered Qcom-QUSB2 phy\n");
 -	else
--		dma_set_mask(pdev->dev, DMA_BIT_MASK(64));
-+	/* Set DMA mask based on controller hardware capabilities */
-+	dma_set_mask_and_coherent(pdev->dev,
-+				  DMA_BIT_MASK(pdev->ops->dma_width));
++	if (IS_ERR(phy_provider))
+ 		pm_runtime_disable(dev);
  
- 	ret = dma_async_device_register(&pdev->device);
- 	if (ret) {
+ 	return PTR_ERR_OR_ZERO(phy_provider);
+diff --git a/drivers/phy/qualcomm/phy-qcom-snps-eusb2.c b/drivers/phy/qualcomm/phy-qcom-snps-eusb2.c
+index e1b175f481b4e..4a1dfef5ff8ff 100644
+--- a/drivers/phy/qualcomm/phy-qcom-snps-eusb2.c
++++ b/drivers/phy/qualcomm/phy-qcom-snps-eusb2.c
+@@ -418,8 +418,6 @@ static int snps_eusb2_hsphy_probe(struct platform_device *pdev)
+ 	if (IS_ERR(phy_provider))
+ 		return PTR_ERR(phy_provider);
+ 
+-	dev_info(dev, "Registered Snps-eUSB2 phy\n");
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/phy/st/phy-stih407-usb.c b/drivers/phy/st/phy-stih407-usb.c
+index a4ae2cca7f637..02e6117709dca 100644
+--- a/drivers/phy/st/phy-stih407-usb.c
++++ b/drivers/phy/st/phy-stih407-usb.c
+@@ -149,8 +149,6 @@ static int stih407_usb2_picophy_probe(struct platform_device *pdev)
+ 	if (IS_ERR(phy_provider))
+ 		return PTR_ERR(phy_provider);
+ 
+-	dev_info(dev, "STiH407 USB Generic picoPHY driver probed!");
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/phy/st/phy-stm32-usbphyc.c b/drivers/phy/st/phy-stm32-usbphyc.c
+index 9dbe60dcf3190..dbf23ae38255a 100644
+--- a/drivers/phy/st/phy-stm32-usbphyc.c
++++ b/drivers/phy/st/phy-stm32-usbphyc.c
+@@ -757,8 +757,8 @@ static int stm32_usbphyc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	version = readl_relaxed(usbphyc->base + STM32_USBPHYC_VERSION);
+-	dev_info(dev, "registered rev:%lu.%lu\n",
+-		 FIELD_GET(MAJREV, version), FIELD_GET(MINREV, version));
++	dev_dbg(dev, "registered rev: %lu.%lu\n",
++		FIELD_GET(MAJREV, version), FIELD_GET(MINREV, version));
+ 
+ 	return 0;
+ 
+diff --git a/drivers/phy/ti/phy-twl4030-usb.c b/drivers/phy/ti/phy-twl4030-usb.c
+index 6b265992d988f..e5918d3b486cc 100644
+--- a/drivers/phy/ti/phy-twl4030-usb.c
++++ b/drivers/phy/ti/phy-twl4030-usb.c
+@@ -784,7 +784,6 @@ static int twl4030_usb_probe(struct platform_device *pdev)
+ 	pm_runtime_mark_last_busy(&pdev->dev);
+ 	pm_runtime_put_autosuspend(twl->dev);
+ 
+-	dev_info(&pdev->dev, "Initialized TWL4030 USB module\n");
+ 	return 0;
+ }
+ 
 -- 
 2.51.0
 
