@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-210920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210921-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KE6KDigpcWkqfAAAu9opvQ
-	(envelope-from <stable+bounces-210920-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:29:44 +0100
+	id QNWCCOkmcWmqewAAu9opvQ
+	(envelope-from <stable+bounces-210921-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:20:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABAE5C2F3
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:29:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961325C02A
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:20:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27EDC7F003E
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0388370EFB7
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4705358D0F;
-	Wed, 21 Jan 2026 18:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F188034D3AC;
+	Wed, 21 Jan 2026 18:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9oWKrGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkT4GaOG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA483375D5;
-	Wed, 21 Jan 2026 18:23:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91A93375D5;
+	Wed, 21 Jan 2026 18:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019833; cv=none; b=tWTpw5T945ksKhSUHajslPP67zXqZf+hJuGl7gbB29ejmJPSKFk3Y/Als6+pkGewLv3YgmtkrX1rHS8aSmpO0vONhKrBwuTiWNFTWK1Ci9gXz3JM3x0PQidhUe3DfK6y5wbpalmcNxU8uqmhZE0nvgdJ0lqApLB/YRXDX6h/ZP4=
+	t=1769019836; cv=none; b=hlMzybpRxg7vzPpgglMSnoSohb0++wL4zRpce3iO6AojIy2zl54gUM26aL/BZNVfD5M2BGRFt+FewPFAcSYHL6ZM/yLCFe+CR50xNWTf1qCEHFHdj8gmjP71rYFhA1DzXYYCMl65tGTV19iufgW8hFz+ngWD/CknNkDkXGgWugM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019833; c=relaxed/simple;
-	bh=uYCx7Cz7cu/jWzU+LyGwC3ppGRCBqhjIe7DPLflPtOs=;
+	s=arc-20240116; t=1769019836; c=relaxed/simple;
+	bh=Ihrp+Pd4WyuI2fcyZzdQbyRHJo39mD8eRCkwTI7paj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FB9dyTdSpz/D460uxwdTHeHKBMRyKlm4tkGmnzUWs4OgN612QFRC+sLl1EJ+j6sGqELcs7XhD+tR7xPsFaYdtvETRLkS+zdBzMy5i35FSQkKMFg3nV0K5FHQtfs/X/eBXEPA18G83USzLmO3RwIV3hPs3nsgUSqFKDDQZtx81Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9oWKrGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79155C4CEF1;
-	Wed, 21 Jan 2026 18:23:52 +0000 (UTC)
+	 MIME-Version; b=l/VDTrgCTDY/ULj2wh8Sav08YMR9O1iuaue+nltwEm5b3CQ37Aeq8jowdMuzRF0RJTFDAZAUR8uaC5B2y6s3SjlygOBHEerWyj2tmdwIwnEhtKZbXwXkblaaDmBJJfIsV+CmSI2nMA/qqkM5ehOudL69felYdEzms1Mu/cBCL00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkT4GaOG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00B4C4CEF1;
+	Wed, 21 Jan 2026 18:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019833;
-	bh=uYCx7Cz7cu/jWzU+LyGwC3ppGRCBqhjIe7DPLflPtOs=;
+	s=korg; t=1769019836;
+	bh=Ihrp+Pd4WyuI2fcyZzdQbyRHJo39mD8eRCkwTI7paj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w9oWKrGTyLc3wOgtlGo5IJMIB1AjYCYRm9RgFHWC1kETKNgKn5zfzL5UZa6xM98Q4
-	 ZxB9RPL+VwNCM4ODV4MRfdMcKd3hVgsZDEg2sFlJbqs1dAKSUTkjvjyP1J5wYty81W
-	 w3/eM35u9CrZv/2sJT3ykQ0D42zzHLv9w7ZNi+oA=
+	b=hkT4GaOGttI5H68C01R7UfgKIGuKPmY07RsWRdJjGuCob0fxrs9K37NYVRGrgdin4
+	 i5idBPVOlVF5xPMD9M/hafaOWhwvZjUOspqcfmDaWgEGICpLOcjEL3f667cyHFYrnk
+	 CpjDCqyswqqlklYSFOnjTMZdbM8AUFi+KnBz1jVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Johan Hovold <johan@kernel.org>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 120/139] dmaengine: ti: dma-crossbar: fix device leak on am335x route allocation
-Date: Wed, 21 Jan 2026 19:16:08 +0100
-Message-ID: <20260121181415.771849903@linuxfoundation.org>
+Subject: [PATCH 6.12 121/139] dmaengine: ti: k3-udma: fix device leak on udma lookup
+Date: Wed, 21 Jan 2026 19:16:09 +0100
+Message-ID: <20260121181415.807872278@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
 References: <20260121181411.452263583@linuxfoundation.org>
@@ -68,32 +69,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210920-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-210921-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,ti.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9ABAE5C2F3
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 961325C02A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,75 +104,40 @@ X-Rspamd-Server: lfdr
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 4fc17b1c6d2e04ad13fd6c21cfbac68043ec03f9 upstream.
+commit 430f7803b69cd5e5694e5dfc884c6628870af36e upstream.
 
-Make sure to drop the reference taken when looking up the crossbar
-platform device during am335x route allocation.
+Make sure to drop the reference taken when looking up the UDMA platform
+device.
 
-Fixes: 42dbdcc6bf96 ("dmaengine: ti-dma-crossbar: Add support for crossbar on AM33xx/AM43xx")
-Cc: stable@vger.kernel.org	# 4.4
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Note that holding a reference to a platform device does not prevent its
+driver data from going away so there is no point in keeping the
+reference after the lookup helper returns.
+
+Fixes: d70241913413 ("dmaengine: ti: k3-udma: Add glue layer for non DMAengine users")
+Fixes: 1438cde8fe9c ("dmaengine: ti: k3-udma: add missing put_device() call in of_xudma_dev_get()")
+Cc: stable@vger.kernel.org	# 5.6: 1438cde8fe9c
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251117161258.10679-15-johan@kernel.org
+Link: https://patch.msgid.link/20251117161258.10679-17-johan@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/dma-crossbar.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/dma/ti/k3-udma-private.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/ti/dma-crossbar.c
-+++ b/drivers/dma/ti/dma-crossbar.c
-@@ -79,34 +79,35 @@ static void *ti_am335x_xbar_route_alloca
- {
- 	struct platform_device *pdev = of_find_device_by_node(ofdma->of_node);
- 	struct ti_am335x_xbar_data *xbar = platform_get_drvdata(pdev);
--	struct ti_am335x_xbar_map *map;
-+	struct ti_am335x_xbar_map *map = ERR_PTR(-EINVAL);
- 
- 	if (dma_spec->args_count != 3)
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
- 
- 	if (dma_spec->args[2] >= xbar->xbar_events) {
- 		dev_err(&pdev->dev, "Invalid XBAR event number: %d\n",
- 			dma_spec->args[2]);
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
+--- a/drivers/dma/ti/k3-udma-private.c
++++ b/drivers/dma/ti/k3-udma-private.c
+@@ -42,9 +42,9 @@ struct udma_dev *of_xudma_dev_get(struct
  	}
  
- 	if (dma_spec->args[0] >= xbar->dma_requests) {
- 		dev_err(&pdev->dev, "Invalid DMA request line number: %d\n",
- 			dma_spec->args[0]);
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
- 	}
- 
- 	/* The of_node_put() will be done in the core for the node */
- 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
- 	if (!dma_spec->np) {
- 		dev_err(&pdev->dev, "Can't get DMA master\n");
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
- 	}
- 
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
- 	if (!map) {
- 		of_node_put(dma_spec->np);
--		return ERR_PTR(-ENOMEM);
-+		map = ERR_PTR(-ENOMEM);
-+		goto out_put_pdev;
- 	}
- 
- 	map->dma_line = (u16)dma_spec->args[0];
-@@ -120,6 +121,9 @@ static void *ti_am335x_xbar_route_alloca
- 
- 	ti_am335x_xbar_write(xbar->iomem, map->dma_line, map->mux_val);
- 
-+out_put_pdev:
+ 	ud = platform_get_drvdata(pdev);
 +	put_device(&pdev->dev);
-+
- 	return map;
- }
+ 	if (!ud) {
+ 		pr_debug("UDMA has not been probed\n");
+-		put_device(&pdev->dev);
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 	}
  
 
 
