@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-211059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mO3fA5kucWmcfAAAu9opvQ
-	(envelope-from <stable+bounces-211059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:52:57 +0100
+	id ULUfF+oycWlQfQAAu9opvQ
+	(envelope-from <stable+bounces-211061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:11:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C855C9A0
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3AF5CE57
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:11:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DAF0578D59A
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:44 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 38CDD7C909E
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C6A3A9D85;
-	Wed, 21 Jan 2026 18:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCBD3559ED;
+	Wed, 21 Jan 2026 18:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="El7kcvJD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTE/HgPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEAD34B69C;
-	Wed, 21 Jan 2026 18:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E37534A78C;
+	Wed, 21 Jan 2026 18:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020299; cv=none; b=q0yG1dM7OZ2bRXCTSEOkFCuCcSfN4KqdLnsXoXYtaUCwqww6zae+SWZ2joAW7PR4Yby4aguedbmFQiMwgLOndS2zOYRaRKDf/k9OZ6M8GgSYtXDqWR3FDI6poMi+U/AzrnQse1Gg1SFihAEPrt3AXb+VB5wAkrY97jkvJN2OSco=
+	t=1769020306; cv=none; b=fDaeJh+nm17n0mFOLrm1aGFvT3gUqaQQkcy+IQDi2p0GoJsl5bql28vUxUBDdRA8DeuVU3IDpfPl62Xhj3da56EhvxxDlA8lnr0BOUM4UFsAgaLf+/XLWoU24/iahEE3QBV1R89XkJSdJrbgMjx0sEYmwcmRRzXES+aVj5ECUqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020299; c=relaxed/simple;
-	bh=GmX6FLqEp2ACyjSAQr4pVvjyn8oD/hvxT46gnb103Sw=;
+	s=arc-20240116; t=1769020306; c=relaxed/simple;
+	bh=SFoHzmInKxet0o4A5mZz7cDXZL6TTfJELmcTvjw6IEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oSvv3jIVndx0RC1H9x661IDnT+G4dFzcQx+7pifP8qdeXDgdWk++jNlcVJDEEX6KzUJEHSjOn5OP01uST8Vp6tewt6M/rSwiI7SAmajBnPVW5cPHkDhH2jaXdlcJK3qhLWeq77Zo8BynpyDa2g3ns2Zn6OFa1KO1lPwvo07uexY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=El7kcvJD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E72EC4CEF1;
-	Wed, 21 Jan 2026 18:31:39 +0000 (UTC)
+	 MIME-Version; b=kw4RC/z2BOiVHU3RGY5tI9rkObZZevQlYR07VVzmDZ9FFWXs2LbHnI8tA8HSqSGcikX5AiIUdXM/J6aMoUcuWkxoJqYm7NzJ9AGeb8TUbk0WaGemioO8r2tgAC24JyMJwfwSaZIuneou2+Yi0gkwKF7UGo7dNo1of6t2CNXbIYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTE/HgPi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8601C4CEF1;
+	Wed, 21 Jan 2026 18:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020299;
-	bh=GmX6FLqEp2ACyjSAQr4pVvjyn8oD/hvxT46gnb103Sw=;
+	s=korg; t=1769020306;
+	bh=SFoHzmInKxet0o4A5mZz7cDXZL6TTfJELmcTvjw6IEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=El7kcvJDQXB/AifdGHYHLGuNA27jGb7z+TvfsS3or9pEsRMqy/GZgC2r2bSGSEOln
-	 Xddwk9FruhZCRHbUymFqcA4djzlSVmEm6UexsXj4MYgQjQkQAH5N9IzsUnAcLmHoru
-	 3d3YMGX0bHTRHYdiZ3/oeiHThKeOPg2vO8NN3gcc=
+	b=fTE/HgPiQQ1WbE3GyHs9SMKXw1LvdgKxXi42pjbhMSmCese81HqJRhHz3LAPiPsd+
+	 GC204Cywhie53Pc5FXqdDHXosq3uOajIU3VCFwwSZpR8ryuHE9QjcbBF2BhNnpXfuy
+	 TPcbQIyE+IVhab/EB1u2QCPcVq6lzgj9nTAJKgcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=E8=83=A1=E8=BF=9E=E5=8B=A4?= <hulianqin@vivo.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.18 118/198] xhci: sideband: dont dereference freed ring when removing sideband endpoint
-Date: Wed, 21 Jan 2026 19:15:46 +0100
-Message-ID: <20260121181422.799509831@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 6.18 119/198] usb: gadget: uvc: fix interval_duration calculation
+Date: Wed, 21 Jan 2026 19:15:47 +0100
+Message-ID: <20260121181422.834452972@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -64,35 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.96 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211059-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-211061-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	RCPT_COUNT_FIVE(0.00)[5];
-	R_SPF_SOFTFAIL(0.00)[~all];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,vivo.com:email]
-X-Rspamd-Queue-Id: B3C855C9A0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email]
+X-Rspamd-Queue-Id: 1B3AF5CE57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,89 +100,67 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit dd83dc1249737b837ac5d57c81f2b0977c613d9f upstream.
+commit 010dc57cb5163e5f4a32430dd5091cc29efd0471 upstream.
 
-xhci_sideband_remove_endpoint() incorrecly assumes that the endpoint is
-running and has a valid transfer ring.
+According to USB specification:
 
-Lianqin reported a crash during suspend/wake-up stress testing, and
-found the cause to be dereferencing a non-existing transfer ring
-'ep->ring' during xhci_sideband_remove_endpoint().
+  For full-/high-speed isochronous endpoints, the bInterval value is
+  used as the exponent for a 2^(bInterval-1) value.
 
-The endpoint and its ring may be in unknown state if this function
-is called after xHCI was reinitialized in resume (lost power), or if
-device is being re-enumerated, disconnected or endpoint already dropped.
+To correctly convert bInterval as interval_duration:
+  interval_duration = 2^(bInterval-1) * frame_interval
 
-Fix this by both removing unnecessary ring access, and by checking
-ep->ring exists before dereferencing it. Also make sure endpoint is
-running before attempting to stop it.
+Because the unit of video->interval is 100ns, add a comment info to
+make it clear.
 
-Remove the xhci_initialize_ring_info() call during sideband endpoint
-removal as is it only initializes ring structure enqueue, dequeue and
-cycle state values to their starting values without changing actual
-hardware enqueue, dequeue and cycle state. Leaving them out of sync
-is worse than leaving it as it is. The endpoint will get freed in after
-this in most usecases.
-
-If the (audio) class driver want's to reuse the endpoint after offload
-then it is up to the class driver to ensure endpoint is properly set up.
-
-Reported-by: 胡连勤 <hulianqin@vivo.com>
-Closes: https://lore.kernel.org/linux-usb/TYUPR06MB6217B105B059A7730C4F6EC8D2B9A@TYUPR06MB6217.apcprd06.prod.outlook.com/
-Tested-by: 胡连勤 <hulianqin@vivo.com>
-Fixes: de66754e9f80 ("xhci: sideband: add initial api to register a secondary interrupter entity")
+Fixes: 48dbe731171e ("usb: gadget: uvc: set req_size and n_requests based on the frame interval")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://patch.msgid.link/20260115233758.364097-2-mathias.nyman@linux.intel.com
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20260113-uvc-gadget-fix-patch-v2-2-62950ef5bcb5@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-sideband.c |    1 -
- drivers/usb/host/xhci.c          |   15 ++++++++++++---
- 2 files changed, 12 insertions(+), 4 deletions(-)
+ drivers/usb/gadget/function/uvc.h       |    2 +-
+ drivers/usb/gadget/function/uvc_video.c |    7 +++++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-sideband.c
-+++ b/drivers/usb/host/xhci-sideband.c
-@@ -210,7 +210,6 @@ xhci_sideband_remove_endpoint(struct xhc
- 		return -ENODEV;
+--- a/drivers/usb/gadget/function/uvc.h
++++ b/drivers/usb/gadget/function/uvc.h
+@@ -107,7 +107,7 @@ struct uvc_video {
+ 	unsigned int width;
+ 	unsigned int height;
+ 	unsigned int imagesize;
+-	unsigned int interval;
++	unsigned int interval;	/* in 100ns units */
+ 	struct mutex mutex;	/* protects frame parameters */
  
- 	__xhci_sideband_remove_endpoint(sb, ep);
--	xhci_initialize_ring_info(ep->ring);
- 
- 	return 0;
- }
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -2891,16 +2891,25 @@ int xhci_stop_endpoint_sync(struct xhci_
- 			    gfp_t gfp_flags)
+ 	unsigned int uvc_num_requests;
+--- a/drivers/usb/gadget/function/uvc_video.c
++++ b/drivers/usb/gadget/function/uvc_video.c
+@@ -499,7 +499,7 @@ uvc_video_prep_requests(struct uvc_video
  {
- 	struct xhci_command *command;
-+	struct xhci_ep_ctx *ep_ctx;
- 	unsigned long flags;
--	int ret;
-+	int ret = -ENODEV;
+ 	struct uvc_device *uvc = container_of(video, struct uvc_device, video);
+ 	struct usb_composite_dev *cdev = uvc->func.config->cdev;
+-	unsigned int interval_duration = video->ep->desc->bInterval * 1250;
++	unsigned int interval_duration;
+ 	unsigned int max_req_size, req_size, header_size;
+ 	unsigned int nreq;
  
- 	command = xhci_alloc_command(xhci, true, gfp_flags);
- 	if (!command)
- 		return -ENOMEM;
+@@ -515,8 +515,11 @@ uvc_video_prep_requests(struct uvc_video
+ 		return;
+ 	}
  
- 	spin_lock_irqsave(&xhci->lock, flags);
--	ret = xhci_queue_stop_endpoint(xhci, command, ep->vdev->slot_id,
--				       ep->ep_index, suspend);
-+
-+	/* make sure endpoint exists and is running before stopping it */
-+	if (ep->ring) {
-+		ep_ctx = xhci_get_ep_ctx(xhci, ep->vdev->out_ctx, ep->ep_index);
-+		if (GET_EP_CTX_STATE(ep_ctx) == EP_STATE_RUNNING)
-+			ret = xhci_queue_stop_endpoint(xhci, command,
-+						       ep->vdev->slot_id,
-+						       ep->ep_index, suspend);
-+	}
-+
- 	if (ret < 0) {
- 		spin_unlock_irqrestore(&xhci->lock, flags);
- 		goto out;
++	interval_duration = 2 << (video->ep->desc->bInterval - 1);
+ 	if (cdev->gadget->speed < USB_SPEED_HIGH)
+-		interval_duration = video->ep->desc->bInterval * 10000;
++		interval_duration *= 10000;
++	else
++		interval_duration *= 1250;
+ 
+ 	nreq = DIV_ROUND_UP(video->interval, interval_duration);
+ 
 
 
 
