@@ -1,70 +1,68 @@
-Return-Path: <stable+bounces-210804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOM1FDwicWl8eQAAu9opvQ
-	(envelope-from <stable+bounces-210804-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:00:12 +0100
+	id sC5UDk8qcWniewAAu9opvQ
+	(envelope-from <stable+bounces-210805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:34:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF175BB1D
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:00:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3505C457
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:34:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 23E9D5EF968
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:57:22 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 784ACB2C7CA
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921EB31B119;
-	Wed, 21 Jan 2026 17:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F447366DAD;
+	Wed, 21 Jan 2026 17:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QK5Le0jV"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="xPlMB1r9"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBEC6331220
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 17:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDA1337113;
+	Wed, 21 Jan 2026 17:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769018060; cv=none; b=FPe4p1EAAXWLaT9aFZwAM+kVwbVnNNLVUJ393HYXGXskSEDA4n2yYwCrOiPr5k7ex8qoAZ3PI6EYOMbF/YYnrchMv6+hYhebtglTzjFBK7lFpyYMUTTEBPj+7j8vqRZpnnblYFKDwdJeEAUSSCjHmVtoejnisZRkmoctEfVJvyY=
+	t=1769018398; cv=none; b=aKRQ2pNHgpiO2q1RWthd9IUcjlkQ/ZukrlIcy3NvepcvU0FqeFZsia35JumzJrveGeyv4SxHrwkts+xdUpHrCQeypNCBSyrUzzzZfNxMuoY0TN/B50Pfj2ANM1oS0cOMHbyEKh0/xu4USGnu86w12Q3uFjpxjShtU98WTMfdtjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769018060; c=relaxed/simple;
-	bh=2VAQF2bPUrBXKvr0EXcola0B6+K76+rauRQYofRmtoU=;
+	s=arc-20240116; t=1769018398; c=relaxed/simple;
+	bh=cB7R//NyyNvgFjDreXZmNdq9+kWv2SQNEu5wQ+LEJsc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SGjpEnU/QCy3sr8g8VCQ61esMQm8tHCQvi13BX3jKsLmslMgzVjQeDI6OgP5eVdBXqF85tClI3q/fFES8e+IBqtT9BpOU0WXamOtMwAOVLGDzbxlrFF+Et+llTPpIW+t9X8XtkzaBofsDZbDeqodnb7cb2UXl3hJ+33X8vfa/cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QK5Le0jV; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769018058; x=1800554058;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=2VAQF2bPUrBXKvr0EXcola0B6+K76+rauRQYofRmtoU=;
-  b=QK5Le0jVb31qYyjV84Qh9pLWL1Est04+DS11kfjjbv2hvkkHGdIvy8Rz
-   AUmschSsxRSdmW07VmboxxlwSG58eV8XESdr9WEIuJ5pPArGqSb0reTSv
-   P35juiZqyjbYgijNSPbHZo5AdY2rMwWozItmYkn8MgMtPV9dQV9ZS68Ia
-   Y7Z2gIvJKr5NTHZoa4KfRnLzRv8Xrzabm32bOsAtCt7YHZxpRNpmZS9YM
-   sB9a+TeEuX6ixiE+p87NrqJCFkzvXnpkfD5NE7nYp6t3NK0QsZ9X7kBll
-   n1bSQXp7xme0NzH8dJ95vQbrcaBfVSodbm+YdPfdnm4MknrGZUxLVRGlP
-   Q==;
-X-CSE-ConnectionGUID: zhJydxh8TU6GD7Sb7w/fCQ==
-X-CSE-MsgGUID: PTIAXiIpRAWnaBKwg1/peQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="69976799"
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
-   d="scan'208";a="69976799"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 09:54:17 -0800
-X-CSE-ConnectionGUID: Px1Na621QAuuCCAk4tPV9A==
-X-CSE-MsgGUID: wYHcX9HIR7iv0rz5nYiAGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
-   d="scan'208";a="206328195"
-Received: from smoticic-mobl1.ger.corp.intel.com (HELO [10.245.245.122]) ([10.245.245.122])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 09:54:15 -0800
-Message-ID: <19212684-a7f2-48f7-a498-9004aeefff04@intel.com>
-Date: Wed, 21 Jan 2026 17:54:12 +0000
+	 In-Reply-To:Content-Type; b=lF6V+kZRfZ14GrfggaEO+jd2S7sG0oLYnJSA3Go7PcJse+DJCjXZaYt8CjdZaPy7HJBPeZDJbxdVisWJfGtabenm0EHKi5AXKQ86vrJgdnvXumfBTo8YWSrCMaKxI4QP+7Wnak1XpyczBVSdpw2PhUmybuAu46sodlOfUfCdWio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=xPlMB1r9; arc=none smtp.client-ip=199.89.1.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 013.lax.mailroute.net (Postfix) with ESMTP id 4dxBmX5YtWzlfc9J;
+	Wed, 21 Jan 2026 17:59:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1769018394; x=1771610395; bh=X95i5SKsyEWEDZbyP0xAvaZy
+	AHiPEpx9o5mzJwtQaRI=; b=xPlMB1r9293lwx+nqLmvq3sIWxaQv+DR6irp2zLd
+	Zlua7TSWZ8wMnhaUmn/e8NGQWAgd25zfYZSa2+EAdxPRrIFp/QSNCNTg039YMpSZ
+	KqiVG1YlurwxJ5MjITbfO+z9ycSu4QHlCrlKxcRyVNQsDSqRNwSzAYKfe8TQt6VO
+	jR7zAslx/P9nFEaKybxWySyeQNwzic+l58UsD/YAWL97RocJFnKYw3nqlx8Qp6Gh
+	SzoVFuf1xXaTvZAbnvOnBuOBA8HBS4jvwVIpL4lv7i44YCq32+OPEPIrTkhXjksG
+	Coccv8upOwnfpsqVrwOaPvgRE1gG0L40K8+tQO49JkcAwA==
+X-Virus-Scanned: by MailRoute
+Received: from 013.lax.mailroute.net ([127.0.0.1])
+ by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id CF6OQ5EBPfQt; Wed, 21 Jan 2026 17:59:54 +0000 (UTC)
+Received: from [100.119.48.131] (unknown [104.135.180.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4dxBmQ3ps2zlfvq4;
+	Wed, 21 Jan 2026 17:59:50 +0000 (UTC)
+Message-ID: <6927d0f7-5bf5-4035-b1c2-50f3edae4b7f@acm.org>
+Date: Wed, 21 Jan 2026 09:59:49 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,232 +70,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] drm, drm/xe: Fix xe userptr in the absence of
- CONFIG_DEVICE_PRIVATE
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- intel-xe@lists.freedesktop.org
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, dri-devel@lists.freedesktop.org,
- stable@vger.kernel.org
-References: <20260121091048.41371-1-thomas.hellstrom@linux.intel.com>
- <20260121091048.41371-2-thomas.hellstrom@linux.intel.com>
- <ad0efbfc-b7b3-4dc8-9499-8a7accd6c5e4@intel.com>
- <81331db882e57f7e7e8322ba7aba87081759465f.camel@linux.intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <81331db882e57f7e7e8322ba7aba87081759465f.camel@linux.intel.com>
+Subject: Re: [PATCH] scsi: target: Fix recursive locking in
+ __configfs_open_file()
+To: Prithvi <activprithvi@gmail.com>
+Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-kernel@vger.kernel.org, hch@lst.de,
+ jlbec@evilplan.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org,
+ david.hunter.linux@gmail.com, khalid@kernel.org,
+ syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260108191523.303114-1-activprithvi@gmail.com>
+ <2f88aa9b-b1c2-4b02-81e8-1c43b982db1b@acm.org>
+ <20260119185049.mvcjjntdkmtdk4je@inspiron>
+ <ac604919-1620-4fea-9401-869fd15f3533@acm.org>
+ <20260121175136.2ku57xskhwwg7syz@inspiron>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20260121175136.2ku57xskhwwg7syz@inspiron>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.96 / 15.00];
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[acm.org:s=mr01];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-210805-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[oracle.com,vger.kernel.org,lst.de,evilplan.org,lists.linux.dev,linuxfoundation.org,gmail.com,kernel.org,syzkaller.appspotmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[acm.org,reject];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_FROM(0.00)[bounces-210804-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+]
-X-Rspamd-Queue-Id: AFF175BB1D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bvanassche@acm.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[acm.org:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,f6e8174215573a84b797];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:mid,acm.org:dkim,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: AD3505C457
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 21/01/2026 17:25, Thomas Hellström wrote:
-> On Wed, 2026-01-21 at 17:19 +0000, Matthew Auld wrote:
->> On 21/01/2026 09:10, Thomas Hellström wrote:
->>> CONFIG_DEVICE_PRIVATE is not selected by default by some distros,
->>> for example Fedora, and that leads to a regression in the xe driver
->>> since userptr support gets compiled out.
->>>
->>> It turns out that DRM_GPUSVM, which is needed for xe userptr
->>> support
->>> compiles also without CONFIG_DEVICE_PRIVATE, but doesn't compile
->>> without CONFIG_ZONE_DEVICE.
->>> Exclude the drm_pagemap files from compilation with
->>> !CONFIG_ZONE_DEVICE,
->>> and remove the CONFIG_DEVICE_PRIVATE dependency from
->>> CONFIG_DRM_GPUSVM and
->>> the xe driver's selection of it, re-enabling xe userptr for those
->>> configs.
->>>
->>> v2:
->>> - Don't compile the drm_pagemap files unless CONFIG_ZONE_DEVICE is
->>> set.
->>> - Adjust the drm_pagemap.h header accordingly.
->>>
->>> Fixes: 9e9787414882 ("drm/xe/userptr: replace xe_hmm with gpusvm")
->>> Cc: Matthew Auld <matthew.auld@intel.com>
->>> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
->>> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->>> Cc: Matthew Brost <matthew.brost@intel.com>
->>> Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
->>> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
->>> Cc: dri-devel@lists.freedesktop.org
->>> Cc: <stable@vger.kernel.org> # v6.18+
->>> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
->>
->> Let me double check that while it does at least build it is also
->> functional without DRM_XE_GPUSVM. I think it takes a different init
->> path
->> and maybe some other differences. Unless you already did?
+On 1/21/26 9:51 AM, Prithvi wrote:
+> I tried using lockdep_register_key() and lockdep_unregister_key() for the
+> frag_sem lock, however it stil gives the possible recursive locking
+> warning. Here is the patch and the bug report from its test:
 > 
-> I think I managed to test without DRM_XE_GPUSVM both with and without
-> ZONE_DEVICE, but since this is going to stable, a second check would be
-> great!
+> https://lore.kernel.org/all/6767d8ea.050a0220.226966.0021.GAE@google.com/T/#m3203ceddf3423b7116ba9225d182771608f93a6f
+> 
+> Would using down_read_nested() and subclasses be a better option here?
+> 
+> I also checked out some documentation regarding it and learnt that to use
+> the _nested() form, the hierarchy among the locks should be mapped
+> accurately; however, IIUC, there isn't any hierarchy between the locks in
+> this case, is this right?
+> 
+> Apologies if I am missing something obvious here, and thanks for your
+> time and guidance.
 
-Tried various userptr IGTs, and looked good.
+This is unexpected. Please ask help from someone who is familiar with 
+VFS internals. I'm not familiar with these internals.
 
-> 
-> Thanks,
-> Thomas
-> 
-> 
->>
->> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
->>
->>> ---
->>>    drivers/gpu/drm/Kconfig    |  2 +-
->>>    drivers/gpu/drm/Makefile   |  4 +++-
->>>    drivers/gpu/drm/xe/Kconfig |  2 +-
->>>    include/drm/drm_pagemap.h  | 18 ++++++++++++++----
->>>    4 files changed, 19 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
->>> index a33b90251530..d3d52310c9cc 100644
->>> --- a/drivers/gpu/drm/Kconfig
->>> +++ b/drivers/gpu/drm/Kconfig
->>> @@ -210,7 +210,7 @@ config DRM_GPUVM
->>>    
->>>    config DRM_GPUSVM
->>>    	tristate
->>> -	depends on DRM && DEVICE_PRIVATE
->>> +	depends on DRM
->>>    	select HMM_MIRROR
->>>    	select MMU_NOTIFIER
->>>    	help
->>> diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
->>> index 0deee72ef935..0c21029c446f 100644
->>> --- a/drivers/gpu/drm/Makefile
->>> +++ b/drivers/gpu/drm/Makefile
->>> @@ -108,9 +108,11 @@ obj-$(CONFIG_DRM_EXEC) += drm_exec.o
->>>    obj-$(CONFIG_DRM_GPUVM) += drm_gpuvm.o
->>>    
->>>    drm_gpusvm_helper-y := \
->>> -	drm_gpusvm.o\
->>> +	drm_gpusvm.o
->>> +drm_gpusvm_helper-$(CONFIG_ZONE_DEVICE) += \
->>>    	drm_pagemap.o\
->>>    	drm_pagemap_util.o
->>> +
->>>    obj-$(CONFIG_DRM_GPUSVM) += drm_gpusvm_helper.o
->>>    
->>>    obj-$(CONFIG_DRM_BUDDY) += drm_buddy.o
->>> diff --git a/drivers/gpu/drm/xe/Kconfig
->>> b/drivers/gpu/drm/xe/Kconfig
->>> index 4b288eb3f5b0..c34be1be155b 100644
->>> --- a/drivers/gpu/drm/xe/Kconfig
->>> +++ b/drivers/gpu/drm/xe/Kconfig
->>> @@ -39,7 +39,7 @@ config DRM_XE
->>>    	select DRM_TTM
->>>    	select DRM_TTM_HELPER
->>>    	select DRM_EXEC
->>> -	select DRM_GPUSVM if !UML && DEVICE_PRIVATE
->>> +	select DRM_GPUSVM if !UML
->>>    	select DRM_GPUVM
->>>    	select DRM_SCHED
->>>    	select MMU_NOTIFIER
->>> diff --git a/include/drm/drm_pagemap.h b/include/drm/drm_pagemap.h
->>> index 46e9c58f09e0..2baf0861f78f 100644
->>> --- a/include/drm/drm_pagemap.h
->>> +++ b/include/drm/drm_pagemap.h
->>> @@ -243,6 +243,8 @@ struct drm_pagemap_devmem_ops {
->>>    			   struct dma_fence *pre_migrate_fence);
->>>    };
->>>    
->>> +#if IS_ENABLED(CONFIG_ZONE_DEVICE)
->>> +
->>>    int drm_pagemap_init(struct drm_pagemap *dpagemap,
->>>    		     struct dev_pagemap *pagemap,
->>>    		     struct drm_device *drm,
->>> @@ -252,17 +254,22 @@ struct drm_pagemap *drm_pagemap_create(struct
->>> drm_device *drm,
->>>    				       struct dev_pagemap
->>> *pagemap,
->>>    				       const struct
->>> drm_pagemap_ops *ops);
->>>    
->>> -#if IS_ENABLED(CONFIG_DRM_GPUSVM)
->>> +struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page
->>> *page);
->>>    
->>>    void drm_pagemap_put(struct drm_pagemap *dpagemap);
->>>    
->>>    #else
->>>    
->>> +static inline struct drm_pagemap
->>> *drm_pagemap_page_to_dpagemap(struct page *page)
->>> +{
->>> +	return NULL;
->>> +}
->>> +
->>>    static inline void drm_pagemap_put(struct drm_pagemap *dpagemap)
->>>    {
->>>    }
->>>    
->>> -#endif /* IS_ENABLED(CONFIG_DRM_GPUSVM) */
->>> +#endif /* IS_ENABLED(CONFIG_ZONE_DEVICE) */
->>>    
->>>    /**
->>>     * drm_pagemap_get() - Obtain a reference on a struct drm_pagemap
->>> @@ -334,6 +341,8 @@ struct drm_pagemap_migrate_details {
->>>    	u32 source_peer_migrates : 1;
->>>    };
->>>    
->>> +#if IS_ENABLED(CONFIG_ZONE_DEVICE)
->>> +
->>>    int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem
->>> *devmem_allocation,
->>>    				  struct mm_struct *mm,
->>>    				  unsigned long start, unsigned
->>> long end,
->>> @@ -343,8 +352,6 @@ int drm_pagemap_evict_to_ram(struct
->>> drm_pagemap_devmem *devmem_allocation);
->>>    
->>>    const struct dev_pagemap_ops *drm_pagemap_pagemap_ops_get(void);
->>>    
->>> -struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page
->>> *page);
->>> -
->>>    void drm_pagemap_devmem_init(struct drm_pagemap_devmem
->>> *devmem_allocation,
->>>    			     struct device *dev, struct mm_struct
->>> *mm,
->>>    			     const struct drm_pagemap_devmem_ops
->>> *ops,
->>> @@ -359,4 +366,7 @@ int drm_pagemap_populate_mm(struct drm_pagemap
->>> *dpagemap,
->>>    void drm_pagemap_destroy(struct drm_pagemap *dpagemap, bool
->>> is_atomic_or_reclaim);
->>>    
->>>    int drm_pagemap_reinit(struct drm_pagemap *dpagemap);
->>> +
->>> +#endif /* IS_ENABLED(CONFIG_ZONE_DEVICE) */
->>> +
->>>    #endif
+Thanks,
 
+Bart.
 
