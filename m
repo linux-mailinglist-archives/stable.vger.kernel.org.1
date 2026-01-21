@@ -1,60 +1,69 @@
-Return-Path: <stable+bounces-210888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHmbLiIrcWniewAAu9opvQ
-	(envelope-from <stable+bounces-210888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:38:10 +0100
+	id sEDmChU5cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-211083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:37:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E1E5C54B
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:38:10 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BA45D655
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 99608B4242E
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:23:46 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2E22472D05D
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16EB3A1A36;
-	Wed, 21 Jan 2026 18:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D21316193;
+	Wed, 21 Jan 2026 18:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLK+FQnb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6vdsBDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103C53A1D10;
-	Wed, 21 Jan 2026 18:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960FF38BDC7;
+	Wed, 21 Jan 2026 18:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019724; cv=none; b=sz3pazIarcb63FFC+pfyBtuuBaOqG3mI10iTOTi8BC6aJlKznk6yEcScf0SILvC4/E4yYfAqEfOmORmzQdk0Bh3Ka+1X66GLhwy+34EFJTOzYAIT18491Sq2gjIF70fzcA0D9hALo/aK9NpDs2WmN6056/8lmvaA3BSZxP3sc0E=
+	t=1769020383; cv=none; b=mPU5+jKALiAPmpRY5okj7WAbKnOE/LKfv9YUGa1l6/+2Gf5kLxhjMbqUoDc6hRQuzTnU69wL0l0ShLpFUXkpqyX3Rdsq7buX+3GQIX46JLksYnaxtFR5mDZaxTI01snOIndxJBwAmoV7v7wxZreTPhd7UwNQR3rrd5YzCrdAMhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019724; c=relaxed/simple;
-	bh=hbJW6k+8ae4bNPIBh9Z7qX9pjzz7xRuBCuLgnI2Udus=;
+	s=arc-20240116; t=1769020383; c=relaxed/simple;
+	bh=lQm7VrYH9Qf8hIN36eSj05LVNjP50iLcjW944dKXq0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C/7TA6clvvwce11ozN+D75eBjn3anImVxMq63YbOj3P40poVGxrqIqOyGWEKEt9hERrKCAs4rSgDQyfLq/uxM5eRvBztPXIslAFX0rLvdOxuZSwrSM2KNreZcVhPHcE3r+18dyjQtRWG9bsrVVED6tS33gR842MUsEd+neRkzhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLK+FQnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB01C16AAE;
-	Wed, 21 Jan 2026 18:22:03 +0000 (UTC)
+	 MIME-Version; b=BHePpAPLz0xwQrREWsklC+Wlx+EcreIiZLpxwbmmCpl8tquVk9PZq4LarpVAUOtwGfdS+Pz6sMhPU427Ns4x7vua5OMtMsoTmOlf1p5cGOuTwIuYbc8QFud9vXE7YWFl6bpzvuOD/xFn20oMgkTWRmLtSW3aVVHMG8ssj/rBlW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6vdsBDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE71C4CEF1;
+	Wed, 21 Jan 2026 18:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019723;
-	bh=hbJW6k+8ae4bNPIBh9Z7qX9pjzz7xRuBCuLgnI2Udus=;
+	s=korg; t=1769020383;
+	bh=lQm7VrYH9Qf8hIN36eSj05LVNjP50iLcjW944dKXq0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLK+FQnbOWOmBrWkejPkm+yGycU0r2INAw9LAOIY/QnZgptDaTcOvf/ZxqLWCH19d
-	 EISHMDX/+rebGLSEHM7UwXcLVaIq1haj3JjUuMYK7BJuXslliTS7HYQrRItbDBhk4z
-	 H5zmXV3H1j0GW8cYeHkC9ITFzcH8k+g124Yr1MBA=
+	b=i6vdsBDCyt+GCMZ+dQ9d6UiDSxA0haLCcRQworbDuDmzC8jzlicegBAMdSMGVaF2C
+	 kk1W0C0TA4Qz+qWwNVHLP5dk20pu8NR/b45rrxu76ITN9GFR700j0BrCDqC/tV+I0i
+	 QfQjsXDh3yQaj7mwxhHeagu33y7+7NTWMahe4esk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.12 088/139] EDAC/i3200: Fix a resource leak in i3200_probe1()
+	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Christoph Hellwig <hch@lst.de>,
+	Jinchao Wang <wangjinchao600@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkman <daniel@iogearbox.net>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 108/198] lib/buildid: use __kernel_read() for sleepable context
 Date: Wed, 21 Jan 2026 19:15:36 +0100
-Message-ID: <20260121181414.623554342@linuxfoundation.org>
+Message-ID: <20260121181422.439581852@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +74,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
@@ -73,80 +83,137 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210888-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TAGGED_FROM(0.00)[bounces-211083-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,linux.dev,lst.de,gmail.com,kernel.org,iogearbox.net,infradead.org,linux-foundation.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,iscas.ac.cn:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 31E1E5C54B
+	TAGGED_RCPT(0.00)[stable,09b7d050e4806540153d];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: D2BA45D655
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Shakeel Butt <shakeel.butt@linux.dev>
 
-commit d42d5715dcb559342ff356327b241c53a67584d9 upstream.
+commit 777a8560fd29738350c5094d4166fe5499452409 upstream.
 
-If edac_mc_alloc() fails, also unmap the window.
+Prevent a "BUG: unable to handle kernel NULL pointer dereference in
+filemap_read_folio".
 
-  [ bp: Use separate labels, turning it into the classic unwind pattern. ]
+For the sleepable context, convert freader to use __kernel_read() instead
+of direct page cache access via read_cache_folio().  This simplifies the
+faultable code path by using the standard kernel file reading interface
+which handles all the complexity of reading file data.
 
-Fixes: dd8ef1db87a4 ("edac: i3200 memory controller driver")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251223123202.1492038-1-lihaoxiang@isrc.iscas.ac.cn
+At the moment we are not changing the code for non-sleepable context which
+uses filemap_get_folio() and only succeeds if the target folios are
+already in memory and up-to-date.  The reason is to keep the patch simple
+and easier to backport to stable kernels.
+
+Syzbot repro does not crash the kernel anymore and the selftests run
+successfully.
+
+In the follow up we will make __kernel_read() with IOCB_NOWAIT work for
+non-sleepable contexts.  In addition, I would like to replace the
+secretmem check with a more generic approach and will add fstest for the
+buildid code.
+
+Link: https://lkml.kernel.org/r/20251222205859.3968077-1-shakeel.butt@linux.dev
+Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
+Reported-by: syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=09b7d050e4806540153d
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Tested-by: Jinchao Wang <wangjinchao600@gmail.com>
+  Link: https://lkml.kernel.org/r/aUteBPWPYzVWIZFH@ndev
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/i3200_edac.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ lib/buildid.c |   32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
---- a/drivers/edac/i3200_edac.c
-+++ b/drivers/edac/i3200_edac.c
-@@ -358,10 +358,11 @@ static int i3200_probe1(struct pci_dev *
- 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[1].size = nr_channels;
- 	layers[1].is_virt_csrow = false;
--	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers,
--			    sizeof(struct i3200_priv));
+--- a/lib/buildid.c
++++ b/lib/buildid.c
+@@ -5,6 +5,7 @@
+ #include <linux/elf.h>
+ #include <linux/kernel.h>
+ #include <linux/pagemap.h>
++#include <linux/fs.h>
+ #include <linux/secretmem.h>
+ 
+ #define BUILD_ID 3
+@@ -65,20 +66,9 @@ static int freader_get_folio(struct frea
+ 
+ 	freader_put_folio(r);
+ 
+-	/* reject secretmem folios created with memfd_secret() */
+-	if (secretmem_mapping(r->file->f_mapping))
+-		return -EFAULT;
+-
++	/* only use page cache lookup - fail if not already cached */
+ 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
+ 
+-	/* if sleeping is allowed, wait for the page, if necessary */
+-	if (r->may_fault && (IS_ERR(r->folio) || !folio_test_uptodate(r->folio))) {
+-		filemap_invalidate_lock_shared(r->file->f_mapping);
+-		r->folio = read_cache_folio(r->file->f_mapping, file_off >> PAGE_SHIFT,
+-					    NULL, r->file);
+-		filemap_invalidate_unlock_shared(r->file->f_mapping);
+-	}
+-
+ 	if (IS_ERR(r->folio) || !folio_test_uptodate(r->folio)) {
+ 		if (!IS_ERR(r->folio))
+ 			folio_put(r->folio);
+@@ -116,6 +106,24 @@ static const void *freader_fetch(struct
+ 		return r->data + file_off;
+ 	}
+ 
++	/* reject secretmem folios created with memfd_secret() */
++	if (secretmem_mapping(r->file->f_mapping)) {
++		r->err = -EFAULT;
++		return NULL;
++	}
 +
-+	rc = -ENOMEM;
-+	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, sizeof(struct i3200_priv));
- 	if (!mci)
--		return -ENOMEM;
-+		goto unmap;
- 
- 	edac_dbg(3, "MC: init mci\n");
- 
-@@ -421,9 +422,9 @@ static int i3200_probe1(struct pci_dev *
- 	return 0;
- 
- fail:
-+	edac_mc_free(mci);
-+unmap:
- 	iounmap(window);
--	if (mci)
--		edac_mc_free(mci);
- 
- 	return rc;
- }
++	/* use __kernel_read() for sleepable context */
++	if (r->may_fault) {
++		ssize_t ret;
++
++		ret = __kernel_read(r->file, r->buf, sz, &file_off);
++		if (ret != sz) {
++			r->err = (ret < 0) ? ret : -EIO;
++			return NULL;
++		}
++		return r->buf;
++	}
++
+ 	/* fetch or reuse folio for given file offset */
+ 	r->err = freader_get_folio(r, file_off);
+ 	if (r->err)
 
 
 
