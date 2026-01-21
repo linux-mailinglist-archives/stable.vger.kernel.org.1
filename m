@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-211091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210940-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONNKHWgycWlQfQAAu9opvQ
-	(envelope-from <stable+bounces-211091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:09:12 +0100
+	id mIE8NhEgcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210940-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:50:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AB85CDBA
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:09:11 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DC75B88D
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C19E7B6B081
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:36:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7EECD725371
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AC8B3D6464;
-	Wed, 21 Jan 2026 18:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6922A3A89C6;
+	Wed, 21 Jan 2026 18:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3lk9FaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nyw0S0Dv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322923A9D92;
-	Wed, 21 Jan 2026 18:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF05356A27;
+	Wed, 21 Jan 2026 18:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020410; cv=none; b=MMXdUnE9GJZ7dUJObPZMH6HRePuZa5juXR7SMMEhyezpvG7tBYj7LG5WaUOWEswZUXba4w5I/f4RuxbFI/pFSA/o8gnFh6PagFGkmD9it1yDSioflF7An6ZiN/TcjUlkJh7xXYFAH6axVWj9PKrB9pVOFTOf+ySsWv4b1Lza+2Q=
+	t=1769019900; cv=none; b=Eh+w75Vnvqt2RnmmnlFw4VF03xAA1zgaKHFqZc58FuUNlBvWTAJcqM1EgITZDLGmBw1cjR6bU7lPZv86EevVb4YvgfsTn7zyh+zS/Ky1V5bCbDrBYNVo4xpvdbM1DOQmOHLERqcMmAT1JF7uMuWxVoKzxJxZT9L1HLpSpGmVGv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020410; c=relaxed/simple;
-	bh=e/k1kMfRKP9+TZGmllYCbWX61r+oL5XnwIGFDu3/3pQ=;
+	s=arc-20240116; t=1769019900; c=relaxed/simple;
+	bh=fjl62f9KzVuXkH7GbWSzctrYJFLn+EAI9Z/AhjE+tPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXfXDrdD5xm86uSlSNc8mfFJarEq6oYYzCFg18VgmydA/x9y/yJy2XuCsFYGTlg0F31QBnuUn3NHxjXEYdHN4GFOV3lf5rdPr5LPrxQgYVYElr6OXoeWdQy0sr/ZDBPRv5jrNBzGRgVQzAG6RsYvzN73N29FnJQi4xWBPt3ebb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3lk9FaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80515C4CEF1;
-	Wed, 21 Jan 2026 18:33:29 +0000 (UTC)
+	 MIME-Version; b=EnBjp0N1/lOqitdW092bgshN5oXAIDDUVxtQZzKWZA4ihPoMK2zoU/tdZbD3LyDGoW7+FWWTbtKBZnEytRnlGQKrscU3zZsWyMWkZijlQZ6ZFBSUz6bpMTXko5nuJMljpD4GFVOKGeKZvf9batBwiWbBUn/E29UhaPgQqgo2Y6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nyw0S0Dv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E22DC4CEF1;
+	Wed, 21 Jan 2026 18:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020409;
-	bh=e/k1kMfRKP9+TZGmllYCbWX61r+oL5XnwIGFDu3/3pQ=;
+	s=korg; t=1769019899;
+	bh=fjl62f9KzVuXkH7GbWSzctrYJFLn+EAI9Z/AhjE+tPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3lk9FaOWyU3nnMQmsvLZztz36XYZnkh4CKIpD1eLaf0p6NJVL7+HNa9TuKICI+0W
-	 Vmbix5IVUzjYjBmMvrdTVXefbgwD5yPayDVxR7Iz0D45LEXqMnhat6PoMdXxN6Ul7x
-	 eceY4fKNDqWLknW5cc7z0IRO7F780bfop3Zymcok=
+	b=Nyw0S0Dv/PZzS/jIK9AR3A1PJimvBKjk+U/Fq8+NMvZXgWK6+bCs4Esy8iIf2F7N6
+	 iLNZ+BIAwmIYOCTRn1WvN9Bjh7H8c8YuqgnHo2hf9bwcPEeNCKSH5w5UJAUrA7XgaH
+	 7gZax1At+Ul7ywFgP/US+dhtsWDF5rI8g8OkFwjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vivek Das Mohapatra <vivek@collabora.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 150/198] drm/amd/display: Initialise backlight level values from hw
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 130/139] mm: kmsan: fix poisoning of high-order non-compound pages
 Date: Wed, 21 Jan 2026 19:16:18 +0100
-Message-ID: <20260121181423.955325773@linuxfoundation.org>
+Message-ID: <20260121181416.130430870@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,114 +71,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211091-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-210940-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: D8AB85CDBA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,arm.com:email]
+X-Rspamd-Queue-Id: 82DC75B88D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vivek Das Mohapatra <vivek@collabora.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit 52d3d115e9cc975b90b1fc49abf6d36ad5e8847a upstream.
+[ Upstream commit 4795d205d78690a46b60164f44b8bb7b3e800865 ]
 
-Internal backlight levels are initialised from ACPI but the values
-are sometimes out of sync with the levels in effect until there has
-been a read from hardware (eg triggered by reading from sysfs).
+kmsan_free_page() is called by the page allocator's free_pages_prepare()
+during page freeing.  Its job is to poison all the memory covered by the
+page.  It can be called with an order-0 page, a compound high-order page
+or a non-compound high-order page.  But page_size() only works for order-0
+and compound pages.  For a non-compound high-order page it will
+incorrectly return PAGE_SIZE.
 
-This means that the first drm_commit can cause the levels to be set
-to a different value than the actual starting one, which results in
-a sudden change in brightness.
+The implication is that the tail pages of a high-order non-compound page
+do not get poisoned at free, so any invalid access while they are free
+could go unnoticed.  It looks like the pages will be poisoned again at
+allocation time, so that would bookend the window.
 
-This path shows the problem (when the values are out of sync):
+Fix this by using the order parameter to calculate the size.
 
-   amdgpu_dm_atomic_commit_tail()
-   -> amdgpu_dm_commit_streams()
-   -> amdgpu_dm_backlight_set_level(..., dm->brightness[n])
-
-This patch calls the backlight ops get_brightness explicitly
-at the end of backlight registration to make sure dm->brightness[n]
-is in sync with the actual hardware levels.
-
-Fixes: 2fe87f54abdc ("drm/amd/display: Set default brightness according to ACPI")
-Signed-off-by: Vivek Das Mohapatra <vivek@collabora.com>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 318b1c36d82a0cd2b06a4bb43272fa6f1bc8adc1)
-Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20260104134348.3544298-1-ryan.roberts@arm.com
+Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page operations")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Tested-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ mm/kmsan/shadow.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -5193,6 +5193,8 @@ amdgpu_dm_register_backlight_device(stru
- 	struct amdgpu_dm_backlight_caps *caps;
- 	char bl_name[16];
- 	int min, max;
-+	int real_brightness;
-+	int init_brightness;
- 
- 	if (aconnector->bl_idx == -1)
+--- a/mm/kmsan/shadow.c
++++ b/mm/kmsan/shadow.c
+@@ -208,7 +208,7 @@ void kmsan_free_page(struct page *page,
  		return;
-@@ -5217,6 +5219,8 @@ amdgpu_dm_register_backlight_device(stru
- 	} else
- 		props.brightness = props.max_brightness = MAX_BACKLIGHT_LEVEL;
- 
-+	init_brightness = props.brightness;
-+
- 	if (caps->data_points && !(amdgpu_dc_debug_mask & DC_DISABLE_CUSTOM_BRIGHTNESS_CURVE)) {
- 		drm_info(drm, "Using custom brightness curve\n");
- 		props.scale = BACKLIGHT_SCALE_NON_LINEAR;
-@@ -5235,8 +5239,20 @@ amdgpu_dm_register_backlight_device(stru
- 	if (IS_ERR(dm->backlight_dev[aconnector->bl_idx])) {
- 		drm_err(drm, "DM: Backlight registration failed!\n");
- 		dm->backlight_dev[aconnector->bl_idx] = NULL;
--	} else
-+	} else {
-+		/*
-+		 * dm->brightness[x] can be inconsistent just after startup until
-+		 * ops.get_brightness is called.
-+		 */
-+		real_brightness =
-+			amdgpu_dm_backlight_ops.get_brightness(dm->backlight_dev[aconnector->bl_idx]);
-+
-+		if (real_brightness != init_brightness) {
-+			dm->actual_brightness[aconnector->bl_idx] = real_brightness;
-+			dm->brightness[aconnector->bl_idx] = real_brightness;
-+		}
- 		drm_dbg_driver(drm, "DM: Registered Backlight device: %s\n", bl_name);
-+	}
- }
- 
- static int initialize_plane(struct amdgpu_display_manager *dm,
+ 	kmsan_enter_runtime();
+ 	kmsan_internal_poison_memory(page_address(page),
+-				     page_size(page),
++				     PAGE_SIZE << order,
+ 				     GFP_KERNEL,
+ 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
+ 	kmsan_leave_runtime();
 
 
 
