@@ -1,99 +1,64 @@
-Return-Path: <stable+bounces-210760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IDbBH5nfcGnCaQAAu9opvQ
-	(envelope-from <stable+bounces-210760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:15:53 +0100
+	id gP68BeLccGnCaQAAu9opvQ
+	(envelope-from <stable+bounces-210761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:04:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E73583D7
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:15:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B56F581D1
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:04:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 3861C7032C2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 13:41:00 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 08B2D942CED
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 13:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147D33C00AA;
-	Wed, 21 Jan 2026 13:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1ECD3EDAB0;
+	Wed, 21 Jan 2026 13:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F1tMCEeK"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="TB9H8ELB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4012C2FC874
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 13:40:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6F23D411D;
+	Wed, 21 Jan 2026 13:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769002849; cv=none; b=MhK+X3jliMEWONeV2cRMKf1afC3vHbaK3KyaesylAYUAEtzMJ3RhLmD1/L8/sYmZWKhiOXAhj8MinbwvXdg8XISVTNrqEEFMssuIjK96CRn18V0hQ15EcCkEKBp4BTLiXUKb0lr3imtIVw4p/aNJCNEU+TEcLJM+WRNf6g7XinA=
+	t=1769002991; cv=none; b=ZCXW0RaxUxUfZwsuksbO8h26wuduTqX6+/6nKtYuVXo4NYd+AQ2ldSQfn6X6mzGILcMzWV38iDfRlm0MxumDwRV8/RYIbZMymzYieN3dzHD3mA6Bcds/wfF1PxG5t8KXabivn/KliHeOpc6zM71DUsuajw+1EYQTHOATAYbzQDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769002849; c=relaxed/simple;
-	bh=Zj98ZO/ts5b/MYgZaQn1CeOkJWBxcPQsjM8uYXM3aaw=;
+	s=arc-20240116; t=1769002991; c=relaxed/simple;
+	bh=BPUSs+DRWFaZUaaeSKV+bFcPdPErDhU0WKpIbS8DUQ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ecOpJCnmuxh+wDWcURwZcGYIBAP9pQ9Gdk92m1YZys1JIhOepBROLrcT4S8UDIZPdUPT7cb86HypaMvL7BCml6TnDn+oAwGFQnm7tpQSxcmkaxhYdi9N50Hg5C0p1CjN47wzgFVGrXQdEWl4jev8dAxv3IFAmcg6lZTg4rPEh14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F1tMCEeK; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-34be2be4b7cso3917623a91.3
-        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 05:40:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769002847; x=1769607647; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pPaaLejyMj+/qnEy2gN+yRCN0UmH2KujytP4NRWmWr8=;
-        b=F1tMCEeKELRa0nVdKgeXsW8TRYImYt3BKVrYRDHTahS2rVVOcf8mJ+GAy1C+fELbWg
-         PW4LIcjathuH7f6y1DNK5rt6VLeFzlrz2ZIYhEojVBO38z51OZEJhMNFaWOzR7gjI6U8
-         7wO6gx/M7bZ3PCMx80W/P4jZTzFUs3zFukyku+nSRk4ogSigIVVbnW1RDHF10botbyyW
-         SRHPXGxHkAdfNbJS/nPUiL4MvxbcTbIOUAGz/exnZriGx/ZD+CTDytP6+3LcHjEWs0rv
-         XVeqwJTufUcMDHkxXhrS5v53nYFNbpVYrwKCGsuyhQQ26AGtQQqYTMmW3uYWv1t9Egkp
-         2mmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769002847; x=1769607647;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pPaaLejyMj+/qnEy2gN+yRCN0UmH2KujytP4NRWmWr8=;
-        b=qfyABwIX1MO48GrSuppUflL+e4xRpeS0xAkpmAA1ObXF4LA5pzZ3rUT5D4jktB342Z
-         SsaHgyKNdkgYjmns0HOZr3dQRby7ivdB1GluNdruPH2H8Lh2TGLRV3Bc45en+FgUE5bG
-         g3qyx680d6JF3RouILla3jdbTRSQq8G19uxPitTLDARfEXQATeXAeLi9OXzf5tjGNo61
-         hEKbxcWc66MHiqcyvIWJVGCcsWpiWdpxL3IbkkOOXO7+m2SrFLlFLs/dyW3OSsjG14Fm
-         xfUvxW0roEkxSUwehwggmrDzYPM0Mlag+Oxe61L20A+b6tg/X1ys41r9jb06tIIimhVZ
-         mrVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWw6Y4QXe/PG/vZxj4LHWsD3D84t02hGGFC+6nhEZT6LLTTErY0YLXkXB+bJxn9BBpBDKJ76wE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZQ7/moUldHV1jWltxvPqYFIqpX6WO0Fu8ONji/ZFg0oZLMhR1
-	uuOwauiaZ9Osy8aWZqYXA6n+1FIR2xWvEu83/8qNZznmARELmnWEftr9
-X-Gm-Gg: AZuq6aLLDY6IHrBg80c5rcQRfGNeHVhFLs6gTgWZlME1OoiYe1F+/fst+Unzknm4iYM
-	OzMwcqvBiuGekJkPzORuZfeKV5Ee04PA6hyo5Bvbnr2luWHKogYpYuzbUkAVsniGiMsTSnuYtQu
-	5hyXr3EzHC+ZlTiRCnHbRSuKlX04mOdaKToBCBo1Tj5dHHrTG9WrbrO6hxICPjUW14zWBDKt1UD
-	s3WFkobcjLCBFDBzDUeFgLpEUa9H/iojn8ucklcif84HaVtj3Bx7gmCx/Dsk49sCHpFA4ltYTmm
-	T4Q/A/kvdgbqrJvomV3fG2j6J0n/65KeiIro0dDjlIro6eqWhFUmokMJRFzjX+IYfPt6qSnuA3G
-	drHnPoAi5zy+12T5w+LmbCHOjBrZQeLGI6jEzhT+CAj1Y4QF/NZYvOSdLUOd615aJ7SgocsDvov
-	x22U+RkHc5bH4=
-X-Received: by 2002:a17:90b:4fc2:b0:34e:630c:616c with SMTP id 98e67ed59e1d1-352c4055083mr3706750a91.31.1769002847164;
-        Wed, 21 Jan 2026 05:40:47 -0800 (PST)
-Received: from inspiron ([111.125.231.221])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-352c114c2absm5238039a91.13.2026.01.21.05.40.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 05:40:46 -0800 (PST)
-Date: Wed, 21 Jan 2026 19:10:37 +0530
-From: Prithvi <activprithvi@gmail.com>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	hch@lst.de, jlbec@evilplan.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com, khalid@kernel.org,
-	syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: target: Fix recursive locking in
- __configfs_open_file()
-Message-ID: <20260121134037.kh3rfrgmwsylcl5r@inspiron>
-References: <20260108191523.303114-1-activprithvi@gmail.com>
- <2f88aa9b-b1c2-4b02-81e8-1c43b982db1b@acm.org>
- <20260119185049.mvcjjntdkmtdk4je@inspiron>
- <ac604919-1620-4fea-9401-869fd15f3533@acm.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FtoPUTnWS3RvsgtE0cX7TCdPigZ2JMEnWVctjF+SpppVfTzlOdZlV0opW3mXZVErcDyhP3YlRD+Dnssi6mvdc4QIuU6rtvGLapNakjeZEVY/6FgMncqm00Xv1AmQ/XDcL7zP5UOMPH42hzPr8TAECJOFVHzYvfIJtjn1UHI4vrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=TB9H8ELB; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=BPUSs+DRWFaZUaaeSKV+bFcPdPErDhU0WKpIbS8DUQ0=; b=TB9H8ELBvyJ5o6fkmXBGE4HzcU
+	9kZIHgbsSNMa8UTK1gr6PLdBQ9DQ+98G4MdYJXDwlKI0PDa6k0DF62m2e+9bxQypK70NS9dRgdjs6
+	KCXrEmoY3uismyDUFAoTuWFzrMDI0CcIZOIrtnbmF2qrUo9RF6CcjMs8ATBLLdqTWaiHTiMjyMtgO
+	JcxDOomHm7tIVdPaGybioLZHIcpzAd+6cueMVtff2W6tdFhMZDvf8HismZ+B6EnBY59n5StiREDMX
+	eNy2Bzzuz3aqmAfhagGKItK8pqGb+aHz7q+K5L2970v8upiGS/HR81671xwwIG3QyJV4duuxa0Z85
+	F1SeW3rA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1viYU8-0000000GPup-13XG;
+	Wed, 21 Jan 2026 13:43:00 +0000
+Date: Wed, 21 Jan 2026 13:43:00 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, bernd@bsbernd.com,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>, linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] flex_proportions: Make fprop_new_period() hardirq safe
+Message-ID: <aXDX5IXuvghtyZZU@casper.infradead.org>
+References: <20260121112729.24463-2-jack@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,58 +67,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ac604919-1620-4fea-9401-869fd15f3533@acm.org>
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <20260121112729.24463-2-jack@suse.cz>
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210760-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[infradead.org,none];
+	FREEMAIL_CC(0.00)[linux-foundation.org,bsbernd.com,gmail.com,szeredi.hu,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-210761-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[oracle.com,vger.kernel.org,lst.de,evilplan.org,lists.linux.dev,linuxfoundation.org,gmail.com,kernel.org,syzkaller.appspotmail.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[infradead.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[activprithvi@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,f6e8174215573a84b797];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 65E73583D7
+	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,infradead.org:dkim,suse.cz:email,bsbernd.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,casper.infradead.org:mid]
+X-Rspamd-Queue-Id: 2B56F581D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jan 20, 2026 at 05:48:16AM -0800, Bart Van Assche wrote:
-> On 1/19/26 10:50 AM, Prithvi wrote:
-> >   Possible unsafe locking scenario:
-> > 
-> >         CPU0
-> >         ----
-> >    lock(&p->frag_sem);
-> >    lock(&p->frag_sem);
-> The least intrusive way to suppress this type of lockdep complaints is
-> by using lockdep_register_key() and lockdep_unregister_key().
-> 
-> Thanks,
-> 
-> Bart.
+On Wed, Jan 21, 2026 at 12:27:30PM +0100, Jan Kara wrote:
+> Bernd has reported a lockdep splat from flexible proportions code that
+> is essentially complaining about the following race:
+[...]
+> Note that a deadlock like this is only possible if the bdi has
+> configured maximum fraction of writeout throughput which is very rare
+> in general but frequent for example for FUSE bdis. To fix this problem
+> we have to make sure write section of the sequence counter is irqsafe.
 
-Sure. I will make v2 patch for the same.
+Ah, that's why we haven't seen it reported before.
 
-Thanks,
-Prithvi
+> CC: stable@vger.kernel.org
+> Fixes: a91befde3503 ("lib/flex_proportions.c: remove local_irq_ops in fprop_new_period()")
+> Reported-by: Bernd Schubert <bernd@bsbernd.com>
+> Link: https://lore.kernel.org/all/9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com/
+> Signed-off-by: Jan Kara <jack@suse.cz>
+
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
