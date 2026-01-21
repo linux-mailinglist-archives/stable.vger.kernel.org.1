@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-211107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uO3YMB08cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-211107-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:50:37 +0100
+	id QAL1ExkucWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-210919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:50:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6F55D9AE
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:50:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD90F5C900
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:50:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A5E617CC192
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:37:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 60BEA7EFE18
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169A83A4AD0;
-	Wed, 21 Jan 2026 18:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3F53A1CE4;
+	Wed, 21 Jan 2026 18:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0k+m9ul+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQaYGOel"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BE2338581;
-	Wed, 21 Jan 2026 18:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E827123AB98;
+	Wed, 21 Jan 2026 18:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020461; cv=none; b=HiUMHEeUqrygGV21qCOIokTpQ0uRQrTWElo1pm++PkZiHK6TDArFbP8DtmpO2HLvMzdcKadiFWLDl4RubLbcuSqYeKPJhUFAvCm/YI9MUIsVpaoPxc6W4yjMUB+w6ka5L/UCLq55Wuy2+NQoBw5QK5z7JuPXhyF6jIPJW0IcrKE=
+	t=1769019830; cv=none; b=lDl6dDt/1bMYhKKU6YqYOg5Y9xaq6HFKr3W4w7jHyOdZIqiLOd9qeLZLAngsVGp2xi6PEGBfbOo8y9ykB9Kp5GdPcO95DTKbVJG34Lh0iCSFUbct8sSXx6w08Tpk9Yv2/ShaITImAplXhp/WPkZelqUZ90CsxjC90hGtzWFRf6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020461; c=relaxed/simple;
-	bh=kNjGVjQ8wu9B8mmUe+OuiDtPMNh+JUYJ1JOpLVgh9YE=;
+	s=arc-20240116; t=1769019830; c=relaxed/simple;
+	bh=Jnwrns+idDmj0xMB70oOgi1ER1Q1LHt1O3qCnErZ6Io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mg/p23Io/+RQu7EwZbLp4592bG/NNcQPeJZxSoYiHtnuoY6YUnNcwAsBVUgijXitE4F4trr3m83sP4Qo+AK4ViME61keY0vAQilwrjAmQtwTBU2PPm1kj+b2Ik56mfFkuZFnQ1+V2rrYRXIED71g166Bl/vPfR2oqjPUup8S4xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0k+m9ul+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A04DC4CEF1;
-	Wed, 21 Jan 2026 18:34:20 +0000 (UTC)
+	 MIME-Version; b=sTKCOHIyR11pMt0e7bsIoTmreERw0eh40CBmoBkAld587N80mHAR4n8U+e1RBHFuLGm3j0a9RZ5s8cFc4xmzluKD0aW/bC+lprF/ZWicvTCibHMskJx6YKz1RmnYQBOLXdfZEDH+05V51jRsr5dZ5ouvHtiagxyKphDGgq4tn/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NQaYGOel; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C64C4CEF1;
+	Wed, 21 Jan 2026 18:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020461;
-	bh=kNjGVjQ8wu9B8mmUe+OuiDtPMNh+JUYJ1JOpLVgh9YE=;
+	s=korg; t=1769019829;
+	bh=Jnwrns+idDmj0xMB70oOgi1ER1Q1LHt1O3qCnErZ6Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0k+m9ul+q/+P1TSf8rw94SFRPVEn/ebabAhOzR6NndveySizU/YViYJYaixHyaKXC
-	 Xkfp8xLmUJKX14EyGipm2c9WKMEHuy/mNGYLY04Vq4waY6+YJjkqbwpRkg48Rmioxc
-	 bo1VP/TuOeDXuZzcYhozdcQo/6Lg/MYr89xMz6j8=
+	b=NQaYGOelJFbkttFHPRwQFRpWi8y8EyPEgg5WcL1zPBMCFdsPhgRf3yP6tECEjsu3T
+	 WdkEs4tu8aDUJhKriMePp4roOGTCsAJXd8g1WkJo8Tv6CLR+62Z5JsCUTQ7d9yju9A
+	 WjioDkKfSm4jpaHMFVJMbBxSbssbPd3NFfAnZqRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 138/198] mm: kmsan: fix poisoning of high-order non-compound pages
-Date: Wed, 21 Jan 2026 19:16:06 +0100
-Message-ID: <20260121181423.512553673@linuxfoundation.org>
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 119/139] dmaengine: ti: dma-crossbar: fix device leak on dra7x route allocation
+Date: Wed, 21 Jan 2026 19:16:07 +0100
+Message-ID: <20260121181415.734927251@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,78 +75,69 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211107-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ti.com,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210919-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arm.com:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 8A6F55D9AE
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: AD90F5C900
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 4795d205d78690a46b60164f44b8bb7b3e800865 upstream.
+commit dc7e44db01fc2498644e3106db3e62a9883a93d5 upstream.
 
-kmsan_free_page() is called by the page allocator's free_pages_prepare()
-during page freeing.  Its job is to poison all the memory covered by the
-page.  It can be called with an order-0 page, a compound high-order page
-or a non-compound high-order page.  But page_size() only works for order-0
-and compound pages.  For a non-compound high-order page it will
-incorrectly return PAGE_SIZE.
+Make sure to drop the reference taken when looking up the crossbar
+platform device during dra7x route allocation.
 
-The implication is that the tail pages of a high-order non-compound page
-do not get poisoned at free, so any invalid access while they are free
-could go unnoticed.  It looks like the pages will be poisoned again at
-allocation time, so that would bookend the window.
+Note that commit 615a4bfc426e ("dmaengine: ti: Add missing put_device in
+ti_dra7_xbar_route_allocate") fixed the leak in the error paths but the
+reference is still leaking on successful allocation.
 
-Fix this by using the order parameter to calculate the size.
-
-Link: https://lkml.kernel.org/r/20260104134348.3544298-1-ryan.roberts@arm.com
-Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page operations")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a074ae38f859 ("dmaengine: Add driver for TI DMA crossbar on DRA7x")
+Fixes: 615a4bfc426e ("dmaengine: ti: Add missing put_device in ti_dra7_xbar_route_allocate")
+Cc: stable@vger.kernel.org	# 4.2: 615a4bfc426e
+Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-14-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kmsan/shadow.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/ti/dma-crossbar.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/kmsan/shadow.c
-+++ b/mm/kmsan/shadow.c
-@@ -207,7 +207,7 @@ void kmsan_free_page(struct page *page,
- 	if (!kmsan_enabled || kmsan_in_runtime())
- 		return;
- 	kmsan_enter_runtime();
--	kmsan_internal_poison_memory(page_address(page), page_size(page),
-+	kmsan_internal_poison_memory(page_address(page), PAGE_SIZE << order,
- 				     GFP_KERNEL & ~(__GFP_RECLAIM),
- 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
- 	kmsan_leave_runtime();
+--- a/drivers/dma/ti/dma-crossbar.c
++++ b/drivers/dma/ti/dma-crossbar.c
+@@ -288,6 +288,8 @@ static void *ti_dra7_xbar_route_allocate
+ 
+ 	ti_dra7_xbar_write(xbar->iomem, map->xbar_out, map->xbar_in);
+ 
++	put_device(&pdev->dev);
++
+ 	return map;
+ }
+ 
 
 
 
