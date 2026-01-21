@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-211030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210867-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNvSOc82cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-211030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:27:59 +0100
+	id 8Ly2BRUvcWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-210867-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:55:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB965D37B
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:27:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E22A5CA11
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:55:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id DC6553ABCA2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:30:56 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 87F9DAAAD90
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800F2358D0F;
-	Wed, 21 Jan 2026 18:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466C6393403;
+	Wed, 21 Jan 2026 18:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOxUrOWo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQUTdpTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1F53A7E12;
-	Wed, 21 Jan 2026 18:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD95E346783;
+	Wed, 21 Jan 2026 18:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020199; cv=none; b=YoNlSRnrt6f83xb1ajfFjfm6sMdZcO4BCpNuepnr0Dc2M9aLyfyqNDx+NBq37fWbvmbTraL6jJNfT5ULsXjY9DtTqDJLZGSAzzWea8fiGe78LeXmbayfJahIYtTknfgnrR0urmrPkqDBSuLMGTrhgRlwvmRtWo789qlgzH/nWKg=
+	t=1769019654; cv=none; b=NzkoPX9j8QHQ7AX+CWXeeRBvtb58YyQKPQCaoLR1o7/kLZ5tRd3Ba3csrgMqOJwGU8yQCSWIblpsZ18bqJ/Rj+cMPWWotfJfjuQ/QCXcHJ1tnqIKGXY+O5/ll9wZKH3Gh1E87NyRh2F3F917dZ5Y0Fi/ku0ihOvRr1qzcMn460k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020199; c=relaxed/simple;
-	bh=0zwP8Y4yP9zZvxjfuG9/arxkqB3IMRx9wK3tRvqOB3g=;
+	s=arc-20240116; t=1769019654; c=relaxed/simple;
+	bh=2zwD9n/6d8sJLNrjI5lS4G4TSe4GBaAw7VXbL5zjG8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EL2gJTi1pAz7qfLO1F+X8nQS2o1elS9zVcLOtbyLvq2zUh0FKkQNrnpV/9YXHQdOSpR4teBIjn+Br6M64v/RtwFdM4kXPkQLGYcoZgRcA4Sx9fCCZvKIYm/5sYiOpPFZf/lPLO7q8EyoMw6iF/FjM+zrtqUEJpEU29W+Py0dvI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOxUrOWo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD211C4CEF1;
-	Wed, 21 Jan 2026 18:29:58 +0000 (UTC)
+	 MIME-Version; b=DUr/GRz5ncAYgUJ0kTwEylYssnSZv6JLJN0R+UoEFNLA2zQPk7nPKmezFd+ivwalSlEeMtHPfE2oRDXnDW5546hk36lq1/K+dugEDMIL1TKs7qN8bslNxM5qiTgCa4YLRVdshlgHeWvUJk45Ajyvvp6lymnTp7hnLN39UUEofeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQUTdpTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49009C4CEF1;
+	Wed, 21 Jan 2026 18:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020199;
-	bh=0zwP8Y4yP9zZvxjfuG9/arxkqB3IMRx9wK3tRvqOB3g=;
+	s=korg; t=1769019653;
+	bh=2zwD9n/6d8sJLNrjI5lS4G4TSe4GBaAw7VXbL5zjG8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOxUrOWoLCcL4lz0Umj8bsOpVTsgZo/LWfU50rG6gbrXMe34WEO9mNVjv/QPzLHbA
-	 U/g4gWtkv3ZVrsHx8EKTp0XvIz4lBmdlxVVxfg4vvaRZxm8askXvbzX/0KkJa7lpAC
-	 UMx7hXFaLfnUWoAQ38IJMfGwFqKkmhgWJIBzMJOE=
+	b=WQUTdpTcAWCKYd97HLvoSxxUuKSfgCHopLkDWt9vYHTZEyhfl152WWZgrThJXEJxS
+	 g6YfatMl/vqZNn7PhhQKEtYu9KSM1oSm+pHsLeGAv2GsCBQhhoNw59tlRQQJVg/J+0
+	 8ZYuKJI0MeDPGp0vjOgsJEVisouo3dyNtkd929m8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 088/198] sched: Deadline has dynamic priority
-Date: Wed, 21 Jan 2026 19:15:16 +0100
-Message-ID: <20260121181421.725093197@linuxfoundation.org>
+	syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 069/139] net: can: j1939: j1939_xtp_rx_rts_session_active(): deactivate session upon receiving the second rts
+Date: Wed, 21 Jan 2026 19:15:17 +0100
+Message-ID: <20260121181413.938710734@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
@@ -75,84 +76,80 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211030-lists,stable=lfdr.de];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210867-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,infradead.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 6EB965D37B
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,881d65229ca4f9ae8c84];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,msgid.link:url,pengutronix.de:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email]
+X-Rspamd-Queue-Id: 7E22A5CA11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit e008ec6c7904ed99d3b2cb634b6545b008a99288 ]
+commit 1809c82aa073a11b7d335ae932d81ce51a588a4a upstream.
 
-While FIFO/RR have static priority, DEADLINE is a dynamic priority
-scheme. Notably it has static priority -1. Do not assume the priority
-doesn't change for deadline tasks just because the static priority
-doesn't change.
+Since j1939_session_deactivate_activate_next() in j1939_tp_rxtimer() is
+called only when the timer is enabled, we need to call
+j1939_session_deactivate_activate_next() if we cancelled the timer.
+Otherwise, refcount for j1939_session leaks, which will later appear as
 
-This ensures DL always sees {DE,EN}QUEUE_MOVE where appropriate.
+| unregister_netdevice: waiting for vcan0 to become free. Usage count = 2.
 
-Fixes: ff77e4685359 ("sched/rt: Fix PI handling vs. sched_setscheduler()")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Pierre Gondois <pierre.gondois@arm.com>
-Tested-by: Juri Lelli <juri.lelli@redhat.com>
-Link: https://patch.msgid.link/20260114130528.GB831285@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+problem.
+
+Reported-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Link: https://patch.msgid.link/b1212653-8fa1-44e1-be9d-12f950fb3a07@I-love.SAKURA.ne.jp
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/core.c     | 2 +-
- kernel/sched/syscalls.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/can/j1939/transport.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index eb47d294e2c5a..e460c22de8ad4 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7383,7 +7383,7 @@ void rt_mutex_setprio(struct task_struct *p, struct task_struct *pi_task)
- 	trace_sched_pi_setprio(p, pi_task);
- 	oldprio = p->prio;
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -1699,8 +1699,16 @@ static int j1939_xtp_rx_rts_session_acti
  
--	if (oldprio == prio)
-+	if (oldprio == prio && !dl_prio(prio))
- 		queue_flag &= ~DEQUEUE_MOVE;
+ 		j1939_session_timers_cancel(session);
+ 		j1939_session_cancel(session, J1939_XTP_ABORT_BUSY);
+-		if (session->transmission)
++		if (session->transmission) {
+ 			j1939_session_deactivate_activate_next(session);
++		} else if (session->state == J1939_SESSION_WAITING_ABORT) {
++			/* Force deactivation for the receiver.
++			 * If we rely on the timer starting in j1939_session_cancel,
++			 * a second RTS call here will cancel that timer and fail
++			 * to restart it because the state is already WAITING_ABORT.
++			 */
++			j1939_session_deactivate_activate_next(session);
++		}
  
- 	prev_class = p->sched_class;
-diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
-index bf360a6fbb800..6805a63d47af7 100644
---- a/kernel/sched/syscalls.c
-+++ b/kernel/sched/syscalls.c
-@@ -688,7 +688,7 @@ int __sched_setscheduler(struct task_struct *p,
- 		 * itself.
- 		 */
- 		newprio = rt_effective_prio(p, newprio);
--		if (newprio == oldprio)
-+		if (newprio == oldprio && !dl_prio(newprio))
- 			queue_flags &= ~DEQUEUE_MOVE;
+ 		return -EBUSY;
  	}
- 
--- 
-2.51.0
-
 
 
 
