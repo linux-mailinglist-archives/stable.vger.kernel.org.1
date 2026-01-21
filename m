@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-211090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mErTDW83cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-211090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:30:39 +0100
+	id KETeI6YzcWlQfQAAu9opvQ
+	(envelope-from <stable+bounces-210939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:14:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB8D5D410
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:30:38 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02D35CEF7
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:14:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2110182403B
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:36:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C653D8AF4DA
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2BF3AA1AF;
-	Wed, 21 Jan 2026 18:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482453A9012;
+	Wed, 21 Jan 2026 18:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaTQLAOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6Pcg6s8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554D13A9D92;
-	Wed, 21 Jan 2026 18:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77251396D35;
+	Wed, 21 Jan 2026 18:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020407; cv=none; b=bhQRADziagTxjjRjJuhhBohuqpgxalqVqTJgZaeP0MxTW68zO1zDqLR8IrklL/d0qRWHvCoMXR16ImC+iRUwbodzxkHbhx+RQ+3D0HbUBa4Q+KdSE+mSB+xU25uSGqprR1r0ID6LeVHxDuIEHY5akbJtwDaxevPEcyLqNTLsn6Y=
+	t=1769019896; cv=none; b=p4J2daq9wguB7kmi1bCOvo0jY4cU8rDKU03+soVfJr8ESxwpO02DMyYyFC5YEPt4fKAzxchQik8FbHPO+QPKW4I6kR4KE6SsQlhdYtCLunLqOIHLzcw8J6zktS1N9GyrsKugZkZ2k8vDx1zQ66kjfr/0hMBnUqY/0yCYwn/Usrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020407; c=relaxed/simple;
-	bh=yE5Y6x539HNA7rxUBQ1NK8UG4QJfp6FlfF2S8PV7X60=;
+	s=arc-20240116; t=1769019896; c=relaxed/simple;
+	bh=pwJDo1qMxRQpgmcvchlKMTP9nEWFLkBvJqpP/ETonH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UROOOZQMkgw0MoGgtDjfRz0PwqD7YPt6GOnmq310DBuwnmlcqkMJIsLeqLiQF9SpGiAC76Z3Eo/RPYUGVpMwR8q8K8aMi7c5B/JwJrpL8bP6m+v/BlWH4GN0fyARFGgSWjkN1FqjCUAh7/k3OOnfT4q7rB8X3rguxyUSYVcOzQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaTQLAOP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57BCAC4CEF1;
-	Wed, 21 Jan 2026 18:33:26 +0000 (UTC)
+	 MIME-Version; b=kJVRFxB0Sdhdl0Ma3u/yrZUc38lra48tYkMLzoIhFfsj+c8my9gQQ6Dam40DOGGAnfwZzwc0WJMWsknn9YjbFE3+J86BEPO9SVLMHoThBECDTIrAbCS7QS80fIV8fmQZQ/nwO2faVfLlAcERz8Rttzzi8mpJxKuZH4zgZyxVix8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6Pcg6s8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AB7C4CEF1;
+	Wed, 21 Jan 2026 18:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020406;
-	bh=yE5Y6x539HNA7rxUBQ1NK8UG4QJfp6FlfF2S8PV7X60=;
+	s=korg; t=1769019896;
+	bh=pwJDo1qMxRQpgmcvchlKMTP9nEWFLkBvJqpP/ETonH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iaTQLAOP2Fhisd9e3z/0tOHrqDcEt2w8f+1t/IyOFZ4T1n5v28scSTEMglfDwO6KR
-	 hoQM9rkbTsCBhm9AzQj0MqA4B7nLG8PckAaHV8KmwxsN7HY2VPtJ4O6Px/3Zcfiwut
-	 GUbxfGThAXxuWX+vCmEss2Rw6LvBbpvJfz3JxXAc=
+	b=A6Pcg6s8ZyE/uCvfyOKv6L12uAc5FMs+QM1dsmCPOXKD+/DQjuveM0WvLbzwFM2Px
+	 53R3c95dfmtYbtLgXQ+vnNVfc6mSPtaXqsEcJ7XEMC35SZQwXLUBD4ROMBE+xIshR1
+	 dZefAwvR5Yq7avIpdL+rW62rnYJ22VCwj68dXO3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dianne Skoll <dianne@skoll.ca>,
-	Chris Park <chris.park@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Matthew Stewart <matthew.stewart2@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 149/198] drm/amd/display: Bump the HDMI clock to 340MHz
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.12 129/139] selftests/bpf: Test invalid narrower ctx load
 Date: Wed, 21 Jan 2026 19:16:17 +0100
-Message-ID: <20260121181423.920257992@linuxfoundation.org>
+Message-ID: <20260121181416.095033810@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +67,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
@@ -77,93 +76,89 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211090-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.com];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210939-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,amd.com:email]
-X-Rspamd-Queue-Id: DCB8D5D410
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: D02D35CEF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-commit fee50077656d8a58011f13bca48f743d1b6d6015 upstream.
+commit ba578b87fe2beef95b37264f8a98c0b505b93de9 upstream.
 
-[Why]
-DP-HDMI dongles can execeed bandwidth requirements on high resolution
-monitors. This can lead to pruning the high resolution modes.
+This patch adds selftests to cover invalid narrower loads on the
+context. These used to cause kernel warnings before the previous patch.
+To trigger the warning, the load had to be aligned, to read an affected
+context field (ex., skb->sk), and not starting at the beginning of the
+field.
 
-HDMI 1.3 bumped the clock to 340MHz, but display code never matched it.
+The nine new cases all fail without the previous patch.
 
-[How]
-Set default to (DVI) 165MHz.  Once HDMI display is identified update
-to 340MHz.
-
-Reported-by: Dianne Skoll <dianne@skoll.ca>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4780
-Reviewed-by: Chris Park <chris.park@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Matthew Stewart <matthew.stewart2@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit ac1e65d8ade46c09fb184579b81acadf36dcb91e)
-Cc: stable@vger.kernel.org
+Suggested-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://patch.msgid.link/44cd83ea9c6868079943f0a436c6efa850528cc1.1753194596.git.paul.chaignon@gmail.com
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_hdmi_types.h       |    2 +-
- drivers/gpu/drm/amd/display/dc/link/link_detection.c |    4 +++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/progs/verifier_ctx.c |   25 +++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dc_hdmi_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_hdmi_types.h
-@@ -41,7 +41,7 @@
- /* kHZ*/
- #define DP_ADAPTOR_DVI_MAX_TMDS_CLK 165000
- /* kHZ*/
--#define DP_ADAPTOR_HDMI_SAFE_MAX_TMDS_CLK 165000
-+#define DP_ADAPTOR_HDMI_SAFE_MAX_TMDS_CLK 340000
+--- a/tools/testing/selftests/bpf/progs/verifier_ctx.c
++++ b/tools/testing/selftests/bpf/progs/verifier_ctx.c
+@@ -218,4 +218,29 @@ __naked void null_check_8_null_bind(void
+ 	: __clobber_all);
+ }
  
- struct dp_hdmi_dongle_signature_data {
- 	int8_t id[15];/* "DP-HDMI ADAPTOR"*/
---- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-@@ -332,7 +332,7 @@ static void query_dp_dual_mode_adaptor(
- 
- 	/* Assume we have no valid DP passive dongle connected */
- 	*dongle = DISPLAY_DONGLE_NONE;
--	sink_cap->max_hdmi_pixel_clock = DP_ADAPTOR_HDMI_SAFE_MAX_TMDS_CLK;
-+	sink_cap->max_hdmi_pixel_clock = DP_ADAPTOR_DVI_MAX_TMDS_CLK;
- 
- 	/* Read DP-HDMI dongle I2c (no response interpreted as DP-DVI dongle)*/
- 	if (!i2c_read(
-@@ -388,6 +388,8 @@ static void query_dp_dual_mode_adaptor(
- 
- 		}
- 	}
-+	if (is_valid_hdmi_signature)
-+		sink_cap->max_hdmi_pixel_clock = DP_ADAPTOR_HDMI_SAFE_MAX_TMDS_CLK;
- 
- 	if (is_type2_dongle) {
- 		uint32_t max_tmds_clk =
++#define narrow_load(type, ctx, field)					\
++	SEC(type)							\
++	__description("narrow load on field " #field " of " #ctx)	\
++	__failure __msg("invalid bpf_context access")			\
++	__naked void invalid_narrow_load##ctx##field(void)		\
++	{								\
++		asm volatile ("						\
++		r1 = *(u32 *)(r1 + %[off]);				\
++		r0 = 0;							\
++		exit;"							\
++		:							\
++		: __imm_const(off, offsetof(struct ctx, field) + 4)	\
++		: __clobber_all);					\
++	}
++
++narrow_load("cgroup/getsockopt", bpf_sockopt, sk);
++narrow_load("cgroup/getsockopt", bpf_sockopt, optval);
++narrow_load("cgroup/getsockopt", bpf_sockopt, optval_end);
++narrow_load("tc", __sk_buff, sk);
++narrow_load("cgroup/bind4", bpf_sock_addr, sk);
++narrow_load("sockops", bpf_sock_ops, sk);
++narrow_load("sockops", bpf_sock_ops, skb_data);
++narrow_load("sockops", bpf_sock_ops, skb_data_end);
++narrow_load("sockops", bpf_sock_ops, skb_hwtstamp);
++
+ char _license[] SEC("license") = "GPL";
 
 
 
