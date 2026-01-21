@@ -1,63 +1,64 @@
-Return-Path: <stable+bounces-210995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8C+PBbsqcWniewAAu9opvQ
-	(envelope-from <stable+bounces-210995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:36:27 +0100
+	id aB51LFEmcWl8eQAAu9opvQ
+	(envelope-from <stable+bounces-210832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:17:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC1A5C4C7
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:36:26 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB715BF68
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:17:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 678E97288EC
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:28:29 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 07D5962F521
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604AD3A1D10;
-	Wed, 21 Jan 2026 18:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4123793BC;
+	Wed, 21 Jan 2026 18:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agwHDHYO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9m3Z69H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF812DF134;
-	Wed, 21 Jan 2026 18:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151A73218DD;
+	Wed, 21 Jan 2026 18:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020083; cv=none; b=koqlOZcKj0UfN6T2BkMnuTT5KnFkMME95N8+ZjKw0G+/y4yhkbu2c6RTFzE7wCpsYd6Zn+tHfcYoAE3N7qrBHxoW4QiUxL98c60FpdHTnXI/mKrKIC7zWNpjvqdOJ49hQhimnKgQliHFYxNLeXdR1LXn9bPjEVsgWctm2xFutdw=
+	t=1769019534; cv=none; b=LFnrhLPbXsmjAbF63fXvUWlEylHMKaUgxp+qTSCZjmP0FM2alL5W1fTUGeis2hAQFySz6QwXKildhgXeIB00iEOcZ4m6aTgPnMW7iB7I8bDmZT7LznkOw4whKgGcHQIwrPEq5T4Yh3IbN4VqbR21WDv1Ywr/XtrlW0L22ERyBOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020083; c=relaxed/simple;
-	bh=xAjOZQFRZcNMFjFGyYT47XKNfB2Q/20V9rAhQBpPSdk=;
+	s=arc-20240116; t=1769019534; c=relaxed/simple;
+	bh=tJSOPU6uUXNgxDxJQt/ukLDgDUYYt0vjyO1CyASIrVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cB6mN7r3/YWa02oera7cVnPzKfJoxle3V/vKlzjtuyLgk0RxgVdqZA+esudMTjpEmKj4v/iqVYlK91bwJ2aEv4nOau+xKyKAbgBrPi+WHGDbV4QLU6joWdXGelmEIQINTZ88El4KEe3He37/Slg5qHuEHejm3nI/KO6coo3mE9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agwHDHYO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEEEC4CEF1;
-	Wed, 21 Jan 2026 18:28:02 +0000 (UTC)
+	 MIME-Version; b=ksob7OcRusjyKbduxwKp55kml1OaFo8wgDJiCkD9T2Of9NiXd76FHE4ND2zrqtsphVLIXnVFJegqNoGV1tT3P/obXH1k+wbyzVfYALooBI7yPZnfn1ySIK9YiQM6EvzncSKTVDpMb7mM5xmUIOLHQwAawUFPQ77B1cgCo4xQKeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9m3Z69H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAEDC4CEF1;
+	Wed, 21 Jan 2026 18:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020083;
-	bh=xAjOZQFRZcNMFjFGyYT47XKNfB2Q/20V9rAhQBpPSdk=;
+	s=korg; t=1769019533;
+	bh=tJSOPU6uUXNgxDxJQt/ukLDgDUYYt0vjyO1CyASIrVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agwHDHYOg72IHBG6L1awUL0PIKO9ONx/UrdNvyFXkHpGnNuTLCugzCFRBfdDsuxeF
-	 Q+7Qmr7FKTWLzy+lO6fQbJino1FhN1zZhrsOQjzPE1I5hu6fzDDjjzDOr3mMiegshl
-	 cJQZ5CXtTg32JtroWExLrJqdDt4RqZBNpLqiwPX8=
+	b=Y9m3Z69HEBV+1oSm9KAi0hfPApsDhcdwukOBcuXrBh2nAMpfeQGlcHLSSf9ht21fS
+	 x8RjuJfdQVXYnvJ8wMWHTA9oLTuYfiUjD8aq82lV7i6PWn8zhtBgznMtWKEZmwvWVR
+	 XDCt2gmAavzLraXXp9va73JC2woUoysUHJ2deBNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+07f3f38f723c335f106d@syzkaller.appspotmail.com,
+	syzbot+72e610f4f1a930ca9d8a@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 054/198] net/sched: sch_qfq: do not free existing class in qfq_change_class()
+Subject: [PATCH 6.12 034/139] ipv6: Fix use-after-free in inet6_addr_del().
 Date: Wed, 21 Jan 2026 19:14:42 +0100
-Message-ID: <20260121181420.499363700@linuxfoundation.org>
+Message-ID: <20260121181412.682595513@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,78 +72,163 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [0.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	MIME_TRACE(0.00)[0:+];
-	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,mojatatu.com:server fail,ams.mirrors.kernel.org:server fail,linuxfoundation.org:server fail,appspotmail.com:server fail];
+	TAGGED_FROM(0.00)[bounces-210832-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210995-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TAGGED_RCPT(0.00)[stable,72e610f4f1a930ca9d8a];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,07f3f38f723c335f106d];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,mojatatu.com:email]
-X-Rspamd-Queue-Id: 7CC1A5C4C7
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2DB715BF68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 3879cffd9d07aa0377c4b8835c4f64b4fb24ac78 ]
+[ Upstream commit ddf96c393a33aef4887e2e406c76c2f8cda1419c ]
 
-Fixes qfq_change_class() error case.
+syzbot reported use-after-free of inet6_ifaddr in
+inet6_addr_del(). [0]
 
-cl->qdisc and cl should only be freed if a new class and qdisc
-were allocated, or we risk various UAF.
+The cited commit accidentally moved ipv6_del_addr() for
+mngtmpaddr before reading its ifp->flags for temporary
+addresses in inet6_addr_del().
 
-Fixes: 462dbc9101ac ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
-Reported-by: syzbot+07f3f38f723c335f106d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6965351d.050a0220.eaf7.00c5.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260112175656.17605-1-edumazet@google.com
+Let's move ipv6_del_addr() down to fix the UAF.
+
+[0]:
+BUG: KASAN: slab-use-after-free in inet6_addr_del.constprop.0+0x67a/0x6b0 net/ipv6/addrconf.c:3117
+Read of size 4 at addr ffff88807b89c86c by task syz.3.1618/9593
+
+CPU: 0 UID: 0 PID: 9593 Comm: syz.3.1618 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0xcd/0x630 mm/kasan/report.c:482
+ kasan_report+0xe0/0x110 mm/kasan/report.c:595
+ inet6_addr_del.constprop.0+0x67a/0x6b0 net/ipv6/addrconf.c:3117
+ addrconf_del_ifaddr+0x11e/0x190 net/ipv6/addrconf.c:3181
+ inet6_ioctl+0x1e5/0x2b0 net/ipv6/af_inet6.c:582
+ sock_do_ioctl+0x118/0x280 net/socket.c:1254
+ sock_ioctl+0x227/0x6b0 net/socket.c:1375
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f164cf8f749
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f164de64038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f164d1e5fa0 RCX: 00007f164cf8f749
+RDX: 0000200000000000 RSI: 0000000000008936 RDI: 0000000000000003
+RBP: 00007f164d013f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f164d1e6038 R14: 00007f164d1e5fa0 R15: 00007ffde15c8288
+ </TASK>
+
+Allocated by task 9593:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:56
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:77
+ poison_kmalloc_redzone mm/kasan/common.c:397 [inline]
+ __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:414
+ kmalloc_noprof include/linux/slab.h:957 [inline]
+ kzalloc_noprof include/linux/slab.h:1094 [inline]
+ ipv6_add_addr+0x4e3/0x2010 net/ipv6/addrconf.c:1120
+ inet6_addr_add+0x256/0x9b0 net/ipv6/addrconf.c:3050
+ addrconf_add_ifaddr+0x1fc/0x450 net/ipv6/addrconf.c:3160
+ inet6_ioctl+0x103/0x2b0 net/ipv6/af_inet6.c:580
+ sock_do_ioctl+0x118/0x280 net/socket.c:1254
+ sock_ioctl+0x227/0x6b0 net/socket.c:1375
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 6099:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:56
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:77
+ kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:584
+ poison_slab_object mm/kasan/common.c:252 [inline]
+ __kasan_slab_free+0x5f/0x80 mm/kasan/common.c:284
+ kasan_slab_free include/linux/kasan.h:234 [inline]
+ slab_free_hook mm/slub.c:2540 [inline]
+ slab_free_freelist_hook mm/slub.c:2569 [inline]
+ slab_free_bulk mm/slub.c:6696 [inline]
+ kmem_cache_free_bulk mm/slub.c:7383 [inline]
+ kmem_cache_free_bulk+0x2bf/0x680 mm/slub.c:7362
+ kfree_bulk include/linux/slab.h:830 [inline]
+ kvfree_rcu_bulk+0x1b7/0x1e0 mm/slab_common.c:1523
+ kvfree_rcu_drain_ready mm/slab_common.c:1728 [inline]
+ kfree_rcu_monitor+0x1d0/0x2f0 mm/slab_common.c:1801
+ process_one_work+0x9ba/0x1b20 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x6c8/0xf10 kernel/workqueue.c:3421
+ kthread+0x3c5/0x780 kernel/kthread.c:463
+ ret_from_fork+0x983/0xb10 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+Fixes: 00b5b7aab9e42 ("net/ipv6: delete temporary address if mngtmpaddr is removed or unmanaged")
+Reported-by: syzbot+72e610f4f1a930ca9d8a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/696598e9.050a0220.3be5c5.0009.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260113010538.2019411-1-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv6/addrconf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index a91a5bac8f737..9b16ad431028f 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -529,8 +529,10 @@ static int qfq_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 	return 0;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 228cf72e52503..e57a2b1841616 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -3141,12 +3141,12 @@ static int inet6_addr_del(struct net *net, int ifindex, u32 ifa_flags,
+ 			in6_ifa_hold(ifp);
+ 			read_unlock_bh(&idev->lock);
  
- destroy_class:
--	qdisc_put(cl->qdisc);
--	kfree(cl);
-+	if (!existing) {
-+		qdisc_put(cl->qdisc);
-+		kfree(cl);
-+	}
- 	return err;
- }
+-			ipv6_del_addr(ifp);
+-
+ 			if (!(ifp->flags & IFA_F_TEMPORARY) &&
+ 			    (ifp->flags & IFA_F_MANAGETEMPADDR))
+ 				delete_tempaddrs(idev, ifp);
  
++			ipv6_del_addr(ifp);
++
+ 			addrconf_verify_rtnl(net);
+ 			if (ipv6_addr_is_multicast(pfx)) {
+ 				ipv6_mc_config(net->ipv6.mc_autojoin_sk,
 -- 
 2.51.0
 
