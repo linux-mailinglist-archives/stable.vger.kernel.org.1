@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-211077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHwpHQQtcWl1fAAAu9opvQ
-	(envelope-from <stable+bounces-211077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:46:12 +0100
+	id 2M7uHucicWl8eQAAu9opvQ
+	(envelope-from <stable+bounces-210915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:03:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 338A45C77D
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:46:12 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA68C5BC12
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:03:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8385B869E09
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:35:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CEC9B86F528
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544563D1CC2;
-	Wed, 21 Jan 2026 18:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F52A3559EE;
+	Wed, 21 Jan 2026 18:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAxkjCTi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgAx83Xx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101B53D1CB3;
-	Wed, 21 Jan 2026 18:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE768330657;
+	Wed, 21 Jan 2026 18:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020363; cv=none; b=jC5lGw2GSMy8Ndx2yyadv/kyjpNZa3Jqmsi+9A0SQ7HiwVtF8Dp7r6sA0N8L7UbLytE0lyCRstbH+wK+cWcrZ7gZLgB2kDSiIQe9RmFVKdWWaMqJygEr+J1RJ+XpYWALGse4skWnog4CZFQPTmJjs0iAIsYCH3TkSvTOZqI/qV8=
+	t=1769019815; cv=none; b=tpjPZxpoZMdYESF9aAchUF19UtK0Xo+JU8qEoa//nkyxhlVZJdhBQuhP4zzj/Z/UuxaMZ7qoO9j0wnyZnLZ5J7I8q60Ujb9MnD/29MegUt+uIkTBOLa6dzjEaLSef7jtq8DhK2UDmofZwxPe5Z/tXwsSkqAlcMFI9Un3JjKYnTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020363; c=relaxed/simple;
-	bh=FoD7L0/bYn1u/2F/oPo4z/utNulKroARndBQoZbxcso=;
+	s=arc-20240116; t=1769019815; c=relaxed/simple;
+	bh=hgsvrMsZFgDQ04WbiBEGlogcWZyDBPCH6vG5fJkkLvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akmseOXGVCEwUbuqyp26HDtU6psfPV+eCRwhdcHhBPouosc3VTVaBtWdTWWJ9K5lHRtqNyAP1Smt7Sgm+xZO8BErwjpGdn/YANmaB0vB+cLi9JWwnAADKZU2UGjkKRcpHaI7KR8YjQI6wYeI7HmtsIGL5lwtyX1Ls/CxUL+NU58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YAxkjCTi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693F2C16AAE;
-	Wed, 21 Jan 2026 18:32:42 +0000 (UTC)
+	 MIME-Version; b=HSgoTHirl+iS5tlacdOmrdofs8AyJFXPz5xWt4GXMlDjitcWgB+C4DqITzIv/pKyXbuWYP39fc7N6scQ8HjDNChUyE7yj/WKXpPTQ/482/OJsFEsQJsfJZUNdbWE+tqHbP7QYNj7ZlME+eDOCBgZmYTaZLtH+mCtO8tnG7lueqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgAx83Xx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A32C4CEF1;
+	Wed, 21 Jan 2026 18:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020362;
-	bh=FoD7L0/bYn1u/2F/oPo4z/utNulKroARndBQoZbxcso=;
+	s=korg; t=1769019814;
+	bh=hgsvrMsZFgDQ04WbiBEGlogcWZyDBPCH6vG5fJkkLvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAxkjCTieo+uQI0PnPzdckNxxw99NeJ/arQFN5RtEKVgwXZEIcT5BGfWNWITrrJrF
-	 sW0Vtl/30+Sf6AuOiMR93KmGQsukvAxCrRMfU0X5OT/zee984rAVrAQJ8NlcgAriKN
-	 e/eidv/NveaW2EgHBkmt0dLyWYwj1CawJh8F+9CA=
+	b=wgAx83XxRkiAqEHMrrVQY8lXIylXjsrcxPscq/4tsFQQpI2DZU5l9tLUlWh8X4OcI
+	 WF/fPlSyRQkqv55IPmGwAwJWBVQJ4l+0Mx5oR5RKOfgZM5RFJq/8HLxAAGPcA0o1eA
+	 N1JmXj5a898Wzy4+RVyPNLVpWcfe7AAtq0BK1Hns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 6.18 134/198] i2c: riic: Move suspend handling to NOIRQ phase
-Date: Wed, 21 Jan 2026 19:16:02 +0100
-Message-ID: <20260121181423.370891937@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 115/139] dmaengine: qcom: gpi: Fix memory leak in gpi_peripheral_config()
+Date: Wed, 21 Jan 2026 19:16:03 +0100
+Message-ID: <20260121181415.590695129@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,8 +66,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
@@ -77,178 +76,82 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_FROM(0.00)[bounces-211077-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210915-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,sang-engineering.com:email,renesas.com:email]
-X-Rspamd-Queue-Id: 338A45C77D
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EA68C5BC12
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit e383f0961422f983451ac4dd6aed1a3d3311f2be upstream.
+commit 3f747004bbd641131d9396d87b5d2d3d1e182728 upstream.
 
-Commit 53326135d0e0 ("i2c: riic: Add suspend/resume support") added
-suspend support for the Renesas I2C driver and following this change
-on RZ/G3E the following WARNING is seen on entering suspend ...
+Fix a memory leak in gpi_peripheral_config() where the original memory
+pointed to by gchan->config could be lost if krealloc() fails.
 
-[  134.275704] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-[  134.285536] ------------[ cut here ]------------
-[  134.290298] i2c i2c-2: Transfer while suspended
-[  134.295174] WARNING: drivers/i2c/i2c-core.h:56 at __i2c_smbus_xfer+0x1e4/0x214, CPU#0: systemd-sleep/388
-[  134.365507] Tainted: [W]=WARN
-[  134.368485] Hardware name: Renesas SMARC EVK version 2 based on r9a09g047e57 (DT)
-[  134.375961] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  134.382935] pc : __i2c_smbus_xfer+0x1e4/0x214
-[  134.387329] lr : __i2c_smbus_xfer+0x1e4/0x214
-[  134.391717] sp : ffff800083f23860
-[  134.395040] x29: ffff800083f23860 x28: 0000000000000000 x27: ffff800082ed5d60
-[  134.402226] x26: 0000001f4395fd74 x25: 0000000000000007 x24: 0000000000000001
-[  134.409408] x23: 0000000000000000 x22: 000000000000006f x21: ffff800083f23936
-[  134.416589] x20: ffff0000c090e140 x19: ffff0000c090e0d0 x18: 0000000000000006
-[  134.423771] x17: 6f63657320313030 x16: 2e30206465737061 x15: ffff800083f23280
-[  134.430953] x14: 0000000000000000 x13: ffff800082b16ce8 x12: 0000000000000f09
-[  134.438134] x11: 0000000000000503 x10: ffff800082b6ece8 x9 : ffff800082b16ce8
-[  134.445315] x8 : 00000000ffffefff x7 : ffff800082b6ece8 x6 : 80000000fffff000
-[  134.452495] x5 : 0000000000000504 x4 : 0000000000000000 x3 : 0000000000000000
-[  134.459672] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c9ee9e80
-[  134.466851] Call trace:
-[  134.469311]  __i2c_smbus_xfer+0x1e4/0x214 (P)
-[  134.473715]  i2c_smbus_xfer+0xbc/0x120
-[  134.477507]  i2c_smbus_read_byte_data+0x4c/0x84
-[  134.482077]  isl1208_i2c_read_time+0x44/0x178 [rtc_isl1208]
-[  134.487703]  isl1208_rtc_read_time+0x14/0x20 [rtc_isl1208]
-[  134.493226]  __rtc_read_time+0x44/0x88
-[  134.497012]  rtc_read_time+0x3c/0x68
-[  134.500622]  rtc_suspend+0x9c/0x170
+The issue occurs when:
+1. gchan->config points to previously allocated memory
+2. krealloc() fails and returns NULL
+3. The function directly assigns NULL to gchan->config, losing the
+   reference to the original memory
+4. The original memory becomes unreachable and cannot be freed
 
-The warning is triggered because I2C transfers can still be attempted
-while the controller is already suspended, due to inappropriate ordering
-of the system sleep callbacks.
+Fix this by using a temporary variable to hold the krealloc() result
+and only updating gchan->config when the allocation succeeds.
 
-If the controller is autosuspended, there is no way to wake it up once
-runtime PM disabled (in suspend_late()). During system resume, the I2C
-controller will be available only after runtime PM is re-enabled
-(in resume_early()). However, this may be too late for some devices.
+Found via static analysis and code review.
 
-Wake up the controller in the suspend() callback while runtime PM is
-still enabled. The I2C controller will remain available until the
-suspend_noirq() callback (pm_runtime_force_suspend()) is called. During
-resume, the I2C controller can be restored by the resume_noirq() callback
-(pm_runtime_force_resume()). Finally, the resume() callback re-enables
-autosuspend. As a result, the I2C controller can remain available until
-the system enters suspend_noirq() and from resume_noirq().
-
+Fixes: 5d0c3533a19f ("dmaengine: qcom: Add GPI dma driver")
 Cc: stable@vger.kernel.org
-Fixes: 53326135d0e0 ("i2c: riic: Add suspend/resume support")
-Signed-off-by: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
-Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-Tested-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://patch.msgid.link/20251029123421.91973-1-linmq006@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-riic.c |   46 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 39 insertions(+), 7 deletions(-)
+ drivers/dma/qcom/gpi.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-riic.c
-+++ b/drivers/i2c/busses/i2c-riic.c
-@@ -670,12 +670,39 @@ static const struct riic_of_data riic_rz
- 
- static int riic_i2c_suspend(struct device *dev)
+--- a/drivers/dma/qcom/gpi.c
++++ b/drivers/dma/qcom/gpi.c
+@@ -1614,14 +1614,16 @@ static int
+ gpi_peripheral_config(struct dma_chan *chan, struct dma_slave_config *config)
  {
--	struct riic_dev *riic = dev_get_drvdata(dev);
--	int ret;
-+	/*
-+	 * Some I2C devices may need the I2C controller to remain active
-+	 * during resume_noirq() or suspend_noirq(). If the controller is
-+	 * autosuspended, there is no way to wake it up once runtime PM is
-+	 * disabled (in suspend_late()).
-+	 *
-+	 * During system resume, the I2C controller will be available only
-+	 * after runtime PM is re-enabled (in resume_early()). However, this
-+	 * may be too late for some devices.
-+	 *
-+	 * Wake up the controller in the suspend() callback while runtime PM
-+	 * is still enabled. The I2C controller will remain available until
-+	 * the suspend_noirq() callback (pm_runtime_force_suspend()) is
-+	 * called. During resume, the I2C controller can be restored by the
-+	 * resume_noirq() callback (pm_runtime_force_resume()).
-+	 *
-+	 * Finally, the resume() callback re-enables autosuspend, ensuring
-+	 * the I2C controller remains available until the system enters
-+	 * suspend_noirq() and from resume_noirq().
-+	 */
-+	return pm_runtime_resume_and_get(dev);
-+}
+ 	struct gchan *gchan = to_gchan(chan);
++	void *new_config;
  
--	ret = pm_runtime_resume_and_get(dev);
--	if (ret)
--		return ret;
-+static int riic_i2c_resume(struct device *dev)
-+{
-+	pm_runtime_put_autosuspend(dev);
-+
-+	return 0;
-+}
-+
-+static int riic_i2c_suspend_noirq(struct device *dev)
-+{
-+	struct riic_dev *riic = dev_get_drvdata(dev);
+ 	if (!config->peripheral_config)
+ 		return -EINVAL;
  
- 	i2c_mark_adapter_suspended(&riic->adapter);
+-	gchan->config = krealloc(gchan->config, config->peripheral_size, GFP_NOWAIT);
+-	if (!gchan->config)
++	new_config = krealloc(gchan->config, config->peripheral_size, GFP_NOWAIT);
++	if (!new_config)
+ 		return -ENOMEM;
  
-@@ -683,12 +710,12 @@ static int riic_i2c_suspend(struct devic
- 	riic_clear_set_bit(riic, ICCR1_ICE, 0, RIIC_ICCR1);
++	gchan->config = new_config;
+ 	memcpy(gchan->config, config->peripheral_config, config->peripheral_size);
  
- 	pm_runtime_mark_last_busy(dev);
--	pm_runtime_put_sync(dev);
-+	pm_runtime_force_suspend(dev);
- 
- 	return reset_control_assert(riic->rstc);
- }
- 
--static int riic_i2c_resume(struct device *dev)
-+static int riic_i2c_resume_noirq(struct device *dev)
- {
- 	struct riic_dev *riic = dev_get_drvdata(dev);
- 	int ret;
-@@ -697,6 +724,10 @@ static int riic_i2c_resume(struct device
- 	if (ret)
- 		return ret;
- 
-+	ret = pm_runtime_force_resume(dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = riic_init_hw(riic);
- 	if (ret) {
- 		/*
-@@ -714,6 +745,7 @@ static int riic_i2c_resume(struct device
- }
- 
- static const struct dev_pm_ops riic_i2c_pm_ops = {
-+	NOIRQ_SYSTEM_SLEEP_PM_OPS(riic_i2c_suspend_noirq, riic_i2c_resume_noirq)
- 	SYSTEM_SLEEP_PM_OPS(riic_i2c_suspend, riic_i2c_resume)
- };
- 
+ 	return 0;
 
 
 
