@@ -1,82 +1,57 @@
-Return-Path: <stable+bounces-211131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIcyOhcvcWmcfAAAu9opvQ
-	(envelope-from <stable+bounces-211131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:55:03 +0100
+	id 8NcNFscvcWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-211133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:57:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95BFC5CA18
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:55:03 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292A35CB15
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C2546AADBFC
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:42:07 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C166486D750
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DAEE3D410E;
-	Wed, 21 Jan 2026 18:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC4934EF02;
+	Wed, 21 Jan 2026 18:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLEvfN+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ce1Xoave"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004B634DB57;
-	Wed, 21 Jan 2026 18:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAC43D5228;
+	Wed, 21 Jan 2026 18:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020543; cv=none; b=DxLCg/NJQNq0/hLUVRtUAjUY48s58aSK03ufaYV3FSffoFlY7LYnqfhJ1Vu/2GOsM9x+EbEvFPShZdWhJOY1eAdpJ6KGAA/jqCdzp88+Zk/SoiGb48u2zMofgutG6ZeEtxu6QoE1DOlHcO5R5ljPgvnAVoa55HVpLyg+oR65Pok=
+	t=1769020550; cv=none; b=hRvfssF2q4W1q6IMFG4jvIjuhEMZTmWdPtokl5RkwwMubDAPPM0KdR7Y7vNJHY6nJv4IuyHZruduJc+Cf/ik05+dMKMAixp/1+0dekqmPeGJRUd/zj/b/7tClvD3Yc6G9bxOHVGYlMec0lb1cXz4IZe7EOzmOlcA1WWVXApEVwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020543; c=relaxed/simple;
-	bh=ePN26RphHVVk66SIu+LiOqFiVCLNfuyZ8KiR1kjLpfw=;
+	s=arc-20240116; t=1769020550; c=relaxed/simple;
+	bh=BfiypYAZlj/jeeC4SLBYret3dOMm59qVW3uKM5srzSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VD5/hI0BbQbyOLo7gtJQnhsabrkCPvVAte23A5aQbR0O43+MjqrwQID1W+yU/xhOap8m14HNOJrOz4YN0TnOc4yG4NAqdwtluJFslKxZxT6eBvR3Frvnp4RaYi8JmStVmXsyHEYnK7ld70b2l5e5LPKQcM1kCD7bsk53/NFJh5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLEvfN+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB61C4CEF1;
-	Wed, 21 Jan 2026 18:35:41 +0000 (UTC)
+	 MIME-Version; b=oKhEqCWGHRJfKuNwr1TVeKfnhO6Z3zO/lJAKnCTdZ9UxCFJimzH2rtlt0bUToX8/GOl5yZ3pNVl0e+ppjv7JDZTPypVSUK1GkIkFeBFdH76Vq0XoEdioR6T+G6jnNh1vmrYQjwGiCb4CfLlot2gFeGgI4GaPkdLLu3bNAB3ov5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ce1Xoave; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6834BC4CEF1;
+	Wed, 21 Jan 2026 18:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020542;
-	bh=ePN26RphHVVk66SIu+LiOqFiVCLNfuyZ8KiR1kjLpfw=;
+	s=korg; t=1769020550;
+	bh=BfiypYAZlj/jeeC4SLBYret3dOMm59qVW3uKM5srzSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zLEvfN+h5VHr6sBGCnlekIuDhOwHVLhxIWKzXkKpxvyLnr2qH0c4TDD/9Q4f8vBU/
-	 pXROIFV7So/F/SMpbT1Uv0/w6c/AUy456yrhYnWs581NqT452Yc514hCU02KgahML0
-	 fj6y/DATIYX83hJ6vAzMUf4Yy95Phw8RYRUaTqjk=
+	b=Ce1XoaveARpNfD5eoMjrEys/RyC3t4OUNS7nqioBBuoFEYjxwbiBaWg1Oa1B11ZlM
+	 /R0mQCSrNE0HAuseYguiYydtJ9GPWyLUFOx4wnPjElmrXpS7LK6obQP9kQpepnXEFV
+	 1mEK09XDAg4LWNtUPCQQVUgor4qMnyM+c+1y5adA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Jann Horn <jannh@google.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Borislav Betkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Robin Murohy <robin.murphy@arm.com>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Will Deacon <will@kernel.org>,
-	Yi Lai <yi1.lai@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 190/198] iommu/sva: invalidate stale IOTLB entries for kernel address space
-Date: Wed, 21 Jan 2026 19:16:58 +0100
-Message-ID: <20260121181425.396020887@linuxfoundation.org>
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.18 191/198] HID: intel-ish-hid: Use dedicated unbound workqueues to prevent resume blocking
+Date: Wed, 21 Jan 2026 19:16:59 +0100
+Message-ID: <20260121181425.432039983@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -98,27 +73,26 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-211133-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211131-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,linux.intel.com,google.com,amd.com,intel.com,kernel.org,alien8.de,redhat.com,linaro.org,8bytes.org,oracle.com,infradead.org,arm.com,linutronix.de,gmail.com,suse.cz,linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[30];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 95BFC5CA18
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,intel.com:email]
+X-Rspamd-Queue-Id: 292A35CB15
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -126,195 +100,202 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-commit e37d5a2d60a338c5917c45296bac65da1382eda5 upstream.
+commit 0d30dae38fe01cd1de358c6039a0b1184689fe51 upstream.
 
-Introduce a new IOMMU interface to flush IOTLB paging cache entries for
-the CPU kernel address space.  This interface is invoked from the x86
-architecture code that manages combined user and kernel page tables,
-specifically before any kernel page table page is freed and reused.
+During suspend/resume tests with S2IDLE, some ISH functional failures were
+observed because of delay in executing ISH resume handler. Here
+schedule_work() is used from resume handler to do actual work.
+schedule_work() uses system_wq, which is a per CPU work queue. Although
+the queuing is not bound to a CPU, but it prefers local CPU of the caller,
+unless prohibited.
 
-This addresses the main issue with vfree() which is a common occurrence
-and can be triggered by unprivileged users.  While this resolves the
-primary problem, it doesn't address some extremely rare case related to
-memory unplug of memory that was present as reserved memory at boot, which
-cannot be triggered by unprivileged users.  The discussion can be found at
-the link below.
+Users of this work queue are not supposed to queue long running work.
+But in practice, there are scenarios where long running work items are
+queued on other unbound workqueues, occupying the CPU. As a result, the
+ISH resume handler may not get a chance to execute in a timely manner.
 
-Enable SVA on x86 architecture since the IOMMU can now receive
-notification to flush the paging cache before freeing the CPU kernel page
-table pages.
+In one scenario, one of the ish_resume_handler() executions was delayed
+nearly 1 second because another work item on an unbound workqueue occupied
+the same CPU. This delay causes ISH functionality failures.
 
-Link: https://lkml.kernel.org/r/20251022082635.2462433-9-baolu.lu@linux.intel.com
-Link: https://lore.kernel.org/linux-iommu/04983c62-3b1d-40d4-93ae-34ca04b827e5@intel.com/
-Co-developed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Suggested-by: Jann Horn <jannh@google.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Robin Murohy <robin.murphy@arm.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yi Lai <yi1.lai@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+A similar issue was previously observed where the ISH HID driver timed out
+while getting the HID descriptor during S4 resume in the recovery kernel,
+likely caused by the same workqueue contention problem.
+
+Create dedicated unbound workqueues for all ISH operations to allow work
+items to execute on any available CPU, eliminating CPU-specific bottlenecks
+and improving resume reliability under varying system loads. Also ISH has
+three different components, a bus driver which implements ISH protocols, a
+PCI interface layer and HID interface. Use one dedicated work queue for all
+of them.
+
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/Kconfig          |    1 +
- drivers/iommu/iommu-sva.c |   32 ++++++++++++++++++++++++++++----
- include/linux/iommu.h     |    4 ++++
- mm/pgtable-generic.c      |    2 ++
- 4 files changed, 35 insertions(+), 4 deletions(-)
+ drivers/hid/intel-ish-hid/ipc/ipc.c          |   21 ++++++++++++++++++++-
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c      |    2 +-
+ drivers/hid/intel-ish-hid/ishtp-hid-client.c |    4 ++--
+ drivers/hid/intel-ish-hid/ishtp/bus.c        |   18 +++++++++++++++++-
+ drivers/hid/intel-ish-hid/ishtp/hbm.c        |    4 ++--
+ drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h  |    3 +++
+ include/linux/intel-ish-client-if.h          |    2 ++
+ 7 files changed, 47 insertions(+), 7 deletions(-)
 
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -279,6 +279,7 @@ config X86
- 	select HAVE_PCI
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
-+	select ASYNC_KERNEL_PGTABLE_FREE	if IOMMU_SVA
- 	select MMU_GATHER_RCU_TABLE_FREE
- 	select MMU_GATHER_MERGE_VMAS
- 	select HAVE_POSIX_CPU_TIMERS_TASK_WORK
---- a/drivers/iommu/iommu-sva.c
-+++ b/drivers/iommu/iommu-sva.c
-@@ -10,6 +10,8 @@
- #include "iommu-priv.h"
+--- a/drivers/hid/intel-ish-hid/ipc/ipc.c
++++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
+@@ -628,7 +628,7 @@ static void	recv_ipc(struct ishtp_device
+ 		if (!ishtp_dev) {
+ 			ishtp_dev = dev;
+ 		}
+-		schedule_work(&fw_reset_work);
++		queue_work(dev->unbound_wq, &fw_reset_work);
+ 		break;
  
- static DEFINE_MUTEX(iommu_sva_lock);
-+static bool iommu_sva_present;
-+static LIST_HEAD(iommu_sva_mms);
- static struct iommu_domain *iommu_sva_domain_alloc(struct device *dev,
- 						   struct mm_struct *mm);
- 
-@@ -42,6 +44,7 @@ static struct iommu_mm_data *iommu_alloc
- 		return ERR_PTR(-ENOSPC);
- 	}
- 	iommu_mm->pasid = pasid;
-+	iommu_mm->mm = mm;
- 	INIT_LIST_HEAD(&iommu_mm->sva_domains);
- 	/*
- 	 * Make sure the write to mm->iommu_mm is not reordered in front of
-@@ -77,9 +80,6 @@ struct iommu_sva *iommu_sva_bind_device(
- 	if (!group)
- 		return ERR_PTR(-ENODEV);
- 
--	if (IS_ENABLED(CONFIG_X86))
--		return ERR_PTR(-EOPNOTSUPP);
--
- 	mutex_lock(&iommu_sva_lock);
- 
- 	/* Allocate mm->pasid if necessary. */
-@@ -135,8 +135,13 @@ struct iommu_sva *iommu_sva_bind_device(
- 	if (ret)
- 		goto out_free_domain;
- 	domain->users = 1;
--	list_add(&domain->next, &mm->iommu_mm->sva_domains);
- 
-+	if (list_empty(&iommu_mm->sva_domains)) {
-+		if (list_empty(&iommu_sva_mms))
-+			iommu_sva_present = true;
-+		list_add(&iommu_mm->mm_list_elm, &iommu_sva_mms);
-+	}
-+	list_add(&domain->next, &iommu_mm->sva_domains);
- out:
- 	refcount_set(&handle->users, 1);
- 	mutex_unlock(&iommu_sva_lock);
-@@ -178,6 +183,13 @@ void iommu_sva_unbind_device(struct iomm
- 		list_del(&domain->next);
- 		iommu_domain_free(domain);
- 	}
-+
-+	if (list_empty(&iommu_mm->sva_domains)) {
-+		list_del(&iommu_mm->mm_list_elm);
-+		if (list_empty(&iommu_sva_mms))
-+			iommu_sva_present = false;
-+	}
-+
- 	mutex_unlock(&iommu_sva_lock);
- 	kfree(handle);
- }
-@@ -315,3 +327,15 @@ static struct iommu_domain *iommu_sva_do
- 
- 	return domain;
- }
-+
-+void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end)
-+{
-+	struct iommu_mm_data *iommu_mm;
-+
-+	guard(mutex)(&iommu_sva_lock);
-+	if (!iommu_sva_present)
-+		return;
-+
-+	list_for_each_entry(iommu_mm, &iommu_sva_mms, mm_list_elm)
-+		mmu_notifier_arch_invalidate_secondary_tlbs(iommu_mm->mm, start, end);
-+}
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -1134,7 +1134,9 @@ struct iommu_sva {
- 
- struct iommu_mm_data {
- 	u32			pasid;
-+	struct mm_struct	*mm;
- 	struct list_head	sva_domains;
-+	struct list_head	mm_list_elm;
+ 	case MNG_RESET_NOTIFY_ACK:
+@@ -933,6 +933,21 @@ static const struct ishtp_hw_ops ish_hw_
+ 	.dma_no_cache_snooping = _dma_no_cache_snooping
  };
  
- int iommu_fwspec_init(struct device *dev, struct fwnode_handle *iommu_fwnode);
-@@ -1615,6 +1617,7 @@ struct iommu_sva *iommu_sva_bind_device(
- 					struct mm_struct *mm);
- void iommu_sva_unbind_device(struct iommu_sva *handle);
- u32 iommu_sva_get_pasid(struct iommu_sva *handle);
-+void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end);
- #else
- static inline struct iommu_sva *
- iommu_sva_bind_device(struct device *dev, struct mm_struct *mm)
-@@ -1639,6 +1642,7 @@ static inline u32 mm_get_enqcmd_pasid(st
++static struct workqueue_struct *devm_ishtp_alloc_workqueue(struct device *dev)
++{
++	struct workqueue_struct *wq;
++
++	wq = alloc_workqueue("ishtp_unbound_%d", WQ_UNBOUND, 0, dev->id);
++	if (!wq)
++		return NULL;
++
++	if (devm_add_action_or_reset(dev, (void (*)(void *))destroy_workqueue,
++				     wq))
++		return NULL;
++
++	return wq;
++}
++
+ /**
+  * ish_dev_init() -Initialize ISH devoce
+  * @pdev: PCI device
+@@ -953,6 +968,10 @@ struct ishtp_device *ish_dev_init(struct
+ 	if (!dev)
+ 		return NULL;
+ 
++	dev->unbound_wq = devm_ishtp_alloc_workqueue(&pdev->dev);
++	if (!dev->unbound_wq)
++		return NULL;
++
+ 	dev->devc = &pdev->dev;
+ 	ishtp_device_init(dev);
+ 
+--- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
++++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
+@@ -384,7 +384,7 @@ static int __maybe_unused ish_resume(str
+ 	ish_resume_device = device;
+ 	dev->resume_flag = 1;
+ 
+-	schedule_work(&resume_work);
++	queue_work(dev->unbound_wq, &resume_work);
+ 
+ 	return 0;
+ }
+--- a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
++++ b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
+@@ -860,7 +860,7 @@ static int hid_ishtp_cl_reset(struct ish
+ 	hid_ishtp_trace(client_data, "%s hid_ishtp_cl %p\n", __func__,
+ 			hid_ishtp_cl);
+ 
+-	schedule_work(&client_data->work);
++	queue_work(ishtp_get_workqueue(cl_device), &client_data->work);
+ 
+ 	return 0;
+ }
+@@ -902,7 +902,7 @@ static int hid_ishtp_cl_resume(struct de
+ 
+ 	hid_ishtp_trace(client_data, "%s hid_ishtp_cl %p\n", __func__,
+ 			hid_ishtp_cl);
+-	schedule_work(&client_data->resume_work);
++	queue_work(ishtp_get_workqueue(cl_device), &client_data->resume_work);
+ 	return 0;
  }
  
- static inline void mm_pasid_drop(struct mm_struct *mm) {}
-+static inline void iommu_sva_invalidate_kva_range(unsigned long start, unsigned long end) {}
- #endif /* CONFIG_IOMMU_SVA */
+--- a/drivers/hid/intel-ish-hid/ishtp/bus.c
++++ b/drivers/hid/intel-ish-hid/ishtp/bus.c
+@@ -541,7 +541,7 @@ void ishtp_cl_bus_rx_event(struct ishtp_
+ 		return;
  
- #ifdef CONFIG_IOMMU_IOPF
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -13,6 +13,7 @@
- #include <linux/swap.h>
- #include <linux/swapops.h>
- #include <linux/mm_inline.h>
-+#include <linux/iommu.h>
- #include <asm/pgalloc.h>
- #include <asm/tlb.h>
- 
-@@ -430,6 +431,7 @@ static void kernel_pgtable_work_func(str
- 	list_splice_tail_init(&kernel_pgtable_work.list, &page_list);
- 	spin_unlock(&kernel_pgtable_work.lock);
- 
-+	iommu_sva_invalidate_kva_range(PAGE_OFFSET, TLB_FLUSH_ALL);
- 	list_for_each_entry_safe(pt, next, &page_list, pt_list)
- 		__pagetable_free(pt);
+ 	if (device->event_cb)
+-		schedule_work(&device->event_work);
++		queue_work(device->ishtp_dev->unbound_wq, &device->event_work);
  }
+ 
+ /**
+@@ -877,6 +877,22 @@ struct device *ishtp_get_pci_device(stru
+ EXPORT_SYMBOL(ishtp_get_pci_device);
+ 
+ /**
++ * ishtp_get_workqueue - Retrieve the workqueue associated with an ISHTP device
++ * @cl_device: Pointer to the ISHTP client device structure
++ *
++ * Returns the workqueue_struct pointer (unbound_wq) associated with the given
++ * ISHTP client device. This workqueue is typically used for scheduling work
++ * related to the device.
++ *
++ * Return: Pointer to struct workqueue_struct.
++ */
++struct workqueue_struct *ishtp_get_workqueue(struct ishtp_cl_device *cl_device)
++{
++	return cl_device->ishtp_dev->unbound_wq;
++}
++EXPORT_SYMBOL(ishtp_get_workqueue);
++
++/**
+  * ishtp_trace_callback() - Return trace callback
+  * @cl_device: ISH-TP client device instance
+  *
+--- a/drivers/hid/intel-ish-hid/ishtp/hbm.c
++++ b/drivers/hid/intel-ish-hid/ishtp/hbm.c
+@@ -573,7 +573,7 @@ void ishtp_hbm_dispatch(struct ishtp_dev
+ 
+ 		/* Start firmware loading process if it has loader capability */
+ 		if (version_res->host_version_supported & ISHTP_SUPPORT_CAP_LOADER)
+-			schedule_work(&dev->work_fw_loader);
++			queue_work(dev->unbound_wq, &dev->work_fw_loader);
+ 
+ 		dev->version.major_version = HBM_MAJOR_VERSION;
+ 		dev->version.minor_version = HBM_MINOR_VERSION;
+@@ -864,7 +864,7 @@ void	recv_hbm(struct ishtp_device *dev,
+ 	dev->rd_msg_fifo_tail = (dev->rd_msg_fifo_tail + IPC_PAYLOAD_SIZE) %
+ 		(RD_INT_FIFO_SIZE * IPC_PAYLOAD_SIZE);
+ 	spin_unlock_irqrestore(&dev->rd_msg_spinlock, flags);
+-	schedule_work(&dev->bh_hbm_work);
++	queue_work(dev->unbound_wq, &dev->bh_hbm_work);
+ eoi:
+ 	return;
+ }
+--- a/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
++++ b/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
+@@ -175,6 +175,9 @@ struct ishtp_device {
+ 	struct hbm_version version;
+ 	int transfer_path; /* Choice of transfer path: IPC or DMA */
+ 
++	/* Alloc a dedicated unbound workqueue for ishtp device */
++	struct workqueue_struct *unbound_wq;
++
+ 	/* work structure for scheduling firmware loading tasks */
+ 	struct work_struct work_fw_loader;
+ 	/* waitq for waiting for command response from the firmware loader */
+--- a/include/linux/intel-ish-client-if.h
++++ b/include/linux/intel-ish-client-if.h
+@@ -87,6 +87,8 @@ bool ishtp_wait_resume(struct ishtp_devi
+ ishtp_print_log ishtp_trace_callback(struct ishtp_cl_device *cl_device);
+ /* Get device pointer of PCI device for DMA acces */
+ struct device *ishtp_get_pci_device(struct ishtp_cl_device *cl_device);
++/* Get the ISHTP workqueue */
++struct workqueue_struct *ishtp_get_workqueue(struct ishtp_cl_device *cl_device);
+ 
+ struct ishtp_cl *ishtp_cl_allocate(struct ishtp_cl_device *cl_device);
+ void ishtp_cl_free(struct ishtp_cl *cl);
 
 
 
