@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-210929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNeAHbMqcWniewAAu9opvQ
-	(envelope-from <stable+bounces-210929-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:36:19 +0100
+	id KKWLAfkscWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-211058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:46:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A8D5C4B8
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:36:18 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id A59C85C76D
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:46:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C1DEE5CF659
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4DE3178D359
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E19E3A4AAF;
-	Wed, 21 Jan 2026 18:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A723A4F2F;
+	Wed, 21 Jan 2026 18:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxJ1keJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGpVZJ6o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC571A9FB0;
-	Wed, 21 Jan 2026 18:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAD43570D5;
+	Wed, 21 Jan 2026 18:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019862; cv=none; b=nO5aLAi3eQiglNJxdS1h0lL6MOj9nCz4dHInjKuhI4KGCXi03Qkj7QUU9XWmRZcZWGv96fKTao1+g3EXer7hHUROkECIoiOjNy2KjwjeIHlN9B0B2L1X/4qrE3WDsHBwkGet50P1oTdoEGzTWsOllDE6TypxR572n38AJsbRmyI=
+	t=1769020296; cv=none; b=obVe7GgZPA2Bka4qor+gYnVBhPZXnJUneCnSbRJGPZKDhbisZMxKw0ND3gJ6hMhtqsYl08kLRa+xsl46KnVvNvuak0m2/qefQYfmSIx3AuFbuTcr7WCw5W4FcNRHVq9YQPwg9UXReCcuqNuddAhMSnbEtWKWgxdEVvWFQEwQ/gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019862; c=relaxed/simple;
-	bh=lJFDkSASDa+1r+JZm8Ckrj3sUWos+25yYpixpxDIkaY=;
+	s=arc-20240116; t=1769020296; c=relaxed/simple;
+	bh=i1GhFdqGR8poxV26TsaaWUy3bU0waqau9JL34M0GrLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IO+qQEDgOMYEbMC8W5sszlxIJI1D20ZcVkKDie9xRoTnLsK4Mdvq1DyusqKudVHDUS8akHwY93FMycLRE6RjRhB8efRGn6+wRyoXfQudLdqBv4ZQArBxtxBzknn14ODY4YN8B9z+yDvg+jQuGcQBIAoKiw9TQifB51ZUBAorfh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxJ1keJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 900E0C4CEF1;
-	Wed, 21 Jan 2026 18:24:21 +0000 (UTC)
+	 MIME-Version; b=qpV0owx3bDprOoRcguAug04GtGSVWVoo7YMEJSQXDCl6FHxmZcNtAT4b8jIEM8Pckm4hOkq2RTXsM3l+Je+pFNOq+LHPuVgaeY2QhdW9V9BQnXvAZJguLfngfaU7aC7Kt5UNA5y2FV2EizX+t+DphDg/qwYvC6qrALbGsbkfvYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGpVZJ6o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A42C4CEF1;
+	Wed, 21 Jan 2026 18:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019861;
-	bh=lJFDkSASDa+1r+JZm8Ckrj3sUWos+25yYpixpxDIkaY=;
+	s=korg; t=1769020296;
+	bh=i1GhFdqGR8poxV26TsaaWUy3bU0waqau9JL34M0GrLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rxJ1keJwGKB591AXIvig/Hcm/H3M99717w7A6suSfu+0MadIANENPgYPkmTsjWDJY
-	 DnA8GTkQGtrVjHWDsVMXYGvzJi5B25qRczeL030LXd7sN+gg7N4HK6lhsUJXLMt8xv
-	 XTnYaEn9GWW9s6nVU+C74Tt16IxCtIxrPyJNUNrY=
+	b=BGpVZJ6o/e01cavnlfXIVUHG8iDFN7jIA4YmgdMHtuUItmmoDQ9KWD2VPoOHJ15fA
+	 wLzLYngrfuuD1KGZioV/UcgQGYwHSAHsdSKMxxTk9HZXXvqGRKpFVfEf23yaIXxWD0
+	 DzZBtjVmzdD1Nzsu5va5WKhwreOidpmIom6ZDju0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lisa Robinson <lisa@bytefly.space>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 097/139] LoongArch: Fix PMU counter allocation for mixed-type event groups
+	stable <stable@kernel.org>,
+	Wayne Chang <waynec@nvidia.com>,
+	Wei-Cheng Chen <weichengc@nvidia.com>,
+	Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH 6.18 117/198] usb: host: xhci-tegra: Use platform_get_irq_optional() for wake IRQs
 Date: Wed, 21 Jan 2026 19:15:45 +0100
-Message-ID: <20260121181414.944510573@linuxfoundation.org>
+Message-ID: <20260121181422.763727413@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,158 +69,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210929-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-211058-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bytefly.space:email]
-X-Rspamd-Queue-Id: C6A8D5C4B8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,nvidia.com:email]
+X-Rspamd-Queue-Id: A59C85C76D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lisa Robinson <lisa@bytefly.space>
+From: Wayne Chang <waynec@nvidia.com>
 
-commit a91f86e27087f250a5d9c89bb4a427b9c30fd815 upstream.
+commit d13b6a128a12e528bb18f971f2969feb286f45c7 upstream.
 
-When validating a perf event group, validate_group() unconditionally
-attempts to allocate hardware PMU counters for the leader, sibling
-events and the new event being added.
+When some wake IRQs are disabled in the device tree, the corresponding
+interrupt entries are removed from DT. In such cases, the driver
+currently calls platform_get_irq(), which returns -ENXIO and logs
+an error like:
 
-This is incorrect for mixed-type groups. If a PERF_TYPE_SOFTWARE event
-is part of the group, the current code still tries to allocate a hardware
-PMU counter for it, which can wrongly consume hardware PMU resources and
-cause spurious allocation failures.
+  tegra-xusb 3610000.usb: error -ENXIO: IRQ index 2 not found
 
-Fix this by only allocating PMU counters for hardware events during group
-validation, and skipping software events.
+However, not all wake IRQs are mandatory. The hardware can operate
+normally even if some wake sources are not defined in DT. To avoid this
+false alarm and allow missing wake IRQs gracefully, use
+platform_get_irq_optional() instead of platform_get_irq().
 
-A trimmed down reproducer is as simple as this:
-
-  #include <stdio.h>
-  #include <assert.h>
-  #include <unistd.h>
-  #include <string.h>
-  #include <sys/syscall.h>
-  #include <linux/perf_event.h>
-
-  int main (int argc, char *argv[])
-  {
-  	struct perf_event_attr attr = { 0 };
-  	int fds[5];
-
-  	attr.disabled = 1;
-  	attr.exclude_kernel = 1;
-  	attr.exclude_hv = 1;
-  	attr.read_format = PERF_FORMAT_TOTAL_TIME_ENABLED |
-  		PERF_FORMAT_TOTAL_TIME_RUNNING | PERF_FORMAT_ID | PERF_FORMAT_GROUP;
-  	attr.size = sizeof (attr);
-
-  	attr.type = PERF_TYPE_SOFTWARE;
-  	attr.config = PERF_COUNT_SW_DUMMY;
-  	fds[0] = syscall (SYS_perf_event_open, &attr, 0, -1, -1, 0);
-  	assert (fds[0] >= 0);
-
-  	attr.type = PERF_TYPE_HARDWARE;
-  	attr.config = PERF_COUNT_HW_CPU_CYCLES;
-  	fds[1] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
-  	assert (fds[1] >= 0);
-
-  	attr.type = PERF_TYPE_HARDWARE;
-  	attr.config = PERF_COUNT_HW_INSTRUCTIONS;
-  	fds[2] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
-  	assert (fds[2] >= 0);
-
-  	attr.type = PERF_TYPE_HARDWARE;
-  	attr.config = PERF_COUNT_HW_BRANCH_MISSES;
-  	fds[3] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
-  	assert (fds[3] >= 0);
-
-  	attr.type = PERF_TYPE_HARDWARE;
-  	attr.config = PERF_COUNT_HW_CACHE_REFERENCES;
-  	fds[4] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
-  	assert (fds[4] >= 0);
-
-  	printf ("PASSED\n");
-
-  	return 0;
-  }
-
-Cc: stable@vger.kernel.org
-Fixes: b37042b2bb7c ("LoongArch: Add perf events support")
-Signed-off-by: Lisa Robinson <lisa@bytefly.space>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 5df186e2ef11 ("usb: xhci: tegra: Support USB wakeup function for Tegra234")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Signed-off-by: Wei-Cheng Chen <weichengc@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://patch.msgid.link/20260112145653.95691-1-weichengc@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/perf_event.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci-tegra.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/perf_event.c
-+++ b/arch/loongarch/kernel/perf_event.c
-@@ -627,6 +627,18 @@ static const struct loongarch_perf_event
- 	return pev;
- }
+--- a/drivers/usb/host/xhci-tegra.c
++++ b/drivers/usb/host/xhci-tegra.c
+@@ -1564,7 +1564,7 @@ static int tegra_xusb_setup_wakeup(struc
+ 	for (i = 0; i < tegra->soc->max_num_wakes; i++) {
+ 		struct irq_data *data;
  
-+static inline bool loongarch_pmu_event_requires_counter(const struct perf_event *event)
-+{
-+	switch (event->attr.type) {
-+	case PERF_TYPE_HARDWARE:
-+	case PERF_TYPE_HW_CACHE:
-+	case PERF_TYPE_RAW:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- static int validate_group(struct perf_event *event)
- {
- 	struct cpu_hw_events fake_cpuc;
-@@ -634,15 +646,18 @@ static int validate_group(struct perf_ev
+-		tegra->wake_irqs[i] = platform_get_irq(pdev, i + WAKE_IRQ_START_INDEX);
++		tegra->wake_irqs[i] = platform_get_irq_optional(pdev, i + WAKE_IRQ_START_INDEX);
+ 		if (tegra->wake_irqs[i] < 0)
+ 			break;
  
- 	memset(&fake_cpuc, 0, sizeof(fake_cpuc));
- 
--	if (loongarch_pmu_alloc_counter(&fake_cpuc, &leader->hw) < 0)
-+	if (loongarch_pmu_event_requires_counter(leader) &&
-+	    loongarch_pmu_alloc_counter(&fake_cpuc, &leader->hw) < 0)
- 		return -EINVAL;
- 
- 	for_each_sibling_event(sibling, leader) {
--		if (loongarch_pmu_alloc_counter(&fake_cpuc, &sibling->hw) < 0)
-+		if (loongarch_pmu_event_requires_counter(sibling) &&
-+		    loongarch_pmu_alloc_counter(&fake_cpuc, &sibling->hw) < 0)
- 			return -EINVAL;
- 	}
- 
--	if (loongarch_pmu_alloc_counter(&fake_cpuc, &event->hw) < 0)
-+	if (loongarch_pmu_event_requires_counter(event) &&
-+	    loongarch_pmu_alloc_counter(&fake_cpuc, &event->hw) < 0)
- 		return -EINVAL;
- 
- 	return 0;
 
 
 
