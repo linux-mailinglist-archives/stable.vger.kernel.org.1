@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-210900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211055-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNE4EJIbcWmodQAAu9opvQ
-	(envelope-from <stable+bounces-210900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:31:46 +0100
+	id 4POMOiMscWl1fAAAu9opvQ
+	(envelope-from <stable+bounces-211055-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:42:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113B15B4C6
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:31:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27FC95C65B
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:42:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 14606784B51
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:24:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1509AB474D3
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58AF23A640C;
-	Wed, 21 Jan 2026 18:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C761B341077;
+	Wed, 21 Jan 2026 18:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0ZZW4yU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRgdKiu5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4E03A0B24;
-	Wed, 21 Jan 2026 18:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F6B36403D;
+	Wed, 21 Jan 2026 18:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019762; cv=none; b=sAH65aTXstLNuL4iwx3IcLcUJsKmETXyMwCJwtTfdPNLcyoXhS8hPNYf5f+x5XTzayFmKUDG02zbSKuBy45K8DcvaJ10gPe5YzF/NvtKbJPbQjr98ud3F5R3Z605PUWsKbLtm+MthUvfWKeMvjx0pcu2vBZOef8Ipla1oJj+x4A=
+	t=1769020286; cv=none; b=AsVfjnuI9WTXvfpYLOCrKgTrMCbidhTVYtpjhqbzyk1eL8CIcyTlgbMOJOLC64QyP8ITh/r8K449PJ29LbdpQZxiEY8gVD+01OwC8m2C0t9jPKdOGkC0aA60WjZFDtNTw7kpdDd/npi9TvHD+YR8+FuTHOzS6bgVXHEbSNOadZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019762; c=relaxed/simple;
-	bh=TY2WHzilEgG847VTQOI8nS5YuYHRZG6UxAZNynW4F/4=;
+	s=arc-20240116; t=1769020286; c=relaxed/simple;
+	bh=3KW1Lxa/+nhB5vPB1gx672jhlkxe/gzdW440NQiTMTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bOeQAzW3fodPeFiDzJ4KXfE1ogPt4Kew5ulCx0BLSyzecj7z2x8c9EeSA+Ln/MgmWip7MiYlpyoU8uRf557hcnLLxsof/95FoVpln2esDF8nw7Q6kNuK/679EJdwCjk7ClNUdLif5aILn47aHEs0RXwiRp+9C5eR0gCc2A6uIqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0ZZW4yU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350C2C4CEF1;
-	Wed, 21 Jan 2026 18:22:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F6Jw1GKAT+9Gu+/P0Bp9kj5mUxruwSV85BIY66GNZZF2at/prn2EhHA4rRxUgUlCftQ+L+/QYJaFWsuVs38idH5W49jLiqCgdTbg4gQzi1WzCRI11ea8QiJaFDYRib/MT0WqTI+HIMotPVdvmn9HfdkyBqR3XiyVOnyhGqjOKrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRgdKiu5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83390C4CEF1;
+	Wed, 21 Jan 2026 18:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019761;
-	bh=TY2WHzilEgG847VTQOI8nS5YuYHRZG6UxAZNynW4F/4=;
+	s=korg; t=1769020286;
+	bh=3KW1Lxa/+nhB5vPB1gx672jhlkxe/gzdW440NQiTMTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q0ZZW4yUy4auh85o5Ss0G9jN+j75mr/ad2wILglATtTmDfeU+8uZ9akF5XBuWnzE/
-	 tgoDd1j+GtsVyt3Mt1ggA3qnlcGcvPz0GGRTOb9Y0AP16u0BMYKehpcFXeIr1ihZDP
-	 feTJRQXqNasAPaA2PkoLXTwECnaJVk3leL60Zf5k=
+	b=LRgdKiu589O7xgQ/3rGmyLqSwv7tgOMEDaDtSHGmtXUzd37K2BtrRC7wRyaweqycJ
+	 /YCtvMmBd48Th8N+5A3jpN1f3uq+TufxdnpinuHLuwFkRsrIr0g61Bl4kqJfXio5S9
+	 aGfxIb5i+AkexMr91rjsawt07I9Fc5rKBToJkpJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <dwagner@suse.de>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.12 093/139] nvme: fix PCIe subsystem reset controller state transition
-Date: Wed, 21 Jan 2026 19:15:41 +0100
-Message-ID: <20260121181414.800924816@linuxfoundation.org>
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.18 114/198] phy: rockchip: inno-usb2: fix disconnection in gadget mode
+Date: Wed, 21 Jan 2026 19:15:42 +0100
+Message-ID: <20260121181422.657677096@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,82 +75,113 @@ X-Spamd-Result: default: False [-1.96 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210900-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-211055-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email]
-X-Rspamd-Queue-Id: 113B15B4C6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,bootlin.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,chg_work.work:url]
+X-Rspamd-Queue-Id: 27FC95C65B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-commit 0edb475ac0a7d153318a24d4dca175a270a5cc4f upstream.
+commit 028e8ca7b20fb7324f3e5db34ba8bd366d9d3acc upstream.
 
-The commit d2fe192348f9 (“nvme: only allow entering LIVE from CONNECTING
-state”) disallows controller state transitions directly from RESETTING
-to LIVE. However, the NVMe PCIe subsystem reset path relies on this
-transition to recover the controller on PowerPC (PPC) systems.
+When the OTG USB port is used to power the SoC, configured as peripheral
+and used in gadget mode, there is a disconnection about 6 seconds after the
+gadget is configured and enumerated.
 
-On PPC systems, issuing a subsystem reset causes a temporary loss of
-communication with the NVMe adapter. A subsequent PCIe MMIO read then
-triggers EEH recovery, which restores the PCIe link and brings the
-controller back online. For EEH recovery to proceed correctly, the
-controller must transition back to the LIVE state.
+The problem was observed on a Radxa Rock Pi S board, which can only be
+powered by the only USB-C connector. That connector is the only one usable
+in gadget mode. This implies the USB cable is connected from before boot
+and never disconnects while the kernel runs.
 
-Due to the changes introduced by commit d2fe192348f9 (“nvme: only allow
-entering LIVE from CONNECTING state”), the controller can no longer
-transition directly from RESETTING to LIVE. As a result, EEH recovery
-exits prematurely, leaving the controller stuck in the RESETTING state.
+The problem happens because of the PHY driver code flow, summarized as:
 
-Fix this by explicitly transitioning the controller state from RESETTING
-to CONNECTING and then to LIVE. This satisfies the updated state
-transition rules and allows the controller to be successfully recovered
-on PPC systems following a PCIe subsystem reset.
+ * UDC start code (triggered via configfs at any time after boot)
+   -> phy_init
+       -> rockchip_usb2phy_init
+           -> schedule_delayed_work(otg_sm_work [A], 6 sec)
+   -> phy_power_on
+       -> rockchip_usb2phy_power_on
+           -> enable clock
+           -> rockchip_usb2phy_reset
 
+ * Now the gadget interface is up and running.
+
+ * 6 seconds later otg_sm_work starts [A]
+   -> rockchip_usb2phy_otg_sm_work():
+       if (B_IDLE state && VBUS present && ...):
+           schedule_delayed_work(&rport->chg_work [B], 0);
+
+ * immediately the chg_detect_work starts [B]
+   -> rockchip_chg_detect_work():
+       if chg_state is UNDEFINED:
+           if (!rport->suspended):
+               rockchip_usb2phy_power_off() <--- [X]
+
+At [X], the PHY is powered off, causing a disconnection. This quickly
+triggers a new connection and following re-enumeration, but any connection
+that had been established during the 6 seconds is broken.
+
+The code already checks for !rport->suspended (which, somewhat
+counter-intuitively, means the PHY is powered on), so add a guard for VBUS
+as well to avoid a disconnection when a cable is connected.
+
+Fixes: 98898f3bc83c ("phy: rockchip-inno-usb2: support otg-port for rk3399")
 Cc: stable@vger.kernel.org
-Fixes: d2fe192348f9 ("nvme: only allow entering LIVE from CONNECTING state")
-Reviewed-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Closes: https://lore.kernel.org/lkml/20250414185458.7767aabc@booty/
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Co-developed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://patch.msgid.link/20251127-rk3308-fix-usb-gadget-phy-disconnect-v2-1-dac8a02cd2ca@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1264,7 +1264,10 @@ static int nvme_pci_subsystem_reset(stru
- 	}
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -821,14 +821,16 @@ static void rockchip_chg_detect_work(str
+ 		container_of(work, struct rockchip_usb2phy_port, chg_work.work);
+ 	struct rockchip_usb2phy *rphy = dev_get_drvdata(rport->phy->dev.parent);
+ 	struct regmap *base = get_reg_base(rphy);
+-	bool is_dcd, tmout, vout;
++	bool is_dcd, tmout, vout, vbus_attach;
+ 	unsigned long delay;
  
- 	writel(NVME_SUBSYS_RESET, dev->bar + NVME_REG_NSSR);
--	nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE);
++	vbus_attach = property_enabled(rphy->grf, &rport->port_cfg->utmi_bvalid);
 +
-+	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_CONNECTING) ||
-+	    !nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
-+		goto unlock;
- 
- 	/*
- 	 * Read controller status to flush the previous write and trigger a
+ 	dev_dbg(&rport->phy->dev, "chg detection work state = %d\n",
+ 		rphy->chg_state);
+ 	switch (rphy->chg_state) {
+ 	case USB_CHG_STATE_UNDEFINED:
+-		if (!rport->suspended)
++		if (!rport->suspended && !vbus_attach)
+ 			rockchip_usb2phy_power_off(rport->phy);
+ 		/* put the controller in non-driving mode */
+ 		if (!vbus_attach)
 
 
 
