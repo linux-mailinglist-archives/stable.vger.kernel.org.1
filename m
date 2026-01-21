@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-211007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210812-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFeKKPcecWmodQAAu9opvQ
-	(envelope-from <stable+bounces-211007-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:46:15 +0100
+	id oFDyA2svcWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-210812-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:56:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBA05B78A
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:46:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 793EE5CAA2
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:56:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 14904B2FFC2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:28:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 884AC6A3D4E
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46F9324B27;
-	Wed, 21 Jan 2026 18:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30253793BC;
+	Wed, 21 Jan 2026 18:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hK+Ez5ts"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfrlpS8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD7234FF4B;
-	Wed, 21 Jan 2026 18:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49038369215;
+	Wed, 21 Jan 2026 18:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020124; cv=none; b=j8wewPo5Wwp+UVkQgHSA5aKuf5Go2oQPyESVI5YjbCM+Ko4f/hnKhJGkfoe25CP2lBZ+FB1yfGQFcTce9EtVN+338b0f3MWydXwOKMdyrFsTc5r85RXzzotNbr8ycj6C8NInsHTRIousbCJ2B4PjWAPBIytmf/PkaEqPD/q4pVY=
+	t=1769019463; cv=none; b=eB3B9pfMiXYvUbIiR+OAbIjcXCxwD7gmOIp9sg0AZf9yixgCOSRlTFchUgDsZkOgaIDWiJDZYMNiC5wj4JPV96DqgRnGdnvFky/q8MkDIhZ+hhp+/iqgITj1Du/cUF8dapwRyeOoRn+OsoJDBRMqlWFjrGX4/JuJTFzA+HWT+uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020124; c=relaxed/simple;
-	bh=LBEax2ZyBorREmbrSUYP2Ht3/Kvhd9CN5POZMwmg9PE=;
+	s=arc-20240116; t=1769019463; c=relaxed/simple;
+	bh=BBFBy35/wxYWPcO8b3XU5zkhx01jSzT2OTzW0JOMjok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CH7yLibrXmCjml6c6BJNTWjPxKhVz4ZRuiiw8DWtdYOtvAGf8fVfyos9OSl8p07PUZN7MrbjKUOYoCV+XSGr0gSKKfdCI0DsXySA/PFvB2OKBiqfVj92/aiXT49RTCbzm87RIw5mv8j9jV1MmyH4ZO0yJnNrenkTCPthXG49GgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hK+Ez5ts; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083C7C16AAE;
-	Wed, 21 Jan 2026 18:28:43 +0000 (UTC)
+	 MIME-Version; b=dgQN863he3ejqbFR4GzKb9RqDTaT7mVG4CyyMRoYuIJadKsldX3uwGSde4MFuKScfeRO/Y+JUVxGnX1f4d1mhGwjLPIBpWYs2ayw2sigPkhpFnqsPtEe+TMUtr1Hr7FltQkBCHyRheNlxjy7BtbCWz/YBEL3cF22jhjpOh2Cgvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfrlpS8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83150C4CEF1;
+	Wed, 21 Jan 2026 18:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020124;
-	bh=LBEax2ZyBorREmbrSUYP2Ht3/Kvhd9CN5POZMwmg9PE=;
+	s=korg; t=1769019462;
+	bh=BBFBy35/wxYWPcO8b3XU5zkhx01jSzT2OTzW0JOMjok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hK+Ez5tsoovDOECJcXLpJDv6+B7vGC+eGphjeMOYyW/ni1KPp/rnzonVyIRYx2zlI
-	 a9jj4tHpVDCW0E7lPcza8Dh0PgTK802e3QWi71RMwUZE/QIS8gwQ+ANanNA+NRIAP0
-	 tsKD9Zz6CoTtVkpB7vo3Rpphyceh2XgTIg9F7Ae0=
+	b=kfrlpS8//S50uJbJptRriZ5wkyVSNUz+VwvBc0nhWsLP1O16n8CWS67J96HH1FXuy
+	 Ozl/fhkaJBGxHKODJq2cYeAMZ8UGEgyP6X7zsMe/OCNUPXV7lrGV37O9X5kwu1Yaj6
+	 rg9NZLCHuB/dt7FC/PhTk7jypxnWqQOiheilaLhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+e8cb6691a7cf68256cb8@syzkaller.appspotmail.com,
+	Szymon Wilczek <swilczek.lx@gmail.com>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 033/198] ip6_tunnel: use skb_vlan_inet_prepare() in __ip6_tnl_rcv()
-Date: Wed, 21 Jan 2026 19:14:21 +0100
-Message-ID: <20260121181419.743319977@linuxfoundation.org>
+Subject: [PATCH 6.12 014/139] can: etas_es58x: allow partial RX URB allocation to succeed
+Date: Wed, 21 Jan 2026 19:14:22 +0100
+Message-ID: <20260121181411.971993532@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,135 +71,82 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [0.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org,pengutronix.de];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211007-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210812-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d4dda070f833dc5dc89a];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0EBA05B78A
+	TAGGED_RCPT(0.00)[stable,e8cb6691a7cf68256cb8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,pengutronix.de:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,syzkaller.appspot.com:url,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 793EE5CAA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Szymon Wilczek <swilczek.lx@gmail.com>
 
-[ Upstream commit 81c734dae203757fb3c9eee6f9896386940776bd ]
+[ Upstream commit b1979778e98569c1e78c2c7f16bb24d76541ab00 ]
 
-Blamed commit did not take care of VLAN encapsulations
-as spotted by syzbot [1].
+When es58x_alloc_rx_urbs() fails to allocate the requested number of
+URBs but succeeds in allocating some, it returns an error code.
+This causes es58x_open() to return early, skipping the cleanup label
+'free_urbs', which leads to the anchored URBs being leaked.
 
-Use skb_vlan_inet_prepare() instead of pskb_inet_may_pull().
+As pointed out by maintainer Vincent Mailhol, the driver is designed
+to handle partial URB allocation gracefully. Therefore, partial
+allocation should not be treated as a fatal error.
 
-[1]
- BUG: KMSAN: uninit-value in __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
- BUG: KMSAN: uninit-value in INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
- BUG: KMSAN: uninit-value in IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
-  __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
-  INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
-  IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
-  ip6ip6_dscp_ecn_decapsulate+0x16f/0x1b0 net/ipv6/ip6_tunnel.c:729
-  __ip6_tnl_rcv+0xed9/0x1b50 net/ipv6/ip6_tunnel.c:860
-  ip6_tnl_rcv+0xc3/0x100 net/ipv6/ip6_tunnel.c:903
- gre_rcv+0x1529/0x1b90 net/ipv6/ip6_gre.c:-1
-  ip6_protocol_deliver_rcu+0x1c89/0x2c60 net/ipv6/ip6_input.c:438
-  ip6_input_finish+0x1f4/0x4a0 net/ipv6/ip6_input.c:489
-  NF_HOOK include/linux/netfilter.h:318 [inline]
-  ip6_input+0x9c/0x330 net/ipv6/ip6_input.c:500
-  ip6_mc_input+0x7ca/0xc10 net/ipv6/ip6_input.c:590
-  dst_input include/net/dst.h:474 [inline]
-  ip6_rcv_finish+0x958/0x990 net/ipv6/ip6_input.c:79
-  NF_HOOK include/linux/netfilter.h:318 [inline]
-  ipv6_rcv+0xf1/0x3c0 net/ipv6/ip6_input.c:311
-  __netif_receive_skb_one_core net/core/dev.c:6139 [inline]
-  __netif_receive_skb+0x1df/0xac0 net/core/dev.c:6252
-  netif_receive_skb_internal net/core/dev.c:6338 [inline]
-  netif_receive_skb+0x57/0x630 net/core/dev.c:6397
-  tun_rx_batched+0x1df/0x980 drivers/net/tun.c:1485
-  tun_get_user+0x5c0e/0x6c60 drivers/net/tun.c:1953
-  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
-  new_sync_write fs/read_write.c:593 [inline]
-  vfs_write+0xbe2/0x15d0 fs/read_write.c:686
-  ksys_write fs/read_write.c:738 [inline]
-  __do_sys_write fs/read_write.c:749 [inline]
-  __se_sys_write fs/read_write.c:746 [inline]
-  __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
-  x64_sys_call+0x30ab/0x3e70 arch/x86/include/generated/asm/syscalls_64.h:2
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xd3/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Modify es58x_alloc_rx_urbs() to return 0 if at least one URB has been
+allocated, restoring the intended behavior and preventing the leak
+in es58x_open().
 
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:4960 [inline]
-  slab_alloc_node mm/slub.c:5263 [inline]
-  kmem_cache_alloc_node_noprof+0x9e7/0x17a0 mm/slub.c:5315
-  kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:586
-  __alloc_skb+0x805/0x1040 net/core/skbuff.c:690
-  alloc_skb include/linux/skbuff.h:1383 [inline]
-  alloc_skb_with_frags+0xc5/0xa60 net/core/skbuff.c:6712
-  sock_alloc_send_pskb+0xacc/0xc60 net/core/sock.c:2995
-  tun_alloc_skb drivers/net/tun.c:1461 [inline]
-  tun_get_user+0x1142/0x6c60 drivers/net/tun.c:1794
-  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
-  new_sync_write fs/read_write.c:593 [inline]
-  vfs_write+0xbe2/0x15d0 fs/read_write.c:686
-  ksys_write fs/read_write.c:738 [inline]
-  __do_sys_write fs/read_write.c:749 [inline]
-  __se_sys_write fs/read_write.c:746 [inline]
-  __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
-  x64_sys_call+0x30ab/0x3e70 arch/x86/include/generated/asm/syscalls_64.h:2
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xd3/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-CPU: 0 UID: 0 PID: 6465 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(none)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-
-Fixes: 8d975c15c0cd ("ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()")
-Reported-by: syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/695e88b2.050a0220.1c677c.036d.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260107163109.4188620-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8537257874e9 ("can: etas_es58x: add core support for ETAS ES58X CAN USB interfaces")
+Reported-by: syzbot+e8cb6691a7cf68256cb8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e8cb6691a7cf68256cb8
+Signed-off-by: Szymon Wilczek <swilczek.lx@gmail.com>
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20251223011732.39361-1-swilczek.lx@gmail.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 2 +-
+ drivers/net/can/usb/etas_es58x/es58x_core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 6405072050e0e..c1f39735a2367 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -844,7 +844,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
+diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
+index 4fc9bed0d2e1e..d483cb7cfbcd5 100644
+--- a/drivers/net/can/usb/etas_es58x/es58x_core.c
++++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
+@@ -1736,7 +1736,7 @@ static int es58x_alloc_rx_urbs(struct es58x_device *es58x_dev)
+ 	dev_dbg(dev, "%s: Allocated %d rx URBs each of size %u\n",
+ 		__func__, i, rx_buf_len);
  
- 	skb_reset_network_header(skb);
+-	return ret;
++	return 0;
+ }
  
--	if (!pskb_inet_may_pull(skb)) {
-+	if (skb_vlan_inet_prepare(skb, true)) {
- 		DEV_STATS_INC(tunnel->dev, rx_length_errors);
- 		DEV_STATS_INC(tunnel->dev, rx_errors);
- 		goto drop;
+ /**
 -- 
 2.51.0
 
