@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-210856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210984-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAG2AGMbcWmodQAAu9opvQ
-	(envelope-from <stable+bounces-210856-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:30:59 +0100
+	id eLt6GkAfcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210984-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:47:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7345F5B4AD
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:30:58 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E44B5B7D9
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:47:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6F497A0F5F1
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:02 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4239B8614CD
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D60C3876AB;
-	Wed, 21 Jan 2026 18:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427D036403D;
+	Wed, 21 Jan 2026 18:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UtxdiBWv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNqU0/y+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2521733E373;
-	Wed, 21 Jan 2026 18:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C8D33A9F4;
+	Wed, 21 Jan 2026 18:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019617; cv=none; b=uTSG+WQvdV3ABsHy+ffAxVZh1KijFg6FcG0bgicn2Y/EOJ5UfhejGvMt9HyWqBK71UA0fYG66ZKsHRx3DbCZ3Wv18iSWepZBDKx81iD+Q20uKMzX1Eh4E3ebGeyIov1lcM9lfww8ul1Lyk1mObH/yWIxvnfDS3Jo7u31tK5WImI=
+	t=1769020046; cv=none; b=XTUA2CKicct8rPnyEMpO+g07Jz8jALRucf4+81mpxVmmSUfXWte3dfCMhquqde+7sAFT9wlPSKsIqiiHBypA3sSGRXDKzh/s9Ags2XbN/ee04hDnjHH2sWyCjbiABtHNccRWyHlaemwQq5FknwzeUmGjhBMZh/FeNHxsAmeAFPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019617; c=relaxed/simple;
-	bh=Sqk4ho3zxvGa38dZJdns+dVUCVjtSkdGty206KWdBwg=;
+	s=arc-20240116; t=1769020046; c=relaxed/simple;
+	bh=HoqZ1t/Ad83K4/qNPjUfNYzWWbEIpGzu+pwIsubXvT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ygn/cR7tYm1uRXL+fsDuvRhwPwIKDXeCpUs0rl0bEGGi8vOR2GZj/cyUujKWgX44THll9T6e4Xi9kDAlubaRe/FFznyFfftnMq5LmWJBGh7sW+iEVV50qLxUCCywltAebNSdoM/mDiHUNWPbMi7/WAPMosrlgYeoYdYjW/mPSrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UtxdiBWv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249C2C4CEF1;
-	Wed, 21 Jan 2026 18:20:15 +0000 (UTC)
+	 MIME-Version; b=YiyNKK1v9DCYrs86UYzHKVc4wAuZuZkV8HP6qjpGbarPqbmcq7Wu/IOKCjbxfajp6cBaupv4tpaxZj30pwSzjTV0XuDDznJbtVCvfjbq7g4sHrj3jkvjy/PPtDjbsodxan8AItPvun/YnwZjYmYOp9YI8hiQoCKVRS8mBh/pOw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNqU0/y+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC8BC4CEF1;
+	Wed, 21 Jan 2026 18:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019616;
-	bh=Sqk4ho3zxvGa38dZJdns+dVUCVjtSkdGty206KWdBwg=;
+	s=korg; t=1769020045;
+	bh=HoqZ1t/Ad83K4/qNPjUfNYzWWbEIpGzu+pwIsubXvT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UtxdiBWvn3u9Pe/uDM5ze0R3zecFa4pmsGU2rw9wpF0benJm7eIek1d4W6egzv2UN
-	 VUW3BXFosQWOVCgI1R4/dK7atT8Gzn0ML9VeKIQfLyxsXSBO2/4OHOzDH/hL/GCz1g
-	 vCm/0Xl59mI+63W3J1Q5wrD7NZmZsmhRnfHQt/lk=
+	b=MNqU0/y+dTJ/3r6j6ZiN+CiiCkFcwEWyN5IsBTQv+QTVwbjKRGba32w1Xx2I7brJn
+	 2boJBesnbzPP7bavdgUVBqjSNRRGAkkWI/mcFzUlTDbtpCt49D8A3nuT89dAPpQyPt
+	 eF08T7YCuyec+Hu8bx5ZNVXQLjzy+gE8zAbpuLq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Li Ming <ming.li@zohomail.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/139] net/mlx5e: Dont store mlx5e_priv in mlx5e_dev devlink priv
+Subject: [PATCH 6.18 044/198] cxl/hdm: Fix potential infinite loop in __cxl_dpa_reserve()
 Date: Wed, 21 Jan 2026 19:14:32 +0100
-Message-ID: <20260121181412.326806741@linuxfoundation.org>
+Message-ID: <20260121181420.135776460@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,177 +75,68 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210856-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-210984-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 7345F5B4AD
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0E44B5B7D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Li Ming <ming.li@zohomail.com>
 
-[ Upstream commit 123eda2e5b1638e298e3a66bb1e64a8da92de5e1 ]
+[ Upstream commit d4026a44626490dc4eca4dd2c4d0816338fa179b ]
 
-mlx5e_priv is an unstable structure that can be memset(0) if profile
-attaching fails, mlx5e_priv in mlx5e_dev devlink private is used to
-reference the netdev and mdev associated with that struct. Instead,
-store netdev directly into mlx5e_dev and get mdev from the containing
-mlx5_adev aux device structure.
+In __cxl_dpa_reserve(), it will check if the new resource range is
+included in one of paritions of the cxl memory device.
+cxlds->nr_paritions is used to represent how many partitions information
+the cxl memory device has. In the loop, if driver cannot find a
+partition including the new resource range, it will be an infinite loop.
 
-This fixes a kernel oops in mlx5e_remove when switchdev mode fails due
-to change profile failure.
+[ dj: Removed incorrect fixes tag ]
 
-$ devlink dev eswitch set pci/0000:00:03.0 mode switchdev
-Error: mlx5_core: Failed setting eswitch to offloads.
-dmesg:
-workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
-mlx5_core 0012:03:00.1: mlx5e_netdev_init_profile:6214:(pid 37199): mlx5e_priv_init failed, err=-12
-mlx5_core 0012:03:00.1 gpu3rdma1: mlx5e_netdev_change_profile: new profile init failed, -12
-workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
-mlx5_core 0012:03:00.1: mlx5e_netdev_init_profile:6214:(pid 37199): mlx5e_priv_init failed, err=-12
-mlx5_core 0012:03:00.1 gpu3rdma1: mlx5e_netdev_change_profile: failed to rollback to orig profile, -12
-
-$ devlink dev reload pci/0000:00:03.0 ==> oops
-
-BUG: kernel NULL pointer dereference, address: 0000000000000520
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-CPU: 3 UID: 0 PID: 521 Comm: devlink Not tainted 6.18.0-rc5+ #117 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
-RIP: 0010:mlx5e_remove+0x68/0x130
-RSP: 0018:ffffc900034838f0 EFLAGS: 00010246
-RAX: ffff88810283c380 RBX: ffff888101874400 RCX: ffffffff826ffc45
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffff888102d789c0 R08: ffff8881007137f0 R09: ffff888100264e10
-R10: ffffc90003483898 R11: ffffc900034838a0 R12: ffff888100d261a0
-R13: ffff888100d261a0 R14: ffff8881018749a0 R15: ffff888101874400
-FS:  00007f8565fea740(0000) GS:ffff88856a759000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000520 CR3: 000000010b11a004 CR4: 0000000000370ef0
-Call Trace:
- <TASK>
- device_release_driver_internal+0x19c/0x200
- bus_remove_device+0xc6/0x130
- device_del+0x160/0x3d0
- ? devl_param_driverinit_value_get+0x2d/0x90
- mlx5_detach_device+0x89/0xe0
- mlx5_unload_one_devl_locked+0x3a/0x70
- mlx5_devlink_reload_down+0xc8/0x220
- devlink_reload+0x7d/0x260
- devlink_nl_reload_doit+0x45b/0x5a0
- genl_family_rcv_msg_doit+0xe8/0x140
-
-Fixes: ee75f1fc44dd ("net/mlx5e: Create separate devlink instance for ethernet auxiliary device")
-Fixes: c4d7eb57687f ("net/mxl5e: Add change profile method")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://patch.msgid.link/20260108212657.25090-3-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 4ef8512e1427 ("net/mlx5e: Pass netdev to mlx5e_destroy_netdev instead of priv")
+Fixes: 991d98f17d31 ("cxl: Make cxl_dpa_alloc() DPA partition number agnostic")
+Signed-off-by: Li Ming <ming.li@zohomail.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20260112120526.530232-1-ming.li@zohomail.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en.h  |  2 +-
- .../net/ethernet/mellanox/mlx5/core/en_main.c | 20 ++++++++++---------
- 2 files changed, 12 insertions(+), 10 deletions(-)
+ drivers/cxl/core/hdm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-index 7c0420deb270c..084c68479f734 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-@@ -946,7 +946,7 @@ struct mlx5e_priv {
- };
- 
- struct mlx5e_dev {
--	struct mlx5e_priv *priv;
-+	struct net_device *netdev;
- 	struct devlink_port dl_port;
- };
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index af70025b129b7..4e2f985273a39 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -6323,8 +6323,8 @@ static int _mlx5e_resume(struct auxiliary_device *adev)
- {
- 	struct mlx5_adev *edev = container_of(adev, struct mlx5_adev, adev);
- 	struct mlx5e_dev *mlx5e_dev = auxiliary_get_drvdata(adev);
--	struct mlx5e_priv *priv = mlx5e_dev->priv;
--	struct net_device *netdev = priv->netdev;
-+	struct mlx5e_priv *priv = netdev_priv(mlx5e_dev->netdev);
-+	struct net_device *netdev = mlx5e_dev->netdev;
- 	struct mlx5_core_dev *mdev = edev->mdev;
- 	struct mlx5_core_dev *pos, *to;
- 	int err, i;
-@@ -6370,10 +6370,11 @@ static int mlx5e_resume(struct auxiliary_device *adev)
- 
- static int _mlx5e_suspend(struct auxiliary_device *adev, bool pre_netdev_reg)
- {
-+	struct mlx5_adev *edev = container_of(adev, struct mlx5_adev, adev);
- 	struct mlx5e_dev *mlx5e_dev = auxiliary_get_drvdata(adev);
--	struct mlx5e_priv *priv = mlx5e_dev->priv;
--	struct net_device *netdev = priv->netdev;
--	struct mlx5_core_dev *mdev = priv->mdev;
-+	struct mlx5e_priv *priv = netdev_priv(mlx5e_dev->netdev);
-+	struct net_device *netdev = mlx5e_dev->netdev;
-+	struct mlx5_core_dev *mdev = edev->mdev;
- 	struct mlx5_core_dev *pos;
- 	int i;
- 
-@@ -6434,11 +6435,11 @@ static int _mlx5e_probe(struct auxiliary_device *adev)
- 		goto err_devlink_port_unregister;
- 	}
- 	SET_NETDEV_DEVLINK_PORT(netdev, &mlx5e_dev->dl_port);
-+	mlx5e_dev->netdev = netdev;
- 
- 	mlx5e_build_nic_netdev(netdev);
- 
- 	priv = netdev_priv(netdev);
--	mlx5e_dev->priv = priv;
- 
- 	priv->profile = profile;
- 	priv->ppriv = NULL;
-@@ -6501,7 +6502,8 @@ static void _mlx5e_remove(struct auxiliary_device *adev)
- {
- 	struct mlx5_adev *edev = container_of(adev, struct mlx5_adev, adev);
- 	struct mlx5e_dev *mlx5e_dev = auxiliary_get_drvdata(adev);
--	struct mlx5e_priv *priv = mlx5e_dev->priv;
-+	struct net_device *netdev = mlx5e_dev->netdev;
-+	struct mlx5e_priv *priv = netdev_priv(netdev);
- 	struct mlx5_core_dev *mdev = edev->mdev;
- 
- 	mlx5_core_uplink_netdev_set(mdev, NULL);
-@@ -6510,8 +6512,8 @@ static void _mlx5e_remove(struct auxiliary_device *adev)
- 	 * if it's from legacy mode. If from switchdev mode, it
- 	 * is already unregistered before changing to NIC profile.
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index d3a094ca01ad9..20dd638108062 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -403,7 +403,7 @@ static int __cxl_dpa_reserve(struct cxl_endpoint_decoder *cxled,
+ 	 * is not set.
  	 */
--	if (priv->netdev->reg_state == NETREG_REGISTERED) {
--		unregister_netdev(priv->netdev);
-+	if (netdev->reg_state == NETREG_REGISTERED) {
-+		unregister_netdev(netdev);
- 		_mlx5e_suspend(adev, false);
- 	} else {
- 		struct mlx5_core_dev *pos;
+ 	if (cxled->part < 0)
+-		for (int i = 0; cxlds->nr_partitions; i++)
++		for (int i = 0; i < cxlds->nr_partitions; i++)
+ 			if (resource_contains(&cxlds->part[i].res, res)) {
+ 				cxled->part = i;
+ 				break;
 -- 
 2.51.0
 
