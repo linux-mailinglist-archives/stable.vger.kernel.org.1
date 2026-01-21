@@ -1,218 +1,253 @@
-Return-Path: <stable+bounces-210797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210798-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOrFEBgOcWlEcgAAu9opvQ
-	(envelope-from <stable+bounces-210797-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:34:16 +0100
+	id 6FVuHGQWcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210798-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:09:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77D65A998
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:34:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78115B0E9
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:09:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C4EB38295D5
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:23:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C8F49F0293
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8D43A89C0;
-	Wed, 21 Jan 2026 16:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF3C3A0E8A;
+	Wed, 21 Jan 2026 17:00:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DKi/9ny7";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RPfvPrL5"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8118B34EF1C
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 16:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769014799; cv=none; b=OcmpcInuZlnkAXRDurTJibuAFKxd6ak0Ekt3rbxEfRFhNqOwiI+wzaD582Ev4m4iIvUqRgqSWWPDug44vCe1f7BD5jjDPHZmRH5l1L0v1xnqTSyHQ0raBulmBG8rvHCw0Fcfz7c9kPLkFyC41URxaWOVLDE3k/Qph+8YLhtKlU0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769014799; c=relaxed/simple;
-	bh=uvtoliAJpTTyDZ2Zh84YtUvsM1+deYJwOeukpICNISo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eVk87Rs81/J4YumB41g88aER/aRYyXrRYi9KYWQITsBlC0kB1jh7LJYxvgMlLVWdkYTr0rs1teFDjs4GBZaKnAvh6sC94qbt5vxXn1CfjLmu+VNkbeOYqDmRIISPAX6coUf79w21dqYJMJcl9I4Fehu35a4vW0z/GjmrppixM9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2D50D1476;
-	Wed, 21 Jan 2026 08:59:49 -0800 (PST)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AF77C3F632;
-	Wed, 21 Jan 2026 08:59:54 -0800 (PST)
-Date: Wed, 21 Jan 2026 16:59:49 +0000
-From: Joey Gouly <joey.gouly@arm.com>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org, david.spickett@arm.com,
-	kevin.brodsky@arm.com, stable@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v1] arm64: poe: fix stale POR_EL0 values for ptrace
-Message-ID: <20260121165949.GA1873371@e124191.cambridge.arm.com>
-References: <20260121135639.1835784-1-joey.gouly@arm.com>
- <aXD0VUDsHxQbCegJ@J2N7QTR9R3>
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAC81B4F1F
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 17:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769014809; cv=pass; b=S146gheXbJnsz5bwzern/IAbY4nEbsu0Dtaf4npAW4ol63lgFlhU9JLFaJTAmzAyrupXYv3KiTP7ULfsLT7FNMUL5GVukR7sbWc56nrGpu3Eq+3qxIJZ2cMchL5WFWTuIQV+UJ4AqDfMri3F/z9DIvxaz5CHEJWS6AwH9fLWJpo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769014809; c=relaxed/simple;
+	bh=+joYYSvt6O0WzeTvPCyBVAm2AiyPwakHVoRSJLX3DYI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OX7rpSpJvshgaRlmjjwzu4VVH0rfH++cRR/gv4OmcMtQJw/Nx6LttXg+hY2rN7Q5BKAs1KrFsAURTbnmaPXwZN8MOcgt0EQSCMjZZ+ZMnIz5Qub7WOOq286fFGcMc0BuvfbOyEYtYDhpshuJ7Iit0wq4CSC79ovZAAAM5ojmBYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DKi/9ny7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RPfvPrL5; arc=pass smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60LGkgei3481446
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 17:00:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:to; s=
+	qcppdkim1; bh=Of1XCp4w1IY/FWfBQqk2YMMCDqdBBDLtge107x8YzfQ=; b=DK
+	i/9ny7u6sYA3xbSXbIQHGKSgaSeJxqF1CQpODMhYJLhS9hlss1d8e6vpsgPmAq6M
+	OUCTtwcZSlrgqTTEfRp0ot0c9upyzZ3agHCzJ4izV9QA9HtfoYDsz1+5sq4xyXlV
+	WqEeTKFxHUpGHzpwQV8CmihLIlOpO33U3duwJaT8uxNEH2ZY1TVo36Yp2vjOIYdW
+	w8LC86fSNSGWc4GbC4oi7L55J+zLtLU3YANJ+FrrGyxmHW3uXwdA4Pt572UMyrOM
+	jsedXPJ4CfvusCELtzQjx2ymDTDv+Xk75Y99HC+/uqFrouioImZBg5vX1LStwHHk
+	zw+arwhsAZsvMDM2YZBw==
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4btvef1fpj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 17:00:05 +0000 (GMT)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2b71041d135so723955eec.1
+        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 09:00:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769014805; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jxziOYB24OfIQzaynGO1IEgEarY0343WoCsa7jtegzf3p0BJuT/WCHP4ujBklK9+R6
+         Td0TpXPW6Uo2ZQ9Fbx7Nv71MuuPgueMT/diGFU/WDuzJB4yPDrLje5C/WgFlFlwX/W4/
+         7rnGCXAb2R+9nQzGgyJIVlUxmb1gP5rm7VIGwd30jAHcJz2oe8zE2frIo8R2D/mmDJCV
+         VomTJms8UdPxyDn5tJ6AjobhPnI2hyS7EHUqE5u55QeQfcw5DHW8QkGONirAPFH+l+vv
+         Sgc0q++TGEBmZ6J+5JDA7M+/fvBVNQ4gmvBk2Hhw/Uv1Opfej6JL7KFf0YhqHMb82Tui
+         lLug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=Of1XCp4w1IY/FWfBQqk2YMMCDqdBBDLtge107x8YzfQ=;
+        fh=l/dAy2kDqEPXeJ5DmpPaaWFUeI+FSfElud0gyxBSrjs=;
+        b=CqqYeI0A+DIpQu0sNCsUu8qmslwqb7LK15g6vsNP/fEzNoK9K5skW/lyi2fDyDRWfr
+         RgM+qSZJ4T+MhwRjJMdyu+QBfCM0awxyYb1LzrdhmL3ux9h2U1hKoQqji/7RvLQoTf3s
+         IyFyVzraBZzp2oNcrTKg5P2OMTGJaY5bDRUvf1EgA2sAPB65Mp75IYNuy5Hwr0UH6IB7
+         BroL9omNuJIpT/RA38fgWWhJ5jpK0HEtQ9LsAy0D5eY51eRGslyK+71AD8o9jwZUxqTT
+         6GCCy/l8knTc79wf/91W3DNMcq680biI0hNswPlpyoddkE5HdVtzg898z5r2yejPshCw
+         r/Cw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1769014805; x=1769619605; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Of1XCp4w1IY/FWfBQqk2YMMCDqdBBDLtge107x8YzfQ=;
+        b=RPfvPrL5Vub9XNUi1CkfP19PQvufpqWWhDd0rhngeFc7vpH0zZvcWhFbyV5fYwJLF/
+         53MLiRMUvBGdqlb+LnEUflcyjZsYeea8UdWF6oI11sW1fNsc8D37MLBoYrvjeTaLcYvO
+         Snu8zfqWrqIFXugi6DXka87SjYRPscFwphSAFq72yK/EzipV9oPVIaTwaMZJXVxbrT5i
+         6DIIXASnbjV4EMMa5cmIOnQHG6KXaRO501kdNgF4eswc+eBA96oFpEfunC+KJ950jxKm
+         mquYZHPY7LyPRnGlP4EOZ9Qp/hI/WXFeumB+yjP6wkWZENtUUkGBsIn++Glkr81cwxU6
+         mNGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769014805; x=1769619605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Of1XCp4w1IY/FWfBQqk2YMMCDqdBBDLtge107x8YzfQ=;
+        b=MT195pBqNHJkRCJuMHFDQgdX3/ZqFbUr0jvGdJFV2ysU1HgCAgmUclsMkRSAw4gMRJ
+         DmAKClgKUxSn7c7xyngx5/cjxjzdIItu2eJImNjqnnbQTgTazP6QcPSDGWnK3jNfm2/p
+         8SrDej/EqTXsSpjjBBhN1TjBe1INOJaRxGlwr6gYMYqEcFVgT/sQV4K1p87cCezQ9nen
+         3ctBmA3rU6zdzxINUFe0oipHQftOGib+zbeIJe3jH1r/xagWjdcH8pokq0EEE997PysQ
+         UqDLZFURTxcwR8j2195+V2LblQAv2X4OvBBbLjDtupF8NzfwSDUebVAiCxw3FZmmdx4l
+         pyeA==
+X-Forwarded-Encrypted: i=1; AJvYcCUxz0JeNsSQqZbKxVfyxXvi3v5Pc5S6ZYWfBXJKkJ/aWu4rgGx6l//m0Vbt7ujdrX6wxym+828=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaTBr3x59NmZqWYF/uWGsqtMh8dtuecoZqyY8wILl6RCCoKSm/
+	XeX1H0ifVKg9w8T70ZK+lICh5z/hhe1PnRbntVSa207wCAo0qMvjU8RILpF2guWa1I84YKbj0+x
+	wsYlXRSEhKznsWgTaIiYhQyS10A6MpUBpvj/E1KeIZizNg3GbsMquJskY6GeNHOmiIiZMvqfPeK
+	eGY3XajAt66SEDkL2MGsjGQtCnI/Y6THPXHw==
+X-Gm-Gg: AZuq6aKHWu6mZL0y4hAw7VCHFE9a9fPqSWzXeqA8Qtmv43LneboFtiAUMWUAo6AVnXR
+	MRoV4GJoDwDjj3CVhn1f1hJwoOIz7wz5b5r/b8phYeKRScXKR7kZtaaUOs/uVbgVETkPchfOfdy
+	JWtkKnWmcfTKGkHNHjWrcilqNDI45wH7KkYBbOcnnw92VaTxgDyS1jjDSSbkY7ORzcAw/TSPNXZ
+	DkUHG8Dpm8prkeKsrnypxdWOg==
+X-Received: by 2002:a05:7022:a8d:b0:123:3c24:b15 with SMTP id a92af1059eb24-12476b1215amr24657c88.19.1769014804752;
+        Wed, 21 Jan 2026 09:00:04 -0800 (PST)
+X-Received: by 2002:a05:7022:a8d:b0:123:3c24:b15 with SMTP id
+ a92af1059eb24-12476b1215amr24635c88.19.1769014804017; Wed, 21 Jan 2026
+ 09:00:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXD0VUDsHxQbCegJ@J2N7QTR9R3>
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+References: <20251221164552.19990-1-johan@kernel.org> <aWdaLF_A5fghNZhN@hovoldconsulting.com>
+ <aXDt6v_iO4EFCqyw@hovoldconsulting.com>
+In-Reply-To: <aXDt6v_iO4EFCqyw@hovoldconsulting.com>
+Reply-To: rob.clark@oss.qualcomm.com
+From: Rob Clark <rob.clark@oss.qualcomm.com>
+Date: Wed, 21 Jan 2026 08:59:51 -0800
+X-Gm-Features: AZwV_QiWj0yuZPjfl5AAb2tqkVbhX91Ozb0ASrKflC4IjkW86-eixAz2tomYpLw
+Message-ID: <CACSVV039g9CcAKhtMAwn=hH4hMT2nV77vxiasgUSFF-sn=+JgA@mail.gmail.com>
+Subject: Re: [PATCH] drm/msm/a6xx: fix bogus hwcg register updates
+To: Johan Hovold <johan@kernel.org>
+Cc: Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
+        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Jessica Zhang <jesszhan0024@gmail.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-GUID: FbYBLFIOx5EBT_-JgMjTF22sF-Kv6JCP
+X-Proofpoint-ORIG-GUID: FbYBLFIOx5EBT_-JgMjTF22sF-Kv6JCP
+X-Authority-Analysis: v=2.4 cv=CYgFJbrl c=1 sm=1 tr=0 ts=69710615 cx=c_pps
+ a=cFYjgdjTJScbgFmBucgdfQ==:117 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8
+ a=RcnqT8zevFU4LWI_uFIA:9 a=QEXdDO2ut3YA:10 a=scEy_gLbYbu1JhEsrz4S:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIxMDE0MyBTYWx0ZWRfX8HERm6FmICLV
+ CE8OGWmFXPycHG6UtyCAKR6RMZjuA4LfUEB9JkkvCdf8sQCEpb0z+ZVDW1FSEr7uW3+IjMHqh1F
+ xh5qZUJrEjO8IXxoYia7T4ZBb4fBIZMF6ZxI9V9mAQsUHsPV3vM6Moh2IvaFG0VX6glP2ZvHFHP
+ Obj+tir3xnkBGTwZk8jj3R4f7OHyYhO0RvG+BOTWtxW+9odsAaZ8uR9NJYMhJ58kMbikwqfJDqu
+ 9lEzoDm6oLnU00WriKAQwAN7ATjAMrMOLW1eC1ccqFb3DniRbw2v9uogdjTKLUk754PWXSp5Cqn
+ jx3smmh9ABwjwrT1WHbEpSoTMDw9sq2AeZ3wNstFaNAByWbzHT4IQoE5aV26yjBEPlWgjn7dN7f
+ 2Vt37hsgkrFoQn6CU91yKWuWssn01Qc65q9msmSYa2sursveRWyvV4bcvA4C5xJkL+F8q1BI2W8
+ tQwJ10Vw4A7y4slFrzg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-21_02,2026-01-20_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 phishscore=0 clxscore=1015 suspectscore=0
+ impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601210143
+X-Spamd-Result: default: False [-1.96 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : No valid SPF, No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210798-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[qualcomm.com,reject];
+	FREEMAIL_CC(0.00)[poorly.run,kernel.org,oss.qualcomm.com,linux.dev,gmail.com,somainline.org,vger.kernel.org,lists.freedesktop.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210797-lists,stable=lfdr.de];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	HAS_REPLYTO(0.00)[rob.clark@oss.qualcomm.com];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob.clark@oss.qualcomm.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joey.gouly@arm.com,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,arm.com:email,e124191.cambridge.arm.com:mid]
-X-Rspamd-Queue-Id: D77D65A998
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,oss.qualcomm.com:replyto,oss.qualcomm.com:dkim,mail.gmail.com:mid,qualcomm.com:dkim]
+X-Rspamd-Queue-Id: D78115B0E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Jan 21, 2026 at 03:44:21PM +0000, Mark Rutland wrote:
-> Hi Joey,
-> 
-> On Wed, Jan 21, 2026 at 01:56:39PM +0000, Joey Gouly wrote:
-> > If a process wrote to POR_EL0 and then crashed before a context switch
-> > happened, the coredump would contain an incorrect value for POR_EL0.
-> > 
-> > The value read in poe_get() would be a stale value left in thread.por_el0.  Fix
-> > this by reading the value from the system register, if the target thread is the
-> > current thread.
-> > 
-> > This matches what gcs/fpsimd do.
-> > 
-> > Fixes: 175198199262 ("arm64/ptrace: add support for FEAT_POE")
-> > Reported-by: David Spickett <david.spickett@arm.com>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-> > Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-> > Cc: Mark Rutland <mark.rutland@arm.com>
-> 
-> I have a couple of comments below, but as-is this looks functionally
-> correct to me. With or without the changes suggested below:
-> 
-> Acked-by: Mark Rutland <mark.rutland@arm.com>
-> 
-> > ---
-> >  arch/arm64/include/asm/por.h | 2 ++
-> >  arch/arm64/kernel/process.c  | 7 ++++++-
-> >  arch/arm64/kernel/ptrace.c   | 5 +++++
-> >  3 files changed, 13 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/arm64/include/asm/por.h b/arch/arm64/include/asm/por.h
-> > index d913d5b529e4..46f1356837e2 100644
-> > --- a/arch/arm64/include/asm/por.h
-> > +++ b/arch/arm64/include/asm/por.h
-> > @@ -31,4 +31,6 @@ static inline bool por_elx_allows_exec(u64 por, u8 pkey)
-> >  	return perm & POE_X;
-> >  }
-> >  
-> > +void poe_preserve_current_state(void);
-> 
-> Is it possible to have a static inline here, i.e.
-> 
-> 	static inline void poe_preserve_current_state(void)
-> 	{
-> 		current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
-> 	}
-> 
-> ... or will that cause some header dependency problem?
+On Wed, Jan 21, 2026 at 7:17=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
+te:
+>
+> On Wed, Jan 14, 2026 at 09:56:12AM +0100, Johan Hovold wrote:
+> > On Sun, Dec 21, 2025 at 05:45:52PM +0100, Johan Hovold wrote:
+> > > The hw clock gating register sequence consists of register value pair=
+s
+> > > that are written to the GPU during initialisation.
+> > >
+> > > The a690 hwcg sequence has two GMU registers in it that used to amoun=
+t
+> > > to random writes in the GPU mapping, but since commit 188db3d7fe66
+> > > ("drm/msm/a6xx: Rebase GMU register offsets") they trigger a fault as
+> > > the updated offsets now lie outside the mapping. This in turn breaks
+> > > boot of machines like the Lenovo ThinkPad X13s.
+> > >
+> > > Note that the updates of these GMU registers is already taken care of
+> > > properly since commit 40c297eb245b ("drm/msm/a6xx: Set GMU CGC
+> > > properties on a6xx too"), but for some reason these two entries were
+> > > left in the table.
+> > >
+> > > Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support")
+> > > Cc: stable@vger.kernel.org  # 6.5
+> > > Cc: Bjorn Andersson <andersson@kernel.org>
+> > > Cc: Konrad Dybcio <konradybcio@kernel.org>
+> > > Signed-off-by: Johan Hovold <johan@kernel.org>
+> > > ---
+> >
+> > This one does not seem to have been applied yet despite fixing a
+> > critical regression in 6.19-rc1. I guess I could have highlighted that
+> > further by also including:
+> >
+> > Fixes: 188db3d7fe66 ("drm/msm/a6xx: Rebase GMU register offsets")
+> >
+> > I realise some delays are expected around Christmas, but can you please
+> > try to get this fix to Linus now that everyone should be back again?
+>
+> I haven't received any reply so was going to send another reminder, but
+> I noticed now that this patch was merged to the msm-next branch last
+> week.
+>
+> Since it fixes a regression in 6.19-rc1 it needs to go to Linus this
+> cycle and I would have assumed it should have be merged to msm-fixes.
+>
+> (MSM) DRM works in mysterious ways, so can someone please confirm that
+> this regression fix is heading into mainline for 6.19-final?
 
-It is possible to do as a static inline..
+Sorry, mesa 26.0 branchpoint this week so I've not had much time for
+kernel for last few weeks and didn't have time for a 2nd msm-fixes PR.
+But with fixes/cc tags it should be picked into 6.19.y
 
-> 
-> If we can have this as a static inline, we can use it everywhere
-> consistently, and avoid needing a function call for a trivial number of
-> instructions.
-> 
-> Otherwise, see below for another option.
-> 
-> > +
-> >  #endif /* _ASM_ARM64_POR_H */
-> > diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
-> > index 489554931231..400182099784 100644
-> > --- a/arch/arm64/kernel/process.c
-> > +++ b/arch/arm64/kernel/process.c
-> > @@ -665,12 +665,17 @@ static int do_set_tsc_mode(unsigned int val)
-> >  	return 0;
-> >  }
-> >  
-> > +void poe_preserve_current_state(void)
-> > +{
-> > +	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
-> > +}
-> > +
-> >  static void permission_overlay_switch(struct task_struct *next)
-> >  {
-> >  	if (!system_supports_poe())
-> >  		return;
-> >  
-> > -	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
-> > +	poe_preserve_current_state();
-> >  	if (current->thread.por_el0 != next->thread.por_el0) {
-> >  		write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
-> >  		/*
-> > diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-> > index b9bdd83fbbca..276d8ee630cd 100644
-> > --- a/arch/arm64/kernel/ptrace.c
-> > +++ b/arch/arm64/kernel/ptrace.c
-> > @@ -37,6 +37,7 @@
-> >  #include <asm/gcs.h>
-> >  #include <asm/mte.h>
-> >  #include <asm/pointer_auth.h>
-> > +#include <asm/por.h>
-> >  #include <asm/stacktrace.h>
-> >  #include <asm/syscall.h>
-> >  #include <asm/traps.h>
-> > @@ -1486,6 +1487,10 @@ static int poe_get(struct task_struct *target,
-> >  	if (!system_supports_poe())
-> >  		return -EINVAL;
-> >  
-> > +	if (target == current) {
-> > +		poe_preserve_current_state();
-> > +	}
-> 
-> If we can't do the static inline, it might be best to just open code the
-> read here, i.e. make this:
-> 
-> 	if (target == current)
-> 		current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
-
-.. however I think this approach is better, no need for abstraction over this.
-
-I will send a v2 in a day or so, in case there are other comments /
-disagreements with that approach.
-
-Thanks,
-Joey
-
-> 
-> ... since permission_overlay_switch() writes the register directly,
-> we're not really gaining abstraction by factoring this out. Open coding
-> would make the diff a bit smaller, and avoid the function call.
-> 
-> That all said, this is functionally correct either way, so if Catalin or
-> Will disagree, go with whatever they prefer!
-> 
-> Mark.
-> 
+BR,
+-R
 
