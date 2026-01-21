@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-210625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210626-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMu/A1gocGmyWwAAu9opvQ
-	(envelope-from <stable+bounces-210625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:14:00 +0100
+	id 8AiGEvoocGmyWwAAu9opvQ
+	(envelope-from <stable+bounces-210626-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:16:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7F84EED1
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:13:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6C124EF24
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:16:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E66603A4F6E
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:13:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ECF6D4AF94C
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5982F39A3;
-	Wed, 21 Jan 2026 01:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBE9303CAF;
+	Wed, 21 Jan 2026 01:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGkKHZqY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6oZkCC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E0F28850E;
-	Wed, 21 Jan 2026 01:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBAB302750
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 01:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768958033; cv=none; b=qi6sGlKSYw0jxM7pORNa4etKcbZtlKWYRhk+elW1o5GBbMKv/mCrM3+8FPP5vkNF1xTZnHfBZOnrxmfNzipeeQ6CkX8GNroz+kpJGO6NYEsTP8w4RtbdoadcgkqSKTI8bH8u1XMM9TSGxqaNB9Jt+yML9Itv91gV/QIgBUoYpg8=
+	t=1768958175; cv=none; b=hxtyf5Z5He+0X/MtjA7zdYI2/AZS6GyJZ8pSeGQHpU97RzvgRk2GBuqFrPL7D/OIueM8oy/pKWy3VG1D5I3b51RElUs5/SOeiN/auHFq7zZ7NIydsmbgJU7eFAnAuc33eBOsct1P2wg7rJ3otbOrKFcROOMk//WjUy4H8nV16/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768958033; c=relaxed/simple;
-	bh=uai1Xw1Kf9LGCGIchC0ILt4/1gjQzAIUN9i0sIXflfU=;
+	s=arc-20240116; t=1768958175; c=relaxed/simple;
+	bh=9v9Cet/tLsIbGyg5HU0NBA44amp0wB6CYglulzZc3RU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6w1Enof0Xb6AeE6SJRVxRwPIJ24vA1buMwXBl7kpNVngp+xml69SG5RgXHXpVNvFU77pwENJbsN9BoMdEowtEorLGShSx/J4UEbPFGkmjRNEqzRGDgSKuRPGUiqer1hsh/DNUQ2sVKEwCmsb+csnkf9jnko/HgL+piD7ETO7ZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGkKHZqY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BC0C16AAE;
-	Wed, 21 Jan 2026 01:13:53 +0000 (UTC)
+	 MIME-Version; b=PFMQmSTmPSzPSY8hhg+yLmGL10nFzzs0NjdHM9orudUInnw9+XLCzSBJdu6pqV1UhcO79ou3d4DjI9KnIKSlHaNExvPkhWJQR+G05clXVsWfnFWcLJZs1xxn/NO95svn2PQWkxMkV7kmk+DVc40qKocfnizxWYHV/OA+tsWbs5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6oZkCC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05094C16AAE;
+	Wed, 21 Jan 2026 01:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768958033;
-	bh=uai1Xw1Kf9LGCGIchC0ILt4/1gjQzAIUN9i0sIXflfU=;
+	s=k20201202; t=1768958175;
+	bh=9v9Cet/tLsIbGyg5HU0NBA44amp0wB6CYglulzZc3RU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGkKHZqYlm4D47FY3yLAV8d1VrfnlSH8TUtjCRERPXr/x+PmykiI8VCGS/HoN8Znx
-	 KZ6b0SHre3MBwBa0kT5Zv+aybKLxvKIT6DaeqIMkM4NW6orcm6PtAW+1Wv8+YyFUsZ
-	 igKjEGqBbnHXAhNqIsPNau/8BTJIywhr5jPTqfGqPklqXU+Zil1cX2S1SAsZmKWdL0
-	 A9fbtK3kG/z+WWf+RwAD57j6F0gD1Ej0x9e03+XEwih/qymlHLGRZivtlD8fDYAqIf
-	 hU5Sf9QQJScB2nO+oe3tAzRBvXGek1AFBAPanItRuREhk8VQ3l/g6aoqpfwKRip4HV
-	 qOReeWvawySJA==
+	b=F6oZkCC/OZBC9X1oc/y+KJC9EpvyWhkARk54K8dSBuB+1/6A5Tr0GNUWwW1nSMcAN
+	 cq+HGNjFRzc7ojV+cK5AG6UJls+fkt1JW55FPgXtIb5nbBikXI9w8KXjr7deM2fgAc
+	 JFocfqxab9ns7b6oLoQBWpe6Ru5XLdtjAv1qV6jPGAqEoM2oswqK0WXtmTdZkJxBCK
+	 0rr9j/qh8p5z3eCdkMwYMu7IVO5XGnGejqulZQQYASibWad6Z2tjqAkjYSuRS7GP2h
+	 E2th7oUBE7yVI4fdtB5tczPA0WEXTrlIRPvSlAv3perVwqkAXkORbr3eq5I8mS9RRJ
+	 O6k1YAqmsq8GQ==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
-Cc: damon@lists.linux.dev,
+Cc: damon@lists.linux-dev,
 	SeongJae Park <sj@kernel.org>,
 	chongjiapeng <jiapeng.chong@linux.alibaba.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y] mm/damon/sysfs-scheme: cleanup quotas subdirs on scheme dir setup failure
-Date: Tue, 20 Jan 2026 17:13:43 -0800
-Message-ID: <20260121011343.164810-1-sj@kernel.org>
+Subject: [PATCH 6.6.y] mm/damon/sysfs-scheme: cleanup access_pattern subdirs on scheme dir setup failure
+Date: Tue, 20 Jan 2026 17:16:08 -0800
+Message-ID: <20260121011608.167602-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026012001-thud-campfire-994f@gregkh>
-References: <2026012001-thud-campfire-994f@gregkh>
+In-Reply-To: <2026012015-democracy-snowdrop-9f8c@gregkh>
+References: <2026012015-democracy-snowdrop-9f8c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210625-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210626-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -92,52 +92,55 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,alibaba.com:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 8A7F84EED1
+X-Rspamd-Queue-Id: D6C124EF24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 When a DAMOS-scheme DAMON sysfs directory setup fails after setup of
-quotas/ directory, subdirectories of quotas/ directory are not cleaned up.
-As a result, DAMON sysfs interface is nearly broken until the system
-reboots, and the memory for the unremoved directory is leaked.
+access_pattern/ directory, subdirectories of access_pattern/ directory are
+not cleaned up.  As a result, DAMON sysfs interface is nearly broken until
+the system reboots, and the memory for the unremoved directory is leaked.
 
 Cleanup the directories under such failures.
 
-Link: https://lkml.kernel.org/r/20251225023043.18579-4-sj@kernel.org
-Fixes: 1b32234ab087 ("mm/damon/sysfs: support DAMOS watermarks")
+Link: https://lkml.kernel.org/r/20251225023043.18579-5-sj@kernel.org
+Fixes: 9bbb820a5bd5 ("mm/damon/sysfs: support DAMOS quotas")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: chongjiapeng <jiapeng.chong@linux.alibaba.com>
 Cc: <stable@vger.kernel.org> # 5.18.x
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit dc7e1d75fd8c505096d0cddeca9e2efb2b55aaf9)
+(cherry picked from commit 392b3d9d595f34877dd745b470c711e8ebcd225c)
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs-schemes.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ mm/damon/sysfs-schemes.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 19d661889cf79..7e65223d63ee6 100644
+index 19d661889cf79..2d081df6b2c16 100644
 --- a/mm/damon/sysfs-schemes.c
 +++ b/mm/damon/sysfs-schemes.c
-@@ -1287,7 +1287,7 @@ static int damon_sysfs_scheme_add_dirs(struct damon_sysfs_scheme *scheme)
- 		goto put_access_pattern_out;
+@@ -1282,9 +1282,10 @@ static int damon_sysfs_scheme_add_dirs(struct damon_sysfs_scheme *scheme)
+ 	err = damon_sysfs_scheme_set_access_pattern(scheme);
+ 	if (err)
+ 		return err;
++
+ 	err = damon_sysfs_scheme_set_quotas(scheme);
+ 	if (err)
+-		goto put_access_pattern_out;
++		goto rmdir_put_access_pattern_out;
  	err = damon_sysfs_scheme_set_watermarks(scheme);
  	if (err)
--		goto put_quotas_access_pattern_out;
-+		goto rmdir_put_quotas_access_pattern_out;
- 	err = damon_sysfs_scheme_set_filters(scheme);
- 	if (err)
- 		goto put_watermarks_quotas_access_pattern_out;
-@@ -1308,7 +1308,8 @@ static int damon_sysfs_scheme_add_dirs(struct damon_sysfs_scheme *scheme)
- put_watermarks_quotas_access_pattern_out:
- 	kobject_put(&scheme->watermarks->kobj);
- 	scheme->watermarks = NULL;
--put_quotas_access_pattern_out:
-+rmdir_put_quotas_access_pattern_out:
-+	damon_sysfs_quotas_rm_dirs(scheme->quotas);
+ 		goto put_quotas_access_pattern_out;
+@@ -1311,7 +1312,8 @@ static int damon_sysfs_scheme_add_dirs(struct damon_sysfs_scheme *scheme)
+ put_quotas_access_pattern_out:
  	kobject_put(&scheme->quotas->kobj);
  	scheme->quotas = NULL;
- put_access_pattern_out:
+-put_access_pattern_out:
++rmdir_put_access_pattern_out:
++	damon_sysfs_access_pattern_rm_dirs(scheme->access_pattern);
+ 	kobject_put(&scheme->access_pattern->kobj);
+ 	scheme->access_pattern = NULL;
+ 	return err;
 -- 
 2.47.3
 
