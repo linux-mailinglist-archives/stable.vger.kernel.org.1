@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-211118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KClACi05cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-211118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:38:05 +0100
+	id eGydBa4kcWl8eQAAu9opvQ
+	(envelope-from <stable+bounces-210925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:10:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DCF5D66C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:38:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4145BDF3
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:10:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id BEAB354CBE2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:38:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AB4FC74B1FD
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38BC3563F7;
-	Wed, 21 Jan 2026 18:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C790739E17E;
+	Wed, 21 Jan 2026 18:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baeONCOR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5tb4WsD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A572D3191A0;
-	Wed, 21 Jan 2026 18:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815E53570D5;
+	Wed, 21 Jan 2026 18:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020498; cv=none; b=bXnPTavMO+AQKoN3cuvsZRfoB+XVeXxbJ1E2GizUmZTInQZc6shW2W1tFafZsXuimDT0aJ8YlCfi82vyV06LQiAbDR8OIDH8T9wY1mmgs9CysxbHHcxgIFum5biC8semWVaOqU9tdv9RdnrIy9xlQd7Ho8IF8Y/iey+ju5v4Vn4=
+	t=1769019849; cv=none; b=NRbD50/XdsIjg1qV7H4XftL/MUU+so7OGq8iz1A3Z+lIW0lNAGIZnoj2Y6svbABI6aEK6S4JTYTE6h7dobutFHQbhADmlsG1SstDQ9PlrZIFEKwlxXXe+yb5NR9xbpoUQW0Sd4wkk9bce6I23f1FMRsKfhgdzFFBe/KTEaBKvFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020498; c=relaxed/simple;
-	bh=I+ATSU52BrFY4lKIR2759dBiq8pgx5FX2XUCCizp9q4=;
+	s=arc-20240116; t=1769019849; c=relaxed/simple;
+	bh=3gShXI/XXbxGrWMs7wHQRm/cWJnVziGeLzsbL9uL7yE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBtJ1JhtMOKQ7CRqJtFZmLgDQvsNN34kRjthbRGX71nv+dQMM4mzlqRdEURm3cp2Pq56Wu2Dh6laYe+KNBaGDaXkaa4SMAbGK/lmyD60MEs4g2wz7++1R68VRqU/moyLZq/LM/dGZcztH1i8GZ44ipBqrlTn67v1lNxRDp6v9R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=baeONCOR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DCFC19424;
-	Wed, 21 Jan 2026 18:34:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pv5dMkdAubySfA4FCny4CgluBNbItdwurfw4Y3Da9vge5wM3iCuqGnhguj3RAg1mjOMcZOBPRHhYw5bHH0EJyuBXcgnMIWg5QbB9rZPbUAtaRIzmPK+O9gKgiy6U7XisowayO4Q6vsa201KFzbW+ez0jplax9hPo8udOT7f7/Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5tb4WsD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D96C4CEF1;
+	Wed, 21 Jan 2026 18:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020498;
-	bh=I+ATSU52BrFY4lKIR2759dBiq8pgx5FX2XUCCizp9q4=;
+	s=korg; t=1769019849;
+	bh=3gShXI/XXbxGrWMs7wHQRm/cWJnVziGeLzsbL9uL7yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=baeONCORU4JH0fWHTWHtoeZtJSLT711q8zAILcfWOrWh71blZCLg3MRVdD/LXSO0E
-	 YGh8Z/K5GmCa/whtHKV6MIxEPsPK2P1WfRvPi5v4ZejGp6GOJT3do/ZBysTyyVdlG3
-	 2dxJtwhFhNvCSUCAczeXgFFQcmGxlQMPjqxD3LL4=
+	b=u5tb4WsDjtUV7JpWwrym3oUA5DI9rQwrQ/Bc/VLqlDeZ8AY3PFjoibUmuS3t0rFnQ
+	 6F+Er3YAZ3ZCEnIzl94wIAesFwePz5PY5/qAkCMS4d23F17CI4PowNrvWRofNln7GA
+	 wEqSzn2ABqPd85JYrhlo7iXnNflTwqYGNRV+jV9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	chongjiapeng <jiapeng.chong@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 143/198] mm/damon/sysfs-scheme: cleanup quotas subdirs on scheme dir setup failure
-Date: Wed, 21 Jan 2026 19:16:11 +0100
-Message-ID: <20260121181423.700591087@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Robbie Ko <robbieko@synology.com>,
+	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Motiejus=20Jak=C5=A1tys?= <motiejus@jakstys.lt>
+Subject: [PATCH 6.12 124/139] btrfs: fix deadlock in wait_current_trans() due to ignored transaction type
+Date: Wed, 21 Jan 2026 19:16:12 +0100
+Message-ID: <20260121181415.915531128@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,85 +66,190 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211118-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-210925-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D2DCF5D66C
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: AF4145BDF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Robbie Ko <robbieko@synology.com>
 
-commit dc7e1d75fd8c505096d0cddeca9e2efb2b55aaf9 upstream.
+commit 5037b342825df7094a4906d1e2a9674baab50cb2 upstream.
 
-When a DAMOS-scheme DAMON sysfs directory setup fails after setup of
-quotas/ directory, subdirectories of quotas/ directory are not cleaned up.
-As a result, DAMON sysfs interface is nearly broken until the system
-reboots, and the memory for the unremoved directory is leaked.
+When wait_current_trans() is called during start_transaction(), it
+currently waits for a blocked transaction without considering whether
+the given transaction type actually needs to wait for that particular
+transaction state. The btrfs_blocked_trans_types[] array already defines
+which transaction types should wait for which transaction states, but
+this check was missing in wait_current_trans().
 
-Cleanup the directories under such failures.
+This can lead to a deadlock scenario involving two transactions and
+pending ordered extents:
 
-Link: https://lkml.kernel.org/r/20251225023043.18579-4-sj@kernel.org
-Fixes: 1b32234ab087 ("mm/damon/sysfs: support DAMOS watermarks")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: chongjiapeng <jiapeng.chong@linux.alibaba.com>
-Cc: <stable@vger.kernel.org> # 5.18.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+  1. Transaction A is in TRANS_STATE_COMMIT_DOING state
+
+  2. A worker processing an ordered extent calls start_transaction()
+     with TRANS_JOIN
+
+  3. join_transaction() returns -EBUSY because Transaction A is in
+     TRANS_STATE_COMMIT_DOING
+
+  4. Transaction A moves to TRANS_STATE_UNBLOCKED and completes
+
+  5. A new Transaction B is created (TRANS_STATE_RUNNING)
+
+  6. The ordered extent from step 2 is added to Transaction B's
+     pending ordered extents
+
+  7. Transaction B immediately starts commit by another task and
+     enters TRANS_STATE_COMMIT_START
+
+  8. The worker finally reaches wait_current_trans(), sees Transaction B
+     in TRANS_STATE_COMMIT_START (a blocked state), and waits
+     unconditionally
+
+  9. However, TRANS_JOIN should NOT wait for TRANS_STATE_COMMIT_START
+     according to btrfs_blocked_trans_types[]
+
+  10. Transaction B is waiting for pending ordered extents to complete
+
+  11. Deadlock: Transaction B waits for ordered extent, ordered extent
+      waits for Transaction B
+
+This can be illustrated by the following call stacks:
+  CPU0                              CPU1
+                                    btrfs_finish_ordered_io()
+                                      start_transaction(TRANS_JOIN)
+                                        join_transaction()
+                                          # -EBUSY (Transaction A is
+                                          # TRANS_STATE_COMMIT_DOING)
+  # Transaction A completes
+  # Transaction B created
+  # ordered extent added to
+  # Transaction B's pending list
+  btrfs_commit_transaction()
+    # Transaction B enters
+    # TRANS_STATE_COMMIT_START
+    # waiting for pending ordered
+    # extents
+                                        wait_current_trans()
+                                          # waits for Transaction B
+                                          # (should not wait!)
+
+Task bstore_kv_sync in btrfs_commit_transaction waiting for ordered
+extents:
+
+  __schedule+0x2e7/0x8a0
+  schedule+0x64/0xe0
+  btrfs_commit_transaction+0xbf7/0xda0 [btrfs]
+  btrfs_sync_file+0x342/0x4d0 [btrfs]
+  __x64_sys_fdatasync+0x4b/0x80
+  do_syscall_64+0x33/0x40
+  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Task kworker in wait_current_trans waiting for transaction commit:
+
+  Workqueue: btrfs-syno_nocow btrfs_work_helper [btrfs]
+  __schedule+0x2e7/0x8a0
+  schedule+0x64/0xe0
+  wait_current_trans+0xb0/0x110 [btrfs]
+  start_transaction+0x346/0x5b0 [btrfs]
+  btrfs_finish_ordered_io.isra.0+0x49b/0x9c0 [btrfs]
+  btrfs_work_helper+0xe8/0x350 [btrfs]
+  process_one_work+0x1d3/0x3c0
+  worker_thread+0x4d/0x3e0
+  kthread+0x12d/0x150
+  ret_from_fork+0x1f/0x30
+
+Fix this by passing the transaction type to wait_current_trans() and
+checking btrfs_blocked_trans_types[cur_trans->state] against the given
+type before deciding to wait. This ensures that transaction types which
+are allowed to join during certain blocked states will not unnecessarily
+wait and cause deadlocks.
+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Robbie Ko <robbieko@synology.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: Motiejus Jakštys <motiejus@jakstys.lt>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs-schemes.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/transaction.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -2117,7 +2117,7 @@ static int damon_sysfs_scheme_add_dirs(s
- 		goto put_dests_out;
- 	err = damon_sysfs_scheme_set_watermarks(scheme);
- 	if (err)
--		goto put_quotas_access_pattern_out;
-+		goto rmdir_put_quotas_access_pattern_out;
- 	err = damos_sysfs_set_filter_dirs(scheme);
- 	if (err)
- 		goto put_watermarks_quotas_access_pattern_out;
-@@ -2142,7 +2142,8 @@ put_filters_watermarks_quotas_access_pat
- put_watermarks_quotas_access_pattern_out:
- 	kobject_put(&scheme->watermarks->kobj);
- 	scheme->watermarks = NULL;
--put_quotas_access_pattern_out:
-+rmdir_put_quotas_access_pattern_out:
-+	damon_sysfs_quotas_rm_dirs(scheme->quotas);
- 	kobject_put(&scheme->quotas->kobj);
- 	scheme->quotas = NULL;
- put_dests_out:
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -520,13 +520,14 @@ static inline int is_transaction_blocked
+  * when this is done, it is safe to start a new transaction, but the current
+  * transaction might not be fully on disk.
+  */
+-static void wait_current_trans(struct btrfs_fs_info *fs_info)
++static void wait_current_trans(struct btrfs_fs_info *fs_info, unsigned int type)
+ {
+ 	struct btrfs_transaction *cur_trans;
+ 
+ 	spin_lock(&fs_info->trans_lock);
+ 	cur_trans = fs_info->running_transaction;
+-	if (cur_trans && is_transaction_blocked(cur_trans)) {
++	if (cur_trans && is_transaction_blocked(cur_trans) &&
++	    (btrfs_blocked_trans_types[cur_trans->state] & type)) {
+ 		refcount_inc(&cur_trans->use_count);
+ 		spin_unlock(&fs_info->trans_lock);
+ 
+@@ -701,12 +702,12 @@ again:
+ 		sb_start_intwrite(fs_info->sb);
+ 
+ 	if (may_wait_transaction(fs_info, type))
+-		wait_current_trans(fs_info);
++		wait_current_trans(fs_info, type);
+ 
+ 	do {
+ 		ret = join_transaction(fs_info, type);
+ 		if (ret == -EBUSY) {
+-			wait_current_trans(fs_info);
++			wait_current_trans(fs_info, type);
+ 			if (unlikely(type == TRANS_ATTACH ||
+ 				     type == TRANS_JOIN_NOSTART))
+ 				ret = -ENOENT;
+@@ -1003,7 +1004,7 @@ out:
+ 
+ void btrfs_throttle(struct btrfs_fs_info *fs_info)
+ {
+-	wait_current_trans(fs_info);
++	wait_current_trans(fs_info, TRANS_START);
+ }
+ 
+ bool btrfs_should_end_transaction(struct btrfs_trans_handle *trans)
 
 
 
