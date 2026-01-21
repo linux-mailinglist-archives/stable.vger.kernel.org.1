@@ -1,152 +1,188 @@
-Return-Path: <stable+bounces-210674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGyWCZ9EcGnXXAAAu9opvQ
-	(envelope-from <stable+bounces-210674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:14:39 +0100
+	id qAZeIN9HcGnXXAAAu9opvQ
+	(envelope-from <stable+bounces-210675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:28:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2357504AE
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:14:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC0C50656
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:28:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D53AC483EB4
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:14:37 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0D9275A0950
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C0E356A2B;
-	Wed, 21 Jan 2026 03:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC8A36213E;
+	Wed, 21 Jan 2026 03:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCoLQd4X"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="J+FyK7Je"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5913F3563FF
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 03:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65DC3612F4;
+	Wed, 21 Jan 2026 03:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768965272; cv=none; b=bffAwswmHM9BTYDV2FmcVuUJxBg7co9VgFzYNtqst+t0YBp3M3crygggNC7mHsv41Mgh7lSQSk4BiDTgxcu2UDt/rB/b16fLsYX6NMn7xR5jeENV68QrDaBZ8u28PWP+LUGfJ2+nd4EU2eVJMLZL50vXI4cLZGH1JF/EbdNuHho=
+	t=1768966099; cv=none; b=Jr2Ol8o3NfubpYax7QhuLSfD6ZP74jJpLSbLOkjCc6lJfXB7MtuqEgZQYkA0CH8lbWn8E02vAh20GzXoUNpWztqrZcl37kKdsob0RT6N4sbzdKMWeWxsBZkJKYG3Yd6SW1pSs3ArO/YHF4eyRpZLIy5VwX4AuU1nt8xs7ehbVhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768965272; c=relaxed/simple;
-	bh=X8BWzLz0NQml6tqdMPSbg+b4rHwh9sI17KZZ8UKZA3s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6Yo8gvZI8dQUYevxMDw7+IEpPExBPmJOTLXUAWGV8x9zXM8tl88NO+VbzPyAsoIO+hxcBn5BCM0eU160MbhUmRakxoY/y7oMOFkB7xGvnn7TFLC54LlG4Ff9FezmfH813/qVts/0o+6cOxx9DdeC0RNO8PXS/CD9Rnv4kHPClc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCoLQd4X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F999C16AAE;
-	Wed, 21 Jan 2026 03:14:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768965271;
-	bh=X8BWzLz0NQml6tqdMPSbg+b4rHwh9sI17KZZ8UKZA3s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fCoLQd4X7GWoGBB3BpUHgiQsjPJkXcMSKEuiU0IMYcHhKazNBSNR9lSEhkqW3E5qE
-	 BP264TU5b1LCc1WseqzKjxkc5Rg8Fx4bslzq60TvDhGWXQpfnwM/aehEYVqyQYZu/P
-	 Z5/cBhWF0MiBLne92fLEE4eJuG3T4pVY05ehqrvoq87bsEDkED9FSqvfEuKAkRPzZY
-	 CJ7w/XCJsirZRyVdPKBdsOW8aAYs6J2+gNXLiUpVSvXVR68slVya+EerDPPuJ3CywR
-	 jAjXVk7rj1I6XeY/KxVLjmBeL3vGnQsAyisgirgfbX43PKiZcQd07FAUYY5HMr2jZ0
-	 wf2ar2TcOc37w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitriy Vyukov <dvyukov@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] mm: kmsan: fix poisoning of high-order non-compound pages
-Date: Tue, 20 Jan 2026 22:14:29 -0500
-Message-ID: <20260121031429.1186608-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012026-varying-grappling-04b4@gregkh>
-References: <2026012026-varying-grappling-04b4@gregkh>
+	s=arc-20240116; t=1768966099; c=relaxed/simple;
+	bh=HQzlJD8f+EbcLTjeuVIAja2myNC7jNchRaXD3uxTMb4=;
+	h=Date:To:From:Subject:Message-Id; b=gd9exKIEAwP6aDKI5EGA1xYAByuzAMahcDEGvsd0n8teulb/xRLTzvndJ8x3Cm8pa64+XR0NbUJtjjVQlG5/g+Lc+n5Mp0do8BEUTEBnezQ4EMnWo2urUbl5at04Nx9DHg8WkpKrOOM3W0vvcOAN8JYGYnyH30wW7oocaHZqpPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=J+FyK7Je; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF82C16AAE;
+	Wed, 21 Jan 2026 03:28:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768966099;
+	bh=HQzlJD8f+EbcLTjeuVIAja2myNC7jNchRaXD3uxTMb4=;
+	h=Date:To:From:Subject:From;
+	b=J+FyK7Je2O4TKYaOp53Pmz2NsTQcNLSWkJpMIyejM07J+hTB4IxvwL7sWzZSrGGJt
+	 TvDC46VgRTzLR3LxBmpSwZ0Bl/NNV5+jXLU/zxyEyfNdqLYF5dR9hLvOI2zwrxVPBV
+	 4euM1QnX5HyE4ohTRmFa/ZB/+0ugh2NCafGz4QD0=
+Date: Tue, 20 Jan 2026 19:28:19 -0800
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,rientjes@google.com,pfalcato@suse.de,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,joshua.hahnjy@gmail.com,jackmanb@google.com,hannes@cmpxchg.org,david@kernel.org,vbabka@suse.cz,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] mm-page_alloc-thp-prevent-reclaim-for-__gfp_thisnode-thp-allocations.patch removed from -mm tree
+Message-Id: <20260121032819.9EF82C16AAE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210674-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210675-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,google.com,kernel.org,suse.de,suse.com,oracle.com,gmail.com,cmpxchg.org,suse.cz,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linux-foundation.org:email,arm.com:email]
-X-Rspamd-Queue-Id: C2357504AE
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2BC0C50656
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit 4795d205d78690a46b60164f44b8bb7b3e800865 ]
+The quilt patch titled
+     Subject: mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP allocations
+has been removed from the -mm tree.  Its filename was
+     mm-page_alloc-thp-prevent-reclaim-for-__gfp_thisnode-thp-allocations.patch
 
-kmsan_free_page() is called by the page allocator's free_pages_prepare()
-during page freeing.  Its job is to poison all the memory covered by the
-page.  It can be called with an order-0 page, a compound high-order page
-or a non-compound high-order page.  But page_size() only works for order-0
-and compound pages.  For a non-compound high-order page it will
-incorrectly return PAGE_SIZE.
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-The implication is that the tail pages of a high-order non-compound page
-do not get poisoned at free, so any invalid access while they are free
-could go unnoticed.  It looks like the pages will be poisoned again at
-allocation time, so that would bookend the window.
+------------------------------------------------------
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP allocations
+Date: Fri, 19 Dec 2025 17:31:57 +0100
 
-Fix this by using the order parameter to calculate the size.
+Since commit cc638f329ef6 ("mm, thp: tweak reclaim/compaction effort of
+local-only and all-node allocations"), THP page fault allocations have
+settled on the following scheme (from the commit log):
 
-Link: https://lkml.kernel.org/r/20260104134348.3544298-1-ryan.roberts@arm.com
-Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page operations")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Cc: Dmitriy Vyukov <dvyukov@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
+1. local node only THP allocation with no reclaim, just compaction.
+2. for madvised VMA's or when synchronous compaction is enabled always - THP
+   allocation from any node with effort determined by global defrag setting
+   and VMA madvise
+3. fallback to base pages on any node
+
+Recent customer reports however revealed we have a gap in step 1 above. 
+What we have seen is excessive reclaim due to THP page faults on a NUMA
+node that's close to its high watermark, while other nodes have plenty of
+free memory.
+
+The problem with step 1 is that it promises no reclaim after the
+compaction attempt, however reclaim is only avoided for certain compaction
+outcomes (deferred, or skipped due to insufficient free base pages), and
+not e.g.  when compaction is actually performed but fails (we did see
+compact_fail vmstat counter increasing).
+
+THP page faults can therefore exhibit a zone_reclaim_mode-like behavior,
+which is not the intention.
+
+Thus add a check for __GFP_THISNODE that corresponds to this exact
+situation and prevents continuing with reclaim/compaction once the initial
+compaction attempt isn't successful in allocating the page.
+
+Note that commit cc638f329ef6 has not introduced this over-reclaim
+possibility; it appears to exist in some form since commit 2f0799a0ffc0
+("mm, thp: restore node-local hugepage allocations").  Followup commits
+b39d0ee2632d ("mm, page_alloc: avoid expensive reclaim when compaction may
+not succeed") and cc638f329ef6 have moved in the right direction, but left
+the abovementioned gap.
+
+Link: https://lkml.kernel.org/r/20251219-costly-noretry-thisnode-fix-v1-1-e1085a4a0c34@suse.cz
+Fixes: 2f0799a0ffc0 ("mm, thp: restore node-local hugepage allocations")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/kmsan/shadow.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
-index 9c58f081d84fc..0327001b2b0ec 100644
---- a/mm/kmsan/shadow.c
-+++ b/mm/kmsan/shadow.c
-@@ -208,7 +208,7 @@ void kmsan_free_page(struct page *page, unsigned int order)
- 		return;
- 	kmsan_enter_runtime();
- 	kmsan_internal_poison_memory(page_address(page),
--				     page_size(page),
-+				     PAGE_SIZE << order,
- 				     GFP_KERNEL,
- 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
- 	kmsan_leave_runtime();
--- 
-2.51.0
+ mm/page_alloc.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+--- a/mm/page_alloc.c~mm-page_alloc-thp-prevent-reclaim-for-__gfp_thisnode-thp-allocations
++++ a/mm/page_alloc.c
+@@ -4819,6 +4819,20 @@ restart:
+ 				goto nopage;
+ 
+ 			/*
++			 * THP page faults may attempt local node only first,
++			 * but are then allowed to only compact, not reclaim,
++			 * see alloc_pages_mpol().
++			 *
++			 * Compaction can fail for other reasons than those
++			 * checked above and we don't want such THP allocations
++			 * to put reclaim pressure on a single node in a
++			 * situation where other nodes might have plenty of
++			 * available memory.
++			 */
++			if (gfp_mask & __GFP_THISNODE)
++				goto nopage;
++
++			/*
+ 			 * Looks like reclaim/compaction is worth trying, but
+ 			 * sync compaction could be very expensive, so keep
+ 			 * using async compaction.
+_
+
+Patches currently in -mm which might be from vbabka@suse.cz are
+
+mm-page_alloc-ignore-the-exact-initial-compaction-result.patch
+mm-page_alloc-refactor-the-initial-compaction-handling.patch
+mm-page_alloc-simplify-__alloc_pages_slowpath-flow.patch
 
 
