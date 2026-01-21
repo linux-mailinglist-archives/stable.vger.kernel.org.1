@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-210933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4BtYH2k3cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-210933-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:30:33 +0100
+	id MPHBDdwycWlQfQAAu9opvQ
+	(envelope-from <stable+bounces-211063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:11:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D9B5D400
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:30:33 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBE65CE38
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6594C74D9D3
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 915F880E427
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958C1318138;
-	Wed, 21 Jan 2026 18:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936ED36657E;
+	Wed, 21 Jan 2026 18:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7odRZFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TNzaC3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E083321A2;
-	Wed, 21 Jan 2026 18:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25540342503;
+	Wed, 21 Jan 2026 18:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019875; cv=none; b=Fc01sDT2LgvtlbOm/DOl5dfzUwkzbAFPnNXcL7rLXth4EmyMBpAxC8JvsXKCZXFzzV4M+pSEAJuLi2EnRTVALnczsvFbv5zP5jjm71noblQdHtG2KG1kgpYzXZ0XUUfB6J/Qb0ymPg3Gu7hwKu4Zf8QGrtTUjIFIizYDl27iIOk=
+	t=1769020313; cv=none; b=R1WIQCgN63Ah0+A0pkKk+vEZVjgo/LAM3zaYgxlSK7a6elAXPXLKFxiNlWxRMSpigOPG9oJy1MWlAyainQr22LfXC7BTLZwSCERcY7sSXp2kAzY7mmAKAh1yyAm6IAJ1s8AdLIn72Y1LCNwjcWnN/0rN78AZzXhwxaucjqp3kEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019875; c=relaxed/simple;
-	bh=SPL835KJUvxWjAkHq3/epaumzgJoUt0nTdsyOgbPV8c=;
+	s=arc-20240116; t=1769020313; c=relaxed/simple;
+	bh=ap1+AHDzY5UscF1ipB/KwTiyfd55SvsM3ChJj+2iirA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oblzWFLKvRRbNfClabdq21QgFG38G+yttV5xFIq3l4U8vSwRNsZqhQDqobBztvS9k2NK7D5WlycfiEW/SSrHtMDYmGXn3zTkL3gWetlEptWXp2hcggWQbBskrID/tZb/aOJ3afPHitwRmGw7wPHCHOiYSu89jvWJ/KArqWmh31k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7odRZFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438A8C4CEF1;
-	Wed, 21 Jan 2026 18:24:34 +0000 (UTC)
+	 MIME-Version; b=iA1tLhVtDS1afuIGixc6c1CF74MtlkRdSPra6uH0hBZa5ucLVq795CL8ruzKNy4q+K0fNnyvco9D7a9R5ivVtr0EnLpZ2AlmnJyI0fp0Q/CivagTlFZAUdbiNqcCFzRLtYz8ChMSd2RMPiMXz6DnYI6eY/lAoHqlCAzQln8iqW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TNzaC3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E2FC4CEF1;
+	Wed, 21 Jan 2026 18:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019874;
-	bh=SPL835KJUvxWjAkHq3/epaumzgJoUt0nTdsyOgbPV8c=;
+	s=korg; t=1769020313;
+	bh=ap1+AHDzY5UscF1ipB/KwTiyfd55SvsM3ChJj+2iirA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7odRZFxqaFYqbf6xkyFP2IVI9crPY8CfdN6Fd+Y4FYCdne5RGysmCzvH2dK9WEve
-	 q/jz9TXu9SnwmDK8h806xpRZVKl5PlJ52SRWwaannmLOJeHOvCtNtAGso1SFQC7TJ2
-	 ZKGcxVnTD3pPV3sVuZuyHKV+1G6sRUCszy0Tb77c=
+	b=1TNzaC3ZOvHwhzX7eheQ3L6oyCTQ1KniDW+WMnb5VHeIGiQ58su1RsJPLET7L3Cr4
+	 6zMg45mqHBYcDphblgZTHM/k7RX/K+CtUZX5IAiIMBM0kqBQZe80MFOUPLB6n/HG5M
+	 jHzIwaq+JBGt+dCsrwdQq5TLW8uL0nUg12B3TNVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 6.12 101/139] drm/nouveau/disp/nv50-: Set lock_core in curs507a_prepare
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.18 121/198] usb: dwc3: Check for USB4 IP_NAME
 Date: Wed, 21 Jan 2026 19:15:49 +0100
-Message-ID: <20260121181415.085286783@linuxfoundation.org>
+Message-ID: <20260121181422.904887471@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,89 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210933-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211063-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 21D9B5D400
+	DBL_BLOCKED_OPENRESOLVER(0.00)[synopsys.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: AEBE65CE38
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lyude Paul <lyude@redhat.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit 9e9bc6be0fa0b6b6b73f4f831f3b77716d0a8d9e upstream.
+commit 0ed91d47959cb7573c17e06487f0fb891d59dfb3 upstream.
 
-For a while, I've been seeing a strange issue where some (usually not all)
-of the display DMA channels will suddenly hang, particularly when there is
-a visible cursor on the screen that is being frequently updated, and
-especially when said cursor happens to go between two screens. While this
-brings back lovely memories of fixing Intel Skylake bugs, I would quite
-like to fix it :).
+Synopsys renamed DWC_usb32 IP to DWC_usb4 as of IP version 1.30. No
+functional change except checking for the IP_NAME here. The driver will
+treat the new IP_NAME as if it's DWC_usb32. Additional features for USB4
+will be introduced and checked separately.
 
-It turns out the problem that's happening here is that we're managing to
-reach nv50_head_flush_set() in our atomic commit path without actually
-holding nv50_disp->mutex. This means that cursor updates happening in
-parallel (along with any other atomic updates that need to use the core
-channel) will race with eachother, which eventually causes us to corrupt
-the pushbuffer - leading to a plethora of various GSP errors, usually:
-
-  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000218 00102680 00000004 00800003
-  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 0000021c 00040509 00000004 00000001
-  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000000 00000000 00000001 00000001
-
-The reason this is happening is because generally we check whether we need
-to set nv50_atom->lock_core at the end of nv50_head_atomic_check().
-However, curs507a_prepare is called from the fb_prepare callback, which
-happens after the atomic check phase. As a result, this can lead to commits
-that both touch the core channel but also don't grab nv50_disp->mutex.
-
-So, fix this by making sure that we set nv50_atom->lock_core in
-cus507a_prepare().
-
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Fixes: 1590700d94ac ("drm/nouveau/kms/nv50-: split each resource type into their own source files")
-Cc: <stable@vger.kernel.org> # v4.18+
-Link: https://patch.msgid.link/20251219215344.170852-2-lyude@redhat.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/e6f1827754c7a7ddc5eb7382add20bfe3a9b312f.1767390747.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/dispnv50/curs507a.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/core.c |    2 ++
+ drivers/usb/dwc3/core.h |    1 +
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
-@@ -84,6 +84,7 @@ curs507a_prepare(struct nv50_wndw *wndw,
- 		asyh->curs.handle = handle;
- 		asyh->curs.offset = offset;
- 		asyh->set.curs = asyh->curs.visible;
-+		nv50_atom(asyh->state.state)->lock_core = true;
- 	}
- }
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -991,6 +991,8 @@ static bool dwc3_core_is_valid(struct dw
+ 
+ 	reg = dwc3_readl(dwc->regs, DWC3_GSNPSID);
+ 	dwc->ip = DWC3_GSNPS_ID(reg);
++	if (dwc->ip == DWC4_IP)
++		dwc->ip = DWC32_IP;
+ 
+ 	/* This should read as U3 followed by revision number */
+ 	if (DWC3_IP_IS(DWC3)) {
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1265,6 +1265,7 @@ struct dwc3 {
+ #define DWC3_IP			0x5533
+ #define DWC31_IP		0x3331
+ #define DWC32_IP		0x3332
++#define DWC4_IP			0x3430
+ 
+ 	u32			revision;
  
 
 
