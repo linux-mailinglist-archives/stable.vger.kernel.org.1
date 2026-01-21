@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-211011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AcHD08jcWl8eQAAu9opvQ
-	(envelope-from <stable+bounces-211011-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:04:47 +0100
+	id yOSgESwkcWl8eQAAu9opvQ
+	(envelope-from <stable+bounces-210815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:08:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05685BC6F
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:04:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A925BD95
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:08:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CE677B4AF75
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:29:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5227E76EB11
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44B23A0EA8;
-	Wed, 21 Jan 2026 18:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA07537BE9C;
+	Wed, 21 Jan 2026 18:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5MweGVd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3NKS1Co"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7260B392C44;
-	Wed, 21 Jan 2026 18:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447CB35F8DA;
+	Wed, 21 Jan 2026 18:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020138; cv=none; b=T1/NWp22ZQN10nG7EMwypde19RUMTWsvN3tz0qdLsLAAxLma1TXJkmbW/vrs49FcjBPmWpr1jXnDwUtOaTp/1hRd5rfqUKGHhDGzig3MmvJha7vDDY9seg4u6GzT0uyT71tWDNFo4+mhzv4fiz1iPp2RtlsKMOsvDCeYa+j0Onw=
+	t=1769019475; cv=none; b=kHXCEaBF55BVFJ1Lc4sd70WFqBg+pBH2nt9QKJvu7/BsuqPu4NAuHyWTFkh/e7d+ljgP7KqRdJP4h+awuTqrN2K9EJO1xVpqQLYiCBJR5s1D5NC+Efvg4ntE8lcxQzM16V0HBLBbShNBzb0sLv2BQGHxXrWBz5XiSIgdmbGBgdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020138; c=relaxed/simple;
-	bh=AygbOAci50Id99JbOsksVb36vvMhvX6guIL44RI2Xhk=;
+	s=arc-20240116; t=1769019475; c=relaxed/simple;
+	bh=10N1gnYPfcAQtFQjJ5sw5OWF9oRv8gR8lEbs5eObjM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OrQYfA/Tp9h9Cz6wwpKf/3HkwA7zc2nL6XrYFeWz65XG6p3pL/FzRl9592vTLQUqnCwett9lXBeB/N64/bSsLhr2dgQLdqEwOiLNRM8jTBUa2BltqZKj0Fl6YDIqIxgYC0dIhA55C6MDJC834Izt9xc1fVZ8X8oDS/pGRhpnJWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5MweGVd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD158C16AAE;
-	Wed, 21 Jan 2026 18:28:57 +0000 (UTC)
+	 MIME-Version; b=L0+O4a6XTta5tr2JdnTgDXVdAtVmaQTARSpqKvG8/6zdBxbRUvm68o+WwqNeS2clanJcsUAhYVCPp9bvPqky18VbtYTWLSsfrzlI0qSnYKdrLbnTaVj2XleKqtV4VeT7snM54STnPgWJeI99FvqtLFMO7AdRNDfYTK1A80XSGIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3NKS1Co; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483B8C4CEF1;
+	Wed, 21 Jan 2026 18:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020138;
-	bh=AygbOAci50Id99JbOsksVb36vvMhvX6guIL44RI2Xhk=;
+	s=korg; t=1769019474;
+	bh=10N1gnYPfcAQtFQjJ5sw5OWF9oRv8gR8lEbs5eObjM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5MweGVd+Xnp+WeH3aWbquumVv/ZDAP2k2fasnNdweGxO4dxLaBWFQqBNf1Kxj6F6
-	 lgaEr99+tzCEaOebah1cN0Lavqh1Ek911sJRwflLenszeV9Pt44TMN484LUD4/tgae
-	 zQ8nNuoxbe3H471aHKIdS0S036Yjd87gFHMKzOb0=
+	b=E3NKS1CovFRJeOLtDE4wdvScH9azjZnDleZmMfeb/qf1xGVVcr28oU7h9Mt03Bg5U
+	 dv8wPTsdHD25bibI5xkLzFIdrQIoZJtWd8JLuDNBzU23FoAU09lOzxOkdv/ZdVAeXP
+	 bxshJ7Vyaot+lYlIyEaDtob/AVSJsWZlNy01qFxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com,
+	syzbot+bfab43087ad57222ce96@syzkaller.appspotmail.com,
 	Eric Dumazet <edumazet@google.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 037/198] ipv4: ip_gre: make ipgre_header() robust
+Subject: [PATCH 6.12 017/139] net: bridge: annotate data-races around fdb->{updated,used}
 Date: Wed, 21 Jan 2026 19:14:25 +0100
-Message-ID: <20260121181419.885699729@linuxfoundation.org>
+Message-ID: <20260121181412.077622024@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,108 +81,164 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211011-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210815-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7c134e1c3aa3283790b9];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable,bfab43087ad57222ce96];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B05685BC6F
+X-Rspamd-Queue-Id: A9A925BD95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e67c577d89894811ce4dcd1a9ed29d8b63476667 ]
+[ Upstream commit b25a0b4a2193407aa72a4cd1df66a7ed07dd4f1e ]
 
-Analog to commit db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
+fdb->updated and fdb->used are read and written locklessly.
 
-Over the years, syzbot found many ways to crash the kernel
-in ipgre_header() [1].
+Add READ_ONCE()/WRITE_ONCE() annotations.
 
-This involves team or bonding drivers ability to dynamically
-change their dev->needed_headroom and/or dev->hard_header_len
-
-In this particular crash mld_newpack() allocated an skb
-with a too small reserve/headroom, and by the time mld_sendpack()
-was called, syzbot managed to attach an ipgre device.
-
-[1]
-skbuff: skb_under_panic: text:ffffffff89ea3cb7 len:2030915468 put:2030915372 head:ffff888058b43000 data:ffff887fdfa6e194 tail:0x120 end:0x6c0 dev:team0
- kernel BUG at net/core/skbuff.c:213 !
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 1322 Comm: kworker/1:9 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Workqueue: mld mld_ifc_work
- RIP: 0010:skb_panic+0x157/0x160 net/core/skbuff.c:213
-Call Trace:
- <TASK>
-  skb_under_panic net/core/skbuff.c:223 [inline]
-  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
-  ipgre_header+0x67/0x290 net/ipv4/ip_gre.c:897
-  dev_hard_header include/linux/netdevice.h:3436 [inline]
-  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
-  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
-  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
-  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
-  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
-Reported-by: syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com
-Closes: https://www.spinics.net/lists/netdev/msg1147302.html
+Fixes: 31cbc39b6344 ("net: bridge: add option to allow activity notifications for any fdb entries")
+Reported-by: syzbot+bfab43087ad57222ce96@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/695e3d74.050a0220.1c677c.035f.GAE@google.com/
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260108190214.1667040-1-edumazet@google.com
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260108093806.834459-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_gre.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/bridge/br_fdb.c   | 28 ++++++++++++++++------------
+ net/bridge/br_input.c |  4 ++--
+ 2 files changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 8178c44a3cdd4..e13244729ad8d 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -891,10 +891,17 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
- 			const void *daddr, const void *saddr, unsigned int len)
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 642b8ccaae8ea..9dd405b64fcc9 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -70,7 +70,7 @@ static inline int has_expired(const struct net_bridge *br,
  {
- 	struct ip_tunnel *t = netdev_priv(dev);
--	struct iphdr *iph;
- 	struct gre_base_hdr *greh;
-+	struct iphdr *iph;
-+	int needed;
-+
-+	needed = t->hlen + sizeof(*iph);
-+	if (skb_headroom(skb) < needed &&
-+	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
-+			     0, GFP_ATOMIC))
-+		return -needed;
+ 	return !test_bit(BR_FDB_STATIC, &fdb->flags) &&
+ 	       !test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags) &&
+-	       time_before_eq(fdb->updated + hold_time(br), jiffies);
++	       time_before_eq(READ_ONCE(fdb->updated) + hold_time(br), jiffies);
+ }
  
--	iph = skb_push(skb, t->hlen + sizeof(*iph));
-+	iph = skb_push(skb, needed);
- 	greh = (struct gre_base_hdr *)(iph+1);
- 	greh->flags = gre_tnl_flags_to_gre_flags(t->parms.o_flags);
- 	greh->protocol = htons(type);
+ static void fdb_rcu_free(struct rcu_head *head)
+@@ -133,9 +133,9 @@ static int fdb_fill_info(struct sk_buff *skb, const struct net_bridge *br,
+ 	if (nla_put_u32(skb, NDA_FLAGS_EXT, ext_flags))
+ 		goto nla_put_failure;
+ 
+-	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
++	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
+ 	ci.ndm_confirmed = 0;
+-	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
++	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
+ 	ci.ndm_refcnt	 = 0;
+ 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
+ 		goto nla_put_failure;
+@@ -552,7 +552,7 @@ void br_fdb_cleanup(struct work_struct *work)
+ 	 */
+ 	rcu_read_lock();
+ 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
+-		unsigned long this_timer = f->updated + delay;
++		unsigned long this_timer = READ_ONCE(f->updated) + delay;
+ 
+ 		if (test_bit(BR_FDB_STATIC, &f->flags) ||
+ 		    test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &f->flags)) {
+@@ -829,6 +829,7 @@ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
+ {
+ 	struct net_bridge_fdb_entry *f;
+ 	struct __fdb_entry *fe = buf;
++	unsigned long delta;
+ 	int num = 0;
+ 
+ 	memset(buf, 0, maxnum*sizeof(struct __fdb_entry));
+@@ -858,8 +859,11 @@ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
+ 		fe->port_hi = f->dst->port_no >> 8;
+ 
+ 		fe->is_local = test_bit(BR_FDB_LOCAL, &f->flags);
+-		if (!test_bit(BR_FDB_STATIC, &f->flags))
+-			fe->ageing_timer_value = jiffies_delta_to_clock_t(jiffies - f->updated);
++		if (!test_bit(BR_FDB_STATIC, &f->flags)) {
++			delta = jiffies - READ_ONCE(f->updated);
++			fe->ageing_timer_value =
++				jiffies_delta_to_clock_t(delta);
++		}
+ 		++fe;
+ 		++num;
+ 	}
+@@ -907,8 +911,8 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
+ 			unsigned long now = jiffies;
+ 			bool fdb_modified = false;
+ 
+-			if (now != fdb->updated) {
+-				fdb->updated = now;
++			if (now != READ_ONCE(fdb->updated)) {
++				WRITE_ONCE(fdb->updated, now);
+ 				fdb_modified = __fdb_mark_active(fdb);
+ 			}
+ 
+@@ -1146,10 +1150,10 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
+ 	if (fdb_handle_notify(fdb, notify))
+ 		modified = true;
+ 
+-	fdb->used = jiffies;
++	WRITE_ONCE(fdb->used, jiffies);
+ 	if (modified) {
+ 		if (refresh)
+-			fdb->updated = jiffies;
++			WRITE_ONCE(fdb->updated, jiffies);
+ 		fdb_notify(br, fdb, RTM_NEWNEIGH, true);
+ 	}
+ 
+@@ -1462,7 +1466,7 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 			goto err_unlock;
+ 		}
+ 
+-		fdb->updated = jiffies;
++		WRITE_ONCE(fdb->updated, jiffies);
+ 
+ 		if (READ_ONCE(fdb->dst) != p) {
+ 			WRITE_ONCE(fdb->dst, p);
+@@ -1471,7 +1475,7 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 
+ 		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
+ 			/* Refresh entry */
+-			fdb->used = jiffies;
++			WRITE_ONCE(fdb->used, jiffies);
+ 		} else {
+ 			modified = true;
+ 		}
+diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+index 2eb2bb6643885..8c26605c4cc1e 100644
+--- a/net/bridge/br_input.c
++++ b/net/bridge/br_input.c
+@@ -207,8 +207,8 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+ 		if (test_bit(BR_FDB_LOCAL, &dst->flags))
+ 			return br_pass_frame_up(skb, false);
+ 
+-		if (now != dst->used)
+-			dst->used = now;
++		if (now != READ_ONCE(dst->used))
++			WRITE_ONCE(dst->used, now);
+ 		br_forward(dst->dst, skb, local_rcv, false);
+ 	} else {
+ 		if (!mcast_hit)
 -- 
 2.51.0
 
