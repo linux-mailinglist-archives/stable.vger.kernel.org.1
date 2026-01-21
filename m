@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-211054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YM7NK7ErcWl1fAAAu9opvQ
-	(envelope-from <stable+bounces-211054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:40:33 +0100
+	id GNE4EJIbcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:31:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B12B5C5D4
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:40:33 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 113B15B4C6
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 702D3786EA7
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:34 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 14606784B51
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055F936997C;
-	Wed, 21 Jan 2026 18:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58AF23A640C;
+	Wed, 21 Jan 2026 18:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLY0SCeE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0ZZW4yU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FE132BF21;
-	Wed, 21 Jan 2026 18:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4E03A0B24;
+	Wed, 21 Jan 2026 18:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020282; cv=none; b=Pg7LibbTnQW9GldJ+MOVbas2rI4i4mI3aNDEQyM3usyucKKZdyh0rV03/lR46FxcvgHmK/qjzvAC5mgyHMKgVUgpjExLNckUazTIOzw4hZ4eZTE5AIF8E6T/Q8w3UKVkhimdZVlphlmCbbGMmwcivvkuBMCRyxTo8XO0icwuPUA=
+	t=1769019762; cv=none; b=sAH65aTXstLNuL4iwx3IcLcUJsKmETXyMwCJwtTfdPNLcyoXhS8hPNYf5f+x5XTzayFmKUDG02zbSKuBy45K8DcvaJ10gPe5YzF/NvtKbJPbQjr98ud3F5R3Z605PUWsKbLtm+MthUvfWKeMvjx0pcu2vBZOef8Ipla1oJj+x4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020282; c=relaxed/simple;
-	bh=vZ8pHZ2AmwIXruhJqvqNrQh8sXzIsW6xEkUPsO2CxiE=;
+	s=arc-20240116; t=1769019762; c=relaxed/simple;
+	bh=TY2WHzilEgG847VTQOI8nS5YuYHRZG6UxAZNynW4F/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OvrKupd9AVVeJKGqX+dLfrC8sJHrmmy9mr2AuTuPBeZ0NzTSPsbMXZrqgVVTUBf68s6rQHTdUzplnFpmm2Bhh1ra+84ew7GGqbddPblBwiW1WJ+Of6nbOF1E1tIJzY03HQ8CyXhnAxqVIogD1uqveFqbUy0lZxhHdywXTXXTa+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLY0SCeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27460C4CEF1;
-	Wed, 21 Jan 2026 18:31:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bOeQAzW3fodPeFiDzJ4KXfE1ogPt4Kew5ulCx0BLSyzecj7z2x8c9EeSA+Ln/MgmWip7MiYlpyoU8uRf557hcnLLxsof/95FoVpln2esDF8nw7Q6kNuK/679EJdwCjk7ClNUdLif5aILn47aHEs0RXwiRp+9C5eR0gCc2A6uIqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0ZZW4yU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350C2C4CEF1;
+	Wed, 21 Jan 2026 18:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020282;
-	bh=vZ8pHZ2AmwIXruhJqvqNrQh8sXzIsW6xEkUPsO2CxiE=;
+	s=korg; t=1769019761;
+	bh=TY2WHzilEgG847VTQOI8nS5YuYHRZG6UxAZNynW4F/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLY0SCeEI7/0PdCxHHZzu/B9pnhEthRpcBm10k5PVuCipNyAY5ZAvDRGFn7gKMyI9
-	 baVf5qScpQUGMtHxUiQeml/YoO1grRAEv4iVEjETYEmJHr8DNeURge4uzfsqua+d9q
-	 HMR3O34wvd+nhapEOXnLo8pKqgLPB0xUfRxrPA9s=
+	b=Q0ZZW4yUy4auh85o5Ss0G9jN+j75mr/ad2wILglATtTmDfeU+8uZ9akF5XBuWnzE/
+	 tgoDd1j+GtsVyt3Mt1ggA3qnlcGcvPz0GGRTOb9Y0AP16u0BMYKehpcFXeIr1ihZDP
+	 feTJRQXqNasAPaA2PkoLXTwECnaJVk3leL60Zf5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Beims <rafael.beims@toradex.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.18 113/198] phy: freescale: imx8m-pcie: assert phy reset during power on
+	Daniel Wagner <dwagner@suse.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.12 093/139] nvme: fix PCIe subsystem reset controller state transition
 Date: Wed, 21 Jan 2026 19:15:41 +0100
-Message-ID: <20260121181422.622005417@linuxfoundation.org>
+Message-ID: <20260121181414.800924816@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +65,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211054-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210900-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:url,msgid.link:url,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,toradex.com:email]
-X-Rspamd-Queue-Id: 4B12B5C5D4
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email]
+X-Rspamd-Queue-Id: 113B15B4C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Beims <rafael.beims@toradex.com>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-commit f2ec4723defbc66a50e0abafa830ae9f8bceb0d7 upstream.
+commit 0edb475ac0a7d153318a24d4dca175a270a5cc4f upstream.
 
-After U-Boot initializes PCIe with "pcie enum", Linux fails to detect
-an NVMe disk on some boot cycles with:
+The commit d2fe192348f9 (“nvme: only allow entering LIVE from CONNECTING
+state”) disallows controller state transitions directly from RESETTING
+to LIVE. However, the NVMe PCIe subsystem reset path relies on this
+transition to recover the controller on PowerPC (PPC) systems.
 
-  phy phy-32f00000.pcie-phy.0: phy poweron failed --> -110
+On PPC systems, issuing a subsystem reset causes a temporary loss of
+communication with the NVMe adapter. A subsequent PCIe MMIO read then
+triggers EEH recovery, which restores the PCIe link and brings the
+controller back online. For EEH recovery to proceed correctly, the
+controller must transition back to the LIVE state.
 
-Discussion with NXP identified that the iMX8MP PCIe PHY PLL may fail to
-lock when re-initialized without a reset cycle [1].
+Due to the changes introduced by commit d2fe192348f9 (“nvme: only allow
+entering LIVE from CONNECTING state”), the controller can no longer
+transition directly from RESETTING to LIVE. As a result, EEH recovery
+exits prematurely, leaving the controller stuck in the RESETTING state.
 
-The issue reproduces on 7% of tested hardware platforms, with a 30-40%
-failure rate per affected device across boot cycles.
+Fix this by explicitly transitioning the controller state from RESETTING
+to CONNECTING and then to LIVE. This satisfies the updated state
+transition rules and allows the controller to be successfully recovered
+on PPC systems following a PCIe subsystem reset.
 
-Insert a reset cycle in the power-on routine to ensure the PHY is
-initialized from a known state.
-
-[1] https://community.nxp.com/t5/i-MX-Processors/iMX8MP-PCIe-initialization-in-U-Boot/m-p/2248437#M242401
-
-Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251223150254.1075221-1-rafael@beims.me
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: d2fe192348f9 ("nvme: only allow entering LIVE from CONNECTING state")
+Reviewed-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/host/pci.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -89,7 +89,8 @@ static int imx8_pcie_phy_power_on(struct
- 			writel(imx8_phy->tx_deemph_gen2,
- 			       imx8_phy->base + PCIE_PHY_TRSV_REG6);
- 		break;
--	case IMX8MP: /* Do nothing. */
-+	case IMX8MP:
-+		reset_control_assert(imx8_phy->reset);
- 		break;
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1264,7 +1264,10 @@ static int nvme_pci_subsystem_reset(stru
  	}
  
+ 	writel(NVME_SUBSYS_RESET, dev->bar + NVME_REG_NSSR);
+-	nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE);
++
++	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_CONNECTING) ||
++	    !nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
++		goto unlock;
+ 
+ 	/*
+ 	 * Read controller status to flush the previous write and trigger a
 
 
 
