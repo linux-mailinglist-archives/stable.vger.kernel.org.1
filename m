@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-211024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOxZBMEmcWl8eQAAu9opvQ
-	(envelope-from <stable+bounces-211024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:19:29 +0100
+	id 2PiBL8QicWl8eQAAu9opvQ
+	(envelope-from <stable+bounces-211026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:02:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B5E5C005
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:19:28 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14DBE5BBDD
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:02:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 38FF29AFF41
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:30:28 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id ADC6A80E018
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7E73ACEF9;
-	Wed, 21 Jan 2026 18:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C395D3AE715;
+	Wed, 21 Jan 2026 18:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSTJLU4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7+ApCvr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157433A9604;
-	Wed, 21 Jan 2026 18:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716E333C52D;
+	Wed, 21 Jan 2026 18:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020179; cv=none; b=tO2PQ0+i4H9nLHKT9TroZONuXKFcf1gigkC+4WRcvk/KP/2oFXtOHNPj+u14S4HJmQ0ngZAvFc3kY6/q2tCmpy3qdt+gusMTlJoT+0CS45kTHPu0OWnytuBL92n+IomLPHwApnfKULPYaQBHgQ12nBnbLYerpG89c8f09tK31wU=
+	t=1769020185; cv=none; b=HlBCN8ZkLSG9D2kXDlU8sNrVQL7CCeLyhnKuG8bixYzDrZfdSBSpGBVWgp8s/6BDONdG6l1wdweNhAdvW6lISJNhLs2iXHkMX+BprcFaxvoxIgQ/Lld39GlAGlqpcM4UaNe+qh7ObORsGFknVL5FEtNMnLi4y0+WG2qs1jZG8cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020179; c=relaxed/simple;
-	bh=uY5zp9u8837RwquWSY1qbb4aX6UeprahneYWYkDv/Z4=;
+	s=arc-20240116; t=1769020185; c=relaxed/simple;
+	bh=mDMWJXvKuWkX9AzpGVCKb5rSN01T8WyyN38qbRh1D8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EexCWtRbeyCEhR0+znfbAEp2IK9rmBjRM/inAB9K/DT+kGPbf7D7t/dCyWxrgyJiQf4tkylXmpJDlN8TDkCY3t2fdUxXFIVcs7+pO5EDgzbhbbdXszawTQbXblQ/Cbo9iZpXS/JWymjISofroZgO5lG1VxJtWX+SNRJZhH1BkLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSTJLU4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE34C4CEF1;
-	Wed, 21 Jan 2026 18:29:38 +0000 (UTC)
+	 MIME-Version; b=CfOFWVErutmZnsLwR3CzQ/g/wu6IT7z1TMBZaISHSvvidh5s/VInaxhFZ/XGRZgoz9PhJTBRWxEtpEJ0WLdY/8cpulJIEFP2SfPuOGRkU6/IMCX8bOqQkL0+Lv8IDa9xOtA0elI31LAZ9apfdFLaUJdLRpvieVLfdliBVzVxXG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7+ApCvr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC38C4CEF1;
+	Wed, 21 Jan 2026 18:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020178;
-	bh=uY5zp9u8837RwquWSY1qbb4aX6UeprahneYWYkDv/Z4=;
+	s=korg; t=1769020185;
+	bh=mDMWJXvKuWkX9AzpGVCKb5rSN01T8WyyN38qbRh1D8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSTJLU4TC9r4GFAQJxdx+5w1L5gVibJvvsrPJWgQBt2FbksTtTs47YYu9Ik+3cHwd
-	 x8Ioo7bW9GelRvKKfbRfvDoJoMrv3GipJ0uXSeUZeI1MsxupoD9bbdg+m/Rzf4uBSe
-	 6CDXEA0LbxXE3G2pJ4juk7NKNfW71OmL/JNG8sng=
+	b=L7+ApCvrrfyEbSmmeIWBSAdakIlmLuDnRyI1WtxxfRcMEXG1eJEXDmMy6t8cnn64/
+	 dwrh0zEksWtAR8A8Z9sqtmb9ioODVYVebP3cAXbWZUC2vna/vlrGegyLduWgb35dju
+	 ljbie+5hyCFkNs0O2aRvRmT1bFlm9VW9aC6spkcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 083/198] dmaengine: omap-dma: fix dma_pool resource leak in error paths
-Date: Wed, 21 Jan 2026 19:15:11 +0100
-Message-ID: <20260121181421.546358852@linuxfoundation.org>
+Subject: [PATCH 6.18 084/198] soundwire: bus: fix off-by-one when allocating slave IDs
+Date: Wed, 21 Jan 2026 19:15:12 +0100
+Message-ID: <20260121181421.583443571@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -74,26 +77,25 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211024-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-211026-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 74B5E5C005
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 14DBE5BBDD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,48 +103,45 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit 2e1136acf8a8887c29f52e35a77b537309af321f ]
+[ Upstream commit 12d4fd9a657174496677cff2841315090f1c11fc ]
 
-The dma_pool created by dma_pool_create() is not destroyed when
-dma_async_device_register() or of_dma_controller_register() fails,
-causing a resource leak in the probe error paths.
+ida_alloc_max() interprets its max argument as inclusive.
 
-Add dma_pool_destroy() in both error paths to properly release the
-allocated dma_pool resource.
+Using SDW_FW_MAX_DEVICES(16) therefore allows an ID of 16 to be
+allocated, but the IRQ domain created for the bus is sized for IDs
+0-15.  If 16 is returned, irq_create_mapping() fails and the driver
+ends up with an invalid IRQ mapping.
 
-Fixes: 7bedaa553760 ("dmaengine: add OMAP DMA engine driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251103073018.643-1-vulab@iscas.ac.cn
+Limit the allocation to 0-15 by passing SDW_FW_MAX_DEVICES - 1.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202512240450.hlDH3nCs-lkp@intel.com/
+Fixes: aab12022b076 ("soundwire: bus: Add internal slave ID and use for IRQs")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260110201959.2523024-1-harshit.m.mogalapalli@oracle.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/omap-dma.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/soundwire/bus_type.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
-index 8c023c6e623a5..73ed4b7946304 100644
---- a/drivers/dma/ti/omap-dma.c
-+++ b/drivers/dma/ti/omap-dma.c
-@@ -1808,6 +1808,8 @@ static int omap_dma_probe(struct platform_device *pdev)
- 	if (rc) {
- 		pr_warn("OMAP-DMA: failed to register slave DMA engine device: %d\n",
- 			rc);
-+		if (od->ll123_supported)
-+			dma_pool_destroy(od->desc_pool);
- 		omap_dma_free(od);
- 		return rc;
- 	}
-@@ -1823,6 +1825,8 @@ static int omap_dma_probe(struct platform_device *pdev)
- 		if (rc) {
- 			pr_warn("OMAP-DMA: failed to register DMA controller\n");
- 			dma_async_device_unregister(&od->ddev);
-+			if (od->ll123_supported)
-+				dma_pool_destroy(od->desc_pool);
- 			omap_dma_free(od);
- 		}
- 	}
+diff --git a/drivers/soundwire/bus_type.c b/drivers/soundwire/bus_type.c
+index 91e70cb46fb57..5c67c13e57357 100644
+--- a/drivers/soundwire/bus_type.c
++++ b/drivers/soundwire/bus_type.c
+@@ -105,7 +105,7 @@ static int sdw_drv_probe(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = ida_alloc_max(&slave->bus->slave_ida, SDW_FW_MAX_DEVICES, GFP_KERNEL);
++	ret = ida_alloc_max(&slave->bus->slave_ida, SDW_FW_MAX_DEVICES - 1, GFP_KERNEL);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to allocated ID: %d\n", ret);
+ 		return ret;
 -- 
 2.51.0
 
