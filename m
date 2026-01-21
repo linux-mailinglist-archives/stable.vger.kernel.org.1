@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-210673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aET5Dt1CcGnXXAAAu9opvQ
-	(envelope-from <stable+bounces-210673-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:07:09 +0100
+	id CGyWCZ9EcGnXXAAAu9opvQ
+	(envelope-from <stable+bounces-210674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:14:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72EB503E4
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:07:08 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2357504AE
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5E7F956CED0
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:07:05 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D53AC483EB4
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7DD3559E4;
-	Wed, 21 Jan 2026 03:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C0E356A2B;
+	Wed, 21 Jan 2026 03:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CcqZXg40"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCoLQd4X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4011935505C
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 03:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5913F3563FF
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 03:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768964819; cv=none; b=L+eUl1PRUNuGTYs4IejZEMDZFhe+1g6iVKz+JkTYfHhihrJZcvLSciuMpJYE0sTsKzQPc8op5WllgYCsPUOz+3MnFZSjHo27ZlnuFr5tts125ApoPRYyIGa2mGBjx+G7TtGi8H/RiUSAQshMjyluBzKlvWoRf3jelCcV4Oo+fnM=
+	t=1768965272; cv=none; b=bffAwswmHM9BTYDV2FmcVuUJxBg7co9VgFzYNtqst+t0YBp3M3crygggNC7mHsv41Mgh7lSQSk4BiDTgxcu2UDt/rB/b16fLsYX6NMn7xR5jeENV68QrDaBZ8u28PWP+LUGfJ2+nd4EU2eVJMLZL50vXI4cLZGH1JF/EbdNuHho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768964819; c=relaxed/simple;
-	bh=ehe0bHOiY9iyv8U1cp0UURd/EWYWC1T6p+ugFIcRUA0=;
+	s=arc-20240116; t=1768965272; c=relaxed/simple;
+	bh=X8BWzLz0NQml6tqdMPSbg+b4rHwh9sI17KZZ8UKZA3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X9z3ptKiVrdDCbdryM8rQrwB+Md/xOTHJeq7aIjypyo1GR3L6IUK3ZvEBLRJaMMbGWG8P0UgTi5vqixNSE6MLwvhyEJVq8HWjF8Ju6aXWYVF9wwv+A0XxlOUOX8ykLEyp1aw9IdI7daR6mQLBHyypJ9h096YYmmKJo8gdleU0vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CcqZXg40; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86897C19423;
-	Wed, 21 Jan 2026 03:06:58 +0000 (UTC)
+	 MIME-Version; b=a6Yo8gvZI8dQUYevxMDw7+IEpPExBPmJOTLXUAWGV8x9zXM8tl88NO+VbzPyAsoIO+hxcBn5BCM0eU160MbhUmRakxoY/y7oMOFkB7xGvnn7TFLC54LlG4Ff9FezmfH813/qVts/0o+6cOxx9DdeC0RNO8PXS/CD9Rnv4kHPClc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCoLQd4X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F999C16AAE;
+	Wed, 21 Jan 2026 03:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768964819;
-	bh=ehe0bHOiY9iyv8U1cp0UURd/EWYWC1T6p+ugFIcRUA0=;
+	s=k20201202; t=1768965271;
+	bh=X8BWzLz0NQml6tqdMPSbg+b4rHwh9sI17KZZ8UKZA3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcqZXg40+rklQFF2nEAqcn3p7wM8zvHrE3MORsf71x6Ch4nj8gzww9CurQt7TG3gQ
-	 FobivhrJ2wnqo2cE5O5DL+bthp3HIAN4VcgzQYrDo/N1h+gw/M32hmTa7OYNltxrnC
-	 v+QgJxbK6ihU0SIIALxJkRKQRzJdt0OygMB+fZQt1NHo7FsX2jI5xjGVF/5BoQd8yq
-	 GHXLOrAcF427GC0ou01ZY2rqrHSkOH+wCDANi9m1TFdgtRfzGMgGBj1LcicEhcYFln
-	 tDshKPxRNMGbrUIEg2VssqYK/R8L9SbYHiacOjhwytR+Mf0CavosqrIPtIw+huwv6i
-	 WgL87CwD3UyIg==
+	b=fCoLQd4X7GWoGBB3BpUHgiQsjPJkXcMSKEuiU0IMYcHhKazNBSNR9lSEhkqW3E5qE
+	 BP264TU5b1LCc1WseqzKjxkc5Rg8Fx4bslzq60TvDhGWXQpfnwM/aehEYVqyQYZu/P
+	 Z5/cBhWF0MiBLne92fLEE4eJuG3T4pVY05ehqrvoq87bsEDkED9FSqvfEuKAkRPzZY
+	 CJ7w/XCJsirZRyVdPKBdsOW8aAYs6J2+gNXLiUpVSvXVR68slVya+EerDPPuJ3CywR
+	 jAjXVk7rj1I6XeY/KxVLjmBeL3vGnQsAyisgirgfbX43PKiZcQd07FAUYY5HMr2jZ0
+	 wf2ar2TcOc37w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Ben Dooks <ben.dooks@codethink.co.uk>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Marco Elver <elver@google.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] mm: numa,memblock: include <asm/numa.h> for 'numa_nodes_parsed'
-Date: Tue, 20 Jan 2026 22:06:55 -0500
-Message-ID: <20260121030655.1173340-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y] mm: kmsan: fix poisoning of high-order non-compound pages
+Date: Tue, 20 Jan 2026 22:14:29 -0500
+Message-ID: <20260121031429.1186608-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260121030655.1173340-1-sashal@kernel.org>
-References: <2026012036-system-boots-1902@gregkh>
- <20260121030655.1173340-1-sashal@kernel.org>
+In-Reply-To: <2026012026-varying-grappling-04b4@gregkh>
+References: <2026012026-varying-grappling-04b4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,71 +68,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.46 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210673-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210674-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linux-foundation.org:email,codethink.co.uk:email]
-X-Rspamd-Queue-Id: A72EB503E4
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linux-foundation.org:email,arm.com:email]
+X-Rspamd-Queue-Id: C2357504AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit f46c26f1bcd9164d7f3377f15ca75488a3e44362 ]
+[ Upstream commit 4795d205d78690a46b60164f44b8bb7b3e800865 ]
 
-The 'numa_nodes_parsed' is defined in <asm/numa.h> but this file
-is not included in mm/numa_memblks.c (build x86_64) so add this
-to the incldues to fix the following sparse warning:
+kmsan_free_page() is called by the page allocator's free_pages_prepare()
+during page freeing.  Its job is to poison all the memory covered by the
+page.  It can be called with an order-0 page, a compound high-order page
+or a non-compound high-order page.  But page_size() only works for order-0
+and compound pages.  For a non-compound high-order page it will
+incorrectly return PAGE_SIZE.
 
-mm/numa_memblks.c:13:12: warning: symbol 'numa_nodes_parsed' was not declared. Should it be static?
+The implication is that the tail pages of a high-order non-compound page
+do not get poisoned at free, so any invalid access while they are free
+could go unnoticed.  It looks like the pages will be poisoned again at
+allocation time, so that would bookend the window.
 
-Link: https://lkml.kernel.org/r/20260108101539.229192-1-ben.dooks@codethink.co.uk
-Fixes: 87482708210f ("mm: introduce numa_memblks")
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Ben Dooks <ben.dooks@codethink.co.uk>
+Fix this by using the order parameter to calculate the size.
+
+Link: https://lkml.kernel.org/r/20260104134348.3544298-1-ryan.roberts@arm.com
+Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page operations")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Tested-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/numa_memblks.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/kmsan/shadow.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/numa_memblks.c b/mm/numa_memblks.c
-index ff4054f4334da..c447add277ccd 100644
---- a/mm/numa_memblks.c
-+++ b/mm/numa_memblks.c
-@@ -7,6 +7,8 @@
- #include <linux/numa.h>
- #include <linux/numa_memblks.h>
- 
-+#include <asm/numa.h>
-+
- int numa_distance_cnt;
- static u8 *numa_distance;
- 
+diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
+index 9c58f081d84fc..0327001b2b0ec 100644
+--- a/mm/kmsan/shadow.c
++++ b/mm/kmsan/shadow.c
+@@ -208,7 +208,7 @@ void kmsan_free_page(struct page *page, unsigned int order)
+ 		return;
+ 	kmsan_enter_runtime();
+ 	kmsan_internal_poison_memory(page_address(page),
+-				     page_size(page),
++				     PAGE_SIZE << order,
+ 				     GFP_KERNEL,
+ 				     KMSAN_POISON_CHECK | KMSAN_POISON_FREE);
+ 	kmsan_leave_runtime();
 -- 
 2.51.0
 
