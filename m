@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-211029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210866-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOyUE/0hcWl8eQAAu9opvQ
-	(envelope-from <stable+bounces-211029-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:59:09 +0100
+	id +OXuI0IncWniewAAu9opvQ
+	(envelope-from <stable+bounces-210866-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:21:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD2775BADC
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:59:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0080D5C0F5
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:21:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 79ED4B2713B
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:30:48 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AF73BB266E0
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7117A3AA1A0;
-	Wed, 21 Jan 2026 18:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EFB387359;
+	Wed, 21 Jan 2026 18:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1Rpdksn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bnKcYDD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D8C337B87;
-	Wed, 21 Jan 2026 18:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9355F330679;
+	Wed, 21 Jan 2026 18:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020196; cv=none; b=H+sdg5oUDUFYkxQ1B4kQKIzrxApy/uIBN+wREXVH6cg01RW6n9DiBJv/NDfpDfRzvjlZAE5Ffq59a7ikegNdkrH+kcCT6Bn6ey1zhxAj6x+AYvNgZYrwRNLqvEpXGCWVX83xu2FfsuGIzAfouhoK1r1xKbiG5P86Mp/Tq78LJNo=
+	t=1769019650; cv=none; b=P4ieDzsCFjQE131HbwH11VmSv0UCfZI4EkkILRTwPlnhJPhlzBiUG7imxcurnz1uHpU5oV7p0yIqY/sEZ7Qbqayt9ymH1W7PljgHbzosR0TsPMcM7VsKEGTmZQm5bmATFERWqIN+nVagOv6tjHJoQm32+C22OJHE7lpjr5poNag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020196; c=relaxed/simple;
-	bh=ajhqsTjaJQjLRqPkMCeHFlgU2o4tx8oQB/myQb0mIwc=;
+	s=arc-20240116; t=1769019650; c=relaxed/simple;
+	bh=1cSvDhT7LVEx34DN+B4LwqFc5lDppwdLRr33pyub/aA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXmx0fjXGlHgoCrUBGDIp3TLk7iXiD4zQNXBfl0NqwP1tvCIhhW4zX1EYa+l1vuGA2jXWQOOZnFpS00alKtENsrBlqh01JZbfbG5sYy/oqBAttqkylFj/wzCSfHfw9O2lI4CzceXjpIZcxbtrT+yCBwY2ypNPHSd3USvJT2KKdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1Rpdksn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20670C4CEF1;
-	Wed, 21 Jan 2026 18:29:54 +0000 (UTC)
+	 MIME-Version; b=h+mTEjRDrnyA/YUkwmGrCrpsNqUz8bxWhbl65A84r2e4tElxC06l1SKRJrJmUcHtLds9F+G/tpd7ahBjBcXSFXXJ9L0yhkRUh7OeANB2/DyiOmZG5xbCXYcarEcy8Y5OVNOYC1azt/7+MX35LhWbDJS4e6hv6AZGko4t+hkV1Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bnKcYDD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD21C4CEF1;
+	Wed, 21 Jan 2026 18:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020195;
-	bh=ajhqsTjaJQjLRqPkMCeHFlgU2o4tx8oQB/myQb0mIwc=;
+	s=korg; t=1769019650;
+	bh=1cSvDhT7LVEx34DN+B4LwqFc5lDppwdLRr33pyub/aA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1RpdksnQVl642NPbyOFTw0DqxZ30gpNJkCgeTeOc8DL2ZQxs5y/jnQ4B6OmPRczW
-	 odzTLy2IWPDKozL1cuqGc62BxGGpYYa6SU0jEv2AZklb2cQe2dx7K0VcfqGscH/3Fv
-	 7bst0xq5diCL/CyOU4N+mto+PCPgueDBBGSbIB7U=
+	b=2bnKcYDDeQ/bbEU2/1vdu+91MUaiXJgZyQw8ECB3Fbq3J5B7fw+uNd4ApjzxJHTaC
+	 leaWAPiqV4PpBXbLg31JuXi1Y8xHCQ7/0A5xVI7mWMsfPj/4fTRcRy0hA2+WIBNz65
+	 iG37UYD3mQrUVeADOAgw2m8vqomMqD3fwk1pXwlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Gondois <pierre.gondois@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 087/198] sched/deadline: Avoid double update_rq_clock()
-Date: Wed, 21 Jan 2026 19:15:15 +0100
-Message-ID: <20260121181421.689499629@linuxfoundation.org>
+	Ondrej Ille <ondrej.ille@gmail.com>,
+	Pavel Pisa <pisa@fel.cvut.cz>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 068/139] can: ctucanfd: fix SSP_SRC in cases when bit-rate is higher than 1 MBit.
+Date: Wed, 21 Jan 2026 19:15:16 +0100
+Message-ID: <20260121181413.901314386@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
@@ -76,75 +77,93 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TAGGED_FROM(0.00)[bounces-210866-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-211029-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,fel.cvut.cz,pengutronix.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AD2775BADC
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 0080D5C0F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Ondrej Ille <ondrej.ille@gmail.com>
 
-[ Upstream commit 4de9ff76067b40c3660df73efaea57389e62ea7a ]
+commit e707c591a139d1bfa4ddc83036fc820ca006a140 upstream.
 
-When setup_new_dl_entity() is called from enqueue_task_dl() ->
-enqueue_dl_entity(), the rq-clock should already be updated, and
-calling update_rq_clock() again is not right.
+The Secondary Sample Point Source field has been
+set to an incorrect value by some mistake in the
+past
 
-Move the update_rq_clock() to the one other caller of
-setup_new_dl_entity(): sched_init_dl_server().
+  0b01 - SSP_SRC_NO_SSP - SSP is not used.
 
-Fixes: 9f239df55546 ("sched/deadline: Initialize dl_servers after SMP")
-Reported-by: Pierre Gondois <pierre.gondois@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Pierre Gondois <pierre.gondois@arm.com>
-Link: https://patch.msgid.link/20260113115622.GA831285@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+for data bitrates above 1 MBit/s. The correct/default
+value already used for lower bitrates is
+
+  0b00 - SSP_SRC_MEAS_N_OFFSET - SSP position = TRV_DELAY
+         (Measured Transmitter delay) + SSP_OFFSET.
+
+The related configuration register structure is described
+in section 3.1.46 SSP_CFG of the CTU CAN FD
+IP CORE Datasheet.
+
+The analysis leading to the proper configuration
+is described in section 2.8.3 Secondary sampling point
+of the datasheet.
+
+The change has been tested on AMD/Xilinx Zynq
+with the next CTU CN FD IP core versions:
+
+ - 2.6 aka master in the "integration with Zynq-7000 system" test
+   6.12.43-rt12+ #1 SMP PREEMPT_RT kernel with CTU CAN FD git
+   driver (change already included in the driver repo)
+ - older 2.5 snapshot with mainline kernels with this patch
+   applied locally in the multiple CAN latency tester nightly runs
+   6.18.0-rc4-rt3-dut #1 SMP PREEMPT_RT
+   6.19.0-rc3-dut
+
+The logs, the datasheet and sources are available at
+
+ https://canbus.pages.fel.cvut.cz/
+
+Signed-off-by: Ondrej Ille <ondrej.ille@gmail.com>
+Signed-off-by: Pavel Pisa <pisa@fel.cvut.cz>
+Link: https://patch.msgid.link/20260105111620.16580-1-pisa@fel.cvut.cz
+Fixes: 2dcb8e8782d8 ("can: ctucanfd: add support for CTU CAN FD open-source IP core - bus independent part.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/deadline.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/can/ctucanfd/ctucanfd_base.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index d3be71d5a9ccc..465592fa530ef 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -761,8 +761,6 @@ static inline void setup_new_dl_entity(struct sched_dl_entity *dl_se)
- 	struct dl_rq *dl_rq = dl_rq_of_se(dl_se);
- 	struct rq *rq = rq_of_dl_rq(dl_rq);
+--- a/drivers/net/can/ctucanfd/ctucanfd_base.c
++++ b/drivers/net/can/ctucanfd/ctucanfd_base.c
+@@ -310,7 +310,7 @@ static int ctucan_set_secondary_sample_p
+ 		}
  
--	update_rq_clock(rq);
--
- 	WARN_ON(is_dl_boosted(dl_se));
- 	WARN_ON(dl_time_before(rq_clock(rq), dl_se->deadline));
+ 		ssp_cfg = FIELD_PREP(REG_TRV_DELAY_SSP_OFFSET, ssp_offset);
+-		ssp_cfg |= FIELD_PREP(REG_TRV_DELAY_SSP_SRC, 0x1);
++		ssp_cfg |= FIELD_PREP(REG_TRV_DELAY_SSP_SRC, 0x0);
+ 	}
  
-@@ -1623,6 +1621,7 @@ void sched_init_dl_servers(void)
- 		rq = cpu_rq(cpu);
- 
- 		guard(rq_lock_irq)(rq);
-+		update_rq_clock(rq);
- 
- 		dl_se = &rq->fair_server;
- 
--- 
-2.51.0
-
+ 	ctucan_write32(priv, CTUCANFD_TRV_DELAY, ssp_cfg);
 
 
 
