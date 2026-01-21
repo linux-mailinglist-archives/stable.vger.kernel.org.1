@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-211037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDeUOh41cWlQfQAAu9opvQ
-	(envelope-from <stable+bounces-211037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:20:46 +0100
+	id wCdDIL8ecWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:45:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934465D0D0
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:20:46 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37245B769
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:45:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6198A7ABC2C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:31:21 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6B57D8AE3CD
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B527F3ACA7A;
-	Wed, 21 Jan 2026 18:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DBF23A0B24;
+	Wed, 21 Jan 2026 18:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1XM5TBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VG7azSB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0A13559ED;
-	Wed, 21 Jan 2026 18:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E553904DB;
+	Wed, 21 Jan 2026 18:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020224; cv=none; b=s3fsCRE1BKfKesGa1jkRWXWmDWF+iQk5fAXifJ6dW1V+4tJZQGVnf6fBvtELxhmGmzNcDCddYnsbZug2nilR4AC2ZWfTJAtzhGZZGSTmwv8enIp0qV1a3ivV1DI53tDhn0WtpRA8K6blGkUX99ga/FPz6VIUz/C5arPCG8sZTcA=
+	t=1769019671; cv=none; b=FIUPOipBu72qF3kHOI212Hy+k5FKv9eDoI+OHgotan+oNRk4I2/RnOSogHpmTYbqcxXW47vbUTxO8Zc+Wjo1N3VzEHk2KeDyH0YOAH7FTJmRfgZBlq+JTn3yDDm2w2iDuxRgoOTWd4rLJ1un5w24UTEaMCT2a5XIk8hjeJuWi7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020224; c=relaxed/simple;
-	bh=1pt/3eUrs+q/RgiUwpDwijm6j8JsweuPVZhIG9Kel1U=;
+	s=arc-20240116; t=1769019671; c=relaxed/simple;
+	bh=2do7hs97H7PX/7F8CNVQLeMGdl3pcUo5XMvQR7hrAzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlOHbTiXpuMOyLvqhhRF1TeGYRgR3nSY7J3qwMVDCo5WE+1WPi5qZDi/a/DU6BlHPpSTCMoWZYsA8Aw/VxWh64tGSpbWTOqrG9MCcwOwuHK2g+6AlRm7vhrDm6AaSJEp1NxBn3/c9LH1eGC4I7cQ3Yiizrtp3GegO97PRq3RtCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1XM5TBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED13C4CEF1;
-	Wed, 21 Jan 2026 18:30:23 +0000 (UTC)
+	 MIME-Version; b=nDpLtQj8+9bqscTHG67SlztGzlYxYHft6w2rcv48j8buNbm7d00Rw+QUWRUETpUUIkNWpx10WQgKHWkkKWFtNw9WswynaIYIpU/s7pedLrsDmUgZrPRfcU1FGdXPcm16MUr91ymooVoRcFa+pFECSETRo4CePeVLH1HkTqOsRQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VG7azSB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5877AC4CEF1;
+	Wed, 21 Jan 2026 18:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020224;
-	bh=1pt/3eUrs+q/RgiUwpDwijm6j8JsweuPVZhIG9Kel1U=;
+	s=korg; t=1769019669;
+	bh=2do7hs97H7PX/7F8CNVQLeMGdl3pcUo5XMvQR7hrAzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1XM5TBiG/96aj3FwGoGWWp0zZRrQCUxj69U4kq3DMmGAS9tCT7uOreksOLJFsVRR
-	 rr8Psh/oOv04VefV20HkeI9Gd7hzU4uMmqgEmlfbJICKJtqblFPBpyHd9gmyy0HksX
-	 wP+qUOKUMBf3dlf+k3V9bzf4Jg4Vb9OhoX7P6BAE=
+	b=VG7azSB20/Bsfa30MNFpISlOcsMQoqvSTzeJLDqLKh9YFxl87SRR+BFv7XoV1SA5C
+	 gjqN8jwXnjepp3uKZgZlDE8TowynC2uqFyzetrGeyLl4n5hXHAhfy+wozmBhekp/Yc
+	 jnS3gZCDe1VtO06apySgePGmmNqsooW4D8yjOQNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 094/198] ALSA: pcm: Improve the fix for race of buffer access at PCM OSS layer
+	Andrew Davis <afd@ti.com>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 074/139] phy: ti: gmii-sel: fix regmap leak on probe failure
 Date: Wed, 21 Jan 2026 19:15:22 +0100
-Message-ID: <20260121181421.936797025@linuxfoundation.org>
+Message-ID: <20260121181414.118303826@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,101 +74,64 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-210872-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211037-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,perex.cz:email,msgid.link:url]
-X-Rspamd-Queue-Id: 934465D0D0
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D37245B769
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Johan Hovold <johan@kernel.org>
 
-commit 47c27c9c9c720bc93fdc69605d0ecd9382e99047 upstream.
+commit 4914d67da947031d6f645c81c74f7879e0844d5d upstream.
 
-Handle the error code from snd_pcm_buffer_access_lock() in
-snd_pcm_runtime_buffer_set_silence() function.
+The mmio regmap that may be allocated during probe is never freed.
 
-Found by Alexandros Panagiotou <apanagio@redhat.com>
+Switch to using the device managed allocator so that the regmap is
+released on probe failures (e.g. probe deferral) and on driver unbind.
 
-Fixes: 93a81ca06577 ("ALSA: pcm: Fix race of buffer access at PCM OSS layer")
-Cc: stable@vger.kernel.org # 6.15
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://patch.msgid.link/20260107213642.332954-1-perex@perex.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 5ab90f40121a ("phy: ti: gmii-sel: Do not use syscon helper to build regmap")
+Cc: stable@vger.kernel.org	# 6.14
+Cc: Andrew Davis <afd@ti.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Andrew Davis <afd@ti.com>
+Link: https://patch.msgid.link/20251127134834.2030-1-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/sound/pcm.h      |    2 +-
- sound/core/oss/pcm_oss.c |    4 +++-
- sound/core/pcm_native.c  |    9 +++++++--
- 3 files changed, 11 insertions(+), 4 deletions(-)
+ drivers/phy/ti/phy-gmii-sel.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/sound/pcm.h
-+++ b/include/sound/pcm.h
-@@ -1402,7 +1402,7 @@ int snd_pcm_lib_mmap_iomem(struct snd_pc
- #define snd_pcm_lib_mmap_iomem	NULL
- #endif
+--- a/drivers/phy/ti/phy-gmii-sel.c
++++ b/drivers/phy/ti/phy-gmii-sel.c
+@@ -480,7 +480,7 @@ static int phy_gmii_sel_probe(struct pla
+ 			return dev_err_probe(dev, PTR_ERR(base),
+ 					     "failed to get base memory resource\n");
  
--void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
-+int snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
- 
- /**
-  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
---- a/sound/core/oss/pcm_oss.c
-+++ b/sound/core/oss/pcm_oss.c
-@@ -1074,7 +1074,9 @@ static int snd_pcm_oss_change_params_loc
- 	runtime->oss.params = 0;
- 	runtime->oss.prepare = 1;
- 	runtime->oss.buffer_used = 0;
--	snd_pcm_runtime_buffer_set_silence(runtime);
-+	err = snd_pcm_runtime_buffer_set_silence(runtime);
-+	if (err < 0)
-+		goto failure;
- 
- 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
- 
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -730,13 +730,18 @@ static void snd_pcm_buffer_access_unlock
- }
- 
- /* fill the PCM buffer with the current silence format; called from pcm_oss.c */
--void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
-+int snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
- {
--	snd_pcm_buffer_access_lock(runtime);
-+	int err;
-+
-+	err = snd_pcm_buffer_access_lock(runtime);
-+	if (err < 0)
-+		return err;
- 	if (runtime->dma_area)
- 		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
- 					   bytes_to_samples(runtime, runtime->dma_bytes));
- 	snd_pcm_buffer_access_unlock(runtime);
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
- 
+-		priv->regmap = regmap_init_mmio(dev, base, &phy_gmii_sel_regmap_cfg);
++		priv->regmap = devm_regmap_init_mmio(dev, base, &phy_gmii_sel_regmap_cfg);
+ 		if (IS_ERR(priv->regmap))
+ 			return dev_err_probe(dev, PTR_ERR(priv->regmap),
+ 					     "Failed to get syscon\n");
 
 
 
