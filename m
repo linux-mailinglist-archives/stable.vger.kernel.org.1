@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-210848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211044-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHf7JcwdcWmodQAAu9opvQ
-	(envelope-from <stable+bounces-210848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:41:16 +0100
+	id cGC0G8E7cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-211044-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:49:05 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6E05B6A8
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:41:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 150925D95A
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:49:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9D2837AC5FE
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:19:58 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A90D9849972
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8996F39E17E;
-	Wed, 21 Jan 2026 18:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C61352938;
+	Wed, 21 Jan 2026 18:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuaTcZb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMMqUAt/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7454D190664;
-	Wed, 21 Jan 2026 18:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A84A344055;
+	Wed, 21 Jan 2026 18:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019588; cv=none; b=H9xotEYydsLV1KF1H6Pnc9pQ6f3xzhSH2gwy3okYwHoRV8zthhLQZi/byRG6A1B5Sgwe8uhgb2FgMH0JR84mnD4oISaRhDKgg980He1uld1wus5hp8S3/VrpcoXcQgX7+eQtvA6JbuFzIbNUwaD6iuDapglkAEF9766527tVCdY=
+	t=1769020248; cv=none; b=WLJgO4I4cfhYwnE2xy3Z88JkOZPbi7bX6N0eFYX3o8EOJYh1oiuz8cpvU3ZHz9lx0Eoa2cUBoCj/hrxyMkruyGmES9GRbdn4kiPCEngQVYr5MlFDSqDZ7qleTNhCWm365U6ZFdv9k2QvadliXnsTAmo6o+hzT04qHxPn9+733O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019588; c=relaxed/simple;
-	bh=QLzBiliieaZG3rMf+RYdtbM3Ljlz4le89WnY9k7Ssig=;
+	s=arc-20240116; t=1769020248; c=relaxed/simple;
+	bh=TnmXr41vRtavySyGwf3+u4CVyIsSVavVuRGFK8UtH0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G3PtsHsppA8ttAjJ4DTacczYxbEBANKwvCsNu2eEdzR+dTI5+6ANEK2MvCrm1LsboY4y+YZS2lIP2gzz7bXdm7NoZcPvTEphP3tILsufxcNaGAhRH0KEQDL1HUZ4+5CL/MPZQtNge8LWEngoMX0HJQtcjTUyPmcWBdbdoOseEc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NuaTcZb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242B2C4CEF1;
-	Wed, 21 Jan 2026 18:19:46 +0000 (UTC)
+	 MIME-Version; b=FlufEF/J1T7+p/yIAMkHy8XZBqnGOugw2UA2VRnyl4JPoqf23YrldguG1HSIfZp/iRpb4t3UJH/i2fNVP92SYKLmQUAGLiZ5DTkENseixGh2FuRkcIdx/kOR61vArLyYW4tvyPxDWGx9tb2BFoskw2ODCz3DJifmzTgP15/LV0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMMqUAt/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E455AC4CEF1;
+	Wed, 21 Jan 2026 18:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019587;
-	bh=QLzBiliieaZG3rMf+RYdtbM3Ljlz4le89WnY9k7Ssig=;
+	s=korg; t=1769020248;
+	bh=TnmXr41vRtavySyGwf3+u4CVyIsSVavVuRGFK8UtH0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NuaTcZb2YFrn1+2FuLRho0fCWaxqLOFd2P6cmS+4Mwl/tJlCqzE6ObrDN7Sy780Cb
-	 eDXJLXs3mGAK15M9ckhGWwCzOy1HYkGoReOSpomuMuksZkaDGVmpJwVVA4Pop5rYWX
-	 AxZrmCjlNgb6xzc5FMErdthCwh08OJ43e1KPfP6U=
+	b=VMMqUAt/MbUtSaS3O7CXlaxRWvwBPhQwSiaHnX5d/RID0Cq5Y4X8tLCg/8IRd9jkL
+	 2FHG90ibh6SAPe6LTHI71br+ut0iI4D9G1ZNMxLfyuShY9/8c1WCyaJ69NQnwAXcnt
+	 YyJlwzWvrdKaOfkOdmDWVB9noSSWq+WUsx7aWfDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Anthony Brandon <anthony@amarulasolutions.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/139] phy: drop probe registration printks
-Date: Wed, 21 Jan 2026 19:14:57 +0100
-Message-ID: <20260121181413.219627860@linuxfoundation.org>
+Subject: [PATCH 6.18 070/198] dmaengine: xilinx: xdma: Fix regmap max_register
+Date: Wed, 21 Jan 2026 19:14:58 +0100
+Message-ID: <20260121181421.078635985@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,8 +69,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
@@ -75,231 +77,110 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210848-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211044-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_PROHIBIT(0.00)[0.0.0.7:email];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,linaro];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,a:email,fd00:email]
-X-Rspamd-Queue-Id: 3B6E05B6A8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,amarulasolutions.com:email]
+X-Rspamd-Queue-Id: 150925D95A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Anthony Brandon <anthony@amarulasolutions.com>
 
-[ Upstream commit 95463cbb4fe6489921fb8c72890113dca54ce83f ]
+[ Upstream commit c7d436a6c1a274c1ac28d5fb3b8eb8f03b6d0e10 ]
 
-Drivers should generally be quiet on successful probe, but this is not
-followed by some PHY drivers, for example:
+The max_register field is assigned the size of the register memory
+region instead of the offset of the last register.
+The result is that reading from the regmap via debugfs can cause
+a segmentation fault:
 
-	snps-eusb2-hsphy 88e1000.phy: Registered Snps-eUSB2 phy
-	qcom-eusb2-repeater c432000.spmi:pmic@7:phy@fd00: Registered Qcom-eUSB2 repeater
-	qcom-eusb2-repeater c432000.spmi:pmic@a:phy@fd00: Registered Qcom-eUSB2 repeater
-	qcom-eusb2-repeater c432000.spmi:pmic@b:phy@fd00: Registered Qcom-eUSB2 repeater
-	snps-eusb2-hsphy fd3000.phy: Registered Snps-eUSB2 phy
-	snps-eusb2-hsphy fd9000.phy: Registered Snps-eUSB2 phy
-	snps-eusb2-hsphy fde000.phy: Registered Snps-eUSB2 phy
-	snps-eusb2-hsphy 88e0000.phy: Registered Snps-eUSB2 phy
-	snps-eusb2-hsphy 88e2000.phy: Registered Snps-eUSB2 phy
+tail /sys/kernel/debug/regmap/xdma.1.auto/registers
+Unable to handle kernel paging request at virtual address ffff800082f70000
+Mem abort info:
+  ESR = 0x0000000096000007
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x07: level 3 translation fault
+[...]
+Call trace:
+ regmap_mmio_read32le+0x10/0x30
+ _regmap_bus_reg_read+0x74/0xc0
+ _regmap_read+0x68/0x198
+ regmap_read+0x54/0x88
+ regmap_read_debugfs+0x140/0x380
+ regmap_map_read_file+0x30/0x48
+ full_proxy_read+0x68/0xc8
+ vfs_read+0xcc/0x310
+ ksys_read+0x7c/0x120
+ __arm64_sys_read+0x24/0x40
+ invoke_syscall.constprop.0+0x64/0x108
+ do_el0_svc+0xb0/0xd8
+ el0_svc+0x38/0x130
+ el0t_64_sync_handler+0x120/0x138
+ el0t_64_sync+0x194/0x198
+Code: aa1e03e9 d503201f f9400000 8b214000 (b9400000)
+---[ end trace 0000000000000000 ]---
+note: tail[1217] exited with irqs disabled
+note: tail[1217] exited with preempt_count 1
+Segmentation fault
 
-Drop (or demote to debug level) unnecessary registration info messages
-to make boot logs a little less noisy.
-
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20250523085112.11287-1-johan+linaro@kernel.org
+Fixes: 17ce252266c7 ("dmaengine: xilinx: xdma: Add xilinx xdma driver")
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Anthony Brandon <anthony@amarulasolutions.com>
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 1ca52c0983c3 ("phy: qcom-qusb2: Fix NULL pointer dereference on early suspend")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/broadcom/phy-bcm-ns2-pcie.c        | 2 --
- drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c      | 1 -
- drivers/phy/broadcom/phy-bcm-sr-pcie.c         | 2 --
- drivers/phy/broadcom/phy-brcm-sata.c           | 2 +-
- drivers/phy/marvell/phy-pxa-usb.c              | 1 -
- drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c | 2 --
- drivers/phy/qualcomm/phy-qcom-m31.c            | 2 --
- drivers/phy/qualcomm/phy-qcom-qusb2.c          | 4 +---
- drivers/phy/qualcomm/phy-qcom-snps-eusb2.c     | 2 --
- drivers/phy/st/phy-stih407-usb.c               | 2 --
- drivers/phy/st/phy-stm32-usbphyc.c             | 4 ++--
- drivers/phy/ti/phy-twl4030-usb.c               | 1 -
- 12 files changed, 4 insertions(+), 21 deletions(-)
+ drivers/dma/xilinx/xdma-regs.h | 1 +
+ drivers/dma/xilinx/xdma.c      | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/broadcom/phy-bcm-ns2-pcie.c b/drivers/phy/broadcom/phy-bcm-ns2-pcie.c
-index 2eaa41f8fc70c..67a6ae5ecba02 100644
---- a/drivers/phy/broadcom/phy-bcm-ns2-pcie.c
-+++ b/drivers/phy/broadcom/phy-bcm-ns2-pcie.c
-@@ -61,8 +61,6 @@ static int ns2_pci_phy_probe(struct mdio_device *mdiodev)
- 		return PTR_ERR(provider);
- 	}
+diff --git a/drivers/dma/xilinx/xdma-regs.h b/drivers/dma/xilinx/xdma-regs.h
+index 6ad08878e9386..70bca92621aa4 100644
+--- a/drivers/dma/xilinx/xdma-regs.h
++++ b/drivers/dma/xilinx/xdma-regs.h
+@@ -9,6 +9,7 @@
  
--	dev_info(dev, "%s PHY registered\n", dev_name(dev));
--
- 	return 0;
- }
+ /* The length of register space exposed to host */
+ #define XDMA_REG_SPACE_LEN	65536
++#define XDMA_MAX_REG_OFFSET	(XDMA_REG_SPACE_LEN - 4)
  
-diff --git a/drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c b/drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c
-index 36ad02c33ac55..8473fa5745296 100644
---- a/drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c
-+++ b/drivers/phy/broadcom/phy-bcm-ns2-usbdrd.c
-@@ -395,7 +395,6 @@ static int ns2_drd_phy_probe(struct platform_device *pdev)
+ /*
+  * maximum number of DMA channels for each direction:
+diff --git a/drivers/dma/xilinx/xdma.c b/drivers/dma/xilinx/xdma.c
+index 0d88b1a670e14..5ecf8223c112e 100644
+--- a/drivers/dma/xilinx/xdma.c
++++ b/drivers/dma/xilinx/xdma.c
+@@ -38,7 +38,7 @@ static const struct regmap_config xdma_regmap_config = {
+ 	.reg_bits = 32,
+ 	.val_bits = 32,
+ 	.reg_stride = 4,
+-	.max_register = XDMA_REG_SPACE_LEN,
++	.max_register = XDMA_MAX_REG_OFFSET,
+ };
  
- 	platform_set_drvdata(pdev, driver);
- 
--	dev_info(dev, "Registered NS2 DRD Phy device\n");
- 	queue_delayed_work(system_power_efficient_wq, &driver->wq_extcon,
- 			   driver->debounce_jiffies);
- 
-diff --git a/drivers/phy/broadcom/phy-bcm-sr-pcie.c b/drivers/phy/broadcom/phy-bcm-sr-pcie.c
-index ff9b3862bf7af..706e1d83b4cee 100644
---- a/drivers/phy/broadcom/phy-bcm-sr-pcie.c
-+++ b/drivers/phy/broadcom/phy-bcm-sr-pcie.c
-@@ -277,8 +277,6 @@ static int sr_pcie_phy_probe(struct platform_device *pdev)
- 		return PTR_ERR(provider);
- 	}
- 
--	dev_info(dev, "Stingray PCIe PHY driver initialized\n");
--
- 	return 0;
- }
- 
-diff --git a/drivers/phy/broadcom/phy-brcm-sata.c b/drivers/phy/broadcom/phy-brcm-sata.c
-index 228100357054d..d52dd065e8622 100644
---- a/drivers/phy/broadcom/phy-brcm-sata.c
-+++ b/drivers/phy/broadcom/phy-brcm-sata.c
-@@ -832,7 +832,7 @@ static int brcm_sata_phy_probe(struct platform_device *pdev)
- 		return PTR_ERR(provider);
- 	}
- 
--	dev_info(dev, "registered %d port(s)\n", count);
-+	dev_dbg(dev, "registered %d port(s)\n", count);
- 
- 	return 0;
- }
-diff --git a/drivers/phy/marvell/phy-pxa-usb.c b/drivers/phy/marvell/phy-pxa-usb.c
-index 6c98eb9608e9c..c0bb71f80c042 100644
---- a/drivers/phy/marvell/phy-pxa-usb.c
-+++ b/drivers/phy/marvell/phy-pxa-usb.c
-@@ -325,7 +325,6 @@ static int pxa_usb_phy_probe(struct platform_device *pdev)
- 		phy_create_lookup(pxa_usb_phy->phy, "usb", "mv-otg");
- 	}
- 
--	dev_info(dev, "Marvell PXA USB PHY");
- 	return 0;
- }
- 
-diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-index c173c6244d9e5..3b68d20142e01 100644
---- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-+++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-@@ -241,8 +241,6 @@ static int eusb2_repeater_probe(struct platform_device *pdev)
- 	if (IS_ERR(phy_provider))
- 		return PTR_ERR(phy_provider);
- 
--	dev_info(dev, "Registered Qcom-eUSB2 repeater\n");
--
- 	return 0;
- }
- 
-diff --git a/drivers/phy/qualcomm/phy-qcom-m31.c b/drivers/phy/qualcomm/phy-qcom-m31.c
-index 8b0f8a3a059c2..168ea980fda03 100644
---- a/drivers/phy/qualcomm/phy-qcom-m31.c
-+++ b/drivers/phy/qualcomm/phy-qcom-m31.c
-@@ -311,8 +311,6 @@ static int m31usb_phy_probe(struct platform_device *pdev)
- 	phy_set_drvdata(qphy->phy, qphy);
- 
- 	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
--	if (!IS_ERR(phy_provider))
--		dev_info(dev, "Registered M31 USB phy\n");
- 
- 	return PTR_ERR_OR_ZERO(phy_provider);
- }
-diff --git a/drivers/phy/qualcomm/phy-qcom-qusb2.c b/drivers/phy/qualcomm/phy-qcom-qusb2.c
-index c52655a383cef..531c3860c3160 100644
---- a/drivers/phy/qualcomm/phy-qcom-qusb2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qusb2.c
-@@ -1084,9 +1084,7 @@ static int qusb2_phy_probe(struct platform_device *pdev)
- 	phy_set_drvdata(generic_phy, qphy);
- 
- 	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
--	if (!IS_ERR(phy_provider))
--		dev_info(dev, "Registered Qcom-QUSB2 phy\n");
--	else
-+	if (IS_ERR(phy_provider))
- 		pm_runtime_disable(dev);
- 
- 	return PTR_ERR_OR_ZERO(phy_provider);
-diff --git a/drivers/phy/qualcomm/phy-qcom-snps-eusb2.c b/drivers/phy/qualcomm/phy-qcom-snps-eusb2.c
-index e1b175f481b4e..4a1dfef5ff8ff 100644
---- a/drivers/phy/qualcomm/phy-qcom-snps-eusb2.c
-+++ b/drivers/phy/qualcomm/phy-qcom-snps-eusb2.c
-@@ -418,8 +418,6 @@ static int snps_eusb2_hsphy_probe(struct platform_device *pdev)
- 	if (IS_ERR(phy_provider))
- 		return PTR_ERR(phy_provider);
- 
--	dev_info(dev, "Registered Snps-eUSB2 phy\n");
--
- 	return 0;
- }
- 
-diff --git a/drivers/phy/st/phy-stih407-usb.c b/drivers/phy/st/phy-stih407-usb.c
-index a4ae2cca7f637..02e6117709dca 100644
---- a/drivers/phy/st/phy-stih407-usb.c
-+++ b/drivers/phy/st/phy-stih407-usb.c
-@@ -149,8 +149,6 @@ static int stih407_usb2_picophy_probe(struct platform_device *pdev)
- 	if (IS_ERR(phy_provider))
- 		return PTR_ERR(phy_provider);
- 
--	dev_info(dev, "STiH407 USB Generic picoPHY driver probed!");
--
- 	return 0;
- }
- 
-diff --git a/drivers/phy/st/phy-stm32-usbphyc.c b/drivers/phy/st/phy-stm32-usbphyc.c
-index 9dbe60dcf3190..dbf23ae38255a 100644
---- a/drivers/phy/st/phy-stm32-usbphyc.c
-+++ b/drivers/phy/st/phy-stm32-usbphyc.c
-@@ -757,8 +757,8 @@ static int stm32_usbphyc_probe(struct platform_device *pdev)
- 	}
- 
- 	version = readl_relaxed(usbphyc->base + STM32_USBPHYC_VERSION);
--	dev_info(dev, "registered rev:%lu.%lu\n",
--		 FIELD_GET(MAJREV, version), FIELD_GET(MINREV, version));
-+	dev_dbg(dev, "registered rev: %lu.%lu\n",
-+		FIELD_GET(MAJREV, version), FIELD_GET(MINREV, version));
- 
- 	return 0;
- 
-diff --git a/drivers/phy/ti/phy-twl4030-usb.c b/drivers/phy/ti/phy-twl4030-usb.c
-index 6b265992d988f..e5918d3b486cc 100644
---- a/drivers/phy/ti/phy-twl4030-usb.c
-+++ b/drivers/phy/ti/phy-twl4030-usb.c
-@@ -784,7 +784,6 @@ static int twl4030_usb_probe(struct platform_device *pdev)
- 	pm_runtime_mark_last_busy(&pdev->dev);
- 	pm_runtime_put_autosuspend(twl->dev);
- 
--	dev_info(&pdev->dev, "Initialized TWL4030 USB module\n");
- 	return 0;
- }
- 
+ /**
 -- 
 2.51.0
 
