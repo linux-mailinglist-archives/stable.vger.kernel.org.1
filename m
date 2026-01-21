@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-210909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEMFF5MjcWl8eQAAu9opvQ
-	(envelope-from <stable+bounces-210909-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:05:55 +0100
+	id qLJyCtAscWl1fAAAu9opvQ
+	(envelope-from <stable+bounces-211074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:45:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B757A5BCE0
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:05:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE055C711
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:45:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id ABB247CFE06
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:24:31 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DAFEF72FA46
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC361366565;
-	Wed, 21 Jan 2026 18:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B26F318BAD;
+	Wed, 21 Jan 2026 18:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+P20u1v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPFk4KLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD743A4AD4;
-	Wed, 21 Jan 2026 18:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC7E36E471;
+	Wed, 21 Jan 2026 18:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019793; cv=none; b=lOCCIoP2yByze7h4hS/JJjIJ1125uhoNhV0JeQgA3a5ricoS8iE3KLa44v2itXOYqIG7trYdAt4pPYwDo3hOs7ZRROOGHtLx2i2k/+sgRyf2QetCjyhI3cJhj4Eg35Yh5x2jWg29yXt3mtn/yNfPQZMDEWrwPy6QfwiUuM5Kclc=
+	t=1769020353; cv=none; b=byN8hU+F91qD7EiNtdSmXcZ5Lc/6Uy3WJLBnMkxPdxMw6dw2xuYVEjYEg5PRVER59cmGmGouEOLrpjIuRI+UbduXKdwPnbsESsfRVY/mCAo3XQoRClhgQ3EPNqFlgWlE7rihml1THCSDc1ffixiFKLGZS9jhiBPr/UcWLVpvILQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019793; c=relaxed/simple;
-	bh=5DGjm0B6Q3M7UqmlB+pNxDsFWUKxHEUgrngDOOhqMHc=;
+	s=arc-20240116; t=1769020353; c=relaxed/simple;
+	bh=DdqZeby7WklILxJxbLTRzmyfVbcr5MLO3gFdSQZbDXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kCWVFHBBZL5aeSqZxDcA5cjLPVqsRXmBn841TCtR5h8oy6P4Xn93cu/8Q3tCrx8thKqmZWEyktjP/tp56ag3AqJMBA7zztQpqiEFw3NM/QOBiCNdapnS0E5X3XSBGlH/e5PHvQOPYHWDhIKn0YgbuAMnWpxTEX97/RpTGXK+NtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+P20u1v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52A9C4CEF1;
-	Wed, 21 Jan 2026 18:23:11 +0000 (UTC)
+	 MIME-Version; b=l/bpY0ur+nqVrHk8OxKeXFFmx7bR/1MmjZrWz45jcF6RZwLObSfAPhps3OEAU06aT/u1IKEqvLQx7nbiFVMHSCrEw2W2igNhkfDNe3OXl2n3WzSUnC1bygkA0Jf48DRati2OXtke83Wk7TpUhWcm0jLjyKSPudo+dyiRPymr2bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPFk4KLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C87C4CEF1;
+	Wed, 21 Jan 2026 18:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019792;
-	bh=5DGjm0B6Q3M7UqmlB+pNxDsFWUKxHEUgrngDOOhqMHc=;
+	s=korg; t=1769020352;
+	bh=DdqZeby7WklILxJxbLTRzmyfVbcr5MLO3gFdSQZbDXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+P20u1vWHRYf95avQ9TW3uhoHG+BqmxUbf7RHguYyrEGKstSRSvRaWIS7e4jrxrU
-	 shbC3j8/mAOCynN3R6C9czO9UWoO+coF1afsppVSoC1J0O8RcnDvQAVBdWJ50QdwvX
-	 1+/nPZNPI3ioFyzd8hegPRUFGyYN2dO5LpOPb4KY=
+	b=DPFk4KLhBXdhBrgFaYb9lLwfOuuha6S7QUPjttSEQUAsYf2jZDf+lsRD7azoc0X8W
+	 jap+5Rs9SVTak03KGYHbT400UM0IqjRWEEcbA9Xddqz7WSaLQn7VZTsin2ZONpdSgb
+	 qiiV9fneYC2aGrSqsx+481zYwegdOsUb0JEkj/iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 110/139] dmaengine: bcm-sba-raid: fix device leak on probe
-Date: Wed, 21 Jan 2026 19:15:58 +0100
-Message-ID: <20260121181415.406562802@linuxfoundation.org>
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.18 131/198] EDAC/x38: Fix a resource leak in x38_probe1()
+Date: Wed, 21 Jan 2026 19:15:59 +0100
+Message-ID: <20260121181423.263134968@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,78 +73,79 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210909-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211074-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B757A5BCE0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email,msgid.link:url,alien8.de:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 9CE055C711
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-commit 7c3a46ebf15a9796b763a54272407fdbf945bed8 upstream.
+commit 0ff7c44106b4715fc27a2e455d9f57f1dfcfd54f upstream.
 
-Make sure to drop the reference taken when looking up the mailbox device
-during probe on probe failures and on driver unbind.
+If edac_mc_alloc() fails, also unmap the window.
 
-Fixes: 743e1c8ffe4e ("dmaengine: Add Broadcom SBA RAID driver")
-Cc: stable@vger.kernel.org	# 4.13
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251117161258.10679-4-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+  [ bp: Use separate labels, turning it into the classic unwind pattern. ]
+
+Fixes: df8bc08c192f ("edac x38: new MC driver module")
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251223124350.1496325-1-lihaoxiang@isrc.iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/bcm-sba-raid.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/edac/x38_edac.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/dma/bcm-sba-raid.c
-+++ b/drivers/dma/bcm-sba-raid.c
-@@ -1699,7 +1699,7 @@ static int sba_probe(struct platform_dev
- 	/* Prealloc channel resource */
- 	ret = sba_prealloc_channel_resources(sba);
- 	if (ret)
--		goto fail_free_mchan;
-+		goto fail_put_mbox;
- 
- 	/* Check availability of debugfs */
- 	if (!debugfs_initialized())
-@@ -1729,6 +1729,8 @@ skip_debugfs:
- fail_free_resources:
- 	debugfs_remove_recursive(sba->root);
- 	sba_freeup_channel_resources(sba);
-+fail_put_mbox:
-+	put_device(sba->mbox_dev);
- fail_free_mchan:
- 	mbox_free_channel(sba->mchan);
- 	return ret;
-@@ -1744,6 +1746,8 @@ static void sba_remove(struct platform_d
- 
- 	sba_freeup_channel_resources(sba);
- 
-+	put_device(sba->mbox_dev);
+--- a/drivers/edac/x38_edac.c
++++ b/drivers/edac/x38_edac.c
+@@ -341,9 +341,12 @@ static int x38_probe1(struct pci_dev *pd
+ 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
+ 	layers[1].size = x38_channel_num;
+ 	layers[1].is_virt_csrow = false;
 +
- 	mbox_free_channel(sba->mchan);
- }
++
++	rc = -ENOMEM;
+ 	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, 0);
+ 	if (!mci)
+-		return -ENOMEM;
++		goto unmap;
  
+ 	edac_dbg(3, "MC: init mci\n");
+ 
+@@ -403,9 +406,9 @@ static int x38_probe1(struct pci_dev *pd
+ 	return 0;
+ 
+ fail:
++	edac_mc_free(mci);
++unmap:
+ 	iounmap(window);
+-	if (mci)
+-		edac_mc_free(mci);
+ 
+ 	return rc;
+ }
 
 
 
