@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-211016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFeXLb05cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-211016-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:40:29 +0100
+	id QOEZLuwocWniewAAu9opvQ
+	(envelope-from <stable+bounces-210899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:28:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2BD5D717
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:40:29 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8EF5C2BE
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 872C646AFCD
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:29:36 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 171517B0049
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E339330675;
-	Wed, 21 Jan 2026 18:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96073A1E73;
+	Wed, 21 Jan 2026 18:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RrD9zUUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIAFVqoX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64671A9FB0;
-	Wed, 21 Jan 2026 18:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964033A0B01;
+	Wed, 21 Jan 2026 18:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020155; cv=none; b=Y7/bPTeYha0fAmCNkWtLkw0Vd/+iQqX8Urm09s6KjGp7XXV0zpyX79gycoc3PQH1UOVQ8F5bExSOGk81V6u/JyTdZBRPvutHSjiPmSSGZTLMp9/jN8WMy4hYsvbtuQKTg4Ts+9ZYxkLUpA457xWLCQUHX9mGUs/1dlyvlGvOJBg=
+	t=1769019758; cv=none; b=SXhVsCIF3KdrZiUcYlzvES2rhNEmmrpVKDVm7VaLl8KFWXy4ZYrWP92XzGJn/rXdRZZvzTQz3BRtLFzQ8WPk9SstrkHeypi6IWm27JcjBb3H0LxPdXC8yw6cfy3iN9rbPDLpFGC3toPlFS12ri+b63Z7S0cAGnIr1NcenDO1ZgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020155; c=relaxed/simple;
-	bh=sTv2lI7i+MPPd3Ot7W2jjGUSJ2bA0PL6vwqkYG7TPKQ=;
+	s=arc-20240116; t=1769019758; c=relaxed/simple;
+	bh=Unl4+OjvN3f+oVtq66oP3SK04fDJ5yJBnsus+G7TwPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t6Hx/N1EokEZRTwqmH9xZ43SEbdrCEJIrXNE4c33OMudKJRfSGTUZnsfUyJrnVF9256K5LkVQUnEGogtflAssiPsFc544e3ch+KOr6iEIaikAZfSheS/mVPoaxOQ5dqglrFb4c+QPmDQsLxbnfrDNAXXmZts6uVyAX2jy8aBnWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RrD9zUUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2814DC4CEF1;
-	Wed, 21 Jan 2026 18:29:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b0WcK3+VykcoHPKHgmPp57GLEBRQssl26rALxKLSUhQ0IMi+bsNauf7WkoyAor8PK3tY2++Vv4ETjXi9jIKNiEVhzBLycclc9ZTPkcoslhHTTmHpvcDP5jEY4K2z6lfB+sqLFxF3kUBejbJp/isPJbPvZYo5ymxcqMAxvb9G+dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIAFVqoX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B6FC4CEF1;
+	Wed, 21 Jan 2026 18:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020155;
-	bh=sTv2lI7i+MPPd3Ot7W2jjGUSJ2bA0PL6vwqkYG7TPKQ=;
+	s=korg; t=1769019758;
+	bh=Unl4+OjvN3f+oVtq66oP3SK04fDJ5yJBnsus+G7TwPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RrD9zUUtRZnX420hCQuEs8L8auFxCEI5cAQ70Xj9+Kw/JM6AFfB4P/uH/CxokllGj
-	 FHGDs8kpv0wT55I3X1IDRAT4ZRfxnigxVvn9Ie6dAxQt5IrwSRt415meIPqiGkPCm7
-	 le3TbpRiriUA3z5pt/7KI/J/1GGDBlnXEV7DOK9E=
+	b=LIAFVqoXdcYKRNiUX+p6fZVfkG5+PheAxUAlFpQMuPEgYOSwGAahm2OI8Xzl9X0Vq
+	 FemAy+Nyj8UHUHmIuGk3gefkWq1K/PKTCS/PPUXzdn/3qVFkU8cXDUPTXxykDuebjW
+	 zFh1/8ZDu59fUP+QjnHDJKwvyK7+Sos9NxycloOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Vinod Koul <vkoul@kernel.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 076/198] phy: ti: da8xx-usb: Handle devm_pm_runtime_enable() errors
+Subject: [PATCH 6.12 056/139] selftests/landlock: Properly close a file descriptor
 Date: Wed, 21 Jan 2026 19:15:04 +0100
-Message-ID: <20260121181421.297003107@linuxfoundation.org>
+Message-ID: <20260121181413.470781316@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +65,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211016-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210899-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,digikod.net,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linaro.org:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 6F2BD5D717
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1C8EF5C2BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Günther Noack <gnoack3000@gmail.com>
 
-[ Upstream commit 08aa19de72110df8ac10c9e67349dd884eeed41d ]
+[ Upstream commit 15e8d739fda1084d81f7d3813e9600eba6e0f134 ]
 
-devm_pm_runtime_enable() can fail due to memory allocation. The current
-code ignores its return value after calling pm_runtime_set_active(),
-leaving the device in an inconsistent state if runtime PM initialization
-fails.
+Add a missing close(srv_fd) call, and use EXPECT_EQ() to check the
+result.
 
-Check the return value of devm_pm_runtime_enable() and return on
-failure. Also move the declaration of 'ret' to the function scope
-to support this check.
-
-Fixes: ee8e41b5044f ("phy: ti: phy-da8xx-usb: Add runtime PM support")
-Suggested-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20251124105734.1027-1-vulab@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Günther Noack <gnoack3000@gmail.com>
+Fixes: f83d51a5bdfe ("selftests/landlock: Check IOCTL restrictions for named UNIX domain sockets")
+Link: https://lore.kernel.org/r/20260101134102.25938-2-gnoack3000@gmail.com
+[mic: Use EXPECT_EQ() and update commit message]
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/ti/phy-da8xx-usb.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/testing/selftests/landlock/fs_test.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/ti/phy-da8xx-usb.c b/drivers/phy/ti/phy-da8xx-usb.c
-index 1d81a1e6ec6b6..62fa6f89c0e61 100644
---- a/drivers/phy/ti/phy-da8xx-usb.c
-+++ b/drivers/phy/ti/phy-da8xx-usb.c
-@@ -180,6 +180,7 @@ static int da8xx_usb_phy_probe(struct platform_device *pdev)
- 	struct da8xx_usb_phy_platform_data *pdata = dev->platform_data;
- 	struct device_node	*node = dev->of_node;
- 	struct da8xx_usb_phy	*d_phy;
-+	int ret;
+diff --git a/tools/testing/selftests/landlock/fs_test.c b/tools/testing/selftests/landlock/fs_test.c
+index 01bb59938dd7a..c781014e6a5c6 100644
+--- a/tools/testing/selftests/landlock/fs_test.c
++++ b/tools/testing/selftests/landlock/fs_test.c
+@@ -4189,7 +4189,8 @@ TEST_F_FORK(layout1, named_unix_domain_socket_ioctl)
+ 	/* FIONREAD and other IOCTLs should not be forbidden. */
+ 	EXPECT_EQ(0, test_fionread_ioctl(cli_fd));
  
- 	d_phy = devm_kzalloc(dev, sizeof(*d_phy), GFP_KERNEL);
- 	if (!d_phy)
-@@ -233,8 +234,6 @@ static int da8xx_usb_phy_probe(struct platform_device *pdev)
- 			return PTR_ERR(d_phy->phy_provider);
- 		}
- 	} else {
--		int ret;
--
- 		ret = phy_create_lookup(d_phy->usb11_phy, "usb-phy",
- 					"ohci-da8xx");
- 		if (ret)
-@@ -249,7 +248,9 @@ static int da8xx_usb_phy_probe(struct platform_device *pdev)
- 			  PHY_INIT_BITS, PHY_INIT_BITS);
+-	ASSERT_EQ(0, close(cli_fd));
++	EXPECT_EQ(0, close(cli_fd));
++	EXPECT_EQ(0, close(srv_fd));
+ }
  
- 	pm_runtime_set_active(dev);
--	devm_pm_runtime_enable(dev);
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		return ret;
- 	/*
- 	 * Prevent runtime pm from being ON by default. Users can enable
- 	 * it using power/control in sysfs.
+ /* clang-format off */
 -- 
 2.51.0
 
