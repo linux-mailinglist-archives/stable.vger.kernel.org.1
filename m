@@ -1,253 +1,267 @@
-Return-Path: <stable+bounces-210798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210799-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FVuHGQWcWmodQAAu9opvQ
-	(envelope-from <stable+bounces-210798-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:09:40 +0100
+	id 2BUJMdkzcWlQfQAAu9opvQ
+	(envelope-from <stable+bounces-210799-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:15:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78115B0E9
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:09:39 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F845CF49
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:15:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0C8F49F0293
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:23:52 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id AC0707831C6
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF3C3A0E8A;
-	Wed, 21 Jan 2026 17:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE09D44CF2C;
+	Wed, 21 Jan 2026 17:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="DKi/9ny7";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RPfvPrL5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hFjM6pEb"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FAC81B4F1F
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 17:00:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769014809; cv=pass; b=S146gheXbJnsz5bwzern/IAbY4nEbsu0Dtaf4npAW4ol63lgFlhU9JLFaJTAmzAyrupXYv3KiTP7ULfsLT7FNMUL5GVukR7sbWc56nrGpu3Eq+3qxIJZ2cMchL5WFWTuIQV+UJ4AqDfMri3F/z9DIvxaz5CHEJWS6AwH9fLWJpo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769014809; c=relaxed/simple;
-	bh=+joYYSvt6O0WzeTvPCyBVAm2AiyPwakHVoRSJLX3DYI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OX7rpSpJvshgaRlmjjwzu4VVH0rfH++cRR/gv4OmcMtQJw/Nx6LttXg+hY2rN7Q5BKAs1KrFsAURTbnmaPXwZN8MOcgt0EQSCMjZZ+ZMnIz5Qub7WOOq286fFGcMc0BuvfbOyEYtYDhpshuJ7Iit0wq4CSC79ovZAAAM5ojmBYA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=DKi/9ny7; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RPfvPrL5; arc=pass smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60LGkgei3481446
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 17:00:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:to; s=
-	qcppdkim1; bh=Of1XCp4w1IY/FWfBQqk2YMMCDqdBBDLtge107x8YzfQ=; b=DK
-	i/9ny7u6sYA3xbSXbIQHGKSgaSeJxqF1CQpODMhYJLhS9hlss1d8e6vpsgPmAq6M
-	OUCTtwcZSlrgqTTEfRp0ot0c9upyzZ3agHCzJ4izV9QA9HtfoYDsz1+5sq4xyXlV
-	WqEeTKFxHUpGHzpwQV8CmihLIlOpO33U3duwJaT8uxNEH2ZY1TVo36Yp2vjOIYdW
-	w8LC86fSNSGWc4GbC4oi7L55J+zLtLU3YANJ+FrrGyxmHW3uXwdA4Pt572UMyrOM
-	jsedXPJ4CfvusCELtzQjx2ymDTDv+Xk75Y99HC+/uqFrouioImZBg5vX1LStwHHk
-	zw+arwhsAZsvMDM2YZBw==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4btvef1fpj-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 17:00:05 +0000 (GMT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2b71041d135so723955eec.1
-        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 09:00:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769014805; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jxziOYB24OfIQzaynGO1IEgEarY0343WoCsa7jtegzf3p0BJuT/WCHP4ujBklK9+R6
-         Td0TpXPW6Uo2ZQ9Fbx7Nv71MuuPgueMT/diGFU/WDuzJB4yPDrLje5C/WgFlFlwX/W4/
-         7rnGCXAb2R+9nQzGgyJIVlUxmb1gP5rm7VIGwd30jAHcJz2oe8zE2frIo8R2D/mmDJCV
-         VomTJms8UdPxyDn5tJ6AjobhPnI2hyS7EHUqE5u55QeQfcw5DHW8QkGONirAPFH+l+vv
-         Sgc0q++TGEBmZ6J+5JDA7M+/fvBVNQ4gmvBk2Hhw/Uv1Opfej6JL7KFf0YhqHMb82Tui
-         lLug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:dkim-signature;
-        bh=Of1XCp4w1IY/FWfBQqk2YMMCDqdBBDLtge107x8YzfQ=;
-        fh=l/dAy2kDqEPXeJ5DmpPaaWFUeI+FSfElud0gyxBSrjs=;
-        b=CqqYeI0A+DIpQu0sNCsUu8qmslwqb7LK15g6vsNP/fEzNoK9K5skW/lyi2fDyDRWfr
-         RgM+qSZJ4T+MhwRjJMdyu+QBfCM0awxyYb1LzrdhmL3ux9h2U1hKoQqji/7RvLQoTf3s
-         IyFyVzraBZzp2oNcrTKg5P2OMTGJaY5bDRUvf1EgA2sAPB65Mp75IYNuy5Hwr0UH6IB7
-         BroL9omNuJIpT/RA38fgWWhJ5jpK0HEtQ9LsAy0D5eY51eRGslyK+71AD8o9jwZUxqTT
-         6GCCy/l8knTc79wf/91W3DNMcq680biI0hNswPlpyoddkE5HdVtzg898z5r2yejPshCw
-         r/Cw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769014805; x=1769619605; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Of1XCp4w1IY/FWfBQqk2YMMCDqdBBDLtge107x8YzfQ=;
-        b=RPfvPrL5Vub9XNUi1CkfP19PQvufpqWWhDd0rhngeFc7vpH0zZvcWhFbyV5fYwJLF/
-         53MLiRMUvBGdqlb+LnEUflcyjZsYeea8UdWF6oI11sW1fNsc8D37MLBoYrvjeTaLcYvO
-         Snu8zfqWrqIFXugi6DXka87SjYRPscFwphSAFq72yK/EzipV9oPVIaTwaMZJXVxbrT5i
-         6DIIXASnbjV4EMMa5cmIOnQHG6KXaRO501kdNgF4eswc+eBA96oFpEfunC+KJ950jxKm
-         mquYZHPY7LyPRnGlP4EOZ9Qp/hI/WXFeumB+yjP6wkWZENtUUkGBsIn++Glkr81cwxU6
-         mNGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769014805; x=1769619605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Of1XCp4w1IY/FWfBQqk2YMMCDqdBBDLtge107x8YzfQ=;
-        b=MT195pBqNHJkRCJuMHFDQgdX3/ZqFbUr0jvGdJFV2ysU1HgCAgmUclsMkRSAw4gMRJ
-         DmAKClgKUxSn7c7xyngx5/cjxjzdIItu2eJImNjqnnbQTgTazP6QcPSDGWnK3jNfm2/p
-         8SrDej/EqTXsSpjjBBhN1TjBe1INOJaRxGlwr6gYMYqEcFVgT/sQV4K1p87cCezQ9nen
-         3ctBmA3rU6zdzxINUFe0oipHQftOGib+zbeIJe3jH1r/xagWjdcH8pokq0EEE997PysQ
-         UqDLZFURTxcwR8j2195+V2LblQAv2X4OvBBbLjDtupF8NzfwSDUebVAiCxw3FZmmdx4l
-         pyeA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxz0JeNsSQqZbKxVfyxXvi3v5Pc5S6ZYWfBXJKkJ/aWu4rgGx6l//m0Vbt7ujdrX6wxym+828=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaTBr3x59NmZqWYF/uWGsqtMh8dtuecoZqyY8wILl6RCCoKSm/
-	XeX1H0ifVKg9w8T70ZK+lICh5z/hhe1PnRbntVSa207wCAo0qMvjU8RILpF2guWa1I84YKbj0+x
-	wsYlXRSEhKznsWgTaIiYhQyS10A6MpUBpvj/E1KeIZizNg3GbsMquJskY6GeNHOmiIiZMvqfPeK
-	eGY3XajAt66SEDkL2MGsjGQtCnI/Y6THPXHw==
-X-Gm-Gg: AZuq6aKHWu6mZL0y4hAw7VCHFE9a9fPqSWzXeqA8Qtmv43LneboFtiAUMWUAo6AVnXR
-	MRoV4GJoDwDjj3CVhn1f1hJwoOIz7wz5b5r/b8phYeKRScXKR7kZtaaUOs/uVbgVETkPchfOfdy
-	JWtkKnWmcfTKGkHNHjWrcilqNDI45wH7KkYBbOcnnw92VaTxgDyS1jjDSSbkY7ORzcAw/TSPNXZ
-	DkUHG8Dpm8prkeKsrnypxdWOg==
-X-Received: by 2002:a05:7022:a8d:b0:123:3c24:b15 with SMTP id a92af1059eb24-12476b1215amr24657c88.19.1769014804752;
-        Wed, 21 Jan 2026 09:00:04 -0800 (PST)
-X-Received: by 2002:a05:7022:a8d:b0:123:3c24:b15 with SMTP id
- a92af1059eb24-12476b1215amr24635c88.19.1769014804017; Wed, 21 Jan 2026
- 09:00:04 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC0C334C02
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 17:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769016011; cv=none; b=BZfs1Qi2J0BxbX9re/mHW4ScYEz1Uy8b7xIwaQeLbZOGzxWBlPRJISlq8ume0Xj9e0Ynx+fpM0xxjw1zrGP0e2sAnDLYDMTFvEfvgQVM7LUHLELFXSYsjFPX4f/o/659ZiIlXBZtZgOUxHOg37l6eVjnEUemALngNK8IhZdanVE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769016011; c=relaxed/simple;
+	bh=RT+nH3hDNGsYT1UnSKOcCfuQw0yC7WxJ2GBu/Q7kfIQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MJsCWEfu0/o1i614Kqjw7BEDuQQfpoO+uGqq8Hi/K4tl74iRq6pQoLca+i6l5Oj7mdlCdAQbFraRMOgOi4GgHlnsoima5QTPSMYwOodwd7yROJyPjetiLn7XbsQqWLS1ds87eTBuvMTLTfUkh+qjw8ujLBdZ+DVFtsdBr/lwuY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hFjM6pEb; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769016008; x=1800552008;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=RT+nH3hDNGsYT1UnSKOcCfuQw0yC7WxJ2GBu/Q7kfIQ=;
+  b=hFjM6pEb1jO7P9B3bu3RBRuLyDWTWKSuCYK6Pky79tYqMAS0yp1f/RRJ
+   /dNixPG75LyRLgME2VEwguLGvFpZO8stmqHTUMLEHCURIhZsDm5/PmGNZ
+   FM8cJgnlsUEZXdYonWJj4ypW9S7HipwaWxy9/tVlyTIbFtfN9FXj7+j5k
+   +NeXW9W5fAG7FNaymN0etyk4myq2MEHn2IbXK2Hrt6fM0QkhB6E5RTuZy
+   +CmghJQ+VnTFfup8Ldoh5r3VrLBZYPEyCOQRZcjMRv/YIfqlZqHD1iztJ
+   VLSvXwSIz5Q1i5PSQzh/raXejRc8mSbkShchoIWu/LZncrWbVnve9X0mZ
+   A==;
+X-CSE-ConnectionGUID: +UH91SjPSfehk+GwHgPEUg==
+X-CSE-MsgGUID: m35Y09QsRJuufadCa7IXAA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11678"; a="70299112"
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
+   d="scan'208";a="70299112"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 09:20:03 -0800
+X-CSE-ConnectionGUID: ulsi36SFTT+R+bfSrWKahw==
+X-CSE-MsgGUID: stBHJcLBQUqI6PHpAXWiSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,242,1763452800"; 
+   d="scan'208";a="211340559"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO [10.245.245.122]) ([10.245.245.122])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 09:20:01 -0800
+Message-ID: <ad0efbfc-b7b3-4dc8-9499-8a7accd6c5e4@intel.com>
+Date: Wed, 21 Jan 2026 17:19:59 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251221164552.19990-1-johan@kernel.org> <aWdaLF_A5fghNZhN@hovoldconsulting.com>
- <aXDt6v_iO4EFCqyw@hovoldconsulting.com>
-In-Reply-To: <aXDt6v_iO4EFCqyw@hovoldconsulting.com>
-Reply-To: rob.clark@oss.qualcomm.com
-From: Rob Clark <rob.clark@oss.qualcomm.com>
-Date: Wed, 21 Jan 2026 08:59:51 -0800
-X-Gm-Features: AZwV_QiWj0yuZPjfl5AAb2tqkVbhX91Ozb0ASrKflC4IjkW86-eixAz2tomYpLw
-Message-ID: <CACSVV039g9CcAKhtMAwn=hH4hMT2nV77vxiasgUSFF-sn=+JgA@mail.gmail.com>
-Subject: Re: [PATCH] drm/msm/a6xx: fix bogus hwcg register updates
-To: Johan Hovold <johan@kernel.org>
-Cc: Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
-        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: FbYBLFIOx5EBT_-JgMjTF22sF-Kv6JCP
-X-Proofpoint-ORIG-GUID: FbYBLFIOx5EBT_-JgMjTF22sF-Kv6JCP
-X-Authority-Analysis: v=2.4 cv=CYgFJbrl c=1 sm=1 tr=0 ts=69710615 cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8
- a=RcnqT8zevFU4LWI_uFIA:9 a=QEXdDO2ut3YA:10 a=scEy_gLbYbu1JhEsrz4S:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIxMDE0MyBTYWx0ZWRfX8HERm6FmICLV
- CE8OGWmFXPycHG6UtyCAKR6RMZjuA4LfUEB9JkkvCdf8sQCEpb0z+ZVDW1FSEr7uW3+IjMHqh1F
- xh5qZUJrEjO8IXxoYia7T4ZBb4fBIZMF6ZxI9V9mAQsUHsPV3vM6Moh2IvaFG0VX6glP2ZvHFHP
- Obj+tir3xnkBGTwZk8jj3R4f7OHyYhO0RvG+BOTWtxW+9odsAaZ8uR9NJYMhJ58kMbikwqfJDqu
- 9lEzoDm6oLnU00WriKAQwAN7ATjAMrMOLW1eC1ccqFb3DniRbw2v9uogdjTKLUk754PWXSp5Cqn
- jx3smmh9ABwjwrT1WHbEpSoTMDw9sq2AeZ3wNstFaNAByWbzHT4IQoE5aV26yjBEPlWgjn7dN7f
- 2Vt37hsgkrFoQn6CU91yKWuWssn01Qc65q9msmSYa2sursveRWyvV4bcvA4C5xJkL+F8q1BI2W8
- tQwJ10Vw4A7y4slFrzg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-21_02,2026-01-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 phishscore=0 clxscore=1015 suspectscore=0
- impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601210143
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] drm, drm/xe: Fix xe userptr in the absence of
+ CONFIG_DEVICE_PRIVATE
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, dri-devel@lists.freedesktop.org,
+ stable@vger.kernel.org
+References: <20260121091048.41371-1-thomas.hellstrom@linux.intel.com>
+ <20260121091048.41371-2-thomas.hellstrom@linux.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20260121091048.41371-2-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.96 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210798-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[qualcomm.com,reject];
-	FREEMAIL_CC(0.00)[poorly.run,kernel.org,oss.qualcomm.com,linux.dev,gmail.com,somainline.org,vger.kernel.org,lists.freedesktop.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	DMARC_POLICY_ALLOW(0.00)[intel.com,none];
+	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	HAS_REPLYTO(0.00)[rob.clark@oss.qualcomm.com];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob.clark@oss.qualcomm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-210799-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,oss.qualcomm.com:replyto,oss.qualcomm.com:dkim,mail.gmail.com:mid,qualcomm.com:dkim]
-X-Rspamd-Queue-Id: D78115B0E9
+	FROM_NEQ_ENVFROM(0.00)[matthew.auld@intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,lists.freedesktop.org:email]
+X-Rspamd-Queue-Id: 56F845CF49
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Jan 21, 2026 at 7:17=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
-te:
->
-> On Wed, Jan 14, 2026 at 09:56:12AM +0100, Johan Hovold wrote:
-> > On Sun, Dec 21, 2025 at 05:45:52PM +0100, Johan Hovold wrote:
-> > > The hw clock gating register sequence consists of register value pair=
-s
-> > > that are written to the GPU during initialisation.
-> > >
-> > > The a690 hwcg sequence has two GMU registers in it that used to amoun=
-t
-> > > to random writes in the GPU mapping, but since commit 188db3d7fe66
-> > > ("drm/msm/a6xx: Rebase GMU register offsets") they trigger a fault as
-> > > the updated offsets now lie outside the mapping. This in turn breaks
-> > > boot of machines like the Lenovo ThinkPad X13s.
-> > >
-> > > Note that the updates of these GMU registers is already taken care of
-> > > properly since commit 40c297eb245b ("drm/msm/a6xx: Set GMU CGC
-> > > properties on a6xx too"), but for some reason these two entries were
-> > > left in the table.
-> > >
-> > > Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support")
-> > > Cc: stable@vger.kernel.org  # 6.5
-> > > Cc: Bjorn Andersson <andersson@kernel.org>
-> > > Cc: Konrad Dybcio <konradybcio@kernel.org>
-> > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > ---
-> >
-> > This one does not seem to have been applied yet despite fixing a
-> > critical regression in 6.19-rc1. I guess I could have highlighted that
-> > further by also including:
-> >
-> > Fixes: 188db3d7fe66 ("drm/msm/a6xx: Rebase GMU register offsets")
-> >
-> > I realise some delays are expected around Christmas, but can you please
-> > try to get this fix to Linus now that everyone should be back again?
->
-> I haven't received any reply so was going to send another reminder, but
-> I noticed now that this patch was merged to the msm-next branch last
-> week.
->
-> Since it fixes a regression in 6.19-rc1 it needs to go to Linus this
-> cycle and I would have assumed it should have be merged to msm-fixes.
->
-> (MSM) DRM works in mysterious ways, so can someone please confirm that
-> this regression fix is heading into mainline for 6.19-final?
+On 21/01/2026 09:10, Thomas Hellström wrote:
+> CONFIG_DEVICE_PRIVATE is not selected by default by some distros,
+> for example Fedora, and that leads to a regression in the xe driver
+> since userptr support gets compiled out.
+> 
+> It turns out that DRM_GPUSVM, which is needed for xe userptr support
+> compiles also without CONFIG_DEVICE_PRIVATE, but doesn't compile
+> without CONFIG_ZONE_DEVICE.
+> Exclude the drm_pagemap files from compilation with !CONFIG_ZONE_DEVICE,
+> and remove the CONFIG_DEVICE_PRIVATE dependency from CONFIG_DRM_GPUSVM and
+> the xe driver's selection of it, re-enabling xe userptr for those configs.
+> 
+> v2:
+> - Don't compile the drm_pagemap files unless CONFIG_ZONE_DEVICE is set.
+> - Adjust the drm_pagemap.h header accordingly.
+> 
+> Fixes: 9e9787414882 ("drm/xe/userptr: replace xe_hmm with gpusvm")
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.18+
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-Sorry, mesa 26.0 branchpoint this week so I've not had much time for
-kernel for last few weeks and didn't have time for a 2nd msm-fixes PR.
-But with fixes/cc tags it should be picked into 6.19.y
+Let me double check that while it does at least build it is also 
+functional without DRM_XE_GPUSVM. I think it takes a different init path 
+and maybe some other differences. Unless you already did?
 
-BR,
--R
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+
+> ---
+>   drivers/gpu/drm/Kconfig    |  2 +-
+>   drivers/gpu/drm/Makefile   |  4 +++-
+>   drivers/gpu/drm/xe/Kconfig |  2 +-
+>   include/drm/drm_pagemap.h  | 18 ++++++++++++++----
+>   4 files changed, 19 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+> index a33b90251530..d3d52310c9cc 100644
+> --- a/drivers/gpu/drm/Kconfig
+> +++ b/drivers/gpu/drm/Kconfig
+> @@ -210,7 +210,7 @@ config DRM_GPUVM
+>   
+>   config DRM_GPUSVM
+>   	tristate
+> -	depends on DRM && DEVICE_PRIVATE
+> +	depends on DRM
+>   	select HMM_MIRROR
+>   	select MMU_NOTIFIER
+>   	help
+> diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
+> index 0deee72ef935..0c21029c446f 100644
+> --- a/drivers/gpu/drm/Makefile
+> +++ b/drivers/gpu/drm/Makefile
+> @@ -108,9 +108,11 @@ obj-$(CONFIG_DRM_EXEC) += drm_exec.o
+>   obj-$(CONFIG_DRM_GPUVM) += drm_gpuvm.o
+>   
+>   drm_gpusvm_helper-y := \
+> -	drm_gpusvm.o\
+> +	drm_gpusvm.o
+> +drm_gpusvm_helper-$(CONFIG_ZONE_DEVICE) += \
+>   	drm_pagemap.o\
+>   	drm_pagemap_util.o
+> +
+>   obj-$(CONFIG_DRM_GPUSVM) += drm_gpusvm_helper.o
+>   
+>   obj-$(CONFIG_DRM_BUDDY) += drm_buddy.o
+> diff --git a/drivers/gpu/drm/xe/Kconfig b/drivers/gpu/drm/xe/Kconfig
+> index 4b288eb3f5b0..c34be1be155b 100644
+> --- a/drivers/gpu/drm/xe/Kconfig
+> +++ b/drivers/gpu/drm/xe/Kconfig
+> @@ -39,7 +39,7 @@ config DRM_XE
+>   	select DRM_TTM
+>   	select DRM_TTM_HELPER
+>   	select DRM_EXEC
+> -	select DRM_GPUSVM if !UML && DEVICE_PRIVATE
+> +	select DRM_GPUSVM if !UML
+>   	select DRM_GPUVM
+>   	select DRM_SCHED
+>   	select MMU_NOTIFIER
+> diff --git a/include/drm/drm_pagemap.h b/include/drm/drm_pagemap.h
+> index 46e9c58f09e0..2baf0861f78f 100644
+> --- a/include/drm/drm_pagemap.h
+> +++ b/include/drm/drm_pagemap.h
+> @@ -243,6 +243,8 @@ struct drm_pagemap_devmem_ops {
+>   			   struct dma_fence *pre_migrate_fence);
+>   };
+>   
+> +#if IS_ENABLED(CONFIG_ZONE_DEVICE)
+> +
+>   int drm_pagemap_init(struct drm_pagemap *dpagemap,
+>   		     struct dev_pagemap *pagemap,
+>   		     struct drm_device *drm,
+> @@ -252,17 +254,22 @@ struct drm_pagemap *drm_pagemap_create(struct drm_device *drm,
+>   				       struct dev_pagemap *pagemap,
+>   				       const struct drm_pagemap_ops *ops);
+>   
+> -#if IS_ENABLED(CONFIG_DRM_GPUSVM)
+> +struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
+>   
+>   void drm_pagemap_put(struct drm_pagemap *dpagemap);
+>   
+>   #else
+>   
+> +static inline struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page)
+> +{
+> +	return NULL;
+> +}
+> +
+>   static inline void drm_pagemap_put(struct drm_pagemap *dpagemap)
+>   {
+>   }
+>   
+> -#endif /* IS_ENABLED(CONFIG_DRM_GPUSVM) */
+> +#endif /* IS_ENABLED(CONFIG_ZONE_DEVICE) */
+>   
+>   /**
+>    * drm_pagemap_get() - Obtain a reference on a struct drm_pagemap
+> @@ -334,6 +341,8 @@ struct drm_pagemap_migrate_details {
+>   	u32 source_peer_migrates : 1;
+>   };
+>   
+> +#if IS_ENABLED(CONFIG_ZONE_DEVICE)
+> +
+>   int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+>   				  struct mm_struct *mm,
+>   				  unsigned long start, unsigned long end,
+> @@ -343,8 +352,6 @@ int drm_pagemap_evict_to_ram(struct drm_pagemap_devmem *devmem_allocation);
+>   
+>   const struct dev_pagemap_ops *drm_pagemap_pagemap_ops_get(void);
+>   
+> -struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
+> -
+>   void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
+>   			     struct device *dev, struct mm_struct *mm,
+>   			     const struct drm_pagemap_devmem_ops *ops,
+> @@ -359,4 +366,7 @@ int drm_pagemap_populate_mm(struct drm_pagemap *dpagemap,
+>   void drm_pagemap_destroy(struct drm_pagemap *dpagemap, bool is_atomic_or_reclaim);
+>   
+>   int drm_pagemap_reinit(struct drm_pagemap *dpagemap);
+> +
+> +#endif /* IS_ENABLED(CONFIG_ZONE_DEVICE) */
+> +
+>   #endif
+
 
