@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-211085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJNlAbo2cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-211085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:27:38 +0100
+	id YH57LRUocWniewAAu9opvQ
+	(envelope-from <stable+bounces-211096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:25:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777935D35E
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:27:37 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2725C1CC
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:25:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 769877E3F4F
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:36:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 803D4B6B2B2
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66FB3A1CFF;
-	Wed, 21 Jan 2026 18:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861333AEF25;
+	Wed, 21 Jan 2026 18:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpHy/9th"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3o0zbCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71247346E71;
-	Wed, 21 Jan 2026 18:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432AC3A9DBC;
+	Wed, 21 Jan 2026 18:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020390; cv=none; b=tvXzaB94yi/UkbgmEkSpD+0zbDcHPUnld2E9nOvtMZUKytf1SeIS8oRTMXxP8hpbBVPFyOohNHW18krGd61p7rTwRqvUPyF1Xt8J69E1An8/P4UhbVhtdHJkigRaMNZK+W7yTuh7udT24w8JELeJOeZFcRjbjY7JarqbNnT/Xjc=
+	t=1769020426; cv=none; b=Nw/SMdu9Y7c8Qhp7zTtasjcjwQ9DjG3wb7Ded/U3pwghvRxnLxnfCDKKV4+Rr3X6hOw/V6ATw4y3hqp3LGFd6GEVFHAhi+3YK89NA1GpsF4fcpbUBfTa46HfKqUGIg8pGbjsCWSd/swVNjnb7j+C6LWbIuayW4EpEL3+eSlVtDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020390; c=relaxed/simple;
-	bh=5pFsBLJm7fklQxQGB3DgPycuK/HvLTt2qpuYGRKAoHc=;
+	s=arc-20240116; t=1769020426; c=relaxed/simple;
+	bh=hLSZqKRt1brkrCrdzpg+YpR1XwHNY/0+vOasxEjPq04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0j+KHiPeWSc+nx3GaE8G8gNvFOzq2v03Nsvzn2xnRs1B/QO8QTUjPl9b3LGkgTizSpMdJhpX2d1WRLSTQDmk3BV/PxgChN1ZgFgy7xjzibrRC9P2k9WiWymboM34IVTb+682McZYnNd1gV/8zc80HQcRHeLscm3zzdeDDmgA8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpHy/9th; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F8FC4CEF1;
-	Wed, 21 Jan 2026 18:33:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ocObTh+ubi0Q5zw5DPnp9jDQLXWmKLoX0hxgkWbwA1YnoF6B/ueJjaRIdmxzq6y3XLuRPkDA1ZuS9FWs3/sATkvMi/Nfr1+oXDRDOq22ScpZveu4g3KhDAMtMhJHb4+j6/41KU5vOG4mu+Cc9w/BTEKTuL9Ssu6g+aiQnukNQOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b3o0zbCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1EEC4CEF1;
+	Wed, 21 Jan 2026 18:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020390;
-	bh=5pFsBLJm7fklQxQGB3DgPycuK/HvLTt2qpuYGRKAoHc=;
+	s=korg; t=1769020426;
+	bh=hLSZqKRt1brkrCrdzpg+YpR1XwHNY/0+vOasxEjPq04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CpHy/9thT9Q06qPGnPnVTu5hoSkj1HyYDveIf3hbPpLID1ikFrq9XItwpukpUMFWA
-	 QksUMIIQA/YcY/YmY4TwJko9WElcoMb7O2e0MTGTB2SKbvTfHONE6QBIdUfPhPn/wL
-	 3ev0Gosxb9QxYzlj+KmG+qVis7HwgxGfHR45J43U=
+	b=b3o0zbCp30wj+yEgh+SGursXIDNj4V5YJsdcxArUSy8XrpyUrw2Neiyq67L00BZ9s
+	 CsRJJwKQemA5QCiCumVF4BrDoNmmswIX0VxHSCsi8kOJWK1OIgGRoUD0qktEdahET6
+	 Q+77/jl92BAw7aNPR4mUAQh6x+u15Hf7m9udB46s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaochen Shen <shenxiaochen@open-hieco.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tony Luck <tony.luck@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>
-Subject: [PATCH 6.18 136/198] x86/resctrl: Fix memory bandwidth counter width for Hygon
-Date: Wed, 21 Jan 2026 19:16:04 +0100
-Message-ID: <20260121181423.441982763@linuxfoundation.org>
+	Daniel Wagner <dwagner@suse.de>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.18 137/198] nvme: fix PCIe subsystem reset controller state transition
+Date: Wed, 21 Jan 2026 19:16:05 +0100
+Message-ID: <20260121181423.476939995@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -66,35 +65,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211096-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211085-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,open-hieco.net:email,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 777935D35E
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email]
+X-Rspamd-Queue-Id: 4A2725C1CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,75 +101,55 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Xiaochen Shen <shenxiaochen@open-hieco.net>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-commit 7517e899e1b87b4c22a92c7e40d8733c48e4ec3c upstream.
+commit 0edb475ac0a7d153318a24d4dca175a270a5cc4f upstream.
 
-The memory bandwidth calculation relies on reading the hardware counter
-and measuring the delta between samples. To ensure accurate measurement,
-the software reads the counter frequently enough to prevent it from
-rolling over twice between reads.
+The commit d2fe192348f9 (“nvme: only allow entering LIVE from CONNECTING
+state”) disallows controller state transitions directly from RESETTING
+to LIVE. However, the NVMe PCIe subsystem reset path relies on this
+transition to recover the controller on PowerPC (PPC) systems.
 
-The default Memory Bandwidth Monitoring (MBM) counter width is 24 bits.
-Hygon CPUs provide a 32-bit width counter, but they do not support the
-MBM capability CPUID leaf (0xF.[ECX=1]:EAX) to report the width offset
-(from 24 bits).
+On PPC systems, issuing a subsystem reset causes a temporary loss of
+communication with the NVMe adapter. A subsequent PCIe MMIO read then
+triggers EEH recovery, which restores the PCIe link and brings the
+controller back online. For EEH recovery to proceed correctly, the
+controller must transition back to the LIVE state.
 
-Consequently, the kernel falls back to the 24-bit default counter width,
-which causes incorrect overflow handling on Hygon CPUs.
+Due to the changes introduced by commit d2fe192348f9 (“nvme: only allow
+entering LIVE from CONNECTING state”), the controller can no longer
+transition directly from RESETTING to LIVE. As a result, EEH recovery
+exits prematurely, leaving the controller stuck in the RESETTING state.
 
-Fix this by explicitly setting the counter width offset to 8 bits (resulting
-in a 32-bit total counter width) for Hygon CPUs.
+Fix this by explicitly transitioning the controller state from RESETTING
+to CONNECTING and then to LIVE. This satisfies the updated state
+transition rules and allows the controller to be successfully recovered
+on PPC systems following a PCIe subsystem reset.
 
-Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper")
-Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251209062650.1536952-3-shenxiaochen@open-hieco.net
+Fixes: d2fe192348f9 ("nvme: only allow entering LIVE from CONNECTING state")
+Reviewed-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/resctrl/core.c     |   15 +++++++++++++--
- arch/x86/kernel/cpu/resctrl/internal.h |    3 +++
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ drivers/nvme/host/pci.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -1012,8 +1012,19 @@ void resctrl_cpu_detect(struct cpuinfo_x
- 		c->x86_cache_occ_scale = ebx;
- 		c->x86_cache_mbm_width_offset = eax & 0xff;
- 
--		if (c->x86_vendor == X86_VENDOR_AMD && !c->x86_cache_mbm_width_offset)
--			c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_AMD;
-+		if (!c->x86_cache_mbm_width_offset) {
-+			switch (c->x86_vendor) {
-+			case X86_VENDOR_AMD:
-+				c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_AMD;
-+				break;
-+			case X86_VENDOR_HYGON:
-+				c->x86_cache_mbm_width_offset = MBM_CNTR_WIDTH_OFFSET_HYGON;
-+				break;
-+			default:
-+				/* Leave c->x86_cache_mbm_width_offset as 0 */
-+				break;
-+			}
-+		}
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1461,7 +1461,10 @@ static int nvme_pci_subsystem_reset(stru
  	}
- }
  
---- a/arch/x86/kernel/cpu/resctrl/internal.h
-+++ b/arch/x86/kernel/cpu/resctrl/internal.h
-@@ -14,6 +14,9 @@
- 
- #define MBM_CNTR_WIDTH_OFFSET_AMD	20
- 
-+/* Hygon MBM counter width as an offset from MBM_CNTR_WIDTH_BASE */
-+#define MBM_CNTR_WIDTH_OFFSET_HYGON	8
+ 	writel(NVME_SUBSYS_RESET, dev->bar + NVME_REG_NSSR);
+-	nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE);
 +
- #define RMID_VAL_ERROR			BIT_ULL(63)
++	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_CONNECTING) ||
++	    !nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
++		goto unlock;
  
- #define RMID_VAL_UNAVAIL		BIT_ULL(62)
+ 	/*
+ 	 * Read controller status to flush the previous write and trigger a
 
 
 
