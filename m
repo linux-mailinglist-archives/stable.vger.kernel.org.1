@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-210989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKNZNQY4cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-210989-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:33:10 +0100
+	id +KmlHCkdcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:38:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA3D5D4D8
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:33:10 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1876F5B5F6
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 995C5863A3D
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:28:18 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E4C8A5CC62F
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87B33A0EA8;
-	Wed, 21 Jan 2026 18:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88208389E1D;
+	Wed, 21 Jan 2026 18:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+3GK2Jx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byVFxYUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817F535E535;
-	Wed, 21 Jan 2026 18:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0829D37F8AB;
+	Wed, 21 Jan 2026 18:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020062; cv=none; b=USa91TyaOm5IpYMWT0wQOv+dlAAh9WPKmhlEsmpv3lvWXlODoaR70bW5F956GaeGs/cDwk1rAobSOE5dl3utTSsYVkEGJGioQGh7DjtA6BO3oVpwTHcYMHgVKGHO7vEE8v4MSXEoz9sJmUk70/npSWptJnktHPPOrGbz7eK820c=
+	t=1769019631; cv=none; b=fZnhg/MCDzwrNXkpcc6JZO533oW2tScfNIu2Vm/KcTKP8XFmvZxuE83KtEua7O4Vnme8Q7Y6qFuLNs1uXJRpseSM4ofJ8nyqWOpi1Durmw8E1clBD/w0H8UQGY5K7Dfl0X3+J3hvgUZV7q/UARBZUzEtS8EsWkdsEuaDsnFfcQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020062; c=relaxed/simple;
-	bh=VWQ6hCldWCHc3pnSqR2ol/CEyxwmuCBNQLwnjmB1aaI=;
+	s=arc-20240116; t=1769019631; c=relaxed/simple;
+	bh=Q13g6Bym4MB7TRHtkbQQnV2rScJrpzmpR6nWPLbRxEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BIvwi9l97Rh54icMdJ1u3iCsgBDH5SAyycGCFDgT8l1JnfrsRNCZRFHxpr7gcGlXa+avQITyD61rpaEObDHzTrFu7Ypxt3mZt8kTBMT9qSnCLHVWb4AFnpUcrj5KzzuwuVg4P3CKCc8svPD24ryn9f4Cl4RFOFYNTJsFWWB+/bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+3GK2Jx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4C9C4CEF1;
-	Wed, 21 Jan 2026 18:27:41 +0000 (UTC)
+	 MIME-Version; b=C9HzstFaxA97JEpgd5FmCaEZcT3KjVocwH2IwHrCJaxXLPs3s0/zsSPtTsMlrkiVxHiHKryag9Z6O2L5V6QViJK2AYuJkkTspLawd5kILrA65sDJTvT8n94gmOtJkPQNO03tWl4yQf5LKOnZruVzthvAGzKhWNx2Rrafo6dGhfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byVFxYUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B80C4CEF1;
+	Wed, 21 Jan 2026 18:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020062;
-	bh=VWQ6hCldWCHc3pnSqR2ol/CEyxwmuCBNQLwnjmB1aaI=;
+	s=korg; t=1769019630;
+	bh=Q13g6Bym4MB7TRHtkbQQnV2rScJrpzmpR6nWPLbRxEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+3GK2JxgV0QrpXj7SFt8GS1kXu8kiklEhajPXe+R9i1chV6PIBHBEh9Kta/a35v6
-	 5Gme54TXPSjq7oJZtciX/kSXD6cekk9SCu5k9K5w/SYz2Am+SOFAJIq6XekhqSVGpV
-	 vRhv3JjceeRfnYwyrKlVEFZKkwn24oQTxF5Z+PV0=
+	b=byVFxYUre06hR0av66cWJhNGKoKHQtL7sG6PsRZP0Jb+gVENENTPcTxJ4TeXiyCIO
+	 O+oycqzjXPmFKRc959n08Q+uMvvIp4lOQZV80ZVr+c0rtTT9IXNRezYy0ITc8GE/u7
+	 XY1SiKVsPUPXiOsQEm6SV7N6fdRx2hWiZ52pmTeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 048/198] ALSA: hda/cirrus_scodec_test: Fix incorrect setup of gpiochip
+Subject: [PATCH 6.12 028/139] btrfs: factor out check_removing_space_info() from btrfs_free_block_groups()
 Date: Wed, 21 Jan 2026 19:14:36 +0100
-Message-ID: <20260121181420.284319119@linuxfoundation.org>
+Message-ID: <20260121181412.469014284@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,75 +69,123 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210989-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-210860-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,suse.de:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 8EA3D5D4D8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,wdc.com:email]
+X-Rspamd-Queue-Id: 1876F5B5F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit c5e96e54eca3876d4ce8857e2e22adbe9f44f4a2 ]
+[ Upstream commit 1cfdbe0d53b27b4b4a4f4cf2a4e430bc65ba2ba5 ]
 
-Set gpiochip parent to the struct device of the dummy GPIO driver
-so that the software node will be associated with the GPIO chip.
+Factor out check_removing_space_info() from btrfs_free_block_groups(). It
+sanity checks a to-be-removed space_info. There is no functional change.
 
-The recent commit e5d527be7e698 ("gpio: swnode: don't use the
-swnode's name as the key for GPIO lookup") broke cirrus_scodec_test,
-because the software node no longer gets associated with the GPIO
-driver by name.
-
-Instead, setting struct gpio_chip.parent to the owning struct device
-will find the node using a normal fwnode lookup.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 2144833e7b414 ("ALSA: hda: cirrus_scodec: Add KUnit test")
-Link: https://patch.msgid.link/20260113130954.574670-1-rf@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: a11224a016d6 ("btrfs: fix memory leaks in create_space_info() error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/side-codecs/cirrus_scodec_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/block-group.c | 49 +++++++++++++++++++++++-------------------
+ 1 file changed, 27 insertions(+), 22 deletions(-)
 
-diff --git a/sound/hda/codecs/side-codecs/cirrus_scodec_test.c b/sound/hda/codecs/side-codecs/cirrus_scodec_test.c
-index 3cca750857b68..159ac80a93144 100644
---- a/sound/hda/codecs/side-codecs/cirrus_scodec_test.c
-+++ b/sound/hda/codecs/side-codecs/cirrus_scodec_test.c
-@@ -103,6 +103,7 @@ static int cirrus_scodec_test_gpio_probe(struct platform_device *pdev)
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 83a196521670b..8dce7046940c4 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -4416,6 +4416,32 @@ void btrfs_put_block_group_cache(struct btrfs_fs_info *info)
+ 	}
+ }
  
- 	/* GPIO core modifies our struct gpio_chip so use a copy */
- 	gpio_priv->chip = cirrus_scodec_test_gpio_chip;
-+	gpio_priv->chip.parent = &pdev->dev;
- 	ret = devm_gpiochip_add_data(&pdev->dev, &gpio_priv->chip, gpio_priv);
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret, "Failed to add gpiochip\n");
++static void check_removing_space_info(struct btrfs_space_info *space_info)
++{
++	struct btrfs_fs_info *info = space_info->fs_info;
++
++	/*
++	 * Do not hide this behind enospc_debug, this is actually important and
++	 * indicates a real bug if this happens.
++	 */
++	if (WARN_ON(space_info->bytes_pinned > 0 || space_info->bytes_may_use > 0))
++		btrfs_dump_space_info(info, space_info, 0, 0);
++
++	/*
++	 * If there was a failure to cleanup a log tree, very likely due to an
++	 * IO failure on a writeback attempt of one or more of its extent
++	 * buffers, we could not do proper (and cheap) unaccounting of their
++	 * reserved space, so don't warn on bytes_reserved > 0 in that case.
++	 */
++	if (!(space_info->flags & BTRFS_BLOCK_GROUP_METADATA) ||
++	    !BTRFS_FS_LOG_CLEANUP_ERROR(info)) {
++		if (WARN_ON(space_info->bytes_reserved > 0))
++			btrfs_dump_space_info(info, space_info, 0, 0);
++	}
++
++	WARN_ON(space_info->reclaim_size > 0);
++}
++
+ /*
+  * Must be called only after stopping all workers, since we could have block
+  * group caching kthreads running, and therefore they could race with us if we
+@@ -4517,28 +4543,7 @@ int btrfs_free_block_groups(struct btrfs_fs_info *info)
+ 					struct btrfs_space_info,
+ 					list);
+ 
+-		/*
+-		 * Do not hide this behind enospc_debug, this is actually
+-		 * important and indicates a real bug if this happens.
+-		 */
+-		if (WARN_ON(space_info->bytes_pinned > 0 ||
+-			    space_info->bytes_may_use > 0))
+-			btrfs_dump_space_info(info, space_info, 0, 0);
+-
+-		/*
+-		 * If there was a failure to cleanup a log tree, very likely due
+-		 * to an IO failure on a writeback attempt of one or more of its
+-		 * extent buffers, we could not do proper (and cheap) unaccounting
+-		 * of their reserved space, so don't warn on bytes_reserved > 0 in
+-		 * that case.
+-		 */
+-		if (!(space_info->flags & BTRFS_BLOCK_GROUP_METADATA) ||
+-		    !BTRFS_FS_LOG_CLEANUP_ERROR(info)) {
+-			if (WARN_ON(space_info->bytes_reserved > 0))
+-				btrfs_dump_space_info(info, space_info, 0, 0);
+-		}
+-
+-		WARN_ON(space_info->reclaim_size > 0);
++		check_removing_space_info(space_info);
+ 		list_del(&space_info->list);
+ 		btrfs_sysfs_remove_space_info(space_info);
+ 	}
 -- 
 2.51.0
 
