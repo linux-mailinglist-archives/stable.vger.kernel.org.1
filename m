@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-211121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMbeOSY1cWlQfQAAu9opvQ
-	(envelope-from <stable+bounces-211121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:20:54 +0100
+	id 0M9PED87cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-211132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:46:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A235D0E1
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:20:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0794A5D8AB
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:46:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2A19386D473
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:41:01 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CC83686D6D8
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8F63F23DE;
-	Wed, 21 Jan 2026 18:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFF23D410C;
+	Wed, 21 Jan 2026 18:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0wGpWjP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULvIZi+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E8D3806BB;
-	Wed, 21 Jan 2026 18:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7458E3D4124;
+	Wed, 21 Jan 2026 18:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020509; cv=none; b=WU5kqR333BmHSGATHxZ2U96kyuYNezvIxs1/2GYScvGZ8LcfCDnS+toYTsqstUSFL8rYYUZ3d66XplaZOL55cI7Ii6wQyLa2ZD6l/hlSc768vkcaDUivZgyxhpvspRJ4K4titMZnfAv3wGulIXpN5TH216vS3mG0SWqiIDZvvbI=
+	t=1769020546; cv=none; b=HuTq6aMaID5GmC/kvsgE7UzIWK30yot17vHoLnT3JavSvzf/JbRek1woschHnaZZqx+2laZEin5mts/KOabStRMGNEI9MW2ClHcsrMu4nsI3+Qdi3U+fh+f1R/vVmP8K5uux51IwdzE7SaUVwJB62S+ntwG36g2h19Ixv3PSZUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020509; c=relaxed/simple;
-	bh=Q3yz+6fA5VMBV8R65dvFUGWmR94KAnZ78PvGHbmhPMs=;
+	s=arc-20240116; t=1769020546; c=relaxed/simple;
+	bh=5EyishnxUAUjqF5ZOdhg7uVvMyNIuiOcvkzhL6GXcmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/jVtluz63DpbvaXjz1KsxFreglUknIa9UgZhzI9R7bCU/XuXPE4zHk1fKraJNwjw8lt4lllzCSSJrN3zkfbDhC4zEt0NUKvfWWS6jVXOn0iTNNuR1sFYvIzIFx0Yz3sRQHXCjfUK6oUzhGjRj48/oVC+VoHlvg6OeJJ/+qHw2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0wGpWjP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0934DC19424;
-	Wed, 21 Jan 2026 18:35:07 +0000 (UTC)
+	 MIME-Version; b=BY0JkgbhrdaM1T0Yw3T0yqmV37DKgpCRfZauuXOJUYU3ifIke4CW/P0V6TEttMR1SHadvU5rCoilv+XvMr+EMrYW/17x+nPbvCSM7BSgZd+Dindn6qqKQJE/9FOopn8CxpSTaAnLgw1WYz7haLILY4ABGiBfXYnYyjS56F+XZ9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULvIZi+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5FBC4CEF1;
+	Wed, 21 Jan 2026 18:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020508;
-	bh=Q3yz+6fA5VMBV8R65dvFUGWmR94KAnZ78PvGHbmhPMs=;
+	s=korg; t=1769020546;
+	bh=5EyishnxUAUjqF5ZOdhg7uVvMyNIuiOcvkzhL6GXcmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0wGpWjPMTHmNiy8PL7zRu134PL4NulZNjLF4GpVvax9uTSHVPCWzMmKwQo8tq3bX
-	 MlsO/ownMRukW3nf8flUTdL57J58il/RwTd4Wx4ihexqEUOCeTHUF1IIntWjk6F/S7
-	 2znar5jSqT5uU2DaD/LcvQ8Vs0IDe32J3G/p+xg4=
+	b=ULvIZi+WG9t/ITGubAVAHrbp1jUgRaHe7vswn048JFqyQ5DrnMLgC28M7lCp7etp8
+	 rMyusp0sivnUWzUg37Zy8As+L19dfim5oLWiJfY/kKgf5fGFVIgKYrd0l6QwnOduvn
+	 /qg73pEqbry37Fy6yGa1FbERWYXFFg0vLRruRnlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Zhen Ni <zhen.ni@easystack.cn>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Johan Hovold <johan@kernel.org>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.18 172/198] dmaengine: fsl-edma: Fix clk leak on alloc_chan_resources failure
-Date: Wed, 21 Jan 2026 19:16:40 +0100
-Message-ID: <20260121181424.737559982@linuxfoundation.org>
+Subject: [PATCH 6.18 173/198] dmaengine: idxd: fix device leaks on compat bind and unbind
+Date: Wed, 21 Jan 2026 19:16:41 +0100
+Message-ID: <20260121181424.773317619@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211121-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211132-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -92,8 +92,8 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,easystack.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 87A235D0E1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 0794A5D8AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,39 +101,81 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Johan Hovold <johan@kernel.org>
 
-commit b18cd8b210417f90537d914ffb96e390c85a7379 upstream.
+commit 799900f01792cf8b525a44764f065f83fcafd468 upstream.
 
-When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
-the error paths only free IRQs and destroy the TCD pool, but forget to
-call clk_disable_unprepare(). This causes the channel clock to remain
-enabled, leaking power and resources.
+Make sure to drop the reference taken when looking up the idxd device as
+part of the compat bind and unbind sysfs interface.
 
-Fix it by disabling the channel clock in the error unwind path.
-
-Fixes: d8d4355861d8 ("dmaengine: fsl-edma: add i.MX8ULP edma support")
-Cc: stable@vger.kernel.org
-Suggested-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20251014090522.827726-1-zhen.ni@easystack.cn
+Fixes: 6e7f3ee97bbe ("dmaengine: idxd: move dsa_drv support to compatible mode")
+Cc: stable@vger.kernel.org	# 5.15
+Cc: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-7-johan@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/fsl-edma-common.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/idxd/compat.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
---- a/drivers/dma/fsl-edma-common.c
-+++ b/drivers/dma/fsl-edma-common.c
-@@ -852,6 +852,7 @@ err_errirq:
- 		free_irq(fsl_chan->txirq, fsl_chan);
- err_txirq:
- 	dma_pool_destroy(fsl_chan->tcd_pool);
-+	clk_disable_unprepare(fsl_chan->clk);
+--- a/drivers/dma/idxd/compat.c
++++ b/drivers/dma/idxd/compat.c
+@@ -20,11 +20,16 @@ static ssize_t unbind_store(struct devic
+ 	int rc = -ENODEV;
  
- 	return ret;
+ 	dev = bus_find_device_by_name(bus, NULL, buf);
+-	if (dev && dev->driver) {
++	if (!dev)
++		return -ENODEV;
++
++	if (dev->driver) {
+ 		device_driver_detach(dev);
+ 		rc = count;
+ 	}
+ 
++	put_device(dev);
++
+ 	return rc;
  }
+ static DRIVER_ATTR_IGNORE_LOCKDEP(unbind, 0200, NULL, unbind_store);
+@@ -38,9 +43,12 @@ static ssize_t bind_store(struct device_
+ 	struct idxd_dev *idxd_dev;
+ 
+ 	dev = bus_find_device_by_name(bus, NULL, buf);
+-	if (!dev || dev->driver || drv != &dsa_drv.drv)
++	if (!dev)
+ 		return -ENODEV;
+ 
++	if (dev->driver || drv != &dsa_drv.drv)
++		goto err_put_dev;
++
+ 	idxd_dev = confdev_to_idxd_dev(dev);
+ 	if (is_idxd_dev(idxd_dev)) {
+ 		alt_drv = driver_find("idxd", bus);
+@@ -53,13 +61,20 @@ static ssize_t bind_store(struct device_
+ 			alt_drv = driver_find("user", bus);
+ 	}
+ 	if (!alt_drv)
+-		return -ENODEV;
++		goto err_put_dev;
+ 
+ 	rc = device_driver_attach(alt_drv, dev);
+ 	if (rc < 0)
+-		return rc;
++		goto err_put_dev;
++
++	put_device(dev);
+ 
+ 	return count;
++
++err_put_dev:
++	put_device(dev);
++
++	return rc;
+ }
+ static DRIVER_ATTR_IGNORE_LOCKDEP(bind, 0200, NULL, bind_store);
+ 
 
 
 
