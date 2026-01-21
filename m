@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-210898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211028-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MP/XApcocWniewAAu9opvQ
-	(envelope-from <stable+bounces-210898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:27:19 +0100
+	id 0J6EDIAucWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-211028-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:52:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F5F5C22D
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:27:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 943A45C982
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:52:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6AEA27AFB96
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:24:09 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 895EAB23E63
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E21361672;
-	Wed, 21 Jan 2026 18:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991343A9600;
+	Wed, 21 Jan 2026 18:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="symTalOl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXldmCne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC7F3A35BE;
-	Wed, 21 Jan 2026 18:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB7433506D;
+	Wed, 21 Jan 2026 18:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019755; cv=none; b=rWfAztp+X28F3f77jQJsG9UN5FhpyjBINOwrJB7uh6CvSXk0CefyhJwfMRY78DDnaG7F5ILBNgMnczG2XLFA8JBuTatZ83f5HxjyB6wyMpRMnP1q4WDvijvWK9wwYjzy6SJnFdjnbp5iVQjewutnVJx78kz/6vGTbuQGovi2lmk=
+	t=1769020192; cv=none; b=Z7PxcgIyLRlUqoktECpQMz+FTa/Q5dc2vK7gMzCB3pt6OwnH1EUZzaago7p2BauXJ90/4sMTNAHELUTUv8QHikZGN0p3J4dubiNCAmstv1NEOjZypujg1CX5zdihEGYsxyWuU6cm1STatdL7r6XF97/ZBgn6ZyEvMkct6g2+Svs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019755; c=relaxed/simple;
-	bh=oPIeztBM9RJzXfAFDMuYQGL9d/5OxGLLZc0iQWUsZJU=;
+	s=arc-20240116; t=1769020192; c=relaxed/simple;
+	bh=mSK0ZgtNKjRRF41swcUndrHf/KjBVB3O/kkn0XYcni0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkYxUacqqfRH5qn5oMjTZs7vdIny7tRsyitj1wqcvythUOuQh8HsYjGy2P/AZko5ljBFd6WL6sOzDvPGpP6EwudfEazDJHwTZVJIyVj8doD5GmQbZewy3eeaa/drBdNudfRiKIOZ0/mdCfyTtgAe21wAHnlHZrfW4bf5dPRdjdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=symTalOl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CEAC4CEF1;
-	Wed, 21 Jan 2026 18:22:34 +0000 (UTC)
+	 MIME-Version; b=B1y0dB/la1SZal9923MKuaWL1oKy3Tmc7Yzx6HCoKYfS/dslUIAagCM+L6Hg0ip9FzzXUdBOjIqOKfgKVs4aRnhq7pZ8RyRr8FEzMNUzdKvU5sJEivVMpGHIk8wQHcaqA0aYn2nBTvrF0ivlJ/kWAVjHoBu/V2UDPMVZ5z7WhRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXldmCne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BB3C4CEF1;
+	Wed, 21 Jan 2026 18:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019754;
-	bh=oPIeztBM9RJzXfAFDMuYQGL9d/5OxGLLZc0iQWUsZJU=;
+	s=korg; t=1769020192;
+	bh=mSK0ZgtNKjRRF41swcUndrHf/KjBVB3O/kkn0XYcni0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=symTalOlmbCXPZbtU4vsMC8Nva5cF+MO+gCFosRGoWckaY2hDOfd+CWdSV8AVyq8S
-	 nQIxMzOb5G6FjgneUgYoquvuUG9yPu5lgCTfWfbu5pZuGAygLftUhLweSRTt3BFD6T
-	 45oTg6cZ5IDyNdTz/gJi73qLbrVViGMKxpVlpZIE=
+	b=MXldmCne0QTgjSeJBUMBl5PvHBlhnzYq8gLL5l1BvkfbflJ3KtMfimZbt+OmBeMQs
+	 b23BWNuHDePnY8sny51TuN4Xt6XHlDDs+eMPHL7ygBbXlNzQU1ew5vtkjwntcgnlPb
+	 U12FsM0xxIaXEVi1EnVOuwLazbfU8TSQA03MZ3fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 065/139] ALSA: pcm: Improve the fix for race of buffer access at PCM OSS layer
-Date: Wed, 21 Jan 2026 19:15:13 +0100
-Message-ID: <20260121181413.792765940@linuxfoundation.org>
+	Carlos Song <carlos.song@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 086/198] i2c: imx-lpi2c: change to PIO mode in system-wide suspend/resume progress
+Date: Wed, 21 Jan 2026 19:15:14 +0100
+Message-ID: <20260121181421.654612078@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +67,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210898-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211028-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,msgid.link:url,perex.cz:email,suse.de:email]
-X-Rspamd-Queue-Id: 70F5F5C22D
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,nxp.com:email,sang-engineering.com:email]
+X-Rspamd-Queue-Id: 943A45C982
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Carlos Song <carlos.song@nxp.com>
 
-commit 47c27c9c9c720bc93fdc69605d0ecd9382e99047 upstream.
+[ Upstream commit f2a3f51365bf672dab4b58d1e8954926a9196b44 ]
 
-Handle the error code from snd_pcm_buffer_access_lock() in
-snd_pcm_runtime_buffer_set_silence() function.
+EDMA resumes early and suspends late in the system power transition
+sequence, while LPI2C enters the NOIRQ stage for both suspend and resume.
+This means LPI2C resources become available before EDMA is fully resumed.
+Once IRQs are enabled, a slave device may immediately trigger an LPI2C
+transfer. If the transfer length meets DMA requirements, the driver will
+attempt to use EDMA even though EDMA may still be unavailable.
 
-Found by Alexandros Panagiotou <apanagio@redhat.com>
+This timing gap can lead to transfer failures. To prevent this, force
+LPI2C to use PIO mode during system-wide suspend and resume transitions.
+This reduces dependency on EDMA and avoids using an unready DMA resource.
 
-Fixes: 93a81ca06577 ("ALSA: pcm: Fix race of buffer access at PCM OSS layer")
-Cc: stable@vger.kernel.org # 6.15
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://patch.msgid.link/20260107213642.332954-1-perex@perex.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a09c8b3f9047 ("i2c: imx-lpi2c: add eDMA mode support for LPI2C")
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/pcm.h      |    2 +-
- sound/core/oss/pcm_oss.c |    4 +++-
- sound/core/pcm_native.c  |    9 +++++++--
- 3 files changed, 11 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/include/sound/pcm.h
-+++ b/include/sound/pcm.h
-@@ -1428,7 +1428,7 @@ int snd_pcm_lib_mmap_iomem(struct snd_pc
- #define snd_pcm_lib_mmap_iomem	NULL
- #endif
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index 2a0962a0b4417..d882126c1778c 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -592,6 +592,13 @@ static bool is_use_dma(struct lpi2c_imx_struct *lpi2c_imx, struct i2c_msg *msg)
+ 	if (!lpi2c_imx->can_use_dma)
+ 		return false;
  
--void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
-+int snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
- 
- /**
-  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
---- a/sound/core/oss/pcm_oss.c
-+++ b/sound/core/oss/pcm_oss.c
-@@ -1074,7 +1074,9 @@ static int snd_pcm_oss_change_params_loc
- 	runtime->oss.params = 0;
- 	runtime->oss.prepare = 1;
- 	runtime->oss.buffer_used = 0;
--	snd_pcm_runtime_buffer_set_silence(runtime);
-+	err = snd_pcm_runtime_buffer_set_silence(runtime);
-+	if (err < 0)
-+		goto failure;
- 
- 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
- 
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -730,13 +730,18 @@ static void snd_pcm_buffer_access_unlock
- }
- 
- /* fill the PCM buffer with the current silence format; called from pcm_oss.c */
--void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
-+int snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
- {
--	snd_pcm_buffer_access_lock(runtime);
-+	int err;
++	/*
++	 * A system-wide suspend or resume transition is in progress. LPI2C should use PIO to
++	 * transfer data to avoid issue caused by no ready DMA HW resource.
++	 */
++	if (pm_suspend_in_progress())
++		return false;
 +
-+	err = snd_pcm_buffer_access_lock(runtime);
-+	if (err < 0)
-+		return err;
- 	if (runtime->dma_area)
- 		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
- 					   bytes_to_samples(runtime, runtime->dma_bytes));
- 	snd_pcm_buffer_access_unlock(runtime);
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
- 
+ 	/*
+ 	 * When the length of data is less than I2C_DMA_THRESHOLD,
+ 	 * cpu mode is used directly to avoid low performance.
+-- 
+2.51.0
+
 
 
 
