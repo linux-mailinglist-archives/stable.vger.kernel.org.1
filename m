@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-210892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOqcIvEucWmcfAAAu9opvQ
-	(envelope-from <stable+bounces-210892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:54:25 +0100
+	id cOhhLLYscWl1fAAAu9opvQ
+	(envelope-from <stable+bounces-211053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:44:54 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93245C9F3
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:54:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 177485C709
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 887C8A676A8
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:23:58 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4B5B5ACDDB6
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6663A9DAF;
-	Wed, 21 Jan 2026 18:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008AF3A7DF1;
+	Wed, 21 Jan 2026 18:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnKyeUaT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKaIeHXj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF1837E2FD;
-	Wed, 21 Jan 2026 18:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5610C36403D;
+	Wed, 21 Jan 2026 18:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019734; cv=none; b=pn9tUzqnKd1/RTPdK2ajY53F3r7np9OHIB9WB9lwfS2g6Ds76lC+mhbhTFCrviTqBPYO0lt5PklAvIw4uR+V8P87bypRgizXeokS+/Azg+ToXnMVk2+UZ6J1A5sGzTIwiXT8ojQA+uIxTGf+0NFThrkpuOAzKhzV/n8GJyccGtk=
+	t=1769020279; cv=none; b=XZkTyCFKqb7Y0Bol2gc6VhvJdfxtRMiIAx//8WoHqagVtJ4gGbvK7GTNH24m8j7Ih6w9pazHut+1ZJ/OhWbFN8p23+waUF4+LhhfmxUca4tvqGLNC2zTCmmjSZWxNThsqMIElB+KcFjbdEEt2MDgD5PWn5frIu1+NEME4a/hvUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019734; c=relaxed/simple;
-	bh=AW+CDJBDRnEj34f6UTWmZqkEQLhNxrJDNzaas6YaMxQ=;
+	s=arc-20240116; t=1769020279; c=relaxed/simple;
+	bh=RS/94qGPi3E1BkDCfViX84n4P830hfgaFjzuZS2cUgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILaO1pu3SUh2wLa5AIk+2FnPn9cA6WgH2YWXkWQCtCY9F3V9e17PPpg3XQWSTm4R2xXqsFwiC1ZI35/BflbYkHLSKoG+e9+50gVRLy57wnr4j5Ul2y/JYCeiTaxtHjF+QM4Ofs+aV9xEYsVzwzqjdfmWHiTfk2kpqq9LHd+DsCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnKyeUaT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D29C4CEF1;
-	Wed, 21 Jan 2026 18:22:13 +0000 (UTC)
+	 MIME-Version; b=RtnA+zDwoO2fBz2YGiHtXGZYvGPwxGRHHm6YTft/TGcc/pU5vReE2oPI3bAOPPCKW7lnp5yiFAiP+TvWHqiyND6GDD40TCniujJ4isWR7lx45Col7kPciYHJXB4J7FrI+HS7R7bLHDHmIX15VZ1u1DXmQBobUIe6jlnoRO6PKII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKaIeHXj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C3FC4CEF1;
+	Wed, 21 Jan 2026 18:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019734;
-	bh=AW+CDJBDRnEj34f6UTWmZqkEQLhNxrJDNzaas6YaMxQ=;
+	s=korg; t=1769020279;
+	bh=RS/94qGPi3E1BkDCfViX84n4P830hfgaFjzuZS2cUgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnKyeUaTU/Nz4RWK6uE9dpkTc6YBLkAcTRmDw86yrdEvmq3VMpKcuZBxb4+RYr68r
-	 gqBBN5Uucg1po8dcteF0Atd2hcsT4ZU6QHnOmR8scKkT1CDhvD6hJ35FG+aPiqtlxc
-	 8uKCeXjVVpOWbFv7opR1iWfC0f1vcOGRcvhKVKmo=
+	b=mKaIeHXj75zWJHwMQlUYvzgzbL2SkwkhKo/9oGtqKXHXv0pkV1HUmZgDPpeqls1nh
+	 YB7cPYK1DGtfF3aQuBCpRMjclisE8Vul6o54zMgmERW4xHTAxbeR1yxD4fmQFh8ecg
+	 IPISSYD1prxpdkVcOiHSOa/ZSY7ndMgPKTas6Oug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaochen Shen <shenxiaochen@open-hieco.net>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Reinette Chatre <reinette.chatre@intel.com>
-Subject: [PATCH 6.12 091/139] x86/resctrl: Add missing resctrl initialization for Hygon
-Date: Wed, 21 Jan 2026 19:15:39 +0100
-Message-ID: <20260121181414.730630925@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.18 112/198] phy: rockchip: inno-usb2: Fix a double free bug in rockchip_usb2phy_probe()
+Date: Wed, 21 Jan 2026 19:15:40 +0100
+Message-ID: <20260121181422.586426540@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210892-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211053-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -92,67 +92,48 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,open-hieco.net:email]
-X-Rspamd-Queue-Id: E93245C9F3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email,msgid.link:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linaro.org:email]
+X-Rspamd-Queue-Id: 177485C709
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaochen Shen <shenxiaochen@open-hieco.net>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 6ee98aabdc700b5705e4f1833e2edc82a826b53b upstream.
+commit e07dea3de508cd6950c937cec42de7603190e1ca upstream.
 
-Hygon CPUs supporting Platform QoS features currently undergo partial resctrl
-initialization through resctrl_cpu_detect() in the Hygon BSP init helper and
-AMD/Hygon common initialization code. However, several critical data
-structures remain uninitialized for Hygon CPUs in the following paths:
+The for_each_available_child_of_node() calls of_node_put() to
+release child_np in each success loop. After breaking from the
+loop with the child_np has been released, the code will jump to
+the put_child label and will call the of_node_put() again if the
+devm_request_threaded_irq() fails. These cause a double free bug.
 
- - get_mem_config()-> __rdt_get_mem_config_amd():
-     rdt_resource::membw,alloc_capable
-     hw_res::num_closid
+Fix by returning directly to avoid the duplicate of_node_put().
 
- - rdt_init_res_defs()->rdt_init_res_defs_amd():
-     rdt_resource::cache
-     hw_res::msr_base,msr_update
-
-Add the missing AMD/Hygon common initialization to ensure proper Platform QoS
-functionality on Hygon CPUs.
-
-Fixes: d8df126349da ("x86/cpu/hygon: Add missing resctrl_cpu_detect() in bsp_init helper")
-Signed-off-by: Xiaochen Shen <shenxiaochen@open-hieco.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Fixes: ed2b5a8e6b98 ("phy: phy-rockchip-inno-usb2: support muxed interrupts")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251209062650.1536952-2-shenxiaochen@open-hieco.net
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260109154626.2452034-1-vulab@iscas.ac.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/resctrl/core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/resctrl/core.c
-+++ b/arch/x86/kernel/cpu/resctrl/core.c
-@@ -892,7 +892,8 @@ static __init bool get_mem_config(void)
- 
- 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
- 		return __get_mem_config_intel(&hw_res->r_resctrl);
--	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
-+	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
-+		 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
- 		return __rdt_get_mem_config_amd(&hw_res->r_resctrl);
- 
- 	return false;
-@@ -1043,7 +1044,8 @@ static __init void rdt_init_res_defs(voi
- {
- 	if (boot_cpu_data.x86_vendor == X86_VENDOR_INTEL)
- 		rdt_init_res_defs_intel();
--	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
-+	else if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||
-+		 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
- 		rdt_init_res_defs_amd();
- }
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -1493,7 +1493,7 @@ next_child:
+ 						rphy);
+ 		if (ret) {
+ 			dev_err_probe(rphy->dev, ret, "failed to request usb2phy irq handle\n");
+-			goto put_child;
++			return ret;
+ 		}
+ 	}
  
 
 
