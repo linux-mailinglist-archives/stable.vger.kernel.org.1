@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-211047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eM2mJ1cfcWmodQAAu9opvQ
-	(envelope-from <stable+bounces-211047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:47:51 +0100
+	id OImjLLUlcWl8eQAAu9opvQ
+	(envelope-from <stable+bounces-210853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:15:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8155B7F6
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:47:51 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2813E5BEE3
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 16D24827216
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F38C7A8E5F4
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242053AA19B;
-	Wed, 21 Jan 2026 18:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505B5338597;
+	Wed, 21 Jan 2026 18:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TROAX7Xh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqNsOykf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4713ACF1B;
-	Wed, 21 Jan 2026 18:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F19D190664;
+	Wed, 21 Jan 2026 18:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020258; cv=none; b=P09k1Ib5MPxAUYbqBpDiSxory1SiDToj7+cL6rwK+aaFEQk3lbjGyaSvzj7CwnCvUg6f+GzCVVwJM5FSiAoVq/d+d3btGlWA8LvcHyCM6fsozYhkwnEfkhWUaLA+yw5vuzyQayfW59p1eO1UBp+m0P4aGbL1BsgdyDM+gue2WdM=
+	t=1769019608; cv=none; b=e4cBNrqku8EzzHXATYb8Ov8IDaRPYx2YwKX6pkD4mQ/m6DvxUm8osQ/jCgmodcISObVT4xLzjYMpbQeMK8f/zpXgcHxyfnMVzNwsUl0GiI4C4efl4PjODiIdlplWH9vxjv3d6sAfxgqLQcB03EHTDXFfe5JurLKB31PvE/5f3Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020258; c=relaxed/simple;
-	bh=YjIERI61gcjiu2QTcJPiqhbgbVgVauyGt595Q97D2GE=;
+	s=arc-20240116; t=1769019608; c=relaxed/simple;
+	bh=dgBVP81jMspHJfW3V/gKCWJNQ9cTIpdYeSAX70vTtCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/a6/yAIb/KFp2t3tVkkJa4H30xWtmI6IDYjtU8BLsz8GYS/IfmuF9ZyhZuUfoFOvj4qKbYCxq65r0eHifRoohQD8rabCsFj9Mm4UrF1Hc/iPD34MI3apQpuHaguoDIgoUj1SCoMAHJuNhRAsMy83wroqj5MW7LsZEeb9oAXlp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TROAX7Xh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FE0C4CEF1;
-	Wed, 21 Jan 2026 18:30:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t5Lty9MzNtHxrjoS/2JWhQ6SoZKnU4WH2K2ivyjpIkrWaNtUzN2PrSwaCYGO8jsvk8xd/In5SVGyNuMfwAdytSG5TmJLocTn1o5Qpk+nI58KuJ1n8Op9UoJR9EXpY4HW2GReHDh7kg9y7NT7fmV6t0wVSGbHfKn2N8kEKktQqBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqNsOykf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CF0C16AAE;
+	Wed, 21 Jan 2026 18:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020258;
-	bh=YjIERI61gcjiu2QTcJPiqhbgbVgVauyGt595Q97D2GE=;
+	s=korg; t=1769019605;
+	bh=dgBVP81jMspHJfW3V/gKCWJNQ9cTIpdYeSAX70vTtCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TROAX7Xhiu/jbprW9HLUlYYEjO+1Mpuaw60zoxQCuXysJy38C0qcT4TN+sIEx3iJ8
-	 iezXhQqTJVUQGDpruU2XCBYcdl/UeYg1OyqZ9FK9678gqNkkwzr5ywbCpsSNuqNcf8
-	 dkms2b1LClJFYri0cY9sxYZ3z8mOFGSZJhmjfBn4=
+	b=iqNsOykfvTNk6UCr5x+czfB/wbpugVE32bDUG8xir6tcx5dRji0HR3Fy8b4flRDqt
+	 qHDiTC9WWiWy7y01D95nNLQX47AYFtr8B8RzLaZzsdZOG9S3CtwO44aQBd1gBhLmwe
+	 /FKU5JlbunuPu2T/D+VNxk/D2s/PEC5NfxZtfSNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonid Segal <leonids@variscite.com>,
-	Pierluigi Passaro <pierluigi.p@variscite.com>,
-	Stefano Radaelli <stefano.r@variscite.com>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Vinod Koul <vkoul@kernel.org>,
+	Matthieu Buffet <matthieu@buffet.re>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 073/198] phy: fsl-imx8mq-usb: Clear the PCS_TX_SWING_FULL field before using it
+Subject: [PATCH 6.12 053/139] selftests/landlock: Fix TCP bind(AF_UNSPEC) test case
 Date: Wed, 21 Jan 2026 19:15:01 +0100
-Message-ID: <20260121181421.186415353@linuxfoundation.org>
+Message-ID: <20260121181413.364648947@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,78 +65,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_FROM(0.00)[bounces-211047-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,variscite.com,nxp.com,gmail.com,pengutronix.de,kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-210853-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3D8155B7F6
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 2813E5BEE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Radaelli <stefano.radaelli21@gmail.com>
+From: Matthieu Buffet <matthieu@buffet.re>
 
-[ Upstream commit 8becf9179a4b45104a1701010ed666b55bf4b3a6 ]
+[ Upstream commit bd09d9a05cf04028f639e209b416bacaeffd4909 ]
 
-Clear the PCS_TX_SWING_FULL field mask before setting the new value
-in PHY_CTRL5 register. Without clearing the mask first, the OR operation
-could leave previously set bits, resulting in incorrect register
-configuration.
+The nominal error code for bind(AF_UNSPEC) on an IPv6 socket
+is -EAFNOSUPPORT, not -EINVAL. -EINVAL is only returned when
+the supplied address struct is too short, which happens to be
+the case in current selftests because they treat AF_UNSPEC
+like IPv4 sockets do: as an alias for AF_INET (which is a
+16-byte struct instead of the 24 bytes required by IPv6
+sockets).
 
-Fixes: 63c85ad0cd81 ("phy: fsl-imx8mp-usb: add support for phy tuning")
-Suggested-by: Leonid Segal <leonids@variscite.com>
-Acked-by: Pierluigi Passaro <pierluigi.p@variscite.com>
-Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
-Reviewed-by: Xu Yang <xu.yang_2@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://patch.msgid.link/20251219160912.561431-1-stefano.r@variscite.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Make the union large enough for any address (by adding struct
+sockaddr_storage to the union), and make AF_UNSPEC addresses
+large enough for any family.
+
+Test for -EAFNOSUPPORT instead, and add a dedicated test case
+for truncated inputs with -EINVAL.
+
+Fixes: a549d055a22e ("selftests/landlock: Add network tests")
+Signed-off-by: Matthieu Buffet <matthieu@buffet.re>
+Link: https://lore.kernel.org/r/20251027190726.626244-2-matthieu@buffet.re
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/landlock/common.h   |  1 +
+ tools/testing/selftests/landlock/net_test.c | 16 +++++++++++++++-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-index b94f242420fc7..0c84f5f7a82cb 100644
---- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-@@ -502,6 +502,7 @@ static void imx8m_phy_tune(struct imx8mq_usb_phy *imx_phy)
+diff --git a/tools/testing/selftests/landlock/common.h b/tools/testing/selftests/landlock/common.h
+index 60afc1ce11bcd..8be801c45f9b9 100644
+--- a/tools/testing/selftests/landlock/common.h
++++ b/tools/testing/selftests/landlock/common.h
+@@ -249,6 +249,7 @@ struct service_fixture {
+ 			struct sockaddr_un unix_addr;
+ 			socklen_t unix_addr_len;
+ 		};
++		struct sockaddr_storage _largest;
+ 	};
+ };
  
- 	if (imx_phy->pcs_tx_swing_full != PHY_TUNE_DEFAULT) {
- 		value = readl(imx_phy->base + PHY_CTRL5);
-+		value &= ~PHY_CTRL5_PCS_TX_SWING_FULL_MASK;
- 		value |= FIELD_PREP(PHY_CTRL5_PCS_TX_SWING_FULL_MASK,
- 				   imx_phy->pcs_tx_swing_full);
- 		writel(value, imx_phy->base + PHY_CTRL5);
+diff --git a/tools/testing/selftests/landlock/net_test.c b/tools/testing/selftests/landlock/net_test.c
+index 376079d70d3fc..c3642c17b251d 100644
+--- a/tools/testing/selftests/landlock/net_test.c
++++ b/tools/testing/selftests/landlock/net_test.c
+@@ -120,6 +120,10 @@ static socklen_t get_addrlen(const struct service_fixture *const srv,
+ {
+ 	switch (srv->protocol.domain) {
+ 	case AF_UNSPEC:
++		if (minimal)
++			return sizeof(sa_family_t);
++		return sizeof(struct sockaddr_storage);
++
+ 	case AF_INET:
+ 		return sizeof(srv->ipv4_addr);
+ 
+@@ -757,6 +761,11 @@ TEST_F(protocol, bind_unspec)
+ 	bind_fd = socket_variant(&self->srv0);
+ 	ASSERT_LE(0, bind_fd);
+ 
++	/* Tries to bind with too small addrlen. */
++	EXPECT_EQ(-EINVAL, bind_variant_addrlen(
++				   bind_fd, &self->unspec_any0,
++				   get_addrlen(&self->unspec_any0, true) - 1));
++
+ 	/* Allowed bind on AF_UNSPEC/INADDR_ANY. */
+ 	ret = bind_variant(bind_fd, &self->unspec_any0);
+ 	if (variant->prot.domain == AF_INET) {
+@@ -765,6 +774,8 @@ TEST_F(protocol, bind_unspec)
+ 			TH_LOG("Failed to bind to unspec/any socket: %s",
+ 			       strerror(errno));
+ 		}
++	} else if (variant->prot.domain == AF_INET6) {
++		EXPECT_EQ(-EAFNOSUPPORT, ret);
+ 	} else {
+ 		EXPECT_EQ(-EINVAL, ret);
+ 	}
+@@ -791,6 +802,8 @@ TEST_F(protocol, bind_unspec)
+ 		} else {
+ 			EXPECT_EQ(0, ret);
+ 		}
++	} else if (variant->prot.domain == AF_INET6) {
++		EXPECT_EQ(-EAFNOSUPPORT, ret);
+ 	} else {
+ 		EXPECT_EQ(-EINVAL, ret);
+ 	}
+@@ -800,7 +813,8 @@ TEST_F(protocol, bind_unspec)
+ 	bind_fd = socket_variant(&self->srv0);
+ 	ASSERT_LE(0, bind_fd);
+ 	ret = bind_variant(bind_fd, &self->unspec_srv0);
+-	if (variant->prot.domain == AF_INET) {
++	if (variant->prot.domain == AF_INET ||
++	    variant->prot.domain == AF_INET6) {
+ 		EXPECT_EQ(-EAFNOSUPPORT, ret);
+ 	} else {
+ 		EXPECT_EQ(-EINVAL, ret)
 -- 
 2.51.0
 
