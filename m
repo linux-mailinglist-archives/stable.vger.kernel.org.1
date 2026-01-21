@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-211039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EGivIy0qcWniewAAu9opvQ
-	(envelope-from <stable+bounces-211039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:34:05 +0100
+	id qM9YEVEbcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:30:41 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00EB65C415
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:34:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0BBA5B491
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:30:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D30EC83030A
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:31:23 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 797A866E7C9
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BF233507B;
-	Wed, 21 Jan 2026 18:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FEB9339848;
+	Wed, 21 Jan 2026 18:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAOZuvan"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOlnGKOX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3338634252D;
-	Wed, 21 Jan 2026 18:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8869B3101A9;
+	Wed, 21 Jan 2026 18:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020231; cv=none; b=ru2P/E2JmMaC3jIkB4QfjjhfE/0i16excgPOZVyW844Ou7WemL/o3AaUJV6UPz/MzIGfhToPlVltNeo7+r8O83Q74puHQghwHxF5052t+1JdCM8EQkqJH5tHl4ZVPiGHjLizrck7dYzqod+Y1pUh7baz19mJkP+L6a16OpkKb7o=
+	t=1769019680; cv=none; b=TqnsfLkqoHKzDgKAu40zEI+AZEM7wvW6+viJoyEr5+kSlKPcXmOSGI+4WnN5smHjj8b8HJMAlFk9VPJsWCRZE+qzuRGKlvnoBnvPzW3N1WGXIwKEDGN7db4LPoYI6lla2qszENiXtEjfg2Nuj2XCAtEoa9yowZjOncEE+sDvA4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020231; c=relaxed/simple;
-	bh=dJUGRJsi4DrH4MOPSRZ+DRuoXi1oGGX7ZDBSHorI+Oo=;
+	s=arc-20240116; t=1769019680; c=relaxed/simple;
+	bh=Gz26K7cc6B/mO4XcfiZ8AYtZfICtRPJbkkdlMSExQXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtYlb+mSXAyG7S66ad+LIu+xCIdd5fkAG9Bu43DGBxlvI3Fd+dntjI5nEwnBaKp893tKHHX3buzqw4GjBglNIfNH5OeG12RJevpDvDglfUaqPK+dTJBm0mDUZz6maTBdzINKCtTgjrpHTwhepAg/HJKHpIKVXahQXoTc8XqZdeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAOZuvan; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8CDC4CEF1;
-	Wed, 21 Jan 2026 18:30:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jxYNPU+Gh1Wxfx/T2HjQPbUTGItYl+jzYyH6aN4c0zNoYpnRuC/JA2Mf/7+xQv5UesIT7bYDOOQM32Jv9y0VArmchLmZSHc96Qnt9nzS/b4hrcguqehDbGFEmsRkoLkZ9v1CVjBNYzP7mDshp6TSX/SR6+UZ80Cn8tCRSKhIsWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOlnGKOX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C853C4CEF1;
+	Wed, 21 Jan 2026 18:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020231;
-	bh=dJUGRJsi4DrH4MOPSRZ+DRuoXi1oGGX7ZDBSHorI+Oo=;
+	s=korg; t=1769019680;
+	bh=Gz26K7cc6B/mO4XcfiZ8AYtZfICtRPJbkkdlMSExQXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MAOZuvanRq5QhinP8PYWVeYXu+QlDDV6j8XFq9ZcL32EH4e+XwWBuA9fB+1oke2fJ
-	 E0GKgd9z96ZuhNbrTESI24Z+a8U9Kcq0fkTea8Co3JSZ4RuoOZkz9Lbvl/z7LCqaVV
-	 xbqadVo/8skWSSRjFNK5ZSUgmmQpue1VuSz5WVPw=
+	b=IOlnGKOXFEQ5Z578+HeT8uQ2S/GCCon0U7m1fcYsHIXVzG/XQtdllVImwvnc3r7f2
+	 QHbwTTTzLI7WtmQJOow5PSSPGGKQ10PKuVMPQeK4tbDbx6zh9XQUFEbhgWjuFVvszo
+	 Q309L2SrjSGYvTvZlrCT452iREXRN5Zvzr3JpKDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 096/198] ALSA: hda/realtek: Add quirk for HP Pavilion x360 to enable mute LED
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 076/139] phy: rockchip: inno-usb2: fix disconnection in gadget mode
 Date: Wed, 21 Jan 2026 19:15:24 +0100
-Message-ID: <20260121181422.010619427@linuxfoundation.org>
+Message-ID: <20260121181414.190011209@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +66,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211039-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210875-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,kylinos.cn:email]
-X-Rspamd-Queue-Id: 00EB65C415
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: A0BBA5B491
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-commit ab2be3af8c4ea57f779474cd2a2fe8dd4ad537a6 upstream.
+commit 028e8ca7b20fb7324f3e5db34ba8bd366d9d3acc upstream.
 
-This quirk enables mute LED on HP Pavilion x360 2-in-1 Laptop 14-ek0xxx,
-which use ALC245 codec.
+When the OTG USB port is used to power the SoC, configured as peripheral
+and used in gadget mode, there is a disconnection about 6 seconds after the
+gadget is configured and enumerated.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220220
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260115015844.3129890-1-zhangheng@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The problem was observed on a Radxa Rock Pi S board, which can only be
+powered by the only USB-C connector. That connector is the only one usable
+in gadget mode. This implies the USB cable is connected from before boot
+and never disconnects while the kernel runs.
+
+The problem happens because of the PHY driver code flow, summarized as:
+
+ * UDC start code (triggered via configfs at any time after boot)
+   -> phy_init
+       -> rockchip_usb2phy_init
+           -> schedule_delayed_work(otg_sm_work [A], 6 sec)
+   -> phy_power_on
+       -> rockchip_usb2phy_power_on
+           -> enable clock
+           -> rockchip_usb2phy_reset
+
+ * Now the gadget interface is up and running.
+
+ * 6 seconds later otg_sm_work starts [A]
+   -> rockchip_usb2phy_otg_sm_work():
+       if (B_IDLE state && VBUS present && ...):
+           schedule_delayed_work(&rport->chg_work [B], 0);
+
+ * immediately the chg_detect_work starts [B]
+   -> rockchip_chg_detect_work():
+       if chg_state is UNDEFINED:
+           if (!rport->suspended):
+               rockchip_usb2phy_power_off() <--- [X]
+
+At [X], the PHY is powered off, causing a disconnection. This quickly
+triggers a new connection and following re-enumeration, but any connection
+that had been established during the 6 seconds is broken.
+
+The code already checks for !rport->suspended (which, somewhat
+counter-intuitively, means the PHY is powered on), so add a guard for VBUS
+as well to avoid a disconnection when a cable is connected.
+
+Fixes: 98898f3bc83c ("phy: rockchip-inno-usb2: support otg-port for rk3399")
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/lkml/20250414185458.7767aabc@booty/
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Co-developed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://patch.msgid.link/20251127-rk3308-fix-usb-gadget-phy-disconnect-v2-1-dac8a02cd2ca@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -6529,6 +6529,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8a2e, "HP Envy 16", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a30, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8a31, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8a34, "HP Pavilion x360 2-in-1 Laptop 14-ek0xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8a4f, "HP Victus 15-fa0xxx (MB 8A4F)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8a6e, "HP EDNA 360", ALC287_FIXUP_CS35L41_I2C_4),
- 	SND_PCI_QUIRK(0x103c, 0x8a74, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -805,14 +805,16 @@ static void rockchip_chg_detect_work(str
+ 		container_of(work, struct rockchip_usb2phy_port, chg_work.work);
+ 	struct rockchip_usb2phy *rphy = dev_get_drvdata(rport->phy->dev.parent);
+ 	struct regmap *base = get_reg_base(rphy);
+-	bool is_dcd, tmout, vout;
++	bool is_dcd, tmout, vout, vbus_attach;
+ 	unsigned long delay;
+ 
++	vbus_attach = property_enabled(rphy->grf, &rport->port_cfg->utmi_bvalid);
++
+ 	dev_dbg(&rport->phy->dev, "chg detection work state = %d\n",
+ 		rphy->chg_state);
+ 	switch (rphy->chg_state) {
+ 	case USB_CHG_STATE_UNDEFINED:
+-		if (!rport->suspended)
++		if (!rport->suspended && !vbus_attach)
+ 			rockchip_usb2phy_power_off(rport->phy);
+ 		/* put the controller in non-driving mode */
+ 		if (!vbus_attach)
 
 
 
