@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-210827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210981-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLSHAkEycWlQfQAAu9opvQ
-	(envelope-from <stable+bounces-210827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:08:33 +0100
+	id +Ou+FgYscWl1fAAAu9opvQ
+	(envelope-from <stable+bounces-210981-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:41:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0D695CDA0
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:08:32 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5435C62D
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:41:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E6FAC7EAF46
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:18:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D5A37B2968D
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0903559DE;
-	Wed, 21 Jan 2026 18:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814153A89AF;
+	Wed, 21 Jan 2026 18:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYM7c+cA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="La9hk5W5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966AE3806BB;
-	Wed, 21 Jan 2026 18:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E903A7E17;
+	Wed, 21 Jan 2026 18:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019515; cv=none; b=i41TYg28D2jtkdh43+Wl9m5rtrb0Uyy46tRTUE161+yskjhVkbh2pPAWJxiL1ZH6RYMviAiipPnTiyR+O0SCXUzWbqL9zhT8H0UF0HRSMMEnWGrmj9j9kDG4kI1WSZ5tgTFl0B/bui8K7lQR4TCpks1nNYa9snAW0Cjj9tK5opo=
+	t=1769020035; cv=none; b=eHClad3MZSz695gZfLwI0YkScyo5nB3KFdm7riebAgcXL28Uphgg7vOV/GqroXcO9o7LCSM52UoCQGB1p8wYoQ96SuANXL08MuAfWgoYKRFDWUtkXh5zoizQCObspZa3yn8R5Y6Qyc66WuzD7gByx+gHQ/0Oatw9rrb7OeTU6pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019515; c=relaxed/simple;
-	bh=gyagFd1UQE3t8kwu40SnpGcnBkxs4oG/ZujonSc+0gs=;
+	s=arc-20240116; t=1769020035; c=relaxed/simple;
+	bh=5RHPk/e4K8Y1MUdHAeJIWxAop++HCMpkA6CHLQtTSE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STsh9K2SeJJt+BBlTGXaPRj928EoTG36RO6qqHnCJymBSyjYMqJoPrNQxOif8DS4CpKB0qd6f1VkYqZYspsOJBXPUnZM7enQPCOH572nQoxp8OCigN6L65uAjQJqbdRywPLYLkMWz4+qs8qCDrf5kMsy+tGzi6Wki85fuRKlZ88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYM7c+cA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF02C4CEF1;
-	Wed, 21 Jan 2026 18:18:34 +0000 (UTC)
+	 MIME-Version; b=C0YTc6DyNXIAubGwRmSx0U0rYRqO/G0H+YNkbVK8TvrZsnXRflRrmrxTk6wosU8oTYbD4sEcajzKmkU51103FgdZtKIaoHill1Gm9TJzmgTfXikJgQNliVHdgVHU41LKr8hfbNV0PPq7B+ytkBHD6ixIjtwDO54NAEYLRz5arh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=La9hk5W5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2890AC4CEF1;
+	Wed, 21 Jan 2026 18:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019515;
-	bh=gyagFd1UQE3t8kwu40SnpGcnBkxs4oG/ZujonSc+0gs=;
+	s=korg; t=1769020035;
+	bh=5RHPk/e4K8Y1MUdHAeJIWxAop++HCMpkA6CHLQtTSE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYM7c+cA84KkRNAWu8OBO2vfQqgzNTbyeEXKnfje8jWztgbx5Gs38w1082XkfZblp
-	 fACafdUE8EK42bRVtSlnn9u2qPnuYjd+ObfD2/Af6IremmB/jX73A682w/g/jgLUwc
-	 ujKrG7yYxQpclDTa2BRU2q0jzB9Ke+G5/prymmWs=
+	b=La9hk5W5+j/HmyTHBDaKwwGI57GWBIi3n/2F4BqIhRbCbQ8SVJzr1sZQBho2ffhwr
+	 UA3Aw1lOvyB0bG7FrdrSjGI/y205Cux5fhx7FIyxwZwGNM7qmN90Zuf4Y9+4JQZWsL
+	 duZGMtBYauAxj7B3CHWHO2AF+ncP8z5ERex6/lSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Shay Drori <shayd@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/139] ipv4: ip_gre: make ipgre_header() robust
+Subject: [PATCH 6.18 041/198] net/mlx5e: Pass netdev to mlx5e_destroy_netdev instead of priv
 Date: Wed, 21 Jan 2026 19:14:29 +0100
-Message-ID: <20260121181412.220951032@linuxfoundation.org>
+Message-ID: <20260121181420.028642839@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,8 +68,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
@@ -76,112 +76,187 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210981-lists,stable=lfdr.de];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210827-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7c134e1c3aa3283790b9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B0D695CDA0
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,nvidia.com:email]
+X-Rspamd-Queue-Id: 9A5435C62D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-[ Upstream commit e67c577d89894811ce4dcd1a9ed29d8b63476667 ]
+[ Upstream commit 4ef8512e1427111f7ba92b4a847d181ff0aeec42 ]
 
-Analog to commit db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
+mlx5e_priv is an unstable structure that can be memset(0) if profile
+attaching fails.
 
-Over the years, syzbot found many ways to crash the kernel
-in ipgre_header() [1].
+Pass netdev to mlx5e_destroy_netdev() to guarantee it will work on a
+valid netdev.
 
-This involves team or bonding drivers ability to dynamically
-change their dev->needed_headroom and/or dev->hard_header_len
+On mlx5e_remove: Check validity of priv->profile, before attempting
+to cleanup any resources that might be not there.
 
-In this particular crash mld_newpack() allocated an skb
-with a too small reserve/headroom, and by the time mld_sendpack()
-was called, syzbot managed to attach an ipgre device.
+This fixes a kernel oops in mlx5e_remove when switchdev mode fails due
+to change profile failure.
 
-[1]
-skbuff: skb_under_panic: text:ffffffff89ea3cb7 len:2030915468 put:2030915372 head:ffff888058b43000 data:ffff887fdfa6e194 tail:0x120 end:0x6c0 dev:team0
- kernel BUG at net/core/skbuff.c:213 !
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 1322 Comm: kworker/1:9 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Workqueue: mld mld_ifc_work
- RIP: 0010:skb_panic+0x157/0x160 net/core/skbuff.c:213
+$ devlink dev eswitch set pci/0000:00:03.0 mode switchdev
+Error: mlx5_core: Failed setting eswitch to offloads.
+dmesg:
+workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
+mlx5_core 0012:03:00.1: mlx5e_netdev_init_profile:6214:(pid 37199): mlx5e_priv_init failed, err=-12
+mlx5_core 0012:03:00.1 gpu3rdma1: mlx5e_netdev_change_profile: new profile init failed, -12
+workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
+mlx5_core 0012:03:00.1: mlx5e_netdev_init_profile:6214:(pid 37199): mlx5e_priv_init failed, err=-12
+mlx5_core 0012:03:00.1 gpu3rdma1: mlx5e_netdev_change_profile: failed to rollback to orig profile, -12
+
+$ devlink dev reload pci/0000:00:03.0 ==> oops
+
+BUG: kernel NULL pointer dereference, address: 0000000000000370
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 15 UID: 0 PID: 520 Comm: devlink Not tainted 6.18.0-rc5+ #115 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+RIP: 0010:mlx5e_dcbnl_dscp_app+0x23/0x100
+RSP: 0018:ffffc9000083f8b8 EFLAGS: 00010286
+RAX: ffff8881126fc380 RBX: ffff8881015ac400 RCX: ffffffff826ffc45
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff8881035109c0
+RBP: ffff8881035109c0 R08: ffff888101e3e838 R09: ffff888100264e10
+R10: ffffc9000083f898 R11: ffffc9000083f8a0 R12: ffff888101b921a0
+R13: ffff888101b921a0 R14: ffff8881015ac9a0 R15: ffff8881015ac400
+FS:  00007f789a3c8740(0000) GS:ffff88856aa59000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000370 CR3: 000000010b6c0001 CR4: 0000000000370ef0
 Call Trace:
  <TASK>
-  skb_under_panic net/core/skbuff.c:223 [inline]
-  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
-  ipgre_header+0x67/0x290 net/ipv4/ip_gre.c:897
-  dev_hard_header include/linux/netdevice.h:3436 [inline]
-  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
-  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
-  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
-  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
-  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ mlx5e_remove+0x57/0x110
+ device_release_driver_internal+0x19c/0x200
+ bus_remove_device+0xc6/0x130
+ device_del+0x160/0x3d0
+ ? devl_param_driverinit_value_get+0x2d/0x90
+ mlx5_detach_device+0x89/0xe0
+ mlx5_unload_one_devl_locked+0x3a/0x70
+ mlx5_devlink_reload_down+0xc8/0x220
+ devlink_reload+0x7d/0x260
+ devlink_nl_reload_doit+0x45b/0x5a0
+ genl_family_rcv_msg_doit+0xe8/0x140
 
-Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
-Reported-by: syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com
-Closes: https://www.spinics.net/lists/netdev/msg1147302.html
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260108190214.1667040-1-edumazet@google.com
+Fixes: c4d7eb57687f ("net/mxl5e: Add change profile method")
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260108212657.25090-4-saeed@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_gre.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en.h      |  2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 15 +++++++++------
+ drivers/net/ethernet/mellanox/mlx5/core/en_rep.c  |  4 ++--
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 9667f27740258..be85dbe74ac8c 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -889,10 +889,17 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
- 			const void *daddr, const void *saddr, unsigned int len)
- {
- 	struct ip_tunnel *t = netdev_priv(dev);
--	struct iphdr *iph;
- 	struct gre_base_hdr *greh;
-+	struct iphdr *iph;
-+	int needed;
-+
-+	needed = t->hlen + sizeof(*iph);
-+	if (skb_headroom(skb) < needed &&
-+	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
-+			     0, GFP_ATOMIC))
-+		return -needed;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+index bc1b343f89a25..b34b85539f3b1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+@@ -1238,7 +1238,7 @@ struct net_device *
+ mlx5e_create_netdev(struct mlx5_core_dev *mdev, const struct mlx5e_profile *profile);
+ int mlx5e_attach_netdev(struct mlx5e_priv *priv);
+ void mlx5e_detach_netdev(struct mlx5e_priv *priv);
+-void mlx5e_destroy_netdev(struct mlx5e_priv *priv);
++void mlx5e_destroy_netdev(struct net_device *netdev);
+ int mlx5e_netdev_change_profile(struct net_device *netdev,
+ 				struct mlx5_core_dev *mdev,
+ 				const struct mlx5e_profile *new_profile,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index dcf1cd3488709..3863fb40ff929 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -6623,11 +6623,12 @@ void mlx5e_netdev_attach_nic_profile(struct net_device *netdev,
+ 	mlx5e_netdev_change_profile(netdev, mdev, &mlx5e_nic_profile, NULL);
+ }
  
--	iph = skb_push(skb, t->hlen + sizeof(*iph));
-+	iph = skb_push(skb, needed);
- 	greh = (struct gre_base_hdr *)(iph+1);
- 	greh->flags = gre_tnl_flags_to_gre_flags(t->parms.o_flags);
- 	greh->protocol = htons(type);
+-void mlx5e_destroy_netdev(struct mlx5e_priv *priv)
++void mlx5e_destroy_netdev(struct net_device *netdev)
+ {
+-	struct net_device *netdev = priv->netdev;
++	struct mlx5e_priv *priv = netdev_priv(netdev);
+ 
+-	mlx5e_priv_cleanup(priv);
++	if (priv->profile)
++		mlx5e_priv_cleanup(priv);
+ 	free_netdev(netdev);
+ }
+ 
+@@ -6784,7 +6785,7 @@ static int _mlx5e_probe(struct auxiliary_device *adev)
+ err_profile_cleanup:
+ 	profile->cleanup(priv);
+ err_destroy_netdev:
+-	mlx5e_destroy_netdev(priv);
++	mlx5e_destroy_netdev(netdev);
+ err_devlink_port_unregister:
+ 	mlx5e_devlink_port_unregister(mlx5e_dev);
+ err_devlink_unregister:
+@@ -6819,7 +6820,9 @@ static void _mlx5e_remove(struct auxiliary_device *adev)
+ 	struct mlx5_core_dev *mdev = edev->mdev;
+ 
+ 	mlx5_core_uplink_netdev_set(mdev, NULL);
+-	mlx5e_dcbnl_delete_app(priv);
++
++	if (priv->profile)
++		mlx5e_dcbnl_delete_app(priv);
+ 	/* When unload driver, the netdev is in registered state
+ 	 * if it's from legacy mode. If from switchdev mode, it
+ 	 * is already unregistered before changing to NIC profile.
+@@ -6840,7 +6843,7 @@ static void _mlx5e_remove(struct auxiliary_device *adev)
+ 	/* Avoid cleanup if profile rollback failed. */
+ 	if (priv->profile)
+ 		priv->profile->cleanup(priv);
+-	mlx5e_destroy_netdev(priv);
++	mlx5e_destroy_netdev(netdev);
+ 	mlx5e_devlink_port_unregister(mlx5e_dev);
+ 	mlx5e_destroy_devlink(mlx5e_dev);
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+index 2f6aa5e61747c..8b65441246244 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+@@ -1611,7 +1611,7 @@ mlx5e_vport_vf_rep_load(struct mlx5_core_dev *dev, struct mlx5_eswitch_rep *rep)
+ 	priv->profile->cleanup(priv);
+ 
+ err_destroy_netdev:
+-	mlx5e_destroy_netdev(netdev_priv(netdev));
++	mlx5e_destroy_netdev(netdev);
+ 	return err;
+ }
+ 
+@@ -1666,7 +1666,7 @@ mlx5e_vport_rep_unload(struct mlx5_eswitch_rep *rep)
+ 	mlx5e_rep_vnic_reporter_destroy(priv);
+ 	mlx5e_detach_netdev(priv);
+ 	priv->profile->cleanup(priv);
+-	mlx5e_destroy_netdev(priv);
++	mlx5e_destroy_netdev(netdev);
+ free_ppriv:
+ 	kvfree(ppriv); /* mlx5e_rep_priv */
+ }
 -- 
 2.51.0
 
