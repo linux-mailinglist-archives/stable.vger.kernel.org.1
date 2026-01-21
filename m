@@ -1,188 +1,178 @@
-Return-Path: <stable+bounces-210675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210676-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAZeIN9HcGnXXAAAu9opvQ
-	(envelope-from <stable+bounces-210675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:28:31 +0100
+	id sDfdK/9HcGnXXAAAu9opvQ
+	(envelope-from <stable+bounces-210676-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:29:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC0C50656
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:28:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1663D5065D
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:29:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0D9275A0950
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:28:26 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8CA296290A9
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC8A36213E;
-	Wed, 21 Jan 2026 03:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B351363C78;
+	Wed, 21 Jan 2026 03:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="J+FyK7Je"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wVXARapK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65DC3612F4;
-	Wed, 21 Jan 2026 03:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7FC363C59;
+	Wed, 21 Jan 2026 03:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768966099; cv=none; b=Jr2Ol8o3NfubpYax7QhuLSfD6ZP74jJpLSbLOkjCc6lJfXB7MtuqEgZQYkA0CH8lbWn8E02vAh20GzXoUNpWztqrZcl37kKdsob0RT6N4sbzdKMWeWxsBZkJKYG3Yd6SW1pSs3ArO/YHF4eyRpZLIy5VwX4AuU1nt8xs7ehbVhs=
+	t=1768966109; cv=none; b=gfVWu9lXW2Id4u9ufOyPv5QFZ9rSTVEFupXFQOU8RK86G3e/aCRP1+V1R5MErMdehS+40dUZaVwFWE8iedsdvytdOx4KDeba1C59U3/DeqD9Y8Yw+JD4aJ6auq8pR7LK2tGzzqQKqpnpKb7ovMfxOsxgYPByJbsWGIS7PnnkokA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768966099; c=relaxed/simple;
-	bh=HQzlJD8f+EbcLTjeuVIAja2myNC7jNchRaXD3uxTMb4=;
-	h=Date:To:From:Subject:Message-Id; b=gd9exKIEAwP6aDKI5EGA1xYAByuzAMahcDEGvsd0n8teulb/xRLTzvndJ8x3Cm8pa64+XR0NbUJtjjVQlG5/g+Lc+n5Mp0do8BEUTEBnezQ4EMnWo2urUbl5at04Nx9DHg8WkpKrOOM3W0vvcOAN8JYGYnyH30wW7oocaHZqpPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=J+FyK7Je; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF82C16AAE;
-	Wed, 21 Jan 2026 03:28:19 +0000 (UTC)
+	s=arc-20240116; t=1768966109; c=relaxed/simple;
+	bh=jxbecehb3fxRg7bAJDc8UCXVIdPqLfk/qYMlbaRmtvY=;
+	h=Date:To:From:Subject:Message-Id; b=jTfjYFVBxrY27zNnXcnHfXEJbUBjVMbCaOcgWfdqxWzS5p5Yol45+56WizCQGxMkXNLRvda3/hn5uZSx3L1M8bRnC4lSZLeGkAOYi5CoY4AvjzkcuU+6CIcxG7hy7ETxpOEgNAgVSf+f3vgTx6vqGxGH36d/bkPUbuDmzQI5SLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wVXARapK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5112C16AAE;
+	Wed, 21 Jan 2026 03:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768966099;
-	bh=HQzlJD8f+EbcLTjeuVIAja2myNC7jNchRaXD3uxTMb4=;
+	s=korg; t=1768966108;
+	bh=jxbecehb3fxRg7bAJDc8UCXVIdPqLfk/qYMlbaRmtvY=;
 	h=Date:To:From:Subject:From;
-	b=J+FyK7Je2O4TKYaOp53Pmz2NsTQcNLSWkJpMIyejM07J+hTB4IxvwL7sWzZSrGGJt
-	 TvDC46VgRTzLR3LxBmpSwZ0Bl/NNV5+jXLU/zxyEyfNdqLYF5dR9hLvOI2zwrxVPBV
-	 4euM1QnX5HyE4ohTRmFa/ZB/+0ugh2NCafGz4QD0=
-Date: Tue, 20 Jan 2026 19:28:19 -0800
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,rientjes@google.com,pfalcato@suse.de,mhocko@suse.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,joshua.hahnjy@gmail.com,jackmanb@google.com,hannes@cmpxchg.org,david@kernel.org,vbabka@suse.cz,akpm@linux-foundation.org
+	b=wVXARapK19k3+Y2H34Zh8ry+xa4wTj4Cs2mryKXF1b83jh2qe8K3HdEz9xFsn+GFn
+	 2Ed3DTpG3gv/DaOaN1fKbSB7wvgFh1k5GEmNWsI283lk3sKZhEJTqBEoF/ou5HrvEd
+	 SW6rpAc7V8sQSdufFDg/0LKUOD0IPrDs4UjUBwGo=
+Date: Tue, 20 Jan 2026 19:28:28 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,longman@redhat.com,david@kernel.org,broonie@kernel.org,liwang@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-page_alloc-thp-prevent-reclaim-for-__gfp_thisnode-thp-allocations.patch removed from -mm tree
-Message-Id: <20260121032819.9EF82C16AAE@smtp.kernel.org>
+Subject: [merged mm-stable] selftests-mm-charge_reserved_hugetlb-drop-mount-size-for-hugetlbfs.patch removed from -mm tree
+Message-Id: <20260121032828.C5112C16AAE@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-210676-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210675-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FREEMAIL_TO(0.00)[vger.kernel.org,nvidia.com,google.com,kernel.org,suse.de,suse.com,oracle.com,gmail.com,cmpxchg.org,suse.cz,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	TO_DN_NONE(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2BC0C50656
+X-Rspamd-Queue-Id: 1663D5065D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP allocations
+     Subject: selftests/mm/charge_reserved_hugetlb: drop mount size for hugetlbfs
 has been removed from the -mm tree.  Its filename was
-     mm-page_alloc-thp-prevent-reclaim-for-__gfp_thisnode-thp-allocations.patch
+     selftests-mm-charge_reserved_hugetlb-drop-mount-size-for-hugetlbfs.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Vlastimil Babka <vbabka@suse.cz>
-Subject: mm, page_alloc, thp: prevent reclaim for __GFP_THISNODE THP allocations
-Date: Fri, 19 Dec 2025 17:31:57 +0100
+From: Li Wang <liwang@redhat.com>
+Subject: selftests/mm/charge_reserved_hugetlb: drop mount size for hugetlbfs
+Date: Sun, 21 Dec 2025 20:26:38 +0800
 
-Since commit cc638f329ef6 ("mm, thp: tweak reclaim/compaction effort of
-local-only and all-node allocations"), THP page fault allocations have
-settled on the following scheme (from the commit log):
+charge_reserved_hugetlb.sh mounts a hugetlbfs instance at /mnt/huge with a
+fixed size of 256M.  On systems with large base hugepages (e.g.  512MB),
+this is smaller than a single hugepage, so the hugetlbfs mount ends up
+with zero capacity (often visible as size=0 in mount output).
 
-1. local node only THP allocation with no reclaim, just compaction.
-2. for madvised VMA's or when synchronous compaction is enabled always - THP
-   allocation from any node with effort determined by global defrag setting
-   and VMA madvise
-3. fallback to base pages on any node
+As a result, write_to_hugetlbfs fails with ENOMEM and the test can hang
+waiting for progress.
 
-Recent customer reports however revealed we have a gap in step 1 above. 
-What we have seen is excessive reclaim due to THP page faults on a NUMA
-node that's close to its high watermark, while other nodes have plenty of
-free memory.
+=== Error log ===
+  # uname -r
+  6.12.0-xxx.el10.aarch64+64k
 
-The problem with step 1 is that it promises no reclaim after the
-compaction attempt, however reclaim is only avoided for certain compaction
-outcomes (deferred, or skipped due to insufficient free base pages), and
-not e.g.  when compaction is actually performed but fails (we did see
-compact_fail vmstat counter increasing).
+  #./charge_reserved_hugetlb.sh -cgroup-v2
+  # -----------------------------------------
+  ...
+  # nr hugepages = 10
+  # writing cgroup limit: 5368709120
+  # writing reseravation limit: 5368709120
+  ...
+  # write_to_hugetlbfs: Error mapping the file: Cannot allocate memory
+  # Waiting for hugetlb memory reservation to reach size 2684354560.
+  # 0
+  # Waiting for hugetlb memory reservation to reach size 2684354560.
+  # 0
+  ...
 
-THP page faults can therefore exhibit a zone_reclaim_mode-like behavior,
-which is not the intention.
+  # mount |grep /mnt/huge
+  none on /mnt/huge type hugetlbfs (rw,relatime,seclabel,pagesize=512M,size=0)
 
-Thus add a check for __GFP_THISNODE that corresponds to this exact
-situation and prevents continuing with reclaim/compaction once the initial
-compaction attempt isn't successful in allocating the page.
+  # grep -i huge /proc/meminfo
+  ...
+  HugePages_Total:      10
+  HugePages_Free:       10
+  HugePages_Rsvd:        0
+  HugePages_Surp:        0
+  Hugepagesize:     524288 kB
+  Hugetlb:         5242880 kB
 
-Note that commit cc638f329ef6 has not introduced this over-reclaim
-possibility; it appears to exist in some form since commit 2f0799a0ffc0
-("mm, thp: restore node-local hugepage allocations").  Followup commits
-b39d0ee2632d ("mm, page_alloc: avoid expensive reclaim when compaction may
-not succeed") and cc638f329ef6 have moved in the right direction, but left
-the abovementioned gap.
+Drop the mount args with 'size=256M', so the filesystem capacity is sufficient
+regardless of HugeTLB page size.
 
-Link: https://lkml.kernel.org/r/20251219-costly-noretry-thisnode-fix-v1-1-e1085a4a0c34@suse.cz
-Fixes: 2f0799a0ffc0 ("mm, thp: restore node-local hugepage allocations")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
+Link: https://lkml.kernel.org/r/20251221122639.3168038-3-liwang@redhat.com
+Fixes: 29750f71a9b4 ("hugetlb_cgroup: add hugetlb_cgroup reservation tests")
+Signed-off-by: Li Wang <liwang@redhat.com>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Waiman Long <longman@redhat.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/page_alloc.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ tools/testing/selftests/mm/charge_reserved_hugetlb.sh |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/page_alloc.c~mm-page_alloc-thp-prevent-reclaim-for-__gfp_thisnode-thp-allocations
-+++ a/mm/page_alloc.c
-@@ -4819,6 +4819,20 @@ restart:
- 				goto nopage;
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh~selftests-mm-charge_reserved_hugetlb-drop-mount-size-for-hugetlbfs
++++ a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -290,7 +290,7 @@ function run_test() {
+   setup_cgroup "hugetlb_cgroup_test" "$cgroup_limit" "$reservation_limit"
  
- 			/*
-+			 * THP page faults may attempt local node only first,
-+			 * but are then allowed to only compact, not reclaim,
-+			 * see alloc_pages_mpol().
-+			 *
-+			 * Compaction can fail for other reasons than those
-+			 * checked above and we don't want such THP allocations
-+			 * to put reclaim pressure on a single node in a
-+			 * situation where other nodes might have plenty of
-+			 * available memory.
-+			 */
-+			if (gfp_mask & __GFP_THISNODE)
-+				goto nopage;
-+
-+			/*
- 			 * Looks like reclaim/compaction is worth trying, but
- 			 * sync compaction could be very expensive, so keep
- 			 * using async compaction.
+   mkdir -p /mnt/huge
+-  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
++  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
+ 
+   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test" "$size" "$populate" \
+     "$write" "/mnt/huge/test" "$method" "$private" "$expect_failure" \
+@@ -344,7 +344,7 @@ function run_multiple_cgroup_test() {
+   setup_cgroup "hugetlb_cgroup_test2" "$cgroup_limit2" "$reservation_limit2"
+ 
+   mkdir -p /mnt/huge
+-  mount -t hugetlbfs -o pagesize=${MB}M,size=256M none /mnt/huge
++  mount -t hugetlbfs -o pagesize=${MB}M none /mnt/huge
+ 
+   write_hugetlbfs_and_get_usage "hugetlb_cgroup_test1" "$size1" \
+     "$populate1" "$write1" "/mnt/huge/test1" "$method" "$private" \
 _
 
-Patches currently in -mm which might be from vbabka@suse.cz are
+Patches currently in -mm which might be from liwang@redhat.com are
 
-mm-page_alloc-ignore-the-exact-initial-compaction-result.patch
-mm-page_alloc-refactor-the-initial-compaction-handling.patch
-mm-page_alloc-simplify-__alloc_pages_slowpath-flow.patch
 
 
