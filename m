@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-211079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPPiA0U0cWlQfQAAu9opvQ
-	(envelope-from <stable+bounces-211079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:17:09 +0100
+	id eDwPHo43cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-210884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:31:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9425CFA9
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:17:08 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 178AF5D43B
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:31:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 372F7B0301F
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:35:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 4CCF780745E
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4013236999F;
-	Wed, 21 Jan 2026 18:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2D73A900C;
+	Wed, 21 Jan 2026 18:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFVuthBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7jAliR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5643D3CE2;
-	Wed, 21 Jan 2026 18:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27A5387359;
+	Wed, 21 Jan 2026 18:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020370; cv=none; b=IlOlN2fO0kbDVhYWnFLHymDUCZl6ncvfbhmsyRj/RcUVqXItriJU7Sbuc080EL6Bm7SmF3ihmQo2e6tpwYcKQNC9nZvKoceIaBiw9/8UiKEejGFxMn7Y9HpSIbzIpBTbayD3e4e5HNMFW6s/wtG3wDSejDd6EvXyRqwlHruqvEs=
+	t=1769019710; cv=none; b=cxtA9D20PnZvK+ixNtObchdCsbueN0YrBTIGlzYji7n8j0IwjIfM1+oVHa7iJMhh0L5xAo2P80Hum4txtbLURDnh6x5PgB8La0ClKeWtw8The0Nli+wPDSWQwJYX2in6dDrtSKF2aGsxqueg24A06/f6NDaqXIczjtz7sJyuBuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020370; c=relaxed/simple;
-	bh=f6eRpgLLWW1Cn9jN/9owv4SPI9pffncNx2X42ZZOQ/E=;
+	s=arc-20240116; t=1769019710; c=relaxed/simple;
+	bh=czsyv4a9OQEBX085PrqqwU1NbJwoLoSiC9pY6XOzl64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BqItHFFHo3Pcmt8P8Of8bCUstpqRTytXYrFUfOXpW8dbzhelJz3RJdKUBDHwc9N5mzmWxBLU/DaiYYCs3/XD2af54XubCldO+LQ42mJqKhVUK1FfRzbBqbLNEsDziZdE4TyWNRZlLyEqYGHdp8/jvfdfSzHLG6Q9MjZ0Q7Ao4TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFVuthBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8B6C4CEF1;
-	Wed, 21 Jan 2026 18:32:48 +0000 (UTC)
+	 MIME-Version; b=Npw5/rvsVd9IrnyUHrbDTSgglmcCot2a8MFXL8iSDI9yNSgZUT5IfoEI4+6tT1gyKruIyx/70f3dQgtTmDfiFMF507xpa7IHNZN+w4fqH+9TAghlsELW6TLbBTYBhlbrmr5aBb4YyX9sQk+7gnCp7QYvdylvLK9qTQI1mz0s1Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7jAliR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06870C4CEF1;
+	Wed, 21 Jan 2026 18:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020369;
-	bh=f6eRpgLLWW1Cn9jN/9owv4SPI9pffncNx2X42ZZOQ/E=;
+	s=korg; t=1769019710;
+	bh=czsyv4a9OQEBX085PrqqwU1NbJwoLoSiC9pY6XOzl64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFVuthBAMdG9+kJcFjRcZKocVH7Ml/TMUjJ9zL/owD7z8vmBfLCdrmv9ktgA2hDbF
-	 FS0M1u4ltu2eF0Lzh+md+rqu9DPD4pd/n9z1mKTEV58+1Z5Vyd5JDfTRCzfAKjvok9
-	 Iz0HeiOgUFhgULEVgna/MyMkJ/sbckROR19qzK5U=
+	b=r7jAliR3Thc2du0EkaProHonxKq7OhOqBOOoUXuewYBazVe7sXGIW2ONJUhdF79Yd
+	 okrxfLFRV12J1KSoRR02hrPRmTi612vHHvqXJuDMiC39OzXGyVIiHrAhjtgV/GNANK
+	 GvSMuYcmzmDF4v06Osje5QWQtQHSsJQeB680DgkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.18 104/198] ftrace: Do not over-allocate ftrace memory
-Date: Wed, 21 Jan 2026 19:15:32 +0100
-Message-ID: <20260121181422.296095897@linuxfoundation.org>
+	Yang Erkun <yangerkun@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.12 085/139] ext4: fix iloc.bh leak in ext4_xattr_inode_update_ref
+Date: Wed, 21 Jan 2026 19:15:33 +0100
+Message-ID: <20260121181414.517944302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,193 +70,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211079-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-210884-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,goodmis.org:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 9D9425CFA9
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iloc.bh:url,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 178AF5D43B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Yang Erkun <yangerkun@huawei.com>
 
-commit be55257fab181b93af38f8c4b1b3cb453a78d742 upstream.
+commit d250bdf531d9cd4096fedbb9f172bb2ca660c868 upstream.
 
-The pg_remaining calculation in ftrace_process_locs() assumes that
-ENTRIES_PER_PAGE multiplied by 2^order equals the actual capacity of the
-allocated page group. However, ENTRIES_PER_PAGE is PAGE_SIZE / ENTRY_SIZE
-(integer division). When PAGE_SIZE is not a multiple of ENTRY_SIZE (e.g.
-4096 / 24 = 170 with remainder 16), high-order allocations (like 256 pages)
-have significantly more capacity than 256 * 170. This leads to pg_remaining
-being underestimated, which in turn makes skip (derived from skipped -
-pg_remaining) larger than expected, causing the WARN(skip != remaining)
-to trigger.
+The error branch for ext4_xattr_inode_update_ref forget to release the
+refcount for iloc.bh. Find this when review code.
 
-Extra allocated pages for ftrace: 2 with 654 skipped
-WARNING: CPU: 0 PID: 0 at kernel/trace/ftrace.c:7295 ftrace_process_locs+0x5bf/0x5e0
-
-A similar problem in ftrace_allocate_records() can result in allocating
-too many pages. This can trigger the second warning in
-ftrace_process_locs().
-
-Extra allocated pages for ftrace
-WARNING: CPU: 0 PID: 0 at kernel/trace/ftrace.c:7276 ftrace_process_locs+0x548/0x580
-
-Use the actual capacity of a page group to determine the number of pages
-to allocate. Have ftrace_allocate_pages() return the number of allocated
-pages to avoid having to calculate it. Use the actual page group capacity
-when validating the number of unused pages due to skipped entries.
-Drop the definition of ENTRIES_PER_PAGE since it is no longer used.
-
-Cc: stable@vger.kernel.org
-Fixes: 4a3efc6baff93 ("ftrace: Update the mcount_loc check of skipped entries")
-Link: https://patch.msgid.link/20260113152243.3557219-1-linux@roeck-us.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 57295e835408 ("ext4: guard against EA inode refcount underflow in xattr update")
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20251213055706.3417529-1-yangerkun@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |   29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
+ fs/ext4/xattr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -1122,7 +1122,6 @@ struct ftrace_page {
- };
- 
- #define ENTRY_SIZE sizeof(struct dyn_ftrace)
--#define ENTRIES_PER_PAGE (PAGE_SIZE / ENTRY_SIZE)
- 
- static struct ftrace_page	*ftrace_pages_start;
- static struct ftrace_page	*ftrace_pages;
-@@ -3808,7 +3807,8 @@ static int ftrace_update_code(struct mod
- 	return 0;
- }
- 
--static int ftrace_allocate_records(struct ftrace_page *pg, int count)
-+static int ftrace_allocate_records(struct ftrace_page *pg, int count,
-+				   unsigned long *num_pages)
- {
- 	int order;
- 	int pages;
-@@ -3818,7 +3818,7 @@ static int ftrace_allocate_records(struc
- 		return -EINVAL;
- 
- 	/* We want to fill as much as possible, with no empty pages */
--	pages = DIV_ROUND_UP(count, ENTRIES_PER_PAGE);
-+	pages = DIV_ROUND_UP(count * ENTRY_SIZE, PAGE_SIZE);
- 	order = fls(pages) - 1;
- 
-  again:
-@@ -3833,6 +3833,7 @@ static int ftrace_allocate_records(struc
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1037,6 +1037,7 @@ static int ext4_xattr_inode_update_ref(h
+ 		ext4_error_inode(ea_inode, __func__, __LINE__, 0,
+ 			"EA inode %lu ref wraparound: ref_count=%lld ref_change=%d",
+ 			ea_inode->i_ino, ref_count, ref_change);
++		brelse(iloc.bh);
+ 		ret = -EFSCORRUPTED;
+ 		goto out;
  	}
- 
- 	ftrace_number_of_pages += 1 << order;
-+	*num_pages += 1 << order;
- 	ftrace_number_of_groups++;
- 
- 	cnt = (PAGE_SIZE << order) / ENTRY_SIZE;
-@@ -3861,12 +3862,14 @@ static void ftrace_free_pages(struct ftr
- }
- 
- static struct ftrace_page *
--ftrace_allocate_pages(unsigned long num_to_init)
-+ftrace_allocate_pages(unsigned long num_to_init, unsigned long *num_pages)
- {
- 	struct ftrace_page *start_pg;
- 	struct ftrace_page *pg;
- 	int cnt;
- 
-+	*num_pages = 0;
-+
- 	if (!num_to_init)
- 		return NULL;
- 
-@@ -3880,7 +3883,7 @@ ftrace_allocate_pages(unsigned long num_
- 	 * waste as little space as possible.
- 	 */
- 	for (;;) {
--		cnt = ftrace_allocate_records(pg, num_to_init);
-+		cnt = ftrace_allocate_records(pg, num_to_init, num_pages);
- 		if (cnt < 0)
- 			goto free_pages;
- 
-@@ -7148,8 +7151,6 @@ static int ftrace_process_locs(struct mo
- 	if (!count)
- 		return 0;
- 
--	pages = DIV_ROUND_UP(count, ENTRIES_PER_PAGE);
--
- 	/*
- 	 * Sorting mcount in vmlinux at build time depend on
- 	 * CONFIG_BUILDTIME_MCOUNT_SORT, while mcount loc in
-@@ -7162,7 +7163,7 @@ static int ftrace_process_locs(struct mo
- 		test_is_sorted(start, count);
- 	}
- 
--	start_pg = ftrace_allocate_pages(count);
-+	start_pg = ftrace_allocate_pages(count, &pages);
- 	if (!start_pg)
- 		return -ENOMEM;
- 
-@@ -7261,27 +7262,27 @@ static int ftrace_process_locs(struct mo
- 	/* We should have used all pages unless we skipped some */
- 	if (pg_unuse) {
- 		unsigned long pg_remaining, remaining = 0;
--		unsigned long skip;
-+		long skip;
- 
- 		/* Count the number of entries unused and compare it to skipped. */
--		pg_remaining = (ENTRIES_PER_PAGE << pg->order) - pg->index;
-+		pg_remaining = (PAGE_SIZE << pg->order) / ENTRY_SIZE - pg->index;
- 
- 		if (!WARN(skipped < pg_remaining, "Extra allocated pages for ftrace")) {
- 
- 			skip = skipped - pg_remaining;
- 
--			for (pg = pg_unuse; pg; pg = pg->next)
-+			for (pg = pg_unuse; pg && skip > 0; pg = pg->next) {
- 				remaining += 1 << pg->order;
-+				skip -= (PAGE_SIZE << pg->order) / ENTRY_SIZE;
-+			}
- 
- 			pages -= remaining;
- 
--			skip = DIV_ROUND_UP(skip, ENTRIES_PER_PAGE);
--
- 			/*
- 			 * Check to see if the number of pages remaining would
- 			 * just fit the number of entries skipped.
- 			 */
--			WARN(skip != remaining, "Extra allocated pages for ftrace: %lu with %lu skipped",
-+			WARN(pg || skip > 0, "Extra allocated pages for ftrace: %lu with %lu skipped",
- 			     remaining, skipped);
- 		}
- 		/* Need to synchronize with ftrace_location_range() */
 
 
 
