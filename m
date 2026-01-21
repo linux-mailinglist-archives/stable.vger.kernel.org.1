@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-210752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qDzGImjYcGkOaAAAu9opvQ
-	(envelope-from <stable+bounces-210752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 14:45:12 +0100
+	id 4MlHHenVcGkOaAAAu9opvQ
+	(envelope-from <stable+bounces-210755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 14:34:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FACB57BC3
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 14:45:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A84A57933
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 14:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A14DA687D81
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 13:22:16 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 037466C3869
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 13:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FFD48A2BA;
-	Wed, 21 Jan 2026 13:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B1648BD54;
+	Wed, 21 Jan 2026 13:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="geHUA2+m"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="UbBXYkbb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4398.protonmail.ch (mail-4398.protonmail.ch [185.70.43.98])
+Received: from mail-07.mail-europe.com (mail-0701.mail-europe.com [51.83.17.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25F6481FD6
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 13:20:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E5641C30E
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 13:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.83.17.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769001656; cv=none; b=gM0G3e8rCKoWBLzeYnsk1pjy1/yREfSaB9K0NYQy2Z+piX/yEPnptwmXxmdkdF+6Nz1YF+vibmh1JVvWY/USTFhYKT19vNPYA5/OjEa7e/wxS6ZlUGczIs+7GV/EQV/M/7RcBUxtX7JAqItsYbMBcO6+cB9FRzglMV+m4Ptc/bc=
+	t=1769001670; cv=none; b=lZogJvemsZa4JqpkG0wqNSoEQVDwUgBvjSpg4FtGENbL5w0IgeYa3D6imVHBADt4jsLbH74/PXjbowL+HHDMTyuCjsjEqIEST1K2V595hv6BKZA45NVfLYxe+9qOM+tdFruM8rm5auDW6R3R239nsJ5HDTAmZzih/vUxQbm/WAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769001656; c=relaxed/simple;
-	bh=EDqnzZEN7orb7ZGQ+93aCuksK9MrkNnuG8+bzoNPJ5o=;
+	s=arc-20240116; t=1769001670; c=relaxed/simple;
+	bh=I2r7cP/avxEfAooDdEHJNIdmgbvA2I/gO0PSjLhEXfo=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kDZekroNnZ6HWWdfjMEoG+lymHVArLgDjA4S6GaRWgCn7x/HsN/WPOs1OT65NR2Bei4Qi9l2qgUCsYisdzsKGqaUhA/4Y9qEFzYHAbPQ8SjBJ10N6scOUPg0Vqb/zp4ev0EtR6eyfTlmNWrrLNephJ1NEH0pQpgYpupGiD3zVpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=geHUA2+m; arc=none smtp.client-ip=185.70.43.98
+	 MIME-Version:Content-Type; b=RNs+vtL7z6WYhO30OxqIgBEb89SP1K5UApmWTZOhwfer65VS0uwKOwTu1gBbX++hJyIAyXpEMrFD0FnOlhcZOD3BaPmpXUrFU0at7oJPQI9+yg4zzUIoybhzoDa2Vz+KcooyqN7fJ9OP6olf9ZSm7O2pzaNAMl6n0EH01bGu4iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=fail smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=UbBXYkbb; arc=none smtp.client-ip=51.83.17.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=1g4.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1769001652; x=1769260852;
-	bh=VQqC9st29svSgAOcWUIUXHbbKJPCeUzGVN5vug9MHKc=;
+	s=protonmail2; t=1769001657; x=1769260857;
+	bh=97EnEXfdGOZnSlFj4TNmyaX9AtuuT1NFsPcfG7rTSxY=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=geHUA2+mJ7+w2S9X2AljL2vbIdOsi103NQ3lUAu3CazCR1vnOh1IAuzaThHzK0Ayz
-	 pUh+QSYbcWUxEthLL7pjmCgOSf4uCiQX95bWU2m25k5EOIp4GIdMQY4Be7GZW9tFUj
-	 E/Id206d+iqm7wySHK1PyxmeMkDS76F9zXCwg2CH+vOMM9uekda4u8QFT+FBxeY7hY
-	 GDcOst/SPMEuKUO/OwOZsssTXGIS3byntLhV05c88IDLMPISxR8DJFtCmy8Ix5R07O
-	 uDeQmgp5pTaZE8uImP4RJIIx2LxN3XZ+lOS1OmHAiyLWDotGgijsKH39MiKTyT0sxe
-	 hEb5uo7fH5sgA==
-Date: Wed, 21 Jan 2026 13:20:50 +0000
+	b=UbBXYkbboJzNarrfVp6R3LKDJwLmv8hvF8CWfD0eLP+QUGzEQ58Rve23UEOgSSOIZ
+	 FB5itLZOXvS7646dVxmH9rii4L8LBZCWnG+R1dCsJ07ZaMIknoFLE5nwQhrykXherK
+	 aIOrOVulBO4IOcsL9y5IY7hX7e7ZDf3M/u+vn3rTgf6hoc1vB65YyUaYQxcT5Pjnew
+	 LGWtCv4MsC/zS32RJDEPukUrbJxiol23cArWK0/vDs+exmX5ILWxj3KP0r77RFPF5e
+	 2A1WqUYfJZqs2TJM6l3AvHjGffRWwOtHDlXsXNifYltc2pPtLeJmk1mrxITzD+HHUo
+	 KevGEMVc8k6YQ==
+Date: Wed, 21 Jan 2026 13:20:54 +0000
 To: netdev@vger.kernel.org
 From: Paul Moses <p@1g4.org>
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, Paul Moses <p@1g4.org>, stable@vger.kernel.org
-Subject: [PATCH net v3 4/7] net/sched: act_gate: read schedule via RCU
-Message-ID: <20260121131954.2710459-5-p@1g4.org>
+Subject: [PATCH net v3 5/7] net/sched: act_gate: cancel timer outside tcf_lock
+Message-ID: <20260121131954.2710459-6-p@1g4.org>
 In-Reply-To: <20260121131954.2710459-1-p@1g4.org>
 References: <20260121131954.2710459-1-p@1g4.org>
 Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 35e9f1a5787104e5795d193ad305baffc241ac0c
+X-Pm-Message-ID: 17c3bed5517b3aeac02460dbb1810ac1584a97e5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [0.54 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210752-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210755-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -94,228 +94,128 @@ X-Spamd-Result: default: False [0.54 / 15.00];
 	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,1g4.org:email,1g4.org:dkim,1g4.org:mid]
-X-Rspamd-Queue-Id: 2FACB57BC3
+X-Rspamd-Queue-Id: 5A84A57933
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Switch dump/accessor reads to RCU read-side sections. This matches other
-actions that read params under rcu_read_lock(), e.g. act_tunnel_key dump
-(commit e97ae742972f6c), act_ctinfo dump (commit 799c94178cf9c9), and
-act_skbedit dump (commit 1f376373bd225c).
+Move hrtimer_cancel() out from under tcf_lock, cancel only on clockid chang=
+es,
+and always restart using the newly computed start time. For schedule
+replacement, bypass the prior expiry clamp so basetime moves forward
+without firing the new schedule early.
 
-Dump reads tcf_action via READ_ONCE, following the lockless action reads us=
-ed
-in act_sample (commit 5c5670fae43027) and act_gact.
-
-Timer logic stays under tcf_lock and uses rcu_dereference_protected(), keep=
-ing
-RCU readers cheap while preserving lock-serialized timer updates.
+Other schedulers explicitly cancel hrtimers on reconfig/teardown, e.g.
+sch_taprio advance_timer (commit 44d4775ca51805), sch_dualpi2 pi2_timer
+(commit 320d031ad6e4d6), and qdisc_watchdog_cancel() (commit 2fbd3da3877ad8=
+).
 
 Fixes: a51c328df310 ("net: qos: introduce a gate control flow action")
 Signed-off-by: Paul Moses <p@1g4.org>
 Cc: stable@vger.kernel.org
 ---
- include/net/tc_act/tc_gate.h | 38 +++++++++++++++++++++++-------------
- net/sched/act_gate.c         | 32 +++++++++++++++---------------
- 2 files changed, 40 insertions(+), 30 deletions(-)
+ net/sched/act_gate.c | 52 ++++++++++++++++++++------------------------
+ 1 file changed, 24 insertions(+), 28 deletions(-)
 
-diff --git a/include/net/tc_act/tc_gate.h b/include/net/tc_act/tc_gate.h
-index 05968b3822392..9587d9e9fa38f 100644
---- a/include/net/tc_act/tc_gate.h
-+++ b/include/net/tc_act/tc_gate.h
-@@ -57,9 +57,10 @@ static inline s32 tcf_gate_prio(const struct tc_action *=
-a)
- =09s32 tcfg_prio;
- =09struct tcf_gate_params *p;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09tcfg_prio =3D p->tcfg_priority;
-+=09rcu_read_unlock();
-=20
- =09return tcfg_prio;
- }
-@@ -69,9 +70,10 @@ static inline u64 tcf_gate_basetime(const struct tc_acti=
-on *a)
- =09u64 tcfg_basetime;
- =09struct tcf_gate_params *p;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09tcfg_basetime =3D p->tcfg_basetime;
-+=09rcu_read_unlock();
-=20
- =09return tcfg_basetime;
- }
-@@ -81,9 +83,10 @@ static inline u64 tcf_gate_cycletime(const struct tc_act=
-ion *a)
- =09u64 tcfg_cycletime;
- =09struct tcf_gate_params *p;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09tcfg_cycletime =3D p->tcfg_cycletime;
-+=09rcu_read_unlock();
-=20
- =09return tcfg_cycletime;
- }
-@@ -93,9 +96,10 @@ static inline u64 tcf_gate_cycletimeext(const struct tc_=
-action *a)
- =09u64 tcfg_cycletimeext;
- =09struct tcf_gate_params *p;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09tcfg_cycletimeext =3D p->tcfg_cycletime_ext;
-+=09rcu_read_unlock();
-=20
- =09return tcfg_cycletimeext;
- }
-@@ -105,9 +109,10 @@ static inline u32 tcf_gate_num_entries(const struct tc=
-_action *a)
- =09u32 num_entries;
- =09struct tcf_gate_params *p;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09num_entries =3D p->num_entries;
-+=09rcu_read_unlock();
-=20
- =09return num_entries;
- }
-@@ -121,19 +126,23 @@ static inline struct action_gate_entry
- =09u32 num_entries;
- =09int i =3D 0;
-=20
--=09p =3D rcu_dereference_protected(to_gate(a)->param,
--=09=09=09=09      lockdep_rtnl_is_held());
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(to_gate(a)->param);
- =09num_entries =3D p->num_entries;
-=20
- =09list_for_each_entry(entry, &p->entries, list)
- =09=09i++;
-=20
--=09if (i !=3D num_entries)
-+=09if (i !=3D num_entries) {
-+=09=09rcu_read_unlock();
- =09=09return NULL;
-+=09}
-=20
- =09oe =3D kcalloc(num_entries, sizeof(*oe), GFP_ATOMIC);
--=09if (!oe)
-+=09if (!oe) {
-+=09=09rcu_read_unlock();
- =09=09return NULL;
-+=09}
-=20
- =09i =3D 0;
- =09list_for_each_entry(entry, &p->entries, list) {
-@@ -143,6 +152,7 @@ static inline struct action_gate_entry
- =09=09oe[i].maxoctets =3D entry->maxoctets;
- =09=09i++;
- =09}
-+=09rcu_read_unlock();
-=20
- =09return oe;
- }
 diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
-index 016708c10a8e0..da4802bbaf4ca 100644
+index da4802bbaf4ca..48ff378bb051a 100644
 --- a/net/sched/act_gate.c
 +++ b/net/sched/act_gate.c
-@@ -624,66 +624,66 @@ static int tcf_gate_dump(struct sk_buff *skb, struct =
-tc_action *a,
+@@ -55,15 +55,17 @@ static void gate_get_start_time(struct tcf_gate *gact,
+ =09*start =3D ktime_add_ns(base, (n + 1) * cycle);
+ }
+=20
+-static void gate_start_timer(struct tcf_gate *gact, ktime_t start)
++static void gate_start_timer(struct tcf_gate *gact, ktime_t start, bool re=
+place)
  {
- =09unsigned char *b =3D skb_tail_pointer(skb);
- =09struct tcf_gate *gact =3D to_gate(a);
--=09struct tc_gate opt =3D { };
- =09struct tcfg_gate_entry *entry;
- =09struct tcf_gate_params *p;
- =09struct nlattr *entry_list;
-+=09struct tc_gate opt =3D { };
- =09struct tcf_t t;
+ =09ktime_t expires;
 =20
- =09opt.index =3D gact->tcf_index;
- =09opt.refcnt =3D refcount_read(&gact->tcf_refcnt) - ref;
- =09opt.bindcnt =3D atomic_read(&gact->tcf_bindcnt) - bind;
+-=09expires =3D hrtimer_get_expires(&gact->hitimer);
+-=09if (expires =3D=3D 0)
+-=09=09expires =3D KTIME_MAX;
++=09if (!replace) {
++=09=09expires =3D hrtimer_get_expires(&gact->hitimer);
++=09=09if (expires =3D=3D 0)
++=09=09=09expires =3D KTIME_MAX;
 =20
--=09spin_lock_bh(&gact->tcf_lock);
--=09opt.action =3D gact->tcf_action;
+-=09start =3D min_t(ktime_t, start, expires);
++=09=09start =3D min_t(ktime_t, start, expires);
++=09}
+=20
+ =09hrtimer_start(&gact->hitimer, start, HRTIMER_MODE_ABS_SOFT);
+ }
+@@ -307,24 +309,9 @@ static int parse_gate_list(struct nlattr *list_attr,
+ =09return err;
+ }
+=20
+-static void gate_setup_timer(struct tcf_gate *gact, u64 basetime,
+-=09=09=09     enum tk_offsets tko, s32 clockid,
+-=09=09=09     bool do_init)
++static void gate_setup_timer(struct tcf_gate *gact,
++=09=09=09     enum tk_offsets tko, s32 clockid)
+ {
+-=09struct tcf_gate_params *p;
 -
--=09p =3D rcu_dereference_protected(gact->param,
--=09=09=09=09      lockdep_is_held(&gact->tcf_lock));
-+=09opt.action =3D READ_ONCE(gact->tcf_action);
+-=09if (!do_init) {
+-=09=09p =3D rcu_dereference_protected(gact->param,
+-=09=09=09=09=09      lockdep_is_held(&gact->tcf_lock));
+-=09=09if (basetime =3D=3D p->tcfg_basetime &&
+-=09=09    tko =3D=3D gact->tk_offset &&
+-=09=09    clockid =3D=3D p->tcfg_clockid)
+-=09=09=09return;
+-
+-=09=09spin_unlock_bh(&gact->tcf_lock);
+-=09=09hrtimer_cancel(&gact->hitimer);
+-=09=09spin_lock_bh(&gact->tcf_lock);
+-=09}
+ =09gact->tk_offset =3D tko;
+ =09hrtimer_setup(&gact->hitimer, gate_timer_func, clockid, HRTIMER_MODE_AB=
+S_SOFT);
+ }
+@@ -527,8 +514,19 @@ static int tcf_gate_init(struct net *net, struct nlatt=
+r *nla,
+ =09=09goto release_mem;
 =20
- =09if (nla_put(skb, TCA_GATE_PARMS, sizeof(opt), &opt))
- =09=09goto nla_put_failure;
-=20
-+=09rcu_read_lock();
-+=09p =3D rcu_dereference(gact->param);
+ =09spin_lock_bh(&gact->tcf_lock);
+-=09gate_setup_timer(gact, basetime, tk_offset, clockid,
+-=09=09=09 ret =3D=3D ACT_P_CREATED);
 +
- =09if (nla_put_u64_64bit(skb, TCA_GATE_BASE_TIME,
- =09=09=09      p->tcfg_basetime, TCA_GATE_PAD))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
++=09if (ret =3D=3D ACT_P_CREATED) {
++=09=09gate_setup_timer(gact, tk_offset, clockid);
++=09} else {
++=09=09old_p =3D rcu_dereference_protected(gact->param,
++=09=09=09=09=09=09  lockdep_is_held(&gact->tcf_lock));
++=09=09if (!old_p || clockid !=3D old_p->tcfg_clockid) {
++=09=09=09spin_unlock_bh(&gact->tcf_lock);
++=09=09=09hrtimer_cancel(&gact->hitimer);
++=09=09=09spin_lock_bh(&gact->tcf_lock);
++=09=09=09gate_setup_timer(gact, tk_offset, clockid);
++=09=09}
++=09}
+ =09gate_get_start_time(gact, p, &start);
 =20
- =09if (nla_put_u64_64bit(skb, TCA_GATE_CYCLE_TIME,
- =09=09=09      p->tcfg_cycletime, TCA_GATE_PAD))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
+ =09old_p =3D rcu_replace_pointer(gact->param, p,
+@@ -542,7 +540,7 @@ static int tcf_gate_init(struct net *net, struct nlattr=
+ *nla,
 =20
- =09if (nla_put_u64_64bit(skb, TCA_GATE_CYCLE_TIME_EXT,
- =09=09=09      p->tcfg_cycletime_ext, TCA_GATE_PAD))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
+ =09goto_ch =3D tcf_action_set_ctrlact(*a, parm->action, goto_ch);
 =20
- =09if (nla_put_s32(skb, TCA_GATE_CLOCKID, p->tcfg_clockid))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
+-=09gate_start_timer(gact, start);
++=09gate_start_timer(gact, start, ret !=3D ACT_P_CREATED);
 =20
- =09if (nla_put_u32(skb, TCA_GATE_FLAGS, p->tcfg_flags))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
+ =09spin_unlock_bh(&gact->tcf_lock);
 =20
- =09if (nla_put_s32(skb, TCA_GATE_PRIORITY, p->tcfg_priority))
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
-=20
- =09entry_list =3D nla_nest_start_noflag(skb, TCA_GATE_ENTRY_LIST);
- =09if (!entry_list)
--=09=09goto nla_put_failure;
-+=09=09goto nla_put_failure_rcu;
-=20
- =09list_for_each_entry(entry, &p->entries, list) {
- =09=09if (dumping_entry(skb, entry) < 0)
--=09=09=09goto nla_put_failure;
-+=09=09=09goto nla_put_failure_rcu;
- =09}
-=20
- =09nla_nest_end(skb, entry_list);
-+=09rcu_read_unlock();
-=20
- =09tcf_tm_dump(&t, &gact->tcf_tm);
- =09if (nla_put_64bit(skb, TCA_GATE_TM, sizeof(t), &t, TCA_GATE_PAD))
- =09=09goto nla_put_failure;
--=09spin_unlock_bh(&gact->tcf_lock);
-=20
- =09return skb->len;
-=20
-+nla_put_failure_rcu:
-+=09rcu_read_unlock();
- nla_put_failure:
--=09spin_unlock_bh(&gact->tcf_lock);
- =09nlmsg_trim(skb, b);
- =09return -1;
+@@ -562,9 +560,7 @@ static int tcf_gate_init(struct net *net, struct nlattr=
+ *nla,
+ =09 * without taking tcf_lock.
+ =09 */
+ =09if (ret =3D=3D ACT_P_CREATED)
+-=09=09gate_setup_timer(gact, 0,
+-=09=09=09=09 gact->tk_offset, 0,
+-=09=09=09=09 true);
++=09=09gate_setup_timer(gact, gact->tk_offset, 0);
+ =09tcf_idr_release(*a, bind);
+ =09return err;
  }
 --=20
 2.52.GIT
