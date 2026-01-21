@@ -1,66 +1,65 @@
-Return-Path: <stable+bounces-210657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIfxHRk/cGnXXAAAu9opvQ
-	(envelope-from <stable+bounces-210657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:51:05 +0100
+	id sAWaAMY/cGnXXAAAu9opvQ
+	(envelope-from <stable+bounces-210659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:53:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 382C95009E
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:51:05 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE08950107
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D1A3BA2E5C8
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:47:51 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 32747765307
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6286C34D4CA;
-	Wed, 21 Jan 2026 02:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43014A3C;
+	Wed, 21 Jan 2026 02:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InfvpxKf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WElkhHh4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2341034A77F
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 02:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C6832AAB1
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 02:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768963666; cv=none; b=nR9Kbu9seEkHuUbisUq3k47K3UabMbG0o8K/sckpaoh4qFDgaKquXjuxb6ZRzjBQEZ4hlvEHJT1wLRTvoPeTsl31gpQOAgVMtDECo00pS2JYkaWjYDTq5nXS9XxX4LF0mqLtNENTdEiKsK9UCeWTKhJFo1F/uIVxmwPWopzW+Ws=
+	t=1768963952; cv=none; b=Ep9KEDVny35FQerHKEFxrfKNdT5oc87/xyZuWv8ZJoZKTzOAPdvBva4BtTYpeq4rAQvPTWmhVCCBpws+enPYPov+D8gmR2kBxwSIto+oXYxSjHBVmlotz+a2YE8eByo4oFQC/qBKuQNOEMxr4vm9pxKe7hodG3pd2EjtO6nwhUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768963666; c=relaxed/simple;
-	bh=Ad7gaW4tc2NGx+4DqIgrhDweXMgxNQMz8OL0XqtdSKQ=;
+	s=arc-20240116; t=1768963952; c=relaxed/simple;
+	bh=VF30JQsGShpdTPhnarEsVxouBh1R63Hkh+1cvx8Nh+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlPldJx0Ae1fi9fnQIT2Sn8SBAMzixwvgdxG371KEhMJXJjRiAxziCq4Sv/lJzfVccQF+LYZyINBgq0sduxOoz2fmoVmINUEaIb1mzj2Xr2agSBuG1nDAGkcjs2+lIpqwBZ6dicdiG1RvAs42RgRMkUChO3oxiUeqgX0xAJIcws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InfvpxKf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E85C19423;
-	Wed, 21 Jan 2026 02:47:44 +0000 (UTC)
+	 MIME-Version; b=b4vXkQLs00leLUKBqhzgBzPMaZVaMkGklYXXnrdQrlSa8VpisRFVjsP5uPTKkoGtCjwflZxJCj9R4tvt/q4D9F4FZZxjXSrMxhm2F1TMq5ABnaASni/WoTp1iehtsWto6Omww3qawa/H/wYMNKpPI/5QUHdlzQxJaVXaglDgnLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WElkhHh4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D0EC16AAE;
+	Wed, 21 Jan 2026 02:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768963665;
-	bh=Ad7gaW4tc2NGx+4DqIgrhDweXMgxNQMz8OL0XqtdSKQ=;
+	s=k20201202; t=1768963951;
+	bh=VF30JQsGShpdTPhnarEsVxouBh1R63Hkh+1cvx8Nh+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=InfvpxKfbDxYpOXzdHJDoCQxB3YsSOUXQtVvg8ZWFR8yjybrbHBLhMFpJ6ZRISG1D
-	 a2eIzZQJ8Xk97cImwqIKKk4DYRbRWlXRk/lMKa2mun3ieS5BFOtIDPA/ZjYTOtMRlU
-	 FEwlSiFV4MGCRQmEnhLWUighytZ7APHRZRDcq7WN5e9AvntQt/ce8BYCb7Si3v46X4
-	 IKXXf74/7/kAdP1SuqeLKbSvo1krW8IlAWy0IUFxAtzCVS9M+K9onDoEEzxX6pl1v+
-	 azpoAHnQ5kSeNQuvdwMdxadOFTTU0fDLXcOwWuZnnajZncaESPVZDrh1DSrdDeIqRP
-	 +fT+qyhTY24HQ==
+	b=WElkhHh4pJHsO9P3O5gt8NGG2fIyK6dqxQr4k2LFS5ofFbT/DKW3hhjEDsgEFJZ8R
+	 NEoKwu8xTJNIePVpyDKy4Rv6ZDW1MVqoAkjz8Q/uMzmc6mRTjAcmZ15EsTrtBxqsbT
+	 8bOdcUdYDAHztRc/PFKo3+iGpAK3tJ4QHTII+bvqZeMzeAr6l/3YWefCtl+XPyWS3s
+	 kZ3l9XRvbLXNqqNj4aZ0qIUQNN3YziO69QRrLq6LuB6W7gKJyXbsIUHCdhCWDUgwE1
+	 T2ZoYMHglu6OnaRPNOOuyit8ql6kHW1+lypiNOT8obCVOninJghFbZweyZ+FEiANZt
+	 +dhNFqV6nV3Sg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Daniel Wagner <dwagner@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 4/4] ASoC: codecs: wsa881x: fix unnecessary initialisation
-Date: Tue, 20 Jan 2026 21:47:40 -0500
-Message-ID: <20260121024740.1145743-4-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/3] nvme-fc: rename free_ctrl callback to match name pattern
+Date: Tue, 20 Jan 2026 21:52:26 -0500
+Message-ID: <20260121025228.1153601-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260121024740.1145743-1-sashal@kernel.org>
-References: <2026012029-possibly-cornhusk-03c3@gregkh>
- <20260121024740.1145743-1-sashal@kernel.org>
+In-Reply-To: <2026012011-happily-padded-148c@gregkh>
+References: <2026012011-happily-padded-148c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,86 +80,64 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210657-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210659-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	R_SPF_SOFTFAIL(0.00)[~all];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,qualcomm.com:email]
-X-Rspamd-Queue-Id: 382C95009E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,grimberg.me:email,suse.de:email]
+X-Rspamd-Queue-Id: AE08950107
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Johan Hovold <johan@kernel.org>
+From: Daniel Wagner <dwagner@suse.de>
 
-[ Upstream commit 29d71b8a5a40708b3eed9ba4953bfc2312c9c776 ]
+[ Upstream commit 205fb5fa6fde1b5b426015eb1ff69f2ff25ef5bb ]
 
-The soundwire update_status() callback may be called multiple times with
-the same ATTACHED status but initialisation should only be done when
-transitioning from UNATTACHED to ATTACHED.
+Rename nvme_fc_nvme_ctrl_freed to nvme_fc_free_ctrl to match the name
+pattern for the callback.
 
-Fixes: a0aab9e1404a ("ASoC: codecs: add wsa881x amplifier support")
-Cc: stable@vger.kernel.org	# 5.6
-Cc: Srinivas Kandagatla <srini@kernel.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260102111413.9605-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Stable-dep-of: 0edb475ac0a7 ("nvme: fix PCIe subsystem reset controller state transition")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wsa881x.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/nvme/host/fc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/wsa881x.c b/sound/soc/codecs/wsa881x.c
-index 80625efc2fc7e..22c382f0c68bf 100644
---- a/sound/soc/codecs/wsa881x.c
-+++ b/sound/soc/codecs/wsa881x.c
-@@ -682,6 +682,7 @@ struct wsa881x_priv {
- 	 */
- 	unsigned int sd_n_val;
- 	int active_ports;
-+	bool hw_init;
- 	bool port_prepared[WSA881X_MAX_SWR_PORTS];
- 	bool port_enable[WSA881X_MAX_SWR_PORTS];
- };
-@@ -691,6 +692,9 @@ static void wsa881x_init(struct wsa881x_priv *wsa881x)
- 	struct regmap *rm = wsa881x->regmap;
- 	unsigned int val = 0;
- 
-+	if (wsa881x->hw_init)
-+		return;
-+
- 	regmap_register_patch(wsa881x->regmap, wsa881x_rev_2_0,
- 			      ARRAY_SIZE(wsa881x_rev_2_0));
- 
-@@ -728,6 +732,8 @@ static void wsa881x_init(struct wsa881x_priv *wsa881x)
- 	regmap_update_bits(rm, WSA881X_OTP_REG_28, 0x3F, 0x3A);
- 	regmap_update_bits(rm, WSA881X_BONGO_RESRV_REG1, 0xFF, 0xB2);
- 	regmap_update_bits(rm, WSA881X_BONGO_RESRV_REG2, 0xFF, 0x05);
-+
-+	wsa881x->hw_init = true;
- }
- 
- static int wsa881x_component_probe(struct snd_soc_component *comp)
-@@ -1064,6 +1070,9 @@ static int wsa881x_update_status(struct sdw_slave *slave,
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index 2954f0a274745..abf6d028ef96f 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -2384,7 +2384,7 @@ nvme_fc_ctrl_get(struct nvme_fc_ctrl *ctrl)
+  * controller. Called after last nvme_put_ctrl() call
+  */
+ static void
+-nvme_fc_nvme_ctrl_freed(struct nvme_ctrl *nctrl)
++nvme_fc_free_ctrl(struct nvme_ctrl *nctrl)
  {
- 	struct wsa881x_priv *wsa881x = dev_get_drvdata(&slave->dev);
+ 	struct nvme_fc_ctrl *ctrl = to_fc_ctrl(nctrl);
  
-+	if (status == SDW_SLAVE_UNATTACHED)
-+		wsa881x->hw_init = false;
-+
- 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
- 		wsa881x_init(wsa881x);
- 
+@@ -3349,7 +3349,7 @@ static const struct nvme_ctrl_ops nvme_fc_ctrl_ops = {
+ 	.reg_read32		= nvmf_reg_read32,
+ 	.reg_read64		= nvmf_reg_read64,
+ 	.reg_write32		= nvmf_reg_write32,
+-	.free_ctrl		= nvme_fc_nvme_ctrl_freed,
++	.free_ctrl		= nvme_fc_free_ctrl,
+ 	.submit_async_event	= nvme_fc_submit_async_event,
+ 	.delete_ctrl		= nvme_fc_delete_ctrl,
+ 	.get_address		= nvmf_get_address,
 -- 
 2.51.0
 
