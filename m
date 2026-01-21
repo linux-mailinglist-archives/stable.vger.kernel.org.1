@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-210814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHNWAlAvcWmcfAAAu9opvQ
-	(envelope-from <stable+bounces-210814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:56:00 +0100
+	id 2AcHD08jcWl8eQAAu9opvQ
+	(envelope-from <stable+bounces-211011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:04:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAF65CA6D
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:55:59 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B05685BC6F
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:04:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4A695AC86CE
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:17:53 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id CE677B4AF75
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8444D33A713;
-	Wed, 21 Jan 2026 18:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44B23A0EA8;
+	Wed, 21 Jan 2026 18:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VikBM/JJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5MweGVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B11378D72;
-	Wed, 21 Jan 2026 18:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7260B392C44;
+	Wed, 21 Jan 2026 18:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019471; cv=none; b=j4Qbq9ipKeLabI4HTPb0gIovJbtd459UMcRyVULj5iqgLlKvccLPLAQ+ZFjXoiC/ia8HiPMduUL61kqEtHngghf8dmKsgR63cjF5VbEaOjitoftr6oozO33uwrZgK7VabsDoP35F+cbvNobujlAfzx36JIwGoJaPxNzVO0wwN78=
+	t=1769020138; cv=none; b=T1/NWp22ZQN10nG7EMwypde19RUMTWsvN3tz0qdLsLAAxLma1TXJkmbW/vrs49FcjBPmWpr1jXnDwUtOaTp/1hRd5rfqUKGHhDGzig3MmvJha7vDDY9seg4u6GzT0uyT71tWDNFo4+mhzv4fiz1iPp2RtlsKMOsvDCeYa+j0Onw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019471; c=relaxed/simple;
-	bh=ND/fZtDTW+y60to4TnjgX4sLO3pVxdMbOiYaI4qCMC8=;
+	s=arc-20240116; t=1769020138; c=relaxed/simple;
+	bh=AygbOAci50Id99JbOsksVb36vvMhvX6guIL44RI2Xhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQHShSChbxXcpO3QeLbEk3U109WwwUhRwynhFUzj3CgzBRIlTVHik8ksWixXuscUFtjN/t6vYrTE4oJtoj4BfX9iNYyw8q0S9JUjfMfgYJy0/URDyM20RJbC2zg14qWvRKu+Zp1+eCK/aExBX+cQOIhn/Uaco30I/xZyW+Yz1pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VikBM/JJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F23D0C4CEF1;
-	Wed, 21 Jan 2026 18:17:49 +0000 (UTC)
+	 MIME-Version; b=OrQYfA/Tp9h9Cz6wwpKf/3HkwA7zc2nL6XrYFeWz65XG6p3pL/FzRl9592vTLQUqnCwett9lXBeB/N64/bSsLhr2dgQLdqEwOiLNRM8jTBUa2BltqZKj0Fl6YDIqIxgYC0dIhA55C6MDJC834Izt9xc1fVZ8X8oDS/pGRhpnJWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5MweGVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD158C16AAE;
+	Wed, 21 Jan 2026 18:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019470;
-	bh=ND/fZtDTW+y60to4TnjgX4sLO3pVxdMbOiYaI4qCMC8=;
+	s=korg; t=1769020138;
+	bh=AygbOAci50Id99JbOsksVb36vvMhvX6guIL44RI2Xhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VikBM/JJc0v9q2MGwqi/jjfRMmWaHwtvkKm8zSoSZmysk7zX4NBeae+Xq9gaKYL9V
-	 ACx+0gcV33CExm2ifGtguzWVO8GNK5tcdHjzHNSca6d6OZxgd8YBU3+ttZu0mqISW6
-	 NsDpbUnEGF3gSatwDiGVcL/fquc3E3zxh5+BTeN4=
+	b=F5MweGVd+Xnp+WeH3aWbquumVv/ZDAP2k2fasnNdweGxO4dxLaBWFQqBNf1Kxj6F6
+	 lgaEr99+tzCEaOebah1cN0Lavqh1Ek911sJRwflLenszeV9Pt44TMN484LUD4/tgae
+	 zQ8nNuoxbe3H471aHKIdS0S036Yjd87gFHMKzOb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/139] btrfs: send: check for inline extents in range_is_hole_in_parent()
-Date: Wed, 21 Jan 2026 19:14:24 +0100
-Message-ID: <20260121181412.042767641@linuxfoundation.org>
+Subject: [PATCH 6.18 037/198] ipv4: ip_gre: make ipgre_header() robust
+Date: Wed, 21 Jan 2026 19:14:25 +0100
+Message-ID: <20260121181419.885699729@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,78 +67,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	RCVD_COUNT_THREE(0.00)[4];
-	URIBL_MULTI_FAIL(0.00)[dfw.mirrors.kernel.org:server fail,suse.com:server fail,linuxfoundation.org:server fail];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210814-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211011-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email]
-X-Rspamd-Queue-Id: 6DAF65CA6D
+	TAGGED_RCPT(0.00)[stable,7c134e1c3aa3283790b9];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B05685BC6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 08b096c1372cd69627f4f559fb47c9fb67a52b39 ]
+[ Upstream commit e67c577d89894811ce4dcd1a9ed29d8b63476667 ]
 
-Before accessing the disk_bytenr field of a file extent item we need
-to check if we are dealing with an inline extent.
-This is because for inline extents their data starts at the offset of
-the disk_bytenr field. So accessing the disk_bytenr
-means we are accessing inline data or in case the inline data is less
-than 8 bytes we can actually cause an invalid
-memory access if this inline extent item is the first item in the leaf
-or access metadata from other items.
+Analog to commit db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
 
-Fixes: 82bfb2e7b645 ("Btrfs: incremental send, fix unnecessary hole writes for sparse files")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Over the years, syzbot found many ways to crash the kernel
+in ipgre_header() [1].
+
+This involves team or bonding drivers ability to dynamically
+change their dev->needed_headroom and/or dev->hard_header_len
+
+In this particular crash mld_newpack() allocated an skb
+with a too small reserve/headroom, and by the time mld_sendpack()
+was called, syzbot managed to attach an ipgre device.
+
+[1]
+skbuff: skb_under_panic: text:ffffffff89ea3cb7 len:2030915468 put:2030915372 head:ffff888058b43000 data:ffff887fdfa6e194 tail:0x120 end:0x6c0 dev:team0
+ kernel BUG at net/core/skbuff.c:213 !
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 1322 Comm: kworker/1:9 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Workqueue: mld mld_ifc_work
+ RIP: 0010:skb_panic+0x157/0x160 net/core/skbuff.c:213
+Call Trace:
+ <TASK>
+  skb_under_panic net/core/skbuff.c:223 [inline]
+  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
+  ipgre_header+0x67/0x290 net/ipv4/ip_gre.c:897
+  dev_hard_header include/linux/netdevice.h:3436 [inline]
+  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
+  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
+  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
+  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
+  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
+  mld_send_cr net/ipv6/mcast.c:2154 [inline]
+  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
+  process_one_work kernel/workqueue.c:3257 [inline]
+  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
+  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
+  kthread+0x711/0x8a0 kernel/kthread.c:463
+  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
+Reported-by: syzbot+7c134e1c3aa3283790b9@syzkaller.appspotmail.com
+Closes: https://www.spinics.net/lists/netdev/msg1147302.html
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260108190214.1667040-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/ip_gre.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index 41b7cbd070254..2fa577d4a232d 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -6550,6 +6550,8 @@ static int range_is_hole_in_parent(struct send_ctx *sctx,
- 		extent_end = btrfs_file_extent_end(path);
- 		if (extent_end <= start)
- 			goto next;
-+		if (btrfs_file_extent_type(leaf, fi) == BTRFS_FILE_EXTENT_INLINE)
-+			return 0;
- 		if (btrfs_file_extent_disk_bytenr(leaf, fi) == 0) {
- 			search_start = extent_end;
- 			goto next;
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 8178c44a3cdd4..e13244729ad8d 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -891,10 +891,17 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
+ 			const void *daddr, const void *saddr, unsigned int len)
+ {
+ 	struct ip_tunnel *t = netdev_priv(dev);
+-	struct iphdr *iph;
+ 	struct gre_base_hdr *greh;
++	struct iphdr *iph;
++	int needed;
++
++	needed = t->hlen + sizeof(*iph);
++	if (skb_headroom(skb) < needed &&
++	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
++			     0, GFP_ATOMIC))
++		return -needed;
+ 
+-	iph = skb_push(skb, t->hlen + sizeof(*iph));
++	iph = skb_push(skb, needed);
+ 	greh = (struct gre_base_hdr *)(iph+1);
+ 	greh->flags = gre_tnl_flags_to_gre_flags(t->parms.o_flags);
+ 	greh->protocol = htons(type);
 -- 
 2.51.0
 
