@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-211092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JJ6AAQocWniewAAu9opvQ
-	(envelope-from <stable+bounces-211092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:24:52 +0100
+	id uNs7ITIocWniewAAu9opvQ
+	(envelope-from <stable+bounces-210941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:25:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7125C1BE
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:24:51 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED4F85C1D4
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:25:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6ADCB844E5C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:36:37 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 278E9AC8CDB
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679823AEF23;
-	Wed, 21 Jan 2026 18:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995313A89DB;
+	Wed, 21 Jan 2026 18:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzTJUDA5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEkG3/Cb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0535828000F;
-	Wed, 21 Jan 2026 18:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B919396D35;
+	Wed, 21 Jan 2026 18:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020413; cv=none; b=JnmZJC6xs64q37WZZ6SULNOJZMq9uOI0l4d0sxGTtoymb6fXm+DG8mUVnz8GcBMHgY/Rf24U9hjIwKzv2ciR4PSfNpDzqe2n6BowsVc931F//ktnagHh1Xm0quVHnHGuevB0Xi8B/KGYkpqDHOmstDpygGS7FOKnNm1C5W8IuTI=
+	t=1769019903; cv=none; b=CITfl2QUh4fZg+IoYMKdxgtfBkBFbloAtdWn2H6T/4jPe5i6k9J14xNKO8+M5lYYVm7RhsUXeLH8ad/vWg/9S6/HK10Tt2klJ8srLco+iW+s4bWcXE6DhG3h5bE0L+1fN8LfkE06axp7x2wNsBmdyWQbxgcgqtBpMce3zvGko+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020413; c=relaxed/simple;
-	bh=8Cc0/pkWQDoSosx+dP5peHLqi3qSLsPtmk11bqH9C8s=;
+	s=arc-20240116; t=1769019903; c=relaxed/simple;
+	bh=cXdbeIzn3w/5hUJ53lxu5+790yZkEebBTltqCC7zNX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2GTbADa0aAb+kADw4ZjQc4XxFKtdjRs06Y0P1cBu9346d7nn4p1TsTQ3JQzP+VlVHFVjmRPIK+ctrus8q4iDPhWuyDM0SP2F9igagMkDT17FnC0sfIgdxKAPcnV8fIwa1u59SW+4Fkk77ctRHzDEvH0xMa+LLgj4FhsaqeStDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzTJUDA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B6FC4CEF1;
-	Wed, 21 Jan 2026 18:33:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CFgSSPHePpvk0JNtgv9uHFq3sA+6cFKtzxjFGXmnQEbYPgVdUfNQ7ISPCEOhaAEY/Z2swjl6YlY4klm792EB2nUs96p4Ua51WUqzgpHlBVIdDBfo8lHVsixw7UbrsVzclaiO1KWwvafGAZHuQbuZr/wjiuawvkdkdIJUY4XPDiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEkG3/Cb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821A0C4CEF1;
+	Wed, 21 Jan 2026 18:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020412;
-	bh=8Cc0/pkWQDoSosx+dP5peHLqi3qSLsPtmk11bqH9C8s=;
+	s=korg; t=1769019903;
+	bh=cXdbeIzn3w/5hUJ53lxu5+790yZkEebBTltqCC7zNX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzTJUDA5/m8vxMLVhuECk4/AMz6gxmGaZt+nImGwjYYIJUSB4nl2SgqSZBmevd53D
-	 EYzcfbRg7FxCfh2untM6z8XgL7EWIEaVc3EE2x1iS3yd1QDoyWeoGbbABY5l2jD1+s
-	 oXYPpSVo24fzoIkdlqSVUzXc58WM5cKX9P9RCBUo=
+	b=bEkG3/CbMf+7Q4zVy3egl31AFoz0d93IMwb3fUNil3uONcEqNzAgXAqtbQzXBE7ca
+	 U5LasbwvC/OOq9ce5Z1R5MOPmBZLzX0lKz7vwHTvUwCq6HLDyCtCCu525RMuCyXTHT
+	 bvz5TRfnyOwRUEOkmCLOSsr0m8q1zrHu3uadQZFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kent.russell@amd.com,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 151/198] drm/amd: Clean up kfd node on surprise disconnect
+	Bruno Faccini <bfaccini@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 131/139] mm/fake-numa: allow later numa node hotplug
 Date: Wed, 21 Jan 2026 19:16:19 +0100
-Message-ID: <20260121181423.990331874@linuxfoundation.org>
+Message-ID: <20260121181416.167077132@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +69,480 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211092-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210941-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,frame.work:url]
-X-Rspamd-Queue-Id: 9A7125C1BE
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,nvidia.com:email]
+X-Rspamd-Queue-Id: ED4F85C1D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Bruno Faccini <bfaccini@nvidia.com>
 
-commit 28695ca09d326461f8078332aa01db516983e8a2 upstream.
+[ Upstream commit 63db8170bf34ce9e0763f87d993cf9b4c9002b09 ]
 
-When an eGPU is unplugged the KFD topology should also be destroyed
-for that GPU. This never happens because the fini_sw callbacks never
-get to run. Run them manually before calling amdgpu_device_ip_fini_early()
-when a device has already been disconnected.
+Current fake-numa implementation prevents new Numa nodes to be later
+hot-plugged by drivers.  A common symptom of this limitation is the "node
+<X> was absent from the node_possible_map" message by associated warning
+in mm/memory_hotplug.c: add_memory_resource().
 
-This location is intentionally chosen to make sure that the kfd locking
-refcount doesn't get incremented unintentionally.
+This comes from the lack of remapping in both pxm_to_node_map[] and
+node_to_pxm_map[] tables to take fake-numa nodes into account and thus
+triggers collisions with original and physical nodes only-mapping that had
+been determined from BIOS tables.
 
-Cc: kent.russell@amd.com
-Closes: https://community.frame.work/t/amd-egpu-on-linux/8691/33
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6a23e7b4332c10f8b56c33a9c5431b52ecff9aab)
-Cc: stable@vger.kernel.org
+This patch fixes this by doing the necessary node-ids translation in both
+pxm_to_node_map[]/node_to_pxm_map[] tables.  node_distance[] table has
+also been fixed accordingly.
+
+Details:
+
+When trying to use fake-numa feature on our system where new Numa nodes
+are being "hot-plugged" upon driver load, this fails with the following
+type of message and warning with stack :
+
+node 8 was absent from the node_possible_map WARNING: CPU: 61 PID: 4259 at
+mm/memory_hotplug.c:1506 add_memory_resource+0x3dc/0x418
+
+This issue prevents the use of the fake-NUMA debug feature with the
+system's full configuration, when it has proven to be sometimes extremely
+useful for performance testing of multi-tasked, memory-bound applications,
+as it enables better isolation of processes/ranks compared to fat NUMA
+nodes.
+
+Usual numactl output after driver has “hot-plugged”/unveiled some
+new Numa nodes with and without memory :
+$ numactl --hardware
+available: 9 nodes (0-8)
+node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
+43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+65 66 67 68 69 70 71
+node 0 size: 490037 MB
+node 0 free: 484432 MB
+node 1 cpus:
+node 1 size: 97280 MB
+node 1 free: 97279 MB
+node 2 cpus:
+node 2 size: 0 MB
+node 2 free: 0 MB
+node 3 cpus:
+node 3 size: 0 MB
+node 3 free: 0 MB
+node 4 cpus:
+node 4 size: 0 MB
+node 4 free: 0 MB
+node 5 cpus:
+node 5 size: 0 MB
+node 5 free: 0 MB
+node 6 cpus:
+node 6 size: 0 MB
+node 6 free: 0 MB
+node 7 cpus:
+node 7 size: 0 MB
+node 7 free: 0 MB
+node 8 cpus:
+node 8 size: 0 MB
+node 8 free: 0 MB
+node distances:
+node   0   1   2   3   4   5   6   7   8
+  0:  10  80  80  80  80  80  80  80  80
+  1:  80  10  255  255  255  255  255  255  255
+  2:  80  255  10  255  255  255  255  255  255
+  3:  80  255  255  10  255  255  255  255  255
+  4:  80  255  255  255  10  255  255  255  255
+  5:  80  255  255  255  255  10  255  255  255
+  6:  80  255  255  255  255  255  10  255  255
+  7:  80  255  255  255  255  255  255  10  255
+  8:  80  255  255  255  255  255  255  255  10
+
+With recent M.Rapoport set of fake-numa patches in mm-everything
+and using numa=fake=4 boot parameter :
+$ numactl --hardware
+available: 4 nodes (0-3)
+node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
+43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+65 66 67 68 69 70 71
+node 0 size: 122518 MB
+node 0 free: 117141 MB
+node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
+43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+65 66 67 68 69 70 71
+node 1 size: 219911 MB
+node 1 free: 219751 MB
+node 2 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
+43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+65 66 67 68 69 70 71
+node 2 size: 122599 MB
+node 2 free: 122541 MB
+node 3 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
+43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+65 66 67 68 69 70 71
+node 3 size: 122479 MB
+node 3 free: 122408 MB
+node distances:
+node   0   1   2   3
+  0:  10  10  10  10
+  1:  10  10  10  10
+  2:  10  10  10  10
+  3:  10  10  10  10
+
+With recent M.Rapoport set of fake-numa patches in mm-everything,
+this patch on top, using numa=fake=4 boot parameter :
+# numactl —hardware
+available: 12 nodes (0-11)
+node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
+43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+65 66 67 68 69 70 71
+node 0 size: 122518 MB
+node 0 free: 116429 MB
+node 1 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
+43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+65 66 67 68 69 70 71
+node 1 size: 122631 MB
+node 1 free: 122576 MB
+node 2 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
+43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+65 66 67 68 69 70 71
+node 2 size: 122599 MB
+node 2 free: 122544 MB
+node 3 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42
+43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64
+65 66 67 68 69 70 71
+node 3 size: 122479 MB
+node 3 free: 122419 MB
+node 4 cpus:
+node 4 size: 97280 MB
+node 4 free: 97279 MB
+node 5 cpus:
+node 5 size: 0 MB
+node 5 free: 0 MB
+node 6 cpus:
+node 6 size: 0 MB
+node 6 free: 0 MB
+node 7 cpus:
+node 7 size: 0 MB
+node 7 free: 0 MB
+node 8 cpus:
+node 8 size: 0 MB
+node 8 free: 0 MB
+node 9 cpus:
+node 9 size: 0 MB
+node 9 free: 0 MB
+node 10 cpus:
+node 10 size: 0 MB
+node 10 free: 0 MB
+node 11 cpus:
+node 11 size: 0 MB
+node 11 free: 0 MB
+node distances:
+node   0   1   2   3   4   5   6   7   8   9  10  11
+  0:  10  10  10  10  80  80  80  80  80  80  80  80
+  1:  10  10  10  10  80  80  80  80  80  80  80  80
+  2:  10  10  10  10  80  80  80  80  80  80  80  80
+  3:  10  10  10  10  80  80  80  80  80  80  80  80
+  4:  80  80  80  80  10  255  255  255  255  255  255  255
+  5:  80  80  80  80  255  10  255  255  255  255  255  255
+  6:  80  80  80  80  255  255  10  255  255  255  255  255
+  7:  80  80  80  80  255  255  255  10  255  255  255  255
+  8:  80  80  80  80  255  255  255  255  10  255  255  255
+  9:  80  80  80  80  255  255  255  255  255  10  255  255
+ 10:  80  80  80  80  255  255  255  255  255  255  10  255
+ 11:  80  80  80  80  255  255  255  255  255  255  255  10
+
+Link: https://lkml.kernel.org/r/20250106120659.359610-2-bfaccini@nvidia.com
+Signed-off-by: Bruno Faccini <bfaccini@nvidia.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: f46c26f1bcd9 ("mm: numa,memblock: include <asm/numa.h> for 'numa_nodes_parsed'")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/acpi/numa/srat.c     |   86 +++++++++++++++++++++++++++++++++++++++++++
+ include/acpi/acpi_numa.h     |    5 ++
+ include/linux/numa_memblks.h |    3 +
+ mm/numa_emulation.c          |   45 +++++++++++++++++++---
+ mm/numa_memblks.c            |    2 -
+ 5 files changed, 133 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4985,6 +4985,14 @@ void amdgpu_device_fini_hw(struct amdgpu
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -81,6 +81,92 @@ int acpi_map_pxm_to_node(int pxm)
+ }
+ EXPORT_SYMBOL(acpi_map_pxm_to_node);
  
- 	amdgpu_ttm_set_buffer_funcs_status(adev, false);
- 
-+	/*
-+	 * device went through surprise hotplug; we need to destroy topology
-+	 * before ip_fini_early to prevent kfd locking refcount issues by calling
-+	 * amdgpu_amdkfd_suspend()
-+	 */
-+	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+		amdgpu_amdkfd_device_fini_sw(adev);
++#ifdef CONFIG_NUMA_EMU
++/*
++ * Take max_nid - 1 fake-numa nodes into account in both
++ * pxm_to_node_map()/node_to_pxm_map[] tables.
++ */
++int __init fix_pxm_node_maps(int max_nid)
++{
++	static int pxm_to_node_map_copy[MAX_PXM_DOMAINS] __initdata
++			= { [0 ... MAX_PXM_DOMAINS - 1] = NUMA_NO_NODE };
++	static int node_to_pxm_map_copy[MAX_NUMNODES] __initdata
++			= { [0 ... MAX_NUMNODES - 1] = PXM_INVAL };
++	int i, j, index = -1, count = 0;
++	nodemask_t nodes_to_enable;
 +
- 	amdgpu_device_ip_fini_early(adev);
++	if (numa_off || srat_disabled())
++		return -1;
++
++	/* find fake nodes PXM mapping */
++	for (i = 0; i < MAX_NUMNODES; i++) {
++		if (node_to_pxm_map[i] != PXM_INVAL) {
++			for (j = 0; j <= max_nid; j++) {
++				if ((emu_nid_to_phys[j] == i) &&
++				    WARN(node_to_pxm_map_copy[j] != PXM_INVAL,
++					 "Node %d is already binded to PXM %d\n",
++					 j, node_to_pxm_map_copy[j]))
++					return -1;
++				if (emu_nid_to_phys[j] == i) {
++					node_to_pxm_map_copy[j] =
++						node_to_pxm_map[i];
++					if (j > index)
++						index = j;
++					count++;
++				}
++			}
++		}
++	}
++	if (WARN(index != max_nid, "%d max nid  when expected %d\n",
++		      index, max_nid))
++		return -1;
++
++	nodes_clear(nodes_to_enable);
++
++	/* map phys nodes not used for fake nodes */
++	for (i = 0; i < MAX_NUMNODES; i++) {
++		if (node_to_pxm_map[i] != PXM_INVAL) {
++			for (j = 0; j <= max_nid; j++)
++				if (emu_nid_to_phys[j] == i)
++					break;
++			/* fake nodes PXM mapping has been done */
++			if (j <= max_nid)
++				continue;
++			/* find first hole */
++			for (j = 0;
++			     j < MAX_NUMNODES &&
++				 node_to_pxm_map_copy[j] != PXM_INVAL;
++			     j++)
++			;
++			if (WARN(j == MAX_NUMNODES,
++			    "Number of nodes exceeds MAX_NUMNODES\n"))
++				return -1;
++			node_to_pxm_map_copy[j] = node_to_pxm_map[i];
++			node_set(j, nodes_to_enable);
++			count++;
++		}
++	}
++
++	/* creating reverse mapping in pxm_to_node_map[] */
++	for (i = 0; i < MAX_NUMNODES; i++)
++		if (node_to_pxm_map_copy[i] != PXM_INVAL &&
++		    pxm_to_node_map_copy[node_to_pxm_map_copy[i]] == NUMA_NO_NODE)
++			pxm_to_node_map_copy[node_to_pxm_map_copy[i]] = i;
++
++	/* overwrite with new mapping */
++	for (i = 0; i < MAX_NUMNODES; i++) {
++		node_to_pxm_map[i] = node_to_pxm_map_copy[i];
++		pxm_to_node_map[i] = pxm_to_node_map_copy[i];
++	}
++
++	/* enable other nodes found in PXM for hotplug */
++	nodes_or(numa_nodes_parsed, nodes_to_enable, numa_nodes_parsed);
++
++	pr_debug("found %d total number of nodes\n", count);
++	return 0;
++}
++#endif
++
+ static void __init
+ acpi_table_print_srat_entry(struct acpi_subtable_header *header)
+ {
+--- a/include/acpi/acpi_numa.h
++++ b/include/acpi/acpi_numa.h
+@@ -17,11 +17,16 @@ extern int node_to_pxm(int);
+ extern int acpi_map_pxm_to_node(int);
+ extern unsigned char acpi_srat_revision;
+ extern void disable_srat(void);
++extern int fix_pxm_node_maps(int max_nid);
  
- 	amdgpu_irq_fini_hw(adev);
+ extern void bad_srat(void);
+ extern int srat_disabled(void);
+ 
+ #else				/* CONFIG_ACPI_NUMA */
++static inline int fix_pxm_node_maps(int max_nid)
++{
++	return 0;
++}
+ static inline void disable_srat(void)
+ {
+ }
+--- a/include/linux/numa_memblks.h
++++ b/include/linux/numa_memblks.h
+@@ -29,7 +29,10 @@ int __init numa_cleanup_meminfo(struct n
+ int __init numa_memblks_init(int (*init_func)(void),
+ 			     bool memblock_force_top_down);
+ 
++extern int numa_distance_cnt;
++
+ #ifdef CONFIG_NUMA_EMU
++extern int emu_nid_to_phys[MAX_NUMNODES];
+ int numa_emu_cmdline(char *str);
+ void __init numa_emu_update_cpu_to_node(int *emu_nid_to_phys,
+ 					unsigned int nr_emu_nids);
+--- a/mm/numa_emulation.c
++++ b/mm/numa_emulation.c
+@@ -8,11 +8,12 @@
+ #include <linux/memblock.h>
+ #include <linux/numa_memblks.h>
+ #include <asm/numa.h>
++#include <acpi/acpi_numa.h>
+ 
+ #define FAKE_NODE_MIN_SIZE	((u64)32 << 20)
+ #define FAKE_NODE_MIN_HASH_MASK	(~(FAKE_NODE_MIN_SIZE - 1UL))
+ 
+-static int emu_nid_to_phys[MAX_NUMNODES];
++int emu_nid_to_phys[MAX_NUMNODES];
+ static char *emu_cmdline __initdata;
+ 
+ int __init numa_emu_cmdline(char *str)
+@@ -379,6 +380,7 @@ void __init numa_emulation(struct numa_m
+ 	size_t phys_size = numa_dist_cnt * numa_dist_cnt * sizeof(phys_dist[0]);
+ 	int max_emu_nid, dfl_phys_nid;
+ 	int i, j, ret;
++	nodemask_t physnode_mask = numa_nodes_parsed;
+ 
+ 	if (!emu_cmdline)
+ 		goto no_emu;
+@@ -395,7 +397,6 @@ void __init numa_emulation(struct numa_m
+ 	 * split the system RAM into N fake nodes.
+ 	 */
+ 	if (strchr(emu_cmdline, 'U')) {
+-		nodemask_t physnode_mask = numa_nodes_parsed;
+ 		unsigned long n;
+ 		int nid = 0;
+ 
+@@ -465,9 +466,6 @@ void __init numa_emulation(struct numa_m
+ 	 */
+ 	max_emu_nid = setup_emu2phys_nid(&dfl_phys_nid);
+ 
+-	/* commit */
+-	*numa_meminfo = ei;
+-
+ 	/* Make sure numa_nodes_parsed only contains emulated nodes */
+ 	nodes_clear(numa_nodes_parsed);
+ 	for (i = 0; i < ARRAY_SIZE(ei.blk); i++)
+@@ -475,10 +473,21 @@ void __init numa_emulation(struct numa_m
+ 		    ei.blk[i].nid != NUMA_NO_NODE)
+ 			node_set(ei.blk[i].nid, numa_nodes_parsed);
+ 
+-	numa_emu_update_cpu_to_node(emu_nid_to_phys, ARRAY_SIZE(emu_nid_to_phys));
++	/* fix pxm_to_node_map[] and node_to_pxm_map[] to avoid collision
++	 * with faked numa nodes, particularly during later memory hotplug
++	 * handling, and also update numa_nodes_parsed accordingly.
++	 */
++	ret = fix_pxm_node_maps(max_emu_nid);
++	if (ret < 0)
++		goto no_emu;
++
++	/* commit */
++	*numa_meminfo = ei;
++
++	numa_emu_update_cpu_to_node(emu_nid_to_phys, max_emu_nid + 1);
+ 
+ 	/* make sure all emulated nodes are mapped to a physical node */
+-	for (i = 0; i < ARRAY_SIZE(emu_nid_to_phys); i++)
++	for (i = 0; i < max_emu_nid + 1; i++)
+ 		if (emu_nid_to_phys[i] == NUMA_NO_NODE)
+ 			emu_nid_to_phys[i] = dfl_phys_nid;
+ 
+@@ -501,12 +510,34 @@ void __init numa_emulation(struct numa_m
+ 			numa_set_distance(i, j, dist);
+ 		}
+ 	}
++	for (i = 0; i < numa_distance_cnt; i++) {
++		for (j = 0; j < numa_distance_cnt; j++) {
++			int physi, physj;
++			u8 dist;
++
++			/* distance between fake nodes is already ok */
++			if (emu_nid_to_phys[i] != NUMA_NO_NODE &&
++			    emu_nid_to_phys[j] != NUMA_NO_NODE)
++				continue;
++			if (emu_nid_to_phys[i] != NUMA_NO_NODE)
++				physi = emu_nid_to_phys[i];
++			else
++				physi = i - max_emu_nid;
++			if (emu_nid_to_phys[j] != NUMA_NO_NODE)
++				physj = emu_nid_to_phys[j];
++			else
++				physj = j - max_emu_nid;
++			dist = phys_dist[physi * numa_dist_cnt + physj];
++			numa_set_distance(i, j, dist);
++		}
++	}
+ 
+ 	/* free the copied physical distance table */
+ 	memblock_free(phys_dist, phys_size);
+ 	return;
+ 
+ no_emu:
++	numa_nodes_parsed = physnode_mask;
+ 	/* No emulation.  Build identity emu_nid_to_phys[] for numa_add_cpu() */
+ 	for (i = 0; i < ARRAY_SIZE(emu_nid_to_phys); i++)
+ 		emu_nid_to_phys[i] = i;
+--- a/mm/numa_memblks.c
++++ b/mm/numa_memblks.c
+@@ -7,7 +7,7 @@
+ #include <linux/numa.h>
+ #include <linux/numa_memblks.h>
+ 
+-static int numa_distance_cnt;
++int numa_distance_cnt;
+ static u8 *numa_distance;
+ 
+ nodemask_t numa_nodes_parsed __initdata;
 
 
 
