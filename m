@@ -1,52 +1,63 @@
-Return-Path: <stable+bounces-210634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aF3xIGktcGniWwAAu9opvQ
-	(envelope-from <stable+bounces-210634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:35:37 +0100
+	id oDmdOFUucGniWwAAu9opvQ
+	(envelope-from <stable+bounces-210636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:39:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4104F287
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:35:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D7B4F326
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:39:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 22FB9ACE236
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:35:33 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E0B53B0226C
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A337630E853;
-	Wed, 21 Jan 2026 01:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3552307492;
+	Wed, 21 Jan 2026 01:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TBwa+cqJ"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3492330CDBC;
-	Wed, 21 Jan 2026 01:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901FC19CD05
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 01:39:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768959326; cv=none; b=Hl7CzZ2jfvlAhmIxdgFC1cHXKCgThFnq6P8xjVrStSdA/RVmLH4twQnt4JmZEt+ZgguA3KBIf8ZcZ+zmuEjRmEZauis8Swcr0ISZyHQ8srnRRTBXsQScoia7tcsVLIwsrtyeCz8MhxU6pwkDmphWyeJTY9OVqcT6N/i7ODTGBss=
+	t=1768959542; cv=none; b=HLGSa6Z5UBffckwz0VI3NTtZY2ls/i37K1rJPs48w5mzDlXCY57pqEjG0t/L51UfmMy+v7xGjK7Hq+CHcuQZVqqcDybNO1VnPISdy3QKsy0VsZ2M7l0r8EpzjVOX0GIqTYhXTrAUj2y3OUDw4WaSpXj+8/Ls/CVyaGWpb835QXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768959326; c=relaxed/simple;
-	bh=jA4NaSNSULApJ0julBiq3qY+S+//bwPxAIZfcE3HXZU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lUbPiIe18zX9r3xRY9appB7rw5qlTr+yHuxgIUIHqYWt+zJcOs/UQJAnx8ijfPpZ6EDYsyfaxkBjjmcKSmbcZzzGw/If+z1cxnS4Ill+xXkzxw7UVIRl9KI+FVos3BIsHOVpOD/Lj4oW36T/3QPeV7hkWWXJJ0N0JO9th8qfgb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.108])
-	by APP-05 (Coremail) with SMTP id zQCowABH2AtNLXBprgPbBQ--.51795S2;
-	Wed, 21 Jan 2026 09:35:09 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: mporter@kernel.crashing.org,
-	alex.bou9@gmail.com,
-	akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] rapidio: replace rio_free_net() with kfree() in rio_scan_alloc_net()
-Date: Wed, 21 Jan 2026 09:35:08 +0800
-Message-Id: <20260121013508.195836-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1768959542; c=relaxed/simple;
+	bh=CB/CPHbAfyLKI5qRI2rsKznfQEwJ31tcdgMyUsZ2ZkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Vwwh0qX5XdUUQwvqJTsV5GDzLrYozhPz0tr+EZjoNSTPDJwbk1NcsBcHtqk7Z2Tk342Z7ORE+NrUMowfVIp9T+Ln2JNNylEL/b7E6G0Oeh1TfsDjWwnCg2cRPJOmVdkuCcfOwgzEEK3/TP220q9nG5OhtQzhH6sUyECQ87sc6FM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TBwa+cqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44089C19423;
+	Wed, 21 Jan 2026 01:38:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768959538;
+	bh=CB/CPHbAfyLKI5qRI2rsKznfQEwJ31tcdgMyUsZ2ZkQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TBwa+cqJsFrN301yooLeIueqkRjuiOK2wtcIRhrS+R0qmG+JZQ3HavdVguqfi8QXl
+	 74FFoXHUnw8WNJqtEJ3xD90J9bbb+4OigPvIOxxLklINnDqUwObRvvE8LHmHzav/NQ
+	 3xQz7miCMyCDCoaeSsdyh0qyDdE482ROSWRUrqkEnSdQeMT1QZ1NnxU9IFHY9/lupk
+	 KyHHNsybzS5181EqQ88uCDoojrwLn9l/buNB0sHLTnJd4XMoCJF7/brxS2Cwj0kmJ7
+	 QZ/5Eg+m3gA9045IsjmOp95k/CuI2/yop5u5x7UkfRwm0UAsgCv2cIyDoe4z+FP+II
+	 JC5dje0tjQdwA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Dragan Simic <dsimic@manjaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] phy: phy-rockchip-inno-usb2: Use dev_err_probe() in the probe path
+Date: Tue, 20 Jan 2026 20:38:55 -0500
+Message-ID: <20260121013856.1104103-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012036-dress-salvaging-8848@gregkh>
+References: <2026012036-dress-salvaging-8848@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,84 +65,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABH2AtNLXBprgPbBQ--.51795S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Jw1UWFW8uw1UWry7ArW3Awb_yoWDCFb_WF
-	18X3ykArZ8CF40k34q9rsavayF9FW8Jrs7Zry3ta9xtFy3Aw4FqF1vgr45Aw1xWr1kArn3
-	Aw12gr1kur47CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb4kFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	AVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUYNVyDU
-	UUU
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiDAUOE2lwF8I5TQABst
-X-Spamd-Result: default: False [1.74 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210634-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[kernel.crashing.org,gmail.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-210636-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[isrc.iscas.ac.cn:mid,iscas.ac.cn:email,linux-foundation.org:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 6F4104F287
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,sntech.de:email,manjaro.org:email]
+X-Rspamd-Queue-Id: 57D7B4F326
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When idtab allocation fails, net is not registered with rio_add_net()
-yet, so kfree(net) is sufficient to release the memory.
-Set mport->net to NULL to avoid dangling pointer.
+From: Dragan Simic <dsimic@manjaro.org>
 
-Fixes: e6b585ca6e81 ("rapidio: move net allocation into core code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
----
-Changes in v2:
-- Set mport->net to NULL. Thanks, Andrew!
----
- drivers/rapidio/rio-scan.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+[ Upstream commit 40452520850683f6771094ca218ff206d1fcb022 ]
 
-diff --git a/drivers/rapidio/rio-scan.c b/drivers/rapidio/rio-scan.c
-index c12941f71e2c..dcd6619a4b02 100644
---- a/drivers/rapidio/rio-scan.c
-+++ b/drivers/rapidio/rio-scan.c
-@@ -854,7 +854,8 @@ static struct rio_net *rio_scan_alloc_net(struct rio_mport *mport,
+Improve error handling in the probe path by using function dev_err_probe()
+instead of function dev_err(), where appropriate.
+
+Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/d4ccd9fc278fb46ea868406bf77811ee507f0e4e.1725524803.git.dsimic@manjaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: e07dea3de508 ("phy: rockchip: inno-usb2: Fix a double free bug in rockchip_usb2phy_probe()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c | 27 +++++++------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+index 4f71373ae6e1a..78a6dccba07a3 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -424,11 +424,9 @@ static int rockchip_usb2phy_extcon_register(struct rockchip_usb2phy *rphy)
  
- 		if (idtab == NULL) {
- 			pr_err("RIO: failed to allocate destID table\n");
--			rio_free_net(net);
-+			kfree(net);
-+			mport->net = NULL;
- 			net = NULL;
- 		} else {
- 			net->enum_data = idtab;
+ 	if (of_property_read_bool(node, "extcon")) {
+ 		edev = extcon_get_edev_by_phandle(rphy->dev, 0);
+-		if (IS_ERR(edev)) {
+-			if (PTR_ERR(edev) != -EPROBE_DEFER)
+-				dev_err(rphy->dev, "Invalid or missing extcon\n");
+-			return PTR_ERR(edev);
+-		}
++		if (IS_ERR(edev))
++			return dev_err_probe(rphy->dev, PTR_ERR(edev),
++					     "invalid or missing extcon\n");
+ 	} else {
+ 		/* Initialize extcon device */
+ 		edev = devm_extcon_dev_allocate(rphy->dev,
+@@ -438,10 +436,9 @@ static int rockchip_usb2phy_extcon_register(struct rockchip_usb2phy *rphy)
+ 			return -ENOMEM;
+ 
+ 		ret = devm_extcon_dev_register(rphy->dev, edev);
+-		if (ret) {
+-			dev_err(rphy->dev, "failed to register extcon device\n");
+-			return ret;
+-		}
++		if (ret)
++			return dev_err_probe(rphy->dev, ret,
++					     "failed to register extcon device\n");
+ 	}
+ 
+ 	rphy->edev = edev;
+@@ -1413,10 +1410,8 @@ static int rockchip_usb2phy_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	ret = rockchip_usb2phy_clk480m_register(rphy);
+-	if (ret) {
+-		dev_err(dev, "failed to register 480m output clock\n");
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to register 480m output clock\n");
+ 
+ 	if (rphy->phy_cfg->phy_tuning) {
+ 		ret = rphy->phy_cfg->phy_tuning(rphy);
+@@ -1436,8 +1431,7 @@ static int rockchip_usb2phy_probe(struct platform_device *pdev)
+ 
+ 		phy = devm_phy_create(dev, child_np, &rockchip_usb2phy_ops);
+ 		if (IS_ERR(phy)) {
+-			dev_err_probe(dev, PTR_ERR(phy), "failed to create phy\n");
+-			ret = PTR_ERR(phy);
++			ret = dev_err_probe(dev, PTR_ERR(phy), "failed to create phy\n");
+ 			goto put_child;
+ 		}
+ 
+@@ -1474,8 +1468,7 @@ static int rockchip_usb2phy_probe(struct platform_device *pdev)
+ 						"rockchip_usb2phy",
+ 						rphy);
+ 		if (ret) {
+-			dev_err(rphy->dev,
+-				"failed to request usb2phy irq handle\n");
++			dev_err_probe(rphy->dev, ret, "failed to request usb2phy irq handle\n");
+ 			goto put_child;
+ 		}
+ 	}
 -- 
-2.25.1
+2.51.0
 
 
