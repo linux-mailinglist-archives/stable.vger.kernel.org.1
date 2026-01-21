@@ -1,181 +1,134 @@
-Return-Path: <stable+bounces-210789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPfrH835cGmgbAAAu9opvQ
-	(envelope-from <stable+bounces-210789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:07:41 +0100
+	id kKuDBI8WcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:10:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82A359AF2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:07:40 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11CE5B101
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 04E3FAA4A48
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:55:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C886A7E398A
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 16:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC583D646D;
-	Wed, 21 Jan 2026 15:50:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vZt4z/dw";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I5Hd1dvd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8514B30DD34;
+	Wed, 21 Jan 2026 16:04:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CCB357A50;
-	Wed, 21 Jan 2026 15:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D27543E4A6
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 16:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769010629; cv=none; b=h//HJqoUMyAkl1EO7vb/EmZTV8+NeFmCVnqEpbS3FMF+tkBDfM6NnC0f2FXPgQgfDRUCGdsHwdVhSXjb2f4AZgTHQFkQo/MarHqQ9Z2LTpP/MI5ttisuWIOF1nfyZNoxSV2+o8SaXgk/bTNhUlY3ZalOnqcxFZ6OIOAThnDg3hU=
+	t=1769011455; cv=none; b=oFfqnbBsvNYqi0u45P6Hv8cUhiwtfxsui2mVF9va4d8yx4mvJ+Q8w2BMkCp595lpsCHb2ETz3sbrtFIz8YS4agdTgF55V/I5BEMbi1pQHFpTUvFPIGsIVBzWhktYtbcxqt7GjgbRCl8nzNU4nsmkvO8UfN48iQEC89myePc+7+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769010629; c=relaxed/simple;
-	bh=TKFMVPUVrcoo260mLYBi9FLX21eB1CR9J8mFOcu+z7Q=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=s/LJZqXpeGMtLmbr5YOYjL7/gMqBEvVksC04Mgvl2pCUA3FQ3vzkWHTkP8Eyq9vARboRQr/9S108ImtZbnIdWneUPbnQ6mJbA2uTAF9tPCEf+HnhOsCVbicU1QVS14qO4pZRoOpvgrgd/QS4QbakRZfBEBbCMc825Gb0Rin35EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vZt4z/dw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I5Hd1dvd; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 21 Jan 2026 15:50:23 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1769010625;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wfPZWxOWTFBc/34iB9b9dmMdVm9Nhcvz3eklJlZaZW0=;
-	b=vZt4z/dwgqlbATu4ANOydpKk9yM8vUfRo+UCHfPUkN1C+S9dXujsXb8DwEExsjUKYCIw+Q
-	bZgT1UN0R4K5DFtGWX1JYfPLuwFTJ4Jk/xd22QI55+kLZ2nlr0VNoXAdepfIrCQ23stJTz
-	Y++Z3ZPbmRjnUS2ohtRZBd5ppq6OrCCtCX97YdSGDSHqjmexq94NpJhRwbi6oVK6pT7gqw
-	CTJCkpAFBLzDN7QJNP1GvNxX/iqUubH2PvM+HiL/12Mk4bZqwnyshG/1WvxpGaVj0/R34e
-	AKekw1a7jqtBleam+s2i1RC//E1bbK3Caf3YrCR25h4Y0wlSSEgSTug/Sj7naQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1769010625;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wfPZWxOWTFBc/34iB9b9dmMdVm9Nhcvz3eklJlZaZW0=;
-	b=I5Hd1dvdOGJjDpTg5aPIXlATlyd7vaS8kI/nCx2jZLKKzq9S7QH4SIxmAsSCV8bCVjtyh1
-	EVu4xuBm5y98z7Dw==
-From: "tip-bot2 for Fernand Sieber" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel: Do not enable BTS for guests
-Cc: jschoenh@amazon.de, Peter Zijlstra <peterz@infradead.org>,
- Fernand Sieber <sieberf@amazon.com>,  <stable@vger.kernel.org>,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20251211183604.868641-1-sieberf@amazon.com>
-References: <20251211183604.868641-1-sieberf@amazon.com>
+	s=arc-20240116; t=1769011455; c=relaxed/simple;
+	bh=ZXsNa/HKBld4onzBriua4Zl8F07PJEDl23YA4bFkd/o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hGDIZmAcWx8dVrmXAS0Zvp9r9wpLMXeFyIgOnspiO7xo540Nes1LiIblYQo7N/yLktlxIh/X7tJAr+Nu9Qf2Xgp6ifgoU3dH9G/0M+2Q309VXqNyQXdeSciU3rPuLIPCqV01h0OsHPEydB+XYyZ8W9qD1isu5j2QABbj1LT/43E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECA3B1476;
+	Wed, 21 Jan 2026 08:04:05 -0800 (PST)
+Received: from [10.57.49.179] (unknown [10.57.49.179])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 240CA3F694;
+	Wed, 21 Jan 2026 08:04:10 -0800 (PST)
+Message-ID: <6bffe794-b5d5-421e-9091-594201bb3b6d@arm.com>
+Date: Wed, 21 Jan 2026 17:04:07 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <176901062386.510.18286224975679497732.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.46 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] arm64: poe: fix stale POR_EL0 values for ptrace
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org,
+ david.spickett@arm.com, stable@vger.kernel.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+References: <20260121135639.1835784-1-joey.gouly@arm.com>
+ <4f4b9dd9-02ed-4899-b17d-24415e50e5c3@arm.com> <aXDynm0YGuNzi7B3@J2N7QTR9R3>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <aXDynm0YGuNzi7B3@J2N7QTR9R3>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : No valid SPF, No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-210789-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[linutronix.de,none];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,amazon.de:email,msgid.link:url,vger.kernel.org:replyto,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linutronix.de:dkim]
-X-Rspamd-Queue-Id: E82A359AF2
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	R_DKIM_NA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kevin.brodsky@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TAGGED_FROM(0.00)[bounces-210790-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: A11CE5B101
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following commit has been merged into the perf/urgent branch of tip:
+On 21/01/2026 16:37, Mark Rutland wrote:
+> On Wed, Jan 21, 2026 at 03:59:22PM +0100, Kevin Brodsky wrote:
+>> On 21/01/2026 14:56, Joey Gouly wrote:
+>>> If a process wrote to POR_EL0 and then crashed before a context switch
+>>> happened, the coredump would contain an incorrect value for POR_EL0.
+>> Isn't that also a problem if using ptrace(PTRACE_GETREGSET, REGSET_POE)?
+> In the case of manipulating a tracee (i.e. target != current), the core
+> code ensures that the tracee is stopped (has context-switched out, an
+> hence has saved its registrer contents to memory) before the relevant
+> regset functions can be called.
 
-Commit-ID:     91dcfae0ff2b9b9ab03c1ec95babaceefbffb9f4
-Gitweb:        https://git.kernel.org/tip/91dcfae0ff2b9b9ab03c1ec95babaceefbf=
-fb9f4
-Author:        Fernand Sieber <sieberf@amazon.com>
-AuthorDate:    Thu, 11 Dec 2025 20:36:04 +02:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Wed, 21 Jan 2026 16:28:59 +01:00
+Right, hadn't thought that through!
 
-perf/x86/intel: Do not enable BTS for guests
+>> Just like for fpsimd, etc.
+> Just FYI, The FPSIMD/SVE/SME registers are a special case relative to
+> all the other regsets.
+>
+> The FPSIMD/SVE/SME registers eagerly saved to memory (and so when a task
+> is scheduled out, the value in memory will be up-to-date), but they're
+> lazily restored (so the value in registers can be transiently stale
+> while the task is running), and there's a special case when scheduling a
+> task in where we attempt to spot if the CPU registers happen to be
+> up-to-date with the task.
+>
+> The gist of this is that when manipulating the FPSIMD/SVE/SME regsets of
+> a task:
+>
+> * For reads, we know that the value in memory is up-to-date unless the
+>   task is the current task.
+>
+> * For writes (which can only occur for a tracee which is not the current
+>   task), we need to update some tracking data to prevent context-switch
+>   from reusing stale values on a CPU. That's what
+>   fpsimd_flush_task_state() does.
+>
+> Pretty much all other regsets don't need the "flush" on writes, since
+> the value in memory will be loaded when the task is next scheduled in.
 
-By default when users program perf to sample branch instructions
-(PERF_COUNT_HW_BRANCH_INSTRUCTIONS) with a sample period of 1, perf
-interprets this as a special case and enables BTS (Branch Trace Store)
-as an optimization to avoid taking an interrupt on every branch.
+That is good to know, thanks! I actually meant to write TLS/TPIDR as
+that's a more comparable case (not saved/restored on exception
+entry/return), but as you pointed out above a task must be scheduled out
+before its register state is inspected so there's no concern here.
 
-Since BTS doesn't virtualize, this optimization doesn't make sense when
-the request originates from a guest. Add an additional check that
-prevents this optimization for virtualized events (exclude_host).
-
-Reported-by: Jan H. Sch=C3=B6nherr <jschoenh@amazon.de>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Fernand Sieber <sieberf@amazon.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251211183604.868641-1-sieberf@amazon.com
----
- arch/x86/events/perf_event.h | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-index 6296302..ad35c54 100644
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1574,13 +1574,22 @@ static inline bool intel_pmu_has_bts_period(struct pe=
-rf_event *event, u64 period
- 	struct hw_perf_event *hwc =3D &event->hw;
- 	unsigned int hw_event, bts_event;
-=20
--	if (event->attr.freq)
-+	/*
-+	 * Only use BTS for fixed rate period=3D=3D1 events.
-+	 */
-+	if (event->attr.freq || period !=3D 1)
-+		return false;
-+
-+	/*
-+	 * BTS doesn't virtualize.
-+	 */
-+	if (event->attr.exclude_host)
- 		return false;
-=20
- 	hw_event =3D hwc->config & INTEL_ARCH_EVENT_MASK;
- 	bts_event =3D x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
-=20
--	return hw_event =3D=3D bts_event && period =3D=3D 1;
-+	return hw_event =3D=3D bts_event;
- }
-=20
- static inline bool intel_pmu_has_bts(struct perf_event *event)
+- Kevin
 
