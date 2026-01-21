@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-210695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HzfLKR0cGktYAAAu9opvQ
-	(envelope-from <stable+bounces-210695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 07:39:32 +0100
+	id wJcwJxB1cGktYAAAu9opvQ
+	(envelope-from <stable+bounces-210696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 07:41:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A322A522AD
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 07:39:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B95552320
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 07:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0AABF4C670C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:38:22 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1408D4C3CF8
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 06:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD6440FDA4;
-	Wed, 21 Jan 2026 06:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29AF44B66F;
+	Wed, 21 Jan 2026 06:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jXVNoxHh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWD7ka7r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B23C44A73F;
-	Wed, 21 Jan 2026 06:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E9544A73B;
+	Wed, 21 Jan 2026 06:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768977493; cv=none; b=GBhg2F14mMzme1sRyw2ZKdFcy4HgQBhX+nPIbWtO9J+lb5eAqUTQzOjZKVu8Fehpi4tTCH4N3iLqmygVQO/fD1zn+JQSRg6LKkWsFuHbiUd3G6355wIjjttIW/2JAqEEPH+Di78d20BIb0zhqBC9GyWkn2vM6kUO7L/4r0wLQ4Y=
+	t=1768977540; cv=none; b=pw9O0GyeeHUS4nivgb50RGO07U1rVRIH35k2Dxm3IX3zQ5pXxcrsFEGMwYuQr+oJ7rfjDqxmIseUVwFmwxybDnfcDs/enbsIzyDr/CjajGgcEH9OMum/Yubow8f0O0wXWPf8L9f1gPxjETOet5Jx1MKsJb98wCqIPc7sRPOKiGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768977493; c=relaxed/simple;
-	bh=DmbPWnO7PuaBy0Q+uOUCKc5b5hSKLi/x+L6Ebzs8Tp4=;
+	s=arc-20240116; t=1768977540; c=relaxed/simple;
+	bh=tGwe/ysEYuZR8J5CPexq7ZZWJzeyRWgxg8diucmF4jo=;
 	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OqSBI/xfGFShfnnbYUg8N+zMUoxWbHc+dBB9CI91J1WcfmfO8DojNpa1nmSN+lCOV6fF+bDYmOEE5bFSgzW1WhRGvKJAyojwhTBa0t4CEP0M08AsOaZiR6rGT7rrGkj/BU1fLGD+zlYs960ytD2sZfaGjR8tYeYlUz6zqhooQ0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jXVNoxHh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326F0C116D0;
-	Wed, 21 Jan 2026 06:38:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sNH7ET7cXb+ZYMqxoPRnrUS2zwiirn9TvTGSgIG7cWBmJRNWO/EZ9Pp7edH+s0/iDLbu6a/FiA39QQJFnJFR3Aax4f6ONhz6XTUpCusfAoIxeAEU1uvlaOBcedI33rZrMOl/vh0FGfGfklbc9njKqUZN1yEk+MuSjA05h/EfL8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWD7ka7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFEAC16AAE;
+	Wed, 21 Jan 2026 06:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768977493;
-	bh=DmbPWnO7PuaBy0Q+uOUCKc5b5hSKLi/x+L6Ebzs8Tp4=;
+	s=k20201202; t=1768977540;
+	bh=tGwe/ysEYuZR8J5CPexq7ZZWJzeyRWgxg8diucmF4jo=;
 	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
-	b=jXVNoxHhrr2EE9L3yjJsjyaJJIW4FLjAlD+wGuz52cj+RHIM+QXrS/BcU+yN3NiNA
-	 iULKgtW+krkuZnZ6ayVwTreE/cS39i7kTtooX9tcpkIqUDW8YH/w18+bcAJImhM3pk
-	 /tUo46wU7RAd0xUNaO43CZSEAnuLdAnjbik4MSPAxRigUMoElfHTcrifxsBpKJcLPN
-	 pOH5SvTxw4SuQSM/d6fbyrd5mY20f7jxwvAYg4RSKUH6Hjk/J+707QWPN2MZqyKXtE
-	 42jlYlf99CWat0cvIvejzTBdmqEurIzfly4vP+Odmia3tN/zRiME99nbOYqKFlpSRO
-	 ucc9Aki2oXnZg==
-Date: Tue, 20 Jan 2026 22:38:12 -0800
-Subject: [PATCH 2/6] xfs: fix freemap adjustments when adding xattrs to leaf
- blocks
+	b=VWD7ka7rJTVXQjR9ebykzmJCyj3EE3eIiiecB4HiGB+R6Bks0lU50DQtuXy3mVtQ5
+	 XY9EfHJ54qjVQxcnE9SSFR7WM/N6jnQhYAYSkxIMVcnxE3Qyn1+QRaG8pOGBKg/iqP
+	 l3R7HuihiMj87npn/mTnHkWORh+Rl7tj1Puso5LYsXQQewlMjkpNMuLkboDJCadKJw
+	 O68NUmIMEog64TM/z76vG1k/28dqidXgC4M1WH+Phlja7nDDlp6eUGeCbdXGFYZQhZ
+	 KMJRxDVvNJ5WKls1zJrUWpp/4Ag3yHlM7nIupl2w4thvg4ivXNJu5oZE62pKqEEA5D
+	 Ozuv5wgn1PVwQ==
+Date: Tue, 20 Jan 2026 22:38:59 -0800
+Subject: [PATCH 5/6] xfs: fix the xattr scrub to detect freemap/entries array
+ collisions
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: djwong@kernel.org, cem@kernel.org
 Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org
-Message-ID: <176897695598.202569.14161628486500284706.stgit@frogsfrogsfrogs>
+Message-ID: <176897695663.202569.9251656342143621163.stgit@frogsfrogsfrogs>
 In-Reply-To: <176897695523.202569.10735226881884087217.stgit@frogsfrogsfrogs>
 References: <176897695523.202569.10735226881884087217.stgit@frogsfrogsfrogs>
 Precedence: bulk
@@ -73,7 +73,7 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	TAGGED_FROM(0.00)[bounces-210695-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210696-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
@@ -90,135 +90,113 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: A322A522AD
+X-Rspamd-Queue-Id: 8B95552320
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Darrick J. Wong <djwong@kernel.org>
 
-xfs/592 and xfs/794 both trip this assertion in the leaf block freemap
-adjustment code after ~20 minutes of running on my test VMs:
+In the previous patches, we observed that it's possible for there to be
+freemap entries with zero size but a nonzero base.  This isn't an
+inconsistency per se, but older kernels can get confused by this and
+corrupt the block, leading to corruption.
 
- ASSERT(ichdr->firstused >= ichdr->count * sizeof(xfs_attr_leaf_entry_t)
-					+ xfs_attr3_leaf_hdr_size(leaf));
+If we see this, flag the xattr structure for optimization so that it
+gets rebuilt.
 
-Upon enabling quite a lot more debugging code, I narrowed this down to
-fsstress trying to set a local extended attribute with namelen=3 and
-valuelen=71.  This results in an entry size of 80 bytes.
-
-At the start of xfs_attr3_leaf_add_work, the freemap looks like this:
-
-i 0 base 448 size 0 rhs 448 count 46
-i 1 base 388 size 132 rhs 448 count 46
-i 2 base 2120 size 4 rhs 448 count 46
-firstused = 520
-
-where "rhs" is the first byte past the end of the leaf entry array.
-This is inconsistent -- the entries array ends at byte 448, but
-freemap[1] says there's free space starting at byte 388!
-
-By the end of the function, the freemap is in worse shape:
-
-i 0 base 456 size 0 rhs 456 count 47
-i 1 base 388 size 52 rhs 456 count 47
-i 2 base 2120 size 4 rhs 456 count 47
-firstused = 440
-
-Important note: 388 is not aligned with the entries array element size
-of 8 bytes.
-
-Based on the incorrect freemap, the name area starts at byte 440, which
-is below the end of the entries array!  That's why the assertion
-triggers and the filesystem shuts down.
-
-How did we end up here?  First, recall from the previous patch that the
-freemap array in an xattr leaf block is not intended to be a
-comprehensive map of all free space in the leaf block.  In other words,
-it's perfectly legal to have a leaf block with:
-
- * 376 bytes in use by the entries array
- * freemap[0] has [base = 376, size = 8]
- * freemap[1] has [base = 388, size = 1500]
- * the space between 376 and 388 is free, but the freemap stopped
-   tracking that some time ago
-
-If we add one xattr, the entries array grows to 384 bytes, and
-freemap[0] becomes [base = 384, size = 0].  So far, so good.  But if we
-add a second xattr, the entries array grows to 392 bytes, and freemap[0]
-gets pushed up to [base = 392, size = 0].  This is bad, because
-freemap[1] hasn't been updated, and now the entries array and the free
-space claim the same space.
-
-The fix here is to adjust all freemap entries so that none of them
-collide with the entries array.  Note that this fix relies on commit
-2a2b5932db6758 ("xfs: fix attr leaf header freemap.size underflow") and
-the previous patch that resets zero length freemap entries to have
-base = 0.
-
-Cc: <stable@vger.kernel.org> # v2.6.12
-Fixes: 1da177e4c3f415 ("Linux-2.6.12-rc2")
+Cc: <stable@vger.kernel.org> # v4.15
+Fixes: 13791d3b833428 ("xfs: scrub extended attribute leaf space")
 Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
 ---
- fs/xfs/libxfs/xfs_attr_leaf.c |   36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+ fs/xfs/scrub/attr.c |   54 ++++++++++++++++++++++++++-------------------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
 
-diff --git a/fs/xfs/libxfs/xfs_attr_leaf.c b/fs/xfs/libxfs/xfs_attr_leaf.c
-index 33c6c468ad8d55..b858e3c2ad50a2 100644
---- a/fs/xfs/libxfs/xfs_attr_leaf.c
-+++ b/fs/xfs/libxfs/xfs_attr_leaf.c
-@@ -1476,6 +1476,7 @@ xfs_attr3_leaf_add_work(
- 	struct xfs_attr_leaf_name_local *name_loc;
- 	struct xfs_attr_leaf_name_remote *name_rmt;
- 	struct xfs_mount	*mp;
-+	int			old_end, new_end;
- 	int			tmp;
- 	int			i;
+diff --git a/fs/xfs/scrub/attr.c b/fs/xfs/scrub/attr.c
+index 708334f9b2bd13..ef299be01de5ea 100644
+--- a/fs/xfs/scrub/attr.c
++++ b/fs/xfs/scrub/attr.c
+@@ -287,32 +287,6 @@ xchk_xattr_set_map(
+ 	return ret;
+ }
  
-@@ -1568,17 +1569,36 @@ xfs_attr3_leaf_add_work(
- 	if (be16_to_cpu(entry->nameidx) < ichdr->firstused)
- 		ichdr->firstused = be16_to_cpu(entry->nameidx);
+-/*
+- * Check the leaf freemap from the usage bitmap.  Returns false if the
+- * attr freemap has problems or points to used space.
+- */
+-STATIC bool
+-xchk_xattr_check_freemap(
+-	struct xfs_scrub		*sc,
+-	struct xfs_attr3_icleaf_hdr	*leafhdr)
+-{
+-	struct xchk_xattr_buf		*ab = sc->buf;
+-	unsigned int			mapsize = sc->mp->m_attr_geo->blksize;
+-	int				i;
+-
+-	/* Construct bitmap of freemap contents. */
+-	bitmap_zero(ab->freemap, mapsize);
+-	for (i = 0; i < XFS_ATTR_LEAF_MAPSIZE; i++) {
+-		if (!xchk_xattr_set_map(sc, ab->freemap,
+-				leafhdr->freemap[i].base,
+-				leafhdr->freemap[i].size))
+-			return false;
+-	}
+-
+-	/* Look for bits that are set in freemap and are marked in use. */
+-	return !bitmap_intersects(ab->freemap, ab->usedmap, mapsize);
+-}
+-
+ /*
+  * Check this leaf entry's relations to everything else.
+  * Returns the number of bytes used for the name/value data.
+@@ -403,6 +377,7 @@ xchk_xattr_block(
  
--	ASSERT(ichdr->firstused >= ichdr->count * sizeof(xfs_attr_leaf_entry_t)
--					+ xfs_attr3_leaf_hdr_size(leaf));
--	tmp = (ichdr->count - 1) * sizeof(xfs_attr_leaf_entry_t)
--					+ xfs_attr3_leaf_hdr_size(leaf);
-+	new_end = ichdr->count * sizeof(struct xfs_attr_leaf_entry) +
-+					xfs_attr3_leaf_hdr_size(leaf);
-+	old_end = new_end - sizeof(struct xfs_attr_leaf_entry);
+ 	*last_checked = blk->blkno;
+ 	bitmap_zero(ab->usedmap, mp->m_attr_geo->blksize);
++	bitmap_zero(ab->freemap, mp->m_attr_geo->blksize);
+ 
+ 	/* Check all the padding. */
+ 	if (xfs_has_crc(ds->sc->mp)) {
+@@ -449,6 +424,9 @@ xchk_xattr_block(
+ 	if ((char *)&entries[leafhdr.count] > (char *)leaf + leafhdr.firstused)
+ 		xchk_da_set_corrupt(ds, level);
+ 
++	if (ds->sc->sm->sm_flags & XFS_SCRUB_OFLAG_CORRUPT)
++		goto out;
 +
-+	ASSERT(ichdr->firstused >= new_end);
+ 	buf_end = (char *)bp->b_addr + mp->m_attr_geo->blksize;
+ 	for (i = 0, ent = entries; i < leafhdr.count; ent++, i++) {
+ 		/* Mark the leaf entry itself. */
+@@ -467,7 +445,29 @@ xchk_xattr_block(
+ 			goto out;
+ 	}
  
- 	for (i = 0; i < XFS_ATTR_LEAF_MAPSIZE; i++) {
--		if (ichdr->freemap[i].base == tmp) {
--			ichdr->freemap[i].base += sizeof(xfs_attr_leaf_entry_t);
-+		int		diff = 0;
+-	if (!xchk_xattr_check_freemap(ds->sc, &leafhdr))
++	/* Construct bitmap of freemap contents. */
++	for (i = 0; i < XFS_ATTR_LEAF_MAPSIZE; i++) {
++		if (!xchk_xattr_set_map(ds->sc, ab->freemap,
++				leafhdr.freemap[i].base,
++				leafhdr.freemap[i].size))
++			xchk_da_set_corrupt(ds, level);
 +
-+		if (ichdr->freemap[i].base == old_end) {
-+			/*
-+			 * This freemap entry starts at the old end of the
-+			 * leaf entry array, so we need to adjust its base
-+			 * upward to accomodate the larger array.
-+			 */
-+			diff = sizeof(struct xfs_attr_leaf_entry);
-+		} else if (ichdr->freemap[i].size > 0 &&
-+			   ichdr->freemap[i].base < new_end) {
-+			/*
-+			 * This freemap entry starts in the space claimed by
-+			 * the new leaf entry.  Adjust its base upward to
-+			 * reflect that.
-+			 */
-+			diff = new_end - ichdr->freemap[i].base;
-+		}
++		/*
++		 * freemap entries with zero length and nonzero base can cause
++		 * problems with older kernels, so we mark these for preening
++		 * even though there's no inconsistency.
++		 */
++		if (leafhdr.freemap[i].size == 0 &&
++		    leafhdr.freemap[i].base > 0)
++			xchk_da_set_preen(ds, level);
 +
-+		if (diff) {
-+			ichdr->freemap[i].base += diff;
- 			ichdr->freemap[i].size -=
--				min_t(uint16_t, ichdr->freemap[i].size,
--						sizeof(xfs_attr_leaf_entry_t));
-+				min_t(uint16_t, ichdr->freemap[i].size, diff);
- 		}
++		if (ds->sc->sm->sm_flags & XFS_SCRUB_OFLAG_CORRUPT)
++			goto out;
++	}
++
++	/* Look for bits that are set in freemap and are marked in use. */
++	if (bitmap_intersects(ab->freemap, ab->usedmap,
++			mp->m_attr_geo->blksize))
+ 		xchk_da_set_corrupt(ds, level);
  
- 		/*
+ 	if (leafhdr.usedbytes != usedbytes)
 
 
