@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-210966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210967-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uPn6KvMncWniewAAu9opvQ
-	(envelope-from <stable+bounces-210966-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:24:35 +0100
+	id CN76CvcccWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210967-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:37:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3F75C1A2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:24:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872855B5DE
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 24ABDA4F875
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:27:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB40DA4FDA5
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F8F3806C0;
-	Wed, 21 Jan 2026 18:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86DE3A0B01;
+	Wed, 21 Jan 2026 18:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUnPQ/uz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GU+26Kl3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08653A89B8;
-	Wed, 21 Jan 2026 18:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738F735CBCD;
+	Wed, 21 Jan 2026 18:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019984; cv=none; b=juos5SZXnraBhZbcVrCotx2BFRcsOchmw3yvDl8TosDRG1jT+uqPMeNG6k/z3tbyqbS6ouGhHPWiMCtx3oLlhuvJQpKPrhQZtICgQdYeO9qwAhNBM8dgThYlm7ZCtivOrJkgd9ajkcpQMJSerKSoQqbs/cX8kttmvw4B5jEOtBg=
+	t=1769019988; cv=none; b=Fj7WsXa380lC+gcasMCgavDaitWNhJI2uqUyHJgJAzYTumEO61tIRfqAFdts3nWbukr95o8Z1KqR1i0OIiGl0podPl8URIyQ4wng/+ZQOEZXACmOzI62AmoARF44hbNBXnAZjmWqSTSDafjL3DzRoSL+Yo0Nhex2OWvqxrxYOR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019984; c=relaxed/simple;
-	bh=O6VtRZrDH9UpkBMlVG9R23vK2GhxrPK/VAu48xZHYsU=;
+	s=arc-20240116; t=1769019988; c=relaxed/simple;
+	bh=wwizCWxnD5O3/NAJujduiQXYsM9xUVYQGHl7rN2SW+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LVJi5+/VOLQ1I1maVgstArvjKYtdunQSr2BGcLjQhmO010TFC+Rrt9DDMcQJ5XMo0G7DdXAbpsZas9fFxTkPzIGm6hU4KFupPxuhSL3jJ7f95JF36hTapMx1jqzhw8cmxLyxpu97SndVrOHmG2Pg6wCQxthpN8KpyJJYQQKz3cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUnPQ/uz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B2FC4CEF1;
-	Wed, 21 Jan 2026 18:26:23 +0000 (UTC)
+	 MIME-Version; b=MhknNz3SPNL5EDxEy1TVeF7QUx/gkSsMl+/1a886fCSnNE6S8I/3FOaqXOUXBj/vUxA1loA9bQomSqLJQxmNNyBUJrF5O2XDX5k/0p4iHft9w7V24fYQ5P2R4ZgM731yEfl3lBJgnRoNFecKfJfBl/ZqEGe8sna1/NVQn4dNI/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GU+26Kl3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BDBC4CEF1;
+	Wed, 21 Jan 2026 18:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019984;
-	bh=O6VtRZrDH9UpkBMlVG9R23vK2GhxrPK/VAu48xZHYsU=;
+	s=korg; t=1769019988;
+	bh=wwizCWxnD5O3/NAJujduiQXYsM9xUVYQGHl7rN2SW+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUnPQ/uzUOtJzcYhbNju1uYVf+/P0eU3SxTfwDmudX4SKqCp83Q3df0PQ7OXWxCEH
-	 uJIVnNxxzaPg30jHb0F4/4iPPFNQI/LqkYmDAWmKzN1VbTeVA124s0srTcZp3oSiJv
-	 9sONQOPRxWvp43B84BPATulKdcycg4bWNo8gJEvg=
+	b=GU+26Kl32vzjdXW3moXw1YgsL636Hu1zEwqOvFFpXmnBqmhV2veb1KhBSu6c6oJ8T
+	 mMeEQDrEFWBGSFeE4zhdtrA+a6s2VscvjTtSAcJ7m0dWrwMxoCDLbdBSGMfRjPbaCP
+	 onzNI7sftK+rqgFMxba7FDORtMRh4bYcNk74uV/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1240b33467289f5ab50b@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+e8cb6691a7cf68256cb8@syzkaller.appspotmail.com,
+	Szymon Wilczek <swilczek.lx@gmail.com>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 025/198] ipv4: ip_tunnel: spread netdev_lockdep_set_classes()
-Date: Wed, 21 Jan 2026 19:14:13 +0100
-Message-ID: <20260121181419.460433123@linuxfoundation.org>
+Subject: [PATCH 6.18 026/198] can: etas_es58x: allow partial RX URB allocation to succeed
+Date: Wed, 21 Jan 2026 19:14:14 +0100
+Message-ID: <20260121181419.496475699@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -76,26 +77,27 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org,pengutronix.de];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210966-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210967-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,1240b33467289f5ab50b];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 1F3F75C1A2
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,e8cb6691a7cf68256cb8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,appspotmail.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 872855B5DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,87 +105,48 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Szymon Wilczek <swilczek.lx@gmail.com>
 
-[ Upstream commit 872ac785e7680dac9ec7f8c5ccd4f667f49d6997 ]
+[ Upstream commit b1979778e98569c1e78c2c7f16bb24d76541ab00 ]
 
-Inspired by yet another syzbot report.
+When es58x_alloc_rx_urbs() fails to allocate the requested number of
+URBs but succeeds in allocating some, it returns an error code.
+This causes es58x_open() to return early, skipping the cleanup label
+'free_urbs', which leads to the anchored URBs being leaked.
 
-IPv6 tunnels call netdev_lockdep_set_classes() for each tunnel type,
-while IPv4 currently centralizes netdev_lockdep_set_classes() call from
-ip_tunnel_init().
+As pointed out by maintainer Vincent Mailhol, the driver is designed
+to handle partial URB allocation gracefully. Therefore, partial
+allocation should not be treated as a fatal error.
 
-Make ip_tunnel_init() a macro, so that we have different lockdep
-classes per tunnel type.
+Modify es58x_alloc_rx_urbs() to return 0 if at least one URB has been
+allocated, restoring the intended behavior and preventing the leak
+in es58x_open().
 
-Fixes: 0bef512012b1 ("net: add netdev_lockdep_set_classes() to virtual drivers")
-Reported-by: syzbot+1240b33467289f5ab50b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/695d439f.050a0220.1c677c.0347.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260106172426.1760721-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8537257874e9 ("can: etas_es58x: add core support for ETAS ES58X CAN USB interfaces")
+Reported-by: syzbot+e8cb6691a7cf68256cb8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=e8cb6691a7cf68256cb8
+Signed-off-by: Szymon Wilczek <swilczek.lx@gmail.com>
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/20251223011732.39361-1-swilczek.lx@gmail.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_tunnels.h | 13 ++++++++++++-
- net/ipv4/ip_tunnel.c     |  5 ++---
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/net/can/usb/etas_es58x/es58x_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index ecae35512b9b4..4021e6a73e32b 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -19,6 +19,7 @@
- #include <net/rtnetlink.h>
- #include <net/lwtunnel.h>
- #include <net/dst_cache.h>
-+#include <net/netdev_lock.h>
+diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
+index adc91873c083f..6eeba9baa1317 100644
+--- a/drivers/net/can/usb/etas_es58x/es58x_core.c
++++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
+@@ -1736,7 +1736,7 @@ static int es58x_alloc_rx_urbs(struct es58x_device *es58x_dev)
+ 	dev_dbg(dev, "%s: Allocated %d rx URBs each of size %u\n",
+ 		__func__, i, rx_buf_len);
  
- #if IS_ENABLED(CONFIG_IPV6)
- #include <net/ipv6.h>
-@@ -372,7 +373,17 @@ static inline void ip_tunnel_init_flow(struct flowi4 *fl4,
- 	fl4->flowi4_flags = flow_flags;
+-	return ret;
++	return 0;
  }
  
--int ip_tunnel_init(struct net_device *dev);
-+int __ip_tunnel_init(struct net_device *dev);
-+#define ip_tunnel_init(DEV)			\
-+({						\
-+	struct net_device *__dev = (DEV);	\
-+	int __res = __ip_tunnel_init(__dev);	\
-+						\
-+	if (!__res)				\
-+		netdev_lockdep_set_classes(__dev);\
-+	__res;					\
-+})
-+
- void ip_tunnel_uninit(struct net_device *dev);
- void  ip_tunnel_dellink(struct net_device *dev, struct list_head *head);
- struct net *ip_tunnel_get_link_net(const struct net_device *dev);
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 158a30ae7c5f2..50d0f5fe4e4c6 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -1281,7 +1281,7 @@ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
- }
- EXPORT_SYMBOL_GPL(ip_tunnel_changelink);
- 
--int ip_tunnel_init(struct net_device *dev)
-+int __ip_tunnel_init(struct net_device *dev)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
- 	struct iphdr *iph = &tunnel->parms.iph;
-@@ -1308,10 +1308,9 @@ int ip_tunnel_init(struct net_device *dev)
- 
- 	if (tunnel->collect_md)
- 		netif_keep_dst(dev);
--	netdev_lockdep_set_classes(dev);
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(ip_tunnel_init);
-+EXPORT_SYMBOL_GPL(__ip_tunnel_init);
- 
- void ip_tunnel_uninit(struct net_device *dev)
- {
+ /**
 -- 
 2.51.0
 
