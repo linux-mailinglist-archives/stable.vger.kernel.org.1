@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-210786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJSHFtkQcWlEcgAAu9opvQ
-	(envelope-from <stable+bounces-210786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:46:01 +0100
+	id QPXgL5cNcWlEcgAAu9opvQ
+	(envelope-from <stable+bounces-210787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5905AB8C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:46:01 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8985A902
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 571477C0BE3
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:46:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A3B6B7C2D56
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD4943900C;
-	Wed, 21 Jan 2026 15:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CB741C316;
+	Wed, 21 Jan 2026 15:44:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB20329E64
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 15:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4139D38BDD4
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 15:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769009832; cv=none; b=PAKf2yzvvW69AT7NL6tbLjBOzjsSbBd4sWTfO45MTlOtX1bng5lDl+uodRRjeeGyU57KwsRHK4srUdPXWOnZ96smgnbcOMx7fV/jNQOpKERiSHnJ9oosT/xAFsV0BQH30ptxO4A4YFOlJ7iBmzdOeXzXuJTp21zHF89z9rWKZeU=
+	t=1769010268; cv=none; b=V8vQpDnwEOPgzMGs2/VaIrK4iF4ORS3qYegaG4t3JpjKGfTXYKaCE/PwaPJ7um4BQTDpP5EwB9DCVlwMCiggkiTXtmw+45a7LCX4bPAwLY8uRlg5PL7rZIYYfx+8eZynhKyn6BU6fMYlISLcBuPHcvS7dszU/LmnoG7lnSE83oE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769009832; c=relaxed/simple;
-	bh=KW3T0r+XxoYdzNapxqIVa/0+pNnxjuzyXoLXueLYcl0=;
+	s=arc-20240116; t=1769010268; c=relaxed/simple;
+	bh=k0CKwpUw5TEZq6srR4eVPhA9a2+nZic8Ra2HB/lE6nI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z8+ozz43xMisyUHDdfCY5KOPfhRLApHE9WNga63BuXnT/zcE8HLx0gIHZxp5rCdNQB8fS5hEmOKaP69NyPOabc9kgksac9TyPSWJ4RNXOuhM/vqmZc36IPTg642Vy65F66jaMRF2lVXEU34AYPJrYMiao9kjCrw38oMFTFHvP2s=
+	 Content-Type:Content-Disposition:In-Reply-To; b=XhVF9pyFmCTMvVyLkByy2LB0fW8CE1n/g/dbvjojUj1NhEf90GJ3g8Yd2KJYkWERwcE/WwPgDJv48E8k/bQv7r2txeNMiZKYyMKrmDmLJbF5nUKwZ8Vrb1clkVO+gbgZGPF8L7ETyZS1MtUb5xBScYGxrr7a/ipt07mf7NfiuHk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3AD861476;
-	Wed, 21 Jan 2026 07:37:02 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A15771476;
+	Wed, 21 Jan 2026 07:44:18 -0800 (PST)
 Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9351D3F632;
-	Wed, 21 Jan 2026 07:37:07 -0800 (PST)
-Date: Wed, 21 Jan 2026 15:37:02 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 057743F632;
+	Wed, 21 Jan 2026 07:44:23 -0800 (PST)
+Date: Wed, 21 Jan 2026 15:44:21 +0000
 From: Mark Rutland <mark.rutland@arm.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Joey Gouly <joey.gouly@arm.com>, linux-arm-kernel@lists.infradead.org,
-	david.spickett@arm.com, stable@vger.kernel.org,
+To: Joey Gouly <joey.gouly@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org, david.spickett@arm.com,
+	kevin.brodsky@arm.com, stable@vger.kernel.org,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>
 Subject: Re: [PATCH v1] arm64: poe: fix stale POR_EL0 values for ptrace
-Message-ID: <aXDynm0YGuNzi7B3@J2N7QTR9R3>
+Message-ID: <aXD0VUDsHxQbCegJ@J2N7QTR9R3>
 References: <20260121135639.1835784-1-joey.gouly@arm.com>
- <4f4b9dd9-02ed-4899-b17d-24415e50e5c3@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,7 +56,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4f4b9dd9-02ed-4899-b17d-24415e50e5c3@arm.com>
+In-Reply-To: <20260121135639.1835784-1-joey.gouly@arm.com>
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
@@ -67,12 +66,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210786-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210787-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
@@ -82,48 +81,123 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_DKIM_NA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 1C5905AB8C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 2E8985A902
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Jan 21, 2026 at 03:59:22PM +0100, Kevin Brodsky wrote:
-> On 21/01/2026 14:56, Joey Gouly wrote:
-> > If a process wrote to POR_EL0 and then crashed before a context switch
-> > happened, the coredump would contain an incorrect value for POR_EL0.
+Hi Joey,
+
+On Wed, Jan 21, 2026 at 01:56:39PM +0000, Joey Gouly wrote:
+> If a process wrote to POR_EL0 and then crashed before a context switch
+> happened, the coredump would contain an incorrect value for POR_EL0.
 > 
-> Isn't that also a problem if using ptrace(PTRACE_GETREGSET, REGSET_POE)?
+> The value read in poe_get() would be a stale value left in thread.por_el0.  Fix
+> this by reading the value from the system register, if the target thread is the
+> current thread.
+> 
+> This matches what gcs/fpsimd do.
+> 
+> Fixes: 175198199262 ("arm64/ptrace: add support for FEAT_POE")
+> Reported-by: David Spickett <david.spickett@arm.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
 
-In the case of manipulating a tracee (i.e. target != current), the core
-code ensures that the tracee is stopped (has context-switched out, an
-hence has saved its registrer contents to memory) before the relevant
-regset functions can be called.
+I have a couple of comments below, but as-is this looks functionally
+correct to me. With or without the changes suggested below:
 
-> Just like for fpsimd, etc.
+Acked-by: Mark Rutland <mark.rutland@arm.com>
 
-Just FYI, The FPSIMD/SVE/SME registers are a special case relative to
-all the other regsets.
+> ---
+>  arch/arm64/include/asm/por.h | 2 ++
+>  arch/arm64/kernel/process.c  | 7 ++++++-
+>  arch/arm64/kernel/ptrace.c   | 5 +++++
+>  3 files changed, 13 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/include/asm/por.h b/arch/arm64/include/asm/por.h
+> index d913d5b529e4..46f1356837e2 100644
+> --- a/arch/arm64/include/asm/por.h
+> +++ b/arch/arm64/include/asm/por.h
+> @@ -31,4 +31,6 @@ static inline bool por_elx_allows_exec(u64 por, u8 pkey)
+>  	return perm & POE_X;
+>  }
+>  
+> +void poe_preserve_current_state(void);
 
-The FPSIMD/SVE/SME registers eagerly saved to memory (and so when a task
-is scheduled out, the value in memory will be up-to-date), but they're
-lazily restored (so the value in registers can be transiently stale
-while the task is running), and there's a special case when scheduling a
-task in where we attempt to spot if the CPU registers happen to be
-up-to-date with the task.
+Is it possible to have a static inline here, i.e.
 
-The gist of this is that when manipulating the FPSIMD/SVE/SME regsets of
-a task:
+	static inline void poe_preserve_current_state(void)
+	{
+		current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+	}
 
-* For reads, we know that the value in memory is up-to-date unless the
-  task is the current task.
+... or will that cause some header dependency problem?
 
-* For writes (which can only occur for a tracee which is not the current
-  task), we need to update some tracking data to prevent context-switch
-  from reusing stale values on a CPU. That's what
-  fpsimd_flush_task_state() does.
+If we can have this as a static inline, we can use it everywhere
+consistently, and avoid needing a function call for a trivial number of
+instructions.
 
-Pretty much all other regsets don't need the "flush" on writes, since
-the value in memory will be loaded when the task is next scheduled in.
+Otherwise, see below for another option.
+
+> +
+>  #endif /* _ASM_ARM64_POR_H */
+> diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+> index 489554931231..400182099784 100644
+> --- a/arch/arm64/kernel/process.c
+> +++ b/arch/arm64/kernel/process.c
+> @@ -665,12 +665,17 @@ static int do_set_tsc_mode(unsigned int val)
+>  	return 0;
+>  }
+>  
+> +void poe_preserve_current_state(void)
+> +{
+> +	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+> +}
+> +
+>  static void permission_overlay_switch(struct task_struct *next)
+>  {
+>  	if (!system_supports_poe())
+>  		return;
+>  
+> -	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+> +	poe_preserve_current_state();
+>  	if (current->thread.por_el0 != next->thread.por_el0) {
+>  		write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
+>  		/*
+> diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
+> index b9bdd83fbbca..276d8ee630cd 100644
+> --- a/arch/arm64/kernel/ptrace.c
+> +++ b/arch/arm64/kernel/ptrace.c
+> @@ -37,6 +37,7 @@
+>  #include <asm/gcs.h>
+>  #include <asm/mte.h>
+>  #include <asm/pointer_auth.h>
+> +#include <asm/por.h>
+>  #include <asm/stacktrace.h>
+>  #include <asm/syscall.h>
+>  #include <asm/traps.h>
+> @@ -1486,6 +1487,10 @@ static int poe_get(struct task_struct *target,
+>  	if (!system_supports_poe())
+>  		return -EINVAL;
+>  
+> +	if (target == current) {
+> +		poe_preserve_current_state();
+> +	}
+
+If we can't do the static inline, it might be best to just open code the
+read here, i.e. make this:
+
+	if (target == current)
+		current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
+
+... since permission_overlay_switch() writes the register directly,
+we're not really gaining abstraction by factoring this out. Open coding
+would make the diff a bit smaller, and avoid the function call.
+
+That all said, this is functionally correct either way, so if Catalin or
+Will disagree, go with whatever they prefer!
 
 Mark.
 
