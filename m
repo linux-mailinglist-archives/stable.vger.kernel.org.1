@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-210862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210980-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJ5BHz00cWlQfQAAu9opvQ
-	(envelope-from <stable+bounces-210862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:17:01 +0100
+	id WIoNGlYucWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-210980-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:51:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A1615CF9B
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:17:01 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id C953C5C933
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:51:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 98D9A7667F5
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 13F2BB24299
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18D038BDB3;
-	Wed, 21 Jan 2026 18:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88A13A9D85;
+	Wed, 21 Jan 2026 18:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Y/PO4RB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfOCgwP2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2B833C19A;
-	Wed, 21 Jan 2026 18:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416853A901E;
+	Wed, 21 Jan 2026 18:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019637; cv=none; b=FYbqjQC0gnAP5PgCgMz6BxYJ/brMsjpZdlsI/fx0izbk9cmjIibV20QuRhpvL//nhuMjhu8B7EzMSZxinrp81jGqu4mND3A4h2ZDss2tl+v70qST4KS11QRsZyTkb9WrFcXqpYOGTS7/JVP5TMzz4jUdxwO6e3pPx1YgYWt9Sbs=
+	t=1769020032; cv=none; b=mOiQ4YhnInBwd2FHvYdviUp6OCF0JntlHUoxFGlu0stMMJNEtDvgUm7l1RM+wU1TKGIwWYTCqp2UZQEkZC1+aIhUPWXDt4AixQo97q+XS5WKUVCWEAFik3bvZ5/GbF0ELwKuxS2FZDC0T1qEZYf2NV5uPMsfHnNp5/vExp14snY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019637; c=relaxed/simple;
-	bh=Lp4Jc0Tajp6cqXFBgiKY4rrFqSBzTcjoSFNYL/p8cmE=;
+	s=arc-20240116; t=1769020032; c=relaxed/simple;
+	bh=NjgU90UxxGDxHGOQu+sFQ6OPpjU1HUSJA63Rnz7YUsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZuiKdxn6v2T7rW5t5Vht5ftNzhimzV58mX6PwRs0hJCDHWFaBsoNO4Vv31ZrOgVrF4UTYhotQ3zeThFdKkZN8gtiVyx9R+rS84hJlzPppJ0oaLPVOXgvtTECQgPaXz75o6Bj7IOPrvzzU+vnpIxT82MPsgEEvBD26vDPY3zKlU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Y/PO4RB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B055CC4CEF1;
-	Wed, 21 Jan 2026 18:20:36 +0000 (UTC)
+	 MIME-Version; b=Etmb+teGcllpF5moO7/vemZMN6y1x5yuuunCeISzc3qhyC8068PHgpzeZNjTSq+UPNcnXvmO38W/afO/U/MwrAxma73mGiH0ifo4hfxx8UKZglQWXMbVhKK8pshUpIziEO13I9TUEKJ0G5+Kk+9I482Gqq03rHfWh90DRbakg8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfOCgwP2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C1EC16AAE;
+	Wed, 21 Jan 2026 18:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019637;
-	bh=Lp4Jc0Tajp6cqXFBgiKY4rrFqSBzTcjoSFNYL/p8cmE=;
+	s=korg; t=1769020032;
+	bh=NjgU90UxxGDxHGOQu+sFQ6OPpjU1HUSJA63Rnz7YUsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Y/PO4RByl5yKv14HqVUyDqlZ6YXsm1ZkVZA7RWAIfpCr3kZu0i1/DVa+/G/YToMq
-	 gjxOryXLfdBkPTmyGV+eUVQB4s1boFWKwpm2+NhjWbMUoQwWyeNKtz3eLnllBcp5pB
-	 0fhSDfB0uaE0HJGtuI7IGeZPF9I8yTJDCW5pKTVo=
+	b=IfOCgwP2lloadCv4ly0YSbkKUWefGUVDstWPw7rVvCpP58ZWym0vd6Umw2dP7IK6o
+	 ykMmw/DlVn0hO0NarTtfzHUkjsV2Wtx7yxy4iOas67Gxyn1uIDbFSszmqO4omvheBr
+	 l5uwcZfmvf36MG24nbW3wq82tQTA4lsch4SdwyPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/139] macvlan: fix possible UAF in macvlan_forward_source()
+Subject: [PATCH 6.18 040/198] net/mlx5e: Dont store mlx5e_priv in mlx5e_dev devlink priv
 Date: Wed, 21 Jan 2026 19:14:28 +0100
-Message-ID: <20260121181412.185294173@linuxfoundation.org>
+Message-ID: <20260121181419.992282434@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,142 +66,184 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210980-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210862-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7182fbe91e58602ec1fe];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 2A1615CF9B
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: C953C5C933
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-[ Upstream commit 7470a7a63dc162f07c26dbf960e41ee1e248d80e ]
+[ Upstream commit 123eda2e5b1638e298e3a66bb1e64a8da92de5e1 ]
 
-Add RCU protection on (struct macvlan_source_entry)->vlan.
+mlx5e_priv is an unstable structure that can be memset(0) if profile
+attaching fails, mlx5e_priv in mlx5e_dev devlink private is used to
+reference the netdev and mdev associated with that struct. Instead,
+store netdev directly into mlx5e_dev and get mdev from the containing
+mlx5_adev aux device structure.
 
-Whenever macvlan_hash_del_source() is called, we must clear
-entry->vlan pointer before RCU grace period starts.
+This fixes a kernel oops in mlx5e_remove when switchdev mode fails due
+to change profile failure.
 
-This allows macvlan_forward_source() to skip over
-entries queued for freeing.
+$ devlink dev eswitch set pci/0000:00:03.0 mode switchdev
+Error: mlx5_core: Failed setting eswitch to offloads.
+dmesg:
+workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
+mlx5_core 0012:03:00.1: mlx5e_netdev_init_profile:6214:(pid 37199): mlx5e_priv_init failed, err=-12
+mlx5_core 0012:03:00.1 gpu3rdma1: mlx5e_netdev_change_profile: new profile init failed, -12
+workqueue: Failed to create a rescuer kthread for wq "mlx5e": -EINTR
+mlx5_core 0012:03:00.1: mlx5e_netdev_init_profile:6214:(pid 37199): mlx5e_priv_init failed, err=-12
+mlx5_core 0012:03:00.1 gpu3rdma1: mlx5e_netdev_change_profile: failed to rollback to orig profile, -12
 
-Note that macvlan_dev are already RCU protected, as they
-are embedded in a standard netdev (netdev_priv(ndev)).
+$ devlink dev reload pci/0000:00:03.0 ==> oops
 
-Fixes: 79cf79abce71 ("macvlan: add source mode")
-Reported-by: syzbot+7182fbe91e58602ec1fe@syzkaller.appspotmail.com
-https: //lore.kernel.org/netdev/695fb1e8.050a0220.1c677c.039f.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260108133651.1130486-1-edumazet@google.com
+BUG: kernel NULL pointer dereference, address: 0000000000000520
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 3 UID: 0 PID: 521 Comm: devlink Not tainted 6.18.0-rc5+ #117 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+RIP: 0010:mlx5e_remove+0x68/0x130
+RSP: 0018:ffffc900034838f0 EFLAGS: 00010246
+RAX: ffff88810283c380 RBX: ffff888101874400 RCX: ffffffff826ffc45
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffff888102d789c0 R08: ffff8881007137f0 R09: ffff888100264e10
+R10: ffffc90003483898 R11: ffffc900034838a0 R12: ffff888100d261a0
+R13: ffff888100d261a0 R14: ffff8881018749a0 R15: ffff888101874400
+FS:  00007f8565fea740(0000) GS:ffff88856a759000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000520 CR3: 000000010b11a004 CR4: 0000000000370ef0
+Call Trace:
+ <TASK>
+ device_release_driver_internal+0x19c/0x200
+ bus_remove_device+0xc6/0x130
+ device_del+0x160/0x3d0
+ ? devl_param_driverinit_value_get+0x2d/0x90
+ mlx5_detach_device+0x89/0xe0
+ mlx5_unload_one_devl_locked+0x3a/0x70
+ mlx5_devlink_reload_down+0xc8/0x220
+ devlink_reload+0x7d/0x260
+ devlink_nl_reload_doit+0x45b/0x5a0
+ genl_family_rcv_msg_doit+0xe8/0x140
+
+Fixes: ee75f1fc44dd ("net/mlx5e: Create separate devlink instance for ethernet auxiliary device")
+Fixes: c4d7eb57687f ("net/mxl5e: Add change profile method")
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://patch.msgid.link/20260108212657.25090-3-saeed@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en.h  |  2 +-
+ .../net/ethernet/mellanox/mlx5/core/en_main.c | 20 ++++++++++---------
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index cf18e66de142c..ee59b57dfb53a 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -58,7 +58,7 @@ struct macvlan_port {
- 
- struct macvlan_source_entry {
- 	struct hlist_node	hlist;
--	struct macvlan_dev	*vlan;
-+	struct macvlan_dev __rcu *vlan;
- 	unsigned char		addr[6+2] __aligned(sizeof(u16));
- 	struct rcu_head		rcu;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+index cfdbeb21b61cf..bc1b343f89a25 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+@@ -963,7 +963,7 @@ struct mlx5e_priv {
  };
-@@ -145,7 +145,7 @@ static struct macvlan_source_entry *macvlan_hash_lookup_source(
  
- 	hlist_for_each_entry_rcu(entry, h, hlist, lockdep_rtnl_is_held()) {
- 		if (ether_addr_equal_64bits(entry->addr, addr) &&
--		    entry->vlan == vlan)
-+		    rcu_access_pointer(entry->vlan) == vlan)
- 			return entry;
- 	}
- 	return NULL;
-@@ -167,7 +167,7 @@ static int macvlan_hash_add_source(struct macvlan_dev *vlan,
- 		return -ENOMEM;
+ struct mlx5e_dev {
+-	struct mlx5e_priv *priv;
++	struct net_device *netdev;
+ 	struct devlink_port dl_port;
+ };
  
- 	ether_addr_copy(entry->addr, addr);
--	entry->vlan = vlan;
-+	RCU_INIT_POINTER(entry->vlan, vlan);
- 	h = &port->vlan_source_hash[macvlan_eth_hash(addr)];
- 	hlist_add_head_rcu(&entry->hlist, h);
- 	vlan->macaddr_count++;
-@@ -186,6 +186,7 @@ static void macvlan_hash_add(struct macvlan_dev *vlan)
- 
- static void macvlan_hash_del_source(struct macvlan_source_entry *entry)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 3850c267dfc02..dcf1cd3488709 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -6635,8 +6635,8 @@ static int _mlx5e_resume(struct auxiliary_device *adev)
  {
-+	RCU_INIT_POINTER(entry->vlan, NULL);
- 	hlist_del_rcu(&entry->hlist);
- 	kfree_rcu(entry, rcu);
- }
-@@ -389,7 +390,7 @@ static void macvlan_flush_sources(struct macvlan_port *port,
+ 	struct mlx5_adev *edev = container_of(adev, struct mlx5_adev, adev);
+ 	struct mlx5e_dev *mlx5e_dev = auxiliary_get_drvdata(adev);
+-	struct mlx5e_priv *priv = mlx5e_dev->priv;
+-	struct net_device *netdev = priv->netdev;
++	struct mlx5e_priv *priv = netdev_priv(mlx5e_dev->netdev);
++	struct net_device *netdev = mlx5e_dev->netdev;
+ 	struct mlx5_core_dev *mdev = edev->mdev;
+ 	struct mlx5_core_dev *pos, *to;
+ 	int err, i;
+@@ -6682,10 +6682,11 @@ static int mlx5e_resume(struct auxiliary_device *adev)
+ 
+ static int _mlx5e_suspend(struct auxiliary_device *adev, bool pre_netdev_reg)
+ {
++	struct mlx5_adev *edev = container_of(adev, struct mlx5_adev, adev);
+ 	struct mlx5e_dev *mlx5e_dev = auxiliary_get_drvdata(adev);
+-	struct mlx5e_priv *priv = mlx5e_dev->priv;
+-	struct net_device *netdev = priv->netdev;
+-	struct mlx5_core_dev *mdev = priv->mdev;
++	struct mlx5e_priv *priv = netdev_priv(mlx5e_dev->netdev);
++	struct net_device *netdev = mlx5e_dev->netdev;
++	struct mlx5_core_dev *mdev = edev->mdev;
+ 	struct mlx5_core_dev *pos;
  	int i;
  
- 	hash_for_each_safe(port->vlan_source_hash, i, next, entry, hlist)
--		if (entry->vlan == vlan)
-+		if (rcu_access_pointer(entry->vlan) == vlan)
- 			macvlan_hash_del_source(entry);
- 
- 	vlan->macaddr_count = 0;
-@@ -432,9 +433,14 @@ static bool macvlan_forward_source(struct sk_buff *skb,
- 
- 	hlist_for_each_entry_rcu(entry, h, hlist) {
- 		if (ether_addr_equal_64bits(entry->addr, addr)) {
--			if (entry->vlan->flags & MACVLAN_FLAG_NODST)
-+			struct macvlan_dev *vlan = rcu_dereference(entry->vlan);
-+
-+			if (!vlan)
-+				continue;
-+
-+			if (vlan->flags & MACVLAN_FLAG_NODST)
- 				consume = true;
--			macvlan_forward_source_one(skb, entry->vlan);
-+			macvlan_forward_source_one(skb, vlan);
- 		}
+@@ -6746,11 +6747,11 @@ static int _mlx5e_probe(struct auxiliary_device *adev)
+ 		goto err_devlink_port_unregister;
  	}
+ 	SET_NETDEV_DEVLINK_PORT(netdev, &mlx5e_dev->dl_port);
++	mlx5e_dev->netdev = netdev;
  
-@@ -1676,7 +1682,7 @@ static int macvlan_fill_info_macaddr(struct sk_buff *skb,
- 	struct macvlan_source_entry *entry;
+ 	mlx5e_build_nic_netdev(netdev);
  
- 	hlist_for_each_entry_rcu(entry, h, hlist, lockdep_rtnl_is_held()) {
--		if (entry->vlan != vlan)
-+		if (rcu_access_pointer(entry->vlan) != vlan)
- 			continue;
- 		if (nla_put(skb, IFLA_MACVLAN_MACADDR, ETH_ALEN, entry->addr))
- 			return 1;
+ 	priv = netdev_priv(netdev);
+-	mlx5e_dev->priv = priv;
+ 
+ 	priv->profile = profile;
+ 	priv->ppriv = NULL;
+@@ -6813,7 +6814,8 @@ static void _mlx5e_remove(struct auxiliary_device *adev)
+ {
+ 	struct mlx5_adev *edev = container_of(adev, struct mlx5_adev, adev);
+ 	struct mlx5e_dev *mlx5e_dev = auxiliary_get_drvdata(adev);
+-	struct mlx5e_priv *priv = mlx5e_dev->priv;
++	struct net_device *netdev = mlx5e_dev->netdev;
++	struct mlx5e_priv *priv = netdev_priv(netdev);
+ 	struct mlx5_core_dev *mdev = edev->mdev;
+ 
+ 	mlx5_core_uplink_netdev_set(mdev, NULL);
+@@ -6822,8 +6824,8 @@ static void _mlx5e_remove(struct auxiliary_device *adev)
+ 	 * if it's from legacy mode. If from switchdev mode, it
+ 	 * is already unregistered before changing to NIC profile.
+ 	 */
+-	if (priv->netdev->reg_state == NETREG_REGISTERED) {
+-		unregister_netdev(priv->netdev);
++	if (netdev->reg_state == NETREG_REGISTERED) {
++		unregister_netdev(netdev);
+ 		_mlx5e_suspend(adev, false);
+ 	} else {
+ 		struct mlx5_core_dev *pos;
 -- 
 2.51.0
 
