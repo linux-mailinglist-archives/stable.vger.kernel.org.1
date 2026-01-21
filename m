@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-210923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qHypLE07cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-210923-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:47:09 +0100
+	id 2LZpIJQ0cWlQfQAAu9opvQ
+	(envelope-from <stable+bounces-211117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:18:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA3C5D8E7
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:47:09 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DFF5D022
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 63A9074A08C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:23 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 47C5F86BB39
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9390D3A35B9;
-	Wed, 21 Jan 2026 18:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F673C1FD2;
+	Wed, 21 Jan 2026 18:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ED2U097D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7WJ4Y/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0746A33DECE;
-	Wed, 21 Jan 2026 18:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085C63C1987;
+	Wed, 21 Jan 2026 18:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019843; cv=none; b=Ig6Fxy2qR/Dgp8ksmlJ6iZxSZNFuxBeo0lj2LoiIhadgzuXv0d4mBoFPqXI5ifoaTjOPk3LzLO1s3bsthusN5Il5D95rmfGiaq4/1aQU5R2n6/DqKESX2DZN8QPQnKJdHUZu51ItT17pREkCO/vVmWHdJBSUnI2QqX1arAHn1Xo=
+	t=1769020495; cv=none; b=Ab3C3Jue81u9Vhrln4ya9Z2Ncwe8Fwbb2/Y+JqRWuhCsMbr33b6Lt201ouPgXRJvS8CLU7DpXbEO5eRM+EkvDNCpqx9e20+sE201AQxdcXTmOxVmT+BRn8b40ZTIm3K9pe9NMIhRyhnUgofkvBsudXEdKSgYkiYdbCIAwrF9KXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019843; c=relaxed/simple;
-	bh=g8VQNKbmB7e6k2peaEpth8aZzgQJw5aKWFlTCSjHwC4=;
+	s=arc-20240116; t=1769020495; c=relaxed/simple;
+	bh=8zBnjBz2UNFV6HEeuqnaDqCJSj6nOK9HhIWxrtLVg5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vy+mJs0rvcRBuQ69YWCX9fokQmpEF8gKlPFQtdL5Su6gokizOUUmowqhDFUZqrgttFAiDJpQGjez4EvUxKc4NcvnsyIROWllN5i8T20Im1mvVca4MUoYHYd7AUwYRqPZbvj+GxMjBpYMKOJyoKbh71UVeBsF95yVNollQWCoRNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ED2U097D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DE8C4CEF1;
-	Wed, 21 Jan 2026 18:24:02 +0000 (UTC)
+	 MIME-Version; b=AUe/bVdOI5YtKFjP9z6B2U1A1Qy+pnmR6M51wUqbP7B7gYRYI9pw+LNEl1KOCzuz0nH4bEeTJUm4tKhVJd6fjxfSDD6/yjCah/qUkqBaKZvr6DTVfDAkKl+0ztMrctlrJSntScEJUjlwxDW1/vOqQZxXWERFheQuLA6Fu61XYkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7WJ4Y/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F65CC4CEF1;
+	Wed, 21 Jan 2026 18:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019842;
-	bh=g8VQNKbmB7e6k2peaEpth8aZzgQJw5aKWFlTCSjHwC4=;
+	s=korg; t=1769020494;
+	bh=8zBnjBz2UNFV6HEeuqnaDqCJSj6nOK9HhIWxrtLVg5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ED2U097DcXBb68CiZuPySU3jNQSoET5gIiELT+zVmCl7yq14m8JY2rIpA6h6WZr32
-	 sTxvbHxY3kfFTOVRj1wzXVE34/ERAR6Xr8v6XWFXakaTCcKl0CIgKwZZAnyUqBBQsH
-	 qSwHzfkfaOUdkUF891Rp9j09EqmsgRT0j0zSKM+k=
+	b=d7WJ4Y/XNFuTzGGxOJB2ig6LqNLodCZLYqLz6nmXYDw8SQPJWTqXaZgck1ur28R7U
+	 hK3Uj33vSxdCiAxblhPcxLeIbjsQW82+BrMA3zidlRJdFPJkurQ87QDOThdbinBvD0
+	 dBaWeZvLLXdgKqOKj/czbCF1QcsONd4EAXVpk45I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Lixu <lixu.zhang@intel.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 122/139] HID: intel-ish-hid: Use dedicated unbound workqueues to prevent resume blocking
+	SeongJae Park <sj@kernel.org>,
+	JaeJoon Jung <rgbi3307@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 142/198] mm/damon/core: remove call_control in inactive contexts
 Date: Wed, 21 Jan 2026 19:16:10 +0100
-Message-ID: <20260121181415.844363022@linuxfoundation.org>
+Message-ID: <20260121181423.663508848@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,229 +74,134 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210923-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211117-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux-foundation.org];
+	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 7CA3C5D8E7
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 28DFF5D022
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Lixu <lixu.zhang@intel.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 0d30dae38fe01cd1de358c6039a0b1184689fe51 upstream.
+commit f9132fbc2e83baf2c45a77043672a63a675c9394 upstream.
 
-During suspend/resume tests with S2IDLE, some ISH functional failures were
-observed because of delay in executing ISH resume handler. Here
-schedule_work() is used from resume handler to do actual work.
-schedule_work() uses system_wq, which is a per CPU work queue. Although
-the queuing is not bound to a CPU, but it prefers local CPU of the caller,
-unless prohibited.
+If damon_call() is executed against a DAMON context that is not running,
+the function returns error while keeping the damon_call_control object
+linked to the context's call_controls list.  Let's suppose the object is
+deallocated after the damon_call(), and yet another damon_call() is
+executed against the same context.  The function tries to add the new
+damon_call_control object to the call_controls list, which still has the
+pointer to the previous damon_call_control object, which is deallocated.
+As a result, use-after-free happens.
 
-Users of this work queue are not supposed to queue long running work.
-But in practice, there are scenarios where long running work items are
-queued on other unbound workqueues, occupying the CPU. As a result, the
-ISH resume handler may not get a chance to execute in a timely manner.
+This can actually be triggered using the DAMON sysfs interface.  It is not
+easily exploitable since it requires the sysfs write permission and making
+a definitely weird file writes, though.  Please refer to the report for
+more details about the issue reproduction steps.
 
-In one scenario, one of the ish_resume_handler() executions was delayed
-nearly 1 second because another work item on an unbound workqueue occupied
-the same CPU. This delay causes ISH functionality failures.
+Fix the issue by making two changes.  Firstly, move the final
+kdamond_call() for cancelling all existing damon_call() requests from
+terminating DAMON context to be done before the ctx->kdamond reset.  This
+makes any code that sees NULL ctx->kdamond can safely assume the context
+may not access damon_call() requests anymore.  Secondly, let damon_call()
+to cleanup the damon_call_control objects that were added to the
+already-terminated DAMON context, before returning the error.
 
-A similar issue was previously observed where the ISH HID driver timed out
-while getting the HID descriptor during S4 resume in the recovery kernel,
-likely caused by the same workqueue contention problem.
-
-Create dedicated unbound workqueues for all ISH operations to allow work
-items to execute on any available CPU, eliminating CPU-specific bottlenecks
-and improving resume reliability under varying system loads. Also ISH has
-three different components, a bus driver which implements ISH protocols, a
-PCI interface layer and HID interface. Use one dedicated work queue for all
-of them.
-
-Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Link: https://lkml.kernel.org/r/20251231012315.75835-1-sj@kernel.org
+Fixes: 004ded6bee11 ("mm/damon: accept parallel damon_call() requests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: JaeJoon Jung <rgbi3307@gmail.com>
+Closes: https://lore.kernel.org/20251224094401.20384-1-rgbi3307@gmail.com
+Cc: <stable@vger.kernel.org> # 6.17.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/intel-ish-hid/ipc/ipc.c          |   21 ++++++++++++++++++++-
- drivers/hid/intel-ish-hid/ipc/pci-ish.c      |    2 +-
- drivers/hid/intel-ish-hid/ishtp-hid-client.c |    4 ++--
- drivers/hid/intel-ish-hid/ishtp/bus.c        |   18 +++++++++++++++++-
- drivers/hid/intel-ish-hid/ishtp/hbm.c        |    4 ++--
- drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h  |    3 +++
- include/linux/intel-ish-client-if.h          |    2 ++
- 7 files changed, 47 insertions(+), 7 deletions(-)
+ mm/damon/core.c |   33 +++++++++++++++++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/intel-ish-hid/ipc/ipc.c
-+++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
-@@ -627,7 +627,7 @@ static void	recv_ipc(struct ishtp_device
- 		if (!ishtp_dev) {
- 			ishtp_dev = dev;
- 		}
--		schedule_work(&fw_reset_work);
-+		queue_work(dev->unbound_wq, &fw_reset_work);
- 		break;
- 
- 	case MNG_RESET_NOTIFY_ACK:
-@@ -932,6 +932,21 @@ static const struct ishtp_hw_ops ish_hw_
- 	.dma_no_cache_snooping = _dma_no_cache_snooping
- };
- 
-+static struct workqueue_struct *devm_ishtp_alloc_workqueue(struct device *dev)
-+{
-+	struct workqueue_struct *wq;
-+
-+	wq = alloc_workqueue("ishtp_unbound_%d", WQ_UNBOUND, 0, dev->id);
-+	if (!wq)
-+		return NULL;
-+
-+	if (devm_add_action_or_reset(dev, (void (*)(void *))destroy_workqueue,
-+				     wq))
-+		return NULL;
-+
-+	return wq;
-+}
-+
- /**
-  * ish_dev_init() -Initialize ISH devoce
-  * @pdev: PCI device
-@@ -952,6 +967,10 @@ struct ishtp_device *ish_dev_init(struct
- 	if (!dev)
- 		return NULL;
- 
-+	dev->unbound_wq = devm_ishtp_alloc_workqueue(&pdev->dev);
-+	if (!dev->unbound_wq)
-+		return NULL;
-+
- 	dev->devc = &pdev->dev;
- 	ishtp_device_init(dev);
- 
---- a/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-+++ b/drivers/hid/intel-ish-hid/ipc/pci-ish.c
-@@ -381,7 +381,7 @@ static int __maybe_unused ish_resume(str
- 	ish_resume_device = device;
- 	dev->resume_flag = 1;
- 
--	schedule_work(&resume_work);
-+	queue_work(dev->unbound_wq, &resume_work);
- 
- 	return 0;
- }
---- a/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-+++ b/drivers/hid/intel-ish-hid/ishtp-hid-client.c
-@@ -858,7 +858,7 @@ static int hid_ishtp_cl_reset(struct ish
- 	hid_ishtp_trace(client_data, "%s hid_ishtp_cl %p\n", __func__,
- 			hid_ishtp_cl);
- 
--	schedule_work(&client_data->work);
-+	queue_work(ishtp_get_workqueue(cl_device), &client_data->work);
- 
- 	return 0;
- }
-@@ -900,7 +900,7 @@ static int hid_ishtp_cl_resume(struct de
- 
- 	hid_ishtp_trace(client_data, "%s hid_ishtp_cl %p\n", __func__,
- 			hid_ishtp_cl);
--	schedule_work(&client_data->resume_work);
-+	queue_work(ishtp_get_workqueue(cl_device), &client_data->resume_work);
- 	return 0;
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1426,6 +1426,35 @@ bool damon_is_running(struct damon_ctx *
+ 	return running;
  }
  
---- a/drivers/hid/intel-ish-hid/ishtp/bus.c
-+++ b/drivers/hid/intel-ish-hid/ishtp/bus.c
-@@ -541,7 +541,7 @@ void ishtp_cl_bus_rx_event(struct ishtp_
- 		return;
- 
- 	if (device->event_cb)
--		schedule_work(&device->event_work);
-+		queue_work(device->ishtp_dev->unbound_wq, &device->event_work);
- }
- 
- /**
-@@ -880,6 +880,22 @@ struct device *ishtp_get_pci_device(stru
- EXPORT_SYMBOL(ishtp_get_pci_device);
- 
- /**
-+ * ishtp_get_workqueue - Retrieve the workqueue associated with an ISHTP device
-+ * @cl_device: Pointer to the ISHTP client device structure
++/*
++ * damon_call_handle_inactive_ctx() - handle DAMON call request that added to
++ *				      an inactive context.
++ * @ctx:	The inactive DAMON context.
++ * @control:	Control variable of the call request.
 + *
-+ * Returns the workqueue_struct pointer (unbound_wq) associated with the given
-+ * ISHTP client device. This workqueue is typically used for scheduling work
-+ * related to the device.
++ * This function is called in a case that @control is added to @ctx but @ctx is
++ * not running (inactive).  See if @ctx handled @control or not, and cleanup
++ * @control if it was not handled.
 + *
-+ * Return: Pointer to struct workqueue_struct.
++ * Returns 0 if @control was handled by @ctx, negative error code otherwise.
 + */
-+struct workqueue_struct *ishtp_get_workqueue(struct ishtp_cl_device *cl_device)
++static int damon_call_handle_inactive_ctx(
++		struct damon_ctx *ctx, struct damon_call_control *control)
 +{
-+	return cl_device->ishtp_dev->unbound_wq;
++	struct damon_call_control *c;
++
++	mutex_lock(&ctx->call_controls_lock);
++	list_for_each_entry(c, &ctx->call_controls, list) {
++		if (c == control) {
++			list_del(&control->list);
++			mutex_unlock(&ctx->call_controls_lock);
++			return -EINVAL;
++		}
++	}
++	mutex_unlock(&ctx->call_controls_lock);
++	return 0;
 +}
-+EXPORT_SYMBOL(ishtp_get_workqueue);
 +
-+/**
-  * ishtp_trace_callback() - Return trace callback
-  * @cl_device: ISH-TP client device instance
-  *
---- a/drivers/hid/intel-ish-hid/ishtp/hbm.c
-+++ b/drivers/hid/intel-ish-hid/ishtp/hbm.c
-@@ -573,7 +573,7 @@ void ishtp_hbm_dispatch(struct ishtp_dev
+ /**
+  * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
+  * @ctx:	DAMON context to call the function for.
+@@ -1456,7 +1485,7 @@ int damon_call(struct damon_ctx *ctx, st
+ 	list_add_tail(&control->list, &ctx->call_controls);
+ 	mutex_unlock(&ctx->call_controls_lock);
+ 	if (!damon_is_running(ctx))
+-		return -EINVAL;
++		return damon_call_handle_inactive_ctx(ctx, control);
+ 	if (control->repeat)
+ 		return 0;
+ 	wait_for_completion(&control->completion);
+@@ -2704,13 +2733,13 @@ done:
+ 	if (ctx->ops.cleanup)
+ 		ctx->ops.cleanup(ctx);
+ 	kfree(ctx->regions_score_histogram);
++	kdamond_call(ctx, true);
  
- 		/* Start firmware loading process if it has loader capability */
- 		if (version_res->host_version_supported & ISHTP_SUPPORT_CAP_LOADER)
--			schedule_work(&dev->work_fw_loader);
-+			queue_work(dev->unbound_wq, &dev->work_fw_loader);
+ 	pr_debug("kdamond (%d) finishes\n", current->pid);
+ 	mutex_lock(&ctx->kdamond_lock);
+ 	ctx->kdamond = NULL;
+ 	mutex_unlock(&ctx->kdamond_lock);
  
- 		dev->version.major_version = HBM_MAJOR_VERSION;
- 		dev->version.minor_version = HBM_MINOR_VERSION;
-@@ -864,7 +864,7 @@ void	recv_hbm(struct ishtp_device *dev,
- 	dev->rd_msg_fifo_tail = (dev->rd_msg_fifo_tail + IPC_PAYLOAD_SIZE) %
- 		(RD_INT_FIFO_SIZE * IPC_PAYLOAD_SIZE);
- 	spin_unlock_irqrestore(&dev->rd_msg_spinlock, flags);
--	schedule_work(&dev->bh_hbm_work);
-+	queue_work(dev->unbound_wq, &dev->bh_hbm_work);
- eoi:
- 	return;
- }
---- a/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
-+++ b/drivers/hid/intel-ish-hid/ishtp/ishtp-dev.h
-@@ -166,6 +166,9 @@ struct ishtp_device {
- 	struct hbm_version version;
- 	int transfer_path; /* Choice of transfer path: IPC or DMA */
+-	kdamond_call(ctx, true);
+ 	damos_walk_cancel(ctx);
  
-+	/* Alloc a dedicated unbound workqueue for ishtp device */
-+	struct workqueue_struct *unbound_wq;
-+
- 	/* work structure for scheduling firmware loading tasks */
- 	struct work_struct work_fw_loader;
- 	/* waitq for waiting for command response from the firmware loader */
---- a/include/linux/intel-ish-client-if.h
-+++ b/include/linux/intel-ish-client-if.h
-@@ -87,6 +87,8 @@ bool ishtp_wait_resume(struct ishtp_devi
- ishtp_print_log ishtp_trace_callback(struct ishtp_cl_device *cl_device);
- /* Get device pointer of PCI device for DMA acces */
- struct device *ishtp_get_pci_device(struct ishtp_cl_device *cl_device);
-+/* Get the ISHTP workqueue */
-+struct workqueue_struct *ishtp_get_workqueue(struct ishtp_cl_device *cl_device);
- 
- struct ishtp_cl *ishtp_cl_allocate(struct ishtp_cl_device *cl_device);
- void ishtp_cl_free(struct ishtp_cl *cl);
+ 	mutex_lock(&damon_lock);
 
 
 
