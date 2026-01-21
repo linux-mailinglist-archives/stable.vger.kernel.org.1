@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-211012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEyhJl8wcWmcfAAAu9opvQ
-	(envelope-from <stable+bounces-211012-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:00:31 +0100
+	id GDd2A+ktcWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-210825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:50:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E2735CBA5
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:00:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7BA5C891
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:50:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 766CDAAC856
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:29:28 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 188078A6BA3
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AEBF331A77;
-	Wed, 21 Jan 2026 18:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC4C500965;
+	Wed, 21 Jan 2026 18:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fTTmyqx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yfwa4efY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5E739B4BB;
-	Wed, 21 Jan 2026 18:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB37243968;
+	Wed, 21 Jan 2026 18:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020141; cv=none; b=eqM4oojmkwuLga/UD58T+F/JctOPMZPT0RcilY/GeZYS2Am0NvanLTxFTMS+oYJ/WAkQ1RTeYXJx7sg9L/WeqQe9vdBTa/+EFJeoR1TpY4cJ/OGYZk6ckKJI8+j2qQ9Oz0cI1B6cUy07bLsY896Xg0DoEcrsCu0DID7q23DT1yc=
+	t=1769019509; cv=none; b=E2ZR7Uxgx4fBG37kuBTH6Is/nhyrYdn3FIcGPCX/vNMKZ4sRljCgA+57FRLsxyQucSvv8157aRldaiSfbSJaxbp2yxBeypGtkHYKTe0YRIjsnkq3BHjKhdEoNMyduF1vGz3IA7O3yUAbTia0E+Oa5P4FnVeFVK3OsIMQOqjmVuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020141; c=relaxed/simple;
-	bh=lNVqk79LCSlNksbc82TSUTtHpB8rMWTXqPA20fTN2Eg=;
+	s=arc-20240116; t=1769019509; c=relaxed/simple;
+	bh=GM8IDIi6r6qAJvtBSnWVQ4Z4lhdkq6zplr8gp6/ry5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xx2DjbNay+faZWZv8uXdHgBj52VPdH8DFusA/ahcqle8LKk0alkHA5uKDeYo9oE89s6Dvap9fX+TV/+R7eBbyVpNlBw2Id08UtNapkQWX3JoethZCxPT8blSvmiVJE0o3s4/gJzCrxbsCQVYPcqEW9/bdvUChmc9c2yVRFRuXVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fTTmyqx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538B6C16AAE;
-	Wed, 21 Jan 2026 18:29:01 +0000 (UTC)
+	 MIME-Version; b=qzLpXj9zIAA36+8YdP1L9Iydct9lIwxjP3xL3w5L6Vn6tyHmBpp8VT4HsvdFdxYGtjauZrGSzDPvuxrjF8oDahPhHieozTHf1N3fTOPWQgnq5QdLkJ/FyfDtdt7IhSvrLljLZ11RfSPweCc0/DX8UOSVdBe0DjVPeL4WOMOKDWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yfwa4efY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15BE8C4CEF1;
+	Wed, 21 Jan 2026 18:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020141;
-	bh=lNVqk79LCSlNksbc82TSUTtHpB8rMWTXqPA20fTN2Eg=;
+	s=korg; t=1769019508;
+	bh=GM8IDIi6r6qAJvtBSnWVQ4Z4lhdkq6zplr8gp6/ry5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2fTTmyqxCNPGNH/TZcpfACwdKcY9unJXEdCNWPhbtP0sAaPICxbjLgmy9kSgdoI5B
-	 0WPacIWBLQm91esZ8aexyGptafYA0WNzIU5XfEctWOQVaKc1gkPWmJ2hKUVqQDtbW1
-	 VqUnGUrfnVHHyW8RL2g1O1ELtZXJQcY1SsXn2syc=
+	b=Yfwa4efYmKw8aEFmkxzAMOfK2i2oJPtKB3tnjxK29PdyrrTE71HU5ikdd624RsO54
+	 va6FmdbzV5yifEOMRgdKGFf2ghtClx5CEjLnD4CGM4YjLaPBQnruxBHEzDnV+/pQ5U
+	 fayha9GtwINzUkxn0KEaNcPT7gt43/xtWXxQUUSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Robert Richter <rrichter@amd.com>,
+	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 028/198] cxl/port: Fix target list setup for multiple decoders sharing the same dport
-Date: Wed, 21 Jan 2026 19:14:16 +0100
-Message-ID: <20260121181419.567513976@linuxfoundation.org>
+Subject: [PATCH 6.12 009/139] NFS: Fix a deadlock involving nfs_release_folio()
+Date: Wed, 21 Jan 2026 19:14:17 +0100
+Message-ID: <20260121181411.794007691@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,141 +68,147 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211012-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210825-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,intel.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,msgid.link:url,huawei.com:email]
-X-Rspamd-Queue-Id: 1E2735CBA5
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,huaweicloud.com:email]
+X-Rspamd-Queue-Id: 8E7BA5C891
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Richter <rrichter@amd.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 3e8aaacdad4f66641f87ab441fe644b45f8ebdff ]
+[ Upstream commit cce0be6eb4971456b703aaeafd571650d314bcca ]
 
-If a switch port has more than one decoder that is using the same
-downstream port, the enumeration of the target lists may fail with:
+Wang Zhaolong reports a deadlock involving NFSv4.1 state recovery
+waiting on kthreadd, which is attempting to reclaim memory by calling
+nfs_release_folio(). The latter cannot make progress due to state
+recovery being needed.
 
- # dmesg | grep target.list
- update_decoder_targets: cxl decoder1.0: dport3 found in target list, index 3
- update_decoder_targets: cxl decoder1.0: dport2 found in target list, index 2
- update_decoder_targets: cxl decoder1.0: dport0 found in target list, index 0
- update_decoder_targets: cxl decoder2.0: dport3 found in target list, index 1
- update_decoder_targets: cxl decoder4.0: dport3 found in target list, index 1
- cxl_mem mem6: failed to find endpoint12:0000:00:01.4 in target list of decoder2.1
- cxl_mem mem8: failed to find endpoint13:0000:20:01.4 in target list of decoder4.1
+It seems that the only safe thing to do here is to kick off a writeback
+of the folio, without waiting for completion, or else kicking off an
+asynchronous commit.
 
-The case, that the same downstream port can be used in multiple target
-lists, is allowed and possible.
-
-Fix the update of the target list. Enumerate all children of the
-switch port and do not stop the iteration after the first matching
-target was found.
-
-With the fix applied:
-
- # dmesg | grep target.list
- update_decoder_targets: cxl decoder1.0: dport2 found in target list, index 2
- update_decoder_targets: cxl decoder1.0: dport0 found in target list, index 0
- update_decoder_targets: cxl decoder1.0: dport3 found in target list, index 3
- update_decoder_targets: cxl decoder2.0: dport3 found in target list, index 1
- update_decoder_targets: cxl decoder2.1: dport3 found in target list, index 1
- update_decoder_targets: cxl decoder4.0: dport3 found in target list, index 1
- update_decoder_targets: cxl decoder4.1: dport3 found in target list, index 1
-
-Analyzing the conditions when this happens:
-
-1) A dport is shared by multiple decoders.
-
-2) The decoders have interleaving configured (ways > 1).
-
-The configuration above has the following hierarchy details (fixed
-version):
-
- root0
- |_
- | |
- | decoder0.1
- | ways: 2
- | target_list: 0,1
- |_______________________________________
- |                                       |
- | dport0                                | dport1
- |                                       |
- port2                                   port4
- |                                       |
- |___________________                    |_____________________
- | |                 |                   | |                   |
- | decoder2.0        decoder2.1          | decoder4.0          decoder4.1
- | ways: 2           ways: 2             | ways: 2             ways: 2
- | target_list: 2,3  target_list: 2,3    | target_list: 2,3    target_list: 2,3
- |___________________                    |___________________
- |                   |                   |                   |
- | dport2            | dport3            | dport2            | dport3
- |                   |                   |                   |
- endpoint7           endpoint12          endpoint9           endpoint13
- |_                  |_                  |_                  |_
- | |                 | |                 | |                 | |
- | decoder7.0        | decoder12.0       | decoder9.0        | decoder13.0
- | decoder7.2        | decoder12.2       | decoder9.2        | decoder13.2
- |                   |                   |                   |
- mem3                mem5                mem6                mem8
-
-Note: Device numbers vary for every boot.
-
-Current kernel fails to enumerate endpoint12 and endpoint13 as the
-target list is not updated for the second decoder.
-
-Fixes: 4f06d81e7c6a ("cxl: Defer dport allocation for switch ports")
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Link: https://patch.msgid.link/20260108101324.509667-1-rrichter@amd.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Reported-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
+Fixes: 96780ca55e3c ("NFS: fix up nfs_release_folio() to try to release the page")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/port.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/file.c          |  3 ++-
+ fs/nfs/nfstrace.h      |  3 +++
+ fs/nfs/write.c         | 33 +++++++++++++++++++++++++++++++++
+ include/linux/nfs_fs.h |  1 +
+ 4 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index 8128fd2b5b317..804e4a48540f6 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -1591,7 +1591,7 @@ static int update_decoder_targets(struct device *dev, void *data)
- 			cxlsd->target[i] = dport;
- 			dev_dbg(dev, "dport%d found in target list, index %d\n",
- 				dport->port_id, i);
--			return 1;
-+			return 0;
- 		}
+diff --git a/fs/nfs/file.c b/fs/nfs/file.c
+index a16a619fb8c33..7d1840cea4444 100644
+--- a/fs/nfs/file.c
++++ b/fs/nfs/file.c
+@@ -461,7 +461,8 @@ static bool nfs_release_folio(struct folio *folio, gfp_t gfp)
+ 		if ((current_gfp_context(gfp) & GFP_KERNEL) != GFP_KERNEL ||
+ 		    current_is_kswapd() || current_is_kcompactd())
+ 			return false;
+-		if (nfs_wb_folio(folio->mapping->host, folio) < 0)
++		if (nfs_wb_folio_reclaim(folio->mapping->host, folio) < 0 ||
++		    folio_test_private(folio))
+ 			return false;
  	}
+ 	return nfs_fscache_release_folio(folio, gfp);
+diff --git a/fs/nfs/nfstrace.h b/fs/nfs/nfstrace.h
+index 1eab98c277fab..2989b6f284ff4 100644
+--- a/fs/nfs/nfstrace.h
++++ b/fs/nfs/nfstrace.h
+@@ -1039,6 +1039,9 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done,
+ DEFINE_NFS_FOLIO_EVENT(nfs_aop_readpage);
+ DEFINE_NFS_FOLIO_EVENT_DONE(nfs_aop_readpage_done);
  
++DEFINE_NFS_FOLIO_EVENT(nfs_writeback_folio_reclaim);
++DEFINE_NFS_FOLIO_EVENT_DONE(nfs_writeback_folio_reclaim_done);
++
+ DEFINE_NFS_FOLIO_EVENT(nfs_writeback_folio);
+ DEFINE_NFS_FOLIO_EVENT_DONE(nfs_writeback_folio_done);
+ 
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 88d0e5168093a..48a8866220d1a 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -2065,6 +2065,39 @@ int nfs_wb_folio_cancel(struct inode *inode, struct folio *folio)
+ 	return ret;
+ }
+ 
++/**
++ * nfs_wb_folio_reclaim - Write back all requests on one page
++ * @inode: pointer to page
++ * @folio: pointer to folio
++ *
++ * Assumes that the folio has been locked by the caller
++ */
++int nfs_wb_folio_reclaim(struct inode *inode, struct folio *folio)
++{
++	loff_t range_start = folio_pos(folio);
++	size_t len = folio_size(folio);
++	struct writeback_control wbc = {
++		.sync_mode = WB_SYNC_ALL,
++		.nr_to_write = 0,
++		.range_start = range_start,
++		.range_end = range_start + len - 1,
++		.for_sync = 1,
++	};
++	int ret;
++
++	if (folio_test_writeback(folio))
++		return -EBUSY;
++	if (folio_clear_dirty_for_io(folio)) {
++		trace_nfs_writeback_folio_reclaim(inode, range_start, len);
++		ret = nfs_writepage_locked(folio, &wbc);
++		trace_nfs_writeback_folio_reclaim_done(inode, range_start, len,
++						       ret);
++		return ret;
++	}
++	nfs_commit_inode(inode, 0);
++	return 0;
++}
++
+ /**
+  * nfs_wb_folio - Write back all requests on one page
+  * @inode: pointer to page
+diff --git a/include/linux/nfs_fs.h b/include/linux/nfs_fs.h
+index 039898d70954f..8d2cf10294a42 100644
+--- a/include/linux/nfs_fs.h
++++ b/include/linux/nfs_fs.h
+@@ -610,6 +610,7 @@ extern int  nfs_update_folio(struct file *file, struct folio *folio,
+ extern int nfs_sync_inode(struct inode *inode);
+ extern int nfs_wb_all(struct inode *inode);
+ extern int nfs_wb_folio(struct inode *inode, struct folio *folio);
++extern int nfs_wb_folio_reclaim(struct inode *inode, struct folio *folio);
+ int nfs_wb_folio_cancel(struct inode *inode, struct folio *folio);
+ extern int  nfs_commit_inode(struct inode *, int);
+ extern struct nfs_commit_data *nfs_commitdata_alloc(void);
 -- 
 2.51.0
 
