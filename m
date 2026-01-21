@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-210873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211039-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLjcElszcWlQfQAAu9opvQ
-	(envelope-from <stable+bounces-210873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:13:15 +0100
+	id EGivIy0qcWniewAAu9opvQ
+	(envelope-from <stable+bounces-211039-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:34:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF8F5CEA2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:13:14 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00EB65C415
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D810C76AC83
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D30EC83030A
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630A3392B76;
-	Wed, 21 Jan 2026 18:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BF233507B;
+	Wed, 21 Jan 2026 18:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9aOqB/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MAOZuvan"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7243624DB;
-	Wed, 21 Jan 2026 18:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3338634252D;
+	Wed, 21 Jan 2026 18:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019673; cv=none; b=uwG1MfRwoP9THXBYq6+eftS2W+/1KMsqoE7bdwe2eP29Ke0Ku8AtMz+XRawn3Rr5ZQoyF6JwuUPYGTH/ddsFyNed+vCckgRqmwuCl79rqT7cX8aWMWG8jKJfF9HystK+pgBZ7Bg1/FDVSBHxv9oFgS9K7DiM68aLPRJbvfrFmx4=
+	t=1769020231; cv=none; b=ru2P/E2JmMaC3jIkB4QfjjhfE/0i16excgPOZVyW844Ou7WemL/o3AaUJV6UPz/MzIGfhToPlVltNeo7+r8O83Q74puHQghwHxF5052t+1JdCM8EQkqJH5tHl4ZVPiGHjLizrck7dYzqod+Y1pUh7baz19mJkP+L6a16OpkKb7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019673; c=relaxed/simple;
-	bh=l4aCG+AYp05DBQGWUiimrRKah4ilpKsBhe5TyYqsSNQ=;
+	s=arc-20240116; t=1769020231; c=relaxed/simple;
+	bh=dJUGRJsi4DrH4MOPSRZ+DRuoXi1oGGX7ZDBSHorI+Oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YDcrTno+zIiqYEwDW9ow/HCVfoLuMTHo3+XgwTzj2sr0SN6ybgLBoBcLMUFmiRfJNlPVjKytiJcGD/r/BAw/N8+yRbYNBaTTLpMDOlHAzFNxOtyOZBAASHNcstYIMYWPluj7IeHCUcsNC0cM2VeBMQkyri24yZEPS9qqfGPkQzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9aOqB/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11C5C19422;
-	Wed, 21 Jan 2026 18:21:12 +0000 (UTC)
+	 MIME-Version; b=KtYlb+mSXAyG7S66ad+LIu+xCIdd5fkAG9Bu43DGBxlvI3Fd+dntjI5nEwnBaKp893tKHHX3buzqw4GjBglNIfNH5OeG12RJevpDvDglfUaqPK+dTJBm0mDUZz6maTBdzINKCtTgjrpHTwhepAg/HJKHpIKVXahQXoTc8XqZdeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MAOZuvan; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8CDC4CEF1;
+	Wed, 21 Jan 2026 18:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019673;
-	bh=l4aCG+AYp05DBQGWUiimrRKah4ilpKsBhe5TyYqsSNQ=;
+	s=korg; t=1769020231;
+	bh=dJUGRJsi4DrH4MOPSRZ+DRuoXi1oGGX7ZDBSHorI+Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9aOqB/dY+i29pVenVW8xyMLOpa+WmgR2xYCxWdopQ2qn63yVfznHGGx1pBfKpAyV
-	 NxsNTR1KAhuBJbVPj5sIw4f6UG4mAX/1WeKhC5ywvxjBGwWrO/7CkuTWnnl79BDogZ
-	 JMOTWddxLStUOYQy0gmTkaMTwB66l8ocieKkBEU4=
+	b=MAOZuvanRq5QhinP8PYWVeYXu+QlDDV6j8XFq9ZcL32EH4e+XwWBuA9fB+1oke2fJ
+	 E0GKgd9z96ZuhNbrTESI24Z+a8U9Kcq0fkTea8Co3JSZ4RuoOZkz9Lbvl/z7LCqaVV
+	 xbqadVo/8skWSSRjFNK5ZSUgmmQpue1VuSz5WVPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Beims <rafael.beims@toradex.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 075/139] phy: freescale: imx8m-pcie: assert phy reset during power on
-Date: Wed, 21 Jan 2026 19:15:23 +0100
-Message-ID: <20260121181414.154881159@linuxfoundation.org>
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 096/198] ALSA: hda/realtek: Add quirk for HP Pavilion x360 to enable mute LED
+Date: Wed, 21 Jan 2026 19:15:24 +0100
+Message-ID: <20260121181422.010619427@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,13 +75,13 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210873-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211039-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,56 +91,42 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,nxp.com:url,toradex.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: DEF8F5CEA2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,kylinos.cn:email]
+X-Rspamd-Queue-Id: 00EB65C415
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Beims <rafael.beims@toradex.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-commit f2ec4723defbc66a50e0abafa830ae9f8bceb0d7 upstream.
+commit ab2be3af8c4ea57f779474cd2a2fe8dd4ad537a6 upstream.
 
-After U-Boot initializes PCIe with "pcie enum", Linux fails to detect
-an NVMe disk on some boot cycles with:
+This quirk enables mute LED on HP Pavilion x360 2-in-1 Laptop 14-ek0xxx,
+which use ALC245 codec.
 
-  phy phy-32f00000.pcie-phy.0: phy poweron failed --> -110
-
-Discussion with NXP identified that the iMX8MP PCIe PHY PLL may fail to
-lock when re-initialized without a reset cycle [1].
-
-The issue reproduces on 7% of tested hardware platforms, with a 30-40%
-failure rate per affected device across boot cycles.
-
-Insert a reset cycle in the power-on routine to ensure the PHY is
-initialized from a known state.
-
-[1] https://community.nxp.com/t5/i-MX-Processors/iMX8MP-PCIe-initialization-in-U-Boot/m-p/2248437#M242401
-
-Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251223150254.1075221-1-rafael@beims.me
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220220
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260115015844.3129890-1-zhangheng@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/hda/codecs/realtek/alc269.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -89,7 +89,8 @@ static int imx8_pcie_phy_power_on(struct
- 			writel(imx8_phy->tx_deemph_gen2,
- 			       imx8_phy->base + PCIE_PHY_TRSV_REG6);
- 		break;
--	case IMX8MP: /* Do nothing. */
-+	case IMX8MP:
-+		reset_control_assert(imx8_phy->reset);
- 		break;
- 	}
- 
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6529,6 +6529,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8a2e, "HP Envy 16", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a30, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a31, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x8a34, "HP Pavilion x360 2-in-1 Laptop 14-ek0xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8a4f, "HP Victus 15-fa0xxx (MB 8A4F)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8a6e, "HP EDNA 360", ALC287_FIXUP_CS35L41_I2C_4),
+ 	SND_PCI_QUIRK(0x103c, 0x8a74, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
