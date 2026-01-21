@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-210650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCbjAj44cGmgXAAAu9opvQ
-	(envelope-from <stable+bounces-210650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:21:50 +0100
+	id aM0/A707cGmgXAAAu9opvQ
+	(envelope-from <stable+bounces-210651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:36:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9BC4FAD6
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:21:49 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E7D94FDA1
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B0450924FFC
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:20:01 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AC515BC2E5A
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:36:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838EE32252D;
-	Wed, 21 Jan 2026 02:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B457E305064;
+	Wed, 21 Jan 2026 02:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="teob2MD7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7VlHoTn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B8F324B16
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 02:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7228630E0C8
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 02:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768961996; cv=none; b=gm89zzh1znsEJdYEVvzl+p6F4Z6mHyJiM1YZtbJ74H4XzG4vPERawlWRsouoJmXvKtQDpQ77yAbZJBNAjSxsf8eYC1xw5hNESLoimxFxjVupuqlTOktnmgnnoFFIzaOAenr9kGgYIYas6pCRLUtKGuz2w5np43Q7sNbbUKBjq6M=
+	t=1768962948; cv=none; b=kMu5l0XQJ58W1JTS+GYUvrug5dsn4pQCyLISM4kiW0r382PHEDLTw1PRf2DAKbceoJNGNFxlcY1HplDNgk7I0Tn06jMWssGGE//ZMi7bOeothWhSR5ghrXYVNZMyiMg6WPremUv4u7KTjDWRalQP+RfBgrVZVihhF1uPHhmcz7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768961996; c=relaxed/simple;
-	bh=pghthH5MoO8rh9X/ETRwSEQ3AASwTPOm4BJ3FD2Ki9M=;
+	s=arc-20240116; t=1768962948; c=relaxed/simple;
+	bh=UsAMaVJxUv/fY1QVQlAe9kq4d/xwGIloJK+FtWDQ2IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3dInKGJ2/KjSnc6XakdQbeg6nukiO9N11aO2BnhwDBpnl7YM7NTcjhhTXOo6fG2qnlZ/XJn0o70y3BkBOiMdNzfRGohBx3CTaz9lcI82TQkY5jIqHYCP4BbKGci9ybrynkhUFUsTp712d9wr7qMViqkkMiUQuJQZc+00l95ztI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=teob2MD7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30037C16AAE;
-	Wed, 21 Jan 2026 02:19:55 +0000 (UTC)
+	 MIME-Version; b=Zqjg2emLdgGeRSojQomJlo2oZfREJ25VFtSQuVtnsCBUGCjoo5NjhtQgcqbU/gpO4xC9MI46msfjWFm2QJ4eqR378obyAtetGn6HNK2WsYQotZ+2PXeV+MXVRersvdki7pfjEp1BlTG+T4BWa/vS+yCD8GtDPPUbRNqpwg74Tuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7VlHoTn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE6FC19425;
+	Wed, 21 Jan 2026 02:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768961995;
-	bh=pghthH5MoO8rh9X/ETRwSEQ3AASwTPOm4BJ3FD2Ki9M=;
+	s=k20201202; t=1768962947;
+	bh=UsAMaVJxUv/fY1QVQlAe9kq4d/xwGIloJK+FtWDQ2IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=teob2MD7b5GOspBH10R2jOaKijtuyaZWyV2C/f6LLzRh3seLrfarY8xwOLqXkUo4e
-	 HSv319f1f7zZFSQh1pqXarFBPgvEHNeZk637z0FlD0rf5zbtY48Bhae26Y84YfMQup
-	 fnqQseeFZ/J53S1KzKRU3iWwm/wotmqxwzCnkDFzdX6Zj/qOk8maeRy2QvCdPDDSrW
-	 Q1kyGggv2vGi2SyWOuv7boGqx/BwO1NUyBGqeBJMmgt31y3PPWWoKgEq9dvUh4PjUf
-	 aaftBuuVgloW7son4UjemFvHOWcjPQ/v/eUdJGtXNMlSNQPFut3gJ1OamCnsq7SR53
-	 IODo7zGbCO3hg==
+	b=h7VlHoTnhnE1AWdTRnJtGd6Fm/fWLI5vCDpMOXLBZ9+AuLJOArk7nSs9473rOCP6A
+	 hDGdG3qVKxTCO5azOzuI3HvLFjInxmmnxUJ08kskAAZb/yd91m9StnFK3d+tvoR75B
+	 VrZMzTT7KSYqrFS6fLDGbZ/oRrqobkqIt8qWKSny+JTdCOiiTYbBBn7LBoKyjA80u0
+	 8y3zaUC1ohIyDUniX4z3iNkxP4ZgFqnkOR6xId0ADhvvpscEuTSFBy6wqNCKVTVxjZ
+	 66U9JtieAbvGjzByeC1JhdkVmvWR9sXx8I8gGMhq985GHgr/R2ciBpEXs3ZunlLZve
+	 7bCQhpyBHpYOA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Brian Foster <bfoster@redhat.com>,
 	"Darrick J. Wong" <djwong@kernel.org>,
 	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] xfs: set max_agbno to allow sparse alloc of last full inode chunk
-Date: Tue, 20 Jan 2026 21:19:53 -0500
-Message-ID: <20260121021953.1128404-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] xfs: set max_agbno to allow sparse alloc of last full inode chunk
+Date: Tue, 20 Jan 2026 21:35:45 -0500
+Message-ID: <20260121023545.1132446-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012008-retention-example-5f1c@gregkh>
-References: <2026012008-retention-example-5f1c@gregkh>
+In-Reply-To: <2026012009-blabber-garnet-a3d6@gregkh>
+References: <2026012009-blabber-garnet-a3d6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210650-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210651-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -89,10 +89,10 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	RCPT_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: CC9BC4FAD6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 6E7D94FDA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -150,7 +150,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/fs/xfs/libxfs/xfs_ialloc.c b/fs/xfs/libxfs/xfs_ialloc.c
-index d1472cbd48ffe..4b2894c85ceaa 100644
+index 994ad783d407f..31dc8e5d87258 100644
 --- a/fs/xfs/libxfs/xfs_ialloc.c
 +++ b/fs/xfs/libxfs/xfs_ialloc.c
 @@ -772,14 +772,15 @@ xfs_ialloc_ag_alloc(
