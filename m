@@ -1,65 +1,64 @@
-Return-Path: <stable+bounces-210659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAWaAMY/cGnXXAAAu9opvQ
-	(envelope-from <stable+bounces-210659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:53:58 +0100
+	id WGztNAdAcGnXXAAAu9opvQ
+	(envelope-from <stable+bounces-210658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:55:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE08950107
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:53:57 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF125013B
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 03:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 32747765307
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:52:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A99DDB26844
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B43014A3C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3855527B32B;
 	Wed, 21 Jan 2026 02:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WElkhHh4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nj8ymsUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C6832AAB1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09A830B533
 	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 02:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768963952; cv=none; b=Ep9KEDVny35FQerHKEFxrfKNdT5oc87/xyZuWv8ZJoZKTzOAPdvBva4BtTYpeq4rAQvPTWmhVCCBpws+enPYPov+D8gmR2kBxwSIto+oXYxSjHBVmlotz+a2YE8eByo4oFQC/qBKuQNOEMxr4vm9pxKe7hodG3pd2EjtO6nwhUw=
+	t=1768963952; cv=none; b=bTqUZSJKodBLXu2cDt8tYNErfNiuiM1j7dS7Ubek3QG/XpBVp5Nq1/t1x6Li6+bB4FuDBSRqAGLSYTGtMEpqTGEcMaG9UqgQGv9qikZOTKxMhBGlkbRhQMKWqv+XDcmcX82TEKol1UlkWgJ2P7UD9Z/rOr079XOrCGdCJixNOjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768963952; c=relaxed/simple;
-	bh=VF30JQsGShpdTPhnarEsVxouBh1R63Hkh+1cvx8Nh+M=;
+	bh=6gajoBo+3ZyI0VNJO3tCogmDRa4O/UFT+iqbZP0a9Bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4vXkQLs00leLUKBqhzgBzPMaZVaMkGklYXXnrdQrlSa8VpisRFVjsP5uPTKkoGtCjwflZxJCj9R4tvt/q4D9F4FZZxjXSrMxhm2F1TMq5ABnaASni/WoTp1iehtsWto6Omww3qawa/H/wYMNKpPI/5QUHdlzQxJaVXaglDgnLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WElkhHh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D0EC16AAE;
-	Wed, 21 Jan 2026 02:52:30 +0000 (UTC)
+	 MIME-Version; b=jQnX+Dj6lufvFH2azNjLApuHCup1wBL7Y+Pd4QPpdfS3wLgpi2Loy3M501XsN4s98kBHhInMnplt0yWtFK8Kdxs5+drVf2tJf/SJy1/y+nkmJX9B8k1FiPTeKm9QipkT4TyAwONLh33yrm/CYLLMXNYUjkwcF1+uSd7mc5RZl4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nj8ymsUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E202C19423;
+	Wed, 21 Jan 2026 02:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1768963951;
-	bh=VF30JQsGShpdTPhnarEsVxouBh1R63Hkh+1cvx8Nh+M=;
+	bh=6gajoBo+3ZyI0VNJO3tCogmDRa4O/UFT+iqbZP0a9Bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WElkhHh4pJHsO9P3O5gt8NGG2fIyK6dqxQr4k2LFS5ofFbT/DKW3hhjEDsgEFJZ8R
-	 NEoKwu8xTJNIePVpyDKy4Rv6ZDW1MVqoAkjz8Q/uMzmc6mRTjAcmZ15EsTrtBxqsbT
-	 8bOdcUdYDAHztRc/PFKo3+iGpAK3tJ4QHTII+bvqZeMzeAr6l/3YWefCtl+XPyWS3s
-	 kZ3l9XRvbLXNqqNj4aZ0qIUQNN3YziO69QRrLq6LuB6W7gKJyXbsIUHCdhCWDUgwE1
-	 T2ZoYMHglu6OnaRPNOOuyit8ql6kHW1+lypiNOT8obCVOninJghFbZweyZ+FEiANZt
-	 +dhNFqV6nV3Sg==
+	b=Nj8ymsUKcaWuipC9NM/af5SCVjYhaVZ3VPRLCtbTP9o6RnFu642JnBklLEuBh0k50
+	 5tCfRxGXHJvvBS4BuYxTWSpSI0uzhqgPOG6mtK8h0eoF+nDRzu2aT+iX6TM83PtoTG
+	 KPwAfilYxVn5R3T2v8DXt9vaR3tCVaSt487TK6Zt3tSpTG17v4eceXaJ8dlOOgtMzc
+	 kn5Ur9S85hehzWYLHHGw97QAey1/898fFO+6EzLtiRMZXko3QQNf9VU4Rm8Nb8uMpN
+	 ZLDv3b/UaI4ad2xMvLupsrX8GIZHT/mQHjj2Kx8x+DR4n71Mc+rw1+uX9q/GyBWIWP
+	 1A57okvobuQkA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Daniel Wagner <dwagner@suse.de>,
+Cc: Keith Busch <kbusch@kernel.org>,
+	Nilay Shroff <nilay@linux.ibm.com>,
 	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 1/3] nvme-fc: rename free_ctrl callback to match name pattern
-Date: Tue, 20 Jan 2026 21:52:26 -0500
-Message-ID: <20260121025228.1153601-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 2/3] nvme-pci: do not directly handle subsys reset fallout
+Date: Tue, 20 Jan 2026 21:52:27 -0500
+Message-ID: <20260121025228.1153601-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012011-happily-padded-148c@gregkh>
+In-Reply-To: <20260121025228.1153601-1-sashal@kernel.org>
 References: <2026012011-happily-padded-148c@gregkh>
+ <20260121025228.1153601-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,76 +67,248 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.46 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210659-lists,stable=lfdr.de];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-210658-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,grimberg.me:email,suse.de:email]
-X-Rspamd-Queue-Id: AE08950107
+	TAGGED_RCPT(0.00)[stable];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,lst.de:email]
+X-Rspamd-Queue-Id: 6AF125013B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 205fb5fa6fde1b5b426015eb1ff69f2ff25ef5bb ]
+[ Upstream commit 210b1f6576e8b367907e7ff51ef425062e1468e4 ]
 
-Rename nvme_fc_nvme_ctrl_freed to nvme_fc_free_ctrl to match the name
-pattern for the callback.
+Scheduling reset_work after a nvme subsystem reset is expected to fail
+on pcie, but this also prevents potential handling the platform's pcie
+services may provide that might successfully recovering the link without
+re-enumeration. Such examples include AER, DPC, and power's EEH.
 
+Provide a pci specific operation that safely initiates a subsystem
+reset, and instead of scheduling reset work, read back the status
+register to trigger a pcie read error.
+
+Since this only affects pci, the other fabrics drivers subscribe to a
+generic nvmf subsystem reset that is exactly the same as before. The
+loop fabric doesn't use it because nvmet doesn't support setting that
+property anyway.
+
+And since we're using the magic NSSR value in two places now, provide a
+symbolic define for it.
+
+Reported-by: Nilay Shroff <nilay@linux.ibm.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Stable-dep-of: 0edb475ac0a7 ("nvme: fix PCIe subsystem reset controller state transition")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/host/fabrics.c | 15 +++++++++++++++
+ drivers/nvme/host/fabrics.h |  1 +
+ drivers/nvme/host/fc.c      |  1 +
+ drivers/nvme/host/nvme.h    | 14 +++-----------
+ drivers/nvme/host/pci.c     | 36 ++++++++++++++++++++++++++++++++++++
+ drivers/nvme/host/rdma.c    |  1 +
+ drivers/nvme/host/tcp.c     |  1 +
+ include/linux/nvme.h        |  3 +++
+ 8 files changed, 61 insertions(+), 11 deletions(-)
 
+diff --git a/drivers/nvme/host/fabrics.c b/drivers/nvme/host/fabrics.c
+index 92ba315cfe19e..5963e8b695ffc 100644
+--- a/drivers/nvme/host/fabrics.c
++++ b/drivers/nvme/host/fabrics.c
+@@ -279,6 +279,21 @@ int nvmf_reg_write32(struct nvme_ctrl *ctrl, u32 off, u32 val)
+ }
+ EXPORT_SYMBOL_GPL(nvmf_reg_write32);
+ 
++int nvmf_subsystem_reset(struct nvme_ctrl *ctrl)
++{
++	int ret;
++
++	if (!nvme_wait_reset(ctrl))
++		return -EBUSY;
++
++	ret = ctrl->ops->reg_write32(ctrl, NVME_REG_NSSR, NVME_SUBSYS_RESET);
++	if (ret)
++		return ret;
++
++	return nvme_try_sched_reset(ctrl);
++}
++EXPORT_SYMBOL_GPL(nvmf_subsystem_reset);
++
+ /**
+  * nvmf_log_connect_error() - Error-parsing-diagnostic print out function for
+  * 				connect() errors.
+diff --git a/drivers/nvme/host/fabrics.h b/drivers/nvme/host/fabrics.h
+index 80e15ad3936f3..e75c687382405 100644
+--- a/drivers/nvme/host/fabrics.h
++++ b/drivers/nvme/host/fabrics.h
+@@ -206,6 +206,7 @@ static inline unsigned int nvmf_nr_io_queues(struct nvmf_ctrl_options *opts)
+ int nvmf_reg_read32(struct nvme_ctrl *ctrl, u32 off, u32 *val);
+ int nvmf_reg_read64(struct nvme_ctrl *ctrl, u32 off, u64 *val);
+ int nvmf_reg_write32(struct nvme_ctrl *ctrl, u32 off, u32 val);
++int nvmf_subsystem_reset(struct nvme_ctrl *ctrl);
+ int nvmf_connect_admin_queue(struct nvme_ctrl *ctrl);
+ int nvmf_connect_io_queue(struct nvme_ctrl *ctrl, u16 qid);
+ int nvmf_register_transport(struct nvmf_transport_ops *ops);
 diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index 2954f0a274745..abf6d028ef96f 100644
+index abf6d028ef96f..4fdb62ae996bf 100644
 --- a/drivers/nvme/host/fc.c
 +++ b/drivers/nvme/host/fc.c
-@@ -2384,7 +2384,7 @@ nvme_fc_ctrl_get(struct nvme_fc_ctrl *ctrl)
-  * controller. Called after last nvme_put_ctrl() call
-  */
- static void
--nvme_fc_nvme_ctrl_freed(struct nvme_ctrl *nctrl)
-+nvme_fc_free_ctrl(struct nvme_ctrl *nctrl)
- {
- 	struct nvme_fc_ctrl *ctrl = to_fc_ctrl(nctrl);
- 
-@@ -3349,7 +3349,7 @@ static const struct nvme_ctrl_ops nvme_fc_ctrl_ops = {
+@@ -3349,6 +3349,7 @@ static const struct nvme_ctrl_ops nvme_fc_ctrl_ops = {
  	.reg_read32		= nvmf_reg_read32,
  	.reg_read64		= nvmf_reg_read64,
  	.reg_write32		= nvmf_reg_write32,
--	.free_ctrl		= nvme_fc_nvme_ctrl_freed,
-+	.free_ctrl		= nvme_fc_free_ctrl,
++	.subsystem_reset	= nvmf_subsystem_reset,
+ 	.free_ctrl		= nvme_fc_free_ctrl,
  	.submit_async_event	= nvme_fc_submit_async_event,
  	.delete_ctrl		= nvme_fc_delete_ctrl,
- 	.get_address		= nvmf_get_address,
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index e867ac859a878..fd9edeb0d9fe6 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -562,6 +562,7 @@ struct nvme_ctrl_ops {
+ 	int (*reg_read64)(struct nvme_ctrl *ctrl, u32 off, u64 *val);
+ 	void (*free_ctrl)(struct nvme_ctrl *ctrl);
+ 	void (*submit_async_event)(struct nvme_ctrl *ctrl);
++	int (*subsystem_reset)(struct nvme_ctrl *ctrl);
+ 	void (*delete_ctrl)(struct nvme_ctrl *ctrl);
+ 	void (*stop_ctrl)(struct nvme_ctrl *ctrl);
+ 	int (*get_address)(struct nvme_ctrl *ctrl, char *buf, int size);
+@@ -660,18 +661,9 @@ int nvme_try_sched_reset(struct nvme_ctrl *ctrl);
+ 
+ static inline int nvme_reset_subsystem(struct nvme_ctrl *ctrl)
+ {
+-	int ret;
+-
+-	if (!ctrl->subsystem)
++	if (!ctrl->subsystem || !ctrl->ops->subsystem_reset)
+ 		return -ENOTTY;
+-	if (!nvme_wait_reset(ctrl))
+-		return -EBUSY;
+-
+-	ret = ctrl->ops->reg_write32(ctrl, NVME_REG_NSSR, 0x4E564D65);
+-	if (ret)
+-		return ret;
+-
+-	return nvme_try_sched_reset(ctrl);
++	return ctrl->ops->subsystem_reset(ctrl);
+ }
+ 
+ /*
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 053385c84bf84..eb93b326db4e1 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1143,6 +1143,41 @@ static void nvme_pci_submit_async_event(struct nvme_ctrl *ctrl)
+ 	spin_unlock(&nvmeq->sq_lock);
+ }
+ 
++static int nvme_pci_subsystem_reset(struct nvme_ctrl *ctrl)
++{
++	struct nvme_dev *dev = to_nvme_dev(ctrl);
++	int ret = 0;
++
++	/*
++	 * Taking the shutdown_lock ensures the BAR mapping is not being
++	 * altered by reset_work. Holding this lock before the RESETTING state
++	 * change, if successful, also ensures nvme_remove won't be able to
++	 * proceed to iounmap until we're done.
++	 */
++	mutex_lock(&dev->shutdown_lock);
++	if (!dev->bar_mapped_size) {
++		ret = -ENODEV;
++		goto unlock;
++	}
++
++	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_RESETTING)) {
++		ret = -EBUSY;
++		goto unlock;
++	}
++
++	writel(NVME_SUBSYS_RESET, dev->bar + NVME_REG_NSSR);
++	nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE);
++
++	/*
++	 * Read controller status to flush the previous write and trigger a
++	 * pcie read error.
++	 */
++	readl(dev->bar + NVME_REG_CSTS);
++unlock:
++	mutex_unlock(&dev->shutdown_lock);
++	return ret;
++}
++
+ static int adapter_delete_queue(struct nvme_dev *dev, u8 opcode, u16 id)
+ {
+ 	struct nvme_command c = { };
+@@ -2910,6 +2945,7 @@ static const struct nvme_ctrl_ops nvme_pci_ctrl_ops = {
+ 	.reg_read64		= nvme_pci_reg_read64,
+ 	.free_ctrl		= nvme_pci_free_ctrl,
+ 	.submit_async_event	= nvme_pci_submit_async_event,
++	.subsystem_reset	= nvme_pci_subsystem_reset,
+ 	.get_address		= nvme_pci_get_address,
+ 	.print_device_info	= nvme_pci_print_device_info,
+ 	.supports_pci_p2pdma	= nvme_pci_supports_pci_p2pdma,
+diff --git a/drivers/nvme/host/rdma.c b/drivers/nvme/host/rdma.c
+index 055b95d2ce935..8803fa04a322a 100644
+--- a/drivers/nvme/host/rdma.c
++++ b/drivers/nvme/host/rdma.c
+@@ -2174,6 +2174,7 @@ static const struct nvme_ctrl_ops nvme_rdma_ctrl_ops = {
+ 	.reg_read32		= nvmf_reg_read32,
+ 	.reg_read64		= nvmf_reg_read64,
+ 	.reg_write32		= nvmf_reg_write32,
++	.subsystem_reset	= nvmf_subsystem_reset,
+ 	.free_ctrl		= nvme_rdma_free_ctrl,
+ 	.submit_async_event	= nvme_rdma_submit_async_event,
+ 	.delete_ctrl		= nvme_rdma_delete_ctrl,
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 5b76670f34be2..f2b171c3169ba 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -2561,6 +2561,7 @@ static const struct nvme_ctrl_ops nvme_tcp_ctrl_ops = {
+ 	.reg_read32		= nvmf_reg_read32,
+ 	.reg_read64		= nvmf_reg_read64,
+ 	.reg_write32		= nvmf_reg_write32,
++	.subsystem_reset	= nvmf_subsystem_reset,
+ 	.free_ctrl		= nvme_tcp_free_ctrl,
+ 	.submit_async_event	= nvme_tcp_submit_async_event,
+ 	.delete_ctrl		= nvme_tcp_delete_ctrl,
+diff --git a/include/linux/nvme.h b/include/linux/nvme.h
+index b61038de139e5..e88b02fff7f2e 100644
+--- a/include/linux/nvme.h
++++ b/include/linux/nvme.h
+@@ -28,6 +28,9 @@
+ 
+ #define NVME_NSID_ALL		0xffffffff
+ 
++/* Special NSSR value, 'NVMe' */
++#define NVME_SUBSYS_RESET	0x4E564D65
++
+ enum nvme_subsys_type {
+ 	/* Referral to another discovery type target subsystem */
+ 	NVME_NQN_DISC	= 1,
 -- 
 2.51.0
 
