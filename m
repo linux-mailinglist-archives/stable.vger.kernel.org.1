@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-211061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULUfF+oycWlQfQAAu9opvQ
-	(envelope-from <stable+bounces-211061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:11:22 +0100
+	id mEljOF4wcWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-210931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:00:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3AF5CE57
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:11:22 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DACD5CB9E
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:00:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 38CDD7C909E
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:49 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 76F0788EE12
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCBD3559ED;
-	Wed, 21 Jan 2026 18:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BBE3002D8;
+	Wed, 21 Jan 2026 18:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTE/HgPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQjQM+rb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E37534A78C;
-	Wed, 21 Jan 2026 18:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C54536B05B;
+	Wed, 21 Jan 2026 18:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020306; cv=none; b=fDaeJh+nm17n0mFOLrm1aGFvT3gUqaQQkcy+IQDi2p0GoJsl5bql28vUxUBDdRA8DeuVU3IDpfPl62Xhj3da56EhvxxDlA8lnr0BOUM4UFsAgaLf+/XLWoU24/iahEE3QBV1R89XkJSdJrbgMjx0sEYmwcmRRzXES+aVj5ECUqE=
+	t=1769019868; cv=none; b=JGdr1A/zFoE1zLM//BohdmbGLsVw2L+Q2yilooujryAHHFdxxFjyhZqmdC4BAhou3G6GqDC0DIcBCNHbqfDcNYNglEe24UQ7MkunZadVFxo/d3WU01en+tbrX9+3CZVLvppjXknws31Mdu39hwjUdNzEIsgWjwk4abFqJ0R1v/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020306; c=relaxed/simple;
-	bh=SFoHzmInKxet0o4A5mZz7cDXZL6TTfJELmcTvjw6IEM=;
+	s=arc-20240116; t=1769019868; c=relaxed/simple;
+	bh=SpV4z/pDUY5dOoaLwXpvI55XQ1cfKhEzZ38sWzxJ15c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kw4RC/z2BOiVHU3RGY5tI9rkObZZevQlYR07VVzmDZ9FFWXs2LbHnI8tA8HSqSGcikX5AiIUdXM/J6aMoUcuWkxoJqYm7NzJ9AGeb8TUbk0WaGemioO8r2tgAC24JyMJwfwSaZIuneou2+Yi0gkwKF7UGo7dNo1of6t2CNXbIYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTE/HgPi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8601C4CEF1;
-	Wed, 21 Jan 2026 18:31:45 +0000 (UTC)
+	 MIME-Version; b=UkEJtDUSqv2u9FRI5MMtRpViLtaUzLYIi2U03sjRbRfGyFQG6fMtazw+UK7NdFnCf+dRTs8C0AWvD6x1jxf6xPk/oTHHO4wv+Ct5CaTVUaZyY79KBh3yzKZIhvoLAuJYkgL8O8y9Sj99Q3QPxuLMLnxGGvccwFkLS+3TqsQ/Zms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQjQM+rb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35A4C4CEF1;
+	Wed, 21 Jan 2026 18:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020306;
-	bh=SFoHzmInKxet0o4A5mZz7cDXZL6TTfJELmcTvjw6IEM=;
+	s=korg; t=1769019868;
+	bh=SpV4z/pDUY5dOoaLwXpvI55XQ1cfKhEzZ38sWzxJ15c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTE/HgPiQQ1WbE3GyHs9SMKXw1LvdgKxXi42pjbhMSmCese81HqJRhHz3LAPiPsd+
-	 GC204Cywhie53Pc5FXqdDHXosq3uOajIU3VCFwwSZpR8ryuHE9QjcbBF2BhNnpXfuy
-	 TPcbQIyE+IVhab/EB1u2QCPcVq6lzgj9nTAJKgcc=
+	b=nQjQM+rbz87LIT9ERCKVIc+LeOzHnCAbTG/0+eKqbtH8iyP4uOZtNMRLYQ2OEugNR
+	 q+OxMw7Vm51Ckb/rVXLC1aNRkgdL1zERp/4Ybg+nFQ4m9O4oVMGShd3K9vlLa/Ww1r
+	 JbLdyxhMhvYoCJhFfg1XSEOA24ec9qEhdSkKwgCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.18 119/198] usb: gadget: uvc: fix interval_duration calculation
+	kent.russell@amd.com,
+	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 099/139] drm/amd: Clean up kfd node on surprise disconnect
 Date: Wed, 21 Jan 2026 19:15:47 +0100
-Message-ID: <20260121181422.834452972@linuxfoundation.org>
+Message-ID: <20260121181415.014971302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,14 +76,14 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211061-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210931-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,76 +92,56 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email]
-X-Rspamd-Queue-Id: 1B3AF5CE57
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
+X-Rspamd-Queue-Id: 2DACD5CB9E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Mario Limonciello (AMD) <superm1@kernel.org>
 
-commit 010dc57cb5163e5f4a32430dd5091cc29efd0471 upstream.
+commit 28695ca09d326461f8078332aa01db516983e8a2 upstream.
 
-According to USB specification:
+When an eGPU is unplugged the KFD topology should also be destroyed
+for that GPU. This never happens because the fini_sw callbacks never
+get to run. Run them manually before calling amdgpu_device_ip_fini_early()
+when a device has already been disconnected.
 
-  For full-/high-speed isochronous endpoints, the bInterval value is
-  used as the exponent for a 2^(bInterval-1) value.
+This location is intentionally chosen to make sure that the kfd locking
+refcount doesn't get incremented unintentionally.
 
-To correctly convert bInterval as interval_duration:
-  interval_duration = 2^(bInterval-1) * frame_interval
-
-Because the unit of video->interval is 100ns, add a comment info to
-make it clear.
-
-Fixes: 48dbe731171e ("usb: gadget: uvc: set req_size and n_requests based on the frame interval")
+Cc: kent.russell@amd.com
+Closes: https://community.frame.work/t/amd-egpu-on-linux/8691/33
+Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 6a23e7b4332c10f8b56c33a9c5431b52ecff9aab)
 Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20260113-uvc-gadget-fix-patch-v2-2-62950ef5bcb5@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/uvc.h       |    2 +-
- drivers/usb/gadget/function/uvc_video.c |    7 +++++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/gadget/function/uvc.h
-+++ b/drivers/usb/gadget/function/uvc.h
-@@ -107,7 +107,7 @@ struct uvc_video {
- 	unsigned int width;
- 	unsigned int height;
- 	unsigned int imagesize;
--	unsigned int interval;
-+	unsigned int interval;	/* in 100ns units */
- 	struct mutex mutex;	/* protects frame parameters */
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4642,6 +4642,14 @@ void amdgpu_device_fini_hw(struct amdgpu
  
- 	unsigned int uvc_num_requests;
---- a/drivers/usb/gadget/function/uvc_video.c
-+++ b/drivers/usb/gadget/function/uvc_video.c
-@@ -499,7 +499,7 @@ uvc_video_prep_requests(struct uvc_video
- {
- 	struct uvc_device *uvc = container_of(video, struct uvc_device, video);
- 	struct usb_composite_dev *cdev = uvc->func.config->cdev;
--	unsigned int interval_duration = video->ep->desc->bInterval * 1250;
-+	unsigned int interval_duration;
- 	unsigned int max_req_size, req_size, header_size;
- 	unsigned int nreq;
+ 	amdgpu_ttm_set_buffer_funcs_status(adev, false);
  
-@@ -515,8 +515,11 @@ uvc_video_prep_requests(struct uvc_video
- 		return;
- 	}
++	/*
++	 * device went through surprise hotplug; we need to destroy topology
++	 * before ip_fini_early to prevent kfd locking refcount issues by calling
++	 * amdgpu_amdkfd_suspend()
++	 */
++	if (drm_dev_is_unplugged(adev_to_drm(adev)))
++		amdgpu_amdkfd_device_fini_sw(adev);
++
+ 	amdgpu_device_ip_fini_early(adev);
  
-+	interval_duration = 2 << (video->ep->desc->bInterval - 1);
- 	if (cdev->gadget->speed < USB_SPEED_HIGH)
--		interval_duration = video->ep->desc->bInterval * 10000;
-+		interval_duration *= 10000;
-+	else
-+		interval_duration *= 1250;
- 
- 	nreq = DIV_ROUND_UP(video->interval, interval_duration);
- 
+ 	amdgpu_irq_fini_hw(adev);
 
 
 
