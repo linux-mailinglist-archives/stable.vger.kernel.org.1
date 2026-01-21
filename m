@@ -1,62 +1,88 @@
-Return-Path: <stable+bounces-210683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AozKZBUcGlvXQAAu9opvQ
-	(envelope-from <stable+bounces-210683-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 05:22:40 +0100
+	id 2G4PMZ9YcGlvXQAAu9opvQ
+	(envelope-from <stable+bounces-210684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 05:39:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1046A50F7E
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 05:22:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D9D0511C9
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 05:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7A0ED4F6A29
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:22:34 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C47434E0B51
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 04:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989F736CE08;
-	Wed, 21 Jan 2026 04:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C7B3A0B20;
+	Wed, 21 Jan 2026 04:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WVbndEji"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="CycryOc4"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF7327380A;
-	Wed, 21 Jan 2026 04:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852FF35BDC9
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 04:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768969346; cv=none; b=ff8kexwyEiw32jRLQsc5Ele5zFASZBkvNSLTQdpseDDxqeoRG5vcMu/wumDQkMcabcRUtOw+OWGyZoU9ftRHqrNUC8nYnEXFZxtXBd6inYCk+mrC/mHC+upH+B+kw0KDS96NehxtoUbJlsf+malVWKSKogUQZSVgwxZq+2RGg7A=
+	t=1768970393; cv=none; b=TdLJZZlvEzXwAQNygzi/y1pldVrR/3eeskdAeNe8JtwHoYlULUVeBqLwhy7chgS89PSmpBQO6VviU8hyXfUILYMcxgoBII1JrXlSlqrCCECfAcYjL1lmzU/ZPHHSLXRAQxWCS/aiV0Sn6YRBPuHHYxgukoKTyvZAeKj+9Cate9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768969346; c=relaxed/simple;
-	bh=r3LhJeqmIyHYQ48RgTfyTB/lA8q3At5gStd5EXR0/9M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FYSsjscX1nxvJvFXiS5v7dCU7VXN1NJyq/9MTuc9vthg8o/VwOWx/F6NGktPcPJhce1jO1YYBgH1iK/NT9CCiB4al/muyrH9nkfIrGA654JX/EKtCKyLPy3LbNE4Q7ubpsbUrGSUT1EGymNhAygVllNgTxd29VHi6BGgck6kNi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WVbndEji; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=fS
-	5fJ55YFcEIupmK8h+jEbbn4Xp6l4seoUgXjOxzdLQ=; b=WVbndEjiL8MJARVHqP
-	PIskxIQ+2q2GldeExf62mp1fIRXpG9e+DPZgbEkpj6Gob2AVRbQ5FvE+SN9AJIne
-	15G0G02kMOC+MYyFfAZ0vtQyUPeHByN+h09gfhqS9qxlHcwJQ8uXWfx4JpDezxjW
-	v46ZqgRQSSyykWdhA7XPKQsHI=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wDnH55pVHBpYLHwGg--.2448S2;
-	Wed, 21 Jan 2026 12:22:02 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH v6.1] drm/amd/display: Check dce_hwseq before dereferencing it
-Date: Wed, 21 Jan 2026 12:21:58 +0800
-Message-Id: <20260121042158.3553167-1-black.hawk@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1768970393; c=relaxed/simple;
+	bh=4BEG5W/oLQV4P3kxNOuYuzdXOELqCIXgtQaTI+MU+9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sjLATT8PcOccNVkeoB1NHveFQqZMM4yEfaRxbU8ZeECaOqWzTQm1tBSitQ358Waoe/UijRY1cKknK6dfbzJW19shGyaUHVHENYtq9Pof2oh5c4y+NI7FXia/5tIwP1ePz9uNAPsi/KeZjAWkUqdMxlJ/WW+YGJiE4zPWHNdeFIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=CycryOc4; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47f3b7ef761so35752205e9.0
+        for <stable@vger.kernel.org>; Tue, 20 Jan 2026 20:39:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768970388; x=1769575188; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2xZCzl/JmuvHLMvKR/eoJ1U6DGED8kB+/3A0CYf/f6k=;
+        b=CycryOc4Eni48223HFf1hAyBWOCz6QbdDh/+NEOonhY2zVdDREKlcPXSLOta245ulJ
+         MwDw2JRy2RyPmiyMqbQZe03rMbCvLEDrXnl8NMAuSN01E3W8SCKMLHAxP9XYqawdTuX6
+         L5qj+842dBzZlJB3oHfBm0hS/mMmYXvSArPY60QH/hZQnZwHy6HMHPuFiBWcnErXrlIG
+         HxrhpW710V7VGWEG/asq4KSPU2DevPBGoqcjMTqjc9xER6jHKSqOxhdh5hGH19MBuOsX
+         xisZ1L3EsE+yQ8og4M/ay4ZQr0yQt4p2tVe0VkAj/aTfhQiCY7XyF6BRnRkKShALwXiP
+         39UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768970388; x=1769575188;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2xZCzl/JmuvHLMvKR/eoJ1U6DGED8kB+/3A0CYf/f6k=;
+        b=UjtQiqA6a/RSwDjk+HNuNG6EMLPMDtdiB0BuxCvpBqRxsuWrwLWXqYgh6GUfq61rxv
+         UOLg1EuB5SXVgGNM3K6VyJgQcbtNvNgTnyM+ufaShEqCNkH50C08zm5kdDtUxi/rrs7G
+         KohqSexJQBWBl4yZN02XTlnPGGp1DSGmhd0kgNEwQCejX0WAT4MDRDUPXvce+qyNdPm2
+         GCXV4ukrU9XiT6uOW9AqFqg8ZJLelB8jz5oRa91sdSkbm1BHBroqLT2nKNK8RVDQIOsC
+         TFzBqyEhO8W9K7383m71RJ3mM0gwxVRwtqjMX1k+tBjWDeBRu2C1d3VQgPys3tf20GEs
+         Yokg==
+X-Gm-Message-State: AOJu0Yw4i0HKQpc5sCxg0gG5B08SMsyIzlmWeFjb2nUmnpDN6ZlOYTPh
+	e5v2isqLkImNoi3gbUKIwFKFQIfN42s2ZUW7zGxJ3jT2/B96VYu+JT2W8O5xwJl1GEKAmHsgrzS
+	WD0zi
+X-Gm-Gg: AZuq6aISS396F3mV9W/gdd5cO++bdNBMpQ+ZPmGq+MnSGb3wDBJbYj2ns6hRAcILOKf
+	vz7GiIz4NcpXbRlCB++Aw9jqn5pypjQrar6rtAHHj4rjE0OdeqqS21i4tYUlcPsSV4kJlAjQMOC
+	v/nYhbkWJl6l+7Lj6RTB6ky0pU4ewuA7uyURwjB2i+09XQcdAYk0B1r0oeAZXb2xdT4fCUdba0A
+	xzpKo04EyD8lDfWCYB+t7jOw5XoQp6D7afMjUiv8iwfRpaYaOnKazjnYBaLA16oaYIOXmDM+ASq
+	rVz2tg8TH1eqofhCRCMpkyeOZJDKobnHXTM4L+wUQ87mrDRT1v7VrF60zirO/EMnaxJT5fEATis
+	E2oxwNS+eKEk+Ry6A+/tPlBQpTqhMhd2JzmiUzdn4gW7gSkUu7oCOkslBeJCYs9CTWfIgNFnnT/
+	FbmU+v4UPsFIVlDw==
+X-Received: by 2002:a05:600c:6388:b0:477:9a28:b0a4 with SMTP id 5b1f17b1804b1-4803e713cc2mr57635195e9.0.1768970388092;
+        Tue, 20 Jan 2026 20:39:48 -0800 (PST)
+Received: from localhost ([2401:e180:8d80:2a2e:c146:9b66:e2fa:21e3])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81fa10bdc65sm13671465b3a.21.2026.01.20.20.39.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jan 2026 20:39:47 -0800 (PST)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: stable@vger.kernel.org
+Cc: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH stable 6.12 6.6 0/2] bpf: Reject narrower access to pointer ctx fields
+Date: Wed, 21 Jan 2026 12:39:14 +0800
+Message-ID: <20260121043939.22629-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,85 +90,60 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnH55pVHBpYLHwGg--.2448S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxJr1fur13Wr1kAw1xZw1xuFg_yoW8CFWUpr
-	n3Gw1rWws7AFyUZa4DJ3W8uFW3uaykJF43GFZFy3Wru3sIyFW0q39Yyan7WryxuF1DZ3Wa
-	qFsxGFWxtF1FkrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piGXHJUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3gulP2lwVGsfPQAA3L
 X-Spamd-Result: default: False [-0.46 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210683-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,amd.com,163.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_POLICY_ALLOW(0.00)[163.com,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TAGGED_FROM(0.00)[bounces-210684-lists,stable=lfdr.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	R_SPF_SOFTFAIL(0.00)[~all];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[suse.com,quarantine];
+	DKIM_TRACE(0.00)[suse.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 1046A50F7E
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 3D9D0511C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Alex Hung <alex.hung@amd.com>
+This series backports two commits from v6.17:
+- e09299225d5b ("bpf: Reject narrower access to pointer
+ ctx fields") to fix the narrow access problem
+- ba578b87fe2b ("selftests/bpf: Test invalid narrower ctx load") for the
+  correspond BPF selftest
 
-[ Upstream commit b669507b637eb6b1aaecf347f193efccc65d756e ]
+BPF selftests are verified to pass with the commits applied on top of
+both 6.12[1] and 6.6[2].
 
-[WHAT]
+1: https://github.com/shunghsiyu/libbpf/actions/runs/21196504628/job/60973453546
+2: https://github.com/shunghsiyu/libbpf/actions/runs/21196504628/job/60973453533
 
-hws was checked for null earlier in dce110_blank_stream, indicating hws
-can be null, and should be checked whenever it is used.
+Paul Chaignon (2):
+  bpf: Reject narrower access to pointer ctx fields
+  selftests/bpf: Test invalid narrower ctx load
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 79db43611ff61280b6de58ce1305e0b2ecf675ad)
-Cc: stable@vger.kernel.org
-[ The context change is due to the commit 8e7b3f5435b3
-("drm/amd/display: Add control flag to dc_stream_state to skip eDP BL off/link off")
-and the commit a8728dbb4ba2 ("drm/amd/display: Refactor edp power
-control") and the proper adoption is done. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
----
- drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/cgroup.c                           |  8 +++---
+ net/core/filter.c                             | 20 +++++++--------
+ .../selftests/bpf/progs/verifier_ctx.c        | 25 +++++++++++++++++++
+ 3 files changed, 39 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-index 508f5fe26848..c542d2ab9160 100644
---- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-@@ -1233,7 +1233,8 @@ void dce110_blank_stream(struct pipe_ctx *pipe_ctx)
- 	struct dce_hwseq *hws = link->dc->hwseq;
- 
- 	if (link->local_sink && link->local_sink->sink_signal == SIGNAL_TYPE_EDP) {
--		hws->funcs.edp_backlight_control(link, false);
-+		if (hws)
-+			hws->funcs.edp_backlight_control(link, false);
- 		link->dc->hwss.set_abm_immediate_disable(pipe_ctx);
- 	}
- 
 -- 
-2.34.1
+2.52.0
 
 
