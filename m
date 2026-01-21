@@ -1,77 +1,59 @@
-Return-Path: <stable+bounces-210870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211035-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGbyBT0vcWmcfAAAu9opvQ
-	(envelope-from <stable+bounces-210870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:55:41 +0100
+	id gB7VDhwfcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-211035-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:46:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC305CA50
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:55:40 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCC565B7AE
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:46:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8B7F4B27C70
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:32 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8E66D7AA9A2
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9829A37E2E6;
-	Wed, 21 Jan 2026 18:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FB83A9D85;
+	Wed, 21 Jan 2026 18:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQfQLJPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvZtv44L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C2A315D48;
-	Wed, 21 Jan 2026 18:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BB733EAE0;
+	Wed, 21 Jan 2026 18:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019664; cv=none; b=UPRNqoLbsFcRN4PJsVrJ43dk/EmwBlqRRaI+zgG9iSMvNho9h405m7O0o/2d315gsyksAKGs2kJfaXk54e2aVYESFt6OWT0k5iSaA9D3wCgdAAVnFO4X7NReamU8HDmUCuMU9CxvefoWURmk6L5JQ1d9Xvr9quCRuYY1wETMgV0=
+	t=1769020217; cv=none; b=JQMY7PFYyJhd4qsq+9lrSLRkSKSyWv5mZx8mzup50I53+4Ja3hQourdkYVLu08Hpp0/bgw/q206NwcM20qcv2nJQg8O6YbleKjqh5dnTgjwz7LgyNqwXEIUs9OSVK9MDi5MBGP5wv4/HXKH5vpNLsu00bdurxcYOQWTPVBYvs4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019664; c=relaxed/simple;
-	bh=Op3eR9+EmrUc8UFTdKlzOFF7nvshA8YpmBQ9LGWZfSE=;
+	s=arc-20240116; t=1769020217; c=relaxed/simple;
+	bh=pdisrH1GII42wJkvaRMbFaAxoeGnLM2XAEmsAhx28tc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdtSoqAT09z14dnp5UiclRnilbYpC+O8QTIiNITP1ZzkUta2jZ3SNiLkFFbqxQp+D7+RfwfXbyvXsaD14QVJMIEkoFrXcUeEYAR/k05jxok4yW5OHB0t/dS2UY5yt7FErCca9hXfv6Oz2yfQG9VRAmQPYba1SjQY5m90Q2aoVf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQfQLJPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5F3C4CEF1;
-	Wed, 21 Jan 2026 18:21:03 +0000 (UTC)
+	 MIME-Version; b=KoJMuN9dsjsdqe9MIGy1PPLAF8NEN23EfUAOgB9C/w0sCF1u7Jx9AwfT41fjIG18G7mbo8nlK+OXHR+0sVCc8NpvNHcA+UioRywNIk/gkgMaP1GH7m46TPQF5zt8MToqcchMm7lgnJ4h/ilBQmFRqrvsIjLvGgHbYbuBE//YXT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvZtv44L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DB3C4CEF1;
+	Wed, 21 Jan 2026 18:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019663;
-	bh=Op3eR9+EmrUc8UFTdKlzOFF7nvshA8YpmBQ9LGWZfSE=;
+	s=korg; t=1769020217;
+	bh=pdisrH1GII42wJkvaRMbFaAxoeGnLM2XAEmsAhx28tc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQfQLJPoRVeTuIZBAHJ88MatL1NB6nGS5M/3cyImg37TGETtVVk3IS/haFXZfCktD
-	 /02JBJENc6fBL2Eq/P1rCtT4vq5AdoSGv0Rqi8tSoNtCoPIijOvUwptr969im6KYQ7
-	 wDCYjcUUkYcIc05X7kT3GF0D4alCgub2hS/BI2+I=
+	b=tvZtv44LwQmBq1EYjjZ+97/j55feY/6B9aRrntympHVr0AbtE1fQKUIYeHcR2Y/Km
+	 c8HDbyGvKyni4tXy5uut5VZBhDEeIFNCKcTdTPqaehr5BNCTR49HKz0Mjn9NEKHmTF
+	 +ieVzgeCW2UBHlK3zn3Jdzex3z3I22WGZKyErRus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Yasunori Goto <y-goto@fujitsu.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 6.12 072/139] x86/kaslr: Recognize all ZONE_DEVICE users as physaddr consumers
-Date: Wed, 21 Jan 2026 19:15:20 +0100
-Message-ID: <20260121181414.046614172@linuxfoundation.org>
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.18 093/198] selftests: kvm: try getting XFD and XSAVE state out of sync
+Date: Wed, 21 Jan 2026 19:15:21 +0100
+Message-ID: <20260121181421.901388626@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -90,140 +72,130 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211035-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210870-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	URIBL_MULTI_FAIL(0.00)[dfw.mirrors.kernel.org:server fail];
-	RCPT_COUNT_TWELVE(0.00)[22];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 8AC305CA50
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BCC565B7AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit 269031b15c1433ff39e30fa7ea3ab8f0be9d6ae2 upstream.
+commit 0383a8edef396cf0a6884b0be81d62bde60737b0 upstream.
 
-Commit 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
-is too narrow. The effect being mitigated in that commit is caused by
-ZONE_DEVICE which PCI_P2PDMA has a dependency. ZONE_DEVICE, in general,
-lets any physical address be added to the direct-map. I.e. not only ACPI
-hotplug ranges, CXL Memory Windows, or EFI Specific Purpose Memory, but
-also any PCI MMIO range for the DEVICE_PRIVATE and PCI_P2PDMA cases. Update
-the mitigation, limit KASLR entropy, to apply in all ZONE_DEVICE=y cases.
+The host is allowed to set FPU state that includes a disabled
+xstate component.  Check that this does not cause bad effects.
 
-Distro kernels typically have PCI_P2PDMA=y, so the practical exposure of
-this problem is limited to the PCI_P2PDMA=n case.
-
-A potential path to recover entropy would be to walk ACPI and determine the
-limits for hotplug and PCI MMIO before kernel_randomize_memory(). On
-smaller systems that could yield some KASLR address bits. This needs
-additional investigation to determine if some limited ACPI table scanning
-can happen this early without an open coded solution like
-arch/x86/boot/compressed/acpi.c needs to deploy.
-
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Logan Gunthorpe <logang@deltatee.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Fixes: 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Tested-by: Yasunori Goto <y-goto@fujitsu.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: http://patch.msgid.link/692e08b2516d4_261c1100a3@dwillia2-mobl4.notmuch
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/kaslr.c |   10 +++++-----
- drivers/pci/Kconfig |    6 ------
- mm/Kconfig          |   10 +++++++---
- 3 files changed, 12 insertions(+), 14 deletions(-)
+ tools/testing/selftests/kvm/x86/amx_test.c |   38 ++++++++++++++++++++++-------
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
---- a/arch/x86/mm/kaslr.c
-+++ b/arch/x86/mm/kaslr.c
-@@ -111,12 +111,12 @@ void __init kernel_randomize_memory(void
+--- a/tools/testing/selftests/kvm/x86/amx_test.c
++++ b/tools/testing/selftests/kvm/x86/amx_test.c
+@@ -125,11 +125,17 @@ static void set_tilecfg(struct tile_conf
+ }
+ 
+ enum {
++	/* Retrieve TMM0 from guest, stash it for TEST_RESTORE_TILEDATA */
++	TEST_SAVE_TILEDATA = 1,
++
+ 	/* Check TMM0 against tiledata */
+-	TEST_COMPARE_TILEDATA = 1,
++	TEST_COMPARE_TILEDATA = 2,
++
++	/* Restore TMM0 from earlier save */
++	TEST_RESTORE_TILEDATA = 4,
+ 
+ 	/* Full VM save/restore */
+-	TEST_SAVE_RESTORE = 2,
++	TEST_SAVE_RESTORE = 8,
+ };
+ 
+ static void __attribute__((__flatten__)) guest_code(struct tile_config *amx_cfg,
+@@ -150,7 +156,16 @@ static void __attribute__((__flatten__))
+ 	GUEST_SYNC(TEST_SAVE_RESTORE);
+ 	/* Check save/restore when trap to userspace */
+ 	__tileloadd(tiledata);
+-	GUEST_SYNC(TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
++	GUEST_SYNC(TEST_SAVE_TILEDATA | TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
++
++	/* xfd=0x40000, disable amx tiledata */
++	wrmsr(MSR_IA32_XFD, XFEATURE_MASK_XTILE_DATA);
++
++	/* host tries setting tiledata while guest XFD is set */
++	GUEST_SYNC(TEST_RESTORE_TILEDATA);
++	GUEST_SYNC(TEST_SAVE_RESTORE);
++
++	wrmsr(MSR_IA32_XFD, 0);
+ 	__tilerelease();
+ 	GUEST_SYNC(TEST_SAVE_RESTORE);
+ 	/*
+@@ -210,10 +225,10 @@ int main(int argc, char *argv[])
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+ 	struct kvm_x86_state *state;
++	struct kvm_x86_state *tile_state = NULL;
+ 	int xsave_restore_size;
+ 	vm_vaddr_t amx_cfg, tiledata, xstate;
+ 	struct ucall uc;
+-	u32 amx_offset;
+ 	int ret;
  
  	/*
- 	 * Adapt physical memory region size based on available memory,
--	 * except when CONFIG_PCI_P2PDMA is enabled. P2PDMA exposes the
--	 * device BAR space assuming the direct map space is large enough
--	 * for creating a ZONE_DEVICE mapping in the direct map corresponding
--	 * to the physical BAR address.
-+	 * except when CONFIG_ZONE_DEVICE is enabled. ZONE_DEVICE wants to map
-+	 * any physical address into the direct-map. KASLR wants to reliably
-+	 * steal some physical address bits. Those design choices are in direct
-+	 * conflict.
- 	 */
--	if (!IS_ENABLED(CONFIG_PCI_P2PDMA) && (memory_tb < kaslr_regions[0].size_tb))
-+	if (!IS_ENABLED(CONFIG_ZONE_DEVICE) && (memory_tb < kaslr_regions[0].size_tb))
- 		kaslr_regions[0].size_tb = memory_tb;
+@@ -265,20 +280,27 @@ int main(int argc, char *argv[])
+ 			/* NOT REACHED */
+ 		case UCALL_SYNC:
+ 			++iter;
++			if (uc.args[1] & TEST_SAVE_TILEDATA) {
++				fprintf(stderr, "GUEST_SYNC #%d, save tiledata\n", iter);
++				tile_state = vcpu_save_state(vcpu);
++			}
+ 			if (uc.args[1] & TEST_COMPARE_TILEDATA) {
+ 				fprintf(stderr, "GUEST_SYNC #%d, check TMM0 contents\n", iter);
  
- 	/*
---- a/drivers/pci/Kconfig
-+++ b/drivers/pci/Kconfig
-@@ -194,12 +194,6 @@ config PCI_P2PDMA
- 	  P2P DMA transactions must be between devices behind the same root
- 	  port.
- 
--	  Enabling this option will reduce the entropy of x86 KASLR memory
--	  regions. For example - on a 46 bit system, the entropy goes down
--	  from 16 bits to 15 bits. The actual reduction in entropy depends
--	  on the physical address bits, on processor features, kernel config
--	  (5 level page table) and physical memory present on the system.
--
- 	  If unsure, say N.
- 
- config PCI_LABEL
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1071,10 +1071,14 @@ config ZONE_DEVICE
- 	  Device memory hotplug support allows for establishing pmem,
- 	  or other device driver discovered memory regions, in the
- 	  memmap. This allows pfn_to_page() lookups of otherwise
--	  "device-physical" addresses which is needed for using a DAX
--	  mapping in an O_DIRECT operation, among other things.
-+	  "device-physical" addresses which is needed for DAX, PCI_P2PDMA, and
-+	  DEVICE_PRIVATE features among others.
- 
--	  If FS_DAX is enabled, then say Y.
-+	  Enabling this option will reduce the entropy of x86 KASLR memory
-+	  regions. For example - on a 46 bit system, the entropy goes down
-+	  from 16 bits to 15 bits. The actual reduction in entropy depends
-+	  on the physical address bits, on processor features, kernel config
-+	  (5 level page table) and physical memory present on the system.
- 
- #
- # Helpers to mirror range of the CPU page tables of a process into device page
+ 				/* Compacted mode, get amx offset by xsave area
+ 				 * size subtract 8K amx size.
+ 				 */
+-				amx_offset = xsave_restore_size - NUM_TILES*TILE_SIZE;
+-				state = vcpu_save_state(vcpu);
+-				void *amx_start = (void *)state->xsave + amx_offset;
++				u32 amx_offset = xsave_restore_size - NUM_TILES*TILE_SIZE;
++				void *amx_start = (void *)tile_state->xsave + amx_offset;
+ 				void *tiles_data = (void *)addr_gva2hva(vm, tiledata);
+ 				/* Only check TMM0 register, 1 tile */
+ 				ret = memcmp(amx_start, tiles_data, TILE_SIZE);
+ 				TEST_ASSERT(ret == 0, "memcmp failed, ret=%d", ret);
+-				kvm_x86_state_cleanup(state);
++			}
++			if (uc.args[1] & TEST_RESTORE_TILEDATA) {
++				fprintf(stderr, "GUEST_SYNC #%d, before KVM_SET_XSAVE\n", iter);
++				vcpu_xsave_set(vcpu, tile_state->xsave);
++				fprintf(stderr, "GUEST_SYNC #%d, after KVM_SET_XSAVE\n", iter);
+ 			}
+ 			if (uc.args[1] & TEST_SAVE_RESTORE) {
+ 				fprintf(stderr, "GUEST_SYNC #%d, save/restore VM state\n", iter);
 
 
 
