@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-210950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AFVCccfcWmodQAAu9opvQ
-	(envelope-from <stable+bounces-210950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:49:43 +0100
+	id 2IhMNO85cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-210951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:41:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE265B868
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:49:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 809B85D75C
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:41:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 749CB844C5B
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:26:47 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1A1B5845038
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5273A1A33;
-	Wed, 21 Jan 2026 18:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7582433DECE;
+	Wed, 21 Jan 2026 18:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j88nWIBs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1wSDGfu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D4036C5BF;
-	Wed, 21 Jan 2026 18:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7B5325711;
+	Wed, 21 Jan 2026 18:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019931; cv=none; b=IVNN4kyNdkUwBYi0tcAvnYjxOSpOx3tIVNA+hXP9j63PlH+50uUMJ3AiYi58Fx7GAcIf8l3tHyuyDSar3vDy5k2qiJkx10AFn7lBBc4rpjJ95IHtmP60sl/UtqaBpDBXbUbWUnoLD77lID9Gto+KtgoZif+dhljVdUzGvxH3jCs=
+	t=1769019934; cv=none; b=ifhIe2MGeDYLEPTB0E++MZ5HWusMl/cOS8thfiOwtKEI7edzuuv1NG3JgVIIP9DeW6DlWz8OcbDFM5NMvZmSsu80ookh1+b+7/3oTZ8JrXD0U6j6WOL651oZo3QXZXpiX9Q5UHRiA4Ki+nyrn4gSZ07/+M4QmM+tiIx/SPCs2/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019931; c=relaxed/simple;
-	bh=ylB4RmkQ1w+ZrdaEz8lJyZzdjq7MSNcKn0E57m+vV24=;
+	s=arc-20240116; t=1769019934; c=relaxed/simple;
+	bh=X3Xz67H9qbRaPC60Fl/TnDhLGvE/ctZCUuaqOGGEllI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kfCasNKKf3aFYw/a3pVXzK7oo4WE7XGONvTyLCwD6Cd920vCquSDvnOKGgC6rcsnp1BpoxNumV8ZBB7Y5QsUxVHDZtuxHmkHI4kIxNM8oQR8PNmJ9slsMoJ4J6kpUDOTeQjBHHkNZO+h/uKF9YW6ACGMUU6hUxOLvxf+rcEhrBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j88nWIBs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CFEC4CEF1;
-	Wed, 21 Jan 2026 18:25:30 +0000 (UTC)
+	 MIME-Version; b=BZ4KXkQG5vOquSWQkSEg4jdRei1C36ufgnJHqf5Z/bWnvCcpZBUw2eMw0zqgirlugumNN697/thhdAnDcCzP2Pc8bKJawteJM/obHHmlm/otsx7RldtUI7oQ0eelpNDQZ5TQ4/rMEVGGNSKRaGpMjUanFXNxnJjdbKE/GkRUfcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1wSDGfu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0E7C4CEF1;
+	Wed, 21 Jan 2026 18:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019930;
-	bh=ylB4RmkQ1w+ZrdaEz8lJyZzdjq7MSNcKn0E57m+vV24=;
+	s=korg; t=1769019934;
+	bh=X3Xz67H9qbRaPC60Fl/TnDhLGvE/ctZCUuaqOGGEllI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j88nWIBse0X9o6YMN4Nusa4XbI7tPnMhkUU5/VupGvcrTXYdm+0/FP1ZauIEMKfdJ
-	 J7W9M/O9Yfp0lcBDCHTs6fk4GZ/o0i3TMPvhSc1hOybpvRY3KY8B9naShLAwlejnfg
-	 ylSj47aUN8SFZm/pMuJXYd8J0DjC8kQNW9LnbYRc=
+	b=Q1wSDGfuNuy+UNXd8iv2niNj7Y7N4fzlcCn74wP5lAp17pwemFf2M9RTrLFodcIfw
+	 lTF82BmMFotoAtEDaZR9N468Anzs3AP+vM2xIIGn4z/BlNP8TpFqfhCcLW/R07CN3+
+	 6+LeAFKU7GhJiADQocMSRem0cO1NyzsLUVHgZb30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.18 010/198] virtio_net: Fix misalignment bug in struct virtnet_info
-Date: Wed, 21 Jan 2026 19:13:58 +0100
-Message-ID: <20260121181418.917772029@linuxfoundation.org>
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 011/198] io_uring: move local task_work in exit cancel loop
+Date: Wed, 21 Jan 2026 19:13:59 +0100
+Message-ID: <20260121181418.953751946@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -74,25 +73,26 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210950-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210951-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BDE265B868
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 809B85D75C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,118 +100,64 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 4156c3745f06bc197094b9ee97a9584e69ed00bf upstream.
+commit da579f05ef0faada3559e7faddf761c75cdf85e1 upstream.
 
-Use the new TRAILING_OVERLAP() helper to fix a misalignment bug
-along with the following warning:
+With IORING_SETUP_DEFER_TASKRUN, task work is queued to ctx->work_llist
+(local work) rather than the fallback list. During io_ring_exit_work(),
+io_move_task_work_from_local() was called once before the cancel loop,
+moving work from work_llist to fallback_llist.
 
-drivers/net/virtio_net.c:429:46: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+However, task work can be added to work_llist during the cancel loop
+itself. There are two cases:
 
-This helper creates a union between a flexible-array member (FAM)
-and a set of members that would otherwise follow it (in this case
-`u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];`). This
-overlays the trailing members (rss_hash_key_data) onto the FAM
-(hash_key_data) while keeping the FAM and the start of MEMBERS aligned.
-The static_assert() ensures this alignment remains.
+1) io_kill_timeouts() is called from io_uring_try_cancel_requests() to
+cancel pending timeouts, and it adds task work via io_req_queue_tw_complete()
+for each cancelled timeout:
 
-Notice that due to tail padding in flexible `struct
-virtio_net_rss_config_trailer`, `rss_trailer.hash_key_data`
-(at offset 83 in struct virtnet_info) and `rss_hash_key_data` (at
-offset 84 in struct virtnet_info) are misaligned by one byte. See
-below:
+2) URING_CMD requests like ublk can be completed via
+io_uring_cmd_complete_in_task() from ublk_queue_rq() during canceling,
+given ublk request queue is only quiesced when canceling the 1st uring_cmd.
 
-struct virtio_net_rss_config_trailer {
-        __le16                     max_tx_vq;            /*     0     2 */
-        __u8                       hash_key_length;      /*     2     1 */
-        __u8                       hash_key_data[];      /*     3     0 */
+Since io_allowed_defer_tw_run() returns false in io_ring_exit_work()
+(kworker != submitter_task), io_run_local_work() is never invoked,
+and the work_llist entries are never processed. This causes
+io_uring_try_cancel_requests() to loop indefinitely, resulting in
+100% CPU usage in kworker threads.
 
-        /* size: 4, cachelines: 1, members: 3 */
-        /* padding: 1 */
-        /* last cacheline: 4 bytes */
-};
-
-struct virtnet_info {
-...
-        struct virtio_net_rss_config_trailer rss_trailer; /*    80     4 */
-
-        /* XXX last struct has 1 byte of padding */
-
-        u8                         rss_hash_key_data[40]; /*    84    40 */
-...
-        /* size: 832, cachelines: 13, members: 48 */
-        /* sum members: 801, holes: 8, sum holes: 31 */
-        /* paddings: 2, sum paddings: 5 */
-};
-
-After changes, those members are correctly aligned at offset 795:
-
-struct virtnet_info {
-...
-        union {
-                struct virtio_net_rss_config_trailer rss_trailer; /*   792     4 */
-                struct {
-                        unsigned char __offset_to_hash_key_data[3]; /*   792     3 */
-                        u8         rss_hash_key_data[40]; /*   795    40 */
-                };                                       /*   792    43 */
-        };                                               /*   792    44 */
-...
-        /* size: 840, cachelines: 14, members: 47 */
-        /* sum members: 801, holes: 8, sum holes: 35 */
-        /* padding: 4 */
-        /* paddings: 1, sum paddings: 4 */
-        /* last cacheline: 8 bytes */
-};
-
-As a result, the RSS key passed to the device is shifted by 1
-byte: the last byte is cut off, and instead a (possibly
-uninitialized) byte is added at the beginning.
-
-As a last note `struct virtio_net_rss_config_hdr *rss_hdr;` is also
-moved to the end, since it seems those three members should stick
-around together. :)
+Fix this by moving io_move_task_work_from_local() inside the cancel
+loop, ensuring any work on work_llist is moved to fallback before
+each cancel attempt.
 
 Cc: stable@vger.kernel.org
-Fixes: ed3100e90d0d ("virtio_net: Use new RSS config structs")
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Link: https://patch.msgid.link/aWIItWq5dV9XTTCJ@kspp
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c0e0d6ba25f1 ("io_uring: add IORING_SETUP_DEFER_TASKRUN")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ io_uring/io_uring.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -425,9 +425,6 @@ struct virtnet_info {
- 	u16 rss_indir_table_size;
- 	u32 rss_hash_types_supported;
- 	u32 rss_hash_types_saved;
--	struct virtio_net_rss_config_hdr *rss_hdr;
--	struct virtio_net_rss_config_trailer rss_trailer;
--	u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3017,12 +3017,12 @@ static __cold void io_ring_exit_work(str
+ 			mutex_unlock(&ctx->uring_lock);
+ 		}
  
- 	/* Has control virtqueue */
- 	bool has_cvq;
-@@ -493,7 +490,16 @@ struct virtnet_info {
- 	struct failover *failover;
+-		if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
+-			io_move_task_work_from_local(ctx);
+-
+ 		/* The SQPOLL thread never reaches this path */
+-		while (io_uring_try_cancel_requests(ctx, NULL, true, false))
++		do {
++			if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
++				io_move_task_work_from_local(ctx);
+ 			cond_resched();
++		} while (io_uring_try_cancel_requests(ctx, NULL, true, false));
  
- 	u64 device_stats_cap;
-+
-+	struct virtio_net_rss_config_hdr *rss_hdr;
-+
-+	/* Must be last as it ends in a flexible-array member. */
-+	TRAILING_OVERLAP(struct virtio_net_rss_config_trailer, rss_trailer, hash_key_data,
-+		u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
-+	);
- };
-+static_assert(offsetof(struct virtnet_info, rss_trailer.hash_key_data) ==
-+	      offsetof(struct virtnet_info, rss_hash_key_data));
- 
- struct padded_vnet_hdr {
- 	struct virtio_net_hdr_v1_hash hdr;
+ 		if (ctx->sq_data) {
+ 			struct io_sq_data *sqd = ctx->sq_data;
 
 
 
