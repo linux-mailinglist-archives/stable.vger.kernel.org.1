@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-211021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIDIEnIxcWmcfAAAu9opvQ
-	(envelope-from <stable+bounces-211021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:05:06 +0100
+	id kGFpO4IicWkPegAAu9opvQ
+	(envelope-from <stable+bounces-210894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:01:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03B15CCA4
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:05:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE925BB60
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:01:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5C6885EECBA
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:30:02 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5E413AEAA02
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646CF350D44;
-	Wed, 21 Jan 2026 18:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3963A4F57;
+	Wed, 21 Jan 2026 18:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kG1A/XbT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwgfXWsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86B7352FA8;
-	Wed, 21 Jan 2026 18:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482B33A4F40;
+	Wed, 21 Jan 2026 18:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020172; cv=none; b=n2+ya0iCNGZmxcpPEigvdYun7NebkEwlOi1UE4n/2H0Ld0OoRwTn+l6Lb8qRHU7hssQUxjtpuIDMstSS5urv6dOgyX+B0vTfiv6CBIkLfvY7UcIfgS8kJn76GiuG3VCht7mU607vJG6zSJrcqXW2AWCPLLuqb/sexQduDtdDGg4=
+	t=1769019741; cv=none; b=fowkWaK/mXpsESSrNpSDlvqDCIUiEttGCSTPTyWWE8pvPq8DLFAPDfEn724Xufoa/SZLy/H71cOs6p5MxwBF6vz2e+8nemenelLgL2rT4QWC1B3Lvgumt269BrXijLMym+ZfDsqmrnTMdZNNnvY1ZGmfVmXqdW2SN5ZfPE0bL3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020172; c=relaxed/simple;
-	bh=msCbn1r/2Q6A08qTQBojfFhRA90AD0fcFg/xwtFTZx0=;
+	s=arc-20240116; t=1769019741; c=relaxed/simple;
+	bh=Dsh0VlZV+0P1kTnfF8h4TKltT9wQ10Wv4N98KzWUu8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QiZO3muJU/HLjnaCuBt8LV4bLsotmRaOVN9TsChdwZDHTAkU5tfhier6wVaCx1TwWbycXpkAbrsd2k4KmGxNcr3C5N8BngbRVE7ZgVC6TwJWA0nIt+6cDZe6VmhK6CQc+lD6o1ZswUpvgh7an9cFKe69s/0jVb8d6xMsUltTFeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kG1A/XbT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BC7C19424;
-	Wed, 21 Jan 2026 18:29:31 +0000 (UTC)
+	 MIME-Version; b=OTAyziM49RIoWjpCRXz+A4dbvAHNELGCgYfl6qujQ2IpziW2jPDTGAKOiJsN1BiSLSDObISqfXNo2OXgl6aNCWCaojrfewVEmfA+IELuGIA4elzGsz86RrDxuWwWiTBb5jxGvx8l+LVyrdczsqMBw5YdjIvqucDXeaq8xbMRUJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wwgfXWsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAD9C4CEF1;
+	Wed, 21 Jan 2026 18:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020172;
-	bh=msCbn1r/2Q6A08qTQBojfFhRA90AD0fcFg/xwtFTZx0=;
+	s=korg; t=1769019741;
+	bh=Dsh0VlZV+0P1kTnfF8h4TKltT9wQ10Wv4N98KzWUu8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kG1A/XbT7bU99TLczyM9aW19bAupC3kVvvvF9I5W5TaVn8ijJB4wb+cPtd2nbQlXQ
-	 C+ttEwJyGCHJ4j9OYekAFpxfaPHV658oW63fzZk+BmwePOX7+E2agemCx8669Y+vvS
-	 SZwVmESfebEEZgtNUxFdwqiST+B+h5eHihClSt7E=
+	b=wwgfXWsXs1m3tU33DD4mY/UX0r8K36VRsIWtnpBCpH+/hBDGSklIzU1wJb149/UM2
+	 naWDk1QMZVXzS6VklaZagqRwrSy1OyOpU2ipGCapIb02CwNIv2zIQSMk6/TZOg1zOg
+	 MictnSW97lXN0hcb1gA4agp7bawxKpURUpOdHAjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Srinivas Kandagatla <srini@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 081/198] phy: broadcom: ns-usb3: Fix Wvoid-pointer-to-enum-cast warning (again)
+Subject: [PATCH 6.12 061/139] ASoC: codecs: wsa883x: fix unnecessary initialisation
 Date: Wed, 21 Jan 2026 19:15:09 +0100
-Message-ID: <20260121181421.476291509@linuxfoundation.org>
+Message-ID: <20260121181413.649245475@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,74 +77,104 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211021-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-210894-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: B03B15CCA4
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1BE925BB60
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit fb21116099bbea1fc59efa9207e63c4be390ab72 ]
+commit 49aadf830eb048134d33ad7329d92ecff45d8dbb upstream.
 
-"family" is an enum, thus cast of pointer on 64-bit compile test with
-clang W=1 causes:
+The soundwire update_status() callback may be called multiple times with
+the same ATTACHED status but initialisation should only be done when
+transitioning from UNATTACHED to ATTACHED.
 
-  phy-bcm-ns-usb3.c:206:17: error: cast to smaller integer type 'enum bcm_ns_family' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+This avoids repeated initialisation of the codecs during boot of
+machines like the Lenovo ThinkPad X13s:
 
-This was already fixed in commit bd6e74a2f0a0 ("phy: broadcom: ns-usb3:
-fix Wvoid-pointer-to-enum-cast warning") but then got bad in commit
-21bf6fc47a1e ("phy: Use device_get_match_data()").
+[   11.614523] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.618022] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.621377] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.624065] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.631382] wsa883x-codec sdw:1:0:0217:0202:00:2: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.634424] wsa883x-codec sdw:1:0:0217:0202:00:2: WSA883X Version 1_1, Variant: WSA8835_V2
 
-Note that after various discussions the preferred cast is via "unsigned
-long", not "uintptr_t".
-
-Fixes: 21bf6fc47a1e ("phy: Use device_get_match_data()")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251224115533.154162-2-krzysztof.kozlowski@oss.qualcomm.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 43b8c7dc85a1 ("ASoC: codecs: add wsa883x amplifier support")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: Srinivas Kandagatla <srini@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260102111413.9605-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/broadcom/phy-bcm-ns-usb3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/wsa883x.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/phy/broadcom/phy-bcm-ns-usb3.c b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-index 9f995e156f755..6e56498d0644b 100644
---- a/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-+++ b/drivers/phy/broadcom/phy-bcm-ns-usb3.c
-@@ -203,7 +203,7 @@ static int bcm_ns_usb3_mdio_probe(struct mdio_device *mdiodev)
- 	usb3->dev = dev;
- 	usb3->mdiodev = mdiodev;
+--- a/sound/soc/codecs/wsa883x.c
++++ b/sound/soc/codecs/wsa883x.c
+@@ -441,6 +441,7 @@ struct wsa883x_priv {
+ 	int active_ports;
+ 	int dev_mode;
+ 	int comp_offset;
++	bool hw_init;
+ };
  
--	usb3->family = (enum bcm_ns_family)device_get_match_data(dev);
-+	usb3->family = (unsigned long)device_get_match_data(dev);
+ enum {
+@@ -1002,6 +1003,9 @@ static int wsa883x_init(struct wsa883x_p
+ 	struct regmap *regmap = wsa883x->regmap;
+ 	int variant, version, ret;
  
- 	syscon_np = of_parse_phandle(dev->of_node, "usb3-dmp-syscon", 0);
- 	err = of_address_to_resource(syscon_np, 0, &res);
--- 
-2.51.0
-
++	if (wsa883x->hw_init)
++		return 0;
++
+ 	ret = regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
+ 	if (ret)
+ 		return ret;
+@@ -1044,6 +1048,8 @@ static int wsa883x_init(struct wsa883x_p
+ 				   wsa883x->comp_offset);
+ 	}
+ 
++	wsa883x->hw_init = true;
++
+ 	return 0;
+ }
+ 
+@@ -1052,6 +1058,9 @@ static int wsa883x_update_status(struct
+ {
+ 	struct wsa883x_priv *wsa883x = dev_get_drvdata(&slave->dev);
+ 
++	if (status == SDW_SLAVE_UNATTACHED)
++		wsa883x->hw_init = false;
++
+ 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
+ 		return wsa883x_init(wsa883x);
+ 
 
 
 
