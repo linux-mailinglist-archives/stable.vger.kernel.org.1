@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-210946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211098-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFLcEoQ4cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-210946-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:35:16 +0100
+	id cP14Mu4jcWl8eQAAu9opvQ
+	(envelope-from <stable+bounces-211098-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:07:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81225D573
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:35:15 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503095BD67
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:07:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C6A2F843C86
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:26:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8B8BEB6B4B2
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716AD3570D5;
-	Wed, 21 Jan 2026 18:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9821DED5C;
+	Wed, 21 Jan 2026 18:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFYAYXU9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkk1y3U0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC1133EAFF;
-	Wed, 21 Jan 2026 18:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBC003A9DAD;
+	Wed, 21 Jan 2026 18:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019917; cv=none; b=laXPIfEDR6wWKFlrplhqsG8/N2Z2rzJOeWRoEAWPJrnmXB30iKvAqKQik16I75pC1ebDOw3k8dOnB6MwoIM/Ks/eqTFlJoQVMk8WE58PPpd7gBzAYJDD0BDAgOsIY+GjC4pPyEM38Bb1YT7gjdOyUecdVlA/ETnOjHko1aD3Xlk=
+	t=1769020432; cv=none; b=VYrGhWJpJ5fcJpmiOcOe7ozyTxK69XhsGW1tRnZK91P27Cz+P0PxAgE9jRwZ4KqOznULXZs5T3v8QhYNBffE3mI6o73wlWVWiwdEycss8B25cOXtC4brWP+Rn/z4d/SpM0FvPBXa/BcJYA72TvC1VnV5JucWB8OiAwqJzpFIfM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019917; c=relaxed/simple;
-	bh=ITkkuTIq0CnEtBuVCMz6+1ZCWlbGxr05AgYKuC1hT6g=;
+	s=arc-20240116; t=1769020432; c=relaxed/simple;
+	bh=R/Ry9LnNdSqm9DLwgcNcMLwHkPB+3fOwUWBxILxr5TA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgv30u1//UXMV38adoJlCTXYDeeGC/uzhBL/N2+8ZQwQo2x2wWMXPXEVqUXJe17q3WPd271BNjD1OmYoTGScZJf58iA9DQnRRhCGKIIayRXfAiuswtkpXowMcgp427h6zujw1otdtMa772GDWkIYEbJZD6gjj4UMiHybAKx1HfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFYAYXU9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BDAC4CEF1;
-	Wed, 21 Jan 2026 18:25:16 +0000 (UTC)
+	 MIME-Version; b=HbMUzvwAXZ+W9qU3yXVEBMo3+Sgw/27p4OVp89Nw5Q3r5ikkOjZx1OySB/q99JlX2RAe2coREtOc6OoG5C2P1ir5SlXgntfkA9/iqIxNWEum7MiXgR66gQM2xyc/MWQ/c/q8DRKU3li7EX3hq9i4YAj9ro87iA9ept5Jm4tPPgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fkk1y3U0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DECC4CEF1;
+	Wed, 21 Jan 2026 18:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019916;
-	bh=ITkkuTIq0CnEtBuVCMz6+1ZCWlbGxr05AgYKuC1hT6g=;
+	s=korg; t=1769020432;
+	bh=R/Ry9LnNdSqm9DLwgcNcMLwHkPB+3fOwUWBxILxr5TA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oFYAYXU9mpxbv3p+zfdnPb/tvRklnnQCglcfHcE4FH8/sp9oS4GycVBo3sTjBQ2qc
-	 eFj8Le7Yd72X4PrA/HFdi4XmtivyI0dhIza3+MvoKYTmOgeaEReUGGA55uVI4iFyZi
-	 gDh2mnjagxRxWtctffqLlzvNBXxW+Qxa+Q9oE8dU=
+	b=fkk1y3U0Ok5YtE9u0MBXLXLlgVZJs2nQg3z0jq/50+lAhNP5TE4tsMRcc2Gj30s5p
+	 /xUrBnSgHLiCj8V2zgGj/zE3z9oi0oydsqchKSqpLpe2SvJsE9rSzL8TpAlOZE9AjZ
+	 4qZBrA7bs1s9YhPHBbIWs6S0m4fw62KlHMrkeiHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Zhen Ni <zhen.ni@easystack.cn>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/139] dmaengine: fsl-edma: Fix clk leak on alloc_chan_resources failure
-Date: Wed, 21 Jan 2026 19:16:23 +0100
-Message-ID: <20260121181416.314270099@linuxfoundation.org>
+	Marek Vasut <marex@nabladev.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.18 156/198] drm/panel-simple: fix connector type for DataImage SCF0700C48GGU18 panel
+Date: Wed, 21 Jan 2026 19:16:24 +0100
+Message-ID: <20260121181424.167588198@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +67,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210946-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-211098-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,nxp.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D81225D573
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 503095BD67
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Ni <zhen.ni@easystack.cn>
+From: Marek Vasut <marex@nabladev.com>
 
-[ Upstream commit b18cd8b210417f90537d914ffb96e390c85a7379 ]
+commit 6ab3d4353bf75005eaa375677c9fed31148154d6 upstream.
 
-When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
-the error paths only free IRQs and destroy the TCD pool, but forget to
-call clk_disable_unprepare(). This causes the channel clock to remain
-enabled, leaking power and resources.
+The connector type for the DataImage SCF0700C48GGU18 panel is missing and
+devm_drm_panel_bridge_add() requires connector type to be set. This leads
+to a warning and a backtrace in the kernel log and panel does not work:
+"
+WARNING: CPU: 3 PID: 38 at drivers/gpu/drm/bridge/panel.c:379 devm_drm_of_get_bridge+0xac/0xb8
+"
+The warning is triggered by a check for valid connector type in
+devm_drm_panel_bridge_add(). If there is no valid connector type
+set for a panel, the warning is printed and panel is not added.
+Fill in the missing connector type to fix the warning and make
+the panel operational once again.
 
-Fix it by disabling the channel clock in the error unwind path.
-
-Fixes: d8d4355861d8 ("dmaengine: fsl-edma: add i.MX8ULP edma support")
 Cc: stable@vger.kernel.org
-Suggested-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20251014090522.827726-1-zhen.ni@easystack.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-[ Different error handling scheme ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 97ceb1fb08b6 ("drm/panel: simple: Add support for DataImage SCF0700C48GGU18")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20260110152750.73848-1-marex@nabladev.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/fsl-edma-common.c |    1 +
+ drivers/gpu/drm/panel/panel-simple.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/dma/fsl-edma-common.c
-+++ b/drivers/dma/fsl-edma-common.c
-@@ -819,6 +819,7 @@ int fsl_edma_alloc_chan_resources(struct
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1900,6 +1900,7 @@ static const struct panel_desc dataimage
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+ 	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE,
++	.connector_type = DRM_MODE_CONNECTOR_DPI,
+ };
  
- 		if (ret) {
- 			dma_pool_destroy(fsl_chan->tcd_pool);
-+			clk_disable_unprepare(fsl_chan->clk);
- 			return ret;
- 		}
- 	}
+ static const struct display_timing dlc_dlc0700yzg_1_timing = {
 
 
 
