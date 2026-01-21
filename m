@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-210975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210950-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFLCG00wcWmcfAAAu9opvQ
-	(envelope-from <stable+bounces-210975-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:00:13 +0100
+	id 8AFVCccfcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210950-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:49:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11945CB82
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:00:12 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE265B868
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E4505A6CC39
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:27:30 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 749CB844C5B
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D92C332ED0;
-	Wed, 21 Jan 2026 18:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5273A1A33;
+	Wed, 21 Jan 2026 18:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Us0cNAxr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j88nWIBs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB4B33DECE;
-	Wed, 21 Jan 2026 18:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D4036C5BF;
+	Wed, 21 Jan 2026 18:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020015; cv=none; b=DLyfiqD9odI+ULadNReIlhfwGGGju7WdYalweFl7a8aSY6EbK4srDZAYpqLl6tEh++3Y/8G4MY9qrqHqV1+jtMUq3bLS7J02PUKUcSGWDZSca848kLNGqeZvb49eeXpqZQt2DjwxXOrT5xFkJEDDNrfxX2DiAEbw+ga9lCxw4CU=
+	t=1769019931; cv=none; b=IVNN4kyNdkUwBYi0tcAvnYjxOSpOx3tIVNA+hXP9j63PlH+50uUMJ3AiYi58Fx7GAcIf8l3tHyuyDSar3vDy5k2qiJkx10AFn7lBBc4rpjJ95IHtmP60sl/UtqaBpDBXbUbWUnoLD77lID9Gto+KtgoZif+dhljVdUzGvxH3jCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020015; c=relaxed/simple;
-	bh=LeqHAOMU8SG2C1mTUCxCnFBnvNetOLVkYSeSXk5zSCM=;
+	s=arc-20240116; t=1769019931; c=relaxed/simple;
+	bh=ylB4RmkQ1w+ZrdaEz8lJyZzdjq7MSNcKn0E57m+vV24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/2w2CooibiEsKBHH51gRJeUVtjR3SQ+q1ixjSIloIucrbEbDdrTXJs5OOk7XhG7ARe6/DK7rBtkSDDDVToS2hvR25FRQeS0vXBUazWGBnudee6umTu+MTqQVsmGFBXJb3qJ8vzCPI8nNpP5DrvdyjCcVKW57BSUOCxhmXIT3v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Us0cNAxr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A418FC4CEF1;
-	Wed, 21 Jan 2026 18:26:54 +0000 (UTC)
+	 MIME-Version; b=kfCasNKKf3aFYw/a3pVXzK7oo4WE7XGONvTyLCwD6Cd920vCquSDvnOKGgC6rcsnp1BpoxNumV8ZBB7Y5QsUxVHDZtuxHmkHI4kIxNM8oQR8PNmJ9slsMoJ4J6kpUDOTeQjBHHkNZO+h/uKF9YW6ACGMUU6hUxOLvxf+rcEhrBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j88nWIBs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CFEC4CEF1;
+	Wed, 21 Jan 2026 18:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020015;
-	bh=LeqHAOMU8SG2C1mTUCxCnFBnvNetOLVkYSeSXk5zSCM=;
+	s=korg; t=1769019930;
+	bh=ylB4RmkQ1w+ZrdaEz8lJyZzdjq7MSNcKn0E57m+vV24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Us0cNAxrrsShO7ZHGZIEelXNeqtufQ4QN3MvgOxIuYbTDrtZHjmRoZGtCRgYT3CL/
-	 EeUAKUesais3kHlP0XHGRXBXRN5OlLofsIy51TLjsZHs9mjBI42BUjCDKhYrdtjBFl
-	 7YNrV1Ks4GIo4p1dgO6TwP3/YuATS09xnT7znrpU=
+	b=j88nWIBse0X9o6YMN4Nusa4XbI7tPnMhkUU5/VupGvcrTXYdm+0/FP1ZauIEMKfdJ
+	 J7W9M/O9Yfp0lcBDCHTs6fk4GZ/o0i3TMPvhSc1hOybpvRY3KY8B9naShLAwlejnfg
+	 ylSj47aUN8SFZm/pMuJXYd8J0DjC8kQNW9LnbYRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Yang <me@shenghaoyang.info>,
-	Ruben Wauters <rubenru09@aol.com>
-Subject: [PATCH 6.18 009/198] drm/gud: fix NULL fb and crtc dereferences on USB disconnect
-Date: Wed, 21 Jan 2026 19:13:57 +0100
-Message-ID: <20260121181418.881060368@linuxfoundation.org>
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.18 010/198] virtio_net: Fix misalignment bug in struct virtnet_info
+Date: Wed, 21 Jan 2026 19:13:58 +0100
+Message-ID: <20260121181418.917772029@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -74,26 +75,24 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210975-lists,stable=lfdr.de];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,shenghaoyang.info,aol.com];
+	TAGGED_FROM(0.00)[bounces-210950-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: F11945CB82
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BDE265B868
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,86 +100,118 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Shenghao Yang <me@shenghaoyang.info>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-commit dc2d5ddb193e363187bae2ad358245642d2721fb upstream.
+commit 4156c3745f06bc197094b9ee97a9584e69ed00bf upstream.
 
-On disconnect drm_atomic_helper_disable_all() is called which
-sets both the fb and crtc for a plane to NULL before invoking a commit.
+Use the new TRAILING_OVERLAP() helper to fix a misalignment bug
+along with the following warning:
 
-This causes a kernel oops on every display disconnect.
+drivers/net/virtio_net.c:429:46: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 
-Add guards for those dereferences.
+This helper creates a union between a flexible-array member (FAM)
+and a set of members that would otherwise follow it (in this case
+`u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];`). This
+overlays the trailing members (rss_hash_key_data) onto the FAM
+(hash_key_data) while keeping the FAM and the start of MEMBERS aligned.
+The static_assert() ensures this alignment remains.
 
-Cc: <stable@vger.kernel.org> # 6.18.x
-Fixes: 73cfd166e045 ("drm/gud: Replace simple display pipe with DRM atomic helpers")
-Signed-off-by: Shenghao Yang <me@shenghaoyang.info>
-Reviewed-by: Ruben Wauters <rubenru09@aol.com>
-Signed-off-by: Ruben Wauters <rubenru09@aol.com>
-Link: https://patch.msgid.link/20251231055039.44266-1-me@shenghaoyang.info
+Notice that due to tail padding in flexible `struct
+virtio_net_rss_config_trailer`, `rss_trailer.hash_key_data`
+(at offset 83 in struct virtnet_info) and `rss_hash_key_data` (at
+offset 84 in struct virtnet_info) are misaligned by one byte. See
+below:
+
+struct virtio_net_rss_config_trailer {
+        __le16                     max_tx_vq;            /*     0     2 */
+        __u8                       hash_key_length;      /*     2     1 */
+        __u8                       hash_key_data[];      /*     3     0 */
+
+        /* size: 4, cachelines: 1, members: 3 */
+        /* padding: 1 */
+        /* last cacheline: 4 bytes */
+};
+
+struct virtnet_info {
+...
+        struct virtio_net_rss_config_trailer rss_trailer; /*    80     4 */
+
+        /* XXX last struct has 1 byte of padding */
+
+        u8                         rss_hash_key_data[40]; /*    84    40 */
+...
+        /* size: 832, cachelines: 13, members: 48 */
+        /* sum members: 801, holes: 8, sum holes: 31 */
+        /* paddings: 2, sum paddings: 5 */
+};
+
+After changes, those members are correctly aligned at offset 795:
+
+struct virtnet_info {
+...
+        union {
+                struct virtio_net_rss_config_trailer rss_trailer; /*   792     4 */
+                struct {
+                        unsigned char __offset_to_hash_key_data[3]; /*   792     3 */
+                        u8         rss_hash_key_data[40]; /*   795    40 */
+                };                                       /*   792    43 */
+        };                                               /*   792    44 */
+...
+        /* size: 840, cachelines: 14, members: 47 */
+        /* sum members: 801, holes: 8, sum holes: 35 */
+        /* padding: 4 */
+        /* paddings: 1, sum paddings: 4 */
+        /* last cacheline: 8 bytes */
+};
+
+As a result, the RSS key passed to the device is shifted by 1
+byte: the last byte is cut off, and instead a (possibly
+uninitialized) byte is added at the beginning.
+
+As a last note `struct virtio_net_rss_config_hdr *rss_hdr;` is also
+moved to the end, since it seems those three members should stick
+around together. :)
+
+Cc: stable@vger.kernel.org
+Fixes: ed3100e90d0d ("virtio_net: Use new RSS config structs")
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://patch.msgid.link/aWIItWq5dV9XTTCJ@kspp
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/gud/gud_pipe.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/net/virtio_net.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/gud/gud_pipe.c b/drivers/gpu/drm/gud/gud_pipe.c
-index 76d77a736d84..4b77be94348d 100644
---- a/drivers/gpu/drm/gud/gud_pipe.c
-+++ b/drivers/gpu/drm/gud/gud_pipe.c
-@@ -457,27 +457,20 @@ int gud_plane_atomic_check(struct drm_plane *plane,
- 	struct drm_plane_state *old_plane_state = drm_atomic_get_old_plane_state(state, plane);
- 	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state, plane);
- 	struct drm_crtc *crtc = new_plane_state->crtc;
--	struct drm_crtc_state *crtc_state;
-+	struct drm_crtc_state *crtc_state = NULL;
- 	const struct drm_display_mode *mode;
- 	struct drm_framebuffer *old_fb = old_plane_state->fb;
- 	struct drm_connector_state *connector_state = NULL;
- 	struct drm_framebuffer *fb = new_plane_state->fb;
--	const struct drm_format_info *format = fb->format;
-+	const struct drm_format_info *format;
- 	struct drm_connector *connector;
- 	unsigned int i, num_properties;
- 	struct gud_state_req *req;
- 	int idx, ret;
- 	size_t len;
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -425,9 +425,6 @@ struct virtnet_info {
+ 	u16 rss_indir_table_size;
+ 	u32 rss_hash_types_supported;
+ 	u32 rss_hash_types_saved;
+-	struct virtio_net_rss_config_hdr *rss_hdr;
+-	struct virtio_net_rss_config_trailer rss_trailer;
+-	u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
  
--	if (drm_WARN_ON_ONCE(plane->dev, !fb))
--		return -EINVAL;
--
--	if (drm_WARN_ON_ONCE(plane->dev, !crtc))
--		return -EINVAL;
--
--	crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
--
--	mode = &crtc_state->mode;
-+	if (crtc)
-+		crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
+ 	/* Has control virtqueue */
+ 	bool has_cvq;
+@@ -493,7 +490,16 @@ struct virtnet_info {
+ 	struct failover *failover;
  
- 	ret = drm_atomic_helper_check_plane_state(new_plane_state, crtc_state,
- 						  DRM_PLANE_NO_SCALING,
-@@ -492,6 +485,9 @@ int gud_plane_atomic_check(struct drm_plane *plane,
- 	if (old_plane_state->rotation != new_plane_state->rotation)
- 		crtc_state->mode_changed = true;
- 
-+	mode = &crtc_state->mode;
-+	format = fb->format;
+ 	u64 device_stats_cap;
 +
- 	if (old_fb && old_fb->format != format)
- 		crtc_state->mode_changed = true;
++	struct virtio_net_rss_config_hdr *rss_hdr;
++
++	/* Must be last as it ends in a flexible-array member. */
++	TRAILING_OVERLAP(struct virtio_net_rss_config_trailer, rss_trailer, hash_key_data,
++		u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
++	);
+ };
++static_assert(offsetof(struct virtnet_info, rss_trailer.hash_key_data) ==
++	      offsetof(struct virtnet_info, rss_hash_key_data));
  
-@@ -598,7 +594,7 @@ void gud_plane_atomic_update(struct drm_plane *plane,
- 	struct drm_atomic_helper_damage_iter iter;
- 	int ret, idx;
- 
--	if (crtc->state->mode_changed || !crtc->state->enable) {
-+	if (!crtc || crtc->state->mode_changed || !crtc->state->enable) {
- 		cancel_work_sync(&gdrm->work);
- 		mutex_lock(&gdrm->damage_lock);
- 		if (gdrm->fb) {
--- 
-2.52.0
-
+ struct padded_vnet_hdr {
+ 	struct virtio_net_hdr_v1_hash hdr;
 
 
 
