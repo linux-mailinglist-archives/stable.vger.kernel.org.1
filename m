@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-210842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211005-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KLIOHMncWniewAAu9opvQ
-	(envelope-from <stable+bounces-210842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:22:27 +0100
+	id wDN9FpUzcWlQfQAAu9opvQ
+	(envelope-from <stable+bounces-211005-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:14:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F715C12C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:22:27 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F2C5CEDE
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:14:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5D6218061C5
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:19:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5E645B2D891
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3E434DB57;
-	Wed, 21 Jan 2026 18:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCAD39341F;
+	Wed, 21 Jan 2026 18:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXDwNATv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzuqkQRD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E70190664;
-	Wed, 21 Jan 2026 18:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED1A33290B;
+	Wed, 21 Jan 2026 18:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019567; cv=none; b=UAcFHkbHNkLliMD68ayDnRlklUiowL4mtjq5kaCYF+u0eyZR32spMloNPGXwLEkdqfB4NHNiufplIP6/Bz4HeYUcwZ26pvi1N0RJ+acgXEaZUUQmEpPntpXa8wtKWM+lJhPL98giBGGwRLgkd+dLe02j5/gFQAbtZNrnduOhOOo=
+	t=1769020117; cv=none; b=l7PZdAx1wEmz/sqrYC2Ca5iW8tEDXuxT6EuaGvQhN87xavzlvVuamYEqPDUF19c3Mx1ugzoMX6hLJzrhp7TwyHJywCKmth/jBHJhg4AUILWpQxecmR3NNJkhve4oumzkvjNaUd9KPF/1NxdnpRCif3S9ArxlmCwy0ZTqwsWhyT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019567; c=relaxed/simple;
-	bh=S5RG+mY0fCwMlXPGCeUx/HH0AzLVY9OUV9ogLx0i3mk=;
+	s=arc-20240116; t=1769020117; c=relaxed/simple;
+	bh=/oQraJPDluVabvMGu4QgyxgAFusD7xlUP2lkUIVvjPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nn8hOqN4eSfRr+f6deuxYLr8Bb2c43wBrCEDw4+ecdsSTNNEL9XaynHiS530smKBMsrw5Jjk7y/qmgtyXCMuJuGYK1WFrQVOSyyj6rcqWuLdfJJ086JMtyHiBqSMpZe6BRvdHNP9IT73DmXOvSR2itXqLYpAR1lLd4+eRfIgb7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXDwNATv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FD3C4CEF1;
-	Wed, 21 Jan 2026 18:19:26 +0000 (UTC)
+	 MIME-Version; b=gdhP74vwDyL+ny/fm9TgPcSgNQVEuS1fM8QeeAeoW/7oPTLYsawpnHu/8tgHPEW2NMX3qMKMr2FlkPAB12yNkj8pWCYtP0H8yYuep9JnDPqkRNXsIWk1vpZ9SvHiMZ3PtShWsmuFPpGUqpjZeUDzq/y5TGs74c+oARTIrIzcb5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzuqkQRD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC19CC4CEF1;
+	Wed, 21 Jan 2026 18:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019567;
-	bh=S5RG+mY0fCwMlXPGCeUx/HH0AzLVY9OUV9ogLx0i3mk=;
+	s=korg; t=1769020117;
+	bh=/oQraJPDluVabvMGu4QgyxgAFusD7xlUP2lkUIVvjPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXDwNATvZ1bL+12m7G9q5wD/aHh3vIWuXyUCZhwJK0thyWpNDb0rOBdK0YqAMuJDt
-	 nE3L2gSyCW0XAiEdTCJvcZCSPUN/GjjmatC54GT8uMUMnC10/VE7MKMAj6lTw6L3dJ
-	 hBJWa7FcnySZQmWvELw+HZ9Rrv73uYqjLvjKDeSM=
+	b=EzuqkQRDcbRsuwopBhsece8LZ9Vrk6glgBBrdOBSkbpXfPI7weCSJYx8ejIiz4cOz
+	 wu0uSeWWP74aBLGD3YKWEgwFN7xrMFhii0aRUlJZmvzfZe2OyY23ceepqqf7QBLUSH
+	 VLDKehZB/CMbSPhm8xeJudEt87/oaBecnIgVzYpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Marco Elver <elver@google.com>,
 	"David Hildenbrand (Red Hat)" <david@kernel.org>,
 	Harry Yoo <harry.yoo@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 043/139] mm, kfence: describe @slab parameter in __kfence_obj_info()
+Subject: [PATCH 6.18 063/198] mm: describe @flags parameter in memalloc_flags_save()
 Date: Wed, 21 Jan 2026 19:14:51 +0100
-Message-ID: <20260121181413.004602408@linuxfoundation.org>
+Message-ID: <20260121181420.825172192@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,64 +80,72 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org,oracle.com,linux-foundation.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oracle.com,linux-foundation.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210842-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211005-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux-foundation.org:email,oracle.com:email]
-X-Rspamd-Queue-Id: 94F715C12C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: B8F2C5CEDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-[ Upstream commit 6cfab50e1440fde19af7c614aacd85e11aa4dcea ]
+[ Upstream commit e2fb7836b01747815f8bb94981c35f2688afb120 ]
+
+Patch series "mm kernel-doc fixes".
+
+Here are kernel-doc fixes for mm subsystem.  I'm also including textsearch
+fix since there's currently no maintainer for include/linux/textsearch.h
+(get_maintainer.pl only shows LKML).
+
+This patch (of 4):
 
 Sphinx reports kernel-doc warning:
 
-WARNING: ./include/linux/kfence.h:220 function parameter 'slab' not described in '__kfence_obj_info'
+WARNING: ./include/linux/sched/mm.h:332 function parameter 'flags' not described in 'memalloc_flags_save'
 
-Fix it by describing @slab parameter.
+Describe @flags to fix it.
 
-Link: https://lkml.kernel.org/r/20251219014006.16328-6-bagasdotme@gmail.com
-Fixes: 2dfe63e61cc3 ("mm, kfence: support kmem_dump_obj() for KFENCE objects")
+Link: https://lkml.kernel.org/r/20251219014006.16328-2-bagasdotme@gmail.com
+Link: https://lkml.kernel.org/r/20251219014006.16328-3-bagasdotme@gmail.com
 Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Acked-by: Marco Elver <elver@google.com>
+Fixes: 3f6d5e6a468d ("mm: introduce memalloc_flags_{save,restore}")
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 Acked-by: Harry Yoo <harry.yoo@oracle.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kfence.h | 1 +
+ include/linux/sched/mm.h | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/kfence.h b/include/linux/kfence.h
-index 0ad1ddbb8b996..e5822f6e7f279 100644
---- a/include/linux/kfence.h
-+++ b/include/linux/kfence.h
-@@ -211,6 +211,7 @@ struct kmem_obj_info;
-  * __kfence_obj_info() - fill kmem_obj_info struct
-  * @kpp: kmem_obj_info to be filled
-  * @object: the object
-+ * @slab: the slab
+diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
+index 0232d983b7153..a3094379b5790 100644
+--- a/include/linux/sched/mm.h
++++ b/include/linux/sched/mm.h
+@@ -323,6 +323,7 @@ static inline void might_alloc(gfp_t gfp_mask)
+ 
+ /**
+  * memalloc_flags_save - Add a PF_* flag to current->flags, save old value
++ * @flags: Flags to add.
   *
-  * Return:
-  * * false - not a KFENCE object
+  * This allows PF_* flags to be conveniently added, irrespective of current
+  * value, and then the old version restored with memalloc_flags_restore().
 -- 
 2.51.0
 
