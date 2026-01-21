@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-210811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211007-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMhcIt43cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-210811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:32:30 +0100
+	id eFeKKPcecWmodQAAu9opvQ
+	(envelope-from <stable+bounces-211007-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:46:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285E15D49E
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:32:30 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBA05B78A
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:46:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B72387CA2DB
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:17:43 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 14904B2FFC2
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669A4378D6C;
-	Wed, 21 Jan 2026 18:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46F9324B27;
+	Wed, 21 Jan 2026 18:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpToMITf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hK+Ez5ts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6C825F78F;
-	Wed, 21 Jan 2026 18:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD7234FF4B;
+	Wed, 21 Jan 2026 18:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019460; cv=none; b=J69oXmfkq4tW3KCK2HQeZc5q7fTRww5ayu8tw0e1ygPtRf/kRxK2PPwNDCbn5MSG6d9CCZA3eC6ATxTFy1Y4rMShZF+s355/2GAnICua137D9qYYSQ14Nc0FicAB/DS8+/pbvPiU5XaYgmtPHJvznF5wKGuJlp0G77mZrUA6Yro=
+	t=1769020124; cv=none; b=j8wewPo5Wwp+UVkQgHSA5aKuf5Go2oQPyESVI5YjbCM+Ko4f/hnKhJGkfoe25CP2lBZ+FB1yfGQFcTce9EtVN+338b0f3MWydXwOKMdyrFsTc5r85RXzzotNbr8ycj6C8NInsHTRIousbCJ2B4PjWAPBIytmf/PkaEqPD/q4pVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019460; c=relaxed/simple;
-	bh=s2hxXL8ik58DdCGCxmJJiOFoehN8t35oG1Jx4oR/ZZw=;
+	s=arc-20240116; t=1769020124; c=relaxed/simple;
+	bh=LBEax2ZyBorREmbrSUYP2Ht3/Kvhd9CN5POZMwmg9PE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blZ8gv378qjLNPmXHZKebD2FdyvJ8UompLzg1FFxDBQVmqrrCArmarI6l0TOXVLXeRHAjQwmIVNrGhRvwkMWAAkCQx215bX2qo+8vzaXwheKvIBRx3AswFdzZwMF+TaqFJcXzHusYNZcHbHhGlUhxJhXrzTfsYG82P1yPD732+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpToMITf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD91C4CEF1;
-	Wed, 21 Jan 2026 18:17:38 +0000 (UTC)
+	 MIME-Version; b=CH7yLibrXmCjml6c6BJNTWjPxKhVz4ZRuiiw8DWtdYOtvAGf8fVfyos9OSl8p07PUZN7MrbjKUOYoCV+XSGr0gSKKfdCI0DsXySA/PFvB2OKBiqfVj92/aiXT49RTCbzm87RIw5mv8j9jV1MmyH4ZO0yJnNrenkTCPthXG49GgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hK+Ez5ts; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083C7C16AAE;
+	Wed, 21 Jan 2026 18:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019459;
-	bh=s2hxXL8ik58DdCGCxmJJiOFoehN8t35oG1Jx4oR/ZZw=;
+	s=korg; t=1769020124;
+	bh=LBEax2ZyBorREmbrSUYP2Ht3/Kvhd9CN5POZMwmg9PE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HpToMITfeL6sl0NBLvC/DW3cEE/+L5AbRr6Kk/1fCKj9fS+VRi7WsPuymk/MUOZO2
-	 2VhNyvddzRZL4WJAeoEiZjSxJ8WtYOlYwcMexS8zmNxEE89yzV8mFspSoInSy+Hxad
-	 mPGIQfh8U5enuYs4TI//NRsEDJX+HCmx8gm3oqpI=
+	b=hK+Ez5tsoovDOECJcXLpJDv6+B7vGC+eGphjeMOYyW/ni1KPp/rnzonVyIRYx2zlI
+	 a9jj4tHpVDCW0E7lPcza8Dh0PgTK802e3QWi71RMwUZE/QIS8gwQ+ANanNA+NRIAP0
+	 tsKD9Zz6CoTtVkpB7vo3Rpphyceh2XgTIg9F7Ae0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yaxiong Tian <tianyaxiong@kylinos.cn>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/139] PM: EM: Fix incorrect description of the cost field in struct em_perf_state
+Subject: [PATCH 6.18 033/198] ip6_tunnel: use skb_vlan_inet_prepare() in __ip6_tnl_rcv()
 Date: Wed, 21 Jan 2026 19:14:21 +0100
-Message-ID: <20260121181411.936448044@linuxfoundation.org>
+Message-ID: <20260121181419.743319977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +67,138 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210811-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211007-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	TO_DN_SOME(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,d4dda070f833dc5dc89a];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,arm.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,intel.com:email,kylinos.cn:email]
-X-Rspamd-Queue-Id: 285E15D49E
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0EBA05B78A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yaxiong Tian <tianyaxiong@kylinos.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 54b603f2db6b95495bc33a8f2bde80f044baff9a ]
+[ Upstream commit 81c734dae203757fb3c9eee6f9896386940776bd ]
 
-Due to commit 1b600da51073 ("PM: EM: Optimize em_cpu_energy() and remove
-division"), the logic for energy consumption calculation has been modified.
-The actual calculation of cost is 10 * power * max_frequency / frequency
-instead of power * max_frequency / frequency.
+Blamed commit did not take care of VLAN encapsulations
+as spotted by syzbot [1].
 
-Therefore, the comment for cost has been updated to reflect the correct
-content.
+Use skb_vlan_inet_prepare() instead of pskb_inet_may_pull().
 
-Fixes: 1b600da51073 ("PM: EM: Optimize em_cpu_energy() and remove division")
-Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-[ rjw: Added Fixes: tag ]
-Link: https://patch.msgid.link/20251230061534.816894-1-tianyaxiong@kylinos.cn
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[1]
+ BUG: KMSAN: uninit-value in __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+ BUG: KMSAN: uninit-value in INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+ BUG: KMSAN: uninit-value in IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
+  __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+  INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+  IP6_ECN_decapsulate+0x7a8/0x1fa0 include/net/inet_ecn.h:321
+  ip6ip6_dscp_ecn_decapsulate+0x16f/0x1b0 net/ipv6/ip6_tunnel.c:729
+  __ip6_tnl_rcv+0xed9/0x1b50 net/ipv6/ip6_tunnel.c:860
+  ip6_tnl_rcv+0xc3/0x100 net/ipv6/ip6_tunnel.c:903
+ gre_rcv+0x1529/0x1b90 net/ipv6/ip6_gre.c:-1
+  ip6_protocol_deliver_rcu+0x1c89/0x2c60 net/ipv6/ip6_input.c:438
+  ip6_input_finish+0x1f4/0x4a0 net/ipv6/ip6_input.c:489
+  NF_HOOK include/linux/netfilter.h:318 [inline]
+  ip6_input+0x9c/0x330 net/ipv6/ip6_input.c:500
+  ip6_mc_input+0x7ca/0xc10 net/ipv6/ip6_input.c:590
+  dst_input include/net/dst.h:474 [inline]
+  ip6_rcv_finish+0x958/0x990 net/ipv6/ip6_input.c:79
+  NF_HOOK include/linux/netfilter.h:318 [inline]
+  ipv6_rcv+0xf1/0x3c0 net/ipv6/ip6_input.c:311
+  __netif_receive_skb_one_core net/core/dev.c:6139 [inline]
+  __netif_receive_skb+0x1df/0xac0 net/core/dev.c:6252
+  netif_receive_skb_internal net/core/dev.c:6338 [inline]
+  netif_receive_skb+0x57/0x630 net/core/dev.c:6397
+  tun_rx_batched+0x1df/0x980 drivers/net/tun.c:1485
+  tun_get_user+0x5c0e/0x6c60 drivers/net/tun.c:1953
+  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
+  new_sync_write fs/read_write.c:593 [inline]
+  vfs_write+0xbe2/0x15d0 fs/read_write.c:686
+  ksys_write fs/read_write.c:738 [inline]
+  __do_sys_write fs/read_write.c:749 [inline]
+  __se_sys_write fs/read_write.c:746 [inline]
+  __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
+  x64_sys_call+0x30ab/0x3e70 arch/x86/include/generated/asm/syscalls_64.h:2
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd3/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:4960 [inline]
+  slab_alloc_node mm/slub.c:5263 [inline]
+  kmem_cache_alloc_node_noprof+0x9e7/0x17a0 mm/slub.c:5315
+  kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:586
+  __alloc_skb+0x805/0x1040 net/core/skbuff.c:690
+  alloc_skb include/linux/skbuff.h:1383 [inline]
+  alloc_skb_with_frags+0xc5/0xa60 net/core/skbuff.c:6712
+  sock_alloc_send_pskb+0xacc/0xc60 net/core/sock.c:2995
+  tun_alloc_skb drivers/net/tun.c:1461 [inline]
+  tun_get_user+0x1142/0x6c60 drivers/net/tun.c:1794
+  tun_chr_write_iter+0x3e9/0x5c0 drivers/net/tun.c:1999
+  new_sync_write fs/read_write.c:593 [inline]
+  vfs_write+0xbe2/0x15d0 fs/read_write.c:686
+  ksys_write fs/read_write.c:738 [inline]
+  __do_sys_write fs/read_write.c:749 [inline]
+  __se_sys_write fs/read_write.c:746 [inline]
+  __x64_sys_write+0x1fb/0x4d0 fs/read_write.c:746
+  x64_sys_call+0x30ab/0x3e70 arch/x86/include/generated/asm/syscalls_64.h:2
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd3/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+CPU: 0 UID: 0 PID: 6465 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(none)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+
+Fixes: 8d975c15c0cd ("ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()")
+Reported-by: syzbot+d4dda070f833dc5dc89a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/695e88b2.050a0220.1c677c.036d.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260107163109.4188620-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/energy_model.h | 2 +-
+ net/ipv6/ip6_tunnel.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/energy_model.h b/include/linux/energy_model.h
-index 34498652f7802..09ce3dc4eab5c 100644
---- a/include/linux/energy_model.h
-+++ b/include/linux/energy_model.h
-@@ -18,7 +18,7 @@
-  * @power:	The power consumed at this level (by 1 CPU or by a registered
-  *		device). It can be a total power: static and dynamic.
-  * @cost:	The cost coefficient associated with this level, used during
-- *		energy calculation. Equal to: power * max_frequency / frequency
-+ *		energy calculation. Equal to: 10 * power * max_frequency / frequency
-  * @flags:	see "em_perf_state flags" description below.
-  */
- struct em_perf_state {
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 6405072050e0e..c1f39735a2367 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -844,7 +844,7 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
+ 
+ 	skb_reset_network_header(skb);
+ 
+-	if (!pskb_inet_may_pull(skb)) {
++	if (skb_vlan_inet_prepare(skb, true)) {
+ 		DEV_STATS_INC(tunnel->dev, rx_length_errors);
+ 		DEV_STATS_INC(tunnel->dev, rx_errors);
+ 		goto drop;
 -- 
 2.51.0
 
