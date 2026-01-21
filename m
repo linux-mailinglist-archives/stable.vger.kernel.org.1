@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-211062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210933-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UA1IAO0kcWl8eQAAu9opvQ
-	(envelope-from <stable+bounces-211062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:11:41 +0100
+	id 4BtYH2k3cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-210933-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:30:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60FC45BE28
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:11:40 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D9B5D400
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:30:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AAA70B6111C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:49 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6594C74D9D3
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C1234A3AC;
-	Wed, 21 Jan 2026 18:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958C1318138;
+	Wed, 21 Jan 2026 18:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izG1SZnX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7odRZFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C00316193;
-	Wed, 21 Jan 2026 18:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E083321A2;
+	Wed, 21 Jan 2026 18:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020309; cv=none; b=EM1eGmvB4Nfr494ar+Fh5gtUkPvYKTYooasvUVCC2CNnvTnxhWQfgBbuQxJsoU/SwK10wpolEUEFyc3rKmFKC82tdGuKs6yg7O5f7uBt2tpdkTrDq7ZI03ye7d0ZO2FLZ83+YTmsIM/4FLIen622Lmmq/ZwK0I0G0valWIgis3k=
+	t=1769019875; cv=none; b=Fc01sDT2LgvtlbOm/DOl5dfzUwkzbAFPnNXcL7rLXth4EmyMBpAxC8JvsXKCZXFzzV4M+pSEAJuLi2EnRTVALnczsvFbv5zP5jjm71noblQdHtG2KG1kgpYzXZ0XUUfB6J/Qb0ymPg3Gu7hwKu4Zf8QGrtTUjIFIizYDl27iIOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020309; c=relaxed/simple;
-	bh=FIzAMxQsVrSGdSftzMdY5BuXrxN+8K5GBzDI538nYzg=;
+	s=arc-20240116; t=1769019875; c=relaxed/simple;
+	bh=SPL835KJUvxWjAkHq3/epaumzgJoUt0nTdsyOgbPV8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBSLmB0n68kW9KPl/SVFpgomFNAbomxi9dROxU7e9vfxQQuv1zw6STgtQSGi5jpYaYBgKQbTmcJXNIc4A2FIFMj1OaxAA6n3yv6G4rED2MMnZkpwm+6TqWl+eHBGrAO6zva4hb4R+pIAhox7j23gjuSQazCO8VvZHLjKZ40DIYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izG1SZnX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D03DC4CEF1;
-	Wed, 21 Jan 2026 18:31:48 +0000 (UTC)
+	 MIME-Version; b=oblzWFLKvRRbNfClabdq21QgFG38G+yttV5xFIq3l4U8vSwRNsZqhQDqobBztvS9k2NK7D5WlycfiEW/SSrHtMDYmGXn3zTkL3gWetlEptWXp2hcggWQbBskrID/tZb/aOJ3afPHitwRmGw7wPHCHOiYSu89jvWJ/KArqWmh31k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7odRZFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438A8C4CEF1;
+	Wed, 21 Jan 2026 18:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020309;
-	bh=FIzAMxQsVrSGdSftzMdY5BuXrxN+8K5GBzDI538nYzg=;
+	s=korg; t=1769019874;
+	bh=SPL835KJUvxWjAkHq3/epaumzgJoUt0nTdsyOgbPV8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izG1SZnXR12yAoqo2DLNBjiO1mTMvyv8WDfIjpSqYss674y6YZNdHDuVCU0vHcbW0
-	 FglVl9yEEf5SRanx9o8Ks8+z/oio6apXIgRu1Ig7owOZchNjyY3DYbO5vcTVndFHSQ
-	 sodxhoWu/jW+gM03itX9+Aoh/1JboBoyCrnJJemE=
+	b=t7odRZFxqaFYqbf6xkyFP2IVI9crPY8CfdN6Fd+Y4FYCdne5RGysmCzvH2dK9WEve
+	 q/jz9TXu9SnwmDK8h806xpRZVKl5PlJ52SRWwaannmLOJeHOvCtNtAGso1SFQC7TJ2
+	 ZKGcxVnTD3pPV3sVuZuyHKV+1G6sRUCszy0Tb77c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.18 120/198] usb: gadget: uvc: fix req_payload_size calculation
-Date: Wed, 21 Jan 2026 19:15:48 +0100
-Message-ID: <20260121181422.869524262@linuxfoundation.org>
+	Dave Airlie <airlied@redhat.com>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 6.12 101/139] drm/nouveau/disp/nv50-: Set lock_core in curs507a_prepare
+Date: Wed, 21 Jan 2026 19:15:49 +0100
+Message-ID: <20260121181415.085286783@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,134 +73,84 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-211062-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210933-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 60FC45BE28
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 21D9B5D400
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Lyude Paul <lyude@redhat.com>
 
-commit 2edc1acb1a2512843425aa19d0c6060a0a924605 upstream.
+commit 9e9bc6be0fa0b6b6b73f4f831f3b77716d0a8d9e upstream.
 
-Current req_payload_size calculation has 2 issue:
+For a while, I've been seeing a strange issue where some (usually not all)
+of the display DMA channels will suddenly hang, particularly when there is
+a visible cursor on the screen that is being frequently updated, and
+especially when said cursor happens to go between two screens. While this
+brings back lovely memories of fixing Intel Skylake bugs, I would quite
+like to fix it :).
 
-(1) When the first time calculate req_payload_size for all the buffers,
-    reqs_per_frame = 0 will be the divisor of DIV_ROUND_UP(). So
-    the result is undefined.
-    This happens because VIDIOC_STREAMON is always executed after
-    VIDIOC_QBUF. So video->reqs_per_frame will be 0 until VIDIOC_STREAMON
-    is run.
+It turns out the problem that's happening here is that we're managing to
+reach nv50_head_flush_set() in our atomic commit path without actually
+holding nv50_disp->mutex. This means that cursor updates happening in
+parallel (along with any other atomic updates that need to use the core
+channel) will race with eachother, which eventually causes us to corrupt
+the pushbuffer - leading to a plethora of various GSP errors, usually:
 
-(2) The buf->req_payload_size may be bigger than max_req_size.
+  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000218 00102680 00000004 00800003
+  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 0000021c 00040509 00000004 00000001
+  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000000 00000000 00000001 00000001
 
-    Take YUYV pixel format as example:
-    If bInterval = 1, video->interval = 666666, high-speed:
-    video->reqs_per_frame = 666666 / 1250 = 534
-     720p: buf->req_payload_size = 1843200 / 534 = 3452
-    1080p: buf->req_payload_size = 4147200 / 534 = 7766
+The reason this is happening is because generally we check whether we need
+to set nv50_atom->lock_core at the end of nv50_head_atomic_check().
+However, curs507a_prepare is called from the fb_prepare callback, which
+happens after the atomic check phase. As a result, this can lead to commits
+that both touch the core channel but also don't grab nv50_disp->mutex.
 
-    Based on such req_payload_size, the controller can't run normally.
+So, fix this by making sure that we set nv50_atom->lock_core in
+cus507a_prepare().
 
-To fix above issue, assign max_req_size to buf->req_payload_size when
-video->reqs_per_frame = 0. And limit buf->req_payload_size to
-video->req_size if it's large than video->req_size. Since max_req_size
-is used at many place, add it to struct uvc_video and set the value once
-endpoint is enabled.
-
-Fixes: 98ad03291560 ("usb: gadget: uvc: set req_length based on payload by nreqs instead of req_size")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20260113-uvc-gadget-fix-patch-v2-1-62950ef5bcb5@nxp.com
+Reviewed-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Fixes: 1590700d94ac ("drm/nouveau/kms/nv50-: split each resource type into their own source files")
+Cc: <stable@vger.kernel.org> # v4.18+
+Link: https://patch.msgid.link/20251219215344.170852-2-lyude@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_uvc.c     |    4 ++++
- drivers/usb/gadget/function/uvc.h       |    1 +
- drivers/usb/gadget/function/uvc_queue.c |   15 +++++++++++----
- drivers/usb/gadget/function/uvc_video.c |    4 +---
- 4 files changed, 17 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/nouveau/dispnv50/curs507a.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/f_uvc.c
-+++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -362,6 +362,10 @@ uvc_function_set_alt(struct usb_function
- 			return ret;
- 		usb_ep_enable(uvc->video.ep);
- 
-+		uvc->video.max_req_size = uvc->video.ep->maxpacket
-+			* max_t(unsigned int, uvc->video.ep->maxburst, 1)
-+			* (uvc->video.ep->mult);
-+
- 		memset(&v4l2_event, 0, sizeof(v4l2_event));
- 		v4l2_event.type = UVC_EVENT_STREAMON;
- 		v4l2_event_queue(&uvc->vdev, &v4l2_event);
---- a/drivers/usb/gadget/function/uvc.h
-+++ b/drivers/usb/gadget/function/uvc.h
-@@ -117,6 +117,7 @@ struct uvc_video {
- 	/* Requests */
- 	bool is_enabled; /* tracks whether video stream is enabled */
- 	unsigned int req_size;
-+	unsigned int max_req_size;
- 	struct list_head ureqs; /* all uvc_requests allocated by uvc_video */
- 
- 	/* USB requests that the video pump thread can encode into */
---- a/drivers/usb/gadget/function/uvc_queue.c
-+++ b/drivers/usb/gadget/function/uvc_queue.c
-@@ -86,10 +86,17 @@ static int uvc_buffer_prepare(struct vb2
- 		buf->bytesused = 0;
- 	} else {
- 		buf->bytesused = vb2_get_plane_payload(vb, 0);
--		buf->req_payload_size =
--			  DIV_ROUND_UP(buf->bytesused +
--				       (video->reqs_per_frame * UVCG_REQUEST_HEADER_LEN),
--				       video->reqs_per_frame);
-+
-+		if (video->reqs_per_frame != 0)	{
-+			buf->req_payload_size =
-+				DIV_ROUND_UP(buf->bytesused +
-+					(video->reqs_per_frame * UVCG_REQUEST_HEADER_LEN),
-+					video->reqs_per_frame);
-+			if (buf->req_payload_size > video->req_size)
-+				buf->req_payload_size = video->req_size;
-+		} else {
-+			buf->req_payload_size = video->max_req_size;
-+		}
+--- a/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
+@@ -84,6 +84,7 @@ curs507a_prepare(struct nv50_wndw *wndw,
+ 		asyh->curs.handle = handle;
+ 		asyh->curs.offset = offset;
+ 		asyh->set.curs = asyh->curs.visible;
++		nv50_atom(asyh->state.state)->lock_core = true;
  	}
+ }
  
- 	return 0;
---- a/drivers/usb/gadget/function/uvc_video.c
-+++ b/drivers/usb/gadget/function/uvc_video.c
-@@ -503,9 +503,7 @@ uvc_video_prep_requests(struct uvc_video
- 	unsigned int max_req_size, req_size, header_size;
- 	unsigned int nreq;
- 
--	max_req_size = video->ep->maxpacket
--		 * max_t(unsigned int, video->ep->maxburst, 1)
--		 * (video->ep->mult);
-+	max_req_size = video->max_req_size;
- 
- 	if (!usb_endpoint_xfer_isoc(video->ep->desc)) {
- 		video->req_size = max_req_size;
 
 
 
