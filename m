@@ -1,186 +1,181 @@
-Return-Path: <stable+bounces-210788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNsaBNT4cGmgbAAAu9opvQ
-	(envelope-from <stable+bounces-210788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:03:32 +0100
+	id cPfrH835cGmgbAAAu9opvQ
+	(envelope-from <stable+bounces-210789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:07:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 903F759A26
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:03:31 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82A359AF2
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 17:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 49A8A7C5F00
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:52:50 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 04E3FAA4A48
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0E044D6BE;
-	Wed, 21 Jan 2026 15:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC583D646D;
+	Wed, 21 Jan 2026 15:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S7QS4Ry9"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vZt4z/dw";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I5Hd1dvd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B4A42315D
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 15:46:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769010378; cv=pass; b=r9RFKJnWR4tElhCIcHnK9ZtEi1eisxJYpOCr/8+25NaqsO6iOxtBr0aYnVVo+cvALu5tVQu2GYhKpgcaDCn2PJ2OACljfCqdK01l/j+uWXsjhTC6DI0ZCbqTxmwV5ByMJkTs9BSO3bW0iD1znQ80PfYNetYYN1GqDSBKMHlQYi0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769010378; c=relaxed/simple;
-	bh=F76WQcEbTi0hFR9Kp7bb0bNOcyvTQNB4ZDIxqiHVc3g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fc8qUR8QX0eOTgIxaEslF/qxPEGt7NQwGNo0opgWPXSyeMlFeVXbUYz7f9c6ErPPgc70Rr3+ZzVOA0AtmLkRHYXFFfzcPlpw8dGG6Gzh5TAYMXsYUa0+q2crupWCZM9rrPpOOsZSUQsyasWEoUgurBM4MKROBbBMpYvZL8Sraos=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S7QS4Ry9; arc=pass smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-89473dca8aaso423526d6.0
-        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 07:46:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769010375; cv=none;
-        d=google.com; s=arc-20240605;
-        b=FUkfELqHnWcKha+XPbBCDMGWbqW2MjSsIHT4BGFs2TqSeb+Bns0dc9wivnbPwLV5vC
-         oO+Dhbx4eoGoVrQTH6S+tJMS1Sa2t7vRKv4KAy+acttaH/na4j7TjCawTtQPXz8tBANB
-         wVdduGqQqkGQncExM1iqrxgw3Xq+rNl/En40XoRAx7GAc8Qlk/6/6hYWMIE46PoWszER
-         61UMWfIteJO6pB4gXeH0jPmBHipxhP51xPZhWx8kLQjWzzaGRsWKUhSvkFt26k3lzaEy
-         fFiR+QJT6ujauIrOMJM3a3pOa8TuTS0aGE3huhoqAFqKE9mvF0BbZAohRhmb4HrFX2we
-         rQ/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=vhc0v3X23UZN/O3bEf6Jea0gd4odiHJo/Sm51lqUpPU=;
-        fh=5nRujV0mwQaioXGE0vvqtE7RcwAfrE0EwZcBDoGTMBA=;
-        b=h5EU3xwdd9VHiu4mI54C+XLmJ8MwxRve0xaLjfm3MA19iJqqRuMbRWwzP9zTIiVzZp
-         z1lLmAa6yCHq68B0SAyM4lc0hfj246EdaRgnqNtVmMhNHavrFNOKeid+N0GT3JLoiyNM
-         lDiBi9G5Z2ZXnm1g5U8RlNQX+LtStL7qUPtHGkXrxHqpHw6cR9/58u9xM9oE5O/HZPLm
-         F3tTpZCh/qJDFN5jsCBJ+fXsGorDpDm+11lKF2E3bjWwVIj0IqZM46Jzj7pYCQp2CWux
-         pJpjiXSqOZAVcawxXaIEA0pTmpCSG54gjyxOxbzfbYA7uFU83Id1yk+GRo7b0csJ8AEd
-         n2nQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769010375; x=1769615175; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vhc0v3X23UZN/O3bEf6Jea0gd4odiHJo/Sm51lqUpPU=;
-        b=S7QS4Ry9G9tttdhIMMbZ9D9J1X7izg28LTajCUwExz5FGHANlJP/f64SNctYV7dCL4
-         S0qp9xaComsjghR9tQaCnY6bzt3a5EYsMJLzVVEqoPqsuOyYmDviSlFzFcffxWnmSfg5
-         ZgnzN5sDDSareWYoab7gjZ8z2DOSL2FQ2g2CVT7Vxn7o+Yv6wwrHfYAymjpYpGu+1fxL
-         BjgxEfvuSOIocu4HPeF+Vjz0blDfSYVW/kHHO4yApzZ23AB5IkDhoXcBL7ADlB5h2mQE
-         54IBNRz29ZS0rGmU6gcCkoO4Hk6F+/HT3lnF6r5sa+RzsUk/bY36nCDAZzTsSwYZTdFG
-         N1Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769010375; x=1769615175;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vhc0v3X23UZN/O3bEf6Jea0gd4odiHJo/Sm51lqUpPU=;
-        b=S9Eg/G8CL2PKpJnGVt37/zODqI4C4YYNIeh2kPbS7Yzh0zGSaxEjWVlyswmugg6pIi
-         q1xBQFf4toTnGH2ryJ4plaxaMa531xxyErToYojt3PJw/YKo8zqqBAzmTkG5wcyVC+ty
-         whLKHd6pLMlYIDH+5znjWhh9wZ1T4CBLNjnpG01gg3DBXe56OXlWB9Y+GzeRIqsrNi7s
-         3XWIa5oTY2nHAlvOQ1GLlFzKftqn6Dulio3EYKwty16nfyn6U/zyBjCNUt6jdhr72DKS
-         6k21Om3G2apPtfagLYxjk3h1RxsXxyV+3BlpLM/3wUH5TBR0MdN7U89jN4nic+PuS8+4
-         PBGw==
-X-Forwarded-Encrypted: i=1; AJvYcCUVNPgCwRdtdB7PqUb+ppoOC+cibC93+WfFeGIWlSvC1ig7kDkPmYZH5XUmnYjNDw8/bi0L9m8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXPKheaPcpoM+3DxdndOjNwiU6n2S/FB7RozxN8jW7ZNyJ4v3B
-	65RFEwu8pKeubO48OMmj29H2hcQ+X1MLVe+n3yTH1phsoZNZq3wINXZVWUPwcxcPvZXoRPN51Rs
-	ypw7g+ne5hfLexn7TC05gUia9IucD7l06XnOBKFsd
-X-Gm-Gg: AZuq6aLDtLyRQK/NCdGF87XdUACyDwwngiPMO5kqDXXAfZMHhe2cznHHog0aSG/jzM/
-	qHF7G38uaogDDJ2pATFoYG7AXeak2ZUaRpVZ7Oi6vKJXkC0hjEXza3gOUwKmEgmugF6cFe2Fvua
-	byfW/ctKw+C9Ad6t3CYX0U06wC+DPTQu/Hm1EMEHTSflG3n45Iez3u13UvZeko6Myydo2dMsCwE
-	q1y2/5B7+LgImk8wWzLfoXPtYFhUBdNAJyV4xZFqOm8upoghiSrZqoY3sUGTtlWVU6eaco=
-X-Received: by 2002:ac8:7d96:0:b0:4ee:4128:beb7 with SMTP id
- d75a77b69052e-502a1f99513mr236249041cf.69.1769010374538; Wed, 21 Jan 2026
- 07:46:14 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CCB357A50;
+	Wed, 21 Jan 2026 15:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769010629; cv=none; b=h//HJqoUMyAkl1EO7vb/EmZTV8+NeFmCVnqEpbS3FMF+tkBDfM6NnC0f2FXPgQgfDRUCGdsHwdVhSXjb2f4AZgTHQFkQo/MarHqQ9Z2LTpP/MI5ttisuWIOF1nfyZNoxSV2+o8SaXgk/bTNhUlY3ZalOnqcxFZ6OIOAThnDg3hU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769010629; c=relaxed/simple;
+	bh=TKFMVPUVrcoo260mLYBi9FLX21eB1CR9J8mFOcu+z7Q=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=s/LJZqXpeGMtLmbr5YOYjL7/gMqBEvVksC04Mgvl2pCUA3FQ3vzkWHTkP8Eyq9vARboRQr/9S108ImtZbnIdWneUPbnQ6mJbA2uTAF9tPCEf+HnhOsCVbicU1QVS14qO4pZRoOpvgrgd/QS4QbakRZfBEBbCMc825Gb0Rin35EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vZt4z/dw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I5Hd1dvd; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 21 Jan 2026 15:50:23 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1769010625;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wfPZWxOWTFBc/34iB9b9dmMdVm9Nhcvz3eklJlZaZW0=;
+	b=vZt4z/dwgqlbATu4ANOydpKk9yM8vUfRo+UCHfPUkN1C+S9dXujsXb8DwEExsjUKYCIw+Q
+	bZgT1UN0R4K5DFtGWX1JYfPLuwFTJ4Jk/xd22QI55+kLZ2nlr0VNoXAdepfIrCQ23stJTz
+	Y++Z3ZPbmRjnUS2ohtRZBd5ppq6OrCCtCX97YdSGDSHqjmexq94NpJhRwbi6oVK6pT7gqw
+	CTJCkpAFBLzDN7QJNP1GvNxX/iqUubH2PvM+HiL/12Mk4bZqwnyshG/1WvxpGaVj0/R34e
+	AKekw1a7jqtBleam+s2i1RC//E1bbK3Caf3YrCR25h4Y0wlSSEgSTug/Sj7naQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1769010625;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wfPZWxOWTFBc/34iB9b9dmMdVm9Nhcvz3eklJlZaZW0=;
+	b=I5Hd1dvdOGJjDpTg5aPIXlATlyd7vaS8kI/nCx2jZLKKzq9S7QH4SIxmAsSCV8bCVjtyh1
+	EVu4xuBm5y98z7Dw==
+From: "tip-bot2 for Fernand Sieber" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/intel: Do not enable BTS for guests
+Cc: jschoenh@amazon.de, Peter Zijlstra <peterz@infradead.org>,
+ Fernand Sieber <sieberf@amazon.com>,  <stable@vger.kernel.org>,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20251211183604.868641-1-sieberf@amazon.com>
+References: <20251211183604.868641-1-sieberf@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260121131954.2710459-1-p@1g4.org> <20260121131954.2710459-2-p@1g4.org>
- <CANn89i+8_ZDxVGwQmo_44iCRs5Wexwxy1Wfhw4WmYg3qA7_t1A@mail.gmail.com>
- <BSn2a6IWtM_DnDrcd-qDBm8cXAwXPo3xj1l4Eu4SWy3BS2UW8Aw7-gXW6uo_DaCipnvmSxgDeGEQrnZ-pjqRKSOPPUW0usVN8M1lp1J-soM=@1g4.org>
- <CANn89iK_VqOThsWX2b-JwvF8suBVmKEmMm9D9SeZJBamDwfPog@mail.gmail.com>
- <YAOV0f1EtmF5tiEGoQMdsnQAKJSrqcg3h9hqnxDdba8MmAprjNHfcDBKselH1vYNZLb672n_zDJZpgjkVn0nHDS0Jh7BKQrh0uGwJYp2hEk=@1g4.org>
- <CANn89i+zuXMZ1Jx226rPG0nHKmRjL1s-m56xk-KD6nWLdrY1Gg@mail.gmail.com> <iSkQcHVqeUy7WNAqfrY9xUAibm1YtrTUPIhZ_yjoHmyDissbQj04N2-quW8BURs4cddEB6bDp0BfXh0LfdYwUYKQudEaHv-4TjEOTI_rCic=@1g4.org>
-In-Reply-To: <iSkQcHVqeUy7WNAqfrY9xUAibm1YtrTUPIhZ_yjoHmyDissbQj04N2-quW8BURs4cddEB6bDp0BfXh0LfdYwUYKQudEaHv-4TjEOTI_rCic=@1g4.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 21 Jan 2026 16:46:02 +0100
-X-Gm-Features: AZwV_QgeFGxLSKDrCfTC2_WdRJPmAZnyXy9FuDtyjRvMi3SE1BesfQq0PTs87k0
-Message-ID: <CANn89iL7_c9FRFUjwacSGHS7K0psFiLKeD9-NcP6Aau14_i4GA@mail.gmail.com>
-Subject: Re: [PATCH net v3 1/7] net/sched: act_gate: zero-initialize netlink
- dump struct
-To: Paul Moses <p@1g4.org>
-Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
-	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <176901062386.510.18286224975679497732.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+X-Spamd-Result: default: False [-1.46 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,mojatatu.com,gmail.com,resnulli.us,davemloft.net,kernel.org,redhat.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210788-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_POLICY_ALLOW(0.00)[google.com,reject];
-	DKIM_TRACE(0.00)[google.com:+];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-210789-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linutronix.de:+];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[linutronix.de,none];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	TAGGED_RCPT(0.00)[stable];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,mail.gmail.com:mid,1g4.org:email]
-X-Rspamd-Queue-Id: 903F759A26
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,amazon.de:email,msgid.link:url,vger.kernel.org:replyto,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linutronix.de:dkim]
+X-Rspamd-Queue-Id: E82A359AF2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Jan 21, 2026 at 4:26=E2=80=AFPM Paul Moses <p@1g4.org> wrote:
->
-> Was looking at tcfg_gate_entry and tcf_gate along with this instance of n=
-la_put, but I can't find my notes and I don't see the path currently. Like =
-I said, remove it, I don't care.
->
->     if (nla_put(skb, TCA_GATE_PARMS, sizeof(opt), &opt))
->         goto nla_put_failure;
+The following commit has been merged into the perf/urgent branch of tip:
 
-To be clear : we have the same pattern in a dozen of net/sched/act_*c files=
-.
-syzbot already found the problematic ones :
+Commit-ID:     91dcfae0ff2b9b9ab03c1ec95babaceefbffb9f4
+Gitweb:        https://git.kernel.org/tip/91dcfae0ff2b9b9ab03c1ec95babaceefbf=
+fb9f4
+Author:        Fernand Sieber <sieberf@amazon.com>
+AuthorDate:    Thu, 11 Dec 2025 20:36:04 +02:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Wed, 21 Jan 2026 16:28:59 +01:00
 
-- net/sched/act_ife.c
-- net/sched/act_connmark.c
-- net/sched/act_ct.c
-- net/sched/act_skbmod.c
+perf/x86/intel: Do not enable BTS for guests
 
-We already checked all other files.
+By default when users program perf to sample branch instructions
+(PERF_COUNT_HW_BRANCH_INSTRUCTIONS) with a sample period of 1, perf
+interprets this as a special case and enables BTS (Branch Trace Store)
+as an optimization to avoid taking an interrupt on every branch.
 
-Unless another maintainer proves me wrong, let's remove this patch
-from your series.
+Since BTS doesn't virtualize, this optimization doesn't make sense when
+the request originates from a guest. Add an additional check that
+prevents this optimization for virtualized events (exclude_host).
 
->
->
-> I have months invested into the UAF though and only just in the past 24 h=
-ours was able to stabilize into user space, so no effort whatsoever has bee=
-n put into defeating kaslr or anything requiring infoleak.
->
-> Look forward to more input on the much larger issue at hand.
+Reported-by: Jan H. Sch=C3=B6nherr <jschoenh@amazon.de>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Fernand Sieber <sieberf@amazon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251211183604.868641-1-sieberf@amazon.com
+---
+ arch/x86/events/perf_event.h | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-Sure, thanks for working on this.
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index 6296302..ad35c54 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1574,13 +1574,22 @@ static inline bool intel_pmu_has_bts_period(struct pe=
+rf_event *event, u64 period
+ 	struct hw_perf_event *hwc =3D &event->hw;
+ 	unsigned int hw_event, bts_event;
+=20
+-	if (event->attr.freq)
++	/*
++	 * Only use BTS for fixed rate period=3D=3D1 events.
++	 */
++	if (event->attr.freq || period !=3D 1)
++		return false;
++
++	/*
++	 * BTS doesn't virtualize.
++	 */
++	if (event->attr.exclude_host)
+ 		return false;
+=20
+ 	hw_event =3D hwc->config & INTEL_ARCH_EVENT_MASK;
+ 	bts_event =3D x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
+=20
+-	return hw_event =3D=3D bts_event && period =3D=3D 1;
++	return hw_event =3D=3D bts_event;
+ }
+=20
+ static inline bool intel_pmu_has_bts(struct perf_event *event)
 
