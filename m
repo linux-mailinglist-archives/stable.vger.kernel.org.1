@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-211035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gB7VDhwfcWmodQAAu9opvQ
-	(envelope-from <stable+bounces-211035-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:46:52 +0100
+	id SBJICLA1cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-210871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:23:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC565B7AE
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:46:51 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1CBF5D1BC
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:23:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8E66D7AA9A2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:31:17 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id D638176A7FC
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FB83A9D85;
-	Wed, 21 Jan 2026 18:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069BC32E6A3;
+	Wed, 21 Jan 2026 18:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvZtv44L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUosnByK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68BB733EAE0;
-	Wed, 21 Jan 2026 18:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A29322B77;
+	Wed, 21 Jan 2026 18:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020217; cv=none; b=JQMY7PFYyJhd4qsq+9lrSLRkSKSyWv5mZx8mzup50I53+4Ja3hQourdkYVLu08Hpp0/bgw/q206NwcM20qcv2nJQg8O6YbleKjqh5dnTgjwz7LgyNqwXEIUs9OSVK9MDi5MBGP5wv4/HXKH5vpNLsu00bdurxcYOQWTPVBYvs4M=
+	t=1769019666; cv=none; b=Hn3bSLzpASciIWyz7arctDcSU2mTvxUnMYXdx8WCid7mkauoPPtuoML4EOROGhfe2UGz67dQpV3/N39OFtqEzJ//V4exOa7kycL/r2xsrC3kl++n1fOY+sOJFdD/iauquKz8HvriWXWji7O8+EuZ3NZfqTohFu11FKg2Jw+UO6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020217; c=relaxed/simple;
-	bh=pdisrH1GII42wJkvaRMbFaAxoeGnLM2XAEmsAhx28tc=;
+	s=arc-20240116; t=1769019666; c=relaxed/simple;
+	bh=CBv2kMNkELkXJqDfc6thb3Djn0h07s1TYZRJESZogTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KoJMuN9dsjsdqe9MIGy1PPLAF8NEN23EfUAOgB9C/w0sCF1u7Jx9AwfT41fjIG18G7mbo8nlK+OXHR+0sVCc8NpvNHcA+UioRywNIk/gkgMaP1GH7m46TPQF5zt8MToqcchMm7lgnJ4h/ilBQmFRqrvsIjLvGgHbYbuBE//YXT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvZtv44L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8DB3C4CEF1;
-	Wed, 21 Jan 2026 18:30:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Wl+0iRT1htLdhjkxz9cr6gtTgHA6jlpW0J5aZ8PteFEQJLuZQrCtmmEvqD6nYLEuYE8CETZ/d/bkdwjFGgqxsk4osqRuDPsF5toufadVia5pCY8bi+GxtdSn0nO+R5EwgniAkKdWu3anfp6RK9Jsv72msP1oMG5nILsUzEnj080=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUosnByK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABBEC4CEF1;
+	Wed, 21 Jan 2026 18:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020217;
-	bh=pdisrH1GII42wJkvaRMbFaAxoeGnLM2XAEmsAhx28tc=;
+	s=korg; t=1769019666;
+	bh=CBv2kMNkELkXJqDfc6thb3Djn0h07s1TYZRJESZogTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvZtv44LwQmBq1EYjjZ+97/j55feY/6B9aRrntympHVr0AbtE1fQKUIYeHcR2Y/Km
-	 c8HDbyGvKyni4tXy5uut5VZBhDEeIFNCKcTdTPqaehr5BNCTR49HKz0Mjn9NEKHmTF
-	 +ieVzgeCW2UBHlK3zn3Jdzex3z3I22WGZKyErRus=
+	b=kUosnByKSY2mHgVVThJDGMD29ilCDV0vA46vr1x778gc1VRpBQnKf0pQzAN9Rc2hs
+	 rnMZg0B1b1hErCBKSmHX1injsvKosoFHhHz0p5riMDighm2BHufcQJ0zogjofA3oe2
+	 4HWMZNwAsIVrOKusJWuX8HR2IjUjyF+WPoemLdLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.18 093/198] selftests: kvm: try getting XFD and XSAVE state out of sync
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 073/139] phy: rockchip: inno-usb2: fix communication disruption in gadget mode
 Date: Wed, 21 Jan 2026 19:15:21 +0100
-Message-ID: <20260121181421.901388626@linuxfoundation.org>
+Message-ID: <20260121181414.082801608@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +65,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211035-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210871-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BCC565B7AE
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url]
+X-Rspamd-Queue-Id: D1CBF5D1BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit 0383a8edef396cf0a6884b0be81d62bde60737b0 upstream.
+commit 7d8f725b79e35fa47e42c88716aad8711e1168d8 upstream.
 
-The host is allowed to set FPU state that includes a disabled
-xstate component.  Check that this does not cause bad effects.
+When the OTG USB port is used to power to SoC, configured as peripheral and
+used in gadget mode, communication stops without notice about 6 seconds
+after the gadget is configured and enumerated.
 
+The problem was observed on a Radxa Rock Pi S board, which can only be
+powered by the only USB-C connector. That connector is the only one usable
+in gadget mode. This implies the USB cable is connected from before boot
+and never disconnects while the kernel runs.
+
+The related code flow in the PHY driver code can be summarized as:
+
+ * the first time chg_detect_work starts (6 seconds after gadget is
+   configured and enumerated)
+   -> rockchip_chg_detect_work():
+       if chg_state is UNDEFINED:
+          property_enable(base, &rphy->phy_cfg->chg_det.opmode, false); [Y]
+
+ * rockchip_chg_detect_work() changes state and re-triggers itself a few
+   times until it reaches the DETECTED state:
+   -> rockchip_chg_detect_work():
+       if chg_state is DETECTED:
+          property_enable(base, &rphy->phy_cfg->chg_det.opmode, true); [Z]
+
+At [Y] all existing communications stop. E.g. using a CDC serial gadget,
+the /dev/tty* devices are still present on both host and device, but no
+data is transferred anymore. The later call with a 'true' argument at [Z]
+does not restore it.
+
+Due to the lack of documentation, what chg_det.opmode does exactly is not
+clear, however by code inspection it seems reasonable that is disables
+something needed to keep the communication working, and testing proves that
+disabling these lines lets gadget mode keep working. So prevent changes to
+chg_det.opmode when there is a cable connected (VBUS present).
+
+Fixes: 98898f3bc83c ("phy: rockchip-inno-usb2: support otg-port for rk3399")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Closes: https://lore.kernel.org/lkml/20250414185458.7767aabc@booty/
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://patch.msgid.link/20251127-rk3308-fix-usb-gadget-phy-disconnect-v2-2-dac8a02cd2ca@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/kvm/x86/amx_test.c |   38 ++++++++++++++++++++++-------
- 1 file changed, 30 insertions(+), 8 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/kvm/x86/amx_test.c
-+++ b/tools/testing/selftests/kvm/x86/amx_test.c
-@@ -125,11 +125,17 @@ static void set_tilecfg(struct tile_conf
- }
- 
- enum {
-+	/* Retrieve TMM0 from guest, stash it for TEST_RESTORE_TILEDATA */
-+	TEST_SAVE_TILEDATA = 1,
-+
- 	/* Check TMM0 against tiledata */
--	TEST_COMPARE_TILEDATA = 1,
-+	TEST_COMPARE_TILEDATA = 2,
-+
-+	/* Restore TMM0 from earlier save */
-+	TEST_RESTORE_TILEDATA = 4,
- 
- 	/* Full VM save/restore */
--	TEST_SAVE_RESTORE = 2,
-+	TEST_SAVE_RESTORE = 8,
- };
- 
- static void __attribute__((__flatten__)) guest_code(struct tile_config *amx_cfg,
-@@ -150,7 +156,16 @@ static void __attribute__((__flatten__))
- 	GUEST_SYNC(TEST_SAVE_RESTORE);
- 	/* Check save/restore when trap to userspace */
- 	__tileloadd(tiledata);
--	GUEST_SYNC(TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
-+	GUEST_SYNC(TEST_SAVE_TILEDATA | TEST_COMPARE_TILEDATA | TEST_SAVE_RESTORE);
-+
-+	/* xfd=0x40000, disable amx tiledata */
-+	wrmsr(MSR_IA32_XFD, XFEATURE_MASK_XTILE_DATA);
-+
-+	/* host tries setting tiledata while guest XFD is set */
-+	GUEST_SYNC(TEST_RESTORE_TILEDATA);
-+	GUEST_SYNC(TEST_SAVE_RESTORE);
-+
-+	wrmsr(MSR_IA32_XFD, 0);
- 	__tilerelease();
- 	GUEST_SYNC(TEST_SAVE_RESTORE);
- 	/*
-@@ -210,10 +225,10 @@ int main(int argc, char *argv[])
- 	struct kvm_vcpu *vcpu;
- 	struct kvm_vm *vm;
- 	struct kvm_x86_state *state;
-+	struct kvm_x86_state *tile_state = NULL;
- 	int xsave_restore_size;
- 	vm_vaddr_t amx_cfg, tiledata, xstate;
- 	struct ucall uc;
--	u32 amx_offset;
- 	int ret;
- 
- 	/*
-@@ -265,20 +280,27 @@ int main(int argc, char *argv[])
- 			/* NOT REACHED */
- 		case UCALL_SYNC:
- 			++iter;
-+			if (uc.args[1] & TEST_SAVE_TILEDATA) {
-+				fprintf(stderr, "GUEST_SYNC #%d, save tiledata\n", iter);
-+				tile_state = vcpu_save_state(vcpu);
-+			}
- 			if (uc.args[1] & TEST_COMPARE_TILEDATA) {
- 				fprintf(stderr, "GUEST_SYNC #%d, check TMM0 contents\n", iter);
- 
- 				/* Compacted mode, get amx offset by xsave area
- 				 * size subtract 8K amx size.
- 				 */
--				amx_offset = xsave_restore_size - NUM_TILES*TILE_SIZE;
--				state = vcpu_save_state(vcpu);
--				void *amx_start = (void *)state->xsave + amx_offset;
-+				u32 amx_offset = xsave_restore_size - NUM_TILES*TILE_SIZE;
-+				void *amx_start = (void *)tile_state->xsave + amx_offset;
- 				void *tiles_data = (void *)addr_gva2hva(vm, tiledata);
- 				/* Only check TMM0 register, 1 tile */
- 				ret = memcmp(amx_start, tiles_data, TILE_SIZE);
- 				TEST_ASSERT(ret == 0, "memcmp failed, ret=%d", ret);
--				kvm_x86_state_cleanup(state);
-+			}
-+			if (uc.args[1] & TEST_RESTORE_TILEDATA) {
-+				fprintf(stderr, "GUEST_SYNC #%d, before KVM_SET_XSAVE\n", iter);
-+				vcpu_xsave_set(vcpu, tile_state->xsave);
-+				fprintf(stderr, "GUEST_SYNC #%d, after KVM_SET_XSAVE\n", iter);
- 			}
- 			if (uc.args[1] & TEST_SAVE_RESTORE) {
- 				fprintf(stderr, "GUEST_SYNC #%d, save/restore VM state\n", iter);
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -815,7 +815,8 @@ static void rockchip_chg_detect_work(str
+ 		if (!rport->suspended)
+ 			rockchip_usb2phy_power_off(rport->phy);
+ 		/* put the controller in non-driving mode */
+-		property_enable(base, &rphy->phy_cfg->chg_det.opmode, false);
++		if (!vbus_attach)
++			property_enable(base, &rphy->phy_cfg->chg_det.opmode, false);
+ 		/* Start DCD processing stage 1 */
+ 		rockchip_chg_enable_dcd(rphy, true);
+ 		rphy->chg_state = USB_CHG_STATE_WAIT_FOR_DCD;
+@@ -878,7 +879,8 @@ static void rockchip_chg_detect_work(str
+ 		fallthrough;
+ 	case USB_CHG_STATE_DETECTED:
+ 		/* put the controller in normal mode */
+-		property_enable(base, &rphy->phy_cfg->chg_det.opmode, true);
++		if (!vbus_attach)
++			property_enable(base, &rphy->phy_cfg->chg_det.opmode, true);
+ 		rockchip_usb2phy_otg_sm_work(&rport->otg_sm_work.work);
+ 		dev_dbg(&rport->phy->dev, "charger = %s\n",
+ 			 chg_to_string(rphy->chg_type));
 
 
 
