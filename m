@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-210851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211045-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBNCFvMwcWmcfAAAu9opvQ
-	(envelope-from <stable+bounces-210851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:02:59 +0100
+	id aKP8OOIrcWl1fAAAu9opvQ
+	(envelope-from <stable+bounces-211045-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:41:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B3B5CC34
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:02:58 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68CC95C607
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:41:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 26B969903E2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:20:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 8799584A5A2
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB223A1D10;
-	Wed, 21 Jan 2026 18:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7DF36A020;
+	Wed, 21 Jan 2026 18:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j66eYJ3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1oqbhFH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA1238B986;
-	Wed, 21 Jan 2026 18:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3044E37F0FA;
+	Wed, 21 Jan 2026 18:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019601; cv=none; b=sIG4WnbMzQsqsREF/Jl0EHLIZjMolr5DHwniC/B9oI5SluA0a0P7FbwP9/WgCygIWIK7YZk7bI+8kmdzChMQvfUqSqLJbrpIwiXUwZFmQ9qMIIYa+dEHtgHoTc9xxUVXbHj9WyCQwH2OCTPXMmaXSNrVYTaq6tShpMPhRAGLIfs=
+	t=1769020252; cv=none; b=j8B+6Q+h/SrnQgRlhTiQ2j7n1S7D5p8PrF1dqd4qNK93um2YeihZGAtFV46EjDUbS64kT8r92XHzC3FSoRPw4zNyaY21d1uEcoYIS/RnbrGAK5Zz9KZaflNU35szYasv+flAz1S1SWA+wzonWSanWfJRDuhXmIhAXcumPYdXnuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019601; c=relaxed/simple;
-	bh=Ou7mtw9MKv2lzUfGPM2J5eb83EYih2ZH4Osnx9l1zuY=;
+	s=arc-20240116; t=1769020252; c=relaxed/simple;
+	bh=MsgjAlzRoObLpzYAthSp81s4KKWX1Azrr7KWXJBClIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kv1DnFwlqBYdS94TcWj1CnaUGp7vY4Z1YgTXQ5KN1WhFNHiTOxbkuGK47mjBPFKgS2q/ecEQp/mMfgtLwULMaVS/oZ7j/zuqHdQIEEcJ7kjNe1r9t5UYDLbiTLcEcx/SdwAuhJ4eOnZaG/rgDIw9sH3CbE60mQDRU8sIVUSUyY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j66eYJ3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE8B9C19422;
-	Wed, 21 Jan 2026 18:19:58 +0000 (UTC)
+	 MIME-Version; b=tXdPkn2TGejFSPlUbKcxRiZ/LEEdGOvzNxo261TkSnVvuJJ9kO02uBvHW2PQlqfuYZFze5mZpNZi3lp+1sJw9J/p+L6dK1rP/Nf0KhP0/yINT9ext18+bILNcYEWnU81EZCqNJcjdFviWktfHr+xLF2RgIzjDkE5RVYmurnTUbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1oqbhFH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B37BC4CEF1;
+	Wed, 21 Jan 2026 18:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019599;
-	bh=Ou7mtw9MKv2lzUfGPM2J5eb83EYih2ZH4Osnx9l1zuY=;
+	s=korg; t=1769020252;
+	bh=MsgjAlzRoObLpzYAthSp81s4KKWX1Azrr7KWXJBClIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j66eYJ3rzR4By0fxfYN7w70vArigcuJlMH1Z19nxvpXyK3VIlKsFQnoBnfb0XBSKQ
-	 u9kXKqTUFO5Q3koNwmu5yL3ja6Ui9QoskWS3IsIYPvayu0G0xsDl3aWUIQ0HbV07Eg
-	 uxeViDFhtcI4rUuzUCuR7+Z2fQnLfsLMwR3IE8Jg=
+	b=A1oqbhFHw1HGVER12gCZIRIGA+RosVMcaAo+3dyqD2cXWIBw1Q+tHH6OEUGynBOZ1
+	 qPzecSuW3XcOqy16LK0y241J4MPrOAUvYFoV1TmE9uxGVNx8zoZ+k6GB9qQCIL5YyQ
+	 wxUktBqS0hMxKyLSlzLWkqbaMoQo9A1D9ubbf1/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Sheetal <sheetal@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/139] phy: stm32-usphyc: Fix off by one in probe()
+Subject: [PATCH 6.18 071/198] dmaengine: tegra-adma: Fix use-after-free
 Date: Wed, 21 Jan 2026 19:14:59 +0100
-Message-ID: <20260121181413.293377053@linuxfoundation.org>
+Message-ID: <20260121181421.114632590@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210851-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211045-lists,stable=lfdr.de];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -85,7 +85,7 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -93,48 +93,117 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,msgid.link:url,st.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: D9B3B5CC34
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,nvidia.com:email]
+X-Rspamd-Queue-Id: 68CC95C607
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sheetal <sheetal@nvidia.com>
 
-[ Upstream commit cabd25b57216ddc132efbcc31f972baa03aad15a ]
+[ Upstream commit 2efd07a7c36949e6fa36a69183df24d368bf9e96 ]
 
-The "index" variable is used as an index into the usbphyc->phys[] array
-which has usbphyc->nphys elements.  So if it is equal to usbphyc->nphys
-then it is one element out of bounds.  The "index" comes from the
-device tree so it's data that we trust and it's unlikely to be wrong,
-however it's obviously still worth fixing the bug.  Change the > to >=.
+A use-after-free bug exists in the Tegra ADMA driver when audio streams
+are terminated, particularly during XRUN conditions. The issue occurs
+when the DMA buffer is freed by tegra_adma_terminate_all() before the
+vchan completion tasklet finishes accessing it.
 
-Fixes: 94c358da3a05 ("phy: stm32: add support for STM32 USB PHY Controller (USBPHYC)")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/aTfHcMJK1wFVnvEe@stanley.mountain
+The race condition follows this sequence:
+
+  1. DMA transfer completes, triggering an interrupt that schedules the
+     completion tasklet (tasklet has not executed yet)
+  2. Audio playback stops, calling tegra_adma_terminate_all() which
+     frees the DMA buffer memory via kfree()
+  3. The scheduled tasklet finally executes, calling vchan_complete()
+     which attempts to access the already-freed memory
+
+Since tasklets can execute at any time after being scheduled, there is
+no guarantee that the buffer will remain valid when vchan_complete()
+runs.
+
+Fix this by properly synchronizing the virtual channel completion:
+ - Calling vchan_terminate_vdesc() in tegra_adma_stop() to mark the
+   descriptors as terminated instead of freeing the descriptor.
+ - Add the callback tegra_adma_synchronize() that calls
+   vchan_synchronize() which kills any pending tasklets and frees any
+   terminated descriptors.
+
+Crash logs:
+[  337.427523] BUG: KASAN: use-after-free in vchan_complete+0x124/0x3b0
+[  337.427544] Read of size 8 at addr ffff000132055428 by task swapper/0/0
+
+[  337.427562] Call trace:
+[  337.427564]  dump_backtrace+0x0/0x320
+[  337.427571]  show_stack+0x20/0x30
+[  337.427575]  dump_stack_lvl+0x68/0x84
+[  337.427584]  print_address_description.constprop.0+0x74/0x2b8
+[  337.427590]  kasan_report+0x1f4/0x210
+[  337.427598]  __asan_load8+0xa0/0xd0
+[  337.427603]  vchan_complete+0x124/0x3b0
+[  337.427609]  tasklet_action_common.constprop.0+0x190/0x1d0
+[  337.427617]  tasklet_action+0x30/0x40
+[  337.427623]  __do_softirq+0x1a0/0x5c4
+[  337.427628]  irq_exit+0x110/0x140
+[  337.427633]  handle_domain_irq+0xa4/0xe0
+[  337.427640]  gic_handle_irq+0x64/0x160
+[  337.427644]  call_on_irq_stack+0x20/0x4c
+[  337.427649]  do_interrupt_handler+0x7c/0x90
+[  337.427654]  el1_interrupt+0x30/0x80
+[  337.427659]  el1h_64_irq_handler+0x18/0x30
+[  337.427663]  el1h_64_irq+0x7c/0x80
+[  337.427667]  cpuidle_enter_state+0xe4/0x540
+[  337.427674]  cpuidle_enter+0x54/0x80
+[  337.427679]  do_idle+0x2e0/0x380
+[  337.427685]  cpu_startup_entry+0x2c/0x70
+[  337.427690]  rest_init+0x114/0x130
+[  337.427695]  arch_call_rest_init+0x18/0x24
+[  337.427702]  start_kernel+0x380/0x3b4
+[  337.427706]  __primary_switched+0xc0/0xc8
+
+Fixes: f46b195799b5 ("dmaengine: tegra-adma: Add support for Tegra210 ADMA")
+Signed-off-by: Sheetal <sheetal@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20251110142445.3842036-1-sheetal@nvidia.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/st/phy-stm32-usbphyc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/tegra210-adma.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/st/phy-stm32-usbphyc.c b/drivers/phy/st/phy-stm32-usbphyc.c
-index dbf23ae38255a..797d45747406d 100644
---- a/drivers/phy/st/phy-stm32-usbphyc.c
-+++ b/drivers/phy/st/phy-stm32-usbphyc.c
-@@ -712,7 +712,7 @@ static int stm32_usbphyc_probe(struct platform_device *pdev)
- 		}
+diff --git a/drivers/dma/tegra210-adma.c b/drivers/dma/tegra210-adma.c
+index fad896ff29a2d..812f64569e6d8 100644
+--- a/drivers/dma/tegra210-adma.c
++++ b/drivers/dma/tegra210-adma.c
+@@ -429,10 +429,17 @@ static void tegra_adma_stop(struct tegra_adma_chan *tdc)
+ 		return;
+ 	}
  
- 		ret = of_property_read_u32(child, "reg", &index);
--		if (ret || index > usbphyc->nphys) {
-+		if (ret || index >= usbphyc->nphys) {
- 			dev_err(&phy->dev, "invalid reg property: %d\n", ret);
- 			if (!ret)
- 				ret = -EINVAL;
+-	kfree(tdc->desc);
++	vchan_terminate_vdesc(&tdc->desc->vd);
+ 	tdc->desc = NULL;
+ }
+ 
++static void tegra_adma_synchronize(struct dma_chan *dc)
++{
++	struct tegra_adma_chan *tdc = to_tegra_adma_chan(dc);
++
++	vchan_synchronize(&tdc->vc);
++}
++
+ static void tegra_adma_start(struct tegra_adma_chan *tdc)
+ {
+ 	struct virt_dma_desc *vd = vchan_next_desc(&tdc->vc);
+@@ -1155,6 +1162,7 @@ static int tegra_adma_probe(struct platform_device *pdev)
+ 	tdma->dma_dev.device_config = tegra_adma_slave_config;
+ 	tdma->dma_dev.device_tx_status = tegra_adma_tx_status;
+ 	tdma->dma_dev.device_terminate_all = tegra_adma_terminate_all;
++	tdma->dma_dev.device_synchronize = tegra_adma_synchronize;
+ 	tdma->dma_dev.src_addr_widths = BIT(DMA_SLAVE_BUSWIDTH_4_BYTES);
+ 	tdma->dma_dev.dst_addr_widths = BIT(DMA_SLAVE_BUSWIDTH_4_BYTES);
+ 	tdma->dma_dev.directions = BIT(DMA_DEV_TO_MEM) | BIT(DMA_MEM_TO_DEV);
 -- 
 2.51.0
 
