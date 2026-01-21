@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-210635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFDAJ1MucGniWwAAu9opvQ
-	(envelope-from <stable+bounces-210635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:39:31 +0100
+	id SO4jD2sucGniWwAAu9opvQ
+	(envelope-from <stable+bounces-210637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:39:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1614F31F
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:39:31 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14784F363
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6A08B90FB71
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:39:06 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 75DA4A21023
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276A33090EE;
-	Wed, 21 Jan 2026 01:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE5330F7FE;
+	Wed, 21 Jan 2026 01:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hbM3q6mf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WKKJueDf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFB72777F3
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 01:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481C22D0C8F
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 01:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768959540; cv=none; b=VuBqfvf8zdp+KMeN9KdnGkJQ+e/YyW5/nZBwYU551RxFuUy3vSqki6XXoruw+gEVS6I3+TgUmZlwQ6tSQv+jj5QOJEEdoKm28p9D4A1B5TjUWSSxfA30rQbxeqR1x/3rAuxW+dgiFeyO0ndthW6qSBsQyqo3wU0cRjsjOKBXyWo=
+	t=1768959549; cv=none; b=TWHxHXs4+GYk3cu8o3D5wHHXiOejAx2pLtdBX/lczxpBjR326vt4BYDAuSBc8VPWqhqXK5s7DnMLu02DuDRFSPVVnAXLQEAlarQH+GVfycZGjPnXwd3MG7qZuF+xlg20Daml/7xy6oBwZX3+t+BaxecUbcmKL2BZgWHtm6kxai8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768959540; c=relaxed/simple;
-	bh=y0ZiPG3MjWV44T3YHMqO3nCXNMuRIXXv0g1XuXE6VDg=;
+	s=arc-20240116; t=1768959549; c=relaxed/simple;
+	bh=gUW3KX9J6YvYIx6IzGRsNAmNgxz/F2QQHNCBIcrbnvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ixwCT24U2uje8KbQESslhzyDy3szb0jSP2L1DU3e3Q5CG/cEiVpLavCOWKaPf5nmmo/q29M/x+D2gsfh4E0L+quKhwXdxrOKuLPU0527KQKuXWkuX1AB+BNkDyacWz9Xgudjpasd6gz++IlhHUCmWtrYFjB4ZX5GdXgAvar5bUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hbM3q6mf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FC5C2BC86;
-	Wed, 21 Jan 2026 01:38:59 +0000 (UTC)
+	 MIME-Version; b=k8x/9EWKdckhzlKbs0PYg3cb2gbm6my8DmqDSmd9fTJ0Ro6q6r8nyYMXBlyUkav8eOyCP+ynQLh3HLOWUq3+YpwMeJl3oHq2AwX1/a/vDAUTiE6diWg4D8Kf/f6eLJ7rfj5SEh4YtAyYdmbPD3eW9jXXcKW+k71vah8zxPqcwY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WKKJueDf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CF5C16AAE;
+	Wed, 21 Jan 2026 01:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768959539;
-	bh=y0ZiPG3MjWV44T3YHMqO3nCXNMuRIXXv0g1XuXE6VDg=;
+	s=k20201202; t=1768959548;
+	bh=gUW3KX9J6YvYIx6IzGRsNAmNgxz/F2QQHNCBIcrbnvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbM3q6mfeEoHsVI7SQDxrSCDolqqV5ynEd5zxiX5hJjzMWws24WEsVea6dKi0/9qv
-	 eYU8WdCLr90o9pbSh3DfDIXwpZDTAvxGe4sWjhlgfD066L//TOHvh+oOS4yKBT2+qY
-	 dcYcLI121nxfAxtktd1+pIB6NLQSBX41k8fRyivrn3cXyxl8k/oi761UkJvRYoq7eI
-	 BqM+ahWIxrLc/6PYgi1UEBDdvgaPYoihYIxP/l2wYfjdHKxTCCV8zGzKLkb3CBYabX
-	 Dd/nNo6EgGMCN/x2uXdoW9svghLzqRcF+1ELmVIRN1cV4VVeB8LyZZtgcwoY2U2jIJ
-	 l3cmDFNrmsCCA==
+	b=WKKJueDf6wIrlaUCXjqTchzi/xer9b8JDUk/pQUyzB3nHG0IRGaWC1LTI9+M2+o7y
+	 c4sl2sv3DYEWT5j5AyJOZ+H7COAyPwhOKIJtLUjKcEHvEPsR/OUVFW4KW0512W+2pJ
+	 f9lIRcyTMkDsrQbHSo0eh5l/9WmFL1YWPzbjhsd1vN8eTvdtRp0kpr+2s9RQhrWU2T
+	 0LE0gyGrGqjqlNxIk6EQdmlk18N8MQ0kwu5AcGeRBBkQL3hDq7G0hEtw7IeMfWzJCr
+	 +ztt6eUwMLizeEJrwgAYYWa0PCyWoeWfDv1OfPtwckfXNXNT/wllQemVePEDJLwPAK
+	 j2V/Hju0CNtlg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Wentao Liang <vulab@iscas.ac.cn>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 2/2] phy: rockchip: inno-usb2: Fix a double free bug in rockchip_usb2phy_probe()
-Date: Tue, 20 Jan 2026 20:38:56 -0500
-Message-ID: <20260121013856.1104103-2-sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/2] ASoC: codecs: wsa881x: Drop unused version readout
+Date: Tue, 20 Jan 2026 20:39:05 -0500
+Message-ID: <20260121013906.1104336-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260121013856.1104103-1-sashal@kernel.org>
-References: <2026012036-dress-salvaging-8848@gregkh>
- <20260121013856.1104103-1-sashal@kernel.org>
+In-Reply-To: <2026012028-unclamped-unfrozen-60bd@gregkh>
+References: <2026012028-unclamped-unfrozen-60bd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,13 +73,13 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-210637-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210635-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
@@ -89,49 +87,49 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,iscas.ac.cn:email,msgid.link:url]
-X-Rspamd-Queue-Id: 0C1614F31F
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	RCPT_COUNT_THREE(0.00)[4];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,linaro.org:email]
+X-Rspamd-Queue-Id: D14784F363
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit e07dea3de508cd6950c937cec42de7603190e1ca ]
+[ Upstream commit 3d2a69eb503d15171a7ba51cf0b562728ac396b7 ]
 
-The for_each_available_child_of_node() calls of_node_put() to
-release child_np in each success loop. After breaking from the
-loop with the child_np has been released, the code will jump to
-the put_child label and will call the of_node_put() again if the
-devm_request_threaded_irq() fails. These cause a double free bug.
+Driver does not use the device version after reading it from the
+registers, so simplify by dropping unneeded code.
 
-Fix by returning directly to avoid the duplicate of_node_put().
-
-Fixes: ed2b5a8e6b98 ("phy: phy-rockchip-inno-usb2: support muxed interrupts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260109154626.2452034-1-vulab@iscas.ac.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240710-asoc-wsa88xx-version-v1-1-f1c54966ccde@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 29d71b8a5a40 ("ASoC: codecs: wsa881x: fix unnecessary initialisation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-usb2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/wsa881x.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-index 78a6dccba07a3..79b2199cff86e 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-@@ -1469,7 +1469,7 @@ static int rockchip_usb2phy_probe(struct platform_device *pdev)
- 						rphy);
- 		if (ret) {
- 			dev_err_probe(rphy->dev, ret, "failed to request usb2phy irq handle\n");
--			goto put_child;
-+			return ret;
- 		}
- 	}
+diff --git a/sound/soc/codecs/wsa881x.c b/sound/soc/codecs/wsa881x.c
+index 53b828f681020..2b0c26664762f 100644
+--- a/sound/soc/codecs/wsa881x.c
++++ b/sound/soc/codecs/wsa881x.c
+@@ -680,7 +680,6 @@ struct wsa881x_priv {
+ 	 * For backwards compatibility.
+ 	 */
+ 	unsigned int sd_n_val;
+-	int version;
+ 	int active_ports;
+ 	bool port_prepared[WSA881X_MAX_SWR_PORTS];
+ 	bool port_enable[WSA881X_MAX_SWR_PORTS];
+@@ -691,7 +690,6 @@ static void wsa881x_init(struct wsa881x_priv *wsa881x)
+ 	struct regmap *rm = wsa881x->regmap;
+ 	unsigned int val = 0;
+ 
+-	regmap_read(rm, WSA881X_CHIP_ID1, &wsa881x->version);
+ 	regmap_register_patch(wsa881x->regmap, wsa881x_rev_2_0,
+ 			      ARRAY_SIZE(wsa881x_rev_2_0));
  
 -- 
 2.51.0
