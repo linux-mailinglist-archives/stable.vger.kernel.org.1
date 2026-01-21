@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-211074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLJyCtAscWl1fAAAu9opvQ
-	(envelope-from <stable+bounces-211074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:45:20 +0100
+	id 8KltKnsycWlQfQAAu9opvQ
+	(envelope-from <stable+bounces-210910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:09:31 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE055C711
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:45:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 051595CDD1
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:09:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id DAFEF72FA46
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:34:03 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 461628CC23A
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B26F318BAD;
-	Wed, 21 Jan 2026 18:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670F6354AD6;
+	Wed, 21 Jan 2026 18:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPFk4KLh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbHIgZs3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC7E36E471;
-	Wed, 21 Jan 2026 18:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055DE339848;
+	Wed, 21 Jan 2026 18:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020353; cv=none; b=byN8hU+F91qD7EiNtdSmXcZ5Lc/6Uy3WJLBnMkxPdxMw6dw2xuYVEjYEg5PRVER59cmGmGouEOLrpjIuRI+UbduXKdwPnbsESsfRVY/mCAo3XQoRClhgQ3EPNqFlgWlE7rihml1THCSDc1ffixiFKLGZS9jhiBPr/UcWLVpvILQ=
+	t=1769019796; cv=none; b=riqcUJJp3V+Nqwvx4mDfxjwvt6swdhi1IMAR4ZK11C2TZP8DUwmqYeWCJz09mXUOpZEvrmBm040+1zMve/qKVPjuAEJzmqVEcDpiuplDI0aFqfpV0A5eMDMR8BAz4uM2xogfYnaJdn0f+iGXEEIm5NW5wpb/L0VG3wl+V8Bywms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020353; c=relaxed/simple;
-	bh=DdqZeby7WklILxJxbLTRzmyfVbcr5MLO3gFdSQZbDXQ=;
+	s=arc-20240116; t=1769019796; c=relaxed/simple;
+	bh=4hg7gJ/ay8mROo6Smcx5qel0hQffhxeviLAHs8wqh8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/bpY0ur+nqVrHk8OxKeXFFmx7bR/1MmjZrWz45jcF6RZwLObSfAPhps3OEAU06aT/u1IKEqvLQx7nbiFVMHSCrEw2W2igNhkfDNe3OXl2n3WzSUnC1bygkA0Jf48DRati2OXtke83Wk7TpUhWcm0jLjyKSPudo+dyiRPymr2bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPFk4KLh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14C87C4CEF1;
-	Wed, 21 Jan 2026 18:32:31 +0000 (UTC)
+	 MIME-Version; b=qJwSm+9vn8gD0V1b1CXTJNd2fC74fIklaeaFVL35P5PtIAaqfwvK6zjULd0VnpF59RoGJvP9w3FVCdnlMnrZzwUm/2P+xUKi2Tse+x5FXTPyDlgw9BlaaGvLzBmjFoOHZMG8zNmV9NMFz2ExuV5fTo0zNMBfrzoikXY9KL4BWGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbHIgZs3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5036FC4CEF1;
+	Wed, 21 Jan 2026 18:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020352;
-	bh=DdqZeby7WklILxJxbLTRzmyfVbcr5MLO3gFdSQZbDXQ=;
+	s=korg; t=1769019795;
+	bh=4hg7gJ/ay8mROo6Smcx5qel0hQffhxeviLAHs8wqh8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPFk4KLhBXdhBrgFaYb9lLwfOuuha6S7QUPjttSEQUAsYf2jZDf+lsRD7azoc0X8W
-	 jap+5Rs9SVTak03KGYHbT400UM0IqjRWEEcbA9Xddqz7WSaLQn7VZTsin2ZONpdSgb
-	 qiiV9fneYC2aGrSqsx+481zYwegdOsUb0JEkj/iU=
+	b=HbHIgZs3Xztnw1FsF1kkSme8QBQDUpY3gVLhMbxz665PqFZkZRzCFI5mIjuteIuSn
+	 qloBMRnBDuSCbs9OqrBXEaef9zfWOH//JcIz/l1UZE1TZ1Hmg7hEYaOU+vwqeHIMGg
+	 GMVMeI42EJrRCRya5DEyl6ukInCRtYgPbXpgvPFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.18 131/198] EDAC/x38: Fix a resource leak in x38_probe1()
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 111/139] dmaengine: dw: dmamux: fix OF node leak on route allocation failure
 Date: Wed, 21 Jan 2026 19:15:59 +0100
-Message-ID: <20260121181423.263134968@linuxfoundation.org>
+Message-ID: <20260121181415.443015565@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,14 +76,14 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211074-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210910-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,61 +92,54 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email,msgid.link:url,alien8.de:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 9CE055C711
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email]
+X-Rspamd-Queue-Id: 051595CDD1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-commit 0ff7c44106b4715fc27a2e455d9f57f1dfcfd54f upstream.
+commit ec25e60f9f95464aa11411db31d0906b3fb7b9f2 upstream.
 
-If edac_mc_alloc() fails, also unmap the window.
+Make sure to drop the reference taken to the DMA master OF node also on
+late route allocation failures.
 
-  [ bp: Use separate labels, turning it into the classic unwind pattern. ]
-
-Fixes: df8bc08c192f ("edac x38: new MC driver module")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251223124350.1496325-1-lihaoxiang@isrc.iscas.ac.cn
+Fixes: 134d9c52fca2 ("dmaengine: dw: dmamux: Introduce RZN1 DMA router support")
+Cc: stable@vger.kernel.org	# 5.19
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20251117161258.10679-6-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/x38_edac.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/dma/dw/rzn1-dmamux.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/edac/x38_edac.c
-+++ b/drivers/edac/x38_edac.c
-@@ -341,9 +341,12 @@ static int x38_probe1(struct pci_dev *pd
- 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[1].size = x38_channel_num;
- 	layers[1].is_virt_csrow = false;
-+
-+
-+	rc = -ENOMEM;
- 	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, 0);
- 	if (!mci)
--		return -ENOMEM;
-+		goto unmap;
+--- a/drivers/dma/dw/rzn1-dmamux.c
++++ b/drivers/dma/dw/rzn1-dmamux.c
+@@ -90,7 +90,7 @@ static void *rzn1_dmamux_route_allocate(
  
- 	edac_dbg(3, "MC: init mci\n");
+ 	if (test_and_set_bit(map->req_idx, dmamux->used_chans)) {
+ 		ret = -EBUSY;
+-		goto free_map;
++		goto put_dma_spec_np;
+ 	}
  
-@@ -403,9 +406,9 @@ static int x38_probe1(struct pci_dev *pd
- 	return 0;
+ 	mask = BIT(map->req_idx);
+@@ -103,6 +103,8 @@ static void *rzn1_dmamux_route_allocate(
  
- fail:
-+	edac_mc_free(mci);
-+unmap:
- 	iounmap(window);
--	if (mci)
--		edac_mc_free(mci);
- 
- 	return rc;
- }
+ clear_bitmap:
+ 	clear_bit(map->req_idx, dmamux->used_chans);
++put_dma_spec_np:
++	of_node_put(dma_spec->np);
+ free_map:
+ 	kfree(map);
+ put_device:
 
 
 
