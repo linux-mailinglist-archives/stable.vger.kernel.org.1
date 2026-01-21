@@ -1,67 +1,67 @@
-Return-Path: <stable+bounces-211025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EN2MAMscWl1fAAAu9opvQ
-	(envelope-from <stable+bounces-211025-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:41:55 +0100
+	id gBD0JZsmcWmqewAAu9opvQ
+	(envelope-from <stable+bounces-210846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:18:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E88F5C626
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:41:55 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E685BFD8
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:18:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 7CC4C8020AE
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:30:34 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5D1677AB3F0
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA94337F0FA;
-	Wed, 21 Jan 2026 18:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C424B389E1D;
+	Wed, 21 Jan 2026 18:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVr89ryr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jp5wxbJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8965D285060;
-	Wed, 21 Jan 2026 18:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C0A38735B;
+	Wed, 21 Jan 2026 18:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020182; cv=none; b=ZCE5AN4tiZusCw8Rd/D7xe6c7GhRJf6yW/PXnAddOmV6YlqYGGA3IRpV19DVQ72heeLYuTojqIBPJNYiMM/qXAF85YcKhEPtN7GBLWri2c2t2cGDMlulqjxRTjKjXl1zoBncbu7fZ1PjOUjhC4RinhDJozGfcVi+BAoE5MfKIUs=
+	t=1769019581; cv=none; b=gtzRTY5EcxKrImUaomNlsaAbQSLqKQFH7g4pcZgfmWFgCVeZ6saqsHPE6/RlwhImvFztLVkbY6cjCAY69b5Ajupg1sY+MzIgPpbeyxwH/WJTOg8RCYUkzvZNMM/L3Y4iylSQyNoeZmfH5aaKAO54Wh2KptQmM6Z8gUUkcRr6UMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020182; c=relaxed/simple;
-	bh=3PXF09dbt+BQ0v3l3iaKlUUJ9JxIxHrqzYa/9NpXGU4=;
+	s=arc-20240116; t=1769019581; c=relaxed/simple;
+	bh=ev+DY6ew5+nqDvDMOXxqdDihJt0qQMKd23i1M66d52A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRHBe4hGjEhXvAt4CwLPn28uJDY66NwwsmSgLJpuFYg9cAR+pQt2/EYTkauaQof+WrlVVzOOtYgapAw/vStZ67NSwoFCd8491ooMKozZZsrwt3k3tJL1CRu+B0DTGOoaRYtbHqN0RaOPLuqZDBrKvdE8D0FfWHkBWLERZxaHfG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVr89ryr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8381AC16AAE;
-	Wed, 21 Jan 2026 18:29:41 +0000 (UTC)
+	 MIME-Version; b=rYN++tzfkXd1bHoRI2J4QTy8jGE/frXU1uR+mE1+taVJhgL4PM3VrP0JsPlCOX6USoRleoa2KuYW8mTWoXUZMMygPta6R9BLDHZ1RvdQsJyhhWIZ2OErLS5UHK4+XxrbRY3xQqchQUWA6G6wOgHcZtS4G7zob/lATbkjEfjv9kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jp5wxbJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D022C16AAE;
+	Wed, 21 Jan 2026 18:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020182;
-	bh=3PXF09dbt+BQ0v3l3iaKlUUJ9JxIxHrqzYa/9NpXGU4=;
+	s=korg; t=1769019580;
+	bh=ev+DY6ew5+nqDvDMOXxqdDihJt0qQMKd23i1M66d52A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVr89ryr01yKOHqBoXFPwSckiVVwfo1AQyKw++xoMnqq6i6cuwHUBrg2NsLUr1kSS
-	 MJFIZBmO4hASOdQTebiE5rNbFhQwOrOHwE5ygt6E5GWFn0jWVUoC7ACF5anErD1AyH
-	 XzeKnJh7VCQXez6Eoah8FpZh4DyjRKDYB5D8t0q8=
+	b=jp5wxbJynupsWbgpL23o8TRUWYPGxOpbbSGoOwNKnp7xdO4V9Jkmw4Z0DobsYmN3B
+	 ZfbSBlL9g8Z5D3yqTmuLWnwfZx7rxT2+maSG1adqsOI4/2AaJDltoovb90GRiw2diY
+	 eczGhHE7O+oVEUW5LE61xfJe3Dles5Cgv8a7u8JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Markus Stockhausen <markus.stockhausen@gmx.de>,
-	Chris Packham <chris.packham@alliedtelesis.co.nz>,
-	Hauke Mehrtens <hauke@hauke-m.de>,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Leonid Segal <leonids@variscite.com>,
+	Pierluigi Passaro <pierluigi.p@variscite.com>,
+	Stefano Radaelli <stefano.r@variscite.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 066/198] mips: fix HIGHMEM initialization
-Date: Wed, 21 Jan 2026 19:14:54 +0100
-Message-ID: <20260121181420.935080219@linuxfoundation.org>
+Subject: [PATCH 6.12 047/139] phy: fsl-imx8mq-usb: Clear the PCS_TX_SWING_FULL field before using it
+Date: Wed, 21 Jan 2026 19:14:55 +0100
+Message-ID: <20260121181413.147412779@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,8 +72,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
@@ -83,99 +82,67 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_FROM(0.00)[bounces-211025-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210846-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,variscite.com,nxp.com,gmail.com,pengutronix.de,kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmx.de,alliedtelesis.co.nz,hauke-m.de,gmail.com,alpha.franken.de,linutronix.de,linux-foundation.org];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linux-foundation.org:email,linutronix.de:email,alliedtelesis.co.nz:email,gmx.de:email,franken.de:email]
-X-Rspamd-Queue-Id: 5E88F5C626
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 32E685BFD8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Stefano Radaelli <stefano.radaelli21@gmail.com>
 
-[ Upstream commit f171b55f1441294344b86edfeaa575ea9673fd23 ]
+[ Upstream commit 8becf9179a4b45104a1701010ed666b55bf4b3a6 ]
 
-Commit 6faea3422e3b ("arch, mm: streamline HIGHMEM freeing") overzealously
-removed mem_init_free_highmem() function that beside freeing high memory
-pages checked for CPU support for high memory as a prerequisite.
+Clear the PCS_TX_SWING_FULL field mask before setting the new value
+in PHY_CTRL5 register. Without clearing the mask first, the OR operation
+could leave previously set bits, resulting in incorrect register
+configuration.
 
-Partially restore mem_init_free_highmem() with a new highmem_init() name
-and make it discard high memory in case there is no CPU support for it.
-
-Link: https://lkml.kernel.org/r/20251231105701.519711-1-rppt@kernel.org
-Fixes: 6faea3422e3b ("arch, mm: streamline HIGHMEM freeing")
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reported-by: Markus Stockhausen <markus.stockhausen@gmx.de>
-Cc: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>
-Cc: Jonas Jelonek <jelonek.jonas@gmail.com>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 63c85ad0cd81 ("phy: fsl-imx8mp-usb: add support for phy tuning")
+Suggested-by: Leonid Segal <leonids@variscite.com>
+Acked-by: Pierluigi Passaro <pierluigi.p@variscite.com>
+Signed-off-by: Stefano Radaelli <stefano.r@variscite.com>
+Reviewed-by: Xu Yang <xu.yang_2@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://patch.msgid.link/20251219160912.561431-1-stefano.r@variscite.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/init.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index a673d3d68254b..8986048f9b110 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -425,6 +425,28 @@ void __init paging_init(void)
- static struct kcore_list kcore_kseg0;
- #endif
+diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+index f914f016b3d2c..043063699e064 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -206,6 +206,7 @@ static void imx8m_phy_tune(struct imx8mq_usb_phy *imx_phy)
  
-+static inline void __init highmem_init(void)
-+{
-+#ifdef CONFIG_HIGHMEM
-+	unsigned long tmp;
-+
-+	/*
-+	 * If CPU cannot support HIGHMEM discard the memory above highstart_pfn
-+	 */
-+	if (cpu_has_dc_aliases) {
-+		memblock_remove(PFN_PHYS(highstart_pfn), -1);
-+		return;
-+	}
-+
-+	for (tmp = highstart_pfn; tmp < highend_pfn; tmp++) {
-+		struct page *page = pfn_to_page(tmp);
-+
-+		if (!memblock_is_memory(PFN_PHYS(tmp)))
-+			SetPageReserved(page);
-+	}
-+#endif
-+}
-+
- void __init arch_mm_preinit(void)
- {
- 	/*
-@@ -435,6 +457,7 @@ void __init arch_mm_preinit(void)
- 
- 	maar_init();
- 	setup_zero_pages();	/* Setup zeroed pages.  */
-+	highmem_init();
- 
- #ifdef CONFIG_64BIT
- 	if ((unsigned long) &_text > (unsigned long) CKSEG0)
+ 	if (imx_phy->pcs_tx_swing_full != PHY_TUNE_DEFAULT) {
+ 		value = readl(imx_phy->base + PHY_CTRL5);
++		value &= ~PHY_CTRL5_PCS_TX_SWING_FULL_MASK;
+ 		value |= FIELD_PREP(PHY_CTRL5_PCS_TX_SWING_FULL_MASK,
+ 				   imx_phy->pcs_tx_swing_full);
+ 		writel(value, imx_phy->base + PHY_CTRL5);
 -- 
 2.51.0
 
