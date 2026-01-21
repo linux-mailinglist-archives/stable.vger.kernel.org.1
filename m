@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-210628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNYtCZgqcGmyWwAAu9opvQ
-	(envelope-from <stable+bounces-210628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:23:36 +0100
+	id qBNmBt8qcGniWwAAu9opvQ
+	(envelope-from <stable+bounces-210630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:24:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id C858E4F092
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:23:35 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 799E94F0E4
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E9613A0D2D8
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:23:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AB4E85AEFC6
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9427E30C602;
-	Wed, 21 Jan 2026 01:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FB630FC0B;
+	Wed, 21 Jan 2026 01:22:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370B72DEA97;
-	Wed, 21 Jan 2026 01:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAC2305E1F;
+	Wed, 21 Jan 2026 01:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768958573; cv=none; b=di0YsL6PJUjq25AkfF5KopJQwfOj0A+44P7dWYMO2zjkKZOUfrB2NynTD2EN/1EWjjwI9/WD6HDzI8J2US1hSOMUMXzPGW3tMM4dil0JggCya4AMWS7jk1qgRd2CTPq2gts1ZI9Aj3LB3GVXucikFKjlPJ8ittf9kEh8e3DHE6c=
+	t=1768958578; cv=none; b=keFPM906xP2AzZYgn90pqT0ilXyt4Gcs8SYTxrWVVWgFMAmkUEkzEBGvTT1piV5rfN/bnE9Rm2p+PVKK9i8ua+LmEm1VPZQtjJghLRSn1RF65mRq21MmDrznfiZg5N8VpQGE/A7QIi0OXTMArhq6yMJNyxsLOE1h96W5amtidZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768958573; c=relaxed/simple;
-	bh=qcBzSlikjwgktBRFNfiEhXzWSxLomGgatXcz6Y27nsM=;
+	s=arc-20240116; t=1768958578; c=relaxed/simple;
+	bh=MdrePG750UHfgpHeOHFuXkLgHmgPmb17/7/xTpwzhAE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pKsXPifXojUjE14pHPhGB1dxIYyV+ESWYRbJCu0EP6odGAEkDH76nm6yGBlKprnwJopvEO8dVseo0C+RlyELjKpswFZyoJgZ5jRB9+E7CFHcNOGOgncd7usj5ab78kdHqEVUoSWOOgSDl2y6ueOAUZ/JPohYy7rCD8xS8NOItR8=
+	 MIME-Version; b=e+/3Q05mmfzVg0Rk8tMakC41KW+lXMZWO8XRC3P+ltekf2i4ToxmU58r4B7NIcKbtbkye3e2Pqn/Bu1cOGFYAS5kwTHIWtzovMFp3pfVmnBiANXHVAU/wNds6ucip/hGAyIBqv1oEZSaGE/ZmBkwdW1u7t81ihWdV5uyYbrPcrM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
 Received: from localhost.localdomain (unknown [36.112.3.108])
-	by APP-05 (Coremail) with SMTP id zQCowAB3zhFdKnBpw6_aBQ--.10840S7;
+	by APP-05 (Coremail) with SMTP id zQCowAB3zhFdKnBpw6_aBQ--.10840S8;
 	Wed, 21 Jan 2026 09:22:46 +0800 (CST)
 From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 To: mturquette@baylibre.com,
@@ -45,9 +45,9 @@ Cc: linux-clk@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 5/7] clk: st: clkgen-pll: Add clk_unregister for pll_clk in clkgen_c32_pll_setup()
-Date: Wed, 21 Jan 2026 09:22:21 +0800
-Message-Id: <20260121012223.186199-6-lihaoxiang@isrc.iscas.ac.cn>
+Subject: [PATCH v2 6/7] clk: st: clkgen-pll: Remove redundant kfree() in clkgen_c32_pll_setup()
+Date: Wed, 21 Jan 2026 09:22:22 +0800
+Message-Id: <20260121012223.186199-7-lihaoxiang@isrc.iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260121012223.186199-1-lihaoxiang@isrc.iscas.ac.cn>
 References: <20260121012223.186199-1-lihaoxiang@isrc.iscas.ac.cn>
@@ -58,25 +58,24 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAB3zhFdKnBpw6_aBQ--.10840S7
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr18tw1UAFW5tFW8JF1xGrg_yoW8WrWfpa
-	yrGw1Yy34DXr4vqF48JFWDuas8Wan2gFW7CFW7Cwn5uwsxtry5Jw4Ygas293WUA3yxuF4a
-	qr1q9r40vF4UAF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBK14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
-	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
-	z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr
-	1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1U
-	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
-	v20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
-	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r126r
-	1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_
-	Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x
-	0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8
-	JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIx
-	AIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbx9NDUUUUU=
-	=
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwkOE2lwF5s6OwAAsH
+X-CM-TRANSID:zQCowAB3zhFdKnBpw6_aBQ--.10840S8
+X-Coremail-Antispam: 1UD129KBjvdXoWrKr4ruF1DtF1Uuryktw13urg_yoWftFbEkF
+	WIy34Ivw1rCr4UAw1Uua1fZ34F93Z5ZFn3WFn3t3y3t34UXFyUKryFqws3Jw13XFWfCF1D
+	Gw1fJr4Uur47AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb6kFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAVCq3wA2048vs2
+	IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28E
+	F7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJw
+	A2z4x0Y4vEx4A2jsIE14v26r1j6r4UM28EF7xvwVC2z280aVCY1x0267AKxVW8JVW8Jr1l
+	e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI
+	8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
+	jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_Jw
+	1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWU
+	JVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7V
+	AKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42
+	IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUYcTQUUUUU
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwwOE2lwF5s6PAABsE
 X-Spamd-Result: default: False [0.24 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
@@ -86,7 +85,7 @@ X-Spamd-Result: default: False [0.24 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -99,57 +98,37 @@ X-Spamd-Result: default: False [0.24 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_FROM(0.00)[bounces-210628-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,isrc.iscas.ac.cn:mid]
-X-Rspamd-Queue-Id: C858E4F092
+	TAGGED_FROM(0.00)[bounces-210630-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[isrc.iscas.ac.cn:mid,iscas.ac.cn:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 799E94F0E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In clkgen_c32_pll_setup(), clkgen_pll_register() allocated a
-clkgen_pll memory and registered a clk. Add clk_unregister()
-and kfree() to release the memory if error occurs.
+In clkgen_c32_pll_setup(), pll_name is actually pll_clk -> core->name.
+This variable will be released in clk_unregister() -> __clk_release()
+if some error occurs. Thus kfree(pll_name) will cause a double free.
+Remove this redundant kfree().
 
 Fixes: b9b8e614b580 ("clk: st: Support for PLLs inside ClockGenA(s)")
 Cc: stable@vger.kernel.org
 Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 Reviewed-by: Brian Masney <bmasney@redhat.com>
 ---
- drivers/clk/st/clkgen-pll.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/clk/st/clkgen-pll.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/clk/st/clkgen-pll.c b/drivers/clk/st/clkgen-pll.c
-index 073180754a56..ddf7673a52c5 100644
+index ddf7673a52c5..b8d2b97a6b9b 100644
 --- a/drivers/clk/st/clkgen-pll.c
 +++ b/drivers/clk/st/clkgen-pll.c
-@@ -764,7 +764,7 @@ static void __init clkgen_c32_pll_setup(struct device_node *np,
- 	int num_odfs, odf;
- 	struct clk_onecell_data *clk_data;
- 	unsigned long pll_flags = 0;
--
-+	struct clkgen_pll *pll;
+@@ -826,7 +826,6 @@ static void __init clkgen_c32_pll_setup(struct device_node *np,
+ 	return;
  
- 	parent_name = of_clk_get_parent_name(np, 0);
- 	if (!parent_name)
-@@ -787,7 +787,7 @@ static void __init clkgen_c32_pll_setup(struct device_node *np,
- 
- 	clk_data = kzalloc(sizeof(*clk_data), GFP_KERNEL);
- 	if (!clk_data)
--		return;
-+		goto err_pll_unregister;
- 
- 	clk_data->clk_num = num_odfs;
- 	clk_data->clks = kcalloc(clk_data->clk_num, sizeof(struct clk *),
-@@ -829,6 +829,10 @@ static void __init clkgen_c32_pll_setup(struct device_node *np,
- 	kfree(pll_name);
+ err:
+-	kfree(pll_name);
  	kfree(clk_data->clks);
  	kfree(clk_data);
-+err_pll_unregister:
-+	pll = to_clkgen_pll(__clk_get_hw(pll_clk));
-+	clk_unregister(pll_clk);
-+	kfree(pll);
- err_unmap:
- 	if (pll_base)
- 		iounmap(pll_base);
+ err_pll_unregister:
 -- 
 2.25.1
 
