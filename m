@@ -1,201 +1,327 @@
-Return-Path: <stable+bounces-210621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4HoXAbohcGlRVwAAu9opvQ
-	(envelope-from <stable+bounces-210621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:45:46 +0100
+	id 0AqWG/AlcGmyWwAAu9opvQ
+	(envelope-from <stable+bounces-210622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:03:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23744EA93
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:45:45 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2544ED7E
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 02:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 64D167AC118
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 00:45:35 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 32448A0AD2B
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 01:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7396628C2DD;
-	Wed, 21 Jan 2026 00:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D8B2F5472;
+	Wed, 21 Jan 2026 01:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MOXeHTOm"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="tDuwti9h"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-24421.protonmail.ch (mail-24421.protonmail.ch [109.224.244.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA3C2C11D9;
-	Wed, 21 Jan 2026 00:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B812DFA5A;
+	Wed, 21 Jan 2026 01:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768956324; cv=none; b=cU2lhSqvpeFNG9U9dLX4FWOcxRCpHkH/DOOBj8609zSMteXxz/Lv6cWUsFHbrsWg1S/onE2K/lrc+PdlF8q/eBTX+qwVTpqyxmQfQCsDNr6BM4TP0BDXSPwVON61vjBCJBNd/A/HpxNfR0C8AwyiPdJHip67Lmmj47Fc6jx2JmY=
+	t=1768957256; cv=none; b=e5ALZOUIbbomGxftfLfiDugm//XH1vhGAWfcCWJW49flf+5RvloE76RKHVKwsEVEYVQhn3vgFF/XCYBZ6C+OANwk1Gkzk7PHS1V/vF8K2Y1WHWkQaERx5Nhj2oD8rQzsbGnwk1aH0l1lp5p+pJXWO5MrYC1Cp81frsTh26ALSU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768956324; c=relaxed/simple;
-	bh=gjq2Ff7tY/Fy6ZKUroGBt++BIpuBCE60LpRjFDhOPBk=;
-	h=Date:To:From:Subject:Message-Id; b=Q6qudo0jA/IBrbaks8bVLjEhwAcFT/1z+go9w5MmCfJCixWloNLTgLayms+HNMBttN3pjR/3ZK05mh2QKO1RQRMyCCpL4tCjoJsAeHrVTO7vUnU+Zg03GWEVyE57wYqaoBfVd/foIxdwnTicEPsxn5Y7XOmEEwbGzowpR3tFrYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MOXeHTOm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C22C16AAE;
-	Wed, 21 Jan 2026 00:45:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768956323;
-	bh=gjq2Ff7tY/Fy6ZKUroGBt++BIpuBCE60LpRjFDhOPBk=;
-	h=Date:To:From:Subject:From;
-	b=MOXeHTOmTty1CDSkhQ9qh2MDcJ+V+S4/F0No4ay+KEVMF0B5hT7mz9NigMnBvDQUo
-	 3ZkkBbBDh43ais8jQ0WYm7x3M6aMszGp1J3tjY4wLHCr68XcqwUD4DmBb+oK6YLUGs
-	 AUJMkN0Zh4AB6Fj2BqkvOfARQBSD1Jvs13erb1mw=
-Date: Tue, 20 Jan 2026 16:45:22 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,william.roche@oracle.com,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,rientjes@google.com,osalvador@suse.de,nao.horiguchi@gmail.com,muchun.song@linux.dev,mhocko@suse.com,lorenzo.stoakes@oracle.com,linmiaohe@huawei.com,Liam.Howlett@oracle.com,jiaqiyan@google.com,david@kernel.org,clm@meta.com,jane.chu@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memory-failure-teach-kill_accessing_process-to-accept-hugetlb-tail-page-pfn.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260121004523.58C22C16AAE@smtp.kernel.org>
+	s=arc-20240116; t=1768957256; c=relaxed/simple;
+	bh=CnaT38/nM5eJZKaIAtAjjZs1hrA7oB6PNhCCVgDt9Qc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WAjhPvo7Ki+hVsGUVPpQDD2JO+1O8A1XQJ1BKnicPQt6oLOPhwIBA0BWeZ873AlbIVjECOQ+7S0JvhBcIasfwv7YQ3FFAIcYVaAmmiZRnJizkBfgUpdEqHt7Yru/i/tJkPeH0NsEEcSJUtbH+tWay3xahlwBL9W5Wkml2XLZBCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=tDuwti9h; arc=none smtp.client-ip=109.224.244.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1768957250; x=1769216450;
+	bh=NLDSvOYskVTfiZx0y65vt1Itpp011SQmy12fPuc5Uqw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=tDuwti9haxFetenj4OPe69hebmWgXsKrlwF/Y/4fCUmwngHZL4bBOsmtvmlk/vPct
+	 3tcsrd2hXcxMCa7dKGXlJdzNbhrbOSGyutbpDvbJjOUmAJpRfurZfCHy48Rhi89CW/
+	 PE9ffu7znHJ1p0Jfe0+w1/BhStr0gBTmRBuWOGKOc7Bd/h2Ek8kW+FR1zv87W8rMK0
+	 vTza/aaQQjaYyhq6X58kw+bEa44n/T/2WK2uRnWuqmTpun5Z5zp8gadWqDEl71vWBZ
+	 yb5w/37sfirLAuIp4GH7W2JNZnqmiEVbTAcCFIsBlrLdzknVqRqPoFkVtDVXi4ymsp
+	 s9sIbT9IiK+xQ==
+Date: Wed, 21 Jan 2026 01:00:46 +0000
+To: Victor Nogueira <victor@mojatatu.com>
+From: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] net/sched: act_gate: fix schedule updates with RCU swap
+Message-ID: <4v-I_ZuHhZBLG3lGttZ9HHAT8n_AggP70Rw2IDrj5w6BK_Ol2VoPsR9eP-BKBlLToLNNCElTtbXdTRdD1wsR3QzlCoSaBi6R7SCPn6CDk5c=@1g4.org>
+In-Reply-To: <bff53f0a-2c94-46b2-bb49-b05d10ae420e@mojatatu.com>
+References: <20260120004720.1886632-1-p@1g4.org> <20260120004720.1886632-2-p@1g4.org> <bff53f0a-2c94-46b2-bb49-b05d10ae420e@mojatatu.com>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: af3c17544d46021292a59f613bdf5bcf65d1f89b
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.54 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210621-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,infradead.org,oracle.com,google.com,kernel.org,suse.de,gmail.com,linux.dev,suse.com,huawei.com,meta.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-210622-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[1g4.org,quarantine];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[1g4.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: A23744EA93
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linux.dev:url,mojatatu.com:email,1g4.org:mid,1g4.org:dkim]
+X-Rspamd-Queue-Id: EA2544ED7E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+> Also, the AI review [2] pointed out a real issue.
+> It's easy to reproduce by running something like:
+>
+> tc action add action gate base-time 200000000000ns \
+>   sched-entry close 0ns index 10
 
-The patch titled
-     Subject: mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-memory-failure-teach-kill_accessing_process-to-accept-hugetlb-tail-page-pfn.patch
+This was never allowed. A zero interval has always been invalid for a gate =
+schedule entry. Clang pointed out a no-op branch I added by mistake and the=
+ AI review picked it up, but the intent was simply to mirror the existing b=
+ase-time / cycle-time range checks we already have. Functionally it=
+=E2=80=99s redundant because we were already rejecting this case via the ex=
+isting validation e.g.:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory-failure-teach-kill_accessing_process-to-accept-hugetlb-tail-page-pfn.patch
+    if (cycle > (u64)S64_MAX - entry->interval) { ... }
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+    if (interval =3D=3D 0) {
+        NL_SET_ERR_MSG(extack, "Invalid interval for schedule entry");
+        return -EINVAL;
+    }
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+I will prepare and test v3 with your first 8 suggestions and await further =
+input on best practices for avoiding a monolithic patch and on appropriate =
+levels of validation in this specific case.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Thanks
+Paul
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
 
-------------------------------------------------------
-From: Jane Chu <jane.chu@oracle.com>
-Subject: mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
-Date: Tue, 20 Jan 2026 16:22:34 -0700
+On Tuesday, January 20th, 2026 at 3:04 PM, Victor Nogueira <victor@mojatatu=
+.com> wrote:
 
-When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
-passed head pfn to kill_accessing_process(), that is not right.  The
-precise pfn of the poisoned page should be used in order to determine the
-precise vaddr as the SIGBUS payload.
-
-This issue has already been taken care of in the normal path, that is,
-hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
-correctly in the hugetlb repoisoning case, it's essential to inform VM the
-precise poisoned page, not the head page.
-
-[1] https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
-[2] https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
-[3] https://lore.kernel.org/lkml/20251116013223.1557158-1-jiaqiyan@google.com/
-
-Link: https://lkml.kernel.org/r/20260120232234.3462258-2-jane.chu@oracle.com
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Chris Mason <clm@meta.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: William Roche <william.roche@oracle.com>
-Cc: <stable@vger.kernel.org>
-
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memory-failure.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
---- a/mm/memory-failure.c~mm-memory-failure-teach-kill_accessing_process-to-accept-hugetlb-tail-page-pfn
-+++ a/mm/memory-failure.c
-@@ -692,6 +692,8 @@ static int check_hwpoisoned_entry(pte_t
- 				unsigned long poisoned_pfn, struct to_kill *tk)
- {
- 	unsigned long pfn = 0;
-+	unsigned long hwpoison_vaddr;
-+	unsigned long mask;
- 
- 	if (pte_present(pte)) {
- 		pfn = pte_pfn(pte);
-@@ -702,10 +704,12 @@ static int check_hwpoisoned_entry(pte_t
- 			pfn = softleaf_to_pfn(entry);
- 	}
- 
--	if (!pfn || pfn != poisoned_pfn)
-+	mask = ~((1UL << (shift - PAGE_SHIFT)) - 1);
-+	if (!pfn || pfn != (poisoned_pfn & mask))
- 		return 0;
- 
--	set_to_kill(tk, addr, shift);
-+	hwpoison_vaddr = addr + ((poisoned_pfn - pfn) << PAGE_SHIFT);
-+	set_to_kill(tk, hwpoison_vaddr, shift);
- 	return 1;
- }
- 
-@@ -2052,10 +2056,8 @@ retry:
- 	case MF_HUGETLB_FOLIO_PRE_POISONED:
- 	case MF_HUGETLB_PAGE_PRE_POISONED:
- 		rv = -EHWPOISON;
--		if (flags & MF_ACTION_REQUIRED) {
--			folio = page_folio(p);
--			rv = kill_accessing_process(current, folio_pfn(folio), flags);
--		}
-+		if (flags & MF_ACTION_REQUIRED)
-+			rv = kill_accessing_process(current, pfn, flags);
- 		if (res == MF_HUGETLB_PAGE_PRE_POISONED)
- 			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
- 		else
-_
-
-Patches currently in -mm which might be from jane.chu@oracle.com are
-
-mm-memory-failure-fix-missing-mf_stats-count-in-hugetlb-poison.patch
-mm-memory-failure-teach-kill_accessing_process-to-accept-hugetlb-tail-page-pfn.patch
-
+>=20
+>=20
+> On 19/01/2026 21:48, Paul Moses wrote:
+>=20
+> > Switch act_gate parameters to an RCU-protected pointer and update sched=
+ule
+> > changes using a prepare-then-swap pattern. This avoids races between th=
+e
+> > timer/data paths and configuration updates, and cancels the hrtimer
+> > before swapping schedules.
+> >=20
+> > A gate action replace could free and swap schedules while the hrtimer
+> > callback or data path still dereferences the old entries, leaving a
+> > use-after-free window during updates. The deferred swap and RCU free
+> > close that window. A reproducer is available on request.
+> >=20
+> > Also clear params on early error for newly created actions to avoid
+> > leaving a dangling reference.
+> > [...]
+> > diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> > index c1f75f2727576..3ee07c3deaf97 100644
+> > --- a/net/sched/act_gate.c
+> > +++ b/net/sched/act_gate.c
+> > @@ -6,6 +6,7 @@
+> > #include <linux/kernel.h>
+> > #include <linux/string.h>
+> > #include <linux/errno.h>
+> > +#include <linux/limits.h>
+>=20
+>=20
+> Do you really need to include this?
+>=20
+> > [...]
+> > @@ -69,12 +71,14 @@ static enum hrtimer_restart gate_timer_func(struct =
+hrtimer *timer)
+> > {
+> > struct tcf_gate *gact =3D container_of(timer, struct tcf_gate,
+> > hitimer);
+> > - struct tcf_gate_params *p =3D &gact->param;
+> > + struct tcf_gate_params *p;
+>=20
+>=20
+> When adding/editing local variables, you should adhere to the
+> reverse xmas tree style [1].
+>=20
+> > spin_lock(&gact->tcf_lock);
+>=20
+>=20
+> Shouldn't you call rcu_read_lock before this line now?
+>=20
+> > + p =3D rcu_dereference_protected(gact->param,
+> > + lockdep_is_held(&gact->tcf_lock));
+> > [...]
+> > static int tcf_gate_init(struct net *net, struct nlattr *nla,
+> > @@ -296,20 +296,26 @@ static int tcf_gate_init(struct net *net, struct =
+nlattr *nla,
+> > struct netlink_ext_ack *extack)
+> > {
+> > struct tc_action_net *tn =3D net_generic(net, act_gate_ops.net_id);
+> > - enum tk_offsets tk_offset =3D TK_OFFS_TAI;
+> > - bool bind =3D flags & TCA_ACT_FLAGS_BIND;
+> > struct nlattr *tb[TCA_GATE_MAX + 1];
+> > struct tcf_chain *goto_ch =3D NULL;
+> > - u64 cycletime =3D 0, basetime =3D 0;
+> > - struct tcf_gate_params *p;
+> > - s32 clockid =3D CLOCK_TAI;
+> > + struct tcf_gate_params *p, *oldp;
+> > struct tcf_gate *gact;
+> > struct tc_gate *parm;
+> > - int ret =3D 0, err;
+> > - u32 gflags =3D 0;
+> > - s32 prio =3D -1;
+> > + struct tcf_gate_params newp =3D { };
+>=20
+>=20
+> Abide by reverse xmas tree when adding local variables.
+>=20
+> > [...]
+> > + bool clockid_set =3D false;
+>=20
+>=20
+> I could be missing something, but I don't believe you need this
+> boolean.
+>=20
+> > [...]
+> > @@ -323,6 +329,7 @@ static int tcf_gate_init(struct net *net, struct nl=
+attr *nla,
+> >=20
+> > if (tb[TCA_GATE_CLOCKID]) {
+> > clockid =3D nla_get_s32(tb[TCA_GATE_CLOCKID]);
+> > + clockid_set =3D true;
+> > switch (clockid) {
+>=20
+>=20
+> Instead of using clockid_set and repeating the switch statament.
+> You could put this if-statement after you already have oldp and do the
+> following:
+>=20
+> if (tb[TCA_GATE_CLOCKID]) {
+> clockid =3D nla_get_s32(tb[TCA_GATE_CLOCKID]);
+> switch (clockid) {
+> case CLOCK_REALTIME:
+> tk_offset =3D TK_OFFS_REAL;
+> break;
+> case CLOCK_MONOTONIC:
+> tk_offset =3D TK_OFFS_MAX;
+> break;
+> case CLOCK_BOOTTIME:
+> tk_offset =3D TK_OFFS_BOOT;
+> break;
+> case CLOCK_TAI:
+> tk_offset =3D TK_OFFS_TAI;
+> break;
+> default:
+> NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
+> return -EINVAL;
+> }
+> } else if (ret !=3D ACT_P_CREATED) {
+> clockid =3D oldp->tcfg_clockid;
+>=20
+> tk_offset =3D gact->tk_offset;
+>=20
+> }
+>=20
+> > [...]
+> > - if (tb[TCA_GATE_CYCLE_TIME])
+> > + if (ret =3D=3D ACT_P_CREATED)
+> > + update_timer =3D true;
+> > [...]
+>=20
+>=20
+> Here you are assigning update_timer to true when the op is a create...
+>=20
+> > [...]
+> > + if (update_timer && ret !=3D ACT_P_CREATED)
+> > + hrtimer_cancel(&gact->hitimer);
+>=20
+>=20
+> .. however in the if-statement where it is used you are only allowing
+> updates. This looks weird.
+>=20
+> > [...]
+> > +free_p:
+> > + release_entry_list(&p->entries);
+> > + kfree(p);
+>=20
+>=20
+> The 2 lines of code above are being repeated below and in
+> tcf_gate_params_release. You should put them in a common function.
+>=20
+> > +release_new_entries:
+> > + release_entry_list(&newp.entries);
+> > +put_chain:
+> > if (goto_ch)
+> > tcf_chain_put_by_act(goto_ch);
+> > release_idr:
+> > - /* action is not inserted in any list: it's safe to init hitimer
+> > - * without taking tcf_lock.
+> > - */
+> > - if (ret =3D=3D ACT_P_CREATED)
+> > - gate_setup_timer(gact, gact->param.tcfg_basetime,
+> > - gact->tk_offset, gact->param.tcfg_clockid,
+> > - true);
+> > + if (ret =3D=3D ACT_P_CREATED) {
+> > + p =3D rcu_dereference_protected(gact->param, 1);
+> > + if (p) {
+> > + release_entry_list(&p->entries);
+> > + kfree(p);
+> > + rcu_assign_pointer(gact->param, NULL);
+> > + }
+> > + }
+> > tcf_idr_release(*a, bind);
+>=20
+>=20
+> Also, the AI review [2] pointed out a real issue.
+> It's easy to reproduce by running something like:
+>=20
+> tc action add action gate base-time 200000000000ns \
+> sched-entry close 0ns index 10
+>=20
+> I think overall you have the right idea - RCU seems like a good fit here.
+> The issue is that this patch is confusing because it seems like you are
+> trying to fix the bug and perform cleanups at the same time.
+> If that is the case, can you try breaking this patch into two? Do one to
+> fix the bug (introducing RCU and etc) and another for the cleanups.
+>=20
+> [1]
+> https://www.kernel.org/doc/html/v6.3/process/maintainer-netdev.html#local=
+-variable-ordering-reverse-xmas-tree-rcs
+> [2]
+> https://netdev-ai.bots.linux.dev/ai-review.html?id=3Dcdc17d0d-fd59-41a8-9=
+c8d-1a42699167fd#patch-0
+>=20
+> cheers,
+> Victor
 
