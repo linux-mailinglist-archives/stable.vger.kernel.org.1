@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-210912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211075-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJWPBcYjcWl8eQAAu9opvQ
-	(envelope-from <stable+bounces-210912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:06:46 +0100
+	id yNprKIkocWniewAAu9opvQ
+	(envelope-from <stable+bounces-211075-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:27:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79C435BD24
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:06:45 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4685C225
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:27:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id C64F08827B7
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:24:36 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B02AD54BB8F
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40E134165B;
-	Wed, 21 Jan 2026 18:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2D33BC4FB;
+	Wed, 21 Jan 2026 18:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UL7Td+VB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzsmxaJs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C70332EB9;
-	Wed, 21 Jan 2026 18:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C0F3BBA1F;
+	Wed, 21 Jan 2026 18:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019802; cv=none; b=nD8nGRSZ5Gm0GfWbosRZBxnJdJ2fXMcM7av8glIzZCLyRzEE992N3CPaq47mpCHxV4QR7s9uD2eTKOwBagMnvp8yAlseWBBFyou5NEQTASe+wSuMPlhMDj7iB8vV8p+TwZJNzA3jmlGkho++zZzjf/3u9AmUx5k+pvo2MWqqIOg=
+	t=1769020356; cv=none; b=JAQWLBnBWmlrwmpfY6Xp4RF3yD8Q4EyW7rnkAKB/8adFCu+7si0jv+O/Ry0ag0n8ka558sFjI6zIdqXCNBk1OLxeWGGwUNE5JpUY13r/ppv9u5sVrcNECJL9xH74IDM4HVb1kQ4YdkW0XDtGH30xYevQ04cX5NqzsOfJFlpRuzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019802; c=relaxed/simple;
-	bh=w1BBc2alToosxpz58Mmevkfv7STZB3QGJNEaQ7VdWdQ=;
+	s=arc-20240116; t=1769020356; c=relaxed/simple;
+	bh=ezj+ENCHoTqQoM+GBBBvT7LTwX26bHBtoAIzwtJY3Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aA6Mxgu+yG/CHNLqWI1vBLXXCIM4mHHSkdSrkBysADnSNjCj0wJViXJxWSnQ19BRkHAeD3LhvkNc200Zyj+QAwS7zhuN3T5+zGZaJls60ZjePfhd8fnmyVFT0eony286H8vm3qjzSNkKzzMNlLgLLqArA9z+fT2AWEUMcfhNJIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UL7Td+VB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D53C4CEF1;
-	Wed, 21 Jan 2026 18:23:21 +0000 (UTC)
+	 MIME-Version; b=PNd/WiGLiZ/EWOOXTB4LS3JpoW1zVEq9V7WaSvUZ69E7e3yt7+rKAOfVy6+Ku/SdqhAEvFv2ChsEdVejY6E/vTJOeJPJdI83RflOQJ7YMq06yqDJXayB0NMViBJATnNfiUuVLROpsLTZdAOIvbXeao7xdKFl7dM39H1s+gctQQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzsmxaJs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708BCC4CEF1;
+	Wed, 21 Jan 2026 18:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019802;
-	bh=w1BBc2alToosxpz58Mmevkfv7STZB3QGJNEaQ7VdWdQ=;
+	s=korg; t=1769020356;
+	bh=ezj+ENCHoTqQoM+GBBBvT7LTwX26bHBtoAIzwtJY3Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UL7Td+VBZdCEFCEblrSwKkQvgqdWfrNtIORDTqVZYUmOHKhZKhQUNszfGvfwh/pjc
-	 B3Tf/UEGABlEz2deTrgJ85KquBj5hZFIBdr197VJJa0XB2Operg2AHWkfvI/YZuh+X
-	 OwwUisp41ZPvKCMxoYkcgKnZZcCjyY0viRHUZhEM=
+	b=WzsmxaJswYzAAPDLKVX72WOUYYx8HPi1HRoQb5Top/6KSTRTcb2Jrf3ugFdFj+qup
+	 Hd9WM9iq4MZzfye+f0sfRDn9T7jvni3yHOBJoSn6ftuzK1EwdP4MAjJt0lVZRHVwiF
+	 aJ/FYIBy0Lomyczlz13imFIO4Ak9OoHzLhmIRgUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.12 112/139] dmaengine: idxd: fix device leaks on compat bind and unbind
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.18 132/198] EDAC/i3200: Fix a resource leak in i3200_probe1()
 Date: Wed, 21 Jan 2026 19:16:00 +0100
-Message-ID: <20260121181415.480758632@linuxfoundation.org>
+Message-ID: <20260121181423.298326328@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,107 +73,80 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210912-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211075-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 79C435BD24
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,alien8.de:email,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 3E4685C225
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-commit 799900f01792cf8b525a44764f065f83fcafd468 upstream.
+commit d42d5715dcb559342ff356327b241c53a67584d9 upstream.
 
-Make sure to drop the reference taken when looking up the idxd device as
-part of the compat bind and unbind sysfs interface.
+If edac_mc_alloc() fails, also unmap the window.
 
-Fixes: 6e7f3ee97bbe ("dmaengine: idxd: move dsa_drv support to compatible mode")
-Cc: stable@vger.kernel.org	# 5.15
-Cc: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251117161258.10679-7-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+  [ bp: Use separate labels, turning it into the classic unwind pattern. ]
+
+Fixes: dd8ef1db87a4 ("edac: i3200 memory controller driver")
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251223123202.1492038-1-lihaoxiang@isrc.iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/compat.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/edac/i3200_edac.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/dma/idxd/compat.c
-+++ b/drivers/dma/idxd/compat.c
-@@ -20,11 +20,16 @@ static ssize_t unbind_store(struct devic
- 	int rc = -ENODEV;
- 
- 	dev = bus_find_device_by_name(bus, NULL, buf);
--	if (dev && dev->driver) {
-+	if (!dev)
-+		return -ENODEV;
+--- a/drivers/edac/i3200_edac.c
++++ b/drivers/edac/i3200_edac.c
+@@ -358,10 +358,11 @@ static int i3200_probe1(struct pci_dev *
+ 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
+ 	layers[1].size = nr_channels;
+ 	layers[1].is_virt_csrow = false;
+-	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers,
+-			    sizeof(struct i3200_priv));
 +
-+	if (dev->driver) {
- 		device_driver_detach(dev);
- 		rc = count;
- 	}
++	rc = -ENOMEM;
++	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, sizeof(struct i3200_priv));
+ 	if (!mci)
+-		return -ENOMEM;
++		goto unmap;
  
-+	put_device(dev);
-+
+ 	edac_dbg(3, "MC: init mci\n");
+ 
+@@ -421,9 +422,9 @@ static int i3200_probe1(struct pci_dev *
+ 	return 0;
+ 
+ fail:
++	edac_mc_free(mci);
++unmap:
+ 	iounmap(window);
+-	if (mci)
+-		edac_mc_free(mci);
+ 
  	return rc;
  }
- static DRIVER_ATTR_IGNORE_LOCKDEP(unbind, 0200, NULL, unbind_store);
-@@ -38,9 +43,12 @@ static ssize_t bind_store(struct device_
- 	struct idxd_dev *idxd_dev;
- 
- 	dev = bus_find_device_by_name(bus, NULL, buf);
--	if (!dev || dev->driver || drv != &dsa_drv.drv)
-+	if (!dev)
- 		return -ENODEV;
- 
-+	if (dev->driver || drv != &dsa_drv.drv)
-+		goto err_put_dev;
-+
- 	idxd_dev = confdev_to_idxd_dev(dev);
- 	if (is_idxd_dev(idxd_dev)) {
- 		alt_drv = driver_find("idxd", bus);
-@@ -53,13 +61,20 @@ static ssize_t bind_store(struct device_
- 			alt_drv = driver_find("user", bus);
- 	}
- 	if (!alt_drv)
--		return -ENODEV;
-+		goto err_put_dev;
- 
- 	rc = device_driver_attach(alt_drv, dev);
- 	if (rc < 0)
--		return rc;
-+		goto err_put_dev;
-+
-+	put_device(dev);
- 
- 	return count;
-+
-+err_put_dev:
-+	put_device(dev);
-+
-+	return rc;
- }
- static DRIVER_ATTR_IGNORE_LOCKDEP(bind, 0200, NULL, bind_store);
- 
 
 
 
