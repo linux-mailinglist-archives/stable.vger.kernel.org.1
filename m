@@ -1,69 +1,61 @@
-Return-Path: <stable+bounces-210869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211033-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMOrBmo2cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-210869-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:26:18 +0100
+	id CGGJCNAscWl1fAAAu9opvQ
+	(envelope-from <stable+bounces-211033-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:45:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FC6F5D2CF
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:26:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43745C712
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:45:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 05A8776A3B6
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:32 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 13CD1B4F0DD
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E10927703C;
-	Wed, 21 Jan 2026 18:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABDC363C68;
+	Wed, 21 Jan 2026 18:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0SHUVdld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pViYTDR1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F7734C83D;
-	Wed, 21 Jan 2026 18:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40D73AE711;
+	Wed, 21 Jan 2026 18:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019660; cv=none; b=lUzYRKp2yH/nd4GZQexkB2I859PTQidj4/iJ9mDUIc7D+moE8+VyieTeHojdFW8oFn3a7qTOMU6ZZEshGdGUlQ7HEHlA8jFTnjSrczpAJmARPZB2YJlvdqUQxv5Sgu8flenBqVtmj2XnhgdULFzTHQJjTgmQ6YXS8E6LvwtVhsQ=
+	t=1769020210; cv=none; b=YwWCFjExOySMPvdyVJ1Y6XuT2791rsrWhLpngJbcomi+g/djcM7AYQRMTM3MsrvZkDHHMvaq/MA7qaLLmHBgUxV3E6hQ7F/DlqPRMppNiu7bfsD7g36sAq+f4UoTOJdkB5ZyMZzScjKN1pxLPnHeluUQzAX5/aK9wl4dDzpy6r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019660; c=relaxed/simple;
-	bh=UkIAgxgeldAc1zRfHX7RJZcBDh3fvhVj35fUtn41j4g=;
+	s=arc-20240116; t=1769020210; c=relaxed/simple;
+	bh=MvW+/oZvMca+mxZ4T2+HIFD3pCtYbLtz7ah0uvoE0zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MS0ix2kAaLH2T6sOBdBckns8Jr1Wm/oHCm84TCViMeLQ+xhIWtexYwfpwOs64cbOSfkFvnkIO7gVBKTFP/7Z9Su/9zd67HYzMMvYlEBd7jkfKy+rNgFJ4UqaJQDy3xjfyUR5JIKN2OLDq4HnJ2kcKWNmn/mmXe9XoJJ+kQsftVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0SHUVdld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0E4C4CEF1;
-	Wed, 21 Jan 2026 18:20:59 +0000 (UTC)
+	 MIME-Version; b=u8kuLs9av5rDE2DwglpFWt4dwsIKnqnYy9+OUISCbCfXOpsQqKAzqkdvUkvsp68dPlnb4YgI2B1mk/WFKEoIA67OthY2MfopzqI5bRd/B6bBBHRNacz6VH1gfO4U4WaQQa9Tej8D+IxuBPrI6elo0ud0B6/vW4a07rP4wn6Du2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pViYTDR1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9AF4C16AAE;
+	Wed, 21 Jan 2026 18:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019660;
-	bh=UkIAgxgeldAc1zRfHX7RJZcBDh3fvhVj35fUtn41j4g=;
+	s=korg; t=1769020210;
+	bh=MvW+/oZvMca+mxZ4T2+HIFD3pCtYbLtz7ah0uvoE0zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0SHUVdldfD25ysi61ZTwe3zo6Coq8wtSgoluK77MMC1QHSiD7amtFfsB6k0bsgdpJ
-	 8Nv8zj/MMDLKD/zINvueSl7ub/COejeW0Wq9P0oDNu2GIMEZ+sNtNXPY01fZGFjNKF
-	 0ER3Ztom3+x0pkLUctOeRagIOB47Rk0Bzn7GFXcI=
+	b=pViYTDR1lnZyMNTDW7C68oQPDJldI4wVOC9+XhB3ePjn/KaB03kEzTGSdRyS+WJkK
+	 sbjjvk5Xa/Y1pq+PIkAXd4FUu5Y/wVzZmWdrIFsw/iKHntq6fw7fRwSILubtZUqtuK
+	 T//vDKyrK3CaC+dsi8ptvaemRAAGBCIngD/ec9FE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Christoph Hellwig <hch@lst.de>,
-	Jinchao Wang <wangjinchao600@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkman <daniel@iogearbox.net>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 071/139] lib/buildid: use __kernel_read() for sleepable context
+	Brian Kao <powenkao@google.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.18 091/198] scsi: core: Fix error handler encryption support
 Date: Wed, 21 Jan 2026 19:15:19 +0100
-Message-ID: <20260121181414.010479567@linuxfoundation.org>
+Message-ID: <20260121181421.831443673@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,8 +66,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
@@ -83,137 +74,133 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	TAGGED_FROM(0.00)[bounces-211033-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_FROM(0.00)[bounces-210869-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,linux.dev,lst.de,gmail.com,kernel.org,iogearbox.net,infradead.org,linux-foundation.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,09b7d050e4806540153d];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 9FC6F5D2CF
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,msgid.link:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,acm.org:email]
+X-Rspamd-Queue-Id: A43745C712
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: Brian Kao <powenkao@google.com>
 
-commit 777a8560fd29738350c5094d4166fe5499452409 upstream.
+commit 9a49157deeb23581fc5c8189b486340d7343264a upstream.
 
-Prevent a "BUG: unable to handle kernel NULL pointer dereference in
-filemap_read_folio".
+Some low-level drivers (LLD) access block layer crypto fields, such as
+rq->crypt_keyslot and rq->crypt_ctx within `struct request`, to
+configure hardware for inline encryption.  However, SCSI Error Handling
+(EH) commands (e.g., TEST UNIT READY, START STOP UNIT) should not
+involve any encryption setup.
 
-For the sleepable context, convert freader to use __kernel_read() instead
-of direct page cache access via read_cache_folio().  This simplifies the
-faultable code path by using the standard kernel file reading interface
-which handles all the complexity of reading file data.
+To prevent drivers from erroneously applying crypto settings during EH,
+this patch saves the original values of rq->crypt_keyslot and
+rq->crypt_ctx before an EH command is prepared via scsi_eh_prep_cmnd().
+These fields in the 'struct request' are then set to NULL.  The original
+values are restored in scsi_eh_restore_cmnd() after the EH command
+completes.
 
-At the moment we are not changing the code for non-sleepable context which
-uses filemap_get_folio() and only succeeds if the target folios are
-already in memory and up-to-date.  The reason is to keep the patch simple
-and easier to backport to stable kernels.
+This ensures that the block layer crypto context does not leak into EH
+command execution.
 
-Syzbot repro does not crash the kernel anymore and the selftests run
-successfully.
-
-In the follow up we will make __kernel_read() with IOCB_NOWAIT work for
-non-sleepable contexts.  In addition, I would like to replace the
-secretmem check with a more generic approach and will add fstest for the
-buildid code.
-
-Link: https://lkml.kernel.org/r/20251222205859.3968077-1-shakeel.butt@linux.dev
-Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
-Reported-by: syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=09b7d050e4806540153d
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Tested-by: Jinchao Wang <wangjinchao600@gmail.com>
-  Link: https://lkml.kernel.org/r/aUteBPWPYzVWIZFH@ndev
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andrii Nakryiko <andrii@kernel.org>
-Cc: Daniel Borkman <daniel@iogearbox.net>
-Cc: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Brian Kao <powenkao@google.com>
+Link: https://patch.msgid.link/20251218031726.2642834-1-powenkao@google.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/buildid.c |   32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ drivers/scsi/scsi_error.c |   24 ++++++++++++++++++++++++
+ include/scsi/scsi_eh.h    |    6 ++++++
+ 2 files changed, 30 insertions(+)
 
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -5,6 +5,7 @@
- #include <linux/elf.h>
- #include <linux/kernel.h>
- #include <linux/pagemap.h>
-+#include <linux/fs.h>
- #include <linux/secretmem.h>
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -1060,6 +1060,9 @@ void scsi_eh_prep_cmnd(struct scsi_cmnd
+ 			unsigned char *cmnd, int cmnd_size, unsigned sense_bytes)
+ {
+ 	struct scsi_device *sdev = scmd->device;
++#ifdef CONFIG_BLK_INLINE_ENCRYPTION
++	struct request *rq = scsi_cmd_to_rq(scmd);
++#endif
  
- #define BUILD_ID 3
-@@ -65,20 +66,9 @@ static int freader_get_folio(struct frea
+ 	/*
+ 	 * We need saved copies of a number of fields - this is because
+@@ -1112,6 +1115,18 @@ void scsi_eh_prep_cmnd(struct scsi_cmnd
+ 			(sdev->lun << 5 & 0xe0);
  
- 	freader_put_folio(r);
- 
--	/* reject secretmem folios created with memfd_secret() */
--	if (secretmem_mapping(r->file->f_mapping))
--		return -EFAULT;
--
-+	/* only use page cache lookup - fail if not already cached */
- 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
- 
--	/* if sleeping is allowed, wait for the page, if necessary */
--	if (r->may_fault && (IS_ERR(r->folio) || !folio_test_uptodate(r->folio))) {
--		filemap_invalidate_lock_shared(r->file->f_mapping);
--		r->folio = read_cache_folio(r->file->f_mapping, file_off >> PAGE_SHIFT,
--					    NULL, r->file);
--		filemap_invalidate_unlock_shared(r->file->f_mapping);
--	}
--
- 	if (IS_ERR(r->folio) || !folio_test_uptodate(r->folio)) {
- 		if (!IS_ERR(r->folio))
- 			folio_put(r->folio);
-@@ -116,6 +106,24 @@ static const void *freader_fetch(struct
- 		return r->data + file_off;
- 	}
- 
-+	/* reject secretmem folios created with memfd_secret() */
-+	if (secretmem_mapping(r->file->f_mapping)) {
-+		r->err = -EFAULT;
-+		return NULL;
-+	}
+ 	/*
++	 * Encryption must be disabled for the commands submitted by the error handler.
++	 * Hence, clear the encryption context information.
++	 */
++#ifdef CONFIG_BLK_INLINE_ENCRYPTION
++	ses->rq_crypt_keyslot = rq->crypt_keyslot;
++	ses->rq_crypt_ctx = rq->crypt_ctx;
 +
-+	/* use __kernel_read() for sleepable context */
-+	if (r->may_fault) {
-+		ssize_t ret;
++	rq->crypt_keyslot = NULL;
++	rq->crypt_ctx = NULL;
++#endif
 +
-+		ret = __kernel_read(r->file, r->buf, sz, &file_off);
-+		if (ret != sz) {
-+			r->err = (ret < 0) ? ret : -EIO;
-+			return NULL;
-+		}
-+		return r->buf;
-+	}
++	/*
+ 	 * Zero the sense buffer.  The scsi spec mandates that any
+ 	 * untransferred sense data should be interpreted as being zero.
+ 	 */
+@@ -1128,6 +1143,10 @@ EXPORT_SYMBOL(scsi_eh_prep_cmnd);
+  */
+ void scsi_eh_restore_cmnd(struct scsi_cmnd* scmd, struct scsi_eh_save *ses)
+ {
++#ifdef CONFIG_BLK_INLINE_ENCRYPTION
++	struct request *rq = scsi_cmd_to_rq(scmd);
++#endif
 +
- 	/* fetch or reuse folio for given file offset */
- 	r->err = freader_get_folio(r, file_off);
- 	if (r->err)
+ 	/*
+ 	 * Restore original data
+ 	 */
+@@ -1140,6 +1159,11 @@ void scsi_eh_restore_cmnd(struct scsi_cm
+ 	scmd->underflow = ses->underflow;
+ 	scmd->prot_op = ses->prot_op;
+ 	scmd->eh_eflags = ses->eh_eflags;
++
++#ifdef CONFIG_BLK_INLINE_ENCRYPTION
++	rq->crypt_keyslot = ses->rq_crypt_keyslot;
++	rq->crypt_ctx = ses->rq_crypt_ctx;
++#endif
+ }
+ EXPORT_SYMBOL(scsi_eh_restore_cmnd);
+ 
+--- a/include/scsi/scsi_eh.h
++++ b/include/scsi/scsi_eh.h
+@@ -41,6 +41,12 @@ struct scsi_eh_save {
+ 	unsigned char cmnd[32];
+ 	struct scsi_data_buffer sdb;
+ 	struct scatterlist sense_sgl;
++
++	/* struct request fields */
++#ifdef CONFIG_BLK_INLINE_ENCRYPTION
++	struct bio_crypt_ctx *rq_crypt_ctx;
++	struct blk_crypto_keyslot *rq_crypt_keyslot;
++#endif
+ };
+ 
+ extern void scsi_eh_prep_cmnd(struct scsi_cmnd *scmd,
 
 
 
