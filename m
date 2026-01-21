@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-211117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LZpIJQ0cWlQfQAAu9opvQ
-	(envelope-from <stable+bounces-211117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:18:28 +0100
+	id uHP/H9ktcWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-210924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:49:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28DFF5D022
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:18:28 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B015C87C
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:49:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 47C5F86BB39
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:38:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7E6D1A102D6
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64F673C1FD2;
-	Wed, 21 Jan 2026 18:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784B939B4BB;
+	Wed, 21 Jan 2026 18:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7WJ4Y/X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koPZb3gG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085C63C1987;
-	Wed, 21 Jan 2026 18:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CD823AB98;
+	Wed, 21 Jan 2026 18:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020495; cv=none; b=Ab3C3Jue81u9Vhrln4ya9Z2Ncwe8Fwbb2/Y+JqRWuhCsMbr33b6Lt201ouPgXRJvS8CLU7DpXbEO5eRM+EkvDNCpqx9e20+sE201AQxdcXTmOxVmT+BRn8b40ZTIm3K9pe9NMIhRyhnUgofkvBsudXEdKSgYkiYdbCIAwrF9KXk=
+	t=1769019846; cv=none; b=Z3IKeBOKML4yZkSfj9uEDoyTVI807O632IENr9ZnNdUpVotMHjKmZm0A4DWJ7EcUfbRR4Ffj0k8y0KwjE3ecCsaNQkGiFARnEJNvgSniNVhFLi0fKinw93EUAS5LEP+VJK5bgUuwLspIu1Rb9Mc0zLbwzep3PmCWJlPWET5oMXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020495; c=relaxed/simple;
-	bh=8zBnjBz2UNFV6HEeuqnaDqCJSj6nOK9HhIWxrtLVg5Y=;
+	s=arc-20240116; t=1769019846; c=relaxed/simple;
+	bh=r58VJ1xzUrETjoPHzh8kgr4dZ9W2h2Fe1Jo7aTimo6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUe/bVdOI5YtKFjP9z6B2U1A1Qy+pnmR6M51wUqbP7B7gYRYI9pw+LNEl1KOCzuz0nH4bEeTJUm4tKhVJd6fjxfSDD6/yjCah/qUkqBaKZvr6DTVfDAkKl+0ztMrctlrJSntScEJUjlwxDW1/vOqQZxXWERFheQuLA6Fu61XYkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7WJ4Y/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F65CC4CEF1;
-	Wed, 21 Jan 2026 18:34:53 +0000 (UTC)
+	 MIME-Version; b=rKnipJKO9o/RPkle10K/XxahsJLVnTG2gioOiFKS2gjNDkzVuMns2J/PtlD73DkBhsQ/kvbVcBjV3mX8VWJw7vS3ahH1/g3sFfHxdcTCY/VJqra/zTJB1D7QCfuNtgzrK/FwZgPoB1a8/S8UiwF672xoANWG2rFZ2P7g7VXtBHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koPZb3gG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 971C8C16AAE;
+	Wed, 21 Jan 2026 18:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020494;
-	bh=8zBnjBz2UNFV6HEeuqnaDqCJSj6nOK9HhIWxrtLVg5Y=;
+	s=korg; t=1769019846;
+	bh=r58VJ1xzUrETjoPHzh8kgr4dZ9W2h2Fe1Jo7aTimo6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7WJ4Y/XNFuTzGGxOJB2ig6LqNLodCZLYqLz6nmXYDw8SQPJWTqXaZgck1ur28R7U
-	 hK3Uj33vSxdCiAxblhPcxLeIbjsQW82+BrMA3zidlRJdFPJkurQ87QDOThdbinBvD0
-	 dBaWeZvLLXdgKqOKj/czbCF1QcsONd4EAXVpk45I=
+	b=koPZb3gGZ4LC4OjQe6Jgm4bTiNd5rp7xH6LE6a8YQgCgKeJe2sDlcNXNxhXnOQ53m
+	 DT3CPyovlHXud5XdBla2rR8uY/ss9kBErCREHhcyFUrgcmZ2xsHi4sowstKepHYw9X
+	 53oeyporjSMRNAp/FgwIC1SQCcWfRnzu7RQJgQgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	JaeJoon Jung <rgbi3307@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 142/198] mm/damon/core: remove call_control in inactive contexts
-Date: Wed, 21 Jan 2026 19:16:10 +0100
-Message-ID: <20260121181423.663508848@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Zhang Lixu <lixu.zhang@intel.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.12 123/139] HID: intel-ish-hid: Fix -Wcast-function-type-strict in devm_ishtp_alloc_workqueue()
+Date: Wed, 21 Jan 2026 19:16:11 +0100
+Message-ID: <20260121181415.880028669@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,140 +70,98 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210924-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211117-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,linux-foundation.org];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 28DFF5D022
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,suse.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: E6B015C87C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit f9132fbc2e83baf2c45a77043672a63a675c9394 upstream.
+commit 3644f4411713f52bf231574aa8759e3d8e20b341 upstream.
 
-If damon_call() is executed against a DAMON context that is not running,
-the function returns error while keeping the damon_call_control object
-linked to the context's call_controls list.  Let's suppose the object is
-deallocated after the damon_call(), and yet another damon_call() is
-executed against the same context.  The function tries to add the new
-damon_call_control object to the call_controls list, which still has the
-pointer to the previous damon_call_control object, which is deallocated.
-As a result, use-after-free happens.
+Clang warns (or errors with CONFIG_WERROR=y / W=e):
 
-This can actually be triggered using the DAMON sysfs interface.  It is not
-easily exploitable since it requires the sysfs write permission and making
-a definitely weird file writes, though.  Please refer to the report for
-more details about the issue reproduction steps.
+  drivers/hid/intel-ish-hid/ipc/ipc.c:935:36: error: cast from 'void (*)(struct workqueue_struct *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+    935 |         if (devm_add_action_or_reset(dev, (void (*)(void *))destroy_workqueue,
+        |                                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  include/linux/device/devres.h:168:34: note: expanded from macro 'devm_add_action_or_reset'
+    168 |         __devm_add_action_or_ireset(dev, action, data, #action)
+        |                                         ^~~~~~
 
-Fix the issue by making two changes.  Firstly, move the final
-kdamond_call() for cancelling all existing damon_call() requests from
-terminating DAMON context to be done before the ctx->kdamond reset.  This
-makes any code that sees NULL ctx->kdamond can safely assume the context
-may not access damon_call() requests anymore.  Secondly, let damon_call()
-to cleanup the damon_call_control objects that were added to the
-already-terminated DAMON context, before returning the error.
+This warning is pointing out a kernel control flow integrity (kCFI /
+CONFIG_CFI=y) violation will occur due to this function cast when the
+destroy_workqueue() is indirectly called via devm_action_release()
+because the prototype of destroy_workqueue() does not match the
+prototype of (*action)().
 
-Link: https://lkml.kernel.org/r/20251231012315.75835-1-sj@kernel.org
-Fixes: 004ded6bee11 ("mm/damon: accept parallel damon_call() requests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reported-by: JaeJoon Jung <rgbi3307@gmail.com>
-Closes: https://lore.kernel.org/20251224094401.20384-1-rgbi3307@gmail.com
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Use a local function with the correct prototype to wrap
+destroy_workqueue() to resolve the warning and CFI violation.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202510190103.qTZvfdjj-lkp@intel.com/
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2139
+Fixes: 0d30dae38fe0 ("HID: intel-ish-hid: Use dedicated unbound workqueues to prevent resume blocking")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Reviewed-by: Zhang Lixu <lixu.zhang@intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |   33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ drivers/hid/intel-ish-hid/ipc/ipc.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1426,6 +1426,35 @@ bool damon_is_running(struct damon_ctx *
- 	return running;
- }
+--- a/drivers/hid/intel-ish-hid/ipc/ipc.c
++++ b/drivers/hid/intel-ish-hid/ipc/ipc.c
+@@ -932,6 +932,11 @@ static const struct ishtp_hw_ops ish_hw_
+ 	.dma_no_cache_snooping = _dma_no_cache_snooping
+ };
  
-+/*
-+ * damon_call_handle_inactive_ctx() - handle DAMON call request that added to
-+ *				      an inactive context.
-+ * @ctx:	The inactive DAMON context.
-+ * @control:	Control variable of the call request.
-+ *
-+ * This function is called in a case that @control is added to @ctx but @ctx is
-+ * not running (inactive).  See if @ctx handled @control or not, and cleanup
-+ * @control if it was not handled.
-+ *
-+ * Returns 0 if @control was handled by @ctx, negative error code otherwise.
-+ */
-+static int damon_call_handle_inactive_ctx(
-+		struct damon_ctx *ctx, struct damon_call_control *control)
++static void ishtp_free_workqueue(void *wq)
 +{
-+	struct damon_call_control *c;
-+
-+	mutex_lock(&ctx->call_controls_lock);
-+	list_for_each_entry(c, &ctx->call_controls, list) {
-+		if (c == control) {
-+			list_del(&control->list);
-+			mutex_unlock(&ctx->call_controls_lock);
-+			return -EINVAL;
-+		}
-+	}
-+	mutex_unlock(&ctx->call_controls_lock);
-+	return 0;
++	destroy_workqueue(wq);
 +}
 +
- /**
-  * damon_call() - Invoke a given function on DAMON worker thread (kdamond).
-  * @ctx:	DAMON context to call the function for.
-@@ -1456,7 +1485,7 @@ int damon_call(struct damon_ctx *ctx, st
- 	list_add_tail(&control->list, &ctx->call_controls);
- 	mutex_unlock(&ctx->call_controls_lock);
- 	if (!damon_is_running(ctx))
--		return -EINVAL;
-+		return damon_call_handle_inactive_ctx(ctx, control);
- 	if (control->repeat)
- 		return 0;
- 	wait_for_completion(&control->completion);
-@@ -2704,13 +2733,13 @@ done:
- 	if (ctx->ops.cleanup)
- 		ctx->ops.cleanup(ctx);
- 	kfree(ctx->regions_score_histogram);
-+	kdamond_call(ctx, true);
+ static struct workqueue_struct *devm_ishtp_alloc_workqueue(struct device *dev)
+ {
+ 	struct workqueue_struct *wq;
+@@ -940,8 +945,7 @@ static struct workqueue_struct *devm_ish
+ 	if (!wq)
+ 		return NULL;
  
- 	pr_debug("kdamond (%d) finishes\n", current->pid);
- 	mutex_lock(&ctx->kdamond_lock);
- 	ctx->kdamond = NULL;
- 	mutex_unlock(&ctx->kdamond_lock);
+-	if (devm_add_action_or_reset(dev, (void (*)(void *))destroy_workqueue,
+-				     wq))
++	if (devm_add_action_or_reset(dev, ishtp_free_workqueue, wq))
+ 		return NULL;
  
--	kdamond_call(ctx, true);
- 	damos_walk_cancel(ctx);
- 
- 	mutex_lock(&damon_lock);
+ 	return wq;
 
 
 
