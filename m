@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-211132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0M9PED87cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-211132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:46:55 +0100
+	id gJsPL/4gcWl8eQAAu9opvQ
+	(envelope-from <stable+bounces-211141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:54:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0794A5D8AB
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:46:55 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC895B9B8
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:54:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CC83686D6D8
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:42:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82F55B4479D
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFF23D410C;
-	Wed, 21 Jan 2026 18:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFC341B378;
+	Wed, 21 Jan 2026 18:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULvIZi+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgfau7+p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7458E3D4124;
-	Wed, 21 Jan 2026 18:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E6C3D647F;
+	Wed, 21 Jan 2026 18:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020546; cv=none; b=HuTq6aMaID5GmC/kvsgE7UzIWK30yot17vHoLnT3JavSvzf/JbRek1woschHnaZZqx+2laZEin5mts/KOabStRMGNEI9MW2ClHcsrMu4nsI3+Qdi3U+fh+f1R/vVmP8K5uux51IwdzE7SaUVwJB62S+ntwG36g2h19Ixv3PSZUo=
+	t=1769020577; cv=none; b=ZjNccgk/91arT+OgnSXaqAXoh9cpmv6vpec4KnVxUijz+BXiW5m1zYnYc3RE5E7Ge7gpDOs7PXMT4M82C9JWpEcb/Nxv+rBlQk2DD/RGdqlz5Seax1VVfkzUbnAw5Y1Cu+jLa7W9Z+oJbcxitOFDUCNWFMuPI1vhM0VC9fecbYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020546; c=relaxed/simple;
-	bh=5EyishnxUAUjqF5ZOdhg7uVvMyNIuiOcvkzhL6GXcmA=;
+	s=arc-20240116; t=1769020577; c=relaxed/simple;
+	bh=gwYZ/mVAWIwXH1O9HCgawMgyok5bzAHLYrCAKaBO+tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BY0JkgbhrdaM1T0Yw3T0yqmV37DKgpCRfZauuXOJUYU3ifIke4CW/P0V6TEttMR1SHadvU5rCoilv+XvMr+EMrYW/17x+nPbvCSM7BSgZd+Dindn6qqKQJE/9FOopn8CxpSTaAnLgw1WYz7haLILY4ABGiBfXYnYyjS56F+XZ9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULvIZi+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5FBC4CEF1;
-	Wed, 21 Jan 2026 18:35:45 +0000 (UTC)
+	 MIME-Version; b=AWV/CdvVe963to5mdiWQbG7JsjhYbCai4rCzjCUpLN2A8rbDgR/BoYC18GrLQjl6tovUh8MX4iXhBz9za542DRsByZRJ41QNbIuY1jtTtX5RhV/i+Hs5LWL2JIW6DpEOAImteLasiLwrM5qvhwDGW/x1KP8ulOJ/2nPxlGjyrQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgfau7+p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3E3C19424;
+	Wed, 21 Jan 2026 18:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020546;
-	bh=5EyishnxUAUjqF5ZOdhg7uVvMyNIuiOcvkzhL6GXcmA=;
+	s=korg; t=1769020577;
+	bh=gwYZ/mVAWIwXH1O9HCgawMgyok5bzAHLYrCAKaBO+tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULvIZi+WG9t/ITGubAVAHrbp1jUgRaHe7vswn048JFqyQ5DrnMLgC28M7lCp7etp8
-	 rMyusp0sivnUWzUg37Zy8As+L19dfim5oLWiJfY/kKgf5fGFVIgKYrd0l6QwnOduvn
-	 /qg73pEqbry37Fy6yGa1FbERWYXFFg0vLRruRnlU=
+	b=bgfau7+pdJ/6hNbjjLpZCN7+SOwc5TApbrklJEdU2ubLYKLFhEDcwywicIZXfgAJp
+	 ykjDZNP+WiqQGeLj50kHP+X9I/+rv5fUO1IA4ReIT2/1HJoUYZ6760SteoR/+nkS0x
+	 lLD35J3GzPswOTcsrZzk6sh2KnXg1KeZ1wbYgNs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
 	Johan Hovold <johan@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.18 173/198] dmaengine: idxd: fix device leaks on compat bind and unbind
-Date: Wed, 21 Jan 2026 19:16:41 +0100
-Message-ID: <20260121181424.773317619@linuxfoundation.org>
+Subject: [PATCH 6.18 174/198] dmaengine: lpc18xx-dmamux: fix device leak on route allocation
+Date: Wed, 21 Jan 2026 19:16:42 +0100
+Message-ID: <20260121181424.810075440@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -74,26 +74,25 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-211141-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211132-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 0794A5D8AB
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2CC895B9B8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -103,79 +102,88 @@ X-Rspamd-Server: lfdr
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 799900f01792cf8b525a44764f065f83fcafd468 upstream.
+commit d4d63059dee7e7cae0c4d9a532ed558bc90efb55 upstream.
 
-Make sure to drop the reference taken when looking up the idxd device as
-part of the compat bind and unbind sysfs interface.
+Make sure to drop the reference taken when looking up the DMA mux
+platform device during route allocation.
 
-Fixes: 6e7f3ee97bbe ("dmaengine: idxd: move dsa_drv support to compatible mode")
-Cc: stable@vger.kernel.org	# 5.15
-Cc: Dave Jiang <dave.jiang@intel.com>
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
+
+Fixes: e5f4ae84be74 ("dmaengine: add driver for lpc18xx dmamux")
+Cc: stable@vger.kernel.org	# 4.3
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251117161258.10679-7-johan@kernel.org
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Link: https://patch.msgid.link/20251117161258.10679-8-johan@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/compat.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/dma/lpc18xx-dmamux.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/dma/idxd/compat.c
-+++ b/drivers/dma/idxd/compat.c
-@@ -20,11 +20,16 @@ static ssize_t unbind_store(struct devic
- 	int rc = -ENODEV;
+--- a/drivers/dma/lpc18xx-dmamux.c
++++ b/drivers/dma/lpc18xx-dmamux.c
+@@ -57,30 +57,31 @@ static void *lpc18xx_dmamux_reserve(stru
+ 	struct lpc18xx_dmamux_data *dmamux = platform_get_drvdata(pdev);
+ 	unsigned long flags;
+ 	unsigned mux;
++	int ret = -EINVAL;
  
- 	dev = bus_find_device_by_name(bus, NULL, buf);
--	if (dev && dev->driver) {
-+	if (!dev)
-+		return -ENODEV;
-+
-+	if (dev->driver) {
- 		device_driver_detach(dev);
- 		rc = count;
+ 	if (dma_spec->args_count != 3) {
+ 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
  	}
  
-+	put_device(dev);
-+
- 	return rc;
- }
- static DRIVER_ATTR_IGNORE_LOCKDEP(unbind, 0200, NULL, unbind_store);
-@@ -38,9 +43,12 @@ static ssize_t bind_store(struct device_
- 	struct idxd_dev *idxd_dev;
- 
- 	dev = bus_find_device_by_name(bus, NULL, buf);
--	if (!dev || dev->driver || drv != &dsa_drv.drv)
-+	if (!dev)
- 		return -ENODEV;
- 
-+	if (dev->driver || drv != &dsa_drv.drv)
-+		goto err_put_dev;
-+
- 	idxd_dev = confdev_to_idxd_dev(dev);
- 	if (is_idxd_dev(idxd_dev)) {
- 		alt_drv = driver_find("idxd", bus);
-@@ -53,13 +61,20 @@ static ssize_t bind_store(struct device_
- 			alt_drv = driver_find("user", bus);
+ 	mux = dma_spec->args[0];
+ 	if (mux >= dmamux->dma_master_requests) {
+ 		dev_err(&pdev->dev, "invalid mux number: %d\n",
+ 			dma_spec->args[0]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
  	}
- 	if (!alt_drv)
--		return -ENODEV;
-+		goto err_put_dev;
  
- 	rc = device_driver_attach(alt_drv, dev);
- 	if (rc < 0)
--		return rc;
-+		goto err_put_dev;
-+
-+	put_device(dev);
+ 	if (dma_spec->args[1] > LPC18XX_DMAMUX_MAX_VAL) {
+ 		dev_err(&pdev->dev, "invalid dma mux value: %d\n",
+ 			dma_spec->args[1]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
  
- 	return count;
+ 	/* The of_node_put() will be done in the core for the node */
+ 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
+ 	if (!dma_spec->np) {
+ 		dev_err(&pdev->dev, "can't get dma master\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	spin_lock_irqsave(&dmamux->lock, flags);
+@@ -89,7 +90,8 @@ static void *lpc18xx_dmamux_reserve(stru
+ 		dev_err(&pdev->dev, "dma request %u busy with %u.%u\n",
+ 			mux, mux, dmamux->muxes[mux].value);
+ 		of_node_put(dma_spec->np);
+-		return ERR_PTR(-EBUSY);
++		ret = -EBUSY;
++		goto err_put_pdev;
+ 	}
+ 
+ 	dmamux->muxes[mux].busy = true;
+@@ -106,7 +108,14 @@ static void *lpc18xx_dmamux_reserve(stru
+ 	dev_dbg(&pdev->dev, "mapping dmamux %u.%u to dma request %u\n", mux,
+ 		dmamux->muxes[mux].value, mux);
+ 
++	put_device(&pdev->dev);
 +
-+err_put_dev:
-+	put_device(dev);
+ 	return &dmamux->muxes[mux];
 +
-+	return rc;
++err_put_pdev:
++	put_device(&pdev->dev);
++
++	return ERR_PTR(ret);
  }
- static DRIVER_ATTR_IGNORE_LOCKDEP(bind, 0200, NULL, bind_store);
  
+ static int lpc18xx_dmamux_probe(struct platform_device *pdev)
 
 
 
