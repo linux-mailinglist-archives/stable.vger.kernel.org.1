@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-210969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EjyA7ghcWl8eQAAu9opvQ
-	(envelope-from <stable+bounces-210969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:58:00 +0100
+	id wH9qHuw5cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-210970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:41:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F815BA82
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:57:59 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB5A5D755
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 5A49E8470AB
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:27:21 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0469F8474B8
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B66A3A8FED;
-	Wed, 21 Jan 2026 18:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB2E34BA42;
+	Wed, 21 Jan 2026 18:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjzWq96G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASi7XMnh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499AF3A8FFC;
-	Wed, 21 Jan 2026 18:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279C33559EE;
+	Wed, 21 Jan 2026 18:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019995; cv=none; b=ld20DAMbnXTp3liTYmTfWHvmJRLyYfCIa3lnAaUvl+N+5IxU+co6cUCDQQRfojY5r/FWtBz5fNmhyOiKNHyLV2bRPWWaiPz3vecHmV5Xs2LijGcJhwNQaV0ZwwsUp54CDAfiqkU66qz5Km6Ru2Qv+Ia5VDWCHJB1vusgW+KWZz0=
+	t=1769019998; cv=none; b=OvdTRP3tTJ4j/7E2r7qtkHnPCLWm9RJqG4T5wHb26laagYcvITAwi4LcjixhfFGFUsrPwHa/vBYXzYhx2F0TKP8AZfHxcSyaADtAxDguYisemsjy3OHblp7aGlkwC+b6VmI5PU4HcQ9LrO83rkHcrA5YGPhqVfYb9g37BwdhDoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019995; c=relaxed/simple;
-	bh=wfWco/C26WTYcbrxrBKysn7h4zIvD3V8eeEyF/oIsdY=;
+	s=arc-20240116; t=1769019998; c=relaxed/simple;
+	bh=kB8tY/Y9/wUkgFHtlE3dt2gID8S3uPuG7xWBaB+VdNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ix/bJex8cWc8zkC+iF+weUlMaCkVRP5AAxL6wjQn7IErXdPINYlsGzlRT+S4SNISBFt0ImKh6OkGVWGGwtliFwVGtwbROg+gmeCzkDfac2yrJ/yHmbck+9cl/b7t/fuqVgEor7Uj8TojSYBuJmPm4EJqtSigIjAARH4kkzffcT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjzWq96G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0C9C4CEF1;
-	Wed, 21 Jan 2026 18:26:34 +0000 (UTC)
+	 MIME-Version; b=cK+4hFB4+Pt4suKLu0LQM+cOx50eFOigSqiwT7IVejJsDHsbXqKPe1B6g53hQd/8dJCEvHSS3p9TjC8Ejs2sCNGqoo7p8tw9Zmzmh09QKLb/XlQ6Re532a8eOvt2pi1fdZgvPmAJlTBDRlr9i9H8Q3VxLHUdx/hHRmNX2VxeGSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASi7XMnh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BA0C4CEF1;
+	Wed, 21 Jan 2026 18:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019994;
-	bh=wfWco/C26WTYcbrxrBKysn7h4zIvD3V8eeEyF/oIsdY=;
+	s=korg; t=1769019998;
+	bh=kB8tY/Y9/wUkgFHtlE3dt2gID8S3uPuG7xWBaB+VdNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjzWq96GryRvgFSXefSHLbp5Hb1A4GJ6Vc/I4zlodxhz4ufFnEJ/O4URAnuGwr1QN
-	 Sy4jHFI0k+LdxI6wiceJ7xIOOQSTgv1vz9PSOqAK7oCCj7hSqk/NUYAEtse88wbVrI
-	 W+C77UFf31TLH7Ml7UC0j6KP91mRvHWjKM9yxSuY=
+	b=ASi7XMnhPry71g2UbD4ALQhwX+qx4SIqqCEFpkoqj8pMdQ0Syqa+hJDEko0tl04za
+	 M0TTfmDF52U3nI47nKSn5oXsUd0uNtxBr+JeJi7ObriCX77FDvf5Yr9TCChQWfaCsu
+	 8a6IMDmDp3d1R5xBjb6qefI971o+IfCJJiQ74Y6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Gompa <neal@gompa.dev>,
-	Christoph Hellwig <hch@lst.de>,
-	Janne Grunau <j@jannau.net>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.18 003/198] nvme-apple: add "apple,t8103-nvme-ans2" as compatible
-Date: Wed, 21 Jan 2026 19:13:51 +0100
-Message-ID: <20260121181418.665977138@linuxfoundation.org>
+	Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH 6.18 004/198] Revert "gfs2: Fix use of bio_chain"
+Date: Wed, 21 Jan 2026 19:13:52 +0100
+Message-ID: <20260121181418.701421776@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -69,31 +66,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-210969-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210970-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A8F815BA82
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3AB5A5D755
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,38 +99,37 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 7d3fa7e954934fbda0a017ac1c305b7b10ecceef upstream.
+commit 469d71512d135907bf5ea0972dfab8c420f57848 upstream.
 
-After discussion with the devicetree maintainers we agreed to not extend
-lists with the generic compatible "apple,nvme-ans2" anymore [1]. Add
-"apple,t8103-nvme-ans2" as fallback compatible as it is the SoC the
-driver and bindings were written for.
+This reverts commit 8a157e0a0aa5143b5d94201508c0ca1bb8cfb941.
 
-[1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
+That commit incorrectly assumed that the bio_chain() arguments were
+swapped in gfs2.  However, gfs2 intentionally constructs bio chains so
+that the first bio's bi_end_io callback is invoked when all bios in the
+chain have completed, unlike bio chains where the last bio's callback is
+invoked.
 
-Cc: stable@vger.kernel.org # v6.18+
-Fixes: 5bd2927aceba ("nvme-apple: Add initial Apple SoC NVMe driver")
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Janne Grunau <j@jannau.net>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 8a157e0a0aa5 ("gfs2: Fix use of bio_chain")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/apple.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/gfs2/lops.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/nvme/host/apple.c
-+++ b/drivers/nvme/host/apple.c
-@@ -1703,6 +1703,7 @@ static const struct apple_nvme_hw apple_
- 
- static const struct of_device_id apple_nvme_of_match[] = {
- 	{ .compatible = "apple,t8015-nvme-ans2", .data = &apple_nvme_t8015_hw },
-+	{ .compatible = "apple,t8103-nvme-ans2", .data = &apple_nvme_t8103_hw },
- 	{ .compatible = "apple,nvme-ans2", .data = &apple_nvme_t8103_hw },
- 	{},
- };
+--- a/fs/gfs2/lops.c
++++ b/fs/gfs2/lops.c
+@@ -487,7 +487,7 @@ static struct bio *gfs2_chain_bio(struct
+ 	new = bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP_NOIO);
+ 	bio_clone_blkg_association(new, prev);
+ 	new->bi_iter.bi_sector = bio_end_sector(prev);
+-	bio_chain(prev, new);
++	bio_chain(new, prev);
+ 	submit_bio(prev);
+ 	return new;
+ }
 
 
 
