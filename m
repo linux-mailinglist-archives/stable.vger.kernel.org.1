@@ -1,113 +1,218 @@
-Return-Path: <stable+bounces-210728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210729-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yL48AOG0cGndZAAAu9opvQ
-	(envelope-from <stable+bounces-210728-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 12:13:37 +0100
+	id WAj0Bey6cGmWZQAAu9opvQ
+	(envelope-from <stable+bounces-210729-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 12:39:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4585755CAC
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 12:13:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8078B561F4
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 12:39:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 36E3296232C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 11:06:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82E5D9292B4
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 11:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B68147DFA0;
-	Wed, 21 Jan 2026 11:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDFA3B8D51;
+	Wed, 21 Jan 2026 11:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="vAPf79tD";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="naRtddYQ";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="wLrqkagr";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="1U+Po9Pu"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAA62D8DDD
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 11:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B9C31195D
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 11:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768993513; cv=none; b=ayi2A4/KBBnXD6Pza1JiqTbdJcLCS0+W8z3djjrHted/A8I4z163ijTiLCLCO0dEOWGoVp9DHdpHetlkWmoMNhVsdV/NCvzkUPtBC5ArJFkhz8WmCVLzN3Reg+8MK5UxTTbAWZknKkpCliwgpI/7hg7iVCskURqkyYBMepjAttI=
+	t=1768994868; cv=none; b=JwH6FtQsNUGTu9AW1DvF9h+laHZSFxQNCc8frcYH5OW+8ZLBTIp1HuGrS+eSIRHVIEKKwv6gaIYuIu4hoPStSaTu/9BVoajQsMYUQhHiK3nhf052JyZJVWSBy28C8Tzc/4U8+ooeqq/Z6tPW1ZYY9oUi61D2Nz91RCP6klnuAFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768993513; c=relaxed/simple;
-	bh=eezuRGoxXuRYKtLQ/9I2o1c2Kbh+5AybBP30dipSIzw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=HZoZwoaSsZR3mLoJ8lDp7/Z6IoADhhhFQKs+xczb3+m4e1V11zE/DlkWyAOedJyDcI53bB80PO2wbWMq0f5K7BlDBIpUumE8aKRYc7XLtmgyPKJfRqJn67/4O7aZbYQkM6RfBmwElSy5TwxLNyY4OivwzjmS07gDW+vC/aniupk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
-Received: from unknown (HELO kinkan3-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 21 Jan 2026 20:03:59 +0900
-Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
-	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 02E0E2069FE9;
-	Wed, 21 Jan 2026 20:03:59 +0900 (JST)
-Received: from iyokan3.css.socionext.com ([172.31.9.53]) by m-FILTER with ESMTP; Wed, 21 Jan 2026 20:03:58 +0900
-Received: from [10.212.247.110] (unknown [10.212.247.110])
-	by iyokan3.css.socionext.com (Postfix) with ESMTP id 8FE3A1071A3;
-	Wed, 21 Jan 2026 20:03:58 +0900 (JST)
-Message-ID: <d0a7accd-3d7d-41ec-b85e-469adf156a91@socionext.com>
-Date: Wed, 21 Jan 2026 20:04:03 +0900
+	s=arc-20240116; t=1768994868; c=relaxed/simple;
+	bh=B4lPUGEYjpm2SdaQ+jA1UbIw10I88xxZxR0qkWF4Zmo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ocL0kGq2ZYcfkL0lNtqk7VZ/v9sdGtkBMYE4GIJ5kAi4zUnb4cWKOMv1hejSLFOxrnjCGC/uoxLF7I2+2+1QQo+HXaGpes7wgnwo1hKGVGo3PHkvzj5S85ePXXKuih57WOFWol4ptW4WXDuQ4zIwpceDAHOHtYsD1GR4suJ2vmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=vAPf79tD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=naRtddYQ; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=wLrqkagr; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=1U+Po9Pu; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 075CD3368B;
+	Wed, 21 Jan 2026 11:27:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768994864; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0HQOO1Ui1MzjGdYk8Ez4fIlrbo8rhrSedMz/5tpkD5Q=;
+	b=vAPf79tDJD/Qb5OOgf5xsvDbhraGuX10FbU4cJKnBkpBlnSdJ0KuxiAGO8/cnq1EKD8rw2
+	eL8Ukjr7QWsi/C7Ep7Nc7XUsqhi+PIU9HJdVI+1Ba41sGkmk0AB/KQB8l4yPyEY2syUZZh
+	8cVkd/hP4TcBoetJj9plItSVejaMDmQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768994864;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0HQOO1Ui1MzjGdYk8Ez4fIlrbo8rhrSedMz/5tpkD5Q=;
+	b=naRtddYQ/8Kb/x80ic7gOBKII61hsHNmNZQCW/FnPTYbWK7/v3U22+yrZe1CEeLp+ouT0O
+	7j+uHPQOvcrSO9Dw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wLrqkagr;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1U+Po9Pu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768994863; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0HQOO1Ui1MzjGdYk8Ez4fIlrbo8rhrSedMz/5tpkD5Q=;
+	b=wLrqkagrV+dXVDXTJEpu/T4ceYRZXykBEcuPIm62jXXpiLxbrzkdLhhbJeX6BISZWZ56bY
+	xIJ/ICPDpgsv/kvm4NtepqWEGv51GcKO5Re1Yktxvh15rqjCjBLCmCpAf3kS2odvCa0UcA
+	ZBKDfQSTcRnD4AnK2CaWBJR/StnWZIM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768994863;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0HQOO1Ui1MzjGdYk8Ez4fIlrbo8rhrSedMz/5tpkD5Q=;
+	b=1U+Po9PuGNYGx7yE7ptgvHe+OwkshyIwmCZg6XwEL804EyKLxxPsvzjyd9y6LK1Miv44TH
+	vmnvT27slpvjPXDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C60CA3EA63;
+	Wed, 21 Jan 2026 11:27:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id y9FTMC64cGlANQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 21 Jan 2026 11:27:42 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 8D50DA09E9; Wed, 21 Jan 2026 12:27:42 +0100 (CET)
+From: Jan Kara <jack@suse.cz>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: bernd@bsbernd.com,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	<linux-block@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] flex_proportions: Make fprop_new_period() hardirq safe
+Date: Wed, 21 Jan 2026 12:27:30 +0100
+Message-ID: <20260121112729.24463-2-jack@suse.cz>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Subject: [REGRESSION] v6.6.120: i3c crash caused by commit 82a09b9965ed
-To: stable@vger.kernel.org
-Cc: Frank Li <Frank.Li@nxp.com>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2344; i=jack@suse.cz; h=from:subject; bh=B4lPUGEYjpm2SdaQ+jA1UbIw10I88xxZxR0qkWF4Zmo=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpcLghZHz/mPEpvXafP6EvFPDeo1VP5Yqf+dp5f 2Wxp3+dA9mJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaXC4IQAKCRCcnaoHP2RA 2SC2B/4/ISO+pbAGxc05NOqVRTTU3B+Q5TeQ5IscQRnlXg1ndRkNRN6/k1PQMC6qggs4MggY0cr vWhBoje8CFiMQ9hgsst06EQfSU1mzBXo2f1kJYWqM1dztGWKm5aK2Q2Cub17t1qe3ZVVMpul+y4 uy5N7QjYy31D5jcdT0XWKIQ8AN6NNeCqILugQIE1i2r1rCSa4eLYiC/1VYeUotA8YXPO3ntIeKd tB8wI+Xye6Ejvar+cUKKHTtDzBgXRnpqSI0hOAZY0PNE40yoGGfm0fHo0i1mFM1j04YgJAnqiBl uLwRmggXS9HUjbyCy6TBkXwrld3S/rWokPIekC5shkhWSLhP
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[socionext.com : No valid SPF, No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hayashi.kunihiko@socionext.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_FROM(0.00)[bounces-210728-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210729-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[bsbernd.com,gmail.com,szeredi.hu,vger.kernel.org,suse.cz];
+	PRECEDENCE_BULK(0.00)[];
+	DMARC_NA(0.00)[suse.cz];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:dkim,suse.cz:mid,bsbernd.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 4585755CAC
+X-Rspamd-Queue-Id: 8078B561F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Dear stable maintainers,
+Bernd has reported a lockdep splat from flexible proportions code that
+is essentially complaining about the following race:
 
-After updating from v6.6.119 to v6.6.120, I noticed a kernel crash
-when I3C was enabled.
+<timer fires>
+run_timer_softirq - we are in softirq context
+  call_timer_fn
+    writeout_period
+      fprop_new_period
+        write_seqcount_begin(&p->sequence);
 
-This regression is caused by:
+        <hardirq is raised>
+        ...
+        blk_mq_end_request()
+	  blk_update_request()
+	    ext4_end_bio()
+	      folio_end_writeback()
+		__wb_writeout_add()
+		  __fprop_add_percpu_max()
+		    if (unlikely(max_frac < FPROP_FRAC_BASE)) {
+		      fprop_fraction_percpu()
+			seq = read_seqcount_begin(&p->sequence);
+			  - sees odd sequence so loops indefinitely
 
-     commit 82a09b9965ed ("i3c: fix refcount inconsistency in i3c_master_register")
+Note that a deadlock like this is only possible if the bdi has
+configured maximum fraction of writeout throughput which is very rare
+in general but frequent for example for FUSE bdis. To fix this problem
+we have to make sure write section of the sequence counter is irqsafe.
 
-The issue is resolved when the following upstream fix commit is applied:
-
-     commit 3502cea99c7c ("i3c: Move device name assignment after i3c_bus_init")
-
-I also confirmed that commit 82a09b9965ed is applied to other stable trees,
-including at least linux-6.1.y, so the same regression may affect them
-as well.
-
-Applying the fix commit or reverting 82a09b9965ed resolves the issue.
-
-Thank you,
-
+CC: stable@vger.kernel.org
+Fixes: a91befde3503 ("lib/flex_proportions.c: remove local_irq_ops in fprop_new_period()")
+Reported-by: Bernd Schubert <bernd@bsbernd.com>
+Link: https://lore.kernel.org/all/9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com/
+Signed-off-by: Jan Kara <jack@suse.cz>
 ---
-Best Regards
-Kunihiko Hayashi
+ lib/flex_proportions.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+Sending v2 because I've messed up Andrew's address and forgot some tags in
+the first posting...
+
+diff --git a/lib/flex_proportions.c b/lib/flex_proportions.c
+index 84ecccddc771..012d5614efb9 100644
+--- a/lib/flex_proportions.c
++++ b/lib/flex_proportions.c
+@@ -64,13 +64,14 @@ void fprop_global_destroy(struct fprop_global *p)
+ bool fprop_new_period(struct fprop_global *p, int periods)
+ {
+ 	s64 events = percpu_counter_sum(&p->events);
++	unsigned long flags;
+ 
+ 	/*
+ 	 * Don't do anything if there are no events.
+ 	 */
+ 	if (events <= 1)
+ 		return false;
+-	preempt_disable_nested();
++	local_irq_save(flags);
+ 	write_seqcount_begin(&p->sequence);
+ 	if (periods < 64)
+ 		events -= events >> periods;
+@@ -78,7 +79,7 @@ bool fprop_new_period(struct fprop_global *p, int periods)
+ 	percpu_counter_add(&p->events, -events);
+ 	p->period += periods;
+ 	write_seqcount_end(&p->sequence);
+-	preempt_enable_nested();
++	local_irq_restore(flags);
+ 
+ 	return true;
+ }
+-- 
+2.51.0
+
 
