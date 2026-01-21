@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-211075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNprKIkocWniewAAu9opvQ
-	(envelope-from <stable+bounces-211075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:27:05 +0100
+	id kPVNBJApcWniewAAu9opvQ
+	(envelope-from <stable+bounces-210913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:31:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E4685C225
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:27:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 746105C360
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B02AD54BB8F
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:34:25 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6D777AC2F4C
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2D33BC4FB;
-	Wed, 21 Jan 2026 18:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E752389E1D;
+	Wed, 21 Jan 2026 18:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzsmxaJs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrJ9b9UF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C0F3BBA1F;
-	Wed, 21 Jan 2026 18:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E57A31281C;
+	Wed, 21 Jan 2026 18:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020356; cv=none; b=JAQWLBnBWmlrwmpfY6Xp4RF3yD8Q4EyW7rnkAKB/8adFCu+7si0jv+O/Ry0ag0n8ka558sFjI6zIdqXCNBk1OLxeWGGwUNE5JpUY13r/ppv9u5sVrcNECJL9xH74IDM4HVb1kQ4YdkW0XDtGH30xYevQ04cX5NqzsOfJFlpRuzg=
+	t=1769019806; cv=none; b=JanpjoypNjh7tKjQm9H2xxk/5Eh4bxXxe1GS7d0Hx2UV19U6WISSRx/so91XdEO6j51vtI/UxHMcULw5h1MCdo8yNvovr5o7TQk1I0/vO0fR05oIDUGRk/w0U+4hza106nhLN9NmilmnzHqacDwFW67JqLJtBVSwWwIUn7KbPPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020356; c=relaxed/simple;
-	bh=ezj+ENCHoTqQoM+GBBBvT7LTwX26bHBtoAIzwtJY3Yk=;
+	s=arc-20240116; t=1769019806; c=relaxed/simple;
+	bh=Im5DY7ph9oV48T2FHZg8q6pXEVyHRrJl5tC+wB7o5tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNd/WiGLiZ/EWOOXTB4LS3JpoW1zVEq9V7WaSvUZ69E7e3yt7+rKAOfVy6+Ku/SdqhAEvFv2ChsEdVejY6E/vTJOeJPJdI83RflOQJ7YMq06yqDJXayB0NMViBJATnNfiUuVLROpsLTZdAOIvbXeao7xdKFl7dM39H1s+gctQQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzsmxaJs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708BCC4CEF1;
-	Wed, 21 Jan 2026 18:32:35 +0000 (UTC)
+	 MIME-Version; b=j9+NEQc5/lUEBkaaXEtPM1RlV0gSqlYG1o6wYXY/bYlu8MfS0Ie1zgpnzcIAdPxiU/bGJLgDELkrhWnI1L+Wv7Q/hRVbxYyOiIqzGpOhkbNeCHzGfEA0ygNukWcGwNEXLB3AY0/apiLIoAfpoOkKCfz/Z8eh/sVJm7/D7A0RzYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrJ9b9UF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DACAC4CEF1;
+	Wed, 21 Jan 2026 18:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020356;
-	bh=ezj+ENCHoTqQoM+GBBBvT7LTwX26bHBtoAIzwtJY3Yk=;
+	s=korg; t=1769019806;
+	bh=Im5DY7ph9oV48T2FHZg8q6pXEVyHRrJl5tC+wB7o5tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzsmxaJswYzAAPDLKVX72WOUYYx8HPi1HRoQb5Top/6KSTRTcb2Jrf3ugFdFj+qup
-	 Hd9WM9iq4MZzfye+f0sfRDn9T7jvni3yHOBJoSn6ftuzK1EwdP4MAjJt0lVZRHVwiF
-	 aJ/FYIBy0Lomyczlz13imFIO4Ak9OoHzLhmIRgUc=
+	b=jrJ9b9UFzZyTnudYW5mC+aXiAIU47ahMM3l4BlhMisrfUwAZ7xmzNezUYTclDaIvE
+	 Ilg/SSUqNIlzHl6aVUSG9AZeyGVKvGC4RPpvpzsZhPEQ13Zz4lPrQoXn4JpPctIbxC
+	 bVGccmtWDo2altex28NuCeoOdWm8uuP8YIbLPJME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.18 132/198] EDAC/i3200: Fix a resource leak in i3200_probe1()
-Date: Wed, 21 Jan 2026 19:16:00 +0100
-Message-ID: <20260121181423.298326328@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 113/139] dmaengine: lpc18xx-dmamux: fix device leak on route allocation
+Date: Wed, 21 Jan 2026 19:16:01 +0100
+Message-ID: <20260121181415.517344935@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,14 +76,14 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211075-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210913-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -91,62 +92,99 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,alien8.de:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 3E4685C225
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,mleia.com:email]
+X-Rspamd-Queue-Id: 746105C360
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-commit d42d5715dcb559342ff356327b241c53a67584d9 upstream.
+commit d4d63059dee7e7cae0c4d9a532ed558bc90efb55 upstream.
 
-If edac_mc_alloc() fails, also unmap the window.
+Make sure to drop the reference taken when looking up the DMA mux
+platform device during route allocation.
 
-  [ bp: Use separate labels, turning it into the classic unwind pattern. ]
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-Fixes: dd8ef1db87a4 ("edac: i3200 memory controller driver")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251223123202.1492038-1-lihaoxiang@isrc.iscas.ac.cn
+Fixes: e5f4ae84be74 ("dmaengine: add driver for lpc18xx dmamux")
+Cc: stable@vger.kernel.org	# 4.3
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Link: https://patch.msgid.link/20251117161258.10679-8-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/i3200_edac.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/dma/lpc18xx-dmamux.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/edac/i3200_edac.c
-+++ b/drivers/edac/i3200_edac.c
-@@ -358,10 +358,11 @@ static int i3200_probe1(struct pci_dev *
- 	layers[1].type = EDAC_MC_LAYER_CHANNEL;
- 	layers[1].size = nr_channels;
- 	layers[1].is_virt_csrow = false;
--	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers,
--			    sizeof(struct i3200_priv));
+--- a/drivers/dma/lpc18xx-dmamux.c
++++ b/drivers/dma/lpc18xx-dmamux.c
+@@ -57,30 +57,31 @@ static void *lpc18xx_dmamux_reserve(stru
+ 	struct lpc18xx_dmamux_data *dmamux = platform_get_drvdata(pdev);
+ 	unsigned long flags;
+ 	unsigned mux;
++	int ret = -EINVAL;
+ 
+ 	if (dma_spec->args_count != 3) {
+ 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	mux = dma_spec->args[0];
+ 	if (mux >= dmamux->dma_master_requests) {
+ 		dev_err(&pdev->dev, "invalid mux number: %d\n",
+ 			dma_spec->args[0]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	if (dma_spec->args[1] > LPC18XX_DMAMUX_MAX_VAL) {
+ 		dev_err(&pdev->dev, "invalid dma mux value: %d\n",
+ 			dma_spec->args[1]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	/* The of_node_put() will be done in the core for the node */
+ 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
+ 	if (!dma_spec->np) {
+ 		dev_err(&pdev->dev, "can't get dma master\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	spin_lock_irqsave(&dmamux->lock, flags);
+@@ -89,7 +90,8 @@ static void *lpc18xx_dmamux_reserve(stru
+ 		dev_err(&pdev->dev, "dma request %u busy with %u.%u\n",
+ 			mux, mux, dmamux->muxes[mux].value);
+ 		of_node_put(dma_spec->np);
+-		return ERR_PTR(-EBUSY);
++		ret = -EBUSY;
++		goto err_put_pdev;
+ 	}
+ 
+ 	dmamux->muxes[mux].busy = true;
+@@ -106,7 +108,14 @@ static void *lpc18xx_dmamux_reserve(stru
+ 	dev_dbg(&pdev->dev, "mapping dmamux %u.%u to dma request %u\n", mux,
+ 		dmamux->muxes[mux].value, mux);
+ 
++	put_device(&pdev->dev);
 +
-+	rc = -ENOMEM;
-+	mci = edac_mc_alloc(0, ARRAY_SIZE(layers), layers, sizeof(struct i3200_priv));
- 	if (!mci)
--		return -ENOMEM;
-+		goto unmap;
- 
- 	edac_dbg(3, "MC: init mci\n");
- 
-@@ -421,9 +422,9 @@ static int i3200_probe1(struct pci_dev *
- 	return 0;
- 
- fail:
-+	edac_mc_free(mci);
-+unmap:
- 	iounmap(window);
--	if (mci)
--		edac_mc_free(mci);
- 
- 	return rc;
+ 	return &dmamux->muxes[mux];
++
++err_put_pdev:
++	put_device(&pdev->dev);
++
++	return ERR_PTR(ret);
  }
+ 
+ static int lpc18xx_dmamux_probe(struct platform_device *pdev)
 
 
 
