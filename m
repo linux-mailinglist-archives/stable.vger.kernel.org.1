@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-211115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210920-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id dfnaJ4ggcWl8eQAAu9opvQ
-	(envelope-from <stable+bounces-211115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:52:56 +0100
+	id KE6KDigpcWkqfAAAu9opvQ
+	(envelope-from <stable+bounces-210920-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:29:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35BA05B91B
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABAE5C2F3
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:29:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id AD467B699D4
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:38:11 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27EDC7F003E
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799AE3101A9;
-	Wed, 21 Jan 2026 18:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4705358D0F;
+	Wed, 21 Jan 2026 18:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqpLI/6/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9oWKrGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF8D3BBA1C;
-	Wed, 21 Jan 2026 18:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA483375D5;
+	Wed, 21 Jan 2026 18:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020488; cv=none; b=AkMzeruUtkvY1ZS0f0v1sRgbYeZ7kDqBVuRakKDs4XQ9AkMjrxyNcnsscg31e2NDNNCH7g2hnksV+1sradAMxaG27EIltfCx4pee1I6Y7+AYgW2EsmdZiPfwj6qgcErSM2fho1YCQFOOhypaEwXihREr58kwbhon0hwOoFIv/6g=
+	t=1769019833; cv=none; b=tWTpw5T945ksKhSUHajslPP67zXqZf+hJuGl7gbB29ejmJPSKFk3Y/Als6+pkGewLv3YgmtkrX1rHS8aSmpO0vONhKrBwuTiWNFTWK1Ci9gXz3JM3x0PQidhUe3DfK6y5wbpalmcNxU8uqmhZE0nvgdJ0lqApLB/YRXDX6h/ZP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020488; c=relaxed/simple;
-	bh=vHEuC775ivhvC1MhgytT1Poij3J6NDmXm3xAPBw5VrQ=;
+	s=arc-20240116; t=1769019833; c=relaxed/simple;
+	bh=uYCx7Cz7cu/jWzU+LyGwC3ppGRCBqhjIe7DPLflPtOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZXDgiDZkzftYifHadtTvGj+yGVAAvCYD30EdHJnVwLLPM0RGQurCkyQLC5IZwiQj7Qzv0YmAF7ReOgqoUX+0URwtkb0wPXk35jcGgARF7JvWrQbOgY1+/w/ym1yT7wrsjR+nT7P1Z5uglQVhHVjCsIa4hv4QKWE2twPjPGm1VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqpLI/6/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA6DC4CEF1;
-	Wed, 21 Jan 2026 18:34:47 +0000 (UTC)
+	 MIME-Version; b=FB9dyTdSpz/D460uxwdTHeHKBMRyKlm4tkGmnzUWs4OgN612QFRC+sLl1EJ+j6sGqELcs7XhD+tR7xPsFaYdtvETRLkS+zdBzMy5i35FSQkKMFg3nV0K5FHQtfs/X/eBXEPA18G83USzLmO3RwIV3hPs3nsgUSqFKDDQZtx81Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9oWKrGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79155C4CEF1;
+	Wed, 21 Jan 2026 18:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020487;
-	bh=vHEuC775ivhvC1MhgytT1Poij3J6NDmXm3xAPBw5VrQ=;
+	s=korg; t=1769019833;
+	bh=uYCx7Cz7cu/jWzU+LyGwC3ppGRCBqhjIe7DPLflPtOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqpLI/6/4hJ0aTCzqH7akHSR4I3oopPgCVwXbIpSN9wwFvAq7kR6fWRjnJLXZmgYa
-	 RfqtOyMIcpmDO2TroMV65tTBwkwJcm9fQdiujL6OSH8oev2BpuIZ6DrQq+98pTRI99
-	 XFZa6taagC4/fzCKzBdYs6PuxtoZFgI5794XX5wU=
+	b=w9oWKrGTyLc3wOgtlGo5IJMIB1AjYCYRm9RgFHWC1kETKNgKn5zfzL5UZa6xM98Q4
+	 ZxB9RPL+VwNCM4ODV4MRfdMcKd3hVgsZDEg2sFlJbqs1dAKSUTkjvjyP1J5wYty81W
+	 w3/eM35u9CrZv/2sJT3ykQ0D42zzHLv9w7ZNi+oA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Butsykin <pbutsykin@cloudlinux.com>,
-	SeongJae Park <sj@kernel.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 140/198] mm/zswap: fix error pointer free in zswap_cpu_comp_prepare()
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 120/139] dmaengine: ti: dma-crossbar: fix device leak on am335x route allocation
 Date: Wed, 21 Jan 2026 19:16:08 +0100
-Message-ID: <20260121181423.582986342@linuxfoundation.org>
+Message-ID: <20260121181415.771849903@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,74 +68,111 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TO_DN_SOME(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,cloudlinux.com,kernel.org,linux.dev,gmail.com,cmpxchg.org,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-210920-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211115-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,cmpxchg.org:email]
-X-Rspamd-Queue-Id: 35BA05B91B
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,ti.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9ABAE5C2F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Butsykin <pbutsykin@cloudlinux.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 590b13669b813d55844fecd9142c56abd567914d upstream.
+commit 4fc17b1c6d2e04ad13fd6c21cfbac68043ec03f9 upstream.
 
-crypto_alloc_acomp_node() may return ERR_PTR(), but the fail path checks
-only for NULL and can pass an error pointer to crypto_free_acomp().  Use
-IS_ERR_OR_NULL() to only free valid acomp instances.
+Make sure to drop the reference taken when looking up the crossbar
+platform device during am335x route allocation.
 
-Link: https://lkml.kernel.org/r/20251231074638.2564302-1-pbutsykin@cloudlinux.com
-Fixes: 779b9955f643 ("mm: zswap: move allocations during CPU init outside the lock")
-Signed-off-by: Pavel Butsykin <pbutsykin@cloudlinux.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 42dbdcc6bf96 ("dmaengine: ti-dma-crossbar: Add support for crossbar on AM33xx/AM43xx")
+Cc: stable@vger.kernel.org	# 4.4
+Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-15-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/zswap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/ti/dma-crossbar.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -787,7 +787,7 @@ static int zswap_cpu_comp_prepare(unsign
- 	return 0;
+--- a/drivers/dma/ti/dma-crossbar.c
++++ b/drivers/dma/ti/dma-crossbar.c
+@@ -79,34 +79,35 @@ static void *ti_am335x_xbar_route_alloca
+ {
+ 	struct platform_device *pdev = of_find_device_by_node(ofdma->of_node);
+ 	struct ti_am335x_xbar_data *xbar = platform_get_drvdata(pdev);
+-	struct ti_am335x_xbar_map *map;
++	struct ti_am335x_xbar_map *map = ERR_PTR(-EINVAL);
  
- fail:
--	if (acomp)
-+	if (!IS_ERR_OR_NULL(acomp))
- 		crypto_free_acomp(acomp);
- 	kfree(buffer);
- 	return ret;
+ 	if (dma_spec->args_count != 3)
+-		return ERR_PTR(-EINVAL);
++		goto out_put_pdev;
+ 
+ 	if (dma_spec->args[2] >= xbar->xbar_events) {
+ 		dev_err(&pdev->dev, "Invalid XBAR event number: %d\n",
+ 			dma_spec->args[2]);
+-		return ERR_PTR(-EINVAL);
++		goto out_put_pdev;
+ 	}
+ 
+ 	if (dma_spec->args[0] >= xbar->dma_requests) {
+ 		dev_err(&pdev->dev, "Invalid DMA request line number: %d\n",
+ 			dma_spec->args[0]);
+-		return ERR_PTR(-EINVAL);
++		goto out_put_pdev;
+ 	}
+ 
+ 	/* The of_node_put() will be done in the core for the node */
+ 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
+ 	if (!dma_spec->np) {
+ 		dev_err(&pdev->dev, "Can't get DMA master\n");
+-		return ERR_PTR(-EINVAL);
++		goto out_put_pdev;
+ 	}
+ 
+ 	map = kzalloc(sizeof(*map), GFP_KERNEL);
+ 	if (!map) {
+ 		of_node_put(dma_spec->np);
+-		return ERR_PTR(-ENOMEM);
++		map = ERR_PTR(-ENOMEM);
++		goto out_put_pdev;
+ 	}
+ 
+ 	map->dma_line = (u16)dma_spec->args[0];
+@@ -120,6 +121,9 @@ static void *ti_am335x_xbar_route_alloca
+ 
+ 	ti_am335x_xbar_write(xbar->iomem, map->dma_line, map->mux_val);
+ 
++out_put_pdev:
++	put_device(&pdev->dev);
++
+ 	return map;
+ }
+ 
 
 
 
