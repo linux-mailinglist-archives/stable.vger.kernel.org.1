@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-210824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211012-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDARNfMgcWl8eQAAu9opvQ
-	(envelope-from <stable+bounces-210824-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:54:43 +0100
+	id KEyhJl8wcWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-211012-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:00:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498F95B9A2
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:54:43 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E2735CBA5
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:00:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9EF63A6C7C5
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:18:27 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 766CDAAC856
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1134423C4FF;
-	Wed, 21 Jan 2026 18:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AEBF331A77;
+	Wed, 21 Jan 2026 18:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzaPho6S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2fTTmyqx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635C03803CC;
-	Wed, 21 Jan 2026 18:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5E739B4BB;
+	Wed, 21 Jan 2026 18:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019505; cv=none; b=XBWFaHzD/aaNZ9MSU921CVX4J1HoePYtXJK+OD+L+CBEu2RuPE7Axau+TiTEO4j/bE7BnGY+MvpSECZh2LDHcUPqUk8ztkkx1jvzXY/OsYolmFF8Q14waMULiDgmJJBBHs8PrtLtExmgvE1XgxIjNbfSes9giZgZNvWKGyErBp0=
+	t=1769020141; cv=none; b=eqM4oojmkwuLga/UD58T+F/JctOPMZPT0RcilY/GeZYS2Am0NvanLTxFTMS+oYJ/WAkQ1RTeYXJx7sg9L/WeqQe9vdBTa/+EFJeoR1TpY4cJ/OGYZk6ckKJI8+j2qQ9Oz0cI1B6cUy07bLsY896Xg0DoEcrsCu0DID7q23DT1yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019505; c=relaxed/simple;
-	bh=M8nakGtkqfQszf7jtF3B7kaNe/2p2ttZldK1rUNAsq8=;
+	s=arc-20240116; t=1769020141; c=relaxed/simple;
+	bh=lNVqk79LCSlNksbc82TSUTtHpB8rMWTXqPA20fTN2Eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVLand2bFTVvVCXc6zzeSJke9jx8VGPR3HGPAZv8lVknmY90y4aRJWYzTEAJjzhm580eYUt5lECNlTy371Y0OzXFByihK3Jhrfy0+KKuI2ieebzlZzP+42l73/oxxi805LELXZ3zMoL2fCA6rB4g01ivc3RG7sqUsy5th5crBco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzaPho6S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDFFC4CEF1;
-	Wed, 21 Jan 2026 18:18:24 +0000 (UTC)
+	 MIME-Version; b=Xx2DjbNay+faZWZv8uXdHgBj52VPdH8DFusA/ahcqle8LKk0alkHA5uKDeYo9oE89s6Dvap9fX+TV/+R7eBbyVpNlBw2Id08UtNapkQWX3JoethZCxPT8blSvmiVJE0o3s4/gJzCrxbsCQVYPcqEW9/bdvUChmc9c2yVRFRuXVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2fTTmyqx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538B6C16AAE;
+	Wed, 21 Jan 2026 18:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019505;
-	bh=M8nakGtkqfQszf7jtF3B7kaNe/2p2ttZldK1rUNAsq8=;
+	s=korg; t=1769020141;
+	bh=lNVqk79LCSlNksbc82TSUTtHpB8rMWTXqPA20fTN2Eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bzaPho6S+gXjHvcZIDS7o+MN354dK4Vb5cnXkdWKl/PqZ8gAif9+/fpGrbzH2OFBe
-	 R/v3AWa2CO3WBOIsBNWjm8OSS2GBiImQxsEjo8C7Njf4ZsU2qipG7HG8aO8uFFiOhc
-	 2W7HgottRqrdwNNjJsL+8AoBS+ZXrhYx49nI+d7Q=
+	b=2fTTmyqxCNPGNH/TZcpfACwdKcY9unJXEdCNWPhbtP0sAaPICxbjLgmy9kSgdoI5B
+	 0WPacIWBLQm91esZ8aexyGptafYA0WNzIU5XfEctWOQVaKc1gkPWmJ2hKUVqQDtbW1
+	 VqUnGUrfnVHHyW8RL2g1O1ELtZXJQcY1SsXn2syc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@hammerspace.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Robert Richter <rrichter@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/139] pNFS: Fix a deadlock when returning a delegation during open()
+Subject: [PATCH 6.18 028/198] cxl/port: Fix target list setup for multiple decoders sharing the same dport
 Date: Wed, 21 Jan 2026 19:14:16 +0100
-Message-ID: <20260121181411.758674752@linuxfoundation.org>
+Message-ID: <20260121181419.567513976@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,248 +70,141 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210824-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211012-lists,stable=lfdr.de];
 	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 498F95B9A2
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email,intel.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,msgid.link:url,huawei.com:email]
+X-Rspamd-Queue-Id: 1E2735CBA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Robert Richter <rrichter@amd.com>
 
-[ Upstream commit 857bf9056291a16785ae3be1d291026b2437fc48 ]
+[ Upstream commit 3e8aaacdad4f66641f87ab441fe644b45f8ebdff ]
 
-Ben Coddington reports seeing a hang in the following stack trace:
-  0 [ffffd0b50e1774e0] __schedule at ffffffff9ca05415
-  1 [ffffd0b50e177548] schedule at ffffffff9ca05717
-  2 [ffffd0b50e177558] bit_wait at ffffffff9ca061e1
-  3 [ffffd0b50e177568] __wait_on_bit at ffffffff9ca05cfb
-  4 [ffffd0b50e1775c8] out_of_line_wait_on_bit at ffffffff9ca05ea5
-  5 [ffffd0b50e177618] pnfs_roc at ffffffffc154207b [nfsv4]
-  6 [ffffd0b50e1776b8] _nfs4_proc_delegreturn at ffffffffc1506586 [nfsv4]
-  7 [ffffd0b50e177788] nfs4_proc_delegreturn at ffffffffc1507480 [nfsv4]
-  8 [ffffd0b50e1777f8] nfs_do_return_delegation at ffffffffc1523e41 [nfsv4]
-  9 [ffffd0b50e177838] nfs_inode_set_delegation at ffffffffc1524a75 [nfsv4]
- 10 [ffffd0b50e177888] nfs4_process_delegation at ffffffffc14f41dd [nfsv4]
- 11 [ffffd0b50e1778a0] _nfs4_opendata_to_nfs4_state at ffffffffc1503edf [nfsv4]
- 12 [ffffd0b50e1778c0] _nfs4_open_and_get_state at ffffffffc1504e56 [nfsv4]
- 13 [ffffd0b50e177978] _nfs4_do_open at ffffffffc15051b8 [nfsv4]
- 14 [ffffd0b50e1779f8] nfs4_do_open at ffffffffc150559c [nfsv4]
- 15 [ffffd0b50e177a80] nfs4_atomic_open at ffffffffc15057fb [nfsv4]
- 16 [ffffd0b50e177ad0] nfs4_file_open at ffffffffc15219be [nfsv4]
- 17 [ffffd0b50e177b78] do_dentry_open at ffffffff9c09e6ea
- 18 [ffffd0b50e177ba8] vfs_open at ffffffff9c0a082e
- 19 [ffffd0b50e177bd0] dentry_open at ffffffff9c0a0935
+If a switch port has more than one decoder that is using the same
+downstream port, the enumeration of the target lists may fail with:
 
-The issue is that the delegreturn is being asked to wait for a layout
-return that cannot complete because a state recovery was initiated. The
-state recovery cannot complete until the open() finishes processing the
-delegations it was given.
+ # dmesg | grep target.list
+ update_decoder_targets: cxl decoder1.0: dport3 found in target list, index 3
+ update_decoder_targets: cxl decoder1.0: dport2 found in target list, index 2
+ update_decoder_targets: cxl decoder1.0: dport0 found in target list, index 0
+ update_decoder_targets: cxl decoder2.0: dport3 found in target list, index 1
+ update_decoder_targets: cxl decoder4.0: dport3 found in target list, index 1
+ cxl_mem mem6: failed to find endpoint12:0000:00:01.4 in target list of decoder2.1
+ cxl_mem mem8: failed to find endpoint13:0000:20:01.4 in target list of decoder4.1
 
-The solution is to propagate the existing flags that indicate a
-non-blocking call to the function pnfs_roc(), so that it knows not to
-wait in this situation.
+The case, that the same downstream port can be used in multiple target
+lists, is allowed and possible.
 
-Reported-by: Benjamin Coddington <bcodding@hammerspace.com>
-Fixes: 29ade5db1293 ("pNFS: Wait on outstanding layoutreturns to complete in pnfs_roc()")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fix the update of the target list. Enumerate all children of the
+switch port and do not stop the iteration after the first matching
+target was found.
+
+With the fix applied:
+
+ # dmesg | grep target.list
+ update_decoder_targets: cxl decoder1.0: dport2 found in target list, index 2
+ update_decoder_targets: cxl decoder1.0: dport0 found in target list, index 0
+ update_decoder_targets: cxl decoder1.0: dport3 found in target list, index 3
+ update_decoder_targets: cxl decoder2.0: dport3 found in target list, index 1
+ update_decoder_targets: cxl decoder2.1: dport3 found in target list, index 1
+ update_decoder_targets: cxl decoder4.0: dport3 found in target list, index 1
+ update_decoder_targets: cxl decoder4.1: dport3 found in target list, index 1
+
+Analyzing the conditions when this happens:
+
+1) A dport is shared by multiple decoders.
+
+2) The decoders have interleaving configured (ways > 1).
+
+The configuration above has the following hierarchy details (fixed
+version):
+
+ root0
+ |_
+ | |
+ | decoder0.1
+ | ways: 2
+ | target_list: 0,1
+ |_______________________________________
+ |                                       |
+ | dport0                                | dport1
+ |                                       |
+ port2                                   port4
+ |                                       |
+ |___________________                    |_____________________
+ | |                 |                   | |                   |
+ | decoder2.0        decoder2.1          | decoder4.0          decoder4.1
+ | ways: 2           ways: 2             | ways: 2             ways: 2
+ | target_list: 2,3  target_list: 2,3    | target_list: 2,3    target_list: 2,3
+ |___________________                    |___________________
+ |                   |                   |                   |
+ | dport2            | dport3            | dport2            | dport3
+ |                   |                   |                   |
+ endpoint7           endpoint12          endpoint9           endpoint13
+ |_                  |_                  |_                  |_
+ | |                 | |                 | |                 | |
+ | decoder7.0        | decoder12.0       | decoder9.0        | decoder13.0
+ | decoder7.2        | decoder12.2       | decoder9.2        | decoder13.2
+ |                   |                   |                   |
+ mem3                mem5                mem6                mem8
+
+Note: Device numbers vary for every boot.
+
+Current kernel fails to enumerate endpoint12 and endpoint13 as the
+target list is not updated for the second decoder.
+
+Fixes: 4f06d81e7c6a ("cxl: Defer dport allocation for switch ports")
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Link: https://patch.msgid.link/20260108101324.509667-1-rrichter@amd.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c |  6 ++---
- fs/nfs/pnfs.c     | 58 +++++++++++++++++++++++++++++++++--------------
- fs/nfs/pnfs.h     | 17 ++++++--------
- 3 files changed, 51 insertions(+), 30 deletions(-)
+ drivers/cxl/core/port.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 89f779f16f0dc..c76acd537be05 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3868,8 +3868,8 @@ int nfs4_do_close(struct nfs4_state *state, gfp_t gfp_mask, int wait)
- 	calldata->res.seqid = calldata->arg.seqid;
- 	calldata->res.server = server;
- 	calldata->res.lr_ret = -NFS4ERR_NOMATCHING_LAYOUT;
--	calldata->lr.roc = pnfs_roc(state->inode,
--			&calldata->lr.arg, &calldata->lr.res, msg.rpc_cred);
-+	calldata->lr.roc = pnfs_roc(state->inode, &calldata->lr.arg,
-+				    &calldata->lr.res, msg.rpc_cred, wait);
- 	if (calldata->lr.roc) {
- 		calldata->arg.lr_args = &calldata->lr.arg;
- 		calldata->res.lr_res = &calldata->lr.res;
-@@ -6895,7 +6895,7 @@ static int _nfs4_proc_delegreturn(struct inode *inode, const struct cred *cred,
- 	data->inode = nfs_igrab_and_active(inode);
- 	if (data->inode || issync) {
- 		data->lr.roc = pnfs_roc(inode, &data->lr.arg, &data->lr.res,
--					cred);
-+					cred, issync);
- 		if (data->lr.roc) {
- 			data->args.lr_args = &data->lr.arg;
- 			data->res.lr_res = &data->lr.res;
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 7a742bcff687b..16981d0389c4c 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -1546,10 +1546,9 @@ static int pnfs_layout_return_on_reboot(struct pnfs_layout_hdr *lo)
- 				      PNFS_FL_LAYOUTRETURN_PRIVILEGED);
- }
- 
--bool pnfs_roc(struct inode *ino,
--		struct nfs4_layoutreturn_args *args,
--		struct nfs4_layoutreturn_res *res,
--		const struct cred *cred)
-+bool pnfs_roc(struct inode *ino, struct nfs4_layoutreturn_args *args,
-+	      struct nfs4_layoutreturn_res *res, const struct cred *cred,
-+	      bool sync)
- {
- 	struct nfs_inode *nfsi = NFS_I(ino);
- 	struct nfs_open_context *ctx;
-@@ -1560,7 +1559,7 @@ bool pnfs_roc(struct inode *ino,
- 	nfs4_stateid stateid;
- 	enum pnfs_iomode iomode = 0;
- 	bool layoutreturn = false, roc = false;
--	bool skip_read = false;
-+	bool skip_read;
- 
- 	if (!nfs_have_layout(ino))
- 		return false;
-@@ -1573,20 +1572,14 @@ bool pnfs_roc(struct inode *ino,
- 		lo = NULL;
- 		goto out_noroc;
- 	}
--	pnfs_get_layout_hdr(lo);
--	if (test_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags)) {
--		spin_unlock(&ino->i_lock);
--		rcu_read_unlock();
--		wait_on_bit(&lo->plh_flags, NFS_LAYOUT_RETURN,
--				TASK_UNINTERRUPTIBLE);
--		pnfs_put_layout_hdr(lo);
--		goto retry;
--	}
- 
- 	/* no roc if we hold a delegation */
-+	skip_read = false;
- 	if (nfs4_check_delegation(ino, FMODE_READ)) {
--		if (nfs4_check_delegation(ino, FMODE_WRITE))
-+		if (nfs4_check_delegation(ino, FMODE_WRITE)) {
-+			lo = NULL;
- 			goto out_noroc;
-+		}
- 		skip_read = true;
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 8128fd2b5b317..804e4a48540f6 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -1591,7 +1591,7 @@ static int update_decoder_targets(struct device *dev, void *data)
+ 			cxlsd->target[i] = dport;
+ 			dev_dbg(dev, "dport%d found in target list, index %d\n",
+ 				dport->port_id, i);
+-			return 1;
++			return 0;
+ 		}
  	}
  
-@@ -1595,12 +1588,43 @@ bool pnfs_roc(struct inode *ino,
- 		if (state == NULL)
- 			continue;
- 		/* Don't return layout if there is open file state */
--		if (state->state & FMODE_WRITE)
-+		if (state->state & FMODE_WRITE) {
-+			lo = NULL;
- 			goto out_noroc;
-+		}
- 		if (state->state & FMODE_READ)
- 			skip_read = true;
- 	}
- 
-+	if (skip_read) {
-+		bool writes = false;
-+
-+		list_for_each_entry(lseg, &lo->plh_segs, pls_list) {
-+			if (lseg->pls_range.iomode != IOMODE_READ) {
-+				writes = true;
-+				break;
-+			}
-+		}
-+		if (!writes) {
-+			lo = NULL;
-+			goto out_noroc;
-+		}
-+	}
-+
-+	pnfs_get_layout_hdr(lo);
-+	if (test_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags)) {
-+		if (!sync) {
-+			pnfs_set_plh_return_info(
-+				lo, skip_read ? IOMODE_RW : IOMODE_ANY, 0);
-+			goto out_noroc;
-+		}
-+		spin_unlock(&ino->i_lock);
-+		rcu_read_unlock();
-+		wait_on_bit(&lo->plh_flags, NFS_LAYOUT_RETURN,
-+			    TASK_UNINTERRUPTIBLE);
-+		pnfs_put_layout_hdr(lo);
-+		goto retry;
-+	}
- 
- 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list) {
- 		if (skip_read && lseg->pls_range.iomode == IOMODE_READ)
-@@ -1640,7 +1664,7 @@ bool pnfs_roc(struct inode *ino,
- out_noroc:
- 	spin_unlock(&ino->i_lock);
- 	rcu_read_unlock();
--	pnfs_layoutcommit_inode(ino, true);
-+	pnfs_layoutcommit_inode(ino, sync);
- 	if (roc) {
- 		struct pnfs_layoutdriver_type *ld = NFS_SERVER(ino)->pnfs_curr_ld;
- 		if (ld->prepare_layoutreturn)
-diff --git a/fs/nfs/pnfs.h b/fs/nfs/pnfs.h
-index 91ff877185c8a..3db8f13d8fe4e 100644
---- a/fs/nfs/pnfs.h
-+++ b/fs/nfs/pnfs.h
-@@ -303,10 +303,9 @@ int pnfs_mark_matching_lsegs_return(struct pnfs_layout_hdr *lo,
- 				u32 seq);
- int pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
- 		struct list_head *lseg_list);
--bool pnfs_roc(struct inode *ino,
--		struct nfs4_layoutreturn_args *args,
--		struct nfs4_layoutreturn_res *res,
--		const struct cred *cred);
-+bool pnfs_roc(struct inode *ino, struct nfs4_layoutreturn_args *args,
-+	      struct nfs4_layoutreturn_res *res, const struct cred *cred,
-+	      bool sync);
- int pnfs_roc_done(struct rpc_task *task, struct nfs4_layoutreturn_args **argpp,
- 		  struct nfs4_layoutreturn_res **respp, int *ret);
- void pnfs_roc_release(struct nfs4_layoutreturn_args *args,
-@@ -773,12 +772,10 @@ pnfs_layoutcommit_outstanding(struct inode *inode)
- 	return false;
- }
- 
--
--static inline bool
--pnfs_roc(struct inode *ino,
--		struct nfs4_layoutreturn_args *args,
--		struct nfs4_layoutreturn_res *res,
--		const struct cred *cred)
-+static inline bool pnfs_roc(struct inode *ino,
-+			    struct nfs4_layoutreturn_args *args,
-+			    struct nfs4_layoutreturn_res *res,
-+			    const struct cred *cred, bool sync)
- {
- 	return false;
- }
 -- 
 2.51.0
 
