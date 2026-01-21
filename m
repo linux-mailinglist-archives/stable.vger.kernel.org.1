@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-211147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Ga7J4UgcWmodQAAu9opvQ
-	(envelope-from <stable+bounces-211147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:52:53 +0100
+	id KK/uDM8zcWlQfQAAu9opvQ
+	(envelope-from <stable+bounces-211122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:15:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF275B902
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:52:53 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88BC75CF29
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:15:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0518A7053F8
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:44:14 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 46BB08701C0
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31A73AA1A0;
-	Wed, 21 Jan 2026 18:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4143D2FF0;
+	Wed, 21 Jan 2026 18:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5WsiK6o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4IWMVbG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43A33B52F1;
-	Wed, 21 Jan 2026 18:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516943E95B7;
+	Wed, 21 Jan 2026 18:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020598; cv=none; b=kKZ2XZe5LNxZdrQzweDdcC2dL24wcIzzRaB0W7JYc/XRFbg7pyxnVu++vzP3nvmRwZFg0V2/kr3hoWSsb0dhhyiUN8UYcLsDf1YjD1LCVohaz1xfU2QitmCUzieF5R0IGEQbnzYRJx8aQsSO6z0nGfrXwl7kF5GCY2jK/FQhCUg=
+	t=1769020512; cv=none; b=gZ10cRySf60Gg2OvfcJn3Mi2goqAGXzusDogYjA/1ebsHqCcqCgOWSj7ZqiZLYnxzl87p48JsoUkquBelf66SXpM8rRCEHvMVkguWifssqnUqAOxZOQWI9rUUhjPK1ft1q8WuOP0hZQuDGCXmMCZc3mI/MavxNn77Al0LNSfdSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020598; c=relaxed/simple;
-	bh=0NP5CzxPVcVP8eiY6hhzs/iv4/+52VK3dYJZGirmhys=;
+	s=arc-20240116; t=1769020512; c=relaxed/simple;
+	bh=3B8JrZ25XOkAZ+6EJ79g4cuP6zs8wO7trjfqOnMjuxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKSzhLbenMz9qLBRPqFA7GP7YCDjCFJP84IUaglK1t2NxivVBjAVo/WzcOZpji8iMIMP5/su327QqR5SkBBx54LeDe0k5Dkk8VQI5d5JvvLQeOzN6kVAxXZ+QhnThXBrGNLyAQHOO3vok+bx4C96fF8uILk3l2XbWjfWreQmmGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5WsiK6o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E74C4AF0C;
-	Wed, 21 Jan 2026 18:36:37 +0000 (UTC)
+	 MIME-Version; b=GO7V2QDXZa6MPylO+9TkB8JYwUAwjlqWGMs6EsKXkQ4TRwaLQsfFCVBpG4i68t67WkKb0lz6ZhfgTuAq7kujTIcEIPd+9DMEMzwdrjvzSvhfxqt6JvJljgnkxB2YrVSaUcPJ2reCIvFqmMP40aKU4PFl7ww0vFsIcdQKajlj3pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4IWMVbG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFFBC4CEF1;
+	Wed, 21 Jan 2026 18:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020598;
-	bh=0NP5CzxPVcVP8eiY6hhzs/iv4/+52VK3dYJZGirmhys=;
+	s=korg; t=1769020511;
+	bh=3B8JrZ25XOkAZ+6EJ79g4cuP6zs8wO7trjfqOnMjuxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L5WsiK6o+Mk1zIZVoRru/KEMqc3UkcCA0jZ2VYS3QNrWeh2R/62EPP/r+CWz4lguq
-	 3fp3f8zTFT6Wz6TWfKJMaiuc2ekfYNIYVB0Llmy4BLm4eDenuC3bTGlTJULFoeSOx4
-	 gzbywAdphFjomqovIqQ/zgUuhRNII+HrWpm61yRg=
+	b=Q4IWMVbGtRkM9Zbp4PGBCX3OYavBUnLKSajq8epcmAX13YIzH3nq1+qZykEB/jzE1
+	 Z4DSxL+wZ2PL9TOHIIDOrhXBrPMIDPRM930CkodZNir8gioe5VgOVjYOXgOxeIP1KX
+	 9aCFmOj2lifwAKLHcBtN1mpziOPAf1RFiGF+cnuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+	Peter Ujfalusi <peter.ujfalusi@ti.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
 	Johan Hovold <johan@kernel.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.18 180/198] dmaengine: stm32: dmamux: fix OF node leak on route allocation failure
-Date: Wed, 21 Jan 2026 19:16:48 +0100
-Message-ID: <20260121181425.028605101@linuxfoundation.org>
+Subject: [PATCH 6.18 181/198] dmaengine: ti: dma-crossbar: fix device leak on dra7x route allocation
+Date: Wed, 21 Jan 2026 19:16:49 +0100
+Message-ID: <20260121181425.064717316@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 References: <20260121181418.537774329@linuxfoundation.org>
@@ -75,26 +75,27 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211147-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ti.com,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211122-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,st.com:email]
-X-Rspamd-Queue-Id: 3AF275B902
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,msgid.link:url,ti.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 88BC75CF29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -104,42 +105,38 @@ X-Rspamd-Server: lfdr
 
 From: Johan Hovold <johan@kernel.org>
 
-commit b1b590a590af13ded598e70f0b72bc1e515787a1 upstream.
+commit dc7e44db01fc2498644e3106db3e62a9883a93d5 upstream.
 
-Make sure to drop the reference taken to the DMA master OF node also on
-late route allocation failures.
+Make sure to drop the reference taken when looking up the crossbar
+platform device during dra7x route allocation.
 
-Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
-Cc: stable@vger.kernel.org      # 4.15
-Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
+Note that commit 615a4bfc426e ("dmaengine: ti: Add missing put_device in
+ti_dra7_xbar_route_allocate") fixed the leak in the error paths but the
+reference is still leaking on successful allocation.
+
+Fixes: a074ae38f859 ("dmaengine: Add driver for TI DMA crossbar on DRA7x")
+Fixes: 615a4bfc426e ("dmaengine: ti: Add missing put_device in ti_dra7_xbar_route_allocate")
+Cc: stable@vger.kernel.org	# 4.2: 615a4bfc426e
+Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/20251117161258.10679-12-johan@kernel.org
+Link: https://patch.msgid.link/20251117161258.10679-14-johan@kernel.org
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/stm32/stm32-dmamux.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/dma/ti/dma-crossbar.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/dma/stm32/stm32-dmamux.c
-+++ b/drivers/dma/stm32/stm32-dmamux.c
-@@ -143,7 +143,7 @@ static void *stm32_dmamux_route_allocate
- 	ret = pm_runtime_resume_and_get(&pdev->dev);
- 	if (ret < 0) {
- 		spin_unlock_irqrestore(&dmamux->lock, flags);
--		goto error;
-+		goto err_put_dma_spec_np;
- 	}
- 	spin_unlock_irqrestore(&dmamux->lock, flags);
+--- a/drivers/dma/ti/dma-crossbar.c
++++ b/drivers/dma/ti/dma-crossbar.c
+@@ -288,6 +288,8 @@ static void *ti_dra7_xbar_route_allocate
  
-@@ -165,6 +165,8 @@ static void *stm32_dmamux_route_allocate
+ 	ti_dra7_xbar_write(xbar->iomem, map->xbar_out, map->xbar_in);
  
- 	return mux;
- 
-+err_put_dma_spec_np:
-+	of_node_put(dma_spec->np);
- error:
- 	clear_bit(mux->chan_id, dmamux->dma_inuse);
++	put_device(&pdev->dev);
++
+ 	return map;
+ }
  
 
 
