@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-211049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210879-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QOTJG10ucWmcfAAAu9opvQ
-	(envelope-from <stable+bounces-211049-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:51:57 +0100
+	id sLxxISUwcWmcfAAAu9opvQ
+	(envelope-from <stable+bounces-210879-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:59:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A6F5C93C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:51:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E92FB5CB4F
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:59:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 36016B0FD22
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:32:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 8DC304EE480
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08ED13806C0;
-	Wed, 21 Jan 2026 18:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF34333122D;
+	Wed, 21 Jan 2026 18:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2krc/yk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xry6HzzE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AAF34D3A1;
-	Wed, 21 Jan 2026 18:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637533A1E73;
+	Wed, 21 Jan 2026 18:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020265; cv=none; b=aX/x1tIff5bdFEqANPUbX4k4GSE97o7nJNCY9x5pOwjWv6xXbduwTs0spdlrr0z2xHVNztvwY7aij4zTYM8z18Ct5qZSwMwGug3L9YKx0NQOcPWFr6c5bJ1SZ510hDENaHy+vtlsnucf0nUxoGSb9h8bkrIVbL7rGsmUv4ZpqM4=
+	t=1769019693; cv=none; b=F7lZgpsiOLaPdB6Oh3joY88W9KaFzUyq+rPfYUr6BvAZzIviTszpiGxRyqFGCfxhxe9qSXwjWuSNCiovd5UvqY/FrNNXh2vIhGvwixIQYYHGxlxzqGHuqBVaOZx9NTbNk8IsSmcB7T+ie7NZb2quZHmGd7Ei4iha90yLl2C1O0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020265; c=relaxed/simple;
-	bh=xSxUOWDF/ivA7sK6PNzzqtkRC1AvuHxcglLRIAZSNf0=;
+	s=arc-20240116; t=1769019693; c=relaxed/simple;
+	bh=qEjbugMCPXk4pPCxX0UoMvPipbFiwlPPxBmLATZMmqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEvOEpLjCcl8BnLiv3fBvxZPaQ6Y8/tOlPC77BbYEC3MdAtIEGdVffYh1c0a9Ju4B+0K06nhkeVn3kC/WWG+e4A/sjlI8cRLb5bzAlGzekorT6wpkhFyDR5Ja4OeDrwnAoLqeAt5svLw4eAeMCwBNORxJlq65DBRuKHXujjKAkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2krc/yk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C0BC4CEF1;
-	Wed, 21 Jan 2026 18:31:04 +0000 (UTC)
+	 MIME-Version; b=IVJoGsX2IAATepG46POiA9TQGYhjzq4Bb4C1a6uo/zJ2og5kOb5+o+z1qS6ZC8m1rxkUAzYnmiotxmQMP9hUPboTP3ePsVVCzH7oLpeO6iV9CIGLn6SPEdNczBG4JVWLGOiesaYh5f0LFC8q2SkfW+VC3zl+eXgmQ6EhDVZQ6P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xry6HzzE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB16AC19425;
+	Wed, 21 Jan 2026 18:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020265;
-	bh=xSxUOWDF/ivA7sK6PNzzqtkRC1AvuHxcglLRIAZSNf0=;
+	s=korg; t=1769019693;
+	bh=qEjbugMCPXk4pPCxX0UoMvPipbFiwlPPxBmLATZMmqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c2krc/ykojPnWhnWd/e/pgpV7drE1257L5pIBoY0mpcGfCNki7hhexw0oD5LErSiv
-	 xsf8DcD/EJ/L1tQD5ab+qXEJ40vCySyCKN8J1PinQyuaIWL3fPcizX/zk0vkFbKXCB
-	 H0qRDZWwr9P29HjMtpVj0AhomUCjTt534plKi6Hg=
+	b=xry6HzzE2Kp7EsmAZAy01kx9d4wEz26ngY9+BoweHwc4CcjxEioAXnp+/R9OmArY8
+	 00B1J2B1z/2/UgfwF5NMKqdsBg9NFonYZYg4ZNBpRb7fyeV3H90+5BaT3jjmlHcruo
+	 8ZllCkjtg2FunmrsHtjUEWlCuC94QDUH8acWHIoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.18 100/198] net: can: j1939: j1939_xtp_rx_rts_session_active(): deactivate session upon receiving the second rts
+	stable <stable@kernel.org>,
+	Shengwen Xiao <atzlinux@sina.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.12 080/139] USB: OHCI/UHCI: Add soft dependencies on ehci_platform
 Date: Wed, 21 Jan 2026 19:15:28 +0100
-Message-ID: <20260121181422.153524196@linuxfoundation.org>
+Message-ID: <20260121181414.331197449@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,8 +67,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
@@ -76,13 +75,14 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211049-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,sina.com,loongson.cn,rowland.harvard.edu];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210879-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
@@ -93,63 +93,100 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,881d65229ca4f9ae8c84];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,syzkaller.appspot.com:url,msgid.link:url]
-X-Rspamd-Queue-Id: D0A6F5C93C
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sina.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,loongson.cn:email,0.152.150.128:email,harvard.edu:email]
+X-Rspamd-Queue-Id: E92FB5CB4F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 1809c82aa073a11b7d335ae932d81ce51a588a4a upstream.
+commit 01ef7f1b8713a78ab1a9512cf8096d2474c70633 upstream.
 
-Since j1939_session_deactivate_activate_next() in j1939_tp_rxtimer() is
-called only when the timer is enabled, we need to call
-j1939_session_deactivate_activate_next() if we cancelled the timer.
-Otherwise, refcount for j1939_session leaks, which will later appear as
+Commit 9beeee6584b9aa4f ("USB: EHCI: log a warning if ehci-hcd is not
+loaded first") said that ehci-hcd should be loaded before ohci-hcd and
+uhci-hcd. However, commit 05c92da0c52494ca ("usb: ohci/uhci - add soft
+dependencies on ehci_pci") only makes ohci-pci/uhci-pci depend on ehci-
+pci, which is not enough and we may still see the warnings in boot log.
 
-| unregister_netdevice: waiting for vcan0 to become free. Usage count = 2.
+To eliminate the warnings we should make ohci-hcd/uhci-hcd depend on
+ehci-hcd. But Alan said that the warning introduced by 9beeee6584b9aa4f
+is bogus, we only need the soft dependencies in the PCI level rather
+than the HCD level.
 
-problem.
+However, there is really another neccessary soft dependencies between
+ohci-platform/uhci-platform and ehci-platform, which is added by this
+patch. The boot logs are below.
 
-Reported-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Link: https://patch.msgid.link/b1212653-8fa1-44e1-be9d-12f950fb3a07@I-love.SAKURA.ne.jp
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+1. ohci-platform loaded before ehci-platform:
+
+ ohci-platform 1f058000.usb: Generic Platform OHCI controller
+ ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 1
+ ohci-platform 1f058000.usb: irq 28, io mem 0x1f058000
+ hub 1-0:1.0: USB hub found
+ hub 1-0:1.0: 4 ports detected
+ Warning! ehci_hcd should always be loaded before uhci_hcd and ohci_hcd, not after
+ usb 1-4: new low-speed USB device number 2 using ohci-platform
+ ehci-platform 1f050000.usb: EHCI Host Controller
+ ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 2
+ ehci-platform 1f050000.usb: irq 29, io mem 0x1f050000
+ ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
+ usb 1-4: device descriptor read/all, error -62
+ hub 2-0:1.0: USB hub found
+ hub 2-0:1.0: 4 ports detected
+ usb 1-4: new low-speed USB device number 3 using ohci-platform
+ input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb1/1-4/1-4:1.0/0003:10C4:8105.0001/input/input0
+ hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
+
+2. ehci-platform loaded before ohci-platform:
+
+ ehci-platform 1f050000.usb: EHCI Host Controller
+ ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 1
+ ehci-platform 1f050000.usb: irq 28, io mem 0x1f050000
+ ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
+ hub 1-0:1.0: USB hub found
+ hub 1-0:1.0: 4 ports detected
+ ohci-platform 1f058000.usb: Generic Platform OHCI controller
+ ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 2
+ ohci-platform 1f058000.usb: irq 29, io mem 0x1f058000
+ hub 2-0:1.0: USB hub found
+ hub 2-0:1.0: 4 ports detected
+ usb 2-4: new low-speed USB device number 2 using ohci-platform
+ input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb2/2-4/2-4:1.0/0003:10C4:8105.0001/input/input0
+ hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
+
+In the later case, there is no re-connection for USB-1.0/1.1 devices,
+which is expected.
+
+Cc: stable <stable@kernel.org>
+Reported-by: Shengwen Xiao <atzlinux@sina.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://patch.msgid.link/20260112084802.1995923-1-chenhuacai@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/transport.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/host/ohci-platform.c |    1 +
+ drivers/usb/host/uhci-platform.c |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1695,8 +1695,16 @@ static int j1939_xtp_rx_rts_session_acti
- 
- 		j1939_session_timers_cancel(session);
- 		j1939_session_cancel(session, J1939_XTP_ABORT_BUSY);
--		if (session->transmission)
-+		if (session->transmission) {
- 			j1939_session_deactivate_activate_next(session);
-+		} else if (session->state == J1939_SESSION_WAITING_ABORT) {
-+			/* Force deactivation for the receiver.
-+			 * If we rely on the timer starting in j1939_session_cancel,
-+			 * a second RTS call here will cancel that timer and fail
-+			 * to restart it because the state is already WAITING_ABORT.
-+			 */
-+			j1939_session_deactivate_activate_next(session);
-+		}
- 
- 		return -EBUSY;
- 	}
+--- a/drivers/usb/host/ohci-platform.c
++++ b/drivers/usb/host/ohci-platform.c
+@@ -376,3 +376,4 @@ MODULE_DESCRIPTION(DRIVER_DESC);
+ MODULE_AUTHOR("Hauke Mehrtens");
+ MODULE_AUTHOR("Alan Stern");
+ MODULE_LICENSE("GPL");
++MODULE_SOFTDEP("pre: ehci_platform");
+--- a/drivers/usb/host/uhci-platform.c
++++ b/drivers/usb/host/uhci-platform.c
+@@ -191,3 +191,4 @@ static struct platform_driver uhci_platf
+ 		.of_match_table = platform_uhci_ids,
+ 	},
+ };
++MODULE_SOFTDEP("pre: ehci_platform");
 
 
 
