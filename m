@@ -1,170 +1,139 @@
-Return-Path: <stable+bounces-210763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOWELEvgcGnCaQAAu9opvQ
-	(envelope-from <stable+bounces-210763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:18:51 +0100
+	id SHVLJOzncGk+awAAu9opvQ
+	(envelope-from <stable+bounces-210764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:51:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A71584DA
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:18:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 247A858C2A
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:51:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9F8CA6CE0EB
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 14:07:51 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B4EAE54EA64
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 14:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C1B4ADDA0;
-	Wed, 21 Jan 2026 13:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC4548AE34;
+	Wed, 21 Jan 2026 13:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="XyP2x8F6"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE494ADD8D
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 13:56:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.57.120.243])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579FF269811;
+	Wed, 21 Jan 2026 13:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.57.120.243
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769003809; cv=none; b=kvGg4rxX4r9ivv0WxSKIRdySvlV8yc783hDE5aPKAGPeCNCRJKVWwsArDNqJRq/QT/XRj1oQWR9UFePZ257nJkJ4RyPRF27VF24bGz4Et5eA1d+5PpHfNvRxlBucHtSwe3uhR5yky+x754XJCqG/bcYD8jXq/Ta4+5rf5YY2SXQ=
+	t=1769003887; cv=none; b=HjbOihxNI+NkjjYhKHz3Ck51oqksxTkLVgd1PvaJQ7sMKSWcLkuUSHjBP05rUOpGq9ez5dkdCDYyxDU5wU9E3uIuXiUIbWfvjFO7ems8mISNymTWg9n/K2Ggt76kxmLV6/Wl0xaVvw1ondge3Cxwe4oy+B0S1GkeCsVf5Agxs/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769003809; c=relaxed/simple;
-	bh=JxOpeELHN1OD5VikasuRZJeKuxqbPHrKCOCFBPxCVa4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rK8eEih9n/em82up2++XjQfJYMho40G/cssUEImUuceoBbYf/4Z3YbEMWDKshueQWhFkk7gkCp8/JAGY0AjgNw5fQbFZc2tK0uB1KD7l+CuTnVDNj+pyrRL82FwfCqJt3XMi79hB53duADGB09WNxe548py/jZTSEg6ULmzla4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 491BB1476;
-	Wed, 21 Jan 2026 05:56:40 -0800 (PST)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E1403F740;
-	Wed, 21 Jan 2026 05:56:45 -0800 (PST)
-From: Joey Gouly <joey.gouly@arm.com>
-To: linux-arm-kernel@lists.infradead.org
-Cc: david.spickett@arm.com,
-	joey.gouly@arm.com,
-	kevin.brodsky@arm.com,
-	mark.rutland@arm.com,
-	stable@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH v1] arm64: poe: fix stale POR_EL0 values for ptrace
-Date: Wed, 21 Jan 2026 13:56:39 +0000
-Message-Id: <20260121135639.1835784-1-joey.gouly@arm.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1769003887; c=relaxed/simple;
+	bh=89M39Kki2E06BqFpd/hc0HReSpIPWWO32V+PPC5e5h8=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DwqMOANY1sP57dsgWBdMCx1sc9FdwjpJ0WnBTL3hchWwSd+F/f4/NDAwp/QqcvFIVQ7YoMDlUR9jca5/PvgxJkyBPM4xBIkduNsWvp4yWotg2J/vxDyMbC3AYDLDDdml/aFG/3MCOHRE5s3gAtHjljrUaDDKOZYtWvL0855+bQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=XyP2x8F6; arc=none smtp.client-ip=52.57.120.243
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1769003885; x=1800539885;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=89M39Kki2E06BqFpd/hc0HReSpIPWWO32V+PPC5e5h8=;
+  b=XyP2x8F6gfC6sLWKzf/21yKT0h4BmlPIBjfDJD5qoGSUYbttEI0rnxel
+   bzOCHJ4eauWDy3Tc1OXNiCI2EzrkBYEu8KtBXKttztxNUA2nrnnlZJC+2
+   UfgciVNVWUu+/WGYrmsNq0EGgB+n7UKSFeT+bETJTtCrjy+vr4aTPCDe6
+   PcWoK7f7zwvVgHKSljVkKnJJ96qinlcHmPrSB0bVF8Ru1almZbzH38X7U
+   isXaY6CQcMN1Do7zQ8pMlnEEyplXEz86azOBTOTyHN9kjjgvyOFZVKuH0
+   Ue3gTXLCRbZ/QiCMKXwanp9bICWWhaJlFlkogpy3N3QqHh7wTe4b3XG37
+   Q==;
+X-CSE-ConnectionGUID: 1l+8TWG3SFmIUEjO9TvkmQ==
+X-CSE-MsgGUID: MtoxTnH+QhedP6ao+2Zi2g==
+X-IronPort-AV: E=Sophos;i="6.21,242,1763424000"; 
+   d="scan'208";a="8127399"
+Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
+  by internal-fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 13:57:47 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.233:4201]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.8.54:2525] with esmtp (Farcaster)
+ id 177d1623-b088-4bdc-8cf7-d9ab759f06c3; Wed, 21 Jan 2026 13:57:46 +0000 (UTC)
+X-Farcaster-Flow-ID: 177d1623-b088-4bdc-8cf7-d9ab759f06c3
+Received: from EX19D003EUB001.ant.amazon.com (10.252.51.97) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
+ Wed, 21 Jan 2026 13:57:38 +0000
+Received: from u5934974a1cdd59.ant.amazon.com (10.146.13.108) by
+ EX19D003EUB001.ant.amazon.com (10.252.51.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
+ Wed, 21 Jan 2026 13:57:29 +0000
+From: Fernand Sieber <sieberf@amazon.com>
+To: <dwmw2@infradead.org>, <peterz@infradead.org>, <seanjc@google.com>
+CC: <abusse@amazon.de>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<hborghor@amazon.de>, <hpa@zytor.com>, <jschoenh@amazon.de>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <mingo@redhat.com>,
+	<nh-open-source@amazon.com>, <nsaenz@amazon.com>, <pbonzini@redhat.com>,
+	<sieberf@amazon.com>, <stable@vger.kernel.org>, <tglx@linutronix.de>,
+	<x86@kernel.org>
+Subject: Re: [PATCH v2] perf/x86/intel: Do not enable BTS for guests
+Date: Wed, 21 Jan 2026 15:57:13 +0200
+Message-ID: <20260121135713.214711-1-sieberf@amazon.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <ff49b3013a4ff7626c6f6ac574f85348c35ccc42.camel@infradead.org>
+References: <20251210111655.GB3911114@noisy.programming.kicks-ass.net> <20251211183604.868641-1-sieberf@amazon.com> <ff49b3013a4ff7626c6f6ac574f85348c35ccc42.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.34 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-ClientProxiedBy: EX19D046UWA001.ant.amazon.com (10.13.139.112) To
+ EX19D003EUB001.ant.amazon.com (10.252.51.97)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-7.96 / 15.00];
+	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : No valid SPF, No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210763-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[amazon.com,quarantine];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210764-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[amazon.com:+];
 	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[joey.gouly@arm.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_NEQ_ENVFROM(0.00)[sieberf@amazon.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TO_DN_NONE(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	R_DKIM_NA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,arm.com:mid,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: F3A71584DA
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 247A858C2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-If a process wrote to POR_EL0 and then crashed before a context switch
-happened, the coredump would contain an incorrect value for POR_EL0.
+Hi Peter,
 
-The value read in poe_get() would be a stale value left in thread.por_el0.  Fix
-this by reading the value from the system register, if the target thread is the
-current thread.
+Could you please take another look and see if you are happy to pull in v2 which
+implements the approach that you suggested?
 
-This matches what gcs/fpsimd do.
+Thanks,
 
-Fixes: 175198199262 ("arm64/ptrace: add support for FEAT_POE")
-Reported-by: David Spickett <david.spickett@arm.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
----
- arch/arm64/include/asm/por.h | 2 ++
- arch/arm64/kernel/process.c  | 7 ++++++-
- arch/arm64/kernel/ptrace.c   | 5 +++++
- 3 files changed, 13 insertions(+), 1 deletion(-)
+--Fernand
 
-diff --git a/arch/arm64/include/asm/por.h b/arch/arm64/include/asm/por.h
-index d913d5b529e4..46f1356837e2 100644
---- a/arch/arm64/include/asm/por.h
-+++ b/arch/arm64/include/asm/por.h
-@@ -31,4 +31,6 @@ static inline bool por_elx_allows_exec(u64 por, u8 pkey)
- 	return perm & POE_X;
- }
- 
-+void poe_preserve_current_state(void);
-+
- #endif /* _ASM_ARM64_POR_H */
-diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
-index 489554931231..400182099784 100644
---- a/arch/arm64/kernel/process.c
-+++ b/arch/arm64/kernel/process.c
-@@ -665,12 +665,17 @@ static int do_set_tsc_mode(unsigned int val)
- 	return 0;
- }
- 
-+void poe_preserve_current_state(void)
-+{
-+	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
-+}
-+
- static void permission_overlay_switch(struct task_struct *next)
- {
- 	if (!system_supports_poe())
- 		return;
- 
--	current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
-+	poe_preserve_current_state();
- 	if (current->thread.por_el0 != next->thread.por_el0) {
- 		write_sysreg_s(next->thread.por_el0, SYS_POR_EL0);
- 		/*
-diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index b9bdd83fbbca..276d8ee630cd 100644
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -37,6 +37,7 @@
- #include <asm/gcs.h>
- #include <asm/mte.h>
- #include <asm/pointer_auth.h>
-+#include <asm/por.h>
- #include <asm/stacktrace.h>
- #include <asm/syscall.h>
- #include <asm/traps.h>
-@@ -1486,6 +1487,10 @@ static int poe_get(struct task_struct *target,
- 	if (!system_supports_poe())
- 		return -EINVAL;
- 
-+	if (target == current) {
-+		poe_preserve_current_state();
-+	}
-+
- 	return membuf_write(&to, &target->thread.por_el0,
- 			    sizeof(target->thread.por_el0));
- }
--- 
-2.25.1
+
+
+Amazon Development Centre (South Africa) (Proprietary) Limited
+29 Gogosoa Street, Observatory, Cape Town, Western Cape, 7925, South Africa
+Registration Number: 2004 / 034463 / 07
 
 
