@@ -1,217 +1,386 @@
-Return-Path: <stable+bounces-210729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAj0Bey6cGmWZQAAu9opvQ
-	(envelope-from <stable+bounces-210729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 12:39:24 +0100
+	id +BXoDle6cGmWZQAAu9opvQ
+	(envelope-from <stable+bounces-210730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 12:36:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8078B561F4
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 12:39:23 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB8256198
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 12:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 82E5D9292B4
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 11:28:04 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7221696932A
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 11:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDFA3B8D51;
-	Wed, 21 Jan 2026 11:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71583E9F7E;
+	Wed, 21 Jan 2026 11:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="vAPf79tD";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="naRtddYQ";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="wLrqkagr";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="1U+Po9Pu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/Y0e6i5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B9C31195D
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 11:27:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549F23C00A0
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 11:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768994868; cv=none; b=JwH6FtQsNUGTu9AW1DvF9h+laHZSFxQNCc8frcYH5OW+8ZLBTIp1HuGrS+eSIRHVIEKKwv6gaIYuIu4hoPStSaTu/9BVoajQsMYUQhHiK3nhf052JyZJVWSBy28C8Tzc/4U8+ooeqq/Z6tPW1ZYY9oUi61D2Nz91RCP6klnuAFU=
+	t=1768994892; cv=none; b=NbwcukZVJEKK9yHKFN+z5/VuSnh5NpU0ZhkDqnE/uMPGiplVp2EolxrgfMlG65cYKGA4lk9UVbw3XZESOHZz5L87mj9dDUNWUn6wBbFqYnwYNBD6GNT4p65aB8YFSWuhF1DlBGXglJWSSJPh/fZrpGHlE+/za+USnpOLxoa6ia8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768994868; c=relaxed/simple;
-	bh=B4lPUGEYjpm2SdaQ+jA1UbIw10I88xxZxR0qkWF4Zmo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ocL0kGq2ZYcfkL0lNtqk7VZ/v9sdGtkBMYE4GIJ5kAi4zUnb4cWKOMv1hejSLFOxrnjCGC/uoxLF7I2+2+1QQo+HXaGpes7wgnwo1hKGVGo3PHkvzj5S85ePXXKuih57WOFWol4ptW4WXDuQ4zIwpceDAHOHtYsD1GR4suJ2vmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=vAPf79tD; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=naRtddYQ; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=wLrqkagr; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=1U+Po9Pu; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 075CD3368B;
-	Wed, 21 Jan 2026 11:27:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768994864; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=0HQOO1Ui1MzjGdYk8Ez4fIlrbo8rhrSedMz/5tpkD5Q=;
-	b=vAPf79tDJD/Qb5OOgf5xsvDbhraGuX10FbU4cJKnBkpBlnSdJ0KuxiAGO8/cnq1EKD8rw2
-	eL8Ukjr7QWsi/C7Ep7Nc7XUsqhi+PIU9HJdVI+1Ba41sGkmk0AB/KQB8l4yPyEY2syUZZh
-	8cVkd/hP4TcBoetJj9plItSVejaMDmQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768994864;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=0HQOO1Ui1MzjGdYk8Ez4fIlrbo8rhrSedMz/5tpkD5Q=;
-	b=naRtddYQ/8Kb/x80ic7gOBKII61hsHNmNZQCW/FnPTYbWK7/v3U22+yrZe1CEeLp+ouT0O
-	7j+uHPQOvcrSO9Dw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=wLrqkagr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1U+Po9Pu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768994863; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=0HQOO1Ui1MzjGdYk8Ez4fIlrbo8rhrSedMz/5tpkD5Q=;
-	b=wLrqkagrV+dXVDXTJEpu/T4ceYRZXykBEcuPIm62jXXpiLxbrzkdLhhbJeX6BISZWZ56bY
-	xIJ/ICPDpgsv/kvm4NtepqWEGv51GcKO5Re1Yktxvh15rqjCjBLCmCpAf3kS2odvCa0UcA
-	ZBKDfQSTcRnD4AnK2CaWBJR/StnWZIM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768994863;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=0HQOO1Ui1MzjGdYk8Ez4fIlrbo8rhrSedMz/5tpkD5Q=;
-	b=1U+Po9PuGNYGx7yE7ptgvHe+OwkshyIwmCZg6XwEL804EyKLxxPsvzjyd9y6LK1Miv44TH
-	vmnvT27slpvjPXDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C60CA3EA63;
-	Wed, 21 Jan 2026 11:27:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id y9FTMC64cGlANQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 21 Jan 2026 11:27:42 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 8D50DA09E9; Wed, 21 Jan 2026 12:27:42 +0100 (CET)
-From: Jan Kara <jack@suse.cz>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: bernd@bsbernd.com,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	<linux-block@vger.kernel.org>,
-	<linux-fsdevel@vger.kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] flex_proportions: Make fprop_new_period() hardirq safe
-Date: Wed, 21 Jan 2026 12:27:30 +0100
-Message-ID: <20260121112729.24463-2-jack@suse.cz>
+	s=arc-20240116; t=1768994892; c=relaxed/simple;
+	bh=ggqqjAzE/3u7SEoaFqfMyqphv2ZLY8tfPMFmSgWqd1M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gYw4kXXhjaofCUd0BTIvrbtF7PtHWKso2YeON1lFdaDxcrGMj0a/N9nkYRrvjXnqTpk/gzusKdnsxi/vvldb8MHwiyMmamnRtckaXPdP2I/SYlpbEGk/0/E/+Mg5kGiZZLfpjdfhf3UfBWpX7v2MMhkCk7MVGf76wjEiF3xlMy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/Y0e6i5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA56C19424;
+	Wed, 21 Jan 2026 11:28:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768994891;
+	bh=ggqqjAzE/3u7SEoaFqfMyqphv2ZLY8tfPMFmSgWqd1M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=V/Y0e6i5R4bcGkTlpNKnrvI4VOlxh9LGi8esgMnpir3Wn5zxVeB8h18BrtOdLc2Tb
+	 kSjvMUfSoqLhhAcq2zyG+RwwgtmwbvEnVfkTlUpMwYRqNo1khKymN9XL180Rc+dMTx
+	 PM5V2XvAbYSHmxp/qA1Twj5hl+XidtQQLQa+nZU+nMBYiGZQBa9D8io7RvJEWq9CYJ
+	 w1C2sjgPbfqbQCKGImXxy0QgvOR7lp3wr6kLiksMM4bwSsgWyb2ln7c7KaU5C10eN6
+	 Jj5/Es517MsVRCjpVJYM1XMzUCm0LgDLVuw8aoiDKQ5iRJuf70wp2b4XzPmrKGTNj5
+	 hp0SIpeiILsXA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	SeongJae Park <sj@kernel.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	Chris Mason <clm@fb.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Kirill A. Shutemov" <kirill@shutemov.name>,
+	Michal Hocko <mhocko@suse.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/3] mm/page_alloc/vmstat: simplify refresh_cpu_vm_stats change detection
+Date: Wed, 21 Jan 2026 06:28:06 -0500
+Message-ID: <20260121112808.1461983-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012041-wilder-jalapeno-0398@gregkh>
+References: <2026012041-wilder-jalapeno-0398@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2344; i=jack@suse.cz; h=from:subject; bh=B4lPUGEYjpm2SdaQ+jA1UbIw10I88xxZxR0qkWF4Zmo=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBpcLghZHz/mPEpvXafP6EvFPDeo1VP5Yqf+dp5f 2Wxp3+dA9mJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaXC4IQAKCRCcnaoHP2RA 2SC2B/4/ISO+pbAGxc05NOqVRTTU3B+Q5TeQ5IscQRnlXg1ndRkNRN6/k1PQMC6qggs4MggY0cr vWhBoje8CFiMQ9hgsst06EQfSU1mzBXo2f1kJYWqM1dztGWKm5aK2Q2Cub17t1qe3ZVVMpul+y4 uy5N7QjYy31D5jcdT0XWKIQ8AN6NNeCqILugQIE1i2r1rCSa4eLYiC/1VYeUotA8YXPO3ntIeKd tB8wI+Xye6Ejvar+cUKKHTtDzBgXRnpqSI0hOAZY0PNE40yoGGfm0fHo0i1mFM1j04YgJAnqiBl uLwRmggXS9HUjbyCy6TBkXwrld3S/rWokPIekC5shkhWSLhP
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-210729-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[bsbernd.com,gmail.com,szeredi.hu,vger.kernel.org,suse.cz];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[suse.cz];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[gmail.com,suse.cz,kernel.org,google.com,fb.com,cmpxchg.org,shutemov.name,suse.com,nvidia.com,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.cz:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-210730-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:dkim,suse.cz:mid,bsbernd.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 8078B561F4
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 9DB8256198
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Bernd has reported a lockdep splat from flexible proportions code that
-is essentially complaining about the following race:
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
 
-<timer fires>
-run_timer_softirq - we are in softirq context
-  call_timer_fn
-    writeout_period
-      fprop_new_period
-        write_seqcount_begin(&p->sequence);
+[ Upstream commit 0acc67c4030c39f39ac90413cc5d0abddd3a9527 ]
 
-        <hardirq is raised>
-        ...
-        blk_mq_end_request()
-	  blk_update_request()
-	    ext4_end_bio()
-	      folio_end_writeback()
-		__wb_writeout_add()
-		  __fprop_add_percpu_max()
-		    if (unlikely(max_frac < FPROP_FRAC_BASE)) {
-		      fprop_fraction_percpu()
-			seq = read_seqcount_begin(&p->sequence);
-			  - sees odd sequence so loops indefinitely
+Patch series "mm/page_alloc: Batch callers of free_pcppages_bulk", v5.
 
-Note that a deadlock like this is only possible if the bdi has
-configured maximum fraction of writeout throughput which is very rare
-in general but frequent for example for FUSE bdis. To fix this problem
-we have to make sure write section of the sequence counter is irqsafe.
+Motivation & Approach
+=====================
 
-CC: stable@vger.kernel.org
-Fixes: a91befde3503 ("lib/flex_proportions.c: remove local_irq_ops in fprop_new_period()")
-Reported-by: Bernd Schubert <bernd@bsbernd.com>
-Link: https://lore.kernel.org/all/9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com/
-Signed-off-by: Jan Kara <jack@suse.cz>
+While testing workloads with high sustained memory pressure on large
+machines in the Meta fleet (1Tb memory, 316 CPUs), we saw an unexpectedly
+high number of softlockups.  Further investigation showed that the zone
+lock in free_pcppages_bulk was being held for a long time, and was called
+to free 2k+ pages over 100 times just during boot.
+
+This causes starvation in other processes for the zone lock, which can
+lead to the system stalling as multiple threads cannot make progress
+without the locks.  We can see these issues manifesting as warnings:
+
+[ 4512.591979] rcu: INFO: rcu_sched self-detected stall on CPU
+[ 4512.604370] rcu:     20-....: (9312 ticks this GP) idle=a654/1/0x4000000000000000 softirq=309340/309344 fqs=5426
+[ 4512.626401] rcu:              hardirqs   softirqs   csw/system
+[ 4512.638793] rcu:      number:        0        145            0
+[ 4512.651177] rcu:     cputime:       30      10410          174   ==> 10558(ms)
+[ 4512.666657] rcu:     (t=21077 jiffies g=783665 q=1242213 ncpus=316)
+
+While these warnings don't indicate a crash or a kernel panic, they do
+point to the underlying issue of lock contention.  To prevent starvation
+in both locks, batch the freeing of pages using pcp->batch.
+
+Because free_pcppages_bulk is called with the pcp lock and acquires the
+zone lock, relinquishing and reacquiring the locks are only effective when
+both of them are broken together (unless the system was built with queued
+spinlocks).  Thus, instead of modifying free_pcppages_bulk to break both
+locks, batch the freeing from its callers instead.
+
+A similar fix has been implemented in the Meta fleet, and we have seen
+significantly less softlockups.
+
+Testing
+=======
+The following are a few synthetic benchmarks, made on three machines. The
+first is a large machine with 754GiB memory and 316 processors.
+The second is a relatively smaller machine with 251GiB memory and 176
+processors. The third and final is the smallest of the three, which has 62GiB
+memory and 36 processors.
+
+On all machines, I kick off a kernel build with -j$(nproc).
+Negative delta is better (faster compilation).
+
+Large machine (754GiB memory, 316 processors)
+make -j$(nproc)
++------------+---------------+-----------+
+| Metric (s) | Variation (%) | Delta(%)  |
++------------+---------------+-----------+
+| real       |        0.8070 |  - 1.4865 |
+| user       |        0.2823 |  + 0.4081 |
+| sys        |        5.0267 |  -11.8737 |
++------------+---------------+-----------+
+
+Medium machine (251GiB memory, 176 processors)
+make -j$(nproc)
++------------+---------------+----------+
+| Metric (s) | Variation (%) | Delta(%) |
++------------+---------------+----------+
+| real       |        0.2806 |  +0.0351 |
+| user       |        0.0994 |  +0.3170 |
+| sys        |        0.6229 |  -0.6277 |
++------------+---------------+----------+
+
+Small machine (62GiB memory, 36 processors)
+make -j$(nproc)
++------------+---------------+----------+
+| Metric (s) | Variation (%) | Delta(%) |
++------------+---------------+----------+
+| real       |        0.1503 |  -2.6585 |
+| user       |        0.0431 |  -2.2984 |
+| sys        |        0.1870 |  -3.2013 |
++------------+---------------+----------+
+
+Here, variation is the coefficient of variation, i.e.  standard deviation
+/ mean.
+
+Based on these results, it seems like there are varying degrees to how
+much lock contention this reduces.  For the largest and smallest machines
+that I ran the tests on, it seems like there is quite some significant
+reduction.  There is also some performance increases visible from
+userspace.
+
+Interestingly, the performance gains don't scale with the size of the
+machine, but rather there seems to be a dip in the gain there is for the
+medium-sized machine.  One possible theory is that because the high
+watermark depends on both memory and the number of local CPUs, what
+impacts zone contention the most is not these individual values, but
+rather the ratio of mem:processors.
+
+This patch (of 5):
+
+Currently, refresh_cpu_vm_stats returns an int, indicating how many
+changes were made during its updates.  Using this information, callers
+like vmstat_update can heuristically determine if more work will be done
+in the future.
+
+However, all of refresh_cpu_vm_stats's callers either (a) ignore the
+result, only caring about performing the updates, or (b) only care about
+whether changes were made, but not *how many* changes were made.
+
+Simplify the code by returning a bool instead to indicate if updates
+were made.
+
+In addition, simplify fold_diff and decay_pcp_high to return a bool
+for the same reason.
+
+Link: https://lkml.kernel.org/r/20251014145011.3427205-1-joshua.hahnjy@gmail.com
+Link: https://lkml.kernel.org/r/20251014145011.3427205-2-joshua.hahnjy@gmail.com
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Chris Mason <clm@fb.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 038a102535eb ("mm/page_alloc: prevent pcp corruption with SMP=n")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/flex_proportions.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/gfp.h |  2 +-
+ mm/page_alloc.c     |  8 ++++----
+ mm/vmstat.c         | 28 +++++++++++++++-------------
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
-Sending v2 because I've messed up Andrew's address and forgot some tags in
-the first posting...
-
-diff --git a/lib/flex_proportions.c b/lib/flex_proportions.c
-index 84ecccddc771..012d5614efb9 100644
---- a/lib/flex_proportions.c
-+++ b/lib/flex_proportions.c
-@@ -64,13 +64,14 @@ void fprop_global_destroy(struct fprop_global *p)
- bool fprop_new_period(struct fprop_global *p, int periods)
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index a951de920e208..bc59016743fb7 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -397,7 +397,7 @@ extern void page_frag_free(void *addr);
+ #define free_page(addr) free_pages((addr), 0)
+ 
+ void page_alloc_init_cpuhp(void);
+-int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
++bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
+ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp);
+ void drain_all_pages(struct zone *zone);
+ void drain_local_pages(struct zone *zone);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 9d43bd47da263..6e1669a562946 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2363,10 +2363,10 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
+  * Called from the vmstat counter updater to decay the PCP high.
+  * Return whether there are addition works to do.
+  */
+-int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
++bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
  {
- 	s64 events = percpu_counter_sum(&p->events);
-+	unsigned long flags;
+ 	int high_min, to_drain, batch;
+-	int todo = 0;
++	bool todo = false;
  
- 	/*
- 	 * Don't do anything if there are no events.
- 	 */
- 	if (events <= 1)
- 		return false;
--	preempt_disable_nested();
-+	local_irq_save(flags);
- 	write_seqcount_begin(&p->sequence);
- 	if (periods < 64)
- 		events -= events >> periods;
-@@ -78,7 +79,7 @@ bool fprop_new_period(struct fprop_global *p, int periods)
- 	percpu_counter_add(&p->events, -events);
- 	p->period += periods;
- 	write_seqcount_end(&p->sequence);
--	preempt_enable_nested();
-+	local_irq_restore(flags);
+ 	high_min = READ_ONCE(pcp->high_min);
+ 	batch = READ_ONCE(pcp->batch);
+@@ -2379,7 +2379,7 @@ int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+ 		pcp->high = max3(pcp->count - (batch << CONFIG_PCP_BATCH_SCALE_MAX),
+ 				 pcp->high - (pcp->high >> 3), high_min);
+ 		if (pcp->high > high_min)
+-			todo++;
++			todo = true;
+ 	}
  
- 	return true;
+ 	to_drain = pcp->count - pcp->high;
+@@ -2387,7 +2387,7 @@ int decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp)
+ 		spin_lock(&pcp->lock);
+ 		free_pcppages_bulk(zone, to_drain, pcp, 0);
+ 		spin_unlock(&pcp->lock);
+-		todo++;
++		todo = true;
+ 	}
+ 
+ 	return todo;
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index 3f41344239126..3ca572cbeaf1c 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -768,25 +768,25 @@ EXPORT_SYMBOL(dec_node_page_state);
+ 
+ /*
+  * Fold a differential into the global counters.
+- * Returns the number of counters updated.
++ * Returns whether counters were updated.
+  */
+ static int fold_diff(int *zone_diff, int *node_diff)
+ {
+ 	int i;
+-	int changes = 0;
++	bool changed = false;
+ 
+ 	for (i = 0; i < NR_VM_ZONE_STAT_ITEMS; i++)
+ 		if (zone_diff[i]) {
+ 			atomic_long_add(zone_diff[i], &vm_zone_stat[i]);
+-			changes++;
++			changed = true;
+ 	}
+ 
+ 	for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
+ 		if (node_diff[i]) {
+ 			atomic_long_add(node_diff[i], &vm_node_stat[i]);
+-			changes++;
++			changed = true;
+ 	}
+-	return changes;
++	return changed;
  }
+ 
+ /*
+@@ -803,16 +803,16 @@ static int fold_diff(int *zone_diff, int *node_diff)
+  * with the global counters. These could cause remote node cache line
+  * bouncing and will have to be only done when necessary.
+  *
+- * The function returns the number of global counters updated.
++ * The function returns whether global counters were updated.
+  */
+-static int refresh_cpu_vm_stats(bool do_pagesets)
++static bool refresh_cpu_vm_stats(bool do_pagesets)
+ {
+ 	struct pglist_data *pgdat;
+ 	struct zone *zone;
+ 	int i;
+ 	int global_zone_diff[NR_VM_ZONE_STAT_ITEMS] = { 0, };
+ 	int global_node_diff[NR_VM_NODE_STAT_ITEMS] = { 0, };
+-	int changes = 0;
++	bool changed = false;
+ 
+ 	for_each_populated_zone(zone) {
+ 		struct per_cpu_zonestat __percpu *pzstats = zone->per_cpu_zonestats;
+@@ -836,7 +836,8 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
+ 		if (do_pagesets) {
+ 			cond_resched();
+ 
+-			changes += decay_pcp_high(zone, this_cpu_ptr(pcp));
++			if (decay_pcp_high(zone, this_cpu_ptr(pcp)))
++				changed = true;
+ #ifdef CONFIG_NUMA
+ 			/*
+ 			 * Deal with draining the remote pageset of this
+@@ -858,13 +859,13 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
+ 			}
+ 
+ 			if (__this_cpu_dec_return(pcp->expire)) {
+-				changes++;
++				changed = true;
+ 				continue;
+ 			}
+ 
+ 			if (__this_cpu_read(pcp->count)) {
+ 				drain_zone_pages(zone, this_cpu_ptr(pcp));
+-				changes++;
++				changed = true;
+ 			}
+ #endif
+ 		}
+@@ -884,8 +885,9 @@ static int refresh_cpu_vm_stats(bool do_pagesets)
+ 		}
+ 	}
+ 
+-	changes += fold_diff(global_zone_diff, global_node_diff);
+-	return changes;
++	if (fold_diff(global_zone_diff, global_node_diff))
++		changed = true;
++	return changed;
+ }
+ 
+ /*
 -- 
 2.51.0
 
