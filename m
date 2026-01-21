@@ -1,120 +1,186 @@
-Return-Path: <stable+bounces-210761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gP68BeLccGnCaQAAu9opvQ
-	(envelope-from <stable+bounces-210761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:04:18 +0100
+	id YAzhNPHkcGk+awAAu9opvQ
+	(envelope-from <stable+bounces-210762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:38:41 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B56F581D1
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:04:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB2A58897
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:38:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 08B2D942CED
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 13:43:19 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 33D19A43F0D
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 13:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1ECD3EDAB0;
-	Wed, 21 Jan 2026 13:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11AA4949E9;
+	Wed, 21 Jan 2026 13:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="TB9H8ELB"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jUU72z7Y"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6F23D411D;
-	Wed, 21 Jan 2026 13:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769002991; cv=none; b=ZCXW0RaxUxUfZwsuksbO8h26wuduTqX6+/6nKtYuVXo4NYd+AQ2ldSQfn6X6mzGILcMzWV38iDfRlm0MxumDwRV8/RYIbZMymzYieN3dzHD3mA6Bcds/wfF1PxG5t8KXabivn/KliHeOpc6zM71DUsuajw+1EYQTHOATAYbzQDQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769002991; c=relaxed/simple;
-	bh=BPUSs+DRWFaZUaaeSKV+bFcPdPErDhU0WKpIbS8DUQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FtoPUTnWS3RvsgtE0cX7TCdPigZ2JMEnWVctjF+SpppVfTzlOdZlV0opW3mXZVErcDyhP3YlRD+Dnssi6mvdc4QIuU6rtvGLapNakjeZEVY/6FgMncqm00Xv1AmQ/XDcL7zP5UOMPH42hzPr8TAECJOFVHzYvfIJtjn1UHI4vrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=TB9H8ELB; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=BPUSs+DRWFaZUaaeSKV+bFcPdPErDhU0WKpIbS8DUQ0=; b=TB9H8ELBvyJ5o6fkmXBGE4HzcU
-	9kZIHgbsSNMa8UTK1gr6PLdBQ9DQ+98G4MdYJXDwlKI0PDa6k0DF62m2e+9bxQypK70NS9dRgdjs6
-	KCXrEmoY3uismyDUFAoTuWFzrMDI0CcIZOIrtnbmF2qrUo9RF6CcjMs8ATBLLdqTWaiHTiMjyMtgO
-	JcxDOomHm7tIVdPaGybioLZHIcpzAd+6cueMVtff2W6tdFhMZDvf8HismZ+B6EnBY59n5StiREDMX
-	eNy2Bzzuz3aqmAfhagGKItK8pqGb+aHz7q+K5L2970v8upiGS/HR81671xwwIG3QyJV4duuxa0Z85
-	F1SeW3rA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viYU8-0000000GPup-13XG;
-	Wed, 21 Jan 2026 13:43:00 +0000
-Date: Wed, 21 Jan 2026 13:43:00 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, bernd@bsbernd.com,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Miklos Szeredi <miklos@szeredi.hu>, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] flex_proportions: Make fprop_new_period() hardirq safe
-Message-ID: <aXDX5IXuvghtyZZU@casper.infradead.org>
-References: <20260121112729.24463-2-jack@suse.cz>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A5349253F
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 13:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769003332; cv=pass; b=OiqaCSL3BA9Hj56Hfg4K73qpWXTthCWpLm0c4FzlKdt8QtpidS0o4BLgGvr8eISja34+qPDClIiRTl45TjwimoJSVEKuD6Xo8UGIP3mc6EPfjTM1Ac0/wFyEe/XCYiele6oLzWcHzR/Yixv8cW7YfyYOmll7i05EBH/42zIWld4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769003332; c=relaxed/simple;
+	bh=cP7+lodeQJW67tiROuU4iCdrxhUkaMFq+EWtWSOxqhs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kBiV0C79OhIqhwrpczl/3/bMFvH0a0t9G5V2UqJaAx+OSDDdfZqI3yQsq5JQVGuIiD9eiOKUK+SVVU8y24SoVD1ofgLc42lqp5owumX6Y9Bflh020U+I/M93ghRc2Qa3Y7PJr01SVI14zSRl+OwEzchAdCDo1B+/pwfXKZ7xPjE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jUU72z7Y; arc=pass smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-50145cede6eso52653561cf.2
+        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 05:48:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769003329; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TbY8OqFoY2fF+CIFtTp1UsSI5JWOrpRSXi8rgbrIAgJ6gHPlBI5sbUW7vHRb9NeT19
+         fnJ9DZ5cAFQMSlgdr8dJZU/dFz8ggbxJZeGF0HZ5+bup0Uf+fTAk4AQtJHZFfF8u1UX9
+         pqMJ+XO7DUFeR5KG1JzJBl7e2oSU1IMeaijujYOrXD1pTXE95sDWK+NCVQTIuDcV+NeT
+         NujFyhTLciY9fW3xsFaT52R7eBTBwjQT/tB7Ec2w08+NF7t/bHjLff2ZZfHB1I/+hx51
+         1VCfAprzF3QPJl7U0O7x8vvA9iWrpjHOTYnAz2fhUHMTjwiWUYfgD6elQPNNw9zk6KpD
+         Vlpg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=cP7+lodeQJW67tiROuU4iCdrxhUkaMFq+EWtWSOxqhs=;
+        fh=HJbUyrKQql8UP74XQpdCWnLxRVA3lk/bpMLlyUFcFAQ=;
+        b=CcKel6FzjjzRG9ljZ6JOtu0D5JzAEyD4/O4sDq7bvuYr6KPMuITzTqj+6iH/Q2H8Wj
+         C9Mx4anSefJNM9zIhdPve845uPi9wfnFoyEWCJc8cOiQiPWW+lzWWIzNFrOktGZjF4ad
+         kNKWnH61MVM2nyeFDv/+QNa+GQGx9Fde8Dki74D+Xo2xTIoiU9eCp2BxhjJd0HGfTnY3
+         Lur/X72xK90nQe+laQeDWrB035gYqOJCbWUm8yYCGTJjFxkGVXvE2qhHc+r25RvQ4gEx
+         tiCURbhxTzFB7FbO5qNXzHfl+Fv7N6F3bQRQprgEBCimVe7gExneCbOEy71kWtCykzR0
+         pLbw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769003329; x=1769608129; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cP7+lodeQJW67tiROuU4iCdrxhUkaMFq+EWtWSOxqhs=;
+        b=jUU72z7YCEOCM9xWJ2XbVh3EiIW1784rDdoT76xjfSYFNyP76lTfW01kQ3H+GqW2+5
+         /MRW+mdG5xOlvuKlFUyfRvFazbVT4K1Rn9NW/baH7V0kk6Qubc/PtkCJtIu7PYo0WDV8
+         WnoCSg3glYDaSlpF8P9ZldT/fKVz98Eas9UBYxVKUQHFVyeso/b8nV9YIIOVrh6d1t+R
+         e3ZsdJVipteGdcHEUDUq9u5HtWUQY8vB9CRY2sbGzCiAAHted5GJ+Z9eV2epMzKZTwRq
+         tiUtpU6nwEba9hdOmkvm1A0Df+0QoNJQVnEHaChjMUSQXcJVF4DH40z8COSC8ofPDIPr
+         6DkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769003329; x=1769608129;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cP7+lodeQJW67tiROuU4iCdrxhUkaMFq+EWtWSOxqhs=;
+        b=FCaW2vaz9XlGTP46mjU16gthh/7jHEbMChW/mfoJ6kkJXX6Vp+9IhKR/fB0mZUSW5w
+         jM9dnCuMCw8aSVC62RltTjnlJORCVeBXZloyqVp/MZm6gUq+qI9nSX5SFlkhsIhGhvMK
+         2p8KY4mO4m9mQB+wLgx/7uE3e21CvehhkVV/aGGg442phsm/3B4VYUtu1z4/t4ss5ltd
+         h68x5e3nhoKCMP33CcyaHa45iCBZfHWY62hq1fZhjzQC+PZPoo30fUCU0cVLq1Qlf+ys
+         xG96XgttZ6bXoNjC0htgPt0CdD2QmPonBsFuFPRoRrn1e2vxL4218AuHTnh1JjFkyLEz
+         5IGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXHB8l5eGrzDcfKwPXsEMALfx01Ua766CIcX893C4K9D8b6jDRA3mftNaZeaOhTiebGYM2XVLI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/z1BBtjtBL5v/luWYHSnX5yVozFIb6lU8rjEehS9EPVfY+3U3
+	kyriPc6O5R8rN4dMGj+4cc+LktFtEo2tq2uV7w8BXDrbt/MKgScCMNsA2cBZ3iflj09lX9D5P2T
+	8nQY/i/MJVqlXNJvitLrzz3PEI0d8iSQBSRygceU/
+X-Gm-Gg: AZuq6aKyn4nj/qNXTh7E3AXd52BmWEWXiym96rFBqp8X4V/dw5P6VU16lfo/B+pv0TT
+	mRDi74Qovv945wyrFhhrmTmdszZKuG8dR8uP4wxUovFKKERUsaDGrO6vomIZwb0g0JH0ISskmrg
+	VxH2jW0ZFWcpoLZHcdk19q7vK3XiaO6kvyj+MTnmpLpzU0A3iLvby2fctEsiT372cSSgz47UGaY
+	msJHnPjxEm1WbRi9WquF7vjOSLYEa10jXbIXb0XAkZ1RAmqqruhIsID9Z9eR8SveIRndDQZWkHW
+	6sZohQ==
+X-Received: by 2002:a05:622a:1a9b:b0:4f0:2afc:3b80 with SMTP id
+ d75a77b69052e-502a1f32911mr243056121cf.56.1769003329341; Wed, 21 Jan 2026
+ 05:48:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260121112729.24463-2-jack@suse.cz>
-X-Spamd-Result: default: False [-1.96 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+References: <20260121131954.2710459-1-p@1g4.org> <20260121131954.2710459-2-p@1g4.org>
+ <CANn89i+8_ZDxVGwQmo_44iCRs5Wexwxy1Wfhw4WmYg3qA7_t1A@mail.gmail.com> <BSn2a6IWtM_DnDrcd-qDBm8cXAwXPo3xj1l4Eu4SWy3BS2UW8Aw7-gXW6uo_DaCipnvmSxgDeGEQrnZ-pjqRKSOPPUW0usVN8M1lp1J-soM=@1g4.org>
+In-Reply-To: <BSn2a6IWtM_DnDrcd-qDBm8cXAwXPo3xj1l4Eu4SWy3BS2UW8Aw7-gXW6uo_DaCipnvmSxgDeGEQrnZ-pjqRKSOPPUW0usVN8M1lp1J-soM=@1g4.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 21 Jan 2026 14:48:37 +0100
+X-Gm-Features: AZwV_QjfkzxcsqX79MNZYV42WjEJav4hyCpBb914c2qgdnj1wjV5tfKlXRSh1Pw
+Message-ID: <CANn89iK_VqOThsWX2b-JwvF8suBVmKEmMm9D9SeZJBamDwfPog@mail.gmail.com>
+Subject: Re: [PATCH net v3 1/7] net/sched: act_gate: zero-initialize netlink
+ dump struct
+To: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, 
+	Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_POLICY_ALLOW(0.00)[infradead.org,none];
-	FREEMAIL_CC(0.00)[linux-foundation.org,bsbernd.com,gmail.com,szeredi.hu,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-210761-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,mojatatu.com,gmail.com,resnulli.us,davemloft.net,kernel.org,redhat.com];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-210762-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_POLICY_ALLOW(0.00)[google.com,reject];
+	DKIM_TRACE(0.00)[google.com:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,infradead.org:dkim,suse.cz:email,bsbernd.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,casper.infradead.org:mid]
-X-Rspamd-Queue-Id: 2B56F581D1
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cppreference.com:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,mail.gmail.com:mid,1g4.org:email]
+X-Rspamd-Queue-Id: 4BB2A58897
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Jan 21, 2026 at 12:27:30PM +0100, Jan Kara wrote:
-> Bernd has reported a lockdep splat from flexible proportions code that
-> is essentially complaining about the following race:
-[...]
-> Note that a deadlock like this is only possible if the bdi has
-> configured maximum fraction of writeout throughput which is very rare
-> in general but frequent for example for FUSE bdis. To fix this problem
-> we have to make sure write section of the sequence counter is irqsafe.
+On Wed, Jan 21, 2026 at 2:39=E2=80=AFPM Paul Moses <p@1g4.org> wrote:
+>
+> Yes, it's not proven so you might be right, I knew it was 4 bytes at best=
+. We can do next or toss it, I don't feel strongly either way.
+>
 
-Ah, that's why we haven't seen it reported before.
+These bytes are cleared by C compilers.
 
-> CC: stable@vger.kernel.org
-> Fixes: a91befde3503 ("lib/flex_proportions.c: remove local_irq_ops in fprop_new_period()")
-> Reported-by: Bernd Schubert <bernd@bsbernd.com>
-> Link: https://lore.kernel.org/all/9b845a47-9aee-43dd-99bc-1a82bea00442@bsbernd.com/
-> Signed-off-by: Jan Kara <jack@suse.cz>
+https://en.cppreference.com/w/c/language/struct_initialization.html
 
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Only holes might be left uninitialized.
+
+> On Wednesday, January 21st, 2026 at 7:25 AM, Eric Dumazet <edumazet@googl=
+e.com> wrote:
+>
+> >
+> >
+> > On Wed, Jan 21, 2026 at 2:20=E2=80=AFPM Paul Moses p@1g4.org wrote:
+> >
+> > > Zero-initialize the dump struct before selective assignment to avoid
+> > > leaking stack padding in netlink replies. This matches other actions
+> > > (e.g. act_connmark) that zero-init their dump structs.
+> > >
+> > > Fixes: a51c328df310 ("net: qos: introduce a gate control flow action"=
+)
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Paul Moses p@1g4.org
+> > > ---
+> >
+> >
+> > I do not see a bug to fix, current code is fine.
+> >
+> > act_connmark problem was that "struct tc_connmark" had a 16bit hole.
+> >
+> > No such issue for struct tc_gate.
 
