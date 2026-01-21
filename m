@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-211097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210946-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oF27MnwocWniewAAu9opvQ
-	(envelope-from <stable+bounces-211097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:26:52 +0100
+	id yFLcEoQ4cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-210946-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:35:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76BEF5C210
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:26:52 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81225D573
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:35:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 27E4484ABF5
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:36:46 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C6A2F843C86
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271A63242D6;
-	Wed, 21 Jan 2026 18:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716AD3570D5;
+	Wed, 21 Jan 2026 18:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kP+Mxk0t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFYAYXU9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F0D35295D;
-	Wed, 21 Jan 2026 18:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC1133EAFF;
+	Wed, 21 Jan 2026 18:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769020429; cv=none; b=kQNoVAnN/Zn2EH2fDvdR0R4s/eDo8SFOZiZeOmyX1FPoR7BPYZOGDoSANIK2Hl4TcqlPqWL68OfEJSJSfiCbrmkdhA+rRekljqR/4RzA2bgf+FZPr6Q0+KOnUmYyVdDl9LFwSStiiIvm14pqlLfZcWZCqc0YYQiQzNVp+kfpNL8=
+	t=1769019917; cv=none; b=laXPIfEDR6wWKFlrplhqsG8/N2Z2rzJOeWRoEAWPJrnmXB30iKvAqKQik16I75pC1ebDOw3k8dOnB6MwoIM/Ks/eqTFlJoQVMk8WE58PPpd7gBzAYJDD0BDAgOsIY+GjC4pPyEM38Bb1YT7gjdOyUecdVlA/ETnOjHko1aD3Xlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769020429; c=relaxed/simple;
-	bh=WXMOColiOK75isy0KxJzSJJqpuZHbFW+wPfG8WCAr3k=;
+	s=arc-20240116; t=1769019917; c=relaxed/simple;
+	bh=ITkkuTIq0CnEtBuVCMz6+1ZCWlbGxr05AgYKuC1hT6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQMe3tnipVbIXQgi5nnDa+dhQgYtzxeg8UkCILRjlfFQf9MPe6mRDrh+Vl8hLN9saJjxdPcnds8ZV1sdgtL1B7JB/g+VdCrBEX/rdDGmklFtnTyfoZYqVMr9T1t7QSKfJAJN8VSvz05/RY10sqrj+O/IXTNsojPp1hFdS/aNJrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kP+Mxk0t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64CEC4CEF1;
-	Wed, 21 Jan 2026 18:33:48 +0000 (UTC)
+	 MIME-Version; b=rgv30u1//UXMV38adoJlCTXYDeeGC/uzhBL/N2+8ZQwQo2x2wWMXPXEVqUXJe17q3WPd271BNjD1OmYoTGScZJf58iA9DQnRRhCGKIIayRXfAiuswtkpXowMcgp427h6zujw1otdtMa772GDWkIYEbJZD6gjj4UMiHybAKx1HfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFYAYXU9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BDAC4CEF1;
+	Wed, 21 Jan 2026 18:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769020429;
-	bh=WXMOColiOK75isy0KxJzSJJqpuZHbFW+wPfG8WCAr3k=;
+	s=korg; t=1769019916;
+	bh=ITkkuTIq0CnEtBuVCMz6+1ZCWlbGxr05AgYKuC1hT6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kP+Mxk0ttp5QTw0qEVJc+HFvTJcEmudC/1wUjQP7o72dTkE5JsnRIxpEvoDo7yhsn
-	 yeq0V+V4kP7U2/1/AG6f+XlJcfxcc2aK/KgISx8Zu/ad5hM8aMzH+KSMQBLNq0kYIY
-	 uO1maNqU7ShK0zz6f2TmtnvXWgk1rAxF/IjoyrsI=
+	b=oFYAYXU9mpxbv3p+zfdnPb/tvRklnnQCglcfHcE4FH8/sp9oS4GycVBo3sTjBQ2qc
+	 eFj8Le7Yd72X4PrA/HFdi4XmtivyI0dhIza3+MvoKYTmOgeaEReUGGA55uVI4iFyZi
+	 gDh2mnjagxRxWtctffqLlzvNBXxW+Qxa+Q9oE8dU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Lyude Paul <lyude@redhat.com>
-Subject: [PATCH 6.18 155/198] drm/nouveau/disp/nv50-: Set lock_core in curs507a_prepare
+	Frank Li <Frank.Li@nxp.com>,
+	Zhen Ni <zhen.ni@easystack.cn>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 135/139] dmaengine: fsl-edma: Fix clk leak on alloc_chan_resources failure
 Date: Wed, 21 Jan 2026 19:16:23 +0100
-Message-ID: <20260121181424.131129204@linuxfoundation.org>
+Message-ID: <20260121181416.314270099@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +69,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	TAGGED_FROM(0.00)[bounces-211097-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-210946-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url]
-X-Rspamd-Queue-Id: 76BEF5C210
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,msgid.link:url,nxp.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D81225D573
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lyude Paul <lyude@redhat.com>
+From: Zhen Ni <zhen.ni@easystack.cn>
 
-commit 9e9bc6be0fa0b6b6b73f4f831f3b77716d0a8d9e upstream.
+[ Upstream commit b18cd8b210417f90537d914ffb96e390c85a7379 ]
 
-For a while, I've been seeing a strange issue where some (usually not all)
-of the display DMA channels will suddenly hang, particularly when there is
-a visible cursor on the screen that is being frequently updated, and
-especially when said cursor happens to go between two screens. While this
-brings back lovely memories of fixing Intel Skylake bugs, I would quite
-like to fix it :).
+When fsl_edma_alloc_chan_resources() fails after clk_prepare_enable(),
+the error paths only free IRQs and destroy the TCD pool, but forget to
+call clk_disable_unprepare(). This causes the channel clock to remain
+enabled, leaking power and resources.
 
-It turns out the problem that's happening here is that we're managing to
-reach nv50_head_flush_set() in our atomic commit path without actually
-holding nv50_disp->mutex. This means that cursor updates happening in
-parallel (along with any other atomic updates that need to use the core
-channel) will race with eachother, which eventually causes us to corrupt
-the pushbuffer - leading to a plethora of various GSP errors, usually:
+Fix it by disabling the channel clock in the error unwind path.
 
-  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000218 00102680 00000004 00800003
-  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 0000021c 00040509 00000004 00000001
-  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000000 00000000 00000001 00000001
-
-The reason this is happening is because generally we check whether we need
-to set nv50_atom->lock_core at the end of nv50_head_atomic_check().
-However, curs507a_prepare is called from the fb_prepare callback, which
-happens after the atomic check phase. As a result, this can lead to commits
-that both touch the core channel but also don't grab nv50_disp->mutex.
-
-So, fix this by making sure that we set nv50_atom->lock_core in
-cus507a_prepare().
-
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Fixes: 1590700d94ac ("drm/nouveau/kms/nv50-: split each resource type into their own source files")
-Cc: <stable@vger.kernel.org> # v4.18+
-Link: https://patch.msgid.link/20251219215344.170852-2-lyude@redhat.com
+Fixes: d8d4355861d8 ("dmaengine: fsl-edma: add i.MX8ULP edma support")
+Cc: stable@vger.kernel.org
+Suggested-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20251014090522.827726-1-zhen.ni@easystack.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+[ Different error handling scheme ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/dispnv50/curs507a.c |    1 +
+ drivers/dma/fsl-edma-common.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
-@@ -84,6 +84,7 @@ curs507a_prepare(struct nv50_wndw *wndw,
- 		asyh->curs.handle = handle;
- 		asyh->curs.offset = offset;
- 		asyh->set.curs = asyh->curs.visible;
-+		nv50_atom(asyh->state.state)->lock_core = true;
- 	}
- }
+--- a/drivers/dma/fsl-edma-common.c
++++ b/drivers/dma/fsl-edma-common.c
+@@ -819,6 +819,7 @@ int fsl_edma_alloc_chan_resources(struct
  
+ 		if (ret) {
+ 			dma_pool_destroy(fsl_chan->tcd_pool);
++			clk_disable_unprepare(fsl_chan->clk);
+ 			return ret;
+ 		}
+ 	}
 
 
 
