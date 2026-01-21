@@ -1,139 +1,145 @@
-Return-Path: <stable+bounces-210764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHVLJOzncGk+awAAu9opvQ
-	(envelope-from <stable+bounces-210764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:51:24 +0100
+	id ePnyJ6jocGk+awAAu9opvQ
+	(envelope-from <stable+bounces-210765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:54:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247A858C2A
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:51:24 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10CCF58CD7
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 15:54:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B4EAE54EA64
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 14:08:52 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7F60956DEE7
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 14:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC4548AE34;
-	Wed, 21 Jan 2026 13:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BDB43E9D6;
+	Wed, 21 Jan 2026 14:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="XyP2x8F6"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="wcSgHLxJ"
 X-Original-To: stable@vger.kernel.org
-Received: from fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com [52.57.120.243])
+Received: from mail-10624.protonmail.ch (mail-10624.protonmail.ch [79.135.106.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579FF269811;
-	Wed, 21 Jan 2026 13:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.57.120.243
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CCF494A18
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 14:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769003887; cv=none; b=HjbOihxNI+NkjjYhKHz3Ck51oqksxTkLVgd1PvaJQ7sMKSWcLkuUSHjBP05rUOpGq9ez5dkdCDYyxDU5wU9E3uIuXiUIbWfvjFO7ems8mISNymTWg9n/K2Ggt76kxmLV6/Wl0xaVvw1ondge3Cxwe4oy+B0S1GkeCsVf5Agxs/s=
+	t=1769004087; cv=none; b=FT/3+b/x36kNvJNtzRBoZV/eBEgTtsYzbkVr4TzTxf2d1m6EUCyuGHrWGsaC8vXS0b+9V9YbtpAG2MtjkQpD0mUf69nDxT1ZwvMvnzs62bJTBrpFePfxs5uSiKbQlCNGmFiO39St4QYJft9O684QNF9/13QMmSHvMPNWND+CAKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769003887; c=relaxed/simple;
-	bh=89M39Kki2E06BqFpd/hc0HReSpIPWWO32V+PPC5e5h8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DwqMOANY1sP57dsgWBdMCx1sc9FdwjpJ0WnBTL3hchWwSd+F/f4/NDAwp/QqcvFIVQ7YoMDlUR9jca5/PvgxJkyBPM4xBIkduNsWvp4yWotg2J/vxDyMbC3AYDLDDdml/aFG/3MCOHRE5s3gAtHjljrUaDDKOZYtWvL0855+bQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=XyP2x8F6; arc=none smtp.client-ip=52.57.120.243
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1769003885; x=1800539885;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=89M39Kki2E06BqFpd/hc0HReSpIPWWO32V+PPC5e5h8=;
-  b=XyP2x8F6gfC6sLWKzf/21yKT0h4BmlPIBjfDJD5qoGSUYbttEI0rnxel
-   bzOCHJ4eauWDy3Tc1OXNiCI2EzrkBYEu8KtBXKttztxNUA2nrnnlZJC+2
-   UfgciVNVWUu+/WGYrmsNq0EGgB+n7UKSFeT+bETJTtCrjy+vr4aTPCDe6
-   PcWoK7f7zwvVgHKSljVkKnJJ96qinlcHmPrSB0bVF8Ru1almZbzH38X7U
-   isXaY6CQcMN1Do7zQ8pMlnEEyplXEz86azOBTOTyHN9kjjgvyOFZVKuH0
-   Ue3gTXLCRbZ/QiCMKXwanp9bICWWhaJlFlkogpy3N3QqHh7wTe4b3XG37
-   Q==;
-X-CSE-ConnectionGUID: 1l+8TWG3SFmIUEjO9TvkmQ==
-X-CSE-MsgGUID: MtoxTnH+QhedP6ao+2Zi2g==
-X-IronPort-AV: E=Sophos;i="6.21,242,1763424000"; 
-   d="scan'208";a="8127399"
-Received: from ip-10-6-11-83.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.11.83])
-  by internal-fra-out-012.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2026 13:57:47 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [54.240.197.233:4201]
- by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.8.54:2525] with esmtp (Farcaster)
- id 177d1623-b088-4bdc-8cf7-d9ab759f06c3; Wed, 21 Jan 2026 13:57:46 +0000 (UTC)
-X-Farcaster-Flow-ID: 177d1623-b088-4bdc-8cf7-d9ab759f06c3
-Received: from EX19D003EUB001.ant.amazon.com (10.252.51.97) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Wed, 21 Jan 2026 13:57:38 +0000
-Received: from u5934974a1cdd59.ant.amazon.com (10.146.13.108) by
- EX19D003EUB001.ant.amazon.com (10.252.51.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Wed, 21 Jan 2026 13:57:29 +0000
-From: Fernand Sieber <sieberf@amazon.com>
-To: <dwmw2@infradead.org>, <peterz@infradead.org>, <seanjc@google.com>
-CC: <abusse@amazon.de>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<hborghor@amazon.de>, <hpa@zytor.com>, <jschoenh@amazon.de>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <mingo@redhat.com>,
-	<nh-open-source@amazon.com>, <nsaenz@amazon.com>, <pbonzini@redhat.com>,
-	<sieberf@amazon.com>, <stable@vger.kernel.org>, <tglx@linutronix.de>,
-	<x86@kernel.org>
-Subject: Re: [PATCH v2] perf/x86/intel: Do not enable BTS for guests
-Date: Wed, 21 Jan 2026 15:57:13 +0200
-Message-ID: <20260121135713.214711-1-sieberf@amazon.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <ff49b3013a4ff7626c6f6ac574f85348c35ccc42.camel@infradead.org>
-References: <20251210111655.GB3911114@noisy.programming.kicks-ass.net> <20251211183604.868641-1-sieberf@amazon.com> <ff49b3013a4ff7626c6f6ac574f85348c35ccc42.camel@infradead.org>
+	s=arc-20240116; t=1769004087; c=relaxed/simple;
+	bh=htvZ0BFtdntICwpCIHDXiKGuo9UWkej1fagGs3Fm4G0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hAprItj3J7ft2p02ANSwT0z7+pf0llhd2x4sGyq//L/ycEo3/mAHZf+KrW0Mv4kKoSV1G06ixJbq4i1guE4inhQk3Zw5KD0l5krOMfJeMQlY+3uOXvVQGD4uPXh8pXFM4Q7QGppcrkCa3dgtPf5PmU9NaoSpnwcRyTMBDJHELfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=wcSgHLxJ; arc=none smtp.client-ip=79.135.106.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1769004065; x=1769263265;
+	bh=htvZ0BFtdntICwpCIHDXiKGuo9UWkej1fagGs3Fm4G0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=wcSgHLxJSMc4E4GwCvZ/I20W3voC4J8A6Sc6zym4lWWyvpd95tANmf3/uez401BYk
+	 wMfIBGiLfd3g77zCD9n9Ka7oAVaOecEYvVB4oFc6N2EVXCssuRRNNd9y9SksOmay74
+	 rPk+ionuH75aTA0MIrdQ5BT30hvH9RYRQPPSKpMaZ4/OhP6UUNmtvAj24r27VphhUg
+	 qT/8WsbcswB5oC94GQyevJmcPwRoculIc8CdAxKFKY4LJLme3zjApELVjcu7OkkmVT
+	 +TXehdlmVcAIbIHD77xH71xwdHrWyio4nTZ5jx5KkBHLCetp2M3oFMV956CNSpBzHT
+	 t7xKYy9NXgueg==
+Date: Wed, 21 Jan 2026 14:01:01 +0000
+To: Eric Dumazet <edumazet@google.com>
+From: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v3 1/7] net/sched: act_gate: zero-initialize netlink dump struct
+Message-ID: <YAOV0f1EtmF5tiEGoQMdsnQAKJSrqcg3h9hqnxDdba8MmAprjNHfcDBKselH1vYNZLb672n_zDJZpgjkVn0nHDS0Jh7BKQrh0uGwJYp2hEk=@1g4.org>
+In-Reply-To: <CANn89iK_VqOThsWX2b-JwvF8suBVmKEmMm9D9SeZJBamDwfPog@mail.gmail.com>
+References: <20260121131954.2710459-1-p@1g4.org> <20260121131954.2710459-2-p@1g4.org> <CANn89i+8_ZDxVGwQmo_44iCRs5Wexwxy1Wfhw4WmYg3qA7_t1A@mail.gmail.com> <BSn2a6IWtM_DnDrcd-qDBm8cXAwXPo3xj1l4Eu4SWy3BS2UW8Aw7-gXW6uo_DaCipnvmSxgDeGEQrnZ-pjqRKSOPPUW0usVN8M1lp1J-soM=@1g4.org> <CANn89iK_VqOThsWX2b-JwvF8suBVmKEmMm9D9SeZJBamDwfPog@mail.gmail.com>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 29fab967485f950b33fe952df9c87630554f7bf2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: EX19D046UWA001.ant.amazon.com (10.13.139.112) To
- EX19D003EUB001.ant.amazon.com (10.252.51.97)
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-7.96 / 15.00];
-	WHITELIST_DMARC(-7.00)[amazon.com:D:+];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[amazon.com:s=amazoncorp2];
+	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_POLICY_ALLOW(0.00)[amazon.com,quarantine];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210764-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,mojatatu.com,gmail.com,resnulli.us,davemloft.net,kernel.org,redhat.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[amazon.com:+];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_NEQ_ENVFROM(0.00)[sieberf@amazon.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-210765-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DMARC_POLICY_ALLOW(0.00)[1g4.org,quarantine];
+	DKIM_TRACE(0.00)[1g4.org:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TO_DN_NONE(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 247A858C2A
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cppreference.com:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,1g4.org:email,1g4.org:dkim,1g4.org:mid]
+X-Rspamd-Queue-Id: 10CCF58CD7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Peter,
-
-Could you please take another look and see if you are happy to pull in v2 which
-implements the approach that you suggested?
-
-Thanks,
-
---Fernand
+padding? why does fzero-init-padding-bits exist?
 
 
 
-Amazon Development Centre (South Africa) (Proprietary) Limited
-29 Gogosoa Street, Observatory, Cape Town, Western Cape, 7925, South Africa
-Registration Number: 2004 / 034463 / 07
 
+On Wednesday, January 21st, 2026 at 7:48 AM, Eric Dumazet <edumazet@google.=
+com> wrote:
+
+>=20
+>=20
+> On Wed, Jan 21, 2026 at 2:39=E2=80=AFPM Paul Moses p@1g4.org wrote:
+>=20
+> > Yes, it's not proven so you might be right, I knew it was 4 bytes at be=
+st. We can do next or toss it, I don't feel strongly either way.
+>=20
+>=20
+> These bytes are cleared by C compilers.
+>=20
+> https://en.cppreference.com/w/c/language/struct_initialization.html
+>=20
+> Only holes might be left uninitialized.
+>=20
+> > On Wednesday, January 21st, 2026 at 7:25 AM, Eric Dumazet edumazet@goog=
+le.com wrote:
+> >=20
+> > > On Wed, Jan 21, 2026 at 2:20=E2=80=AFPM Paul Moses p@1g4.org wrote:
+> > >=20
+> > > > Zero-initialize the dump struct before selective assignment to avoi=
+d
+> > > > leaking stack padding in netlink replies. This matches other action=
+s
+> > > > (e.g. act_connmark) that zero-init their dump structs.
+> > > >=20
+> > > > Fixes: a51c328df310 ("net: qos: introduce a gate control flow actio=
+n")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Paul Moses p@1g4.org
+> > > > ---
+> > >=20
+> > > I do not see a bug to fix, current code is fine.
+> > >=20
+> > > act_connmark problem was that "struct tc_connmark" had a 16bit hole.
+> > >=20
+> > > No such issue for struct tc_gate.
 
