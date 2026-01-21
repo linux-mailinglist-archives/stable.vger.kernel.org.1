@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-211154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211155-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNS/Dwg0cWlQfQAAu9opvQ
-	(envelope-from <stable+bounces-211154-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:16:08 +0100
+	id GG4KEFY2cWnffQAAu9opvQ
+	(envelope-from <stable+bounces-211155-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:25:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78895CF6D
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:16:07 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id A42195D2A3
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2ED28474E0
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:44:44 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E69BCA89EC3
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192C33D5245;
-	Wed, 21 Jan 2026 19:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2123BBA14;
+	Wed, 21 Jan 2026 19:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="VDx4IwOV"
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="m/gLvpKm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679DA280A5B
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 19:44:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B7F346AC1
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 19:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769024677; cv=none; b=U4QOPykBYeMbIARz0Nse7dh8D0NkICkvoYxXBTvDbcJPf6OaWUR9jAtrcTvlyoV3vTA2GNfmSWTr9xZtaVtaIoAJyydugD2/HsPl2nRUFUII1rmQxFLBrqkxfHgyDQMxKffUbIPbIWGvkx2DCbjufRBUThrV6Yil21tWa8HkkmA=
+	t=1769024701; cv=none; b=NwG2uhQWu+SEy2IOqtGd4uugHoYbKYw9K6ui9PkOQ5oD7i3UYzMKNQIyV7IweuOv5ASOTKybqRz8fuhVGILM5xSWiQmem8tjslMTcX0ecVAgVxFwYoL3GuC6Y16vbb3gOIJw2TZE/dpVpo1L16+rDGRapDUcmki6WsDGhpVnsL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769024677; c=relaxed/simple;
-	bh=l5SyFJCfo1fQSa9mU6zNAv0ThOth/LCY4pXaeqqK6Go=;
+	s=arc-20240116; t=1769024701; c=relaxed/simple;
+	bh=ykOJXdnRPdORkrcuM4LDP6Fwb8+CG51exR/43qlXuAw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oIfYUfXPnY/300PT8gN9G3jQ0lRBml1qOOCBKvTaFgPbgmt1hJxtp34z8Tkg/8jIAkBReIGhPClRd8VbO0kJZD3xvrEQwhpBRQQkbaKwxtoO+R8buy1JBwt+4vv4wzNeJEaDYOom9Y8oiiPeNbN2gcesCZAAFg4RxAQJTo1tCO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=VDx4IwOV; arc=none smtp.client-ip=74.125.82.170
+	 In-Reply-To:Content-Type; b=rll7AJ4TjIv5Xbr9z9m6gCRuh122jf8lJ6dKyR2mHAWHYmKDRNxZRdFHkKng/AgTE0e7hspUGCMEwtsd5qC6RpCZYULIR53OCapSXHESBUg+6cTIXrlFydWDrIRIfEhVGH1SfObKzeAZo1UKRWXee0OD145JLR3UpolN2mWtH7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=m/gLvpKm; arc=none smtp.client-ip=74.125.82.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b0ea1edf11so513785eec.0
-        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 11:44:34 -0800 (PST)
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1233b953bebso533303c88.1
+        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 11:44:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1769024673; x=1769629473; darn=vger.kernel.org;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1769024698; x=1769629498; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=KEa/Pdcnys+mGuP+b9JWKh6Y2RdyW/MdUrzTT9ml1Mc=;
-        b=VDx4IwOVByoLhrAnSWP/KTgkljRYom53Maconcs0m2JH5yAV8OXYCONgsaWZiFCE5A
-         1TZOTDFja3sRw+UK8aJJcbvvC3779tVdB/m7wE31EbbOutMwNokHiPNiiihub40d7RON
-         yKnPAMXswdZaNjba5hOiT4+CAc7JbquqBGL0BuuT8M8E2URvDBsJlYuGov3q72WNE7Z+
-         PQu+nZsJ98Dln5jrsN0X5mFuDvKwu1q+uz0+X2j9hhNKb7CX+kXqxnvXA/vL0fBokcrz
-         gr62hOH8kxyRz7sflIMVJDbwA4B+81e3c45UZg3+TQX3SjwsBjPLgVKDCHApPx48EgfO
-         wjJw==
+        bh=ecdrB4zSMEy5aBv8OAslEgazFoiJdmaPpZodoGqi+h0=;
+        b=m/gLvpKmxspQ32YdnwcEX3KVnmdoNdVcKjtGLCVlDThBtYQeXf2g2V8FCjkPFrDEEO
+         b198E8/2c/OLB9rKKApQoKfzavgUvp34diP7qKde56/X6wYr4KtE52H3SIZr3HE/1Vc/
+         3J4+qe2OMoEx7W4IHxqyKcGspaRMItEoD3WEbaXDG8711dmKPILy8S50XcTfhkJpXkyE
+         3yXlrxQXIF3KvYap/jbNy1EYv1y7Ev52fK+5mGiQX1SylTaGJmQOCSP4fymRafPiUjkx
+         loR88taQbXx9jq2jX0mbJWW1Gw0ByfMgYzPsgfKLIsLPQjxaBGTokOx60uvX0lzAaeYz
+         VGEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769024673; x=1769629473;
+        d=1e100.net; s=20230601; t=1769024698; x=1769629498;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KEa/Pdcnys+mGuP+b9JWKh6Y2RdyW/MdUrzTT9ml1Mc=;
-        b=XzbnIdPFheWW/mCHok88MoYQAhCutFyWnUlVLINi1MWeQj+sVX4XeqoOt3Fgls2sgR
-         9AVDZ3Jv9yOelnAOJ1bLr01NVkBZN+WPjEjnxJJToUoQ3qbnAimHLoQIG0kY24LuNvP3
-         wakns8ZPSm2iXgPEQERXmqUCsw8HKM+DPPdFL1Fo44uiu9xB5fFZxDKRI4I/7LtgQy4q
-         HhHb9tilTIlN2yvuHF+/4xXYLRMKZcDEqo4kR2ab8+XZm48sEufq0hqcsVJQ3q2NZ3RF
-         B1BWdQ3ofe6d4k26ZdfasV6O++h7ki9KQfYdB+EkBs1K1ZGmbBQmfhVlJINQtCIZCtIE
-         zP3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXC3MvM3VAEIheEy0gEfNSZ1w1YoeBc8o6iZbiMT7BM9mEGGu0Q1aAyIF+BW2kZ2tww6JB/S6I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMLGex0TSfJo90Z5zrfg72eLC6FqSxiwTuy+mS0FK54et67uQC
-	i21pAKqaQsw1e7kIxnLnNVTNcIQon49ciihTWActl7+B+/q6W2/aPre7hNGCaeHdBA==
-X-Gm-Gg: AZuq6aIjKk0Xl8EczPvwe67q5w7FtuMHVzVrT9M7zhxO0ESRxaIv5r6F40bwQlp5XUW
-	cSLSW8e+HEvyyceMM7zayjoW3oUhOqs4/ctPRs/+wjhK1/PTJalpRdmweSwJ3Y+C54t3oPL+9Ow
-	1YXA3yiy56lyE3U5tVTKht1cjemRE4YuMW3xeerna90FZmoWaettKGKFDFudt6mh4fVwYj9BOqD
-	1buZ/15+XO5JYci4203pobKutMFzdBrfRP+RvO5nw/Wy5Mdy+8KsWvFZA7T1BKxUhKc52bSIb/o
-	IphxevjeHqrY4beiGLSIX0FbAnllnAFBLdB83bCED/y0X5DHmnwBg8J7cIEyZMvqldNPNEWvcW4
-	ezgJOsmy1WPvffzDRlJnS6XS0IoskqOCciTD+9WawTqnPseviuHn2Xnmk/TyYnrr0qNwcXTlMlu
-	Ghw+k4/89WKXNOTlQZthg6BA==
-X-Received: by 2002:a05:7301:408c:b0:2b7:143a:9a8f with SMTP id 5a478bee46e88-2b7143a9e6bmr1628457eec.7.1769024671502;
-        Wed, 21 Jan 2026 11:44:31 -0800 (PST)
+        bh=ecdrB4zSMEy5aBv8OAslEgazFoiJdmaPpZodoGqi+h0=;
+        b=XBKcPitmAvinNH96BS4LrgEB20bx/RpFkuXLAzrOqwT3v0ADlgGVbEI/AeksVwTdYN
+         MTiznv6S+SnU+N2lFcReERh3/mucURwibwQOkkleOqEu8qj9nMZD/wO2xIs6wWhWKaP0
+         ae0n8pW7Ria/UzrvbZ3njhJPf+1I5gge97eVEmUJwRYu4nlR8sUqAIEvNTdfMEThDwjr
+         R9fF5TmvwlGquXI1zzNI03gQouhPjhhU2MeydxJ8osXX0NLQK6iv3pSN7n//WvXa3LdS
+         va/AvdnfDLx2rqJgV4bsPFhulQ9Fc06O34X7Z6r09T8Jf6PoBr4xj14Kct+RFaIJ6VWx
+         vYyg==
+X-Forwarded-Encrypted: i=1; AJvYcCXIJtdXx0e99TMMuN6GAy1Y9Nmo7LY9NTI6eEjhvwp63IdM9dvDn5RVIOUtobVl+Ahme9sl/H8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2POnFGBH+gWXd5/wAvgzvN4jjGvhdF7EmgeFLuYfW8JGCSCK6
+	TFJHR/0V9zBNJffhxFZKR+mlF9bD23LMHU77BWEBuOCL/ZpSOIF0BYJUXgP0bTtoqQ==
+X-Gm-Gg: AZuq6aIzOj0RPsm9VbozQUk5K5WRTDYEvX0M4z2ziMfTqF38U5ZlSWtXVfU3Dj3gjpq
+	lOPMmmRpyMR4nnzQ1mr9GWaFVhS5Hk4PVqVEnwbYg/xCLaRtsRPLd1WzlZPj3NEIkAV7isu+pCD
+	Qy1kq9WIxCpMUnN86xrkVAt/Nceh8YDebTN+OPGJu8mRHCQbQxeCfsLiELL/ydDR1IuHctAzrZX
+	IMOxhlx9ol9+zddXQriyEcNkjQxzp5VI4joaVGO9xADM1fnocjHmrfieJrbitDGoU99Mw1fbXIF
+	/C9sfVaQTkDkVyDPTAOnei4OL3b34dqhxM9XUq0PLT2JPsR8hBFSBZKHnIR61hiQzDpUdoRBm9W
+	qgUncRvG1mS7KrbaphTqCHzEtHegLGCugJvbxSRrWMwLwN9LO5l2IBVR9qjIEvn6KUD8zowoV4x
+	3/3abjVf8gnaPBm+v8+W3YDg==
+X-Received: by 2002:a05:7022:914:b0:119:e56b:c75a with SMTP id a92af1059eb24-1246aad1e60mr4237514c88.31.1769024697979;
+        Wed, 21 Jan 2026 11:44:57 -0800 (PST)
 Received: from ?IPV6:2804:14d:5c54:4efb::1c9d? ([2804:14d:5c54:4efb::1c9d])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b71d3d2da2sm2106569eec.6.2026.01.21.11.44.26
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1244aefac48sm23814082c88.11.2026.01.21.11.44.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jan 2026 11:44:31 -0800 (PST)
-Message-ID: <1f63d057-ce11-4fdf-b9d4-7022ec356377@mojatatu.com>
-Date: Wed, 21 Jan 2026 16:44:25 -0300
+        Wed, 21 Jan 2026 11:44:57 -0800 (PST)
+Message-ID: <c8a8ae22-c5c4-4112-8084-0faa256a1d84@mojatatu.com>
+Date: Wed, 21 Jan 2026 16:44:51 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,7 +88,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 4/7] net/sched: act_gate: read schedule via RCU
+Subject: Re: [PATCH net v3 6/7] net/sched: act_gate: reject empty schedule
+ list
 To: Paul Moses <p@1g4.org>, netdev@vger.kernel.org
 Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang
  <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
@@ -97,10 +98,10 @@ Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang
  Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
 References: <20260121131954.2710459-1-p@1g4.org>
- <20260121131954.2710459-5-p@1g4.org>
+ <20260121131954.2710459-7-p@1g4.org>
 Content-Language: en-US
 From: Victor Nogueira <victor@mojatatu.com>
-In-Reply-To: <20260121131954.2710459-5-p@1g4.org>
+In-Reply-To: <20260121131954.2710459-7-p@1g4.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [0.04 / 15.00];
@@ -111,7 +112,7 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211154-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211155-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	DMARC_NA(0.00)[mojatatu.com];
 	RCPT_COUNT_TWELVE(0.00)[12];
@@ -119,7 +120,7 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[mojatatu-com.20230601.gappssmtp.com:+];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
@@ -129,43 +130,40 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu-com.20230601.gappssmtp.com:dkim,mojatatu.com:mid,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: B78895CF6D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[1g4.org:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,mojatatu.com:mid,mojatatu-com.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: A42195D2A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 On 21/01/2026 10:20, Paul Moses wrote:
-> Switch dump/accessor reads to RCU read-side sections. This matches other
-> actions that read params under rcu_read_lock(), e.g. act_tunnel_key dump
-> (commit e97ae742972f6c), act_ctinfo dump (commit 799c94178cf9c9), and
-> act_skbedit dump (commit 1f376373bd225c).
+> Reject empty schedules (num_entries == 0) so next_entry is always valid and
+> RCU readers/timer logic never walk an empty list. taprio enforces the same
+> constraint on schedules (sch_taprio.c, commit 09dbdf28f9f9fa).
 > 
-> Dump reads tcf_action via READ_ONCE, following the lockless action reads used
-> in act_sample (commit 5c5670fae43027) and act_gact.
+> Fixes: a51c328df310 ("net: qos: introduce a gate control flow action")
+> Signed-off-by: Paul Moses <p@1g4.org>
+> Cc: stable@vger.kernel.org
+> ---
+>   net/sched/act_gate.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> Timer logic stays under tcf_lock and uses rcu_dereference_protected(), keeping
-> RCU readers cheap while preserving lock-serialized timer updates.
-> 
-> diff --git a/include/net/tc_act/tc_gate.h b/include/net/tc_act/tc_gate.h
-> index 05968b3822392..9587d9e9fa38f 100644
-> --- a/include/net/tc_act/tc_gate.h
-> +++ b/include/net/tc_act/tc_gate.h
-> @@ -57,9 +57,10 @@ static inline s32 tcf_gate_prio(const struct tc_action *a)
->   	s32 tcfg_prio;
->   	struct tcf_gate_params *p;
+> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> index 48ff378bb051a..e4134b9a4a314 100644
+> --- a/net/sched/act_gate.c
+> +++ b/net/sched/act_gate.c
+> @@ -509,6 +509,12 @@ static int tcf_gate_init(struct net *net, struct nlattr *nla,
+>   		cycletime_ext = nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
+>   	p->tcfg_cycletime_ext = cycletime_ext;
 >   
-> -	p = rcu_dereference_protected(to_gate(a)->param,
-> -				      lockdep_rtnl_is_held());
-> +	rcu_read_lock();
-> +	p = rcu_dereference(to_gate(a)->param);
->   	tcfg_prio = p->tcfg_priority;
-> +	rcu_read_unlock();
+> +	if (p->num_entries == 0) {
+> +		NL_SET_ERR_MSG(extack, "The entry list is empty");
+> +		err = -EINVAL;
+> +		goto release_mem;
+> +	}
 
-These helper functions are called with the tcf_lock acquired, so you
-don't need rcu_read_lock here. You can just do:
-
-p = rcu_dereference_protected(to_gate(a)->param,
-			      lockdep_is_held(&gact->tcf_lock));
+It would be simpler to check this in parse_gate_list.
+That way you could return -EINVAL there directly
+in case 0 entries were passed.
 
 cheers,
 Victor
