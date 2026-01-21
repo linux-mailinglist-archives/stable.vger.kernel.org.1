@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-210967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210822-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CN76CvcccWmodQAAu9opvQ
-	(envelope-from <stable+bounces-210967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:37:43 +0100
+	id SNMRMocgcWmodQAAu9opvQ
+	(envelope-from <stable+bounces-210822-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:52:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872855B5DE
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F8F5B90E
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id BB40DA4FDA5
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:27:16 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 17FFDB0C1A5
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 18:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86DE3A0B01;
-	Wed, 21 Jan 2026 18:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB763559DE;
+	Wed, 21 Jan 2026 18:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GU+26Kl3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpQUEbGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738F735CBCD;
-	Wed, 21 Jan 2026 18:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F032C375E;
+	Wed, 21 Jan 2026 18:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769019988; cv=none; b=Fj7WsXa380lC+gcasMCgavDaitWNhJI2uqUyHJgJAzYTumEO61tIRfqAFdts3nWbukr95o8Z1KqR1i0OIiGl0podPl8URIyQ4wng/+ZQOEZXACmOzI62AmoARF44hbNBXnAZjmWqSTSDafjL3DzRoSL+Yo0Nhex2OWvqxrxYOR4=
+	t=1769019499; cv=none; b=MvCScGKuKgjsZuFWoCdgdILnlx2cvHYSGbOePjoVr9FqV+KUculxgLm10mdm+5oeqLDeAR6fWlSNJSZIMRXEvoODcZWvPggIH8pxPW+GKudHvJGqTcsNc9rK+lhNVwW9GbNse8+AIMS7Ts9jw9HXC1LWsEjE54DX26nkUkZWw2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769019988; c=relaxed/simple;
-	bh=wwizCWxnD5O3/NAJujduiQXYsM9xUVYQGHl7rN2SW+c=;
+	s=arc-20240116; t=1769019499; c=relaxed/simple;
+	bh=Xdo2KwI7UUnTZztgdbicRu2awcJ7LqpX/KRwXRLkWe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhknNz3SPNL5EDxEy1TVeF7QUx/gkSsMl+/1a886fCSnNE6S8I/3FOaqXOUXBj/vUxA1loA9bQomSqLJQxmNNyBUJrF5O2XDX5k/0p4iHft9w7V24fYQ5P2R4ZgM731yEfl3lBJgnRoNFecKfJfBl/ZqEGe8sna1/NVQn4dNI/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GU+26Kl3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BDBC4CEF1;
-	Wed, 21 Jan 2026 18:26:27 +0000 (UTC)
+	 MIME-Version; b=m3vpE4Lf1JirWX15PSc0o6V6Qc3lw/khu84EJ1z6DqXJ7vffqH1UgjbB3KtSWWec03R03od68YkSn5Vw1u4MmHoFJKHLWWuqkJCKBt3sTtyxFhdWv3B/uwxmacKLbV8wBOj4p9z/BE9oNt6jx0ZqPaCcREz8GETGGQpJwXk6zUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpQUEbGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2B9C19425;
+	Wed, 21 Jan 2026 18:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769019988;
-	bh=wwizCWxnD5O3/NAJujduiQXYsM9xUVYQGHl7rN2SW+c=;
+	s=korg; t=1769019498;
+	bh=Xdo2KwI7UUnTZztgdbicRu2awcJ7LqpX/KRwXRLkWe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GU+26Kl32vzjdXW3moXw1YgsL636Hu1zEwqOvFFpXmnBqmhV2veb1KhBSu6c6oJ8T
-	 mMeEQDrEFWBGSFeE4zhdtrA+a6s2VscvjTtSAcJ7m0dWrwMxoCDLbdBSGMfRjPbaCP
-	 onzNI7sftK+rqgFMxba7FDORtMRh4bYcNk74uV/4=
+	b=zpQUEbGnfxVUFVEexPBzPG2sgnRu76fTs5NRp2VgEQD8jRJnfqGlyOlfovHERX3lP
+	 1+WGPasDz1RjnP/5YuF/3Rd9YsyIow9KYRTkcg3H15oKeecSgqL3KeZJh/V+o29yp1
+	 pBFd2QSQQviek5YdGWaTpHiMGrbEcKQfru6IxYec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e8cb6691a7cf68256cb8@syzkaller.appspotmail.com,
-	Szymon Wilczek <swilczek.lx@gmail.com>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 026/198] can: etas_es58x: allow partial RX URB allocation to succeed
+Subject: [PATCH 6.12 006/139] xfrm: Fix inner mode lookup in tunnel mode GSO segmentation
 Date: Wed, 21 Jan 2026 19:14:14 +0100
-Message-ID: <20260121181419.496475699@linuxfoundation.org>
+Message-ID: <20260121181411.687177468@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,8 +67,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
@@ -77,76 +75,92 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org,pengutronix.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-210967-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-210822-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,e8cb6691a7cf68256cb8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,appspotmail.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 872855B5DE
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,queasysnail.net:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,secunet.com:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 66F8F5B90E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Szymon Wilczek <swilczek.lx@gmail.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit b1979778e98569c1e78c2c7f16bb24d76541ab00 ]
+[ Upstream commit 3d5221af9c7711b7aec8da1298c8fc393ef6183d ]
 
-When es58x_alloc_rx_urbs() fails to allocate the requested number of
-URBs but succeeds in allocating some, it returns an error code.
-This causes es58x_open() to return early, skipping the cleanup label
-'free_urbs', which leads to the anchored URBs being leaked.
+Commit 61fafbee6cfe ("xfrm: Determine inner GSO type from packet inner
+protocol") attempted to fix GSO segmentation by reading the inner
+protocol from XFRM_MODE_SKB_CB(skb)->protocol. This was incorrect
+because the field holds the inner L4 protocol (TCP/UDP) instead of the
+required tunnel protocol. Also, the memory location (shared by
+XFRM_SKB_CB(skb) which could be overwritten by xfrm_replay_overflow())
+is prone to corruption. This combination caused the kernel to select
+the wrong inner mode and get the wrong address family.
 
-As pointed out by maintainer Vincent Mailhol, the driver is designed
-to handle partial URB allocation gracefully. Therefore, partial
-allocation should not be treated as a fatal error.
+The correct value is in xfrm_offload(skb)->proto, which is set from
+the outer tunnel header's protocol field by esp[4|6]_gso_encap(). It
+is initialized by xfrm[4|6]_tunnel_encap_add() to either IPPROTO_IPIP
+or IPPROTO_IPV6, using xfrm_af2proto() and correctly reflects the
+inner packet's address family.
 
-Modify es58x_alloc_rx_urbs() to return 0 if at least one URB has been
-allocated, restoring the intended behavior and preventing the leak
-in es58x_open().
-
-Fixes: 8537257874e9 ("can: etas_es58x: add core support for ETAS ES58X CAN USB interfaces")
-Reported-by: syzbot+e8cb6691a7cf68256cb8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e8cb6691a7cf68256cb8
-Signed-off-by: Szymon Wilczek <swilczek.lx@gmail.com>
-Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20251223011732.39361-1-swilczek.lx@gmail.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 61fafbee6cfe ("xfrm: Determine inner GSO type from packet inner protocol")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/etas_es58x/es58x_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/esp4_offload.c | 4 ++--
+ net/ipv6/esp6_offload.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
-index adc91873c083f..6eeba9baa1317 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_core.c
-+++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
-@@ -1736,7 +1736,7 @@ static int es58x_alloc_rx_urbs(struct es58x_device *es58x_dev)
- 	dev_dbg(dev, "%s: Allocated %d rx URBs each of size %u\n",
- 		__func__, i, rx_buf_len);
+diff --git a/net/ipv4/esp4_offload.c b/net/ipv4/esp4_offload.c
+index 05828d4cb6cdb..abd77162f5e75 100644
+--- a/net/ipv4/esp4_offload.c
++++ b/net/ipv4/esp4_offload.c
+@@ -122,8 +122,8 @@ static struct sk_buff *xfrm4_tunnel_gso_segment(struct xfrm_state *x,
+ 						struct sk_buff *skb,
+ 						netdev_features_t features)
+ {
+-	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
+-					XFRM_MODE_SKB_CB(skb)->protocol);
++	struct xfrm_offload *xo = xfrm_offload(skb);
++	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x, xo->proto);
+ 	__be16 type = inner_mode->family == AF_INET6 ? htons(ETH_P_IPV6)
+ 						     : htons(ETH_P_IP);
  
--	return ret;
-+	return 0;
- }
+diff --git a/net/ipv6/esp6_offload.c b/net/ipv6/esp6_offload.c
+index 22410243ebe88..22895521a57d0 100644
+--- a/net/ipv6/esp6_offload.c
++++ b/net/ipv6/esp6_offload.c
+@@ -158,8 +158,8 @@ static struct sk_buff *xfrm6_tunnel_gso_segment(struct xfrm_state *x,
+ 						struct sk_buff *skb,
+ 						netdev_features_t features)
+ {
+-	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x,
+-					XFRM_MODE_SKB_CB(skb)->protocol);
++	struct xfrm_offload *xo = xfrm_offload(skb);
++	const struct xfrm_mode *inner_mode = xfrm_ip2inner_mode(x, xo->proto);
+ 	__be16 type = inner_mode->family == AF_INET ? htons(ETH_P_IP)
+ 						    : htons(ETH_P_IPV6);
  
- /**
 -- 
 2.51.0
 
