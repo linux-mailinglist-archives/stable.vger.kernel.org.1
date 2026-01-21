@@ -1,190 +1,180 @@
-Return-Path: <stable+bounces-211172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211173-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yCcPJOc5cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-211172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:41:11 +0100
+	id CJfvNDo3cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-211173-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:29:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B24F5D73C
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:41:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 472D65D3E2
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 74CF07ECEB6
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:03:06 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id EE2989D029C
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 20:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B76E3002B9;
-	Wed, 21 Jan 2026 19:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957673D3CFC;
+	Wed, 21 Jan 2026 20:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="K6Vc4K72"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gQu+zMG9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F113559F8
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 19:59:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E1128000F
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 20:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769025554; cv=none; b=inXVYHq+ZXCLxuMf6vYkS+D0G5plEqUI+RssAC2ys2Z3WZTDqHs0QCdG/wGTTke2xu1SR+HZuSJHJnroS2VV6XrLdHzPskrFkbqOpnI+8TOgomBlef9LFyvSTkVJsSqGg3tYF/OOumcRpbzZkFW7fBzTPM7kMOd/L7tfMbbniBo=
+	t=1769025784; cv=none; b=F97NCMakHfPWpK/vLcnThv67b5SAli2I435tb9/R9bQXNu/+yhiywr0mp3YHBxqJFnjWR6X/69AZUastl/TOjOhB1Je7WM6Ehsvmq9Fk6EEKFv1sxS5KONv2aBvb3lufRGXLXJjQXBT3mpPwj+PZNfKHLCUXBxjQtLsYm+beXqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769025554; c=relaxed/simple;
-	bh=iAinQJn5QYQ3kvgqKm4iTv2GpvuABTLS4Cuy/M96RMM=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=HDJkhbqNgZP9yGc7rx9poy0CvNG4vnGD1Vt0tOYSwu5osOW+nH/RgHnDcIxrHnqHClUSEFfeIJbpb+cgdDN3CRORvfuM94Ibsznp0Y6GbHysFMvD0vcj1RXKg4VVc7rV4YqFYchMVSCe4iJstdVPiFAMxZU8MlrVunnDiKG3BaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=K6Vc4K72; arc=none smtp.client-ip=74.125.82.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-2b6b0500e06so318029eec.1
-        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 11:59:12 -0800 (PST)
+	s=arc-20240116; t=1769025784; c=relaxed/simple;
+	bh=ryGfHyEX0pdgmogicUMhJer8o2q7Zut9okPt2Zf69UQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QjTbP6+15a/fMJVV1V75V1zfSSgHYti8n5rLcoYn5pqR14QbQfytyebbAknvSGZQSJydAUoPmpg0Rkr5sorRM0FvqWutdCyk/9lYsz1MLt9yYTLyHgePuEc2PGc2yXI/BHwJ1dw4YkNWfTZbPETGMpzIxkYWzriXutj6++FKRnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gQu+zMG9; arc=none smtp.client-ip=74.125.82.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2b0ea1edf11so557338eec.0
+        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 12:03:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1769025551; x=1769630351; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9GARQQsAnTLylvU5q1KvHxmmX6+D/SIUBChYjeDOQP8=;
-        b=K6Vc4K72SFKmAEOmspVrSL+g2xDSRTizkqCWYqGf5UFlt0xkNd/x36p57Bfjqkurl/
-         dYxNo0Kn4m5dXNa+iMTXC5O2GjiWE67cCfZalVuq8wonfpvTlknKNb4qlHtK9oXi3fXL
-         bR3EtPzRbEiKErrLt8WZCbrNIpEjNYPhl9eK6zaJHr2ddvqT5B60xUAw/UuzvQ0vFX0v
-         Q0mwh/2KJZl0XF5m/oDMxw/pC8GmAiVptpQwX+rXFEp7Nfb/rlkBJPS2s+qqE6QfeEG9
-         hNnZK53c0nqlndwY8RrHJU4c67aIbA0/5I6IdgmUlv8Qn5B5/smxb+hjz8ORFhVslSHV
-         Zvqw==
+        d=gmail.com; s=20230601; t=1769025781; x=1769630581; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=noOMWd8451AiWi9sjesHYL9FiLA2for0VqMOqr/FP1M=;
+        b=gQu+zMG9Mvr8420xOEK9ciJT6pxxL7WFICPoDrSWDbsUmk75jHuCvz4T9x1zkR/czp
+         2895eAQubjtKaXS0lTLnq06kgL1m2xvhNf03p1FVPclgi/Cg1cHxpLCyuCgeX5a4ESiT
+         fBc+VE6FWCez2ggpBLijomqYG/E9Si0nMyKaEhj3LsRhD/kwgLUjbH1ArPc/TB7LI/xT
+         21GFWHftYp9xc6lryjA9w8iKU4pitaE4wZTGOnWA08NiD6OugWgRnnCQKGys8dwQaput
+         dkBMMeyLiS4g9XEDZZR84NyHD+UaBcjppCAPMD/x0FiAiPKstp2RsaBXORxneaPb6xm0
+         sTWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769025551; x=1769630351;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9GARQQsAnTLylvU5q1KvHxmmX6+D/SIUBChYjeDOQP8=;
-        b=Ba86URFgySSEZmnL75ZdxSW2CDVHwojvVJ36aeh19bJd1QGqoobzN3BvCj6MV+ckms
-         tj+Bp1EsYLY0MBx8pOgbdjXLMGub10uVLfvvQ4wipDcM+0iUC+11x/7/6yiwDhAPOdSI
-         9EUjURK6ylJk38g9Ck8KKz8gpLUJ01MuRC1m631c4WcnXOeO6kA+K7KphoIG4ZcLiRH/
-         VqoZoPCczoZJdBQlF43Fb3zuRkCpOTtbj/HoUemAZmhRwjU1YQDOeJpDDAbwt+CFa/BN
-         qTcyCxp9ywcpQ1TEOWONlyPMAYRLO4Ia+NFGwrqzj1DjhUEdgItXm6mkJ/PcPqP9ESQz
-         4KWg==
-X-Forwarded-Encrypted: i=1; AJvYcCWYMQDMJqgQ2UJxPYMgSCGVTo6ZgVAl8/a/dVOAPtR23cDfVloDZpudnhV91lvwWw8BnoDaWGQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvlqsmrKUYdfi8jP36WuhyH65MjPHrc/29t1vSCzRjBa32H1no
-	3myhDH/b+4DxDW1goxaS/6CMM//8PgI4MjGo7w52KhORJv3EG9xnWcIFo7BHtzioojE=
-X-Gm-Gg: AZuq6aIne90grnCY7TKjqRdD11FqPpsgEyPExuIKl7viHg7vWwuMOYtnZVXcciApnzO
-	GGgpz6S/ObuSH4esQ1/h6uLOTABTdOF6pBpBkGq3QhTyGXiA0e4wV0D3KCMtPCc6NpX6Ej+HlPD
-	rWpdD5v3D+ABYKGyA6vRCF/aUDFgO01JICxj8MfaJCRiBaWLA4G6Ax1A5boxmSyxYbmdDyQ8mjw
-	cu56qe6uTD+IGT6t/iDHejjkt+/tUaG7Fv0ABpsSCptxpbKRJ8kPhrL+NuGmfT1zCPFlmdopACF
-	zA/9rozLXzErQUE81cLTbBmsp9fJT2H4dnndvMg32TDBVn8vD3Zq9LZEbakbOhkmJAwfAfwmwuU
-	K/1IPhW0boLyE/9nu4FyZT5ALz5Oqpvtp2GjLa9v9CeM4K1wW07GE9o9qUgQHbgWjBvGw49djU1
-	4vJm1/
-X-Received: by 2002:a05:693c:60d2:b0:2b6:ffcc:65b8 with SMTP id 5a478bee46e88-2b6ffcc6e0fmr3190672eec.3.1769025550919;
-        Wed, 21 Jan 2026 11:59:10 -0800 (PST)
-Received: from 22d5995788c3 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b71ccf2c95sm2313676eec.35.2026.01.21.11.59.09
+        d=1e100.net; s=20230601; t=1769025781; x=1769630581;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=noOMWd8451AiWi9sjesHYL9FiLA2for0VqMOqr/FP1M=;
+        b=EKoSOnQJ5jjZX1+DrpPiAmqo3ljyW79QonLE9vzDy/QzUNzeoyMTitwG7SDPzKRJGu
+         Edp85y9CKuGLpUiA3Se1v8VHhJnFjYjN0nxW9THIk/j9yh0hLJCt0RJUDpINU2PG3/4T
+         Yo4Bp31jM5/409w+DKYTO1MSwT7OZaj4ZCIJ15PtMC92saSeYdji0C2V9WkEfd4rWrqj
+         d2SgKh2Lfn8PIQS+XusIvSMGDtSRr2qog9kdzGzSv4GnC5zPWRIq8hg889UG9J0Ffrkm
+         ItW2Pa28O7BCQq/Fi2u/0SRQBk9B4HlOUjhLhjzbuUh6XYb8qfNWn/HDvIxRvaIiL4zt
+         XpbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCYQyx9JsakxnqYceYgeSRsrMEMvtiOu5xc22ejHQnUagimtW3d7IytEJm/LuXMEZRDk+QJs0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhRdvHFKhqfTl/m4+DUFJ9oUkNwaYDnj4cECthH6DTSz0lbNtN
+	RmmVcDEP/c/+zcHuwE9p8yth5ArYd7SjrA0YzonllGL4fvQqVJeeGQqx
+X-Gm-Gg: AZuq6aLI9hrPc/isZzak/D2cM7v6r2ISo1IF6/gfsERbCT4IlE/2ML1+sVqeP7f9yxu
+	CE2zagaxHxIUPOSe1l7aMS1uc7mNd1TZP+hUlIeIsrPZ2TeLycg/sDvV253qszUMAxd6WLOz/Wd
+	54jzZIOxCzKgkruQiW7oJMgrDRW27bFLfStUPlvqXBSZTmksoS6/aOOjQpAwNLW5CDKRSxJ/nM2
+	m432emKQZGDFMh1lgpDWhVqSzyTB2ig89+FljTIkAspP8stSUQAVUcnrJejSX6AnzuBLSYwez7H
+	V2F6YAX3qc6VYiSaVuzmf3pTaTM+zNRKrgDQzjNELDd+I/tMIXNSIuUzhv3xkDGVt1EBQGvQgPB
+	qgGTlmc+gkM2b59EceMrMLGmXpHydwbAJOzBXB+OzGCC5SEZtmRbxL4Qub6HXalHixAsKDgIhvk
+	CWyCiN5fCEBXbLzQUyBHp4rDC0UXIckZqmvubXFIaMJE+9b7ZGoSveMm1Lc4yiDJg=
+X-Received: by 2002:a05:693c:2d8f:b0:2ac:1a21:841d with SMTP id 5a478bee46e88-2b6b4e5b5f9mr12956485eec.16.1769025781007;
+        Wed, 21 Jan 2026 12:03:01 -0800 (PST)
+Received: from google.com ([2a00:79e0:2ebe:8:abb8:3a31:328a:3594])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7070eeec2sm6086404eec.21.2026.01.21.12.02.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Jan 2026 11:59:09 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 21 Jan 2026 12:03:00 -0800 (PST)
+Date: Wed, 21 Jan 2026 12:02:56 -0800
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Minseong Kim <ii4gsp@gmail.com>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] Input: synaptics_i2c - guard polling restart in resume
+Message-ID: <h4k2em6sx5je4yvq26xdelqxxhpnipj6aoq7z6ferpowmfczuv@nib5dh3m45b7>
+References: <20260121063738.799967-1-ii4gsp@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: 
- =?utf-8?q?=5BREGRESSION=5D_stable-rc/linux-5=2E10=2Ey=3A_=28build=29_unused_?=
- =?utf-8?q?variable_=E2=80=98atslave=E2=80=99_=5B-Wunused-variable=5D_in_dri?=
- =?utf-8?q?vers/dma/at=5Fhd=2E=2E=2E?=
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Wed, 21 Jan 2026 19:59:09 -0000
-Message-ID: <176902554918.564.13470632052259281449@22d5995788c3>
-X-Spamd-Result: default: False [0.04 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121063738.799967-1-ii4gsp@gmail.com>
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-gcc-14-arm-697117dbb2a19cc73abf1e48/.config];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211173-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211172-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[kernelci.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linux.dev:email,lists.linux.dev:replyto,kernelci-org.20230601.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 3B24F5D73C
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 472D65D3E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Minseong,
 
+On Wed, Jan 21, 2026 at 03:37:38PM +0900, Minseong Kim wrote:
+> synaptics_i2c_resume() restarts delayed work unconditionally, even when
+> the input device is not opened. Guard the polling restart by taking the
+> input device mutex and checking input_device_enabled() before re-queuing
+> the delayed work.
+> 
+> Fixes: eef3e4cab72ea ("Input: add driver for Synaptics I2C touchpad")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Minseong Kim <ii4gsp@gmail.com>
+> ---
+>  drivers/input/mouse/synaptics_i2c.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/input/mouse/synaptics_i2c.c b/drivers/input/mouse/synaptics_i2c.c
+> index a0d707e47d93..fc65e28c1b31 100644
+> --- a/drivers/input/mouse/synaptics_i2c.c
+> +++ b/drivers/input/mouse/synaptics_i2c.c
+> @@ -615,13 +615,17 @@ static int synaptics_i2c_resume(struct device *dev)
+>  	int ret;
+>  	struct i2c_client *client = to_i2c_client(dev);
+>  	struct synaptics_i2c *touch = i2c_get_clientdata(client);
+> +	struct input_dev *input = touch->input;
+>  
+>  	ret = synaptics_i2c_reset_config(client);
+>  	if (ret)
+>  		return ret;
+>  
+> -	mod_delayed_work(system_wq, &touch->dwork,
+> +	mutex_lock(&input->mutex);
 
+This can be
 
+	guard(mutex)(&input->mutex);
 
-Hello,
+> +	if (input_device_enabled(input))
+> +		mod_delayed_work(system_wq, &touch->dwork,
+>  				msecs_to_jiffies(NO_DATA_SLEEP_MSECS));
+> +	mutex_unlock(&input->mutex);
+>  
+>  	return 0;
+>  }
 
-New build issue found on stable-rc/linux-5.10.y:
+I made the adjustment and applied.
 
----
- unused variable ‘atslave’ [-Wunused-variable] in drivers/dma/at_hdmac.o (drivers/dma/at_hdmac.c) [logspec:kbuild,kbuild.compiler.warning]
----
+Thanks.
 
-- dashboard: https://d.kernelci.org/i/maestro:f881c63f6dfec0f96d93d51269c3a33c1d8721bf
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  d16e94d964e9243489e3ac17cfd7f6a1714b3540
-
-
-Please include the KernelCI tag when submitting a fix:
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
-
-Log excerpt:
-=====================================================
-drivers/dma/at_hdmac.c:1323:34: warning: unused variable ‘atslave’ [-Wunused-variable]
- 1323 |         struct at_dma_slave     *atslave;
-      |                                  ^~~~~~~
-drivers/dma/at_hdmac.c: In function ‘atc_free_chan_resources’:
-drivers/dma/at_hdmac.c:1583:9: error: ‘atslave’ undeclared (first use in this function)
- 1583 |         atslave = chan->private;
-      |         ^~~~~~~
-drivers/dma/at_hdmac.c:1583:9: note: each undeclared identifier is reported only once for each function it appears in
-  CC      drivers/soc/amlogic/meson-gx-socinfo.o
-  AR      drivers/dma/ti/built-in.a
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## multi_v5_defconfig on (arm):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-arm-multi_v5_defconfig-697126edb2a19cc73abf671a/.config
-- dashboard: https://d.kernelci.org/build/maestro:697126edb2a19cc73abf671a
-
-## multi_v7_defconfig on (arm):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-arm-697117dbb2a19cc73abf1e48/.config
-- dashboard: https://d.kernelci.org/build/maestro:697117dbb2a19cc73abf1e48
-
-
-#kernelci issue maestro:f881c63f6dfec0f96d93d51269c3a33c1d8721bf
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+-- 
+Dmitry
 
