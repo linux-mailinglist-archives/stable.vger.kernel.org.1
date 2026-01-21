@@ -1,64 +1,72 @@
-Return-Path: <stable+bounces-210737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLQZAv3EcGkNZwAAu9opvQ
-	(envelope-from <stable+bounces-210737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 13:22:21 +0100
+	id SEG4NmbFcGkNZwAAu9opvQ
+	(envelope-from <stable+bounces-210738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 13:24:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id E296856AEF
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 13:22:16 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CE156B32
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 13:24:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F2B179A9B42
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 12:15:57 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 034E89A9C49
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 12:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689783446DE;
-	Wed, 21 Jan 2026 12:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7203C2765C5;
+	Wed, 21 Jan 2026 12:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NFPtUGSX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WqDJFXnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082392BE057
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 12:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31158314B7F
+	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 12:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768997754; cv=none; b=TRQFgfy026cyjiXklOgk8gcqvfICR71e0qMiUgU9SgNaecFLjMsKrlJtuAukdhLNfXpF4mWMQrxlTyCT7Ba/86XHflc1m69TKHmYZFy42XPy3nzajgB6U2BRmXUJkksGyDWJ3bpouGi+KE/BYKlZ2P5nVtS7vdBjXt6cPYsQ588=
+	t=1768997757; cv=none; b=B7alCQTpbd/tAHyD0HN8/jPCn4arHFx2Y+2Moe9hw5PqBGfYMkJwWiVpFEcJ8b1Y/n/Sr/UgfsWs/xIvvpU68qQFTvr0jtosVU+JVfsqZU+L9RSw844hhxCV9XK34UWRdiVJLYNFcUxJMrzPQdZt0QPGB41M0rJCnEB5f0F+XAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768997754; c=relaxed/simple;
-	bh=+AINEGkwhqDOPKQwtu0hG+f47mL0ba/y19OprUduoh8=;
+	s=arc-20240116; t=1768997757; c=relaxed/simple;
+	bh=XWQOn9IFtc33reczSi6cOIe0qR9UT41FQLFNMq4GRFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgBlDHKCFojQ8UpzmALB6DK2HPFgS3t0expkVJTtrMgIgCo8Q1smLwB9ThhNYtq8v6O+rq8bFRS1RNUm7cpTeIOSKFOJIIo85+1UGB7TfyWZBuD7AF+8Ten3/uPy8UDkhx4ffqSwIPJv9tBsmDHfXy8+XuMzwzv0l8f8DuWcspo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NFPtUGSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E08D1C116D0;
-	Wed, 21 Jan 2026 12:15:52 +0000 (UTC)
+	 MIME-Version; b=Np/1JJHkqQIe/OBfXB6ePaZN6rWUUQ7EkaK+FG8PB0EZ0hm02BDHS6q40rtczoJBFp+vuj1QBOQrF0+b9Vm3XmJZ70taHG/mP80wpILE6uZ7zOxOQxQ7YQh1YKR09FqlenkWNW6DVO2Vb65vhMPKZXavZMgm0sRLH0eKT1f+xkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WqDJFXnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86B5C116D0;
+	Wed, 21 Jan 2026 12:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768997753;
-	bh=+AINEGkwhqDOPKQwtu0hG+f47mL0ba/y19OprUduoh8=;
+	s=k20201202; t=1768997757;
+	bh=XWQOn9IFtc33reczSi6cOIe0qR9UT41FQLFNMq4GRFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NFPtUGSXL0+JeOLOd7IgmcEClByD6FsZfUVY/1H1LmYzX5u8q+O0leVsFYizbZtSk
-	 qweq50Mu5m/9FddzouHALwQn0bWtrrCbHq+ouG0UwKJ/h9VYo3dWe25CzMVRq3P0xf
-	 1ksXH9rrhdYIDB8n2YzgzY8IpRaHGWh/08komQMOKUqHsRSirvwq+HftHrbyT7aOre
-	 LG5jXh34O8MBuqlvH+V9OQQtolHd8mPR0BnRkkgYhc281DnB2jgAbRo3NNapKsgIO1
-	 ol87jWk7JwNNjsPJq1XZq6+QPiJSunl0Ij45D9KXneeuKMKmpIPVC7g/LHbDGMCqhw
-	 Ts2KRrEFekOwg==
+	b=WqDJFXnTQ/QLQOQP43T2WM09/DXu/UxqPIfVLJZWJHPC7gvdrcvECU9Y/A61XdWWE
+	 rT/B60wiHESuGggq8+k+0zTErINBCr7AUa1jR/IjMuQ1FfvgQ1yllwAPclAnstv9qD
+	 0n5lYXcVJ/UvZDL+5O52v4apiKzNxh0bYLTxBaRcd06JWbVy+5ec+Q/tM4W10drfDY
+	 3eqgklGhYeOLAB4ER9LwHF2x4TqP3Znw/uDEIk/gQLoFCrLWk72rcySJQo322CW/Gv
+	 dp9SoiNjfkfeeEB7I7GoYgHWLBvt2hPP4qrz+TL/XgWWUBorBMtqeEJQENmgAcLnkD
+	 ZaVVRoTpsiHoA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>,
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	kernel test robot <oliver.sang@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] dmaengine: stm32: dmamux: fix device leak on route allocation
-Date: Wed, 21 Jan 2026 07:15:50 -0500
-Message-ID: <20260121121550.1523155-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] mm/page_alloc: prevent pcp corruption with SMP=n
+Date: Wed, 21 Jan 2026 07:15:54 -0500
+Message-ID: <20260121121554.1523263-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012056-swifter-dispersed-4902@gregkh>
-References: <2026012056-swifter-dispersed-4902@gregkh>
+In-Reply-To: <2026012044-late-implode-126e@gregkh>
+References: <2026012044-late-implode-126e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,9 +87,9 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-210737-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-210738-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	PRECEDENCE_BULK(0.00)[];
@@ -89,96 +97,176 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: E296856AEF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
+X-Rspamd-Queue-Id: 37CE156B32
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Johan Hovold <johan@kernel.org>
+From: Vlastimil Babka <vbabka@suse.cz>
 
-[ Upstream commit dd6e4943889fb354efa3f700e42739da9bddb6ef ]
+[ Upstream commit 038a102535eb49e10e93eafac54352fcc5d78847 ]
 
-Make sure to drop the reference taken when looking up the DMA mux
-platform device during route allocation.
+The kernel test robot has reported:
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+ BUG: spinlock trylock failure on UP on CPU#0, kcompactd0/28
+  lock: 0xffff888807e35ef0, .magic: dead4ead, .owner: kcompactd0/28, .owner_cpu: 0
+ CPU: 0 UID: 0 PID: 28 Comm: kcompactd0 Not tainted 6.18.0-rc5-00127-ga06157804399 #1 PREEMPT  8cc09ef94dcec767faa911515ce9e609c45db470
+ Call Trace:
+  <IRQ>
+  __dump_stack (lib/dump_stack.c:95)
+  dump_stack_lvl (lib/dump_stack.c:123)
+  dump_stack (lib/dump_stack.c:130)
+  spin_dump (kernel/locking/spinlock_debug.c:71)
+  do_raw_spin_trylock (kernel/locking/spinlock_debug.c:?)
+  _raw_spin_trylock (include/linux/spinlock_api_smp.h:89 kernel/locking/spinlock.c:138)
+  __free_frozen_pages (mm/page_alloc.c:2973)
+  ___free_pages (mm/page_alloc.c:5295)
+  __free_pages (mm/page_alloc.c:5334)
+  tlb_remove_table_rcu (include/linux/mm.h:? include/linux/mm.h:3122 include/asm-generic/tlb.h:220 mm/mmu_gather.c:227 mm/mmu_gather.c:290)
+  ? __cfi_tlb_remove_table_rcu (mm/mmu_gather.c:289)
+  ? rcu_core (kernel/rcu/tree.c:?)
+  rcu_core (include/linux/rcupdate.h:341 kernel/rcu/tree.c:2607 kernel/rcu/tree.c:2861)
+  rcu_core_si (kernel/rcu/tree.c:2879)
+  handle_softirqs (arch/x86/include/asm/jump_label.h:36 include/trace/events/irq.h:142 kernel/softirq.c:623)
+  __irq_exit_rcu (arch/x86/include/asm/jump_label.h:36 kernel/softirq.c:725)
+  irq_exit_rcu (kernel/softirq.c:741)
+  sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1052)
+  </IRQ>
+  <TASK>
+ RIP: 0010:_raw_spin_unlock_irqrestore (arch/x86/include/asm/preempt.h:95 include/linux/spinlock_api_smp.h:152 kernel/locking/spinlock.c:194)
+  free_pcppages_bulk (mm/page_alloc.c:1494)
+  drain_pages_zone (include/linux/spinlock.h:391 mm/page_alloc.c:2632)
+  __drain_all_pages (mm/page_alloc.c:2731)
+  drain_all_pages (mm/page_alloc.c:2747)
+  kcompactd (mm/compaction.c:3115)
+  kthread (kernel/kthread.c:465)
+  ? __cfi_kcompactd (mm/compaction.c:3166)
+  ? __cfi_kthread (kernel/kthread.c:412)
+  ret_from_fork (arch/x86/kernel/process.c:164)
+  ? __cfi_kthread (kernel/kthread.c:412)
+  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
+  </TASK>
 
-Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
-Cc: stable@vger.kernel.org	# 4.15
-Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/20251117161258.10679-11-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Matthew has analyzed the report and identified that in drain_page_zone()
+we are in a section protected by spin_lock(&pcp->lock) and then get an
+interrupt that attempts spin_trylock() on the same lock.  The code is
+designed to work this way without disabling IRQs and occasionally fail the
+trylock with a fallback.  However, the SMP=n spinlock implementation
+assumes spin_trylock() will always succeed, and thus it's normally a
+no-op.  Here the enabled lock debugging catches the problem, but otherwise
+it could cause a corruption of the pcp structure.
+
+The problem has been introduced by commit 574907741599 ("mm/page_alloc:
+leave IRQs enabled for per-cpu page allocations").  The pcp locking scheme
+recognizes the need for disabling IRQs to prevent nesting spin_trylock()
+sections on SMP=n, but the need to prevent the nesting in spin_lock() has
+not been recognized.  Fix it by introducing local wrappers that change the
+spin_lock() to spin_lock_iqsave() with SMP=n and use them in all places
+that do spin_lock(&pcp->lock).
+
+[vbabka@suse.cz: add pcp_ prefix to the spin_lock_irqsave wrappers, per Steven]
+Link: https://lkml.kernel.org/r/20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz
+Fixes: 574907741599 ("mm/page_alloc: leave IRQs enabled for per-cpu page allocations")
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202512101320.e2f2dd6f-lkp@intel.com
+Analyzed-by: Matthew Wilcox <willy@infradead.org>
+Link: https://lore.kernel.org/all/aUW05pyc9nZkvY-1@casper.infradead.org/
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ drop changes to decay_pcp_high() and zone_pcp_update_cacheinfo() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/stm32-dmamux.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ mm/page_alloc.c | 37 +++++++++++++++++++++++++++++++++----
+ 1 file changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/dma/stm32-dmamux.c b/drivers/dma/stm32-dmamux.c
-index 8d77e2a7939a0..7911797607824 100644
---- a/drivers/dma/stm32-dmamux.c
-+++ b/drivers/dma/stm32-dmamux.c
-@@ -90,23 +90,25 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 	struct stm32_dmamux_data *dmamux = platform_get_drvdata(pdev);
- 	struct stm32_dmamux *mux;
- 	u32 i, min, max;
--	int ret;
-+	int ret = -EINVAL;
- 	unsigned long flags;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index d760b96604eca..e1a87594dd27d 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -198,6 +198,33 @@ static DEFINE_MUTEX(pcp_batch_high_lock);
+ #define pcp_spin_unlock(ptr)						\
+ 	pcpu_spin_unlock(lock, ptr)
  
- 	if (dma_spec->args_count != 3) {
- 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	if (dma_spec->args[0] > dmamux->dmamux_requests) {
- 		dev_err(&pdev->dev, "invalid mux request number: %d\n",
- 			dma_spec->args[0]);
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
--	if (!mux)
--		return ERR_PTR(-ENOMEM);
-+	if (!mux) {
-+		ret = -ENOMEM;
-+		goto err_put_pdev;
-+	}
- 
- 	spin_lock_irqsave(&dmamux->lock, flags);
- 	mux->chan_id = find_first_zero_bit(dmamux->dma_inuse,
-@@ -133,7 +135,6 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", i - 1);
- 	if (!dma_spec->np) {
- 		dev_err(&pdev->dev, "can't get dma master\n");
--		ret = -EINVAL;
- 		goto error;
- 	}
- 
-@@ -160,6 +161,8 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
- 	dev_dbg(&pdev->dev, "Mapping DMAMUX(%u) to DMA%u(%u)\n",
- 		mux->request, mux->master, mux->chan_id);
- 
-+	put_device(&pdev->dev);
++/*
++ * With the UP spinlock implementation, when we spin_lock(&pcp->lock) (for i.e.
++ * a potentially remote cpu drain) and get interrupted by an operation that
++ * attempts pcp_spin_trylock(), we can't rely on the trylock failure due to UP
++ * spinlock assumptions making the trylock a no-op. So we have to turn that
++ * spin_lock() to a spin_lock_irqsave(). This works because on UP there are no
++ * remote cpu's so we can only be locking the only existing local one.
++ */
++#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
++static inline void __flags_noop(unsigned long *flags) { }
++#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
++({							\
++	 __flags_noop(&(flags));			\
++	 spin_lock(&(ptr)->lock);			\
++})
++#define pcp_spin_unlock_maybe_irqrestore(ptr, flags)	\
++({							\
++	 spin_unlock(&(ptr)->lock);			\
++	 __flags_noop(&(flags));			\
++})
++#else
++#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
++		spin_lock_irqsave(&(ptr)->lock, flags)
++#define pcp_spin_unlock_maybe_irqrestore(ptr, flags)	\
++		spin_unlock_irqrestore(&(ptr)->lock, flags)
++#endif
 +
- 	return mux;
+ #ifdef CONFIG_USE_PERCPU_NUMA_NODE_ID
+ DEFINE_PER_CPU(int, numa_node);
+ EXPORT_PER_CPU_SYMBOL(numa_node);
+@@ -3174,14 +3201,15 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
+  */
+ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
+ {
++	unsigned long UP_flags;
+ 	int to_drain, batch;
  
- error:
-@@ -167,6 +170,9 @@ static void *stm32_dmamux_route_allocate(struct of_phandle_args *dma_spec,
+ 	batch = READ_ONCE(pcp->batch);
+ 	to_drain = min(pcp->count, batch);
+ 	if (to_drain > 0) {
+-		spin_lock(&pcp->lock);
++		pcp_spin_lock_maybe_irqsave(pcp, UP_flags);
+ 		free_pcppages_bulk(zone, to_drain, pcp, 0);
+-		spin_unlock(&pcp->lock);
++		pcp_spin_unlock_maybe_irqrestore(pcp, UP_flags);
+ 	}
+ }
+ #endif
+@@ -3192,10 +3220,11 @@ void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
+ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+ {
+ 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
++	unsigned long UP_flags;
+ 	int count;
  
- error_chan_id:
- 	kfree(mux);
-+err_put_pdev:
-+	put_device(&pdev->dev);
-+
- 	return ERR_PTR(ret);
+ 	do {
+-		spin_lock(&pcp->lock);
++		pcp_spin_lock_maybe_irqsave(pcp, UP_flags);
+ 		count = pcp->count;
+ 		if (count) {
+ 			int to_drain = min(count,
+@@ -3204,7 +3233,7 @@ static void drain_pages_zone(unsigned int cpu, struct zone *zone)
+ 			free_pcppages_bulk(zone, to_drain, pcp, 0);
+ 			count -= to_drain;
+ 		}
+-		spin_unlock(&pcp->lock);
++		pcp_spin_unlock_maybe_irqrestore(pcp, UP_flags);
+ 	} while (count);
  }
  
 -- 
