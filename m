@@ -1,85 +1,61 @@
-Return-Path: <stable+bounces-211178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOh1CJVLcWn2fgAAu9opvQ
-	(envelope-from <stable+bounces-211178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 22:56:37 +0100
+	id yGJzKhJRcWkKCQAAu9opvQ
+	(envelope-from <stable+bounces-211179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 23:20:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9705F5E5EF
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 22:56:36 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1927B5EB24
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 23:20:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E229448AAA7
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:49:17 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1CEC0800ACC
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 22:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9466F3A4ACD;
-	Wed, 21 Jan 2026 21:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C06C45BD77;
+	Wed, 21 Jan 2026 22:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="ecYTw7xK"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="hIKIT/KN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88050358D27
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 21:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B72243E488;
+	Wed, 21 Jan 2026 22:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769032150; cv=none; b=RbCPxGkwZkBvBlWbHAF5CD45opBHvZsuxf0OOECEMFJ9mWFfpNj0xa5QBFoYkUaSsPXCsm6RTRUP7Jo+fPof21/G3yF5iuiO1JK48vlnFbd7krSegWIn428o//ZXXgFE7yE35t7pSmyPOUGvSD9Wd26fOadSjJ2IBYCZMZTjHkk=
+	t=1769033558; cv=none; b=IJ++UCa5j+uJhpilbobOVJZJmDn+cDVf/NTv0v20HnFM+DywnkDK1PhaS1Ib66yW8B7wuojdoRCQQeTKMHAiF9sdHY5jgl4NduADB/bAv7EWIXmZhjquWkjl/7SjWQUYZMXqRTI/ACsiWNXzwLOwDnLQMOeH66dXvkIB/O3/HGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769032150; c=relaxed/simple;
-	bh=2SFqDiH83MW4ugjSYoc3/nCATH+R8FXbL80fYxa71co=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=L2AFc/7upAubLRjTtEtXrBdHHSypzw5ns6oXM6G0dNFckvQX9ROsUmCU59m9lth7jQpLsYMCNpHykj3mE7iopYZKROcDhFTXyNhBiHwrqknR55kYWHPKYE1urv71GkP+H5qYRmAbruKMhCszRLBDk6a+uUIrjD2iKEK4Z9T2IbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=ecYTw7xK; arc=none smtp.client-ip=74.125.82.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2b704f08e73so172817eec.1
-        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 13:49:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1769032147; x=1769636947; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=J5o26zUnay0o8KGgb7cyYz/y8MIhvkmFsB5HLG6SVuQ=;
-        b=ecYTw7xKvpsrSRzuYUK7y1MEjBcnZ8BbiQFS4jivnso1LJ6+BokxipVxRuxpr1CD0K
-         aa6NAIiJVOL3LQXhVzMqm34zGDGiLOppFRWg9zuhjDHrxN30rA3WePntt6H6vy891GDy
-         R7c7NfTsz6MqR1rIYiFB7QaUPu1ysAyuY+03FPf3SRBA/YFqXyCRU2apTmtBRPWQ5G4/
-         jiLXLOpxBdMrE56p/8AuS4UsQuIandbhOIg5Z/4KXVa5KlIeDQy7qy7KIPDYUGlhNlw8
-         9A+U3dZe4vKSadHsWiH088upHRIXus/Qab0w87Zjx03xp3V81Mhs7NM6FTlK49Fhjf4r
-         vylA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769032147; x=1769636947;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J5o26zUnay0o8KGgb7cyYz/y8MIhvkmFsB5HLG6SVuQ=;
-        b=wKJOJwdL4V3U8U4QuMD6buhpflweBrefITF0xUjyjZuR/4Y9I5dBgjTHEpjwhIJfp2
-         svOo2sJ8OxvjT0z5kdHLYxQyHZ4xOw2MsY5qFW2ohYYOc5iMnVsdXiWp7pZv8mn/ba/E
-         73jL9QEM9qcA/ekb3PRcmQg0TWdJPkwH+7BuwNHk38Q9d+2MeivhlxfLtmM07eNuaZEm
-         +dgwl/CQYuzhxxXeox5YRg4ld87oY6IVQNVAD/ujqvtOXJ8fxhGRljV0IUMui6cCi3eE
-         QTxSJzBKK66OM9KjAVkk/ppGQEPOAjVK3rnkS5s5FXKv4/pcm+tS/ZMmnIK0TRv7gPi4
-         YC9A==
-X-Forwarded-Encrypted: i=1; AJvYcCXKuj3GhLfMur0WfF5PYt/yNLKzkbzUXU4nL4b9BppPlWl8IdsexqiN1+ATo0s0HNfrXkbigWY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTFtCj2A0BljlT3CPkwT64NFsVaEUOqKISQeR7EvUOWeEGqjR8
-	znzDdtnkH2iVNVFjHHkjKDKD4ut+tS/eUyVruIfFZjlcgZsp7N8PMyu/E/wdz3drBQ==
-X-Gm-Gg: AZuq6aIs2nm5ywQRRoPvYgaQNkTuAc0k9V7k1E+KksBXC3v4NaZbA1WstOadEuQPLMh
-	W+fZ+2wvoXEonsouEJvPQO65AWdym2XXWNaJUCge5kpblXBDQeWsE3J51YbkHf1PB7pgdURD7NW
-	i8XFRneXV3Pv+fGGwFGsnKV/r5vjb5GEcgjb/7LOImexNeqa35TDrfNDyxSgezlt3exKz4PhXNs
-	o87vgaDtkRr17V8hKAaSRq2AnR0J0dhgN0G/x84Jyb0dSSjRZKS3M8yn6XoNvV+n1jnvW8ItKH0
-	8oCy6bGzXgLbZSJ2sNbZgaZ7477zbKLssTBniuqcj7uc7fFRPEH8cvPECtQG4pdS54h+M9rpjH8
-	WU5DhVMhPEKm2KJ6dLi3OK1vv6szKtqW3GnuwJTNB+iBe4jbkp99076T7rRl3IlDbhREdF1YDFI
-	Z5T23PxKoB4JE5Fpy2nZmtMA==
-X-Received: by 2002:a05:7300:ad2d:b0:2b6:b246:dee0 with SMTP id 5a478bee46e88-2b7247158f4mr526028eec.4.1769032147014;
-        Wed, 21 Jan 2026 13:49:07 -0800 (PST)
-Received: from ?IPV6:2804:14d:5c54:4efb::1c9d? ([2804:14d:5c54:4efb::1c9d])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b70d7f729bsm6550761eec.16.2026.01.21.13.49.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jan 2026 13:49:06 -0800 (PST)
-Message-ID: <412136f7-1d46-42ac-96f9-b6cc462204b2@mojatatu.com>
-Date: Wed, 21 Jan 2026 18:48:59 -0300
+	s=arc-20240116; t=1769033558; c=relaxed/simple;
+	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q345pN/iDGuOtdtGPCvERU+JBppqBq0Me4Wp+SqIk2wwduFinYtV2zHJd3IJm2Tntke+gRBvEdKBjhTV31U8j+sxoLRaQO0CHd2gV7diqDQBNnQ/z7VmRd0EzAnyNDx0M111/p3O6Cj6Hde6r4Ua6MvKTs0HgDUg9IjvpPRgA6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=hIKIT/KN; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1769033541; x=1769638341; i=rwarsow@gmx.de;
+	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=hIKIT/KNfLfVcnoqvGbIe1pN5u2tbLAPN0McHKAoNGmJbLsU9WRlM+GnBmgFY587
+	 qG0KqNSKYlYz0oHolUMcn7PWon4EvhrxGOG5fXq2KpoUN4ARYyGQSoibrBo7x5Z1x
+	 4JM96Lej97I2R2ezJVTglr1BOJu3xRSv4umgTqK7PE5C4PW+hvSBx6ZJT+f/uo5E2
+	 zNaedMEjdnUJNVe9jGPBGr187CsbRwX/RePAzy13o8qk+mUJmtU8u8QqBv1G4DLl4
+	 EsmW3ozwaEvcpaBidxV1WJ3rwtIhf6R0o4RxCygoAyOJPnjEAFqlA8eFcbYadeJYN
+	 v2QPEUhVopbQNlKTwg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.39]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MSbx3-1vKALU1PCb-00XKfD; Wed, 21
+ Jan 2026 23:12:21 +0100
+Message-ID: <c985041b-7a22-4d49-8e69-d132d10300b7@gmx.de>
+Date: Wed, 21 Jan 2026 23:12:19 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,102 +63,137 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 6/7] net/sched: act_gate: reject empty schedule
- list
-From: Victor Nogueira <victor@mojatatu.com>
-To: Paul Moses <p@1g4.org>, netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang
- <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260121131954.2710459-1-p@1g4.org>
- <20260121131954.2710459-7-p@1g4.org>
- <c8a8ae22-c5c4-4112-8084-0faa256a1d84@mojatatu.com>
-Content-Language: en-US
-In-Reply-To: <c8a8ae22-c5c4-4112-8084-0faa256a1d84@mojatatu.com>
+Subject: Re: [PATCH 6.18 000/198] 6.18.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260121181418.537774329@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:9CJB1oJ/bw/Y0Ze1ndHh7NBBh2ruyTmLcinx31S8cBcAxeUdQLL
+ w3YwacxP1GuIUJZGmfkguB7OCWC9aUN3Bifr6gmX3Au2Be22vQKmx6REPDvazkQRfTfh3s1
+ XE3CQXcLhIWd1ySSb2Pjok7eiMpmkMf1JUYMwNHVWBOYfLoADNp+OpPr0gg9I19/wWk5Gly
+ OyZr6x/qTHEnLLgRx6/BQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:0uBW7bxMsGY=;4NifpYP8vTgrJcNEndl3zk+J/ga
+ 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
+ hkPmGFVKS1mP/2UBQ=
+X-Rspamd-Server: lfdr
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[mojatatu-com.20230601.gappssmtp.com:s=20230601];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211179-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211178-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[mojatatu.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[mojatatu-com.20230601.gappssmtp.com:+];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmx.de];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmx.de:+];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[victor@mojatatu.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[gmx.de,quarantine];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,mojatatu-com.20230601.gappssmtp.com:dkim,mojatatu.com:mid,1g4.org:email]
-X-Rspamd-Queue-Id: 9705F5E5EF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,gmx.de:dkim,gmx.de:mid,dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1927B5EB24
 X-Rspamd-Action: no action
-X-Rspamd-Server: lfdr
 
-On 21/01/2026 16:44, Victor Nogueira wrote:
-> On 21/01/2026 10:20, Paul Moses wrote:
->> Reject empty schedules (num_entries == 0) so next_entry is always 
->> valid and
->> RCU readers/timer logic never walk an empty list. taprio enforces the 
->> same
->> constraint on schedules (sch_taprio.c, commit 09dbdf28f9f9fa).
->>
->> Fixes: a51c328df310 ("net: qos: introduce a gate control flow action")
->> Signed-off-by: Paul Moses <p@1g4.org>
->> Cc: stable@vger.kernel.org
->> ---
->>   net/sched/act_gate.c | 6 ++++++
->>   1 file changed, 6 insertions(+)
->>
->> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
->> index 48ff378bb051a..e4134b9a4a314 100644
->> --- a/net/sched/act_gate.c
->> +++ b/net/sched/act_gate.c
->> @@ -509,6 +509,12 @@ static int tcf_gate_init(struct net *net, struct 
->> nlattr *nla,
->>           cycletime_ext = nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
->>       p->tcfg_cycletime_ext = cycletime_ext;
->> +    if (p->num_entries == 0) {
->> +        NL_SET_ERR_MSG(extack, "The entry list is empty");
->> +        err = -EINVAL;
->> +        goto release_mem;
->> +    }
-> 
-> It would be simpler to check this in parse_gate_list.
-> That way you could return -EINVAL there directly
-> in case 0 entries were passed.
+Hi
 
-On second thought, I believe it would be better
-to check whether parse_gate_list's return is 0
-and the op is a create. Something like:
+no regressions here on x86_64 (Intel 11th Gen. CPU)
 
-err = parse_gate_list(tb[TCA_GATE_ENTRY_LIST], p, extack);
-...
-if (!err && ret == ACT_P_CREATED) {
-     NL_SET_ERR_MSG(extack, "The entry list is empty");
-     err = -EINVAL;
-     goto release_mem;
-}
+Thanks
 
-so that you don't need to add new arguments to
-parse_gate_list.
-
-cheers,
-Victor
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
