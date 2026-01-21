@@ -1,197 +1,163 @@
-Return-Path: <stable+bounces-211157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eN8QASo4cWnKfQAAu9opvQ
-	(envelope-from <stable+bounces-211157-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:33:46 +0100
+	id oI4JNik6cWnKfQAAu9opvQ
+	(envelope-from <stable+bounces-211158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:42:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E6A5D515
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:33:45 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6725D7B8
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 21:42:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id B9FA656FF70
-	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:47:44 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 02B4E7A5A0C
+	for <lists+stable@lfdr.de>; Wed, 21 Jan 2026 19:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B263369988;
-	Wed, 21 Jan 2026 19:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B84235CB9D;
+	Wed, 21 Jan 2026 19:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="OpGS25re"
+	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="PRy4ZUNf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFFB3570D5
-	for <stable@vger.kernel.org>; Wed, 21 Jan 2026 19:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE64366DB4;
+	Wed, 21 Jan 2026 19:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769024857; cv=none; b=s/LsHTXCcjNCspFr/uEKUL8Ft4B8y2GWFY20uaGIQuodBRd/fAQi58IN+x/RF8Q6Hru3Zp10xyKt6koIvs7kKIoryRAy3xNyq9LJX//00ElABsYOQdDOrkxGVXlIkz9r4JvNeNdjk9zl0MYlPRRbkToITvhr2B+AX50Ui6ol7ag=
+	t=1769025064; cv=none; b=uDderhsfPJQCjspldP1e/FY40zKgO5GWag/2HQBXBAfglwaDSVTUt0PgrPzLNONeYkBCPzSPwM2yY6f2rNeSdnTI7hJbS9Zb+d8r3DzpkYZ+RDrS+PVINJ7NLSNR5f94LHjfkX490kC7NTlFFY8+2sYI/lQo7wP/4DmBLvyRFuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769024857; c=relaxed/simple;
-	bh=orzjDnZyozRaJvwCpqJ+jtvJM5mx9ik0LsEMc44wRrE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lQnPPSFB/O8M71dRnTMrjNGseagfWOruoIhlhKxBURVCfTPBodQ9ojha8uyl81TI7b5GYf1TNW7kjf4cZeUtvjfaQTx/CW3PynCFS5jCRIxBiNxiTDsT6wu5UCiTueFFrFsANOo2xHrNTM1U89K/a2OjXIu5/DrnVbaP6ZaF+0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=OpGS25re; arc=none smtp.client-ip=74.125.82.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-12339e2e2c1so157755c88.1
-        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 11:47:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1769024854; x=1769629654; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ghQ1KD4bD3UuMNHS90xQzdAHsii/uYgvSXFMZHQgAwQ=;
-        b=OpGS25reeIVL229DD6aBx+eu31A+v4FeZpRy5frVWoJ/rFNOn3/X3nu54fJop8yKml
-         lVqh+E2jaw/N+ZQd6fdb1i4mBxbc1BbTbeIqFdnIBIKQivhfXXzwJsm2SgY+izX4ofeE
-         wzXCuzXlQAqLe0zGjsX3hxcGOAr1oB064ToxNiB6yWPamk8X1lgej7YoL3wb5guhYrZG
-         7OWT0K7o9F+jxdyapZvQhYxF15JIsBMd/fS5RSAfYwYvBF29g0PHC0IP7GI61pShd3tt
-         ECTsoasbouoFOqs/dd4lC10Cnm5rsYnjhiXiMncLYx+WMxRlSipi5n6VnwxmPqWpNJTu
-         r9sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769024854; x=1769629654;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ghQ1KD4bD3UuMNHS90xQzdAHsii/uYgvSXFMZHQgAwQ=;
-        b=i4ZonCdY6/u3A5GaeW/Z0Q60bzwliCNNluF5pk30YN6kEj+8Xk50//Au/GWobV1N3s
-         jwR8SN+BOVd9/qiqEVL8ly/HdAIeopQB9i54Yai72O3XCffyBhUZ2AhOg1ErnOeCcE92
-         ek4LmveS0ttbu9mmc5N7A8tJpdejzrhBSLhwn/ZSCbkLDFrfdTF+L/K7gClLjGyl8sZr
-         bnRM7aejsfvDdBfwj8VHddIHbdpX+LIGLLejySon3QxPt/58hE8ptBj3YmDnpaUqbgS1
-         9VM+cv9urUdpfR5Lz4iTDg2m9TlniI9kvabN+zsC12a3oS7e96dArTc+UNdTg6A27aWi
-         nt1A==
-X-Forwarded-Encrypted: i=1; AJvYcCVNLwFtJ9DOsj6MDDLxxQBU8zD4Wat/Q8u+MtvR7I1VkNhZV8XiSrnLilq+2Ga2CSTZFfeX3ig=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpvFqqvXBFBcSRdyxNaaWyYpTyOABbBFIv6fb5wBus+GOR+O/5
-	gwGtVYHtqe9bOvzkX/v540wWiBDCbLMq9US4hEL4ry3vveFV009HaKYT/05D9cPt9w==
-X-Gm-Gg: AZuq6aIv3km2byQHm6yAqPsGnOJPNb8/EOjXpOc8rl1jvMKB2zfoXDfL6Jng6eLdSzM
-	ZAV0vzmJAsGo93BY4pP6urWvj4guq9Gmga7VoRfcilPWEa3eR57HMJu7GlOsOcGEEwho18hJmmF
-	dn/x4JEz+0mi5c7zpf5+nKJOsATgLz2C7IwmRlfQi9S128PEx/8omeJDNSLkVgB7cUwREXzikAV
-	IdlUjQ6uU+dIdE3qnNyh9lxNnbvggPdzgbSY7hc0xb7H7IQehld0XF+4PfLd63oVul5V0M0AZoO
-	R7nAkfUab8T3IGwa4w3TSMITOuVUEGyMhO5Tzc0gYz9ZHxjJfjPNpctAv3Zqpt/ps90yXuoZzlo
-	i9v51DWYPpDFwwzxGsQ0PkJPzkClpKLZBnZTR7QgySd7vZNABTOzb0jGL02RshX5N7moXp/GVue
-	AYPbZ//c86Hc/5QcF94IPW+A==
-X-Received: by 2002:a05:7022:2390:b0:119:e569:f84d with SMTP id a92af1059eb24-12476a6d462mr351429c88.4.1769024853578;
-        Wed, 21 Jan 2026 11:47:33 -0800 (PST)
-Received: from ?IPV6:2804:14d:5c54:4efb::1c9d? ([2804:14d:5c54:4efb::1c9d])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b6b3502c91sm22276230eec.9.2026.01.21.11.47.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jan 2026 11:47:33 -0800 (PST)
-Message-ID: <50912945-9da4-40c8-adad-34baa2b1e81b@mojatatu.com>
-Date: Wed, 21 Jan 2026 16:47:27 -0300
+	s=arc-20240116; t=1769025064; c=relaxed/simple;
+	bh=Pemh6rlGGV9lkxUPKKC9yBPCa/gHohfxJNa19OdMp8s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NHm+PqbB9Lg3ZsOFCrB8Y5OV5ihxNWkIkRb78gJfy56vDmi03HYLRiBIDjEoPCtz6BtLTdo4+MB62j0MSDKJ254ZE/uhjLd4vLn/9CTja+rc9SyanU69kvAAJmVq4hfcDu2xKeUYw3bNBJCvxyxY94NQvfv9pOqcq103ep/UMeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=PRy4ZUNf; arc=none smtp.client-ip=144.76.82.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
+	s=42; h=Message-ID:Date:Cc:To:From;
+	bh=QMaKCo9jK007YuWfsvuB0Dm5RGJe1N+wLPeQMaZO+vI=; b=PRy4ZUNfMemMONK4jFfOL5eecB
+	TNsjJ0XRSAFO/L07QQsVYv42IKXPqmv/pc3F3T/kyFGFKdfV7gjMLH+oFdoawAoY57n9tDFNWwQ0d
+	DqutPfpALdEOp8oFhcvZzc9eXhzDWpVPUOcE8opnaEO9dkhuhf+Rm8RfxlzyaJpwNVqtPNx/5lM72
+	CUvJnAPpaIZ2Yb8EcOn6GMTyidgtvZDa3/QFsrdSRQgEgeUb0k7CTWKR+sCbNSMl5sl9/44Fp85hT
+	XzrMUHsJmRQKoujo7cWU86pWPBJHSJMcdc1fWZzxTvSOOiJnvifotdr2kYRLx3YVuvE2EbfsXlXmH
+	ie8WthdyyQM23EcmxplSlyVBT7L9Js/Kd7oKF7JqPwdPsmpyb8Fx++A4OmQ+sNK1jVbRMlgPUqEYV
+	wl8sH5IcaPOUnZiqn4npMdIAFZpy34xslGJLzYqHCh5yoLylhyQRbvyYS901qlUA7la3DDnwO0djj
+	+y3hf8bqoPudjQp6GtrnRyUE;
+Received: from [127.0.0.2] (localhost [127.0.0.1])
+	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
+	(Exim)
+	id 1vieEA-00000001dye-3Wjg;
+	Wed, 21 Jan 2026 19:50:54 +0000
+From: Stefan Metzmacher <metze@samba.org>
+To: linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Cc: metze@samba.org,
+	stable@vger.kernel.org,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 01/19] smb: smbdirect: introduce smbdirect_socket.recv_io.credits.available
+Date: Wed, 21 Jan 2026 20:50:11 +0100
+Message-ID: <1f60cea1eae937938070f66f1b8343107a1155fd.1769024269.git.metze@samba.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1769024269.git.metze@samba.org>
+References: <cover.1769024269.git.metze@samba.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3 7/7] net/sched: act_gate: guard NULL params in
- accessors
-To: Paul Moses <p@1g4.org>, netdev@vger.kernel.org
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang
- <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260121131954.2710459-1-p@1g4.org>
- <20260121131954.2710459-8-p@1g4.org>
-Content-Language: en-US
-From: Victor Nogueira <victor@mojatatu.com>
-In-Reply-To: <20260121131954.2710459-8-p@1g4.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[mojatatu-com.20230601.gappssmtp.com:s=20230601];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [8.84 / 15.00];
+	URIBL_BLACK(7.50)[talpey.com:email];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211157-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[mojatatu.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[mojatatu-com.20230601.gappssmtp.com:+];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[victor@mojatatu.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[samba.org,vger.kernel.org,gmail.com,talpey.com,microsoft.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-211158-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_ALLOW(0.00)[samba.org:s=42];
+	RCVD_COUNT_THREE(0.00)[4];
+	GREYLIST(0.00)[pass,meta];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[samba.org,quarantine];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	FROM_NEQ_ENVFROM(0.00)[metze@samba.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[samba.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu.com:mid,mojatatu-com.20230601.gappssmtp.com:dkim,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: 64E6A5D515
-X-Rspamd-Action: no action
+	DMARC_POLICY_ALLOW_WITH_FAILURES(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,samba.org:email,samba.org:dkim,samba.org:mid,talpey.com:email]
+X-Rspamd-Queue-Id: AB6725D7B8
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-On 21/01/2026 10:21, Paul Moses wrote:
-> Guard NULL params in accessors/dump/timer paths to avoid crashes during
-> teardown or failed initialization. Other actions already guard params before
-> RCU cleanup (act_pedit, commit 52cf89f78c01bf; act_vlan, commits 4c5b9d9642c859
-> and 1edf8abe04090c), so act_gate should tolerate NULL in reader paths too.
-> [...]
-> diff --git a/include/net/tc_act/tc_gate.h b/include/net/tc_act/tc_gate.h
-> index 9587d9e9fa38f..8c3309b0dd779 100644
-> --- a/include/net/tc_act/tc_gate.h
-> +++ b/include/net/tc_act/tc_gate.h
-> @@ -54,12 +54,13 @@ struct tcf_gate {
->   
->   static inline s32 tcf_gate_prio(const struct tc_action *a)
->   {
-> -	s32 tcfg_prio;
-> +	s32 tcfg_prio = 0;
->   	struct tcf_gate_params *p;
->   
->   	rcu_read_lock();
->   	p = rcu_dereference(to_gate(a)->param);
-> -	tcfg_prio = p->tcfg_priority;
-> +	if (p)
-> +		tcfg_prio = p->tcfg_priority;
+The logic off managing recv credits by counting posted recv_io and
+granted credits is racy.
 
-I don't believe you need to check for NULL in these helper functions. From
-what I understood, the only place setting this to NULL is the cleanup
-callback. You also won't be able to run this in parallel with the init
-callback.
+That's because the peer might already consumed a credit,
+but between receiving the incoming recv at the hardware
+and processing the completion in the 'recv_done' functions
+we likely have a window where we grant credits, which
+don't really exist.
 
-> [...]
->   	list_for_each_entry(entry, &p->entries, list)
-> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
-> index e4134b9a4a314..65b53cbf37e67 100644
-> --- a/net/sched/act_gate.c
-> +++ b/net/sched/act_gate.c
-> @@ -82,7 +82,11 @@ static enum hrtimer_restart gate_timer_func(struct hrtimer *timer)
->   
->   	p = rcu_dereference_protected(gact->param,
->   				      lockdep_is_held(&gact->tcf_lock));
-> +	if (!p)
-> +		goto out_unlock;
+So we better have a decicated counter for the
+available credits, which will be incremented
+when we posted new recv buffers and drained when
+we grant the credits to the peer.
 
-Also don't think you need to check this here.
-Unless I'm missing something, cleanup will only set param to NULL after
-the timer callback has finished executing.
+Fixes: 5fb9b459b368 ("smb: client: count the number of posted recv_io messages in order to calculated credits")
+Fixes: 89b021a72663 ("smb: server: manage recv credits by counting posted recv_io and granted credits")
+Cc: <stable@vger.kernel.org> # 6.18.x
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+---
+ fs/smb/common/smbdirect/smbdirect_socket.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> [...]
-> @@ -643,6 +652,8 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
->   
->   	rcu_read_lock();
->   	p = rcu_dereference(gact->param);
-> +	if (!p)
-> +		goto nla_put_failure_rcu;
+diff --git a/fs/smb/common/smbdirect/smbdirect_socket.h b/fs/smb/common/smbdirect/smbdirect_socket.h
+index ee4c2726771a..403a8b2cd30e 100644
+--- a/fs/smb/common/smbdirect/smbdirect_socket.h
++++ b/fs/smb/common/smbdirect/smbdirect_socket.h
+@@ -239,6 +239,7 @@ struct smbdirect_socket {
+ 		 */
+ 		struct {
+ 			u16 target;
++			atomic_t available;
+ 			atomic_t count;
+ 		} credits;
+ 
+@@ -387,6 +388,7 @@ static __always_inline void smbdirect_socket_init(struct smbdirect_socket *sc)
+ 	INIT_WORK(&sc->recv_io.posted.refill_work, __smbdirect_socket_disabled_work);
+ 	disable_work_sync(&sc->recv_io.posted.refill_work);
+ 
++	atomic_set(&sc->recv_io.credits.available, 0);
+ 	atomic_set(&sc->recv_io.credits.count, 0);
+ 
+ 	INIT_LIST_HEAD(&sc->recv_io.reassembly.list);
+-- 
+2.43.0
 
-I don't think you need the check here either.
-Take a look at act_vlan.
-
-cheers,
-Victor
 
