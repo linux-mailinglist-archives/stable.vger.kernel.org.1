@@ -1,124 +1,178 @@
-Return-Path: <stable+bounces-211250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELDaBUQ8cmnTfAAAu9opvQ
-	(envelope-from <stable+bounces-211250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:03:32 +0100
+	id yNxZJE0+cmnpfAAAu9opvQ
+	(envelope-from <stable+bounces-211251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:12:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9554684C2
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:03:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E46F26877B
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:12:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B60653002D3A
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:02:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E6551301ECC4
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A3C2ED87C;
-	Thu, 22 Jan 2026 15:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E385E33C191;
+	Thu, 22 Jan 2026 15:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gK2cujjm"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="GKzrfFsG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C0226D4EF;
-	Thu, 22 Jan 2026 15:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769094157; cv=none; b=QrWOLvYuwFhq0NJIWHhmXggKdDFYLH7N0nVjo22+sgmrvBAeQsR13Ll8EDGotSpXI+kqiPPpU3DkN9+0LbxOtNXY7/tGjqOIshXUT+YKSsjx2p61isQPfLNp6Yu3rNI4CeAj9Db+WeWjyjz1d+bNUa2340Ikm5gW0c//r1H8tn8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769094157; c=relaxed/simple;
-	bh=FS/3Zs7nsDXrEKGlXb5BBxbZ/HRhrpXAqkdEcmopUUc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SUEWDNViSrGskBiiQxQ6nmDC3zoV3Hki0HXP2auW0Aq0TokFWU+WZuSBmpEu+QTBC/RhQ6lUcWpuXo5WEvd6FKzj19BGQlPFRCUJgAdkZ3412EpoE3z8CDXibR7cnBRwkadSbdO0oj+NUGlqwyUJapXxCBCgf4q+5JsT+jv8BlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gK2cujjm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894D0C19423;
-	Thu, 22 Jan 2026 15:02:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769094157;
-	bh=FS/3Zs7nsDXrEKGlXb5BBxbZ/HRhrpXAqkdEcmopUUc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gK2cujjmYB20cORjPTmXZZEjgiwJLJvVsqkp+d1Fbg+6fAaTt+SbtOr7N/JSUAKO5
-	 sTjKJnlWd3yqaFRhBfxgO3AxPQZe1Vl8+XHtQVJ4WumQdOl9H94KPnpprJ/3pKI+co
-	 KxKdAw7eDGVVX3USlL1+qLyx7a9WQlr7hIPkwfm5+u+WQix/rIij83xVivg42dd9Cw
-	 DSxtobWDHLzn74ZLk9xGoQceomQt8Kg7Pmotf7gBLkDKFtaXQzEpzVHyR3WgJ+lXao
-	 qGdPRiCornOZd7NPCsg+FUI3Y/mKSednDU71vJy1oeKEZjBaJgh/kLeOeEiFwNKcwU
-	 5ZoN/U+P6q33Q==
-Date: Thu, 22 Jan 2026 16:02:31 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Cc: Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	macro@orcam.me.uk, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] PCI: dwc: Fix skipped index 0 in outbound ATU
- setup
-Message-ID: <aXI8ByG3RlLpIRRa@ryzen>
-References: <20251229-ecam_io_fix-v2-0-41a0e56a6faa@oss.qualcomm.com>
- <20251229-ecam_io_fix-v2-1-41a0e56a6faa@oss.qualcomm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B00E2DF142
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 15:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769094413; cv=pass; b=H04sp1IA/QjuIIseZ+C0QFwX73UGsKTAZjamMHykijG9kKayMidQcOvGnvIaWTJ7vEBgWppmFJT+WRQAYdLgGtrfIc/7mZQ2ZUr8oK0t4iRVotCx6vzXeFlbAn/U+mFYFYmED7l4qT7/fY9CpXdre2EVPfSAI8DnVR3HlTiPbzI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769094413; c=relaxed/simple;
+	bh=zChY9g9QiZ2j/L6PoeholoqDqkO3cn0KCtgYtxidmEU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dCXdTLlOEqyNcQ3FwW/Z/8HngVORJanMQSNk8z/+dtKhwGraOFoYQIK4sEzjnEt/hciSd2wblflP7/CO6B2OXZ9j5oRaz0F/Vt1jDHKtJgvXiBO/TJnzMDdZTJ/KWKno1bmpKDoaQKAll4dA6vq43NhFCXUT3dXpilV3G9onvUY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=GKzrfFsG; arc=pass smtp.client-ip=209.85.222.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8c531473fdcso131502185a.3
+        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 07:06:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769094409; cv=none;
+        d=google.com; s=arc-20240605;
+        b=WG0sibPNDV0BBPqlaHQf6/b2LwtTPrrYTXL5cXsnS17hJV2GkA3Ce4M38QQlEvFU/f
+         l0bbnPjb8Y0r9Dq2dE0dEEjBzH3/uLXnczBuHSNh5GmXYjCFvmHVd258XCr/6Zryxa4Z
+         Rpg4F5q2oswnwfyJ6URutTP2yg9nl77lBIzkBrEhNlRkQDkPyNQoJ848SHb9YZJO1pcy
+         SD1FQ0lc2EWaEaUK3gVsLeY/cA+wMpXyUrJLnxiWqNqAgtidbbuoCquc+GKoZZpeSl/r
+         EbDmd8v5gCIg1i3RsXT4hs67h1AUBsEULj2s007Ydl1i+R1Nsk6pH/DrSMRYvidNZ6kk
+         PRjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ygDx271Y0S0OopKEObkAzsR5sQdsbflGYcm3pyskm28=;
+        fh=bN1N9u37F9sfpeWZ2mDRMBHW5qqsdrFlcOzPW13gTq4=;
+        b=XlvCK4s1ziiEp89+MQ6xCH2WvhHjVwwVhft46Zd+q/iG3W3R76Agj+rVZW8s56qCWk
+         8H9WJFFlitC+79/hr1Lg+PSMfpbOQyx5yIs7qtwIrxiUDMb2wH+EEJdbMZrubhMX2z0R
+         My49NqDvp5UsiBkLTpk4w7PWa4TRcWqAYDyjTZDxS312NR7SBINGf6mlNajYpNIR7cJR
+         rYkKOjugXvdt+pdsjCZwBLwK/0LYNsD7qLbQPFLXtW3KE8ZZm0iP1BU2EfQYVJ2WjiR5
+         F64guCg9s+zCokZ0RqPui9d4nkW2DlrPRJZt5QKiT5Em4HzQcn6iODLr2+R9QtqFfDaR
+         b9Bg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ciq.com; s=s1; t=1769094409; x=1769699209; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ygDx271Y0S0OopKEObkAzsR5sQdsbflGYcm3pyskm28=;
+        b=GKzrfFsGm2/TkpDHP9ipmv0+3OE8YaBG7Bim495AkEy7TU0duOwlmW/u/50twwvh9b
+         D/qC+7/2VSlJPbZI1ksc1HXb7JUZ0hk+Rg9cPiPTCv4Y4GnXZVAzORINPLAj8mDLSzUg
+         BwFBXZSMSEqzDlGEFO+CsOBp4Zbj6Nhxyz905mZ/6g7c6GD7VHrrvfH8U3OcKgpHGivM
+         2SYcrR6m43c5ojoTFn0vgD9Srirg9LO1iV+yT8CuyremcwyqNdvzXLp0KIPgUE0gEkrl
+         jlnYPTeZcCXO0qlia96YJ/1GRXTjRA46VD5qxa0MmvJ+PYHFjZP+qYBE1q4uWGzh57YA
+         S8uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769094409; x=1769699209;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ygDx271Y0S0OopKEObkAzsR5sQdsbflGYcm3pyskm28=;
+        b=lkzGB2oQQGk9TRozmyJgM0wocx32xMmjU6dVdVRNpFGubv+97byQ8JoVJZsPTQ+/fp
+         xQefz2WQ7zLU+IIYItJqDri4GAkG/UeutwoQrA10IT2buMDnnFUMxIBNzmGreqgtko6T
+         dvRKGhYMGzWdybfhmjuAjTzqnS0EdbRxb11KU67YLprK8rgcXosgwVW1FgfI6CkhnYo5
+         T6FD43Rjw+0WCUnmK6UDKEIRWGvrZvDFPSCw/HTOuBgsDVqOTlVYQ1jxxwYzJg8jkPDW
+         SmknqmSFgI1p5NZYIS/2SEqmpqxtn9ZS9Rx+kNiLMVWhs+AfaUu5ra53nXc+ZDMy9CVC
+         7GbQ==
+X-Gm-Message-State: AOJu0YzY7+XZgHfHclr+Stk5wyoWuYnCk9wHaztomrr+xxaE503YG5aa
+	RVEkMVzqOngVBN69szbf2I628NcwMvhCqwALhOq5WuqQ13d4vYwPslMbBpYCkB1+OzuM23OvvSA
+	uwbk4Jn99S+mf5GvRxjQF5LG4BUFw2SzNEpmkGocjKA==
+X-Gm-Gg: AZuq6aK6qmXMHxXdd6i1q7Ky98XUq8ucw330lc8BbSP6o/AypzyNEzWCNmiMHSQzFu5
+	oVSJs/51Vd3DV5HkXCBdAodqfNNO0zpAXPq/J9mKS8/z0ryzEoEKbaBNaZIxohtdDtwJq64roun
+	85RLAFlaU2bbrZoE5HrOL+BTg34Q34k7BPpzVozvhc464xL+r5OmEP53dE2tYldMEn/gfmWCCkM
+	6K8Bm+HvfzPn0ZTGTQqiy243u1nBBrubvoH+7OlH7dFrLl171ZFmS6yO5CN/9/m3gdVFeLt
+X-Received: by 2002:a05:620a:1794:b0:8b8:dd7f:f032 with SMTP id
+ af79cd13be357-8c6a6979c1fmr2837675985a.78.1769094409009; Thu, 22 Jan 2026
+ 07:06:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251229-ecam_io_fix-v2-1-41a0e56a6faa@oss.qualcomm.com>
+References: <20260121181411.452263583@linuxfoundation.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Thu, 22 Jan 2026 10:06:37 -0500
+X-Gm-Features: AZwV_QhMiQHqhJbB72TePco8pls6ayYvyPgeqKVZdDBP2ASsrAS5S8VEPOBSX9E
+Message-ID: <CAOBMUvjtyWdRSR3dON18mN74uO2kLdhBB9b2V=Zm2qpJ-GQOJA@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/139] 6.12.67-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[ciq.com,reject];
+	R_DKIM_ALLOW(-0.20)[ciq.com:s=s1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211250-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211251-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,google.com,nxp.com,baikalelectronics.ru,vger.kernel.org,orcam.me.uk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[ciq.com:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[bmastbergen@ciq.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: E9554684C2
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,ciq.com:email,ciq.com:dkim,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E46F26877B
 X-Rspamd-Action: no action
 
-On Mon, Dec 29, 2025 at 04:12:41PM +0530, Krishna Chaitanya Chundru wrote:
-> In dw_pcie_iatu_setup(), the outbound ATU loop uses a pre-increment
-> on the index and starts programming from 1, effectively skipping
-> index 0. This results in the first outbound window never being
-> configured.
+On Wed, Jan 21, 2026 at 2:02=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.67 release.
+> There are 139 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 23 Jan 2026 18:13:43 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.67-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-This in not true.
+Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
+Intel Core i7-12600H
 
-outbound iatu at index 0 is used for CFG IOs, see dw_pcie_other_conf_map_bus()
-and:
-https://github.com/torvalds/linux/blob/v6.19-rc6/drivers/pci/controller/dwc/pcie-designware-host.c#L888
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
-
-Also see my series here:
-https://lore.kernel.org/linux-pci/20260122145411.453291-4-cassel@kernel.org/T/
-
-That tries to clean up this mess.
-
-
-Kind regards,
-Niklas
+Thanks,
+Brett
 
