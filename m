@@ -1,152 +1,162 @@
-Return-Path: <stable+bounces-211186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNIxF6N/cWk1IAAAu9opvQ
-	(envelope-from <stable+bounces-211186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 02:38:43 +0100
+	id gNYUMHyGcWk1IAAAu9opvQ
+	(envelope-from <stable+bounces-211187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 03:07:56 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id E205D6069D
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 02:38:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D30A60B67
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 03:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id A2A01382096
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 01:38:33 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6FEB8446AED
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 02:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA5821FF2A;
-	Thu, 22 Jan 2026 01:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dLUzQBKP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1D035CB8D;
+	Thu, 22 Jan 2026 02:03:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AA93033FB
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 01:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F4B30C615;
+	Thu, 22 Jan 2026 02:03:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769045908; cv=none; b=BLmL4Uc0YKZ/P1WOOGfHyHnRrKG2JafOf1TNU81X1TPeUMt2DeqNyKguW/6FW0E3lJcIkxYUZTTntPpSzW3CK29QVf4Vgw597FqewFNqaL4rHaA/GMEM/puilPU6AsEw83aC79e/WWuFAyp87MZrhBIybqoPEYlr8H3F9J2HJug=
+	t=1769047434; cv=none; b=UqElr/LRc+WSYt2MUtIOccD6ShEJumnViaNDEuR1hPqvMxVuGV07D1101IQzvDGe6IrJIPqwUfaw1niyCuQvA9kGIc3z7SlV9KF65UBjTunkCzzWkTMyeyjGgJUsQqmRRzKCWdu7KONwpaXChMmwwVGVBjfEa/AG8POHUObv7qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769045908; c=relaxed/simple;
-	bh=oY/qN6nZjPxrQYZGrC5kxmWY9kyRk/6YjHOsTx5Jz8Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=urg5sGM84rUzs/fEsxOjRKzHMUvsSlHyalgCdYENDay50bV7DddDWCXPOJdFsypCAHK+r/VdxqU9b28+up3LiMCA6qm/X7QQVhBHppgxaDVMgJbEWcExmA9GkgNfMCqnNgRvFl3B/Wnv8h2tp7oafJPhguIvdUhDqOP6syAgqAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dLUzQBKP; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 22 Jan 2026 01:38:19 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769045903;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N2rgyhPOsWcxR+CccOn5CSJfPcIulXCGROrBkQlH1Hw=;
-	b=dLUzQBKPylLEp+xsRT31ktLjpnhES0ORWsr2drYoiJ50B/mF6F1nym2aTgkN4jUmT2Dg0M
-	JCVV5X0JBlA/nyKoM4JRafnf2BxQlK/odJQAN5MgSp1pvh5lullBHtzQV1RX//34jerVl1
-	+r5EyZ60tnLhU9sv66uhfFszV6ifENg=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4 16/26] KVM: nSVM: Add missing consistency check for
- nCR3 validity
-Message-ID: <zhrcqjacdnmm4gtcmbx7rqaoap6kxtzirv5t2a3rustjsrc32g@2w5u23dcb3bi>
-References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
- <20260115011312.3675857-17-yosry.ahmed@linux.dev>
+	s=arc-20240116; t=1769047434; c=relaxed/simple;
+	bh=w83I06vDjrhR5j7M6vefS6yAGb619Wxa7/JnmjLaOiM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tSl9Thr87jAPJTy2F7UDr8COH/ID8p6vUEtZSc1czuAMiuQ6MiIfC63HreRIQb3HqbfkYda/4fRAsxV7gBzXKK1f70OGWzYCwBV00rO/fkBtRmLRFo2SXtfafdA7cZDIHUEYc3NSElCC2FTFuuRABNulPtHLOhJ3iePv1Hqs6Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1009)
+	id 40A6220B7167; Wed, 21 Jan 2026 18:03:53 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 40A6220B7167
+From: Dexuan Cui <decui@microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	lpieralisi@kernel.org,
+	kwilczynski@kernel.org,
+	mani@kernel.org,
+	robh@kernel.org,
+	bhelgaas@google.com,
+	jakeo@microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: mhklinux@outlook.com,
+	stable@vger.kernel.org
+Subject: [PATCH] PCI: hv: Allocate MMIO from above 4GB for the config window
+Date: Wed, 21 Jan 2026 18:03:37 -0800
+Message-ID: <20260122020337.94967-1-decui@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260115011312.3675857-17-yosry.ahmed@linux.dev>
-X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [2.24 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[microsoft.com : No valid SPF, No valid DKIM,reject];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211186-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[outlook.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-211187-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[linux.dev,none];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yosry.ahmed@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,linux.dev:email,linux.dev:dkim]
-X-Rspamd-Queue-Id: E205D6069D
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FROM_NEQ_ENVFROM(0.00)[decui@microsoft.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	PRECEDENCE_BULK(0.00)[];
+	TO_DN_NONE(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6D30A60B67
 X-Rspamd-Action: no action
 
-On Thu, Jan 15, 2026 at 01:13:02AM +0000, Yosry Ahmed wrote:
-> From the APM Volume #2, 15.25.4 (24593—Rev. 3.42—March 2024):
-> 
-> 	When VMRUN is executed with nested paging enabled
-> 	(NP_ENABLE = 1), the following conditions are considered illegal
-> 	state combinations, in addition to those mentioned in
-> 	“Canonicalization and Consistency Checks”:
-> 	• Any MBZ bit of nCR3 is set.
-> 	• Any G_PAT.PA field has an unsupported type encoding or any
-> 	reserved field in G_PAT has a nonzero value.
-> 
-> Add the consistency check for nCR3 being a legal GPA with no MBZ bits
-> set. The G_PAT.PA check was proposed separately [*].
-> 
-> [*]https://lore.kernel.org/kvm/20251107201151.3303170-6-jmattson@google.com/
-> 
-> Fixes: 4b16184c1cca ("KVM: SVM: Initialize Nested Nested MMU context on VMRUN")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> ---
->  arch/x86/kvm/svm/nested.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index 0f2b42803cf6..eb4a633a668d 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -351,6 +351,11 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
->  	if (CC(control->asid == 0))
->  		return false;
->  
-> +	if (nested_npt_enabled(to_svm(vcpu))) {
+There has been a longstanding MMIO conflict between the pci_hyperv
+driver's config_window (see hv_allocate_config_window()) and the
+hyperv_drm (or hyperv_fb) driver (see hyperv_setup_vram()): typically
+both get MMIO from the low MMIO range below 4GB; this is not an issue
+in the normal kernel since the VMBus driver reserves the framebuffer
+MMIO in vmbus_reserve_fb(), so the drm driver's hyperv_setup_vram() can
+always get the reserved framebuffer MMIO; however, a Gen2 VM's kdump
+kernel fails to reserve the framebuffer MMIO in vmbus_reserve_fb() because
+the screen_info.lfb_base is zero in the kdump kernel: the screen_info
+is not initialized at all in the kdump kernel, because the EFI stub
+code, which initializes screen_info, doesn't run in the case of kdump.
 
-This won't work correctly in svm_set_nested_state(), because the control
-cache hadn't been restored yet. Also makes more sense in general to
-check NPT enablement using the passed in control area.
+When vmbus_reserve_fb() fails to reserve the framebuffer MMIO in the
+kdump kernel, if pci_hyperv in the kdump kernel loads before hyperv_drm
+loads, pci_hyperv's vmbus_allocate_mmio() gets the framebuffer MMIO
+and tries to use it, but since the host thinks that the MMIO range is
+still in use by hyperv_drm, the host refuses to accept the MMIO range
+as the config window, and pci_hyperv's hv_pci_enter_d0() errors out:
+"PCI Pass-through VSP failed D0 Entry with status c0370048".
 
-This should be:
+This PCI error in the kdump kernel was not fatal in the past because
+the kdump kernel normally doesn't reply on pci_hyperv, and the root
+file system is on a VMBus SCSI device.
 
-	if (control->nested_ctl & SVM_NESTED_CTL_NP_ENABLE) {
+Now, a VM on Azure can boot from NVMe, i.e. the root FS can be on a
+NVMe device, which depends on pci_hyperv. When the PCI error occurs,
+the kdump kernel fails to boot up since no root FS is detected.
 
-> +		if (CC(!kvm_vcpu_is_legal_gpa(vcpu, control->nested_cr3)))
-> +			return false;
-> +	}
-> +
->  	if (CC(!nested_svm_check_bitmap_pa(vcpu, control->msrpm_base_pa,
->  					   MSRPM_SIZE)))
->  		return false;
-> -- 
-> 2.52.0.457.g6b5491de43-goog
-> 
+Fix the MMIO conflict by allocating MMIO above 4GB for the
+config_window.
+
+Note: we still need to figure out how to address the possible MMIO
+conflict between hyperv_drm and pci_hyperv in the case of 32-bit PCI
+MMIO BARs, but that's of low priority because all PCI devices available
+to a Linux VM on Azure should use 64-bit BARs and should not use 32-bit
+BARs -- I checked Mellanox VFs, MANA VFs, NVMe devices, and GPUs in
+Linux VMs on Azure, and found no 32-bit BARs.
+
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/pci/controller/pci-hyperv.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+index 1e237d3538f9..a6aecb1b5cab 100644
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -3406,9 +3406,13 @@ static int hv_allocate_config_window(struct hv_pcibus_device *hbus)
+ 
+ 	/*
+ 	 * Set up a region of MMIO space to use for accessing configuration
+-	 * space.
++	 * space. Use the high MMIO range to not conflict with the hyperv_drm
++	 * driver (which normally gets MMIO from the low MMIO range) in the
++	 * kdump kernel of a Gen2 VM, which fails to reserve the framebuffer
++	 * MMIO range in vmbus_reserve_fb() due to screen_info.lfb_base being
++	 * zero in the kdump kernel.
+ 	 */
+-	ret = vmbus_allocate_mmio(&hbus->mem_config, hbus->hdev, 0, -1,
++	ret = vmbus_allocate_mmio(&hbus->mem_config, hbus->hdev, SZ_4G, -1,
+ 				  PCI_CONFIG_MMIO_LENGTH, 0x1000, false);
+ 	if (ret)
+ 		return ret;
+-- 
+2.43.0
+
 
