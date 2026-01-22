@@ -1,214 +1,174 @@
-Return-Path: <stable+bounces-211291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MG6jJw1ocmmrjwAAu9opvQ
-	(envelope-from <stable+bounces-211291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 19:10:21 +0100
+	id oF9uI0NpcmnckQAAu9opvQ
+	(envelope-from <stable+bounces-211292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 19:15:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4F26C09B
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 19:10:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00316C2A9
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 19:15:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11F7F3004207
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 18:10:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA8913001CE5
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 18:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31886372B35;
-	Thu, 22 Jan 2026 18:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3FA37475F;
+	Thu, 22 Jan 2026 18:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="eVyGKPbU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhL+VLXQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409B8361DC3
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 18:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769105405; cv=pass; b=R745FSsBb24+1Q1PT4Ft8IBuT5dqarBf/ijm9jIeO78O4Vgmbq8JW5gVP/wF2SIDsYiaqu3DWhtSRXz88XKfluxw3ZFNUAzlgfHWvtKt9yXQjEtXBeGvOLSijc0NyIo6Mjesr3pjzjKgzu4+B6oa5V/I3EbLPaMJzC5BFMinP/A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769105405; c=relaxed/simple;
-	bh=Ilqdx+/ykMBSFbeY8n+vM8S5InCnEJwZ3/TPDE2mMYA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uKRrprTnxlyVbTWrwat1C9p0EULVp23syi3KYqrl8mjH+JefiVDGVt1tXl+fU10ZKdAtWA1zYjWS/zie6qGXoBkcR63u52WLnFzxvysJ+/bvOsyeL1W2B0TTV6zTkYfxCLDaYZTNqEOYSAWYl5RNpwdseNGfIecoTLF3XIbP2W4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=eVyGKPbU; arc=pass smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6581234d208so2532601a12.3
-        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 10:09:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769105383; cv=none;
-        d=google.com; s=arc-20240605;
-        b=G95DzPEyJubAahtTiG2mELX4wck/SBUm6uRIG3n6JKeJpBw/YeXx3qbGM8pDNiozLq
-         CnIhtvUjjNiOC/JYkK12IhcBldSW9SE2nanFd1avlJ7S83Bg5M0zXIuoz0q1UimCAf3F
-         jsd0GP3bWL6MvOydkhx1a9ZJJHWNfw0bsIOlSQRihGc03FYsVNcP+SGFwDlWoXyI9qUh
-         pllKd6qFfMNReK+NvC9ea1v1SbBIz1t0HplakRLZ7/XvMckLbGbJlIrOxE07DwAgN5VP
-         HPYFQFWOSSWh1rvJeh3QCuRlNMtTDPb3v2oQATo+KWVfmvy8ZKxJm/tfD58EC6tnVCT1
-         1Gtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LbjBnPVhpRbR+iDPKNRkBtw2lZYOaBG/Duh0jODc6ZA=;
-        fh=wNt9wsmn24ppyHtMm/JsmzPr0ypdSnr3timhZZ9vXkI=;
-        b=cbejQxUcfXoFBJYkuKb59F3bgEntNnLG8eV13rGgDUkWJfbDMVKJ3eiDc3rv8GDePJ
-         z1ZzclZRrAg4znuebQRiRTi7P11bYuCqr2UmWZYiMptL1zP2CvUE/89jNNOUyEHJupMm
-         KolYUN91LGf5O60adyX5VSXf+i9K4MCHTeMmVt6avTkwnrdZqLFeBeVmONd1pBP4LTsF
-         hqq85I9G4SBvZd9w/4kkxHYWK8ZhMQJuHkBseXXxpCLHqVsG2RHoigqXgSn9h5Z2Dz3I
-         XZhJ16mmrbshF0vVyVjo5hsYrsVqWvBZjbZ+bgGaEgbjAbxEp4AEUOaGihOXPMosGLjq
-         U2Fw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1769105383; x=1769710183; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LbjBnPVhpRbR+iDPKNRkBtw2lZYOaBG/Duh0jODc6ZA=;
-        b=eVyGKPbUlmJeHhNPVJuv/F1ALiJ5wlhl3wy5/WYrsRAAVr2yTCYJ4na4sjixHFmKXj
-         Uht54A9yeIdGBdtI2xi61OKmjhpXiddOuKQysKlzmC1eXCdbISNc/GS8N6F1QFTj3KEx
-         f13YlG1gm7+ZyYIO7GJIV7KRiLzrpUEL1H8H8aHEvZY+R5b9R0aZM/xo9xkv6jQNJzjN
-         sISRSWlRKK1JXdGg5bBA8+vCkOMpJJD4bc4A8UHbjIv8QOaYRYCimRmVUi1Cnxeduapp
-         L6b3qpsnbfRAGsWyeUTdBtvE9lXxb6zk0URLbFZaRXUt70eqe/y8773gNk3CPFErBxaC
-         QwVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769105383; x=1769710183;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LbjBnPVhpRbR+iDPKNRkBtw2lZYOaBG/Duh0jODc6ZA=;
-        b=mZJI7AXTiK21spEkDG18bjMSLgJShJCdZyJid/d08uMBXi4X2ZsSrLGxr4nUhL+6HF
-         kqfcRM6ws6agNKSsKDuZWh4an1pOmVk4JbSKv1v9yVUkli6yN1R46TlAG1JmqZNBt2U/
-         LpHaVVJ3m7NeYqphvel3NVWGSl/bKK10hYUIVwWaOlhGQWE/ofKLRJf4G83dfCbkoM3y
-         HTdeFZiWtnRJK+pGSCdKL/aGXkuIUP2KguURpHR6YyRPkU52g69629JAfDctJbPQcawJ
-         91DPmCsRtBgEffa8qo1r0Jl7j3TjB5GSTSmaWmNP2Q+Hd9WtFeZnkn7W4ibeNXh90BUz
-         vpAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/nij0mmPJ8SZwrY5ONMNCNtpLFQgv28V4fkwF2WhzL3JoVWDtQAXS8GZb75XMTtIiBuddYbE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIP2IUV1QeylPIQILHKf7cxUco+n/Z1d1waaGDgiJxLychgPvm
-	bVsJAp3N/ndUtVoVjkQWRDuESzJJKmBBFFMqRRSpgdIypxHb6O6FMC/RH+abmvYA8t+J/KetpMI
-	+1dJR7MduVBxSwUmQBw916fE7pEwwCNUY7MUicn/Kyw==
-X-Gm-Gg: AZuq6aLw/8TKIdDteamolukdvl6VzRTA12DEKbBKn7QFtl+xsvthoowW4z+sdc+gBBI
-	Q6tlog+u/6y0l1BBEFATDQbqtRCsDuPXxBqmRwdaoYKY3u1/YcE++CmCl7RrfcgIGltbcGxA6u9
-	bjSzrj0JyLb0dYVvsSHmxIlmajLIQtK1b6ZV7FXP/D++YdqRkPkGDA8bXaKHllhUcBQenoRiAl3
-	UrzhMpRZgIvJ0sAh/SGC4uK5cKgrpffWkRNcpsAuAEiogBRGIjzv0bcLO+5EMs2csYl2Zg2Urxa
-	OI5Wb1jOmWbBHBTm93qz6h5FEw==
-X-Received: by 2002:a05:6402:1e92:b0:64d:3b22:a5c2 with SMTP id
- 4fb4d7f45d1cf-658487baf12mr292541a12.25.1769105382740; Thu, 22 Jan 2026
- 10:09:42 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050D62517AF;
+	Thu, 22 Jan 2026 18:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769105721; cv=none; b=DnqnOoyZhQY9pmY85r7uDnnGFjyZiZMlb7hECqxb1EpCw1J+ze8mYvsnXeZcRdkcHsNjj71OOeTZrPTQaks3KiGbrsbcL/h5/VBuFKpt5f8rEh1OIiqzmv+OjB6Ml7WZJRwOCPTp/H0Tyham1nuYJL/sZeHAKskY8hoJjpi0Z/c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769105721; c=relaxed/simple;
+	bh=7LKFfCFbzmlEynwe0Tr8raROJe7wN73Kd9MIXE9C1zM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d8X4nenM7w17qINLrHsGn+flaLlQO7cObYhQU0kn3okerXEuCPh9U4ze3grbveFwV2fAoi7W5Xsjf3xF/XUydr1tqNUiTrwLVclUDt1KdxU3+zJq7Dkl5+PY1eS0NUUFWdWLIiMsY06QNAPvLYfRRgsgePiGWu+Nx6B1bH3IDdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhL+VLXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A688FC116C6;
+	Thu, 22 Jan 2026 18:15:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769105719;
+	bh=7LKFfCFbzmlEynwe0Tr8raROJe7wN73Kd9MIXE9C1zM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YhL+VLXQUcCxy0w1Mq7nCEoEExNuM9OpjW+E5sCyH2R6AtFnIGULz7AzCYsr8cqT2
+	 76IPzFtZAxtLXM4XBuu+A9KwX08GCVP2xFiNrcZZpNdIdXSByqEW76BVW7vJ1rvJwR
+	 VIrCp8XvbBuMR7tFoN89Fhg9qDifvH+3wpViTUA879Vr6mB/CNr6uwEVMiXSo6fde3
+	 fB/Uzio9Lx7knrPox+UIB3BvA89Yhr9Psc7V7hWbjy8eE28JBwz4NsnaC+yE+Lij/3
+	 rh05b4DI6Eamq71TOt4lxHbZbI+ranYkGiJ7zhObvnSCw8tfkpQsrcxQwW0WqFOGaQ
+	 L3IrVjWtDom3g==
+Date: Thu, 22 Jan 2026 18:15:12 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com,
+	Ryan.Roberts@arm.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH 6.18 000/198] 6.18.7-rc1 review
+Message-ID: <392ccce0-4042-47ac-abdd-d1ed830ea27d@sirena.org.uk>
+References: <20260121181418.537774329@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260122132740.176468-1-ranxiaokai627@163.com>
-In-Reply-To: <20260122132740.176468-1-ranxiaokai627@163.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 22 Jan 2026 13:09:06 -0500
-X-Gm-Features: AZwV_Qi9TMnkjzXXfx8I6-lM4eliGE6Ihf3Eq84jRCQeznE2azuug8e_3kMlNnw
-Message-ID: <CA+CK2bAMBxZMBGS6DLaEO7M92vutW5UhfJNSwk+okdVu=EYu+g@mail.gmail.com>
-Subject: Re: [PATCH RESEND v3] kho: init alloc tags when restoring pages from
- reserved memory
-To: ranxiaokai627@163.com
-Cc: pratyush@kernel.org, surenb@google.com, akpm@linux-foundation.org, 
-	kent.overstreet@linux.dev, rppt@kernel.org, graf@amazon.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	ran.xiaokai@zte.com.cn, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="BuFbwiFtP7fxVovs"
+Content-Disposition: inline
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+X-Cookie: Don't read everything you believe.
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[soleen.com,reject];
-	R_DKIM_ALLOW(-0.20)[soleen.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211291-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211292-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[163.com];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[soleen.com:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,arm.com,oracle.com];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pasha.tatashin@soleen.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	NEURAL_HAM(-0.00)[-0.987];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.996];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,soleen.com:email,soleen.com:dkim]
-X-Rspamd-Queue-Id: DD4F26C09B
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:url,sirena.org.uk:mid]
+X-Rspamd-Queue-Id: B00316C2A9
 X-Rspamd-Action: no action
 
-On Thu, Jan 22, 2026 at 8:28=E2=80=AFAM <ranxiaokai627@163.com> wrote:
->
-> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
->
-> Memblock pages (including reserved memory) should have their allocation
-> tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-> released to the page allocator. When kho restores pages through
-> kho_restore_page(), missing this call causes mismatched
-> allocation/deallocation tracking and below warning message:
->
-> alloc_tag was not set
-> WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1=
-: swapper/0/1
-> RIP: 0010:___free_pages+0xb8/0x260
->  kho_restore_vmalloc+0x187/0x2e0
->  kho_test_init+0x3c4/0xa30
->  do_one_initcall+0x62/0x2b0
->  kernel_init_freeable+0x25b/0x480
->  kernel_init+0x1a/0x1c0
->  ret_from_fork+0x2d1/0x360
->
-> Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-> fix this.
->
-> Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-> ---
->
-> v2 -> v3:
->  - also call clear_page_tag_ref() for non-compound order-0 tail pages
->
->  kernel/liveupdate/kexec_handover.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec=
-_handover.c
-> index d4482b6e3cae..96767b106cac 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -255,6 +255,14 @@ static struct page *kho_restore_page(phys_addr_t phy=
-s, bool is_folio)
->         if (is_folio && info.order)
->                 prep_compound_page(page, info.order);
->
-> +       /* Always mark headpage's codetag as empty to avoid accounting mi=
-smatch */
-> +       clear_page_tag_ref(page);
-> +       if (!is_folio) {
-> +               /* Also do that for the non-compound tail pages */
-> +               for (unsigned int i =3D 1; i < nr_pages; i++)
-> +                       clear_page_tag_ref(page + i);
-> +       }
-> +
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+--BuFbwiFtP7fxVovs
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Pasha
+On Wed, Jan 21, 2026 at 07:13:48PM +0100, Greg Kroah-Hartman wrote:
 
->         adjust_managed_page_count(page, nr_pages);
->         return page;
->  }
-> --
-> 2.25.1
->
->
->
+> This is the start of the stable review cycle for the 6.18.7 release.
+> There are 198 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Tested-by: Mark Brown <broonie@kernel.org>
+
+However:
+
+> Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>     tools/testing/selftests: add forked (un)/faulted VMA merge tests
+
+These are failing for me on arm64 and I think arm (something literally
+exploded in my lab so the arm bisect didn't complete yet due to the
+half of the lab with that board being powered off until I get that
+fixed), that in turn causes a new top level failure of the merge
+selftest program but the actual failure is purely newly added tests not
+working so I don't think the kernel itself is any worse than it was
+before.  The tests are OK in Linus' tree so we are I guess missing a
+backport?
+
+Log:
+
+   https://lava.sirena.org.uk/scheduler/job/2395273#L4133
+
+# # #  RUN           merge_with_fork.forked.mremap_faulted_to_unfaulted_prev ...
+# # # merge.c:1283:mremap_faulted_to_unfaulted_prev:Expected procmap->query.vma_end (281473166635008) == (unsigned long)ptr_b + offset (281473166622720)
+# # # mremap_faulted_to_unfaulted_prev: Test terminated by assertion
+# # #          FAIL  merge_with_fork.forked.mremap_faulted_to_unfaulted_prev
+# # not ok 16 merge_with_fork.forked.mremap_faulted_to_unfaulted_prev
+# # #  RUN           merge_with_fork.forked.mremap_faulted_to_unfaulted_next ...
+# # # merge.c:1349:mremap_faulted_to_unfaulted_next:Expected procmap->query.vma_end (281473166635008) == (unsigned long)ptr_a + offset (281473166622720)
+# # # mremap_faulted_to_unfaulted_next: Test terminated by assertion
+# # #          FAIL  merge_with_fork.forked.mremap_faulted_to_unfaulted_next
+# # not ok 17 merge_with_fork.forked.mremap_faulted_to_unfaulted_next
+# # #  RUN           merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_unfaulted_next ...
+# # # merge.c:1420:mremap_faulted_to_unfaulted_prev_unfaulted_next:Expected procmap->query.vma_end (281473166647296) == (unsigned long)ptr_a + offset (281473166622720)
+# # # mremap_faulted_to_unfaulted_prev_unfaulted_next: Test terminated by assertion
+# # #          FAIL  merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_unfaulted_next
+# # not ok 18 merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_unfaulted_next
+# # #  RUN           merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_faulted_next ...
+# # # merge.c:1495:mremap_faulted_to_unfaulted_prev_faulted_next:Expected procmap->query.vma_start (281473166610432) == (unsigned long)ptr_b (281473166622720)
+# # # mremap_faulted_to_unfaulted_prev_faulted_next: Test terminated by assertion
+# # #          FAIL  merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_faulted_next
+# # not ok 19 merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_faulted_next
+
+--BuFbwiFtP7fxVovs
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlyaTAACgkQJNaLcl1U
+h9BeRwf/Tp6aH6UsW55SmaGC1ZzDwV3rF6Y8pHzX5GpSkciwHdkcYL74KMgdYjAq
+LNoipMtmiEDnVW2NEyzlPfqvOdjgET2sN0VZutPuZ38aB7kGnk2Y6XvYyuVGyW/7
+wfbnpAI0rl/lQlxo/k6dgwyTm1yzl5TJjnlhsduhSxTs6bsn4G6maGEMAFDXc5+5
+DSnVR96jqaAvdcjcQpHQD+MVxPMWAOTcI7KOaZBpprZ77SWvhHXQsaXKUK0UkL9k
+QPGzIicyoTzlsJn4lAtc86zlNZRBVlPxqTUXKKn7jg3e0ewgAVmrfGYvAZA1Ka1y
+ZOndzPdQpZ72u0o9ERyuxBEs5UAYHQ==
+=tnH2
+-----END PGP SIGNATURE-----
+
+--BuFbwiFtP7fxVovs--
 
