@@ -1,168 +1,144 @@
-Return-Path: <stable+bounces-211227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211228-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBTrMtEncmmadwAAu9opvQ
-	(envelope-from <stable+bounces-211227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 14:36:17 +0100
+	id oKc4Ku0ncmmadwAAu9opvQ
+	(envelope-from <stable+bounces-211228-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 14:36:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513CE675D4
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 14:36:17 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id C99F5675F2
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 14:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 53D09945056
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 12:27:12 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A804E56C97E
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 12:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1603D3ED10B;
-	Thu, 22 Jan 2026 12:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B0433E363;
+	Thu, 22 Jan 2026 12:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="nQjJ4fqg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n3fQ6Rqa"
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348D238BF98
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 12:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD2D338F5B
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 12:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769084606; cv=none; b=KGSm7pxk3QNHT77K4C3XjamGifmi6xhk5eUxHV2UDo6BD2H6E1Fa5QzpTVLo+KSzKbAXiiOr64yzcyT7ptef2xzCaj/6AQOxg8I025X7vyfPLqO9fdI6Pg70oZFAb9bZnzFrB8BN1O7QCaBVvAkdik2mrXZmYjsrrXV9ecRJ/pQ=
+	t=1769085135; cv=none; b=omUfmHiY1dv+maf1O2ZqAjDw0Gv0xtmmGPX2nDkC7NicIVCxNzU9rFWWuHjGD0dOTJaBdeh3mtdfNJRAE/A1cX3sW5ZPaQJLwNCPZCGq9psh0fU72sO79A6R6l5hHDEfglzVxlHA9BJxx+Jl41WOiYXa3giUiOepP7H5aox5wxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769084606; c=relaxed/simple;
-	bh=62/tc5Jl8yhCA3TTJShSNQNW1PjM0Y6ceRHuymeQSN4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TfgmMCd+RfBFzvoosew0WPnl0KtrZwH6UijCBxC83xYTA7iNTraMdrlkVtgD1gCrhl6ubD3sbLE3Iurar3dYWRXZVk+/CwJjMaVrZu3OA1xaMyFtYdHk1I3sI+e4XjWhxmeDCeN56lzIkLSyGwKjcXYPRq7Jp081Du4roSO+qoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=nQjJ4fqg; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6003b.ext.cloudfilter.net ([10.0.30.175])
-	by cmsmtp with ESMTPS
-	id iqdEvObc3SkcfitidvLQcq; Thu, 22 Jan 2026 12:23:23 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id iticvR7xqhoT4iticvYFfv; Thu, 22 Jan 2026 12:23:23 +0000
-X-Authority-Analysis: v=2.4 cv=XZyJzJ55 c=1 sm=1 tr=0 ts=697216bb
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=kP7N0LjBwUmm6fcBzzPGsdAWo+L37DkvwarY70LbA/4=; b=nQjJ4fqgRrjs7Y4ALkPKW6/8n8
-	Mg7V+1sNtlm1F7195d45tP7JwF7aNjxd8MBtzx8jEwPQ2jsayonUBvqf3vGPAnCV8BbX1pc4GFE+3
-	1IIfmJeoIihwOTysSQTL3DF978RaZQv1wpx8tnWOpCgr1qy+hczYMSZe87LHewVqqmDgyWahwi9bH
-	6N6gsxCrVt4Ud6eapq+mTReMY2MYhuJw2Thba0axtOYt/CfcL8PBmv3zGJ0lcGxCelTRrhwCbniAS
-	YExGGWD5djKV8r9jOH0Kd1ihm0xIiiYAgtMTSA3wPnS4I9dBACl9u21XFRIJYFxG707hlJ4cSxlm2
-	7t8hEGww==;
-Received: from c-73-92-56-26.hsd1.ca.comcast.net ([73.92.56.26]:35854 helo=[10.0.1.180])
-	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <re@w6rz.net>)
-	id 1vitic-00000002bwx-14Ks;
-	Thu, 22 Jan 2026 05:23:22 -0700
-Message-ID: <385c51cb-f9f6-43d2-ad6d-b4505a80de00@w6rz.net>
-Date: Thu, 22 Jan 2026 04:23:17 -0800
+	s=arc-20240116; t=1769085135; c=relaxed/simple;
+	bh=d8Def9PVTqewssSlh9dZ/Q2Y8Z89O1Lw2ILvhmm6flg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YuE8E9QWncHo2QBA+34hLVyNPcCoZhefLiJqQPn+7juVhKvDV2wDZ2BZ+Irk7/heGq0//uE0dhmIu73LqngJS/yJeGXHL2Mjq9FVuQSBd9ZHgWBYEqCJDgtjsVdiYK3j1xjdwTZuA0L4/VTYxFNnqBBhEmMvI5LCoLv6fROMvvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n3fQ6Rqa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DC6C116C6
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 12:32:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769085135;
+	bh=d8Def9PVTqewssSlh9dZ/Q2Y8Z89O1Lw2ILvhmm6flg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=n3fQ6RqaTDre0jKXjOOMrzwL2UsSQSWIOzPzmC6s+mjieiaumvykG9+F/0jmXVKi0
+	 V3j/UKZgSJoLC9GQfMTO4LrWtck+sHD27nd9QqqnGGmhUA1kxH4i2Ta9bpDRAANn+Z
+	 MXchKolNrH3CzgzJ2KCXDg+m7XYtDXv6JFDzKJ2v5R0jSFS/7W83O5JqKxu/M+91tY
+	 NBmSzIu41/PlJIluX45pKxeFdnq3GsgjJTOVl95UFlk9crupJu0XNhke4qloqSNaD1
+	 JJrfedkbJXrLetuqiqjyVSjCguYaPBNnLBI9vg3sdT0kWcZvuXdRNsz+gv7ZVxdjQw
+	 fhWNikzHXOM+A==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6505d3adc3aso1255975a12.1
+        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 04:32:15 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVgb2FkCrFaPw+2qKHxsPTJzrqWHe0ZssXuA3pdSlqjhDiuSk/fa62S3+RUnnamtCjIfqziugQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6jYM49YWtEWohphL0O+RIF0OBfAq9wAg+UjmknI4nirAfsKod
+	coM6DeGVZ3E1AOcF4ZBc8Sd5iH0Of3gsRq1FS91xWPYkrTYlkhG2nEpphBETpDRpKa9/KnxD2hu
+	c8B0Srp5pzNcKbCn1amSJGEEB7xpEsp4=
+X-Received: by 2002:a05:6402:2342:b0:649:815e:3f9b with SMTP id
+ 4fb4d7f45d1cf-654b9364eaemr15295455a12.3.1769085133730; Thu, 22 Jan 2026
+ 04:32:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/139] 6.12.67-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260121181411.452263583@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.92.56.26
-X-Source-L: No
-X-Exim-ID: 1vitic-00000002bwx-14Ks
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-92-56-26.hsd1.ca.comcast.net ([10.0.1.180]) [73.92.56.26]:35854
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 39
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfPRIz5T82q7tOUz9PWujWfNv9XSOI6RUUPcdd0jEMkyCLCC8yXKACjS8NCROKfC6Eofl3WwgrjS+I5qx4VlJpgadhENV//+vpaP5ulhvyrelq2bvZmWx
- FvRB9/n0RoSTayYRnGEqgNtcFOaGD6DiX/nng/TazKDHQIKIC/XPYm8C2W+oGaqmHluvRl+DdOe3eA==
+References: <cover.1769024269.git.metze@samba.org> <1f60cea1eae937938070f66f1b8343107a1155fd.1769024269.git.metze@samba.org>
+In-Reply-To: <1f60cea1eae937938070f66f1b8343107a1155fd.1769024269.git.metze@samba.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Thu, 22 Jan 2026 21:32:00 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd96QRnjDmQRRy9BDN+4ikec1DAbT8FCESwMVL8+PJebVA@mail.gmail.com>
+X-Gm-Features: AZwV_QgitcCrjyLBq2mrXyuQ8g1zGXIhjdfOfnkcuui8dGFK79XQBXvC5CAuw6E
+Message-ID: <CAKYAXd96QRnjDmQRRy9BDN+4ikec1DAbT8FCESwMVL8+PJebVA@mail.gmail.com>
+Subject: Re: [PATCH 01/19] smb: smbdirect: introduce smbdirect_socket.recv_io.credits.available
+To: Stefan Metzmacher <metze@samba.org>
+Cc: linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
+	stable@vger.kernel.org, Steve French <smfrench@gmail.com>, Tom Talpey <tom@talpey.com>, 
+	Long Li <longli@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.24 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [7.34 / 15.00];
+	URIBL_BLACK(7.50)[talpey.com:email];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211227-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.samba.org,gmail.com,talpey.com,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-211228-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	DMARC_NA(0.00)[w6rz.net];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
+	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	HAS_X_SOURCE(0.00)[];
-	HAS_X_ANTIABUSE(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	GREYLIST(0.00)[pass,meta];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[w6rz.net:-];
-	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns,w6rz.net:mid,w6rz.net:email]
-X-Rspamd-Queue-Id: 513CE675D4
-X-Rspamd-Action: no action
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns]
+X-Rspamd-Queue-Id: C99F5675F2
+X-Rspamd-Action: add header
+X-Spam: Yes
 
-On 1/21/26 10:14, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.67 release.
-> There are 139 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, Jan 22, 2026 at 4:51=E2=80=AFAM Stefan Metzmacher <metze@samba.org>=
+ wrote:
 >
-> Responses should be made by Fri, 23 Jan 2026 18:13:43 +0000.
-> Anything received after that time might be too late.
+> The logic off managing recv credits by counting posted recv_io and
+> granted credits is racy.
 >
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.67-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
+> That's because the peer might already consumed a credit,
+> but between receiving the incoming recv at the hardware
+> and processing the completion in the 'recv_done' functions
+> we likely have a window where we grant credits, which
+> don't really exist.
 >
-> thanks,
+> So we better have a decicated counter for the
+> available credits, which will be incremented
+> when we posted new recv buffers and drained when
+> we grant the credits to the peer.
 >
-> greg k-h
-
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
-
-Tested-by: Ron Economos <re@w6rz.net>
-
+> Fixes: 5fb9b459b368 ("smb: client: count the number of posted recv_io mes=
+sages in order to calculated credits")
+> Fixes: 89b021a72663 ("smb: server: manage recv credits by counting posted=
+ recv_io and granted credits")
+> Cc: <stable@vger.kernel.org> # 6.18.x
+> Cc: Steve French <smfrench@gmail.com>
+> Cc: Tom Talpey <tom@talpey.com>
+> Cc: Long Li <longli@microsoft.com>
+> Cc: Namjae Jeon <linkinjeon@kernel.org>
+> Cc: linux-cifs@vger.kernel.org
+> Cc: samba-technical@lists.samba.org
+> Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Thanks!
 
