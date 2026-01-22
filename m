@@ -1,135 +1,163 @@
-Return-Path: <stable+bounces-211229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OFp5HBMqcmmadwAAu9opvQ
-	(envelope-from <stable+bounces-211229-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 14:45:55 +0100
+	id ACnFIOshcmmPdQAAu9opvQ
+	(envelope-from <stable+bounces-211230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 14:11:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032DC677A2
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 14:45:54 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB60D67162
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 14:11:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B3C566C964C
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 12:33:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 0669C90928F
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 12:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4081D3385A3;
-	Thu, 22 Jan 2026 12:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE0E3164C2;
+	Thu, 22 Jan 2026 12:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pYtj0f79"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lyjbR/Mn";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HF7jQ0dZ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lyjbR/Mn";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="HF7jQ0dZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D6832BF55
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 12:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA2E346784
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 12:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769085173; cv=none; b=uFM1ctCqlzxVSqupmvFVNglb4ztpaORiIwb2P/ep+2xTH70wrhUaiV2nn8PQb1T52mY6M7zVWGKxWn/jBPjFb5NPdASILLH2DY0XPzk/eDm1J0v8S77+nHThy8HvcP6VXSrgarLjznfw0+WTW/5YaOeS22yRE72q2/WWhYbJP2M=
+	t=1769085200; cv=none; b=CZ92rQVX8aMpwYN4TmL4D84QvFtdTvlm+4ddOJRPA4T4wyDWp0wjpsYMsJSJlHz6vXBRRXGEs/65PIdlIZfSuLOJcMBDoOYLgzq2sOwQvTJXg4nt+we8Imx55qBX+4q/0O8FOgdNfHRkFc2SjKHveA7U36gkyAe+qVgVzJGUif8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769085173; c=relaxed/simple;
-	bh=9fPWMKy7hSQvEilxkcNEyPtXnQNOMCjs4n/ncRl0JNc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nLabGBN97DTSgSbQNU4+FgeEtJbh68am+cFuoZ6Chp+ctbdqpWDZ0SFODykydyy5lmeWmJ67oE7oh7ftYhrR9JtSyXdhKKcUTCQsc2IKtjRXLQHrH4DR+Aufh1gBadKUrHeZ0PNZ7pzLZvlRj3uFbwckqgiQ+G4jR3PlOAh++2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pYtj0f79; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4D7C19425
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 12:32:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769085172;
-	bh=9fPWMKy7hSQvEilxkcNEyPtXnQNOMCjs4n/ncRl0JNc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=pYtj0f79MVJ8tQj52sqT581tMA/i9U+Y67Wdvmv23DGa5vnHTqW275K77E1t6/CGS
-	 +Jt7krCIKzUU8RLw5x75tzzYc6w2UrZE+tRzD6UcPZa4iSTynBSiTApVGdnwvMVRhD
-	 umFnC9bz5CBl5dUjJEqw9SFNXP9YZf7GawadmWHvtglDRhkyl3v9ZfDdSsPDYwJCsA
-	 GzYssdaZu313XAGfu9gfnENLuDOoSMC2f1GfoLUQ8K/MU4bRiWT7cxiS0BuBZI4Amd
-	 7myrum3w/fvJSKPSb/bxZ9gSRsBQLWX+iy1Z/ZnB9NHXfQ49ta2T/fwqJViIVxckmq
-	 7/Ive3Joc8+6g==
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-653780e9eb3so1257112a12.1
-        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 04:32:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWIEcefU/jhUQWss7ZoCJ15QeYFRz/WZinBF8LSnMlwhwzJemqF3oLhg9TkiQ+8dwTDaG5yL28=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwscSU4q7NBWFSUQD+qI3I2VOqH2+9Lto7C9i8oFI8XQKMalLgJ
-	CXVEttLX+B1Us658Cslnf61grEcovdaNim/KNN0wZc/RfSCOjgSbC4hbWQyJld3yaUQrnilRqN+
-	v8T2KtccIlHMwlJsERBoPUL36tNCFaH4=
-X-Received: by 2002:a05:6402:43cc:b0:658:11c3:421e with SMTP id
- 4fb4d7f45d1cf-65811c346d0mr4916788a12.12.1769085171299; Thu, 22 Jan 2026
- 04:32:51 -0800 (PST)
+	s=arc-20240116; t=1769085200; c=relaxed/simple;
+	bh=ALbcLl8uokk9H6x8tA66C5FLwVN1RZNN0BqtCgoRoJ8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kFXlTAoi5tBpymOo53aacrKtvvT0HFb6nsmpXzIgJQf1p+uIdZbVdlrCcK4gMQSPnS3MCqV+MlQQ4QFJGgQqJyi3dK0c9FOZUooDD3DAoyAHbfvFZRUwN0YXSgcpJ4hFukqAuPOBJ+TvUMgRl5jMINnPWlTZUDfgh0p5j/WYoIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lyjbR/Mn; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HF7jQ0dZ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lyjbR/Mn; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=HF7jQ0dZ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AA7BA5BCC7;
+	Thu, 22 Jan 2026 12:33:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1769085195; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0iX6pX1UbAHS3EnZvXdsqpQs9agwPrmslZb/baAtyYc=;
+	b=lyjbR/Mnn275woA2EMI5QuKKN99w33rxp0RlX9FFqXkJSVNv0LFO7zC4ppUo3PkbCwcT9H
+	xWQwnF3ov1wni5nIRHBj8Vje7IEx2PYQUny6xXliAxke+EpANyE8ZAKeRkpV8wpwlweiQV
+	ohpdNeUkhV9irdGWxtoXxpvKKGtZvW4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1769085195;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0iX6pX1UbAHS3EnZvXdsqpQs9agwPrmslZb/baAtyYc=;
+	b=HF7jQ0dZITr7fREmprVhvCFq6pUODL5+HK6y1z0p3ti9MzG9L53Vc3bEGFntJE3pDInEp5
+	Xicil/sIk5WavQBg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1769085195; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0iX6pX1UbAHS3EnZvXdsqpQs9agwPrmslZb/baAtyYc=;
+	b=lyjbR/Mnn275woA2EMI5QuKKN99w33rxp0RlX9FFqXkJSVNv0LFO7zC4ppUo3PkbCwcT9H
+	xWQwnF3ov1wni5nIRHBj8Vje7IEx2PYQUny6xXliAxke+EpANyE8ZAKeRkpV8wpwlweiQV
+	ohpdNeUkhV9irdGWxtoXxpvKKGtZvW4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1769085195;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0iX6pX1UbAHS3EnZvXdsqpQs9agwPrmslZb/baAtyYc=;
+	b=HF7jQ0dZITr7fREmprVhvCFq6pUODL5+HK6y1z0p3ti9MzG9L53Vc3bEGFntJE3pDInEp5
+	Xicil/sIk5WavQBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A37713533;
+	Thu, 22 Jan 2026 12:33:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dRDDFAsZcmmVDAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Thu, 22 Jan 2026 12:33:15 +0000
+Date: Thu, 22 Jan 2026 13:33:14 +0100
+Message-ID: <87zf65hlo5.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Zhang Heng <zhangheng@kylinos.cn>
+Cc: perex@perex.cz,
+	tiwai@suse.com,
+	sbinding@opensource.cirrus.com,
+	kailang@realtek.com,
+	chris.chiu@canonical.com,
+	edip@medip.dev,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: hda/realtek: Add quirk for Samsung 730QED to fix headphone
+In-Reply-To: <20260122085240.3163975-1-zhangheng@kylinos.cn>
+References: <20260122085240.3163975-1-zhangheng@kylinos.cn>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.1 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <cover.1769024269.git.metze@samba.org> <b7a30840f1b912a924b700c3eb01f1e36e88b7ec.1769024269.git.metze@samba.org>
-In-Reply-To: <b7a30840f1b912a924b700c3eb01f1e36e88b7ec.1769024269.git.metze@samba.org>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Thu, 22 Jan 2026 21:32:39 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd_v0AwyKBd77iyK6VBzWbe1h3gpcjBLFp_OTh7dkTdQMg@mail.gmail.com>
-X-Gm-Features: AZwV_Qg7HSlQ58x-dL2uTe6q4c1AlokAAiacFBfwek0EK8c5rb6A2_QqU57naBU
-Message-ID: <CAKYAXd_v0AwyKBd77iyK6VBzWbe1h3gpcjBLFp_OTh7dkTdQMg@mail.gmail.com>
-Subject: Re: [PATCH 02/19] smb: smbdirect: introduce smbdirect_socket.send_io.bcredits.*
-To: Stefan Metzmacher <metze@samba.org>
-Cc: linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
-	stable@vger.kernel.org, Steve French <smfrench@gmail.com>, Tom Talpey <tom@talpey.com>, 
-	Long Li <longli@microsoft.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Flag: NO
+X-Spam-Score: -3.30
+X-Spam-Level: 
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [7.34 / 15.00];
-	URIBL_BLACK(7.50)[talpey.com:email];
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211229-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.samba.org,gmail.com,talpey.com,microsoft.com];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DMARC_POLICY_ALLOW(0.00)[suse.de,none];
 	FROM_HAS_DN(0.00)[];
-	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	GREYLIST(0.00)[pass,meta];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211230-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 032DC677A2
-X-Rspamd-Action: add header
-X-Spam: Yes
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns,suse.de:mid,suse.de:dkim]
+X-Rspamd-Queue-Id: EB60D67162
+X-Rspamd-Action: no action
 
-On Thu, Jan 22, 2026 at 4:51=E2=80=AFAM Stefan Metzmacher <metze@samba.org>=
- wrote:
->
-> It turns out that our code will corrupt the stream of
-> reassabled data transfer messages when we trigger an
-> immendiate (empty) send.
->
-> In order to fix this we'll have a single 'batch' credit per
-> connection. And code getting that credit is free to use
-> as much messages until remaining_length reaches 0, then
-> the batch credit it given back and the next logical send can
-> happen.
->
-> Cc: <stable@vger.kernel.org> # 6.18.x
-> Cc: Steve French <smfrench@gmail.com>
-> Cc: Tom Talpey <tom@talpey.com>
-> Cc: Long Li <longli@microsoft.com>
-> Cc: Namjae Jeon <linkinjeon@kernel.org>
-> Cc: linux-cifs@vger.kernel.org
-> Cc: samba-technical@lists.samba.org
-> Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Thanks!
+On Thu, 22 Jan 2026 09:52:40 +0100,
+Zhang Heng wrote:
+> 
+> After applying this quirk for the ALC256 audio codec, the headphone
+> audio path functions normally; otherwise, headphones produce no sound.
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=220574
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+
+Applied now.  Thanks.
+
+
+Takashi
 
