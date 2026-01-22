@@ -1,176 +1,240 @@
-Return-Path: <stable+bounces-211215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211216-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIwDOj/ycWmvZwAAu9opvQ
-	(envelope-from <stable+bounces-211215-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 10:47:43 +0100
+	id UC6dJTL4cWmvZwAAu9opvQ
+	(envelope-from <stable+bounces-211216-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 11:13:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C67764C50
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 10:47:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFBC6512E
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 11:13:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EB0EB625CE2
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 09:41:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 75BE6660E75
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 10:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855713502B5;
-	Thu, 22 Jan 2026 09:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BED352C21;
+	Thu, 22 Jan 2026 10:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIPtWEcK"
+	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="GM6cSHwx";
+	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="wu1Zz0IP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mta-01.yadro.com (mta-01.yadro.com [195.3.219.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4EB308F33;
-	Thu, 22 Jan 2026 09:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9CC2D0C9D;
+	Thu, 22 Jan 2026 10:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.3.219.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769074869; cv=none; b=OBsxtril8gFuFhMfTsao4f/R1+qTN5VZD+Qi0H9uOhcIpetbH0ZN3nDnwJuaswDpocigl4FkS9D/UkLQrSFH95RFMFmqtHQUoWvXwNd0gzY7vnAeZEdzvLeDYqC/YMi3Z2/cNsOCB1/P1z0Pum7xkyz2PEGGab1E2QNK5ifAsl4=
+	t=1769076159; cv=none; b=o9cIh0Ru4rcJKW2bmn/4doNefb74SpdY4ecyFRyT6t8slXEnM6mbgQEtM0yl7P3pKBrjTWTOybtA7TROgZLkF6Jv2kcXuW2k346ZHBmnOG1jJU4Omq/jt626cXCFHzSpPtcW8YRFtFXx27jQPyhAGJHVS0f0uKItMfXC7461/vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769074869; c=relaxed/simple;
-	bh=ULYW/RP0yu7Z99OE1vPmkiwP012bx0rlTW+FCdIDYmc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FS6OhoSk3aMndcdEOhyRBR4nfX8XVhTRd+kgSUg0bDHzsHBrrWftsjlbkrhSCNXIr8CC5K6kHAHOKYeKBgif62P6yXTOwoBszq63oPngYOFwU+792Fu5Ix73tkMgy+VV3L4zoV1c6eDEQGbo/NUqgFRu97dfxjob1MAs1phY1SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIPtWEcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789EFC116C6;
-	Thu, 22 Jan 2026 09:41:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769074867;
-	bh=ULYW/RP0yu7Z99OE1vPmkiwP012bx0rlTW+FCdIDYmc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SIPtWEcKNGS0u07v7qFDECVGvCyv6rnxV6zPa5z35e5MkBSDph9xXnxhQEcOtZgWX
-	 Jh2L561z4a8Eb9zXxgdha2KZPD/bVH8bRD8YYQVICHZ35W/rGQCZv13UmQqN+Q2mJ0
-	 +ZUJzyQPH8u7Sd0RkGIaY6w7zwXVTB9k77ChA0ciApSBDWnb/Y8g5C9kOM5ysua9TH
-	 fGrZLDTiXxAzczZnc8shj6Ig4r6ipMWehlkbVohJcjNBs6yS1h07XZG8VmWgPpZVQc
-	 +McUT7glVR8tz8o10wtWBm225RKY73eZMjI99lY3tMAWJ7m/C4xllU2OSlypEWZdVC
-	 nre+DhGxBEhug==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1virBW-000000003RU-2WW7;
-	Thu, 22 Jan 2026 10:41:02 +0100
-Date: Thu, 22 Jan 2026 10:41:02 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Rob Clark <rob.clark@oss.qualcomm.com>
-Cc: Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Abhinav Kumar <abhinav.kumar@linux.dev>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Subject: Re: [PATCH] drm/msm/a6xx: fix bogus hwcg register updates
-Message-ID: <aXHwrnMS2aj_PYRj@hovoldconsulting.com>
-References: <20251221164552.19990-1-johan@kernel.org>
- <aWdaLF_A5fghNZhN@hovoldconsulting.com>
- <aXDt6v_iO4EFCqyw@hovoldconsulting.com>
- <CACSVV039g9CcAKhtMAwn=hH4hMT2nV77vxiasgUSFF-sn=+JgA@mail.gmail.com>
+	s=arc-20240116; t=1769076159; c=relaxed/simple;
+	bh=U7gZ4KtU9pdT22CPcscPa0l7Fcikaz3hIApZkPxTY3w=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T61Wu/Ftu2fEnxF69MCLeYrP0i73ggadcpAmKC0Re3I1SP9mDfAx2YVkkEYkfjJMa8eXaq3owuKxlJ4c1zGq8LWPrgwII2mMsb3qWdncfTSmvFipnkn1pldoYjdiri1eU0oMHSyIptyPZOez1pSBQaCHuBe9i1mGtvTGH6QBsRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yadro.com; spf=pass smtp.mailfrom=yadro.com; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=GM6cSHwx; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=wu1Zz0IP; arc=none smtp.client-ip=195.3.219.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yadro.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yadro.com
+Received: from mta-01.yadro.com (localhost [127.0.0.1])
+	by mta-01.yadro.com (Postfix) with ESMTP id 5706220022;
+	Thu, 22 Jan 2026 12:56:25 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-01.yadro.com 5706220022
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-02;
+	t=1769075785; bh=TSfOQSD1nGDR+S9g/1A7cqiXfGLSItDDZxx/gk5oYV4=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:From;
+	b=GM6cSHwxWxQIE/Qqnda3N1lU2OY6aRIz2KZQ7Afc+jUt/g6qEUXymwk1wRdjVI4DU
+	 hFwBbdTRxx2AZAQcM15Zm1pyOKvG491T3HhXFZt3bd4VZa2nNNftSZmFHfM5csOzQO
+	 DZfLGCHpzXTcCJfoCE2SKC1nkrU7fwYTaXEcLYzYydx1R3uh6p/f+90/09flm3TmtA
+	 ErsUYgtO8jxm+1vZXA/A762ZUjdzyxFTQ5ZN3jCdpHkWIgy45mbNVmOA5bXpOgtjXu
+	 ry97qMIN1N182hgcFEKgildkjk/d8sUB2LDTi3kVD5+NOaP+4Ld1ie4MqJN7dYAxS1
+	 X6756Slyc5NIQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
+	t=1769075785; bh=TSfOQSD1nGDR+S9g/1A7cqiXfGLSItDDZxx/gk5oYV4=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:From;
+	b=wu1Zz0IPBuOhGnzc4XKQscYXl8X2pPQwP1ujmLx54P1RKlIFiZ3EYdlby7K/ipAEm
+	 oHVky1BvXyJ/NtW3FEoeY1XpnAbc/plo6pPRugw2kp8sdm6ux/Sz+RPI/AsobUBb99
+	 sxgOIChJkxR9B2kfLSoSjcmWFn8z5xGzJwdyv+DgzBjKemrOzGM8JL5fNWwJsYfWmB
+	 pAmeFvC0PjsTt7iQXGsOYdL003iyIcAubeKK/REAczBzmjMGk9ihF94K9znthAE1u8
+	 tyBD1yqIw6iloQgYPSNeozfkSm8UeTK8ijxa3pqsrN31uF5MnRWAqwT3T+S8gJY/i/
+	 G9G+8s0RFHR+g==
+Received: from RTM-EXCH-06.corp.yadro.com (unknown [10.34.9.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mta-01.yadro.com (Postfix) with ESMTPS;
+	Thu, 22 Jan 2026 12:56:17 +0300 (MSK)
+Received: from T-EXCH-12.corp.yadro.com (10.34.9.214) by
+ RTM-EXCH-06.corp.yadro.com (10.34.9.206) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Thu, 22 Jan 2026 12:56:34 +0300
+Received: from yadro.com (10.34.9.241) by T-EXCH-12.corp.yadro.com
+ (10.34.9.214) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Thu, 22 Jan
+ 2026 12:56:33 +0300
+Date: Thu, 22 Jan 2026 12:56:34 +0300
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
+To: Prithvi <activprithvi@gmail.com>
+CC: <martin.petersen@oracle.com>, <linux-scsi@vger.kernel.org>,
+	<target-devel@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <hch@lst.de>,
+	<jlbec@evilplan.org>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel-mentees@lists.linux.dev>, <skhan@linuxfoundation.org>,
+	<david.hunter.linux@gmail.com>, <khalid@kernel.org>,
+	<syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] scsi: target: Fix recursive locking in
+ __configfs_open_file()
+Message-ID: <20260122095634.GA15012@yadro.com>
+References: <20260108191523.303114-1-activprithvi@gmail.com>
+ <20260115032012.yb5ylmumcirrmsbr@inspiron>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACSVV039g9CcAKhtMAwn=hH4hMT2nV77vxiasgUSFF-sn=+JgA@mail.gmail.com>
+In-Reply-To: <20260115032012.yb5ylmumcirrmsbr@inspiron>
+X-ClientProxiedBy: RTM-EXCH-04.corp.yadro.com (10.34.9.204) To
+ T-EXCH-12.corp.yadro.com (10.34.9.214)
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/01/22 08:49:00
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/01/22 07:14:00 #28140735
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-KATA-Status: Not Scanned
+X-KSMG-LinksScanning: NotDetected, bases: 2026/01/22 08:49:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 5
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.96 / 15.00];
+X-Spamd-Result: default: False [-0.46 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[yadro.com:s=mta-02,yadro.com:s=mta-03];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[poorly.run,kernel.org,oss.qualcomm.com,linux.dev,gmail.com,somainline.org,vger.kernel.org,lists.freedesktop.org,ffwll.ch];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	TAGGED_FROM(0.00)[bounces-211215-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[oracle.com,vger.kernel.org,lst.de,evilplan.org,lists.linux.dev,linuxfoundation.org,gmail.com,kernel.org,syzkaller.appspotmail.com];
+	TAGGED_FROM(0.00)[bounces-211216-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[yadro.com,reject];
+	DKIM_TRACE(0.00)[yadro.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[yadro.com:email,yadro.com:dkim,yadro.com:mid,appspotmail.com:email,ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,syzkaller.appspot.com:url];
 	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[d.bogdanov@yadro.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	TAGGED_RCPT(0.00)[stable,f6e8174215573a84b797];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,hovoldconsulting.com:mid]
-X-Rspamd-Queue-Id: 3C67764C50
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 4BFBC6512E
 X-Rspamd-Action: no action
 
-[ +CC: Dave and Simona ]
-
-On Wed, Jan 21, 2026 at 08:59:51AM -0800, Rob Clark wrote:
-> On Wed, Jan 21, 2026 at 7:17 AM Johan Hovold <johan@kernel.org> wrote:
-> >
-> > On Wed, Jan 14, 2026 at 09:56:12AM +0100, Johan Hovold wrote:
-> > > On Sun, Dec 21, 2025 at 05:45:52PM +0100, Johan Hovold wrote:
-> > > > The hw clock gating register sequence consists of register value pairs
-> > > > that are written to the GPU during initialisation.
-> > > >
-> > > > The a690 hwcg sequence has two GMU registers in it that used to amount
-> > > > to random writes in the GPU mapping, but since commit 188db3d7fe66
-> > > > ("drm/msm/a6xx: Rebase GMU register offsets") they trigger a fault as
-> > > > the updated offsets now lie outside the mapping. This in turn breaks
-> > > > boot of machines like the Lenovo ThinkPad X13s.
-> > > >
-> > > > Note that the updates of these GMU registers is already taken care of
-> > > > properly since commit 40c297eb245b ("drm/msm/a6xx: Set GMU CGC
-> > > > properties on a6xx too"), but for some reason these two entries were
-> > > > left in the table.
-> > > >
-> > > > Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support")
-> > > > Cc: stable@vger.kernel.org  # 6.5
-> > > > Cc: Bjorn Andersson <andersson@kernel.org>
-> > > > Cc: Konrad Dybcio <konradybcio@kernel.org>
-> > > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > > ---
-> > >
-> > > This one does not seem to have been applied yet despite fixing a
-> > > critical regression in 6.19-rc1. I guess I could have highlighted that
-> > > further by also including:
-> > >
-> > > Fixes: 188db3d7fe66 ("drm/msm/a6xx: Rebase GMU register offsets")
-> > >
-> > > I realise some delays are expected around Christmas, but can you please
-> > > try to get this fix to Linus now that everyone should be back again?
-> >
-> > I haven't received any reply so was going to send another reminder, but
-> > I noticed now that this patch was merged to the msm-next branch last
-> > week.
-> >
-> > Since it fixes a regression in 6.19-rc1 it needs to go to Linus this
-> > cycle and I would have assumed it should have be merged to msm-fixes.
-> >
-> > (MSM) DRM works in mysterious ways, so can someone please confirm that
-> > this regression fix is heading into mainline for 6.19-final?
+On Thu, Jan 15, 2026 at 08:50:12AM +0530, Prithvi wrote:
 > 
-> Sorry, mesa 26.0 branchpoint this week so I've not had much time for
-> kernel for last few weeks and didn't have time for a 2nd msm-fixes PR.
-> But with fixes/cc tags it should be picked into 6.19.y
+> On Fri, Jan 09, 2026 at 12:45:23AM +0530, Prithvi Tambewagh wrote:
+> > In flush_write_buffer, &p->frag_sem is acquired and then the loaded store
+> > function is called, which, here, is target_core_item_dbroot_store().
+> > This function called filp_open(), following which these functions were
+> > called (in reverse order), according to the call trace:
+> >
+> > down_read
+> > __configfs_open_file
+> > do_dentry_open
+> > vfs_open
+> > do_open
+> > path_openat
+> > do_filp_open
+> > file_open_name
+> > filp_open
+> > target_core_item_dbroot_store
+> > flush_write_buffer
+> > configfs_write_iter
+> >
+> > Hence ultimately, __configfs_open_file() was called, indirectly by
+> > target_core_item_dbroot_store(), and it also attempted to acquire
+> > &p->frag_sem, which was already held by the same thread, acquired earlier
+> > in flush_write_buffer. This poses a possibility of recursive locking,
+> > which triggers the lockdep warning.
+> >
+> > Fix this by modifying target_core_item_dbroot_store() to use kern_path()
+> > instead of filp_open() to avoid opening the file using filesystem-specific
+> > function __configfs_open_file(), and further modifying it to make this
+> > fix compatible.
+> >
+> > Reported-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=f6e8174215573a84b797
+> > Tested-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+> > ---
+> >  drivers/target/target_core_configfs.c | 13 +++++++------
+> >  1 file changed, 7 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+> > index b19acd662726..f29052e6a87d 100644
+> > --- a/drivers/target/target_core_configfs.c
+> > +++ b/drivers/target/target_core_configfs.c
+> > @@ -108,8 +108,8 @@ static ssize_t target_core_item_dbroot_store(struct config_item *item,
+> >                                       const char *page, size_t count)
+> >  {
+> >       ssize_t read_bytes;
+> > -     struct file *fp;
+> >       ssize_t r = -EINVAL;
+> > +     struct path path = {};
+> >
+> >       mutex_lock(&target_devices_lock);
+> >       if (target_devices) {
+> > @@ -131,17 +131,18 @@ static ssize_t target_core_item_dbroot_store(struct config_item *item,
+> >               db_root_stage[read_bytes - 1] = '\0';
+> >
+> >       /* validate new db root before accepting it */
+> > -     fp = filp_open(db_root_stage, O_RDONLY, 0);
+> > -     if (IS_ERR(fp)) {
+> > +     r = kern_path(db_root_stage, LOOKUP_FOLLOW, &path);
+> > +     if (r) {
+> >               pr_err("db_root: cannot open: %s\n", db_root_stage);
+> >               goto unlock;
+> >       }
+> > -     if (!S_ISDIR(file_inode(fp)->i_mode)) {
+> > -             filp_close(fp, NULL);
+> > +     if (!d_is_dir(path.dentry)) {
+> > +             path_put(&path);
+> >               pr_err("db_root: not a directory: %s\n", db_root_stage);
+> > +             r = -ENOTDIR;
+> >               goto unlock;
+> >       }
+> > -     filp_close(fp, NULL);
+> > +     path_put(&path);
+> >
+> >       strscpy(db_root, db_root_stage);
+> >       pr_debug("Target_Core_ConfigFS: db_root set to %s\n", db_root);
+> >
+> > base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+> > --
+> > 2.34.1
+> >
 
-I'm afraid that's not good enough as this is a *regression* breaking the
-display completely on machines like the X13s.
+You missed the very significant thing in the commit message - that this
+lockdep warning is due to try to write its own filename to dbroot file:
 
-Regression fixes should go to mainline this cycle since we don't
-knowingly break users' setups (and force them to debug/bisect when they
-update to 6.19 while the fix has been available since before Christmas).
+	db_root: not a directory: /sys/kernel/config/target/dbroot
 
-Can't you just send a PR with this single fix? Otherwise, perhaps Dave
-or Simona can pick up the fix directly?
+That is why the semaphore is the same - it is of the same file.
 
-Johan
+Without that explanation nobody understands wheter it is a false positive or not.
+
+The fix itself looks good.
+
+Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com> 
 
