@@ -1,164 +1,134 @@
-Return-Path: <stable+bounces-211238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211239-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iL94A/MzcmmadwAAu9opvQ
-	(envelope-from <stable+bounces-211238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:28:03 +0100
+	id uA0jCLctcmmadwAAu9opvQ
+	(envelope-from <stable+bounces-211239-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:01:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8205F67EE3
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:28:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 517EF67A40
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:01:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 3F42292403C
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 13:32:46 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id E8527929B16
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 13:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15A331A564;
-	Thu, 22 Jan 2026 13:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CAF340287;
+	Thu, 22 Jan 2026 13:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="dC1wa78e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZqz90LK"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A83131B803;
-	Thu, 22 Jan 2026 13:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F746329E6D;
+	Thu, 22 Jan 2026 13:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769088550; cv=none; b=Bx1GXLNBRl5J09jroDk2O6+xmNyO5mj4I4MMGpeS/iZJ9CdG9MpxG52Dh5q5fLR2Dova6fHHDCCToFVYhW7fdgCTl2y2hiLq0ZVxFgNHAjQxonhBu9HRm+UShT8qsjXSOx7oFwyXsRtGXXFYKXbtqFaNDITsmzBcSsAa4RKukHQ=
+	t=1769088600; cv=none; b=koxsLcAEbZcLLBjV6+dmoQCT68ZBhzsunLzB5zYpLT4c/wgz8fhryVAIcHtOtauM+K2UFZmUfrJ6ljmCDgzaLH6+W48dlyXsGF2sK5S8NdHFVjgheX9XzyapNyLyop8BjGqci0zB5anUAHSlWt58o2cqFjDaVJsTO51X/H+AiUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769088550; c=relaxed/simple;
-	bh=m9U6Y+bSWTgs4pYYcQrqD8WdR2YkpRXqY9YeVrThtjA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pe6BeFIf7FyFc6gwFBt9ojFuSleVZKfszD/I9nssGdCFpWZ+9HakMDhiRU9tjqjsF1EbKJwycMWzoFgPIGXGf0FyW7eE+MM5uhrUj0wwLjr29SYJ6Y5FELSfD9GQoNADV4kLqZkobiOqSU+5hoqLiMKfnjd2aha86Wj32H0RGhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=dC1wa78e; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=e+
-	6gDoaU6sjJYiXvvo+102yEP3zTOi6BPXPONrmdz8k=; b=dC1wa78esyeMyra8fB
-	Ue5iSWNlHlVvxuY3NcWOQse2SSMGWXKuMf6PBV/dz1nnHH2I/C4v74o5OT5qoye7
-	M21pKWJm/hmqwHr0UcNJiKjxzX+ocJ4dj9uLykTa1YoKx5Hnu6EcPpzUexqLwxjV
-	BNOA1Ag/wMheQnO8B32WwAWEs=
-Received: from ubuntu24-z.. (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCgvCgAnE2TOJXJpoBt0MQ--.31S2;
-	Thu, 22 Jan 2026 21:27:46 +0800 (CST)
-From: ranxiaokai627@163.com
-To: pratyush@kernel.org,
-	surenb@google.com,
-	akpm@linux-foundation.org
-Cc: pasha.tatashin@soleen.com,
-	kent.overstreet@linux.dev,
-	rppt@kernel.org,
-	graf@amazon.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	ran.xiaokai@zte.com.cn,
-	ranxiaokai627@163.com,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND v3] kho: init alloc tags when restoring pages from reserved memory
-Date: Thu, 22 Jan 2026 13:27:40 +0000
-Message-ID: <20260122132740.176468-1-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1769088600; c=relaxed/simple;
+	bh=j16OdxVu7cymtCh8dnQR++a6SNKxWgDVaAkhwyd3QF4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I/4hN06TXwEuSZH6bteMklM1XL5Do/lXBR0kIu6HxHO4rKSvpWK4n8cRLnBgObC1m/n83r9AJvhBypriptk7xUzRZr5gbkRvLSKpneaDNT21l/cVgKQzdx+tUmM/QRpkHk5e9vBL67I+Uqbq9WiGyTrTYrF6+KJS3wdyTAn/s1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZqz90LK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D30EC116C6;
+	Thu, 22 Jan 2026 13:29:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769088600;
+	bh=j16OdxVu7cymtCh8dnQR++a6SNKxWgDVaAkhwyd3QF4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BZqz90LKsHdKl/22TXo6iQ+m4JVqGgCNpKYrLQZhVMYfO/V7uN8s+i7ewXeYBPc6k
+	 HZWF4oIyaL5gnw3odAK9FN0U6zph3GkP1/mWXRY/6RrgRjWGvA7mR2bb6/HkKEISfz
+	 NaSRKjbRUS4gbXCFsJYQP1wCOUDgnGf4ogQxfFG80fcwU+9k/CwHRA1/2B8g5jARm6
+	 Q/X6TlDhrD7bGvsrIKy37xsJPR61jg+SHxlVjxnJg9dBGoWcMCuarNhqjNPeezWSJt
+	 KrjKl5Nw/IAWlEf0owpT1OCwlGy4AT1k65zj+s7Yobz0tv4HLp8stlMZiKV6LBsFk0
+	 bogd2y77+QxvA==
+Date: Thu, 22 Jan 2026 13:29:53 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/139] 6.12.67-rc1 review
+Message-ID: <4f0d9d57-2c0c-4e05-93ac-01d3ddcf5dd3@sirena.org.uk>
+References: <20260121181411.452263583@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCgvCgAnE2TOJXJpoBt0MQ--.31S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ArWkWr1xuFWrXFyruw4xXrb_yoW8CFWDpr
-	WUJr1kt3y5JwnrZws2va4vk34fXws5C3y5Jasru34fZF13Awn2yas7ZFy0vF15Zr4FvF48
-	Wr4UXrZ0v3WYk3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0piFdgJUUUUU=
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxRJ0wGlyJdLrAwAA3n
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="HFsI2e+kDhQet7m1"
+Content-Disposition: inline
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+X-Cookie: Don't read everything you believe.
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-211238-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[soleen.com,linux.dev,kernel.org,amazon.com,kvack.org,vger.kernel.org,lists.infradead.org,zte.com.cn,163.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	TAGGED_FROM(0.00)[bounces-211239-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[163.com,none];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
 	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	FREEMAIL_FROM(0.00)[163.com];
-	FROM_NEQ_ENVFROM(0.00)[ranxiaokai627@163.com,stable@vger.kernel.org]
-X-Rspamd-Queue-Id: 8205F67EE3
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 517EF67A40
 X-Rspamd-Action: no action
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-Memblock pages (including reserved memory) should have their allocation
-tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-released to the page allocator. When kho restores pages through
-kho_restore_page(), missing this call causes mismatched
-allocation/deallocation tracking and below warning message:
+--HFsI2e+kDhQet7m1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-alloc_tag was not set
-WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
-RIP: 0010:___free_pages+0xb8/0x260
- kho_restore_vmalloc+0x187/0x2e0
- kho_test_init+0x3c4/0xa30
- do_one_initcall+0x62/0x2b0
- kernel_init_freeable+0x25b/0x480
- kernel_init+0x1a/0x1c0
- ret_from_fork+0x2d1/0x360
+On Wed, Jan 21, 2026 at 07:14:08PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.67 release.
+> There are 139 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-fix this.
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
----
+--HFsI2e+kDhQet7m1
+Content-Type: application/pgp-signature; name="signature.asc"
 
-v2 -> v3: 
- - also call clear_page_tag_ref() for non-compound order-0 tail pages
+-----BEGIN PGP SIGNATURE-----
 
- kernel/liveupdate/kexec_handover.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlyJlEACgkQJNaLcl1U
+h9CzHgf/aiALH26UlJr/7pcHx1qAvRguvmmRNaiv1cXHwB77letexjIdF+W41oMx
+R/mzyirDKKGplZKfN4Mg+6hzwVbjSOyGAE1+54+2T4eW5zk5sCLBLgSz8MGR/X1s
+CSfzJC1uaxWfn+TGRQYywuc4YW6lFnZAbu/voz27Qm41z25vvB/yq2rPDwmsFB1z
+pLW/1an3Z7PgIyFWmyD7TtyB3YpwcshbDT8wSwnDCiDYJiA9WPmnFHTrOHUYQWsw
+tD+GgEBmup/TpP2dd/RapgHYQld92YMYAdmBf63ar3oHvnWeUAdOxmTmj/jhKU/1
+7BArTZe03k5/l/Ixrk4mhWYffiedBw==
+=B/To
+-----END PGP SIGNATURE-----
 
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index d4482b6e3cae..96767b106cac 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -255,6 +255,14 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
- 	if (is_folio && info.order)
- 		prep_compound_page(page, info.order);
- 
-+	/* Always mark headpage's codetag as empty to avoid accounting mismatch */
-+	clear_page_tag_ref(page);
-+	if (!is_folio) {
-+		/* Also do that for the non-compound tail pages */
-+		for (unsigned int i = 1; i < nr_pages; i++)
-+			clear_page_tag_ref(page + i);
-+	}
-+
- 	adjust_managed_page_count(page, nr_pages);
- 	return page;
- }
--- 
-2.25.1
-
-
+--HFsI2e+kDhQet7m1--
 
