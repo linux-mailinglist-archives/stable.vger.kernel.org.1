@@ -1,296 +1,244 @@
-Return-Path: <stable+bounces-211315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uFhTMmyUcmksmQAAu9opvQ
-	(envelope-from <stable+bounces-211315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 22:19:40 +0100
+	id wKk/JOObcmkFnAAAu9opvQ
+	(envelope-from <stable+bounces-211316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 22:51:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D94D6DA9B
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 22:19:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCB76DF36
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 22:51:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 671483010D9C
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 21:19:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9BB3C30041FB
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 21:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22573BE486;
-	Thu, 22 Jan 2026 21:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4977C3A4ACE;
+	Thu, 22 Jan 2026 21:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFoEAKIm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lZKdn7EA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6EB2D8396;
-	Thu, 22 Jan 2026 21:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9E1239E97
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 21:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769116768; cv=none; b=GBlNvpx4W94tB9ZmTH+xYDUYHp3ckQb6L+WYIQslRRpsnDL6BPg5aKTu9vqPjphjtHS7b6g0o8hsAvQssk/95et6Mr4zAbOdaJGiILafvUWAUE+ZhVI0uXw6FUhzB2GV5x7avP2acR7U9jjacbjtp6ia2fgzHsDO5Wd/CUltXC0=
+	t=1769118681; cv=none; b=Up2p2keqB4WPgBTFR8NroTt5WeB+2jE9irJql+/zwv/P6QxfuOAnm3udtBLe4If+4TL/QEWntoyCeR7eLuMWrO/2DDdx2ljEcP9qpCcoi9mL7Gbdoe1toT0UWIAaOMMXC0SN7r7JlEoTWmEcqfICJW5GaNvcgisivwGwC6PGhKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769116768; c=relaxed/simple;
-	bh=bystnSK/iqbWozZ7hbo6gpEx8M3AERXWdK58MlZ2V44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E+YizOlLo2I28L8GwvV4dhZNDBjwY9+B1P4hql982dCTAapmjSHQf+q/vUprnKMaOxKAkxEYs/+uOzePk4o7rlvxkGwCQqEIV/63PII+qyExAYKuf+ALgftBkV3fuukHYBuBmDA0OH3jVqsYUvSNjHrdQkjI4NUL0waywGPaJcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFoEAKIm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4ABC116C6;
-	Thu, 22 Jan 2026 21:19:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769116768;
-	bh=bystnSK/iqbWozZ7hbo6gpEx8M3AERXWdK58MlZ2V44=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BFoEAKImmRrF0iBubHmvI7C5xPKsb1k1+A5ekvmjLDN8EhFd3c3rntizCJzF5xE+V
-	 4STZ5pqHpfeARb0FKKtL8x1Y4qyzOGohJyg2tfSdeVq/GCa8bAndc7GzDW00GoILfP
-	 KNJTcgStKu3x5gJ3M1bLhCW+vXPY8/myr4+4mqGXyRjY3y04Fnlm0DQlh6bDHOLJMY
-	 TM1kBWiCDmNbXFMscsoJaJoD5V6DuxLfad5eHMzJrrxeTaQ9dYCOj6g1AaIp58Il6w
-	 zttkHAl2v82ITe2gQ8MeOkBpvZHMouJcU98wY9K/GSMduYgVxARcdaAJi2qH85YyH8
-	 G15fO2RMNfL9Q==
-Date: Thu, 22 Jan 2026 22:19:23 +0100
-From: Niklas Cassel <cassel@kernel.org>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] PCI: dwc: Fix skipped index 0 in outbound ATU
- setup
-Message-ID: <aXKUW8euDVaRJofR@ryzen>
-References: <20251229-ecam_io_fix-v2-0-41a0e56a6faa@oss.qualcomm.com>
- <20251229-ecam_io_fix-v2-1-41a0e56a6faa@oss.qualcomm.com>
- <aXI8ByG3RlLpIRRa@ryzen>
- <alpine.DEB.2.21.2601221806080.6421@angie.orcam.me.uk>
+	s=arc-20240116; t=1769118681; c=relaxed/simple;
+	bh=/u+ZErAt/dSlC5m863c/9Cp4PgYSc0bXVyQfWIL1XNM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jG1XVjWLrOKSCLlcIopNBPYEY+V4lWnDLtKElBZ6C4gzt0VQoBUTOYeI6QxFQk7DQXpCbsSbpHs3n9HDpISs60IIzW5mTTZRS7pqATAQZhfRdAhY7YMaiVcTOsvNFXmnP+sYRnl2BY9JN1Y8SVZNRTuQwuCifpN4zZthjPoNxr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lZKdn7EA; arc=none smtp.client-ip=209.85.128.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-4801d21c411so8183645e9.3
+        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 13:51:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769118675; x=1769723475; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e0ISmEwBHp05TAPm+EEbFkb53tTfIWH4DgA6isaTgsE=;
+        b=lZKdn7EAywldaNah9QT/mDq1UnHaMtoJhUeJPLHSVJq0Wx7adLNwcRXgieNrbL2duD
+         LBFWFGYfb26SMwHUwHultFuZNVIaOfc2GW4hzDZIaAIZHSFpLb6otFuE9NtZsIevKa1K
+         1+hvN5/9ZGpxGirLf0BTG75++yBgJEg9SI5ymGMTtnBi8WOr+GmMuiddDtNNI9hyn6hK
+         38MhabynlgfbCmC/zLp65bCESNLcoDJnqpC3I+v2lpI+0Kvani+kDnVk4sdMM8uWDr2r
+         LI1uCYA/q9v37HoyV6/HlFWh+oAET8jFb445RaknaUNLMb6a3yJcL4BCQfU8ekFo2Niu
+         8djw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769118675; x=1769723475;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e0ISmEwBHp05TAPm+EEbFkb53tTfIWH4DgA6isaTgsE=;
+        b=ukhFnqfK4lydt+Ei4CPPtexjOHoPFgGPcQkJGcPj2Xzk+Vo1s6IyxEqEt7i2L/8+7O
+         nwdM7y39VtggrhvQSuKyUnT+p6JTKBF1EJD/Bgv6byIz/NEqRqUuXdaolQW6AP/YmVvX
+         Y6srdojYs7Rl3l2X4o0jy3iv4FP9LLWqkizjiSUM4VkJZChD3vGzPPjcyTnL60GiFo6N
+         Aecjmlay9j/8OZBOljMQ5P0vmMJekH0DfpjMJi3wcmBUsMpvJbKVy30beoGObitWJ9fY
+         OOJg0Z1f17PIErSQNNVnLHSI4DNQgVPBKvpbLnE4e4CcdOR7o6FPA8RU/RYRAABcI1W6
+         uLbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWD/zGy95yvEAhLzrJ0Qo2X3yNL/AnNmpsclegcAG7iBRSZILheOTWZL4GmtnE7YB2jT+CdOzk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLTLX3XjpSuH1kPyjRi7A+y/kN5wb53aIlX+OBVVaaafJ2Uaa1
+	R8q8zoQ2KVs7Qev0sXiz87/BILXy87hBZcTVgJ3hkcpd5lfeuWGFoP+M
+X-Gm-Gg: AZuq6aKcgfU5XZAmNTm3W9VyXJY1sf6GOY2sV3WEhKCLvNg1dzPwYXk96lNP8ycWgQx
+	cPzfwvf+FB+qu8Rg5/pdH5/wdIy5RaSVINuvl9FRQHmYWAXdvG7xP7hYWybI1VoqHG+8p9PaFav
+	Z7WDcjisvVDq2mrESv9lC84TWN1E+jGiEAlv7BxowNCOzJDrGHF9nFCjpzz12B7mo78U8MeW4Yw
+	bNvgsar14iPLz2cHNQybIkisd4esEuvnnN11QQLovILxT4cdsbVFLHzp6D1G7wSHOx3/UV0eiSH
+	cOrGNOkalzaeLE43FbzEaBq5FJTREDWkXCdnf8Hr4UVWGE6u3vXrFm/cmLbVs/egsqdRLgx9Gl2
+	8rahj10Uk2Vxg/ZZ3li0Heq7Cmw48nuwqQK5VNqrBxqg77+k3EvViuxUuFmEk8WD0nd9pvPz2f2
+	ZSAAXFyAewFF9rq41Hy/kaXAOYPpce8JTjZNerHNRH5OvJ6TJXpJKGACa3y8clj2VpLajxzHi6f
+	nfYcGt9UVXsUunSqZLr8FKz3FavL6u8jKfRe7hL9qk7NBIEIF3GAsEl5r0Wldz1U7FrtUs4AvYJ
+X-Received: by 2002:a05:600c:4692:b0:477:55c9:c3ea with SMTP id 5b1f17b1804b1-4804c9ca73amr18662255e9.35.1769118674489;
+        Thu, 22 Jan 2026 13:51:14 -0800 (PST)
+Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1f7c8efsm1774230f8f.42.2026.01.22.13.51.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Jan 2026 13:51:13 -0800 (PST)
+Message-ID: <efe080c9-5176-4fa1-9f65-5be44074779e@gmail.com>
+Date: Thu, 22 Jan 2026 21:51:10 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="PQqAQjSSbpBNymFr"
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2601221806080.6421@angie.orcam.me.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
+ cross-buffer accounting
+To: Jens Axboe <axboe@kernel.dk>, Yuhao Jiang <danisjiang@gmail.com>
+Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260119071039.2113739-1-danisjiang@gmail.com>
+ <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
+ <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
+ <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
+ <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
+ <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
+ <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
+ <2be71481-ac35-4ff2-b6a9-a7568f81f728@gmail.com>
+ <2fcf583a-f521-4e8d-9a89-0985681ca85b@kernel.dk>
+ <d2fc2ff2-98d9-49f8-af95-968100174d55@gmail.com>
+ <3b7e6088-7d92-4d5c-96c7-f8c0e2cc7745@kernel.dk>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <3b7e6088-7d92-4d5c-96c7-f8c0e2cc7745@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211315-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211316-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+,1:+,2:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_CC(0.00)[oss.qualcomm.com,gmail.com,kernel.org,google.com,nxp.com,baikalelectronics.ru,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_ATTACHMENT(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[kernel.dk,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6D94D6DA9B
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3CCB76DF36
 X-Rspamd-Action: no action
 
-
---PQqAQjSSbpBNymFr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Thu, Jan 22, 2026 at 06:16:11PM +0000, Maciej W. Rozycki wrote:
-> On Thu, 22 Jan 2026, Niklas Cassel wrote:
+On 1/22/26 17:47, Jens Axboe wrote:
+> On 1/22/26 4:43 AM, Pavel Begunkov wrote:
+>> On 1/21/26 14:58, Jens Axboe wrote:
+>>> On 1/20/26 2:45 PM, Pavel Begunkov wrote:
+>>>> On 1/20/26 17:03, Jens Axboe wrote:
+>>>>> On 1/20/26 5:05 AM, Pavel Begunkov wrote:
+>>>>>> On 1/20/26 07:05, Yuhao Jiang wrote:
+>>>> ...
+>>>>>>>
+>>>>>>> I've been implementing the xarray-based ref tracking approach for v3.
+>>>>>>> While working on it, I discovered an issue with buffer cloning.
+>>>>>>>
+>>>>>>> If ctx1 has two buffers sharing a huge page, ctx1->hpage_acct[page] = 2.
+>>>>>>> Clone to ctx2, now both have a refcount of 2. On cleanup both hit zero
+>>>>>>> and unaccount, so we double-unaccount and user->locked_vm goes negative.
+>>>>>>>
+>>>>>>> The per-context xarray can't coordinate across clones - each context
+>>>>>>> tracks its own refcount independently. I think we either need a global
+>>>>>>> xarray (shared across all contexts), or just go back to v2. What do
+>>>>>>> you think?
+>>>>>>
+>>>>>> The Jens' diff is functionally equivalent to your v1 and has
+>>>>>> exactly same problems. Global tracking won't work well.
+>>>>>
+>>>>> Why not? My thinking was that we just use xa_lock() for this, with
+>>>>> a global xarray. It's not like register+unregister is a high frequency
+>>>>> thing. And if they are, then we've got much bigger problems than the
+>>>>> single lock as the runtime complexity isn't ideal.
+>>>>
+>>>> 1. There could be quite a lot of entries even for a single ring
+>>>> with realistic amount of memory. If lots of threads start up
+>>>> at the same time taking it in a loop, it might become a chocking
+>>>> point for large systems. Should be even more spectacular for
+>>>> some numa setups.
+>>>
+>>> I already briefly touched on that earlier, for sure not going to be of
+>>> any practical concern.
+>>
+>> Modest 16 GB can give 1M entries. Assuming 50ns-100ns per entry for the
+>> xarray business, that's 50-100ms. It's all serialised, so multiply by
+>> the number of CPUs/threads, e.g. 10-100, that's 0.5-10s. Account sky
+>> high spinlock contention, and it jumps again, and there can be more
+>> memory / CPUs / numa nodes. Not saying that it's worse than the
+>> current O(n^2), I have a test program that borderline hangs the
+>> system.
 > 
-> > Also see my series here:
-> > https://lore.kernel.org/linux-pci/20260122145411.453291-4-cassel@kernel.org/T/
-> > 
-> > That tries to clean up this mess.
+> It's definitely not worse than the existing system, which is why I don't
+> think it's a big deal. Nobody has ever complained about time to register
+> buffers. It's inherently a slow path, and quite slow at that depending
+> on the use case. Out of curiosity, I ran some stilly testing on
+> registering 16GB of memory, with 1..32 threads. Each will do 16GB, so
+> 512GB registered in total for the 32 case. Before is the current kernel,
+> after is with per-user xarray accounting:
 > 
->  Is your patchset referred meant to replace this one or does it apply on 
-> top?
+> before
+> 
+> nthreads 1:      646 msec
+> nthreads 2:      888 msec
+> nthreads 4:      864 msec
+> nthreads 8:     1450 msec
+> nthreads 16:    2890 msec
+> nthreads 32:    4410 msec
+> 
+> after
+> 
+> nthreads 1:      650 msec
+> nthreads 2:      888 msec
+> nthreads 4:      892 msec
+> nthreads 8:     1270 msec
+> nthreads 16:    2430 msec
+> nthreads 32:    4160 msec
+> 
+> This includes both registering buffers, cloning all of them to another
+> ring, and unregistering times, and nowhere is locking scalability an
+> issue for the xarray manipulation. The box has 32 nodes and 512 CPUs. So
+> no, I strongly believe this isn't an issue.
+> 
+> IOW, accurate accounting is cheaper than the stuff we have now. None of
+> them are super cheap. Does it matter? I really don't think so, or people
+> would've complained already. The only complaint I got on these kinds of
+> things was for cloning, which did get fixed up some releases ago.
 
-This series does no longer apply, as it collides with a commit queued on
-controller/dwc branch:
-https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=controller/dwc&id=e9a5415adb209f86a05e55b850127ada82e070f1
+You need compound pages
 
-My patches are based on top of the above commit.
-(I saw the big mess we currently have with regards to iatu indexing,
-so I decided to clean it up, but making things consistent.)
+always > /sys/kernel/mm/transparent_hugepage/hugepages-16kB/enabled
 
+And use update() instead of register() as accounting dedup for
+registration is broken-disabled. For the current kernel:
 
-So first of all, this series needs to be rebased.
-If you ask me personally, I would prefer if Krishna could rebase on top
-of my cleanups.
+Single threaded:
+1x1G: 7.5s
+2x1G: 45s
+4x1G: 190s
 
+16x should be ~3000s, not going to run it. Uninterruptible and no
+cond_resched, so spawn NR_CPUS threads and the system is completely
+unresponsive (I guess it depends on the preemption mode).
 
-Patch 1/3 in this series is simply wrong, so it should be dropped.
-
-Patch 2/3 in this series is similar to patch 1/3 in my series, but seems
-to also have some extra prints that seem to be unrelated to fixing the issue
-at hand. (Fine to add extra prints in some other function, but don't do it in
-the fix patch itself that will be backported to stable releases.)
-
-Patch 3/3 is the only patch that needs to be rebased, and seem to be the
-patch that solves your issue.
-
-
-I don't like the way that patch 3/3 is implemented.
-
-ECAM will use two iATUs, one for PCIE_ATU_TYPE_CFG0 one for
-PCIE_ATU_TYPE_CFG1. But this patch completely disregards that
-this driver already reserves iATU index 0 for PCIE_ATU_TYPE_CFG0,
-but for non-ECAM versions.
-
-Now I understand why they have patch 1/3 in this series.
-
-But it is still wrong. It has to change the indexing based on ECAM
-is used or not.
-
-Please try the attached patch on top of my series.
-
-It avoids the need to introduce a new struct member.
-
-
-Kind regards,
-Niklas
-
---PQqAQjSSbpBNymFr
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename=0001-PCI-dwc-Fix-ECAM.patch
-
-From b3d345d7075a4757c10b8fbf85154da66bccfebf Mon Sep 17 00:00:00 2001
-From: Niklas Cassel <cassel@kernel.org>
-Date: Thu, 22 Jan 2026 22:05:39 +0100
-Subject: [PATCH] PCI: dwc: Fix ECAM ...
-
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
----
- .../pci/controller/dwc/pcie-designware-host.c | 34 +++++++++++--------
- drivers/pci/controller/dwc/pcie-designware.c  |  6 ++++
- 2 files changed, 26 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index eda94db04b63..ef66a031f0bb 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -441,7 +441,7 @@ static int dw_pcie_config_ecam_iatu(struct dw_pcie_rp *pp)
- 	/*
- 	 * Root bus under the host bridge doesn't require any iATU configuration
- 	 * as DBI region will be used to access root bus config space.
--	 * Immediate bus under Root Bus, needs type 0 iATU configuration and
-+	 * Immediate bus under Root Bus needs type 0 iATU configuration and
- 	 * remaining buses need type 1 iATU configuration.
- 	 */
- 	atu.index = 0;
-@@ -641,14 +641,6 @@ int dw_pcie_host_init(struct dw_pcie_rp *pp)
- 	if (ret)
- 		goto err_free_msi;
- 
--	if (pp->ecam_enabled) {
--		ret = dw_pcie_config_ecam_iatu(pp);
--		if (ret) {
--			dev_err(dev, "Failed to configure iATU in ECAM mode\n");
--			goto err_free_msi;
--		}
--	}
--
- 	/*
- 	 * Allocate the resource for MSG TLP before programming the iATU
- 	 * outbound window in dw_pcie_setup_rc(). Since the allocation depends
-@@ -892,8 +884,8 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
- 	struct dw_pcie *pci = to_dw_pcie_from_pp(pp);
- 	struct dw_pcie_ob_atu_cfg atu = { 0 };
- 	struct resource_entry *entry;
--	int ob_iatu_index_to_use = 0;
--	int ib_iatu_index_to_use = 0;
-+	int ob_iatu_index_to_use;
-+	int ib_iatu_index_to_use;
- 	int i, ret;
- 
- 	if (!pci->num_ob_windows) {
-@@ -915,8 +907,20 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
- 	 * NOTE: For outbound address translation, outbound iATU at index 0 is
- 	 * reserved for CFG IOs (dw_pcie_other_conf_map_bus()), thus start at
- 	 * index 1.
-+	 *
-+	 * If using ECAM, outbound iATU at index 0 and index 1 is reserved for
-+	 * CFG IOs.
- 	 */
--	ob_iatu_index_to_use++;
-+	if (pp->ecam_enabled) {
-+		ob_iatu_index_to_use = 2;
-+		ret = dw_pcie_config_ecam_iatu(pp);
-+		if (ret) {
-+			dev_err(pci->dev, "Failed to configure iATU in ECAM mode\n");
-+			return ret;
-+		}
-+	} else {
-+		ob_iatu_index_to_use = 1;
-+	}
- 
- 	resource_list_for_each_entry(entry, &pp->bridge->windows) {
- 		resource_size_t res_size;
-@@ -1002,6 +1006,7 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
- 		}
- 	}
- 
-+	ib_iatu_index_to_use = 0;
- 	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
- 		resource_size_t res_start, res_size, window_size;
- 
-@@ -1157,9 +1162,10 @@ int dw_pcie_setup_rc(struct dw_pcie_rp *pp)
- 	/*
- 	 * If the platform provides its own child bus config accesses, it means
- 	 * the platform uses its own address translation component rather than
--	 * ATU, so we should not program the ATU here.
-+	 * ATU, so we should not program the ATU here. If ECAM is enabled,
-+	 * config space access goes through ATU, so set up ATU here.
- 	 */
--	if (pp->bridge->child_ops == &dw_child_pcie_ops) {
-+	if (pp->bridge->child_ops == &dw_child_pcie_ops || pp->ecam_enabled) {
- 		ret = dw_pcie_iatu_setup(pp);
- 		if (ret)
- 			return ret;
-diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-index 2fa9f6ee149e..766df22fe46e 100644
---- a/drivers/pci/controller/dwc/pcie-designware.c
-+++ b/drivers/pci/controller/dwc/pcie-designware.c
-@@ -531,6 +531,9 @@ int dw_pcie_prog_outbound_atu(struct dw_pcie *pci,
- 	u32 retries, val;
- 	u64 limit_addr;
- 
-+	if (atu->index > pci->num_ob_windows)
-+		return -ENOSPC;
-+
- 	limit_addr = parent_bus_addr + atu->size - 1;
- 
- 	if ((limit_addr & ~pci->region_limit) != (parent_bus_addr & ~pci->region_limit) ||
-@@ -604,6 +607,9 @@ int dw_pcie_prog_inbound_atu(struct dw_pcie *pci, int index, int type,
- 	u64 limit_addr = pci_addr + size - 1;
- 	u32 retries, val;
- 
-+	if (index > pci->num_ib_windows)
-+		return -ENOSPC;
-+
- 	if ((limit_addr & ~pci->region_limit) != (pci_addr & ~pci->region_limit) ||
- 	    !IS_ALIGNED(parent_bus_addr, pci->region_align) ||
- 	    !IS_ALIGNED(pci_addr, pci->region_align) || !size) {
 -- 
-2.52.0
+Pavel Begunkov
 
-
---PQqAQjSSbpBNymFr--
 
