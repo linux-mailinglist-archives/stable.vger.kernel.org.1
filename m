@@ -1,432 +1,241 @@
-Return-Path: <stable+bounces-211286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oM2wDo9qcmnckQAAu9opvQ
-	(envelope-from <stable+bounces-211286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 19:21:03 +0100
+	id YGIaN91icmnfjQAAu9opvQ
+	(envelope-from <stable+bounces-211287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 18:48:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C98706C431
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 19:21:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459B76BA3A
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 18:48:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 04DD531D8564
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 17:42:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F3D1B3000FC8
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 17:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC11431355E;
-	Thu, 22 Jan 2026 17:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FED342503;
+	Thu, 22 Jan 2026 17:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="R6M4j1h3"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="ekzaEtyL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com [209.85.167.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1912367F56
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 17:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769103230; cv=pass; b=gHiwORa6worJ7cG3jz4YkZmY2unC4gqE413BplTBHfTxopqzuNIM/hjKetNJZud86IbbWRNhwe42Zzu5+zJJzK9973S+wiiqzlDF99MU/JbtFGiXQTiXirJprRQ95aSkSR/Paj29UnA1i1Yt13DS8BFDOXUqPLDbjz7M3GVxGMY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769103230; c=relaxed/simple;
-	bh=rBgLROGkyGYznxqWSuRkU5F4AzgyzuGopbrdq+I0uRs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IGyhoKFcPOZU0ZVqMKwP5H4WrXHnoxnBr+AsXYT5dPTJzzjBiCZwQSaPhJIUaDh3RNXzSvKe9GYUuTwaE9yjUeSKR+b430GZz0p+2JUvnsFYPd/CP93159cOg2hModm2kR0t/SHAZsAM2CkiYPnlZYQbpb/FvFcHCAD9XvKzCvQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=R6M4j1h3; arc=pass smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59dd34f8120so1439880e87.3
-        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 09:33:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769103211; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dgBR//AbkLHmxGyw4wVoQRuVOe8whXAbwSSnsDSgjvYF/79tGjwh4VZhGDCBi29frV
-         YlIbet39ZYfcMzy7Vtd98qAa66RvxIYwPlSVOvAgt9UaH8kOM7IgVe6R+dHNzp8nVoR9
-         CgIq+/XNuGljMjVTR1a4RQAlUd7mKLhP6BHp+A0aZE1pmVmkZcuUjxuTgSWp8xgzBIi4
-         S3RAtfkKyogM9cqov+0RYUZH7AATVFi3H6Afprfr+m1v6Gik6FbVDLRfbSlwFQ/NsDPA
-         rPEm1KPrEb0fZfYRViSy8/Yg+X514TdIVoVqPUdWwewAzrEfMc2OtsWF8dgHRzIvZ8qz
-         QQhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=8XKCF2Q88XMJ/IC11XgoXGRKrYQjYW3piHpYIxDwdd4=;
-        fh=x96fmTdrXgvbSnzG22VnZIhwcPz3VixYUloy4f/8jHg=;
-        b=RK8JV62UWnG2BTga01gXSoOzpuVQZ7lzOe02gIvYEaG9Yy3zpqhN0MXOfr/eoHNr98
-         biT6QKMRv+X7NKJxTJVm+/M/R/tPDwkmdNlYagBc1L7ChfXrYXteELYTLrLxPo4/cbVa
-         a83NTt7IsuA9z6DGx711WeIU11Eo3zOWd9lhsujYje+HFixHJYDm33JSy6firKudq5Yj
-         PRQ6M4JweMvW3A0E1JJVwoldL56+yJwTdHO/ny2f2ZqkQjc976NDldv1C9xMV5WYMY7b
-         sqb0wgfoqZi1RbWKl08WGyoYHWHHGEMGl7Nlmk9m/vjS+CLEx97GYJRBiqLJKvXhA+sN
-         B2ow==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4903019B0
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 17:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.194
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769104086; cv=none; b=SjzAePAw8uIdmQ/2i5c/g2UnZgKs1vwrw7G0dEhQTnuiXw7XEg8ryti4m2lJOQvmZWjmQy/cnbe0Y94JOOg3lMlkvdVXbJzyPk12L7KO5aKaIf4WvHMuY+AWh6u3J79yA+ZgImLrLX5rUqPqqPheENfFbyVc6ZSBJp3tSZPXYQs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769104086; c=relaxed/simple;
+	bh=49srhGImsId0QkHe5QH0OscT6JWTVDJqrGDDcteRD6k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cZZ9Zf2enc/J85fLaL8OjvLTM3EHQqX3TTB0hkIqLyKjWu3IKK5xVmtmlfkTlO8xlnFyTl2f+L65cYGXMjZ3+6Q4GFJPn1DFXONsS3f/Hi0K0iulUGlT/DS1C5qxvyy6trM4h1JYzl7FRonT28Mm1skHuHdTVH7fdrM1yCSB56A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=ekzaEtyL; arc=none smtp.client-ip=209.85.167.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oi1-f194.google.com with SMTP id 5614622812f47-45c733ccc32so423935b6e.0
+        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 09:48:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769103211; x=1769708011; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8XKCF2Q88XMJ/IC11XgoXGRKrYQjYW3piHpYIxDwdd4=;
-        b=R6M4j1h3KfxZWWsckpE/6oWW4PCRkxR8EU4RfYw6AJimplHHJZ9zkt8kXc09dBNNhr
-         bo6oHb7EzBj7Xk8IaJgszrHG/VrBte6OEVxHi/vMDhdQgvTSudF1/2hmIj0axdx66670
-         dZw9Nvu7OYg8R0JOcfA1gqYt+pse7ZgNIBEWGCBtbR4LB6Ly6kJ0sRRuGProlN1acYiN
-         lyfAeHQHEnq3hJfA+Q9FtQ7dXhkb/Dr/dFOXL7CvMY4Z91oy/PH+IZXR46KTMU0cNSyT
-         bN5MjICeMG7ZemnSWgD0e6teHH3pp7gbnzdupxfUPBeL5hx3m+hvUczAiXBSBPQ3Wxrc
-         /OIg==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1769104078; x=1769708878; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tAqYu3xB4La4CDsCFBPKH7jgCHbWvIT5wooh5c1w7TA=;
+        b=ekzaEtyLptFcVPJZAjKX7EgwWmXjs3Z6bghpmwtqTaQFBQNjEP4pClwtVM7ivKOQf9
+         cshxFBn8t1VRJU3K59EO0uHoa3h4NZDdLHrWVgpYhzDHG9TSZCzIwZYh2je3QyODV1Yx
+         eQH9a+vRSxV7veydJuyfrmPac32UGUjWN06xLXl3Rb7XpLwXtU6HysIQNNzr+1g14tnu
+         kWRAMP5TuaQzY17XJWNygas/hISnT3NPSjt4a7y+gDvfoDnrxupAYCYdFHtm0+UHG+m9
+         80XZ2OdvhDt+jovYQHow9X9Ir5JB997scPDKmzGqCI4gviTBPTWqkmSvoqn6cmHhTAqd
+         S0Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769103211; x=1769708011;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8XKCF2Q88XMJ/IC11XgoXGRKrYQjYW3piHpYIxDwdd4=;
-        b=i2mi8mWaSecgLFId0L4EuOnTxswPXS3D6eJokhSf/mf1dMuRdgl3bB1l/VYIau6BcT
-         ur2qfhjRaQ68t2d+pJl6Gm3QBinxMTMd48zs0EBuhwDAjjBi3gkGe9pouCKwatejvxDX
-         KReKcAG7mkNcsQSri99+3wNrob3lTQ2uF7ZBosc656adlovO7MskFvnLxD2gjSev0p+L
-         w0QEAmVXWbDhy7LgWv3K+AxsaGhd9inYONOOKpTSjlVfdzCF//1oqzc59Y11x/tGbxPn
-         MNXaaGWeclVg8V600+e3HuOUS41FujIV/MJrrS1lxXMxzQS5EH44xOT0lxybnb75hQAl
-         U1gA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6ImMXUyYhsmXgtnOSnCl2/6x2sImNJGPLwM/h+Pa+mohZxnG2ql4YwcNtS8ZIiiUUwiCVW9g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8woWpHlApVkqk9tZBIFGiXOT+7GCWJmpTwfKZNIzWpco4mHox
-	sh71p44V85NWNGptwg6NBHWn9OgQegZAFAezFGG8wz25CYkuPDCS3ym82UUcEvz0h6wDTwP0WiD
-	4lrjK+dU2e/pn6DSqZw4urGuQXL/ddpyH67VOC9LBaw==
-X-Gm-Gg: AZuq6aLa6TRyzSKB+KSiUZ2XnuVj1u+FE+67+wthJkRmKOmRvU2I6kgNWzlqS71aBL1
-	cBdnKmko/FeF7zym99Szc2lhowmoCdnR1MHJtIlT2M2Lc6sRvDYwbhlGjhd5pNFMeDqZij0NEk9
-	00Ozya3JMuqzB3k2B2AsvLJ1O3HynfWzqmrRVLCxr6BqjgpsTUjh3bxXHCYwSBJHQeYAjuEuwX/
-	mpS0t3cXGsXooxtM2s6pPl0nTJxcbPaKWyG/L21+27dA1EXLX6IojPa4QFvaJalVaRps5ta
-X-Received: by 2002:a05:6512:3504:b0:59d:d679:2a6d with SMTP id
- 2adb3069b0e04-59de4916eeemr34747e87.23.1769103211187; Thu, 22 Jan 2026
- 09:33:31 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769104078; x=1769708878;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tAqYu3xB4La4CDsCFBPKH7jgCHbWvIT5wooh5c1w7TA=;
+        b=JzwtOpOL2TT5RMKUwqobiuy4j/UpTaPkGcHM/JVg17Iq6V4F/eHmNZ8wifcKPx1Ww9
+         dSNLTTYAZQRiCN5tYkfcqrAVrp+IViQ4Bvs6kBfZffyVkJjKXznkwdm6KIr+x/xG8MKk
+         HP0v44ZhfBV3HSw7qi6sZHYIHr2/UwxOYEz4DV3SJgs77M9plhvSXHM/nCjR5u5Lr7ip
+         pKxsQUpAnBKhJ1gQ0BjXwSEuiEkwT8H+rAOeqQ9fL03cGLYB+7QdyrL5DimBOynFuc6o
+         xD9i6gc0Wp+HLsD/poyB6FXXBk4I3ZrrEQuqzVDI/DfIxXlsJQxpt74rpebdvvfUan1j
+         fJ5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXnV49iJ7eywNFlmKIBve8rEdKVO/Y1o8itWOIiD1Tzvz5cs0X6lZtb96Lqw9p1J/Wh2BcnPD8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyF2U+uWA3fs1joVuQX88CXvNjXI6E1os47L0vRDHd/exE0urAG
+	zpF+RHluhttUyLlsG6Gx5dFJintisuJpRNMSNzLRAWA9VrHah2BWmQdrYdsjOMdVu2o=
+X-Gm-Gg: AZuq6aK0GTomf8wCjp2u6/xENC0IcebuU+jvWMu5JbcRM2yL0y9UZshErQjZOhpLmNZ
+	pQ2ZrS98/DA0InLLzk5xJPpz1/G4A19wNAm4AIO4AQ3Cf3orOF+/wD24CK5MbfzWeLpfmHKvuLZ
+	Bfai4YBAY16bMwR/GQRd66VPfwaEaIrM3kN6CHPNvHkR3Ygota5w565tdZiu5i3Ly7HENBj1hUh
+	NuPebbOclTJ+AbkvDJdqjxSqUZF9px4nWLuj5ec8ZsHVMyi9JwlwVyT/MeWrDyg+gTr3AhiomAw
+	8Vdgt7E5Ax8uA72nqxv2v6w7cmN5jAK5zGMG100CLNBSfEx33I8wF0xJ3hkz/U4HU2vzmocFDW+
+	aVdmWc2suS/bKPNlcZ3S+HvgYCwP2gXASqjRWtL49VpC9GAT/6FuFgSyN+KmwVSxLDxcBmvk8pl
+	UQF1dp8SRtluL2N9GFqLO5g8Wa7VTZs9niXQU8TYHLBKCliDgyFEnUKoPzMBEcH53huR1M
+X-Received: by 2002:a05:6808:4482:b0:450:474b:2736 with SMTP id 5614622812f47-45eb1cf6dc0mr193617b6e.45.1769104078250;
+        Thu, 22 Jan 2026 09:47:58 -0800 (PST)
+Received: from [192.168.1.102] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-45c9e08943csm10644269b6e.20.2026.01.22.09.47.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Jan 2026 09:47:57 -0800 (PST)
+Message-ID: <3b7e6088-7d92-4d5c-96c7-f8c0e2cc7745@kernel.dk>
+Date: Thu, 22 Jan 2026 10:47:56 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115214648.168365-1-pgeng@nvidia.com>
-In-Reply-To: <20260115214648.168365-1-pgeng@nvidia.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 22 Jan 2026 18:32:55 +0100
-X-Gm-Features: AZwV_Qgym-tguzdbKVLzMRHcvH4LFPmeb3zCUxWdfkYYh9QZZgSZ7Dgv9E0urcE
-Message-ID: <CAPDyKFqYgOOJdT-0oxCyrfCjW8SuORX3+tXq1D09Qj1jYDOKpw@mail.gmail.com>
-Subject: Re: [PATCH mmc v1] mmc: core: Fix bitfield race between retune and
- host claiming
-To: Penghe Geng <pgeng@nvidia.com>, Adrian Hunter <adrian.hunter@intel.com>
-Cc: linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
+ cross-buffer accounting
+To: Pavel Begunkov <asml.silence@gmail.com>,
+ Yuhao Jiang <danisjiang@gmail.com>
+Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260119071039.2113739-1-danisjiang@gmail.com>
+ <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
+ <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
+ <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
+ <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
+ <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
+ <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
+ <2be71481-ac35-4ff2-b6a9-a7568f81f728@gmail.com>
+ <2fcf583a-f521-4e8d-9a89-0985681ca85b@kernel.dk>
+ <d2fc2ff2-98d9-49f8-af95-968100174d55@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
+Content-Language: en-US
+In-Reply-To: <d2fc2ff2-98d9-49f8-af95-968100174d55@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211287-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[kernel.dk];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211286-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: C98706C431
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel-dk.20230601.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 459B76BA3A
 X-Rspamd-Action: no action
 
-+ Adrian
+On 1/22/26 4:43 AM, Pavel Begunkov wrote:
+> On 1/21/26 14:58, Jens Axboe wrote:
+>> On 1/20/26 2:45 PM, Pavel Begunkov wrote:
+>>> On 1/20/26 17:03, Jens Axboe wrote:
+>>>> On 1/20/26 5:05 AM, Pavel Begunkov wrote:
+>>>>> On 1/20/26 07:05, Yuhao Jiang wrote:
+>>> ...
+>>>>>>
+>>>>>> I've been implementing the xarray-based ref tracking approach for v3.
+>>>>>> While working on it, I discovered an issue with buffer cloning.
+>>>>>>
+>>>>>> If ctx1 has two buffers sharing a huge page, ctx1->hpage_acct[page] = 2.
+>>>>>> Clone to ctx2, now both have a refcount of 2. On cleanup both hit zero
+>>>>>> and unaccount, so we double-unaccount and user->locked_vm goes negative.
+>>>>>>
+>>>>>> The per-context xarray can't coordinate across clones - each context
+>>>>>> tracks its own refcount independently. I think we either need a global
+>>>>>> xarray (shared across all contexts), or just go back to v2. What do
+>>>>>> you think?
+>>>>>
+>>>>> The Jens' diff is functionally equivalent to your v1 and has
+>>>>> exactly same problems. Global tracking won't work well.
+>>>>
+>>>> Why not? My thinking was that we just use xa_lock() for this, with
+>>>> a global xarray. It's not like register+unregister is a high frequency
+>>>> thing. And if they are, then we've got much bigger problems than the
+>>>> single lock as the runtime complexity isn't ideal.
+>>>
+>>> 1. There could be quite a lot of entries even for a single ring
+>>> with realistic amount of memory. If lots of threads start up
+>>> at the same time taking it in a loop, it might become a chocking
+>>> point for large systems. Should be even more spectacular for
+>>> some numa setups.
+>>
+>> I already briefly touched on that earlier, for sure not going to be of
+>> any practical concern.
+> 
+> Modest 16 GB can give 1M entries. Assuming 50ns-100ns per entry for the
+> xarray business, that's 50-100ms. It's all serialised, so multiply by
+> the number of CPUs/threads, e.g. 10-100, that's 0.5-10s. Account sky
+> high spinlock contention, and it jumps again, and there can be more
+> memory / CPUs / numa nodes. Not saying that it's worse than the
+> current O(n^2), I have a test program that borderline hangs the
+> system.
 
-On Thu, 15 Jan 2026 at 22:46, Penghe Geng <pgeng@nvidia.com> wrote:
->
-> The host->claimed flag shares a bitfield storage word with several
-> retune flags (retune_now, retune_paused, can_retune, doing_retune,
-> doing_init_tune). Updating those flags without host->lock can RMW the
-> shared word and clear claimed, triggering spurious
-> WARN_ON(!host->claimed).
->
-> Serialize all retune bitfield updates with host->lock. Provide lockless
-> __mmc_retune_* helpers so callers that already hold host->lock can
-> avoid deadlocks while public wrappers serialize updates. Also protect
-> doing_init_tune and the CQE retune_now assignment with host->lock.
->
-> Fixes: dfa13ebbe334 ("mmc: host: Add facility to support re-tuning")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Penghe Geng <pgeng@nvidia.com>
+It's definitely not worse than the existing system, which is why I don't
+think it's a big deal. Nobody has ever complained about time to register
+buffers. It's inherently a slow path, and quite slow at that depending
+on the use case. Out of curiosity, I ran some stilly testing on
+registering 16GB of memory, with 1..32 threads. Each will do 16GB, so
+512GB registered in total for the 32 case. Before is the current kernel,
+after is with per-user xarray accounting:
 
-Thanks for the patch! I have looped in Adrian to get his opinion on this.
+before
 
-Kind regards
-Uffe
+nthreads 1:      646 msec
+nthreads 2:      888 msec
+nthreads 4:      864 msec
+nthreads 8:     1450 msec
+nthreads 16:    2890 msec
+nthreads 32:    4410 msec
 
-> ---
->  drivers/mmc/core/host.c  | 60 +++++++++++++++++++++++++++++++---------
->  drivers/mmc/core/host.h  | 35 ++++++++++++++++++++++-
->  drivers/mmc/core/mmc.c   |  6 ++++
->  drivers/mmc/core/queue.c |  3 ++
->  include/linux/mmc/host.h |  4 +++
->  5 files changed, 94 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
-> index 88c95dbfd9cf..0b6b4a31f629 100644
-> --- a/drivers/mmc/core/host.c
-> +++ b/drivers/mmc/core/host.c
-> @@ -109,7 +109,11 @@ void mmc_unregister_host_class(void)
->   */
->  void mmc_retune_enable(struct mmc_host *host)
->  {
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&host->lock, flags);
->         host->can_retune = 1;
-> +       spin_unlock_irqrestore(&host->lock, flags);
->         if (host->retune_period)
->                 mod_timer(&host->retune_timer,
->                           jiffies + host->retune_period * HZ);
-> @@ -121,18 +125,31 @@ void mmc_retune_enable(struct mmc_host *host)
->   */
->  void mmc_retune_pause(struct mmc_host *host)
->  {
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&host->lock, flags);
->         if (!host->retune_paused) {
->                 host->retune_paused = 1;
-> -               mmc_retune_hold(host);
-> +               __mmc_retune_hold(host);
->         }
-> +       spin_unlock_irqrestore(&host->lock, flags);
->  }
->  EXPORT_SYMBOL(mmc_retune_pause);
->
->  void mmc_retune_unpause(struct mmc_host *host)
->  {
-> +       unsigned long flags;
-> +       bool released;
-> +
-> +       spin_lock_irqsave(&host->lock, flags);
->         if (host->retune_paused) {
->                 host->retune_paused = 0;
-> -               mmc_retune_release(host);
-> +               released = __mmc_retune_release(host);
-> +               spin_unlock_irqrestore(&host->lock, flags);
-> +               if (!released)
-> +                       WARN_ON(1);
-> +       } else {
-> +               spin_unlock_irqrestore(&host->lock, flags);
->         }
->  }
->  EXPORT_SYMBOL(mmc_retune_unpause);
-> @@ -145,8 +162,12 @@ EXPORT_SYMBOL(mmc_retune_unpause);
->   */
->  void mmc_retune_disable(struct mmc_host *host)
->  {
-> +       unsigned long flags;
-> +
->         mmc_retune_unpause(host);
-> +       spin_lock_irqsave(&host->lock, flags);
->         host->can_retune = 0;
-> +       spin_unlock_irqrestore(&host->lock, flags);
->         timer_delete_sync(&host->retune_timer);
->         mmc_retune_clear(host);
->  }
-> @@ -159,16 +180,22 @@ EXPORT_SYMBOL(mmc_retune_timer_stop);
->
->  void mmc_retune_hold(struct mmc_host *host)
->  {
-> -       if (!host->hold_retune)
-> -               host->retune_now = 1;
-> -       host->hold_retune += 1;
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&host->lock, flags);
-> +       __mmc_retune_hold(host);
-> +       spin_unlock_irqrestore(&host->lock, flags);
->  }
->
->  void mmc_retune_release(struct mmc_host *host)
->  {
-> -       if (host->hold_retune)
-> -               host->hold_retune -= 1;
-> -       else
-> +       unsigned long flags;
-> +       bool released;
-> +
-> +       spin_lock_irqsave(&host->lock, flags);
-> +       released = __mmc_retune_release(host);
-> +       spin_unlock_irqrestore(&host->lock, flags);
-> +       if (!released)
->                 WARN_ON(1);
->  }
->  EXPORT_SYMBOL(mmc_retune_release);
-> @@ -177,18 +204,23 @@ int mmc_retune(struct mmc_host *host)
->  {
->         bool return_to_hs400 = false;
->         int err;
-> +       unsigned long flags;
->
-> -       if (host->retune_now)
-> -               host->retune_now = 0;
-> -       else
-> +       spin_lock_irqsave(&host->lock, flags);
-> +       if (!host->retune_now) {
-> +               spin_unlock_irqrestore(&host->lock, flags);
->                 return 0;
-> +       }
-> +       host->retune_now = 0;
->
-> -       if (!host->need_retune || host->doing_retune || !host->card)
-> +       if (!host->need_retune || host->doing_retune || !host->card) {
-> +               spin_unlock_irqrestore(&host->lock, flags);
->                 return 0;
-> +       }
->
->         host->need_retune = 0;
-> -
->         host->doing_retune = 1;
-> +       spin_unlock_irqrestore(&host->lock, flags);
->
->         if (host->ios.timing == MMC_TIMING_MMC_HS400) {
->                 err = mmc_hs400_to_hs200(host->card);
-> @@ -205,7 +237,9 @@ int mmc_retune(struct mmc_host *host)
->         if (return_to_hs400)
->                 err = mmc_hs200_to_hs400(host->card);
->  out:
-> +       spin_lock_irqsave(&host->lock, flags);
->         host->doing_retune = 0;
-> +       spin_unlock_irqrestore(&host->lock, flags);
->
->         return err;
->  }
-> diff --git a/drivers/mmc/core/host.h b/drivers/mmc/core/host.h
-> index 5941d68ff989..07e4f427fe15 100644
-> --- a/drivers/mmc/core/host.h
-> +++ b/drivers/mmc/core/host.h
-> @@ -21,22 +21,55 @@ int mmc_retune(struct mmc_host *host);
->  void mmc_retune_pause(struct mmc_host *host);
->  void mmc_retune_unpause(struct mmc_host *host);
->
-> -static inline void mmc_retune_clear(struct mmc_host *host)
-> +static inline void __mmc_retune_clear(struct mmc_host *host)
->  {
->         host->retune_now = 0;
->         host->need_retune = 0;
->  }
->
-> +static inline void mmc_retune_clear(struct mmc_host *host)
-> +{
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&host->lock, flags);
-> +       __mmc_retune_clear(host);
-> +       spin_unlock_irqrestore(&host->lock, flags);
-> +}
-> +
-> +static inline void __mmc_retune_hold(struct mmc_host *host)
-> +{
-> +       if (!host->hold_retune)
-> +               host->retune_now = 1;
-> +       host->hold_retune += 1;
-> +}
-> +
-> +static inline bool __mmc_retune_release(struct mmc_host *host)
-> +{
-> +       if (host->hold_retune) {
-> +               host->hold_retune -= 1;
-> +               return true;
-> +       }
-> +       return false;
-> +}
-> +
->  static inline void mmc_retune_hold_now(struct mmc_host *host)
->  {
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&host->lock, flags);
->         host->retune_now = 0;
->         host->hold_retune += 1;
-> +       spin_unlock_irqrestore(&host->lock, flags);
->  }
->
->  static inline void mmc_retune_recheck(struct mmc_host *host)
->  {
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&host->lock, flags);
->         if (host->hold_retune <= 1)
->                 host->retune_now = 1;
-> +       spin_unlock_irqrestore(&host->lock, flags);
->  }
->
->  static inline int mmc_host_can_cmd23(struct mmc_host *host)
-> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-> index 7c86efb1044a..114febd15f08 100644
-> --- a/drivers/mmc/core/mmc.c
-> +++ b/drivers/mmc/core/mmc.c
-> @@ -1820,13 +1820,19 @@ static int mmc_init_card(struct mmc_host *host, u32 ocr,
->                 goto free_card;
->
->         if (mmc_card_hs200(card)) {
-> +               unsigned long flags;
-> +
-> +               spin_lock_irqsave(&host->lock, flags);
->                 host->doing_init_tune = 1;
-> +               spin_unlock_irqrestore(&host->lock, flags);
->
->                 err = mmc_hs200_tuning(card);
->                 if (!err)
->                         err = mmc_select_hs400(card);
->
-> +               spin_lock_irqsave(&host->lock, flags);
->                 host->doing_init_tune = 0;
-> +               spin_unlock_irqrestore(&host->lock, flags);
->
->                 if (err)
->                         goto free_card;
-> diff --git a/drivers/mmc/core/queue.c b/drivers/mmc/core/queue.c
-> index 284856c8f655..5e38759c87f5 100644
-> --- a/drivers/mmc/core/queue.c
-> +++ b/drivers/mmc/core/queue.c
-> @@ -237,6 +237,7 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
->         enum mmc_issue_type issue_type;
->         enum mmc_issued issued;
->         bool get_card, cqe_retune_ok;
-> +       unsigned long flags;
->         blk_status_t ret;
->
->         if (mmc_card_removed(mq->card)) {
-> @@ -297,8 +298,10 @@ static blk_status_t mmc_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
->                 mmc_get_card(card, &mq->ctx);
->
->         if (host->cqe_enabled) {
-> +               spin_lock_irqsave(&host->lock, flags);
->                 host->retune_now = host->need_retune && cqe_retune_ok &&
->                                    !host->hold_retune;
-> +               spin_unlock_irqrestore(&host->lock, flags);
->         }
->
->         blk_mq_start_request(req);
-> diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-> index e0e2c265e5d1..e7bddbafd1da 100644
-> --- a/include/linux/mmc/host.h
-> +++ b/include/linux/mmc/host.h
-> @@ -713,8 +713,12 @@ void mmc_retune_timer_stop(struct mmc_host *host);
->
->  static inline void mmc_retune_needed(struct mmc_host *host)
->  {
-> +       unsigned long flags;
-> +
-> +       spin_lock_irqsave(&host->lock, flags);
->         if (host->can_retune)
->                 host->need_retune = 1;
-> +       spin_unlock_irqrestore(&host->lock, flags);
->  }
->
->  static inline bool mmc_can_retune(struct mmc_host *host)
-> --
-> 2.43.0
->
+after
+
+nthreads 1:      650 msec
+nthreads 2:      888 msec
+nthreads 4:      892 msec
+nthreads 8:     1270 msec
+nthreads 16:    2430 msec
+nthreads 32:    4160 msec
+
+This includes both registering buffers, cloning all of them to another
+ring, and unregistering times, and nowhere is locking scalability an
+issue for the xarray manipulation. The box has 32 nodes and 512 CPUs. So
+no, I strongly believe this isn't an issue.
+
+IOW, accurate accounting is cheaper than the stuff we have now. None of
+them are super cheap. Does it matter? I really don't think so, or people
+would've complained already. The only complaint I got on these kinds of
+things was for cloning, which did get fixed up some releases ago.
+
+> Look, I don't care what it'd be, whether it stutters or blows up the
+> kernel, I only took a quick look since you pinged me and was asking
+> "why not". If you don't want to consider my reasoning, as the
+> maintainer you can merge whatever you like, and it'll be easier for
+> me as I won't be wasting more time.
+
+I do consider your reasoning, but you also need to consider mine rather
+than assuming there's only one answer here, or that yours is invariably
+the correct one and being stubborn about it. The above test obviously
+isn't the end-all be-all of testing, but it would show if we had issues
+with scaling to the extent that you assume.
+
+Also worth considering that for these kinds of parallel setups running,
+the (by far) common use case is threads. And hence you're going to be
+banging on the shared mm anyway for a lot of these memory related setup
+operations.
+
+-- 
+Jens Axboe
 
