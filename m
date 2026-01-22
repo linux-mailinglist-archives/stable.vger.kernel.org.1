@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-211233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEG2CEwwcmmadwAAu9opvQ
-	(envelope-from <stable+bounces-211233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:12:28 +0100
+	id kHQkBHclcmkVdwAAu9opvQ
+	(envelope-from <stable+bounces-211234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 14:26:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4ADA67BBE
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:12:27 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7049B673E7
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 14:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6E0B272AA72
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 12:48:41 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 81DFF94A6E1
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 12:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193CE2D8DD4;
-	Thu, 22 Jan 2026 12:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2545B2DA750;
+	Thu, 22 Jan 2026 12:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s68Rghmx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GWKV8a1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39DE2DA755
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 12:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5202D8795
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 12:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769086075; cv=none; b=W8deCCCSStvHn+ANbJobjiyVfONgSUY/+Pi4PXp/oQw2ZTYvZIvnKSn0VaVn7839+ccX4oJiSVd39E5DQtD8Ytm8fpbhuDoa3Zqnx9dmLx6oNa0hn1ZpDhaQzwE/UhCnWZaY0yoSqYfL/pDQp8wxUVyeaASYWblcZCjBSSKzn5Q=
+	t=1769086099; cv=none; b=QDijGU9Vz1g7dI4dq2DWDU0e6atGeYHYstDPgl9A3JltdRDpairkj9JxKKLjvwGKlVBDLBWk5PtfkLY6sfGjahoAqdMRXHXvd/+Ph2JQcR9c2Lv+Fr9VoZXv61ZIbFuyY5wblZ1Vn+ubFhYM1vgBJL6EdwiGavEQLwBg9fbAJ5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769086075; c=relaxed/simple;
-	bh=zU+rf1tCXpDNUFXYEvhYHREVrhniYHLqDw1SrN7jgsM=;
+	s=arc-20240116; t=1769086099; c=relaxed/simple;
+	bh=2/WHl849NuQcFQNDU9fJWdHP7W9CnumSpRjicgxIwJM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gM+e95zSeKzUQRgKzpdhwIN8Nzi74G9dSMnHsbJI3ktH8mbhVapKop/X9T5CxW+NY6kGFalC36K2AqzfgdOw4zDnFQABKjpWhnEjPhMUPqtmrY2+yNQGSCS7s1hIfB+J6W/+sLiw+qtzMHldKv07PDTXNIx9tqJnK3YlxjKgALA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s68Rghmx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659EDC2BC86
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 12:47:55 +0000 (UTC)
+	 To:Cc:Content-Type; b=o6615g1rAsmsAcjMJUKXsGm4bg/jcL+V4cz7tu87twbVgCrfaHEI0B+8BbpgFl1lumfIjBbxAByRnqRkH3TkML/mf8ZZOJMesk0qxXOpoonouvdFS8GwX71EeKI9R5wQadm1Rj3BqZ+Chjd0a7n3fN7Z15sm7tBtVIUUnuM8770=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GWKV8a1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04171C19422
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 12:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769086075;
-	bh=zU+rf1tCXpDNUFXYEvhYHREVrhniYHLqDw1SrN7jgsM=;
+	s=k20201202; t=1769086099;
+	bh=2/WHl849NuQcFQNDU9fJWdHP7W9CnumSpRjicgxIwJM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=s68RghmxcilXdhdinBZV+UejlGDCJy8f8zZ3r+577oqdlAjzrDCR5NKMLOGjUo/CM
-	 QC2L9Ac568vIxZHE0egUGcmdMiQ/yUwbnXY8q70qmwEIdihsPC/mWd0HOIPE8H+t8l
-	 V2n2cg5Xb3UVT6flabQZFhbCrOLhQuRYcA3wq2hcnIqcettILfLWt7lGRQN1P7A9AK
-	 2MQNaT2fg6T1Hedx1+zoCRZss7SIFAP4l3BVW7wv5P3SEye/atbtxrKWD3PL20YFK5
-	 IP+QGaR8GcA3P+XMXF6QlNc4FUI8HUgLM7mGf1V3rrwbZOioXkCW7Ltx4Fd96B3ihF
-	 UUkobKqqFgqIw==
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-658078d6655so1874534a12.3
-        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 04:47:55 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVH/VBBG5MOC6H6k2y/0JnedT6365tR/R9OGOOCGBCTIO9njp5T/147B0btLEVrEmUPfY+AAwY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJHC6qpvrSLPfvOQ7G9x5/ezSNimoNBfa+k/y9y68KT542kw3t
-	GXjhtNA8D/cOLDVDw77meApU7R4OhITLABTodH//kCy8WYcPpTe5vTFae1Y5OcCTIH4d4WOCIEN
-	pr6Dh1cW2/diykMeR9Vi+boKQX2/5k50=
-X-Received: by 2002:a17:907:3f11:b0:b88:4fc9:a1a9 with SMTP id
- a640c23a62f3a-b884fc9aa1emr11455166b.6.1769086073991; Thu, 22 Jan 2026
- 04:47:53 -0800 (PST)
+	b=GWKV8a1uG3eCbcQgjsRHAgHx3eGuuwuru6/wnGfIhD+bJblht/SDkp070KyJ/8mUO
+	 5cMsJRTTkfNQwfjutza7pRSvpqbQdJ4gKMbYqOpZcihD0G8U2v+OecC2e7dqQTq+Nv
+	 k2e4Uy/fRjq8m0lxTvayToRgfObvOaw6GO08lv4QFO5PP3rqRIDigW2wOJtvl/EQeL
+	 0yhQsu6XTouOIuLubcY0uzsBDWvCl16L0qzVF/kbV5gvgC+EISOjp7PcDDWPuo9lpt
+	 kUQ2+LOd6YWg9Yil8AkBcmM/zwG1YFXR8IX5SKBG0qCoVrfiB1cDf8aAHCYUsWAPT8
+	 yUcOZvQ8iJd0Q==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-65807a2012fso1573012a12.0
+        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 04:48:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWN0AMca3V76Ifv+1dqgdcEm4yQ++DkEV+QG8SMhgRlk1+l3No89Ac+JpTEPYNmbe5fqNEP3is=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0rPeailadM4ekbNRZvN1FE71FVvbvh+PyeFDa9FhkJ3wzZBx4
+	CyhqKWnChg7acz8XAECjciHAgyF6XNdbdw588QwLxTAFW5wBCYiWRJA/4g2xF8qDj1vsDW2FHRB
+	IYf75RHicMYsdKLhArXCNqOVW4peIsYw=
+X-Received: by 2002:a05:6402:2681:b0:658:1917:af4d with SMTP id
+ 4fb4d7f45d1cf-6581917b121mr2795893a12.9.1769086097539; Thu, 22 Jan 2026
+ 04:48:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1769024269.git.metze@samba.org> <0ea7ea3ae6be53898f3061aab481687ae41f7c1d.1769024269.git.metze@samba.org>
-In-Reply-To: <0ea7ea3ae6be53898f3061aab481687ae41f7c1d.1769024269.git.metze@samba.org>
+References: <cover.1769024269.git.metze@samba.org> <27b48512bb652a9e1662c9321971f42c88084c4c.1769024269.git.metze@samba.org>
+In-Reply-To: <27b48512bb652a9e1662c9321971f42c88084c4c.1769024269.git.metze@samba.org>
 From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Thu, 22 Jan 2026 21:47:41 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd8HyWTaXVcwAoDeKpaUEqinHSgUQRzpdWOXM0mF8UtA1A@mail.gmail.com>
-X-Gm-Features: AZwV_QhwHX5s6tH3QApzvhEJ9Wa8GD1YOCN0QwBym4v9p--uY_0F0CkX8nzJcns
-Message-ID: <CAKYAXd8HyWTaXVcwAoDeKpaUEqinHSgUQRzpdWOXM0mF8UtA1A@mail.gmail.com>
-Subject: Re: [PATCH 05/19] smb: server: make use of smbdirect_socket.send_io.bcredits
+Date: Thu, 22 Jan 2026 21:48:05 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd9uZ30n6QTufjYHGdwnYrdoYX8YB9o=ACtSF44Strb7Cw@mail.gmail.com>
+X-Gm-Features: AZwV_Qgmhy9wuuNuBBrza1C0UMtqzGxmzhHUz2khZKvtLa8SFvErauE3nsmyxNk
+Message-ID: <CAKYAXd9uZ30n6QTufjYHGdwnYrdoYX8YB9o=ACtSF44Strb7Cw@mail.gmail.com>
+Subject: Re: [PATCH 06/19] smb: server: fix last send credit problem causing disconnects
 To: Stefan Metzmacher <metze@samba.org>
 Cc: linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
 	stable@vger.kernel.org, Steve French <smfrench@gmail.com>, Tom Talpey <tom@talpey.com>
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [7.34 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[vger.kernel.org,lists.samba.org,gmail.com,talpey.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211233-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211234-lists,stable=lfdr.de];
 	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
 	FROM_HAS_DN(0.00)[];
 	GREYLIST(0.00)[pass,meta];
@@ -102,25 +102,46 @@ X-Spamd-Result: default: False [7.34 / 15.00];
 	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
 	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: A4ADA67BBE
+X-Rspamd-Queue-Id: 7049B673E7
 X-Rspamd-Action: add header
 X-Spam: Yes
 
 On Thu, Jan 22, 2026 at 4:51=E2=80=AFAM Stefan Metzmacher <metze@samba.org>=
  wrote:
 >
-> It turns out that our code will corrupt the stream of
-> reassabled data transfer messages when we trigger an
-> immendiate (empty) send.
+> When we are about to use the last send credit that was
+> granted to us by the peer, we need to wait until
+> we are ourself able to grant at least one credit
+> to the peer. Otherwise it might not be possible
+> for the peer to grant more credits.
 >
-> In order to fix this we'll have a single 'batch' credit per
-> connection. And code getting that credit is free to use
-> as much messages until remaining_length reaches 0, then
-> the batch credit it given back and the next logical send can
-> happen.
+> The following sections in MS-SMBD are related to this:
 >
+> 3.1.5.1 Sending Upper Layer Messages
+> ...
+> If Connection.SendCredits is 1 and the CreditsGranted field of the
+> message is 0, stop processing.
+> ...
+>
+> 3.1.5.9 Managing Credits Prior to Sending
+> ...
+> If Connection.ReceiveCredits is zero, or if Connection.SendCredits is
+> one and the Connection.SendQueue is not empty, the sender MUST allocate
+> and post at least one receive of size Connection.MaxReceiveSize and MUST
+> increment Connection.ReceiveCredits by the number allocated and posted.
+> If no receives are posted, the processing MUST return a value of zero to
+> indicate to the caller that no Send message can be currently performed.
+> ...
+>
+> This problem was found by running this on Windows 2025
+> against ksmbd with required smb signing:
+> 'frametest.exe -r 4k -t 20 -n 2000' after
+> 'frametest.exe -w 4k -t 20 -n 2000'.
+>
+> Link: https://lore.kernel.org/linux-cifs/b58fa352-2386-4145-b42e-9b4b1d48=
+4e17@samba.org/
 > Cc: <stable@vger.kernel.org> # 6.18.x
 > Cc: Namjae Jeon <linkinjeon@kernel.org>
 > Cc: Steve French <smfrench@gmail.com>
