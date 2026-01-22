@@ -1,162 +1,155 @@
-Return-Path: <stable+bounces-211187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNYUMHyGcWk1IAAAu9opvQ
-	(envelope-from <stable+bounces-211187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 03:07:56 +0100
+	id CJB2N++GcWk1IAAAu9opvQ
+	(envelope-from <stable+bounces-211188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 03:09:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D30A60B67
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 03:07:56 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E0060B9D
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 03:09:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6FEB8446AED
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 02:04:24 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 139B4821A4E
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 02:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1D035CB8D;
-	Thu, 22 Jan 2026 02:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E687322C98;
+	Thu, 22 Jan 2026 02:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="ikciujDJ"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F4B30C615;
-	Thu, 22 Jan 2026 02:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1C133FE23
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 02:07:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769047434; cv=none; b=UqElr/LRc+WSYt2MUtIOccD6ShEJumnViaNDEuR1hPqvMxVuGV07D1101IQzvDGe6IrJIPqwUfaw1niyCuQvA9kGIc3z7SlV9KF65UBjTunkCzzWkTMyeyjGgJUsQqmRRzKCWdu7KONwpaXChMmwwVGVBjfEa/AG8POHUObv7qM=
+	t=1769047658; cv=none; b=MYiAdMhcC3MSO8H29JGk0gRJ9yTe4DDlEQxAMxpFvs1vGTtFT+Px5R5V/PkczPyuXQcWJ67lVFk2db4DoQLXycJWvKPU5m5YZweTi1CawaqgH8Z1Ns+b7rQAz727Hi0A8745RT/675qB4TQuCZAtsup2rL3SllZ9d+LcJ2yjPio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769047434; c=relaxed/simple;
-	bh=w83I06vDjrhR5j7M6vefS6yAGb619Wxa7/JnmjLaOiM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tSl9Thr87jAPJTy2F7UDr8COH/ID8p6vUEtZSc1czuAMiuQ6MiIfC63HreRIQb3HqbfkYda/4fRAsxV7gBzXKK1f70OGWzYCwBV00rO/fkBtRmLRFo2SXtfafdA7cZDIHUEYc3NSElCC2FTFuuRABNulPtHLOhJ3iePv1Hqs6Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1009)
-	id 40A6220B7167; Wed, 21 Jan 2026 18:03:53 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 40A6220B7167
-From: Dexuan Cui <decui@microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	lpieralisi@kernel.org,
-	kwilczynski@kernel.org,
-	mani@kernel.org,
-	robh@kernel.org,
-	bhelgaas@google.com,
-	jakeo@microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: mhklinux@outlook.com,
-	stable@vger.kernel.org
-Subject: [PATCH] PCI: hv: Allocate MMIO from above 4GB for the config window
-Date: Wed, 21 Jan 2026 18:03:37 -0800
-Message-ID: <20260122020337.94967-1-decui@microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1769047658; c=relaxed/simple;
+	bh=t+ym/opLo6mfDQnXsG2uLVcUKxmKwOvex8NynllbvN0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qZuQ/MKj1UvfgVe0O0U7B+qDBkDK7x4VLNcXnrP6dEcHb/Ghn9LHUij4916wt79NOpTWHP19T4xJdIMqTpDzwoWriU1j8bD7ePnOUSJTqrW1UFoIAE9Tq6rc9263GZErGitEmAstL94nH9yxQmFH25Z11QaxLJLYzPFkR7BuCgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=ikciujDJ; arc=none smtp.client-ip=74.125.82.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12331482b8fso1523686c88.1
+        for <stable@vger.kernel.org>; Wed, 21 Jan 2026 18:07:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1769047655; x=1769652455; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WNruM5AAazPVdzrP4iDSGumpoyRXNPwCc7bPrEHbcqg=;
+        b=ikciujDJY1Y17VXqI+EMCLtpspe2tJc+rSmIpO1HdswYXc4EbdEMe98poKyk7wy9Cm
+         rIKdRwgahhWtarAGbQGIuqn0V2BRHkErsGxaRwYLvQAnTADYDQc5QK7oXLxzz1i309p/
+         Teez+fzOgHzVKgT/j/MVl6MCkuYUdZf3Oi7kw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769047655; x=1769652455;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=WNruM5AAazPVdzrP4iDSGumpoyRXNPwCc7bPrEHbcqg=;
+        b=Fk1o2oYFSyX2zPvyZ8Yo7xdjA9FPkFBDKARj4v6sfqz9C6XcwVffcv0b7joyIlfC/G
+         +4g1hTSLud8qpu2CTjRhFqlO7kisY4AzqupP5Y4S006tSltEOFyVEFQFVHHg0BgAsVS/
+         JNv/0ODYNENALsvh8Izi+LTYF1CwyQl1uLeSNwgYCZgpV21e0pv7sl2Q03TxtaAlIPM5
+         W/FSxeVcn61fDlQjdUsLWU7dTDgYjP955hwguddT9WJgzqB8qtyK7qY4eWKLNcbxJMkV
+         7k8zEfyWKRjQTDFkI0UH0a+srm5DLNe8OwmEykuWFjCINhKN/tMNtWEKj5nWmLvkT39t
+         7fVQ==
+X-Gm-Message-State: AOJu0Yx60Ara3FY6YlLbDdAONuQ2o31niJVrIgwwL1OnJTTP8H40l1/N
+	miI03uT3/4D2gIjAd5gD01mmM2ydzY0zL8c+XBTwoHFLzNIl3tBL6oN7cDiz9HHgrQ==
+X-Gm-Gg: AZuq6aL8rP9U1MP41GIBVs80cNgCZ0vgqwz5x8k0++1YAndF2uoWVLelSIU1sCV5edy
+	Hr6WXPkSMu9X9WBn2XfnpB7/T77rZfXmKvJZ5ykq9p23pO/vFsvG4KK19T1FspnGCpyRdz3j2vG
+	t1XpRfJZ7a7c/uyPPrKU6m0oriC7bPFZPxiJgadfSoY2Qz11w5dbl6lZWkk8/gnw9CQRNHzcUlx
+	IloXo/ksOfZstzQ53EC8t0jUdNPZymbv8P1vQ4X246g+UeIC49ngb4w/DpNeccIWjKEDYCDaksn
+	Uhxv7hiSetJcCXuJ5+urK1r3Bjd/RTcTnhI9wOiMm+yMgCJMHkCn89BhzZA/YXvR+O/owMWmXLi
+	yT7KriccoQy6rt3hJdzXEOFJ3n0T07vpXhOUo6e2TTcP2jtlGKHyaNYTtxKy6bSnb3a/UGmIRaY
+	YPYBfZHUm7B5W4ghbRgCHhhhjOAZD678T0yIqFZ27k9gw=
+X-Received: by 2002:a05:7022:6189:b0:11b:c1ab:bdd0 with SMTP id a92af1059eb24-1244a782231mr14959212c88.35.1769047654346;
+        Wed, 21 Jan 2026 18:07:34 -0800 (PST)
+Received: from fedora64.linuxtx.org ([216.147.126.136])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b70d7f729bsm7494035eec.16.2026.01.21.18.07.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Jan 2026 18:07:34 -0800 (PST)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Wed, 21 Jan 2026 19:07:29 -0700
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.18 000/198] 6.18.7-rc1 review
+Message-ID: <aXGGYbZ6UaOTGuPr@fedora64.linuxtx.org>
+References: <20260121181418.537774329@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.24 / 15.00];
-	DMARC_POLICY_REJECT(2.00)[microsoft.com : No valid SPF, No valid DKIM,reject];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.14 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxtx.org:s=google];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[fedoraproject.org : No valid SPF, DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211188-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[outlook.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-211187-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FROM_NEQ_ENVFROM(0.00)[decui@microsoft.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
-	PRECEDENCE_BULK(0.00)[];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxtx.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6D30A60B67
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jforbes@fedoraproject.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns,linuxtx.org:dkim]
+X-Rspamd-Queue-Id: 70E0060B9D
 X-Rspamd-Action: no action
 
-There has been a longstanding MMIO conflict between the pci_hyperv
-driver's config_window (see hv_allocate_config_window()) and the
-hyperv_drm (or hyperv_fb) driver (see hyperv_setup_vram()): typically
-both get MMIO from the low MMIO range below 4GB; this is not an issue
-in the normal kernel since the VMBus driver reserves the framebuffer
-MMIO in vmbus_reserve_fb(), so the drm driver's hyperv_setup_vram() can
-always get the reserved framebuffer MMIO; however, a Gen2 VM's kdump
-kernel fails to reserve the framebuffer MMIO in vmbus_reserve_fb() because
-the screen_info.lfb_base is zero in the kdump kernel: the screen_info
-is not initialized at all in the kdump kernel, because the EFI stub
-code, which initializes screen_info, doesn't run in the case of kdump.
+On Wed, Jan 21, 2026 at 07:13:48PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.7 release.
+> There are 198 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 23 Jan 2026 18:13:40 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-When vmbus_reserve_fb() fails to reserve the framebuffer MMIO in the
-kdump kernel, if pci_hyperv in the kdump kernel loads before hyperv_drm
-loads, pci_hyperv's vmbus_allocate_mmio() gets the framebuffer MMIO
-and tries to use it, but since the host thinks that the MMIO range is
-still in use by hyperv_drm, the host refuses to accept the MMIO range
-as the config window, and pci_hyperv's hv_pci_enter_d0() errors out:
-"PCI Pass-through VSP failed D0 Entry with status c0370048".
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-This PCI error in the kdump kernel was not fatal in the past because
-the kdump kernel normally doesn't reply on pci_hyperv, and the root
-file system is on a VMBus SCSI device.
-
-Now, a VM on Azure can boot from NVMe, i.e. the root FS can be on a
-NVMe device, which depends on pci_hyperv. When the PCI error occurs,
-the kdump kernel fails to boot up since no root FS is detected.
-
-Fix the MMIO conflict by allocating MMIO above 4GB for the
-config_window.
-
-Note: we still need to figure out how to address the possible MMIO
-conflict between hyperv_drm and pci_hyperv in the case of 32-bit PCI
-MMIO BARs, but that's of low priority because all PCI devices available
-to a Linux VM on Azure should use 64-bit BARs and should not use 32-bit
-BARs -- I checked Mellanox VFs, MANA VFs, NVMe devices, and GPUs in
-Linux VMs on Azure, and found no 32-bit BARs.
-
-Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Cc: stable@vger.kernel.org
----
- drivers/pci/controller/pci-hyperv.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
-index 1e237d3538f9..a6aecb1b5cab 100644
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -3406,9 +3406,13 @@ static int hv_allocate_config_window(struct hv_pcibus_device *hbus)
- 
- 	/*
- 	 * Set up a region of MMIO space to use for accessing configuration
--	 * space.
-+	 * space. Use the high MMIO range to not conflict with the hyperv_drm
-+	 * driver (which normally gets MMIO from the low MMIO range) in the
-+	 * kdump kernel of a Gen2 VM, which fails to reserve the framebuffer
-+	 * MMIO range in vmbus_reserve_fb() due to screen_info.lfb_base being
-+	 * zero in the kdump kernel.
- 	 */
--	ret = vmbus_allocate_mmio(&hbus->mem_config, hbus->hdev, 0, -1,
-+	ret = vmbus_allocate_mmio(&hbus->mem_config, hbus->hdev, SZ_4G, -1,
- 				  PCI_CONFIG_MMIO_LENGTH, 0x1000, false);
- 	if (ret)
- 		return ret;
--- 
-2.43.0
-
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
