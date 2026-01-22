@@ -1,244 +1,272 @@
-Return-Path: <stable+bounces-211316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKk/JOObcmkFnAAAu9opvQ
-	(envelope-from <stable+bounces-211316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 22:51:31 +0100
+	id eFS+FeSdcmkFnAAAu9opvQ
+	(envelope-from <stable+bounces-211317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 23:00:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CCB76DF36
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 22:51:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 870456E005
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 23:00:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9BB3C30041FB
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 21:51:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 78253301B168
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 22:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4977C3A4ACE;
-	Thu, 22 Jan 2026 21:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F248212548;
+	Thu, 22 Jan 2026 21:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lZKdn7EA"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GqmdQDdW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9E1239E97
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 21:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6789930DD1D;
+	Thu, 22 Jan 2026 21:59:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769118681; cv=none; b=Up2p2keqB4WPgBTFR8NroTt5WeB+2jE9irJql+/zwv/P6QxfuOAnm3udtBLe4If+4TL/QEWntoyCeR7eLuMWrO/2DDdx2ljEcP9qpCcoi9mL7Gbdoe1toT0UWIAaOMMXC0SN7r7JlEoTWmEcqfICJW5GaNvcgisivwGwC6PGhKg=
+	t=1769119194; cv=none; b=hJD20mNRKPN2R/cXHU7aKKkj02M9UhGJHbipQN+kno7rFD5LxB39jeTb7pD2UrazGVUSe61RA00pf5PxW3PoD58a0wRyIO3mT4wsehmbCN9tIOlaRZEXlzwmv7F6ktXZae9zg6mbznLmbwRLmC0FJzVoK+t/8YHe93Spv/7rGHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769118681; c=relaxed/simple;
-	bh=/u+ZErAt/dSlC5m863c/9Cp4PgYSc0bXVyQfWIL1XNM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jG1XVjWLrOKSCLlcIopNBPYEY+V4lWnDLtKElBZ6C4gzt0VQoBUTOYeI6QxFQk7DQXpCbsSbpHs3n9HDpISs60IIzW5mTTZRS7pqATAQZhfRdAhY7YMaiVcTOsvNFXmnP+sYRnl2BY9JN1Y8SVZNRTuQwuCifpN4zZthjPoNxr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lZKdn7EA; arc=none smtp.client-ip=209.85.128.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-4801d21c411so8183645e9.3
-        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 13:51:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769118675; x=1769723475; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=e0ISmEwBHp05TAPm+EEbFkb53tTfIWH4DgA6isaTgsE=;
-        b=lZKdn7EAywldaNah9QT/mDq1UnHaMtoJhUeJPLHSVJq0Wx7adLNwcRXgieNrbL2duD
-         LBFWFGYfb26SMwHUwHultFuZNVIaOfc2GW4hzDZIaAIZHSFpLb6otFuE9NtZsIevKa1K
-         1+hvN5/9ZGpxGirLf0BTG75++yBgJEg9SI5ymGMTtnBi8WOr+GmMuiddDtNNI9hyn6hK
-         38MhabynlgfbCmC/zLp65bCESNLcoDJnqpC3I+v2lpI+0Kvani+kDnVk4sdMM8uWDr2r
-         LI1uCYA/q9v37HoyV6/HlFWh+oAET8jFb445RaknaUNLMb6a3yJcL4BCQfU8ekFo2Niu
-         8djw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769118675; x=1769723475;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e0ISmEwBHp05TAPm+EEbFkb53tTfIWH4DgA6isaTgsE=;
-        b=ukhFnqfK4lydt+Ei4CPPtexjOHoPFgGPcQkJGcPj2Xzk+Vo1s6IyxEqEt7i2L/8+7O
-         nwdM7y39VtggrhvQSuKyUnT+p6JTKBF1EJD/Bgv6byIz/NEqRqUuXdaolQW6AP/YmVvX
-         Y6srdojYs7Rl3l2X4o0jy3iv4FP9LLWqkizjiSUM4VkJZChD3vGzPPjcyTnL60GiFo6N
-         Aecjmlay9j/8OZBOljMQ5P0vmMJekH0DfpjMJi3wcmBUsMpvJbKVy30beoGObitWJ9fY
-         OOJg0Z1f17PIErSQNNVnLHSI4DNQgVPBKvpbLnE4e4CcdOR7o6FPA8RU/RYRAABcI1W6
-         uLbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWD/zGy95yvEAhLzrJ0Qo2X3yNL/AnNmpsclegcAG7iBRSZILheOTWZL4GmtnE7YB2jT+CdOzk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLTLX3XjpSuH1kPyjRi7A+y/kN5wb53aIlX+OBVVaaafJ2Uaa1
-	R8q8zoQ2KVs7Qev0sXiz87/BILXy87hBZcTVgJ3hkcpd5lfeuWGFoP+M
-X-Gm-Gg: AZuq6aKcgfU5XZAmNTm3W9VyXJY1sf6GOY2sV3WEhKCLvNg1dzPwYXk96lNP8ycWgQx
-	cPzfwvf+FB+qu8Rg5/pdH5/wdIy5RaSVINuvl9FRQHmYWAXdvG7xP7hYWybI1VoqHG+8p9PaFav
-	Z7WDcjisvVDq2mrESv9lC84TWN1E+jGiEAlv7BxowNCOzJDrGHF9nFCjpzz12B7mo78U8MeW4Yw
-	bNvgsar14iPLz2cHNQybIkisd4esEuvnnN11QQLovILxT4cdsbVFLHzp6D1G7wSHOx3/UV0eiSH
-	cOrGNOkalzaeLE43FbzEaBq5FJTREDWkXCdnf8Hr4UVWGE6u3vXrFm/cmLbVs/egsqdRLgx9Gl2
-	8rahj10Uk2Vxg/ZZ3li0Heq7Cmw48nuwqQK5VNqrBxqg77+k3EvViuxUuFmEk8WD0nd9pvPz2f2
-	ZSAAXFyAewFF9rq41Hy/kaXAOYPpce8JTjZNerHNRH5OvJ6TJXpJKGACa3y8clj2VpLajxzHi6f
-	nfYcGt9UVXsUunSqZLr8FKz3FavL6u8jKfRe7hL9qk7NBIEIF3GAsEl5r0Wldz1U7FrtUs4AvYJ
-X-Received: by 2002:a05:600c:4692:b0:477:55c9:c3ea with SMTP id 5b1f17b1804b1-4804c9ca73amr18662255e9.35.1769118674489;
-        Thu, 22 Jan 2026 13:51:14 -0800 (PST)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1f7c8efsm1774230f8f.42.2026.01.22.13.51.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Jan 2026 13:51:13 -0800 (PST)
-Message-ID: <efe080c9-5176-4fa1-9f65-5be44074779e@gmail.com>
-Date: Thu, 22 Jan 2026 21:51:10 +0000
+	s=arc-20240116; t=1769119194; c=relaxed/simple;
+	bh=t8y7aUQcU/qiqgYFpCKSJRRYf13Se/dbEuith7oxcEk=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=IyZVp41yuPl0ZQduUVR8NehcWjrbD8vpXZA4iXSOKaDZQEoUkzg1BQUddbSrfFtdT9XcQ2k+ZgeCCqSEdEk4OKNAeKSanpZKFDrOXWQRr6pow0J+Ce/pZ7f6Z1Xa7ZXBqdgmxOfVFTEpoKQj1PySDOFW7A/i1ArBuiSXA80KN2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GqmdQDdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849FFC116D0;
+	Thu, 22 Jan 2026 21:59:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769119193;
+	bh=t8y7aUQcU/qiqgYFpCKSJRRYf13Se/dbEuith7oxcEk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=GqmdQDdWpUV1+NT/kFUTO7fq9v+oatrAe0T1+aQUisPlqvNiSXIWP6557agpcvHBV
+	 74polR+JjBtuzM+yPqkyF2KK4mhM4uyG7N3eQUBjD3zoKnLU5toVqPs8IpV8Kc4eob
+	 uX5lAEjvz/8e69dKGQSd9ICkCiH+DJOTUSWB020k=
+Date: Thu, 22 Jan 2026 13:59:51 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Qiliang Yuan <realwujing@gmail.com>
+Cc: lihuafei1@huawei.com, mingo@kernel.org, linux-kernel@vger.kernel.org,
+ sunshx@chinatelecom.cn, thorsten.blum@linux.dev, wangjinchao600@gmail.com,
+ yangyicong@hisilicon.com, yuanql9@chinatelecom.cn,
+ zhangjn11@chinatelecom.cn, stable@vger.kernel.org, Song Liu
+ <song@kernel.org>, Douglas Anderson <dianders@chromium.org>
+Subject: Re: [PATCH v2] watchdog/hardlockup: Fix UAF in perf event cleanup
+ due to migration race
+Message-Id: <20260122135951.68ca60cf6ca3d90314306552@linux-foundation.org>
+In-Reply-To: <20260122052442.667394-1-realwujing@gmail.com>
+References: <20260122042717.657231-1-realwujing@gmail.com>
+	<20260122052442.667394-1-realwujing@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
- cross-buffer accounting
-To: Jens Axboe <axboe@kernel.dk>, Yuhao Jiang <danisjiang@gmail.com>
-Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260119071039.2113739-1-danisjiang@gmail.com>
- <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
- <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
- <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
- <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
- <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
- <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
- <2be71481-ac35-4ff2-b6a9-a7568f81f728@gmail.com>
- <2fcf583a-f521-4e8d-9a89-0985681ca85b@kernel.dk>
- <d2fc2ff2-98d9-49f8-af95-968100174d55@gmail.com>
- <3b7e6088-7d92-4d5c-96c7-f8c0e2cc7745@kernel.dk>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <3b7e6088-7d92-4d5c-96c7-f8c0e2cc7745@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211316-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-211317-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DMARC_NA(0.00)[linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[kernel.dk,gmail.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[huawei.com,kernel.org,vger.kernel.org,chinatelecom.cn,linux.dev,gmail.com,hisilicon.com,chromium.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3CCB76DF36
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:mid,linux-foundation.org:dkim,chinatelecom.cn:email]
+X-Rspamd-Queue-Id: 870456E005
 X-Rspamd-Action: no action
 
-On 1/22/26 17:47, Jens Axboe wrote:
-> On 1/22/26 4:43 AM, Pavel Begunkov wrote:
->> On 1/21/26 14:58, Jens Axboe wrote:
->>> On 1/20/26 2:45 PM, Pavel Begunkov wrote:
->>>> On 1/20/26 17:03, Jens Axboe wrote:
->>>>> On 1/20/26 5:05 AM, Pavel Begunkov wrote:
->>>>>> On 1/20/26 07:05, Yuhao Jiang wrote:
->>>> ...
->>>>>>>
->>>>>>> I've been implementing the xarray-based ref tracking approach for v3.
->>>>>>> While working on it, I discovered an issue with buffer cloning.
->>>>>>>
->>>>>>> If ctx1 has two buffers sharing a huge page, ctx1->hpage_acct[page] = 2.
->>>>>>> Clone to ctx2, now both have a refcount of 2. On cleanup both hit zero
->>>>>>> and unaccount, so we double-unaccount and user->locked_vm goes negative.
->>>>>>>
->>>>>>> The per-context xarray can't coordinate across clones - each context
->>>>>>> tracks its own refcount independently. I think we either need a global
->>>>>>> xarray (shared across all contexts), or just go back to v2. What do
->>>>>>> you think?
->>>>>>
->>>>>> The Jens' diff is functionally equivalent to your v1 and has
->>>>>> exactly same problems. Global tracking won't work well.
->>>>>
->>>>> Why not? My thinking was that we just use xa_lock() for this, with
->>>>> a global xarray. It's not like register+unregister is a high frequency
->>>>> thing. And if they are, then we've got much bigger problems than the
->>>>> single lock as the runtime complexity isn't ideal.
->>>>
->>>> 1. There could be quite a lot of entries even for a single ring
->>>> with realistic amount of memory. If lots of threads start up
->>>> at the same time taking it in a loop, it might become a chocking
->>>> point for large systems. Should be even more spectacular for
->>>> some numa setups.
->>>
->>> I already briefly touched on that earlier, for sure not going to be of
->>> any practical concern.
->>
->> Modest 16 GB can give 1M entries. Assuming 50ns-100ns per entry for the
->> xarray business, that's 50-100ms. It's all serialised, so multiply by
->> the number of CPUs/threads, e.g. 10-100, that's 0.5-10s. Account sky
->> high spinlock contention, and it jumps again, and there can be more
->> memory / CPUs / numa nodes. Not saying that it's worse than the
->> current O(n^2), I have a test program that borderline hangs the
->> system.
-> 
-> It's definitely not worse than the existing system, which is why I don't
-> think it's a big deal. Nobody has ever complained about time to register
-> buffers. It's inherently a slow path, and quite slow at that depending
-> on the use case. Out of curiosity, I ran some stilly testing on
-> registering 16GB of memory, with 1..32 threads. Each will do 16GB, so
-> 512GB registered in total for the 32 case. Before is the current kernel,
-> after is with per-user xarray accounting:
-> 
-> before
-> 
-> nthreads 1:      646 msec
-> nthreads 2:      888 msec
-> nthreads 4:      864 msec
-> nthreads 8:     1450 msec
-> nthreads 16:    2890 msec
-> nthreads 32:    4410 msec
-> 
-> after
-> 
-> nthreads 1:      650 msec
-> nthreads 2:      888 msec
-> nthreads 4:      892 msec
-> nthreads 8:     1270 msec
-> nthreads 16:    2430 msec
-> nthreads 32:    4160 msec
-> 
-> This includes both registering buffers, cloning all of them to another
-> ring, and unregistering times, and nowhere is locking scalability an
-> issue for the xarray manipulation. The box has 32 nodes and 512 CPUs. So
-> no, I strongly believe this isn't an issue.
-> 
-> IOW, accurate accounting is cheaper than the stuff we have now. None of
-> them are super cheap. Does it matter? I really don't think so, or people
-> would've complained already. The only complaint I got on these kinds of
-> things was for cloning, which did get fixed up some releases ago.
+On Thu, 22 Jan 2026 00:24:42 -0500 Qiliang Yuan <realwujing@gmail.com> wrote:
 
-You need compound pages
+> During the early initialization of the hardlockup detector, the
+> hardlockup_detector_perf_init() function probes for PMU hardware availability.
+> It originally used hardlockup_detector_event_create(), which interacts with
+> the per-cpu 'watchdog_ev' variable.
 
-always > /sys/kernel/mm/transparent_hugepage/hugepages-16kB/enabled
+Thanks.
 
-And use update() instead of register() as accounting dedup for
-registration is broken-disabled. For the current kernel:
+For a -stable backport it's desirable to have a Fixes: target.  But it
+appears this is very old code?
 
-Single threaded:
-1x1G: 7.5s
-2x1G: 45s
-4x1G: 190s
+Also, I'm not sure who best to ask to help review this change.  I'll
+add a few cc's here.
 
-16x should be ~3000s, not going to run it. Uninterruptible and no
-cond_resched, so spawn NR_CPUS threads and the system is completely
-unresponsive (I guess it depends on the preemption mode).
+[full email retained...]
 
--- 
-Pavel Begunkov
-
+> If the initializing task migrates to another CPU during this probe phase,
+> two issues arise:
+> 1. The 'watchdog_ev' pointer on the original CPU is set but not cleared,
+>    leaving a stale pointer to a freed perf event.
+> 2. The 'watchdog_ev' pointer on the new CPU might be incorrectly cleared.
+> 
+> This race condition was observed in console logs (captured by adding debug printks):
+> 
+> [23.038376] hardlockup_detector_perf_init 313 cur_cpu=2
+> ...
+> [23.076385] hardlockup_detector_event_create 203 cpu(cur)=2 set watchdog_ev
+> ...
+> [23.095788] perf_event_release_kernel 4623 cur_cpu=2
+> ...
+> [23.116963] lockup_detector_reconfigure 577 cur_cpu=3
+> 
+> The log shows the task started on CPU 2, set watchdog_ev on CPU 2,
+> released the event on CPU 2, but then migrated to CPU 3 before the
+> cleanup logic (which would clear watchdog_ev) could run. This left
+> watchdog_ev on CPU 2 pointing to a freed event.
+> 
+> Later, when the watchdog is enabled/disabled on CPU 2, this stale pointer
+> leads to a Use-After-Free (UAF) in perf_event_disable(), as detected by KASAN:
+> [26.539140] ==================================================================
+> [26.540732] BUG: KASAN: use-after-free in perf_event_ctx_lock_nested.isra.72+0x6b/0x140
+> [26.542442] Read of size 8 at addr ff110006b360d718 by task kworker/2:1/94
+> [26.543954]
+> [26.544744] CPU: 2 PID: 94 Comm: kworker/2:1 Not tainted 4.19.90-debugkasan #11
+> [26.546505] Hardware name: GoStack Foundation OpenStack Nova, BIOS 1.16.3-3.ctl3 04/01/2014
+> [26.548256] Workqueue: events smp_call_on_cpu_callback
+> [26.549267] Call Trace:
+> [26.549936]  dump_stack+0x8b/0xbb
+> [26.550731]  print_address_description+0x6a/0x270
+> [26.551688]  kasan_report+0x179/0x2c0
+> [26.552519]  ? perf_event_ctx_lock_nested.isra.72+0x6b/0x140
+> [26.553654]  ? watchdog_disable+0x80/0x80
+> [26.553657]  perf_event_ctx_lock_nested.isra.72+0x6b/0x140
+> [26.556951]  ? dump_stack+0xa0/0xbb
+> [26.564006]  ? watchdog_disable+0x80/0x80
+> [26.564886]  perf_event_disable+0xa/0x30
+> [26.565746]  hardlockup_detector_perf_disable+0x1b/0x60
+> [26.566776]  watchdog_disable+0x51/0x80
+> [26.567624]  softlockup_stop_fn+0x11/0x20
+> [26.568499]  smp_call_on_cpu_callback+0x5b/0xb0
+> [26.569443]  process_one_work+0x389/0x770
+> [26.570311]  worker_thread+0x57/0x5a0
+> [26.571124]  ? process_one_work+0x770/0x770
+> [26.572031]  kthread+0x1ae/0x1d0
+> [26.572810]  ? kthread_create_worker_on_cpu+0xc0/0xc0
+> [26.573821]  ret_from_fork+0x1f/0x40
+> [26.574638]
+> [26.575178] Allocated by task 1:
+> [26.575990]  kasan_kmalloc+0xa0/0xd0
+> [26.576814]  kmem_cache_alloc_trace+0xf3/0x1e0
+> [26.577732]  perf_event_alloc.part.89+0xb5/0x12b0
+> [26.578700]  perf_event_create_kernel_counter+0x1e/0x1d0
+> [26.579728]  hardlockup_detector_event_create+0x4e/0xc0
+> [26.580744]  hardlockup_detector_perf_init+0x2f/0x60
+> [26.581746]  lockup_detector_init+0x85/0xdc
+> [26.582645]  kernel_init_freeable+0x34d/0x40e
+> [26.583568]  kernel_init+0xf/0x130
+> [26.584428]  ret_from_fork+0x1f/0x40
+> [26.584429]
+> [26.584430] Freed by task 0:
+> [26.584433]  __kasan_slab_free+0x130/0x180
+> [26.584436]  kfree+0x90/0x1a0
+> [26.589641]  rcu_process_callbacks+0x2cb/0x6e0
+> [26.590935]  __do_softirq+0x119/0x3a2
+> [26.591965]
+> [26.592630] The buggy address belongs to the object at ff110006b360d500
+> [26.592630]  which belongs to the cache kmalloc-2048 of size 2048
+> [26.592633] The buggy address is located 536 bytes inside of
+> [26.592633]  2048-byte region [ff110006b360d500, ff110006b360dd00)
+> [26.592634] The buggy address belongs to the page:
+> [26.592637] page:ffd400001acd8200 count:1 mapcount:0 mapping:ff11000107c0e800 index:0x0 compound_mapcount: 0
+> [26.600959] flags: 0x17ffffc0010200(slab|head)
+> [26.601891] raw: 0017ffffc0010200 dead000000000100 dead000000000200 ff11000107c0e800
+> [26.603541] raw: 0000000000000000 00000000800f000f 00000001ffffffff 0000000000000000
+> [26.605546] page dumped because: kasan: bad access detected
+> [26.606788]
+> [26.607351] Memory state around the buggy address:
+> [26.608556]  ff110006b360d600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> [26.610565]  ff110006b360d680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> [26.610567] >ff110006b360d700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> [26.610568]                             ^
+> [26.610570]  ff110006b360d780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> [26.610573]  ff110006b360d800: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> [26.618955] ==================================================================
+> 
+> Fix this by making the probe logic stateless. Use a local variable for the
+> perf event and avoid accessing the per-cpu 'watchdog_ev' during initialization.
+> This ensures that the probe event is always properly released regardless of
+> task migration, and no stale global state is left behind.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shouxin Sun <sunshx@chinatelecom.cn>
+> Signed-off-by: Junnan Zhang <zhangjn11@chinatelecom.cn>
+> Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
+> Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
+> ---
+> v2:
+> - Add Cc: stable@vger.kernel.org tag.
+> ---
+>  kernel/watchdog_perf.c | 28 ++++++++++++++++++++++++----
+>  1 file changed, 24 insertions(+), 4 deletions(-)
+> 
+> diff --git a/kernel/watchdog_perf.c b/kernel/watchdog_perf.c
+> index d3ca70e3c256..5066be7bba03 100644
+> --- a/kernel/watchdog_perf.c
+> +++ b/kernel/watchdog_perf.c
+> @@ -264,18 +264,38 @@ bool __weak __init arch_perf_nmi_is_available(void)
+>  int __init watchdog_hardlockup_probe(void)
+>  {
+>  	int ret;
+> +	struct perf_event_attr *wd_attr = &wd_hw_attr;
+> +	struct perf_event *evt;
+> +	unsigned int cpu;
+>  
+>  	if (!arch_perf_nmi_is_available())
+>  		return -ENODEV;
+>  
+> -	ret = hardlockup_detector_event_create();
+> +	/*
+> +	 * Test hardware PMU availability. Avoid using
+> +	 * hardlockup_detector_event_create() to prevent migration-related
+> +	 * stale pointers in the per-cpu watchdog_ev during early probe.
+> +	 */
+> +	wd_attr->sample_period = hw_nmi_get_sample_period(watchdog_thresh);
+> +	if (!wd_attr->sample_period)
+> +		return -EINVAL;
+>  
+> -	if (ret) {
+> +	/*
+> +	 * Use raw_smp_processor_id() for probing in preemptible init code.
+> +	 * Migration after reading ID is acceptable as counter creation on
+> +	 * the old CPU is sufficient for the probe.
+> +	 */
+> +	cpu = raw_smp_processor_id();
+> +	evt = perf_event_create_kernel_counter(wd_attr, cpu, NULL,
+> +					       watchdog_overflow_callback, NULL);
+> +	if (IS_ERR(evt)) {
+>  		pr_info("Perf NMI watchdog permanently disabled\n");
+> +		ret = PTR_ERR(evt);
+>  	} else {
+> -		perf_event_release_kernel(this_cpu_read(watchdog_ev));
+> -		this_cpu_write(watchdog_ev, NULL);
+> +		perf_event_release_kernel(evt);
+> +		ret = 0;
+>  	}
+> +
+>  	return ret;
+>  }
+>  
+> -- 
+> 2.51.0
 
