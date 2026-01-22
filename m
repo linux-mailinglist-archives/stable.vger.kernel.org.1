@@ -1,238 +1,176 @@
-Return-Path: <stable+bounces-211213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHocFhzocWkONAAAu9opvQ
-	(envelope-from <stable+bounces-211213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 10:04:28 +0100
+	id GIwDOj/ycWmvZwAAu9opvQ
+	(envelope-from <stable+bounces-211215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 10:47:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2060642DE
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 10:04:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C67764C50
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 10:47:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 55FFC5E6A68
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 08:55:39 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id EB0EB625CE2
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 09:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98C04657D5;
-	Thu, 22 Jan 2026 08:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855713502B5;
+	Thu, 22 Jan 2026 09:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fxKj32V0";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CCSIsfDq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIPtWEcK"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E902336AB4B
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 08:53:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4EB308F33;
+	Thu, 22 Jan 2026 09:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769072038; cv=none; b=EoOfCQkUAUSrinHqOCGcvc6MuP73AufkiX2crONhytoDpBA89JppDzz1yMGjTKQ2GQHhLjfkwJ812oUDzK55TytArylhpBoKM3iB63DElijypar2NeJkjSUNMfmtHDYuw6v987AhG5GyR6u4k4Zcn26rFJZTJHpRL0CQ6DzwZcE=
+	t=1769074869; cv=none; b=OBsxtril8gFuFhMfTsao4f/R1+qTN5VZD+Qi0H9uOhcIpetbH0ZN3nDnwJuaswDpocigl4FkS9D/UkLQrSFH95RFMFmqtHQUoWvXwNd0gzY7vnAeZEdzvLeDYqC/YMi3Z2/cNsOCB1/P1z0Pum7xkyz2PEGGab1E2QNK5ifAsl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769072038; c=relaxed/simple;
-	bh=fEYCB1OmXJHFLfozOgMIdwRQktFqsVtb3nHoMKfmXLU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LHfPZf10TZeJxnFi1Bcu2ZKdsgTNJ+LeP2EUU6/CGogA1H80ggyOmmbaJNSIDEDqTNMqQWbZ2Pg9K9H9VLqrT0WLhxqckTCm2MbAOSID89V5epBxbFdt2dKwjXebCSOxCmOuGuvWpsXhZJwLnaqbwtQHqVG7smnZ5NN/r7XdKTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fxKj32V0; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CCSIsfDq; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60M6riOK725129
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 08:53:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=92J8WnSaQyl7D9plb8idv8
-	AXwTqatCyT3Ld0iG7JRRo=; b=fxKj32V0jHc4S9sy+tFsyCXGiG9ssv56htCPpE
-	GJTBTJROdDKx9lzXW3bDzagPxOq0yvhvkPuAqoOWzXwYW7FnjTCKB6bz/yacbqZ0
-	9QLvNQi/+anmsBJg4B3kbupHCH9v2pWy7XWYWmlaCxmIAG0jpNweT4iWWid0hL4H
-	0L8ytUNVu3xdVpDqIbcyU0QVpD6XwahG4k6HuTz5bTSZyu7H/sVmqYTJNRaSPaLg
-	4uOsIb+xfj0mzlVKtGPxt1T5qeyeL+WFCG9eWM5PZI5A6qBG9TbZSkIqtBEzd15h
-	fOUL/VYEIvFJSaM/h/hvhwy6Q2OA6QUpjptErSr0IarTDWtA==
-Received: from mail-dl1-f69.google.com (mail-dl1-f69.google.com [74.125.82.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4buf1bgb4c-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 08:53:55 +0000 (GMT)
-Received: by mail-dl1-f69.google.com with SMTP id a92af1059eb24-12338d13f2cso943151c88.1
-        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 00:53:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769072035; x=1769676835; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=92J8WnSaQyl7D9plb8idv8AXwTqatCyT3Ld0iG7JRRo=;
-        b=CCSIsfDq+9P+Na0Rb72dNHWq6k82m3S3YLqDTGXLWi8XoknhfHzSxeIHyZbQ7dKExZ
-         lTQiNrXKBqXQ0+i47YYJ3TYmlQgNI2fPcPX7Ara9+IbU+3MWfUilU9IecD1OrwNd9bpd
-         8FNp3o0/O0gccQ7G5upwBmHOdNeEu/kkBDrVaHyZ6Kt5WFlh4k1J2m/2qMyrRMx7uq2o
-         H7mEq0QnXHkU3jqhQdr8q+ibJKvVSXil5I3/4XCbUHAUP53U9IfZiEtEVuvvjvHvPALX
-         r1mjZyJ35q2fstmnAAmC377n0fEre1EH0fw++65LxXaACSEOh4YaHp55A2yMLICWX1pX
-         vCgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769072035; x=1769676835;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=92J8WnSaQyl7D9plb8idv8AXwTqatCyT3Ld0iG7JRRo=;
-        b=e9j4n+AMJtDhGNQtCs8MVqWHXPYcsZ3ddWErIXJRH6LmBgYhNZTRwelA81MXTavynf
-         PV6HkT/3vhEYV7sxN0IGOz6iv8VlXR/aqU2ILjGcwBb67fdZ4dXyEtCoL0RONwMVdnzv
-         PuMOknSZGhRoxBi/w6X4LfmNZZfWBf+R6fhK6ZCuDDtg1YoafKtYzqk/yhDjJhBWUXkl
-         iS6TTLT4DJxOwUCZaoB9tqqBZZSBLmqKDFBCObasieNtigKIL98Nyru8Wd+RAGO+sk7W
-         OjlK78LPiP4slUBPGOQLMUpGM6C8HnowdDS74vDHd/OxkhvrNPU2geA4JN2W0n6I4l8n
-         ZE0g==
-X-Forwarded-Encrypted: i=1; AJvYcCVXCZZnT+LZs6SVH5Np9UuqxVPmYTZ8rQei9Gwx846A3H26WZHTI6F1dvjqwjJdrne/4YrKR3A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjSyR56y3+G7xXHadlIeOceG5VEbYZc1UVp7lAl80H3HynybRx
-	hXfmTlZFan6hLzX4ZHEWfe36HQp6C/TeiRlBWzmYWP3KJKdR8fXK3Huplu2kbFD08YqT3r3t3BB
-	4JAf+YP3eIz6gLxJ2GDSVZBmkKK8PTAFojFc0vfSkKar+5xUYFNkP4qoOfhg=
-X-Gm-Gg: AZuq6aLCPh0INOc++VFnbEEuIoBR/mbg6EWRb912/BGsE/vruzRNtt+4eL1/cqn7V1f
-	Jbc4sdIQEAhW6gpgp2tfH3p15+KniA4rAyBwlZ8ZAQzEmrjRkdJ+T7HnJ4qWVfFTIvokWr/H5yP
-	5RXx8znVcR/x0B5pVmcgyZUg8pEaDExj09GvqYuSY8SqH1st0my7g/6332i1mw7TrllW1Pjm0/y
-	PCUMt+C6K/0xvc4XKRx6ymNathOC3h1MVgcTGlIArMryZCBNE2KLkNdKDoDp9xMI5QwHXaSRmoi
-	+roVFbHHU/nVYHN7LH1sh4lHeWZnFuEbZp70EtDLBej7AGXCQU6ukESWz2K12LmsgMsnmVQa+s6
-	odrQnLkYNfcT6qDg1fyOPQewlzlOo7PyNxlk5A0Jc8g2yVItxyUk0UW9f
-X-Received: by 2002:a05:7022:4188:b0:11a:37a7:3d2f with SMTP id a92af1059eb24-1244b36d5a6mr15735724c88.37.1769072034884;
-        Thu, 22 Jan 2026 00:53:54 -0800 (PST)
-X-Received: by 2002:a05:7022:4188:b0:11a:37a7:3d2f with SMTP id a92af1059eb24-1244b36d5a6mr15735708c88.37.1769072034216;
-        Thu, 22 Jan 2026 00:53:54 -0800 (PST)
-Received: from hu-qianyu-lv.qualcomm.com (Global_NAT1.qualcomm.com. [129.46.96.20])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b70d4324f5sm7179524eec.8.2026.01.22.00.53.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 00:53:53 -0800 (PST)
-From: Qiang Yu <qiang.yu@oss.qualcomm.com>
-Date: Thu, 22 Jan 2026 00:53:48 -0800
-Subject: [PATCH] bus: mhi: host: pci_generic: Switch to async power up to
- avoid boot delays
+	s=arc-20240116; t=1769074869; c=relaxed/simple;
+	bh=ULYW/RP0yu7Z99OE1vPmkiwP012bx0rlTW+FCdIDYmc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FS6OhoSk3aMndcdEOhyRBR4nfX8XVhTRd+kgSUg0bDHzsHBrrWftsjlbkrhSCNXIr8CC5K6kHAHOKYeKBgif62P6yXTOwoBszq63oPngYOFwU+792Fu5Ix73tkMgy+VV3L4zoV1c6eDEQGbo/NUqgFRu97dfxjob1MAs1phY1SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIPtWEcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789EFC116C6;
+	Thu, 22 Jan 2026 09:41:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769074867;
+	bh=ULYW/RP0yu7Z99OE1vPmkiwP012bx0rlTW+FCdIDYmc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SIPtWEcKNGS0u07v7qFDECVGvCyv6rnxV6zPa5z35e5MkBSDph9xXnxhQEcOtZgWX
+	 Jh2L561z4a8Eb9zXxgdha2KZPD/bVH8bRD8YYQVICHZ35W/rGQCZv13UmQqN+Q2mJ0
+	 +ZUJzyQPH8u7Sd0RkGIaY6w7zwXVTB9k77ChA0ciApSBDWnb/Y8g5C9kOM5ysua9TH
+	 fGrZLDTiXxAzczZnc8shj6Ig4r6ipMWehlkbVohJcjNBs6yS1h07XZG8VmWgPpZVQc
+	 +McUT7glVR8tz8o10wtWBm225RKY73eZMjI99lY3tMAWJ7m/C4xllU2OSlypEWZdVC
+	 nre+DhGxBEhug==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1virBW-000000003RU-2WW7;
+	Thu, 22 Jan 2026 10:41:02 +0100
+Date: Thu, 22 Jan 2026 10:41:02 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Rob Clark <rob.clark@oss.qualcomm.com>
+Cc: Sean Paul <sean@poorly.run>, Konrad Dybcio <konradybcio@kernel.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Subject: Re: [PATCH] drm/msm/a6xx: fix bogus hwcg register updates
+Message-ID: <aXHwrnMS2aj_PYRj@hovoldconsulting.com>
+References: <20251221164552.19990-1-johan@kernel.org>
+ <aWdaLF_A5fghNZhN@hovoldconsulting.com>
+ <aXDt6v_iO4EFCqyw@hovoldconsulting.com>
+ <CACSVV039g9CcAKhtMAwn=hH4hMT2nV77vxiasgUSFF-sn=+JgA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260122-mhi_async_probe-v1-1-b5cb2a3629d0@oss.qualcomm.com>
-X-B4-Tracking: v=1; b=H4sIAJvlcWkC/3WNwQrCMBBEf6Xs2ZRsxFY99T+klKSuZsE2NavBU
- vrvxt69DLyBebOAUGQSOBcLREosHMYMuCug93a8k+JrZjDaVBpxrwbPnZV57LspBkfK1k4fq9p
- VZAjyaop0489mvLSZPcsrxHk7SPhr/7sSKlQ1kdEHxJM12ASR8vm2jz4MQ5kD2nVdv14InUC1A
- AAA
-X-Change-ID: 20260113-mhi_async_probe-a7b0867b6e2e
-To: Manivannan Sadhasivam <mani@kernel.org>,
-        Qiang Yu <quic_qianyu@quicinc.com>
-Cc: mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Qiang Yu <qiang.yu@oss.qualcomm.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769072033; l=2282;
- i=qiang.yu@oss.qualcomm.com; s=20250513; h=from:subject:message-id;
- bh=fEYCB1OmXJHFLfozOgMIdwRQktFqsVtb3nHoMKfmXLU=;
- b=ENKcEED5vkiC3LwXWL73TKl+JtTGvCONhel7LnBjoD4Nq6W7Vi+QqT6nhLJPI3HdNwB16gX7R
- 9RNxoMqtNTJAAJ91L37yZj3ONjydrqxY5n4HDuwjp6CuXsdILwrSSPI
-X-Developer-Key: i=qiang.yu@oss.qualcomm.com; a=ed25519;
- pk=Rr94t+fykoieF1ngg/bXxEfr5KoQxeXPtYxM8fBQTAI=
-X-Proofpoint-ORIG-GUID: fAxRxF-6eOlzbCqDDgqsPe2728bl-yLS
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIyMDA1OSBTYWx0ZWRfX4HJutcrr7vaO
- gvh7QkGyezryYTgxRY4HeNpqiJy6Sz4S2x4ujiyRAD57QnZv0XeNW69rS7jEv6SH46ZQXGaCk8m
- mMbeoXGxBZcd1Ey5U0NRJKJQVa6kNP3VUBWYonwJv36Si8vP8pg3RDacFJ/+B22/zQQQq+9OdFG
- HTWMOfhbnpo83lmFMuGJGHK2uqDSGTw/pIayDRGUGeQfqcGD68t+Oqu0Ig6X/XyVHl8BMlyEHI8
- zBIgJ8Ot/2CisKsABMD9gHXt03IVqUt/KkJxH+eAhDili54BKMGU+vXXqIVFqpP3hd4gS8aYXM1
- uzEUEem0zKVzl398xrQrkE4+7A6jqLcqRc8BpAfKR+8YvUi4WkK5+Vrcq7EGT0bSAiQkjx8ybZV
- u0xHNgBgHG9vG39u5KC65QIrwDgxtJ8kKk9xmifGcQ7Br+mOqUSYvhk5F+EpNjsoeFgOM51YLyV
- RPeKhX1v3jN76mm3auw==
-X-Authority-Analysis: v=2.4 cv=G+0R0tk5 c=1 sm=1 tr=0 ts=6971e5a3 cx=c_pps
- a=kVLUcbK0zfr7ocalXnG1qA==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=yFp2A1wA7JFfkWW7:21 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=dy2jf5g7Jfd3xFo1z28A:9 a=QEXdDO2ut3YA:10 a=vr4QvYf-bLy2KjpDp97w:22
-X-Proofpoint-GUID: fAxRxF-6eOlzbCqDDgqsPe2728bl-yLS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-21_04,2026-01-20_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 priorityscore=1501 malwarescore=0 phishscore=0 adultscore=0
- spamscore=0 suspectscore=0 lowpriorityscore=0 impostorscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601220059
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACSVV039g9CcAKhtMAwn=hH4hMT2nV77vxiasgUSFF-sn=+JgA@mail.gmail.com>
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[qualcomm.com,reject];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-211213-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,qualcomm.com:email,qualcomm.com:dkim,oss.qualcomm.com:mid,oss.qualcomm.com:dkim];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qiang.yu@oss.qualcomm.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[poorly.run,kernel.org,oss.qualcomm.com,linux.dev,gmail.com,somainline.org,vger.kernel.org,lists.freedesktop.org,ffwll.ch];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	TAGGED_FROM(0.00)[bounces-211215-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: F2060642DE
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,hovoldconsulting.com:mid]
+X-Rspamd-Queue-Id: 3C67764C50
 X-Rspamd-Action: no action
 
-Some modem devices can take significant time (up to 20 secs for sdx75) to
-enter mission mode during initialization. Currently, mhi_sync_power_up()
-waits for this entire process to complete, blocking other driver probes
-and delaying system boot.
+[ +CC: Dave and Simona ]
 
-Switch to mhi_async_power_up() so probe can return immediately while MHI
-initialization continues in the background. This eliminates lengthy boot
-delays and allows other drivers to probe in parallel, improving overall
-system boot performance.
+On Wed, Jan 21, 2026 at 08:59:51AM -0800, Rob Clark wrote:
+> On Wed, Jan 21, 2026 at 7:17 AM Johan Hovold <johan@kernel.org> wrote:
+> >
+> > On Wed, Jan 14, 2026 at 09:56:12AM +0100, Johan Hovold wrote:
+> > > On Sun, Dec 21, 2025 at 05:45:52PM +0100, Johan Hovold wrote:
+> > > > The hw clock gating register sequence consists of register value pairs
+> > > > that are written to the GPU during initialisation.
+> > > >
+> > > > The a690 hwcg sequence has two GMU registers in it that used to amount
+> > > > to random writes in the GPU mapping, but since commit 188db3d7fe66
+> > > > ("drm/msm/a6xx: Rebase GMU register offsets") they trigger a fault as
+> > > > the updated offsets now lie outside the mapping. This in turn breaks
+> > > > boot of machines like the Lenovo ThinkPad X13s.
+> > > >
+> > > > Note that the updates of these GMU registers is already taken care of
+> > > > properly since commit 40c297eb245b ("drm/msm/a6xx: Set GMU CGC
+> > > > properties on a6xx too"), but for some reason these two entries were
+> > > > left in the table.
+> > > >
+> > > > Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support")
+> > > > Cc: stable@vger.kernel.org  # 6.5
+> > > > Cc: Bjorn Andersson <andersson@kernel.org>
+> > > > Cc: Konrad Dybcio <konradybcio@kernel.org>
+> > > > Signed-off-by: Johan Hovold <johan@kernel.org>
+> > > > ---
+> > >
+> > > This one does not seem to have been applied yet despite fixing a
+> > > critical regression in 6.19-rc1. I guess I could have highlighted that
+> > > further by also including:
+> > >
+> > > Fixes: 188db3d7fe66 ("drm/msm/a6xx: Rebase GMU register offsets")
+> > >
+> > > I realise some delays are expected around Christmas, but can you please
+> > > try to get this fix to Linus now that everyone should be back again?
+> >
+> > I haven't received any reply so was going to send another reminder, but
+> > I noticed now that this patch was merged to the msm-next branch last
+> > week.
+> >
+> > Since it fixes a regression in 6.19-rc1 it needs to go to Linus this
+> > cycle and I would have assumed it should have be merged to msm-fixes.
+> >
+> > (MSM) DRM works in mysterious ways, so can someone please confirm that
+> > this regression fix is heading into mainline for 6.19-final?
+> 
+> Sorry, mesa 26.0 branchpoint this week so I've not had much time for
+> kernel for last few weeks and didn't have time for a 2nd msm-fixes PR.
+> But with fixes/cc tags it should be picked into 6.19.y
 
-Add pm_runtime_forbid() in remove path to prevent device suspend during
-driver reinstallation. This issue is specific to async power up: with
-sync power up, pm_runtime_put_noidle() is called after mission mode is
-reached because mhi_sync_power_up() waits for mission mode event. With
-async power up, pm_runtime_put_noidle() is called immediately while power
-up process continues in background, which can cause the device to
-suspend and mhi init fail if pm_runtime_allow() from a previous probe
-is still active.
+I'm afraid that's not good enough as this is a *regression* breaking the
+display completely on machines like the X13s.
 
-Fixes: 5571519009d0 ("bus: mhi: host: pci_generic: Add SDX75 based modem support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiang Yu <qiang.yu@oss.qualcomm.com>
----
- drivers/bus/mhi/host/pci_generic.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Regression fixes should go to mainline this cycle since we don't
+knowingly break users' setups (and force them to debug/bisect when they
+update to 6.19 while the fix has been available since before Christmas).
 
-diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
-index 0884a384b77fc3f56fa62a12351933132ffc9293..fc0952e46ae5e4854c7165ed60b850729843d458 100644
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -1393,7 +1393,7 @@ static int mhi_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		goto err_unregister;
- 	}
- 
--	err = mhi_sync_power_up(mhi_cntrl);
-+	err = mhi_async_power_up(mhi_cntrl);
- 	if (err) {
- 		dev_err(&pdev->dev, "failed to power up MHI controller\n");
- 		goto err_unprepare;
-@@ -1447,6 +1447,7 @@ static void mhi_pci_remove(struct pci_dev *pdev)
- 		mhi_soc_reset(mhi_cntrl);
- 
- 	mhi_unregister_controller(mhi_cntrl);
-+	pm_runtime_forbid(&pdev->dev);
- }
- 
- static void mhi_pci_shutdown(struct pci_dev *pdev)
+Can't you just send a PR with this single fix? Otherwise, perhaps Dave
+or Simona can pick up the fix directly?
 
----
-base-commit: 91a0b0dce350766675961892ba4431363c4e29f7
-change-id: 20260113-mhi_async_probe-a7b0867b6e2e
-
-Best regards,
--- 
-Qiang Yu <qiang.yu@oss.qualcomm.com>
-
+Johan
 
