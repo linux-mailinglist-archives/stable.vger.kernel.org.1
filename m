@@ -1,164 +1,195 @@
-Return-Path: <stable+bounces-211223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJYWMnIUcmksawAAu9opvQ
-	(envelope-from <stable+bounces-211223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 13:13:38 +0100
+	id cAfSFdsRcmksawAAu9opvQ
+	(envelope-from <stable+bounces-211224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 13:02:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BD30667B2
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 13:13:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD5366589
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 13:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 036F36CBEE3
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 11:23:19 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id CB6B2740859
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 11:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F617428487;
-	Thu, 22 Jan 2026 11:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDE8441054;
+	Thu, 22 Jan 2026 11:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YcP34y7e"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HhLiMYfp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E2D413250
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 11:20:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A2B43C05B
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 11:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769080807; cv=none; b=djek+2l6PYX+rzUJqj6BiD/T5U/BA03dL3wwiOtt4qMbNoFQ9QZfKGQ3HHA5HQh+We0wii7Wl7a5duVXXvpA8mA1hAkJf9ARBh/db+DapHBYCs9eUkbG9c4gIjgZ4pWE+UxZvGf54PNjkM2iVRhFy1q2Nx9GkAMOfT3WutGx8Sc=
+	t=1769082216; cv=none; b=J80DXyLlO7KmwmGcxJUZayMSGvt5AADskVNVIpbMhTwBDaELgSs86VokBB9k2/8kxDfHG+4bIMIillL5BSbIeqcMkpTxOzpC1xg5f4Ekrr0lbVkACjvh14HsJh1rbXov592hU0QGuEq1iR2OgzTx2gx4NHmGP/eEUYUI0ZzsE4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769080807; c=relaxed/simple;
-	bh=9drDpY6+z/ej7FB1CPcTn/nYH3WOGUJooU/8D7OpAgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h50V5WAJfbH7eNZlGaMzzRQWWOGqwA7VhGjmZHV8lelIEOIJ1nrDcYwPRDpRXzC0/kpTbK1qDrpKQUcNEGCAt29GJdjCiIgYbEUyptgnHT9sSlib0CxTiBjB3e7/VCZhNCbqgd58GJyehdrmPIpS3CtX8ox/0HM1whJLUcNeoWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YcP34y7e; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1769082216; c=relaxed/simple;
+	bh=F41KeYoTPX1xryCYyrjJBC6quQJkQA8gOyh0i4b/oQ4=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Fk8ifZ9ttyiHRVMXErWng2Gq2WcAuE7TdtBHmnprr1gMIUzLBgazg4D5UQg4dMSRAsZPOyW3DtiinlQyHMMWHg7MkMsuCGymokLfoMl3AxVNCNgmLB+gu0jNnimGsjP2PygCyrtJ83vks4HTkurY+imtjzO3sYE8G7jbCjbJ4XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HhLiMYfp; arc=none smtp.client-ip=209.85.221.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4801bc32725so6706585e9.0
-        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 03:20:05 -0800 (PST)
+Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-432d28870ddso506008f8f.3
+        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 03:43:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769080803; x=1769685603; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vE16nPS696hV6qrtA4V5+Qb8uv6z8ojCk8XJiLozdcQ=;
-        b=YcP34y7evYlbP8KjZPr56OD/ulJ5DfPGRL+gMMA58U5ujb3+c8LGrj3KtZrTJ7Ri5l
-         u/70JMAcJIx28U6HHH5XR8a/yUxOetwQ8H1wtuYjuPanuGdIIeTAG4A/GwIvhvNPrXGi
-         kT+kMcYS69OlVKs2EvjtKG2j+2KpC74MGYCCfK4xgo0a9JZZCkMnKsV7IEdKb5505zZW
-         Bjflg77EIqPa7wUOh2fIgTAPGnTZ0TF2uqIftBva5lHvFAi8SLeqAC2tKXq3Dl0QQymU
-         IRajj3c6eEjzL6asrKBycVhFdr4cAfFrP+qQEB3VnC5INdYHBLlB1clGd+yfs22NGk8S
-         cseQ==
+        d=gmail.com; s=20230601; t=1769082213; x=1769687013; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4HpEyOC6PJWGGCRXO6diXKKa/2BXf2R4DS4i3pG5vnY=;
+        b=HhLiMYfpVekH0/ua43LJafJwNLFcyyqm8QlDnSmGBL31MtrJDQpCzE9t+OxuL2peyT
+         HB63bWXBta/gXSjZurr6WLluqHt61qkUH7uPSOY1dUYjjjoUDFag0AbVDlTEoaGzwuwu
+         ewpyVEe7SWMTL9QfFTUMhE3mptNMKie2O1UXv5NM4b6zRwI6HXdMzYRAM7J9Ufg6Y0Rm
+         1rZRhxLZTWt4/SI1pYL26u1G7beaU3qDT2xH8zc72Dcuewqt1DvdEQP+BhMKUQGQmcJL
+         FxUOLspxo5eeh51UHgKu6hmdSksMJ9ftPsFBF8ijkUwmcqYJUfJpJio57exbBIjTmRg2
+         Ft4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769080803; x=1769685603;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vE16nPS696hV6qrtA4V5+Qb8uv6z8ojCk8XJiLozdcQ=;
-        b=rDyVIMUvNjd+OeRAuHfghKAjkGworTO6lDNmPXFqvlf8tf/dzw2/IL/MVOsELgULRf
-         gCejie5L6olfZXJY+8XhK1CB7kE+g7Nyw0KR0GSINpUxAYuXGMVfKKvZ5bqJFaPRm3Bf
-         RC5r46iO909lZdM6nGSLYPgBCH1MGSTGoV+txo61Q1Rbu1uYLuDNSYzTxZ+6bYv/zZED
-         Bv5yuY2DU3SYUUmwf2BJf3mbE/p57bmdKXUJS3wtvIdbhh4/SmhTeuVLTW2B4+7E2Mlu
-         +NEShKYLa8hRVdOtFbu2uuHbwFypMO8E9a1ngzq49AZgPXdF+8DsBfOAkaA7z68hDzM/
-         tbVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/pExBdK/QssYLQZTr7m1X/oomzrn1x0f9CWZkp836KDJSjDPaII02+hgReA4CvTbalHGCkAY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxeKSDDVNtGRDEfr7C4E+v3VrW0I/U0+soKFkUoBOe5aCXGBnU
-	jvomQZ/Nx53E/DJzHuy3rNQWSeCu6N40VgsPcmbgPOeG7ZxLZ36KX1xt
-X-Gm-Gg: AZuq6aKt6FGTVIjRuQv9RQwJ3n044ZtskpASG8+Dc3mmASlNSBr5EcrOmmBSg6tQl2b
-	NA8yUV6oi6IA6QLz2FqK7wkxpsntnBWama3j6MFEHB9MVMmhqDasodxZx9lJgb+EcWQFWw7a37Q
-	Jx5oDwfF3xprjkjgdaa4WsLhlaU2NATwUfD1E1rMl7QOMapOQWzmVint3r9BWK8KrS3IBCbCYWp
-	+aFmUCL2jJ+P5meTyf6PuZB+7iZCyuu2U8ZblDrpsxyUtthz6iNifE+qoqrMvQvrI8ZctoSTcVa
-	6ZKVNnfIy3X8T1ci3/FF+FVJA0W2z/zCatxbW6gH0UVd8Vf4/H8h4aTki/Lw7FG6R5kdW8L1iB5
-	XApv7t4i+28oUyMDJ+n4/N/lNfP4M4Sce4B65EySSZANZfyZKma/DJNVcNtnZiIovJy3UgCLH1x
-	8FlsDLJyhaWsAOMPIVevZSkMgWL23JHl9Cdoi4BZCXsW0sw7bWLydx
-X-Received: by 2002:a05:600c:4748:b0:480:1c85:88bf with SMTP id 5b1f17b1804b1-4801eb10a4amr295290455e9.27.1769080803227;
-        Thu, 22 Jan 2026 03:20:03 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480424aa344sm51662315e9.3.2026.01.22.03.20.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 03:20:02 -0800 (PST)
-Date: Thu, 22 Jan 2026 11:19:59 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: "Ionut Nechita (Sunlight Linux)" <sunlightlinux@gmail.com>
-Cc: rafael@kernel.org, daniel.lezcano@linaro.org, christian.loehle@arm.com,
- linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
- yumpusamongus@gmail.com, Ionut Nechita <ionut_n2001@yahoo.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] cpuidle: menu: Use min() to prevent deep
- C-states when tick is stopped
-Message-ID: <20260122111959.14e8fb3e@pumpkin>
-In-Reply-To: <20260122080937.22347-4-sunlightlinux@gmail.com>
-References: <20260122080937.22347-2-sunlightlinux@gmail.com>
-	<20260122080937.22347-4-sunlightlinux@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20230601; t=1769082213; x=1769687013;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4HpEyOC6PJWGGCRXO6diXKKa/2BXf2R4DS4i3pG5vnY=;
+        b=e5fATYOflKov/MQbbMxw4sw8zZugm88FlpiImKVNcNc1r7asMESWIJTvqAmQMMEgbK
+         SIdOzFMh7O1dqA7oO8mCurEQu9u2sG4Icbhis82miVUpOIDFavBUBSKdthN5rc3E09Wm
+         XmLH9flmPzRHqZlI65mkDigLODHZP2IWnEGhNqSvWMj9KINCl9NW6QzcliuiifGzkdVi
+         7vlGegwHExV8s1b8xs9B462ZUm+F5sYmGbTGn1a/PAWODB1ZXBcWu647RnAtviyjYPX5
+         uc3W9DU1U4uUo20PxdCtK8iBLXOnpqhwVijCTp9BeYLASalFc9bxI+m3KiqUKVkG+yMs
+         W/Mg==
+X-Forwarded-Encrypted: i=1; AJvYcCXe6glplLwN8TFUGjQZiduwG/TcgvhaI53ZfVSUvpeBlvs/h8Gv6AmwxXLbtyRLWkmKTvEZ2Fs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUFu1J+ZF7Ykz4Gro2CUB6ITb3FnTY2MrtbnL0epXdhECXduJu
+	yjeEhEwqAwyUl/3LcKmPQDtDm7DP4OlgFeJYO3h/Ei1f0S1L71x3KIsRRkGX5YJL27Q=
+X-Gm-Gg: AZuq6aLwBZQ3CSGWLZAZeDvZ2s7eDsDKWKTJkz3PJGGuUhEPFLOMz7qQbpbf9NPEoXA
+	UV6Z3ZrpzXSYy+nghJlil3Nle0612I6qFkDAw90n1GuQEtJQbVABuQw2xXh61lht65br1du4DPn
+	uadyheeiLY+WciZXgNDbCLKrRCAp9GCMf9DAh38MYJNyoY+FffgEXlg3wyLUPJ60XWj4pqscAxf
+	Pblp4R/bi3NajQu/bwseaunIRArqUA5ObXJgvCmcykrKc6kaQPGtJCWqBMsC695M6zz9kXBjemn
+	/CCn3jwi5z7fqfmLuqQlTfZ9XafWuQWtPtlyP1bNm1Vdpli7I6FVoMC6rQDUbf9aYMIqvNHpv1I
+	UtlFd8wqg5yl3Phx7eGP5JzHYm9S6el1X0pdX2sdsd3CiKSb5M5Odm8rSseXuDgeBOrPA7KNOSw
+	OjPZcoOzFc1QpSn1hIfSfbtUAgUgle1htC6sqUa4UsBfDuf2IdwgYm30wKzaO45GkmKZMtFcotb
+	h7IekDfXROf7HxCP1bFyC4yLWm58FnuVp5CNRW94qAn1Bo=
+X-Received: by 2002:a05:6000:2502:b0:430:f3ab:56a1 with SMTP id ffacd0b85a97d-43569bcb6d7mr31529951f8f.42.1769082212593;
+        Thu, 22 Jan 2026 03:43:32 -0800 (PST)
+Received: from ?IPV6:2620:10d:c096:325:77fd:1068:74c8:af87? ([2620:10d:c092:600::1:46c4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43569921f6esm43811271f8f.4.2026.01.22.03.43.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Jan 2026 03:43:31 -0800 (PST)
+Message-ID: <d2fc2ff2-98d9-49f8-af95-968100174d55@gmail.com>
+Date: Thu, 22 Jan 2026 11:43:28 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+From: Pavel Begunkov <asml.silence@gmail.com>
+Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
+ cross-buffer accounting
+To: Jens Axboe <axboe@kernel.dk>, Yuhao Jiang <danisjiang@gmail.com>
+Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260119071039.2113739-1-danisjiang@gmail.com>
+ <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
+ <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
+ <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
+ <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
+ <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
+ <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
+ <2be71481-ac35-4ff2-b6a9-a7568f81f728@gmail.com>
+ <2fcf583a-f521-4e8d-9a89-0985681ca85b@kernel.dk>
+Content-Language: en-US
+In-Reply-To: <2fcf583a-f521-4e8d-9a89-0985681ca85b@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211223-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,linaro.org,arm.com,vger.kernel.org,gmail.com,yahoo.com];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211224-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.dk,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	DMARC_POLICY_ALLOW(0.00)[gmail.com,none];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_FIVE(0.00)[5];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6BD30667B2
+X-Rspamd-Queue-Id: 0CD5366589
 X-Rspamd-Action: no action
 
-On Thu, 22 Jan 2026 10:09:39 +0200
-"Ionut Nechita (Sunlight Linux)" <sunlightlinux@gmail.com> wrote:
-
-> From: Ionut Nechita <ionut_n2001@yahoo.com>
+On 1/21/26 14:58, Jens Axboe wrote:
+> On 1/20/26 2:45 PM, Pavel Begunkov wrote:
+>> On 1/20/26 17:03, Jens Axboe wrote:
+>>> On 1/20/26 5:05 AM, Pavel Begunkov wrote:
+>>>> On 1/20/26 07:05, Yuhao Jiang wrote:
+>> ...
+>>>>>
+>>>>> I've been implementing the xarray-based ref tracking approach for v3.
+>>>>> While working on it, I discovered an issue with buffer cloning.
+>>>>>
+>>>>> If ctx1 has two buffers sharing a huge page, ctx1->hpage_acct[page] = 2.
+>>>>> Clone to ctx2, now both have a refcount of 2. On cleanup both hit zero
+>>>>> and unaccount, so we double-unaccount and user->locked_vm goes negative.
+>>>>>
+>>>>> The per-context xarray can't coordinate across clones - each context
+>>>>> tracks its own refcount independently. I think we either need a global
+>>>>> xarray (shared across all contexts), or just go back to v2. What do
+>>>>> you think?
+>>>>
+>>>> The Jens' diff is functionally equivalent to your v1 and has
+>>>> exactly same problems. Global tracking won't work well.
+>>>
+>>> Why not? My thinking was that we just use xa_lock() for this, with
+>>> a global xarray. It's not like register+unregister is a high frequency
+>>> thing. And if they are, then we've got much bigger problems than the
+>>> single lock as the runtime complexity isn't ideal.
+>>
+>> 1. There could be quite a lot of entries even for a single ring
+>> with realistic amount of memory. If lots of threads start up
+>> at the same time taking it in a loop, it might become a chocking
+>> point for large systems. Should be even more spectacular for
+>> some numa setups.
 > 
-> When the tick is already stopped and the predicted idle duration is short
-> (< TICK_NSEC), the original code uses next_timer_ns directly. This can
-> lead to selecting excessively deep C-states when the actual idle duration
-> is much shorter than the next timer event.
-> 
-> On modern Intel server platforms (Sapphire Rapids and newer), deep package
-> C-states can have exit latencies of 150-190us due to:
-> - Tile-based architecture with per-tile power gating
-> - DDR5 and CXL power management overhead
-> - Complex mesh interconnect resynchronization
-> 
-> When a network packet arrives after 500us but the governor selected a deep
-> C-state (PC6) based on a 10ms timer, the high exit latency (150us+)
-> dominates the response time.
-....
+> I already briefly touched on that earlier, for sure not going to be of
+> any practical concern.
 
-We had to disable the deep sleep states on much older Intel -7 cpus.
-The problem was that we needed to wake up multiple cpu and they tended
-to get woken in turn - so it was far too long before they were all running.
-I suspect that pretty much anything that cares about latency has always
-needed to disable them.
+Modest 16 GB can give 1M entries. Assuming 50ns-100ns per entry for the
+xarray business, that's 50-100ms. It's all serialised, so multiply by
+the number of CPUs/threads, e.g. 10-100, that's 0.5-10s. Account sky
+high spinlock contention, and it jumps again, and there can be more
+memory / CPUs / numa nodes. Not saying that it's worse than the
+current O(n^2), I have a test program that borderline hangs the
+system.
 
-	David
+Look, I don't care what it'd be, whether it stutters or blows up the
+kernel, I only took a quick look since you pinged me and was asking
+"why not". If you don't want to consider my reasoning, as the
+maintainer you can merge whatever you like, and it'll be easier for
+me as I won't be wasting more time.
+
+-- 
+Pavel Begunkov
+
 
