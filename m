@@ -1,230 +1,160 @@
-Return-Path: <stable+bounces-211254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211255-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKyUGhRFcmnpfAAAu9opvQ
-	(envelope-from <stable+bounces-211254-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:41:08 +0100
+	id iA4hDORYcmkpiwAAu9opvQ
+	(envelope-from <stable+bounces-211255-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 18:05:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFD069104
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:41:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C45306ABCE
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 18:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D11DD3000717
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:41:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8AF8A30C9D5C
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253B644A702;
-	Thu, 22 Jan 2026 15:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48C94DC550;
+	Thu, 22 Jan 2026 15:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UInVgzqJ"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="eKJVRuKY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 316824418CE
-	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 15:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554284DC543
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 15:51:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769096465; cv=none; b=cmZa4VPJIMjxMYo0NDYKs3Q5hMyi3VpoiDDyNKRwOEKCosVVqx4u9iwHtvpGFeiA9D6r5HVRRL78KDbyWGWez8tzL450gKdBh7EKXGyniS8qMTV3l0YzwGzOEzqlNlqaun4c8k+Uv+M/CNFudZjKb2RkPXwFBHq09zY4gKcqPcU=
+	t=1769097100; cv=none; b=aVTzUaYNERkFWeQdD2F4v0itwTY9hJOtf3lGwtYiEsXzRcrfzvbp0xrv+bS/HkQpF+qgzp+0ybtXZ/1yaLJQs1xVCRLck3Ay1FHiWtwFSEvfRPXt6sYrsvdYOtdlW/+csoJEryIjBq4BseorG6HsRswsIdo9jYOs7Nixy4OAg58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769096465; c=relaxed/simple;
-	bh=uONlpUsG6B+1SJNCDttGGY2DFAbNfSVv6+TjnGPV9Ro=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rv+Rq81PXTJjO50IV6Xez6XrnF4SB9i1SZgLwUHp2l/Tf1e8ASF4QLWj6I1S2xbAl+9HjVrdRVI/scqbNsnTznNHHtro54WEIzMlmB9pJjYLtlh9R6UD3Hi6LF+p4wvT0DSuTebcFw4oLXb6fzQoXGY+y1QcN1gBmFZmdv9/+E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UInVgzqJ; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-81e821c3d4eso1007256b3a.3
-        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 07:41:02 -0800 (PST)
+	s=arc-20240116; t=1769097100; c=relaxed/simple;
+	bh=rmvs0wUA6Vknh3KvKwpYhY7VCf5Gt2lC67JAUIj8J/c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O5P3+NLGBAI+o8Tz1QnOoUXKMWn+zIrBJETDkbfwE1UuabLwLa+A8fx/Cy5a0Y9VKRVd79ERG8u6ChADZ7T84NyU4OjMLxSn7yJ03V16mM2KtKyRCjeNGK2MtfZxOr7y0jFb5pRAK0mrhVruysTFWZIleURuiGfbAAWnMgCLuwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=eKJVRuKY; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47edffe5540so13018805e9.0
+        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 07:51:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769096462; x=1769701262; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=iC3BQrsx4m1KIySd6SGYfoOdN/kOmKuZK6JhgQwLLwU=;
-        b=UInVgzqJdiwkrpta0q1byxIFltiwJbGYlfvUihTy1JF0VxZ1EhsDOfpEfaK1nd3awD
-         aoGR4DIcNaGc5hur+fI4/Dfy4NUzWJ6T7sxdXa/K2CDXIngiw9lZZU+NwnyZUVetns9I
-         5bEOzxsZp/MF6zlIFd3hw+f403B5rP6M2o2KK6F506alIzWt23EZ7AP2yabYG7Zw2Z0W
-         kXLMV3IbFrh3fa66hRBG1Xu3xXjcorVd6T0uIX3QuIkOmWqn0x+GjjRt1BCPHy+A45kt
-         RbC39LlbzbC1Dun65yFK840m4+2/1XTmQPWHXzMuJxU6XNhm2b0OZ2wNuV2n+cTT7K4x
-         RG7Q==
+        d=googlemail.com; s=20230601; t=1769097092; x=1769701892; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=c19nhZZPPkZH3viVYUA+n7Wk9ieUTEkhR5Y9vgtGhyU=;
+        b=eKJVRuKYhuGzK/wYG5UV/2DD/ca06JodpTuKKhxS53sgILwKcKY17S+5QPqKX5Ekr4
+         MSsRDtNE6iFhL61wU1jtpK7FoLIcpL0cfiOctUsVeCSpGh+jFe4NVDmTuyeKbgXTxFQK
+         9taxhn54dlNLn2j+6IIOjfLxpob6HEpico4upPCNWJmbF/0v6dPrWw9oMvMZHeakIO2K
+         UkAGYRpKUqilJ5NrxmDYWgGXPtdbn7O3qAqaR/N25Q+Suemxn3ZuLCV3XMxSPr31Ao+t
+         Tm80dlPiyW/37Aw1bE2GmsxfPmnt0Pdx58p15E+hSxQyuV7+s8FMGHZ7h6qABDPQKq7N
+         f9zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769096462; x=1769701262;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iC3BQrsx4m1KIySd6SGYfoOdN/kOmKuZK6JhgQwLLwU=;
-        b=NKR6moLtvnJM9qtDAUmzg3Hregbfiqf56A+FRwEOute/tyFTJxyVJeGvWFsFHOcWdi
-         suQhoYOXMD1gi1Dpe42oNyv6lWLAnZ0KCIcpZuX8z30lHQ+pFgFyZpFjg4oDZaoQ0jDJ
-         ay5J2D3DOi4sxwnYOdc/aIaHhMF/eKQ7SMMROasPcRuRUJtj2ybHYS2eHHXRJgMFewD/
-         eJfPJUSX5LANtXl2BLWEsWxHsqVaFWSaxX9BhCC8TowBmLTsziYOyXt3IyLjcyDuC2Dv
-         fCcrpUTlz+jvKhMDw15AFpC5suri9p9sz8kC5VsOcWtcHCcbUV2U+nXwK+TIg8Em6fdG
-         z0bw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnQY6d8eAPmHkL9hb1ihq0CIJdq+cDbf2GKcCwYaD4Rc6bF6HPt0lg1I8vcoNO0c3EGZDlqzM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxwqeuu1ywSdauow37WvvOUteccHr+PbeeE25fJXkgqHpLv0XTm
-	NPbIsUWp/4mC2FBtPW2jp/acoVyBUuznsIdY5CXY8BMivvvTJvurHF1j
-X-Gm-Gg: AZuq6aIqULry0aDXL2sLWO41otY35FK3UpGl3UM3nbJBggfJ1sRrA72MACBU0gJK9cK
-	xBlBBQUtqVsapS5yBIX664xv23WxuMaexJSJ1Tpkmou5T91pdZHAngE1oRj9RexJTNpPr8d76D4
-	XqP+mRHLXQo15QIcVjNIZXF/N5snKxr84ZxzNyNz9S2WOgrIBsOGRNfqGonJIZr7SGg7cAXEhlU
-	7eL/J6X4kjWiv8WN7DWRyJ+XjWBNtPoAWfrf5dP/1v5FfoGtcHKVjbRl93yq5wvlq3MmMUcbwGW
-	CioGmKeAP4wTB53KMgEh+qLZEx8yJXwoQZsrC2K1UtU8S1tJ6pW2UfgW1zjZNPgUAALcF2BIOl8
-	3VNPeeTzGxM0xBcv/Of6rqT83ch3072wxQi/vFRX5/KvuleuXDsrhIIA8Bs3PEMo4NnbftX1oNR
-	nUSE4vKT5XxH4AHv6SOpAm4MQmPusD
-X-Received: by 2002:a05:6a00:1302:b0:823:1117:39e6 with SMTP id d2e1a72fcca58-82311173ef0mr798121b3a.33.1769096462238;
-        Thu, 22 Jan 2026 07:41:02 -0800 (PST)
-Received: from localhost.localdomain ([111.125.231.221])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82181d6f7f7sm3474462b3a.50.2026.01.22.07.40.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 07:41:01 -0800 (PST)
-From: Prithvi Tambewagh <activprithvi@gmail.com>
-To: martin.petersen@oracle.com,
-	d.bogdanov@yadro.com,
-	bvanassche@acm.org
-Cc: linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev,
-	skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com,
-	khalid@kernel.org,
-	Prithvi Tambewagh <activprithvi@gmail.com>,
-	syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2] scsi: target: fix recursive locking in __configfs_open_file()
-Date: Thu, 22 Jan 2026 21:10:51 +0530
-Message-Id: <20260122154051.64132-1-activprithvi@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1769097092; x=1769701892;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c19nhZZPPkZH3viVYUA+n7Wk9ieUTEkhR5Y9vgtGhyU=;
+        b=REBqVRaaURYctf9YP1mx3tZzAYdN1EOnK5/b3eGaSUGRzQR+NB++k3DkkyHt9pQJQs
+         ihC7drfVKLdD6OWYVnmB91cbmveOGx4nZJl6DL9pp8NBocLyZJrSEtoEG1d96V2oe+YX
+         kMk8YXfroQrz+HIr6ybvwf/PTUS+6+Xd/8gIA7+GZw44jKOXNom3PS2HEKXwfaUzyo30
+         2R+P7buPjlRJRtEu8eP4iPLMoJrLcc0H14SknZLpycB4+KKWerzinvsUZMkJc3chEj/g
+         ZBfhP8TaF6u6LbkvpmQ4pUawevR3j++tfoidO7DQ9pozJbBfqFS1x7dRt8Fxyb7acz4+
+         /2NA==
+X-Forwarded-Encrypted: i=1; AJvYcCWTNgiX3Lypakf08iD4K9zFcBbxU5p2BvNmVMNHbUB/mUXOPnzf7YXyZxYt5yvUUSKeKxVTtOg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBdlvpGfbho5jkkXi+q1lSoHOrxTy6GLL6bSUvK0BzxCyraHno
+	WqS7QcxPp1gAomqbwZhkRIKZzGEvUKjfxr5RHC08nKbRKxH+un8029k=
+X-Gm-Gg: AZuq6aJz2wR/PglMNihsXUNoKSz1jryLHlMa/+eU0hGAoi9U68iHoJJF2g2FgsSxFkh
+	po4tv+gmFdFwVd3AVSJ4oJSWL9wTvv5nthVHDK/boGUdCAQVJt7PljkULEnfDIaQqON6q4wspjQ
+	tqSiMM4Dpt899JqGIoo6MMfgmfOUgk/674znqvzubgS+IRIPa0Ety8v64uOCrDichLqf4OrnjBr
+	hq5/X7Wm2wr2X5mNiZTqzpBUiLkf9tj2Izc7JqkXoCiQzm5dZPThHLIM326SywLsn7SWZ5QAUIP
+	safvFUte+rJ0wKw17AwLTTpbA5bTaqldROOVEA8eJuI3XRYN8sBCK4M1RFp7kg6EdO9yx+ftqI9
+	GWSSu4BWk/UOsBXrzYDysvYOBRs0cNBu450RyrM/T01wC/3BZhMXMntGvfuelVdnwKYZrvVdC+Q
+	R2se+VTJiU3y077t4GBAeNSADnKxyb56+dpolL6xwo+dnXI8E+fLXd0ZyGxe7jPbk=
+X-Received: by 2002:a05:600c:3e10:b0:477:9814:6882 with SMTP id 5b1f17b1804b1-4804c947a33mr1434825e9.5.1769097092144;
+        Thu, 22 Jan 2026 07:51:32 -0800 (PST)
+Received: from [192.168.1.3] (p5b2b44b4.dip0.t-ipconnect.de. [91.43.68.180])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4804704b4e6sm77029785e9.7.2026.01.22.07.51.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Jan 2026 07:51:31 -0800 (PST)
+Message-ID: <a45313d2-2033-4783-92a4-b0ec2786cd29@googlemail.com>
+Date: Thu, 22 Jan 2026 16:51:30 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.18 000/198] 6.18.7-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260121181418.537774329@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linuxfoundation.org,gmail.com,kernel.org,syzkaller.appspotmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-211254-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211255-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[activprithvi@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,f6e8174215573a84b797];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CFFD069104
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlemail.com:mid,googlemail.com:dkim,peters-netzplatz.de:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C45306ABCE
 X-Rspamd-Action: no action
 
-In flush_write_buffer, &p->frag_sem is acquired and then the loaded store
-function is called, which, here, is target_core_item_dbroot_store().
-This function called filp_open(), following which these functions were
-called (in reverse order), according to the call trace:
+Am 21.01.2026 um 19:13 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.18.7 release.
+> There are 198 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-down_read
-__configfs_open_file
-do_dentry_open
-vfs_open
-do_open
-path_openat
-do_filp_open
-file_open_name
-filp_open
-target_core_item_dbroot_store
-flush_write_buffer
-configfs_write_iter
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-target_core_item_dbroot_store() tries to validate the new file path by
-trying to open the file path provided to it; however, in this case,
-the bug report shows:
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-db_root: not a directory: /sys/kernel/config/target/dbroot
 
-indicating that the same configfs file was tried to be opened, on which
-it is currently working on. Thus, it is trying to acquire frag_sem
-semaphore of the same file of which it already holds the semaphore obtained
-in flush_write_buffer(), leading to acquiring the semaphore in a nested
-manner and a possibility of recursive locking.
+Beste Grüße,
+Peter Schneider
 
-Fix this by modifying target_core_item_dbroot_store() to use kern_path()
-instead of filp_open() to avoid opening the file using filesystem-specific
-function __configfs_open_file(), and further modifying it to make this
-fix compatible.
-
-Reported-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f6e8174215573a84b797
-Tested-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
----
-Changes since v1:
- - Update commit message to reflect the fact that same file, which code was 
-   currently operating on, was tried to be opened again, leading to 
-   acquiring the same semaphore in nested manner & possibility of recursive
-   locking.
-
-v1 link: https://lore.kernel.org/all/20260108191523.303114-1-activprithvi@gmail.com/T/ 
-
- drivers/target/target_core_configfs.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-index b19acd662726..f29052e6a87d 100644
---- a/drivers/target/target_core_configfs.c
-+++ b/drivers/target/target_core_configfs.c
-@@ -108,8 +108,8 @@ static ssize_t target_core_item_dbroot_store(struct config_item *item,
- 					const char *page, size_t count)
- {
- 	ssize_t read_bytes;
--	struct file *fp;
- 	ssize_t r = -EINVAL;
-+	struct path path = {};
- 
- 	mutex_lock(&target_devices_lock);
- 	if (target_devices) {
-@@ -131,17 +131,18 @@ static ssize_t target_core_item_dbroot_store(struct config_item *item,
- 		db_root_stage[read_bytes - 1] = '\0';
- 
- 	/* validate new db root before accepting it */
--	fp = filp_open(db_root_stage, O_RDONLY, 0);
--	if (IS_ERR(fp)) {
-+	r = kern_path(db_root_stage, LOOKUP_FOLLOW, &path);
-+	if (r) {
- 		pr_err("db_root: cannot open: %s\n", db_root_stage);
- 		goto unlock;
- 	}
--	if (!S_ISDIR(file_inode(fp)->i_mode)) {
--		filp_close(fp, NULL);
-+	if (!d_is_dir(path.dentry)) {
-+		path_put(&path);
- 		pr_err("db_root: not a directory: %s\n", db_root_stage);
-+		r = -ENOTDIR;
- 		goto unlock;
- 	}
--	filp_close(fp, NULL);
-+	path_put(&path);
- 
- 	strscpy(db_root, db_root_stage);
- 	pr_debug("Target_Core_ConfigFS: db_root set to %s\n", db_root);
-
-base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
 -- 
-2.34.1
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
