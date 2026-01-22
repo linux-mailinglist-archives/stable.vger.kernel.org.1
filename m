@@ -1,262 +1,237 @@
-Return-Path: <stable+bounces-211247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211248-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHJDO048cmnTfAAAu9opvQ
-	(envelope-from <stable+bounces-211247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:03:42 +0100
+	id QLUEECY9cmnpfAAAu9opvQ
+	(envelope-from <stable+bounces-211248-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:07:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6615F684D1
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:03:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E7A68601
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 16:07:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3AAB3300B9F6
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:02:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5A6F3038F7B
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 15:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FD031076A;
-	Thu, 22 Jan 2026 15:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D459A349AEE;
+	Thu, 22 Jan 2026 15:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iqDa8xTF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BmQK8cyK"
 X-Original-To: stable@vger.kernel.org
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11013012.outbound.protection.outlook.com [52.101.72.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16CB2F9C3D;
-	Thu, 22 Jan 2026 15:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.72.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769094038; cv=fail; b=k2NrFwuYihB9r2lUxPB1SXIdv7aoF4O7/1nsL2GIyrC/KBKN8dgo4n6nsGrB/GfLwveOrTyRoFr+XK81AtSpKmettRUnFnLSUtnP4jyrzkTLF1pL2S0G+gIsQkEewCt7VdIsZX+vvVFXpFyETpdTBk+fJ+tgba2rcTaCaOXaLMA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769094038; c=relaxed/simple;
-	bh=uqius2VvB0lRFUj/kYZr70hjn1OBjDJd9GFqrhedGZk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=WeANeVmfOEV7rZss7cZ3Gy42YvB9o/I7qkDJIgM9v3Pq57yyF1er5pPt0QDXXaEu3dUGXf2SoLnC3ds7xMl8F+JOvmuGIqHqoYC/6V5/hbx7pvzuFWZRvu7FhO3DIiLfmsNE3H/DzKwX7dInMDa3lgUn0eGNPuxm6SDZEKeqb8Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iqDa8xTF; arc=fail smtp.client-ip=52.101.72.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m+U9VWBUYfHFXJR6E3D6Y3y9omPD2aw7SYe65wzT35NO5d3lI3uqK0Mw4Oi7Ym/9C7Nru2oheyWZl5DGMFpv/3/HwlCZnEmePs1lfsnN2vRugP6kRxrbWXyiFlC0rgpGijREgl3L6jZVYSbObQ+uSRw704nU5urXJDi9P4DQx1BO81RLO9pESl63j4fjE2Lb99Y+zH1X24kSjjofrmv1K57bcc6j4bSya0hUbX+oqndK7zK1zVbUWrT52XVlc99OMtKI8a7Mhuh6TLL2IOh0BTokzH8zMMOZrMgJLXrF1Sv7gt1mNYb7gurs702TnwSqZ+JbAcsD6HsJ58I+hBDWDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7iOfBDtHc5rUXY7Ed9OAnlf74Pe8rVgMc+uTMls4Fm8=;
- b=H1Pm7hzL7Ah8ChQOAKl0nbS/2Nwqm7+mCYfLNM9I5e5JEApMkwjuy50S+zEqzOrNK1IZfdoT+Es6rsOlRg6CGc2ot8eIzDm868v/gELo6xHEzbDbU5l6T008Jr6AFO3DN526deh8s9VdQPHz8quTzYL23Oi4YeWt70VuVouuuYcQ/dvDLBY8sO+1B2reQ3D7x1A7d5OHklgUQ2HiAg66XcMGSCmI1UZ1w+ydQZzEzenXE4vBeBbdbrBDnyygGZ78pUSBoJBoZwmphW8QRdMebU3LmGMINy5ruwK4LlYKtXRD+7Y5LAtT+9UP3PaKSRn9w879WTAUDt1iqlbSIDS2rQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7iOfBDtHc5rUXY7Ed9OAnlf74Pe8rVgMc+uTMls4Fm8=;
- b=iqDa8xTFlnIf2jdm5KpJ7HJN2LdKkRma7d5yW+L4hqcI/WC80VKsUSkZ7Dt6w2t4r9al3AlLXXbvmI0CFmUK+h5mWpUwsSqiWwHt0UQS+F0W+aTFZW0hmAxwZE6yCVEwpc77arSp/jgzgCa2Pyv7z46Tm44Zqnuzcx9MlFRV9SMwaZVhNvm3gIqlvW85IEfV4StS2+SZrDwtfhmTgH3kIz5XrBRona2u+AkzYpgk5Uy2BKEx1SExHqhvurQzllwEIN/teIMUb0KpC9tl3WEAbJtLBL2qeEkqYMLfAxUSKLzepJsmEtW3y7EjBg/TqWvDkyzaAiCzYwtvy0k3MPpPdg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PRASPRMB0004.eurprd04.prod.outlook.com (2603:10a6:102:29b::6)
- by PAXPR04MB8653.eurprd04.prod.outlook.com (2603:10a6:102:21c::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.10; Thu, 22 Jan
- 2026 15:00:33 +0000
-Received: from PRASPRMB0004.eurprd04.prod.outlook.com
- ([fe80::6ab3:f427:606a:1ecd]) by PRASPRMB0004.eurprd04.prod.outlook.com
- ([fe80::6ab3:f427:606a:1ecd%4]) with mapi id 15.20.9520.009; Thu, 22 Jan 2026
- 15:00:33 +0000
-Date: Thu, 22 Jan 2026 10:00:24 -0500
-From: Frank Li <Frank.li@nxp.com>
-To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Iuliana Prodan <iuliana.prodan@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	linux-remoteproc@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] remoteproc: imx_rproc: Not report loaded resource table
- when none
-Message-ID: <aXI7iL2Zf282uFlh@lizhi-Precision-Tower-5810>
-References: <20260122-imx-rproc-fix-v1-1-36cc64369a40@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260122-imx-rproc-fix-v1-1-36cc64369a40@nxp.com>
-X-ClientProxiedBy: PH8PR20CA0020.namprd20.prod.outlook.com
- (2603:10b6:510:23c::21) To PRASPRMB0004.eurprd04.prod.outlook.com
- (2603:10a6:102:29b::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0CFF34B425
+	for <stable@vger.kernel.org>; Thu, 22 Jan 2026 15:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769094047; cv=none; b=deQTxA1k7uYjzdMTTt0xho3PZYOzAGuNhwIx+sRazRp1QmCz6JFqx/eYlVeeSo8lpRojtpZY70v26oUojs+O9rAM9LforppdOhPbtkfWXigDptrjb/Zs5/qXg1qjL4Z3bAz+PFm1yegaklOxNjEiheVHOFTNH+24rIpwhlK94lY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769094047; c=relaxed/simple;
+	bh=AW6QW16cZw4eS2w4tFK4qEp001q0jxR721JZGa9TE8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a2+gLgFtOKDNqEawsFqUNDj+oU0UrMi5S2GKmgT1GjQsZ7Vk4pZHy7kHhxQciK/2E7fXkfTNcoted+dGi9iEGRgJCTU+ttyiZbM84a4VKrnNtGT7akM5i88CTKK7laX+7QehK6bAVzXWeET7uGNKKH6Hk5Cm/exQbxFnpc53+BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BmQK8cyK; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47ee76e8656so14679945e9.0
+        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 07:00:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769094044; x=1769698844; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FDIGcrQeI7TUl53A1tKBQGSWEsAoREmDHrcAi67WNyY=;
+        b=BmQK8cyKDsmehjbotknkAjl1E/aINQCQ7AcE9aPOcMVOwQSMLda8dyfl1+G+HLxSxx
+         S4tyIZhTpHpFyOLivSZJnZUpifsGEKJqavjtwK42x7PmiT00CQ9V5SzVzHyI9wVB1B/M
+         sGdXY/nO9q+4aqyZnLLC2No2iSnUBSUoOzfpvBNqKn7zyj7AyeKyD1pLChruSq1KGtWK
+         gtzIDR8GiHO0PS/OB91gcW1AKkw15yMZ70GarAWHzdWjBuxhylF6k0b/OgHvBHv4V1Gy
+         0ZWZA7n1yiNkpp0GDnOvqcfbunpTNZI8ev7fXNTfVGxuaUtis8EOdApmTxNJw/gwUzGu
+         vZjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769094044; x=1769698844;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FDIGcrQeI7TUl53A1tKBQGSWEsAoREmDHrcAi67WNyY=;
+        b=jhN5WoXbz+rHFlDCc9mQJiYblxsWSW+fSsFtjxbDvg3znkqYsxefdym9333P5DuWT5
+         lIEYFkJjrvwSTwkabk2xrDw9oPW4yKUvXftRQeuUDrDVGODqIaLlj18TPCbMhanYJ9dt
+         IVkH+SBbnEieNGcS4MwVnkcVRkxJlHUHW1qVxj27ssazfFsEGHHxu+pNG+7YoWbh130c
+         Sw1e1NyhDUp0vXe4v8heNCwjROTwwOX/KLrobXd2I6iHrX/tVUhiZiFfDJ+0QgXtNcIq
+         iDH2sDzrMhHnvDsVSGqL/ht0P0SyMh03A98KEzqVo7BBf2zmS4c2coU43V8iqTD1JvH3
+         T9uw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2JpOhUy5xKabsQdSK7ISbk9SyXK2qE6UrvlOxtr2tmXLWxwaci3cffBZH6w5wVYKoQOUWWK8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTv7o5lADnvRtZQxPFcR311Ck7n5T15vmaoPrgf08b5z8Rp8oK
+	R1fzqFS0U395CdBly0lxgAVlfaHBzfdDzLCnBChGqR6KUdmLeR13INT8
+X-Gm-Gg: AZuq6aJb+0X1lk+Y0cm78/akahoirPdF64cmRH9HSKEHtWZFuHozfWCVTkf32oP5Boz
+	6OVOnRqmHy+iZb3HMqiZvw0NPLJYzo3TZdgKb2XLI6g2qUAGKQwnUW5jWuARDrbVHI8FFDTrcHY
+	ueubSL0eUSDqndrx02DAKQNhYrrZXL3Xa3a6hvIoRDXwHGBfwOrcus72i9w3oKsSETf3hyW7foE
+	wYrXdI8eUp/jzskls3/PWwZPHE7jrHjFXZFx7SzGcFH0YpwRUSU+mLaLmMPcn5DYPVm8evWEO8d
+	IKy4tH66aOaVOLGn6FTW5HocSbmGYP0avrFoISdTm1IksSkduYDVpq1oQA6R7ouymr5H2kptjHp
+	ni1YIOgDq+ys4XmcV/jMHN0Fa2LbMSz9ovvcKHA5TBgipzsfFm1JBSmgbYUlNIiin/ElhiO3NKk
+	5fJoz4BBBh1AoCmrF9DHu+0umOx5cGNx0IbxgW97zuub7WlIy9+LyeQQks
+X-Received: by 2002:a05:600c:a013:b0:477:79c7:8994 with SMTP id 5b1f17b1804b1-4803e7f0e39mr144220535e9.30.1769094043496;
+        Thu, 22 Jan 2026 07:00:43 -0800 (PST)
+Received: from timur-hyperion.localnet (5400182B.dsl.pool.telekom.hu. [84.0.24.43])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480470cf1acsm72039655e9.14.2026.01.22.07.00.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 07:00:42 -0800 (PST)
+From: Timur =?UTF-8?B?S3Jpc3TDs2Y=?= <timur.kristof@gmail.com>
+To: Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org
+Cc: Jon Doron <jond@wiz.io>, stable@vger.kernel.org,
+ "Lazar, Lijo" <lijo.lazar@amd.com>
+Subject:
+ Re: [PATCH] drm/amdgpu: fix NULL pointer dereference in
+ amdgpu_gmc_filter_faults_remove
+Date: Thu, 22 Jan 2026 16:00:41 +0100
+Message-ID: <4882409.vXUDI8C0e8@timur-hyperion>
+In-Reply-To: <9d5291d6-9e1f-4df4-ad0b-ba7543d8a2af@amd.com>
+References:
+ <20260121182447.2434085-1-alexander.deucher@amd.com>
+ <9d5291d6-9e1f-4df4-ad0b-ba7543d8a2af@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PRASPRMB0004:EE_|PAXPR04MB8653:EE_
-X-MS-Office365-Filtering-Correlation-Id: 44bf2d9f-53a5-4653-d84d-08de59c6fdc2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|19092799006|366016|376014|7416014|52116014|1800799024|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?y9F2BjWaY3xwMff5loJOSuLvtMPucm6qd/W8nXV2pkBdh7Y/ybOfyraahKOb?=
- =?us-ascii?Q?Y+/l3sfG3RVKAK3IvzpUfzyL0c3/DudqWqs8eeKVlTJhE1uqGywIc7p4sCRz?=
- =?us-ascii?Q?qNfRrONTlAaRuWD53Kb2lQ6OSL0JW3iGbNZxATxPKiK5NJdhQMfHXbbPQ9cT?=
- =?us-ascii?Q?tV02GHfE7ekTBL4WE+d00uKvl8q02X/f/Hjph8hDOWL1umnr5vGMf93L5xtf?=
- =?us-ascii?Q?Y2WrX+CE/0jUakEtIHmg1yaoeuma0rqa91mz+6lL9hVtdFJUBP66as7A3Fsj?=
- =?us-ascii?Q?ubJZLHTm7o/8LMn2misRdKODdHi6EbE3cGoxVvPYwShy036td5aeXWyCENHE?=
- =?us-ascii?Q?2QHR0+G7DT/vGYCV05mj2RPn8wI+0AD1t2Sd1GI9/bP0HJTlSGhA/70lxHaU?=
- =?us-ascii?Q?DZSUTZK6ilbRObAZ5DrIbnRWEmUfpkxpMszDblJHFIJhPpspageV9m57NvPd?=
- =?us-ascii?Q?UwsDIxUc6sI8d4BxaIhEzDF21Fak6gWBs7efg0oZKhjaSAVaKcLqh6CouOku?=
- =?us-ascii?Q?fWZoQvBUQnn4MWDTMTxhoD7a6FY3IapdHw05dM+NSQUW8I7xJ98JdafxDieg?=
- =?us-ascii?Q?B7O+nUkzRCe168IJl7g706DKv3EoiFGLRJnpmHYOE+vr+Vqp1tSNLV/5K2/L?=
- =?us-ascii?Q?KoeIlQ7h/MLGWJvzJQrV5ysaWYhuGqOeeaGLq5tYCr2vBMe3Qa5bWzGbqMUk?=
- =?us-ascii?Q?rn0ufpYvcalIN3U4JdhB7ZTxXWOD9fB8W5bnX8RE1dg5WQP6RM/0zcFJmMBd?=
- =?us-ascii?Q?2bWJA6BhqoiokkX5zfkUJ9xoU5fXFjCwcOOUvtKI9Nnap/BrUtV7vmWawjAU?=
- =?us-ascii?Q?D3mKxDg8Yi46qEWZ7Jw+jGOJV6uxsEOP+yWtXhl6xciZ+ZI1PsAkBp2YpHDV?=
- =?us-ascii?Q?UjuCFlRE0YH06tr97R1bzwcZuSqf421vFFXS8QntuKmCFS6KprQTM00OA8sY?=
- =?us-ascii?Q?S/V2iyQbusQGXMxezlEYbouAszEoih/zT0XRRmRQ/s/4h20R0oSNBoR5O5Ml?=
- =?us-ascii?Q?HrzMSlmGk011Te/uS6YqF04o2oK3fIQI9VJ/cptkYxFRKmjO7U1h90bJ0yfu?=
- =?us-ascii?Q?I+IW6Jav9ISSbhLXGS28DRW4nJDOdGyY3sdTzM+gEKP8dPmssb5LzOpdENz4?=
- =?us-ascii?Q?y/AOZGDm2hETZwHdidSaq7xoQl1h8Brm/HJ10Hxvcdg9U/4axU/sZFAyfJkH?=
- =?us-ascii?Q?0+cgj946gaeTXiMRoc6eeQ4CdTgGS0eNfvSloMsnA4YQFrxyfTokk/FAfX01?=
- =?us-ascii?Q?Q9q+tspCqzHsxnc310njn0YaLrJRjZGCTINBjuL8bNnjfXAVz6JPfQlIFsgd?=
- =?us-ascii?Q?ZqvVEoeOtRdmHVwIBTJgNU5+ji5jQnf0eN4f7yPQuksAIUnXtDizuuijwxq9?=
- =?us-ascii?Q?x/miBvCLego9c2bRaWoFyM0BgnRBl1W8dGC6ohejStP08urdI/I8YyavWZmq?=
- =?us-ascii?Q?oxVE7jVTB2tgI1VU8PL7qSQZ/pB+iw1igi90BfhWFwGLoJHxi35WPt9YVlkH?=
- =?us-ascii?Q?ZZp+6SCytVAEDZ7/LO0yXdzGc7HQPJ6SpwiV7w9rABWo9PT8XGGBWjoRmIfG?=
- =?us-ascii?Q?ORneY1PAibShtYpesdVY0tunlh4Fwtd0KJTI6ObTZcowbTtp4U4CN3ckbquc?=
- =?us-ascii?Q?PuajvqdZC0pcFrXyMLGGEB4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PRASPRMB0004.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(366016)(376014)(7416014)(52116014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hj2V4wpotXdkVfGHxzDaI1np1oFgCiNeBWzDGdS/ygUCsu4gUtnFL+PPmp+/?=
- =?us-ascii?Q?GKav0/55ig3aRzkQcw/Vx8O9yUiCORSuMg5i22zF2WX5cwRHU9m46we80YB9?=
- =?us-ascii?Q?Si7MTzgt4QNssot1nRNPxu4ufAwUjHdoNvrMFmmKAQ/kjs5gAMuMenrtIRMJ?=
- =?us-ascii?Q?Tqe4n5u6JFqhmXrGWef27qKgd+qD53bIn+hHUQ5mV5HtvJicopiDAswnQlQ1?=
- =?us-ascii?Q?xpY286aBEZupzEtXwv8ASWOVw87adqUHSIzjthXpDxw7i6TJJJsDDptnpvM4?=
- =?us-ascii?Q?+jyh66Xu8II92bij80HhiFykkKgtwOKqXkbxHuIm+2ls7xlDOO8thOhtlsrX?=
- =?us-ascii?Q?G91NeBGUkou0VyFEZKOKamerjEVZSIBZaqAU7gzzvTtLRyYxIEoKIENip8ih?=
- =?us-ascii?Q?a3IE77su1rOPgYqaTOrljv+B1npioSD5SYwX9RaGFRKRBF3+dKwA7GSmXv9N?=
- =?us-ascii?Q?oAttN9yhMZ9r8zH/J1czwiNTQLo/G/3iLA4Jq2O5vmXMen/OmUE2vPXSLrnI?=
- =?us-ascii?Q?PA+E3fDRgYymNAOrVGkoaqSbJAfmb7NRzrhGkhHDX2jkq2tLq/1ARFkbuSL5?=
- =?us-ascii?Q?QTA48afCvYbcz2ziUem8bJ/8nEfH91x9Y0Lj80+6esuh53FYqw1rag3wUk4x?=
- =?us-ascii?Q?VcdviHEe3xrE91NggjoRHpvJobgssGYjoi3J1OypORw2k7H2WUCLp20ldsEP?=
- =?us-ascii?Q?zN0yXFpTRqOKlGqTZLvyT8e5+KfZTQd7NEitXJKqH6MOoLvDqO+gHCRD+ITy?=
- =?us-ascii?Q?gS20zAAWJ2S8lJXke/8EJvJ3iO92zdK+umfa5nYNwo2eHd3xlFO+8oXLcHsS?=
- =?us-ascii?Q?g/KL4J66ygBXYP4DGEmQit9iTdVIGd7+22ukJUzeB2FOeoS7lbuuxg1igzvf?=
- =?us-ascii?Q?q//AEvAth78B9krl6MyqiPl3wvoH16gv+9hjILYlgAyfdgFi0lLOQpwRYM+Y?=
- =?us-ascii?Q?OP4Kuuk39R9t5Ro5Khf5EWxTopyGfccvs7TzHqGunKkMdbUKPlqK3X+CuayX?=
- =?us-ascii?Q?71BuhNGBMopqmjsDiPqz5MpWaqvjzuyOvHpkA3mRNbG5pTWRxFj69XqlMbSq?=
- =?us-ascii?Q?RUuRpvnhUi0T00n8kvUpnqY1I1cI/2vuyUYF52ZnEaIjrws/Q7I5FF3G5Px9?=
- =?us-ascii?Q?Zg0M1hkZEl4EszyIlaK/cPOjFgtoSQa6KoZBJrtjLaw6w3OtZAP09YdmbGBl?=
- =?us-ascii?Q?++/Vlv9FcxnRz6/aox2vIdkbAcGFMABhFoIgoxmoWHkSbhrQxoS4vkM3pz/F?=
- =?us-ascii?Q?sHNzpkKyFgoIzaSc2b5GYCyMnGaXEqz0cGMcDYKWifBDJd4B5AywLH4rxURE?=
- =?us-ascii?Q?C/vKJsyHyMqTXoFJlhbc+wtiq+MRrP0N+7LjQR36iO1S+f2TDZhBuYgys2ij?=
- =?us-ascii?Q?IpfsCGwEfKCqUPTZ/KcZY153wWpVEyLyNnty6+zf94tt/4MgwBMf0I/YUAAZ?=
- =?us-ascii?Q?duaLHqVJPYTzh6N4I9i/kFsesRdcuL9pc1CIsqTQe3DoZqVY+Vb2sRWjPuYn?=
- =?us-ascii?Q?f6oL92x5tj4ULPq0ISNUf4M+A5fyrTh3P5Rgjft1X8W7ZJ/0V+m/R6F/0KBH?=
- =?us-ascii?Q?rSmMbqquzaCLHrRgx/LPTHf4FDPRXdZxXse6JaGaziEO1Qmc4DyHNhrzCUwZ?=
- =?us-ascii?Q?mJUrBf/GJlvwBJBRtidpqrY+4lqJ0xJA67ktH+nQOV3o5l4ZAoAzR0Lj7ri8?=
- =?us-ascii?Q?WlLrxpANmK1gnH0eSx+kVIIsC4K08YV53Ny0OzkNeAfi46AF?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 44bf2d9f-53a5-4653-d84d-08de59c6fdc2
-X-MS-Exchange-CrossTenant-AuthSource: PRASPRMB0004.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2026 15:00:33.0443
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 59G9Smft2l8UsGNKuJGB3Stc/bYNO9GjFa8jcnj8tR8aLxC4nxZOV916VMuGieOHuESRU9SK7YAbnjyAUdsDzA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8653
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211247-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_CC(0.00)[kernel.org,linaro.org,pengutronix.de,gmail.com,nxp.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	DKIM_TRACE(0.00)[nxp.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-211248-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email,nxp.com:dkim]
-X-Rspamd-Queue-Id: 6615F684D1
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[timurkristof@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wiz.io:email,gitlab.freedesktop.org:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 79E7A68601
 X-Rspamd-Action: no action
 
-On Thu, Jan 22, 2026 at 11:24:43AM +0800, Peng Fan (OSS) wrote:
-> From: Peng Fan <peng.fan@nxp.com>
->
-> When starting a firmware without a resource table after previously running
-> one that had a resource table, imx_rproc_elf_find_loaded_rsc_table() may
-> incorrectly return a valid device memory pointer (priv->rsc_table).
->
-> In this case rproc->cached_table is NULL because the current firmware does
-> not contain a resource table, but the remoteproc core still interprets the
-> non-NULL return value as a loaded resource table and attempts to memcpy()
-> from rproc->cached_table, leading to a NULL pointer dereference and kernel
-> panic.
->
-> Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
-> there is no cached resource table for the current firmware. This ensures
-> that a loaded resource table is only reported when a valid cached_table
-> exists, which matches the remoteproc core expectations.
->
-> This issue can be reproduced by:
->   1) start a firmware with a resource table
->   2) stop the remote processor
->   3) start a firmware without a resource table
->
-> With this change, starting a firmware without a resource table no longer
-> causes kernel dump.
->
-> Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook for find_loaded_rsc_table")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> ---
+On Thursday, January 22, 2026 6:07:27=E2=80=AFAM Central European Standard =
+Time Lazar,=20
+Lijo wrote:
+> On 21-Jan-26 11:54 PM, Alex Deucher wrote:
+> > From: Jon Doron <jond@wiz.io>
+> >=20
+> > On APUs such as Raven and Renoir (GC 9.1.0, 9.2.2, 9.3.0), the ih1 and
+> > ih2 interrupt ring buffers are not initialized. This is by design, as
+> > these secondary IH rings are only available on discrete GPUs. See
+> > vega10_ih_sw_init() which explicitly skips ih1/ih2 initialization when
+> > AMD_IS_APU is set.
+> >=20
+> > However, amdgpu_gmc_filter_faults_remove() unconditionally uses ih1 to
+> > get the timestamp of the last interrupt entry. When retry faults are
+> > enabled on APUs (noretry=3D0), this function is called from the SVM page
+> > fault recovery path, resulting in a NULL pointer dereference when
+> > amdgpu_ih_decode_iv_ts_helper() attempts to access ih->ring[].
+> >=20
+> > The crash manifests as:
+> >    BUG: kernel NULL pointer dereference, address: 0000000000000004
+> >    RIP: 0010:amdgpu_ih_decode_iv_ts_helper+0x22/0x40 [amdgpu]
+> >   =20
+> >    Call Trace:
+> >     amdgpu_gmc_filter_faults_remove+0x60/0x130 [amdgpu]
+> >     svm_range_restore_pages+0xae5/0x11c0 [amdgpu]
+> >     amdgpu_vm_handle_fault+0xc8/0x340 [amdgpu]
+> >     gmc_v9_0_process_interrupt+0x191/0x220 [amdgpu]
+> >     amdgpu_irq_dispatch+0xed/0x2c0 [amdgpu]
+> >     amdgpu_ih_process+0x84/0x100 [amdgpu]
+> >=20
+> > This issue was exposed by commit 1446226d32a4 ("drm/amdgpu: Remove GC HW
+> > IP 9.3.0 from noretry=3D1") which changed the default for Renoir APU fr=
+om
+> > noretry=3D1 to noretry=3D0, enabling retry fault handling and thus
+> > exercising the buggy code path.
+> >=20
+> > Fix this by adding a check for ih1.ring_size before attempting to use
+> > it. Also restore the soft_ih support from commit dd299441654f
+> > ("drm/amdgpu:
+> > Rework retry fault removal").  This is needed if the hardware doesn't
+> > support secondary HW IH rings.
+> >=20
+> > v2: additional updates (Alex)
+> >=20
+> > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3814
+> > Fixes: dd299441654f ("drm/amdgpu: Rework retry fault removal")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jon Doron <jond@wiz.io>
+> > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> > ---
+> >=20
+> >   drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 7 ++++++-
+> >   1 file changed, 6 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+> > b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c index
+> > 8e65fec9f534e..243d75917458a 100644
+> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+> > @@ -498,8 +498,13 @@ void amdgpu_gmc_filter_faults_remove(struct
+> > amdgpu_device *adev, uint64_t addr,>=20
+> >   	if (adev->irq.retry_cam_enabled)
+> >   =09
+> >   		return;
+> >=20
+> > +	else if (adev->irq.ih1.ring_size)
+> > +		ih =3D &adev->irq.ih1;
+> > +	else if (adev->irq.ih_soft.enabled)
+> > +		ih =3D &adev->irq.ih_soft;
+>=20
+> Faults are delegated to soft ring when retry_cam is enabled -
+> https://gitlab.freedesktop.org/agd5f/linux/-/blob/amd-staging-drm-next/dr=
+ive
+> rs/gpu/drm/amd/amdgpu/amdgpu_gmc.c#L541
 
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Hi,
 
->  drivers/remoteproc/imx_rproc.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-> index 375de79168a1c8d11b87ac1bd63774a3feac106d..cf044b385b58fe1e17d0fc440c243d76ecf020ae 100644
-> --- a/drivers/remoteproc/imx_rproc.c
-> +++ b/drivers/remoteproc/imx_rproc.c
-> @@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct rproc *rproc, const struct firmware *
->  {
->  	struct imx_rproc *priv = rproc->priv;
->
-> +	/* No resource table in the firmware */
-> +	if (!rproc->cached_table)
-> +		return NULL;
-> +
->  	if (priv->rsc_table)
->  		return (struct resource_table *)priv->rsc_table;
->
->
-> ---
-> base-commit: e3b32dcb9f23e3c3927ef3eec6a5842a988fb574
-> change-id: 20260122-imx-rproc-fix-e206f8e6e477
->
-> Best regards,
-> --
-> Peng Fan <peng.fan@nxp.com>
->
+As far as I know the retry CAM is not available on APUs.
+Please correct me if I'm wrong.
+
+Thanks,
+Timur
+
+>=20
+> That matches with the original logic in d299441654f ("drm/amdgpu: Rework
+> retry fault removal").
+>=20
+> To match exactly with the logic in above commit, I think it should use
+> soft ring only when retry cam is enabled. Presently, it's returning
+> without doing anything.
+>=20
+> Thanks,
+> Lijo
+>=20
+> > +	else
+> > +		return;
+> >=20
+> > -	ih =3D &adev->irq.ih1;
+> >=20
+> >   	/* Get the WPTR of the last entry in IH ring */
+> >   	last_wptr =3D amdgpu_ih_get_wptr(adev, ih);
+> >   	/* Order wptr with ring data. */
+
+
+
+
 
