@@ -1,174 +1,107 @@
-Return-Path: <stable+bounces-211292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211293-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oF9uI0NpcmnckQAAu9opvQ
-	(envelope-from <stable+bounces-211292-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 19:15:31 +0100
+	id gIlgIipwcmlpkwAAu9opvQ
+	(envelope-from <stable+bounces-211293-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 19:44:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00316C2A9
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 19:15:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00EEA6CA0D
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 19:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA8913001CE5
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 18:15:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3A6A530255FA
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 18:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3FA37475F;
-	Thu, 22 Jan 2026 18:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhL+VLXQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8E6376488;
+	Thu, 22 Jan 2026 18:16:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 050D62517AF;
-	Thu, 22 Jan 2026 18:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6002736EAB8;
+	Thu, 22 Jan 2026 18:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769105721; cv=none; b=DnqnOoyZhQY9pmY85r7uDnnGFjyZiZMlb7hECqxb1EpCw1J+ze8mYvsnXeZcRdkcHsNjj71OOeTZrPTQaks3KiGbrsbcL/h5/VBuFKpt5f8rEh1OIiqzmv+OjB6Ml7WZJRwOCPTp/H0Tyham1nuYJL/sZeHAKskY8hoJjpi0Z/c=
+	t=1769105794; cv=none; b=tzxm8KgUoGc3g82rFuuhh2idj30rFVoSkmLs6vaCVeiTbE0EIy7ygjtQsNGU8SHGhIWOgJMXW7E7gGP5LVYxjO8PSXkDhvQv/VPzoAZVjKKksLvHReBJW9CL8OA5vTmqIVDmRXgoB/Ef3oNcKY+jxJ8l7SiXpasV9Xa5jKI/wAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769105721; c=relaxed/simple;
-	bh=7LKFfCFbzmlEynwe0Tr8raROJe7wN73Kd9MIXE9C1zM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d8X4nenM7w17qINLrHsGn+flaLlQO7cObYhQU0kn3okerXEuCPh9U4ze3grbveFwV2fAoi7W5Xsjf3xF/XUydr1tqNUiTrwLVclUDt1KdxU3+zJq7Dkl5+PY1eS0NUUFWdWLIiMsY06QNAPvLYfRRgsgePiGWu+Nx6B1bH3IDdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhL+VLXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A688FC116C6;
-	Thu, 22 Jan 2026 18:15:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769105719;
-	bh=7LKFfCFbzmlEynwe0Tr8raROJe7wN73Kd9MIXE9C1zM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YhL+VLXQUcCxy0w1Mq7nCEoEExNuM9OpjW+E5sCyH2R6AtFnIGULz7AzCYsr8cqT2
-	 76IPzFtZAxtLXM4XBuu+A9KwX08GCVP2xFiNrcZZpNdIdXSByqEW76BVW7vJ1rvJwR
-	 VIrCp8XvbBuMR7tFoN89Fhg9qDifvH+3wpViTUA879Vr6mB/CNr6uwEVMiXSo6fde3
-	 fB/Uzio9Lx7knrPox+UIB3BvA89Yhr9Psc7V7hWbjy8eE28JBwz4NsnaC+yE+Lij/3
-	 rh05b4DI6Eamq71TOt4lxHbZbI+ranYkGiJ7zhObvnSCw8tfkpQsrcxQwW0WqFOGaQ
-	 L3IrVjWtDom3g==
-Date: Thu, 22 Jan 2026 18:15:12 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com,
-	Ryan.Roberts@arm.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: Re: [PATCH 6.18 000/198] 6.18.7-rc1 review
-Message-ID: <392ccce0-4042-47ac-abdd-d1ed830ea27d@sirena.org.uk>
-References: <20260121181418.537774329@linuxfoundation.org>
+	s=arc-20240116; t=1769105794; c=relaxed/simple;
+	bh=B+VTRAMPF/5hfKD7XYDcddVM/g7Pc3Pr1FC8TaMmDvY=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=R3c8xaAwj0lEXcCh3pP4IDPpHV1dAxjGYSXsLp7DzZKSwVqNZ12Lk5Qu/MFgpIfkw79+vdtQksE7pijAWlykCp7MbJ0+UbHFLCiv/oPV0rkMhD3yW1+TlaMn4b+gJcDEr/It6j2Foiz0SLCWZb+qKXO8yWhjmTOGmt400rbIfsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 3090292009C; Thu, 22 Jan 2026 19:16:11 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 2A46392009B;
+	Thu, 22 Jan 2026 18:16:11 +0000 (GMT)
+Date: Thu, 22 Jan 2026 18:16:11 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Niklas Cassel <cassel@kernel.org>
+cc: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
+    Jingoo Han <jingoohan1@gmail.com>, Manivannan Sadhasivam <mani@kernel.org>, 
+    Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+    =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+    Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+    Frank Li <Frank.Li@nxp.com>, 
+    Serge Semin <Sergey.Semin@baikalelectronics.ru>, linux-pci@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] PCI: dwc: Fix skipped index 0 in outbound ATU
+ setup
+In-Reply-To: <aXI8ByG3RlLpIRRa@ryzen>
+Message-ID: <alpine.DEB.2.21.2601221806080.6421@angie.orcam.me.uk>
+References: <20251229-ecam_io_fix-v2-0-41a0e56a6faa@oss.qualcomm.com> <20251229-ecam_io_fix-v2-1-41a0e56a6faa@oss.qualcomm.com> <aXI8ByG3RlLpIRRa@ryzen>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="BuFbwiFtP7fxVovs"
-Content-Disposition: inline
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-X-Cookie: Don't read everything you believe.
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211292-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,arm.com,oracle.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211293-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[orcam.me.uk];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,gmail.com,kernel.org,google.com,nxp.com,baikalelectronics.ru,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:url,sirena.org.uk:mid]
-X-Rspamd-Queue-Id: B00316C2A9
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[macro@orcam.me.uk,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,angie.orcam.me.uk:mid]
+X-Rspamd-Queue-Id: 00EEA6CA0D
 X-Rspamd-Action: no action
 
+On Thu, 22 Jan 2026, Niklas Cassel wrote:
 
---BuFbwiFtP7fxVovs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+> Also see my series here:
+> https://lore.kernel.org/linux-pci/20260122145411.453291-4-cassel@kernel.org/T/
+> 
+> That tries to clean up this mess.
 
-On Wed, Jan 21, 2026 at 07:13:48PM +0100, Greg Kroah-Hartman wrote:
+ Is your patchset referred meant to replace this one or does it apply on 
+top?  Shall I verify yours with my RISC-V HiFive Unmatched system so as to 
+determine whether it is as good a fix for the port I/O access regression 
+caused by commit f6fd357f7afb ("PCI: dwc: Prepare the driver for enabling 
+ECAM mechanism using iATU 'CFG Shift Feature'")?  You don't seem to refer 
+to either my issue previously reported or the offending commit.
 
-> This is the start of the stable review cycle for the 6.18.7 release.
-> There are 198 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Tested-by: Mark Brown <broonie@kernel.org>
-
-However:
-
-> Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->     tools/testing/selftests: add forked (un)/faulted VMA merge tests
-
-These are failing for me on arm64 and I think arm (something literally
-exploded in my lab so the arm bisect didn't complete yet due to the
-half of the lab with that board being powered off until I get that
-fixed), that in turn causes a new top level failure of the merge
-selftest program but the actual failure is purely newly added tests not
-working so I don't think the kernel itself is any worse than it was
-before.  The tests are OK in Linus' tree so we are I guess missing a
-backport?
-
-Log:
-
-   https://lava.sirena.org.uk/scheduler/job/2395273#L4133
-
-# # #  RUN           merge_with_fork.forked.mremap_faulted_to_unfaulted_prev ...
-# # # merge.c:1283:mremap_faulted_to_unfaulted_prev:Expected procmap->query.vma_end (281473166635008) == (unsigned long)ptr_b + offset (281473166622720)
-# # # mremap_faulted_to_unfaulted_prev: Test terminated by assertion
-# # #          FAIL  merge_with_fork.forked.mremap_faulted_to_unfaulted_prev
-# # not ok 16 merge_with_fork.forked.mremap_faulted_to_unfaulted_prev
-# # #  RUN           merge_with_fork.forked.mremap_faulted_to_unfaulted_next ...
-# # # merge.c:1349:mremap_faulted_to_unfaulted_next:Expected procmap->query.vma_end (281473166635008) == (unsigned long)ptr_a + offset (281473166622720)
-# # # mremap_faulted_to_unfaulted_next: Test terminated by assertion
-# # #          FAIL  merge_with_fork.forked.mremap_faulted_to_unfaulted_next
-# # not ok 17 merge_with_fork.forked.mremap_faulted_to_unfaulted_next
-# # #  RUN           merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_unfaulted_next ...
-# # # merge.c:1420:mremap_faulted_to_unfaulted_prev_unfaulted_next:Expected procmap->query.vma_end (281473166647296) == (unsigned long)ptr_a + offset (281473166622720)
-# # # mremap_faulted_to_unfaulted_prev_unfaulted_next: Test terminated by assertion
-# # #          FAIL  merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_unfaulted_next
-# # not ok 18 merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_unfaulted_next
-# # #  RUN           merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_faulted_next ...
-# # # merge.c:1495:mremap_faulted_to_unfaulted_prev_faulted_next:Expected procmap->query.vma_start (281473166610432) == (unsigned long)ptr_b (281473166622720)
-# # # mremap_faulted_to_unfaulted_prev_faulted_next: Test terminated by assertion
-# # #          FAIL  merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_faulted_next
-# # not ok 19 merge_with_fork.forked.mremap_faulted_to_unfaulted_prev_faulted_next
-
---BuFbwiFtP7fxVovs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlyaTAACgkQJNaLcl1U
-h9BeRwf/Tp6aH6UsW55SmaGC1ZzDwV3rF6Y8pHzX5GpSkciwHdkcYL74KMgdYjAq
-LNoipMtmiEDnVW2NEyzlPfqvOdjgET2sN0VZutPuZ38aB7kGnk2Y6XvYyuVGyW/7
-wfbnpAI0rl/lQlxo/k6dgwyTm1yzl5TJjnlhsduhSxTs6bsn4G6maGEMAFDXc5+5
-DSnVR96jqaAvdcjcQpHQD+MVxPMWAOTcI7KOaZBpprZ77SWvhHXQsaXKUK0UkL9k
-QPGzIicyoTzlsJn4lAtc86zlNZRBVlPxqTUXKKn7jg3e0ewgAVmrfGYvAZA1Ka1y
-ZOndzPdQpZ72u0o9ERyuxBEs5UAYHQ==
-=tnH2
------END PGP SIGNATURE-----
-
---BuFbwiFtP7fxVovs--
+  Maciej
 
