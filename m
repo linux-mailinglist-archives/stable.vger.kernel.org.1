@@ -1,111 +1,104 @@
-Return-Path: <stable+bounces-211197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCUmBZq4cWnTLgAAu9opvQ
-	(envelope-from <stable+bounces-211197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 06:41:46 +0100
+	id oE/uHJ28cWkmLwAAu9opvQ
+	(envelope-from <stable+bounces-211199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 06:58:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981E862092
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 06:41:45 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC1B621A5
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 06:58:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1EC934E34E6
-	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 05:41:43 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 073434A29D5
+	for <lists+stable@lfdr.de>; Thu, 22 Jan 2026 05:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FDC39282C;
-	Thu, 22 Jan 2026 05:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57F242982A;
+	Thu, 22 Jan 2026 05:57:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-1.gladserv.net (bregans-1.gladserv.net [185.128.211.58])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967F9314A8A;
-	Thu, 22 Jan 2026 05:41:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.211.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523773A89AB;
+	Thu, 22 Jan 2026 05:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769060497; cv=none; b=qCfqUoUfSfMLHXaoQ2N4r6ExG6CMogvFmo0GNtkSCoerVhMjOzq9kD7ChbDTy/UX39hNU4ZLR9KKmH2KzQsqiqwFeYSpzu3iOs3T6FNlF31IZbhuzIC8773AIJj7XmY6BLJkEcY8LvGPPrB5hZFscxfliwelA9Ags+oX84dHyDE=
+	t=1769061474; cv=none; b=DfZ3ReKG0KiLYnIi6hT5nWRcoxUvH16SI2pWmseKUH+GVTEihCQ4SlPQo9Z9JzB0vyO6Ga/R3fpHnEbjTdwrwOysOOMCR29SNC5oUOC9JBBGB4KBI2ALM6D5GVWVLEL3DL+icCr/S8NjtOIgCBQqE79L7rmdEN6bY9KQYYXYx+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769060497; c=relaxed/simple;
-	bh=BckS+Xu3Ic3ddV6z7oTGnvuUBs3j0eQi1I/SAXeguP8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bwgpJTVNoGjpSwMQPhAzj0SAgzTdRxDqIjZ+BljTG8fG6e8gGZ6g51CQI+KQoz9G/LVPJw2EFyswMApgA1nxugutiqd81rfIIkqiQEiCSowm+KrX8uySfHr/vYfqCTi4mQ+fIBStchqjYUQrzQobjcq4uRDHoQcwucJI9d3NJzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.211.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 6.18 000/198] 6.18.7-rc1 review
-Date: Thu, 22 Jan 2026 05:41:07 +0000
-Message-ID: <20260122054111.29687-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260121181418.537774329@linuxfoundation.org>
-References: <20260121181418.537774329@linuxfoundation.org>
+	s=arc-20240116; t=1769061474; c=relaxed/simple;
+	bh=I9oJCAJSbUnAlEpypxu7wF7MP7jyvo3WrHt00nK97Ds=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AuKCQz/uloKjVjH1rj2sOWsZe0duL6agp2iYV2ggQ9Q9Hxf5EgZ3e701NBMPowBmElVIN0BMRhxRVcT4CzJE+oK/g8wQU9a/xO+xZjeiOdYMVqCt1N2RBcOTBRVY4SaNZkeDWnopVYcopB95SYNwVjDa5PxDVKmbcuj8r7XjZ9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 60E38227AA8; Thu, 22 Jan 2026 06:57:48 +0100 (CET)
+Date: Thu, 22 Jan 2026 06:57:48 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, cem@kernel.org, r772577952@gmail.com,
+	stable@vger.kernel.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 1/4] xfs: check the return value of xchk_xfile_*_descr
+ calls
+Message-ID: <20260122055748.GA23964@lst.de>
+References: <176897723519.207608.4983293162799232099.stgit@frogsfrogsfrogs> <176897723563.207608.1472219452580720216.stgit@frogsfrogsfrogs> <20260121070323.GA11640@lst.de> <20260121182208.GH5945@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121182208.GH5945@frogsfrogsfrogs>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.74 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[lst.de : No valid SPF, No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211197-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[librecast.net];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCVD_COUNT_THREE(0.00)[4];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	FREEMAIL_CC(0.00)[lst.de,kernel.org,gmail.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns]
-X-Rspamd-Queue-Id: 981E862092
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hch@lst.de,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211199-lists,stable=lfdr.de];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	RCVD_TLS_LAST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,lst.de:mid]
+X-Rspamd-Queue-Id: 1DC1B621A5
 X-Rspamd-Action: no action
 
-# Librecast Test Results
+On Wed, Jan 21, 2026 at 10:22:08AM -0800, Darrick J. Wong wrote:
+> > xchk_xfile_*_descr is used to pass the name to xfarray_create or
+> > xfblob_create.  I still think it would make this a lot more robust if
+> > those took a format string and varags, and then we'd have wrappers for
+> > the common types.  Even if that still ends up doing kasprintf underneath,
+> > that would be isolated to the low-level functions that only need to
+> > implement error handling and freeing once.
+> 
+> Alternately we just drop all the helpers and kasprintf crap in favor of
+> feeding the raw string ("iunlinked next pointers") all the way through
+> to shmem_kernel_file_setup.
 
-020/020 [ OK ] liblcrq
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+But wouldn't we get duplicate names for different inodes?
 
-CPU/kernel: Linux auntie 6.18.7-rc1-g28a73c31d7f5 #1 SMP PREEMPT_DYNAMIC Thu Jan 22 05:27:29 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+Anyway, I did a quick take at format string / varags version of the
+helpers, and that works out nicely, but that _descr macros still confuse
+me a bit.  Maybe I'll have something until the start of your Thursday.
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
 
