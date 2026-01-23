@@ -1,210 +1,340 @@
-Return-Path: <stable+bounces-211359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YA10Gb8kc2nCsgAAu9opvQ
-	(envelope-from <stable+bounces-211359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 08:35:27 +0100
+	id WBfFArssc2mTswAAu9opvQ
+	(envelope-from <stable+bounces-211360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 09:09:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF3371C78
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 08:35:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8193E723A9
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 09:09:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A45F43014C14
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:35:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83B5A304E1C5
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 08:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B486307492;
-	Fri, 23 Jan 2026 07:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767313502A6;
+	Fri, 23 Jan 2026 08:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cdnFHa6a"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Xxc5SFv1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010014.outbound.protection.outlook.com [52.101.61.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DF62EA48F;
-	Fri, 23 Jan 2026 07:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769153722; cv=none; b=PjospcIG/KHwyy+WgXu8gagdlS3oTE3N/9GutL373zaMkj4fVA+FfjMZEt2rHrTnRgr7SZe6ZF5gWFOgDEfnk38Aq1NbU3I+xklJ281uDz11JV1vrNWC3H4s4R2yxlsxR4RgDFBxhdxUpx3jA/RM971KNVWMNHpdt//DDm9+g7Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769153722; c=relaxed/simple;
-	bh=GKOeyS1K3rfOAmVVi3P0BY1kZ4FOXbUQ5mLzkw9Qnhk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dixQsRn86yyomBJ8GCmNL92kdY5JAsGBnBzvollRonmlx9p/aE3M2j5iEoMBqQrVgFYGT8//pLXKWikHfK10I5HS2SG3J9r/E3VaHHoEvIlfGQRXtnuySwmTQnS/aESrpE564aDJ/8gVZe7G7CnlHLVPASAn3wUZ4jjVJBJ8fsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cdnFHa6a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913A9C4CEF1;
-	Fri, 23 Jan 2026 07:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769153721;
-	bh=GKOeyS1K3rfOAmVVi3P0BY1kZ4FOXbUQ5mLzkw9Qnhk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cdnFHa6acOhen3sG8YsgihUo67aSjrJ11MNnbM4wzKfrCG+DvmnzzDj8XAXm9u0/x
-	 o+ODFNva8MQpI61LQnbSq2C1fqAb0mx8DG7TUIr51+aO2ohjrUz6ocKnPNMaEGKiSA
-	 y7tgcbAchwN/odopNH1/ImC948GoArXGwnrD9NNnOjqKEqio//Hd9BU3jFTCzb8U3j
-	 cso9KRc4X/uYBEqmf4lTSysxgoRgJJCwGYBRM1SLhJhhpv3MoZ/1rikCpQHq6XxHld
-	 ZDqMqgseZExfl4fRdajbneQHBLSLXW7w7XfW96yMhrZXeyu17xJBk6jo89kxMOkkDt
-	 Agh1MH4qECfiA==
-Message-ID: <9a5867b0-a271-43b9-9b02-743185ee83c2@kernel.org>
-Date: Fri, 23 Jan 2026 08:35:18 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E5E367F5A
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 08:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769155602; cv=fail; b=AWrp/m0zBc6HNKShymRzcZ21O8cubJ2/p8eb0myIg97PdZmPkSkflyN+KM12zSadwWnkUo7sxGV3TUOIMxCDFVLcsr69ISiGEzT/oGA7mN3NQcM/hNtirXrDvCng/jj2jONAAqaHhK1MHD9Z69zhrLegDDTSAUZdickuqzc6RXE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769155602; c=relaxed/simple;
+	bh=PLgorOJh3DzrCIdA8001n/MPsOGjcL6SxFt+zi4rKzw=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cBYq/aKSY3MqdZTy1n4KU6eIRnA1Q/dOr9wlZR4c3bfa4oikXZCsDy1s6AcKpoI46sFgp1hp9kU+qW7UUgmmzsm57MJEY9H1dr85SZbGWYbRF6IfM9eLi/oozr3eaZIvjtjbOnphDmyw87ixK5wxI4yVF/YSSytODVk98AJo0gM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Xxc5SFv1; arc=fail smtp.client-ip=52.101.61.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nW8+qW0MZ1MdBkSkOkWPcrZ+bsvCu+NhncZOPpOvIG0fTtWA1pDVa+5h+KV1NLVOKGnQO2cRw8Xjm5t7AvkOcRCKdqsVG6OpVgz4oW9AcEh5ddFekEPxDZRwpRucZQS0nf8Z2qz6kGLm9SkinMFwAaJzE0Eke1k4A0Hk72n2qJByCIKXEyBJ+6z1ZUpSu+DI6j9VhnglVskKit6WL+c4Dss6B6QS9Rv3VYqziRg7mvDuC4ZwwGEwTavZ8pZBsFl7U51jkVJ4cWY648HO5afg7CnBQIjNRqCGbJfQZvlNkL7Rr4e0nh7EDShmA6aG0+0o7zzpfY1biaBF7TFCsXORiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mJpQMUN5FIfeV16OamXJGhjk9301ZaMd9ltgpRWcGw0=;
+ b=a8C9nTdHPwQnAzlkRatXdEfM8Tap7d8B3wT3ZiUhbX5jB3C7Z/E7ZtUnRSvI9RVzYLK6z63zOVRGYUBXEV0A4etFIOBbUvSXES8UP+SuLhdCL6G7lCFQv8wcQ2vTzsheEpSyA9PH7zZTgVaqQp/SlEeAQrENgJTENCinIdRazdru2LEzSMLBwmKsJtj3a1hxkfY2Ekyp/8X1D3qGihjwpaLrfKR1DgMdoqQIuyMf8Ft5/fWFW+rjBEp+Gx1IytpJPdrUc5sPWlGvWJIcCaEWuCos1quE+gB2LA2/KW622nbI8VwCVJRhafFxOWnYLbD2he9oLCHmBl7HUu9KSp5uTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mJpQMUN5FIfeV16OamXJGhjk9301ZaMd9ltgpRWcGw0=;
+ b=Xxc5SFv11V/ul5fJBV4p3jb9sU+syfLF0EYmzLyHvcTfN4Xph0fn9N7DcXWNmDtK7wbIUJ/q3LFQr4vvCn5z9hYtyGjYSYf+ehHfzAg4TWr6/ApiPhn/1SdXw+KTf5nq20S/8VZIlS+njX062AdjcbZuV90UNN7ffQFDCO1Oprk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA0PR12MB7091.namprd12.prod.outlook.com (2603:10b6:806:2d5::17)
+ by DS2PR12MB9638.namprd12.prod.outlook.com (2603:10b6:8:27b::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
+ 2026 08:06:37 +0000
+Received: from SA0PR12MB7091.namprd12.prod.outlook.com
+ ([fe80::ec33:1213:cfd8:63bc]) by SA0PR12MB7091.namprd12.prod.outlook.com
+ ([fe80::ec33:1213:cfd8:63bc%6]) with mapi id 15.20.9542.010; Fri, 23 Jan 2026
+ 08:06:37 +0000
+Message-ID: <f4351b14-45b9-4207-b661-71e72280540c@amd.com>
+Date: Fri, 23 Jan 2026 13:36:30 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amdgpu: fix NULL pointer dereference in
+ amdgpu_gmc_filter_faults_remove
+From: "Lazar, Lijo" <lijo.lazar@amd.com>
+To: =?UTF-8?Q?Timur_Krist=C3=B3f?= <timur.kristof@gmail.com>,
+ Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org
+Cc: Jon Doron <jond@wiz.io>, stable@vger.kernel.org
+References: <20260121182447.2434085-1-alexander.deucher@amd.com>
+ <9d5291d6-9e1f-4df4-ad0b-ba7543d8a2af@amd.com>
+ <4882409.vXUDI8C0e8@timur-hyperion>
+ <d2b50d58-9488-492c-a542-3708fe070d95@amd.com>
+Content-Language: en-US
+In-Reply-To: <d2b50d58-9488-492c-a542-3708fe070d95@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN4P287CA0125.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:2b2::7) To SA0PR12MB7091.namprd12.prod.outlook.com
+ (2603:10b6:806:2d5::17)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] serial: Fix not set tty->port race condition
-To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20260123072139.53293-2-krzysztof.kozlowski@oss.qualcomm.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20260123072139.53293-2-krzysztof.kozlowski@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA0PR12MB7091:EE_|DS2PR12MB9638:EE_
+X-MS-Office365-Filtering-Correlation-Id: b37a5d0c-2ca2-46f9-040c-08de5a5654b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cjdOY3NRTVFmUy9ocUlBd0pQOG51ZDVZWFFuaitJT09TRlN1YUt1cGpwYXho?=
+ =?utf-8?B?bVlCckpidlNEaDA0NUU3NHV3dVRjWUF1Tnl2UmRYOFduQU5pang5Rll1ajB0?=
+ =?utf-8?B?dU1OdHBMM2l1VnlRQktuTnVlQTMwZTZCTU1ySWttVitoTmoxV2ZOQkVyWG5k?=
+ =?utf-8?B?VVUxdjFlTXdmREc0N0dDSVArQUFhZCtYTUxVQjYxWTQwRmg3TWxiOWNYK3NT?=
+ =?utf-8?B?UWlEYXdLdlFBek1tTXE0KzBDd1p1R2V0aUtLSEh6SUpDUlRjbVRCby9YK0Uv?=
+ =?utf-8?B?MmpqUkV1Q1poYnVQL1lHVTBUZ0tHem15Vi9MZTJiMmFCT2VaNE1ReXRWcHUx?=
+ =?utf-8?B?eExjL2RUemhnTTlFYnRuT1ZPVVArRWJjRSs3OXJiMFc3RGQxc29UOG9GclhO?=
+ =?utf-8?B?WEtGdGNVUWorb0hyMDBvNUhSN2NGR3MvaGMzQTdtSWtVMGhOVk55dlNPRlJ5?=
+ =?utf-8?B?SjE3YmpidzA5NHpLY0pNaHdJeHQzMnBvdUR3ZWtxNUs5anlJZ2RHSkpDQ0g0?=
+ =?utf-8?B?TEQ3Mk9Rc2ZnQVE1SVVOOElzcUtUaDlNZERLS1VaVnMwTHBZMENCRkREZTRp?=
+ =?utf-8?B?ODM2WVo3dCtaS3ZuTzhWOTZCZjdRbGVjN0xtTUhqWFEvdnk4UGVYY1NVdWhk?=
+ =?utf-8?B?TTcwNnZFODJvRGF1U1p0cHZObnVza09NeGR6eHltVzVHTDdrRzhpazdqM3RQ?=
+ =?utf-8?B?bFBKcEgrTG5RTitqV2JhSmUwWEtWQ01WWHlJclhEb2hSMTVhRVRhWHRoZ3NC?=
+ =?utf-8?B?ODBITWdhdmovRWFIcVBMaFRnRG5FMXVjS3h5Kzl1bTFiN2cyMUhVQUp4UVRU?=
+ =?utf-8?B?NXFuanYyNFlENnpoRVBpL056eDgzK0FCd2h4ZW5qaU9LUWpPSDB0S05CZk5Y?=
+ =?utf-8?B?ZXVtQnF6UlgweEgwV2R4REFqMGlibExscW5nN1FiM0pUM3BqRlVORDR5eTlT?=
+ =?utf-8?B?Y1hvaTVSVVVhSGN4dXdXdlpJUGI3SU1YT1owRVdrcmJEUzdkY21QQnBlUExN?=
+ =?utf-8?B?VlIyOTRyaVhkay90Nld5M3pybllla21OeUVuSi9rUk81dUI3WDB5M1IyT3VW?=
+ =?utf-8?B?NEJFL3c5cWtVUGFlMUoyekZTSjViU1o0RDRkVUJJV0xtVzdkeGRmandaZm1B?=
+ =?utf-8?B?YlFmeFRobmNpTEZGUTEzREQ0NWx2MTNvZHpzNVkxeFJYTmV5cjBlSysweVd0?=
+ =?utf-8?B?QUZTTGFSbWxoeksyOVY4TXhvZFA0b0J1aHFvQlczSDRxN0tIVkFyTFpDMy9E?=
+ =?utf-8?B?QjJRRzV3c1N3dDNBaGJsTHh4dk5vSTNwYzUxVXR6cnE2bDh2NW9Bb3JMKzIv?=
+ =?utf-8?B?MmxNUG5rOFRiZGxKUmRYZzZWVGNwa0U3NkRHdEFRY3IrZTNRNU9qdHo1SkE1?=
+ =?utf-8?B?Y0N5RUF2U0EwcUFJUzh3YzRKUGRjSW5rdHNwNitTWngzVHdXNEI1OUlrT1po?=
+ =?utf-8?B?QkJoQlR2ZU1UbUxsTlo3SlFhSTNNMFUwVGtIQUw4WEI1enZzYVovOVI1ZmtY?=
+ =?utf-8?B?ZVV0TWw0dXhPempGbkFRV1FhbGN3a05OOTJSK0VUMHFEK1FrWm1vV0x2emhy?=
+ =?utf-8?B?TW9MMUZSTUpTUmYvRXl5N2JwNW5hdTBZZTIyS2pFdElYN0x5THlNbmRaUWJx?=
+ =?utf-8?B?SXlVZ0lwS2FLbHdWN0huQTYzQU56a1NtS3dhV1ZUU0Y2TXpoNmtpMVNGTFFl?=
+ =?utf-8?B?S1piV2tXM1hkdi9tT1NYQ1FFNnRCek1UbFN0dUY4azJuaGNwMEVkaE1aVWRV?=
+ =?utf-8?B?cjBnaFBOYW9CSlJZR1k0MHE1VTQ4Z0VyR1RkMDNlajJ5TzZqU2lLNzJnYjlJ?=
+ =?utf-8?B?RGY4VUc1b0U4YkxhSDhKTTloamc0QzF6T0p5UGZUR0FVUGhBbmNCQktFSkRM?=
+ =?utf-8?B?UDZ6eXlPOUEwTUVkME5JeEJhdlplTG9maVowTlgyYk1sYyt6ZE5oL09HMTB3?=
+ =?utf-8?B?enhOVG85TGg2c094Q2tieUhRR1dPOWMwbEpJUm5QcmlyR0JuQ0wxenJSNDdH?=
+ =?utf-8?B?emJSL2FzcXJFUUgwZWFXSlI2UXBHckVEa3Vudkxwd2RjY1JlU1pCSHF0Y0Nh?=
+ =?utf-8?Q?YAhkxl?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB7091.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bmJXMk1zQ283V29oTm44WnU4ZWRQVCtRc3UraVhnOHZtZldVWlJPejJ1MlFz?=
+ =?utf-8?B?anFJdUxDelNMUmNlTStweXZaTTZCUUZVWEsvQTBKc20vTFB2ZWdkcnA1UFly?=
+ =?utf-8?B?MXdxVDZna2NIb2UvR3FpSllQVVNSRThPZktIdldDS2VBYlV1NjR4Mkh6K0Fv?=
+ =?utf-8?B?N0FvN3h3TTZ2K1QwN3h6YUJHL1BuZVZJKytNdGwxb2w4c3NYbzhrbmxQbDJi?=
+ =?utf-8?B?cmRzMHBJQk5ZUmV6eU5qdTRvdEQ3ZzB1YzNrNmRZRnQxS29jbjFGS1o1dFJ2?=
+ =?utf-8?B?SlFPNHIxc3pvV0NFdlR6VWZJMkU1NTZYeDZ3c2g4OUxIN3ZpLzhWOWM4aGdm?=
+ =?utf-8?B?TzMxK2c3UG5wQXExTkczKzMyc21KbFZtcHVUVTUyMkRINHd5eWxHWkZqa04x?=
+ =?utf-8?B?bG43bGtWS04xdzNPV1YwcGRhakxHLzlPUTVhdGRtRzYxaS9HeS9kKzRSU2JO?=
+ =?utf-8?B?OGFuZVNrN2hBSDhoNHRNaTUxVkJBNnEyUzRsSE9nVEs2NUhGanhYRXJZVEZ2?=
+ =?utf-8?B?bWllTGxqMGRFQ2MyeW1wTzQ0c2NFeTJHVnBFYzdyWXVqRmF2M01LcUJ0c1dU?=
+ =?utf-8?B?dytqSzdZWkV0R3hsanZjdEpCTDRNQjJ5aTMxenhBZTliQ1ZGUHpycXR3Sjh6?=
+ =?utf-8?B?RldHZ1V3TjA4Q1h2VGgrSk56S2ViSXdGZWdGYnBKeVJROTRFNkt5cWJCZW9q?=
+ =?utf-8?B?cTVlK0E2N09rOFNsQU10SzliNkN3ZDU0NS9rV3pwY2lmbGQwY1k2RkF5M2ox?=
+ =?utf-8?B?SUd1NVlGeTNHZGNaM2d1aFd5Q0dEWGkzSHlDWVdqNmF3cFJybXNJenJ2OXhp?=
+ =?utf-8?B?MWljSkc2clBJSDY5YUhaZ2hGZmxMeVozWEcvQW5OZmtpNEExdTUyeXpQUU1k?=
+ =?utf-8?B?SHNNMkw1cFIxclo2QnpnVDJwNVY2N0lmK2ozUlZLQzNzdnk4NHRMMmV3TkIr?=
+ =?utf-8?B?aDNwdVJGb3FPcnBhRnZaM1pMNmpLYXFFWWV3WUQzTVJacHpNUkY0Mks5Tjht?=
+ =?utf-8?B?OTRJM3RCd0phd1BIVnBiRkdvSU5qTGJMQU9aWlpMMnkwdTNKOEYxeGQrVElQ?=
+ =?utf-8?B?SDJ0UTEzc290WmEzZTBHRUVub21ML2ErdUQ2bTFaRmk4dWx1QWFiT0ZvTVg2?=
+ =?utf-8?B?ZXRtMThYQjgzQUtueXlOMytpRnVxWXlWUFc3YlU3Y05pai93Rml4ZThWSytV?=
+ =?utf-8?B?cHRvN3JydHJKUVZKUzlPSGxsZlZCWjVkNDhLT0tBdjNSeUlxYjZNOUhwbnpB?=
+ =?utf-8?B?Ti84UnhrSWtwaDFLOWZFZVYxN2JJWkFEY3lDLzl5OTQrRUxjWDY2d2pMWmh4?=
+ =?utf-8?B?eFpLT3NVUG9zYU1Cbzd1WEJkL0ZVRWY5NDg0WXJjMUxpbE15b3ZFNU5zTitt?=
+ =?utf-8?B?bXM4Z1ZibHZyR0U3REExZHZHSloxRmtuMkwzMC9lQlJMTVdLTlhRREZvS2I5?=
+ =?utf-8?B?Z0QzRVZuYjRuZDZPQTZ3ZEF0TGZXMk9CSUZ6bmtaQVJxS3dzL1FseWxyZUlJ?=
+ =?utf-8?B?S1BrSXQyeDZWSE9nQmdQYW9PZ1FOaHdBZ1UzVzhOdC9hQ3ZqYkorekZMN1pD?=
+ =?utf-8?B?Vlp3dVdWU3h5a253bVc5eWJwUWFSSENYT25GTW5XQy9vN3Z4aXNKeEttSGNi?=
+ =?utf-8?B?WXhGa2Z0VTZ4RWNEQWwzY2k4RjQvaVBZL0lPK21RMGdMOHV2RC9LQmhhVDdX?=
+ =?utf-8?B?TUduYTlxWXBrcnlGTllmY1hNN25LWEcyU1c3b0E4NVFSVGFlMjJ2SE1od0Qx?=
+ =?utf-8?B?eUlFd09NUFRJY2VGOXNhOGtqeWo3WWxQZ1k5T3lON2lqcGVqQTZic0IySmxY?=
+ =?utf-8?B?bG1rT2o5Nmx2NWpqd0Rja0g1L2drSG1GbWNpbTlZZ0VMdXFNQTJMMlJRamFx?=
+ =?utf-8?B?OUhaSlpvbWIzMkd2RWxDclFXdGh1aWJjMkczNXFrbzZBNEdhdzd0ZUlCeFNY?=
+ =?utf-8?B?WkhHYzhWN2syc2JzS0J6cENuMHlUYWdxb2hSenpDZTBkeEpWMVZaZXJTSkxl?=
+ =?utf-8?B?RFVvV25WN2p1ZkJNR0xJNTFxaFpnUU1rSXlqcmFmeGJGSEtLc0JsUTNuUDdj?=
+ =?utf-8?B?TFd0dFIxcmRMV1k0ck5tNmtOWC9nTWR2a1k4NUpBcks4NFJIQmE4cEI1cnNI?=
+ =?utf-8?B?ckwwVVBnUm5uemtCWmtNcTRmYXVVaVp0eHFrd2RxU05TVHRzQTVCWkUwUVR4?=
+ =?utf-8?B?U2htMytGOU5yd1FXK0VGWHV1cUx6UEdOcEorVlhxT0ZLZDR1VEtUYjRGN1cx?=
+ =?utf-8?B?cnlZRVhNZlV0TmFZSUNQWENhRitCcmxXL0VSTVdwWXpuaHJiOTdjUzVJVHl6?=
+ =?utf-8?B?SExJZkJ4dTI2LytidTVDL0dkbDdaaGFHQnJxa3IxdXBRa29Xd2JBQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b37a5d0c-2ca2-46f9-040c-08de5a5654b7
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB7091.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 08:06:37.2092
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BLLdlwziRu2WEqAcvOpS9zUfCnB1tUuxc66IY89vCJheU+DhyBNIBZJmZZarucGZ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9638
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211360-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211359-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,amd.com,lists.freedesktop.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lijo.lazar@amd.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[amd.com:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: CAF3371C78
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,wiz.io:email,amd.com:email,amd.com:dkim,amd.com:mid,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 8193E723A9
 X-Rspamd-Action: no action
 
-On 23. 01. 26, 8:21, Krzysztof Kozlowski wrote:
-> Revert commit bfc467db60b7 ("serial: remove redundant
-> tty_port_link_device()") because the tty_port_link_device() is not
-> redundant: the tty->port has to be confured before we call
-> uart_configure_port(), otherwise user-space can open console without TTY
-> linked to the driver.
-> 
-> This tty_port_link_device() was added explicitly to avoid this exact
-> issue in commit fb2b90014d78 ("tty: link tty and port before configuring
-> it as console"), so offending commit basically reverted the fix saying
-> it is redundant without addressing the actual race condition presented
-> there.
-> 
-> Reproducible always as tty->port warning on Qualcomm SoC with most of
-> devices disabled, so with very fast boot, and one serial device being
-> the console:
-> 
->    printk: legacy console [ttyMSM0] enabled
->    printk: legacy console [ttyMSM0] enabled
->    printk: legacy bootconsole [qcom_geni0] disabled
->    printk: legacy bootconsole [qcom_geni0] disabled
->    ------------[ cut here ]------------
->    tty_init_dev: ttyMSM driver does not set tty->port. This would crash the kernel. Fix the driver!
->    WARNING: drivers/tty/tty_io.c:1414 at tty_init_dev.part.0+0x228/0x25c, CPU#2: systemd/1
->    Modules linked in: socinfo tcsrcc_eliza gcc_eliza sm3_ce fuse ipv6
->    CPU: 2 UID: 0 PID: 1 Comm: systemd Tainted: G S                  6.19.0-rc4-next-20260108-00024-g2202f4d30aa8 #73 PREEMPT
->    Tainted: [S]=CPU_OUT_OF_SPEC
->    Hardware name: Qualcomm Technologies, Inc. Eliza (DT)
->    ...
->    tty_init_dev.part.0 (drivers/tty/tty_io.c:1414 (discriminator 11)) (P)
->    tty_open (arch/arm64/include/asm/atomic_ll_sc.h:95 (discriminator 3) drivers/tty/tty_io.c:2073 (discriminator 3) drivers/tty/tty_io.c:2120 (discriminator 3))
->    chrdev_open (fs/char_dev.c:411)
->    do_dentry_open (fs/open.c:962)
->    vfs_open (fs/open.c:1094)
->    do_open (fs/namei.c:4634)
->    path_openat (fs/namei.c:4793)
->    do_filp_open (fs/namei.c:4820)
->    do_sys_openat2 (fs/open.c:1391 (discriminator 3))
->    ...
->    Starting Network Name Resolution...
-> 
-> Apparently the flow with this small Yocto-based ramdisk user-space is:
-> 
-> driver (qcom_geni_serial.c):                  user-space:
-> ============================                  ===========
-> qcom_geni_serial_probe()
->   uart_add_one_port()
->    serial_core_register_port()
->     serial_core_add_one_port()
->      uart_configure_port()
->       register_console()
->      |
->      |                                         open console
->      |                                          ...
->      |                                          tty_init_dev()
->      |                                           driver->ports[idx] is NULL
->      |
->      tty_port_register_device_attr_serdev()
->       tty_port_link_device() <- set driver->ports[idx]
-> 
-> Fixes: bfc467db60b7 ("serial: remove redundant tty_port_link_device()")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Thanks for the update.
 
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+On 23-Jan-26 12:47 PM, Lazar, Lijo wrote:
+> 
+> 
+> On 22-Jan-26 8:30 PM, Timur Kristóf wrote:
+>> On Thursday, January 22, 2026 6:07:27 AM Central European Standard 
+>> Time Lazar,
+>> Lijo wrote:
+>>> On 21-Jan-26 11:54 PM, Alex Deucher wrote:
+>>>> From: Jon Doron <jond@wiz.io>
+>>>>
+>>>> On APUs such as Raven and Renoir (GC 9.1.0, 9.2.2, 9.3.0), the ih1 and
+>>>> ih2 interrupt ring buffers are not initialized. This is by design, as
+>>>> these secondary IH rings are only available on discrete GPUs. See
+>>>> vega10_ih_sw_init() which explicitly skips ih1/ih2 initialization when
+>>>> AMD_IS_APU is set.
+>>>>
+>>>> However, amdgpu_gmc_filter_faults_remove() unconditionally uses ih1 to
+>>>> get the timestamp of the last interrupt entry. When retry faults are
+>>>> enabled on APUs (noretry=0), this function is called from the SVM page
+>>>> fault recovery path, resulting in a NULL pointer dereference when
+>>>> amdgpu_ih_decode_iv_ts_helper() attempts to access ih->ring[].
+>>>>
+>>>> The crash manifests as:
+>>>>     BUG: kernel NULL pointer dereference, address: 0000000000000004
+>>>>     RIP: 0010:amdgpu_ih_decode_iv_ts_helper+0x22/0x40 [amdgpu]
+>>>>     Call Trace:
+>>>>      amdgpu_gmc_filter_faults_remove+0x60/0x130 [amdgpu]
+>>>>      svm_range_restore_pages+0xae5/0x11c0 [amdgpu]
+>>>>      amdgpu_vm_handle_fault+0xc8/0x340 [amdgpu]
+>>>>      gmc_v9_0_process_interrupt+0x191/0x220 [amdgpu]
+>>>>      amdgpu_irq_dispatch+0xed/0x2c0 [amdgpu]
+>>>>      amdgpu_ih_process+0x84/0x100 [amdgpu]
+>>>>
+>>>> This issue was exposed by commit 1446226d32a4 ("drm/amdgpu: Remove 
+>>>> GC HW
+>>>> IP 9.3.0 from noretry=1") which changed the default for Renoir APU from
+>>>> noretry=1 to noretry=0, enabling retry fault handling and thus
+>>>> exercising the buggy code path.
+>>>>
+>>>> Fix this by adding a check for ih1.ring_size before attempting to use
+>>>> it. Also restore the soft_ih support from commit dd299441654f
+>>>> ("drm/amdgpu:
+>>>> Rework retry fault removal").  This is needed if the hardware doesn't
+>>>> support secondary HW IH rings.
+>>>>
+>>>> v2: additional updates (Alex)
+>>>>
+>>>> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3814
+>>>> Fixes: dd299441654f ("drm/amdgpu: Rework retry fault removal")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Jon Doron <jond@wiz.io>
+>>>> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>>>> ---
+>>>>
+>>>>    drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 7 ++++++-
+>>>>    1 file changed, 6 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+>>>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c index
+>>>> 8e65fec9f534e..243d75917458a 100644
+>>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+>>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+>>>> @@ -498,8 +498,13 @@ void amdgpu_gmc_filter_faults_remove(struct
+>>>> amdgpu_device *adev, uint64_t addr,>
+>>>>        if (adev->irq.retry_cam_enabled)
+>>>>
+>>>>            return;
+>>>>
+>>>> +    else if (adev->irq.ih1.ring_size)
+>>>> +        ih = &adev->irq.ih1;
+>>>> +    else if (adev->irq.ih_soft.enabled)
+>>>> +        ih = &adev->irq.ih_soft;
+>>>
+>>> Faults are delegated to soft ring when retry_cam is enabled -
+>>> https://gitlab.freedesktop.org/agd5f/linux/-/blob/amd-staging-drm- 
+>>> next/drive
+>>> rs/gpu/drm/amd/amdgpu/amdgpu_gmc.c#L541
+>>
+>> Hi,
+>>
+>> As far as I know the retry CAM is not available on APUs.
+>> Please correct me if I'm wrong.
+>>
+> 
+> Retry CAM filter is available on APUs as well.
+> 
 
--- 
-js
-suse labs
+Correction - this is no longer true for newer ones.
+
+Thanks,
+Lijo
+
+> Thanks,
+> Lijo
+> 
+>> Thanks,
+>> Timur
+>>
+>>>
+>>> That matches with the original logic in d299441654f ("drm/amdgpu: Rework
+>>> retry fault removal").
+>>>
+>>> To match exactly with the logic in above commit, I think it should use
+>>> soft ring only when retry cam is enabled. Presently, it's returning
+>>> without doing anything.
+>>>
+>>> Thanks,
+>>> Lijo
+>>>
+>>>> +    else
+>>>> +        return;
+>>>>
+>>>> -    ih = &adev->irq.ih1;
+>>>>
+>>>>        /* Get the WPTR of the last entry in IH ring */
+>>>>        last_wptr = amdgpu_ih_get_wptr(adev, ih);
+>>>>        /* Order wptr with ring data. */
+>>
+>>
+>>
+>>
+> 
+
 
