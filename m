@@ -1,283 +1,292 @@
-Return-Path: <stable+bounces-211400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDPWLwmic2lqxgAAu9opvQ
-	(envelope-from <stable+bounces-211400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:30:01 +0100
+	id KMKrKF6nc2lnxwAAu9opvQ
+	(envelope-from <stable+bounces-211401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:52:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B5978843
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:30:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A3078A6B
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:52:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CC3530A012D
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 16:24:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72947302172B
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 16:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8624A2DA750;
-	Fri, 23 Jan 2026 16:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6B82EA75E;
+	Fri, 23 Jan 2026 16:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iu40PVHb"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="dW2XC2Rx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com [209.85.210.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F1C2DE71B
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 16:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A6F25B1D2
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 16:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769185454; cv=none; b=HY5Pqdoy6QTkViu3JbqNmgjCohQnPd76BklkRIHvFEnNXMxA//7ecRtdoaitOn4c9WrtZFoCq9UA88qESOrV7gPP6bgi8drbVdaSjUTiK/6LLXHQZLGW64+HJFlHJo+bDPzr47T523wdqgAovcNPyozOb59MF6DgIsXsTuCHbf0=
+	t=1769187160; cv=none; b=JTmUnXreJARkqqy2+NsiBqzgShMUzxc6nlfaOtrdNE8DsbLxZRJJijFpBQiSdkniWzmznO1WWMfOr7meVPTbmlGuAf/J+u8SgpEGDCqtaJPVP/GJDIX1mfw0SF17JWD95JLbUEK3VFZdFHR9LpWxTmr6cpOXDMwb9FjJuhvrWdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769185454; c=relaxed/simple;
-	bh=QcCR6CAiq0FadPOO5YfJmMaLforRVQ62FwYyDpfMM1s=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Umd6/0IMVZ+lxAFu0gHzbHRiGmERMAC4nBhhINMnrR+Lmoy2rVwfR5t55PV9cO+vBmHB7DrWnCE4lpCVohz7SMgcF97Z6uDtobPVjmpBhKEL4LwcSqx6VT5JAg51nPNvAI3sDmUwG6crogQxCLHCXWtRZKN3FbSkiu/KSkKBXSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iu40PVHb; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43591aacca2so1720665f8f.1
-        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 08:24:12 -0800 (PST)
+	s=arc-20240116; t=1769187160; c=relaxed/simple;
+	bh=esVP2ks5MLabb1EHTOBLm+guRAZfmT1anVSyAPL10r0=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=dmJZbsh6Qnd2xQmOIUOgKvRlrSP5WFqqT/97mwk86YpcJCrbHID3dy+bvnHX8WtqMQSSELHI1cSEiEgDFtrJXku/6nEZKpAreHymXpp72HMXlWEU6PZxZJY9nZrFrqYQGuV3R9n6nkBmj0DsJ4NO6GctLsZhWYm+VX9fXVD0UK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=dW2XC2Rx; arc=none smtp.client-ip=209.85.210.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-ot1-f68.google.com with SMTP id 46e09a7af769-7cfdd3146deso997114a34.2
+        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 08:52:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769185451; x=1769790251; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OJSn0XRjBL2vBFJzXfObLCxOaT59HpV4z91cAz8rES8=;
-        b=iu40PVHbgxKkSuKjXwA0YHzaYh6NyClspgj1QmN6dy1I7K3JjxYkG9FScOl20q2BO4
-         XJMzykVvjjW0FqIW9jRbtrkZI9IiB3LzVJA/6QKHAVW1nHFDUyO5BGR2h6JlyIrrvtmb
-         0t263khnVuWqtT0STIlEq/mtxN6t32Iy6eOUYmE3c0XZ4Hk2i1to1OLumYOXV6O3V6aH
-         mPhokyNFXbyOvgNilH1OQcXiKhPzzZX/qo3ret9qnHSTXcyfkrZf5zHFo9htgyMAjpXM
-         cedvMM9E/UMaJLceVSgOZqoqNG191OSZRQqji6EUDjX+KBlMxWoxxx6dbOS3mxrd9n0m
-         NKNQ==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1769187157; x=1769791957; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HINUjvj70QFSduejzR0GqjYZg6AHoxHg1vc7HquTrMA=;
+        b=dW2XC2RxbbfWIersmaxczxRk9XuiMLmEK6sFDX7HVT5s+I91ooJ9YezML55wiVk7yk
+         QuvuUUVvkR846MsDyOg+/WU7w7Jzg7QF6O2j8+W2aOmLbMyFomnvniJMDIenj08SA2WU
+         7NI6R6ZrKal4CwOlBz9fdeip+09nby+0Yhngi3smu5CwXNdEciicVcqr17PGtnBLNYYE
+         5Dlq9VrKN+BTFR5Fq7SAXnJ8UuFBU9zrl+52VixdAbja534VARyiJ6bFOvJqbDucsfnt
+         RbmfqNcwpiGlhv4kh4DNqHOpzZfPd/2NukXwAgbCmGa4C8mvVcDPU+x4Zz5aYU7dfH6K
+         d2zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769185451; x=1769790251;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OJSn0XRjBL2vBFJzXfObLCxOaT59HpV4z91cAz8rES8=;
-        b=vnrGx+YQmF3FrbWzMT5uTCS/MEb3dZ+eH+x71Mi04dl53qJ1tq1QW563n9ImgcsDjg
-         zjIo4INtqx0jacjpZRn+h86HZu+WZnY+Ne5AM7QROe8lVUEomO9zjoiBAbKCFWiXrvsA
-         rN8xLfAEjTxQNn1z/n6yCvSE6RdPKfQ7lfi2EVkH+rsOFEbsUQ86YVAXjdXiJNpPveju
-         DOeyuJd23y+iec95IQgfjsrlAH7bszSyxuwAyewNq8hiUuUC9YvTiNLqB5GfBkB2WQ8h
-         UfnhthDKjWJEvYpHLUOQ2TFwL5Ahq+sjoATgfm1ptsD8ltAlh7XIabf/1uVcMzsZyUQq
-         MdXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUpFIp/gObdYuyUEWoaokVPIuFFQPixCBav00Tfr0GK3+5hhKtQRPvsKbln/JzVU8aIEPgthQY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbpwCOFtuindtN2ZUeN3qM3N5qKvt/sQdmap72jVghTA8DZckP
-	6uUGEBbLBsLzel+6JeoQGxaWQGe7paL2da7dfWWCiP/o6+U3ZVlOLjRAT3Q9zhB2cfAt1NFrbvm
-	+yF8P+BDlzeaUNAzPZw==
-X-Received: from wrbbn2.prod.google.com ([2002:a05:6000:602:b0:435:95e8:26b6])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:4a83:0:b0:435:bbd7:18e4 with SMTP id ffacd0b85a97d-435bbd71a34mr1352288f8f.63.1769185451329;
- Fri, 23 Jan 2026 08:24:11 -0800 (PST)
-Date: Fri, 23 Jan 2026 16:23:56 +0000
+        d=1e100.net; s=20230601; t=1769187157; x=1769791957;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HINUjvj70QFSduejzR0GqjYZg6AHoxHg1vc7HquTrMA=;
+        b=FcJI6UtM77GAoAISdf0Y28cdgvopzOUp3wvsGZ9yzag0cL36opUB76f+4eTknsN5jE
+         N5ieEUDZIeLac939KiKltMTpqo3UEvt06TGGHppBoppGJgKdC87hmPXIDqH++wyJ+KmN
+         MRvWA36Q7/GF0k6L/DXsEHCe/yFomITDkWBA9o97SJwqashXHJmgzEpZw66MlT/jbTBa
+         GmIu69vwFcKnDvk3bzmJX9J6SzjhSdk9NGFuXuRjVvjLsBMVAPfEmqMkZYq6QoHv0XSS
+         dTasFZyOXzjfVeknp05qEN6tkRFMwNX1h0vnE4QO5roF5sWIno5s+n0rFZzbM2xTYQ80
+         WfEw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFpgjcaTZOXBV3NNaCrupfR/wvEpINVgNXHuEN6HlBiNZabFeW+7fUHjqI/2DVJzShJaBKRHk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjtRZu1tW2GnN3Hf8y0tBFEyn8VBRPwOAWLpFzbuZ1nZ0H1LYV
+	S7vnO2IrJ7Rko9ETVC/fGjOwvW9ugA/OyGecsBp+EyY3YG7Nvx/wWN3V67My/z067eNKYMiv4g2
+	Ozaa2fM5G4Q==
+X-Gm-Gg: AZuq6aID7/yvnOAYur5xDJ07OUSaGnEWio977R5lNXxgcgANgb3NDQ/cFZ0t4lsRP6+
+	YeeiswgRXz1o2imziF3UAAy0e4nA+bAkX6MdYzC+v52z0he97I0twTQjc37U6H0ZwxNBFAGfSFF
+	emzSEH/iC8EEWss/iRGM4WOIfFAXO6SWsuDqkZGXNV1wCDhlzDS4w2ysZrGsObLmGsMegtz3ihY
+	DODq8S1Z3FRalbAilQO5sUcqQOfUMQINpPvYQ5S7EY4+Edlt3aMf/DWIzRBC1qcEHubVluS3dCI
+	TsPCTFRegIPTUBD/Fq8aSYhXxx97YSjs9UxYHknjMjzx4+1jckOAjgp/EeKKwRB3PQkAIR35dPv
+	lECTr0BH8ZAKOPIcAKSAiealndZEy+YwDUPeIr0gviCkdt2iYj2IHClVJ1P08ZRuPTuOwlofhMR
+	IgDKUaM+7HplDbDUkBTWDGaSRGfF+V6hFBh1DjjUqGQfFr4+/pA97ywhNIfsZ80F3CANad
+X-Received: by 2002:a05:6830:43a1:b0:7cf:ddb7:8823 with SMTP id 46e09a7af769-7d15a5cc5f9mr2131944a34.11.1769187156828;
+        Fri, 23 Jan 2026 08:52:36 -0800 (PST)
+Received: from [192.168.1.102] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d15b346e2asm2143281a34.2.2026.01.23.08.52.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Jan 2026 08:52:35 -0800 (PST)
+Message-ID: <eea0d7c3-9aed-4c1f-8146-23b82e611899@kernel.dk>
+Date: Fri, 23 Jan 2026 09:52:34 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAJygc2kC/x3MQQqDMBAF0KvIrDuQxCKtV5Eu0uSrQ3WUSSkF8
- e4NXb7NO6jABIX65iDDR4psWuEvDaU56gSWXE3Bhc750PJTNMM4LjLpCn3zuhk4zUivwu7qxy7 5+y23kWqxG0b5/vvhcZ4//SMejW4AAAA=
-X-Change-Id: 20260123-binder-alignment-more-checks-041f6c198d3a
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6723; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=QcCR6CAiq0FadPOO5YfJmMaLforRVQ62FwYyDpfMM1s=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpc6ClTd2lbtOIAaHy/jJ7SPc94eNFKpsulv9hb
- 9CFFLoDCC+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaXOgpQAKCRAEWL7uWMY5
- RoVKEAC0JWjRzPxxpf0vH+4VVShSdajH/dhXQn83H2azvKIZ1y+czZbGnT1+sTBHuq9teXFPddd
- bSPmpMophgUAHxjSSaSj3DKdvay2ufyUSIy+Xy4l3W/87Gg11mOeYU1xc8t5DwMJtkRY5YL7iW0
- to8Im31u5a/wCsKeRfuQ4zd60iXMs15CkTyRgRXhSNEW0z2c/YiFqPtArVIB9vgSNz4XdIDfXMT
- h3UAcKzSm64j21zQVrW6AuLfrHKFxg9POYbjv0CxOsaKKIITthj+wfG9YsfypruAXa7624o499A
- CqpUDaeOkkaj791lnHwEd62frL6T3Qw7Jn4APSyrm+oclFOtuINNYbnOqD8RvffWeA4KaAc03f0
- eHz/HR03TbmfEo70S1O+U1cFN4gMbet+QnB5xhstY/VOrpCC3vsE0XVih9tOi6QW1Evoz/lXHHw
- zNLvbb2XmQK/u+XPS4kLwqjJr6vzqJ/XH7Fga3TXWqv+mxP/PwKhRFKg76C+Pbk9ZMFL2jWbFDQ
- BWVuf4JBHtPlqu5if2bzjwwc1gFYT98aajbK/G4+1f3WrMc7PboQrPb6gxCFL3G3gywJ1hXJo85
- 3VwlrgJSgZGmSsh80geez6rB8y7NxAhql1YKjRsJU7C79yzw0v/aS86D0OwwVocJy4Ww7hL45PS kgeFLkfiDkicCJQ==
-X-Mailer: b4 0.14.2
-Message-ID: <20260123-binder-alignment-more-checks-v1-1-7e1cea77411d@google.com>
-Subject: [PATCH] rust_binder: add additional alignment checks
-From: Alice Ryhl <aliceryhl@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	stable@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
+ cross-buffer accounting
+From: Jens Axboe <axboe@kernel.dk>
+To: Pavel Begunkov <asml.silence@gmail.com>,
+ Yuhao Jiang <danisjiang@gmail.com>
+Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260119071039.2113739-1-danisjiang@gmail.com>
+ <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
+ <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
+ <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
+ <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
+ <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
+ <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
+ <2be71481-ac35-4ff2-b6a9-a7568f81f728@gmail.com>
+ <2fcf583a-f521-4e8d-9a89-0985681ca85b@kernel.dk>
+ <d2fc2ff2-98d9-49f8-af95-968100174d55@gmail.com>
+ <3b7e6088-7d92-4d5c-96c7-f8c0e2cc7745@kernel.dk>
+ <efe080c9-5176-4fa1-9f65-5be44074779e@gmail.com>
+ <596bc7ac-3d24-43a7-9e7e-e59189525ebc@gmail.com>
+ <fc8664bb-7769-48a2-b470-71fb81828e26@kernel.dk>
+ <654fe339-5a2b-4c38-9d2d-28cfc306b307@kernel.dk>
+Content-Language: en-US
+In-Reply-To: <654fe339-5a2b-4c38-9d2d-28cfc306b307@kernel.dk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211401-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[kernel.dk];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211400-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 12B5978843
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel-dk.20230601.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 31A3078A6B
 X-Rspamd-Action: no action
 
-This adds some alignment checks to match C Binder more closely. This
-causes the driver to reject more transactions. I don't think any of the
-transactions in question are harmful, but it's still a bug because it's
-the wrong uapi to accept them.
+On 1/23/26 8:04 AM, Jens Axboe wrote:
+> On 1/23/26 7:50 AM, Jens Axboe wrote:
+>> On 1/23/26 7:26 AM, Pavel Begunkov wrote:
+>>> On 1/22/26 21:51, Pavel Begunkov wrote:
+>>> ...
+>>>>>>> I already briefly touched on that earlier, for sure not going to be of
+>>>>>>> any practical concern.
+>>>>>>
+>>>>>> Modest 16 GB can give 1M entries. Assuming 50ns-100ns per entry for the
+>>>>>> xarray business, that's 50-100ms. It's all serialised, so multiply by
+>>>>>> the number of CPUs/threads, e.g. 10-100, that's 0.5-10s. Account sky
+>>>>>> high spinlock contention, and it jumps again, and there can be more
+>>>>>> memory / CPUs / numa nodes. Not saying that it's worse than the
+>>>>>> current O(n^2), I have a test program that borderline hangs the
+>>>>>> system.
+>>>>>
+>>>>> It's definitely not worse than the existing system, which is why I don't
+>>>>> think it's a big deal. Nobody has ever complained about time to register
+>>>>> buffers. It's inherently a slow path, and quite slow at that depending
+>>>>> on the use case. Out of curiosity, I ran some stilly testing on
+>>>>> registering 16GB of memory, with 1..32 threads. Each will do 16GB, so
+>>>>> 512GB registered in total for the 32 case. Before is the current kernel,
+>>>>> after is with per-user xarray accounting:
+>>>>>
+>>>>> before
+>>>>>
+>>>>> nthreads 1:      646 msec
+>>>>> nthreads 2:      888 msec
+>>>>> nthreads 4:      864 msec
+>>>>> nthreads 8:     1450 msec
+>>>>> nthreads 16:    2890 msec
+>>>>> nthreads 32:    4410 msec
+>>>>>
+>>>>> after
+>>>>>
+>>>>> nthreads 1:      650 msec
+>>>>> nthreads 2:      888 msec
+>>>>> nthreads 4:      892 msec
+>>>>> nthreads 8:     1270 msec
+>>>>> nthreads 16:    2430 msec
+>>>>> nthreads 32:    4160 msec
+>>>>>
+>>>>> This includes both registering buffers, cloning all of them to another
+>>>>> ring, and unregistering times, and nowhere is locking scalability an
+>>>>> issue for the xarray manipulation. The box has 32 nodes and 512 CPUs. So
+>>>>> no, I strongly believe this isn't an issue.
+>>>>>
+>>>>> IOW, accurate accounting is cheaper than the stuff we have now. None of
+>>>>> them are super cheap. Does it matter? I really don't think so, or people
+>>>>> would've complained already. The only complaint I got on these kinds of
+>>>>> things was for cloning, which did get fixed up some releases ago.
+>>>>
+>>>> You need compound pages
+>>>>
+>>>> always > /sys/kernel/mm/transparent_hugepage/hugepages-16kB/enabled
+>>>>
+>>>> And use update() instead of register() as accounting dedup for
+>>>> registration is broken-disabled. For the current kernel:
+>>>>
+>>>> Single threaded:
+>>>> 1x1G: 7.5s
+>>>> 2x1G: 45s
+>>>> 4x1G: 190s
+>>>>
+>>>> 16x should be ~3000s, not going to run it. Uninterruptible and no
+>>>> cond_resched, so spawn NR_CPUS threads and the system is completely
+>>>> unresponsive (I guess it depends on the preemption mode).
+>>> The program is below for reference, but it's trivial. THP setting
+>>> is done inside for convenience. There are ways to make the runtime
+>>> even worse, but that should be enough.
+>>
+>> Thanks for sending that. Ran it on the same box, on current -git and
+>> with user_struct xarray accounting. Modified it so that 2nd arg is
+>> number of threads, for easy running:
+> 
+> Should've tried 32x32 as well, that ends up going deep into "this sucks"
+> territory:
+> 
+> git
+> 
+> good luck
+> 
+> git + user_struct
+> 
+> axboe@r7625 ~> time ./ppage 32 32
+> register 32 GB, num threads 32
+> 
+> ________________________________________________________
+> Executed in   16.34 secs    fish           external
+>    usr time    0.54 secs  497.00 micros    0.54 secs
+>    sys time  451.94 secs   55.00 micros  451.94 secs
 
-The cases where usize is changed for u64, it will affect only 32-bit
-kernels.
+OK, if we use a per-ctx btree, otherwise the code is the same:
 
-Cc: stable@vger.kernel.org
-Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- drivers/android/binder/thread.rs | 50 +++++++++++++++++++++++++++++-----------
- 1 file changed, 36 insertions(+), 14 deletions(-)
+axboe@r7625 ~> for i in 1 2 4 8 16; time ./ppage $i $i; end
+register 1 GB, num threads 1
 
-diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
-index 1a8e6fdc0dc42369ee078e720aa02b2554fb7332..bf3de22aaf64ce4aac312b73e1948e2aeb00d5ab 100644
---- a/drivers/android/binder/thread.rs
-+++ b/drivers/android/binder/thread.rs
-@@ -39,6 +39,10 @@
-     sync::atomic::{AtomicU32, Ordering},
- };
- 
-+fn is_aligned(value: usize, to: usize) -> bool {
-+    value % to == 0
-+}
-+
- /// Stores the layout of the scatter-gather entries. This is used during the `translate_objects`
- /// call and is discarded when it returns.
- struct ScatterGatherState {
-@@ -789,6 +793,10 @@ fn translate_object(
-                 let num_fds = usize::try_from(obj.num_fds).map_err(|_| EINVAL)?;
-                 let fds_len = num_fds.checked_mul(size_of::<u32>()).ok_or(EINVAL)?;
- 
-+                if !is_aligned(parent_offset, size_of::<u32>()) {
-+                    return Err(EINVAL.into());
-+                }
-+
-                 let info = sg_state.validate_parent_fixup(parent_index, parent_offset, fds_len)?;
-                 view.alloc.info_add_fd_reserve(num_fds)?;
- 
-@@ -803,6 +811,10 @@ fn translate_object(
-                     }
-                 };
- 
-+                if !is_aligned(parent_entry.sender_uaddr, size_of::<u32>()) {
-+                    return Err(EINVAL.into());
-+                }
-+
-                 parent_entry.fixup_min_offset = info.new_min_offset;
-                 parent_entry
-                     .pointer_fixups
-@@ -820,6 +832,7 @@ fn translate_object(
-                     .sender_uaddr
-                     .checked_add(parent_offset)
-                     .ok_or(EINVAL)?;
-+
-                 let mut fda_bytes = KVec::new();
-                 UserSlice::new(UserPtr::from_addr(fda_uaddr as _), fds_len)
-                     .read_all(&mut fda_bytes, GFP_KERNEL)?;
-@@ -949,25 +962,30 @@ pub(crate) fn copy_transaction_data(
- 
-         let data_size = trd.data_size.try_into().map_err(|_| EINVAL)?;
-         let aligned_data_size = ptr_align(data_size).ok_or(EINVAL)?;
--        let offsets_size = trd.offsets_size.try_into().map_err(|_| EINVAL)?;
--        let aligned_offsets_size = ptr_align(offsets_size).ok_or(EINVAL)?;
--        let buffers_size = tr.buffers_size.try_into().map_err(|_| EINVAL)?;
--        let aligned_buffers_size = ptr_align(buffers_size).ok_or(EINVAL)?;
-+        let offsets_size: usize = trd.offsets_size.try_into().map_err(|_| EINVAL)?;
-+        let buffers_size: usize = tr.buffers_size.try_into().map_err(|_| EINVAL)?;
-         let aligned_secctx_size = match secctx.as_ref() {
-             Some((_offset, ctx)) => ptr_align(ctx.len()).ok_or(EINVAL)?,
-             None => 0,
-         };
- 
-+        if !is_aligned(offsets_size, size_of::<u64>()) {
-+            return Err(EINVAL.into());
-+        }
-+        if !is_aligned(buffers_size, size_of::<u64>()) {
-+            return Err(EINVAL.into());
-+        }
-+
-         // This guarantees that at least `sizeof(usize)` bytes will be allocated.
-         let len = usize::max(
-             aligned_data_size
--                .checked_add(aligned_offsets_size)
--                .and_then(|sum| sum.checked_add(aligned_buffers_size))
-+                .checked_add(offsets_size)
-+                .and_then(|sum| sum.checked_add(buffers_size))
-                 .and_then(|sum| sum.checked_add(aligned_secctx_size))
-                 .ok_or(ENOMEM)?,
--            size_of::<usize>(),
-+            size_of::<u64>(),
-         );
--        let secctx_off = aligned_data_size + aligned_offsets_size + aligned_buffers_size;
-+        let secctx_off = aligned_data_size + offsets_size + buffers_size;
-         let mut alloc =
-             match to_process.buffer_alloc(debug_id, len, is_oneway, self.process.task.pid()) {
-                 Ok(alloc) => alloc,
-@@ -999,13 +1017,13 @@ pub(crate) fn copy_transaction_data(
-             }
- 
-             let offsets_start = aligned_data_size;
--            let offsets_end = aligned_data_size + aligned_offsets_size;
-+            let offsets_end = aligned_data_size + offsets_size;
- 
-             // This state is used for BINDER_TYPE_PTR objects.
-             let sg_state = sg_state.insert(ScatterGatherState {
-                 unused_buffer_space: UnusedBufferSpace {
-                     offset: offsets_end,
--                    limit: len,
-+                    limit: offsets_end + buffers_size,
-                 },
-                 sg_entries: KVec::new(),
-                 ancestors: KVec::new(),
-@@ -1014,12 +1032,16 @@ pub(crate) fn copy_transaction_data(
-             // Traverse the objects specified.
-             let mut view = AllocationView::new(&mut alloc, data_size);
-             for (index, index_offset) in (offsets_start..offsets_end)
--                .step_by(size_of::<usize>())
-+                .step_by(size_of::<u64>())
-                 .enumerate()
-             {
--                let offset = view.alloc.read(index_offset)?;
-+                let offset: usize = view
-+                    .alloc
-+                    .read::<u64>(index_offset)?
-+                    .try_into()
-+                    .map_err(|_| EINVAL)?;
- 
--                if offset < end_of_previous_object {
-+                if offset < end_of_previous_object || !is_aligned(offset, size_of::<u32>()) {
-                     pr_warn!("Got transaction with invalid offset.");
-                     return Err(EINVAL.into());
-                 }
-@@ -1051,7 +1073,7 @@ pub(crate) fn copy_transaction_data(
-                 }
- 
-                 // Update the indexes containing objects to clean up.
--                let offset_after_object = index_offset + size_of::<usize>();
-+                let offset_after_object = index_offset + size_of::<u64>();
-                 view.alloc
-                     .set_info_offsets(offsets_start..offset_after_object);
-             }
+________________________________________________________
+Executed in   54.06 millis    fish           external
+   usr time   41.70 millis  382.00 micros   41.32 millis
+   sys time   10.64 millis  314.00 micros   10.33 millis
 
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20260123-binder-alignment-more-checks-041f6c198d3a
+register 2 GB, num threads 2
 
-Best regards,
+________________________________________________________
+Executed in  105.56 millis    fish           external
+   usr time   60.65 millis  485.00 micros   60.16 millis
+   sys time   40.11 millis    0.00 micros   40.11 millis
+
+register 4 GB, num threads 4
+
+________________________________________________________
+Executed in  209.98 millis    fish           external
+   usr time   38.57 millis  447.00 micros   38.12 millis
+   sys time  190.61 millis    0.00 micros  190.61 millis
+
+register 8 GB, num threads 8
+
+________________________________________________________
+Executed in  423.37 millis    fish           external
+   usr time  130.50 millis  470.00 micros  130.03 millis
+   sys time  380.80 millis    0.00 micros  380.80 millis
+
+register 16 GB, num threads 16
+
+________________________________________________________
+Executed in  832.71 millis    fish           external
+   usr time    0.27 secs    470.00 micros    0.27 secs
+   sys time    1.04 secs      0.00 micros    1.04 secs
+
+and the crazier cases:
+
+axboe@r7625 ~> time ./ppage 32 32
+register 32 GB, num threads 32
+
+________________________________________________________
+Executed in    2.81 secs    fish           external
+   usr time    0.71 secs  497.00 micros    0.71 secs
+   sys time   19.57 secs  183.00 micros   19.57 secs
+
+which isn't insane. Obviously also needs conditional rescheduling in the
+page loops, as those can take a loooong time for large amounts of
+memory.
+
 -- 
-Alice Ryhl <aliceryhl@google.com>
-
+Jens Axboe
 
