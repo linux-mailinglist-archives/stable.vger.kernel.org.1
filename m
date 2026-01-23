@@ -1,542 +1,250 @@
-Return-Path: <stable+bounces-211405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCLaGTCwc2nOxwAAu9opvQ
-	(envelope-from <stable+bounces-211405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 18:30:24 +0100
+	id AJH0OKuwc2nOxwAAu9opvQ
+	(envelope-from <stable+bounces-211406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 18:32:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5807908F
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 18:30:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53E6F790C1
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 18:32:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8FAAC3033234
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:28:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A032303CA61
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:32:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8290030DD01;
-	Fri, 23 Jan 2026 17:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB2A235071;
+	Fri, 23 Jan 2026 17:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XvUtsJva"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="lr+iIcxg"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010064.outbound.protection.outlook.com [52.101.46.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A3B302741;
-	Fri, 23 Jan 2026 17:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769189335; cv=none; b=rTuPWP3yZDvMAxLb3bshgSRjkxru280+C2FVS50SkJgK58l+VeODUW/QFg/igdUt7/XnG06lyfCf4wtIyhqs/fv6ibUtq3kUfbMozaQD4IfDqCYC7Rv1vUUxsfQ0n1h4KQjf56EKcMPOmxvgt4zH+x/Wae0odx+xWtzHoQ48SyE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769189335; c=relaxed/simple;
-	bh=DdzYzfgvJ/DWQr4zdbyNdqQqhddEIPM/zjS37cStY9Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jXgRacintaYAClQEypQPmFzvqoKpM3/YxzWBQwJsj6MPkPAnFOTCsxC3dXihpqubMqmIdEa0lsBMgXI4XAf9s8DPfJsRHzpEs81lMUWDqAp1I12YQvSHkHnvwjQBMhKwtcMTftj0wr3aIbSzca7grs2MTDbafRaFw2dRVhZumkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XvUtsJva; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769189333; x=1800725333;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=DdzYzfgvJ/DWQr4zdbyNdqQqhddEIPM/zjS37cStY9Q=;
-  b=XvUtsJvalDY4c8GaxVz0xwNpf/NjbqzYZxf3P/0fKpbytZkTWgXUwFl9
-   aFQWmWZcY/LVviiy+c9c6heyC9fqNi7BLZed/OfTWZJTWJ98cg13aGPXt
-   dvaZwJZ8ypLfrn4vCiTOj/AO0NIHFQRXK5Rb+NVQI7q3DrtVk9c0vWpTr
-   RE3c51JQmqmQfrTDMXAsBWJfwryxcXIIqROei1sYxVhr2cGItyyp8og6G
-   HlH5HSXVjzZduwZXIoki3YmzR4HyAz1S6+dSki6KbB0W6U77C0jqOmf1I
-   cz2TXpKMdlm2pNS3ZRtiG5tiQPiwfasdcdieJz3DMkovgYdb7RNxdHUQK
-   A==;
-X-CSE-ConnectionGUID: Nz0PAfdtToyFnBbOOAUqiQ==
-X-CSE-MsgGUID: OIF5F2M3Sduv1yIpcU7AMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11680"; a="81816379"
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="81816379"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 09:28:52 -0800
-X-CSE-ConnectionGUID: tGD+N8Z2RgqFYlwMDWRSIA==
-X-CSE-MsgGUID: XIWl0loESjqCLAcO/z0qdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,248,1763452800"; 
-   d="scan'208";a="206326661"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.164])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jan 2026 09:28:47 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	linux-serial@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	qianfan Zhao <qianfanguijin@163.com>,
-	Adriana Nicolae <adriana@arista.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Markus Mayer <markus.mayer@linaro.org>,
-	Tim Kryger <tim.kryger@linaro.org>,
-	Matt Porter <matt.porter@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Jamie Iles <jamie@jamieiles.com>,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	"Bandal, Shankar" <shankar.bandal@intel.com>,
-	"Murthy, Shanth" <shanth.murthy@intel.com>
-Subject: [PATCH 6/6] serial: 8250_dw: Ensure BUSY is deasserted
-Date: Fri, 23 Jan 2026 19:27:39 +0200
-Message-Id: <20260123172739.13410-7-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20260123172739.13410-1-ilpo.jarvinen@linux.intel.com>
-References: <20260123172739.13410-1-ilpo.jarvinen@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D913EBF00;
+	Fri, 23 Jan 2026 17:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769189525; cv=fail; b=RVY2sEOwUSulOQfjYdNGOSugqHcpvWILcnHzrSLHoRKi2U9+s2jN69V5uTm484Hl+qyzh3ImWu3aXZ2mts1D9L4yM832tSozH5wsYiLdpL77/tCb8Lsh1Li/BNLw4uROr+BN3Z45AfvUnp2BAtetQgGZIN6qkdA6WSTre9wakKo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769189525; c=relaxed/simple;
+	bh=HZHqws/RbMR4E6+n+z1z2jI2EHrkiydp8HRIZQwNeNo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rhqFkpXSZNijw5Xn282Yx4bU0KLUID2dETCEJ9UuCkrV4zL0qrh7eJN07jGnAYq/4wqTGdclWuYtN8+GQBT26HV414zpRqErzEREf5rmQ2/Y2wIlkqYEJvzrJVhLW4zdeJWMEbCoADx7u5LiulGZmQ9WX/nwvhjKQIcfnkTRa+E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=lr+iIcxg; arc=fail smtp.client-ip=52.101.46.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J7up0t1bgDj+ms4VmuW8byx1Tbs4g2UUJQQBzvAZDrtD4qw6VBEAmo44Zlu8P+7RSKMcJkECqH0LXZwXfCiN0I2jXLOo3MPOyOSHH7Zq5yrowYdngynV+Ha9iUi6k5eYv+tUTxD4uNC3ZtkXAle081GjROOtFvPZaMMTK3V8O2mYyLcj2PFVLDkC9S7m5cu8nxjMlg9MN4aWCYKQ/OBmthyy8x0ZlBFWvpgnU3MrxhjMcbi0GDiyVlsd5XrZhxL62ESmaWClMb+UrvT5LOn/IbpZkADPGTZk5OdCXB5LFGqc/jzSmcbZEeZ2rjl8vUjJqqC7MdeHZNQhuwMzIeJMXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H35GJQkbWnFOZwBlgucIiBWstBlZN9gMLFGnm9aApnI=;
+ b=USFsnwBps9LAQmPeHpzgoznCAELBcvBubTySfJ5SrWXy/vuexWkX5ttbbZY0KzoFzUm6W25buQjJvWuRzcZ0NKU6K+CYWK62SC6zoT9+A88mZnoLk73CmCJWQFFwVZycsUBy0UBILOgU3/N5GvD4Zuc2nenSqHXoCoBHaFOpxYGGb+cEcrbFOaVlNPIqmcnneIm1dDa95eOSo975/aL0ItbU5dFoJMFLG1XQmuKSVxC7q9d2xMUhbSMFqdTIuJaLIF8O8XrbaXhS3u3tZnHCQXGT7U5UbZBvELCdiHR/wI/DvNq0TxLTylIYa87ne4tRQkdRrBC2fdKiKk0FS7rbSw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H35GJQkbWnFOZwBlgucIiBWstBlZN9gMLFGnm9aApnI=;
+ b=lr+iIcxgbJKf/3hL/J7nkoT6sdcCSQR7eW/OyxT6GCc5xWt5txoeLuNjtkT3nH+46jLZxMHSVmqFNviVQfZUPOxOSZBxFKAOumuwNJu/lOg6Es+7R2xTCQB38d7sXR6zKiVGCt4nONvdV0/Po+/egWq84NMjWJsV8gf9A7l50bGdyUkVl6i4Dc1IMoPiZH2XhRU5oIWbegzlzZe3bymsYnHFc8CDqPaLWer6dKOzrMMwG12HY5j7+O1dNVDo7q8Bjrg0sYgQIIxSzDc5Sgwqlm6vhEMdJSwLS8nkCMy17lZaBqhg+6xSgSxc6ruGEhxbXnBQ1pmVRa3zpV5SmBGknw==
+Received: from PH7P220CA0005.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:326::22)
+ by DS0PR12MB8456.namprd12.prod.outlook.com (2603:10b6:8:161::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
+ 2026 17:31:57 +0000
+Received: from SA2PEPF000015CA.namprd03.prod.outlook.com
+ (2603:10b6:510:326:cafe::31) by PH7P220CA0005.outlook.office365.com
+ (2603:10b6:510:326::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.11 via Frontend Transport; Fri,
+ 23 Jan 2026 17:31:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ SA2PEPF000015CA.mail.protection.outlook.com (10.167.241.200) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.3 via Frontend Transport; Fri, 23 Jan 2026 17:31:55 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 23 Jan
+ 2026 09:31:26 -0800
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Fri, 23 Jan 2026 09:31:25 -0800
+Received: from waynec-Precision-5760.nvidia.com (10.127.8.13) by
+ mail.nvidia.com (10.126.190.182) with Microsoft SMTP Server id 15.2.2562.20
+ via Frontend Transport; Fri, 23 Jan 2026 09:31:24 -0800
+From: Wayne Chang <waynec@nvidia.com>
+To: <gregkh@linuxfoundation.org>, <thierry.reding@gmail.com>,
+	<jonathanh@nvidia.com>
+CC: <waynec@nvidia.com>, <haotienh@nvidia.com>, <linux-usb@vger.kernel.org>,
+	<linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH V4 1/1] usb: gadget: tegra-xudc: Add handling for BLCG_COREPLL_PWRDN
+Date: Sat, 24 Jan 2026 01:31:21 +0800
+Message-ID: <20260123173121.4093902-1-waynec@nvidia.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015CA:EE_|DS0PR12MB8456:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a6e8135-900e-4422-ac58-08de5aa54e19
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?lLk/ntkgce9PNLt861gL9+4q3XOIO226nXSk2Kld9DmUSBxTvgZAhntNtZVj?=
+ =?us-ascii?Q?ZxwEewa9NSet7Gj/Lwe2YUvrrmDjCIe92dKYKGydMn9HvN8ofJiQwMY3mae6?=
+ =?us-ascii?Q?SW4uDpgQns7S6Zr/5wgKZIfeVBc7a3Hs9ZTwwKUqmtSVDO7qbLqoWJ73/s9+?=
+ =?us-ascii?Q?Iiq6pTNbvjtWVMb2QZXrPnVV67pghGkIjAT01i4sSh9OIEwfAuwBReAExsOZ?=
+ =?us-ascii?Q?6zPyBzEoA2ReXODY5xWuLfEAVj94AwQZ6pm3aMTDDhuAIEF/Hnt5oRL86qBd?=
+ =?us-ascii?Q?2YXHDT3JjF9xvksGSmcCaKRRQFCVYND2KvugE/aQ+7oLu/REDznzYCk6+wlk?=
+ =?us-ascii?Q?469hkVAx6Z1c+pGpp/rXJUDELLYypI0J7CYwNvn1GkZU6qDbHDO9DoQ0xA68?=
+ =?us-ascii?Q?EURZCoNnOiHtq/yfvSbH2FZagCyAlTj8vempkVIboobDrlsK/418Mia4mj9F?=
+ =?us-ascii?Q?jFXlQqUpsDMR0lH3rIsUumkoF4JRz9KZEg0/nHHxuZLhkxj/hY7UlF3dbgY5?=
+ =?us-ascii?Q?F/GwIm/RnpFD5yAF3gMADnJu16bnfce5n+tMX5yYF1UcsjqwOr6PKy3+j+iQ?=
+ =?us-ascii?Q?PSowT4nR+2EsO69Xq+n5c5KjWHc/utk9JQIGmly/JbLcPvfO48JRGKoHFIr+?=
+ =?us-ascii?Q?2L2wOqSn9d3iePoAQT1VROZr52bkiXfoHrUZZyVrfPoFl3ruVj3lxt/cpker?=
+ =?us-ascii?Q?/bUha3QojsJakYgKIAQn6UbrhhYctRhCBEJfLn7VW/xpI4V2gqBg05SYbrTH?=
+ =?us-ascii?Q?kTyaMeseoMcd8+0Ro4j4WnZBW9pO7Z8m49uUPN783s5JRfWEFqQ+JgeYzSQY?=
+ =?us-ascii?Q?A+C45jy+rMDKDuneIYWsDo3tuJsROCbJJSIoUaP4/KDjJiyMiuTIx2NEXcpm?=
+ =?us-ascii?Q?FKLb5HOvxuwQ/hjxFOk/SGyA2ek2NJc5webTtCA2WGH/9yus35ew1d439dh4?=
+ =?us-ascii?Q?XBWqIMZpYHzGQBK1NhtjgMNABVsWYRvddFOeRXHBDrqzPnNkSFhk56X2ygrr?=
+ =?us-ascii?Q?GztQd/xele/Wl3Hc0bKuPxlaM/uHHqEHH/PNcY+QP79flf5jT6ftO+DekU9K?=
+ =?us-ascii?Q?2omjxnO2esEZdYDgONlni0tAV/b3rsIeWVyhHLJf347nI6vonC6x/uzS8FC0?=
+ =?us-ascii?Q?/9swSfTttL8n2h31PyXK8U/fyiIcqfUovmCXNwgjNa7vTnHqXXlcE9ZVT5hF?=
+ =?us-ascii?Q?BEHSq8QmXVxcKQ5x50BoOavoAAgN8PRpVyiLNwOvJSJfLHaAStO83qRRs9fh?=
+ =?us-ascii?Q?1cKgDMKoqIc0z2Z+ZwCzSirYhgS++b7MB/m2UpHeA57L0lcCN6qw1mymzrGB?=
+ =?us-ascii?Q?UGWIV7zrLA9QB9tDzlBCOaFd981hFtMLWT08SYNe4aPK0X+xn99pfwvBX8K7?=
+ =?us-ascii?Q?oaFr0ZRgEaVF5U6c0pUpS9STr86v8jKjeDKObRxK0aPw723uBiZrmfqczKzj?=
+ =?us-ascii?Q?CLAj3UMx80oGqhsUmMZTza0/DV5MMfemNl+Q6VbBDkinxt/ZH6sNI1YT4En/?=
+ =?us-ascii?Q?xYYxOzmhksEtZUf0E586p8Kr6YCTfxknpA8by+RPdGiTRoa+jukAnYxCmTPo?=
+ =?us-ascii?Q?sWumNeyHRavLOk++fPEpTPG7fc8rczsyNlEbqdf4VaC5GM1D9LUPdG2rMiSS?=
+ =?us-ascii?Q?xQZVuZ41cSDgNPjs5+pi3YhusIB2xPqhyMImSFpQmKILr27eToSn5L/KOZNH?=
+ =?us-ascii?Q?omUB3A=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jan 2026 17:31:55.8264
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a6e8135-900e-4422-ac58-08de5aa54e19
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF000015CA.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8456
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [1.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211405-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,linux.intel.com,163.com,arista.com,linaro.org,jamieiles.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com,nvidia.com];
+	TAGGED_FROM(0.00)[bounces-211406-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,nvidia.com:email,Nvidia.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[waynec@nvidia.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arista.com:email,intel.com:email,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.intel.com:mid]
-X-Rspamd-Queue-Id: CF5807908F
+	RCVD_COUNT_SEVEN(0.00)[9]
+X-Rspamd-Queue-Id: 53E6F790C1
 X-Rspamd-Action: no action
 
-DW UART cannot write to LCR, DLL, and DLH while BUSY is asserted.
-Existance of BUSY depends on uart_16550_compatible, if UART HW is
-configured with 16550 compatible those registers can always be written.
+From: Haotien Hsu <haotienh@nvidia.com>
 
-There currently is dw8250_force_idle() which attempts to archive
-non-BUSY state by disabling FIFO, however, the solution is unreliable
-when Rx keeps getting more and more characters.
+The COREPLL_PWRDN bit in the BLCG register must be set when the XUSB
+device controller is powergated and cleared when it is unpowergated.
+If this bit is not explicitly controlled, the core PLL may remain in an
+incorrect power state across suspend/resume or ELPG transitions.
+Therefore, update the driver to explicitly control this bit during
+powergate transitions.
 
-Create a sequence of operations to enforce that ensures UART cannot
-keep BUSY asserted indefinitely. The new sequence relies on enabling
-loopback mode temporarily to prevent incoming Rx characters keeping
-UART BUSY.
-
-Ensure no Tx in ongoing while the UART is switches into the loopback
-mode (requires exporting serial8250_fifo_wait_for_lsr_thre() and adding
-DMA Tx pause/resume functions).
-
-According to tests performed by Adriana Nicolae <adriana@arista.com>,
-simply disabling FIFO or clearing FIFOs only once does not always
-ensure BUSY is deasserted but up to two tries may be needed. This could
-be related to ongoing Rx of a character (a guess, not known for sure).
-Therefore, retry FIFO clearing a few times (retry limit 4 is arbitrary
-number but using, e.g., p->fifosize seems overly large). Tests
-performed by others did not exhibit similar challenge but it does not
-seem harmful to leave the FIFO clearing loop in place for all DW UARTs
-with BUSY functionality.
-
-Use the new dw8250_idle_enter/exit() to do divisor writes and LCR
-writes. In case of plain LCR writes, opportunistically try to update
-LCR first and only invoke dw8250_idle_enter() if the write did not
-succeed (it has been observed that in practice most LCR writes do
-succeed without complications).
-
-This issue was first reported by qianfan Zhao who put lots of debugging
-effort into understanding the solution space.
-
-Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
-Fixes: 7d4008ebb1c9 ("tty: add a DesignWare 8250 driver")
-Cc: <stable@vger.kernel.org>
-Reported-by: qianfan Zhao <qianfanguijin@163.com>
-Link: https://lore.kernel.org/linux-serial/289bb78a-7509-1c5c-2923-a04ed3b6487d@163.com/
-Reported-by: Adriana Nicolae <adriana@arista.com>
-Link: https://lore.kernel.org/linux-serial/20250819182322.3451959-1-adriana@arista.com/
-Reported-by: "Bandal, Shankar" <shankar.bandal@intel.com>
-Tested-by: "Bandal, Shankar" <shankar.bandal@intel.com>
-Tested-by: "Murthy, Shanth" <shanth.murthy@intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
 ---
- drivers/tty/serial/8250/8250.h      |  25 ++++
- drivers/tty/serial/8250/8250_dw.c   | 172 ++++++++++++++++++++--------
- drivers/tty/serial/8250/8250_port.c |  28 ++---
- 3 files changed, 166 insertions(+), 59 deletions(-)
+ drivers/usb/gadget/udc/tegra-xudc.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250.h b/drivers/tty/serial/8250/8250.h
-index 8caecfc85d93..77fe0588fd6b 100644
---- a/drivers/tty/serial/8250/8250.h
-+++ b/drivers/tty/serial/8250/8250.h
-@@ -175,7 +175,9 @@ static unsigned int __maybe_unused serial_icr_read(struct uart_8250_port *up,
- 	return value;
- }
- 
-+void serial8250_clear_fifos(struct uart_8250_port *p);
- void serial8250_clear_and_reinit_fifos(struct uart_8250_port *p);
-+void serial8250_fifo_wait_for_lsr_thre(struct uart_8250_port *up, unsigned int count);
- 
- void serial8250_rpm_get(struct uart_8250_port *p);
- void serial8250_rpm_put(struct uart_8250_port *p);
-@@ -400,6 +402,26 @@ static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
- 
- 	return dma && dma->tx_running;
- }
-+
-+static inline void serial8250_tx_dma_pause(struct uart_8250_port *p)
-+{
-+	struct uart_8250_dma *dma = p->dma;
-+
-+	if (!dma->tx_running)
-+		return;
-+
-+	dmaengine_pause(dma->txchan);
-+}
-+
-+static inline void serial8250_tx_dma_resume(struct uart_8250_port *p)
-+{
-+	struct uart_8250_dma *dma = p->dma;
-+
-+	if (!dma->tx_running)
-+		return;
-+
-+	dmaengine_resume(dma->txchan);
-+}
- #else
- static inline int serial8250_tx_dma(struct uart_8250_port *p)
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index 9d2007f448c0..7f7251c10e95 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -3392,17 +3392,18 @@ static void tegra_xudc_device_params_init(struct tegra_xudc *xudc)
  {
-@@ -421,6 +443,9 @@ static inline bool serial8250_tx_dma_running(struct uart_8250_port *p)
- {
- 	return false;
- }
-+
-+static inline void serial8250_tx_dma_pause(struct uart_8250_port *p) { }
-+static inline void serial8250_tx_dma_resume(struct uart_8250_port *p) { }
- #endif
+ 	u32 val, imod;
  
- static inline int ns16550a_goto_highspeed(struct uart_8250_port *up)
-diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-index a40c0851f39c..8166ed15fd08 100644
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -15,6 +15,7 @@
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/io.h>
-+#include <linux/lockdep.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/notifier.h>
-@@ -46,6 +47,8 @@
- 
- #define DW_UART_MCR_SIRE		BIT(6)
- 
-+#define DW_UART_USR_BUSY		BIT(0)
-+
- /* Renesas specific register fields */
- #define RZN1_UART_xDMACR_DMA_EN		BIT(0)
- #define RZN1_UART_xDMACR_1_WORD_BURST	(0 << 1)
-@@ -82,6 +85,7 @@ struct dw8250_data {
- 
- 	unsigned int		skip_autocfg:1;
- 	unsigned int		uart_16550_compatible:1;
-+	unsigned int		in_idle:1;
- 
- 	u64			no_int_count;
- };
-@@ -115,77 +119,152 @@ static inline u32 dw8250_modify_msr(struct uart_port *p, unsigned int offset, u3
- }
- 
- /*
-- * This function is being called as part of the uart_port::serial_out()
-- * routine. Hence, it must not call serial_port_out() or serial_out()
-- * against the modified registers here, i.e. LCR.
-+ * Ensure BUSY is not asserted. If DW UART is configured with
-+ * !uart_16550_compatible, the writes to LCR, DLL, and DLH fail while
-+ * BUSY is asserted.
-+ *
-+ * Context: port's lock must be held
-  */
--static void dw8250_force_idle(struct uart_port *p)
-+static int dw8250_idle_enter(struct uart_port *p)
- {
-+	struct dw8250_data *d = to_dw8250_data(p->private_data);
- 	struct uart_8250_port *up = up_to_u8250p(p);
--	unsigned int lsr;
-+	unsigned int usr_reg = DW_UART_USR;
-+	int retries;
-+	u32 lsr;
- 
--	/*
--	 * The following call currently performs serial_out()
--	 * against the FCR register. Because it differs to LCR
--	 * there will be no infinite loop, but if it ever gets
--	 * modified, we might need a new custom version of it
--	 * that avoids infinite recursion.
--	 */
--	serial8250_clear_and_reinit_fifos(up);
-+	lockdep_assert_held_once(&p->lock);
-+
-+	if (d->uart_16550_compatible)
-+		return 0;
-+
-+	if (d->pdata)
-+		usr_reg = d->pdata->usr_reg;
-+
-+	d->in_idle = 1;
-+
-+	/* Prevent triggering interrupt from RBR filling */
-+	p->serial_out(p, UART_IER, 0);
-+
-+	if (up->dma) {
-+		serial8250_rx_dma_flush(up);
-+		if (serial8250_tx_dma_running(up))
-+			serial8250_tx_dma_pause(up);
-+	}
- 
- 	/*
--	 * With PSLVERR_RESP_EN parameter set to 1, the device generates an
--	 * error response when an attempt to read an empty RBR with FIFO
--	 * enabled.
-+	 * Wait until Tx becomes empty + one extra frame time to ensure all bits
-+	 * have been sent on the wire.
- 	 */
--	if (up->fcr & UART_FCR_ENABLE_FIFO) {
--		lsr = serial_port_in(p, UART_LSR);
--		if (!(lsr & UART_LSR_DR))
--			return;
-+	serial8250_fifo_wait_for_lsr_thre(up, p->fifosize);
-+	ndelay(p->frame_time);
-+
-+	p->serial_out(p, UART_MCR, up->mcr | UART_MCR_LOOP);
-+
-+	retries = 4;	/* Arbitrary limit, 2 was always enough in tests */
-+	do {
-+		serial8250_clear_fifos(up);
-+		if (!(p->serial_in(p, usr_reg) & DW_UART_USR_BUSY))
-+			break;
-+		ndelay(p->frame_time);
-+	} while (--retries);
-+
-+	lsr = serial_lsr_in(up);
-+	if (lsr & UART_LSR_DR) {
-+		p->serial_in(p, UART_RX);
-+		up->lsr_saved_flags = 0;
- 	}
- 
--	serial_port_in(p, UART_RX);
-+	/* Now guaranteed to have BUSY deasserted? Just sanity check */
-+	if (p->serial_in(p, usr_reg) & DW_UART_USR_BUSY)
-+		return -EBUSY;
-+
-+	return 0;
-+}
-+
-+static void dw8250_idle_exit(struct uart_port *p)
-+{
-+	struct dw8250_data *d = to_dw8250_data(p->private_data);
-+	struct uart_8250_port *up = up_to_u8250p(p);
-+
-+	if (d->uart_16550_compatible)
-+		return;
-+
-+	if (up->capabilities & UART_CAP_FIFO)
-+		p->serial_out(p, UART_FCR, up->fcr);
-+	p->serial_out(p, UART_MCR, up->mcr);
-+	p->serial_out(p, UART_IER, up->ier);
-+
-+	/* DMA Rx is restarted by IRQ handler as needed. */
-+	if (up->dma)
-+		serial8250_tx_dma_resume(up);
-+
-+	d->in_idle = 0;
-+}
-+
-+static void dw8250_set_divisor(struct uart_port *p, unsigned int baud,
-+			       unsigned int quot, unsigned int quot_frac)
-+{
-+	struct uart_8250_port *up = up_to_u8250p(p);
-+	int ret;
-+
-+	ret = dw8250_idle_enter(p);
-+	if (ret < 0)
-+		goto idle_failed;
-+
-+	p->serial_out(p, UART_LCR, up->lcr | UART_LCR_DLAB);
-+	if (!(p->serial_in(p, UART_LCR) & UART_LCR_DLAB))
-+		goto idle_failed;
-+
-+	serial_dl_write(up, quot);
-+	p->serial_out(p, UART_LCR, up->lcr);
-+
-+idle_failed:
-+	dw8250_idle_exit(p);
- }
- 
- /*
-  * This function is being called as part of the uart_port::serial_out()
-- * routine. Hence, it must not call serial_port_out() or serial_out()
-- * against the modified registers here, i.e. LCR.
-+ * routine. Hence, special care must be taken when serial_port_out() or
-+ * serial_out() against the modified registers here, i.e. LCR (d->in_idle is
-+ * used to break recursion loop).
-  */
- static void dw8250_check_lcr(struct uart_port *p, unsigned int offset, u32 value)
- {
- 	struct dw8250_data *d = to_dw8250_data(p->private_data);
--	void __iomem *addr = p->membase + (offset << p->regshift);
--	int tries = 1000;
-+	u32 lcr;
-+	int ret;
- 
- 	if (offset != UART_LCR || d->uart_16550_compatible)
- 		return;
- 
--	/* Make sure LCR write wasn't ignored */
--	while (tries--) {
--		u32 lcr = serial_port_in(p, offset);
-+	lcr = p->serial_in(p, UART_LCR);
- 
--		if ((value & ~UART_LCR_SPAR) == (lcr & ~UART_LCR_SPAR))
--			return;
-+	/* Make sure LCR write wasn't ignored */
-+	if ((value & ~UART_LCR_SPAR) == (lcr & ~UART_LCR_SPAR))
-+		return;
- 
--		dw8250_force_idle(p);
-+	if (d->in_idle) {
-+		/*
-+		 * FIXME: this deadlocks if port->lock is already held
-+		 * dev_err(p->dev, "Couldn't set LCR to %d\n", value);
-+		 */
-+		return;
-+	}
- 
--#ifdef CONFIG_64BIT
--		if (p->type == PORT_OCTEON)
--			__raw_writeq(value & 0xff, addr);
--		else
--#endif
--		if (p->iotype == UPIO_MEM32)
--			writel(value, addr);
--		else if (p->iotype == UPIO_MEM32BE)
--			iowrite32be(value, addr);
--		else
--			writeb(value, addr);
-+	ret = dw8250_idle_enter(p);
-+	if (ret < 0) {
-+		/*
-+		 * FIXME: this deadlocks if port->lock is already held
-+		 * dev_err(p->dev, "Couldn't set LCR to %d\n", value);
-+		 */
-+		goto idle_failed;
- 	}
--	/*
--	 * FIXME: this deadlocks if port->lock is already held
--	 * dev_err(p->dev, "Couldn't set LCR to %d\n", value);
--	 */
-+
-+	p->serial_out(p, UART_LCR, value);
-+
-+idle_failed:
-+	dw8250_idle_exit(p);
- }
- 
- /*
-@@ -627,6 +706,7 @@ static int dw8250_probe(struct platform_device *pdev)
- 	p->dev		= dev;
- 	p->set_ldisc	= dw8250_set_ldisc;
- 	p->set_termios	= dw8250_set_termios;
-+	p->set_divisor	= dw8250_set_divisor;
- 
- 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
- 	if (!data)
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index fa982e5cbe90..d5ea0f08a854 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -489,7 +489,7 @@ serial_port_out_sync(struct uart_port *p, int offset, int value)
- /*
-  * FIFO support.
-  */
--static void serial8250_clear_fifos(struct uart_8250_port *p)
-+void serial8250_clear_fifos(struct uart_8250_port *p)
- {
- 	if (p->capabilities & UART_CAP_FIFO) {
- 		serial_out(p, UART_FCR, UART_FCR_ENABLE_FIFO);
-@@ -498,6 +498,7 @@ static void serial8250_clear_fifos(struct uart_8250_port *p)
- 		serial_out(p, UART_FCR, 0);
- 	}
- }
-+EXPORT_SYMBOL_GPL(serial8250_clear_fifos);
- 
- static enum hrtimer_restart serial8250_em485_handle_start_tx(struct hrtimer *t);
- static enum hrtimer_restart serial8250_em485_handle_stop_tx(struct hrtimer *t);
-@@ -3200,6 +3201,17 @@ void serial8250_set_defaults(struct uart_8250_port *up)
- }
- EXPORT_SYMBOL_GPL(serial8250_set_defaults);
- 
-+void serial8250_fifo_wait_for_lsr_thre(struct uart_8250_port *up, unsigned int count)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < count; i++) {
-+		if (wait_for_lsr(up, UART_LSR_THRE))
-+			return;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(serial8250_fifo_wait_for_lsr_thre);
-+
- #ifdef CONFIG_SERIAL_8250_CONSOLE
- 
- static void serial8250_console_putchar(struct uart_port *port, unsigned char ch)
-@@ -3241,16 +3253,6 @@ static void serial8250_console_restore(struct uart_8250_port *up)
- 	serial8250_out_MCR(up, up->mcr | UART_MCR_DTR | UART_MCR_RTS);
- }
- 
--static void fifo_wait_for_lsr(struct uart_8250_port *up, unsigned int count)
--{
--	unsigned int i;
++	val = xudc_readl(xudc, BLCG);
+ 	if (xudc->soc->has_ipfs) {
+-		val = xudc_readl(xudc, BLCG);
+ 		val |= BLCG_ALL;
+ 		val &= ~(BLCG_DFPCI | BLCG_UFPCI | BLCG_FE |
+ 				BLCG_COREPLL_PWRDN);
+ 		val |= BLCG_IOPLL_0_PWRDN;
+ 		val |= BLCG_IOPLL_1_PWRDN;
+ 		val |= BLCG_IOPLL_2_PWRDN;
 -
--	for (i = 0; i < count; i++) {
--		if (wait_for_lsr(up, UART_LSR_THRE))
--			return;
--	}
--}
--
- /*
-  * Print a string to the serial port using the device FIFO
-  *
-@@ -3269,7 +3271,7 @@ static void serial8250_console_fifo_write(struct uart_8250_port *up,
+-		xudc_writel(xudc, val, BLCG);
++	} else {
++		val &= ~BLCG_COREPLL_PWRDN;
+ 	}
++	xudc_writel(xudc, val, BLCG);
  
- 	while (s != end) {
- 		/* Allow timeout for each byte of a possibly full FIFO */
--		fifo_wait_for_lsr(up, fifosize);
-+		serial8250_fifo_wait_for_lsr_thre(up, fifosize);
+ 	if (xudc->soc->port_speed_quirk)
+ 		tegra_xudc_limit_port_speed(xudc);
+@@ -3953,6 +3954,7 @@ static void tegra_xudc_remove(struct platform_device *pdev)
+ static int __maybe_unused tegra_xudc_powergate(struct tegra_xudc *xudc)
+ {
+ 	unsigned long flags;
++	u32 val;
  
- 		for (i = 0; i < fifosize && s != end; ++i) {
- 			if (*s == '\n' && !cr_sent) {
-@@ -3287,7 +3289,7 @@ static void serial8250_console_fifo_write(struct uart_8250_port *up,
- 	 * Allow timeout for each byte written since the caller will only wait
- 	 * for UART_LSR_BOTH_EMPTY using the timeout of a single character
- 	 */
--	fifo_wait_for_lsr(up, tx_count);
-+	serial8250_fifo_wait_for_lsr_thre(up, tx_count);
- }
+ 	dev_dbg(xudc->dev, "entering ELPG\n");
  
- /*
+@@ -3965,6 +3967,10 @@ static int __maybe_unused tegra_xudc_powergate(struct tegra_xudc *xudc)
+ 
+ 	spin_unlock_irqrestore(&xudc->lock, flags);
+ 
++	val = xudc_readl(xudc, BLCG);
++	val |= BLCG_COREPLL_PWRDN;
++	xudc_writel(xudc, val, BLCG);
++
+ 	clk_bulk_disable_unprepare(xudc->soc->num_clks, xudc->clks);
+ 
+ 	regulator_bulk_disable(xudc->soc->num_supplies, xudc->supplies);
 -- 
-2.39.5
+2.25.1
 
 
