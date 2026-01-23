@@ -1,247 +1,239 @@
-Return-Path: <stable+bounces-211395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOTsAOSMc2l0xAAAu9opvQ
-	(envelope-from <stable+bounces-211395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 15:59:48 +0100
+	id eDMkOu6Qc2l0xAAAu9opvQ
+	(envelope-from <stable+bounces-211396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 16:17:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56921775FE
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 15:59:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6330677ABC
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 16:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E1F1304C7C8
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 14:58:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2BDC4307AAD2
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 15:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4712032695C;
-	Fri, 23 Jan 2026 14:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C529342C92;
+	Fri, 23 Jan 2026 15:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E03gqZWO"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="yyv7UixE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-oo1-f66.google.com (mail-oo1-f66.google.com [209.85.161.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967E833556D
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 14:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB1433BBC0
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 15:04:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769180311; cv=none; b=bkQAn/WG/TutvpKX/A1Nh21Akv+ufFi7UVqBHcCX3oGWGz96ZQ+utPxEbugb4yN9kRzQ39nPRIoBUOp6J1CEfIDXAzvu2BBNZfFfTNLtdtviw8P+xTRgs4RFir1ETpKZc67S8uvnd9GccE/Wgm/9hX2X94llkl9PIvU9DTJoz+o=
+	t=1769180694; cv=none; b=pND8XnvhBpKIa8TdOs7byo6yscGKeeQHUygqb0uUMJoCjmeVFLTOc4PD+mSrfsS4wGayszCNKrOTmXN0uJ0nG3WKaHJbyJBxEC0kOCzy5c6jDBSz80bS0839WxYmi7ld3w+t6RA2NK9LElc6wvp0HG1/gPPspYRxNh2FqgU94BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769180311; c=relaxed/simple;
-	bh=yLzY19MuS3iN380+AoG930YPzVQx3y4RwEr4smOpjaQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YU/BGPsm/BwoTCxt8/09M7/PA+Hjimdv4AaBm0AbuXSNPuHC67JWYefn0iNxVdHUFz9p83pLRaRsZlW5J52klpFFH++QRW7AvYFDEFm5tTDwrIIacBvPCoVFdeeEa8JIpyZ4h7WH0iIAaRAIKxdlYMA3tEp+GJC/5tX66rJ19o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E03gqZWO; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8230c839409so1724668b3a.3
-        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 06:58:26 -0800 (PST)
+	s=arc-20240116; t=1769180694; c=relaxed/simple;
+	bh=GtoJMAV3JMEw5u0PkRh1Ohg8essRu+nn9weTSPQUFWI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=he0ojjKWBUhAjCbXvkbK3h6vzwcLajahw1zdJ7gCWR+PMQMPIgnv09vEqjZHnvOM2s+Bdl3gn7WgTVXpeH3t0GoAIbPQftkzXMop4V/eccb4Q7M5oYz6obREp8W/T7ru3gZd71bqyEbxqApGmAwsx7ospnLA9K2j9BZdA2PNVAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=yyv7UixE; arc=none smtp.client-ip=209.85.161.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oo1-f66.google.com with SMTP id 006d021491bc7-661077c4d36so2242936eaf.0
+        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 07:04:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769180306; x=1769785106; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eEedmtOY7Y8eJ9xgbPCCWxatDC0k0Q8serp7IKoqpeM=;
-        b=E03gqZWOFHV3q/QQn+Zg2MgCO0R4louQSem3MkoQbOTGUL4ZT/EziRRSowEbQN6H/p
-         aUNsW2+IbwA0Q3G7kYkJO2679gs98qiGwCy8AU7TIQ5J42HcAr8/uZYDHlMDgLJwgSdM
-         t3drZyVjo4hbGG5tGlmZSsT/K3OVgs4pZlSLZDlzAeMh0DR+3zB0YArA7v8/Q3NaSyAy
-         wIDi7QDlO6uWxeXZkfZRTsSGBs2RTiThdFdUop9xefCTEC49ZW3/39gKcxojKAyTL+j+
-         3N0sdIGy0CLWJsN/lt9XyzbUYpBuZFhrQCoPRUSFmVU2oozpDmWtVu7NxJU28n00sLff
-         GgAQ==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1769180691; x=1769785491; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=C0mzcb/MlZDJODBRwhXegE9ctUcOjJ+6el+uFNaQtwg=;
+        b=yyv7UixECEK1530EPpPZ6ZwUqCS5nMJyEKh8XLR/p0iyyUSEpkvRl+kkirnpsHCN2b
+         8aA1pja0aN5fMt5gYrUdKMDoa4B+rOyBSmzht8ir9qGygxRt9q0mN+mELzJVS6BmM8sU
+         6TucC2tJxq/TWhlOG4NdamkeDW9d1ZbFk+9SbIz06qe6BuIKyc00cyLUozJvYmJifQrJ
+         J/P3VknwE7TMtaBvWMg4262KhfwboJk/x7bgQ5DU6ew02mWti9MM/uRHa1v2o/xP4WqZ
+         C5APD2S3LLyBZ5SS3AvQT1fZVieun7zrJlbDuSFI8Er9S2LOGwlZH5z8jwa19jukIfGf
+         LE7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769180306; x=1769785106;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eEedmtOY7Y8eJ9xgbPCCWxatDC0k0Q8serp7IKoqpeM=;
-        b=UjINGilWeWbNTUPQ7XAPJe11h4Miyf1H4EzpgBc0wfagh9DfDzrLQmS6xcQEmxGuS3
-         f4qhrTeBtdTj+Cwj39HFVqkfMWKF6pbhLo7fdrUPWR8UIJsPIMPTEjDi0+q6mwa01/2Q
-         PUBS89sFQD+WNMPCWAbrFQdPl730UguivFQSYRAoXjT4rnazPGlywHZfm3JDrWpBcCsy
-         AdE5kON0TnD5rulSsmDhYwevRHWb3RTCzxI2u0Opeg32m/p7job3yMxrlZVeYGH85AUv
-         +C43OnQ7CCCqecODb/jqbaiKGBlEbFK4xh0zkYNAs4TdJPTFDgOgKawg36cFGe5BLzZ7
-         m1iQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXasQuA4ZRLWUDR8a2NuvAHqRN9I4GdrfgkHE+AebZaNa9LKDEEW6BsA4YpLa4KQ+LyIE48cQA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpxCQ0t2BVKexTek1MzkE7EQBMMHH7Jfpp1IAK8ODTUA+uHSOU
-	NfjoV/g7yIC3HNHFF88hqrno07U5RsiSPox4QVoR+Nj0Q2Bo5gByhXL4
-X-Gm-Gg: AZuq6aK0g0ybrb6fJ4QEOcchZJWVm+UpVHf3DYKVmj+kW+IBz1uQadozIVhp16aRCnn
-	Iwk2oy3VgWvmhlmahJBkDv10RVyZ+o8ciDqG/SNqbhFEjQw4Q6CXpLFDVydOVBH6LRgkSJWwgje
-	9w4D1ai/+Z5a3f4l7lITpDGL3jgCjqPpNVlWD3imLLx/KQLimdMhd2Q35NfPOthvf/KS8eCb6yt
-	12wIEzczFkvc7XZm7cMuUOYBegEe88Ywuu2MPAJoVfK8y1DpBQNFrqa20LaJYYQ8zOiyyj5IqgW
-	CwlHsirTx60WRVhiowK11Ih7ScbUITb2qqdlMZkXq5hVgfzJknnoQWT/7fexyvahPBEuyGpAwyQ
-	NT1Ne/Wwolid5BjOWLmXVkMBL5FFogaiDViEeUtyoIeDpNsMnt4bOdqtN6iBNQKKYMJTEwJkE7G
-	Co2fPluh6+OkI=
-X-Received: by 2002:a05:6a21:3944:b0:366:14b0:1a41 with SMTP id adf61e73a8af0-38e6f8297c7mr3334491637.79.1769180305734;
-        Fri, 23 Jan 2026 06:58:25 -0800 (PST)
-Received: from inspiron ([111.125.231.221])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c635a42e8ecsm2290372a12.32.2026.01.23.06.58.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 06:58:25 -0800 (PST)
-Date: Fri, 23 Jan 2026 20:28:13 +0530
-From: Prithvi <activprithvi@gmail.com>
-To: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Cc: martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-	target-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	hch@lst.de, jlbec@evilplan.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel-mentees@lists.linux.dev, skhan@linuxfoundation.org,
-	david.hunter.linux@gmail.com, khalid@kernel.org,
-	syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: target: Fix recursive locking in
- __configfs_open_file()
-Message-ID: <20260123145813.wamnt62fwh2ihtur@inspiron>
-References: <20260108191523.303114-1-activprithvi@gmail.com>
- <20260115032012.yb5ylmumcirrmsbr@inspiron>
- <20260122095634.GA15012@yadro.com>
+        d=1e100.net; s=20230601; t=1769180691; x=1769785491;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C0mzcb/MlZDJODBRwhXegE9ctUcOjJ+6el+uFNaQtwg=;
+        b=cUJRUmGADtO6Ns5lEVZ+wqArYHgGO1djaLIeVi/auXSHzLiJ1hmEjIsxevNCRMMq7B
+         yEo8ZccWLvoHx9OC5lJ4a7NQYnqho5dHryS3nG00rLflKYfRtxWQkrLj7FBolAlx/xtQ
+         gZVpz55WwcFEvwjTCkX2yrnF+asB4C6vF6hQ1BNhNHtrRCG3VgCuP2IsZOsEbxv8Aiuv
+         4OxaPCGE2Esc4Qv2L4nln9phfqfXjDugwo0AwHKXgSywpVmRloY8pMJEGycmq3YiQUc5
+         w6M+HeEVa4+BrhdwIT2LVi1DQEGeT21IHEXm7j5ViGPhgmFuKGdIsRls8o3q6W6RrsRj
+         znCw==
+X-Forwarded-Encrypted: i=1; AJvYcCXuoU5GTKRXU4Euu370OyK/VyNQvhe0csyiLIshoQOfEcgYM/xgirrX5Hkl8A+Yk7sNnctjWbc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTFpWPDkpPtDcxP6/B6EELcJpCxqc+0OYFL7AdHmAqcyCo1UM6
+	moaR2+FGW4rpQtvvQesYMoaLdCuxy9EMGeyrRpZb1P4Uf475F/9h1TAqQuzjZvUmmbVkobaBjk9
+	SvrRH6jqGbg==
+X-Gm-Gg: AZuq6aJvUpRKj1rCAVb9Kny4H/52FOD5YCqzzrNsZuhACiOQPtTouy1iK39sv7UaFl0
+	kdxe5TtAVYj82KHkW7q5B67gM/hP8wzsireYAPoGuAEHzdj/KY7+i4L4+4JoB5YUaqAfxlOx4ss
+	7KDnXkwlWMvBdHppKXwoy4ye2c4KxbJK5a2/JdoS71nI1UZ4Gio3X9ykY4c4d84XhI5ENOBoGsO
+	OPvgkhit4c19JhdHUHB5Ssrg0Lpo8d2Rbf8oG8Ecu/R4w1oMtB7pxBDkIjmvwOMYsw1P1onf+8N
+	QhkbmpCVtkbNEaRtygqEVZnJt2FFEb6C0IpahJACUHAFW9L5VjCzjz5r6AFkr+PTew5PY2npCk1
+	+BSMMTzKNPijeQhcN351ZM8dbtXS6NQfN9Ph7m/1dX6RC9z/2mKINIslur72u8fo72H37mLrV7i
+	lfogkjnVIK83O5ui/ElxbuKGa474jF4Hh+Due5mmr/DwNEHXr0CW3pI1McuEDjoR6n6gEUM59UG
+	UIm/OI=
+X-Received: by 2002:a05:6820:4d4c:20b0:661:1580:bf84 with SMTP id 006d021491bc7-662caf90a02mr1265746eaf.34.1769180690515;
+        Fri, 23 Jan 2026 07:04:50 -0800 (PST)
+Received: from [192.168.1.102] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-662cb651194sm1245674eaf.12.2026.01.23.07.04.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Jan 2026 07:04:50 -0800 (PST)
+Message-ID: <654fe339-5a2b-4c38-9d2d-28cfc306b307@kernel.dk>
+Date: Fri, 23 Jan 2026 08:04:49 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260122095634.GA15012@yadro.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
+ cross-buffer accounting
+From: Jens Axboe <axboe@kernel.dk>
+To: Pavel Begunkov <asml.silence@gmail.com>,
+ Yuhao Jiang <danisjiang@gmail.com>
+Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260119071039.2113739-1-danisjiang@gmail.com>
+ <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
+ <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
+ <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
+ <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
+ <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
+ <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
+ <2be71481-ac35-4ff2-b6a9-a7568f81f728@gmail.com>
+ <2fcf583a-f521-4e8d-9a89-0985681ca85b@kernel.dk>
+ <d2fc2ff2-98d9-49f8-af95-968100174d55@gmail.com>
+ <3b7e6088-7d92-4d5c-96c7-f8c0e2cc7745@kernel.dk>
+ <efe080c9-5176-4fa1-9f65-5be44074779e@gmail.com>
+ <596bc7ac-3d24-43a7-9e7e-e59189525ebc@gmail.com>
+ <fc8664bb-7769-48a2-b470-71fb81828e26@kernel.dk>
+Content-Language: en-US
+In-Reply-To: <fc8664bb-7769-48a2-b470-71fb81828e26@kernel.dk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-211396-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211395-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FREEMAIL_CC(0.00)[oracle.com,vger.kernel.org,lst.de,evilplan.org,lists.linux.dev,linuxfoundation.org,gmail.com,kernel.org,syzkaller.appspotmail.com];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[kernel.dk];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[activprithvi@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,f6e8174215573a84b797];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yadro.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 56921775FE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:mid,r7625:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6330677ABC
 X-Rspamd-Action: no action
 
-On Thu, Jan 22, 2026 at 12:56:34PM +0300, Dmitry Bogdanov wrote:
-> On Thu, Jan 15, 2026 at 08:50:12AM +0530, Prithvi wrote:
-> > 
-> > On Fri, Jan 09, 2026 at 12:45:23AM +0530, Prithvi Tambewagh wrote:
-> > > In flush_write_buffer, &p->frag_sem is acquired and then the loaded store
-> > > function is called, which, here, is target_core_item_dbroot_store().
-> > > This function called filp_open(), following which these functions were
-> > > called (in reverse order), according to the call trace:
-> > >
-> > > down_read
-> > > __configfs_open_file
-> > > do_dentry_open
-> > > vfs_open
-> > > do_open
-> > > path_openat
-> > > do_filp_open
-> > > file_open_name
-> > > filp_open
-> > > target_core_item_dbroot_store
-> > > flush_write_buffer
-> > > configfs_write_iter
-> > >
-> > > Hence ultimately, __configfs_open_file() was called, indirectly by
-> > > target_core_item_dbroot_store(), and it also attempted to acquire
-> > > &p->frag_sem, which was already held by the same thread, acquired earlier
-> > > in flush_write_buffer. This poses a possibility of recursive locking,
-> > > which triggers the lockdep warning.
-> > >
-> > > Fix this by modifying target_core_item_dbroot_store() to use kern_path()
-> > > instead of filp_open() to avoid opening the file using filesystem-specific
-> > > function __configfs_open_file(), and further modifying it to make this
-> > > fix compatible.
-> > >
-> > > Reported-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
-> > > Closes: https://syzkaller.appspot.com/bug?extid=f6e8174215573a84b797
-> > > Tested-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
-> > > ---
-> > >  drivers/target/target_core_configfs.c | 13 +++++++------
-> > >  1 file changed, 7 insertions(+), 6 deletions(-)
-> > >
-> > > diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
-> > > index b19acd662726..f29052e6a87d 100644
-> > > --- a/drivers/target/target_core_configfs.c
-> > > +++ b/drivers/target/target_core_configfs.c
-> > > @@ -108,8 +108,8 @@ static ssize_t target_core_item_dbroot_store(struct config_item *item,
-> > >                                       const char *page, size_t count)
-> > >  {
-> > >       ssize_t read_bytes;
-> > > -     struct file *fp;
-> > >       ssize_t r = -EINVAL;
-> > > +     struct path path = {};
-> > >
-> > >       mutex_lock(&target_devices_lock);
-> > >       if (target_devices) {
-> > > @@ -131,17 +131,18 @@ static ssize_t target_core_item_dbroot_store(struct config_item *item,
-> > >               db_root_stage[read_bytes - 1] = '\0';
-> > >
-> > >       /* validate new db root before accepting it */
-> > > -     fp = filp_open(db_root_stage, O_RDONLY, 0);
-> > > -     if (IS_ERR(fp)) {
-> > > +     r = kern_path(db_root_stage, LOOKUP_FOLLOW, &path);
-> > > +     if (r) {
-> > >               pr_err("db_root: cannot open: %s\n", db_root_stage);
-> > >               goto unlock;
-> > >       }
-> > > -     if (!S_ISDIR(file_inode(fp)->i_mode)) {
-> > > -             filp_close(fp, NULL);
-> > > +     if (!d_is_dir(path.dentry)) {
-> > > +             path_put(&path);
-> > >               pr_err("db_root: not a directory: %s\n", db_root_stage);
-> > > +             r = -ENOTDIR;
-> > >               goto unlock;
-> > >       }
-> > > -     filp_close(fp, NULL);
-> > > +     path_put(&path);
-> > >
-> > >       strscpy(db_root, db_root_stage);
-> > >       pr_debug("Target_Core_ConfigFS: db_root set to %s\n", db_root);
-> > >
-> > > base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
-> > > --
-> > > 2.34.1
-> > >
+On 1/23/26 7:50 AM, Jens Axboe wrote:
+> On 1/23/26 7:26 AM, Pavel Begunkov wrote:
+>> On 1/22/26 21:51, Pavel Begunkov wrote:
+>> ...
+>>>>>> I already briefly touched on that earlier, for sure not going to be of
+>>>>>> any practical concern.
+>>>>>
+>>>>> Modest 16 GB can give 1M entries. Assuming 50ns-100ns per entry for the
+>>>>> xarray business, that's 50-100ms. It's all serialised, so multiply by
+>>>>> the number of CPUs/threads, e.g. 10-100, that's 0.5-10s. Account sky
+>>>>> high spinlock contention, and it jumps again, and there can be more
+>>>>> memory / CPUs / numa nodes. Not saying that it's worse than the
+>>>>> current O(n^2), I have a test program that borderline hangs the
+>>>>> system.
+>>>>
+>>>> It's definitely not worse than the existing system, which is why I don't
+>>>> think it's a big deal. Nobody has ever complained about time to register
+>>>> buffers. It's inherently a slow path, and quite slow at that depending
+>>>> on the use case. Out of curiosity, I ran some stilly testing on
+>>>> registering 16GB of memory, with 1..32 threads. Each will do 16GB, so
+>>>> 512GB registered in total for the 32 case. Before is the current kernel,
+>>>> after is with per-user xarray accounting:
+>>>>
+>>>> before
+>>>>
+>>>> nthreads 1:      646 msec
+>>>> nthreads 2:      888 msec
+>>>> nthreads 4:      864 msec
+>>>> nthreads 8:     1450 msec
+>>>> nthreads 16:    2890 msec
+>>>> nthreads 32:    4410 msec
+>>>>
+>>>> after
+>>>>
+>>>> nthreads 1:      650 msec
+>>>> nthreads 2:      888 msec
+>>>> nthreads 4:      892 msec
+>>>> nthreads 8:     1270 msec
+>>>> nthreads 16:    2430 msec
+>>>> nthreads 32:    4160 msec
+>>>>
+>>>> This includes both registering buffers, cloning all of them to another
+>>>> ring, and unregistering times, and nowhere is locking scalability an
+>>>> issue for the xarray manipulation. The box has 32 nodes and 512 CPUs. So
+>>>> no, I strongly believe this isn't an issue.
+>>>>
+>>>> IOW, accurate accounting is cheaper than the stuff we have now. None of
+>>>> them are super cheap. Does it matter? I really don't think so, or people
+>>>> would've complained already. The only complaint I got on these kinds of
+>>>> things was for cloning, which did get fixed up some releases ago.
+>>>
+>>> You need compound pages
+>>>
+>>> always > /sys/kernel/mm/transparent_hugepage/hugepages-16kB/enabled
+>>>
+>>> And use update() instead of register() as accounting dedup for
+>>> registration is broken-disabled. For the current kernel:
+>>>
+>>> Single threaded:
+>>> 1x1G: 7.5s
+>>> 2x1G: 45s
+>>> 4x1G: 190s
+>>>
+>>> 16x should be ~3000s, not going to run it. Uninterruptible and no
+>>> cond_resched, so spawn NR_CPUS threads and the system is completely
+>>> unresponsive (I guess it depends on the preemption mode).
+>> The program is below for reference, but it's trivial. THP setting
+>> is done inside for convenience. There are ways to make the runtime
+>> even worse, but that should be enough.
 > 
-> You missed the very significant thing in the commit message - that this
-> lockdep warning is due to try to write its own filename to dbroot file:
-> 
-> 	db_root: not a directory: /sys/kernel/config/target/dbroot
-> 
-> That is why the semaphore is the same - it is of the same file.
-> 
-> Without that explanation nobody understands wheter it is a false positive or not.
-> 
-> The fix itself looks good.
-> 
-> Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com> 
+> Thanks for sending that. Ran it on the same box, on current -git and
+> with user_struct xarray accounting. Modified it so that 2nd arg is
+> number of threads, for easy running:
 
-Hello Dmitry,
+Should've tried 32x32 as well, that ends up going deep into "this sucks"
+territory:
 
-I have sent v2 patch with this change incorporated, however it doesn't
-include your Reviewed-by tag. Since your review applies, and the changes
-in v2 don't invalidate it, I wanted to confirm if its okay to carry
-forward your Reviewed-by tag or if you would prefer to review it agian.
+git
 
-Apologies if this is an obvious point.
+good luck
 
-Best Regards,
-Prithvi
+git + user_struct
+
+axboe@r7625 ~> time ./ppage 32 32
+register 32 GB, num threads 32
+
+________________________________________________________
+Executed in   16.34 secs    fish           external
+   usr time    0.54 secs  497.00 micros    0.54 secs
+   sys time  451.94 secs   55.00 micros  451.94 secs
+
+-- 
+Jens Axboe
 
