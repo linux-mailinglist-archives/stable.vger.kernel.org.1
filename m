@@ -1,296 +1,305 @@
-Return-Path: <stable+bounces-211339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJ/vIaQXc2mwsAAAu9opvQ
-	(envelope-from <stable+bounces-211339-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:39:32 +0100
+	id AAj3Iwwbc2mwsAAAu9opvQ
+	(envelope-from <stable+bounces-211341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:54:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04BD87113A
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:39:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0677471395
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:54:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9667D3013710
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 06:39:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 047AD30214F0
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 06:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D00233123D;
-	Fri, 23 Jan 2026 06:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01275332EBC;
+	Fri, 23 Jan 2026 06:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="mPhUfdpT"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="zgvEHHPy";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="gHQhmfuW";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ToZZ/BfT";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="K6pbeq4M"
 X-Original-To: stable@vger.kernel.org
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazolkn19010016.outbound.protection.outlook.com [52.103.2.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E83727E07A;
-	Fri, 23 Jan 2026 06:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.2.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769150369; cv=fail; b=nbmdffSkKrCPPXYdVslcevCBtYrLt8OfxlK7FHuFsdkxzFnZUhJk0NpFncwZ+JEgime4W8xVMryZosspSi0/K6F8wdLplxJ9CZaOrTYS6Co5sbkmPyDbRilL0gnNVcKqB+lWbBOPTUiZpXCzTbGvqXEIvhyqSKm1Rnh5d2ErDnc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769150369; c=relaxed/simple;
-	bh=8YNDzZtGiWVFcifpkAROgTY6ML17zoAalC0rmjM4LEo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=USAFQgGPOglkMbZEPSqn1BGFICGYmPeaFUCJWbe8mRbBOiQVYYaGvJQS10/qoMuD7BoAD/7To9hmL53bF5zvl7GQjAfpesNTjxRcFB1Pf8kteQMNiQzHD23i/UZ8sfeatuJ5/yuQHlgOKmR+z7YNec8vwB9EH2EoGXMSDnQbgfY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=mPhUfdpT; arc=fail smtp.client-ip=52.103.2.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=O/9HXpsyNh0+2W01OVd/lvCW0d2SMsUDOndCEHIgqFlQvR+Db2LlW1CRX2d3PAiaHvz6YLcXSIQm4kxdqPJFrzMcc/ja6eU8OM603G8OC9ePSwZ87m/SfYy9iAPi4IP1HC6COS56GS+NPp78+XLHLkt6n0UufxKWds2OCrHXGd0yAS8dzAngyWCtL55sf5vAHndsdQmECTVkSq7IgZ8adjtSWz1NB9HPIpH6NiO5W3UU9BPL1BdEzOcWoET8kt7P/P4N5SZ0aKNdwbBEwOPAarxd2VnT1tSlitnJV/V6Sig1PRrpSEAYQgDID+WsFDYM7O84WouVDpERNSIQEr1j0g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KoKXFUs6o2LZzpP3wiZekrhlVR6xu9ONBg4AS7yW4RU=;
- b=EEjqirwIze02ZkcNmqfuEsyllHv8O+BJT3pdfFmEvTn8oC9HKmUZduJC7AFKKxAGJTP5Pv0htsIpVxSmg8JVKH6dtliH3WwSB8rHjX+/7DLYZaGUotmBqog5nmuyLiQfeJVboiELD5ckevbVinwWpHr0d43layH8iwH+aqZtD1w26pI7LbcpPi/A40wB3YT0z9d5Skv5X44YiDCkYGddE1rSq0s1MCIft+qUHZjzim8aqSJH+tSeU2Q8d+C41dUdCC4IgSgnwy/Iojrzc4XL9U4qN6Patl03GPyvaIzws1/o6gZ7+PiseJima0XPks7qSUzGgVDBCFBt5cGStu85eQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KoKXFUs6o2LZzpP3wiZekrhlVR6xu9ONBg4AS7yW4RU=;
- b=mPhUfdpT4uu7b8/9hI5IJNlSuqr7R0SNk4YiprV823WbxPyVGimZ/vUGqmq3chvO+BFzQiSHwPQungNT1sDX/zgtNecSjMWzPj84Y4aGupZgvybpdMFfdet+m1Qqj/CEeA0qqsUtaKlN9iIyASj6tBoLJvsBKhZiFDEcGJLRHmV7mD0q99L07/XUQ4r8oY6BYRt2rRCI8dtP0GFiNeZJpzc+KBdPhyf4wS63KURMlpC+u8OnXlRlEyPeBno3EooTVfvuISRc7NlHB4BfA3Q2oAzYIS2zF/K7Ix2MhL/qVf0jjeu/hnf9h8XbXgHzxENv0JM8sB53G3gGrAFKqCcIFg==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by LV3PR02MB10762.namprd02.prod.outlook.com (2603:10b6:408:28a::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
- 2026 06:39:25 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::900:1ccf:2b1e:52b6]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::900:1ccf:2b1e:52b6%6]) with mapi id 15.20.9542.008; Fri, 23 Jan 2026
- 06:39:24 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Matthew Ruffell <matthew.ruffell@canonical.com>
-CC: "DECUI@microsoft.com" <DECUI@microsoft.com>, "bhelgaas@google.com"
-	<bhelgaas@google.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"jakeo@microsoft.com" <jakeo@microsoft.com>, "kwilczynski@kernel.org"
-	<kwilczynski@kernel.org>, "kys@microsoft.com" <kys@microsoft.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"longli@microsoft.com" <longli@microsoft.com>, "lpieralisi@kernel.org"
-	<lpieralisi@kernel.org>, "mani@kernel.org" <mani@kernel.org>,
-	"robh@kernel.org" <robh@kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "wei.liu@kernel.org" <wei.liu@kernel.org>
-Subject: RE: [PATCH] PCI: hv: Allocate MMIO from above 4GB for the config
- window
-Thread-Topic: [PATCH] PCI: hv: Allocate MMIO from above 4GB for the config
- window
-Thread-Index: AQHci0NePIGSa/9NGkCUvIR93cd3gLVdwUXwgADOvQCAABBuYIAAnjqAgAALUwA=
-Date: Fri, 23 Jan 2026 06:39:24 +0000
-Message-ID:
- <SN6PR02MB41573CD2EA6CD82A0C238F66D494A@SN6PR02MB4157.namprd02.prod.outlook.com>
-References:
- <SN6PR02MB4157545DAFDCCE0028439DB2D497A@SN6PR02MB4157.namprd02.prod.outlook.com>
- <20260123053909.95584-1-matthew.ruffell@canonical.com>
-In-Reply-To: <20260123053909.95584-1-matthew.ruffell@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|LV3PR02MB10762:EE_
-x-ms-office365-filtering-correlation-id: ee46c156-2693-409e-d77a-08de5a4a2632
-x-ms-exchange-slblob-mailprops:
- vuaKsetfIZmcv7cN2CQdJd4XVKwegu/4gmvfM/dqyPaNcPd/UUQlYe+uQK9A9zupr1DB2js7WBBYCQ+KmdDQQ7j/gLpX00XMZPOOlAeRfADB5/pCSUbf4BqqJiN/DGLP5pcWHN3MXFndMRk0rNKT3kjo1zErlrfSRKHxbTSITTs1ppYWBSia4E0iLfspwSWmS3DQdS75Dfr9rJK+kAVtqRwaXATr0qLolAW6sZnnaqmBtAUG74nk1wsiKtTkaLhuq8AGuRDpPHxOjH7Y+zUCbG8uZd7oIz5iMnBodz6oNWvMNwbtR2NG2idJ3ADCgxYm0GNBm7oaBRrwMH7CpzoC4raK+F8snRNyHFN44rxJ5xpdvofEb1v0ssDWZDWLbJp8LZ2v38YaFdGBDqRWiF42PymJ7ODohdlrh/RMrhLKa+DN9xIML2Lah5VW9uF8tfR9WDOM2J1Nx7KKonfNpiWnG9CZXqZrSj9lwDo2FwL3KGBQENudhirvOz5ZmSEhUtQz1xi1UlrTl2RCdqAzAvZUEc98ByXTyFdcTnQmmTrznEY+7xvVWLvAp7W6LgoAbowCW7lSZy+VH5xANnxHgcGwSSSIhUx2j2CWoIxNUNvwreKWx1VWepAqtgY40YuFuHUIVZlKqHhigye47k5gx3Hdi7maht7D3+4zKEVauJgNpzAu62EjIgqSKaw/h14jzEj3tmwUnEZd4MxTNrWMw+juxi9Q6OvKSETvveRuL+Bj1hVz47jsZ3Y5RBq1cTr60Ub0pac//NpBqRaNE9DKHxSak1GW7++o8ryq7EXLPu5KP6HfrlfbHhu6fBKrMLRj/nSV
-x-microsoft-antispam:
- BCL:0;ARA:14566002|41001999006|461199028|31061999003|51005399006|19110799012|13091999003|8062599012|8060799015|15080799012|4302099013|3412199025|440099028|10035399007|40105399003|102099032|1602099012|56899033;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?D0ZlDfY3xSSzOYROfqgtR6Uz8DihgLuCjVEeSDVjahoEHUerQNzCFfUmz1k+?=
- =?us-ascii?Q?2GCb/F1IWbR1Hg+Vi+qApllIiud8SKgdPNOX6WFgDz3/XYOAVuNpPFdvBPTa?=
- =?us-ascii?Q?MTGV2xrSEm+1ub59VfRQMfvmuXcyMF1i134rLcydIG/EA4i6uaP//ZldRpf0?=
- =?us-ascii?Q?T2L3jpl4gmOJnYHhW+mpiynojhbhqxA82Oez6Mpq1p3cJTcgH+3caJAHUb2/?=
- =?us-ascii?Q?blHd+in2mqDHf4mKs9ZosPoMf7x/MHNpFfuB632RPljTA8Tf9AuhMGJ2xFct?=
- =?us-ascii?Q?xeKiJ5vjKhLov1RA9SGUfSgKJ4s7Af5kWdkUGgat76q76BIAJb7n0vrxL+vO?=
- =?us-ascii?Q?hWF7edKVgoKtyBOrD4hgA06/pUdTgPvAhyYASjcZ+6aEMjJzrEmMkzNQfsuZ?=
- =?us-ascii?Q?p3QTyJDEcR2GtqzTmD5FU72YEfPLCI6tj2au4qC9a163XApHG1JrmVlah85X?=
- =?us-ascii?Q?gtCnR1hcas1p/fS8wQFbCrcE+gfyw5sr3YUPSGFzpUhuoItttcJbelBRYDON?=
- =?us-ascii?Q?C/Mm7p6/P7K4iNTK3pCtIFXi2zWesdm1cagw5//dNmdPAWHgu30sgmXM3yE1?=
- =?us-ascii?Q?1cOkvP6Kj7jx6npYSf/TjC3JJeg/kMpLuCTlEttn9WKecBUc4lbkgitd3Eas?=
- =?us-ascii?Q?nicSF+LcZ2r5FBAeehI5ZFU9ZRVfeSig4UAlmEMji0uB4o0yShgPZEHvRPWl?=
- =?us-ascii?Q?lQWQkohd1n/cOG3KTzmG+ErBhsWKzne7URw3od3Kcsq2/sBwuR49bqlEMVUN?=
- =?us-ascii?Q?2oYVt0ojPgYNrhANu5GjAEzfUh9IwVP+QO9qUVXdA7IqrBZY/qurR478YUvG?=
- =?us-ascii?Q?TIirRFfX9szXLgmN8oImW2afgSoLqqNjt6VKxTmngwFKtLcdFu1nYCYD7m7q?=
- =?us-ascii?Q?395j0T512Qo11Nzud4w71m53pznVsVCqVRZeiEWoYSKDsnemQORvPNmH6bEN?=
- =?us-ascii?Q?KREEuduqYPf6Aa6kdC3W57Ge/J+FmY6VHCDa0XX5293b8XbvYUGR+gJ5+vxB?=
- =?us-ascii?Q?LpeU1Aj4Vu8ySJ8P989wTuCphDFOVZ8koDa8e7pE/dowr6LkCNRa/aTs1lYx?=
- =?us-ascii?Q?NY5JFKNOe9Cy5QJvf0R+C81fRqC7yrI4nXINYOYIC2Xro644N4c74rBgCmfs?=
- =?us-ascii?Q?uyWtpqcyHSDAjAT+tFsS4x0krpVDe+Se8xLTi7vXea2H9gth9G/fMfXeD04K?=
- =?us-ascii?Q?urNOYMi2qvg/198Sjc6KGQzLf1eMICZ2uO6oMZkt4amTWFFYFozu4JWoe1vy?=
- =?us-ascii?Q?QlP2flRzrUEbndFNoskrZ/byb8euBGtdtvBdlRv14O0qiHzVe2+f05VI+0lg?=
- =?us-ascii?Q?8YYtcf4oFsCPLe8c+J5wO8I5XMnfoEzeM+7m3EG0BF/Ue6GWyhiSGAP/P17w?=
- =?us-ascii?Q?1ADYZ4V8k6L7R4E+7a2vDbjWVy2V?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?OrL+mZWTM++UYX3kg8oXDdn/Luwdpk12rqgqLWlyptHVCEzteHiKzzlPTI7l?=
- =?us-ascii?Q?DyFPynKjygn1Mdq9+JvEiFAYif2jhahPKnfCSgDrXZp3YSEt8KYuo09iwZQb?=
- =?us-ascii?Q?EJCRP/EkAfVke2Jams7MPZX9IB/k5SNulfk+Ay+hsmYzukthu2x54nWhvVrY?=
- =?us-ascii?Q?MR7TyF1EmI7Lbi6N8pssGmknol6hYEQhqMA2clbW+hcxtt7TD9Oyv3D4QjTq?=
- =?us-ascii?Q?OpbUpdyPoFfaEkO0uqUY2M+gPxk6YpwSqF7jcXM7alFWPcV1yZpwEV7r86PN?=
- =?us-ascii?Q?VadWLS+kDufyKedDhFvFU1/b4GiN75mrpML1PEqX4qKic7s/1vRHkEU4kEYD?=
- =?us-ascii?Q?AF3SbkYv3XStJ84P6EbTDWDAOaqmhD7cNfdg5HaYhS7L8jRfQa/DSK5nDmDW?=
- =?us-ascii?Q?HWU0UARAFHqfeKfopXeMLa8FC/rO4RY45cwD8EGmFMBsQk9j+f72lDUCdvAT?=
- =?us-ascii?Q?xACpDcsu5H9thqjYjvad1Hxe21Hi4imd0+3nlnpzTq3WisUHrPVxn1WNc8ki?=
- =?us-ascii?Q?h/IH5mCi7ulEPjGIR0PbRx+TI26Qo6+qIUJ3oYW6d91NEjoOCXdKFB3WlQDJ?=
- =?us-ascii?Q?TbSGhH7BifFtGyBEy1bjfWuw0XO5+/5JGOkUT3TDcD/I0UtxmHMPB8VzFIXJ?=
- =?us-ascii?Q?Or5cjZO9oTvUjhAepeuQ9KU6ZgrQUG925G0n4PjR8got9anuYOeZ4SRdkIvz?=
- =?us-ascii?Q?hAIH92/lCcD7Ci103/V4guTditohH+V+ZjdzEjaQ0rG8Vnwc46NDJzl70sXL?=
- =?us-ascii?Q?wBnoVjYrRLRxJxUFIpGFh18OumPG3Nn2n6SEkrX4/WiHkV+pJOiutbbkzg+L?=
- =?us-ascii?Q?Nq7Ia4YBIvGUtUPWftyxmNbnvwknixPyfYLlFbNFS6lWuL3luLOgsBm5Y2f2?=
- =?us-ascii?Q?xIpwCG5v0AOzBMurn7ePLjOf5xZjw5KB+hWzg3TbheMvXp/m1N/P1jWJaGT6?=
- =?us-ascii?Q?RZj292Pu8WA08/H1QsF1x4EFS8z8+1DzbYKpPatCFZ1ibQplQBlEJ9mXADUi?=
- =?us-ascii?Q?Fq+0OdWcrB3fu8qSTOCLynDlMHQ5U87FZO2Vea2yDI/C8FaEmWO+nIsmpar5?=
- =?us-ascii?Q?xqaWvTcDW1/DCNRiRjkJ4q3QUgpppXZZnhgcn9t2iiRPcIaWzwwK9DKnpwzC?=
- =?us-ascii?Q?5tLA4kgpiNFizB3JSCE79KKA+J9x19yd4vd7NpcDLBn4Fo7LTq3jOjiyJmOE?=
- =?us-ascii?Q?NUCJfZrZBi+D6IPZwXhhW5eg/fVHcm1FS0ria/DfWCe52+Dy4xvAV+DO7uI7?=
- =?us-ascii?Q?J713UvCWZ0myazZ4KmFXMj1aqxtsgaBSHiCrPlDKJCSAAMXPz5+dJWbzI/sT?=
- =?us-ascii?Q?MbIcTBv4DK/Wbwh+t14kYlhtHZYCo/P4ozoYqSHqnDNGHIWO0cE0sJsU7yef?=
- =?us-ascii?Q?oRxAvKc=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4865732D44F
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 06:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769151195; cv=none; b=sDLqe4cIPnK89gD/stJ3plT2owfTbIIrWLi9SL2BzZ1IjCftEifIHf67ZM9kSl8EAc8d5YY33h66mlRdMsZFKbeG9PPm/Rv+Q/SIZ2SWH7yXzI5n9ZTMlPV7g2+JPCt6IsT4qLhfIMCb3thduwIaBIoBsy5qYzqMedJRlUT7s7k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769151195; c=relaxed/simple;
+	bh=E26E8yiAzndBAW9zw2+25zeYDnfroJjbXi/8QjcbhyQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sVmfV8kTjvEfudtkWPG+sByUvF9sCaVb425n5n4pnZatN00AGoC95IxbY2lT2XI6vpIfVD6QVNvAiZoiLIjsD51uLZ6nMg3j//XUV+k5hBQZmqpswnSsn9k0qu3S1pkpXykWAWHEWSluK6tHrIu7jm2gi6qJcNt8a3jLaQjzzMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=zgvEHHPy; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=gHQhmfuW; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ToZZ/BfT; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=K6pbeq4M; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3953C33768;
+	Fri, 23 Jan 2026 06:53:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769151190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xHBC7+XIDKcDoXobVjIIeaJAGTBPlExl+xM4MpgZv40=;
+	b=zgvEHHPy66Pe3rtCqtFAlD/T0SFtfIkyxHp/2jGbNuWivkgsODJS+GB3rTyJNdBQHar97c
+	sVm/AXjAPZ5uQPERzlxQuVNOH7cVpTMu5hBAdgpBzT2vGeTkd+bMle170/98KuVYb/J+cW
+	oDALmTnPKb+gF1t00DYBWfwm/XjlF6A=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769151190;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xHBC7+XIDKcDoXobVjIIeaJAGTBPlExl+xM4MpgZv40=;
+	b=gHQhmfuWotNYLJuejhYX3dxwwfRYJvYYMhnYv7Laye0/yDAzbmLXYqCYnjP4I1LEQZHmCG
+	A1ZPbR8VaFf+GeCg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769151189; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xHBC7+XIDKcDoXobVjIIeaJAGTBPlExl+xM4MpgZv40=;
+	b=ToZZ/BfTv62as/fot31mnxaZmixLhnkGocIYQRRAdYgnwsl7CsXu4WojwsA5SXTDgZ+Dz4
+	m2EtAaA982iGbCPhmEdr+UvakVto6xCGIYXWgknW7KUguIi/6AOE+7QqOMrCbu7j36Tiqn
+	1vNp+dBhgA5BoJk1Q/nawV2GLF4BLsk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769151189;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=xHBC7+XIDKcDoXobVjIIeaJAGTBPlExl+xM4MpgZv40=;
+	b=K6pbeq4MyJ0jv8OvZFU821QP3Qr9O0rFmSjHF2nLtGR8Lgx/18gnDuZZGw8wx0o2fvg3t4
+	jn59EWj4p1ZIHjBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 06A8B1395E;
+	Fri, 23 Jan 2026 06:53:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +aDbANUac2k4YgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 23 Jan 2026 06:53:09 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH v4 00/22] slab: replace cpu (partial) slabs with sheaves
+Date: Fri, 23 Jan 2026 07:52:38 +0100
+Message-Id: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: ee46c156-2693-409e-d77a-08de5a4a2632
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2026 06:39:24.8097
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR02MB10762
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIALYac2kC/2XOTQ7CIBCG4as0rMUMQ+mPK+9hXNApWJLGGlCiN
+ r27tNGo6fIjed5hZMF4ZwLbZSPzJrrghnMa+SZj1OnzyXDXps0QUAkA5KEzOprA7eC57nteFZq
+ EbCkvtWJJXbyx7r4UD8e0Oxeug38sB6KYX98tlKtWFBx4Ya1GqutcEOzDLZgtPdlcivjRBQix/
+ knEpOsKUZFtFJD91/JXF2stk1aqVtQAQFniV0/T9AKIqE+lKAEAAA==
+X-Change-ID: 20251002-sheaves-for-all-86ac13dc47a5
+To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+ Uladzislau Rezki <urezki@gmail.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
+ Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
+ stable@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>
+X-Mailer: b4 0.14.3
+X-Spam-Score: -4.30
+X-Spam-Level: 
+X-Spam-Flag: NO
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211339-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211341-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.dev,linux-foundation.org,gmail.com,oracle.com,google.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,suse.cz,intel.com];
+	DMARC_NA(0.00)[suse.cz];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_FROM(0.00)[outlook.com];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DKIM_TRACE(0.00)[outlook.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhklinux@outlook.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@suse.cz,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 04BD87113A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,suse.cz:dkim,suse.cz:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 0677471395
 X-Rspamd-Action: no action
 
-From: Matthew Ruffell <matthew.ruffell@canonical.com> Sent: Thursday, Janua=
-ry 22, 2026 9:39 PM
->=20
-> Hi Michael,
->=20
-> > > I wonder if commit a41e0ab394e4 broke the initialization of screen_in=
-fo in the
-> > > kdump kernel. Or perhaps there is now a rev-lock between the kernel w=
-ith this
-> > > commit and a new version of the user space kexec command.
->=20
-> a41e0ab394e4 isn't a mainline commit. Can you please mention the commit s=
-ubject
-> so I can have a read.
+Percpu sheaves caching was introduced as opt-in but the goal was to
+eventually move all caches to them. This is the next step, enabling
+sheaves for all caches (except the two bootstrap ones) and then removing
+the per cpu (partial) slabs and lots of associated code.
 
-It's this patch:
+Besides (hopefully) improved performance, this removes the rather
+complicated code related to the lockless fastpaths (using
+this_cpu_try_cmpxchg128/64) and its complications with PREEMPT_RT or
+kmalloc_nolock().
 
-https://lore.kernel.org/lkml/20251126160854.553077-5-tzimmermann@suse.de/
+The lockless slab freelist+counters update operation using
+try_cmpxchg128/64 remains and is crucial for freeing remote NUMA objects
+without repeating the "alien" array flushing of SLUB, and to allow
+flushing objects from sheaves to slabs mostly without the node
+list_lock.
 
-which is in linux-next, but not yet in mainline. Since you are dealing with=
- older
-kernels, it's not the culprit.
+Sending this v4 because various changes accumulated in the branch due to
+review and -next exposure (see the list below). Thanks for all the
+reviews!
 
->=20
-> > > There's a parameter to the kexec() command that governs whether it us=
-es the
-> > > kexec_file_load() system call or the kexec_load() system call.
-> > > I wonder if that parameter makes a difference in the problem describe=
-d for this
-> > > patch.
->=20
-> Yes, it does indeed make a difference. I have been debugging this the pas=
-t few
-> days, and my colleague Melissa noticed that the problem reproduces when s=
-ecure
-> boot is disabled, but it does not reproduce when secure boot is enabled.
-> Additionally, it reproduces on jammy, but not noble. It turns out that
-> kexec-tools on jammy defaults to kexec_load() when secure boot is disable=
-d,
-> and when enabled, it instead uses kexec_file_load(). On noble, it default=
-s to
-> first trying kexec_file_load() before falling back to kexec_load(), so th=
-e
-> issue does not reproduce.
+Git branch for the v4
+  https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=sheaves-for-all-v4
 
-This is good info, and definitely a clue. So to be clear, the problem repro=
-s
-only when kexec_load() is used. With kexec_file_load(), it does not repro. =
-Is that
-right? I saw a similar distinction when working on commit 304386373007,
-though in the opposite direction!
+Which is a snapshot of:
+  https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/sheaves-for-all
 
->=20
-> > > >  	/*
-> > > >  	 * Set up a region of MMIO space to use for accessing configurati=
-on
-> > > > -	 * space.
-> > > > +	 * space. Use the high MMIO range to not conflict with the hyperv=
-_drm
-> > > > +	 * driver (which normally gets MMIO from the low MMIO range) in t=
-he
-> > > > +	 * kdump kernel of a Gen2 VM, which fails to reserve the framebuf=
-fer
-> > > > +	 * MMIO range in vmbus_reserve_fb() due to screen_info.lfb_base b=
-eing
-> > > > +	 * zero in the kdump kernel.
-> > > >  	 */
-> > > > -	ret =3D vmbus_allocate_mmio(&hbus->mem_config, hbus->hdev, 0, -1,
-> > > > +	ret =3D vmbus_allocate_mmio(&hbus->mem_config, hbus->hdev, SZ_4G,=
- -1,
-> > > >  				  PCI_CONFIG_MMIO_LENGTH, 0x1000, false);
-> > > >  	if (ret)
-> > > >  		return ret;
-> > > > --
->=20
-> Thank you for the patch Dexuan.
->=20
-> This patch fixes the problem on Ubuntu 5.15, and 6.8 based kernels
-> booting V6 instance types on Azure with Gen 2 images.
+Based on:
+  https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/log/?h=slab/for-7.0/sheaves-base
+  - includes a sheaves optimization that seemed minor but there was lkp
+    test robot result with significant improvements:
+    https://lore.kernel.org/all/202512291555.56ce2e53-lkp@intel.com/
+    (could be an uncommon corner case workload though)
+  - includes the kmalloc_nolock() fix commit a4ae75d1b6a2 that is undone
+    as part of this series
 
-Are you seeing the problem on x86/64 or arm64 instances in Azure?
-"V6 instance types" could be either, I think, but I'm guessing you
-are on x86/64.
+Significant (but not critical) remaining TODOs:
+- Integration of rcu sheaves handling with kfree_rcu batching.
+  - Currently the kfree_rcu batching is almost completely bypassed. I'm
+    thinking it could be adjusted to handle rcu sheaves in addition to
+    individual objects, to get the best of both.
+- Performance evaluation. Petr Tesarik has been doing that on the RFC
+  with some promising results (thanks!) and also found a memory leak.
 
-And just to confirm: are you seeing the problem with the
-Hyper-V DRM driver, or the Hyper-V FB driver? This patch mentions
-the DRM driver, so I assume that's the problematic config.
+Note that as many things, this caching scheme change is a tradeoff, as
+summarized by Christoph:
 
->=20
-> Tested-by: Matthew Ruffell <matthew.ruffell@canonical.com>
+  https://lore.kernel.org/all/f7c33974-e520-387e-9e2f-1e523bfe1545@gentwo.org/
 
-While this patch may solve the observed problem, I'm interested in
-understanding the root cause of why vmbus_reserve_fb() is seeing
-screen_info.lfb_base set to zero. It may be next week before I can
-take a look, and I may need follow up with you on more details of the
-scenario to reproduce the problem.
+- Objects allocated from sheaves should have better temporal locality
+  (likely recently freed, thus cache hot) but worse spatial locality
+  (likely from many different slabs, increasing memory usage and
+  possibly TLB pressure on kernel's direct map).
 
-Michael
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+---
+Changes in v4:
+- Fix up both missing and spurious r-b tags from v3, and add new ones
+  (big thanks to Hao Li, Harry, and Suren!)
+- Fix infinite recursion with kmemleak (Breno Leitao)
+- Use cache_has_sheaves() in pcs_destroy() (Suren)
+- Use cache_has_sheaves() in kvfree_rcu_barrier_on_cache() (Hao Li)
+- Bypass sheaf for remote object free also in kfree_nolock() (Harry)
+- WRITE_ONCE slab->counters in __update_freelist_slow() so
+  get_partial_node_bulk() can stop being paranoid (Harry)
+- Tweak conditions in alloc_from_new_slab() (Hao Li, Suren)
+- Rename get_partial*() functions to get_from_partial*() (Suren)
+- Rename variable freelist to object in ___slab_alloc() (Suren)
+- Separate struct partial_bulk_context instead of extending.
+- Rename flush_cpu_slab() to flush_cpu_sheaves() (Hao Li)
+- Add "mm/slab: fix false lockdep warning in __kfree_rcu_sheaf()" from
+  Harry.
+- Add counting of FREE_SLOWPATH stat to some missing places (Suren, Hao
+  Li)
+- Link to v3: https://patch.msgid.link/20260116-sheaves-for-all-v3-0-5595cb000772@suse.cz
+
+Changes in v3:
+- Rebase to current slab/for-7.0/sheaves which itself is rebased to
+  slab/for-next-fixes to include commit a4ae75d1b6a2 ("slab: fix
+  kmalloc_nolock() context check for PREEMPT_RT")
+- Revert a4ae75d1b6a2 as part of "slab: simplify kmalloc_nolock()" as
+  it's no longer necessary.
+- Add cache_has_sheaves() helper to test for s->sheaf_capacity, use it
+  in more places instead of s->cpu_sheaves tests that were missed
+  (Hao Li)
+- Fix a bug where kmalloc_nolock() could end up trying to allocate empty
+  sheaf (not compatible with !allow_spin) in __pcs_replace_full_main()
+  (Hao Li)
+- Fix missing inc_slabs_node() in ___slab_alloc() ->
+  alloc_from_new_slab() path. (Hao Li)
+  - Also a bug where refill_objects() -> alloc_from_new_slab ->
+    free_new_slab_nolock() (previously defer_deactivate_slab()) would
+    do inc_slabs_node() without matching dec_slabs_node()
+- Make __free_slab call free_frozen_pages_nolock() when !allow_spin.
+  This was correct in the first RFC. (Hao Li)
+- Add patch to make SLAB_CONSISTENCY_CHECKS prevent merging.
+- Add tags from sveral people (thanks!)
+- Fix checkpatch warnings.
+- Link to v2: https://patch.msgid.link/20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz
+
+Changes in v2:
+- Rebased to v6.19-rc1+slab.git slab/for-7.0/sheaves
+  - Some of the preliminary patches from the RFC went in there.
+- Incorporate feedback/reports from many people (thanks!), including:
+  - Make caches with sheaves mergeable.
+  - Fix a major memory leak.
+- Cleanup of stat items.
+- Link to v1: https://patch.msgid.link/20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz
+
+---
+Harry Yoo (1):
+      mm/slab: fix false lockdep warning in __kfree_rcu_sheaf()
+
+Vlastimil Babka (21):
+      mm/slab: add rcu_barrier() to kvfree_rcu_barrier_on_cache()
+      slab: add SLAB_CONSISTENCY_CHECKS to SLAB_NEVER_MERGE
+      mm/slab: move and refactor __kmem_cache_alias()
+      mm/slab: make caches with sheaves mergeable
+      slab: add sheaves to most caches
+      slab: introduce percpu sheaves bootstrap
+      slab: make percpu sheaves compatible with kmalloc_nolock()/kfree_nolock()
+      slab: handle kmalloc sheaves bootstrap
+      slab: add optimized sheaf refill from partial list
+      slab: remove cpu (partial) slabs usage from allocation paths
+      slab: remove SLUB_CPU_PARTIAL
+      slab: remove the do_slab_free() fastpath
+      slab: remove defer_deactivate_slab()
+      slab: simplify kmalloc_nolock()
+      slab: remove struct kmem_cache_cpu
+      slab: remove unused PREEMPT_RT specific macros
+      slab: refill sheaves from all nodes
+      slab: update overview comments
+      slab: remove frozen slab checks from __slab_free()
+      mm/slub: remove DEACTIVATE_TO_* stat items
+      mm/slub: cleanup and repurpose some stat items
+
+ include/linux/slab.h |    6 -
+ mm/Kconfig           |   11 -
+ mm/internal.h        |    1 +
+ mm/page_alloc.c      |    5 +
+ mm/slab.h            |   65 +-
+ mm/slab_common.c     |   61 +-
+ mm/slub.c            | 2689 ++++++++++++++++++--------------------------------
+ 7 files changed, 1031 insertions(+), 1807 deletions(-)
+---
+base-commit: a66f9c0f1ba2dd05fa994c800ebc63f265155f91
+change-id: 20251002-sheaves-for-all-86ac13dc47a5
+
+Best regards,
+-- 
+Vlastimil Babka <vbabka@suse.cz>
+
 
