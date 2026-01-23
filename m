@@ -1,157 +1,108 @@
-Return-Path: <stable+bounces-211321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMbQETnScmnKpgAAu9opvQ
-	(envelope-from <stable+bounces-211321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 02:43:21 +0100
+	id 6PY9OD3ScmnKpgAAu9opvQ
+	(envelope-from <stable+bounces-211322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 02:43:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E166F3CE
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 02:43:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28866F3E4
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 02:43:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8CFEC30157CB
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 01:42:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5A4C530039AA
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 01:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3930A37BE6A;
-	Fri, 23 Jan 2026 01:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DED337E311;
+	Fri, 23 Jan 2026 01:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="aKXCISKa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uLcTcLra"
 X-Original-To: stable@vger.kernel.org
-Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.229.168.213])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC6033B6E6;
-	Fri, 23 Jan 2026 01:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.229.168.213
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A286A2165EA;
+	Fri, 23 Jan 2026 01:43:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769132573; cv=none; b=pro4YaXv7snqPutm7ZQNFNPP0cYLRId3fPRZR69NjXqR1zdr1n9vrH5goIENyeJnG7HSQHu9SZY6PLqZFvXdWnIVmLVKOxRqFvf6VvUcpWpKlKnZ0m38d7P9sBhsYmmSGjzHogQUIv3UTg/5lN53OL2GUGeE5qSLTI6DhO1mVJ8=
+	t=1769132599; cv=none; b=kdmg56TTpmGxWRIbNX65jelLWhPy0vzhEsqwQ1OJaTlI2g7+yG0pPim5MtCnRncBquoBEqjIOEidJRikl7X0OBvYkIXoMZtf7SjVOyeiQ6T0gjkuCAj43062aaKFCjMv8E8Qw96q6nb0joDlji9cbup2AoUdJ7qvc9vmq/uhcIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769132573; c=relaxed/simple;
-	bh=u442/kIPnswlSrtDeIwcwzFD1En+jTnsrGj2SbH/MSg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VgwPjy7lwwRXp+ZAYHz95+eQRNBnWMtRakTocLb2gxgk0vTI4HqgR/MHjLtDhsLsGcbxQ28teDB8mfV3cCRA73XLYgDdi71H7Mx5hRVn8JKprU4CpB8jWLxGnHeV9nqszSWJ7ix+hWaULbYsNfFQdMKnSfhWMnpweACncbzPSK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=aKXCISKa; arc=none smtp.client-ip=52.229.168.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
-	Date:Message-Id:In-Reply-To:References:MIME-Version:
-	Content-Transfer-Encoding; bh=5Ly8uhzeFbQPewmVn2QY+2QICWV2d84I1k
-	dcGrd5+PM=; b=aKXCISKauLEzlzsFtjguYxuIABZKfxcvdomRAD47BECuc6pqVA
-	DnwYJbmUzRH8PnWlkyqE3sUB9U15NohO7Ba6t2i0+XA2UxDeeeasFtiKgFA4B+5B
-	DQwX5+TMPIumsIPYhpKQNFpzeDfra/qvdap1TMj+hJwSAawiQH/kUMvA8=
-Received: from dell-PowerEdge-R760.. (unknown [101.6.30.120])
-	by web5 (Coremail) with SMTP id zAQGZQCHwKv90XJpoSPPAA--.47541S3;
-	Fri, 23 Jan 2026 09:42:32 +0800 (CST)
-From: Yi Liu <liuy22@mails.tsinghua.edu.cn>
-To: jgg@ziepe.ca,
-	leon@kernel.org
-Cc: linux-rdma@vger.kernel.org,
-	security@kernel.org,
-	Yi Liu <liuy22@mails.tsinghua.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] RDMA/uverbs: Validate wqe_size before using it in ib_uverbs_post_send
-Date: Fri, 23 Jan 2026 09:42:19 +0800
-Message-Id: <20260123014219.3175025-2-liuy22@mails.tsinghua.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260123014219.3175025-1-liuy22@mails.tsinghua.edu.cn>
-References: <20260123014219.3175025-1-liuy22@mails.tsinghua.edu.cn>
+	s=arc-20240116; t=1769132599; c=relaxed/simple;
+	bh=tkthldLffXYVms3wxAD2lbP6j9gBgsHsKO89SXCZQ54=;
+	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
+	 To:Date:Message-ID; b=d+M6B2L3+IAtIqZa3WZhJi+igyGbgws16l7Y0g1i7A1GwI435iwg1mL4C/aBtYSJeSHnEYEUY/JrzS6q8+C04UM3pxqDeTLQ3xpZM45sUTAnKYmDIFW8mJycrv4pfIMj9oXrcnkMVpujyLMzWEMavOjw+wdBzQTho9aO7MxHRWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uLcTcLra; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFEDC116C6;
+	Fri, 23 Jan 2026 01:43:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769132598;
+	bh=tkthldLffXYVms3wxAD2lbP6j9gBgsHsKO89SXCZQ54=;
+	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+	b=uLcTcLran58oZgank16uYJiybGF0GSvNw1wlsmWRmd2bHG458ZEJRs/yn95lUTUKG
+	 jEgHvG9TzAM/JYI0kmiLz15iIoqy0S6sZ9z/ThLHQv7bczkT6fKcfvUI3QsbORTAb9
+	 A0Dk2RUgIfp49c65Fm9UqVoQ6Fv1uZeLhZUmXyRdVELn9iBbrRIwONnxLVpv5m1tRw
+	 GZMADfi3KLM8zVKcPRtppjOtsOluIS++kqv3uyPT2iqth1PCHtmU/u3H1QVBOXCHl2
+	 wfSLYrMb7yh+PQ5uKc7HTb7EC9qzbyDuHVlL54NKF6YfziHvdQy6oC8Lm2sKIEe+MH
+	 nUY4sL2MTrtWw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zAQGZQCHwKv90XJpoSPPAA--.47541S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw1fZFy8Zr1UWrWxAw4xZwb_yoW8Ar1DpF
-	WUK3WYkrW7XF4fAF1DJw48u34rA3ykZFZrW3sa9asxZrn8Jryq9rZ0ya4agrWrXr4vyr4Y
-	qr4v9FnYgF4vvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvS1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
-	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
-	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4U
-	JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxV
-	AIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv
-	8VW8Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II
-	8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1lc2xSY4AK67AK6w4l42xK82IYc2Ij
-	64vIr41l42xK82IY6x8ErcxFaVAv8VW8Ww4UJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI
-	8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AK
-	xVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI
-	8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280
-	aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43
-	ZEXa7VU0asj5UUUUU==
-X-CM-SenderInfo: polx5j2s6ptxtovo32xlqjx3vdohv3gofq/1tbiAQIPAmlx-ltZzAALst
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20251223-mtk-gate-v1-1-e4a489ab33de@collabora.com>
+References: <20251223-mtk-gate-v1-1-e4a489ab33de@collabora.com>
+Subject: Re: [PATCH] clk: mediatek: Drop __initconst from gates
+From: Stephen Boyd <sboyd@kernel.org>
+Cc: kernel@collabora.com, linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, stable@vger.kernel.org, Sjoerd Simons <sjoerd@collabora.com>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Chen-Yu Tsai <wenst@chromium.org>, Laura Nao <laura.nao@collabora.com>, Matthias Brugger <matthias.bgg@gmail.com>, Michael Turquette <mturquette@baylibre.com>, Sjoerd Simons <sjoerd@collabora.com>
+Date: Thu, 22 Jan 2026 18:43:16 -0700
+Message-ID: <176913259630.4027.12058255654210765589@lazor>
+User-Agent: alot/0.11
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[mails.tsinghua.edu.cn,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[mails.tsinghua.edu.cn:s=dkim];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211321-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[liuy22@mails.tsinghua.edu.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[mails.tsinghua.edu.cn:+];
+	FREEMAIL_TO(0.00)[collabora.com,chromium.org,gmail.com,baylibre.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211322-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sboyd@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.996];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tsinghua.edu.cn:email]
-X-Rspamd-Queue-Id: 10E166F3CE
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,collabora.com:email]
+X-Rspamd-Queue-Id: C28866F3E4
 X-Rspamd-Action: no action
 
-ib_uverbs_post_send() uses cmd.wqe_size from userspace without any
-validation before passing it to kmalloc() and using the allocated
-buffer as struct ib_uverbs_send_wr.
+Quoting Sjoerd Simons (2025-12-23 04:05:17)
+> Since commit 8ceff24a754a ("clk: mediatek: clk-gate: Refactor
+> mtk_clk_register_gate to use mtk_gate struct") the mtk_gate structs
+> are no longer just used for initialization/registration, but also at
+> runtime. So drop __initconst annotations.
+>=20
+> Fixes: 8ceff24a754a ("clk: mediatek: clk-gate: Refactor mtk_clk_register_=
+gate to use mtk_gate struct")
+> Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
+> ---
 
-If a user provides a small wqe_size value (e.g., 1), kmalloc() will
-succeed, but subsequent accesses to user_wr->opcode, user_wr->num_sge,
-and other fields will read beyond the allocated buffer, resulting in
-an out-of-bounds read from kernel heap memory. This could potentially
-leak sensitive kernel information to userspace.
-
-Additionally, providing an excessively large wqe_size can trigger a
-WARNING in the memory allocation path, as reported by syzkaller.
-
-This is inconsistent with ib_uverbs_unmarshall_recv() which properly
-validates that wqe_size >= sizeof(struct ib_uverbs_recv_wr) before
-proceeding.
-
-Add the same validation for ib_uverbs_post_send() to ensure wqe_size
-is at least sizeof(struct ib_uverbs_send_wr).
-
-Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yi Liu <liuy22@mails.tsinghua.edu.cn>
----
- drivers/infiniband/core/uverbs_cmd.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
-index ce16404cd..a80b95948 100644
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -2049,6 +2049,9 @@ static int ib_uverbs_post_send(struct uverbs_attr_bundle *attrs)
- 	if (ret)
- 		return ret;
- 
-+	if (cmd.wqe_size < sizeof(struct ib_uverbs_send_wr))
-+		return -EINVAL;
-+
- 	user_wr = kmalloc(cmd.wqe_size, GFP_KERNEL);
- 	if (!user_wr)
- 		return -ENOMEM;
--- 
-2.34.1
-
+Applied to clk-next
 
