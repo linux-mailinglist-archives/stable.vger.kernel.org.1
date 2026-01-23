@@ -1,175 +1,128 @@
-Return-Path: <stable+bounces-211342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PqlIoMdc2ngsQAAu9opvQ
-	(envelope-from <stable+bounces-211342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 08:04:35 +0100
+	id +MMeFq0dc2kzsgAAu9opvQ
+	(envelope-from <stable+bounces-211343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 08:05:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001A9715FC
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 08:04:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B22997162A
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 08:05:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2E4E305E31E
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 06:58:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 66AB2301D07F
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EDE338911;
-	Fri, 23 Jan 2026 06:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD8F32863F;
+	Fri, 23 Jan 2026 07:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="tNF99gqV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LRxDrkNv"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-113.mail.139.com (n169-113.mail.139.com [120.232.169.113])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED0433FE27;
-	Fri, 23 Jan 2026 06:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DB8318B80;
+	Fri, 23 Jan 2026 07:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769151483; cv=none; b=VY1G9JUGih/nx7ro5ZB2+aLj7HLXKiacOMT58mXBy4odNxO0kiFi/TUJELA/NU9/f5jrDy4irPUQMHck9fnsjvk4za8MBw4iNxdCtv7+aKQAI6OUepC+KG7t6Xxpdnx1V4ILv3jIcLjSahHEvAC/u5zMvsHvRpGqm87i13QDuRc=
+	t=1769151620; cv=none; b=QXI1dP2DCW84tUrY9096YWwujgCzITPH7OZ+3udrgi38z7plku+umDkddRRwQiKp/lK/vM+BnjhiZFclnXXy8IpMuZbhtckgKwzMvtJXwmt6xqUr3ylU3saUUHxPXrXKA/eE/fKV65RC0g+sMkp/QweynWj2gmv6WMG0Xot/jFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769151483; c=relaxed/simple;
-	bh=BR7+cfJEaBNBYHwMCXGwidYW7SMy5OOv9HfA+Plaiok=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ku+hy3nyrBpc3QvvPaqpL615EcSNqEs25SwIpaJzk8RozTgSJNzeCmym2qjZ3OZgnQcS+YS7WJKGJT6cKFa49cpmc5Z1mMht+QGutcjWUys7Uo4fnSTuziwXSCU+Udi+M4zhMtMYi+0mGfzblmdBua77dWQ8vJwAgqvmTTg+Rtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=tNF99gqV; arc=none smtp.client-ip=120.232.169.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=tNF99gqV7Ead5GG0tXIcuitu6lPBiSKpU+UVEf0L3q3CShaUVn58h76+wWj84ok1aMv5xRGXRfNeZ
-	 zJ/CiyUITbHQgbfrMcyLraYJ0ih+9Ds9zyFBEGOadadE9I//yDOEhGOChYP3rM2QHUh+ErjnWydBvR
-	 ceVyNeFSFXNRTtbQ=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-32-12046 (RichMail) with SMTP id 2f0e69731be8c88-01caf;
-	Fri, 23 Jan 2026 14:57:46 +0800 (CST)
-X-RM-TRANSID:2f0e69731be8c88-01caf
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	kubik.bartlomiej@gmail.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	khalid@kernel.org,
-	almaz.alexandrovich@paragon-software.com,
-	ntfs3@lists.linux.dev
-Subject: [PATCH 6.6.y] fs/ntfs3: Initialize allocated memory before use
-Date: Fri, 23 Jan 2026 14:57:53 +0800
-Message-Id: <20260123065753.4067735-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1769151620; c=relaxed/simple;
+	bh=xWJlC56ytp7VaBP2X6LppyLGFBh0JYwPRgjL1tBKTiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jgio8ycgca8MS4pRk1acQPK99cfQ87L6Or1xeaGodvGngeIildkwmJMvPoaXcrhvyDngd5X4XNsrK3n9LUL66IR2m4Z91yoOdexQD1LQvUP9gPFXERgWIflfLyDaLfq55IKJUHEy9a9qltdxFCfZTL/URssvf+9u9lo7DO8+xqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LRxDrkNv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169F2C4CEF1;
+	Fri, 23 Jan 2026 07:00:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769151620;
+	bh=xWJlC56ytp7VaBP2X6LppyLGFBh0JYwPRgjL1tBKTiU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LRxDrkNv+iEOawQ+KOrhTYBVnCoBZ5Ccs4ihA9O0xmegSB+Ji2dSZ8oxELTtjurUh
+	 ifimLGe8WppqhN5k8M4ZutPBAC7kU/HDMWkKNNuf85M+SjF57S2cFq3qVq6R6Ysgfx
+	 zPjMKv/8pKqae8jRpuEh39UljJKsU0FjiyJY20zsFWhWNOPTq1MxB2osUY4FHU9z5H
+	 dkQYDvy/rZGMF/7dV9rktRcimnrOJXkvhoP4oV5rPbS5xwVfAf5nLUboxdeU1stkHE
+	 uEQlbICmKoqR2OS6CRwe7SDHVkRnVr6WGOFrVYE3EZwTs0NVz37jaAzCvnNzvNzcGk
+	 q9u92XrhTGmuw==
+Date: Thu, 22 Jan 2026 23:00:19 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: cem@kernel.org, r772577952@gmail.com, stable@vger.kernel.org,
+	linux-xfs@vger.kernel.org
+Subject: Re: [PATCH 1/4] xfs: check the return value of xchk_xfile_*_descr
+ calls
+Message-ID: <20260123070019.GO5945@frogsfrogsfrogs>
+References: <176897723519.207608.4983293162799232099.stgit@frogsfrogsfrogs>
+ <176897723563.207608.1472219452580720216.stgit@frogsfrogsfrogs>
+ <20260121070323.GA11640@lst.de>
+ <20260121182208.GH5945@frogsfrogsfrogs>
+ <20260122055748.GA23964@lst.de>
+ <20260122185701.GO5966@frogsfrogsfrogs>
+ <20260123053323.GA24680@lst.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260123053323.GA24680@lst.de>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211343-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-211342-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[139.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,paragon-software.com:email,139.com:mid,139.com:email]
-X-Rspamd-Queue-Id: 001A9715FC
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B22997162A
 X-Rspamd-Action: no action
 
-From: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
+On Fri, Jan 23, 2026 at 06:33:23AM +0100, Christoph Hellwig wrote:
+> On Thu, Jan 22, 2026 at 10:57:01AM -0800, Darrick J. Wong wrote:
+> > > > Alternately we just drop all the helpers and kasprintf crap in favor of
+> > > > feeding the raw string ("iunlinked next pointers") all the way through
+> > > > to shmem_kernel_file_setup.
+> > > 
+> > > But wouldn't we get duplicate names for different inodes?
+> > 
+> > Yes, but that's only used for readlink of /proc/$pid/fd/* so (AFAICT) it
+> > makes tracing more confusing but doesn't affect functionality.
+> > xfs_healthmon just passes in "xfs_healthmon" and I can run healers on
+> > multiple filesystems just fine.
+> > 
+> > anon inodes are ... uh ... magic.
+> 
+> Ok, that certainly would simply things a lot, and I'd be ok with it.
+> 
+> My ideas didn't really work out.  The last idea I had was to be able
+> to specify a prefix in a new method in struct xchk_meta_ops, but
+> this starts to feel like severe overengineering.
 
-[ Upstream commit a8a3ca23bbd9d849308a7921a049330dc6c91398 ]
+<nod> I just replaced them with static strings and everything seemed to
+work fine.  Will send a replacement patchset shortly.
 
-KMSAN reports: Multiple uninitialized values detected:
-
-- KMSAN: uninit-value in ntfs_read_hdr (3)
-- KMSAN: uninit-value in bcmp (3)
-
-Memory is allocated by __getname(), which is a wrapper for
-kmem_cache_alloc(). This memory is used before being properly
-cleared. Change kmem_cache_alloc() to kmem_cache_zalloc() to
-properly allocate and clear memory before use.
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Tested-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=332bd4e9d148f11a87dc
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Tested-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
-Reported-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0399100e525dd9696764
-
-Reviewed-by: Khalid Aziz <khalid@kernel.org>
-Signed-off-by: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
----
- fs/ntfs3/inode.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 76326299ba36..ce381eafd084 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1327,7 +1327,7 @@ struct inode *ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
- 		fa |= FILE_ATTRIBUTE_READONLY;
- 
- 	/* Allocate PATH_MAX bytes. */
--	new_de = __getname();
-+	new_de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!new_de) {
- 		err = -ENOMEM;
- 		goto out1;
-@@ -1756,10 +1756,9 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
- 	struct NTFS_DE *de;
- 
- 	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
--	memset(de, 0, PATH_MAX);
- 
- 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
- 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
-@@ -1795,7 +1794,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
- 		return -EINVAL;
- 
- 	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
- 
--- 
-2.34.1
-
-
+--D
 
