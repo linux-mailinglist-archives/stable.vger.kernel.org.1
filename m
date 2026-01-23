@@ -1,113 +1,157 @@
-Return-Path: <stable+bounces-211320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gByYNOXRcmnKpgAAu9opvQ
-	(envelope-from <stable+bounces-211320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 02:41:57 +0100
+	id mMbQETnScmnKpgAAu9opvQ
+	(envelope-from <stable+bounces-211321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 02:43:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A58F6F34A
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 02:41:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E166F3CE
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 02:43:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D69B3013A6C
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 01:41:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8CFEC30157CB
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 01:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785A0335575;
-	Fri, 23 Jan 2026 01:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3930A37BE6A;
+	Fri, 23 Jan 2026 01:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lv8co33U"
+	dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b="aKXCISKa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AA72E8897;
-	Fri, 23 Jan 2026 01:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [52.229.168.213])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC6033B6E6;
+	Fri, 23 Jan 2026 01:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.229.168.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769132510; cv=none; b=P3aI6wkcbPInz9dfi1ZtCcegUHr1Qtnr76yOI349tu3MedpTqU+DzDDZDk7sJ4fOZM2UAH0STIAW3DAWc2za7RoIr/x9kGg85zsOvj+FxFfvhULYXG1y/Y0S9S/Sm2cn20FBcCdSfsJO61tIWMhx7NkKsb1yQek/Nx4n2yLB+yM=
+	t=1769132573; cv=none; b=pro4YaXv7snqPutm7ZQNFNPP0cYLRId3fPRZR69NjXqR1zdr1n9vrH5goIENyeJnG7HSQHu9SZY6PLqZFvXdWnIVmLVKOxRqFvf6VvUcpWpKlKnZ0m38d7P9sBhsYmmSGjzHogQUIv3UTg/5lN53OL2GUGeE5qSLTI6DhO1mVJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769132510; c=relaxed/simple;
-	bh=oNjilOE/dRq5dq0Dva4SX0YHGlllIlzGlLtyxlIdKCM=;
-	h=Content-Type:MIME-Version:In-Reply-To:References:Subject:From:Cc:
-	 To:Date:Message-ID; b=Yz5Jtd6UPKw+Y4LQyVoZvvxXgkmjetkz6+bwD3Gltsm8QI98NgAFjxXasTZwPQURsI8Uzl3wXeRjQ3RXCCNyawH9ImfiesFw+sKIFNL3yJ97m82pwXoHyY9MqEKyovM/S+92iebtchphI7hR9PzSCPmEAdTcHz5kLObIn18VXp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lv8co33U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EF42C116C6;
-	Fri, 23 Jan 2026 01:41:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769132508;
-	bh=oNjilOE/dRq5dq0Dva4SX0YHGlllIlzGlLtyxlIdKCM=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=Lv8co33Usw8jQjJhAI69jkEwgk1TXkprRyXGxi6IsQzVsOJM/UkQBEre44uCo+Q1L
-	 S8/FAlHEtGwFFrocDD+T29+FJMlalvJwqWE+7vFSYOV/bFHp4t/jG3bZINgUpZ849u
-	 OEjNiIi5QhC/X4WGUgkGjHtMRPeURjwQJIpm9RN2pDBkCMeXMvLiBXaPxbCT8EZzVG
-	 ClABQnMnQT5kH4YKo50jcEYUg50g8DdyaREgllg2pAXszUN3M0OO38ql7EJGLJr8Gx
-	 kkp+MRy3IEP2boeXt6O8lUv+J/VzMqZk3xuJq8EYDkKjzDKEgLFUsAgjrwnEfmLCLX
-	 ZMgxc2RsOS8Ug==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1769132573; c=relaxed/simple;
+	bh=u442/kIPnswlSrtDeIwcwzFD1En+jTnsrGj2SbH/MSg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=VgwPjy7lwwRXp+ZAYHz95+eQRNBnWMtRakTocLb2gxgk0vTI4HqgR/MHjLtDhsLsGcbxQ28teDB8mfV3cCRA73XLYgDdi71H7Mx5hRVn8JKprU4CpB8jWLxGnHeV9nqszSWJ7ix+hWaULbYsNfFQdMKnSfhWMnpweACncbzPSK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn; dkim=pass (1024-bit key) header.d=mails.tsinghua.edu.cn header.i=@mails.tsinghua.edu.cn header.b=aKXCISKa; arc=none smtp.client-ip=52.229.168.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mails.tsinghua.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mails.tsinghua.edu.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=mails.tsinghua.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:
+	Date:Message-Id:In-Reply-To:References:MIME-Version:
+	Content-Transfer-Encoding; bh=5Ly8uhzeFbQPewmVn2QY+2QICWV2d84I1k
+	dcGrd5+PM=; b=aKXCISKauLEzlzsFtjguYxuIABZKfxcvdomRAD47BECuc6pqVA
+	DnwYJbmUzRH8PnWlkyqE3sUB9U15NohO7Ba6t2i0+XA2UxDeeeasFtiKgFA4B+5B
+	DQwX5+TMPIumsIPYhpKQNFpzeDfra/qvdap1TMj+hJwSAawiQH/kUMvA8=
+Received: from dell-PowerEdge-R760.. (unknown [101.6.30.120])
+	by web5 (Coremail) with SMTP id zAQGZQCHwKv90XJpoSPPAA--.47541S3;
+	Fri, 23 Jan 2026 09:42:32 +0800 (CST)
+From: Yi Liu <liuy22@mails.tsinghua.edu.cn>
+To: jgg@ziepe.ca,
+	leon@kernel.org
+Cc: linux-rdma@vger.kernel.org,
+	security@kernel.org,
+	Yi Liu <liuy22@mails.tsinghua.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/1] RDMA/uverbs: Validate wqe_size before using it in ib_uverbs_post_send
+Date: Fri, 23 Jan 2026 09:42:19 +0800
+Message-Id: <20260123014219.3175025-2-liuy22@mails.tsinghua.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260123014219.3175025-1-liuy22@mails.tsinghua.edu.cn>
+References: <20260123014219.3175025-1-liuy22@mails.tsinghua.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20251121164003.13047-1-johan@kernel.org>
-References: <20251121164003.13047-1-johan@kernel.org>
-Subject: Re: [PATCH] clk: tegra: tegra124-emc: fix device leak on set_rate()
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: Thierry Reding <thierry.reding@gmail.com>, Mikko Perttunen <mperttunen@nvidia.com>, Miaoqian Lin <linmq006@gmail.com>, linux-clk@vger.kernel.org, linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org, Johan Hovold <johan@kernel.org>, stable@vger.kernel.org
-To: Johan Hovold <johan@kernel.org>, Michael Turquette <mturquette@baylibre.com>, Peter De Schrijver <pdeschrijver@nvidia.com>, Prashant Gaikwad <pgaikwad@nvidia.com>
-Date: Thu, 22 Jan 2026 18:41:46 -0700
-Message-ID: <176913250651.4027.13580353440284678626@lazor>
-User-Agent: alot/0.11
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zAQGZQCHwKv90XJpoSPPAA--.47541S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw1fZFy8Zr1UWrWxAw4xZwb_yoW8Ar1DpF
+	WUK3WYkrW7XF4fAF1DJw48u34rA3ykZFZrW3sa9asxZrn8Jryq9rZ0ya4agrWrXr4vyr4Y
+	qr4v9FnYgF4vvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvS1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l8cAvFVAK
+	0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4
+	x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4U
+	JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxV
+	AIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv
+	8VW8Ww4UJr1UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II
+	8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1lc2xSY4AK67AK6w4l42xK82IYc2Ij
+	64vIr41l42xK82IY6x8ErcxFaVAv8VW8Ww4UJr1UMxC20s026xCaFVCjc4AY6r1j6r4UMI
+	8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AK
+	xVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI
+	8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280
+	aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43
+	ZEXa7VU0asj5UUUUU==
+X-CM-SenderInfo: polx5j2s6ptxtovo32xlqjx3vdohv3gofq/1tbiAQIPAmlx-ltZzAALst
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mails.tsinghua.edu.cn,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[mails.tsinghua.edu.cn:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211320-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-211321-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sboyd@kernel.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[gmail.com,nvidia.com,vger.kernel.org,kernel.org];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1A58F6F34A
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[liuy22@mails.tsinghua.edu.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[mails.tsinghua.edu.cn:+];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tsinghua.edu.cn:email]
+X-Rspamd-Queue-Id: 10E166F3CE
 X-Rspamd-Action: no action
 
-Quoting Johan Hovold (2025-11-21 09:40:03)
-> Make sure to drop the reference taken when looking up the EMC device and
-> its driver data on first set_rate().
->=20
-> Note that holding a reference to a device does not prevent its driver
-> data from going away so there is no point in keeping the reference.
->=20
-> Fixes: 2db04f16b589 ("clk: tegra: Add EMC clock driver")
-> Fixes: 6d6ef58c2470 ("clk: tegra: tegra124-emc: Fix missing put_device() =
-call in emc_ensure_emc_driver")
-> Cc: stable@vger.kernel.org      # 4.2: 6d6ef58c2470
-> Cc: Mikko Perttunen <mperttunen@nvidia.com>
-> Cc: Miaoqian Lin <linmq006@gmail.com>
-> Signed-off-by: Johan Hovold <johan@kernel.org>
-> ---
+ib_uverbs_post_send() uses cmd.wqe_size from userspace without any
+validation before passing it to kmalloc() and using the allocated
+buffer as struct ib_uverbs_send_wr.
 
-Applied to clk-next
+If a user provides a small wqe_size value (e.g., 1), kmalloc() will
+succeed, but subsequent accesses to user_wr->opcode, user_wr->num_sge,
+and other fields will read beyond the allocated buffer, resulting in
+an out-of-bounds read from kernel heap memory. This could potentially
+leak sensitive kernel information to userspace.
+
+Additionally, providing an excessively large wqe_size can trigger a
+WARNING in the memory allocation path, as reported by syzkaller.
+
+This is inconsistent with ib_uverbs_unmarshall_recv() which properly
+validates that wqe_size >= sizeof(struct ib_uverbs_recv_wr) before
+proceeding.
+
+Add the same validation for ib_uverbs_post_send() to ensure wqe_size
+is at least sizeof(struct ib_uverbs_send_wr).
+
+Fixes: 67cdb40ca444 ("[IB] uverbs: Implement more commands")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yi Liu <liuy22@mails.tsinghua.edu.cn>
+---
+ drivers/infiniband/core/uverbs_cmd.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
+index ce16404cd..a80b95948 100644
+--- a/drivers/infiniband/core/uverbs_cmd.c
++++ b/drivers/infiniband/core/uverbs_cmd.c
+@@ -2049,6 +2049,9 @@ static int ib_uverbs_post_send(struct uverbs_attr_bundle *attrs)
+ 	if (ret)
+ 		return ret;
+ 
++	if (cmd.wqe_size < sizeof(struct ib_uverbs_send_wr))
++		return -EINVAL;
++
+ 	user_wr = kmalloc(cmd.wqe_size, GFP_KERNEL);
+ 	if (!user_wr)
+ 		return -ENOMEM;
+-- 
+2.34.1
+
 
