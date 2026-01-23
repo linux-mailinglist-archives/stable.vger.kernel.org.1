@@ -1,195 +1,283 @@
-Return-Path: <stable+bounces-211399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211400-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFycESObc2nNxQAAu9opvQ
-	(envelope-from <stable+bounces-211399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:00:35 +0100
+	id WDPWLwmic2lqxgAAu9opvQ
+	(envelope-from <stable+bounces-211400-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:30:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC42781D9
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:00:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B5978843
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:30:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0B333059907
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 15:56:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7CC3530A012D
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 16:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5436735977;
-	Fri, 23 Jan 2026 15:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8624A2DA750;
+	Fri, 23 Jan 2026 16:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=csmantle.top header.i=rong.bao@csmantle.top header.b="aGtZgn3h"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iu40PVHb"
 X-Original-To: stable@vger.kernel.org
-Received: from o47.p25.mailjet.com (o47.p25.mailjet.com [185.189.236.47])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2CA2F851
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 15:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.189.236.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F1C2DE71B
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 16:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769183795; cv=none; b=uQFW5RQtlQgmAci/CtxtsDGsqTiWoIUa5aoqlS2AMZVfiR7wl8qqu9KT6Ti4bMDXSDbQfZJwIGj4rs/qI3PcAerDJq6/FLgie90WAJab275uhzZhNb6nYjDp/314MqzDs0H7aguRJ0kck0488OPpInStS6iHyj0z/vjh00z3edY=
+	t=1769185454; cv=none; b=HY5Pqdoy6QTkViu3JbqNmgjCohQnPd76BklkRIHvFEnNXMxA//7ecRtdoaitOn4c9WrtZFoCq9UA88qESOrV7gPP6bgi8drbVdaSjUTiK/6LLXHQZLGW64+HJFlHJo+bDPzr47T523wdqgAovcNPyozOb59MF6DgIsXsTuCHbf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769183795; c=relaxed/simple;
-	bh=n625F9iOcmfm4oeosR440PIXnRGSOWmz0lx0rm52p6Y=;
-	h=Message-Id:MIME-Version:From:To:Subject:Date:Cc; b=FWZjyvePACyYNnbDArk37zAYbogs4/6FVr9lRChajVO3V9k6R7xl+rQdzdk/HWRZlURqAst3Hk6SqOMjq07/x6jSyZV7Ey1D2HYJVgjfOI3Y7HPK0tmqhzQtJcD2vpNtPTmJV7H74BjaxqeWDWgKP3gL5FeOjTx5INd5LOmKaHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csmantle.top; spf=pass smtp.mailfrom=a3364097.bnc3.mailjet.com; dkim=pass (2048-bit key) header.d=csmantle.top header.i=rong.bao@csmantle.top header.b=aGtZgn3h; arc=none smtp.client-ip=185.189.236.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csmantle.top
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=a3364097.bnc3.mailjet.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
-  d=csmantle.top; i=rong.bao@csmantle.top; s=mailjet; x=1769190989;
-  h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe-post:list-unsubscribe:
-  cc:feedback-id:x-csa-complaints:x-mj-mid:x-mj-smtpguid:x-report-abuse-to:
-  content-transfer-encoding;
-  bh=n625F9iOcmfm4oeosR440PIXnRGSOWmz0lx0rm52p6Y=;
-  b=aGtZgn3hMy1Xs9KHzley4W/fFaKJz5l+VXzUMpsqFnRyUfoDiGWgrLvyP
- fxP7ir9NG51cQkd5bZCvfGzLYh6B9Xu+kTgmdUP94kVcvQc1m1ZCRPjowHgM
- 2neoX/TsQVEPOxa/Ji/kAP9iKNq+nOA8LO1A806a1aB7f82fMRCGLzJyHAjY
- qar+/zFRPLb/HLAHd4vHauCLe6BKaZgqM7DHazLbv8wfrzPiaaoCcGI3KdyV
- 9tMs6HBDXiF8MS2sqTw42DtNzkYkWb8zsD/AIjZk297O8zjUesI9+EJ8Lzfu
- HzMYKbVN1kvWkrr8Fj4buGax+7k1sSwnVHJwdLzKDGj+w==
-Message-Id: <e44d8406.AWMAAIrycOEAAAAAAAAAA-ma1qUAAYKJPtkAAAAAADNVAQBpc5ot@mailjet.com>
+	s=arc-20240116; t=1769185454; c=relaxed/simple;
+	bh=QcCR6CAiq0FadPOO5YfJmMaLforRVQ62FwYyDpfMM1s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Umd6/0IMVZ+lxAFu0gHzbHRiGmERMAC4nBhhINMnrR+Lmoy2rVwfR5t55PV9cO+vBmHB7DrWnCE4lpCVohz7SMgcF97Z6uDtobPVjmpBhKEL4LwcSqx6VT5JAg51nPNvAI3sDmUwG6crogQxCLHCXWtRZKN3FbSkiu/KSkKBXSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iu40PVHb; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43591aacca2so1720665f8f.1
+        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 08:24:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769185451; x=1769790251; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OJSn0XRjBL2vBFJzXfObLCxOaT59HpV4z91cAz8rES8=;
+        b=iu40PVHbgxKkSuKjXwA0YHzaYh6NyClspgj1QmN6dy1I7K3JjxYkG9FScOl20q2BO4
+         XJMzykVvjjW0FqIW9jRbtrkZI9IiB3LzVJA/6QKHAVW1nHFDUyO5BGR2h6JlyIrrvtmb
+         0t263khnVuWqtT0STIlEq/mtxN6t32Iy6eOUYmE3c0XZ4Hk2i1to1OLumYOXV6O3V6aH
+         mPhokyNFXbyOvgNilH1OQcXiKhPzzZX/qo3ret9qnHSTXcyfkrZf5zHFo9htgyMAjpXM
+         cedvMM9E/UMaJLceVSgOZqoqNG191OSZRQqji6EUDjX+KBlMxWoxxx6dbOS3mxrd9n0m
+         NKNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769185451; x=1769790251;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OJSn0XRjBL2vBFJzXfObLCxOaT59HpV4z91cAz8rES8=;
+        b=vnrGx+YQmF3FrbWzMT5uTCS/MEb3dZ+eH+x71Mi04dl53qJ1tq1QW563n9ImgcsDjg
+         zjIo4INtqx0jacjpZRn+h86HZu+WZnY+Ne5AM7QROe8lVUEomO9zjoiBAbKCFWiXrvsA
+         rN8xLfAEjTxQNn1z/n6yCvSE6RdPKfQ7lfi2EVkH+rsOFEbsUQ86YVAXjdXiJNpPveju
+         DOeyuJd23y+iec95IQgfjsrlAH7bszSyxuwAyewNq8hiUuUC9YvTiNLqB5GfBkB2WQ8h
+         UfnhthDKjWJEvYpHLUOQ2TFwL5Ahq+sjoATgfm1ptsD8ltAlh7XIabf/1uVcMzsZyUQq
+         MdXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpFIp/gObdYuyUEWoaokVPIuFFQPixCBav00Tfr0GK3+5hhKtQRPvsKbln/JzVU8aIEPgthQY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwbpwCOFtuindtN2ZUeN3qM3N5qKvt/sQdmap72jVghTA8DZckP
+	6uUGEBbLBsLzel+6JeoQGxaWQGe7paL2da7dfWWCiP/o6+U3ZVlOLjRAT3Q9zhB2cfAt1NFrbvm
+	+yF8P+BDlzeaUNAzPZw==
+X-Received: from wrbbn2.prod.google.com ([2002:a05:6000:602:b0:435:95e8:26b6])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a5d:4a83:0:b0:435:bbd7:18e4 with SMTP id ffacd0b85a97d-435bbd71a34mr1352288f8f.63.1769185451329;
+ Fri, 23 Jan 2026 08:24:11 -0800 (PST)
+Date: Fri, 23 Jan 2026 16:23:56 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: Rong Bao <rong.bao@csmantle.top>
-To: Huacai Chen <chenhuacai@kernel.org>
-Subject: [PATCH] loongarch: retrieve CPU package ID from PPTT when available
-Date: Fri, 23 Jan 2026 23:56:06 +0800
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-Cc: Mingcong Bai <jeffbai@aosc.io>, Kexy Biscuit <kexybiscuit@aosc.io>,
-	Rong Bao <rong.bao@csmantle.top>, stable@vger.kernel.org, WANG Xuerui
-	<kernel@xen0n.name>, Yuli Wang <wangyuli@uniontech.com>, Yanteng Si
-	<si.yanteng@linux.dev>, Masahiro Yamada <masahiroy@kernel.org>,
-	Hongliang Wang <wanghongliang@loongson.cn>, Thierry Reding
-	<treding@nvidia.com>, Tianyang Zhang <zhangtianyang@loongson.cn>,
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
-Feedback-Id: 42.3364097.3062169:MJ
-X-CSA-Complaints: csa-complaints@eco.de
-X-MJ-Mid:
-	AWMAAIrycOEAAAAAAAAAA-ma1qUAAYKJPtkAAAAAADNVAQBpc5otdaWHx0l4T1eqou6TQoQvzQAuuZk
-X-MJ-SMTPGUID: e6c17ccd-6fab-4083-aa61-d129a700786e
-X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
-	abuse@mailjet.com with a copy of the message
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAJygc2kC/x3MQQqDMBAF0KvIrDuQxCKtV5Eu0uSrQ3WUSSkF8
+ e4NXb7NO6jABIX65iDDR4psWuEvDaU56gSWXE3Bhc750PJTNMM4LjLpCn3zuhk4zUivwu7qxy7 5+y23kWqxG0b5/vvhcZ4//SMejW4AAAA=
+X-Change-Id: 20260123-binder-alignment-more-checks-041f6c198d3a
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6723; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=QcCR6CAiq0FadPOO5YfJmMaLforRVQ62FwYyDpfMM1s=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpc6ClTd2lbtOIAaHy/jJ7SPc94eNFKpsulv9hb
+ 9CFFLoDCC+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaXOgpQAKCRAEWL7uWMY5
+ RoVKEAC0JWjRzPxxpf0vH+4VVShSdajH/dhXQn83H2azvKIZ1y+czZbGnT1+sTBHuq9teXFPddd
+ bSPmpMophgUAHxjSSaSj3DKdvay2ufyUSIy+Xy4l3W/87Gg11mOeYU1xc8t5DwMJtkRY5YL7iW0
+ to8Im31u5a/wCsKeRfuQ4zd60iXMs15CkTyRgRXhSNEW0z2c/YiFqPtArVIB9vgSNz4XdIDfXMT
+ h3UAcKzSm64j21zQVrW6AuLfrHKFxg9POYbjv0CxOsaKKIITthj+wfG9YsfypruAXa7624o499A
+ CqpUDaeOkkaj791lnHwEd62frL6T3Qw7Jn4APSyrm+oclFOtuINNYbnOqD8RvffWeA4KaAc03f0
+ eHz/HR03TbmfEo70S1O+U1cFN4gMbet+QnB5xhstY/VOrpCC3vsE0XVih9tOi6QW1Evoz/lXHHw
+ zNLvbb2XmQK/u+XPS4kLwqjJr6vzqJ/XH7Fga3TXWqv+mxP/PwKhRFKg76C+Pbk9ZMFL2jWbFDQ
+ BWVuf4JBHtPlqu5if2bzjwwc1gFYT98aajbK/G4+1f3WrMc7PboQrPb6gxCFL3G3gywJ1hXJo85
+ 3VwlrgJSgZGmSsh80geez6rB8y7NxAhql1YKjRsJU7C79yzw0v/aS86D0OwwVocJy4Ww7hL45PS kgeFLkfiDkicCJQ==
+X-Mailer: b4 0.14.2
+Message-ID: <20260123-binder-alignment-more-checks-v1-1-7e1cea77411d@google.com>
+Subject: [PATCH] rust_binder: add additional alignment checks
+From: Alice Ryhl <aliceryhl@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	stable@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[csmantle.top : SPF not aligned (relaxed),quarantine];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[csmantle.top:s=mailjet];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211399-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[csmantle.top:-];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211400-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rong.bao@csmantle.top,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.993];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailjet.com:mid,csmantle.top:email]
-X-Rspamd-Queue-Id: 9EC42781D9
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 12B5978843
 X-Rspamd-Action: no action
 
-Currently, the LoongArch CPU topology initialization code calculates
-each core's package ID by dividing its physical ID by
-loongson_sysconf.cores_per_package. This relies on the assumption that
-cores_per_package counts in the same domain as physical IDs.
+This adds some alignment checks to match C Binder more closely. This
+causes the driver to reject more transactions. I don't think any of the
+transactions in question are harmful, but it's still a bug because it's
+the wrong uapi to accept them.
 
-On Loongson 3B6000 (XB612B0V_1.2), cores_per_package matches the visible
-core count -- 24 in this case. However, the physical IDs range from 0 to
-31 in a noncontiguous fashion:
-
-        $ cat /proc/cpuinfo | grep -i -F 'global_id'
-        global_id               : 0
-        global_id               : 1
-        global_id               : 4
-        global_id               : 5
-        global_id               : 6
-        global_id               : 7
-        global_id               : 8
-        global_id               : 9
-        global_id               : 10
-        global_id               : 11
-        global_id               : 14
-        global_id               : 15
-        global_id               : 16
-        global_id               : 17
-        global_id               : 20
-        global_id               : 21
-        global_id               : 22
-        global_id               : 23
-        global_id               : 26
-        global_id               : 27
-        global_id               : 28
-        global_id               : 29
-        global_id               : 30
-        global_id               : 31
-
-Retrieve the exact package ID from ACPI PPTT when available, in the same
-style as retrieving the core ID and thread ID in parse_acpi_topology().
-Use this information in loongson_init_secondary() when PPTT readout is
-successful. The original division logic is kept as a fallback.
+The cases where usize is changed for u64, it will affect only 32-bit
+kernels.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Rong Bao <rong.bao@csmantle.top>
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- arch/loongarch/kernel/acpi.c | 9 ++++++++-
- arch/loongarch/kernel/smp.c  | 2 +-
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/android/binder/thread.rs | 50 +++++++++++++++++++++++++++++-----------
+ 1 file changed, 36 insertions(+), 14 deletions(-)
 
-diff --git a/arch/loongarch/kernel/acpi.c b/arch/loongarch/kernel/acpi.c
-index 1367ca759468..82c7ffd4f1ac 100644
---- a/arch/loongarch/kernel/acpi.c
-+++ b/arch/loongarch/kernel/acpi.c
-@@ -176,7 +176,7 @@ int pptt_enabled;
+diff --git a/drivers/android/binder/thread.rs b/drivers/android/binder/thread.rs
+index 1a8e6fdc0dc42369ee078e720aa02b2554fb7332..bf3de22aaf64ce4aac312b73e1948e2aeb00d5ab 100644
+--- a/drivers/android/binder/thread.rs
++++ b/drivers/android/binder/thread.rs
+@@ -39,6 +39,10 @@
+     sync::atomic::{AtomicU32, Ordering},
+ };
  
- int __init parse_acpi_topology(void)
- {
--	int cpu, topology_id;
-+	int cpu, topology_id, package_id;
- 
- 	for_each_possible_cpu(cpu) {
- 		topology_id = find_acpi_cpu_topology(cpu, 0);
-@@ -194,6 +194,13 @@ int __init parse_acpi_topology(void)
- 
- 			cpu_data[cpu].core = topology_id;
- 		}
++fn is_aligned(value: usize, to: usize) -> bool {
++    value % to == 0
++}
 +
-+		package_id = find_acpi_cpu_topology_package(cpu);
-+		if (package_id < 0) {
-+			pr_warn("Invalid BIOS PPTT\n");
-+			return -ENOENT;
-+		}
-+		cpu_data[cpu].package = package_id;
- 	}
+ /// Stores the layout of the scatter-gather entries. This is used during the `translate_objects`
+ /// call and is discarded when it returns.
+ struct ScatterGatherState {
+@@ -789,6 +793,10 @@ fn translate_object(
+                 let num_fds = usize::try_from(obj.num_fds).map_err(|_| EINVAL)?;
+                 let fds_len = num_fds.checked_mul(size_of::<u32>()).ok_or(EINVAL)?;
  
- 	pptt_enabled = 1;
-diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-index 8b2fcb3fb874..409e49d4da37 100644
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -412,7 +412,7 @@ void loongson_init_secondary(void)
- 	numa_add_cpu(cpu);
- #endif
- 	per_cpu(cpu_state, cpu) = CPU_ONLINE;
--	cpu_data[cpu].package =
-+	cpu_data[cpu].package = pptt_enabled ? cpu_data[cpu].package :
- 		     cpu_logical_map(cpu) / loongson_sysconf.cores_per_package;
- 	cpu_data[cpu].core = pptt_enabled ? cpu_data[cpu].core :
- 		     cpu_logical_map(cpu) % loongson_sysconf.cores_per_package;
++                if !is_aligned(parent_offset, size_of::<u32>()) {
++                    return Err(EINVAL.into());
++                }
++
+                 let info = sg_state.validate_parent_fixup(parent_index, parent_offset, fds_len)?;
+                 view.alloc.info_add_fd_reserve(num_fds)?;
+ 
+@@ -803,6 +811,10 @@ fn translate_object(
+                     }
+                 };
+ 
++                if !is_aligned(parent_entry.sender_uaddr, size_of::<u32>()) {
++                    return Err(EINVAL.into());
++                }
++
+                 parent_entry.fixup_min_offset = info.new_min_offset;
+                 parent_entry
+                     .pointer_fixups
+@@ -820,6 +832,7 @@ fn translate_object(
+                     .sender_uaddr
+                     .checked_add(parent_offset)
+                     .ok_or(EINVAL)?;
++
+                 let mut fda_bytes = KVec::new();
+                 UserSlice::new(UserPtr::from_addr(fda_uaddr as _), fds_len)
+                     .read_all(&mut fda_bytes, GFP_KERNEL)?;
+@@ -949,25 +962,30 @@ pub(crate) fn copy_transaction_data(
+ 
+         let data_size = trd.data_size.try_into().map_err(|_| EINVAL)?;
+         let aligned_data_size = ptr_align(data_size).ok_or(EINVAL)?;
+-        let offsets_size = trd.offsets_size.try_into().map_err(|_| EINVAL)?;
+-        let aligned_offsets_size = ptr_align(offsets_size).ok_or(EINVAL)?;
+-        let buffers_size = tr.buffers_size.try_into().map_err(|_| EINVAL)?;
+-        let aligned_buffers_size = ptr_align(buffers_size).ok_or(EINVAL)?;
++        let offsets_size: usize = trd.offsets_size.try_into().map_err(|_| EINVAL)?;
++        let buffers_size: usize = tr.buffers_size.try_into().map_err(|_| EINVAL)?;
+         let aligned_secctx_size = match secctx.as_ref() {
+             Some((_offset, ctx)) => ptr_align(ctx.len()).ok_or(EINVAL)?,
+             None => 0,
+         };
+ 
++        if !is_aligned(offsets_size, size_of::<u64>()) {
++            return Err(EINVAL.into());
++        }
++        if !is_aligned(buffers_size, size_of::<u64>()) {
++            return Err(EINVAL.into());
++        }
++
+         // This guarantees that at least `sizeof(usize)` bytes will be allocated.
+         let len = usize::max(
+             aligned_data_size
+-                .checked_add(aligned_offsets_size)
+-                .and_then(|sum| sum.checked_add(aligned_buffers_size))
++                .checked_add(offsets_size)
++                .and_then(|sum| sum.checked_add(buffers_size))
+                 .and_then(|sum| sum.checked_add(aligned_secctx_size))
+                 .ok_or(ENOMEM)?,
+-            size_of::<usize>(),
++            size_of::<u64>(),
+         );
+-        let secctx_off = aligned_data_size + aligned_offsets_size + aligned_buffers_size;
++        let secctx_off = aligned_data_size + offsets_size + buffers_size;
+         let mut alloc =
+             match to_process.buffer_alloc(debug_id, len, is_oneway, self.process.task.pid()) {
+                 Ok(alloc) => alloc,
+@@ -999,13 +1017,13 @@ pub(crate) fn copy_transaction_data(
+             }
+ 
+             let offsets_start = aligned_data_size;
+-            let offsets_end = aligned_data_size + aligned_offsets_size;
++            let offsets_end = aligned_data_size + offsets_size;
+ 
+             // This state is used for BINDER_TYPE_PTR objects.
+             let sg_state = sg_state.insert(ScatterGatherState {
+                 unused_buffer_space: UnusedBufferSpace {
+                     offset: offsets_end,
+-                    limit: len,
++                    limit: offsets_end + buffers_size,
+                 },
+                 sg_entries: KVec::new(),
+                 ancestors: KVec::new(),
+@@ -1014,12 +1032,16 @@ pub(crate) fn copy_transaction_data(
+             // Traverse the objects specified.
+             let mut view = AllocationView::new(&mut alloc, data_size);
+             for (index, index_offset) in (offsets_start..offsets_end)
+-                .step_by(size_of::<usize>())
++                .step_by(size_of::<u64>())
+                 .enumerate()
+             {
+-                let offset = view.alloc.read(index_offset)?;
++                let offset: usize = view
++                    .alloc
++                    .read::<u64>(index_offset)?
++                    .try_into()
++                    .map_err(|_| EINVAL)?;
+ 
+-                if offset < end_of_previous_object {
++                if offset < end_of_previous_object || !is_aligned(offset, size_of::<u32>()) {
+                     pr_warn!("Got transaction with invalid offset.");
+                     return Err(EINVAL.into());
+                 }
+@@ -1051,7 +1073,7 @@ pub(crate) fn copy_transaction_data(
+                 }
+ 
+                 // Update the indexes containing objects to clean up.
+-                let offset_after_object = index_offset + size_of::<usize>();
++                let offset_after_object = index_offset + size_of::<u64>();
+                 view.alloc
+                     .set_info_offsets(offsets_start..offset_after_object);
+             }
+
+---
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+change-id: 20260123-binder-alignment-more-checks-041f6c198d3a
+
+Best regards,
 -- 
-2.52.0
+Alice Ryhl <aliceryhl@google.com>
 
 
