@@ -1,141 +1,194 @@
-Return-Path: <stable+bounces-211398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MF/NFsSUc2ktxQAAu9opvQ
-	(envelope-from <stable+bounces-211398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 16:33:24 +0100
+	id oFycESObc2nNxQAAu9opvQ
+	(envelope-from <stable+bounces-211399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:00:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A6577D34
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 16:33:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC42781D9
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 17:00:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 812823057CDB
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 15:31:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0B333059907
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 15:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7CC278161;
-	Fri, 23 Jan 2026 15:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5436735977;
+	Fri, 23 Jan 2026 15:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WhtMxpAg"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=csmantle.top header.i=rong.bao@csmantle.top header.b="aGtZgn3h"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from o47.p25.mailjet.com (o47.p25.mailjet.com [185.189.236.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D101288C3F
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 15:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2CA2F851
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 15:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.189.236.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769182280; cv=none; b=khgZK03+Too+a7HBMMPS6NH10kEGPp2miJ2cTHU4iSCW5aAl/22ZaBpcD5tULYpvMg91b1A/RTo/KJdJXsMQvKrc+5bh+IIg1aYKPeQNq6lhyOHYVMB25U1EjPD1dfmhPIUiYzdDGFbmOs6+yNAKYNNYCfbgND+zpGQ58mB7Jmg=
+	t=1769183795; cv=none; b=uQFW5RQtlQgmAci/CtxtsDGsqTiWoIUa5aoqlS2AMZVfiR7wl8qqu9KT6Ti4bMDXSDbQfZJwIGj4rs/qI3PcAerDJq6/FLgie90WAJab275uhzZhNb6nYjDp/314MqzDs0H7aguRJ0kck0488OPpInStS6iHyj0z/vjh00z3edY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769182280; c=relaxed/simple;
-	bh=w2JiCUhmvRT8ZQZxwuaTFt0UtjH6jhCGJVP322DS2Fo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PoEb3+rq1LBO3k7fqNnsiZlY1v5O7hbkZ4Qy5MEuM+pUGHG9QC2GzqIpbv1Vv/yrO5czUBzsSuyemDFn2YXy8dTdyRxcu1bWYTFtcidrruV4hUDHGLfXcHpAx9hj3LCaRuOVKA7UGf7n5oVbeJRMjc/i/g44OdwxKUrdBF7E7us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WhtMxpAg; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769182277;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MymNL/nYeDWvomO79oTb7U4puYKN2dbfH+nTeBxlP5Q=;
-	b=WhtMxpAgyaqFxbGlabEeWjqd/bIxtsNSKUEKjglqzsCWZ0gIuv15sQdNN17puJMNo6/4j8
-	4KfIxWHAqrrfiV2CqoCGlldkw0jLfDRsLEB9BA6ed6Cv1YtWYVaDe3brKpp3WOccTUK2gR
-	L7Rso+Kleu4BVXUJH2sJp9um0TG79Tk=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-584-8LOpjD06NHmEqrGi9fP1uA-1; Fri,
- 23 Jan 2026 10:31:16 -0500
-X-MC-Unique: 8LOpjD06NHmEqrGi9fP1uA-1
-X-Mimecast-MFC-AGG-ID: 8LOpjD06NHmEqrGi9fP1uA_1769182275
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 512861955D9F;
-	Fri, 23 Jan 2026 15:31:15 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.45.224.52])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1A5C830002D1;
-	Fri, 23 Jan 2026 15:31:13 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: gfs2@lists.linux.dev
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 05/13] Revert "gfs2: Fix use of bio_chain"
-Date: Fri, 23 Jan 2026 16:30:55 +0100
-Message-ID: <20260123153105.797382-6-agruenba@redhat.com>
-In-Reply-To: <20260123153105.797382-1-agruenba@redhat.com>
-References: <20260123153105.797382-1-agruenba@redhat.com>
+	s=arc-20240116; t=1769183795; c=relaxed/simple;
+	bh=n625F9iOcmfm4oeosR440PIXnRGSOWmz0lx0rm52p6Y=;
+	h=Message-Id:MIME-Version:From:To:Subject:Date:Cc; b=FWZjyvePACyYNnbDArk37zAYbogs4/6FVr9lRChajVO3V9k6R7xl+rQdzdk/HWRZlURqAst3Hk6SqOMjq07/x6jSyZV7Ey1D2HYJVgjfOI3Y7HPK0tmqhzQtJcD2vpNtPTmJV7H74BjaxqeWDWgKP3gL5FeOjTx5INd5LOmKaHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csmantle.top; spf=pass smtp.mailfrom=a3364097.bnc3.mailjet.com; dkim=pass (2048-bit key) header.d=csmantle.top header.i=rong.bao@csmantle.top header.b=aGtZgn3h; arc=none smtp.client-ip=185.189.236.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csmantle.top
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=a3364097.bnc3.mailjet.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; q=dns/txt;
+  d=csmantle.top; i=rong.bao@csmantle.top; s=mailjet; x=1769190989;
+  h=message-id:mime-version:from:from:to:to:subject:subject:date:date:list-unsubscribe-post:list-unsubscribe:
+  cc:feedback-id:x-csa-complaints:x-mj-mid:x-mj-smtpguid:x-report-abuse-to:
+  content-transfer-encoding;
+  bh=n625F9iOcmfm4oeosR440PIXnRGSOWmz0lx0rm52p6Y=;
+  b=aGtZgn3hMy1Xs9KHzley4W/fFaKJz5l+VXzUMpsqFnRyUfoDiGWgrLvyP
+ fxP7ir9NG51cQkd5bZCvfGzLYh6B9Xu+kTgmdUP94kVcvQc1m1ZCRPjowHgM
+ 2neoX/TsQVEPOxa/Ji/kAP9iKNq+nOA8LO1A806a1aB7f82fMRCGLzJyHAjY
+ qar+/zFRPLb/HLAHd4vHauCLe6BKaZgqM7DHazLbv8wfrzPiaaoCcGI3KdyV
+ 9tMs6HBDXiF8MS2sqTw42DtNzkYkWb8zsD/AIjZk297O8zjUesI9+EJ8Lzfu
+ HzMYKbVN1kvWkrr8Fj4buGax+7k1sSwnVHJwdLzKDGj+w==
+Message-Id: <e44d8406.AWMAAIrycOEAAAAAAAAAA-ma1qUAAYKJPtkAAAAAADNVAQBpc5ot@mailjet.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+From: Rong Bao <rong.bao@csmantle.top>
+To: Huacai Chen <chenhuacai@kernel.org>
+Subject: [PATCH] loongarch: retrieve CPU package ID from PPTT when available
+Date: Fri, 23 Jan 2026 23:56:06 +0800
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+Cc: Mingcong Bai <jeffbai@aosc.io>, Kexy Biscuit <kexybiscuit@aosc.io>,
+	Rong Bao <rong.bao@csmantle.top>, stable@vger.kernel.org, WANG Xuerui
+	<kernel@xen0n.name>, Yuli Wang <wangyuli@uniontech.com>, Yanteng Si
+	<si.yanteng@linux.dev>, Masahiro Yamada <masahiroy@kernel.org>,
+	Hongliang Wang <wanghongliang@loongson.cn>, Thierry Reding
+	<treding@nvidia.com>, Tianyang Zhang <zhangtianyang@loongson.cn>,
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Feedback-Id: 42.3364097.3062169:MJ
+X-CSA-Complaints: csa-complaints@eco.de
+X-MJ-Mid:
+	AWMAAIrycOEAAAAAAAAAA-ma1qUAAYKJPtkAAAAAADNVAQBpc5otdaWHx0l4T1eqou6TQoQvzQAuuZk
+X-MJ-SMTPGUID: e6c17ccd-6fab-4083-aa61-d129a700786e
+X-REPORT-ABUSE-TO: Message sent by Mailjet please report to
+	abuse@mailjet.com with a copy of the message
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[csmantle.top : SPF not aligned (relaxed),quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[csmantle.top:s=mailjet];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211399-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211398-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[csmantle.top:-];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[agruenba@redhat.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.990];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 82A6577D34
+	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rong.bao@csmantle.top,stable@vger.kernel.org];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.993];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mailjet.com:mid,csmantle.top:email]
+X-Rspamd-Queue-Id: 9EC42781D9
 X-Rspamd-Action: no action
 
-This reverts commit 8a157e0a0aa5143b5d94201508c0ca1bb8cfb941.
+Currently, the LoongArch CPU topology initialization code calculates
+each core's package ID by dividing its physical ID by
+loongson_sysconf.cores_per_package. This relies on the assumption that
+cores_per_package counts in the same domain as physical IDs.
 
-That commit incorrectly assumed that the bio_chain() arguments were
-swapped in gfs2.  However, gfs2 intentionally constructs bio chains so
-that the first bio's bi_end_io callback is invoked when all bios in the
-chain have completed, unlike bio chains where the last bio's callback is
-invoked.
+On Loongson 3B6000 (XB612B0V_1.2), cores_per_package matches the visible
+core count -- 24 in this case. However, the physical IDs range from 0 to
+31 in a noncontiguous fashion:
 
-Fixes: 8a157e0a0aa5 ("gfs2: Fix use of bio_chain")
+        $ cat /proc/cpuinfo | grep -i -F 'global_id'
+        global_id               : 0
+        global_id               : 1
+        global_id               : 4
+        global_id               : 5
+        global_id               : 6
+        global_id               : 7
+        global_id               : 8
+        global_id               : 9
+        global_id               : 10
+        global_id               : 11
+        global_id               : 14
+        global_id               : 15
+        global_id               : 16
+        global_id               : 17
+        global_id               : 20
+        global_id               : 21
+        global_id               : 22
+        global_id               : 23
+        global_id               : 26
+        global_id               : 27
+        global_id               : 28
+        global_id               : 29
+        global_id               : 30
+        global_id               : 31
+
+Retrieve the exact package ID from ACPI PPTT when available, in the same
+style as retrieving the core ID and thread ID in parse_acpi_topology().
+Use this information in loongson_init_secondary() when PPTT readout is
+successful. The original division logic is kept as a fallback.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Rong Bao <rong.bao@csmantle.top>
 ---
- fs/gfs2/lops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/kernel/acpi.c | 9 ++++++++-
+ arch/loongarch/kernel/smp.c  | 2 +-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
-index 97ebe457c00a..d27a0b1080a9 100644
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -484,7 +484,7 @@ static struct bio *gfs2_chain_bio(struct bio *prev, unsigned int nr_iovecs)
- 	new = bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP_NOIO);
- 	bio_clone_blkg_association(new, prev);
- 	new->bi_iter.bi_sector = bio_end_sector(prev);
--	bio_chain(prev, new);
-+	bio_chain(new, prev);
- 	submit_bio(prev);
- 	return new;
- }
+diff --git a/arch/loongarch/kernel/acpi.c b/arch/loongarch/kernel/acpi.c
+index 1367ca759468..82c7ffd4f1ac 100644
+--- a/arch/loongarch/kernel/acpi.c
++++ b/arch/loongarch/kernel/acpi.c
+@@ -176,7 +176,7 @@ int pptt_enabled;
+ 
+ int __init parse_acpi_topology(void)
+ {
+-	int cpu, topology_id;
++	int cpu, topology_id, package_id;
+ 
+ 	for_each_possible_cpu(cpu) {
+ 		topology_id = find_acpi_cpu_topology(cpu, 0);
+@@ -194,6 +194,13 @@ int __init parse_acpi_topology(void)
+ 
+ 			cpu_data[cpu].core = topology_id;
+ 		}
++
++		package_id = find_acpi_cpu_topology_package(cpu);
++		if (package_id < 0) {
++			pr_warn("Invalid BIOS PPTT\n");
++			return -ENOENT;
++		}
++		cpu_data[cpu].package = package_id;
+ 	}
+ 
+ 	pptt_enabled = 1;
+diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
+index 8b2fcb3fb874..409e49d4da37 100644
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -412,7 +412,7 @@ void loongson_init_secondary(void)
+ 	numa_add_cpu(cpu);
+ #endif
+ 	per_cpu(cpu_state, cpu) = CPU_ONLINE;
+-	cpu_data[cpu].package =
++	cpu_data[cpu].package = pptt_enabled ? cpu_data[cpu].package :
+ 		     cpu_logical_map(cpu) / loongson_sysconf.cores_per_package;
+ 	cpu_data[cpu].core = pptt_enabled ? cpu_data[cpu].core :
+ 		     cpu_logical_map(cpu) % loongson_sysconf.cores_per_package;
 -- 
 2.52.0
 
