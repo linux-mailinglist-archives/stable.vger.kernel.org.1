@@ -1,149 +1,154 @@
-Return-Path: <stable+bounces-211417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id xyDcMuK9c2mHyQAAu9opvQ
-	(envelope-from <stable+bounces-211417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 19:28:50 +0100
+	id MGBBFSrCc2nnyQAAu9opvQ
+	(envelope-from <stable+bounces-211418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 19:47:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7203879A5C
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 19:28:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F239E79BFA
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 19:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDDB43004DD6
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 18:28:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D8A71305930C
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 18:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9C12848A0;
-	Fri, 23 Jan 2026 18:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0B9249E5;
+	Fri, 23 Jan 2026 18:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n9AzXghO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nkaUsap7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF761E531;
-	Fri, 23 Jan 2026 18:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F923EBF2A;
+	Fri, 23 Jan 2026 18:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769192928; cv=none; b=RTm7NDvTtQruHvlMXfZT92+/LBL1um1gwJ4dKJoNdkIIDZSJdkRyY7j4TjmSNPn/xvhen9Kz+87ueXTFitmEZ2+XIL8eS8oxmJXSDZjD+4CwgemN/T1oIM3owIJgpSq/z0k3k9ZiLnNw+cwxVa+L3CZTkUdbqRiJm62PQgTwKsE=
+	t=1769194019; cv=none; b=kI2SSfKDfRcxPYO2Y34vZa4a47GBwnSzVtOpNgubCm2vizPKxF6J5RZxeyx5WT11sl1K5874Uj3uOi8YyM4nUE7DjA1AVyENZcSnMa8UbklP5L6yAsSaIAjdMy8Exxnv5crv301CYUr3eFetnrtGlpM1E7J0il0TURDQU4oMQO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769192928; c=relaxed/simple;
-	bh=26/yJNz4YSnbicTXM0RZydtgr9bCYQuI7RPh0S62vDw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B86Ml0LfvLDuYmRRhJQFnXti09cMXmsSQecdfA1xpX12Z+yRCfSrKgtxcS/GUDfhQ0oQSpZmjhm/vaoEQL6IYPKpyMh0+YOReq7If60mjiJLcsCGH2zwQ2Et0KrkVg6jrYjLe7N59oMkqSSRy2f6pzlgZI7go1fKgg3oNlDvV5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n9AzXghO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFA3C4CEF1;
-	Fri, 23 Jan 2026 18:28:44 +0000 (UTC)
+	s=arc-20240116; t=1769194019; c=relaxed/simple;
+	bh=r6ZEYv1acM820A9Xate+DXThNCoFR1GIsc+2yX3WUZQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pTVOzgoqI1hoS06hS15UK2ZsspVcFesJhYS5outWkSl6F5JO5G8y82lm2KdcSrHZklfXQH7NsxU3dZYdsKeP68OHBrns42byLv/DwzCgM/+HE8oZ8OPVa7s3c9Gf6WnFcVEcMqoLVIdI/6DDWrvWSfQQOvBYf1GerudlVhlY5gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nkaUsap7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F11DC4CEF1;
+	Fri, 23 Jan 2026 18:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769192928;
-	bh=26/yJNz4YSnbicTXM0RZydtgr9bCYQuI7RPh0S62vDw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n9AzXghOkgkKNCrZUrTGXH/hi8yk8aBOWttROQsSMHrT4EwW9rIyE/Md0+ic5HE0b
-	 lHuWEVP9XSjw7fcAp25vX/HGzEPij9d6CYHVZKnxWqBycvFkBs8zKbpvkA19R+gwSE
-	 WwW2wwlu+78E6qArnTph3I7Wy1siV25229VMwQU2IM0T7tLcslx2EEQIQLdTIbMVqg
-	 Te+NrAVCmPytwj0bjPHOv96DnJn0rlc4AJnsnhYRuHN4TNJwY1wtW+1Ej5RdEL2KOO
-	 QpChmre3Ak4Pgfuyu5EkPI5Q4lsmIa+VPgPvEghOtvMNQ7MpaJVZPGpBbNmo4cesSt
-	 6MHoYF7A5+DCQ==
-From: Niklas Cassel <cassel@kernel.org>
-To: Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Randolph Lin <randolph@andestech.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Charles Mirabile <cmirabil@redhat.com>,
-	tim609@andestech.com,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	dlemoal@kernel.org,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Niklas Cassel <cassel@kernel.org>,
-	stable@vger.kernel.org,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Hans Zhang <zhanghuabing@ecosda.com>,
-	linux-pci@vger.kernel.org
-Subject: [PATCH v4 1/4] PCI: dwc: Fix msg_atu_index assignment
-Date: Fri, 23 Jan 2026 19:28:36 +0100
-Message-ID: <20260123182835.831710-7-cassel@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260123182835.831710-6-cassel@kernel.org>
-References: <20260123182835.831710-6-cassel@kernel.org>
+	s=k20201202; t=1769194019;
+	bh=r6ZEYv1acM820A9Xate+DXThNCoFR1GIsc+2yX3WUZQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=nkaUsap7XB9W5BuDpzbyA9TkQeBZjvTapc2IqDPv4vUElTGz4A+HNmb54tEyNF7RC
+	 SvyIw1PorPkJeSWbQ36XXNNLhnmDUhRarlbVrK51UYwmm0UyrR9whLAqoRxP/lz7xP
+	 V+EdFtlAKxXkiTkcmbG83gPy7K31hsKXe7zDen0YnAaovrJxMBbAGOl5aetNWVJLH/
+	 Ne8QnoIoH51WMFm6uQr8ztruhDkW6pGexdp50Um4l5r00j/JBm8kz6vrOBPLrdO0Rg
+	 OsMi72Jm/EyNkc4W0c/6LGSV8Lq55ohQxKvSp/06wHaTQDLKpH0wxGSevPMClmikMt
+	 knPVU2EWOhg7g==
+Message-ID: <b15b53fe-280c-4d43-978c-fb338f5ad368@kernel.org>
+Date: Sat, 24 Jan 2026 05:46:53 +1100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1509; i=cassel@kernel.org; h=from:subject; bh=26/yJNz4YSnbicTXM0RZydtgr9bCYQuI7RPh0S62vDw=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDKL917eqi9oy59ptjl16qWufck31AVV7xfslsoKat3Ep FeVusiio5SFQYyLQVZMkcX3h8v+4m73KccV79jAzGFlAhnCwMUpABP5eImR4e71ot+St63spjLO 1YvaHrnw+J3GubsCu7fIrmsIO7Uv5jLDP22nR4fN256dPtXH9CDxwPWlVbkXLs3bN7FwgexUK5+ n7xgB
-X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/4] PCI: dwc: Fix msg_atu_index assignment
+To: Niklas Cassel <cassel@kernel.org>, Jingoo Han <jingoohan1@gmail.com>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Frank Li <Frank.Li@nxp.com>
+Cc: Randolph Lin <randolph@andestech.com>,
+ Samuel Holland <samuel.holland@sifive.com>,
+ Charles Mirabile <cmirabil@redhat.com>, tim609@andestech.com,
+ Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+ "Maciej W. Rozycki" <macro@orcam.me.uk>, stable@vger.kernel.org,
+ Shawn Lin <shawn.lin@rock-chips.com>, Hans Zhang <zhanghuabing@ecosda.com>,
+ linux-pci@vger.kernel.org
+References: <20260123182835.831710-6-cassel@kernel.org>
+ <20260123182835.831710-7-cassel@kernel.org>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20260123182835.831710-7-cassel@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211417-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-211418-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,google.com,nxp.com];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,google.com,nxp.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dlemoal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7203879A5C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F239E79BFA
 X-Rspamd-Action: no action
 
-When dw_pcie_iatu_setup() configures outbound address translation
-for both type PCIE_ATU_TYPE_MEM and PCIE_ATU_TYPE_IO, the iATU index
-to use is incremented before calling dw_pcie_prog_outbound_atu().
+On 2026/01/24 5:28, Niklas Cassel wrote:
+> When dw_pcie_iatu_setup() configures outbound address translation
+> for both type PCIE_ATU_TYPE_MEM and PCIE_ATU_TYPE_IO, the iATU index
+> to use is incremented before calling dw_pcie_prog_outbound_atu().
+> 
+> However, for msg_atu_index the index is not incremented before use,
+> causing the iATU index to be the same as the last configured iATU
+> index, which means that it will incorrectly use the same iATU index
+> that is already in use, breaking outbound address translation.
+> 
+> Fixes: e1a4ec1a9520 ("PCI: dwc: Add generic MSG TLP support for sending PME_Turn_Off when system suspend")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
+> Reviewed-by: Hans Zhang <zhanghuabing@ecosda.com>
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> ---
+>  drivers/pci/controller/dwc/pcie-designware-host.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+> index b3d6a474fd16..ae5f2d8a3857 100644
+> --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> @@ -982,7 +982,7 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
+>  		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
+>  			 pci->num_ob_windows);
+>  
+> -	pp->msg_atu_index = i;
+> +	pp->msg_atu_index = ++i;
 
-However, for msg_atu_index the index is not incremented before use,
-causing the iATU index to be the same as the last configured iATU
-index, which means that it will incorrectly use the same iATU index
-that is already in use, breaking outbound address translation.
+	pp->msg_atu_index = i + 1;
 
-Fixes: e1a4ec1a9520 ("PCI: dwc: Add generic MSG TLP support for sending PME_Turn_Off when system suspend")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Hans Zhang <zhanghuabing@ecosda.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
----
- drivers/pci/controller/dwc/pcie-designware-host.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+is a lot more readable in my opinion. Changing i itself is useless since it is
+reset to 0 below.
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index b3d6a474fd16..ae5f2d8a3857 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -982,7 +982,7 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
- 		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
- 			 pci->num_ob_windows);
- 
--	pp->msg_atu_index = i;
-+	pp->msg_atu_index = ++i;
- 
- 	i = 0;
- 	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
+>  
+>  	i = 0;
+>  	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
+
+
 -- 
-2.52.0
-
+Damien Le Moal
+Western Digital Research
 
