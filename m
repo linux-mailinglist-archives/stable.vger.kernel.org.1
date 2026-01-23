@@ -1,151 +1,133 @@
-Return-Path: <stable+bounces-211427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211428-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GA42Ndrgc2k0zQAAu9opvQ
-	(envelope-from <stable+bounces-211427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 21:58:02 +0100
+	id 2MSAAAzrc2llzgAAu9opvQ
+	(envelope-from <stable+bounces-211428-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 22:41:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2877ACB2
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 21:58:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6368F7AF43
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 22:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50A15301CFA1
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 20:57:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 582823012C88
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 21:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CFB2EDD50;
-	Fri, 23 Jan 2026 20:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815D22F7AAB;
+	Fri, 23 Jan 2026 21:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hl5jc/aW"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84174256C70;
-	Fri, 23 Jan 2026 20:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1EF256C70;
+	Fri, 23 Jan 2026 21:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769201878; cv=none; b=tsltzvagpAUqhM6MNEJngYhp9ID3vxPTDgH3IvGWMaUV0uFQNTdMExtzJMVEXJwX6oEYzPuoK/4UXSu2UDXUHV2j0g/3SUwr30JMQurSfjishEFUiFLHv86w9C86Xoy1AchFAr+617grn/rDGEAyB/KTxl2qi16fCw9XEMVBTt4=
+	t=1769204489; cv=none; b=uGCYE+pzx2/IX2kvBfErEw784r0/s4DFDzZrVY7dczA9ndNxU0IMq1+AHLNBvoLOC2va3jWOueh/8tnik+OFpJrsAmLMsO38lyWRMl0xPMrNkbgjHh1GPYj4Fhiz6dkROQjLPYJCOHFkpU+MMqLYp/FGIsLf5bAJ8KPk+8TxkgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769201878; c=relaxed/simple;
-	bh=oTLfKQMhMf/G1/ZFs0kiRU3UcXziZ1w9OCfVwFS5rIQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CiHN4Wrdlt+rUD8BYieYWRGqV5HL7uncInu2vsCv2XWRmK6smo4d9GT6j0OsZOABmNtDjXji8cGrdBnfe/0NLT67qIecr8K5J3y61363zRT4O4bibTNs6AzyDYi1TNaxuNQf9O3sFsrRL5wTvugOEbN+fMFzneqZgxTT48sPC+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 122ED1476;
-	Fri, 23 Jan 2026 12:57:48 -0800 (PST)
-Received: from [10.57.51.35] (unknown [10.57.51.35])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C2A1B3F632;
-	Fri, 23 Jan 2026 12:57:52 -0800 (PST)
-Message-ID: <e9fd0005-bfbb-4052-8c2a-9200eb0b60ac@arm.com>
-Date: Fri, 23 Jan 2026 20:57:50 +0000
+	s=arc-20240116; t=1769204489; c=relaxed/simple;
+	bh=Je70bcBzcj4dsXrG8ZfJpnw5/HF+33l3GrF69bgsmMA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ds4ovEJc9ZK9Gm+LHvVTOLDlPd4ldOqMKzbg1su8YbfTX7I9kx6OEAw0ngcOkMg/m2eqTiBPpTv1hUk5Rs4uHd35qajQ7o0dQ8VO15KF/Blgyt0qR2pPbVX6iBDeaCup58eo+2ACLBfqP8PDTOQFhl2Uf1/ez7E5thWJJuQXfgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hl5jc/aW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95373C4CEF1;
+	Fri, 23 Jan 2026 21:41:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769204488;
+	bh=Je70bcBzcj4dsXrG8ZfJpnw5/HF+33l3GrF69bgsmMA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Hl5jc/aW4WdS1DGPsJI0VRUUXGXrFfXC7uzGYKirihtUI9PKdokUu7hc0iBC+CA/v
+	 8b3QVIa+EBlbFIJNQQxwowV7wp4R9845CXPqqs09sTzu2fSI9yMSUC7w7LHVrBRALR
+	 f+T/A+86thuGG3JNVJpPvchMh4A5ewmQqlklk+gE9pzdFbbzy90YeMRoB7tvuj6sMN
+	 f9mLYM5lH2weJERveU4Q0Hzsk2dKQ16mIbZQsaEWxz9zKh2YHsGxS+qIQmtxrkBYI8
+	 tuiFQCuQ8HRgfgURD4Q4JFwdksiFL1ybcOPeBZyCOyJKi08P6LeJqVOK1DPSKNb86j
+	 EpolgfEigSZuA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.12 000/139] 6.12.67-rc1 review
+Date: Fri, 23 Jan 2026 22:41:16 +0100
+Message-ID: <20260123214116.8553-1-ojeda@kernel.org>
+In-Reply-To: <20260121181411.452263583@linuxfoundation.org>
+References: <20260121181411.452263583@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gpio: rockchip: mark the GPIO controller as sleeping
-To: Bartosz Golaszewski <brgl@kernel.org>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>,
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Linus Walleij <linusw@kernel.org>, Heiko Stuebner <heiko@sntech.de>,
- linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>
-References: <20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com>
- <aWGSQYCXP4R08koQ@venus>
- <CAMRc=Mf0tRxRrh7tn5OaDn3a47N_qvUcjO=zqbTi-GhY-Y9hOg@mail.gmail.com>
- <447e8d5a-916b-4d58-b39c-3467c152379c@arm.com>
- <CAMRc=Md0h5b=N9CqV-9L9sOtCNbiL1-y6RE0x4+w9HYXE8=pEQ@mail.gmail.com>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <CAMRc=Md0h5b=N9CqV-9L9sOtCNbiL1-y6RE0x4+w9HYXE8=pEQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,denx.de,gmx.de,sladewatkins.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-211428-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	R_DKIM_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211427-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 3A2877ACB2
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.982];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6368F7AF43
 X-Rspamd-Action: no action
 
-On 2026-01-23 7:27 pm, Bartosz Golaszewski wrote:
-> On Fri, Jan 23, 2026 at 2:27 PM Robin Murphy <robin.murphy@arm.com> wrote:
->>
->>>>
->>>> It's not a big issue for the hdmirx driver specifically, but I wonder
->>>> how many more (less often tested) rockchip drivers use GPIOs from their
->>>> IRQ handler.
->>
->> Yeah, seems this finally reached my distro kernel and now the kernel log
->> on one of my boards is totally flooded from gpio_ir_recv_irq()
->> (legitimately) calling gpio_get_value()... that's not really OK :/
->>
+On Wed, 21 Jan 2026 19:14:08 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.67 release.
+> There are 139 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> This has always been a sleeping driver. The driver does not know the
-> firmware configuration it'll be passed and - as I explained above -
-> depending on the lookup flags, we may call .direction_output() and
-> descend into pinctrl which uses mutexes. Ideally, we'd make
-> GPIO-facing pinctrl operations not sleeping but this is a long-time
-> project and quite complex. Telling the GPIO core that it cannot sleep
-> is simply incorrect - even if it worked for this particular use-case -
-> and has an impact on paths we're choosing.
-> 
-> Can the GPIO reading in the gpio-ir-recv driver be done from a
-> high-priority workqueue by any chance? Or can we make it a threaded
-> interrupt?
+> Responses should be made by Fri, 23 Jan 2026 18:13:43 +0000.
+> Anything received after that time might be too late.
 
-rockchip_gpio_get() is essentially nothing but a readl(), please explain 
-how that could sleep? Saying that countless in-tree and out-of-tree 
-arbitrary GPIO consumer drivers should pointlessly refactor just to 
-avoid the GPIO core spewing spurious WARN()s is not reasonable.
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for loongarch64:
 
-I appreciate there are cases where the warning most definitely *is* 
-relevant, which is why I picked up this discussion rather than proposing 
-a revert, even though the documentation says:
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-  * @can_sleep: flag must be set iff get()/set() methods sleep, as they
+Thanks!
 
-where since neither rockchip_gpio_get() nor rockchip_gpio_set() 
-themselves sleep, apparently this flag must *not* be set. It's 
-irrelevant that a higher-level gpiod_set_value() invocation might end up 
-calling .set_direction before it gets as far as calling .set - that's 
-not the gpio_chip's fault, and gpiolib knows exactly what it's doing.
-
-What I'm getting at is that getting, and even (directly) setting a 
-GPIO's value can reasonably be expected to be more common and applicable 
-in a wider range of circumstances than changing its configuration, so 
-the former should not be unfairly penalised because of the latter. This 
-case is clearly distinct from external GPIO expanders on buses that 
-fundamentally can't guarantee fast memory-mapped access at all, so 
-trying to conflate it under the same flag doesn't fit, and that needs 
-fixing ASAP, before the reverts *do* start piling in. Maybe that just 
-means some new dir_can_sleep or more abstract dir_needs_pinctrl flag 
-might suffice, maybe it's something more involved; I don't really know, 
-and I don't have the bandwidth to take this on myself.
-
-Thanks,
-Robin.
+Cheers,
+Miguel
 
