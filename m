@@ -1,366 +1,296 @@
-Return-Path: <stable+bounces-211338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211339-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBw5NPUWc2mwsAAAu9opvQ
-	(envelope-from <stable+bounces-211338-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:36:37 +0100
+	id QJ/vIaQXc2mwsAAAu9opvQ
+	(envelope-from <stable+bounces-211339-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:39:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35BB9710E1
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:36:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04BD87113A
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:39:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96A863019074
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 06:34:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9667D3013710
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 06:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5612FC891;
-	Fri, 23 Jan 2026 06:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D00233123D;
+	Fri, 23 Jan 2026 06:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HhMTsOby"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="mPhUfdpT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazolkn19010016.outbound.protection.outlook.com [52.103.2.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 506B72BFC7B
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 06:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769150064; cv=none; b=V822wF85kcD9sZfuDz/u8XiWESAMWW0nOekre0s0XqF68VkNUT0MwSJ2cOwNSQJF5akEjYYeZxu0+rh8QRIDYPlEW98rFWHxSuuMSvSLjhaXImt598Snfh0Rx9Da7eWiiUPq72cA+MhBLwYkznqFU+1ag/58frVPC6HIcOl9jik=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769150064; c=relaxed/simple;
-	bh=3tE8bua8ns/oISEYiYIo23uBl9ulZW+1x9VpbUmsXjE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3LvKql4FKMGem9r8oO+xV6oH3nYa045e15AAxUo7Cvuux7SlhDjSoNUNeaU28VXD8orTPtsnRdIwa1Q6C77AcFXWCuYfADks6YtLzYcYVie9+WBsrJKWUM3ghs+JEWBNNOKQYYgTjfHY2JiIjXad0F9ON+nJ9pReN5FdyZZu4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HhMTsOby; arc=none smtp.client-ip=74.125.82.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-121a0bcd364so3253236c88.0
-        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 22:34:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769150059; x=1769754859; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5sXcBBoWh7S5ryxIZK6TNZiSRw8O4j7XF0vdkdGQlyQ=;
-        b=HhMTsOby5FV2mEjeANhw/wG13yZ1j0cilrYs7iLQodzhEcmfdyCLkX2tIJjf4Bpcx9
-         Anipt3e+Ini1ftLQSWLYLxQSDuU8gA0oerZcViL7NPJxXTAHf7cu4d3D6NhBH1kDlXqG
-         gL7fUicpa9bbXVOFjpeldFyx7rRI3EMp1TSbC5FJ2wDfe622Ukaqz+QZsYbua3eBOm11
-         Yr/VFXCYWIxd/bZDTbXyxfvg72b7438WtRvAmmIo19FLO7cnib5//OrYOToWrp0W+DkD
-         Hoc6Sdqo9fZNk+aBdVmvJvWoCvW3YWezHWxnIehgAawTg/mA6VWPNbNmOrGiVWC1A7Pp
-         LknA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769150059; x=1769754859;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5sXcBBoWh7S5ryxIZK6TNZiSRw8O4j7XF0vdkdGQlyQ=;
-        b=rEI2I2zG9oRJ1yBqteOKlY8OHSoTJIS3KmEKd1dWExPgOzkrENE3D4Z/E9fkhPHl9N
-         wg5dLvHUlnle5HbexmnOLiVuPfSRpc59j5ppigG6kkxi0F50t/llWjXhaF783+8fLVeJ
-         oO4OFEQmrgUAUrxZdmHMImu5O9AyBxWU7j4kYqydTndC8LcYbN5lgxbStcUGRWcOEsyK
-         LzeliPyIFxOyb2KxLuUMcOvDleMDuUomZHWWzeT5wVFygTPeNXCiJxC4DRGnjxKN91pz
-         LbgsidBEOcLqaIlWwth4s4pYRudWRNeUwWmxWo5lvAYNYFvCjO/t+Eyl8ALnIqVASD+g
-         hv9w==
-X-Forwarded-Encrypted: i=1; AJvYcCW6v77jmk/ruB+7OM8um0f4+A0zfWtSnYy8gF7d7NuwryCKzwXRZLyRQlDDPYpMQlhcVdhl4Vk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywGiX4Ny5aKDYHscAK43lur0tVhcpawTDfCE8EdQPYOhkDwnoV
-	U54HJzKSRWzeqWWWfKoNqwJCgIzLm9d2BeJCWiiYhS4qA+Mgh4NqshkJdlG2tTgG
-X-Gm-Gg: AZuq6aJHhaoqkWckAdM5ZM63pfX53dJcS0XXB/5qHQ+qxVjbttnRAaYRV53ieCMb0gw
-	RuJ7p0ng899LGjqRsTRBhnZSvF6boOWilxT5mHS02w06DDe8iJgnM4WI6NgAkqw4NKsJU5baSjq
-	RSoawCZsXnQ2GsjG1/KkcRY5SaPYt39W2U5qRAhncW+Q9BxuCDfNWfzbAjOsDtZrg44MrOb++rT
-	3+WuLa9bVBtbkXaYXo4FwQbDdEsfSDE1bblBvYsRxg2l+nZJtgYUqywQ4p5Xfgk677uMVu2W9Hn
-	cK88zOJg7zqKpwIGxIjJvSThI6NkeQO6+lltb9sWD8wNQJdUjBBj2IGgTAMDZMNP+14uMiVRvmb
-	hqoeSXh9JIxAvFQmZzzs934NnAWO3oyE+HngiQQhR5iz52kZ3CRljqgnwJnWLEr8lcArBsT/dGo
-	o5XMM=
-X-Received: by 2002:a05:7022:6720:b0:11b:9386:a381 with SMTP id a92af1059eb24-1247dc13195mr946069c88.48.1769150058449;
-        Thu, 22 Jan 2026 22:34:18 -0800 (PST)
-Received: from debian ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247d7abb74sm3396847c88.0.2026.01.22.22.34.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Jan 2026 22:34:18 -0800 (PST)
-From: Qiliang Yuan <realwujing@gmail.com>
-To: dianders@chromium.org,
-	akpm@linux-foundation.org
-Cc: lihuafei1@huawei.com,
-	linux-kernel@vger.kernel.org,
-	mingo@kernel.org,
-	realwujing@gmail.com,
-	song@kernel.org,
-	stable@vger.kernel.org,
-	sunshx@chinatelecom.cn,
-	thorsten.blum@linux.dev,
-	wangjinchao600@gmail.com,
-	yangyicong@hisilicon.com,
-	yuanql9@chinatelecom.cn,
-	zhangjn11@chinatelecom.cn,
-	mm-commits@vger.kernel.org
-Subject: [PATCH v3] watchdog/hardlockup: Fix UAF in perf event cleanup due to migration race
-Date: Fri, 23 Jan 2026 01:34:07 -0500
-Message-ID: <20260123063407.248775-1-realwujing@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <CAD=FV=UGpqN3XsHWM9coRdez2mL8mz0_hsUMQttTqaD7oEvSEQ@mail.gmail.com>
-References: <CAD=FV=UGpqN3XsHWM9coRdez2mL8mz0_hsUMQttTqaD7oEvSEQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E83727E07A;
+	Fri, 23 Jan 2026 06:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.2.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769150369; cv=fail; b=nbmdffSkKrCPPXYdVslcevCBtYrLt8OfxlK7FHuFsdkxzFnZUhJk0NpFncwZ+JEgime4W8xVMryZosspSi0/K6F8wdLplxJ9CZaOrTYS6Co5sbkmPyDbRilL0gnNVcKqB+lWbBOPTUiZpXCzTbGvqXEIvhyqSKm1Rnh5d2ErDnc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769150369; c=relaxed/simple;
+	bh=8YNDzZtGiWVFcifpkAROgTY6ML17zoAalC0rmjM4LEo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=USAFQgGPOglkMbZEPSqn1BGFICGYmPeaFUCJWbe8mRbBOiQVYYaGvJQS10/qoMuD7BoAD/7To9hmL53bF5zvl7GQjAfpesNTjxRcFB1Pf8kteQMNiQzHD23i/UZ8sfeatuJ5/yuQHlgOKmR+z7YNec8vwB9EH2EoGXMSDnQbgfY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=mPhUfdpT; arc=fail smtp.client-ip=52.103.2.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=O/9HXpsyNh0+2W01OVd/lvCW0d2SMsUDOndCEHIgqFlQvR+Db2LlW1CRX2d3PAiaHvz6YLcXSIQm4kxdqPJFrzMcc/ja6eU8OM603G8OC9ePSwZ87m/SfYy9iAPi4IP1HC6COS56GS+NPp78+XLHLkt6n0UufxKWds2OCrHXGd0yAS8dzAngyWCtL55sf5vAHndsdQmECTVkSq7IgZ8adjtSWz1NB9HPIpH6NiO5W3UU9BPL1BdEzOcWoET8kt7P/P4N5SZ0aKNdwbBEwOPAarxd2VnT1tSlitnJV/V6Sig1PRrpSEAYQgDID+WsFDYM7O84WouVDpERNSIQEr1j0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KoKXFUs6o2LZzpP3wiZekrhlVR6xu9ONBg4AS7yW4RU=;
+ b=EEjqirwIze02ZkcNmqfuEsyllHv8O+BJT3pdfFmEvTn8oC9HKmUZduJC7AFKKxAGJTP5Pv0htsIpVxSmg8JVKH6dtliH3WwSB8rHjX+/7DLYZaGUotmBqog5nmuyLiQfeJVboiELD5ckevbVinwWpHr0d43layH8iwH+aqZtD1w26pI7LbcpPi/A40wB3YT0z9d5Skv5X44YiDCkYGddE1rSq0s1MCIft+qUHZjzim8aqSJH+tSeU2Q8d+C41dUdCC4IgSgnwy/Iojrzc4XL9U4qN6Patl03GPyvaIzws1/o6gZ7+PiseJima0XPks7qSUzGgVDBCFBt5cGStu85eQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KoKXFUs6o2LZzpP3wiZekrhlVR6xu9ONBg4AS7yW4RU=;
+ b=mPhUfdpT4uu7b8/9hI5IJNlSuqr7R0SNk4YiprV823WbxPyVGimZ/vUGqmq3chvO+BFzQiSHwPQungNT1sDX/zgtNecSjMWzPj84Y4aGupZgvybpdMFfdet+m1Qqj/CEeA0qqsUtaKlN9iIyASj6tBoLJvsBKhZiFDEcGJLRHmV7mD0q99L07/XUQ4r8oY6BYRt2rRCI8dtP0GFiNeZJpzc+KBdPhyf4wS63KURMlpC+u8OnXlRlEyPeBno3EooTVfvuISRc7NlHB4BfA3Q2oAzYIS2zF/K7Ix2MhL/qVf0jjeu/hnf9h8XbXgHzxENv0JM8sB53G3gGrAFKqCcIFg==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by LV3PR02MB10762.namprd02.prod.outlook.com (2603:10b6:408:28a::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Fri, 23 Jan
+ 2026 06:39:25 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6%6]) with mapi id 15.20.9542.008; Fri, 23 Jan 2026
+ 06:39:24 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Matthew Ruffell <matthew.ruffell@canonical.com>
+CC: "DECUI@microsoft.com" <DECUI@microsoft.com>, "bhelgaas@google.com"
+	<bhelgaas@google.com>, "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"jakeo@microsoft.com" <jakeo@microsoft.com>, "kwilczynski@kernel.org"
+	<kwilczynski@kernel.org>, "kys@microsoft.com" <kys@microsoft.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"longli@microsoft.com" <longli@microsoft.com>, "lpieralisi@kernel.org"
+	<lpieralisi@kernel.org>, "mani@kernel.org" <mani@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "wei.liu@kernel.org" <wei.liu@kernel.org>
+Subject: RE: [PATCH] PCI: hv: Allocate MMIO from above 4GB for the config
+ window
+Thread-Topic: [PATCH] PCI: hv: Allocate MMIO from above 4GB for the config
+ window
+Thread-Index: AQHci0NePIGSa/9NGkCUvIR93cd3gLVdwUXwgADOvQCAABBuYIAAnjqAgAALUwA=
+Date: Fri, 23 Jan 2026 06:39:24 +0000
+Message-ID:
+ <SN6PR02MB41573CD2EA6CD82A0C238F66D494A@SN6PR02MB4157.namprd02.prod.outlook.com>
+References:
+ <SN6PR02MB4157545DAFDCCE0028439DB2D497A@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <20260123053909.95584-1-matthew.ruffell@canonical.com>
+In-Reply-To: <20260123053909.95584-1-matthew.ruffell@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|LV3PR02MB10762:EE_
+x-ms-office365-filtering-correlation-id: ee46c156-2693-409e-d77a-08de5a4a2632
+x-ms-exchange-slblob-mailprops:
+ vuaKsetfIZmcv7cN2CQdJd4XVKwegu/4gmvfM/dqyPaNcPd/UUQlYe+uQK9A9zupr1DB2js7WBBYCQ+KmdDQQ7j/gLpX00XMZPOOlAeRfADB5/pCSUbf4BqqJiN/DGLP5pcWHN3MXFndMRk0rNKT3kjo1zErlrfSRKHxbTSITTs1ppYWBSia4E0iLfspwSWmS3DQdS75Dfr9rJK+kAVtqRwaXATr0qLolAW6sZnnaqmBtAUG74nk1wsiKtTkaLhuq8AGuRDpPHxOjH7Y+zUCbG8uZd7oIz5iMnBodz6oNWvMNwbtR2NG2idJ3ADCgxYm0GNBm7oaBRrwMH7CpzoC4raK+F8snRNyHFN44rxJ5xpdvofEb1v0ssDWZDWLbJp8LZ2v38YaFdGBDqRWiF42PymJ7ODohdlrh/RMrhLKa+DN9xIML2Lah5VW9uF8tfR9WDOM2J1Nx7KKonfNpiWnG9CZXqZrSj9lwDo2FwL3KGBQENudhirvOz5ZmSEhUtQz1xi1UlrTl2RCdqAzAvZUEc98ByXTyFdcTnQmmTrznEY+7xvVWLvAp7W6LgoAbowCW7lSZy+VH5xANnxHgcGwSSSIhUx2j2CWoIxNUNvwreKWx1VWepAqtgY40YuFuHUIVZlKqHhigye47k5gx3Hdi7maht7D3+4zKEVauJgNpzAu62EjIgqSKaw/h14jzEj3tmwUnEZd4MxTNrWMw+juxi9Q6OvKSETvveRuL+Bj1hVz47jsZ3Y5RBq1cTr60Ub0pac//NpBqRaNE9DKHxSak1GW7++o8ryq7EXLPu5KP6HfrlfbHhu6fBKrMLRj/nSV
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|41001999006|461199028|31061999003|51005399006|19110799012|13091999003|8062599012|8060799015|15080799012|4302099013|3412199025|440099028|10035399007|40105399003|102099032|1602099012|56899033;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?D0ZlDfY3xSSzOYROfqgtR6Uz8DihgLuCjVEeSDVjahoEHUerQNzCFfUmz1k+?=
+ =?us-ascii?Q?2GCb/F1IWbR1Hg+Vi+qApllIiud8SKgdPNOX6WFgDz3/XYOAVuNpPFdvBPTa?=
+ =?us-ascii?Q?MTGV2xrSEm+1ub59VfRQMfvmuXcyMF1i134rLcydIG/EA4i6uaP//ZldRpf0?=
+ =?us-ascii?Q?T2L3jpl4gmOJnYHhW+mpiynojhbhqxA82Oez6Mpq1p3cJTcgH+3caJAHUb2/?=
+ =?us-ascii?Q?blHd+in2mqDHf4mKs9ZosPoMf7x/MHNpFfuB632RPljTA8Tf9AuhMGJ2xFct?=
+ =?us-ascii?Q?xeKiJ5vjKhLov1RA9SGUfSgKJ4s7Af5kWdkUGgat76q76BIAJb7n0vrxL+vO?=
+ =?us-ascii?Q?hWF7edKVgoKtyBOrD4hgA06/pUdTgPvAhyYASjcZ+6aEMjJzrEmMkzNQfsuZ?=
+ =?us-ascii?Q?p3QTyJDEcR2GtqzTmD5FU72YEfPLCI6tj2au4qC9a163XApHG1JrmVlah85X?=
+ =?us-ascii?Q?gtCnR1hcas1p/fS8wQFbCrcE+gfyw5sr3YUPSGFzpUhuoItttcJbelBRYDON?=
+ =?us-ascii?Q?C/Mm7p6/P7K4iNTK3pCtIFXi2zWesdm1cagw5//dNmdPAWHgu30sgmXM3yE1?=
+ =?us-ascii?Q?1cOkvP6Kj7jx6npYSf/TjC3JJeg/kMpLuCTlEttn9WKecBUc4lbkgitd3Eas?=
+ =?us-ascii?Q?nicSF+LcZ2r5FBAeehI5ZFU9ZRVfeSig4UAlmEMji0uB4o0yShgPZEHvRPWl?=
+ =?us-ascii?Q?lQWQkohd1n/cOG3KTzmG+ErBhsWKzne7URw3od3Kcsq2/sBwuR49bqlEMVUN?=
+ =?us-ascii?Q?2oYVt0ojPgYNrhANu5GjAEzfUh9IwVP+QO9qUVXdA7IqrBZY/qurR478YUvG?=
+ =?us-ascii?Q?TIirRFfX9szXLgmN8oImW2afgSoLqqNjt6VKxTmngwFKtLcdFu1nYCYD7m7q?=
+ =?us-ascii?Q?395j0T512Qo11Nzud4w71m53pznVsVCqVRZeiEWoYSKDsnemQORvPNmH6bEN?=
+ =?us-ascii?Q?KREEuduqYPf6Aa6kdC3W57Ge/J+FmY6VHCDa0XX5293b8XbvYUGR+gJ5+vxB?=
+ =?us-ascii?Q?LpeU1Aj4Vu8ySJ8P989wTuCphDFOVZ8koDa8e7pE/dowr6LkCNRa/aTs1lYx?=
+ =?us-ascii?Q?NY5JFKNOe9Cy5QJvf0R+C81fRqC7yrI4nXINYOYIC2Xro644N4c74rBgCmfs?=
+ =?us-ascii?Q?uyWtpqcyHSDAjAT+tFsS4x0krpVDe+Se8xLTi7vXea2H9gth9G/fMfXeD04K?=
+ =?us-ascii?Q?urNOYMi2qvg/198Sjc6KGQzLf1eMICZ2uO6oMZkt4amTWFFYFozu4JWoe1vy?=
+ =?us-ascii?Q?QlP2flRzrUEbndFNoskrZ/byb8euBGtdtvBdlRv14O0qiHzVe2+f05VI+0lg?=
+ =?us-ascii?Q?8YYtcf4oFsCPLe8c+J5wO8I5XMnfoEzeM+7m3EG0BF/Ue6GWyhiSGAP/P17w?=
+ =?us-ascii?Q?1ADYZ4V8k6L7R4E+7a2vDbjWVy2V?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?OrL+mZWTM++UYX3kg8oXDdn/Luwdpk12rqgqLWlyptHVCEzteHiKzzlPTI7l?=
+ =?us-ascii?Q?DyFPynKjygn1Mdq9+JvEiFAYif2jhahPKnfCSgDrXZp3YSEt8KYuo09iwZQb?=
+ =?us-ascii?Q?EJCRP/EkAfVke2Jams7MPZX9IB/k5SNulfk+Ay+hsmYzukthu2x54nWhvVrY?=
+ =?us-ascii?Q?MR7TyF1EmI7Lbi6N8pssGmknol6hYEQhqMA2clbW+hcxtt7TD9Oyv3D4QjTq?=
+ =?us-ascii?Q?OpbUpdyPoFfaEkO0uqUY2M+gPxk6YpwSqF7jcXM7alFWPcV1yZpwEV7r86PN?=
+ =?us-ascii?Q?VadWLS+kDufyKedDhFvFU1/b4GiN75mrpML1PEqX4qKic7s/1vRHkEU4kEYD?=
+ =?us-ascii?Q?AF3SbkYv3XStJ84P6EbTDWDAOaqmhD7cNfdg5HaYhS7L8jRfQa/DSK5nDmDW?=
+ =?us-ascii?Q?HWU0UARAFHqfeKfopXeMLa8FC/rO4RY45cwD8EGmFMBsQk9j+f72lDUCdvAT?=
+ =?us-ascii?Q?xACpDcsu5H9thqjYjvad1Hxe21Hi4imd0+3nlnpzTq3WisUHrPVxn1WNc8ki?=
+ =?us-ascii?Q?h/IH5mCi7ulEPjGIR0PbRx+TI26Qo6+qIUJ3oYW6d91NEjoOCXdKFB3WlQDJ?=
+ =?us-ascii?Q?TbSGhH7BifFtGyBEy1bjfWuw0XO5+/5JGOkUT3TDcD/I0UtxmHMPB8VzFIXJ?=
+ =?us-ascii?Q?Or5cjZO9oTvUjhAepeuQ9KU6ZgrQUG925G0n4PjR8got9anuYOeZ4SRdkIvz?=
+ =?us-ascii?Q?hAIH92/lCcD7Ci103/V4guTditohH+V+ZjdzEjaQ0rG8Vnwc46NDJzl70sXL?=
+ =?us-ascii?Q?wBnoVjYrRLRxJxUFIpGFh18OumPG3Nn2n6SEkrX4/WiHkV+pJOiutbbkzg+L?=
+ =?us-ascii?Q?Nq7Ia4YBIvGUtUPWftyxmNbnvwknixPyfYLlFbNFS6lWuL3luLOgsBm5Y2f2?=
+ =?us-ascii?Q?xIpwCG5v0AOzBMurn7ePLjOf5xZjw5KB+hWzg3TbheMvXp/m1N/P1jWJaGT6?=
+ =?us-ascii?Q?RZj292Pu8WA08/H1QsF1x4EFS8z8+1DzbYKpPatCFZ1ibQplQBlEJ9mXADUi?=
+ =?us-ascii?Q?Fq+0OdWcrB3fu8qSTOCLynDlMHQ5U87FZO2Vea2yDI/C8FaEmWO+nIsmpar5?=
+ =?us-ascii?Q?xqaWvTcDW1/DCNRiRjkJ4q3QUgpppXZZnhgcn9t2iiRPcIaWzwwK9DKnpwzC?=
+ =?us-ascii?Q?5tLA4kgpiNFizB3JSCE79KKA+J9x19yd4vd7NpcDLBn4Fo7LTq3jOjiyJmOE?=
+ =?us-ascii?Q?NUCJfZrZBi+D6IPZwXhhW5eg/fVHcm1FS0ria/DfWCe52+Dy4xvAV+DO7uI7?=
+ =?us-ascii?Q?J713UvCWZ0myazZ4KmFXMj1aqxtsgaBSHiCrPlDKJCSAAMXPz5+dJWbzI/sT?=
+ =?us-ascii?Q?MbIcTBv4DK/Wbwh+t14kYlhtHZYCo/P4ozoYqSHqnDNGHIWO0cE0sJsU7yef?=
+ =?us-ascii?Q?oRxAvKc=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee46c156-2693-409e-d77a-08de5a4a2632
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2026 06:39:24.8097
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR02MB10762
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211339-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211338-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[huawei.com,vger.kernel.org,kernel.org,gmail.com,chinatelecom.cn,linux.dev,hisilicon.com];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FROM_NEQ_ENVFROM(0.00)[realwujing@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhklinux@outlook.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email]
-X-Rspamd-Queue-Id: 35BB9710E1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 04BD87113A
 X-Rspamd-Action: no action
 
-During the early initialization of the hardlockup detector, the
-hardlockup_detector_perf_init() function probes for PMU hardware availability.
-It originally used hardlockup_detector_event_create(), which interacts with
-the per-cpu 'watchdog_ev' variable.
+From: Matthew Ruffell <matthew.ruffell@canonical.com> Sent: Thursday, Janua=
+ry 22, 2026 9:39 PM
+>=20
+> Hi Michael,
+>=20
+> > > I wonder if commit a41e0ab394e4 broke the initialization of screen_in=
+fo in the
+> > > kdump kernel. Or perhaps there is now a rev-lock between the kernel w=
+ith this
+> > > commit and a new version of the user space kexec command.
+>=20
+> a41e0ab394e4 isn't a mainline commit. Can you please mention the commit s=
+ubject
+> so I can have a read.
 
-If the initializing task migrates to another CPU during this probe phase,
-two issues arise:
-1. The 'watchdog_ev' pointer on the original CPU is set but not cleared,
-   leaving a stale pointer to a freed perf event.
-2. The 'watchdog_ev' pointer on the new CPU might be incorrectly cleared.
+It's this patch:
 
-This race condition was observed in console logs (captured by adding debug printks):
+https://lore.kernel.org/lkml/20251126160854.553077-5-tzimmermann@suse.de/
 
-[23.038376] hardlockup_detector_perf_init 313 cur_cpu=2
-...
-[23.076385] hardlockup_detector_event_create 203 cpu(cur)=2 set watchdog_ev
-...
-[23.095788] perf_event_release_kernel 4623 cur_cpu=2
-...
-[23.116963] lockup_detector_reconfigure 577 cur_cpu=3
+which is in linux-next, but not yet in mainline. Since you are dealing with=
+ older
+kernels, it's not the culprit.
 
-The log shows the task started on CPU 2, set watchdog_ev on CPU 2,
-released the event on CPU 2, but then migrated to CPU 3 before the
-cleanup logic (which would clear watchdog_ev) could run. This left
-watchdog_ev on CPU 2 pointing to a freed event.
+>=20
+> > > There's a parameter to the kexec() command that governs whether it us=
+es the
+> > > kexec_file_load() system call or the kexec_load() system call.
+> > > I wonder if that parameter makes a difference in the problem describe=
+d for this
+> > > patch.
+>=20
+> Yes, it does indeed make a difference. I have been debugging this the pas=
+t few
+> days, and my colleague Melissa noticed that the problem reproduces when s=
+ecure
+> boot is disabled, but it does not reproduce when secure boot is enabled.
+> Additionally, it reproduces on jammy, but not noble. It turns out that
+> kexec-tools on jammy defaults to kexec_load() when secure boot is disable=
+d,
+> and when enabled, it instead uses kexec_file_load(). On noble, it default=
+s to
+> first trying kexec_file_load() before falling back to kexec_load(), so th=
+e
+> issue does not reproduce.
 
-Later, when the watchdog is enabled/disabled on CPU 2, this stale pointer
-leads to a Use-After-Free (UAF) in perf_event_disable(), as detected by KASAN:
-[26.539140] ==================================================================
-[26.540732] BUG: KASAN: use-after-free in perf_event_ctx_lock_nested.isra.72+0x6b/0x140
-[26.542442] Read of size 8 at addr ff110006b360d718 by task kworker/2:1/94
-[26.543954]
-[26.544744] CPU: 2 PID: 94 Comm: kworker/2:1 Not tainted 4.19.90-debugkasan #11
-[26.546505] Hardware name: GoStack Foundation OpenStack Nova, BIOS 1.16.3-3.ctl3 04/01/2014
-[26.548256] Workqueue: events smp_call_on_cpu_callback
-[26.549267] Call Trace:
-[26.549936]  dump_stack+0x8b/0xbb
-[26.550731]  print_address_description+0x6a/0x270
-[26.551688]  kasan_report+0x179/0x2c0
-[26.552519]  ? perf_event_ctx_lock_nested.isra.72+0x6b/0x140
-[26.553654]  ? watchdog_disable+0x80/0x80
-[26.553657]  perf_event_ctx_lock_nested.isra.72+0x6b/0x140
-[26.556951]  ? dump_stack+0xa0/0xbb
-[26.564006]  ? watchdog_disable+0x80/0x80
-[26.564886]  perf_event_disable+0xa/0x30
-[26.565746]  hardlockup_detector_perf_disable+0x1b/0x60
-[26.566776]  watchdog_disable+0x51/0x80
-[26.567624]  softlockup_stop_fn+0x11/0x20
-[26.568499]  smp_call_on_cpu_callback+0x5b/0xb0
-[26.569443]  process_one_work+0x389/0x770
-[26.570311]  worker_thread+0x57/0x5a0
-[26.571124]  ? process_one_work+0x770/0x770
-[26.572031]  kthread+0x1ae/0x1d0
-[26.572810]  ? kthread_create_worker_on_cpu+0xc0/0xc0
-[26.573821]  ret_from_fork+0x1f/0x40
-[26.574638]
-[26.575178] Allocated by task 1:
-[26.575990]  kasan_kmalloc+0xa0/0xd0
-[26.576814]  kmem_cache_alloc_trace+0xf3/0x1e0
-[26.577732]  perf_event_alloc.part.89+0xb5/0x12b0
-[26.578700]  perf_event_create_kernel_counter+0x1e/0x1d0
-[26.579728]  hardlockup_detector_event_create+0x4e/0xc0
-[26.580744]  hardlockup_detector_perf_init+0x2f/0x60
-[26.581746]  lockup_detector_init+0x85/0xdc
-[26.582645]  kernel_init_freeable+0x34d/0x40e
-[26.583568]  kernel_init+0xf/0x130
-[26.584428]  ret_from_fork+0x1f/0x40
-[26.584429]
-[26.584430] Freed by task 0:
-[26.584433]  __kasan_slab_free+0x130/0x180
-[26.584436]  kfree+0x90/0x1a0
-[26.589641]  rcu_process_callbacks+0x2cb/0x6e0
-[26.590935]  __do_softirq+0x119/0x3a2
-[26.591965]
-[26.592630] The buggy address belongs to the object at ff110006b360d500
-[26.592630]  which belongs to the cache kmalloc-2048 of size 2048
-[26.592633] The buggy address is located 536 bytes inside of
-[26.592633]  2048-byte region [ff110006b360d500, ff110006b360dd00)
-[26.592634] The buggy address belongs to the page:
-[26.592637] page:ffd400001acd8200 count:1 mapcount:0 mapping:ff11000107c0e800 index:0x0 compound_mapcount: 0
-[26.600959] flags: 0x17ffffc0010200(slab|head)
-[26.601891] raw: 0017ffffc0010200 dead000000000100 dead000000000200 ff11000107c0e800
-[26.603541] raw: 0000000000000000 00000000800f000f 00000001ffffffff 0000000000000000
-[26.605546] page dumped because: kasan: bad access detected
-[26.606788]
-[26.607351] Memory state around the buggy address:
-[26.608556]  ff110006b360d600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[26.610565]  ff110006b360d680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[26.610567] >ff110006b360d700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[26.610568]                             ^
-[26.610570]  ff110006b360d780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[26.610573]  ff110006b360d800: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[26.618955] ==================================================================
+This is good info, and definitely a clue. So to be clear, the problem repro=
+s
+only when kexec_load() is used. With kexec_file_load(), it does not repro. =
+Is that
+right? I saw a similar distinction when working on commit 304386373007,
+though in the opposite direction!
 
-Fix this by refactoring hardlockup_detector_event_create() to return the
-created perf event instead of directly assigning it to the per-cpu variable.
-This allows the probe logic to reuse the creation code (including fallback
-logic) without affecting the global state, ensuring that task migration
-during probe no longer leaves stale pointers in 'watchdog_ev'.
+>=20
+> > > >  	/*
+> > > >  	 * Set up a region of MMIO space to use for accessing configurati=
+on
+> > > > -	 * space.
+> > > > +	 * space. Use the high MMIO range to not conflict with the hyperv=
+_drm
+> > > > +	 * driver (which normally gets MMIO from the low MMIO range) in t=
+he
+> > > > +	 * kdump kernel of a Gen2 VM, which fails to reserve the framebuf=
+fer
+> > > > +	 * MMIO range in vmbus_reserve_fb() due to screen_info.lfb_base b=
+eing
+> > > > +	 * zero in the kdump kernel.
+> > > >  	 */
+> > > > -	ret =3D vmbus_allocate_mmio(&hbus->mem_config, hbus->hdev, 0, -1,
+> > > > +	ret =3D vmbus_allocate_mmio(&hbus->mem_config, hbus->hdev, SZ_4G,=
+ -1,
+> > > >  				  PCI_CONFIG_MMIO_LENGTH, 0x1000, false);
+> > > >  	if (ret)
+> > > >  		return ret;
+> > > > --
+>=20
+> Thank you for the patch Dexuan.
+>=20
+> This patch fixes the problem on Ubuntu 5.15, and 6.8 based kernels
+> booting V6 instance types on Azure with Gen 2 images.
 
-Signed-off-by: Shouxin Sun <sunshx@chinatelecom.cn>
-Signed-off-by: Junnan Zhang <zhangjn11@chinatelecom.cn>
-Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
-Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
-Cc: Song Liu <song@kernel.org>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Wang Jinchao <wangjinchao600@gmail.com>
-Cc: <stable@vger.kernel.org>
----
-v3: Refactor creation logic to return event pointer; restores PMU cycle fallback and unifies paths.
-v2: Add Cc: <stable@vger.kernel.org>.
-v1: Avoid 'watchdog_ev' in probe path by manually creating and releasing a local perf event.
+Are you seeing the problem on x86/64 or arm64 instances in Azure?
+"V6 instance types" could be either, I think, but I'm guessing you
+are on x86/64.
 
- kernel/watchdog_perf.c | 51 ++++++++++++++++++++++++------------------
- 1 file changed, 29 insertions(+), 22 deletions(-)
+And just to confirm: are you seeing the problem with the
+Hyper-V DRM driver, or the Hyper-V FB driver? This patch mentions
+the DRM driver, so I assume that's the problematic config.
 
-diff --git a/kernel/watchdog_perf.c b/kernel/watchdog_perf.c
-index d3ca70e3c256..d045b92bc514 100644
---- a/kernel/watchdog_perf.c
-+++ b/kernel/watchdog_perf.c
-@@ -118,18 +118,11 @@ static void watchdog_overflow_callback(struct perf_event *event,
- 	watchdog_hardlockup_check(smp_processor_id(), regs);
- }
- 
--static int hardlockup_detector_event_create(void)
-+static struct perf_event *hardlockup_detector_event_create(unsigned int cpu)
- {
--	unsigned int cpu;
- 	struct perf_event_attr *wd_attr;
- 	struct perf_event *evt;
- 
--	/*
--	 * Preemption is not disabled because memory will be allocated.
--	 * Ensure CPU-locality by calling this in per-CPU kthread.
--	 */
--	WARN_ON(!is_percpu_thread());
--	cpu = raw_smp_processor_id();
- 	wd_attr = &wd_hw_attr;
- 	wd_attr->sample_period = hw_nmi_get_sample_period(watchdog_thresh);
- 
-@@ -143,14 +136,7 @@ static int hardlockup_detector_event_create(void)
- 						       watchdog_overflow_callback, NULL);
- 	}
- 
--	if (IS_ERR(evt)) {
--		pr_debug("Perf event create on CPU %d failed with %ld\n", cpu,
--			 PTR_ERR(evt));
--		return PTR_ERR(evt);
--	}
--	WARN_ONCE(this_cpu_read(watchdog_ev), "unexpected watchdog_ev leak");
--	this_cpu_write(watchdog_ev, evt);
--	return 0;
-+	return evt;
- }
- 
- /**
-@@ -159,17 +145,26 @@ static int hardlockup_detector_event_create(void)
-  */
- void watchdog_hardlockup_enable(unsigned int cpu)
- {
-+	struct perf_event *evt;
-+
- 	WARN_ON_ONCE(cpu != smp_processor_id());
- 
--	if (hardlockup_detector_event_create())
-+	evt = hardlockup_detector_event_create(cpu);
-+	if (IS_ERR(evt)) {
-+		pr_debug("Perf event create on CPU %d failed with %ld\n", cpu,
-+			 PTR_ERR(evt));
- 		return;
-+	}
- 
- 	/* use original value for check */
- 	if (!atomic_fetch_inc(&watchdog_cpus))
- 		pr_info("Enabled. Permanently consumes one hw-PMU counter.\n");
- 
-+	WARN_ONCE(this_cpu_read(watchdog_ev), "unexpected watchdog_ev leak");
-+	this_cpu_write(watchdog_ev, evt);
-+
- 	watchdog_init_timestamp();
--	perf_event_enable(this_cpu_read(watchdog_ev));
-+	perf_event_enable(evt);
- }
- 
- /**
-@@ -263,19 +258,31 @@ bool __weak __init arch_perf_nmi_is_available(void)
-  */
- int __init watchdog_hardlockup_probe(void)
- {
-+	struct perf_event *evt;
-+	unsigned int cpu;
- 	int ret;
- 
- 	if (!arch_perf_nmi_is_available())
- 		return -ENODEV;
- 
--	ret = hardlockup_detector_event_create();
-+	if (!hw_nmi_get_sample_period(watchdog_thresh))
-+		return -EINVAL;
- 
--	if (ret) {
-+	/*
-+	 * Test hardware PMU availability by creating a temporary perf event.
-+	 * Allow migration during the check as any successfully created per-cpu
-+	 * event validates PMU support. The event is released immediately.
-+	 */
-+	cpu = raw_smp_processor_id();
-+	evt = hardlockup_detector_event_create(cpu);
-+	if (IS_ERR(evt)) {
- 		pr_info("Perf NMI watchdog permanently disabled\n");
-+		ret = PTR_ERR(evt);
- 	} else {
--		perf_event_release_kernel(this_cpu_read(watchdog_ev));
--		this_cpu_write(watchdog_ev, NULL);
-+		perf_event_release_kernel(evt);
-+		ret = 0;
- 	}
-+
- 	return ret;
- }
- 
--- 
-2.51.0
+>=20
+> Tested-by: Matthew Ruffell <matthew.ruffell@canonical.com>
 
+While this patch may solve the observed problem, I'm interested in
+understanding the root cause of why vmbus_reserve_fb() is seeing
+screen_info.lfb_base set to zero. It may be next week before I can
+take a look, and I may need follow up with you on more details of the
+scenario to reproduce the problem.
+
+Michael
 
