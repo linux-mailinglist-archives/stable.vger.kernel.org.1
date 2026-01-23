@@ -1,259 +1,207 @@
-Return-Path: <stable+bounces-211423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8H0hKrLTc2kCywAAu9opvQ
-	(envelope-from <stable+bounces-211423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 21:01:54 +0100
+	id cM/5AtrTc2kCywAAu9opvQ
+	(envelope-from <stable+bounces-211424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 21:02:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957967A716
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 21:01:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 426E47A731
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 21:02:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 86174300611F
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 20:01:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E74653034652
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 20:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50682D1F6B;
-	Fri, 23 Jan 2026 20:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E8021146C;
+	Fri, 23 Jan 2026 20:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Q/aXxdvL";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="jD6rY27B"
+	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="dlboqyds"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F96E2C08C8
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 20:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397E03D6F
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 20:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769198512; cv=none; b=UldzJYURHnq+KVGvbaChD5Eg2osYLZAmmbWiASNSLtzSk9K64gM78we2hU0ZLXesIRUcHZXhByWBU7tHNEuW/OlDbGvmJdX1JXFF2MXrBveKi0us4ZSn1Z9CTUzbDUUW/I3Wh+jxCUASiagUO4j9D2AGd4gVyW5QWfFv0Truoeo=
+	t=1769198550; cv=none; b=MD06ovb4cIcBW6aAprqISrBkXtIsMXQb798Y7oSCZLOi9h9OIR9NGUpFmbkgHxqbNsYDNPe5tmYQ4+YNk+IN5t6+U3ObKYFEZEu7btp2+g/DODjRnS5jvvFkom0P4OGJmPVRpRN7lLT2/kfY9DXCrUCcUpB4rFNBFJAB/OnN/OM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769198512; c=relaxed/simple;
-	bh=HQa1dso7aP6z1fQza2zERoT8P4/7FVAFQTUB4DDEfNk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ANXpQbAcCOYwtEqGW8sHPL47JVhxSgIw6wDAas3mjJF4CuG4uuRVrFyXNBjeGMOjkm8pIhy6jJB7vW/vtxrYeb8colBhIRvouMSgBqV1KyLJDfM0+azsZ8szYk0c4PzxsTKCbdamuRmyXAjtKl0gpGqQN9E06fDzuV7Lin6UuYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Q/aXxdvL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=jD6rY27B; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60NF8iKO1267935
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 20:01:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	QO9fOs8BxvQ8WpaH5XwHVqxgxLsb6bKPzQB3chuzJo8=; b=Q/aXxdvLjMTLlE9d
-	kRx0SHYqzDN/ae+5dN1EyvqWKDmhRwLqFBzhQ1mpFPaL3ZmIZxk35Q+pSFJBQ/50
-	Bh+Bw4XLihxybVZhIY9/CEEMjZgnWtBVRrLR3hnh7GJ/+ezTI3dbb/ds0Eeqc2/c
-	gQW5k1rJ+aUX7bjRAvAZioZTVlaEZUfPLqsHJcms0WiPnFveMWo7XNCr22Mq/5Gu
-	knlqRXD3ayxkgtRneu+OR9vuKOGj2ZU33Qe6EFSGoCcKf5CldpfLj3+gCSymcZUj
-	Rej92BH17KxXZxiIJhLtofIzDzPeB5xN6E6mf4MzY8iMr9ZSNgniLMrkfB+pSqV2
-	V/41Jw==
-Received: from mail-vk1-f198.google.com (mail-vk1-f198.google.com [209.85.221.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bv4v9ae5r-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 20:01:49 +0000 (GMT)
-Received: by mail-vk1-f198.google.com with SMTP id 71dfb90a1353d-56637f625f2so1525190e0c.0
-        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 12:01:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769198509; x=1769803309; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QO9fOs8BxvQ8WpaH5XwHVqxgxLsb6bKPzQB3chuzJo8=;
-        b=jD6rY27BiR90DNSj1pLFBPqogF9XYfYGYEC+84cxpi5jKPKneB9iFl10SHoy3JUO4T
-         wtSv4t5cRApGDbAlBxkZ2PM2+yfPL6mx9gBrFHAK29AwP5smrrbESPFYpkezEUtx/R0y
-         PbDfSoHqVXRR0cjL9NrCkVFnoGR4GX/2SJHM4gI/cjsR6wJG9OJdcZyWEgVYQn7ObGUR
-         kHNDJM+VOyEjZtbNtg1Vut5Fsb64jKeCcf8Qj7bzXqWhn5GxiSsfSSYG4F+G3uF5Qb9H
-         D6kolyX2uCkwA6TkqjE4x3oTHYo2fKIvmev0WD+rk/eK+A7zlTlJ62dmmVsgZhhzhSOX
-         iSgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769198509; x=1769803309;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QO9fOs8BxvQ8WpaH5XwHVqxgxLsb6bKPzQB3chuzJo8=;
-        b=jUCFTXc8++ETuBxkRN1cPep7++c8CQ3IL5XzZp/YMoHarzVawPK7lxKqbfxXYF1mCT
-         sBtAvRfzX3K7CcVmW67Na0DvlkfkyWAdmDPDAroXJ0PnMC3uyPX1ZFVTci8eO7V6ANfM
-         +YyrzIeJ9kyF/TdusUzzB/wzqzbUZUkUZiv18wLNpkeLJ+CassiLJZhFhAhkWvNx5BO7
-         vGTQq2Yf7At/ToiEuqW7rFyZyTQRmik23mTlaa0jHZcVVJac0oO1ouoHAUEffS39oTWt
-         O5VIVEACKhYSXyHUQhW2AOf3UPsi7bsNz/4p8LwJ9cLMpzDJS8aar/Koy+AfgZoU3wqU
-         jBsg==
-X-Forwarded-Encrypted: i=1; AJvYcCU0O22D6TKxNxfQ8FEXoF1wD11U8ixvwKxK140NphvX++j27KHKDwzDF/RGpKgqvEjrPO81UeM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySm5QaGf+26x+C7wLu6xGAk5/UvgT3E/cm6bPvd+FPZ8YyuSel
-	FuPzt69365xiiL8p0m/sAQFIQWoJfewdAHFZUs2KYTnt0S/UaHSKJE21kiTFHxPpLOk2dr5ZdQm
-	2wIurKc33E8IM1oq63lK6AwIo87HoUpfAgo8Rb8GYOzIiwJ8E5f/nRnGhW+c=
-X-Gm-Gg: AZuq6aK/bwkUizdII7LihAPY1JNSDrr2DXI6G30lrJQjthWP5LEA5Wr5c0Ir9DlPGZZ
-	9lPhoGo49lNyrBfQ8XrsbAx0QzktSjdBab5ZLD2zehT6egFK2peYsmBC57hwXUhtc2JwTGJ0T8H
-	UzfozR3C4vr/3BWgwjMGINqAej2R4dcbvJ+iLhL7Yp77h40mGwdLaGMs9KP7pKiLNR9kTDUiy1Q
-	x1pRkOT6quFoJsjU4RStRPXFC1FIdsijAZqrc6It2DdOWO93oeFl0KQJkGu8sNLCNHL2vRmTfJH
-	o/zTgV3setFqbdSBlGH2JNTUSJbb5ZtoeWB1M29wfMdNUTW8a+PpVDcrTjScNmOR1Kw5tdkFWpY
-	GfufwHQOhRBGho5NC7lUAS96Ols2u0tXVRhTRpnHEmKmUxV7Pv4BRRW40jNLRvRezot5H9OHXna
-	yN4ZsEKhvoxceoy6VI8GaXPcY=
-X-Received: by 2002:a05:6122:62b1:b0:55b:305b:4e2d with SMTP id 71dfb90a1353d-5663ebbd2b8mr1282009e0c.20.1769198507022;
-        Fri, 23 Jan 2026 12:01:47 -0800 (PST)
-X-Received: by 2002:a05:6122:62b1:b0:55b:305b:4e2d with SMTP id 71dfb90a1353d-5663ebbd2b8mr1281497e0c.20.1769198503280;
-        Fri, 23 Jan 2026 12:01:43 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-385d9faed52sm7868411fa.2.2026.01.23.12.01.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 12:01:42 -0800 (PST)
-Date: Fri, 23 Jan 2026 22:01:40 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Rob Clark <rob.clark@oss.qualcomm.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Johan Hovold <johan@kernel.org>, Sean Paul <sean@poorly.run>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Subject: Re: [PATCH] drm/msm/a6xx: fix bogus hwcg register updates
-Message-ID: <gofqva7heojs5d7hi2naihqlpkfttjocdazdg4yjqrkeqew5tw@bp57c7rvycpa>
-References: <20251221164552.19990-1-johan@kernel.org>
- <aWdaLF_A5fghNZhN@hovoldconsulting.com>
- <aXDt6v_iO4EFCqyw@hovoldconsulting.com>
- <CACSVV039g9CcAKhtMAwn=hH4hMT2nV77vxiasgUSFF-sn=+JgA@mail.gmail.com>
- <aXHwrnMS2aj_PYRj@hovoldconsulting.com>
- <CACSVV00vk95aYZPrVThoAnHzBUsCHXxnSoEHJNaoLdyJJBOZzw@mail.gmail.com>
+	s=arc-20240116; t=1769198550; c=relaxed/simple;
+	bh=0z92upF8xKOU/HaMYE1ZBiOd5Xi6AXhQNsyh8EwnhFU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=c7njCqJdByzOeGbvSgjseE56pXETR1TQFH5pz1yIc65o77b5/rYdjUgqX70KN/tofeNsN9J+cGwo9jUiaLw6rSDODph/d7ljFoX0gGoBIYZRlna+P4TgB+8kdAemXRgJYLgVRFXaeFNFA+9IaWxaYyGrjNrQ6lN9UdqbdzZW1w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=dlboqyds; arc=none smtp.client-ip=91.218.175.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACSVV00vk95aYZPrVThoAnHzBUsCHXxnSoEHJNaoLdyJJBOZzw@mail.gmail.com>
-X-Proofpoint-GUID: h4Ggf7ADWYFnqBEFFVUd9Jr7ivvNdkYh
-X-Proofpoint-ORIG-GUID: h4Ggf7ADWYFnqBEFFVUd9Jr7ivvNdkYh
-X-Authority-Analysis: v=2.4 cv=H7TWAuYi c=1 sm=1 tr=0 ts=6973d3ad cx=c_pps
- a=1Os3MKEOqt8YzSjcPV0cFA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=Ifu46aO8IFbR1bL56rwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=hhpmQAJR8DioWGSBphRh:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTIzMDE1MyBTYWx0ZWRfX8NcNZ+dMowSV
- +iD9FR1YKWFG7RCIOqrczTcNQaH10ISlxxp/xglIIjTxJrucggYqX0DfDMXVXnIRSVI9+1VNFPz
- wNN0yvLfRw4r0uM6YQ8aIxfb1q0jONurmrJ8QvvAzJi94ZUIcIFUCzToByBPCsyiImMRVdGEEQd
- 5mZnVftBJhBMQoiLW+dUfRDigHXegN7q8IYbX44bGigjxXCQbgPWD0krMJ277mWbOwe4Sy++qiJ
- RPkKa4M8DK5sB3Kvv5/wbPVxF0mdhmFK35HF4hrDfuT0UTx++e9/xCBcUKS7fMeDQ7iVPRAnQwi
- 0Uw9GwX62N4aGouOIhB5aGqsCzTdLhOQ2OlgFlW5OO3r7b/IL8IiKPG6XqvSmXslMHM0kfnvj2Y
- AdMj+9yiG8t//IT+vxLL+osYHIeHn6kjWrVz5B4njf5Fc5iVcpKgfNF+23jfxVtMRBT9PqbXps/
- bFrxsI1RJCMnsbSYCIQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-23_03,2026-01-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- lowpriorityscore=0 suspectscore=0 bulkscore=0 clxscore=1015 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2601230153
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow-tech.com;
+	s=key1; t=1769198542;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZZ1FOsHm/vGJer214zga1vzlRDmrTUC/1ttgjjuK9w4=;
+	b=dlboqydsKNghsrFWuPNRagiwi1t7kf6ZpeRDUYxpBOt5Bgm7i7dDMVbYEEIX5+Qjbu4zCY
+	Q3IcOju9We+KxQMeUxju3nidaGOXnZaCxjudffnb9viEsM4n5SMUxSpSmF9jhl/O7UzMrq
+	iO0N5qPRjJ0CUov460DoNxN9VPe7gerLszUgtU9fQ7ZcbAiPggSE0p+ws73LzRm3/9UFWP
+	vgpdRko+lhzXbFBi4D1At7e3AzWszyAjJ19GF+h90twaJh9MVqV3U6D1LmlNkinlPuFk+z
+	S5XJWTt3pdUBIn1eRSlcI0sXiQX7MFhhKhS6/ad4C3w85Y0Udd67CxOpp4LhEQ==
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 23 Jan 2026 21:02:19 +0100
+Message-Id: <DFW8JGOI41QK.2AFPP8SSK8TH1@cknow-tech.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Diederik de Haas" <diederik@cknow-tech.com>
+To: "Robin Murphy" <robin.murphy@arm.com>, "Bartosz Golaszewski"
+ <brgl@kernel.org>, "Sebastian Reichel" <sebastian.reichel@collabora.com>
+Cc: "Bartosz Golaszewski" <bartosz.golaszewski@oss.qualcomm.com>, "Linus
+ Walleij" <linusw@kernel.org>, "Heiko Stuebner" <heiko@sntech.de>,
+ <linux-gpio@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-rockchip@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+ <stable@vger.kernel.org>, "Marek Szyprowski" <m.szyprowski@samsung.com>
+Subject: Re: [PATCH] gpio: rockchip: mark the GPIO controller as sleeping
+References: <20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com>
+ <aWGSQYCXP4R08koQ@venus>
+ <CAMRc=Mf0tRxRrh7tn5OaDn3a47N_qvUcjO=zqbTi-GhY-Y9hOg@mail.gmail.com>
+ <447e8d5a-916b-4d58-b39c-3467c152379c@arm.com>
+In-Reply-To: <447e8d5a-916b-4d58-b39c-3467c152379c@arm.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[cknow-tech.com,quarantine];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[cknow-tech.com:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211423-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,poorly.run,oss.qualcomm.com,linux.dev,gmail.com,somainline.org,vger.kernel.org,lists.freedesktop.org,ffwll.ch];
+	TAGGED_FROM(0.00)[bounces-211424-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[cknow-tech.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.984];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FROM_NEQ_ENVFROM(0.00)[diederik@cknow-tech.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 957967A716
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 426E47A731
 X-Rspamd-Action: no action
 
-On Thu, Jan 22, 2026 at 06:48:58AM -0800, Rob Clark wrote:
-> On Thu, Jan 22, 2026 at 1:41 AM Johan Hovold <johan@kernel.org> wrote:
-> >
-> > [ +CC: Dave and Simona ]
-> >
-> > On Wed, Jan 21, 2026 at 08:59:51AM -0800, Rob Clark wrote:
-> > > On Wed, Jan 21, 2026 at 7:17 AM Johan Hovold <johan@kernel.org> wrote:
-> > > >
-> > > > On Wed, Jan 14, 2026 at 09:56:12AM +0100, Johan Hovold wrote:
-> > > > > On Sun, Dec 21, 2025 at 05:45:52PM +0100, Johan Hovold wrote:
-> > > > > > The hw clock gating register sequence consists of register value pairs
-> > > > > > that are written to the GPU during initialisation.
-> > > > > >
-> > > > > > The a690 hwcg sequence has two GMU registers in it that used to amount
-> > > > > > to random writes in the GPU mapping, but since commit 188db3d7fe66
-> > > > > > ("drm/msm/a6xx: Rebase GMU register offsets") they trigger a fault as
-> > > > > > the updated offsets now lie outside the mapping. This in turn breaks
-> > > > > > boot of machines like the Lenovo ThinkPad X13s.
-> > > > > >
-> > > > > > Note that the updates of these GMU registers is already taken care of
-> > > > > > properly since commit 40c297eb245b ("drm/msm/a6xx: Set GMU CGC
-> > > > > > properties on a6xx too"), but for some reason these two entries were
-> > > > > > left in the table.
-> > > > > >
-> > > > > > Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support")
-> > > > > > Cc: stable@vger.kernel.org  # 6.5
-> > > > > > Cc: Bjorn Andersson <andersson@kernel.org>
-> > > > > > Cc: Konrad Dybcio <konradybcio@kernel.org>
-> > > > > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > > > > ---
-> > > > >
-> > > > > This one does not seem to have been applied yet despite fixing a
-> > > > > critical regression in 6.19-rc1. I guess I could have highlighted that
-> > > > > further by also including:
-> > > > >
-> > > > > Fixes: 188db3d7fe66 ("drm/msm/a6xx: Rebase GMU register offsets")
-> > > > >
-> > > > > I realise some delays are expected around Christmas, but can you please
-> > > > > try to get this fix to Linus now that everyone should be back again?
-> > > >
-> > > > I haven't received any reply so was going to send another reminder, but
-> > > > I noticed now that this patch was merged to the msm-next branch last
-> > > > week.
-> > > >
-> > > > Since it fixes a regression in 6.19-rc1 it needs to go to Linus this
-> > > > cycle and I would have assumed it should have be merged to msm-fixes.
-> > > >
-> > > > (MSM) DRM works in mysterious ways, so can someone please confirm that
-> > > > this regression fix is heading into mainline for 6.19-final?
-> > >
-> > > Sorry, mesa 26.0 branchpoint this week so I've not had much time for
-> > > kernel for last few weeks and didn't have time for a 2nd msm-fixes PR.
-> > > But with fixes/cc tags it should be picked into 6.19.y
-> >
-> > I'm afraid that's not good enough as this is a *regression* breaking the
-> > display completely on machines like the X13s.
-> >
-> > Regression fixes should go to mainline this cycle since we don't
-> > knowingly break users' setups (and force them to debug/bisect when they
-> > update to 6.19 while the fix has been available since before Christmas).
-> >
-> > Can't you just send a PR with this single fix? Otherwise, perhaps Dave
-> > or Simona can pick up the fix directly?
-> 
-> Maybe someone can cherry-pick to drm-misc-fixes?
+On Fri Jan 23, 2026 at 2:27 PM CET, Robin Murphy wrote:
+> On 2026-01-12 9:08 am, Bartosz Golaszewski wrote:
+>> On Sat, Jan 10, 2026 at 12:55=E2=80=AFAM Sebastian Reichel
+>> <sebastian.reichel@collabora.com> wrote:
+>>> On Tue, Jan 06, 2026 at 10:00:11AM +0100, Bartosz Golaszewski wrote:
+>>>> The GPIO controller is configured as non-sleeping but it uses generic
+>>>> pinctrl helpers which use a mutex for synchronization.
+>>>>
+>>>> This can cause the following lockdep splat with shared GPIOs enabled o=
+n
+>>>> boards which have multiple devices using the same GPIO:
+>>>>
+>>=20
+>> [snip]
+>>=20
+>>>>
+>>>> Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
+>>>> Cc: stable@vger.kernel.org
+>>>> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+>>>> Closes: https://lore.kernel.org/all/d035fc29-3b03-4cd6-b8ec-001f93540b=
+c6@samsung.com/
+>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.c=
+om>
+>>>> ---
+>>>>   drivers/gpio/gpio-rockchip.c | 1 +
+>>>>   1 file changed, 1 insertion(+)
+>>>>
+>>>> diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip=
+.c
+>>>> index 47174eb3ba76..bae2061f15fc 100644
+>>>> --- a/drivers/gpio/gpio-rockchip.c
+>>>> +++ b/drivers/gpio/gpio-rockchip.c
+>>>> @@ -593,6 +593,7 @@ static int rockchip_gpiolib_register(struct rockch=
+ip_pin_bank *bank)
+>>>>        gc->ngpio =3D bank->nr_pins;
+>>>>        gc->label =3D bank->name;
+>>>>        gc->parent =3D bank->dev;
+>>>> +     gc->can_sleep =3D true;
+>>>
+>>> This means all operations are marked as can_sleep, even though
+>>> pinctrl operations are only used for the direction setting.
+>>> I.e. the common get/set operations always worked in atomic mode,
+>>> but now complain. See for example:
+>>>
+>>> https://lore.kernel.org/all/20260108-media-synopsys-hdmirx-fix-gpio-can=
+sleep-v1-1-3570518d8bab@kernel.org/
+>>>
+>>> It's not a big issue for the hdmirx driver specifically, but I wonder
+>>> how many more (less often tested) rockchip drivers use GPIOs from their
+>>> IRQ handler.
+>
+> Yeah, seems this finally reached my distro kernel and now the kernel log=
+=20
+> on one of my boards is totally flooded from gpio_ir_recv_irq()=20
+> (legitimately) calling gpio_get_value()... that's not really OK :/
 
-I know that there is some process for cherry-picking into
-drm-misc-fixes, but I think the end result was frowned upon. Neil?
+Yeah, I'm getting it too on several of my boards, like on Rock64:
+https://paste.sr.ht/~diederik/154c5023a3a50d77f1da2195e7bb9a96f6a88555
+(that's just a fraction as dmesg ran out of its buffer ...)
+Also mentioned here:
+https://lore.kernel.org/all/DFOEGOTI1AQ9.175GP7V1VK1XU@cknow-tech.com/
 
--- 
-With best wishes
-Dmitry
+Diederik
+
+>
+> Thanks,
+> Robin.
+>
+>>> Considering setting or getting the GPIO from atomic context is much
+>>> more common than changing the direction - is there some way to
+>>> describe the sleep behavior in a more specific way in the GPIO
+>>> controller?
+>>>
+>>=20
+>> No, there's no such switch at the moment. This is because there are
+>> paths that we can take, where we *do* end up setting direction from
+>> gpiod_set_value(). For instance:
+>>=20
+>> gpiod_set_value()
+>>    gpiod_set_value_nocheck()
+>>      gpio_set_open_drain_value_commit()
+>>        gpiochip_direction_output()
+>>=20
+>> I'm afraid, for correctness, it has to be either sleeping, or not. I
+>> would love - at some point - to make pinctrl mostly lockless with
+>> SRCU, like we did with GPIO. That would solve this issue correctly.
+>> But until then, I'm afraid we need to keep a chip-global switch for
+>> sleeping.
+>>=20
+>> Bartosz
+>>=20
+>> _______________________________________________
+>> Linux-rockchip mailing list
+>> Linux-rockchip@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/linux-rockchip
+>
+>
+> _______________________________________________
+> Linux-rockchip mailing list
+> Linux-rockchip@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-rockchip
+
 
