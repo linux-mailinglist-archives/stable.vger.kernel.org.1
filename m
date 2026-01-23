@@ -1,200 +1,175 @@
-Return-Path: <stable+bounces-211340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GPrHuMac2mwsAAAu9opvQ
-	(envelope-from <stable+bounces-211340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:53:23 +0100
+	id 2PqlIoMdc2ngsQAAu9opvQ
+	(envelope-from <stable+bounces-211342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 08:04:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B02712D0
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 07:53:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 001A9715FC
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 08:04:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 768E43009532
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 06:53:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2E4E305E31E
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 06:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73273334C34;
-	Fri, 23 Jan 2026 06:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EDE338911;
+	Fri, 23 Jan 2026 06:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="TwaNSJ22";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="SNEpdW+c"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="tNF99gqV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from n169-113.mail.139.com (n169-113.mail.139.com [120.232.169.113])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97496306B0A
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 06:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED0433FE27;
+	Fri, 23 Jan 2026 06:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769151194; cv=none; b=duI088Mjt8SRWRPbIWZ2CvgUz5S54hScbuv8Ork5mgGErUjF3o0Iqz2XRgiF/mhlDXr5HIPXuQVvk/Kk0oYKyp6NyF+28mTy8f7HZuol3A2zPjHgzUmjB9GbUU8ka20kaHWhOqAOI/nmH2Tv2Ze/Qb6G7fIKe+GxcaI/oAsUm88=
+	t=1769151483; cv=none; b=VY1G9JUGih/nx7ro5ZB2+aLj7HLXKiacOMT58mXBy4odNxO0kiFi/TUJELA/NU9/f5jrDy4irPUQMHck9fnsjvk4za8MBw4iNxdCtv7+aKQAI6OUepC+KG7t6Xxpdnx1V4ILv3jIcLjSahHEvAC/u5zMvsHvRpGqm87i13QDuRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769151194; c=relaxed/simple;
-	bh=2dxN373nd33A36HYKm5zAqxbXMPp7koH+IgdNry5g9s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Qn6OnCXZbpJ0SMIdqYRP7uaAUjScRd/wYX0HN2+vUyqzySCYMAGrzjHAUFFs5X4wRALQ1m3o5pp9CauXoapnlrzs2oSPPMVZ6PKv8Xu7x7BWXGacedGZbCXKHetCtct5AD2zWjDRk99hEDq/Dmlgi+IN+zlwUbEqhHaV6ISh2Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=TwaNSJ22; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=SNEpdW+c; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5590D5BCC7;
-	Fri, 23 Jan 2026 06:53:09 +0000 (UTC)
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769151189; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N3DPRc87aFtnpwc8583i8li1YmCTDsn4GBRi/xoPavM=;
-	b=TwaNSJ22lUVkujoTIcvlmVUlFpzLKghPixm3xazahkIhiI/v4TrTd+WtWioUyaylUhhp7T
-	FRbngh8djjheSnvOCQ6NZhq46zfaMkyu/7bpHDVUruTcSaryiQM9w+Ug1fc7wqbN7O6Mrp
-	E6bNPUFcj3w4jWxip5wq5q8xY6i26Ls=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769151189;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N3DPRc87aFtnpwc8583i8li1YmCTDsn4GBRi/xoPavM=;
-	b=SNEpdW+ctprfZkkprEqg/5KnB8JO8nS631UuFA1jSQ0f0vyJgC0E2/s9y3iaX05lqkGrNb
-	bJ9qxNkxCKfWBwCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 277A7139E8;
-	Fri, 23 Jan 2026 06:53:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0O5fCdUac2k4YgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 23 Jan 2026 06:53:09 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-Date: Fri, 23 Jan 2026 07:52:39 +0100
-Subject: [PATCH v4 01/22] mm/slab: add rcu_barrier() to
- kvfree_rcu_barrier_on_cache()
+	s=arc-20240116; t=1769151483; c=relaxed/simple;
+	bh=BR7+cfJEaBNBYHwMCXGwidYW7SMy5OOv9HfA+Plaiok=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ku+hy3nyrBpc3QvvPaqpL615EcSNqEs25SwIpaJzk8RozTgSJNzeCmym2qjZ3OZgnQcS+YS7WJKGJT6cKFa49cpmc5Z1mMht+QGutcjWUys7Uo4fnSTuziwXSCU+Udi+M4zhMtMYi+0mGfzblmdBua77dWQ8vJwAgqvmTTg+Rtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=tNF99gqV; arc=none smtp.client-ip=120.232.169.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=tNF99gqV7Ead5GG0tXIcuitu6lPBiSKpU+UVEf0L3q3CShaUVn58h76+wWj84ok1aMv5xRGXRfNeZ
+	 zJ/CiyUITbHQgbfrMcyLraYJ0ih+9Ds9zyFBEGOadadE9I//yDOEhGOChYP3rM2QHUh+ErjnWydBvR
+	 ceVyNeFSFXNRTtbQ=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-32-12046 (RichMail) with SMTP id 2f0e69731be8c88-01caf;
+	Fri, 23 Jan 2026 14:57:46 +0800 (CST)
+X-RM-TRANSID:2f0e69731be8c88-01caf
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	kubik.bartlomiej@gmail.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	khalid@kernel.org,
+	almaz.alexandrovich@paragon-software.com,
+	ntfs3@lists.linux.dev
+Subject: [PATCH 6.6.y] fs/ntfs3: Initialize allocated memory before use
+Date: Fri, 23 Jan 2026 14:57:53 +0800
+Message-Id: <20260123065753.4067735-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-sheaves-for-all-v4-1-041323d506f7@suse.cz>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
-In-Reply-To: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
-To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
- Uladzislau Rezki <urezki@gmail.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Suren Baghdasaryan <surenb@google.com>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
- bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
- Vlastimil Babka <vbabka@suse.cz>, kernel test robot <oliver.sang@intel.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211340-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linux.dev,linux-foundation.org,gmail.com,oracle.com,google.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,suse.cz,intel.com];
-	DMARC_NA(0.00)[suse.cz];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vbabka@suse.cz,stable@vger.kernel.org];
+	DMARC_NA(0.00)[139.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-211342-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[139.com];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.cz:email,suse.cz:dkim,suse.cz:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: D0B02712D0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,paragon-software.com:email,139.com:mid,139.com:email]
+X-Rspamd-Queue-Id: 001A9715FC
 X-Rspamd-Action: no action
 
-After we submit the rcu_free sheaves to call_rcu() we need to make sure
-the rcu callbacks complete. kvfree_rcu_barrier() does that via
-flush_all_rcu_sheaves() but kvfree_rcu_barrier_on_cache() doesn't. Fix
-that.
+From: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
 
-This currently causes no issues because the caches with sheaves we have
-are never destroyed. The problem flagged by kernel test robot was
-reported for a patch that enables sheaves for (almost) all caches, and
-occurred only with CONFIG_KASAN. Harry Yoo found the root cause [1]:
+[ Upstream commit a8a3ca23bbd9d849308a7921a049330dc6c91398 ]
 
-  It turns out the object freed by sheaf_flush_unused() was in KASAN
-  percpu quarantine list (confirmed by dumping the list) by the time
-  __kmem_cache_shutdown() returns an error.
+KMSAN reports: Multiple uninitialized values detected:
 
-  Quarantined objects are supposed to be flushed by kasan_cache_shutdown(),
-  but things go wrong if the rcu callback (rcu_free_sheaf_nobarn()) is
-  processed after kasan_cache_shutdown() finishes.
+- KMSAN: uninit-value in ntfs_read_hdr (3)
+- KMSAN: uninit-value in bcmp (3)
 
-  That's why rcu_barrier() in __kmem_cache_shutdown() didn't help,
-  because it's called after kasan_cache_shutdown().
+Memory is allocated by __getname(), which is a wrapper for
+kmem_cache_alloc(). This memory is used before being properly
+cleared. Change kmem_cache_alloc() to kmem_cache_zalloc() to
+properly allocate and clear memory before use.
 
-  Calling rcu_barrier() in kvfree_rcu_barrier_on_cache() guarantees
-  that it'll be added to the quarantine list before kasan_cache_shutdown()
-  is called. So it's a valid fix!
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
+Tested-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
+Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=332bd4e9d148f11a87dc
 
-[1] https://lore.kernel.org/all/aWd6f3jERlrB5yeF@hyeyoo/
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
+Tested-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
+Reported-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0399100e525dd9696764
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202601121442.c530bed3-lkp@intel.com
-Fixes: 0f35040de593 ("mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction")
-Cc: stable@vger.kernel.org
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Tested-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Khalid Aziz <khalid@kernel.org>
+Signed-off-by: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
 ---
- mm/slab_common.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/ntfs3/inode.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index eed7ea556cb1..ee994ec7f251 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -2133,8 +2133,11 @@ EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
-  */
- void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
- {
--	if (s->cpu_sheaves)
-+	if (s->cpu_sheaves) {
- 		flush_rcu_sheaves_on_cache(s);
-+		rcu_barrier();
-+	}
-+
- 	/*
- 	 * TODO: Introduce a version of __kvfree_rcu_barrier() that works
- 	 * on a specific slab cache.
-
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 76326299ba36..ce381eafd084 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1327,7 +1327,7 @@ struct inode *ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
+ 		fa |= FILE_ATTRIBUTE_READONLY;
+ 
+ 	/* Allocate PATH_MAX bytes. */
+-	new_de = __getname();
++	new_de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
+ 	if (!new_de) {
+ 		err = -ENOMEM;
+ 		goto out1;
+@@ -1756,10 +1756,9 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
+ 	struct NTFS_DE *de;
+ 
+ 	/* Allocate PATH_MAX bytes. */
+-	de = __getname();
++	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
+ 	if (!de)
+ 		return -ENOMEM;
+-	memset(de, 0, PATH_MAX);
+ 
+ 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
+ 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
+@@ -1795,7 +1794,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
+ 		return -EINVAL;
+ 
+ 	/* Allocate PATH_MAX bytes. */
+-	de = __getname();
++	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
+ 	if (!de)
+ 		return -ENOMEM;
+ 
 -- 
-2.52.0
+2.34.1
+
 
 
