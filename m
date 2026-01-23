@@ -1,64 +1,90 @@
-Return-Path: <stable+bounces-211330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211331-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QO/KHknucmksrQAAu9opvQ
-	(envelope-from <stable+bounces-211330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 04:43:05 +0100
+	id OKV0OpHxcmlrrQAAu9opvQ
+	(envelope-from <stable+bounces-211331-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 04:57:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09E3870291
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 04:43:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 619B470363
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 04:57:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED0A13019128
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 03:43:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 566E23013B45
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 03:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE7D30C621;
-	Fri, 23 Jan 2026 03:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB58231D366;
+	Fri, 23 Jan 2026 03:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="X8pyUFqq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mEg3H/Jc"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EDC38735E;
-	Fri, 23 Jan 2026 03:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5FB38B9B7
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 03:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769139775; cv=none; b=tpJZz0Uh2Yt5tJ09nWjFVPuSr3QCt6NK87/cg51TRclW1GAnXgTwsH3RhBxdXrgaZ3w8TtgG3IZVao/sqOe6AhYSNc9n6t/pXaj+HmYjehC9CQyo3c5XTgLD0IPHePPpx5iouufCFMTss/Ead+yg7MTaJVQep5SslqdP8AEMK60=
+	t=1769140620; cv=none; b=B8Q4g9yzlvDR8m/bmJxFLtPPFEKsRygu3bkVEyp0x80YYJclofA1y8cpFwZX//4+EkWX0yGQ9cnJd7Q0qeKizSQAt/c7iw33ltnn/V7VIlHVUQNnmW6AoPm2wVBDZ4ol+SgnBJ7wgbV2uuZ7BeIN5AcNnqVZnkDzfZpjPU6lvrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769139775; c=relaxed/simple;
-	bh=l0hODGY4ssr5Uin5t6zv70ci6q4NEQFy1RW6FUFNnAQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c9Okts4jE68eJI0TVpkdABlLw87Xjw3VzQEAEm1R93tv9gZmTZEX96fAC80wn5HiJ0a60M9obmx03myH2DxPiKDlodJF6/JNkSWLGsavjbC0BaBm2onV4tIgLui4exY1JxBb0isAR1OGveT7xh9doee3bvWni4OGfcVVVD7huLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=X8pyUFqq; arc=none smtp.client-ip=120.232.169.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1769140620; c=relaxed/simple;
+	bh=9IkWk7ZurIDOgZSoVU/ErgeaZNfgE62rKwgWKZ2gMQ8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mVWSL3h4iMrjGECc5xBGXRO2lCnM51vXPvCLW/HdCIs0T1beb7r91atsVPxbPJ+gyZTIKp4buo1atCjdLD/33plKir2qSef1WbL7zzRB7i/1AtbPqvUqBehuQ08kpzqRu5ZnhQqnH0XULAN3XDrDOj3Nj1s8Sfd/phn11a65tVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mEg3H/Jc; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8230c2d3128so618502b3a.0
+        for <stable@vger.kernel.org>; Thu, 22 Jan 2026 19:56:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=X8pyUFqq+r+JETfd7dg2LmuX9VDRZCxcQMOYDc9kl6Xqncg6JWygXlGtzfBkeK9jjJkIPnSI/hTgf
-	 2bmnJKAHKB5c76xifA1+YqoO4b1tC08skQcDj1GTsdhvCerMqtdNaU13mcpYHAVPm+aSHBvXoFVlIZ
-	 RqpBY+iKXr8QdN5k=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-13-12002 (RichMail) with SMTP id 2ee26972ee24ea7-01ed3;
-	Fri, 23 Jan 2026 11:42:31 +0800 (CST)
-X-RM-TRANSID:2ee26972ee24ea7-01ed3
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	kubik.bartlomiej@gmail.com
-Cc: patches@lists.linux.dev,
+        d=gmail.com; s=20230601; t=1769140614; x=1769745414; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/otCFW7jCkMsv16Qri9tIeY6tMlxQmHzjcpDQaISHXM=;
+        b=mEg3H/JcpB2yRs/VHxZ3ql0sAoabUgJquZJuCf/z1MMO8bPHUyU9q8DX3D+cyxZ9/6
+         axp1Gc8OOCROeyZonK7U5+02RcKE3yBLMUyN0wRCQJpjX2RHThagPj3qGjys5psPrCyz
+         9e2qGzihv8KUvUJaMEOyMqIoNZcNrwa3k0t1JMMyfrKcoHylv89USD2V42mCyPWjHwtg
+         HEzIYYjJrI3ge1b4zTKdxTqe8ZhzvlEjO1Mllcv6bvsZprz+/IhAEMXq5+drZSuydlrp
+         w7FBqG/lgNbMOesAZbofEAOhPVA1sk5PwsZvbmz+NevO3w1qGwai1lu2yxjc4ElwK5e3
+         I9TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769140614; x=1769745414;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/otCFW7jCkMsv16Qri9tIeY6tMlxQmHzjcpDQaISHXM=;
+        b=R6exFWJxkqAvHkJfjUuP7+TS94wajuw3fRxLU9OuG/UHvA4MY5c4I2zFgS7qh3NSD5
+         KDdk5oXInUJVpmABZH06+kVUuonoBGM6v+xyZTadT2TxHKGVxM3NvaFGQNBrqgXcEnB0
+         9WHmOIY4Q9/l/PvkN/w0hiEDc5aHWPplq6BQYZO+CC6GLDILYdmk1kVzONMitAutzh8d
+         S9ddhML4qQ83mhnoOAi3/MNGHw1EE7SLsfjg1ajC+tU8Pj/zBvJEKuN4GrJMEjnd3gEN
+         8DA8Jx+eWTSSNnnfzHyC8pgiNrt3wvA1Lvghuk8vN8zdiFHaLBgfUBonBiL5kTQ69RGW
+         h5Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCXExGmfekP5wxULcNYaNZwrmM86QQcgMmhbbBD1UpAzQcajyKC34S/6rB/+znwteoHiBtJ367Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjjMP7PcrYC0TBTA/9OUrtBzr92BONbsSx+t/yHL8zTPJGP5ad
+	HtXKtCzaexpcykQLLrY0MUH8oOLHUikHqhukIZYwabTqf52JWDyvtD+V
+X-Gm-Gg: AZuq6aL8wavHnt9xYDbB4VK9drEv6ZEnvcPX175kuHiw85uki6yvUPDW2jxiAL559oT
+	VXxDv8HYcDB7Lujf/uUGRg3w72Cwzf0RMLGepegI5JP0rVtapT55FYG0d9wpgORPNQ5WsvyuS6V
+	r4i0fxC0WtfQraKDC2BwdIO2nSvFsBebkL0dRbkmYjZi3LIOmb69stGU9AEKJ7aCgZTfxV6LrUl
+	js4IksQevgP2vN2TFSyVFQ8d/gEcRFXA4V8jDlEqEWyj2y2yMeBhQ/83bZctZY7w3JewIb0N4fP
+	oPY4a0iSH3onpflkYb6rjErb/pWipffsSsoVYmjo8ub+qopIj/sdDrmxtualFgWhrdoREIgzvSl
+	lO9UcEjRocFWH6m+EyY9pggQ1+DBjJKcy/q/L+6H9KUkGRQHqTiKCIADtUZRcTPl3mbU6b0hi8Z
+	YochJNlpECQl91zsDxZgVwMIZNFGkTWaMWUi1uXx3VeAXgj2rPwGZ2RVn3agy/Y1PoqYluKYx5K
+	6ikB3AtlAGV+xxb+2FY+S27FngOHweEPosXxRKDDhNRhTA=
+X-Received: by 2002:a05:6a21:69a:b0:35e:e604:f766 with SMTP id adf61e73a8af0-38e6f6a9658mr1638303637.6.1769140614130;
+        Thu, 22 Jan 2026 19:56:54 -0800 (PST)
+Received: from c8971f1abf06.ap-southeast-2.compute.internal (ec2-54-252-206-51.ap-southeast-2.compute.amazonaws.com. [54.252.206.51])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c635a424485sm688045a12.27.2026.01.22.19.56.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Jan 2026 19:56:53 -0800 (PST)
+From: Weigang He <geoffreyhe2@gmail.com>
+To: jassisinghbrar@gmail.com,
+	s-anna@ti.com
+Cc: tony@atomide.com,
 	linux-kernel@vger.kernel.org,
-	khalid@kernel.org,
-	almaz.alexandrovich@paragon-software.com,
-	ntfs3@lists.linux.dev
-Subject: [PATCH 6.12.y] fs/ntfs3: Initialize allocated memory before use
-Date: Fri, 23 Jan 2026 11:42:31 +0800
-Message-Id: <20260123034231.3793689-1-1468888505@139.com>
+	stable@vger.kernel.org,
+	Weigang He <geoffreyhe2@gmail.com>
+Subject: [PATCH] mailbox: omap: fix reference count leak in omap_mbox_probe()
+Date: Fri, 23 Jan 2026 03:56:48 +0000
+Message-Id: <20260123035648.1441763-1-geoffreyhe2@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -68,108 +94,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[139.com];
+	TAGGED_FROM(0.00)[bounces-211331-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[atomide.com,vger.kernel.org,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-211330-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,ti.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[geoffreyhe2@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[139.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,139.com:mid,139.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 09E3870291
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 619B470363
 X-Rspamd-Action: no action
 
-From: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
+of_get_next_available_child() returns a device_node pointer with
+refcount incremented. The caller is responsible for calling
+of_node_put() to release the reference when done.
 
-[ Upstream commit a8a3ca23bbd9d849308a7921a049330dc6c91398 ]
+In omap_mbox_probe(), when the loop iterates over child nodes using
+of_get_next_available_child(), several error paths return directly
+without releasing the child node reference. Additionally, when the
+loop completes normally, the last child node reference is never
+released.
 
-KMSAN reports: Multiple uninitialized values detected:
+Fix this by:
+1. Using goto-based error handling to ensure of_node_put(child) is
+   called on all error paths within the loop
+2. Adding of_node_put(child) after the loop completes normally to
+   release the last child node reference
 
-- KMSAN: uninit-value in ntfs_read_hdr (3)
-- KMSAN: uninit-value in bcmp (3)
-
-Memory is allocated by __getname(), which is a wrapper for
-kmem_cache_alloc(). This memory is used before being properly
-cleared. Change kmem_cache_alloc() to kmem_cache_zalloc() to
-properly allocate and clear memory before use.
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Tested-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=332bd4e9d148f11a87dc
-
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Tested-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
-Reported-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0399100e525dd9696764
-
-Reviewed-by: Khalid Aziz <khalid@kernel.org>
-Signed-off-by: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Fixes: 75288cc66dc4 ("mailbox/omap: add support for parsing dt devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
 ---
- fs/ntfs3/inode.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/mailbox/omap-mailbox.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 8a9c11083e6e..8113d47b0ceb 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1301,7 +1301,7 @@ int ntfs_create_inode(struct mnt_idmap *idmap, struct inode *dir,
- 		fa |= FILE_ATTRIBUTE_READONLY;
+diff --git a/drivers/mailbox/omap-mailbox.c b/drivers/mailbox/omap-mailbox.c
+index 17fe6545875d0..3f6af947e29ce 100644
+--- a/drivers/mailbox/omap-mailbox.c
++++ b/drivers/mailbox/omap-mailbox.c
+@@ -508,14 +508,16 @@ static int omap_mbox_probe(struct platform_device *pdev)
+ 		int rx_id,         rx_usr;
  
- 	/* Allocate PATH_MAX bytes. */
--	new_de = __getname();
-+	new_de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!new_de) {
- 		err = -ENOMEM;
- 		goto out1;
-@@ -1734,10 +1734,9 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
- 	struct NTFS_DE *de;
+ 		mbox = devm_kzalloc(&pdev->dev, sizeof(*mbox), GFP_KERNEL);
+-		if (!mbox)
+-			return -ENOMEM;
++		if (!mbox) {
++			ret = -ENOMEM;
++			goto err_put_child;
++		}
  
- 	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
--	memset(de, 0, PATH_MAX);
+ 		child = of_get_next_available_child(node, child);
+ 		ret = of_property_read_u32_array(child, "ti,mbox-tx", tmp,
+ 						 ARRAY_SIZE(tmp));
+ 		if (ret)
+-			return ret;
++			goto err_put_child;
+ 		tx_id = tmp[0];
+ 		tx_irq = tmp[1];
+ 		tx_usr = tmp[2];
+@@ -523,14 +525,16 @@ static int omap_mbox_probe(struct platform_device *pdev)
+ 		ret = of_property_read_u32_array(child, "ti,mbox-rx", tmp,
+ 						 ARRAY_SIZE(tmp));
+ 		if (ret)
+-			return ret;
++			goto err_put_child;
+ 		rx_id = tmp[0];
+ 		/* rx_irq = tmp[1]; */
+ 		rx_usr = tmp[2];
  
- 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
- 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
-@@ -1773,7 +1772,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
- 		return -EINVAL;
+ 		if (tx_id >= num_fifos || rx_id >= num_fifos ||
+-		    tx_usr >= num_users || rx_usr >= num_users)
+-			return -EINVAL;
++		    tx_usr >= num_users || rx_usr >= num_users) {
++			ret = -EINVAL;
++			goto err_put_child;
++		}
  
- 	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
+ 		fifo = &mbox->tx_fifo;
+ 		fifo->msg = MAILBOX_MESSAGE(tx_id);
+@@ -554,11 +558,14 @@ static int omap_mbox_probe(struct platform_device *pdev)
+ 		mbox->parent = mdev;
+ 		mbox->name = child->name;
+ 		mbox->irq = platform_get_irq(pdev, tx_irq);
+-		if (mbox->irq < 0)
+-			return mbox->irq;
++		if (mbox->irq < 0) {
++			ret = mbox->irq;
++			goto err_put_child;
++		}
+ 		mbox->chan = &chnls[i];
+ 		chnls[i].con_priv = mbox;
+ 	}
++	of_node_put(child);
  
+ 	mutex_init(&mdev->cfg_lock);
+ 	mdev->dev = &pdev->dev;
+@@ -602,6 +609,10 @@ static int omap_mbox_probe(struct platform_device *pdev)
+ 		return ret;
+ 
+ 	return 0;
++
++err_put_child:
++	of_node_put(child);
++	return ret;
+ }
+ 
+ static struct platform_driver omap_mbox_driver = {
 -- 
 2.34.1
-
 
 
