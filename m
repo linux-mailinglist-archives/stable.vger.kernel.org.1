@@ -1,166 +1,162 @@
-Return-Path: <stable+bounces-211362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +L2dAdI8c2kztgAAu9opvQ
-	(envelope-from <stable+bounces-211362-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:18:10 +0100
+	id uIcCGMVBc2mWtwAAu9opvQ
+	(envelope-from <stable+bounces-211363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:39:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5287A731B0
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:18:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB477380B
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:39:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9F01C3019451
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 09:18:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE50A306199E
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 09:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E441C30BB80;
-	Fri, 23 Jan 2026 09:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0E235CB6C;
+	Fri, 23 Jan 2026 09:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bBCmB3/P"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i+xjEDWr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABEE2F3C3F
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 09:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769159886; cv=none; b=mZMGRgdUxRu8WQjise2GGRUmj2m3f/M9zhxoBB8fCWDnvj4FxFg+Y2HUZwfR1TYEpcbh50kE54xXl0HTD8Z6V0cMoHa9YzoKSFvHxc4+CN1xP59Mc2ctBqPAtChmjdUk5d/icfO4XQvtUDs9+zsU+I6Vuyj+7OR0+MeuuaeduDo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769159886; c=relaxed/simple;
-	bh=XVH95s01MqloQH1J7IdnagDFHxf/iHAeNk0s14uQMvc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=As4/RA/CUbuK+kDngCPSLe9SVeHTEnRCA43W8KGtS5OkouFvCRb7FfyYkqPuVMhtJZWH4s2m23rVW90+7h3dy13GWP8Fr3X1RkfUz6UqiUNKxUEyE3i/Jt5OQg2+br8ChgZH+lnb5Uun7pf7t5yg/gJimXkcNfJCF/BE69hAp0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bBCmB3/P; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b844098869cso180689066b.2
-        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 01:18:04 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB2B346A1F
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 09:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769160746; cv=pass; b=fgiJYDfErcuuE5ps4Vrj2SzH8+W05QYkm67N8OPEXVr3ItYWd85clAIhG+LV7ycT0mr/dJ2wwV/TzuHpTp6OvjB3SKdBOQNgwRZs0xMjoHgpfVBSIbuUZz1sTgdvsZcgRborWfNxdIkmqwIvQQHtUoWWyESiEEVE7ib5po1zSug=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769160746; c=relaxed/simple;
+	bh=o7c+Ej4jUrjidb9rcGMaXa9mTwKoEZebvld5syfwi6Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=LhtlajvRLsALbOZqZ+288emnYcbC0eJo+v5btnGN15b1RCO7s4v+DknE8id/6Dyzjt8OlGdVQCvEgm6KrV621GpuuEWKNHLUZypYsfIOWNEeMQDdXCnzH8EmaKWJsvCHUobfouYXuubtw0X1NHa7vCEBk6Eq/vw7iC5hOK4q7Jo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i+xjEDWr; arc=pass smtp.client-ip=74.125.224.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-649166a96a9so2062113d50.3
+        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 01:32:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769160733; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cYbJLwVmyAOVftC/jbfm+7GypNv2fvGqlM10xTTd1sacCbft/NzE3Lr2i6Zd3KFH5D
+         xJETSXKwM0aGozO6sMiy5/WnHhSCi4KIBfGeiuQ1063mEDgJ+JoCUfgjcRD23rHRamJV
+         /XgM3HWM2OEUDDM1v98RmH/+JPdwuObRTpODiiXiq8OPJlMQOz+psetioXqBV3h0h7xg
+         Z2wY1tm2v+if0Twq/1SmOibdmm33ZC0yOrNst3Il0th/Ybr96lGRfMmeZdcc06rtNxNU
+         lydiSRovSKJIXmIttolO6ts8MnctTeAbAd88fgluJr7S5/e4EFxIyzi6gg2+0wGKA32c
+         YgqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=o7c+Ej4jUrjidb9rcGMaXa9mTwKoEZebvld5syfwi6Q=;
+        fh=D4Lvm6QVYjsGoENpkkzXqlC9iYTVaCt3LWahqMd1JkU=;
+        b=QIQfzjibraxBKONX1Df025eikQHQvzpRVa63jWJzUGUxOnd8oDQJVHezwADQtMM+Kt
+         29WRtaky45DDbB2PqCNLmJTbahNOAjPTmfg/yiKmjpVyhKep82LbvEyd5gPQOWXVioxT
+         +wT/uEjbb8Yp1P0hj1Npiq7yjyzkMnWzA1zyaaHTB7jJ/zEUP4fs+7qYST11BS8ZrYh4
+         Suku1zdlhBmuz830qSL5IjzhiPg3HgpPv9jAjPj6cj9txV2TCs2GIXX6TPJyt2viwKMm
+         A37oo+xWPnH7Xt0VLfAME16BMnDCYlM830OqCJ2eqHd1a8ceMuBs+XNad0TpdJG90J0V
+         bLaA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769159883; x=1769764683; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Ua9w7UEf7xgcdVIusVPQYkd37tPBqbwBjiHWdVEgXw=;
-        b=bBCmB3/PRQlg21+v04SN+KgncglLaC+vjw0iW1XjTX2wiyYC7ZKtef++wsVS13Qm16
-         pkQ3sOccOGri6uSrxZCwPv4ixBuCgJkneFQNcRYQ6R+sq9mSBfwvPFUoQPghCbeMniUd
-         nRXjZfAaXyY5MFSbLWGH7zH+jNcMOXuWMtmsE64kQt959v68fpADqkX91TntrhziA8yO
-         4h+TTIH2lUEkMzKPFeL0UKQLxXW8ooSoW634FqAEkNcKz72S1ZIZdJD5CydtYeQpDOSV
-         Pk6mZ9CTmk+vYAmAzG0jlXmjGUykCdKVLpa6CRV3vEchTQeAC2tfFfwj2qKbZX8ZCrQc
-         9MQA==
+        d=gmail.com; s=20230601; t=1769160733; x=1769765533; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o7c+Ej4jUrjidb9rcGMaXa9mTwKoEZebvld5syfwi6Q=;
+        b=i+xjEDWry7pQW1AbelPp/SH279YxtQWGLNkqnDXZa+z87eYqNVO3fNqXi6hbpAKSG3
+         ozjl3fYyVzES18Xk3hJ5AfB60M8Tzoi5KtMxMXMFWWHcZ7Il8ZFTo8YQmWxGU5GM38hy
+         eSKt81aMOqJ4/rAMB0PBlJCNvo1lU1c3S8PmGdEhbbnEywo/re7qRcAldmQkvilF54bj
+         e8DeVIBXuBEYMflJ1+soob9Hfwd1/eWxgucuiuOrsWSpvgkZr58f8a/DZe7YVbX4MES8
+         6BKa5H6rKguYEaqHLJGc8WyKREvHucem5drfX3fmrjeMf61VCQ0czequXo5C9NNxKIja
+         9kMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769159883; x=1769764683;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9Ua9w7UEf7xgcdVIusVPQYkd37tPBqbwBjiHWdVEgXw=;
-        b=g1c6DlrmdPMgEtFtiwmgX3njVHceB5w2AGf7QTm9GsxwoD0lf2kIVe77QLHiGl4EA3
-         9VJH/pFe9L94SkPzIKz6ySdgOjjSAAxOyoexS6D26p/hL+LEfOlm6zjm3gjJjS3lrvei
-         nVwwHvnrdd6rL3XC7c7mA+mfx3Kv7WIr+1hHihtdHaQImOcNiH1Q/7EV9giamV9rFsCm
-         Higioo1GLbiQXqFqG4EVLSlq91RjaeFhJOq2z/Xdcs9aIvg60kAwPgWnvtPLMM4pgT7M
-         DyOwENC5ri9HFuJ4AUTsNsQws3A9z+9a7TkyecnFuNoEgW1xyUsIoakNg1aDeod2ypqv
-         x5ww==
-X-Forwarded-Encrypted: i=1; AJvYcCXhTT5TWTWoQ4SVhJFNw3q0c73DCUbFYj3nmJ03fXPYNY/RwghSQKpNAgQ9ta/rfP0sJE9Mzx8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzycbW1tocaMPglWunTxoUqk5vyzrqMZau1CLxn+VhcG4BQ3lcK
-	hWlRwzBfpfGyd9pHEammu3HR6dbRXIj61NDM3UcBgeRdkdzetHzrLbZlWaHqZ0Juv2Xn2yZKy+0
-	Cm3cYw7HeK2hSQUhwuA==
-X-Received: from ejqh18.prod.google.com ([2002:a17:906:5912:b0:b87:20a7:41e8])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:1c94:b0:b86:e937:d097 with SMTP id a640c23a62f3a-b885ae0a088mr139955566b.38.1769159882639;
- Fri, 23 Jan 2026 01:18:02 -0800 (PST)
-Date: Fri, 23 Jan 2026 09:18:01 +0000
-In-Reply-To: <20260122180203.1502637-1-cmllamas@google.com>
+        d=1e100.net; s=20230601; t=1769160733; x=1769765533;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=o7c+Ej4jUrjidb9rcGMaXa9mTwKoEZebvld5syfwi6Q=;
+        b=gbMvJoY9Z6zoBaJJT/9Bw5fcHGUE4+S0p5RdXZZ14uuOn6nW7nUuUY3PbS29R8vVcJ
+         EM+G2wC4lp9Lboro54UU+VIGDHUiad6NxhARC+JO+gef0Uk1cfesZCklZDgD8uW+lpuQ
+         vZPdS7oehLp/8nrpGtUWa+ZOeRg3BF/sQq9nPh5n+ArRXiFQaVAvA7Ve94AcbPbBYajT
+         EjwTYZCZ3sBbbdgS0ZxWqtlpug6/HoYzBZ9LekyeQ6IMT65BgQIZGe9oh98zwY7P0uNv
+         D7+XNOHG0uf1l4IKzFRRjcySm0K+kGpXRtjdAFFSLWGVo7TRrNNUIPHmJ112QZcg1Rdf
+         hKAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVwnmKQe2QHMVLUcmcSY0WYFsAKaA2/HNXZfNjCnrTmzqcDkg8AYqdXOW6w7CTN4JMDIjaRk00=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQY2Y0CZoglutFfy5EPMGMmpUJPfb59E9FVWB2xfFqC1qgVEmq
+	zZcXkZ8YwrV6puoydL8IUUgS/0u3ckck0XhhcSK3w0hgufSsfUi0vSrq0DVDLkEhF3D3mXESfyN
+	YNnD0ydSUEuzYJLpED55uZRkEa7qLW1k=
+X-Gm-Gg: AZuq6aIXmJdvk49V2UVy4rizSM3hESuleD03KLzHGf+RCXUkMSFZxcrae0nGUhIGkvx
+	oDED9zvLp8vDQW0lK7oBV1dOMhESVFhryNHlRJNy+awgdJ+8/5kCqrEHg/tN3Zo6ckA8jXXshWR
+	VG4QTR+0Vxlgbb9g8oaYsFhRqiUKw8b3qtcFvNN1oZWdRyLJYvgMrhjmXXAi3z8UVwIjYPaAhTl
+	qaKqd0sbSfb6Jw6ZYzdsUqllaDslSKPEE1JtpIoMephP67J6N3GveHnaqSRfBeT3jZD2A==
+X-Received: by 2002:a05:690e:bc8:b0:63c:f5a6:f2ef with SMTP id
+ 956f58d0204a3-6496125f47amr390019d50.65.1769160733420; Fri, 23 Jan 2026
+ 01:32:13 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <aXHfYfNZ20-3J8qR@google.com> <20260122180203.1502637-1-cmllamas@google.com>
-Message-ID: <aXM8ybQ60WW2Z1A4@google.com>
-Subject: Re: [PATCH v2] binder: fix UAF in binder_netlink_report()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Li Li <dualli@google.com>, kernel-team@android.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <CABVCGTr75UNvZkOzeYobL70fo6NgATywwDmTf98J7cSFQTuq6A@mail.gmail.com>
+In-Reply-To: <CABVCGTr75UNvZkOzeYobL70fo6NgATywwDmTf98J7cSFQTuq6A@mail.gmail.com>
+From: =?UTF-8?Q?Juanan_Rodr=C3=ADguez?= <juananrodriguezg@gmail.com>
+Date: Fri, 23 Jan 2026 09:32:02 +0000
+X-Gm-Features: AZwV_QgbiLMBeK1VlRPgK9quCiLDl1HBB2ktcDQ4UeKESQu2e696adOwcejLSTo
+Message-ID: <CABVCGTpVxfzjWBs1p3eS-t3+21sM5S5ysyfXVfCanK1C4QR6Wg@mail.gmail.com>
+Subject: Fwd: No sound alienware a51 fresh linux install
+To: linux-kernel@vger.kernel.org, kernelnewbies@nl.linux.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211362-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211363-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[juananrodriguezg@gmail.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5287A731B0
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: BAB477380B
 X-Rspamd-Action: no action
 
-On Thu, Jan 22, 2026 at 06:02:02PM +0000, Carlos Llamas wrote:
-> Oneway transactions sent to frozen targets via binder_proc_transaction()
-> return a BR_TRANSACTION_PENDING_FROZEN error but they are still treated
-> as successful since the target is expected to thaw at some point. It is
-> then not safe to access 't' after BR_TRANSACTION_PENDING_FROZEN errors
-> as the transaction could have been consumed by the now thawed target.
-> 
-> This is the case for binder_netlink_report() which derreferences 't'
-> after a pending frozen error, as pointed out by the following KASAN
-> report:
-> 
->   ==================================================================
->   BUG: KASAN: slab-use-after-free in binder_netlink_report.isra.0+0x694/0x6c8
->   Read of size 8 at addr ffff00000f98ba38 by task binder-util/522
-> 
->   CPU: 4 UID: 0 PID: 522 Comm: binder-util Not tainted 6.19.0-rc6-00015-gc03e9c42ae8f #1 PREEMPT
->   Hardware name: linux,dummy-virt (DT)
->   Call trace:
->    binder_netlink_report.isra.0+0x694/0x6c8
->    binder_transaction+0x66e4/0x79b8
->    binder_thread_write+0xab4/0x4440
->    binder_ioctl+0x1fd4/0x2940
->    [...]
-> 
->   Allocated by task 522:
->    __kmalloc_cache_noprof+0x17c/0x50c
->    binder_transaction+0x584/0x79b8
->    binder_thread_write+0xab4/0x4440
->    binder_ioctl+0x1fd4/0x2940
->    [...]
-> 
->   Freed by task 488:
->    kfree+0x1d0/0x420
->    binder_free_transaction+0x150/0x234
->    binder_thread_read+0x2d08/0x3ce4
->    binder_ioctl+0x488/0x2940
->    [...]
->   ==================================================================
-> 
-> Instead, make a transaction copy so the data can be safely accessed by
-> binder_netlink_report() after a pending frozen error. While here, add a
-> comment about not using t->buffer in binder_netlink_report().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 63740349eba7 ("binder: introduce transaction reports via netlink")
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---------- Forwarded message ---------
+De: Juanan Rodr=C3=ADguez <juananrodriguezg@gmail.com>
+Date: lun, 12 ene 2026 a las 17:51
+Subject: No sound alienware a51 fresh linux install
+To: <linux-kernel@vger.kernel.org>
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+Hi, I saw this commit fixing sound on alienware a51
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=
+=3Dv6.15.11&id=3D5add3f3954fd8224bdb4d58452d39560f385eea1
+
+The thing is, I just instslled linux on an a51 18 laptop and there is no
+sound, tried serveral distros based on ubuntu, fedora, arch with same
+results, tried to purge pulseaudio, install pipewire an several fixes
+and nothing.
+
+Could you help me with this?
+
+Thanks in advance, apologies for the unexpected message
 
