@@ -1,195 +1,189 @@
-Return-Path: <stable+bounces-211384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MPyIaJ8c2lowwAAu9opvQ
-	(envelope-from <stable+bounces-211384-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 14:50:26 +0100
+	id 4CYAHPCAc2nxwwAAu9opvQ
+	(envelope-from <stable+bounces-211385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 15:08:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2713276757
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 14:50:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F01EE76BD6
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 15:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1B552301A282
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 13:50:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C65123057716
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 14:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593731FDA61;
-	Fri, 23 Jan 2026 13:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929F530DD36;
+	Fri, 23 Jan 2026 14:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cmSepP7I"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ijXwU6Wj"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF871448D5
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 13:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99EF1D5ABA
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 14:03:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769176222; cv=none; b=QsTw6YBlQqYpFcN/EbWb3RZHFhHM42dWqdw45QT1tcIi3xOWKucPDEljDFwfh1sJBHVais55KmAGqcM/LEMu6NWm3Y5jvClB8/NZNAA1syn16WECSDNfNTDv0GbYoTEdHfIYxB1o0Oyz47ZYizRknkLCbmLl0EAQDqVBwfZw0Ww=
+	t=1769177003; cv=none; b=cWK0f9Qrdkf764yRI1dDPNI2/CPyUIZANHvB9LpeYeaLAi73PBISsXsnlN+yGEyA0r/i+Aqkd846HKzSv+B1bY7S4lE/IIIH2oZG8XOIEk8lAs8rRbE6esyLgmy6vmlOUclxIm9/rwf+tNMOLHUp098eM/ZU41WC13C5OomwNV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769176222; c=relaxed/simple;
-	bh=oHABnvfXBlVrftVJekZ578HCsQh3TGBXWbJyWOV27ZM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hk8mgNdO7h9dPvJYUk7iY9/uWuWCmsVDoy2o2gK9mhdTMedBSuZiaohN13h5TevOxE9bJ3EsZc/hEGlT+x+p+r4Pu015VM77HjfIvSZpG+fVqwASAuh7YbR4qnYTJ6WopX2wNKWVUmlhMRMjwIsXgfE+HJ9o3C/iZI1OYT95tjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cmSepP7I; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769176220;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1WONNtqCu6LKQf22ZJpLLTIem2aa8W5Gfqm0AALqkZo=;
-	b=cmSepP7I/AtzRLStZX34pmcLZATN0gKFr7tJJSgDWksBMg0oMLVamq1xi2OEtQa3a9Uvpl
-	0dk6B2jKcV0ihqtG7rFER7d0JLi6O01WAO1On6KdnwE6YURCGlROHf7UrCm/CdiN4zn4RA
-	KSM6fsr4n3oJoTduVXYBGHDIu2gJZ3I=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-297-YvBjDA30Or6Fq5CVuYWgMA-1; Fri,
- 23 Jan 2026 08:50:18 -0500
-X-MC-Unique: YvBjDA30Or6Fq5CVuYWgMA-1
-X-Mimecast-MFC-AGG-ID: YvBjDA30Or6Fq5CVuYWgMA_1769176217
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8F07119775AA;
-	Fri, 23 Jan 2026 13:50:16 +0000 (UTC)
-Received: from localhost (unknown [10.22.89.44])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8811A1801AC9;
-	Fri, 23 Jan 2026 13:50:15 +0000 (UTC)
-Date: Fri, 23 Jan 2026 10:50:14 -0300
-From: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
-To: Ben Hutchings <ben@decadent.org.uk>
-Cc: stable <stable@vger.kernel.org>, Chen Ni <nichen@iscas.ac.cn>,
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [5.10] net/sched: act_ife: convert comma to semicolon
-Message-ID: <aXN8ltBrBMuLmj-s@redhat.com>
-References: <fe9a24d2b872878e6bf041f02e6ffe1e3570955a.camel@decadent.org.uk>
+	s=arc-20240116; t=1769177003; c=relaxed/simple;
+	bh=NQCeoHQjMPAF3JY+lHnBjng/gItcqZenN+9wm7CI+JE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HBChwhY4GZujLMX7IawoRp+p+nrf5LhwWPBwgefK7lXfFMrNdZ/OHt2tpQtR1FLZXNCEX1l2vcD0FlHEdeBfT/efxTAnPdbB2pGD3HSdINisOAS1h1gEuHgDuqc/7rW+f//p5DxGeAKD3SuJgAVc9MOuNFpvHsH2suWbNxflq4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ijXwU6Wj; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-42fbc305552so2000593f8f.0
+        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 06:03:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769177000; x=1769781800; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eflxrySSouHFZK8Z+UVBaTlYFEPw4EIIlMLqk/MN/DQ=;
+        b=ijXwU6Wj3vgXyeX5oxdde0/37FPODtfL5HFL+xRrlFGjkNTdEZ2UOxsTksyH2ps176
+         V/Vy6H8t378u7J3DFlWcAct/wTiAs/iBMulhpHeJnwaLz8d7T20/2T5Q+g5nrJBIYGuV
+         g28TgPoHQEerIXn3LCxzPIh9RaCCRwUi2VD/IvLM4/1E8z80ZQr21kMtRfAFvSTXgIPI
+         1ziDz++XzRQMbcSpCFQ/CG54Mf8uEys+w3mtcqde5XGv38trjknI0BbxmTMTqwMxVViT
+         TUJCHY7PRD7AVj5nTWPAsj3SF+ds2GzW6AMz0IAdU18ZKE/husr5KUHC7CuvUuzoYgzz
+         5Zlg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769177000; x=1769781800;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=eflxrySSouHFZK8Z+UVBaTlYFEPw4EIIlMLqk/MN/DQ=;
+        b=M/h5/GUEPyOFj4rGEsFj1lYwx42WJC9JPqDVegTRDe0yNFxPqNXx9r6KObm53N9v8k
+         42FfuB21AYHNPWZXvCEsbF2LnIHV06ise9TPfLf0InCTQPZC9huFpVaxbBFpu3eEzRfw
+         jzPWADUn/9emr5scJ8ddixCLiCbLNEGV5Tx+LGlsiikjRI8R1GAAyuaf5IQCL9RJWHz0
+         LctS1XR3P1NsxyaFeNO5CXEyOPM2DeHZQA6V77Sar8HaTQgnLXXaK9hkSZW6u5QUHtrz
+         aud1M3o9R7lG2gT0BNipDBSP3HdKloh9qm/so3J+a/LJBSRrbiWXx/e28rIUaLK5lZE9
+         zHaw==
+X-Forwarded-Encrypted: i=1; AJvYcCUcaFsJ6BUbAZ+7PmTmHgvESbebT/GPdtXV+o+zv/KOinFuUhcm/E9UVu4DftcwvWjGk4PKB6k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwP7T6n59gVkD7LFYCSrEO0UFJUMRgf2LMtOrKFsb60zvxNKx71
+	cFTbubayl9WhzS3XSx6vmKsnZyictXg5UtJHPB19fdrupjTsWRdKb2MX
+X-Gm-Gg: AZuq6aKAioxy6KkBXBRcdYceCXdvDc3uAHuyuKXvKgZAOfr3tFgzuUi5hcLmkTweKpa
+	0v148A4vbusU5ML/389SDiDSWaSOlmIDnv/7zxrIBKEKM5yH3rXUAnX1ScsM/6BsnSFOLMVH4Jl
+	nDcc9emJ8Z36sO6YzXd7Jq4zoDsIQ7H2VU79Xl1zh4WQ2WDeQaDa4D+HYr3suSTHzR1EIEK1Zoq
+	Vm2cAuP8G4r+wn0nV9/3mqDrQaE0fc6ofbWVmv1tLOyKIMXyZWMM6OzPXBWAwvylj9oa9Km/cLC
+	x9uPVtrjHR+PgTQogkKNAnr/3ILKaJfDuGo6ZhrmgixoR46Gh4g7mMPeDrWcHr9uZWqzQpGf8F9
+	rgLz6Emd5/D8QEiYpvJE9ZgkzJT2cQZfeJ6dHGrZ3tsDwaQLHWxgJ+aamNeOCKNAn80+tte3yiZ
+	1sXouyTpecJ+GVOi2v3gYYvhcZjIWNOdT3StB3m2rxhfDsA9fSYYkE
+X-Received: by 2002:a05:600c:548d:b0:47e:e78a:c832 with SMTP id 5b1f17b1804b1-4804c9cf942mr48475245e9.37.1769176998771;
+        Fri, 23 Jan 2026 06:03:18 -0800 (PST)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1c24ac1sm6823141f8f.14.2026.01.23.06.03.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jan 2026 06:03:18 -0800 (PST)
+Date: Fri, 23 Jan 2026 14:03:17 +0000
+From: David Laight <david.laight.linux@gmail.com>
+To: Leo Yan <leo.yan@arm.com>
+Cc: James Clark <james.clark@linaro.org>, Thomas Voegtle <tv@lio96.de>,
+ stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>, Greg KH
+ <gregkh@linuxfoundation.org>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
+ linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH] perf arm_spe: Fix bitfield dependency failure
+Message-ID: <20260123140317.4bd85cdb@pumpkin>
+In-Reply-To: <20260123120847.GB40455@e132581.arm.com>
+References: <20260123100218.233246-1-leo.yan@arm.com>
+	<705c0889-ffb6-4758-941c-ccfdb367d9c8@linaro.org>
+	<20260123120847.GB40455@e132581.arm.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="1og4atT/0XttzaxX"
-Content-Disposition: inline
-In-Reply-To: <fe9a24d2b872878e6bf041f02e6ffe1e3570955a.camel@decadent.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211384-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgoncalv@redhat.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211385-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2713276757
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[davidlaightlinux@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
+X-Rspamd-Queue-Id: F01EE76BD6
 X-Rspamd-Action: no action
 
+On Fri, 23 Jan 2026 12:08:47 +0000
+Leo Yan <leo.yan@arm.com> wrote:
 
---1og4atT/0XttzaxX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On Fri, Jan 23, 2026 at 10:27:42AM +0000, James Clark wrote:
+> 
+> [...]
+> 
+> > > diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
+> > > index adf4cde320aa..8d16619cd098 100644
+> > > --- a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
+> > > +++ b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
+> > > @@ -7,6 +7,7 @@
+> > >   #ifndef INCLUDE__ARM_SPE_PKT_DECODER_H__
+> > >   #define INCLUDE__ARM_SPE_PKT_DECODER_H__
+> > > +#include <linux/kernel.h>
+> > >   #include <linux/bitfield.h>  
+> > 
+> > This isn't the first time I've seen this issue. Isn't the real fix to
+> > include kernel.h in bitfield.h if it depends on it?  
+> 
+> Good point!
+> 
+> bitfield.h is a common header so I did not change it.  I digged a bit
+> and found diverage between kernel's bitfield.h and tool's bitfield.h.
+> 
+> 1) The kernel's bitfield.h includes asm/byteorder.h, and finally it
+>    includes linux/byteorder/generic.h, cpu_to_le{16|32|64} are defined
+>    in this file.
+> 
+> 2) The tool's bitfield.h will includes asm/byteorder.h, but this hooks
+>    to the headers provided by the toolchain.  cpu_to_le{16|32|64} are
+>    not C lib API, they are defined in tool's kernel.h.
 
-On Wed, Jan 21, 2026 at 03:39:49PM +0100, Ben Hutchings wrote:
-> Hello stable maintainers,
->=20
-> There has been a build regression for the 5.10 stable branch when both
-> CONFIG_NET_ACT_IFE and CONFIG_PREEMPT_RT are enabled.  This was
-> introduced by the backport of commit ce50039be49e ("net: sched: act_ife:
-> initialize struct tc_ife to fix KMSAN kernel-infoleak") in 5.10.247.
->=20
-> After that change, tcf_ife_dump() includes the single statement:
->=20
->         opt.index =3D ife->tcf_index,
->         opt.refcnt =3D refcount_read(&ife->tcf_refcnt) - ref,
->         opt.bindcnt =3D atomic_read(&ife->tcf_bindcnt) - bind,
-> =20
->         spin_lock_bh(&ife->tcf_lock);
->=20
-> But with CONFIG_PREEMPT_RT enabled, spin_lock_bh() is a macro whose
-> expansion starts with "do", so this is a syntax error.
+Perhaps cpu_to_le16() and friends should be defined in the tools
+asm/byteorder.h rather than its kernel.h.
 
-Ben, we had two other instances where the v5.10-rt implementation of
-spin_lock_bh() as a macro required touching the code to fix build problems:
+	David
 
-    386242acb15e rt: fix build issue in at_hdmac
-    72bf92dcdcab rt: fix build issue in be2net
-
-As there were only two instances, it made no sense at the time backporting
-the RT locking implementation from v5.15-rt or newer.
-
-I can cherry-pick the commit you mentioned to v5.10-rt and carry it until
-it hits stable. I will also discuss with the maintainers for stable RT
-whether it is a good idea or not to update the locking code of v5.10-rt
-(EOL in Dec 2026) or not.
-
-Thank you again for spotting this build problem!
-
-Luis
-
-> For 5.15-rt and newer, spin_lock_bh() is a function, and 5.4 is EOL, so
-> only 5.10 is affected.
->=20
-> Please cherry-pick commit 205305c028ad ("net/sched: act_ife: convert
-> comma to semicolon") to fix this for 5.10.  It should be harmless to
-> apply to later branches as well, of course.
->=20
-> Ben.
->=20
-> --=20
-> Ben Hutchings
-> I'm always amazed by the number of people who take up solipsism because
-> they heard someone else explain it. - E*Borg on alt.fan.pratchett
-
-
----end quoted text---
-
---1og4atT/0XttzaxX
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEEk1QGSZlyjTHUZNFA85SkI/jmfCYFAmlzfJUACgkQ85SkI/jm
-fCb9xA//Qgc5Hh8KawRsZp4yknRQLPYvNK7Yp3hnnwiTpHRKs0yESGgitwWfyePt
-Il9CK8WCzLmSz/OM2Cc4ZGAbBl/sexCvv7LmXxp60lxsgbOE2LCFlPZNfcIagxY9
-dKLh015qw6Epj1SeDryH5BMDaDJhwIEnG6CNJCgt8jOG/xpVhfVfO4gyc0kOXxZm
-ay/coNiHUZOWmY2jwzVw6NDycsVkfGPLVxupyoeZlxNATvIsDnM13FsyELXgi+1k
-PyvDR/eMTALqL7HUyk8d5UMOoXZM2pG8dmAI5Njz6hwTrorubG4cA2f9xAS9VkWr
-IgsFz5/+Li/SeNhhwjCystTA8cO6uP8MSPE7rMZwoMzIEdplKF8EBuqAkbhunpbi
-vamlg6WOmP1g3adDtI1gQgOsixJIKu83QTl2bS8o6QmLYIeZFsNxwK47chkjp+sX
-NpAyegHyI3wdDdBgLGfz4IW9WoyQybREJIXvihV5X1ZpaTyjX4oX/QSLYqi5ixMN
-V3AxAX1wU0PtVcwqzWQj+pgLoucPDLWJKaxEQBtftFRFFRn3lj7ohaHuKVHpBm0e
-vma03MCCqoYMrft0O+7cYbRUL1SWrHs7WX4i9ZjShm0zweW3Dx8noP34c4dUS8Qi
-6syHYd33voN5E/Savfx4Pvx7twlgCv7BurnsTxfuLXDyXe1+fpg=
-=drRa
------END PGP SIGNATURE-----
-
---1og4atT/0XttzaxX--
+> 
+>    As a result, we need to include kernel.h for perf build.
+> 
+> As you said, we can include kernel.h in bitfield.h, I will respin and
+> send a new series.
+> 
+> > Usually you shouldn't
+> > have to know what all the dependencies of a header are when you include it.
+> > Or is there a reason it wasn't done that way in the first place? Maybe this
+> > has been discussed before?  
+> 
+> This issue is for tools only, and only Arm modules in perf folder use
+> this header, I don't expect this is widely spread issue.
+> 
+> Thanks,
+> Leo
+> 
 
 
