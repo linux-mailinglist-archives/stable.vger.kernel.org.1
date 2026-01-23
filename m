@@ -1,144 +1,164 @@
-Return-Path: <stable+bounces-211365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211366-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJ18JpBBc2mWtwAAu9opvQ
-	(envelope-from <stable+bounces-211365-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:38:24 +0100
+	id CI3sGdVFc2mHuQAAu9opvQ
+	(envelope-from <stable+bounces-211366-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:56:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5171D737CE
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:38:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB7473BC0
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:56:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F9843063948
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 09:34:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 63AC7300B5B6
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 09:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5416836F438;
-	Fri, 23 Jan 2026 09:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CC137FF5B;
+	Fri, 23 Jan 2026 09:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4zdI2ug"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="qf9jUyJ8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DC936C0A8;
-	Fri, 23 Jan 2026 09:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E8135D5EB
+	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 09:54:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769160848; cv=none; b=hQQJm8M/hIJPqaTZh7xkP6D+JHBKGZ4Scw87MbYG/qJXG9XCZ8aEj7hlqUHkMO3O8cWRjBCHCTWML8RJBKtHqgWa7kCsyvNhnx/E+3LRjSdZ+C0lXBsC52WZ05/WS5y5l/GIyejLAmIzACiOxD+f2r8Odvo2L86RyKgvWZVtBbg=
+	t=1769162089; cv=none; b=hMCMERsuO8ytxp8X+GgZsHVBovl69UwptYqxDn/Tc5kW4wut3MqW9IQT6jyPJ30ppGXH5udLaUpfWJMZw3YlIb8sNQjiY9IYSTmTwGSzCWxwiHLsUmm5rn0vNSdt5It5ssvk+7zDKbOv4gawiRFG9jyunDBOiL6J88Vta9dXocc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769160848; c=relaxed/simple;
-	bh=OHgUB6UEKM0ab7UrpkwVT+z2dqOdymtjtNsQzMlv0bM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XrrOA2zQ5B36U4bkErfnhm8Y99GoQ8lm5MNDwKgNwSgQMqxGCVK3mzcbG6lnKOp0TW0qbvo4Ur2lR8OUgy8kDsdDLFW3VdAFXH/BrTppKI6JNwdmsct48El5+xqyDE898VRC2XIqKMJBINark50CdDdGghkPwsKYLagzzuN3ifs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4zdI2ug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1207C4CEF1;
-	Fri, 23 Jan 2026 09:34:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769160847;
-	bh=OHgUB6UEKM0ab7UrpkwVT+z2dqOdymtjtNsQzMlv0bM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=V4zdI2ug+9Nsn1fhBMdLw+rlWMsUSy1WMR0LMRIV2H4J1d3mkRGNiQYM1bkmSnK0K
-	 rwg4caeYfvbmBohzuWpldR3915Avre1hRsA+T/5b/AOsCv5V8vAPWKZ1VZ6zcyQSnN
-	 bNyTjWLiyYIoojRPltW8Z8qUEV0d7lxByrDupi6KNheE3shHd1LgXZKMG01jS/bbnb
-	 oJymRNR8i2m/ai7tLRh8+nWTO/iTNyfzO0QDhmNzNxLi8ohAk/xJ99zc8Fzz4xTXyl
-	 KsK3y8M+fTTHxPLJnKF44U8Da26Rmog4KV3GJzoOHkAgy7KUxXIjufoVI7cSYLwawy
-	 xEvjl2CherMuA==
-Date: Fri, 23 Jan 2026 09:33:57 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, stable@vger.kernel.org, kernel@pengutronix.de,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, Andy Shevchenko <andy@kernel.org>, David
- Lechner <dlechner@baylibre.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, David Jander <david@protonic.nl>
-Subject: Re: [PATCH v1 4/8] iio: dac: ds4424: reject -128 RAW value
-Message-ID: <20260123093357.6996154f@jic23-huawei>
-In-Reply-To: <aW6AEszfRQzuHf6j@smile.fi.intel.com>
-References: <20260119182424.1660601-1-o.rempel@pengutronix.de>
-	<20260119182424.1660601-5-o.rempel@pengutronix.de>
-	<aW6AEszfRQzuHf6j@smile.fi.intel.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1769162089; c=relaxed/simple;
+	bh=OKT3nW2NcTLbT0bZ7gEfeFdbPPtkLeME5w1GMI5FqxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VB0yZO3LxDYv71fLsMzcHc9wfcXObOZGBYnU4DP3RHLEm5ahQLLpMqoDRDI3wMNzw5m8quQBHwMe6e00B0fvndij8wqL7ZrN21Rm6CnZntw8RcSfSv5Bhic/PROlKWUSa/s7Y89qqj99iFEUQVeIHPIBlgRPqRPaQVvAoQ+0thQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=qf9jUyJ8; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=M6PaY/eMHA8WP5Bby+zqUFNuTpDO4V3PN7JXSs+wEoY=; b=qf9jUyJ89O9/LqrXoiahRcdpmq
+	tpw47bizJ9gZU0flv0Y1qoTbicYhHtKviJ+SQmvQmRNRbXywkCktjqtDlWBrvum1o9mdn8XIq4WqU
+	e2rSDL2UREUMWiW2snSO1FG/g20OjLoPihykYFXuFc0riGg30GG4zUzUBbW88PGBNGzFeJ12hdEJw
+	Gyz5PBSC5US9qOPa0DOjXfbz5LEbUnGKeRv71z+HERwrGmGml8F5yk2mrLuotpsw9I6kEToDP7ZvC
+	F7hPKTSkyUYUh7iMwzo5Jz8WyyHapYR2t15wD7a5PYsABCIIlWvAliWgGw846tBNo0kLIIoOAx4yP
+	Xz+Hj6ZQ==;
+Received: from [90.240.106.137] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1vjDs7-008ozf-Bm; Fri, 23 Jan 2026 10:54:31 +0100
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+To: dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	Zhi Wang <wangzhi@stu.xidian.edu.cn>,
+	David Francis <David.Francis@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm: Do not allow userspace to trigger kernel warnings in drm_gem_change_handle_ioctl()
+Date: Fri, 23 Jan 2026 09:54:15 +0000
+Message-ID: <20260123095415.74260-1-tvrtko.ursulin@igalia.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.64 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211365-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211366-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tvrtko.ursulin@igalia.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 5171D737CE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,igalia.com:email,xidian.edu.cn:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9EB7473BC0
 X-Rspamd-Action: no action
 
-On Mon, 19 Jan 2026 21:03:46 +0200
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+Since GEM bo handles are u32 in the uapi and the internal implementation
+uses idr_alloc() which uses int ranges, passing a new handle larger than
+INT_MAX trivially triggers a kernel warning:
 
-> On Mon, Jan 19, 2026 at 07:24:20PM +0100, Oleksij Rempel wrote:
-> > The DS442x DAC uses sign-magnitude encoding, so -128 cannot be
-> > represented in hardware.
-> > 
-> > With the previous check, userspace could pass -128, which gets converted
-> > to a magnitude of 128 and then truncated by the 7-bit DAC field. This
-> > ends up programming a zero magnitude with the sign bit set, i.e. an
-> > unintended output (effectively 0 mA instead of -128 steps).
-> > 
-> > Reject -128 to avoid silently producing the wrong current.  
-> 
-> ...
-> 
-> > -		if (val < S8_MIN || val > S8_MAX)
-> > +		if (val <= S8_MIN || val > S8_MAX)
-> >  			return -EINVAL;  
-> 
-> Hmm... So the range is [ -127 .. 0 .. 127 ] ?
-> 
-> I think in such case the plain numbers would be more specific than
-> the type related limits.
-> 
+idr_alloc():
+...
+	if (WARN_ON_ONCE(start < 0))
+		return -EINVAL;
+...
 
-Check the abs(val) <= 127 given that's what we care about I think?
-Or make it explicit and do
-FIELD_FIT() against a mask that you then use to fill the register
-value (another mask for the sign bit).
+Fix it by rejecting new handles above INT_MAX and at the same time make
+the end limit calculation more obvious by moving into int domain.
 
-Btw use abs(val) to set raw.dx and drop it out of the conditional.
-Even better get rid of the bitfield stuff and just add
-two defines + fill val directly in this function using FIELD_PREP().
-Then both the checking and the field filling use the same defines
-and it should be easy to see what is going on.
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Reported-by: Zhi Wang <wangzhi@stu.xidian.edu.cn>
+Fixes: 53096728b891 ("drm: Add DRM prime interface to reassign GEM handle")
+Cc: David Francis <David.Francis@amd.com>
+Cc: Felix Kuehling <felix.kuehling@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: <stable@vger.kernel.org> # v6.18+
+---
+Compile tested only. Any IGTs for the new functionality?
+---
+ drivers/gpu/drm/drm_gem.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-Jonathan
-
-
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index 7ff6b7bbeb73..c5d3ecc1f8a8 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -1001,11 +1001,16 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+ {
+ 	struct drm_gem_change_handle *args = data;
+ 	struct drm_gem_object *obj;
+-	int ret;
++	int new, ret;
+ 
+ 	if (!drm_core_check_feature(dev, DRIVER_GEM))
+ 		return -EOPNOTSUPP;
+ 
++	if (args->new_handle <= INT_MAX) /* idr_alloc() limitation. */
++		new = args->new_handle;
++	else
++		return -EINVAL;
++
+ 	obj = drm_gem_object_lookup(file_priv, args->handle);
+ 	if (!obj)
+ 		return -ENOENT;
+@@ -1018,8 +1023,7 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+ 	mutex_lock(&file_priv->prime.lock);
+ 
+ 	spin_lock(&file_priv->table_lock);
+-	ret = idr_alloc(&file_priv->object_idr, obj,
+-		args->new_handle, args->new_handle + 1, GFP_NOWAIT);
++	ret = idr_alloc(&file_priv->object_idr, obj, new, new + 1, GFP_NOWAIT);
+ 	spin_unlock(&file_priv->table_lock);
+ 
+ 	if (ret < 0)
+-- 
+2.52.0
 
 
