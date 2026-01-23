@@ -1,220 +1,343 @@
-Return-Path: <stable+bounces-211434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFvaNiEIdGmE1gAAu9opvQ
-	(envelope-from <stable+bounces-211434-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 00:45:37 +0100
+	id qD+fHosIdGmE1gAAu9opvQ
+	(envelope-from <stable+bounces-211435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 00:47:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E437B87A
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 00:45:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A01977B892
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 00:47:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9FF0301464C
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 23:45:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46D543013A44
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 23:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85101E5B64;
-	Fri, 23 Jan 2026 23:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C303C226CF1;
+	Fri, 23 Jan 2026 23:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DFeuhaZ8"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C9715E5BB;
-	Fri, 23 Jan 2026 23:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874C918BC3B;
+	Fri, 23 Jan 2026 23:47:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769211932; cv=none; b=f60PSpYolmgB4ikbt/LzbReiUceOpHLO2l9dDYamCti7zqDxJUtLCQ8kWvAAB18wQ2mVZWUkTVy580UkgZ3YMJyE36JzNwUk5Hr/VgVHCqi9JFTb0BfVGqr9IMVlwMIy1/VqNv0Qx6oNIydGiOnCYSUxnX7oYO4yTEsbeln2+vU=
+	t=1769212039; cv=none; b=XhtLkZr8OufItmngpVyog7PABKvDwXJveyuXYx9o8k6eT0SSWYNe2O099h7/iqzDQg185PRXol/9rc4jq3WSwq5uuIhcVN43kjGYAy+BGFRk/O/41jtQmdZbG7Xycf7MlW3mt+qN2EamTcqP5oSHqxH0H+FWRhtlJzHmcLs9qeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769211932; c=relaxed/simple;
-	bh=zC0V6wSbmMfojZ+NWBRVzhSNvDBpOJ/m3zw7EyxvdhA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uatP0bB0gBBOouq/tMcO3eWn8MTqz5XMOqXkQnufye3/ucmhN9upcwe7ICKA6NgbwSUMsIc+T5yFnCnoDwoHyvXSZkTCeYFKHxM2iV2NTAVcvxdPu1gTQQBmXmyDRsGlISYBfYnI3FONs7fo1hcRxrdEUA0hXKhDXCMhUg9bqeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BCC431476;
-	Fri, 23 Jan 2026 15:45:22 -0800 (PST)
-Received: from [10.57.51.35] (unknown [10.57.51.35])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3A8B73F632;
-	Fri, 23 Jan 2026 15:45:27 -0800 (PST)
-Message-ID: <cb13c3df-be09-4cf3-b679-4431862d7264@arm.com>
-Date: Fri, 23 Jan 2026 23:45:25 +0000
+	s=arc-20240116; t=1769212039; c=relaxed/simple;
+	bh=TumnA3/S3uxDkS0YRpeWFX+7ih2OIthnuN41bLEmwas=;
+	h=Date:To:From:Subject:Message-Id; b=Jar0pFJuWtoFCBLOvMkLWXStbmxo945OQINooL1EmwWoE9UciHFy7NFuGKYnNq2AFr4rBp6iQTsIlK+SMZde9zN/LAcyktRhZQNQCldraZWWyK0rVlaPMxkbOYH1ExQG4Ft1XlD1yArgqIUY8mH3kq80NS/a7kLOxmq7/xf7ruU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DFeuhaZ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1554EC4CEF1;
+	Fri, 23 Jan 2026 23:47:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769212039;
+	bh=TumnA3/S3uxDkS0YRpeWFX+7ih2OIthnuN41bLEmwas=;
+	h=Date:To:From:Subject:From;
+	b=DFeuhaZ8BBmhPUPvzHr2CwGpgxIQkeefoPpFSQ6ZlZJAOpArfcJDjcvjAUFu4X2+v
+	 PLhCDwAihy5ibV51Jpsb6kuRthHXQTyWcu1W/TZMhpdqooAvZZRXlk17SFEbr3mF7H
+	 mOR1PKB6H5kVmpn+A5aLqFTmK8Udl+d43HqRu8I0=
+Date: Fri, 23 Jan 2026 15:47:18 -0800
+To: mm-commits@vger.kernel.org,zhangjn11@chinatelecom.cn,yuanql9@chinatelecom.cn,yangyicong@hisilicon.com,wangjinchao600@gmail.com,thorsten.blum@linux.dev,sunshx@chinatelecom.cn,stable@vger.kernel.org,song@kernel.org,mingo@kernel.org,lihuafei1@huawei.com,dianders@chromium.org,realwujing@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch added to mm-nonmm-unstable branch
+Message-Id: <20260123234719.1554EC4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] gpio: rockchip: mark the GPIO controller as sleeping
-To: =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>,
- Bartosz Golaszewski <brgl@kernel.org>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>,
- Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
- Linus Walleij <linusw@kernel.org>, linux-gpio@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Marek Szyprowski <m.szyprowski@samsung.com>
-References: <20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com>
- <CAMRc=Md0h5b=N9CqV-9L9sOtCNbiL1-y6RE0x4+w9HYXE8=pEQ@mail.gmail.com>
- <e9fd0005-bfbb-4052-8c2a-9200eb0b60ac@arm.com> <16771005.dW097sEU6C@diego>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <16771005.dW097sEU6C@diego>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.36 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211434-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211435-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,chinatelecom.cn,hisilicon.com,gmail.com,linux.dev,kernel.org,huawei.com,chromium.org,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 83E437B87A
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chinatelecom.cn:email,hisilicon.com:email]
+X-Rspamd-Queue-Id: A01977B892
 X-Rspamd-Action: no action
 
-On 2026-01-23 9:52 pm, Heiko Stübner wrote:
-> Am Freitag, 23. Januar 2026, 21:57:50 Mitteleuropäische Normalzeit schrieb Robin Murphy:
->> On 2026-01-23 7:27 pm, Bartosz Golaszewski wrote:
->>> On Fri, Jan 23, 2026 at 2:27 PM Robin Murphy <robin.murphy@arm.com> wrote:
->>>>
->>>>>>
->>>>>> It's not a big issue for the hdmirx driver specifically, but I wonder
->>>>>> how many more (less often tested) rockchip drivers use GPIOs from their
->>>>>> IRQ handler.
->>>>
->>>> Yeah, seems this finally reached my distro kernel and now the kernel log
->>>> on one of my boards is totally flooded from gpio_ir_recv_irq()
->>>> (legitimately) calling gpio_get_value()... that's not really OK :/
->>>>
->>>
->>> This has always been a sleeping driver. The driver does not know the
->>> firmware configuration it'll be passed and - as I explained above -
->>> depending on the lookup flags, we may call .direction_output() and
->>> descend into pinctrl which uses mutexes. Ideally, we'd make
->>> GPIO-facing pinctrl operations not sleeping but this is a long-time
->>> project and quite complex. Telling the GPIO core that it cannot sleep
->>> is simply incorrect - even if it worked for this particular use-case -
->>> and has an impact on paths we're choosing.
->>>
->>> Can the GPIO reading in the gpio-ir-recv driver be done from a
->>> high-priority workqueue by any chance? Or can we make it a threaded
->>> interrupt?
->>
->> rockchip_gpio_get() is essentially nothing but a readl(), please explain
->> how that could sleep? Saying that countless in-tree and out-of-tree
->> arbitrary GPIO consumer drivers should pointlessly refactor just to
->> avoid the GPIO core spewing spurious WARN()s is not reasonable.
->>
->> I appreciate there are cases where the warning most definitely *is*
->> relevant, which is why I picked up this discussion rather than proposing
->> a revert, even though the documentation says:
->>
->>    * @can_sleep: flag must be set iff get()/set() methods sleep, as they
->>
->> where since neither rockchip_gpio_get() nor rockchip_gpio_set()
->> themselves sleep, apparently this flag must *not* be set. It's
->> irrelevant that a higher-level gpiod_set_value() invocation might end up
->> calling .set_direction before it gets as far as calling .set - that's
->> not the gpio_chip's fault, and gpiolib knows exactly what it's doing.
->>
->> What I'm getting at is that getting, and even (directly) setting a
->> GPIO's value can reasonably be expected to be more common and applicable
->> in a wider range of circumstances than changing its configuration, so
->> the former should not be unfairly penalised because of the latter. This
->> case is clearly distinct from external GPIO expanders on buses that
->> fundamentally can't guarantee fast memory-mapped access at all, so
->> trying to conflate it under the same flag doesn't fit, and that needs
->> fixing ASAP, before the reverts *do* start piling in. Maybe that just
->> means some new dir_can_sleep or more abstract dir_needs_pinctrl flag
->> might suffice, maybe it's something more involved; I don't really know,
->> and I don't have the bandwidth to take this on myself.
-> 
-> the sadest part here is, that the dive from gpio to pinctrl is sort of
-> a remant of the past. Originally it was meant to "automatically" set
-> the gpio pinmux, but nowadays we (at least try to) have pinctrl entries
-> doing that separately.
-> 
-> But of course that's hard to enforce now, because we can't really know
-> where gpios without pinctrl might hide, and of course newer kernels
-> need to still run with old DTBs.
-> 
-> But...
-> 
-> rockchip_pmx_gpio_set_direction()'s only function is to set the GPIO
-> pinmux - it does not handle the actual the actual direction.
-> 
-> Can't we move the pinctrl_gpio_direction_input/_output() call just over
-> to the request callback of the gpiochip?
 
-In fact, after an hour or so chasing through the code, is that not just
-pretty much this? (Not even compile tested as I'd rather go to bed now...)
+The patch titled
+     Subject: watchdog/hardlockup: fix UAF in perf event cleanup due to migration race
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch
 
-Cheers,
-Robin.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch
 
------>8-----
-diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
-index 47174eb3ba76..118edd57c252 100644
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -164,12 +164,6 @@ static int rockchip_gpio_set_direction(struct gpio_chip *chip,
-  	unsigned long flags;
-  	u32 data = input ? 0 : 1;
-  
--
--	if (input)
--		pinctrl_gpio_direction_input(chip, offset);
--	else
--		pinctrl_gpio_direction_output(chip, offset);
--
-  	raw_spin_lock_irqsave(&bank->slock, flags);
-  	rockchip_gpio_writel_bit(bank, offset, data, bank->gpio_regs->port_ddr);
-  	raw_spin_unlock_irqrestore(&bank->slock, flags);
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index e44ef262beec..2fc67aeafdb3 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -3545,10 +3545,9 @@ static int rockchip_pmx_set(struct pinctrl_dev *pctldev, unsigned selector,
-  	return 0;
-  }
-  
--static int rockchip_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
--					   struct pinctrl_gpio_range *range,
--					   unsigned offset,
--					   bool input)
-+static int rockchip_pmx_gpio_request_enable(struct pinctrl_dev *pctldev,
-+					    struct pinctrl_gpio_range *range,
-+					    unsigned int offset)
-  {
-  	struct rockchip_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
-  	struct rockchip_pin_bank *bank;
-@@ -3562,7 +3561,7 @@ static const struct pinmux_ops rockchip_pmx_ops = {
-  	.get_function_name	= rockchip_pmx_get_func_name,
-  	.get_function_groups	= rockchip_pmx_get_groups,
-  	.set_mux		= rockchip_pmx_set,
--	.gpio_set_direction	= rockchip_pmx_gpio_set_direction,
-+	.gpio_request_enable	= rockchip_pmx_gpio_request_enable,
-  };
-  
-  /*
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Qiliang Yuan <realwujing@gmail.com>
+Subject: watchdog/hardlockup: fix UAF in perf event cleanup due to migration race
+Date: Fri, 23 Jan 2026 01:34:07 -0500
+
+During the early initialization of the hardlockup detector, the
+hardlockup_detector_perf_init() function probes for PMU hardware
+availability.  It originally used hardlockup_detector_event_create(),
+which interacts with the per-cpu 'watchdog_ev' variable.
+
+If the initializing task migrates to another CPU during this probe phase,
+two issues arise:
+1. The 'watchdog_ev' pointer on the original CPU is set but not cleared,
+   leaving a stale pointer to a freed perf event.
+2. The 'watchdog_ev' pointer on the new CPU might be incorrectly cleared.
+
+This race condition was observed in console logs (captured by adding debug printks):
+
+[23.038376] hardlockup_detector_perf_init 313 cur_cpu=2
+...
+[23.076385] hardlockup_detector_event_create 203 cpu(cur)=2 set watchdog_ev
+...
+[23.095788] perf_event_release_kernel 4623 cur_cpu=2
+...
+[23.116963] lockup_detector_reconfigure 577 cur_cpu=3
+
+The log shows the task started on CPU 2, set watchdog_ev on CPU 2,
+released the event on CPU 2, but then migrated to CPU 3 before the cleanup
+logic (which would clear watchdog_ev) could run.  This left watchdog_ev on
+CPU 2 pointing to a freed event.
+
+Later, when the watchdog is enabled/disabled on CPU 2, this stale pointer
+leads to a Use-After-Free (UAF) in perf_event_disable(), as detected by KASAN:
+[26.539140] ==================================================================
+[26.540732] BUG: KASAN: use-after-free in perf_event_ctx_lock_nested.isra.72+0x6b/0x140
+[26.542442] Read of size 8 at addr ff110006b360d718 by task kworker/2:1/94
+[26.543954]
+[26.544744] CPU: 2 PID: 94 Comm: kworker/2:1 Not tainted 4.19.90-debugkasan #11
+[26.546505] Hardware name: GoStack Foundation OpenStack Nova, BIOS 1.16.3-3.ctl3 04/01/2014
+[26.548256] Workqueue: events smp_call_on_cpu_callback
+[26.549267] Call Trace:
+[26.549936]  dump_stack+0x8b/0xbb
+[26.550731]  print_address_description+0x6a/0x270
+[26.551688]  kasan_report+0x179/0x2c0
+[26.552519]  ? perf_event_ctx_lock_nested.isra.72+0x6b/0x140
+[26.553654]  ? watchdog_disable+0x80/0x80
+[26.553657]  perf_event_ctx_lock_nested.isra.72+0x6b/0x140
+[26.556951]  ? dump_stack+0xa0/0xbb
+[26.564006]  ? watchdog_disable+0x80/0x80
+[26.564886]  perf_event_disable+0xa/0x30
+[26.565746]  hardlockup_detector_perf_disable+0x1b/0x60
+[26.566776]  watchdog_disable+0x51/0x80
+[26.567624]  softlockup_stop_fn+0x11/0x20
+[26.568499]  smp_call_on_cpu_callback+0x5b/0xb0
+[26.569443]  process_one_work+0x389/0x770
+[26.570311]  worker_thread+0x57/0x5a0
+[26.571124]  ? process_one_work+0x770/0x770
+[26.572031]  kthread+0x1ae/0x1d0
+[26.572810]  ? kthread_create_worker_on_cpu+0xc0/0xc0
+[26.573821]  ret_from_fork+0x1f/0x40
+[26.574638]
+[26.575178] Allocated by task 1:
+[26.575990]  kasan_kmalloc+0xa0/0xd0
+[26.576814]  kmem_cache_alloc_trace+0xf3/0x1e0
+[26.577732]  perf_event_alloc.part.89+0xb5/0x12b0
+[26.578700]  perf_event_create_kernel_counter+0x1e/0x1d0
+[26.579728]  hardlockup_detector_event_create+0x4e/0xc0
+[26.580744]  hardlockup_detector_perf_init+0x2f/0x60
+[26.581746]  lockup_detector_init+0x85/0xdc
+[26.582645]  kernel_init_freeable+0x34d/0x40e
+[26.583568]  kernel_init+0xf/0x130
+[26.584428]  ret_from_fork+0x1f/0x40
+[26.584429]
+[26.584430] Freed by task 0:
+[26.584433]  __kasan_slab_free+0x130/0x180
+[26.584436]  kfree+0x90/0x1a0
+[26.589641]  rcu_process_callbacks+0x2cb/0x6e0
+[26.590935]  __do_softirq+0x119/0x3a2
+[26.591965]
+[26.592630] The buggy address belongs to the object at ff110006b360d500
+[26.592630]  which belongs to the cache kmalloc-2048 of size 2048
+[26.592633] The buggy address is located 536 bytes inside of
+[26.592633]  2048-byte region [ff110006b360d500, ff110006b360dd00)
+[26.592634] The buggy address belongs to the page:
+[26.592637] page:ffd400001acd8200 count:1 mapcount:0 mapping:ff11000107c0e800 index:0x0 compound_mapcount: 0
+[26.600959] flags: 0x17ffffc0010200(slab|head)
+[26.601891] raw: 0017ffffc0010200 dead000000000100 dead000000000200 ff11000107c0e800
+[26.603541] raw: 0000000000000000 00000000800f000f 00000001ffffffff 0000000000000000
+[26.605546] page dumped because: kasan: bad access detected
+[26.606788]
+[26.607351] Memory state around the buggy address:
+[26.608556]  ff110006b360d600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[26.610565]  ff110006b360d680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[26.610567] >ff110006b360d700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[26.610568]                             ^
+[26.610570]  ff110006b360d780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[26.610573]  ff110006b360d800: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[26.618955] ==================================================================
+
+Fix this by refactoring hardlockup_detector_event_create() to return the
+created perf event instead of directly assigning it to the per-cpu
+variable.  This allows the probe logic to reuse the creation code
+(including fallback logic) without affecting the global state, ensuring
+that task migration during probe no longer leaves stale pointers in
+'watchdog_ev'.
+
+Link: https://lkml.kernel.org/r/20260123063407.248775-1-realwujing@gmail.com
+Signed-off-by: Shouxin Sun <sunshx@chinatelecom.cn>
+Signed-off-by: Junnan Zhang <zhangjn11@chinatelecom.cn>
+Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
+Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
+Cc: Song Liu <song@kernel.org>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Li Huafei <lihuafei1@huawei.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Yicong Yang <yangyicong@hisilicon.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/watchdog_perf.c |   51 ++++++++++++++++++++++-----------------
+ 1 file changed, 29 insertions(+), 22 deletions(-)
+
+--- a/kernel/watchdog_perf.c~watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race
++++ a/kernel/watchdog_perf.c
+@@ -118,18 +118,11 @@ static void watchdog_overflow_callback(s
+ 	watchdog_hardlockup_check(smp_processor_id(), regs);
+ }
+ 
+-static int hardlockup_detector_event_create(void)
++static struct perf_event *hardlockup_detector_event_create(unsigned int cpu)
+ {
+-	unsigned int cpu;
+ 	struct perf_event_attr *wd_attr;
+ 	struct perf_event *evt;
+ 
+-	/*
+-	 * Preemption is not disabled because memory will be allocated.
+-	 * Ensure CPU-locality by calling this in per-CPU kthread.
+-	 */
+-	WARN_ON(!is_percpu_thread());
+-	cpu = raw_smp_processor_id();
+ 	wd_attr = &wd_hw_attr;
+ 	wd_attr->sample_period = hw_nmi_get_sample_period(watchdog_thresh);
+ 
+@@ -143,14 +136,7 @@ static int hardlockup_detector_event_cre
+ 						       watchdog_overflow_callback, NULL);
+ 	}
+ 
+-	if (IS_ERR(evt)) {
+-		pr_debug("Perf event create on CPU %d failed with %ld\n", cpu,
+-			 PTR_ERR(evt));
+-		return PTR_ERR(evt);
+-	}
+-	WARN_ONCE(this_cpu_read(watchdog_ev), "unexpected watchdog_ev leak");
+-	this_cpu_write(watchdog_ev, evt);
+-	return 0;
++	return evt;
+ }
+ 
+ /**
+@@ -159,17 +145,26 @@ static int hardlockup_detector_event_cre
+  */
+ void watchdog_hardlockup_enable(unsigned int cpu)
+ {
++	struct perf_event *evt;
++
+ 	WARN_ON_ONCE(cpu != smp_processor_id());
+ 
+-	if (hardlockup_detector_event_create())
++	evt = hardlockup_detector_event_create(cpu);
++	if (IS_ERR(evt)) {
++		pr_debug("Perf event create on CPU %d failed with %ld\n", cpu,
++			 PTR_ERR(evt));
+ 		return;
++	}
+ 
+ 	/* use original value for check */
+ 	if (!atomic_fetch_inc(&watchdog_cpus))
+ 		pr_info("Enabled. Permanently consumes one hw-PMU counter.\n");
+ 
++	WARN_ONCE(this_cpu_read(watchdog_ev), "unexpected watchdog_ev leak");
++	this_cpu_write(watchdog_ev, evt);
++
+ 	watchdog_init_timestamp();
+-	perf_event_enable(this_cpu_read(watchdog_ev));
++	perf_event_enable(evt);
+ }
+ 
+ /**
+@@ -263,19 +258,31 @@ bool __weak __init arch_perf_nmi_is_avai
+  */
+ int __init watchdog_hardlockup_probe(void)
+ {
++	struct perf_event *evt;
++	unsigned int cpu;
+ 	int ret;
+ 
+ 	if (!arch_perf_nmi_is_available())
+ 		return -ENODEV;
+ 
+-	ret = hardlockup_detector_event_create();
++	if (!hw_nmi_get_sample_period(watchdog_thresh))
++		return -EINVAL;
+ 
+-	if (ret) {
++	/*
++	 * Test hardware PMU availability by creating a temporary perf event.
++	 * Allow migration during the check as any successfully created per-cpu
++	 * event validates PMU support. The event is released immediately.
++	 */
++	cpu = raw_smp_processor_id();
++	evt = hardlockup_detector_event_create(cpu);
++	if (IS_ERR(evt)) {
+ 		pr_info("Perf NMI watchdog permanently disabled\n");
++		ret = PTR_ERR(evt);
+ 	} else {
+-		perf_event_release_kernel(this_cpu_read(watchdog_ev));
+-		this_cpu_write(watchdog_ev, NULL);
++		perf_event_release_kernel(evt);
++		ret = 0;
+ 	}
++
+ 	return ret;
+ }
+ 
+_
+
+Patches currently in -mm which might be from realwujing@gmail.com are
+
+watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch
 
 
