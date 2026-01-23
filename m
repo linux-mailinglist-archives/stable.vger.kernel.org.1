@@ -1,304 +1,196 @@
-Return-Path: <stable+bounces-211373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211374-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EfKFCxYc2nruwAAu9opvQ
-	(envelope-from <stable+bounces-211373-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 12:14:52 +0100
+	id qKwMMHNYc2nruwAAu9opvQ
+	(envelope-from <stable+bounces-211374-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 12:16:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7371074E2A
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 12:14:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 435BB74E53
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 12:16:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BFF4322DEE4
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 11:09:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AB3813008316
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 11:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF79318EF9;
-	Fri, 23 Jan 2026 11:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDB2287256;
+	Fri, 23 Jan 2026 11:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UHKKuGrR"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="SDSVETuy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D901231829
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 11:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E478730C361;
+	Fri, 23 Jan 2026 11:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769166575; cv=none; b=GPmUMtTjwVi/4yta1HlaiVYoFwack38+cV4FbPXIq/qT284okP3hKmCUKIGCFvw2B1FNP3eNaQSwKgn491gP339FRVWesbM04Qet+ehr3Dsq6rWTeux/J6yhf5SzXlUO1UoMWW1Xju9CeOzuD25R4A0hjuwORgL9rdz3ei57nI4=
+	t=1769166958; cv=none; b=px7rd77f0scHsTcTOvH+PlvuVADpLRcX7pg7dlXI2XCEJdXtVl5nh66hsupgU8RDzPVqBbNuyU/jQB68Vie2NsUYtc29H1m2LgnUqGdoDPJs6VqU0XmIeTpQpYOCLbRwEHhbmE44rxpYgBo79fKuCsrCjxcrQxzqFaXek9mKjnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769166575; c=relaxed/simple;
-	bh=4iDgbCPDX6zetLw0sIoTMixX1OU29nvoRAcbnlpMyp8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dQR44NOVIo8WJHLyyY3L1fGoI5MU+pZl0u5DfYN2sYIURme/iZgqMmpbi86Z5Agc3KhjHHrszRSRRBwtqClAex0loNbbfNWS0Yzh8vwZQlntqH5AUFu9Gca+lKt/fXD1qXHx1JkEjOlw/9dThyXgEKFTidDOILGKM4n/h6WdeEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UHKKuGrR; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-88ffcb14e11so37524396d6.0
-        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 03:09:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769166571; x=1769771371; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0/pAK6MrrOiwwDQc0GBrsxIdwLQE0979ZY3mHhzgGcY=;
-        b=UHKKuGrRBDJYfX0sG/9bxETcd5SZb8WQwP+7HWlx1nIw2UoE23VKeMOvwdQBhRBINE
-         q3YKvVduVJeoHK7pjMmHofRUmMxheAwfCnvyhDkW8qixjat0eO+2EF9EvawjQhoHwpQA
-         uMJeLJismzXFR5MdJLaLGUAi/POQzt1rMNvV9UeJe94BWQDUF5JFeltvobw4DRRMVA8q
-         BvNqu2HZe9CqzmIukR61UfP90vAo0sRHnEh62nBUPhtSAn8n4yey2WpbwbcjIYe3buRx
-         SaHG2BX6vn3n1Ifw26p2gMly7GBRlk6UTn1vL2bfj3Dy2atpYFB9nLb/6RraBHRT3znP
-         mLpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769166571; x=1769771371;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0/pAK6MrrOiwwDQc0GBrsxIdwLQE0979ZY3mHhzgGcY=;
-        b=ru/XIVFDJ+Ad5CXZ/RW+aIfBxk7mL+8mmbZecT7/6sjGtCnHX/0N5Yi2xZ71udeDMh
-         1zX0Gt16MyuxamZ5ZrzOUCCEF4leZFUdfxSTwXhckwr6yAGDmfZLlLY0SDDEQv76dSiz
-         Ke81jbVxK+CnMW9tlsazonWcLpHTqBjq5bKlqhR0O27NoF9aVAIT7ObRJew9Oa7xN1Uy
-         E9BgXlORpnv7ur+XOAKt/kPRbpIgdcYs/gGc8C6M/kMOsoM6N+MpN0YotqeIrX/95u0R
-         m54Qr/wjmuXQkbE2DpGlj/3MKQ0OO6dcqAXNj/5tORICTGPuOd+KqCHCYZ21nLPjE35s
-         1jPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWzXdY7CiKu9OlKrtOVzYlh+FlHLo1hWvbtXyVyryMv7YPZD36u9nkXDZixGCBRQHYTJ/X2pcI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzsBRGSAhYGxC2PaIZ0PbVbxxYCZ5Bt8tsL6l9L7YC3xLSY8kvA
-	cE3YjkNJ1X1qHOx6WsIygr8ele7+kD2+mIUo1pUrYDKMiZ02NxO+sg4b
-X-Gm-Gg: AZuq6aIbXhM42N+ZhPy6/p8k4Op5B13yqwfxcKDJdQI6LK+BvqC0dMlnylN4S0wW6tE
-	aV7AFG7zGklUfXQHxLqqyTS80pbcjvVg7/Y2PA9YyOhlWtwrREF8PNrgGonwohuLsxtNHA/vysg
-	aQ8Q4R2CttQPzMQhZ3H18HxUZqYfZeUCxcSkfQ1McGTFQYqiLXd1t7GEQM3wlPDLnk/tz8ph6X4
-	dYplpNB333OoR67U4RDXuQIEwCWlYVSXfniUPbozzejCQdXB3KW8+FsSZyCCqZndv31OmDoBhaQ
-	3BT77liJ0QgogQAGqWPbhB6/+3RkzfptRAFl1Spy2tt17JBZr6uDyPzV2gtqC2k/4sLDf5N9mLc
-	AOawbU6+boU2Jt/vjYly48REf9wsO9qVE4ZV2aHNLsl6lj+YqXHjIr7c+GUwUY8T0JCSkP79JPi
-	Ld6kdgWc9Tl7oyFdVIUN+A
-X-Received: by 2002:a05:6214:2628:b0:894:610c:3a22 with SMTP id 6a1803df08f44-89490177e74mr36606866d6.20.1769166571210;
-        Fri, 23 Jan 2026 03:09:31 -0800 (PST)
-Received: from localhost.localdomain ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-502f7f72d8bsm14348801cf.22.2026.01.23.03.09.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Jan 2026 03:09:30 -0800 (PST)
-From: Kevin Hao <haokexin@gmail.com>
-Date: Fri, 23 Jan 2026 19:09:07 +0800
-Subject: [PATCH net] net: cpsw_new: Execute ndo_set_rx_mode callback in a
- work queue
+	s=arc-20240116; t=1769166958; c=relaxed/simple;
+	bh=hbCCTTqf/VoHgYXOFS2JZ/4Xv1Ar1ZhaMccriHZ9cGo=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=LGrtnzGj9KfL0RTt6hAj9EZyl0EFkNNew884/kpBc2cXBMWe+CPsnufnQFQ9bFSWzVxZn1wxPiUBDJ7nCfauQMRYHIPaWgzdygDTMCSvPGyChdbcmFGVR3gM42nSM8K1OikPCbLwD9IGyabtQY0mR9aXsrZpuPDcdvJDHWr+1QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=SDSVETuy; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1769166953; x=1769771753; i=markus.elfring@web.de;
+	bh=yde3Mjb8oaKQZAJ6rJRhWjZDacDDPtcd49QgFCiCTvk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=SDSVETuyz5mWgUkhsW1FfpH+T8mZmKBMunWaWsMez11VKExVAPqXKHeNNB5zQ/WU
+	 +icqQAp0+1+fsi1gLD9ZStJWxEtJYg9mI7S2GQxG+ihmZt5uIMg8pjacYYAKdDbFC
+	 Z/iNnIfa/YiEXRJ7gNg24OKJq+ZOL0TwKg7UR4bXNBlHeCdkTZT1lyjWWyiCsW71h
+	 S4AItWwoSEjGLzibTOkiY7LVAErLX2LXYfPdQcQhTUeklR6E6kLHP+EEOR5hHia0E
+	 GTLzF9fjAjaonNPjZocLjhPcHzHcmUEOZLZPsKHUBe6PggsZ/Yvn0oLGt66QI/w21
+	 P2FlMoxdGvYDda5I7w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.224]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MKuKH-1vUb4O0wcn-00XIHz; Fri, 23
+ Jan 2026 12:15:53 +0100
+Message-ID: <969082ca-8af4-420e-992d-c6f4cc79f6c6@web.de>
+Date: Fri, 23 Jan 2026 12:15:48 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260123-bbb-v1-1-176b0b71834d@gmail.com>
-X-B4-Tracking: v=1; b=H4sIANJWc2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDQyNj3aSkJN2UZGMzc9M0M3PDFAMloMqCotS0zAqwKdFKeaklSrG1tQB
- t+L7sWgAAAA==
-X-Change-ID: 20260123-bbb-dc3675f671d0
-To: netdev@vger.kernel.org
-Cc: Kevin Hao <haokexin@gmail.com>, stable@vger.kernel.org, 
- Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, linux-omap@vger.kernel.org
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird
+To: Weigang He <geoffreyhe2@gmail.com>, Suman Anna <s-anna@ti.com>,
+ Jassi Brar <jassisinghbrar@gmail.com>
+Cc: stable@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, Tony Lindgren <tony@atomide.com>
+References: <20260123035648.1441763-1-geoffreyhe2@gmail.com>
+Subject: Re: [PATCH] mailbox: omap: fix reference count leak in
+ omap_mbox_probe()
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20260123035648.1441763-1-geoffreyhe2@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:M61XyfDR2DFHbhcNrHQMpV1v3J20XO3AFTt+nm6BqdfLPsNqrGG
+ RAqKYOTuYSNq8xjsrZOH+hHvYfeIjSVI3Fa0O1vN1+w1sz3Tz6+RhbJLYVRkwgOkwit6awq
+ 7cN5RbkO50raTmQQ0srS7clsaqoB2o8oVnEN2CEV16mOECRHbzsnVnsasVbD/zIu4lRdESN
+ /Dl3hq3rQnMMSx/J2F1RQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:NIImDBBm9k8=;65Bl88vc3IWUXws9oLZuUPUBFWO
+ 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
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[web.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[web.de:s=s29768273];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211373-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,ti.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-211374-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[haokexin@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,ti.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[web.de:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[web.de];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[Markus.Elfring@web.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,davemloft.net:email]
-X-Rspamd-Queue-Id: 7371074E2A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 435BB74E53
 X-Rspamd-Action: no action
 
-Commit 1767bb2d47b7 ("ipv6: mcast: Don't hold RTNL for
-IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP") removed the RTNL lock for
-IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP operations. However, this
-change triggered the following call trace on my BeagleBone Black board:
-  WARNING: net/8021q/vlan_core.c:236 at vlan_for_each+0x120/0x124, CPU#0: rpcbind/496
-  RTNL: assertion failed at net/8021q/vlan_core.c (236)
-  Modules linked in:
-  CPU: 0 UID: 997 PID: 496 Comm: rpcbind Not tainted 6.19.0-rc6-next-20260122-yocto-standard+ #8 PREEMPT
-  Hardware name: Generic AM33XX (Flattened Device Tree)
-  Call trace:
-   unwind_backtrace from show_stack+0x28/0x2c
-   show_stack from dump_stack_lvl+0x30/0x38
-   dump_stack_lvl from __warn+0xb8/0x11c
-   __warn from warn_slowpath_fmt+0x130/0x194
-   warn_slowpath_fmt from vlan_for_each+0x120/0x124
-   vlan_for_each from cpsw_add_mc_addr+0x54/0xd8
-   cpsw_add_mc_addr from __hw_addr_ref_sync_dev+0xc4/0xec
-   __hw_addr_ref_sync_dev from __dev_mc_add+0x78/0x88
-   __dev_mc_add from igmp6_group_added+0x84/0xec
-   igmp6_group_added from __ipv6_dev_mc_inc+0x1fc/0x2f0
-   __ipv6_dev_mc_inc from __ipv6_sock_mc_join+0x124/0x1b4
-   __ipv6_sock_mc_join from do_ipv6_setsockopt+0x84c/0x1168
-   do_ipv6_setsockopt from ipv6_setsockopt+0x88/0xc8
-   ipv6_setsockopt from do_sock_setsockopt+0xe8/0x19c
-   do_sock_setsockopt from __sys_setsockopt+0x84/0xac
-   __sys_setsockopt from ret_fast_syscall+0x0/0x5
+=E2=80=A6
+> 1. Using goto-based error handling to ensure of_node_put(child) is
+>    called on all error paths within the loop
+> 2. Adding of_node_put(child) after the loop completes normally to
+>    release the last child node reference
 
-This trace occurs because vlan_for_each() is called within
-cpsw_ndo_set_rx_mode(), which expects the RTNL lock to be held.
-Since modifying vlan_for_each() to operate without the RTNL lock is not
-straightforward, and because ndo_set_rx_mode() is invoked both with and
-without the RTNL lock across different code paths, simply adding
-rtnl_lock() in cpsw_ndo_set_rx_mode() is not a viable solution.
+How do you think about to increase the application of scope-based resource=
+ management
+with another patch?
 
-To resolve this issue, we opt to execute the actual processing within
-a work queue, following the approach used by the icssg-prueth driver.
-
-Fixes: 1767bb2d47b7 ("ipv6: mcast: Don't hold RTNL for IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP.")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Cc: stable@vger.kernel.org
----
-Please note that the cpsw driver also has the same issue. If this resolution
-is acceptable, I will create another patch to fix the issue in cpsw.
-
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: Roger Quadros <rogerq@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: linux-omap@vger.kernel.org
----
- drivers/net/ethernet/ti/cpsw_new.c  | 29 +++++++++++++++++++++++++++--
- drivers/net/ethernet/ti/cpsw_priv.h |  2 ++
- 2 files changed, 29 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index ab88d4c02cbde76207f89cf433e2b383dcde6a83..786d64a952643927ad80d2effbb171dd87f91160 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -248,15 +248,20 @@ static int cpsw_purge_all_mc(struct net_device *ndev, const u8 *addr, int num)
- 	return 0;
- }
- 
--static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
-+static void cpsw_ndo_set_rx_mode_work(struct work_struct *work)
- {
--	struct cpsw_priv *priv = netdev_priv(ndev);
-+	struct cpsw_priv *priv = container_of(work, struct cpsw_priv, rx_mode_work);
- 	struct cpsw_common *cpsw = priv->cpsw;
-+	struct net_device *ndev = priv->ndev;
- 
-+	rtnl_lock();
-+	netif_addr_lock_bh(ndev);
- 	if (ndev->flags & IFF_PROMISC) {
- 		/* Enable promiscuous mode */
- 		cpsw_set_promiscious(ndev, true);
- 		cpsw_ale_set_allmulti(cpsw->ale, IFF_ALLMULTI, priv->emac_port);
-+		netif_addr_unlock_bh(ndev);
-+		rtnl_unlock();
- 		return;
- 	}
- 
-@@ -270,6 +275,16 @@ static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
- 	/* add/remove mcast address either for real netdev or for vlan */
- 	__hw_addr_ref_sync_dev(&ndev->mc, ndev, cpsw_add_mc_addr,
- 			       cpsw_del_mc_addr);
-+	netif_addr_unlock_bh(ndev);
-+	rtnl_unlock();
-+}
-+
-+static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
-+{
-+	struct cpsw_priv *priv = netdev_priv(ndev);
-+	struct cpsw_common *cpsw = priv->cpsw;
-+
-+	queue_work(cpsw->cmd_wq, &priv->rx_mode_work);
- }
- 
- static unsigned int cpsw_rxbuf_total_len(unsigned int len)
-@@ -1398,6 +1413,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
- 		priv->msg_enable = netif_msg_init(debug_level, CPSW_DEBUG);
- 		priv->emac_port = i + 1;
- 		priv->tx_packet_min = CPSW_MIN_PACKET_SIZE;
-+		INIT_WORK(&priv->rx_mode_work, cpsw_ndo_set_rx_mode_work);
- 
- 		if (is_valid_ether_addr(slave_data->mac_addr)) {
- 			ether_addr_copy(priv->mac_addr, slave_data->mac_addr);
-@@ -1976,6 +1992,13 @@ static int cpsw_probe(struct platform_device *pdev)
- 	}
- 	cpsw_split_res(cpsw);
- 
-+	cpsw->cmd_wq = create_singlethread_workqueue("cpsw_cmd_wq");
-+	if (!cpsw->cmd_wq) {
-+		dev_err(dev, "error initializing workqueue\n");
-+		ret = -ENOMEM;
-+		goto clean_cpts;
-+	}
-+
- 	/* setup netdevs */
- 	ret = cpsw_create_ports(cpsw);
- 	if (ret)
-@@ -2042,6 +2065,7 @@ static int cpsw_probe(struct platform_device *pdev)
- clean_unregister_notifiers:
- 	cpsw_unregister_notifiers(cpsw);
- clean_unregister_netdev:
-+	destroy_workqueue(cpsw->cmd_wq);
- 	cpsw_unregister_ports(cpsw);
- clean_cpts:
- 	cpts_release(cpsw->cpts);
-@@ -2068,6 +2092,7 @@ static void cpsw_remove(struct platform_device *pdev)
- 		return;
- 	}
- 
-+	destroy_workqueue(cpsw->cmd_wq);
- 	cpsw_unregister_notifiers(cpsw);
- 	cpsw_unregister_devlink(cpsw);
- 	cpsw_unregister_ports(cpsw);
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.h b/drivers/net/ethernet/ti/cpsw_priv.h
-index 91add8925e235c6cf5542fde11f3383b9234c872..8cdf4bff198fcc05436ff381a7e4326b3e3c27b1 100644
---- a/drivers/net/ethernet/ti/cpsw_priv.h
-+++ b/drivers/net/ethernet/ti/cpsw_priv.h
-@@ -362,6 +362,7 @@ struct cpsw_common {
- 	struct net_device *hw_bridge_dev;
- 	bool ale_bypass;
- 	u8 base_mac[ETH_ALEN];
-+	struct workqueue_struct *cmd_wq;
- };
- 
- struct cpsw_ale_ratelimit {
-@@ -391,6 +392,7 @@ struct cpsw_priv {
- 	u32 tx_packet_min;
- 	struct cpsw_ale_ratelimit ale_bc_ratelimit;
- 	struct cpsw_ale_ratelimit ale_mc_ratelimit;
-+	struct work_struct rx_mode_work;
- };
- 
- #define ndev_to_cpsw(ndev) (((struct cpsw_priv *)netdev_priv(ndev))->cpsw)
-
----
-base-commit: a0c666c25aeefd16f4b088c6549a6fb6b65a8a1d
-change-id: 20260123-bbb-dc3675f671d0
-
-Best regards,
--- 
-Kevin Hao <haokexin@gmail.com>
-
+Regards,
+Markus
 
