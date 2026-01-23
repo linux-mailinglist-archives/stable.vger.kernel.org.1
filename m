@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-211366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CI3sGdVFc2mHuQAAu9opvQ
-	(envelope-from <stable+bounces-211366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:56:37 +0100
+	id sBaNGnlHc2mHuQAAu9opvQ
+	(envelope-from <stable+bounces-211367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 11:03:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB7473BC0
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:56:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C2D73DC3
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 11:03:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 63AC7300B5B6
-	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 09:55:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 371A4302A6F1
+	for <lists+stable@lfdr.de>; Fri, 23 Jan 2026 10:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CC137FF5B;
-	Fri, 23 Jan 2026 09:54:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="qf9jUyJ8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA8036607A;
+	Fri, 23 Jan 2026 10:02:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E8135D5EB
-	for <stable@vger.kernel.org>; Fri, 23 Jan 2026 09:54:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110AF320CD9;
+	Fri, 23 Jan 2026 10:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769162089; cv=none; b=hMCMERsuO8ytxp8X+GgZsHVBovl69UwptYqxDn/Tc5kW4wut3MqW9IQT6jyPJ30ppGXH5udLaUpfWJMZw3YlIb8sNQjiY9IYSTmTwGSzCWxwiHLsUmm5rn0vNSdt5It5ssvk+7zDKbOv4gawiRFG9jyunDBOiL6J88Vta9dXocc=
+	t=1769162576; cv=none; b=keCXIiQXhzRzQncIdZHA29sP8H/+eNRlDeW+rXGCamPlDEzSuS5euBXUu1f1Y+pRcI2F/bvfhSGs4lrnzMmz3Lk8rKMcu8dMnnhe/xOMSbLwyHtadwm5uQdPKjf0tB0BM6GTbQt1oOGZBnlnyKWSZJfs3WyMKrqwOEtD54Cf4V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769162089; c=relaxed/simple;
-	bh=OKT3nW2NcTLbT0bZ7gEfeFdbPPtkLeME5w1GMI5FqxQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VB0yZO3LxDYv71fLsMzcHc9wfcXObOZGBYnU4DP3RHLEm5ahQLLpMqoDRDI3wMNzw5m8quQBHwMe6e00B0fvndij8wqL7ZrN21Rm6CnZntw8RcSfSv5Bhic/PROlKWUSa/s7Y89qqj99iFEUQVeIHPIBlgRPqRPaQVvAoQ+0thQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=qf9jUyJ8; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
-	Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=M6PaY/eMHA8WP5Bby+zqUFNuTpDO4V3PN7JXSs+wEoY=; b=qf9jUyJ89O9/LqrXoiahRcdpmq
-	tpw47bizJ9gZU0flv0Y1qoTbicYhHtKviJ+SQmvQmRNRbXywkCktjqtDlWBrvum1o9mdn8XIq4WqU
-	e2rSDL2UREUMWiW2snSO1FG/g20OjLoPihykYFXuFc0riGg30GG4zUzUBbW88PGBNGzFeJ12hdEJw
-	Gyz5PBSC5US9qOPa0DOjXfbz5LEbUnGKeRv71z+HERwrGmGml8F5yk2mrLuotpsw9I6kEToDP7ZvC
-	F7hPKTSkyUYUh7iMwzo5Jz8WyyHapYR2t15wD7a5PYsABCIIlWvAliWgGw846tBNo0kLIIoOAx4yP
-	Xz+Hj6ZQ==;
-Received: from [90.240.106.137] (helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1vjDs7-008ozf-Bm; Fri, 23 Jan 2026 10:54:31 +0100
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-To: dri-devel@lists.freedesktop.org
-Cc: kernel-dev@igalia.com,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	Zhi Wang <wangzhi@stu.xidian.edu.cn>,
-	David Francis <David.Francis@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	s=arc-20240116; t=1769162576; c=relaxed/simple;
+	bh=d/I0DYn4lkHUeQ50ip4C4D5h5ELivq7q5hR8hZ3DVgM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=BY6HJ3FvkmJrnux6QkMUZzuBO9a7xfxLHGgaEGfHrFnQ6lo4SdAH2n15YGHOVDJ4g7FbC9Jz2QD39JhxM7bruPMMnlDoqZwpFStno9JPtsC0abC0w9uQw9x0yw6aaEn8MJiL3egR/CETnGWgxyE5kv9eSxb4DtykLCCdh42QiWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 38CF61476;
+	Fri, 23 Jan 2026 02:02:36 -0800 (PST)
+Received: from e132581.cambridge.arm.com (e132581.arm.com [10.1.196.87])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 09F9D3F740;
+	Fri, 23 Jan 2026 02:02:40 -0800 (PST)
+From: Leo Yan <leo.yan@arm.com>
+To: Sasha Levin <sashal@kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	linux-perf-users@vger.kernel.org
+Cc: Leo Yan <leo.yan@arm.com>,
+	Thomas Voegtle <tv@lio96.de>,
 	stable@vger.kernel.org
-Subject: [PATCH] drm: Do not allow userspace to trigger kernel warnings in drm_gem_change_handle_ioctl()
-Date: Fri, 23 Jan 2026 09:54:15 +0000
-Message-ID: <20260123095415.74260-1-tvrtko.ursulin@igalia.com>
-X-Mailer: git-send-email 2.52.0
+Subject: [PATCH] perf arm_spe: Fix bitfield dependency failure
+Date: Fri, 23 Jan 2026 10:02:18 +0000
+Message-Id: <20260123100218.233246-1-leo.yan@arm.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,94 +59,92 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.64 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211366-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[igalia.com:-];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-211367-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tvrtko.ursulin@igalia.com,stable@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[leo.yan@arm.com,stable@vger.kernel.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,igalia.com:email,xidian.edu.cn:email,amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9EB7473BC0
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:mid,arm.com:email,lio96.de:email]
+X-Rspamd-Queue-Id: B5C2D73DC3
 X-Rspamd-Action: no action
 
-Since GEM bo handles are u32 in the uapi and the internal implementation
-uses idr_alloc() which uses int ranges, passing a new handle larger than
-INT_MAX trivially triggers a kernel warning:
+A perf build failure was reported by Thomas Voegtle on stable kernel
+v6.6.120:
 
-idr_alloc():
-...
-	if (WARN_ON_ONCE(start < 0))
-		return -EINVAL;
-...
+  make perf NO_JEVENTS=1 NO_LIBTRACEEVENT=1
+    BUILD:   Doing 'make -j12' parallel build
+    HOSTCC  fixdep.o
+    HOSTLD  fixdep-in.o
+  ...
+  ...
+    CC      tests/sample-parsing.o
+    CC      util/intel-pt-decoder/intel-pt-pkt-decoder.o
+    CC      util/perf-regs-arch/perf_regs_csky.o
+    CC      util/arm-spe-decoder/arm-spe-pkt-decoder.o
+    CC      util/perf-regs-arch/perf_regs_loongarch.o
+  In file included from util/arm-spe-decoder/arm-spe-pkt-decoder.h:10,
+                   from util/arm-spe-decoder/arm-spe-pkt-decoder.c:14:
+  /local/git/linux-stable-rc/tools/include/linux/bitfield.h: In function ‘le16_encode_bits’:
+  /local/git/linux-stable-rc/tools/include/linux/bitfield.h:166:31: error: implicit declaration of
+  function ‘cpu_to_le16’; did you mean ‘htole16’? [-Werror=implicit-function-declaration]
+    ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
+                                 ^~~~~~~~~
+  /local/git/linux-stable-rc/tools/include/linux/bitfield.h:149:9: note: in definition of macro
+  ‘____MAKE_OP’
+    return to((v & field_mask(field)) * field_multiplier(field)); \
+           ^~
+  /local/git/linux-stable-rc/tools/include/linux/bitfield.h:170:1: note: in expansion of macro
+  ‘__MAKE_OP’
+   __MAKE_OP(16)
 
-Fix it by rejecting new handles above INT_MAX and at the same time make
-the end limit calculation more obvious by moving into int domain.
+Fix this by including linux/kernel.h, which provides the required
+definitions.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reported-by: Zhi Wang <wangzhi@stu.xidian.edu.cn>
-Fixes: 53096728b891 ("drm: Add DRM prime interface to reassign GEM handle")
-Cc: David Francis <David.Francis@amd.com>
-Cc: Felix Kuehling <felix.kuehling@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: <stable@vger.kernel.org> # v6.18+
+The relevant C file in mainline already includes kernel.h, so the issue is
+not exposed.  It'd be good to merge this change on mainline as well for
+robustness.
+
+Fixes: 64d86c03e144 ("perf arm-spe: Extend branch operations")
+Reported-by: Thomas Voegtle <tv@lio96.de>
+Closes: https://lore.kernel.org/stable/3a44500b-d7c8-179f-61f6-e51cb50d3512@lio96.de/
+Cc: stable@vger.kernel.org
+Signed-off-by: Leo Yan <leo.yan@arm.com>
 ---
-Compile tested only. Any IGTs for the new functionality?
----
- drivers/gpu/drm/drm_gem.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
-index 7ff6b7bbeb73..c5d3ecc1f8a8 100644
---- a/drivers/gpu/drm/drm_gem.c
-+++ b/drivers/gpu/drm/drm_gem.c
-@@ -1001,11 +1001,16 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
- {
- 	struct drm_gem_change_handle *args = data;
- 	struct drm_gem_object *obj;
--	int ret;
-+	int new, ret;
+diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
+index adf4cde320aa..8d16619cd098 100644
+--- a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
++++ b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
+@@ -7,6 +7,7 @@
+ #ifndef INCLUDE__ARM_SPE_PKT_DECODER_H__
+ #define INCLUDE__ARM_SPE_PKT_DECODER_H__
  
- 	if (!drm_core_check_feature(dev, DRIVER_GEM))
- 		return -EOPNOTSUPP;
- 
-+	if (args->new_handle <= INT_MAX) /* idr_alloc() limitation. */
-+		new = args->new_handle;
-+	else
-+		return -EINVAL;
-+
- 	obj = drm_gem_object_lookup(file_priv, args->handle);
- 	if (!obj)
- 		return -ENOENT;
-@@ -1018,8 +1023,7 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
- 	mutex_lock(&file_priv->prime.lock);
- 
- 	spin_lock(&file_priv->table_lock);
--	ret = idr_alloc(&file_priv->object_idr, obj,
--		args->new_handle, args->new_handle + 1, GFP_NOWAIT);
-+	ret = idr_alloc(&file_priv->object_idr, obj, new, new + 1, GFP_NOWAIT);
- 	spin_unlock(&file_priv->table_lock);
- 
- 	if (ret < 0)
++#include <linux/kernel.h>
+ #include <linux/bitfield.h>
+ #include <stddef.h>
+ #include <stdint.h>
 -- 
-2.52.0
+2.34.1
 
 
