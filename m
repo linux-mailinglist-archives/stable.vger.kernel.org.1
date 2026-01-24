@@ -1,307 +1,281 @@
-Return-Path: <stable+bounces-211437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211438-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cN14JTwYdGmQ2AAAu9opvQ
-	(envelope-from <stable+bounces-211437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 01:54:20 +0100
+	id iC4VG5QmdGkl2gAAu9opvQ
+	(envelope-from <stable+bounces-211438-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 02:55:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408287BD10
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 01:54:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AFB7C211
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 02:55:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5827A3019171
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 00:54:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1259D300373A
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 01:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA6E1531C8;
-	Sat, 24 Jan 2026 00:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DB619E96D;
+	Sat, 24 Jan 2026 01:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="i0PDKtu6";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="X9oJ+h48"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FMLXLcGP"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E203A823DD
-	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 00:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.168.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769216057; cv=pass; b=ZWA4KsPitD1PJPDuDVM9tko8HkTXg9BddfY50oEmYiCnqYLUv7aLX+IZc9UM1l/c6fDgGeKSfLSXlzdmgYUUscTHi7sp0GKXywSEII81jrtow9+yST2TpnV9sl/lVF/nwKmSebn/yit2YU+rKXmE9xhS6ct5wQnIBDZ6oji8thw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769216057; c=relaxed/simple;
-	bh=/psSTzl/zugWR/YfBzE0v+7mfQXW9IlvaUYxzo1OIfw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PvQPlNhZe4FMuW7zuEphQzjsaj24erzhs2uFSv3+PXvlXMUsCV4v1b1ORuZSuxNLTJkX1wjCCr+097pC3UjBi5imC4zyNqjhcWJ0O3baFjir0dKAWiLm/E+XLJlwhkkv7Zif7JYc3WAavVUSEbunv4ijzL6iR8u8vUYrQA3doYI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=i0PDKtu6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=X9oJ+h48; arc=pass smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60NFPJ0c2209353
-	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 00:54:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:to; s=
-	qcppdkim1; bh=ypT2ScJN5jRu324D8R3Gm5Zq8pTI726Gt53mcp0XdfE=; b=i0
-	PDKtu6xakoZ4UTDxvtVoxkX8S0nFL9D0WtLVBqCHHMZlY2BsHdrxNWhezHe5apiL
-	5rc+1oH0EDiR/Sl5L9CEyUeOtOOmksLw49oL7y4yAMBxn1NjDKMZ+U8YtFTJ0qiy
-	Df81JDhUJoiQokaHCkQDLOEJYhDVMNCvO7QeaTvqsPPn2EdplkFxcTHJ0tcGdT/+
-	2js9L1OB++qs4LVg2g2VAlKZiUZZ7sCP/qfwELh4GNa+u9OnDIhGXwGQFr2UgK3G
-	8iPlPmia2jum1uc1wtVGLuRhLi/QsRpceMuIU1m1XbyW8K6SHuYWBlG7fwsroV5w
-	+EP2mjdVQ22uL6SG5mEw==
-Received: from mail-dl1-f71.google.com (mail-dl1-f71.google.com [74.125.82.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bvbm6hc6r-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 00:54:14 +0000 (GMT)
-Received: by mail-dl1-f71.google.com with SMTP id a92af1059eb24-121b1cb8377so5473567c88.0
-        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 16:54:13 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769216053; cv=none;
-        d=google.com; s=arc-20240605;
-        b=P+n0xCB7Af/7e9+BcbUdGboRwCKlxe5eR0AjUDFBPImP7cfxcze/kBnoU+z1O/JfQ6
-         UrIz1qMbKuTLi7r0auTZchv0o3rfJs4p9FNRUXMNS+uPZxeVSiz3FzddM/7WS0tQa3OP
-         bQL97zpH/JJEpHttvLreyctJjxqeDhkbKDBW6sOnmCvn71rUD4lO4fanuikSeROMcMF+
-         EBVBwJ7gyHT2kHsJvXiNv1LGsHO9CGRLG/4JqZ9lZrRoR0sNAsudbEQrqk8te8QD541O
-         j23YgBDado3HL6mYzmMChiMT+QnrVgO6jhu1ixVuEimzMPM0zbGklx5jPNVagPmvXF3c
-         eccQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:dkim-signature;
-        bh=ypT2ScJN5jRu324D8R3Gm5Zq8pTI726Gt53mcp0XdfE=;
-        fh=gnVt1i2syJMBshIFNhIANjFnM1rylhYOexS8Vlv4m+E=;
-        b=VlhHmZJHt6w3+aSNKBg1YTaJK0LDJb7USy+kRzwB21PEvpjlj+tTc6uSqVp9rKp5xC
-         g3u+bTcNIUBY2dsvNWUqxqMw0mOGUj1os+l7mGawg9ugJ2UJXX/eSW83mhJXYd0INpjZ
-         nXIMNLH+6k0oycKafIkLHJ8w6fYJCpW6LqnFD5O9KrXKPpyi1YGmE05OzwtwaQS9gB8R
-         RtIkhNTeEImkpPj0dOF9q8z7J1tjdbkjkj8PeybkUG96IezAbur0Xn0DR+a2JU0Rguy5
-         nqOvtx/OHUhHgbuOU8+IUOPmNOme8kNnYk/1YKz0C2GqCqhma1dukI44hAShxFWcJh/o
-         j5BA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769216053; x=1769820853; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ypT2ScJN5jRu324D8R3Gm5Zq8pTI726Gt53mcp0XdfE=;
-        b=X9oJ+h48V4arB9nLabDFCY98FrI4pLoO382ZwPui3P3D2W/ypOoVkzbZT2WwuPkSLl
-         GLUYFmk/Hgg0gLvk8s5AyJRwsNG3lpZxsi1KldYRFoseQNXkyicm2nQuGRpEW9eN1YvL
-         gTxt8ZKqUE9IS90QENS4MDRpOPh6zxEgVf9QxBacB0Q+Q5W9Guc+jW4/KBijAarB7KXi
-         u4e5W0M8c12sXzHvxSC62AsTKqmgFWGRZRjgf/moM7ck2HztxkzvjbhYsuuAhjDCgSvn
-         HvSsiVptyyExos5xpi9DYDJu2BD9JrY2prOkySygClKmta6QoY/zaeLFN7WeI4tnNLCp
-         z62w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769216053; x=1769820853;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ypT2ScJN5jRu324D8R3Gm5Zq8pTI726Gt53mcp0XdfE=;
-        b=ROd5BGATM0tMysSmIQw/1AfGU+zLb84FrXMURnCQ+qxZcV/AMUmhyv2GkLLIbpoLe2
-         Sy/EJGzmiYYsUWyXylB26GzB/gNZutLavcBEtuEoCRcVPs6fDWeEY5/OENURdJXUz4a/
-         nT8404SzoaQ53vU9FR2K6d6aCP7vwa6SUKCe6vp0xX9u2Tw0CLoOwISBRndHB3B4qOWi
-         r8s1ndHZ0m6BXqumhBAK39urWJwj6RDjGOmS9D+/osOXsijmR1CevxdZ7r2658SjYx4N
-         6wUldAZ0d0wMm1fHxImGdP1fY8VRjkX1gfk4S94IDdktwpvDXOI1biHUgtzgyPhVBdFQ
-         eDIg==
-X-Forwarded-Encrypted: i=1; AJvYcCUdYmu/jwxff+NnzWBy1/HHwGKCLYNRQe4nxXJd+3SnQV/nP/PZ1qRb0dk8aZ0/Y07roxUvk2s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXwnGTsSzErqDsFH1hpK8hulNRI3zfWJaXfJRHcTqVOK1x7YE4
-	yErUQ+gg5BBZjXQYQTXTrUXiWn1S4nKld/eZzj8rHaueCKJ9Mr1uSP7/rVGhN4UcFc+Ers35Wvt
-	kZSOe+MC/cX1CoGxBVREo+QrqCyzckmmVwW0CaqaqnvSIyFwpSxV+v+N2PAiHPjRrcvdeaOp7eK
-	MdMlZ6fnZN061uFjGAYVD/0WabBlrWMUi2gg==
-X-Gm-Gg: AZuq6aLrsMRTq6sOsAh3zGiL9fioaHaWXJ0Qym5mEXvGZN+ZCeqokoeeheFdgQUTgT8
-	J0p8IiurwuQPovyl/+UIrvHldKl2qhxsyEEeA5youjRAF4xqU3JZ6y6Yrpyncoo0ke8BID8ushi
-	pklLZoSx/99wCKotV9wRqMfuA8dKmBlmccSo+YdlPZQwI3ZvKORVyWbxuEIV6/djD5DH0zbfTEa
-	SgIUS/Zah8d6sKVlSZCBIacIw==
-X-Received: by 2002:a05:7022:660a:b0:11b:9386:a38c with SMTP id a92af1059eb24-1247dc1d3c2mr2254082c88.47.1769216053137;
-        Fri, 23 Jan 2026 16:54:13 -0800 (PST)
-X-Received: by 2002:a05:7022:660a:b0:11b:9386:a38c with SMTP id
- a92af1059eb24-1247dc1d3c2mr2254058c88.47.1769216052652; Fri, 23 Jan 2026
- 16:54:12 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D2BAD2C;
+	Sat, 24 Jan 2026 01:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769219725; cv=none; b=HgeZhTY7KkIJNBTy7YgZKHnhhNYjcHigCZy3CwH2FUxftlZzpbi54appCLuBKhHvqQiOI/VaPOWfHL5cOyoiwwHRTwl/mQrVnmJ/35aQksBvM1B54vy++0QX0uVDUIJE6ONSUSSSeUXt0C+/Ygya5DcgrSrGl4qvL7KMxbyZfx4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769219725; c=relaxed/simple;
+	bh=yQ2CRYrDIFVSia1BpTHLclEHzkwAyPyckO/9L4uqoDE=;
+	h=Date:To:From:Subject:Message-Id; b=A9jLjlbH9xHGFjvOqc7M9dfwC6EZzIFl92PxafIfm9awXeyFl+9piMSc19BMQPGedSE91dDtaSEUfLHzSSpkooBYRqUTWuCXfcePJZKxGY7kNzAXY+5wPK6bq9csdJs6CDWFeg51xpFeyaZdkSm1o2HOtLYw0z1plSGO8Z4MrM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FMLXLcGP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0626C4CEF1;
+	Sat, 24 Jan 2026 01:55:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769219725;
+	bh=yQ2CRYrDIFVSia1BpTHLclEHzkwAyPyckO/9L4uqoDE=;
+	h=Date:To:From:Subject:From;
+	b=FMLXLcGPVp7Pz5KSAXurtn5Wt0bR57yVl0yMoNNvlo4mhOc1hemfAPHCH75LdrG67
+	 1SEtXN5Gspy0rRtXGiBbgy7Au7b2E72sJrg1bdKB3TI7HHCngJr0t0K8N7dI4hsVZS
+	 t50ML6lDL6RknnmKZ0y6GWKDZzTeb+YZAl54fEkc=
+Date: Fri, 23 Jan 2026 17:55:24 -0800
+To: mm-commits@vger.kernel.org,zhangjn11@chinatelecom.cn,yuanql9@chinatelecom.cn,wangjinchao600@gmail.com,sunshx@chinatelecom.cn,stable@vger.kernel.org,song@kernel.org,dianders@chromium.org,realwujing@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch added to mm-nonmm-unstable branch
+Message-Id: <20260124015524.E0626C4CEF1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20251221164552.19990-1-johan@kernel.org> <aWdaLF_A5fghNZhN@hovoldconsulting.com>
- <aXDt6v_iO4EFCqyw@hovoldconsulting.com> <CACSVV039g9CcAKhtMAwn=hH4hMT2nV77vxiasgUSFF-sn=+JgA@mail.gmail.com>
- <aXHwrnMS2aj_PYRj@hovoldconsulting.com> <CACSVV00vk95aYZPrVThoAnHzBUsCHXxnSoEHJNaoLdyJJBOZzw@mail.gmail.com>
- <gofqva7heojs5d7hi2naihqlpkfttjocdazdg4yjqrkeqew5tw@bp57c7rvycpa>
-In-Reply-To: <gofqva7heojs5d7hi2naihqlpkfttjocdazdg4yjqrkeqew5tw@bp57c7rvycpa>
-Reply-To: rob.clark@oss.qualcomm.com
-From: Rob Clark <rob.clark@oss.qualcomm.com>
-Date: Fri, 23 Jan 2026 16:53:59 -0800
-X-Gm-Features: AZwV_QjZSDbfsgVXlqFUWImTwV-kCK27tq9V8fSTEX_IRAyz8vlv3X-k5-2yZDg
-Message-ID: <CACSVV00_FbOuihnFYwda8xxEdtaBEDZ75dtSBPg9oOXTzzR6gg@mail.gmail.com>
-Subject: Re: [PATCH] drm/msm/a6xx: fix bogus hwcg register updates
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>,
-        Johan Hovold <johan@kernel.org>, Sean Paul <sean@poorly.run>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-        Dmitry Baryshkov <lumag@kernel.org>,
-        Abhinav Kumar <abhinav.kumar@linux.dev>,
-        Jessica Zhang <jesszhan0024@gmail.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-ORIG-GUID: F6yTIfcxFJUdt-eLeKJ0f_YU5yn-Mpk9
-X-Authority-Analysis: v=2.4 cv=LvSfC3dc c=1 sm=1 tr=0 ts=69741836 cx=c_pps
- a=JYo30EpNSr/tUYqK9jHPoA==:117 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=EUspDBNiAAAA:8 a=VwQbUJbxAAAA:8
- a=51pYYRa9bS4eTvwAioYA:9 a=QEXdDO2ut3YA:10 a=Fk4IpSoW4aLDllm1B1p-:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI0MDAwNCBTYWx0ZWRfX4orPI2yLGsRC
- KMzFb10JCzZLTXVmkGUsiXw+I4WW/bp/SJ42dA7/WNREaV9Q64BEM5B1vjLDUPD2KXwW06Wirio
- 05bcwp23cJHxXoERx5rrIfte7X8NPE6nLyYW035GatfWR8NAjwt58LIsnhyj95bmqOPFUOG161t
- Wg+xt3nEab4MCfUnPACuoepffg8MX2Znl8/a5DCkoIeiLb9UtCs01f0CW2judfAeLItZJstqJSn
- L5OCSRaIXB1dUPVWTI0939VzqIjmsVojGWfB9pQm/6pexNlFT7+XJ0OP/iRJjY6tCOmSStxNhSd
- 0AoVc+Z8Kp6H1kI/XDCjzNXNUaC84msfg98IIVomF8gsMmSz3eo/c+nhTJTcFhZ3y3bdRLHOk+1
- JhGts9QUS3owkT9rBO0Dn6FVKg2pyda3Na2Nk07F2+MK0nsS1ZlGVXfRt/b1i1WUOdio5HxkjXI
- dMvTMd+apFBA0RpmmVA==
-X-Proofpoint-GUID: F6yTIfcxFJUdt-eLeKJ0f_YU5yn-Mpk9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-23_04,2026-01-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 adultscore=0 clxscore=1015 bulkscore=0 malwarescore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2601240004
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211438-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211437-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linaro.org,kernel.org,poorly.run,oss.qualcomm.com,linux.dev,gmail.com,somainline.org,vger.kernel.org,lists.freedesktop.org,ffwll.ch];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,chinatelecom.cn,gmail.com,kernel.org,chromium.org,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob.clark@oss.qualcomm.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	HAS_REPLYTO(0.00)[rob.clark@oss.qualcomm.com];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:replyto,oss.qualcomm.com:dkim,qualcomm.com:email,qualcomm.com:dkim]
-X-Rspamd-Queue-Id: 408287BD10
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:email,linux-foundation.org:dkim,chinatelecom.cn:email]
+X-Rspamd-Queue-Id: 96AFB7C211
 X-Rspamd-Action: no action
 
-On Fri, Jan 23, 2026 at 12:01=E2=80=AFPM Dmitry Baryshkov
-<dmitry.baryshkov@oss.qualcomm.com> wrote:
->
-> On Thu, Jan 22, 2026 at 06:48:58AM -0800, Rob Clark wrote:
-> > On Thu, Jan 22, 2026 at 1:41=E2=80=AFAM Johan Hovold <johan@kernel.org>=
- wrote:
-> > >
-> > > [ +CC: Dave and Simona ]
-> > >
-> > > On Wed, Jan 21, 2026 at 08:59:51AM -0800, Rob Clark wrote:
-> > > > On Wed, Jan 21, 2026 at 7:17=E2=80=AFAM Johan Hovold <johan@kernel.=
-org> wrote:
-> > > > >
-> > > > > On Wed, Jan 14, 2026 at 09:56:12AM +0100, Johan Hovold wrote:
-> > > > > > On Sun, Dec 21, 2025 at 05:45:52PM +0100, Johan Hovold wrote:
-> > > > > > > The hw clock gating register sequence consists of register va=
-lue pairs
-> > > > > > > that are written to the GPU during initialisation.
-> > > > > > >
-> > > > > > > The a690 hwcg sequence has two GMU registers in it that used =
-to amount
-> > > > > > > to random writes in the GPU mapping, but since commit 188db3d=
-7fe66
-> > > > > > > ("drm/msm/a6xx: Rebase GMU register offsets") they trigger a =
-fault as
-> > > > > > > the updated offsets now lie outside the mapping. This in turn=
- breaks
-> > > > > > > boot of machines like the Lenovo ThinkPad X13s.
-> > > > > > >
-> > > > > > > Note that the updates of these GMU registers is already taken=
- care of
-> > > > > > > properly since commit 40c297eb245b ("drm/msm/a6xx: Set GMU CG=
-C
-> > > > > > > properties on a6xx too"), but for some reason these two entri=
-es were
-> > > > > > > left in the table.
-> > > > > > >
-> > > > > > > Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support=
-")
-> > > > > > > Cc: stable@vger.kernel.org  # 6.5
-> > > > > > > Cc: Bjorn Andersson <andersson@kernel.org>
-> > > > > > > Cc: Konrad Dybcio <konradybcio@kernel.org>
-> > > > > > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > > > > > ---
-> > > > > >
-> > > > > > This one does not seem to have been applied yet despite fixing =
-a
-> > > > > > critical regression in 6.19-rc1. I guess I could have highlight=
-ed that
-> > > > > > further by also including:
-> > > > > >
-> > > > > > Fixes: 188db3d7fe66 ("drm/msm/a6xx: Rebase GMU register offsets=
-")
-> > > > > >
-> > > > > > I realise some delays are expected around Christmas, but can yo=
-u please
-> > > > > > try to get this fix to Linus now that everyone should be back a=
-gain?
-> > > > >
-> > > > > I haven't received any reply so was going to send another reminde=
-r, but
-> > > > > I noticed now that this patch was merged to the msm-next branch l=
-ast
-> > > > > week.
-> > > > >
-> > > > > Since it fixes a regression in 6.19-rc1 it needs to go to Linus t=
-his
-> > > > > cycle and I would have assumed it should have be merged to msm-fi=
-xes.
-> > > > >
-> > > > > (MSM) DRM works in mysterious ways, so can someone please confirm=
- that
-> > > > > this regression fix is heading into mainline for 6.19-final?
-> > > >
-> > > > Sorry, mesa 26.0 branchpoint this week so I've not had much time fo=
-r
-> > > > kernel for last few weeks and didn't have time for a 2nd msm-fixes =
-PR.
-> > > > But with fixes/cc tags it should be picked into 6.19.y
-> > >
-> > > I'm afraid that's not good enough as this is a *regression* breaking =
-the
-> > > display completely on machines like the X13s.
-> > >
-> > > Regression fixes should go to mainline this cycle since we don't
-> > > knowingly break users' setups (and force them to debug/bisect when th=
-ey
-> > > update to 6.19 while the fix has been available since before Christma=
-s).
-> > >
-> > > Can't you just send a PR with this single fix? Otherwise, perhaps Dav=
-e
-> > > or Simona can pick up the fix directly?
-> >
-> > Maybe someone can cherry-pick to drm-misc-fixes?
->
-> I know that there is some process for cherry-picking into
-> drm-misc-fixes, but I think the end result was frowned upon. Neil?
 
-I'll send a pull request with the cherry-pick
+The patch titled
+     Subject: watchdog/hardlockup: fix UAF in perf event cleanup due to migration race
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch
 
-BR,
--R
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch
+
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Qiliang Yuan <realwujing@gmail.com>
+Subject: watchdog/hardlockup: fix UAF in perf event cleanup due to migration race
+Date: Thu, 22 Jan 2026 00:24:42 -0500
+
+During the early initialization of the hardlockup detector, the
+hardlockup_detector_perf_init() function probes for PMU hardware
+availability.  It originally used hardlockup_detector_event_create(),
+which interacts with the per-cpu 'watchdog_ev' variable.
+
+If the initializing task migrates to another CPU during this probe phase,
+two issues arise:
+1. The 'watchdog_ev' pointer on the original CPU is set but not cleared,
+   leaving a stale pointer to a freed perf event.
+2. The 'watchdog_ev' pointer on the new CPU might be incorrectly cleared.
+
+This race condition was observed in console logs (captured by adding debug printks):
+
+[23.038376] hardlockup_detector_perf_init 313 cur_cpu=2
+...
+[23.076385] hardlockup_detector_event_create 203 cpu(cur)=2 set watchdog_ev
+...
+[23.095788] perf_event_release_kernel 4623 cur_cpu=2
+...
+[23.116963] lockup_detector_reconfigure 577 cur_cpu=3
+
+The log shows the task started on CPU 2, set watchdog_ev on CPU 2,
+released the event on CPU 2, but then migrated to CPU 3 before the cleanup
+logic (which would clear watchdog_ev) could run.  This left watchdog_ev on
+CPU 2 pointing to a freed event.
+
+Later, when the watchdog is enabled/disabled on CPU 2, this stale pointer
+leads to a Use-After-Free (UAF) in perf_event_disable(), as detected by KASAN:
+[26.539140] ==================================================================
+[26.540732] BUG: KASAN: use-after-free in perf_event_ctx_lock_nested.isra.72+0x6b/0x140
+[26.542442] Read of size 8 at addr ff110006b360d718 by task kworker/2:1/94
+[26.543954]
+[26.544744] CPU: 2 PID: 94 Comm: kworker/2:1 Not tainted 4.19.90-debugkasan #11
+[26.546505] Hardware name: GoStack Foundation OpenStack Nova, BIOS 1.16.3-3.ctl3 04/01/2014
+[26.548256] Workqueue: events smp_call_on_cpu_callback
+[26.549267] Call Trace:
+[26.549936]  dump_stack+0x8b/0xbb
+[26.550731]  print_address_description+0x6a/0x270
+[26.551688]  kasan_report+0x179/0x2c0
+[26.552519]  ? perf_event_ctx_lock_nested.isra.72+0x6b/0x140
+[26.553654]  ? watchdog_disable+0x80/0x80
+[26.553657]  perf_event_ctx_lock_nested.isra.72+0x6b/0x140
+[26.556951]  ? dump_stack+0xa0/0xbb
+[26.564006]  ? watchdog_disable+0x80/0x80
+[26.564886]  perf_event_disable+0xa/0x30
+[26.565746]  hardlockup_detector_perf_disable+0x1b/0x60
+[26.566776]  watchdog_disable+0x51/0x80
+[26.567624]  softlockup_stop_fn+0x11/0x20
+[26.568499]  smp_call_on_cpu_callback+0x5b/0xb0
+[26.569443]  process_one_work+0x389/0x770
+[26.570311]  worker_thread+0x57/0x5a0
+[26.571124]  ? process_one_work+0x770/0x770
+[26.572031]  kthread+0x1ae/0x1d0
+[26.572810]  ? kthread_create_worker_on_cpu+0xc0/0xc0
+[26.573821]  ret_from_fork+0x1f/0x40
+[26.574638]
+[26.575178] Allocated by task 1:
+[26.575990]  kasan_kmalloc+0xa0/0xd0
+[26.576814]  kmem_cache_alloc_trace+0xf3/0x1e0
+[26.577732]  perf_event_alloc.part.89+0xb5/0x12b0
+[26.578700]  perf_event_create_kernel_counter+0x1e/0x1d0
+[26.579728]  hardlockup_detector_event_create+0x4e/0xc0
+[26.580744]  hardlockup_detector_perf_init+0x2f/0x60
+[26.581746]  lockup_detector_init+0x85/0xdc
+[26.582645]  kernel_init_freeable+0x34d/0x40e
+[26.583568]  kernel_init+0xf/0x130
+[26.584428]  ret_from_fork+0x1f/0x40
+[26.584429]
+[26.584430] Freed by task 0:
+[26.584433]  __kasan_slab_free+0x130/0x180
+[26.584436]  kfree+0x90/0x1a0
+[26.589641]  rcu_process_callbacks+0x2cb/0x6e0
+[26.590935]  __do_softirq+0x119/0x3a2
+[26.591965]
+[26.592630] The buggy address belongs to the object at ff110006b360d500
+[26.592630]  which belongs to the cache kmalloc-2048 of size 2048
+[26.592633] The buggy address is located 536 bytes inside of
+[26.592633]  2048-byte region [ff110006b360d500, ff110006b360dd00)
+[26.592634] The buggy address belongs to the page:
+[26.592637] page:ffd400001acd8200 count:1 mapcount:0 mapping:ff11000107c0e800 index:0x0 compound_mapcount: 0
+[26.600959] flags: 0x17ffffc0010200(slab|head)
+[26.601891] raw: 0017ffffc0010200 dead000000000100 dead000000000200 ff11000107c0e800
+[26.603541] raw: 0000000000000000 00000000800f000f 00000001ffffffff 0000000000000000
+[26.605546] page dumped because: kasan: bad access detected
+[26.606788]
+[26.607351] Memory state around the buggy address:
+[26.608556]  ff110006b360d600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[26.610565]  ff110006b360d680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[26.610567] >ff110006b360d700: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[26.610568]                             ^
+[26.610570]  ff110006b360d780: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[26.610573]  ff110006b360d800: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[26.618955] ==================================================================
+
+Fix this by making the probe logic stateless.  Use a local variable for
+the perf event and avoid accessing the per-cpu 'watchdog_ev' during
+initialization.  This ensures that the probe event is always properly
+released regardless of task migration, and no stale global state is left
+behind.
+
+Link: https://lkml.kernel.org/r/20260122052442.667394-1-realwujing@gmail.com
+Signed-off-by: Shouxin Sun <sunshx@chinatelecom.cn>
+Signed-off-by: Junnan Zhang <zhangjn11@chinatelecom.cn>
+Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
+Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
+Cc: Song Liu <song@kernel.org>
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Jinchao Wang <wangjinchao600@gmail.com>
+Cc: Wang Jinchao <wangjinchao600@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/watchdog_perf.c |   28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
+
+--- a/kernel/watchdog_perf.c~watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race
++++ a/kernel/watchdog_perf.c
+@@ -264,18 +264,38 @@ bool __weak __init arch_perf_nmi_is_avai
+ int __init watchdog_hardlockup_probe(void)
+ {
+ 	int ret;
++	struct perf_event_attr *wd_attr = &wd_hw_attr;
++	struct perf_event *evt;
++	unsigned int cpu;
+ 
+ 	if (!arch_perf_nmi_is_available())
+ 		return -ENODEV;
+ 
+-	ret = hardlockup_detector_event_create();
++	/*
++	 * Test hardware PMU availability. Avoid using
++	 * hardlockup_detector_event_create() to prevent migration-related
++	 * stale pointers in the per-cpu watchdog_ev during early probe.
++	 */
++	wd_attr->sample_period = hw_nmi_get_sample_period(watchdog_thresh);
++	if (!wd_attr->sample_period)
++		return -EINVAL;
+ 
+-	if (ret) {
++	/*
++	 * Use raw_smp_processor_id() for probing in preemptible init code.
++	 * Migration after reading ID is acceptable as counter creation on
++	 * the old CPU is sufficient for the probe.
++	 */
++	cpu = raw_smp_processor_id();
++	evt = perf_event_create_kernel_counter(wd_attr, cpu, NULL,
++					       watchdog_overflow_callback, NULL);
++	if (IS_ERR(evt)) {
+ 		pr_info("Perf NMI watchdog permanently disabled\n");
++		ret = PTR_ERR(evt);
+ 	} else {
+-		perf_event_release_kernel(this_cpu_read(watchdog_ev));
+-		this_cpu_write(watchdog_ev, NULL);
++		perf_event_release_kernel(evt);
++		ret = 0;
+ 	}
++
+ 	return ret;
+ }
+ 
+_
+
+Patches currently in -mm which might be from realwujing@gmail.com are
+
+watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch
+
 
