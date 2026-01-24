@@ -1,153 +1,214 @@
-Return-Path: <stable+bounces-211440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAS8KmVCdGn73wAAu9opvQ
-	(envelope-from <stable+bounces-211440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 04:54:13 +0100
+	id 4IjMGl1tdGkx5gAAu9opvQ
+	(envelope-from <stable+bounces-211442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 07:57:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58EC27C696
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 04:54:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDE997CC33
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 07:57:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C93A1302EEB9
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 03:53:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 572033009F90
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 06:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D8C1EB19B;
-	Sat, 24 Jan 2026 03:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938B42417E0;
+	Sat, 24 Jan 2026 06:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="H2i32+nx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cl/IPlre"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E835F21FF21;
-	Sat, 24 Jan 2026 03:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1603B1BD
+	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 06:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769226820; cv=none; b=pndPHofWL/VWkuiiwFLnVEHwexiHJIvP8EkzZZjvN5bk/wIi1g4i7vdiKqI2myS4bV227CIKqE8PZSQw17xgpgH8VFZk7LBSIrSsLTmckGQJLhztiuc5DCSK11IgDmldAQuVpKTvcljXwIRs/qxjzr5xSHk1zqbTB/G6JJHb0sg=
+	t=1769237848; cv=none; b=H5aUTHZy60o7l4rYk+z58PWSs1iYGYt+QkrsrySmAJuFJWrR7mVWKbJf2sdsbs2DL6rjFKFfNXf/HD1wNgejdxeziZPhrNRYx1tDMnHuIuZ5YNzfi6hnY1YYB55lXneegr9aPguj4rRA5/BEzQXjkAW+8icWPBo9FLTAol+QJRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769226820; c=relaxed/simple;
-	bh=I+o9BX/d2ctAuwNXNZrEgHT5HARRlzxoitZu+mf1PIg=;
+	s=arc-20240116; t=1769237848; c=relaxed/simple;
+	bh=cC6e1KioY41c91yijmGbSSfZ61Ovdtzrqxzxhm4vNOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GtUmLCXAr3aBLgsET2ZuEGUluhIdu1ID//zzSt0s7795TjNveDNKHcp7AaA4IdVvFnrPo91WFSfPLU5D1UCxfIvBjL1O7989We7/+dkH1CH3EIvJs43zrV1jXzTzdLqTAkzz9xPjRO0JgIXAHpRHcUrknr9sTbP1pXzJKgfxR1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=H2i32+nx; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60O30S6p342768;
-	Sat, 24 Jan 2026 03:53:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=UTnRbbhfqB56bWwjF2sO5paDiKonankzp8U6fOUds8c=; b=
-	H2i32+nxG2MUvWoHRTAV0Ejy4lUr7NFyj7LuCmogjhZH2ABD5QJC4TdpIxr1lNmm
-	hJmNHjWx3A8SF4sBteHX2jgf0/UGUOVEFrFyfq1j86ltRRkh8/z+oErZx8Xr8WVx
-	pCTOU7l2z7/51t/6ktAdS6oye3QW9xf38P5wtAGL6wYaizekYCoQF3w6RBfrgTS8
-	AltlEZk1+h9hf4902bZCz4ry2Xg3yweVfTE2KGuim/ghRYneSmwRmcvmu/hfcwH8
-	UzBbM4FqwBWlSA8i9Rt5vNXX7nbAhjRRLlaf+9qiwuR4GZBBpoaaCbAoK0E/0HbQ
-	1rMRMNOxFbhB2wQxOs/buQ==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bvmv2r1k2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 24 Jan 2026 03:53:33 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60O1Y9vH019829;
-	Sat, 24 Jan 2026 03:53:32 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bvmhbak31-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 24 Jan 2026 03:53:32 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60O3rVib002545;
-	Sat, 24 Jan 2026 03:53:32 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 4bvmhbak2d-3;
-	Sat, 24 Jan 2026 03:53:32 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: ketan.mukadam@broadcom.com, James.Bottomley@HansenPartnership.com,
-        jitendra.bhivare@broadcom.com, hare@suse.com,
-        Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: be2iscsi: fix a memory leak in beiscsi_boot_get_sinfo()
-Date: Fri, 23 Jan 2026 22:53:26 -0500
-Message-ID: <176922663887.2974474.15556943791943692829.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <20251213083643.301240-1-lihaoxiang@isrc.iscas.ac.cn>
-References: <20251213083643.301240-1-lihaoxiang@isrc.iscas.ac.cn>
+	 MIME-Version; b=aJMvG2+OeCK2CBYRSyGVjtMYB6ISL/Tq9SKRlwgqSsY7VLVonwMcDsMPmg469NgXOoGShn88M1z89znhuV+tsgmtG6bbHXgX1kQVHhBth9CFwCPHL0gYBvGry2lPP1bjVq4dGiwOyan7qsV7Wbov2bV9/6+a/dxzycGtkqa2E6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cl/IPlre; arc=none smtp.client-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2b4520f6b32so4688158eec.0
+        for <stable@vger.kernel.org>; Fri, 23 Jan 2026 22:57:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769237846; x=1769842646; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9zUgdI+AQs7RFvCShWYLUQ2AaO9+6oR78cTHkGs6KEk=;
+        b=Cl/IPlre8xHPIRfyps4l4tcTCHh3y09WS04WUM3o8GqmAQkgUl2ARQrqE3ITu1oBK1
+         xZwrKlTlWQbWM8LofeXevhQeStf2vMl4qsNUt4z5QamzP1Bv/RXyUakpV2BpQ7t7d5yO
+         N61UsKR0SlgD6e9Gd7373afiOcH6sm5vBRz4V3nD2ZxY/9QiEqn3+VZXjJu2KvZvqLs2
+         8w4KDb3xBi4ok+qqy65zIupoBchINi8q0aIfNH5CIS6JBgJ09d9Hic1IN8eSsyjuCImF
+         uVClqdZFNq9htSZaZhveATPIRWa8LVN894tYagtu1FbMMK1I+rL9U46SMRmK1zbB8GPc
+         0kAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769237846; x=1769842646;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9zUgdI+AQs7RFvCShWYLUQ2AaO9+6oR78cTHkGs6KEk=;
+        b=NYVCgbFg+4b/HHpxBhfoQR1CTRyEK/RtHdEHB3jPLlO+XJkc2kO3g4pgupDJC7ZXaY
+         8ofcC8+QfHvDKK9/E9XxdN4MGk0Om88uDdj3b5zhp/GAoqc5JsKv2Rac3GV9FTVwRo/2
+         im3HanHTxx0lfY+YZbV7PM4ZKJrw+ks7RfPuucx7H1t6VY9ts63dAL3uzZJZOmgR2uLP
+         cKmGzA6x8FC3v+LTyfTievbWRFd45L2uzQA6velD1TQPnu5xkmYc/hPnEBNowUoTn5Lr
+         9CpWjRD672f88BbaIskFj3fsucLSVhgnWixrL5HwmNA6KWaKLsqbHbFOrqvhUNKCSzqG
+         9MHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX7fT+kbiNZeF1RkWY0Mj7kNXQW8FxyG5uhwb7KkmdL2Sv8FYDnjTP3aem5vO+StrpWybbgKxE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDQiOakRWBOIApZDER2PKckOSPMXjDGj2PISiiY41ykJX1YbPb
+	3cPz1mxRNlJgqZWVI1dTX2uGS7M8UQixntqFMpC0R2YBXn89cOxPUH5G
+X-Gm-Gg: AZuq6aLnM0TMpAiMYoFXOkjskFn/TsgVdeoUYBekU7DsTR7QX9CKqzOssrUqg44rHKv
+	7i2g8XzV+fkpXNwMxE3Q+c1y5qoZ7Lvt28OjN+KCYa4cdJ/UBm6RqVbUJqLsMCw0FdPdSurIv/y
+	HUBrG67FKY5XIrV/3EONCJNnS/+/+z3BJZosj8TKXLJFVXEo9w/kWDEcPmy4R6fp7X3qc9PDa0g
+	XrFJ3HoGYNuahrjHNteOTGQZw3tXPc0OT1iP20P90uaVVTw54s8CVwwr4Fj7b2laAngmpBqldkx
+	E7+YM0QLQ6+Zp82SspmYXdoHKvJ23iQnINJkhvhdw1pixDfFVv8H//js2Dx0xmyYB22CT6XuK+d
+	g+HGxPNq8RMwehGMqEwQOuZuXl4EoGdqANl0lj4vd8HGB/HHeQrz6GL2W8bkto4Mt74cvAttPd+
+	9csh0=
+X-Received: by 2002:a05:7300:e60d:b0:2b1:7910:b0f9 with SMTP id 5a478bee46e88-2b739bd0c1fmr2553928eec.42.1769237846080;
+        Fri, 23 Jan 2026 22:57:26 -0800 (PST)
+Received: from debian ([74.48.213.230])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b73a6c47d5sm5852866eec.10.2026.01.23.22.57.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jan 2026 22:57:25 -0800 (PST)
+From: Qiliang Yuan <realwujing@gmail.com>
+To: dianders@chromium.org
+Cc: akpm@linux-foundation.org,
+	lihuafei1@huawei.com,
+	linux-kernel@vger.kernel.org,
+	mingo@kernel.org,
+	mm-commits@vger.kernel.org,
+	realwujing@gmail.com,
+	song@kernel.org,
+	stable@vger.kernel.org,
+	sunshx@chinatelecom.cn,
+	thorsten.blum@linux.dev,
+	wangjinchao600@gmail.com,
+	yangyicong@hisilicon.com,
+	yuanql9@chinatelecom.cn,
+	zhangjn11@chinatelecom.cn
+Subject: Re: [PATCH v3] watchdog/hardlockup: Fix UAF in perf event cleanup due to migration race
+Date: Sat, 24 Jan 2026 01:57:19 -0500
+Message-ID: <20260124065719.805144-1-realwujing@gmail.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <CAD=FV=WHWrKS_LVjod6nhnPdEk9_ZqeubGpft3PJOUJNMbBxfg@mail.gmail.com>
+References: <CAD=FV=WHWrKS_LVjod6nhnPdEk9_ZqeubGpft3PJOUJNMbBxfg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-24_01,2026-01-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 phishscore=0
- mlxlogscore=610 mlxscore=0 spamscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601240028
-X-Proofpoint-ORIG-GUID: J_k1IJc2aDrWxSZXWoHLZhIGK-ceZ9pX
-X-Proofpoint-GUID: J_k1IJc2aDrWxSZXWoHLZhIGK-ceZ9pX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI0MDAyNyBTYWx0ZWRfXxtcsONdBQWbl
- j21DtD9xNh2vy96pZ9ntDVTq36jfXHWO5YLkHN0HReqGVGs/rahEcbpzHlArcFKBLuQMtUAXeei
- zw62gPmfkagWY0kOnzo1dDMjZdXi4xtyaRDAVwCMXhLB/eiTjP9xCtUK50qSWLaF8jQ87QoyWm1
- GaHOLE/ddplK/yqGX1NhAgr1q9v4/KYW/N7voWkdZVQRxi1RNXfuiXVFaVDfXdfH30Fx8TaL152
- pQ98/Zrs0iiidCaRvZl5gM0UjR8xLc/rboAtPOxDmS8cbacR147ZnLwOyKkD21iM4sMB3zg5/2h
- bW/bqALPmoLygsUm7/5Uw7lQMH0Wv7AwHBPrU1liUqSUVp+6oF9eyZGlu++tQzqwhuvjvJ3DSAI
- 4hdRjieqzk6ocQJNpoNUYFn3Q6JWdUG3tkdxlNiempgLw9fxRwxNkDgwbcMtw5LYxmUfABiNR7V
- Xj8EQ+RvZW2j7g225YkrmMArCfNV6gh8i2X7Y8lk=
-X-Authority-Analysis: v=2.4 cv=cPLtc1eN c=1 sm=1 tr=0 ts=6974423d b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=K_eg6-KxHybF2RbmVOcA:9 a=QEXdDO2ut3YA:10 cc=ntf
- awl=host:12103
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[oracle.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,huawei.com,vger.kernel.org,kernel.org,gmail.com,chinatelecom.cn,linux.dev,hisilicon.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211440-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:mid,oracle.com:dkim];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211442-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[realwujing@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: 58EC27C696
+	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CDE997CC33
 X-Rspamd-Action: no action
 
-On Sat, 13 Dec 2025 16:36:43 +0800, Haoxiang Li wrote:
+Thanks for the detailed review!
 
-> If nonemb_cmd->va fails to be allocated, call free_mcc_wrb()
-> to restore the impact caused by alloc_mcc_wrb().
-> 
-> 
+> Wait a second... The above function hasn't existed for 2.5 years. It
+> was removed in commit d9b3629ade8e ("watchdog/hardlockup: have the
+> perf hardlockup use __weak functions more cleanly"). All that's left
+> in the ToT kernel referencing that function is an old comment...
+>
+> Oh, and I guess I can see below that your stack traces are on 4.19,
+> which is ancient! Things have changed a bit in the meantime. Are you
+> certain that the problem still reproduces on ToT?
 
-Applied to 6.19/scsi-fixes, thanks!
+The function hardlockup_detector_perf_init() was renamed to
+watchdog_hardlockup_probe() in commit d9b3629ade8e ("watchdog/hardlockup:
+have the perf hardlockup use __weak functions more cleanly").
+Additionally, the source file was moved from kernel/watchdog_hld.c to
+kernel/watchdog_perf.c in commit 6ea0d04211a7. The v3 commit message
+inadvertently retained legacy terminology from the 4.19 kernel; this will
+be updated in V4 to reflect current ToT naming.
 
-[1/1] scsi: be2iscsi: fix a memory leak in beiscsi_boot_get_sinfo()
-      https://git.kernel.org/mkp/scsi/c/4747bafaa501
+The core logic remains the same: the race condition persists despite the
+renaming and cleanup of the __weak function logic.
 
--- 
-Martin K. Petersen
+Regarding ToT reproducibility: while the KASAN report originated from
+4.19, the underlying logic is still problematic in ToT. In
+watchdog_hardlockup_probe(), the call to
+hardlockup_detector_event_create() still writes to the per-cpu
+watchdog_ev. Task migration between event creation and the subsequent
+perf_event_release_kernel() leaves a stale pointer in the watchdog_ev of
+the original CPU.
+
+> Probably want a "Fixes" tag? If I had to guess, maybe?
+>
+> Fixes: 930d8f8dbab9 ("watchdog/perf: adapt the watchdog_perf interface
+> for async model")
+
+Commit 930d8f8dbab9 introduced the async initialization which allows
+preemption/migration during the probe phase. This tag will be included in
+V4.
+
+> I'm still a bit confused why this warning didn't trigger previously.
+> Do you know why?
+
+In 4.19, hardlockup_detector_event_create() did not include the
+WARN_ON(!is_percpu_thread()) check, which was added in later versions. In
+ToT, this warning is expected to trigger if watchdog_hardlockup_probe()
+is called from a non-per-cpu-bound thread (such as kernel_init). This
+further justifies refactoring the creation logic to be CPU-agnostic for
+probing.
+
+> I guess it's implied by the "Allow migration during the check", but I
+> might even word it more strongly and say something like "The cpu we
+> use here is arbitrary, so we don't disable preemption and use
+> raw_smp_processor_id() to get a CPU."
+>
+> I guess that should be OK. Hopefully the arbitrary CPU that you pick
+> doesn't go offline during this function. I don't know "perf" well, but
+> I could imagine that it might be upset if you tried to create a perf
+> event for a CPU that has gone offline. I guess you could be paranoid
+> and surround this with cpu_hotplug_disable() / cpu_hotplug_enable()?
+
+The point is well-taken. While unlikely during early boot, adding
+cpu_hotplug_disable() ensures robustness.
+
+V4 will be submitted with the following changes:
+1. Clarified commit message (retaining 4.19 logs while explaining the
+   renaming to watchdog_hardlockup_probe).
+2. Inclusion of the "Fixes" tag.
+3. Addition of cpu_hotplug_disable() around the probe.
+4. Refined comments.
+
+Best regards,
+Qiliang
 
