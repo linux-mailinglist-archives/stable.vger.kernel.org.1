@@ -1,260 +1,179 @@
-Return-Path: <stable+bounces-211464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAl/FZn3dGlH/gAAu9opvQ
-	(envelope-from <stable+bounces-211464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 17:47:21 +0100
+	id GA+ZIazzdGlH/QAAu9opvQ
+	(envelope-from <stable+bounces-211463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 17:30:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59FC7E272
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 17:47:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB957E1FE
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 17:30:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2FED300B463
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 16:47:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60FF3300A612
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 16:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8269D25393B;
-	Sat, 24 Jan 2026 16:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3F52417C3;
+	Sat, 24 Jan 2026 16:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bTSUehkH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WWdYbmJU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451A723645D;
-	Sat, 24 Jan 2026 16:47:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE5C21B191
+	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 16:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769273224; cv=none; b=Rqeu5XcERW3tvqozPc4ihcA0AqeEP24IxFFOd2sI2Ktzm3yO4skzuriosrQtpHUzi2gaeUTVJaLbyC90Bn/NFrej9ON3t97lWLesCJuXKjDnzATZvh9zUBtKN0dXbS3lsgWVvMLg86iqyRx+qI/UrKjomuYOgGRcp0M3C4IZWyI=
+	t=1769272230; cv=none; b=healjtdQgvcoIuwhXXV/xNmXGUvXbq2mabZ+qmraDIHBgObSP6Wsj//IlynMXS9eOID8lK2sEA0gs8q/qMcnv/hfy+0G9ZQ6BDu65FlOdVDWPwHsLVoMfAu44roM1RcjzTR9pFVBxSpS24IAA9LAITsF21k/S9Lo6SwxwhMy3IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769273224; c=relaxed/simple;
-	bh=koVTBk7QDr/VkxFedRNFGbEg98lzmoTKW7R68p1v3qI=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=kZqJ+9stpd+V/BOGzbHC+huSTAklC7yQwdvzCeYBb1+bD01Q+sNUnHl/zONpgUU/ggvf1jwIWytv0k0XDcJdIoDQrWMFyZaeJnU59xzyH4RfhS2uwsvDsLOawriSeuLrtzmPX/5pz+MjpiVeMI5MxMXMb7ZRh9Qlt34f5dD0FOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bTSUehkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C575CC16AAE;
-	Sat, 24 Jan 2026 16:47:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769273223;
-	bh=koVTBk7QDr/VkxFedRNFGbEg98lzmoTKW7R68p1v3qI=;
-	h=Date:From:To:Cc:Subject:References:From;
-	b=bTSUehkHz5gaFDL6QbDsA55ZotHlD7VXFXO+i0gM7RGd4+6GAVzX21Z2ncf/8oLdX
-	 EeLqT0d8sIiO8SJLFlWgD3lCFGxTEhz+aowWOflVPc40XRzVAQ2HcriLIMafVsV3iB
-	 tB4mWqmLEG5AzQaesgIE6uH8EB1XDu5Me4tt+OT5/E5UDL0fG4bARxMecKgN6HY+4B
-	 9cj3V1wtKeVKPL9VRbFmO4kw4WbgEBSThkjroOQYEmy/chs0xzqn3zhFglB7ZfP5L+
-	 3zRAMZynrSoGUPBq22UutAgiOvDA3+IEaZJe4Db7CeFgWhioxy1R757t7/LYCNGxhC
-	 tcboPntwxUCkA==
-Received: from rostedt by gandalf with local (Exim 4.99.1)
-	(envelope-from <rostedt@kernel.org>)
-	id 1vjgnO-00000003Cmt-3TLm;
-	Sat, 24 Jan 2026 11:47:34 -0500
-Message-ID: <20260124164734.690561052@kernel.org>
-User-Agent: quilt/0.68
-Date: Sat, 24 Jan 2026 11:29:44 -0500
-From: Steven Rostedt <rostedt@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Tom Zanussi <zanussi@kernel.org>
-Subject: [for-linus][PATCH 1/4] tracing: Fix crash on synthetic stacktrace field usage
-References: <20260124162943.928691049@kernel.org>
+	s=arc-20240116; t=1769272230; c=relaxed/simple;
+	bh=L8SxQfCSwBmfGTudwzsqlrN4eU8OYaOz4gCyWiDNshA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aslGb6tVBWu5/yKlw/W8ZFvZocc11Wc7ZKBb2yjA+FN9R9fnRyBVRAwnDJqSYuEmkFmnF3SLzNxyeYHmy33WPaHJF+YSueqOlvL8iCmFa0j1vxQSN2VQcHYzjHF1k0bp2J7Qrkgv4pQbfqWnfYAbEssolPmbDX+8Bk0Dnkxtnns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WWdYbmJU; arc=none smtp.client-ip=209.85.218.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so461548666b.2
+        for <stable@vger.kernel.org>; Sat, 24 Jan 2026 08:30:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769272227; x=1769877027; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mOdxhWbrrly9vOYfsFSZEpGnALwy1L1i04bJsdLEpuE=;
+        b=WWdYbmJUOXq9+15P2R2mGNmgEXtseyEABXaeY8XBnjHhNuhuEBI5Z5OFgbSHGtLoSu
+         KzUkj65XhyEmGz9vp9JemNnSmw1WY5a3REBTFwTDqVhoTTUaMb2loq09aoEHhGFwh4S0
+         +z72OlZNReERFD+EJD//h1q5peWsp6GcRV58CF4c2P0hKLqdESg5Vd4JttJ5gSbYXOBw
+         tJQ9CJcPjGj95RPHA0h5mtXFNLScBGOIkRsJG3O1pb8f9ed3RSw4XQcyVYJhhiRxizS3
+         eX+ynGzGkseyseVS+otrCVTwyRrplMTmv9r4G3pu8of10xQyXYoV78mU6t1Lm1Feu02a
+         t5cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769272227; x=1769877027;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=mOdxhWbrrly9vOYfsFSZEpGnALwy1L1i04bJsdLEpuE=;
+        b=GOs6S1Ugny0jTVPDhWawIXIl4jYZF8+NGO7iK1EWIVhJL5ZjYvh1DuDm/+4maYtSG8
+         l3QGgVvI9N5POH7JGvo9vKoFzeDbgx33nGNfXGVhVb8xN7tlYO5P/7srHD7b45+PjZPH
+         lHKW9iB2r9EtpXP6pBykRFLIaUodF1Z1U0MIA2jaFZz5NonZasmpt1El24Vg2xr0ONGO
+         cMCcy7T/xUP9nKWdi0H0vhEcKwMtl1ED2k+vkx2XiEABFboqSP3HOE1MJSkG+Vq0oLaE
+         WFRhst84MqDpAs96u35gmyeIjA4vxUUSXvArMGxsuoBLphRygsEJh7QvQVgQyvr79eZ+
+         Dm0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWN97PdRhs96dqthna9p1mMBJruOZA6Tgftt+YzEhZROTSfCa77/ivLdm6iyMyxAtz7pFG1A4M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdjT0hzqJfne2ZwiL7LSr2cDihlxU3/gyWBXl6Dqr04JR+ket8
+	JexY1siJtSEx61dABzEErtDkg8Rxo/fittPJW0caJgur6cgh/UIGzM9vhZYHFwrR
+X-Gm-Gg: AZuq6aJ6g1XHtBqJF15pHAqgckmgqVvn9QL+AD6QO8sVzizQ1rsVgMJh325ioreoBGl
+	dCOYU55zk+I0F+d9HQiOzYA7n/Wv9Rgn4YcJJ/LTvuL9qGLZSdaN3SoX6LGZntqmD+4WwJgvqYl
+	Ui2CsZoGnFxQidd59dGvLsuytSxgX9V6l/bPamP3ahlc7Yv9WUs9no3AgG9oPFHVJMK2jPEOvxZ
+	EZk8AAVRMlgrMBelusJUf6/oem4d8nyt4PBjlwVwmzFbgrPzYNIjlDjuS4GbMwJ+HQ6FJCYOSab
+	APkLuz7J2eAmRSoePNqDFuL3yrYj/IP3T9vPrlT/Wu3NNcYEjZ3fCjbl/NQQnyKgScgLfvcFCYZ
+	G32/dSIuu0bwaBtX0xtsnsaSCy/74vhUkoToexJ2S16nEIYaRuYUoTdJH4aoKNv1SyixpxMqWvb
+	4EEua5gq+5VNvEXEgw5ma0ox3QMF82MTeDq0YH/KvMqJO21E9qpvdDva/6bpkstroqjOpdMKjZC
+	ZIxGzMiJzL9ZOfxf/SyqhtcjnMiPMv1xtaIc48SRQRVSGAoLrGnJsoeDENGwZzO5A==
+X-Received: by 2002:a17:906:fe44:b0:b88:4fc9:a196 with SMTP id a640c23a62f3a-b885ae08ffamr432721766b.34.1769272226744;
+        Sat, 24 Jan 2026 08:30:26 -0800 (PST)
+Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b885b7661f7sm287380466b.54.2026.01.24.08.30.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 24 Jan 2026 08:30:26 -0800 (PST)
+Message-ID: <38a46172-8734-462b-870d-39d0697882e1@gmail.com>
+Date: Sat, 24 Jan 2026 16:30:25 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
+ cross-buffer accounting
+To: Jens Axboe <axboe@kernel.dk>, Yuhao Jiang <danisjiang@gmail.com>
+Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260119071039.2113739-1-danisjiang@gmail.com>
+ <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
+ <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
+ <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
+ <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
+ <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
+ <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
+ <2be71481-ac35-4ff2-b6a9-a7568f81f728@gmail.com>
+ <2fcf583a-f521-4e8d-9a89-0985681ca85b@kernel.dk>
+ <d2fc2ff2-98d9-49f8-af95-968100174d55@gmail.com>
+ <3b7e6088-7d92-4d5c-96c7-f8c0e2cc7745@kernel.dk>
+ <efe080c9-5176-4fa1-9f65-5be44074779e@gmail.com>
+ <596bc7ac-3d24-43a7-9e7e-e59189525ebc@gmail.com>
+ <fc8664bb-7769-48a2-b470-71fb81828e26@kernel.dk>
+ <654fe339-5a2b-4c38-9d2d-28cfc306b307@kernel.dk>
+ <eea0d7c3-9aed-4c1f-8146-23b82e611899@kernel.dk>
+ <9317bad6-aa89-4e93-b7d2-9e28f5d17cc8@gmail.com>
+ <74f2ec89-ca40-44a0-8df7-de404063a1a3@kernel.dk>
+ <32b884bc-929b-4b27-ae74-5754fa2473de@kernel.dk>
+Content-Language: en-US
+From: Pavel Begunkov <asml.silence@gmail.com>
+In-Reply-To: <32b884bc-929b-4b27-ae74-5754fa2473de@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211464-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-211463-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[kernel.dk,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: C59FC7E272
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: DEB957E1FE
 X-Rspamd-Action: no action
 
-From: Steven Rostedt <rostedt@goodmis.org>
+On 1/24/26 15:55, Jens Axboe wrote:
+> On 1/24/26 8:14 AM, Jens Axboe wrote:
+>>>> ________________________________________________________
+>>>> Executed in    2.81 secs    fish           external
+>>>>      usr time    0.71 secs  497.00 micros    0.71 secs
+>>>>      sys time   19.57 secs  183.00 micros   19.57 secs
+>>>>
+>>>> which isn't insane. Obviously also needs conditional rescheduling in the
+>>>> page loops, as those can take a loooong time for large amounts of
+>>>> memory.
+>>>
+>>> 2.8 sec sounds like a lot as well, makes me wonder which part of
+>>> that is mm, but it mm should scale fine-ish. Surely there will be
+>>> contention on page refcounts but at least the table walk is
+>>> lockless in the best case scenario and otherwise seems to be read
+>>> protected by an rw lock.
+>>
+>> Well a lot of that is also just faulting in the memory on clear, test
+>> case should probably be modified to do its own timing. And iterating
+>> page arrays is a huge part of it too. There's no real contention in that
+>> 2.8 seconds.
+> 
+> I checked and the faulting part is 2.0s of that runtime. On a re-run:
 
-When creating a synthetic event based on an existing synthetic event that
-had a stacktrace field and the new synthetic event used that field a
-kernel crash occurred:
+Makes sense, I was forgetting it's full time.
 
- ~# cd /sys/kernel/tracing
- ~# echo 's:stack unsigned long stack[];' > dynamic_events
- ~# echo 'hist:keys=prev_pid:s0=common_stacktrace if prev_state & 3' >> events/sched/sched_switch/trigger
- ~# echo 'hist:keys=next_pid:s1=$s0:onmatch(sched.sched_switch).trace(stack,$s1)' >> events/sched/sched_switch/trigger
-
-The above creates a synthetic event that takes a stacktrace when a task
-schedules out in a non-running state and passes that stacktrace to the
-sched_switch event when that task schedules back in. It triggers the
-"stack" synthetic event that has a stacktrace as its field (called "stack").
-
- ~# echo 's:syscall_stack s64 id; unsigned long stack[];' >> dynamic_events
- ~# echo 'hist:keys=common_pid:s2=stack' >> events/synthetic/stack/trigger
- ~# echo 'hist:keys=common_pid:s3=$s2,i0=id:onmatch(synthetic.stack).trace(syscall_stack,$i0,$s3)' >> events/raw_syscalls/sys_exit/trigger
-
-The above makes another synthetic event called "syscall_stack" that
-attaches the first synthetic event (stack) to the sys_exit trace event and
-records the stacktrace from the stack event with the id of the system call
-that is exiting.
-
-When enabling this event (or using it in a historgram):
-
- ~# echo 1 > events/synthetic/syscall_stack/enable
-
-Produces a kernel crash!
-
- BUG: unable to handle page fault for address: 0000000000400010
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: Oops: 0000 [#1] SMP PTI
- CPU: 6 UID: 0 PID: 1257 Comm: bash Not tainted 6.16.3+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.16.3-1
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
- RIP: 0010:trace_event_raw_event_synth+0x90/0x380
- Code: c5 00 00 00 00 85 d2 0f 84 e1 00 00 00 31 db eb 34 0f 1f 00 66 66 2e 0f 1f 84 00 00 00 00 00 66 66 2e 0f 1f 84 00 00 00 00 00 <49> 8b 04 24 48 83 c3 01 8d 0c c5 08 00 00 00 01 cd 41 3b 5d 40 0f
- RSP: 0018:ffffd2670388f958 EFLAGS: 00010202
- RAX: ffff8ba1065cc100 RBX: 0000000000000000 RCX: 0000000000000000
- RDX: 0000000000000001 RSI: fffff266ffda7b90 RDI: ffffd2670388f9b0
- RBP: 0000000000000010 R08: ffff8ba104e76000 R09: ffffd2670388fa50
- R10: ffff8ba102dd42e0 R11: ffffffff9a908970 R12: 0000000000400010
- R13: ffff8ba10a246400 R14: ffff8ba10a710220 R15: fffff266ffda7b90
- FS:  00007fa3bc63f740(0000) GS:ffff8ba2e0f48000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000400010 CR3: 0000000107f9e003 CR4: 0000000000172ef0
- Call Trace:
-  <TASK>
-  ? __tracing_map_insert+0x208/0x3a0
-  action_trace+0x67/0x70
-  event_hist_trigger+0x633/0x6d0
-  event_triggers_call+0x82/0x130
-  trace_event_buffer_commit+0x19d/0x250
-  trace_event_raw_event_sys_exit+0x62/0xb0
-  syscall_exit_work+0x9d/0x140
-  do_syscall_64+0x20a/0x2f0
-  ? trace_event_raw_event_sched_switch+0x12b/0x170
-  ? save_fpregs_to_fpstate+0x3e/0x90
-  ? _raw_spin_unlock+0xe/0x30
-  ? finish_task_switch.isra.0+0x97/0x2c0
-  ? __rseq_handle_notify_resume+0xad/0x4c0
-  ? __schedule+0x4b8/0xd00
-  ? restore_fpregs_from_fpstate+0x3c/0x90
-  ? switch_fpu_return+0x5b/0xe0
-  ? do_syscall_64+0x1ef/0x2f0
-  ? do_fault+0x2e9/0x540
-  ? __handle_mm_fault+0x7d1/0xf70
-  ? count_memcg_events+0x167/0x1d0
-  ? handle_mm_fault+0x1d7/0x2e0
-  ? do_user_addr_fault+0x2c3/0x7f0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The reason is that the stacktrace field is not labeled as such, and is
-treated as a normal field and not as a dynamic event that it is.
-
-In trace_event_raw_event_synth() the event is field is still treated as a
-dynamic array, but the retrieval of the data is considered a normal field,
-and the reference is just the meta data:
-
-// Meta data is retrieved instead of a dynamic array
-  str_val = (char *)(long)var_ref_vals[val_idx];
-
-// Then when it tries to process it:
-  len = *((unsigned long *)str_val) + 1;
-
-It triggers a kernel page fault.
-
-To fix this, first when defining the fields of the first synthetic event,
-set the filter type to FILTER_STACKTRACE. This is used later by the second
-synthetic event to know that this field is a stacktrace. When creating
-the field of the new synthetic event, have it use this FILTER_STACKTRACE
-to know to create a stacktrace field to copy the stacktrace into.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Link: https://patch.msgid.link/20260122194824.6905a38e@gandalf.local.home
-Fixes: 00cf3d672a9d ("tracing: Allow synthetic events to pass around stacktraces")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- kernel/trace/trace_events_hist.c  | 9 +++++++++
- kernel/trace/trace_events_synth.c | 8 +++++++-
- 2 files changed, 16 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 5e6e70540eef..c97bb2fda5c0 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -2057,6 +2057,15 @@ static struct hist_field *create_hist_field(struct hist_trigger_data *hist_data,
- 			hist_field->fn_num = HIST_FIELD_FN_RELDYNSTRING;
- 		else
- 			hist_field->fn_num = HIST_FIELD_FN_PSTRING;
-+	} else if (field->filter_type == FILTER_STACKTRACE) {
-+		flags |= HIST_FIELD_FL_STACKTRACE;
-+
-+		hist_field->size = MAX_FILTER_STR_VAL;
-+		hist_field->type = kstrdup_const(field->type, GFP_KERNEL);
-+		if (!hist_field->type)
-+			goto free;
-+
-+		hist_field->fn_num = HIST_FIELD_FN_STACK;
- 	} else {
- 		hist_field->size = field->size;
- 		hist_field->is_signed = field->is_signed;
-diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
-index 4554c458b78c..45c187e77e21 100644
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -130,7 +130,9 @@ static int synth_event_define_fields(struct trace_event_call *call)
- 	struct synth_event *event = call->data;
- 	unsigned int i, size, n_u64;
- 	char *name, *type;
-+	int filter_type;
- 	bool is_signed;
-+	bool is_stack;
- 	int ret = 0;
- 
- 	for (i = 0, n_u64 = 0; i < event->n_fields; i++) {
-@@ -138,8 +140,12 @@ static int synth_event_define_fields(struct trace_event_call *call)
- 		is_signed = event->fields[i]->is_signed;
- 		type = event->fields[i]->type;
- 		name = event->fields[i]->name;
-+		is_stack = event->fields[i]->is_stack;
-+
-+		filter_type = is_stack ? FILTER_STACKTRACE : FILTER_OTHER;
-+
- 		ret = trace_define_field(call, type, name, offset, size,
--					 is_signed, FILTER_OTHER);
-+					 is_signed, filter_type);
- 		if (ret)
- 			break;
- 
 -- 
-2.51.0
-
+Pavel Begunkov
 
 
