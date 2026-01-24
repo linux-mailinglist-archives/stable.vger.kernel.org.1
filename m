@@ -1,294 +1,226 @@
-Return-Path: <stable+bounces-211473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ctzmBytWdWmVEAEAu9opvQ
-	(envelope-from <stable+bounces-211473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 00:30:51 +0100
+	id yErwAYNXdWnYEAEAu9opvQ
+	(envelope-from <stable+bounces-211474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 00:36:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE1D7F40D
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 00:30:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC577F468
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 00:36:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45DC3300C59F
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 23:30:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1E60A300CFD6
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 23:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5516622D795;
-	Sat, 24 Jan 2026 23:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E88027A133;
+	Sat, 24 Jan 2026 23:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="r1KYNGMC"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="EcXKtZh3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D51D3EBF01;
-	Sat, 24 Jan 2026 23:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE3827CB35
+	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 23:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769297446; cv=none; b=PuajNM9cMHjcRZCbdXW0Aeqnf+AbbUIweT9nyqYU96GGkufGUWlMvlOedNhWd04SSfoGcMgS5OYyHv8HwF/7xnhWdbbJi7r1F7ZC8sWpF+Fh7CqWizd5E07iTy+fAAtqf32Z8DE/66+U+whBYFg+gSOJh6YIaGn6t/eOsxqk45w=
+	t=1769297781; cv=none; b=Rli0LLFXyUBco8ZM+ESmatIxPyneEKZetvIczfgI2CpjMHjj8eX11+dMlmnmoxj7+2AYMzhoZHBtstPJjGgJdxkWxXrhyvjWMAN5ZpV3aORS+vmQYmRHWRKwQLfvKlQj3PJBi2WOqqgzV9mPmQKxj8LhdvkP9IwQYeoezbjwoCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769297446; c=relaxed/simple;
-	bh=KtuxpYhTJgxrsVD9d5MOe40dD9EQTJrjGyg/UnFbEwE=;
-	h=Date:To:From:Subject:Message-Id; b=Zho+GTDRe2IZvRbC1dLJWvxFUNHS6PPaJm6mnCm0XitPvhyYxqpKyJZOJVMgXk28WT/i1Fpr5lwDGhal74KVR5rOMo/0hZVq1Ntz8Tte4xhZKkRcBlpZe8suy/a/5TTZ4XZYBdWEqMJWCwCZnjCscaQhti57eOJucmo0LFTqK0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=r1KYNGMC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B402C116D0;
-	Sat, 24 Jan 2026 23:30:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769297445;
-	bh=KtuxpYhTJgxrsVD9d5MOe40dD9EQTJrjGyg/UnFbEwE=;
-	h=Date:To:From:Subject:From;
-	b=r1KYNGMC+JPYgqMmiD7HoPvxhN7uA7qQBl+9AQ0bsaBeNfDvb8Jz1Aiiec5+IyNWF
-	 /DbQUNcL6YAktc3V6jMY/p8Zbg+3hPHGUFliEZRrlyi3hCzIi7hZwZ1Ih1Lflz9hMP
-	 IO120baqdLNsMM3JGTYXYZ9NSQ50xmf6YEpHP6c4=
-Date: Sat, 24 Jan 2026 15:30:44 -0800
-To: mm-commits@vger.kernel.org,zhangjn11@chinatelecom.cn,yuanql9@chinatelecom.cn,yangyicong@hisilicon.com,wangjinchao600@gmail.com,thorsten.blum@linux.dev,sunshx@chinatelecom.cn,stable@vger.kernel.org,song@kernel.org,mingo@kernel.org,lihuafei1@huawei.com,dianders@chromium.org,realwujing@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch added to mm-nonmm-unstable branch
-Message-Id: <20260124233045.5B402C116D0@smtp.kernel.org>
+	s=arc-20240116; t=1769297781; c=relaxed/simple;
+	bh=F7IdeJxEuwyJhlT1kgnXqGZv2HwcrsfzSvPn/0f4rt4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HK9gUGirVTLF2zJbswjrAXC0fGqMW1ppLvVth6bAhFmmSp75TgAHlOpz7XYortN9vxk88WJj57QOHMNSLwul5lCfhy7q7H4aXxEr7Hcf0aDdyhXzqr46aXPuzbLqAdHEgDlRjTFntScxHG7KFvQJsT7lRCSicC6rXDzqz/vmcDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=EcXKtZh3; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b88455e6663so490662866b.1
+        for <stable@vger.kernel.org>; Sat, 24 Jan 2026 15:36:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1769297776; x=1769902576; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F7IdeJxEuwyJhlT1kgnXqGZv2HwcrsfzSvPn/0f4rt4=;
+        b=EcXKtZh3KjR6EEU4oJNoh35dgZ4I6tV1dad+HPwVip4LjAvCAJGtkwjgacODmCmzML
+         DEZhhloPLFK1KZquIqENkz+8Pz7rhh5UGCNygvad5kZKsa8k7qg2H0bT8M4AcGAMDUYg
+         DcxEz53qBEMZtDPbcFkcIttS5NqS3dajMj+X0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769297776; x=1769902576;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=F7IdeJxEuwyJhlT1kgnXqGZv2HwcrsfzSvPn/0f4rt4=;
+        b=YqBWSJmMGZ2t0+xfHamayiFhRTwfJHJ38vq51Mk8S0wPo/NpBe7Y4fxC27AgDpzawM
+         3YCsZtjJ857F1OxJ1dQtOP1kL06EDIY7es3HbfazwhC9n6TTme4O4CFp6eVI/Fi7TS70
+         b14QRkMBMTiv+hmyvuVnNvv1CJ4f65l8aCA6Gn/x72m/yQ9j7EmYjFaDiVGETWu2KkLa
+         b+JMbTnxocMYIsLfblEPOqkgPqSLcR+qRBhxm50kWcfmlDJB+3Due9Nn/u7if50RmKVb
+         9DVMHbSRga6lHS7KtfSKneT6d/SYxDt/lBQDYllPXH8oyuV1iXhy4WR/7SYlVeyAPV0a
+         +new==
+X-Forwarded-Encrypted: i=1; AJvYcCU5iSDfeL9UB/UhVGRGwCUlK+cNkbLkOV5BhkCbNNRjecn/CPCQBJx+ne6I2ILTs122rJMxkTI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywfd2LQQdTFd2ijtMEFG60vr0jbFWslcM3qOAhu6IwPJ5RMxzMm
+	fkkIWWkpu3nv0JE40VqYyvz6wWdyDxY2D2e4bgXC+0brRhOKkZGR/9g0g/klyltG1IS0xa41dCK
+	CoBw0uw==
+X-Gm-Gg: AZuq6aJrtBfWg07gLkP6n7Se0nZQEcf/WQzpGsq1VLhsDDUgBIX5uX914fT/5ncj5QB
+	E6Rd9LBs0CMSvHB2iXi4IFLH9g+peuSmX5Y60KiP8AjXysqZ7jzfccL9ykE2YZ03Jdi57S6DFJ4
+	lKo9as67aXhnCVPpD/wKyf57EFiPpzD/2wJkPKclOedKHgDb0u0dSK0+VDoHMawiLefOP2yegXb
+	LkoPLchtUf1JysD+wlsdpCWvTTKnzuhCadwHNZ/9lxWCRfVsWoG6wVIiJAqlHCEVuwTo7BQ5AI3
+	haGBhWG2vN72YTC9CI+qdu3wICvxXxCdFphcPe4IesP7qcx1fmf3MeBZP/SIPjYo/SCpvCWRsnA
+	Lb9Yf8oDDW9KYWrVLnMg82SyLqO2PY+NZiQ6HtUQ4v2yVfvn20WuicPJ1UEV7uHTskO9OR0oK87
+	oZbeg8plvWdrJ8WJqzmtcIpq62qqeTT30V6qvSUS47xHQ5qVFhmQ==
+X-Received: by 2002:a17:907:7b8b:b0:b73:8d2e:2d38 with SMTP id a640c23a62f3a-b8d4f75f6b1mr6376766b.50.1769297775707;
+        Sat, 24 Jan 2026 15:36:15 -0800 (PST)
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com. [209.85.221.44])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b885b7ae986sm341721966b.57.2026.01.24.15.36.13
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 24 Jan 2026 15:36:15 -0800 (PST)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-432d2670932so3114356f8f.2
+        for <stable@vger.kernel.org>; Sat, 24 Jan 2026 15:36:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWFCT5rYEPoolnKD0yT2vIEeCuK07aU6xYPoFrtfl0PdEtqVM73bt2JIe8sXsiA8CAyC99fFYE=@vger.kernel.org
+X-Received: by 2002:a5d:5f93:0:b0:435:982d:97ee with SMTP id
+ ffacd0b85a97d-435ca1afeb0mr132288f8f.57.1769297772964; Sat, 24 Jan 2026
+ 15:36:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <CAD=FV=WHWrKS_LVjod6nhnPdEk9_ZqeubGpft3PJOUJNMbBxfg@mail.gmail.com>
+ <20260124065719.805144-1-realwujing@gmail.com>
+In-Reply-To: <20260124065719.805144-1-realwujing@gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Sat, 24 Jan 2026 15:36:01 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=Vmk1jA+dAgJNVDMtxrhhrPxgnXkNxiqJXWBvgUcZZUxQ@mail.gmail.com>
+X-Gm-Features: AZwV_QjwSccMhlpIM9-YrAxACDjpiR1Rl3L9SfoYHyhRS2AZtl7vffA2Ud_GyTI
+Message-ID: <CAD=FV=Vmk1jA+dAgJNVDMtxrhhrPxgnXkNxiqJXWBvgUcZZUxQ@mail.gmail.com>
+Subject: Re: [PATCH v3] watchdog/hardlockup: Fix UAF in perf event cleanup due
+ to migration race
+To: Qiliang Yuan <realwujing@gmail.com>
+Cc: akpm@linux-foundation.org, lihuafei1@huawei.com, 
+	linux-kernel@vger.kernel.org, mingo@kernel.org, mm-commits@vger.kernel.org, 
+	song@kernel.org, stable@vger.kernel.org, sunshx@chinatelecom.cn, 
+	thorsten.blum@linux.dev, wangjinchao600@gmail.com, yangyicong@hisilicon.com, 
+	yuanql9@chinatelecom.cn, zhangjn11@chinatelecom.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-211473-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,chinatelecom.cn,hisilicon.com,gmail.com,linux.dev,kernel.org,huawei.com,chromium.org,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,huawei.com,vger.kernel.org,kernel.org,chinatelecom.cn,linux.dev,gmail.com,hisilicon.com];
+	TAGGED_FROM(0.00)[bounces-211474-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[chromium.org:+];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,linux-foundation.org:dkim,chinatelecom.cn:email]
-X-Rspamd-Queue-Id: 3AE1D7F40D
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
+X-Rspamd-Queue-Id: AFC577F468
 X-Rspamd-Action: no action
 
+Hi,
 
-The patch titled
-     Subject: watchdog/hardlockup: fix UAF in perf event cleanup due to migration race
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch
+On Fri, Jan 23, 2026 at 10:57=E2=80=AFPM Qiliang Yuan <realwujing@gmail.com=
+> wrote:
+>
+> Thanks for the detailed review!
+>
+> > Wait a second... The above function hasn't existed for 2.5 years. It
+> > was removed in commit d9b3629ade8e ("watchdog/hardlockup: have the
+> > perf hardlockup use __weak functions more cleanly"). All that's left
+> > in the ToT kernel referencing that function is an old comment...
+> >
+> > Oh, and I guess I can see below that your stack traces are on 4.19,
+> > which is ancient! Things have changed a bit in the meantime. Are you
+> > certain that the problem still reproduces on ToT?
+>
+> The function hardlockup_detector_perf_init() was renamed to
+> watchdog_hardlockup_probe() in commit d9b3629ade8e ("watchdog/hardlockup:
+> have the perf hardlockup use __weak functions more cleanly").
+> Additionally, the source file was moved from kernel/watchdog_hld.c to
+> kernel/watchdog_perf.c in commit 6ea0d04211a7. The v3 commit message
+> inadvertently retained legacy terminology from the 4.19 kernel; this will
+> be updated in V4 to reflect current ToT naming.
+>
+> The core logic remains the same: the race condition persists despite the
+> renaming and cleanup of the __weak function logic.
+>
+> Regarding ToT reproducibility: while the KASAN report originated from
+> 4.19, the underlying logic is still problematic in ToT. In
+> watchdog_hardlockup_probe(), the call to
+> hardlockup_detector_event_create() still writes to the per-cpu
+> watchdog_ev. Task migration between event creation and the subsequent
+> perf_event_release_kernel() leaves a stale pointer in the watchdog_ev of
+> the original CPU.
+>
+> > Probably want a "Fixes" tag? If I had to guess, maybe?
+> >
+> > Fixes: 930d8f8dbab9 ("watchdog/perf: adapt the watchdog_perf interface
+> > for async model")
+>
+> Commit 930d8f8dbab9 introduced the async initialization which allows
+> preemption/migration during the probe phase. This tag will be included in
+> V4.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch
+The part that doesn't make a lot of sense to me, though, is that v4.19
+also doesn't have commit 930d8f8dbab9 ("watchdog/perf: adapt the
+watchdog_perf interface for async model"), which is where we are
+saying the problem was introduced.
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+...so in v4.19 I think:
+* hardlockup_detector_perf_init() is only called from watchdog_nmi_probe()
+* watchdog_nmi_probe() is only called from lockup_detector_init()
+* lockup_detector_init() is only called from kernel_init_freeable()
+right before smp_init()
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Thus I'm super confused about how you could have seen the problem on
+v4.19. Maybe your v4.19 kernel has some backported patches that makes
+this possible?
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+While I'm not saying that the v4 patch you just posted is incorrect,
+I'm just trying to make sure that:
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+1. We actually understand the problem you were seeing.
 
-------------------------------------------------------
-From: Qiliang Yuan <realwujing@gmail.com>
-Subject: watchdog/hardlockup: fix UAF in perf event cleanup due to migration race
-Date: Sat, 24 Jan 2026 02:08:14 -0500
+2. We are identifying the correct "Fixes" commit.
 
-Original analysis on Linux 4.19 showed a race condition in the hardlockup
-detector's initialization phase.  Specifically, during the early probe
-phase, hardlockup_detector_perf_init() (renamed to
-watchdog_hardlockup_probe() in newer kernels via commit d9b3629ade8e)
-interacted with the per-cpu 'watchdog_ev' variable.
 
-If the initializing task migrates to another CPU during this probe phase,
-two issues arise:
-1. The 'watchdog_ev' pointer on the original CPU is set but not cleared,
-   leaving a stale pointer to a freed perf event.
-2. The 'watchdog_ev' pointer on the new CPU might be incorrectly cleared.
+> > I'm still a bit confused why this warning didn't trigger previously.
+> > Do you know why?
+>
+> In 4.19, hardlockup_detector_event_create() did not include the
+> WARN_ON(!is_percpu_thread()) check, which was added in later versions. In
+> ToT, this warning is expected to trigger if watchdog_hardlockup_probe()
+> is called from a non-per-cpu-bound thread (such as kernel_init). This
+> further justifies refactoring the creation logic to be CPU-agnostic for
+> probing.
 
-Note: Although the logs below reference hardlockup_detector_perf_init(),
-the same logic persists in the current watchdog_hardlockup_probe()
-implementation.
+OK, fair enough. ...but I'm a bit curious why nobody else saw this
+WARN_ON(). I'm also curious if you have tested the hardlockup detector
+on newer kernels, or if all of your work has been done on 4.19. If all
+your work has been done on 4.19, do we need to find someone to test
+your patch on a newer kernel and make sure it works OK? If you've
+tested on a newer kernel, did the hardlockup detector init from the
+kernel's early-init code, or the retry code?
 
-This race condition was observed in console logs:
-[23.038376] hardlockup_detector_perf_init 313 cur_cpu=2
-...
-[23.076385] hardlockup_detector_event_create 203 cpu(cur)=2 set watchdog_ev
-...
-[23.095788] perf_event_release_kernel 4623 cur_cpu=2
-...
-[23.116963] lockup_detector_reconfigure 577 cur_cpu=3
-
-The log shows the task started on CPU 2, set watchdog_ev on CPU 2,
-released the event on CPU 2, but then migrated to CPU 3 before the cleanup
-logic could run.  This left watchdog_ev on CPU 2 pointing to a freed
-event, resulting in a UAF when later accessed:
-
-[26.540732] BUG: KASAN: use-after-free in perf_event_ctx_lock_nested.isra.72+0x6b/0x140
-[26.542442] Read of size 8 at addr ff110006b360d718 by task kworker/2:1/94
-
-Fix this by refactoring hardlockup_detector_event_create() to return the
-created perf event instead of directly assigning it to the per-cpu
-variable.  In the probe function, use an arbitrary CPU but ensure it
-remains online via cpu_hotplug_disable() during the check.
-
-Link: https://lkml.kernel.org/r/20260124070814.806828-1-realwujing@gmail.com
-Fixes: 930d8f8dbab9 ("watchdog/perf: adapt the watchdog_perf interface for async model")
-Signed-off-by: Shouxin Sun <sunshx@chinatelecom.cn>
-Signed-off-by: Junnan Zhang <zhangjn11@chinatelecom.cn>
-Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
-Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
-Cc: Song Liu <song@kernel.org>
-Cc: Douglas Anderson <dianders@chromium.org>
-Cc: Jinchao Wang <wangjinchao600@gmail.com>
-Cc: Wang Jinchao <wangjinchao600@gmail.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Li Huafei <lihuafei1@huawei.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Yicong Yang <yangyicong@hisilicon.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- kernel/watchdog_perf.c |   56 +++++++++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 22 deletions(-)
-
---- a/kernel/watchdog_perf.c~watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race
-+++ a/kernel/watchdog_perf.c
-@@ -17,6 +17,7 @@
- #include <linux/atomic.h>
- #include <linux/module.h>
- #include <linux/sched/debug.h>
-+#include <linux/cpu.h>
- 
- #include <asm/irq_regs.h>
- #include <linux/perf_event.h>
-@@ -118,18 +119,11 @@ static void watchdog_overflow_callback(s
- 	watchdog_hardlockup_check(smp_processor_id(), regs);
- }
- 
--static int hardlockup_detector_event_create(void)
-+static struct perf_event *hardlockup_detector_event_create(unsigned int cpu)
- {
--	unsigned int cpu;
- 	struct perf_event_attr *wd_attr;
- 	struct perf_event *evt;
- 
--	/*
--	 * Preemption is not disabled because memory will be allocated.
--	 * Ensure CPU-locality by calling this in per-CPU kthread.
--	 */
--	WARN_ON(!is_percpu_thread());
--	cpu = raw_smp_processor_id();
- 	wd_attr = &wd_hw_attr;
- 	wd_attr->sample_period = hw_nmi_get_sample_period(watchdog_thresh);
- 
-@@ -143,14 +137,7 @@ static int hardlockup_detector_event_cre
- 						       watchdog_overflow_callback, NULL);
- 	}
- 
--	if (IS_ERR(evt)) {
--		pr_debug("Perf event create on CPU %d failed with %ld\n", cpu,
--			 PTR_ERR(evt));
--		return PTR_ERR(evt);
--	}
--	WARN_ONCE(this_cpu_read(watchdog_ev), "unexpected watchdog_ev leak");
--	this_cpu_write(watchdog_ev, evt);
--	return 0;
-+	return evt;
- }
- 
- /**
-@@ -159,17 +146,26 @@ static int hardlockup_detector_event_cre
-  */
- void watchdog_hardlockup_enable(unsigned int cpu)
- {
-+	struct perf_event *evt;
-+
- 	WARN_ON_ONCE(cpu != smp_processor_id());
- 
--	if (hardlockup_detector_event_create())
-+	evt = hardlockup_detector_event_create(cpu);
-+	if (IS_ERR(evt)) {
-+		pr_debug("Perf event create on CPU %d failed with %ld\n", cpu,
-+			 PTR_ERR(evt));
- 		return;
-+	}
- 
- 	/* use original value for check */
- 	if (!atomic_fetch_inc(&watchdog_cpus))
- 		pr_info("Enabled. Permanently consumes one hw-PMU counter.\n");
- 
-+	WARN_ONCE(this_cpu_read(watchdog_ev), "unexpected watchdog_ev leak");
-+	this_cpu_write(watchdog_ev, evt);
-+
- 	watchdog_init_timestamp();
--	perf_event_enable(this_cpu_read(watchdog_ev));
-+	perf_event_enable(evt);
- }
- 
- /**
-@@ -263,19 +259,35 @@ bool __weak __init arch_perf_nmi_is_avai
-  */
- int __init watchdog_hardlockup_probe(void)
- {
-+	struct perf_event *evt;
-+	unsigned int cpu;
- 	int ret;
- 
- 	if (!arch_perf_nmi_is_available())
- 		return -ENODEV;
- 
--	ret = hardlockup_detector_event_create();
-+	if (!hw_nmi_get_sample_period(watchdog_thresh))
-+		return -EINVAL;
- 
--	if (ret) {
-+	/*
-+	 * Test hardware PMU availability by creating a temporary perf event.
-+	 * The requested CPU is arbitrary; preemption is not disabled, so
-+	 * raw_smp_processor_id() is used. Surround with cpu_hotplug_disable()
-+	 * to ensure the arbitrarily chosen CPU remains online during the check.
-+	 * The event is released immediately.
-+	 */
-+	cpu_hotplug_disable();
-+	cpu = raw_smp_processor_id();
-+	evt = hardlockup_detector_event_create(cpu);
-+	if (IS_ERR(evt)) {
- 		pr_info("Perf NMI watchdog permanently disabled\n");
-+		ret = PTR_ERR(evt);
- 	} else {
--		perf_event_release_kernel(this_cpu_read(watchdog_ev));
--		this_cpu_write(watchdog_ev, NULL);
-+		perf_event_release_kernel(evt);
-+		ret = 0;
- 	}
-+	cpu_hotplug_enable();
-+
- 	return ret;
- }
- 
-_
-
-Patches currently in -mm which might be from realwujing@gmail.com are
-
-watchdog-hardlockup-fix-uaf-in-perf-event-cleanup-due-to-migration-race.patch
-
+-Doug
 
