@@ -1,179 +1,146 @@
-Return-Path: <stable+bounces-211463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GA+ZIazzdGlH/QAAu9opvQ
-	(envelope-from <stable+bounces-211463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 17:30:36 +0100
+	id pWWEMAECdWmi/wAAu9opvQ
+	(envelope-from <stable+bounces-211467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 18:31:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB957E1FE
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 17:30:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6B47E4E7
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 18:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60FF3300A612
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 16:30:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5948D3006B57
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 17:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3F52417C3;
-	Sat, 24 Jan 2026 16:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0335421CC5C;
+	Sat, 24 Jan 2026 17:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WWdYbmJU"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="NLNgiRAU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE5C21B191
-	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 16:30:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EE52BD0B;
+	Sat, 24 Jan 2026 17:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769272230; cv=none; b=healjtdQgvcoIuwhXXV/xNmXGUvXbq2mabZ+qmraDIHBgObSP6Wsj//IlynMXS9eOID8lK2sEA0gs8q/qMcnv/hfy+0G9ZQ6BDu65FlOdVDWPwHsLVoMfAu44roM1RcjzTR9pFVBxSpS24IAA9LAITsF21k/S9Lo6SwxwhMy3IA=
+	t=1769275897; cv=none; b=JEHKqviwWHvbnOQge24IlRrrYumDrp4QG3cENOWdRNUPE7ywd1/n9DBST3bQlyroH3tc0r6kWjuEPiE6YHN47u77z9YRevKBMI4O6ASA2vqVD/yq0cDTEPTEVRS4b84lqfTRRHJP0wiRQFKgMmWOX0/joEmPPzbzDYEQdJ4W3k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769272230; c=relaxed/simple;
-	bh=L8SxQfCSwBmfGTudwzsqlrN4eU8OYaOz4gCyWiDNshA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aslGb6tVBWu5/yKlw/W8ZFvZocc11Wc7ZKBb2yjA+FN9R9fnRyBVRAwnDJqSYuEmkFmnF3SLzNxyeYHmy33WPaHJF+YSueqOlvL8iCmFa0j1vxQSN2VQcHYzjHF1k0bp2J7Qrkgv4pQbfqWnfYAbEssolPmbDX+8Bk0Dnkxtnns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WWdYbmJU; arc=none smtp.client-ip=209.85.218.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so461548666b.2
-        for <stable@vger.kernel.org>; Sat, 24 Jan 2026 08:30:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769272227; x=1769877027; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mOdxhWbrrly9vOYfsFSZEpGnALwy1L1i04bJsdLEpuE=;
-        b=WWdYbmJUOXq9+15P2R2mGNmgEXtseyEABXaeY8XBnjHhNuhuEBI5Z5OFgbSHGtLoSu
-         KzUkj65XhyEmGz9vp9JemNnSmw1WY5a3REBTFwTDqVhoTTUaMb2loq09aoEHhGFwh4S0
-         +z72OlZNReERFD+EJD//h1q5peWsp6GcRV58CF4c2P0hKLqdESg5Vd4JttJ5gSbYXOBw
-         tJQ9CJcPjGj95RPHA0h5mtXFNLScBGOIkRsJG3O1pb8f9ed3RSw4XQcyVYJhhiRxizS3
-         eX+ynGzGkseyseVS+otrCVTwyRrplMTmv9r4G3pu8of10xQyXYoV78mU6t1Lm1Feu02a
-         t5cA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769272227; x=1769877027;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mOdxhWbrrly9vOYfsFSZEpGnALwy1L1i04bJsdLEpuE=;
-        b=GOs6S1Ugny0jTVPDhWawIXIl4jYZF8+NGO7iK1EWIVhJL5ZjYvh1DuDm/+4maYtSG8
-         l3QGgVvI9N5POH7JGvo9vKoFzeDbgx33nGNfXGVhVb8xN7tlYO5P/7srHD7b45+PjZPH
-         lHKW9iB2r9EtpXP6pBykRFLIaUodF1Z1U0MIA2jaFZz5NonZasmpt1El24Vg2xr0ONGO
-         cMCcy7T/xUP9nKWdi0H0vhEcKwMtl1ED2k+vkx2XiEABFboqSP3HOE1MJSkG+Vq0oLaE
-         WFRhst84MqDpAs96u35gmyeIjA4vxUUSXvArMGxsuoBLphRygsEJh7QvQVgQyvr79eZ+
-         Dm0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWN97PdRhs96dqthna9p1mMBJruOZA6Tgftt+YzEhZROTSfCa77/ivLdm6iyMyxAtz7pFG1A4M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdjT0hzqJfne2ZwiL7LSr2cDihlxU3/gyWBXl6Dqr04JR+ket8
-	JexY1siJtSEx61dABzEErtDkg8Rxo/fittPJW0caJgur6cgh/UIGzM9vhZYHFwrR
-X-Gm-Gg: AZuq6aJ6g1XHtBqJF15pHAqgckmgqVvn9QL+AD6QO8sVzizQ1rsVgMJh325ioreoBGl
-	dCOYU55zk+I0F+d9HQiOzYA7n/Wv9Rgn4YcJJ/LTvuL9qGLZSdaN3SoX6LGZntqmD+4WwJgvqYl
-	Ui2CsZoGnFxQidd59dGvLsuytSxgX9V6l/bPamP3ahlc7Yv9WUs9no3AgG9oPFHVJMK2jPEOvxZ
-	EZk8AAVRMlgrMBelusJUf6/oem4d8nyt4PBjlwVwmzFbgrPzYNIjlDjuS4GbMwJ+HQ6FJCYOSab
-	APkLuz7J2eAmRSoePNqDFuL3yrYj/IP3T9vPrlT/Wu3NNcYEjZ3fCjbl/NQQnyKgScgLfvcFCYZ
-	G32/dSIuu0bwaBtX0xtsnsaSCy/74vhUkoToexJ2S16nEIYaRuYUoTdJH4aoKNv1SyixpxMqWvb
-	4EEua5gq+5VNvEXEgw5ma0ox3QMF82MTeDq0YH/KvMqJO21E9qpvdDva/6bpkstroqjOpdMKjZC
-	ZIxGzMiJzL9ZOfxf/SyqhtcjnMiPMv1xtaIc48SRQRVSGAoLrGnJsoeDENGwZzO5A==
-X-Received: by 2002:a17:906:fe44:b0:b88:4fc9:a196 with SMTP id a640c23a62f3a-b885ae08ffamr432721766b.34.1769272226744;
-        Sat, 24 Jan 2026 08:30:26 -0800 (PST)
-Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b885b7661f7sm287380466b.54.2026.01.24.08.30.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 24 Jan 2026 08:30:26 -0800 (PST)
-Message-ID: <38a46172-8734-462b-870d-39d0697882e1@gmail.com>
-Date: Sat, 24 Jan 2026 16:30:25 +0000
+	s=arc-20240116; t=1769275897; c=relaxed/simple;
+	bh=wakJy6/WI3zTSTIk8b8zvkA5paropCtJ2eepRXWqQyM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lVZCBdqb0W1dSQdXjmDejqNjKbTQSsaO6sbs27FW0rGV8zWKsU/V6dL8Sur5eNS+g9eiEwCK3WoMFoy1i9m+cBWQ7sxkKONwoNT97KoYz1tVod/P5CU3D27DgblRUbgTf1it5nzauMVkH8cWzKxj9M6wGMyor+tB2ojQqHL05TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=NLNgiRAU; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id 7AC5527D6A;
+	Sat, 24 Jan 2026 18:21:24 +0100 (CET)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+ by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id MgCn9sH1KmQz; Sat, 24 Jan 2026 18:21:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1769275283; bh=wakJy6/WI3zTSTIk8b8zvkA5paropCtJ2eepRXWqQyM=;
+	h=From:Subject:Date:To:Cc;
+	b=NLNgiRAUSNu+C7VqTTpq24xo+YEhzfQ1UUc+5tmAkiOpp5B6o7AF2ZpHkiHyHwyMC
+	 Mf+pj9Y3OiG4W/Fi+j5AqhGthXxmm8694mcFJEQ8wUTur/qoZ0cGvI+uRRUcSugq1Z
+	 vxsamL56bngG+MViXlKfhR49S8RQp3JuytmO8a3Iea7a+S8kmXq5mlSfCXX6HFh+0C
+	 CeWHJBZX3oXPwWGRcVHatPXk/M8r4+DKv9xABakHaLwk1roxLMC8x484ayN8l1ybCM
+	 PO7Nkd34Ho4q+U/XtGXht2dup7pdvg8w4fT7/bRY74dl2Qt4wpveA6SQIKZN8lqxCD
+	 znAFPKgNEmTGA==
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
+Subject: [PATCH 0/3] Fixes and enhancements for Exynos (7870) DSIM bridge
+ driver
+Date: Sat, 24 Jan 2026 22:50:45 +0530
+Message-Id: <20260124-exynos-dsim-fixes-v1-0-122d047a23d1@disroot.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
- cross-buffer accounting
-To: Jens Axboe <axboe@kernel.dk>, Yuhao Jiang <danisjiang@gmail.com>
-Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260119071039.2113739-1-danisjiang@gmail.com>
- <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
- <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
- <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
- <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
- <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
- <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
- <2be71481-ac35-4ff2-b6a9-a7568f81f728@gmail.com>
- <2fcf583a-f521-4e8d-9a89-0985681ca85b@kernel.dk>
- <d2fc2ff2-98d9-49f8-af95-968100174d55@gmail.com>
- <3b7e6088-7d92-4d5c-96c7-f8c0e2cc7745@kernel.dk>
- <efe080c9-5176-4fa1-9f65-5be44074779e@gmail.com>
- <596bc7ac-3d24-43a7-9e7e-e59189525ebc@gmail.com>
- <fc8664bb-7769-48a2-b470-71fb81828e26@kernel.dk>
- <654fe339-5a2b-4c38-9d2d-28cfc306b307@kernel.dk>
- <eea0d7c3-9aed-4c1f-8146-23b82e611899@kernel.dk>
- <9317bad6-aa89-4e93-b7d2-9e28f5d17cc8@gmail.com>
- <74f2ec89-ca40-44a0-8df7-de404063a1a3@kernel.dk>
- <32b884bc-929b-4b27-ae74-5754fa2473de@kernel.dk>
-Content-Language: en-US
-From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <32b884bc-929b-4b27-ae74-5754fa2473de@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAG3/dGkC/x3LQQqAIBBA0avErBswLYuuEi0ip5pFGg6EId09a
+ fn4/AxCkUlgrDJEulk4+IKmrmA9Fr8TsisGrbRVjW6R0uODoBM+ceNEgp0ZjLOL3VRvoHxXpD+
+ UbZrf9wPyZ+ovYwAAAA==
+X-Change-ID: 20260124-exynos-dsim-fixes-5383d6a6f073
+To: Inki Dae <inki.dae@samsung.com>, 
+ Jagan Teki <jagan@amarulasolutions.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+ Kaustabh Chakraborty <kauschluss@disroot.org>, stable@vger.kernel.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[disroot.org,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[disroot.org:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211463-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.dk,gmail.com];
+	TAGGED_FROM(0.00)[bounces-211467-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[samsung.com,amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[asmlsilence@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[kauschluss@disroot.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[disroot.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: DEB957E1FE
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[disroot.org:email,disroot.org:dkim,disroot.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0C6B47E4E7
 X-Rspamd-Action: no action
 
-On 1/24/26 15:55, Jens Axboe wrote:
-> On 1/24/26 8:14 AM, Jens Axboe wrote:
->>>> ________________________________________________________
->>>> Executed in    2.81 secs    fish           external
->>>>      usr time    0.71 secs  497.00 micros    0.71 secs
->>>>      sys time   19.57 secs  183.00 micros   19.57 secs
->>>>
->>>> which isn't insane. Obviously also needs conditional rescheduling in the
->>>> page loops, as those can take a loooong time for large amounts of
->>>> memory.
->>>
->>> 2.8 sec sounds like a lot as well, makes me wonder which part of
->>> that is mm, but it mm should scale fine-ish. Surely there will be
->>> contention on page refcounts but at least the table walk is
->>> lockless in the best case scenario and otherwise seems to be read
->>> protected by an rw lock.
->>
->> Well a lot of that is also just faulting in the memory on clear, test
->> case should probably be modified to do its own timing. And iterating
->> page arrays is a huge part of it too. There's no real contention in that
->> 2.8 seconds.
-> 
-> I checked and the faulting part is 2.0s of that runtime. On a re-run:
+Since v6.17, there were a few regressive changes for the Exynos 7870
+DSIM driver. These changes resulted in weird artifacts on the display,
+such as random RGB channel swaps and random aberration (the occurrences
+of both were mutually exclusive).
 
-Makes sense, I was forgetting it's full time.
+The first two commits of this patch series address the aforementioned
+changes.
 
+The third patch replaces an implicit loop for waiting for PLL
+stabilization with an interrupt-based solution, which should be more
+reliable. This solution was suggested by Inki Dae in a discussion of an
+earlier patch series sent by me. For further details, refer to its
+commit description.
+
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+---
+Kaustabh Chakraborty (3):
+      drm/bridge: samsung-dsim: move bridge init sequence to atomic_enable
+      drm/bridge: samsung-dsim: enable MFLUSH_VS for Exynos 7870 DSIM
+      drm/bridge: samsung-dsim: use DSIM interrupt to wait for PLL stability
+
+ drivers/gpu/drm/bridge/samsung-dsim.c | 61 +++++++++++++++++++++++------------
+ include/drm/bridge/samsung-dsim.h     |  1 +
+ 2 files changed, 42 insertions(+), 20 deletions(-)
+---
+base-commit: ca3a02fda4da8e2c1cb6baee5d72352e9e2cfaea
+change-id: 20260124-exynos-dsim-fixes-5383d6a6f073
+
+Best regards,
 -- 
-Pavel Begunkov
+Kaustabh Chakraborty <kauschluss@disroot.org>
 
 
