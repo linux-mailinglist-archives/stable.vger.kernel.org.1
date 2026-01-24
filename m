@@ -1,296 +1,313 @@
-Return-Path: <stable+bounces-211469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGxAN0AZdWlVAwEAu9opvQ
-	(envelope-from <stable+bounces-211469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 20:10:56 +0100
+	id QL9nG5k0dWmjCAEAu9opvQ
+	(envelope-from <stable+bounces-211470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 22:07:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3345C7E943
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 20:10:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E76077F023
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 22:07:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1DE93013AA0
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 19:10:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53ADD30160D0
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 21:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43EAE26561E;
-	Sat, 24 Jan 2026 19:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A30283C83;
+	Sat, 24 Jan 2026 21:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b6YNR1dP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iPjkGIl/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0212421773F
-	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 19:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76455280CF6
+	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 21:07:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769281840; cv=none; b=dDbbMziDXYvoRmzFBXeCw1qCQhmSNPZnq/6uwxeWKlj2KHw2vyUUPfS4pxjHICD31pfT6PNV4lufNcm8nTbmY6SwGDY4edAXQ5bioOXABry6NEr3sUE9DxXHRbknyVvaUOsZ6QQrgUWiW6Zij2qE5P8enArp/vpZosxSMqHqoxU=
+	t=1769288835; cv=none; b=RDHt6vpUnhR1YyS73oEcM4d0p/SKGhMcRo0OnkLBLqPZNIqEkguWYkPGByC6iiVFPkMRpLPb5mBRCcD5K7aUlFz/I2HD4jGUCuKUOhPS+pd7qWnLiG6N5xj7Fxb0bEV2/hIJGOkO8aNq0wilci+rbMjy9c+VaQ9JCjAY4f10BMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769281840; c=relaxed/simple;
-	bh=WYmylhlnxg++jo/vtjrtnmoqDXDhbH0F9J+5FRINfp0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nNf25LnYaTPlvHx1CVTwvssiYpUPDuiEXrlgVMGk5yJfRAs6DKyaEFM0cgqZfm7zlNeDwIywS9A2JI/YnxbN8dw/1/DxkHX7UOqMvBCLcKzuzypwADNgi6/JkZ+QxA4AVmxFdd9XzjPiLqB3jvXoMU9uYFBjJCr95pz/p11O688=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b6YNR1dP; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-432d2c7dd52so3371722f8f.2
-        for <stable@vger.kernel.org>; Sat, 24 Jan 2026 11:10:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769281836; x=1769886636; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=zvjiNMXqNXn3CIGev2BIjc6WsB/YpEeQXxxmz/nUT8E=;
-        b=b6YNR1dPT39/r7NQ251mxnzU4G3fLQoRWUbeLAIn30jLe6KQ+72pr494xXDWsTGJ/V
-         TX0XD3n5c/W0yoNbjdVrZSoert8eflZpIRB9tl/yG9BfGoBgM6tJjIYv5YqQ4pJG9UbP
-         scuBRoHgRNUbakpgN7D9I1W+hPbMgXMJPQEeDXCjvnlz+V/l6nsokdG9aK3pqO9Og/dw
-         s62jst3Q94xmkJ4/huwqSnQSekR5qlggyDx2AoRYvch4wnn+xujDd0jhmPBFWlKvhu63
-         I+NZ8QDhT+A4mnhKzd0jRYCAuX4lV9ZZ+m1c6OghVfjddKLd2EWwRBQNMLam6q2LmoyJ
-         qTQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769281836; x=1769886636;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zvjiNMXqNXn3CIGev2BIjc6WsB/YpEeQXxxmz/nUT8E=;
-        b=i2aYe0BrNkn/eTJxXGxYT6Ax9LzZODA8+OhAdaEoQZbAo65Ux1Mmgt2+5kLj4t6cf7
-         aj3zRb/vgHNDrBID4xEMvNxQ1PgKbOLErlEUDLZHJIpxE39C7tozVzXtUicMaUs6qEET
-         IgIgPV4ERGYGOqeETPnKG9S9KCUPR/uFLATL+yZ9c1l+Nm6Lm0BBEoAkRFPQSrvsxizk
-         9LuMqs0q2OH/1GfSwMwBO3551N3PNMZkdh0hvKTxplsA3yYjPqk+skBg7MeEk7unxdDE
-         Mxy6iu7WZANqW0c1RajFZUL1TZA4e2IxBEBw3iejhEV/KbEoJnaP40zOWuu4qlKwOD9y
-         e6cA==
-X-Forwarded-Encrypted: i=1; AJvYcCVWmCFio2+/00cnkWRUH3phMPehWHFDj1QqIs35pBOhT+GY+m0rNZ61WD5P6+evy5dfESDqoqc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfzTFsKuGyuiSAvnmfIyjen8b8Onsa6bJn2tj+n6b1hpH9oUX2
-	yZJwCB6wuekXbs/FIZxB4Y470LogU334ig3zdOirI1UPQl10bi+q87uY
-X-Gm-Gg: AZuq6aJk0ufk2W8bA36bUF/5YchTnPv8y0Fr/+l79VmjbWTbFedx/PI9Vr7US3bXwTN
-	vjdpxKBZjPrcfpwNzNH5Os1QP8ulyYzmkGmhh1Av63rRIeunqSQk1zINKgukIscsM6YxrJdS+JH
-	NeV3fzYnl6qWo+E+rZ93wG5pBS8/45qfWLTrWz0hzQwDBXlArfPAyiMWga8mkOqXtGQwbmncFen
-	N5+eLSjaHHEbkTAyerRJS3b/RxV19O+NJnkrXoTct2vvEiS/pQO9Vy9+v3J0loWmGiBSSuJxRRj
-	5EwhQXMk23LdalzXU3eCO+jpnTZEL3IdDLsTordGj5Vyfxm8ry6Hg3JDHIko/QsFhdIFjkjNQmo
-	Ly+psaOsaQzSvYecISj52UVhd9+MT/tP6ves4DpnqTVdiHkjpY7nVlXjltHqcib8vdEivPIQi1f
-	ZVGGyapMgrGQmlW0ggIpB2wWZwkbNG0kzc6Zm1Lgr2Yts=
-X-Received: by 2002:adf:e845:0:b0:435:bd00:cb4 with SMTP id ffacd0b85a97d-435bd000cd7mr4623096f8f.23.1769281836162;
-        Sat, 24 Jan 2026 11:10:36 -0800 (PST)
-Received: from osama ([156.223.77.192])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1c24b54sm16642950f8f.15.2026.01.24.11.10.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Jan 2026 11:10:35 -0800 (PST)
-Date: Sat, 24 Jan 2026 20:10:31 +0100
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sjur Braendeland <sjur.brandeland@stericsson.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] net: caif: fix memory leak in ldisc_receive
-Message-ID: <aXUZJ_xO2hGAvV6-@osama>
-References: <20260118174422.10257-1-osama.abdelkader@gmail.com>
- <9a7c53ac-d208-457f-9940-ca821b08df1e@kernel.org>
- <ed294369-e463-4d4b-83c8-43df0e24c014@kernel.org>
+	s=arc-20240116; t=1769288835; c=relaxed/simple;
+	bh=UclknFpN2ZWd4uyp6MAwU80cqRd1X1vfkRRK1+y/n94=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dhQW9xXhJ664kRRi8x0MyxSrdoN80EK2Tfr/pRsueum3HKhP6lTNANtg+reO6EY61XYIswnBASXZv9bxbh5vntIXAm/BKycIcP0QL8aM4ZX6f2nQZelUIwWjOhrQ8i1LxahytGpCeR+qTGtKKsHlJqrFziEoa/gTOf8+py1cFIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iPjkGIl/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0F0C2BC9E
+	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 21:07:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769288835;
+	bh=UclknFpN2ZWd4uyp6MAwU80cqRd1X1vfkRRK1+y/n94=;
+	h=From:In-Reply-To:References:Date:Subject:To:Cc:From;
+	b=iPjkGIl/MsKSCH3BAycQX0vWp+HMLch/o5/rIimI7jUSnVBt7vOdjyITWccbSwha2
+	 /Gwu74jqRVijsbLwDF71/L27hjEvJD7l5DXvZ4SHisYzwDvFYPR6KzlGT/H+xQxY+H
+	 pR0WW6qGsk+19+3UaE+SyGpoQ7gXAcNCsbLn4jFfdeuYk7X+IXP4cmyehpNeXpv4kQ
+	 OcxiVzJYl4iKllN7nYfAKjLxVbXaoQ8uTOYbosVdJXNjzfVKzjOsV6e5grfbeVXL5C
+	 1b3vOgC3owq6APXHo63GFQ/5XvRwFWONSN8pDeHov0EtirL5i9y/pf62EHPQ0Gfx46
+	 nal33MTE+NkdQ==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-382f0732612so21519891fa.1
+        for <stable@vger.kernel.org>; Sat, 24 Jan 2026 13:07:15 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWC0n8XHUZb7gw0P+Jl4CSbSYHy/8qlN2xBx9Qb6eUMAXnd/bLYK9NzjbxSDv2w/qx6giPkddQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHBeNJd//GAbr/dire7HI3IPT370AoMn4SKBuI8tcdioultmZ/
+	j7dKXcGoOpMKxp+dCUGiubQu6ZdbtLaOMuSSGTx/JodOjFyxoPJ28mK7sRsqzxFFTwmgFFkSvUu
+	zfs4H5xc2wY2XXDH6otC0r/zpWXV/G/ivAwu5/UXxZw==
+X-Received: by 2002:a05:651c:4187:b0:37b:a30e:fe1e with SMTP id
+ 38308e7fff4ca-385f9dcdbe9mr139721fa.18.1769288833896; Sat, 24 Jan 2026
+ 13:07:13 -0800 (PST)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 24 Jan 2026 16:07:12 -0500
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Sat, 24 Jan 2026 16:07:12 -0500
+From: Bartosz Golaszewski <brgl@kernel.org>
+In-Reply-To: <cb13c3df-be09-4cf3-b679-4431862d7264@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ed294369-e463-4d4b-83c8-43df0e24c014@kernel.org>
+References: <20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com>
+ <CAMRc=Md0h5b=N9CqV-9L9sOtCNbiL1-y6RE0x4+w9HYXE8=pEQ@mail.gmail.com>
+ <e9fd0005-bfbb-4052-8c2a-9200eb0b60ac@arm.com> <16771005.dW097sEU6C@diego> <cb13c3df-be09-4cf3-b679-4431862d7264@arm.com>
+Date: Sat, 24 Jan 2026 16:07:12 -0500
+X-Gmail-Original-Message-ID: <CAMRc=MfUawHpDgxj=fP2OF_-qg1O+P3oM_cSvGsbvAdLRB=+hw@mail.gmail.com>
+X-Gm-Features: AZwV_Qj_fkFL-PYes-rtNy10zLCqgVdVHFhLik2wLfULvoDu_c3HvmP55gf-KMU
+Message-ID: <CAMRc=MfUawHpDgxj=fP2OF_-qg1O+P3oM_cSvGsbvAdLRB=+hw@mail.gmail.com>
+Subject: Re: [PATCH] gpio: rockchip: mark the GPIO controller as sleeping
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Linus Walleij <linusw@kernel.org>, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	=?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>, 
+	Bartosz Golaszewski <brgl@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211470-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211469-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,arm.com:email];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[osamaabdelkader@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev,f9d847b2b84164fa69f3];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3345C7E943
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: E76077F023
 X-Rspamd-Action: no action
 
-On Mon, Jan 19, 2026 at 08:00:37AM +0100, Jiri Slaby wrote:
-> On 19. 01. 26, 7:58, Jiri Slaby wrote:
-> > On 18. 01. 26, 18:44, Osama Abdelkader wrote:
-> > > Add NULL pointer checks for ser and ser->dev in ldisc_receive() to
-> > > prevent memory leaks when the function is called during device close
-> > > or in race conditions where tty->disc_data or ser->dev may be NULL.
-> > > 
-> > > The memory leak occurred because ser->dev was accessed before checking
-> > > if ser or ser->dev was NULL, which could cause a NULL pointer
-> > > dereference or use of freed memory. Additionally, set tty->disc_data
-> > > to NULL in ldisc_close() to prevent receive_buf() from using a freed
-> > > ser pointer after the line discipline is closed.
-> > > 
-> > > Reported-by: syzbot+f9d847b2b84164fa69f3@syzkaller.appspotmail.com
-> > > Closes: https://syzkaller.appspot.com/bug?extid=f9d847b2b84164fa69f3
-> > > Fixes: 9b27105b4a44 ("net-caif-driver: add CAIF serial driver (ldisc)")
-> > > CC: stable@vger.kernel.org
-> > > Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-> > > ---
-> > > v2:
-> > > 1.Combine NULL pointer checks for ser and ser->dev in ldisc_receive()
-> > > 2.Set tty->disc_data = NULL in ldisc_close() to prevent receive_buf()
-> > > from using a freed ser pointer after close.
-> > > 3.Add NULL pointer check for ser in ldisc_close()
-> > > ---
-> > >   drivers/net/caif/caif_serial.c | 8 ++++++--
-> > >   1 file changed, 6 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/
-> > > caif_serial.c
-> > > index c398ac42eae9..970237a3ccca 100644
-> > > --- a/drivers/net/caif/caif_serial.c
-> > > +++ b/drivers/net/caif/caif_serial.c
-> > > @@ -152,6 +152,8 @@ static void ldisc_receive(struct tty_struct
-> > > *tty, const u8 *data,
-> > >       int ret;
-> > >       ser = tty->disc_data;
-> > > +    if (!ser || !ser->dev)
-> > > +        return;
-> > >       /*
-> > >        * NOTE: flags may contain information about break or overrun.
-> > > @@ -170,8 +172,6 @@ static void ldisc_receive(struct tty_struct
-> > > *tty, const u8 *data,
-> > >           return;
-> > >       }
-> > > -    BUG_ON(ser->dev == NULL);
-> > > -
-> > >       /* Get a suitable caif packet and copy in data. */
-> > >       skb = netdev_alloc_skb(ser->dev, count+1);
-> > 
-> > Wait, the reported error is memory leak of mem allocated here. So both
-> > ser and ser->dev appear to be valid?
-> > 
-> > So instead, does netif_rx() return an error few lines below for some
-> > reason? So should skb just be freed in that path?
-> > 
-> >          if (skb == NULL)
-> >                  return;
-> >          skb_put_data(skb, data, count);
-> > 
-> >          skb->protocol = htons(ETH_P_CAIF);
-> >          skb_reset_mac_header(skb);
-> >          debugfs_rx(ser, data, count);
-> >          /* Push received packet up the stack. */
-> >          ret = netif_rx(skb);
-> >          if (!ret) {
-> >                  ser->dev->stats.rx_packets++;
-> >                  ser->dev->stats.rx_bytes += count;
-> >          } else
-> >                  ++ser->dev->stats.rx_dropped;
-> > 
-> > Not calling skb_free() in this else path _is_ a BUG™ in any case IMO.
-> 
-> No, it's not: netif_rx() always eats the buffer. So care to elaborate why
-> the socket buffer is actually leaked?
-> 
-> > thanks,
-> -- 
-> js
-> suse labs
-> 
+On Sat, 24 Jan 2026 00:45:25 +0100, Robin Murphy <robin.murphy@arm.com> sai=
+d:
+> On 2026-01-23 9:52 pm, Heiko St=C3=BCbner wrote:
+>> Am Freitag, 23. Januar 2026, 21:57:50 Mitteleurop=C3=A4ische Normalzeit =
+schrieb Robin Murphy:
+>>> On 2026-01-23 7:27 pm, Bartosz Golaszewski wrote:
+>>>> On Fri, Jan 23, 2026 at 2:27=E2=80=AFPM Robin Murphy <robin.murphy@arm=
+.com> wrote:
+>>>>>
+>>>>>>>
+>>>>>>> It's not a big issue for the hdmirx driver specifically, but I wond=
+er
+>>>>>>> how many more (less often tested) rockchip drivers use GPIOs from t=
+heir
+>>>>>>> IRQ handler.
+>>>>>
+>>>>> Yeah, seems this finally reached my distro kernel and now the kernel =
+log
+>>>>> on one of my boards is totally flooded from gpio_ir_recv_irq()
+>>>>> (legitimately) calling gpio_get_value()... that's not really OK :/
+>>>>>
+>>>>
+>>>> This has always been a sleeping driver. The driver does not know the
+>>>> firmware configuration it'll be passed and - as I explained above -
+>>>> depending on the lookup flags, we may call .direction_output() and
+>>>> descend into pinctrl which uses mutexes. Ideally, we'd make
+>>>> GPIO-facing pinctrl operations not sleeping but this is a long-time
+>>>> project and quite complex. Telling the GPIO core that it cannot sleep
+>>>> is simply incorrect - even if it worked for this particular use-case -
+>>>> and has an impact on paths we're choosing.
+>>>>
+>>>> Can the GPIO reading in the gpio-ir-recv driver be done from a
+>>>> high-priority workqueue by any chance? Or can we make it a threaded
+>>>> interrupt?
+>>>
 
-Hi Jiri, Greg
+Let me circle back to my earlier question. Would the following change work?
 
-Following up on v2 feedback regarding the CAIF close-receive race,
-I'm thinking of (similar to PPP driver):
-
-- Add proper lifetime management using a refcount (`rx_ref`) to track
-  in-flight receive callbacks.
-- Introduce a `closing` flag to prevent new receive callbacks after ldisc_close()
-  starts.
-- Use a completion (`rx_done`) to wait for in-flight callbacks to finish before 
-  freeing resources.
-
-I plan to verify the patch using the ReproC program and kmemleak locally, but I
-would appreciate feedback on this approach before testing.
-
-proposal is written below.
-
-Thanks for your review!
-
-Best regards,
-Osama 
-
---- a/drivers/net/caif/caif_serial.c
-+++ b/drivers/net/caif/caif_serial.c
-@@ struct ser_device {
-     /* existing fields */
-+    refcount_t rx_ref;             /* track in-flight receive callbacks */
-+    bool closing;                  /* indicates ldisc_close in progress */
-+    spinlock_t lock;               /* protects closing flag */
-+    struct completion rx_done;     /* signals all RX finished */
+diff --git a/drivers/media/rc/gpio-ir-recv.c b/drivers/media/rc/gpio-ir-rec=
+v.c
+index a6418ef782bc..1f95e54bd146 100644
+--- a/drivers/media/rc/gpio-ir-recv.c
++++ b/drivers/media/rc/gpio-ir-recv.c
+@@ -26,6 +26,11 @@ struct gpio_rc_dev {
  };
- 
-@@ static void ldisc_receive(struct tty_struct *tty,
-     struct ser_device *ser = tty->disc_data;
- 
--    if (!ser)
--        return;
-+    if (!ser)
-+        return; /* safety check, usually handled by TTY core */
+
+ static irqreturn_t gpio_ir_recv_irq(int irq, void *dev_id)
++{
++	return IRQ_WAKE_THREAD;
++}
 +
-+    /* Acquire lock to check closing */
-+    spin_lock(&ser->lock);
-+    if (ser->closing) {
-+        spin_unlock(&ser->lock);
-+        return;
-+    }
-+    refcount_inc(&ser->rx_ref);
-+    spin_unlock(&ser->lock);
-+
-+    /* existing RX processing code */
-+
-+    /* RX done */
-+    if (refcount_dec_and_test(&ser->rx_ref))
-+        complete(&ser->rx_done);
++static irqreturn_t gpio_ir_recv_irq_thread(int irq, void *dev_id)
+ {
+ 	int val;
+ 	struct gpio_rc_dev *gpio_dev =3D dev_id;
+@@ -120,9 +125,10 @@ static int gpio_ir_recv_probe(struct platform_device *=
+pdev)
+
+ 	platform_set_drvdata(pdev, gpio_dev);
+
+-	return devm_request_irq(dev, gpio_dev->irq, gpio_ir_recv_irq,
+-				IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING,
+-				"gpio-ir-recv-irq", gpio_dev);
++	return devm_request_threaded_irq(dev, gpio_dev->irq, gpio_ir_recv_irq,
++					 gpio_ir_recv_irq_thread,
++					 IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING,
++					 "gpio-ir-recv-irq", gpio_dev);
  }
- 
-@@ static void ldisc_close(struct tty_struct *tty)
-     struct ser_device *ser = tty->disc_data;
- 
-     if (!ser)
-         return;
-+
-+    /* mark closing and prevent new receive callbacks */
-+    spin_lock(&ser->lock);
-+    ser->closing = true;
-+    spin_unlock(&ser->lock);
-+
-+    /* wait for in-flight RX to finish */
-+    wait_for_completion(&ser->rx_done);
-+
-+    /* safe to free ser and associated resources now */
-+
-+    /* optional: re-init completion for future opens */
-+    init_completion(&ser->rx_done);
+
+ static void gpio_ir_recv_remove(struct platform_device *pdev)
+
+>>> rockchip_gpio_get() is essentially nothing but a readl(), please explai=
+n
+>>> how that could sleep? Saying that countless in-tree and out-of-tree
+>>> arbitrary GPIO consumer drivers should pointlessly refactor just to
+>>> avoid the GPIO core spewing spurious WARN()s is not reasonable.
+>>>
+
+Right, so gpiod_get_value() is a bit different from gpiod_set_value() becau=
+se
+it indeed can't descend into pinctrl.
+
+>>> I appreciate there are cases where the warning most definitely *is*
+>>> relevant, which is why I picked up this discussion rather than proposin=
+g
+>>> a revert, even though the documentation says:
+>>>
+>>>    * @can_sleep: flag must be set iff get()/set() methods sleep, as the=
+y
+>>>
+>>> where since neither rockchip_gpio_get() nor rockchip_gpio_set()
+>>> themselves sleep, apparently this flag must *not* be set. It's
+>>> irrelevant that a higher-level gpiod_set_value() invocation might end u=
+p
+>>> calling .set_direction before it gets as far as calling .set - that's
+>>> not the gpio_chip's fault, and gpiolib knows exactly what it's doing.
+>>>
+
+Well, the wording may be unfortunate and it's probably been this way for a
+long time. I don't know the history here, this probably needs to be revised=
+.
+
+Please keep in mind: I don't deal with a single rockchip driver but with
+a generic subsystem supporting hundreds of GPIO drivers and thousands of
+users across the kernel tree. Not to mention all the API abuse like people
+calling direction_output() from atomic context etc. We have all kinds of
+combinations of sleeping and non-sleeping consumers and suppliers. It's
+sometimes hard to find the middle ground.
+
+Maybe the core GPIO code should not try to simulate open-source/open-drain
+on non-sleeping chips for gpiod_set_value(). Or maybe we need a .uses_pinct=
+rl
+flag parallel to .cansleep which tells GPIO core that while set/get don't
+sleep, direction_output/input may.
+
+>
+>> rockchip_pmx_gpio_set_direction()'s only function is to set the GPIO
+>> pinmux - it does not handle the actual the actual direction.
+>>
+>> Can't we move the pinctrl_gpio_direction_input/_output() call just over
+>> to the request callback of the gpiochip?
+>
+
+What if the user calls gpiod_direction_output() on a pin set to input?
+
+> In fact, after an hour or so chasing through the code, is that not just
+> pretty much this? (Not even compile tested as I'd rather go to bed now...=
+)
+>
+> Cheers,
+> Robin.
+>
+> ----->8-----
+> diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
+> index 47174eb3ba76..118edd57c252 100644
+> --- a/drivers/gpio/gpio-rockchip.c
+> +++ b/drivers/gpio/gpio-rockchip.c
+> @@ -164,12 +164,6 @@ static int rockchip_gpio_set_direction(struct gpio_c=
+hip *chip,
+>   	unsigned long flags;
+>   	u32 data =3D input ? 0 : 1;
+>
+> -
+> -	if (input)
+> -		pinctrl_gpio_direction_input(chip, offset);
+> -	else
+> -		pinctrl_gpio_direction_output(chip, offset);
+> -
+>   	raw_spin_lock_irqsave(&bank->slock, flags);
+>   	rockchip_gpio_writel_bit(bank, offset, data, bank->gpio_regs->port_ddr=
+);
+>   	raw_spin_unlock_irqrestore(&bank->slock, flags);
+> diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl=
+-rockchip.c
+> index e44ef262beec..2fc67aeafdb3 100644
+> --- a/drivers/pinctrl/pinctrl-rockchip.c
+> +++ b/drivers/pinctrl/pinctrl-rockchip.c
+> @@ -3545,10 +3545,9 @@ static int rockchip_pmx_set(struct pinctrl_dev *pc=
+tldev, unsigned selector,
+>   	return 0;
+>   }
+>
+> -static int rockchip_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
+> -					   struct pinctrl_gpio_range *range,
+> -					   unsigned offset,
+> -					   bool input)
+> +static int rockchip_pmx_gpio_request_enable(struct pinctrl_dev *pctldev,
+> +					    struct pinctrl_gpio_range *range,
+> +					    unsigned int offset)
+>   {
+>   	struct rockchip_pinctrl *info =3D pinctrl_dev_get_drvdata(pctldev);
+>   	struct rockchip_pin_bank *bank;
+> @@ -3562,7 +3561,7 @@ static const struct pinmux_ops rockchip_pmx_ops =3D=
+ {
+>   	.get_function_name	=3D rockchip_pmx_get_func_name,
+>   	.get_function_groups	=3D rockchip_pmx_get_groups,
+>   	.set_mux		=3D rockchip_pmx_set,
+> -	.gpio_set_direction	=3D rockchip_pmx_gpio_set_direction,
+> +	.gpio_request_enable	=3D rockchip_pmx_gpio_request_enable,
+>   };
+>
+>   /*
+>
+
+I'm not sure what's going on here. You don't really need to call
+pinctrl_gpio_direction_input/output()?
+
+I'm putting it on my TODO list to figure out a proper way of interacting
+with pinctrl. At the same time, I want to fix your problem so the .uses_pin=
+ctrl
+flag sounds like a solution. This would make gpio-shared-proxy still use
+a mutex but we wouldn't warn in gpiod_get_value(). Unless you can simply sw=
+itch
+to a threaded interrupt in the IR driver. Maybe the latency would be
+negligible?
+
+Bartosz
 
