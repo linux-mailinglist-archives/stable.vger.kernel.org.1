@@ -1,202 +1,144 @@
-Return-Path: <stable+bounces-211461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJ00G4vrdGng+wAAu9opvQ
-	(envelope-from <stable+bounces-211461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 16:55:55 +0100
+	id 0wj5LJXvdGmv/AAAu9opvQ
+	(envelope-from <stable+bounces-211462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 17:13:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F727E0EE
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 16:55:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2403E7E17C
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 17:13:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44747300B13F
-	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 15:55:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A3E5300F190
+	for <lists+stable@lfdr.de>; Sat, 24 Jan 2026 16:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028BF239E76;
-	Sat, 24 Jan 2026 15:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 343DF23958D;
+	Sat, 24 Jan 2026 16:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Pko0fuAe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BLE7fCnm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f66.google.com (mail-oa1-f66.google.com [209.85.160.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47F218BC3D
-	for <stable@vger.kernel.org>; Sat, 24 Jan 2026 15:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB84A1DFE12;
+	Sat, 24 Jan 2026 16:13:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769270149; cv=none; b=oq0AnwHjqMwtwNl7u7MKpWNHEuz0f2XxrIv5YuRdw5Pt3tfDp1ZhjUJtybBUd5kprQN6kqe717R/3I44tcvYg7hs2sF/7bWJ7V6Mcgd1SLlk4V4fSJAd2o/cqCrB9aTrAH2xFUU75xkIGnBBQpjgq56Azb+dAeF7XOqUYG4wGXk=
+	t=1769271184; cv=none; b=fqEgfmjKMf3gBTfoQEWlb1fRe0gpPcmDsfVQxshA8svIUVoRz+MdLv9cBaEpqPXZaLV8BOAv1TlTKZglIt1OsEMIzLFYUqBN5nhKSuMpAk37xasTjyywvVnnb78TFA0w259BWo5+c97zriOpv5XX4a2WGnRIw0nHPueqSKnF7/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769270149; c=relaxed/simple;
-	bh=U2+e4xKSAYRABwS2qCE3DaefmKfUoZiVs6WXlSlOT1U=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=PBVRruqXL8fMcWufqfWTJgSI2+N8TbrkToS4JaS8R8rw657jwR++/NilN5Pqwwx8iKkbXaPXh+KDrt3SdL6u9fFN3ZBzF7PmEGSWWw9Pe1boFmGrJfBwLqEg+UKjmvTEaCd/T7CrtsQ5Y3Sh8ZqbmgYHg3Utbk4zeDMUyuPn0Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Pko0fuAe; arc=none smtp.client-ip=209.85.160.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oa1-f66.google.com with SMTP id 586e51a60fabf-40413188553so2003460fac.1
-        for <stable@vger.kernel.org>; Sat, 24 Jan 2026 07:55:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1769270146; x=1769874946; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=b28I4oYFav6Da1zUgaoqh5wjH9PdZp3ISEmwrG28SHk=;
-        b=Pko0fuAe2cq4uyqMVG0CzsaGKFA4qkVyf5TA6qrYTbQ2miDVXcvlxicQIRHiXRdMjO
-         RKYNJ2ofkVCEVhQIAPaQH4TG9Uojmg4ZXVn13n4t2dU2zrUAymfC2wTX+dhcg7yZMV1f
-         JFqMOWxyuDUZs71uuBPV+kEq4+z0xs5kxTb2liUuQoUya5XTtOMDwfOfIlk8VTs7CFr0
-         2ocpq//Qys+u7BilmV+4EOV+x3aIovX/jjkdZNm6XzaPbxQI5Sx+nnSb6w43sUGIt2md
-         inYOYvzzBaCj9/h9Ri0/Adnez2+Mbv3Gpph+weMk3/ewpX7UgNKuKBveDoNnASWSHyoM
-         K3TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769270146; x=1769874946;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b28I4oYFav6Da1zUgaoqh5wjH9PdZp3ISEmwrG28SHk=;
-        b=fuWQpmejwI2Q5j6NYhmx0VCz34g3vPF3fa75YzkZ/pYtNhz+sk/QwlEnD//BxIOl8S
-         lwFr3LgQqWqTSmrTwvK6SRtRSx8F/8/G7ibVcd07vzNVzmHVSSv/i004Pblo05/pyTCx
-         PQby0YceVW+2DHn/mRYJHulJhwxKxawtZPkHhUmuixFyfgV/2pxqJoD4pGlpoJd1seYD
-         lECMhLaGc80rbqAxh32tdOeWeekDhIcLV325TBO9Vmfl/xLKF3U5kVUcU5gAzdt2O/vw
-         PQsAlDEG6OLmNlFkbCOut7L0rmx3XE2W0w9kEC/q1YNXB/Fkp+Op1lVtEHfw65CKutgL
-         NErQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVu956wtiO5+vYgIOD6n00xoALFKadrsSUelhxHmrF5zikPnwXrc2wUX2fBkTIsz52KjIX6gmw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLwCGwmaab+PvcJm31TI4I7X6r1zo+vhmT5x3caEP8Fbi6zAeM
-	OGVoTWhJwWj6qdnGVS4sqwv66m46ENgTMTcfMbCnhzKnQY3/qvGD/A+olZ3Smv0rwAA=
-X-Gm-Gg: AZuq6aKXaeRjYRGKCLHo6OMFwbqpRbTi9snStKy/ROpeaXjY3Y300GCvnIZOpVeHeOA
-	mM6McV9CTdBzRT+dp/eYSRhnpTzQ+c2w2i/mc62cFf2/hju01t30aMv4bozBBKAso03AhCTFleU
-	LCgfGNa8IYZV3TZjVRf9IkWQJuZmnB4Y2I73fa3/N37zL9kMNwo1Ogfif9jBb/ccKCBQm9qHKxf
-	bztgPxGLXtdOsELpocJUbcxta+pNtPO3kjWcLBYFocFx5gUnvn+6raVAM0dFF6xUaITjbI6ERuA
-	Pcpi5hP/uaq+eMTfqWTJtcugpLJWYLbItY0OwbetWIU3yvm3EognnvCKfw5QKgg3fcjRYLBTWg5
-	WBAbUCMDqRpTjlA9jvaNADx0VQLU9hOp9TagHbgM0I3XiXOzao5v6WdYlSaDl9JAitHH8IvzAox
-	LTBbQAvHoI7NHwiSUHMgI4t/uKiRCXWk5TAl25VimWWMDoaZPIShegW+vzvaYEmSDMUXm76A==
-X-Received: by 2002:a05:6870:d253:b0:3e0:9188:8f10 with SMTP id 586e51a60fabf-408bd516408mr2231166fac.0.1769270145077;
-        Sat, 24 Jan 2026 07:55:45 -0800 (PST)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-408afba74bfsm3825187fac.13.2026.01.24.07.55.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 24 Jan 2026 07:55:44 -0800 (PST)
-Message-ID: <32b884bc-929b-4b27-ae74-5754fa2473de@kernel.dk>
-Date: Sat, 24 Jan 2026 08:55:43 -0700
+	s=arc-20240116; t=1769271184; c=relaxed/simple;
+	bh=OB4Oj3IPiEmInLRb5mbu6fz1itrOKTvgfaliwNhPdq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rvB45a66v+rRjI3JQHMyhZ01WO+AbOy3uzeMM+04o4E1hgR3Wae+Oa0ljfC2Ltviwr5JQM9i29KVhksbI7k9SNmzoH31UNJud5NjFmjFyTuqcbYxl8+nMaewsFT0VONWU6ZnyBHvt7hmaIKzg/454j+oEQvwf5BDgb9kYISIJyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BLE7fCnm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81519C116D0;
+	Sat, 24 Jan 2026 16:13:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769271183;
+	bh=OB4Oj3IPiEmInLRb5mbu6fz1itrOKTvgfaliwNhPdq0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BLE7fCnmFAl9POpj9P8Lec/b9uvHSkVoP7AVBUUBGV731WApBVjpi1/oi5st3BwBy
+	 5zoYW3id0gWlEpSv5iLrwusGOVSbbdzR++4tA8bGEVaiyMSbJ8bXlYbEIOTiXqBTXE
+	 ktDTaQrnnJ9/7160E1eUUjKRmkCiTKpMD5+qAqKwCT5n5RTwxh11OE7FZ+JRjaxDSZ
+	 uwKNSfc55dYja2s0OUPRq14M/Vzx2Wd3dMYnlDaSA7R/stKdWcitk8eYvKM+KczZE5
+	 b+RLbI/zjhBiZpK8ibRQamrLhPwAKgu/t/AIjkvx86PGtsfxWjAyEmZce5Ga0p0k5g
+	 Y02zy2/59csOA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Cc: dri-devel@lists.freedesktop.org,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/tyr: depend on `COMMON_CLK` to fix build error
+Date: Sat, 24 Jan 2026 17:09:48 +0100
+Message-ID: <20260124160948.67508-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] io_uring/rsrc: fix RLIMIT_MEMLOCK bypass by removing
- cross-buffer accounting
-From: Jens Axboe <axboe@kernel.dk>
-To: Pavel Begunkov <asml.silence@gmail.com>,
- Yuhao Jiang <danisjiang@gmail.com>
-Cc: io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260119071039.2113739-1-danisjiang@gmail.com>
- <bc2e8ec1-8809-4603-9519-788cfff2ae12@kernel.dk>
- <CAHYQsXTHfRKBuTDYWus9r5jDLO2WLBeopt4_bGH_vVm=0z7mWw@mail.gmail.com>
- <2919f3c5-2510-4e97-ab7f-c9eef1c76a69@kernel.dk>
- <CAHYQsXQK4nKu+fcni71__=V241RN=QxUHrvNQMQtPMzeL_z=BA@mail.gmail.com>
- <d8d28435-2a89-4b25-925e-14fdb346839b@gmail.com>
- <8c6a9114-82e9-416e-804b-ffaa7a679ab7@kernel.dk>
- <2be71481-ac35-4ff2-b6a9-a7568f81f728@gmail.com>
- <2fcf583a-f521-4e8d-9a89-0985681ca85b@kernel.dk>
- <d2fc2ff2-98d9-49f8-af95-968100174d55@gmail.com>
- <3b7e6088-7d92-4d5c-96c7-f8c0e2cc7745@kernel.dk>
- <efe080c9-5176-4fa1-9f65-5be44074779e@gmail.com>
- <596bc7ac-3d24-43a7-9e7e-e59189525ebc@gmail.com>
- <fc8664bb-7769-48a2-b470-71fb81828e26@kernel.dk>
- <654fe339-5a2b-4c38-9d2d-28cfc306b307@kernel.dk>
- <eea0d7c3-9aed-4c1f-8146-23b82e611899@kernel.dk>
- <9317bad6-aa89-4e93-b7d2-9e28f5d17cc8@gmail.com>
- <74f2ec89-ca40-44a0-8df7-de404063a1a3@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <74f2ec89-ca40-44a0-8df7-de404063a1a3@kernel.dk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211461-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,gmail.com,garyguo.net,protonmail.com,kernel.org,umich.edu,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-211462-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,r7625:email]
-X-Rspamd-Queue-Id: 15F727E0EE
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2403E7E17C
 X-Rspamd-Action: no action
 
-On 1/24/26 8:14 AM, Jens Axboe wrote:
->>> ________________________________________________________
->>> Executed in    2.81 secs    fish           external
->>>     usr time    0.71 secs  497.00 micros    0.71 secs
->>>     sys time   19.57 secs  183.00 micros   19.57 secs
->>>
->>> which isn't insane. Obviously also needs conditional rescheduling in the
->>> page loops, as those can take a loooong time for large amounts of
->>> memory.
->>
->> 2.8 sec sounds like a lot as well, makes me wonder which part of
->> that is mm, but it mm should scale fine-ish. Surely there will be
->> contention on page refcounts but at least the table walk is
->> lockless in the best case scenario and otherwise seems to be read
->> protected by an rw lock.
-> 
-> Well a lot of that is also just faulting in the memory on clear, test
-> case should probably be modified to do its own timing. And iterating
-> page arrays is a huge part of it too. There's no real contention in that
-> 2.8 seconds.
+Tyr needs `CONFIG_COMMON_CLK` to build:
 
-I checked and the faulting part is 2.0s of that runtime. On a re-run:
+    error[E0432]: unresolved import `kernel::clk::Clk`
+     --> drivers/gpu/drm/tyr/driver.rs:3:5
+      |
+    3 | use kernel::clk::Clk;
+      |     ^^^^^^^^^^^^^^^^ no `Clk` in `clk`
 
-axboe@r7625 ~> time ./ppage 32 32
-register 32 GB, num threads 32
-clear msec 2011
+    error[E0432]: unresolved import `kernel::clk::OptionalClk`
+     --> drivers/gpu/drm/tyr/driver.rs:4:5
+      |
+    4 | use kernel::clk::OptionalClk;
+      |     ^^^^^^^^^^^^^^^^^^^^^^^^ no `OptionalClk` in `clk`
 
-________________________________________________________
-Executed in    3.13 secs    fish           external
-   usr time    0.78 secs  193.00 micros    0.78 secs
-   sys time   27.46 secs  271.00 micros   27.46 secs
+Thus add the dependency to fix it.
 
-Or just a single thread:
+Fixes: cf4fd52e3236 ("rust: drm: Introduce the Tyr driver for Arm Mali GPUs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ drivers/gpu/drm/tyr/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-axboe@r7625 ~> time ./ppage 32 1
-register 32 GB, num threads 1
-clear msec 2081
+diff --git a/drivers/gpu/drm/tyr/Kconfig b/drivers/gpu/drm/tyr/Kconfig
+index 4b55308fd2eb..e933e6478027 100644
+--- a/drivers/gpu/drm/tyr/Kconfig
++++ b/drivers/gpu/drm/tyr/Kconfig
+@@ -6,6 +6,7 @@ config DRM_TYR
+ 	depends on RUST
+ 	depends on ARM || ARM64 || COMPILE_TEST
+ 	depends on !GENERIC_ATOMIC64  # for IOMMU_IO_PGTABLE_LPAE
++	depends on COMMON_CLK
+ 	default n
+ 	help
+ 	  Rust DRM driver for ARM Mali CSF-based GPUs.
 
-________________________________________________________
-Executed in    2.29 secs    fish           external
-   usr time    0.58 secs  750.00 micros    0.58 secs
-   sys time    1.71 secs    0.00 micros    1.71 secs
-
-axboe@r7625 ~ [1]> time ./ppage 64 1
-register 64 GB, num threads 1
-clear msec 5380
-
-________________________________________________________
-Executed in    6.24 secs    fish           external
-   usr time    1.42 secs  328.00 micros    1.42 secs
-   sys time    4.82 secs  375.00 micros    4.82 secs
-
+base-commit: 24d479d26b25bce5faea3ddd9fa8f3a6c3129ea7
 -- 
-Jens Axboe
+2.52.0
+
 
