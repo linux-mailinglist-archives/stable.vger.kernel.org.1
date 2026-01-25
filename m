@@ -1,53 +1,50 @@
-Return-Path: <stable+bounces-211479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AThIXwJdmnKKwEAu9opvQ
-	(envelope-from <stable+bounces-211479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 13:15:56 +0100
+	id AHkYClwLdmkNLAEAu9opvQ
+	(envelope-from <stable+bounces-211480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 13:23:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DABBF80795
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 13:15:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8033F80837
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 13:23:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93A0C30086CB
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 12:15:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3C8D330048D6
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 12:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B93D2773EE;
-	Sun, 25 Jan 2026 12:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B06331985D;
+	Sun, 25 Jan 2026 12:23:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600458834;
-	Sun, 25 Jan 2026 12:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA963EBF21;
+	Sun, 25 Jan 2026 12:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769343349; cv=none; b=bnJMKWnA4ELPkg5SuTpL/C2jWzvRge0U5/a392VaP/4DNlA5uL96Rwk/zdW9TkbG1AA7idzD0xnp/0NTRsfKRar+BRgyGLBpOeW2JOaenpPYIy9zUVny9BoVsu12AQAsZi4gt7Bq3faIW81onQxpB5qxcJyBS+0nu75pLqjqKo8=
+	t=1769343830; cv=none; b=Lf586zXMnicuLgkTbVEeYbxdKPljmp4UcMRrDy1mww9qRWZU6ML3nbiVTSDJ6JTDMPO8kstCaY45BWipryJIcFuZHsQrS9xx2iAqJy4u8B4Xd6R0VhYeatfhjzJ5q2/spa/DmZnu6vcl+q+Ur1NwSOLBvHGRVxWAm5kiyaUSPuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769343349; c=relaxed/simple;
-	bh=6Mm5+tV/nMuur0bLKcTbkNA0cTam9M2K3LtP1Ujsdnk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o0Sc+VzGw6wirEmZ4NPiP+N5V5A4pNEZqdAyhnxnJ6gJKqM1ZU7165gUCr2HlSTeWbIajQILWBgvttecAO2SlDc2+TDjLBng1+I728mpRo8rzlzwnys8KeLbd+4e0RwIRTrElqrhjHQLrLKN/ReaJB6jxXvHTV7rLWNsWxU3E+o=
+	s=arc-20240116; t=1769343830; c=relaxed/simple;
+	bh=A7ZNenREdKva72mcfILf0vXj6lo8W9TsdkB+zsI1spg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nhNOgtaOMgMGBajjgna10Enu0SUnCWyyu+K9RUI351abI1UA6L1Os95IzCT9N2BLxCzl8VRh1RalRIpi8Vzb1t5lNB9Y2R3Ow7z1HgqVq24AzTNd/n2qDLxMdYt1iygkwySV1zVL/tSyWJ1ptjsO1A7fcaSeTS8aw3CS/MMJI44=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
 Received: from localhost.localdomain (unknown [36.112.3.223])
-	by APP-01 (Coremail) with SMTP id qwCowAB3424NCHZp+PIqBg--.53936S2;
-	Sun, 25 Jan 2026 20:09:49 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowABnEW1NC3ZpK0orBg--.10392S2;
+	Sun, 25 Jan 2026 20:23:41 +0800 (CST)
 From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: mkl@pengutronix.de,
-	mailhol@kernel.org,
-	alexandre.belloni@bootlin.com,
-	nicolas.ferre@microchip.com,
-	claudiu.beznea@tuxon.dev
-Cc: linux-can@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+To: airlied@redhat.com,
+	chris@chris-wilson.co.uk,
+	simona.vetter@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] can: at91_can: fix an error handle in at91_can_probe()
-Date: Sun, 25 Jan 2026 20:09:47 +0800
-Message-Id: <20260125120947.1997682-1-lihaoxiang@isrc.iscas.ac.cn>
+Subject: [PATCH] intel-gtt: fix an error handle in i810_setup()
+Date: Sun, 25 Jan 2026 20:23:39 +0800
+Message-Id: <20260125122339.2008087-1-lihaoxiang@isrc.iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -56,30 +53,30 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAB3424NCHZp+PIqBg--.53936S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Jw18tr15AryfCF15GrWruFg_yoWfWwb_Ka
-	1IyFZ2vFWUKrn093WrurZIyFyakFyUZF1kWFyqg3yagrW3Aw18XrWFvFn3Wr1DWrs2kr15
-	Kw12vF18u34S9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+X-CM-TRANSID:qwCowABnEW1NC3ZpK0orBg--.10392S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Xw1ruw4xuF48Cry7Xr13Jwb_yoWkJFc_WF
+	yFg34kG3yFkF1rCr1UAr17ZFy2kw1FqrZaqF17Kryaya4SqFs3KFy5urn3u3WkXrs8ur9F
+	qa47Xr1Fyry2kjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb48FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
 	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
-	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Jr0_Gr
-	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
-	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
-	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxh
-	VjvjDU0xZFpf9x0JUd-B_UUUUU=
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiDAcRE2l038QMtAABs2
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
+	6r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
+	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y
+	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
+	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU18sqtUUUU
+	U==
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwkSE2l1q+x0JgAAsG
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -87,45 +84,48 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.991];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.992];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	DMARC_NA(0.00)[iscas.ac.cn];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	R_DKIM_NA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211479-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211480-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[isrc.iscas.ac.cn:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: DABBF80795
+	DBL_BLOCKED_OPENRESOLVER(0.00)[isrc.iscas.ac.cn:mid,iscas.ac.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8033F80837
 X-Rspamd-Action: no action
 
-In at91_can_probe(), if devm_phy_optional_get() fails,
-the memory allocated by alloc_candev() should be freed.
-Modify the goto label to do so.
+In i810_setup(), if ioremap() fails, the memory allocated
+by alloc_gatt_pages() should be freed. Add free_gatt_pages()
+to do so.
 
-Fixes: 3ecc09856afb ("can: at91_can: add CAN transceiver support")
+Fixes: 820647b97a9c ("intel-gtt: switch i81x to the common initialization helpers")
 Cc: stable@vger.kernel.org
 Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 ---
- drivers/net/can/at91_can.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/agp/intel-gtt.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/at91_can.c b/drivers/net/can/at91_can.c
-index c2a3a4eef5b2..58da323f14d7 100644
---- a/drivers/net/can/at91_can.c
-+++ b/drivers/net/can/at91_can.c
-@@ -1099,7 +1099,7 @@ static int at91_can_probe(struct platform_device *pdev)
- 	if (IS_ERR(transceiver)) {
- 		err = PTR_ERR(transceiver);
- 		dev_err_probe(&pdev->dev, err, "failed to get phy\n");
--		goto exit_iounmap;
-+		goto exit_free;
- 	}
+diff --git a/drivers/char/agp/intel-gtt.c b/drivers/char/agp/intel-gtt.c
+index bcc26785175d..dfb6282ce401 100644
+--- a/drivers/char/agp/intel-gtt.c
++++ b/drivers/char/agp/intel-gtt.c
+@@ -186,8 +186,10 @@ static int i810_setup(void)
+ 	reg_addr = pci_resource_start(intel_private.pcidev, I810_MMADR_BAR);
  
- 	dev->netdev_ops	= &at91_netdev_ops;
+ 	intel_private.registers = ioremap(reg_addr, KB(64));
+-	if (!intel_private.registers)
++	if (!intel_private.registers) {
++		free_gatt_pages(intel_private.i81x_gtt_table, I810_GTT_ORDER);
+ 		return -ENOMEM;
++	}
+ 
+ 	writel(virt_to_phys(gtt_table) | I810_PGETBL_ENABLED,
+ 	       intel_private.registers+I810_PGETBL_CTL);
 -- 
 2.25.1
 
