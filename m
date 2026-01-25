@@ -1,181 +1,161 @@
-Return-Path: <stable+bounces-211475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMAUDhB1dWlfFQEAu9opvQ
-	(envelope-from <stable+bounces-211475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 02:42:40 +0100
+	id iG0sC1B3dWmqFQEAu9opvQ
+	(envelope-from <stable+bounces-211476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 02:52:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25DC7F6FB
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 02:42:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBB707F74A
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 02:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B8A3300B84C
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 01:42:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3767630022CD
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 01:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E4E1C84CB;
-	Sun, 25 Jan 2026 01:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913CD1A2C04;
+	Sun, 25 Jan 2026 01:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q1gN4lrq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mZvqesz7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9911A76BB
-	for <stable@vger.kernel.org>; Sun, 25 Jan 2026 01:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D821922FD
+	for <stable@vger.kernel.org>; Sun, 25 Jan 2026 01:52:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769305353; cv=pass; b=H7E8kZ3Z2raAltlzcQkWllmZdJxwsU4L0QMKa2i9kMsbjb4gsaG9zEIjyFAYzYTMZrX2tCjslJ8NxitDkLHo92oCvc/zAgmrAa+hBIRDtHhYQ1qQl4n0PGWFsBy7TSqQvO8qIhGAAac6u4KCSG41K4EZa+Srpe4+lkLpVM+9Hcc=
+	t=1769305931; cv=pass; b=rDt/VmkmidjsiCUZ5yeBAkZKeJAWjtI9PQvzSbOVixyB+bFY18was23+ujAAx5dUe68paJnbweI86SbxRvJHj3N2LkekqEK4OnptDEnZ93LJh1p/IMV7p50gstwwOfVDtOIy4d7L5yZLFl/ZZndsloPmWqeSZZwMyUC6VuEwt9Q=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769305353; c=relaxed/simple;
-	bh=o62QWtWcle4DY/qGkFRQ4LThvoa5UF61oBPpFQEHMy0=;
+	s=arc-20240116; t=1769305931; c=relaxed/simple;
+	bh=PlYLsq+ZaimvGGy4x/AZzbOrBDCOqAHYQURfifOmu3M=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qCDRT8amapOhL/a9EpC/qPizMGMAhLovJChKgKqJxsKe3H2Vl8WfbSxiUIC76ZiUovUy+RgPYj+xyKszqY5sAkSYt9rjgpEAJNM2NKJ/4cIW6CkduIeGUP3kfDerrNlZZUGNKepBB9OVLbcjitkIi7ejzLkF30C9Dzz3kogWFZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q1gN4lrq; arc=pass smtp.client-ip=209.85.218.48
+	 To:Cc:Content-Type; b=kxpQ5A66byvRL8GXUTyxrB+svztbeYADarlSykmz67qHb7HXOPU55+RviUuDYW+ld54wON2P2cggO2v4vTajrKQBzbf9RBQzMSVuWepkw/jdiVPpRMR2rlpv9umnnGo1GHenrRc1hN3gO7C4c+g9MV/C9YXCDh7ucdFS/7/fvUM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mZvqesz7; arc=pass smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b883c8dfb00so714795666b.1
-        for <stable@vger.kernel.org>; Sat, 24 Jan 2026 17:42:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769305350; cv=none;
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-652fdd043f9so6151081a12.1
+        for <stable@vger.kernel.org>; Sat, 24 Jan 2026 17:52:09 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769305928; cv=none;
         d=google.com; s=arc-20240605;
-        b=QhWGM6yL7lCyan9AmGWvGf052g6EboHJLt9NAvfFufkMPpKG7qH4SfcS3gSQ0IZhWS
-         sEOsYS877kfkQYI6iPcyKc35ozxH9sSnLmHG8D59imAcpNcptr/0BL8JcQqUNkswex6W
-         FwvAPC+QXzW6M2/GhZO3+Aa19pSV7uXaSpnWSW2SiHjyS6Uge5EP1Pus5ZscUwoqJMhy
-         SE36u1LDooYsiRa27ZFBrWz96rH0n3EktWYuHKT0TPoPfYXVPDro+zSLNqrB/Hv4qhkO
-         xReniAm2CcvAqf+wRHChbB31fGRwnrJttmqMdA1HY8Q/ifSYP3B6COlOI6dneaLhZsCR
-         VYWw==
+        b=lYVXUBWbDnUHxKeYW264TpgYvMYt/NeomaEPUmB4cRyc3Mj+G2mSmByR25hIIjd02y
+         0/TseXzILRh9STiIYwom7C3OpmrV6nO6KXQQ+PDdQEwKfWjANJUtTFeww+W1xX6IJO0L
+         YZr21FVhaBcrmMPqkJ+In2nE3U5fRF5HlIMAzErOHv8D4ZKG6dOzr1Z+e+jQdY0rBygE
+         4fYFRY7HeBHFbf3QXaLJPnNytpo18vzGlW9nySSZzMd7kAUczbdBGZBs8wE2q37m5mIE
+         diUci13UrjgMsdmR5taC3lJdqG5ZNN5T0j7//uz0dmP0jYwEQ21sFjjCoil1G3KxFQeR
+         ZbxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=zLvoAJ9PRCVQHW3muNClNeM72pKgSuHCyQxqvs2XN7M=;
-        fh=weBd/FlJyMojcFXVCIEGqpm6BC9Gl6CEnsBQBhh0GdE=;
-        b=j9GrnDT3MTBUDbbHfHF2uTYaK1Ib523RQdhzet/FInjZKgo3RCWaioGsAI3XoT7zXA
-         FKdLVkOOVL5vZl83AEraa4ULQac0ZHzmHp1Gp6H9w5qnmCHtl6smkQ+oWxLEUujNKUQq
-         KZb1B1Uhmfms7Yntusf2V5fQOgHawWn2G3GWq8tZxk3qTP+SOJvxMeX6IfybKCf/thc0
-         uJtPPpyHgYz4th/PBFS/uzmsUaxOYjwF1EE7tgP9qjGUNZjSa9kb7IRtlW+GCWHwqEaB
-         jiIKtoXt8e9l8Mnk2cASYbfXv0yQs/9mx4NsKz7k5kJAq5fPzZ1cFCwEP/GWaPRlASgr
-         PwnA==;
+        bh=PlYLsq+ZaimvGGy4x/AZzbOrBDCOqAHYQURfifOmu3M=;
+        fh=VVia0Jo97xaS07p81AXvnWcRlLATyX/H89HySMWQma0=;
+        b=eiY7FHSiSFJruRlyEeobHDTArsnZiDlMc1O9mJTxbOBJStD1QknCNDUWdFlBR5KwrH
+         yxka7drh/0gj+ArG85AlBYkHXfeUY0jdwqDBnDYg2OpVP8/SC+rZNSdCGv6nAe7J8Xwz
+         rnaBOrJvk3jUaKURDrY8Pfett+Fbv37NPc4zJl6zUA0FEwFYOcMEJeM2CQnfiTzfJP63
+         puKUTTXWu4BY4Mb1DDhW5lh/rQVET+1cUW2Gr+4fxoOK1NeyiTscXAkZ2xtk+XgTmQUp
+         b/ZE2q3swPrIT0UyA/Mie2iRQEaz1rrILhXx2Wp/oE4Pw9jF49xxc4yuLf+2GgFaT8IU
+         cHTA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769305350; x=1769910150; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769305928; x=1769910728; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zLvoAJ9PRCVQHW3muNClNeM72pKgSuHCyQxqvs2XN7M=;
-        b=Q1gN4lrqzD+6W0GvKXwUZkZ7B7zFGgAgDNAwOTK5gd8e8b06uAuKF2WEag6/cR0DIX
-         Z4DJbPq3Z0Ebz8kQYCKxJ41iWatKrnY1z/h937QW3YTP42g2uzDbF6cOmD6nGcCyz3GN
-         SuV8KqupqPzsbD1/V5dHvuRnvK+Na1+sQrWFChcHR4NQqSeyWNeJ7qktJgUOW1Y93vU0
-         aqFvRAJ4hnZ104G7zImKPK7JrnBfL5W5sQpNPoWWciUhNPzgKyV2E9hWkBQEtobhoigP
-         eRRoXCT8m24cQILCszKf0iypbEL0FK8vm80YA6UJ72pO8dNhHZwIDfcbNp9louts/2OU
-         3JlA==
+        bh=PlYLsq+ZaimvGGy4x/AZzbOrBDCOqAHYQURfifOmu3M=;
+        b=mZvqesz7WBI4NOfJM0Y3mEH9qPWH9jqCKiH/D6irpS+UTiqTzXCErRUDaPljYYBmfb
+         wJwwQmedEWrffFjAMlveDurUFPn+xwA0GkYhs3uBu/0IudtYdjHrkC841qFmjyctH33b
+         wCIL+9QFf2sj6Fjj1ORE51jGahlX00ogBSaSX950EuHO1tc02NtNcyr08nupkxrU1+6w
+         9LCnqox2BQCKgcfTfbPo67q3v+BLRPGGE4ac486Dt+KObCZgEvAA+VMgTyowVXpum6Yt
+         9mhLNh0fq+SfkxAFwpFliNMTpBpcR9w+C0sCDwDeSy9krh+4kqniIdBE3HeDT0IUCz/G
+         SLBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769305350; x=1769910150;
+        d=1e100.net; s=20230601; t=1769305928; x=1769910728;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=zLvoAJ9PRCVQHW3muNClNeM72pKgSuHCyQxqvs2XN7M=;
-        b=LRPi/QNBlVOoy41jNJmvDftysDsHAceczyjazBdq4li9hF1Un1HAM91LrqLKgANYfo
-         dAsPnkhCRV1HtkNGPlz+Vrahs1ATjf9VAoVIPrGcrXma6EYv+qjsDbBrrCJXE7o7YQcZ
-         fdIz73m6eeokRDF+SGqdQDiRPpIKFcPoF+iPAps6wVKgDw1Lb0gKyo3csA13XXgbR2R+
-         H1JSqlFRiM5I9nb953JzNVne6Aw4y2OSwbI0cBgF7bpMba9PFpqyCJcWwcYDjcif3K6y
-         ioYVdo+qbrgCq9jlYjaqVGGHHJju44IBYVOspxUJo+d4wkZSLUBAFxlJn/LYJTQzcxXj
-         zC8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWnivFYziYyUuExMfNm7bS/VUtasIyzWipmjjq/LdQi+OJ9ifh8qJa3qoR4aPahMvI6pPpaAgc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/hyIV6GIUap/ol8rtun+LATLYLhtWmvLE0DnVycu5dENcRo87
-	vk9fssaXfaHe48fadCVjlOrTZF//U+Q4YspNeYBb6sh2GJ3QeD9eWw3uzf9pDdYmjti1oSFSG29
-	rZUxjLhIk4zj+G3Ev9snw5mznWaZh9MTlGFu8
-X-Gm-Gg: AZuq6aIYlBiuNan1rjdAF594g9ooOmcVC7dJbd5N4840dpXKswICHAlachiMNPDt6Rf
-	4QGszBYcrCwJjLr7z/Aj/BM6yBl+7T6b3fVMlriebKqE7dF7CqLbR0YQOrfAfQNvXBmjaKtVZ4n
-	w/Uw1xDZMnqfYfpIg9jgmn9JFzi00TgGl4C9fZ/SNDF5cbiOKxLfUxPV1iePrh3fdP6qLp+N9nN
-	wZZUdl054Z3NvNfUGeAeoODeLXj/3wVOQgtTmPZFKBcZ6OfLp54+wiWt/7MPGEhXgS4AbNo
-X-Received: by 2002:a17:907:3f0e:b0:b87:1e50:95c2 with SMTP id
- a640c23a62f3a-b8d20b4f2a3mr26845466b.3.1769305350219; Sat, 24 Jan 2026
- 17:42:30 -0800 (PST)
+        bh=PlYLsq+ZaimvGGy4x/AZzbOrBDCOqAHYQURfifOmu3M=;
+        b=cyokSQOIZjMpVN0a+m3Oat7hMhURDbw+nNQoH27tp6A7kHHe3qlaPt5Scc0RjpWMzR
+         hBjbtGmFWPjdQmuI9RyAPKNnqebiShXywzgQsbu7ZVDjNzrYI9GgICOMpZRWnX298ESj
+         qlEQtDmPDw8sVzXYk2i0QsUlfDT1Fk3g0xip4fJzLxAnJZO3FX7ZaS1arpRDmc24pY6D
+         Pdn1AsYB/8Hk5bvEnxHmn7ChzqOcL8TXY7RWCziTRUvImYu+M9T5aoEYqjoUe9P640Hh
+         riGv/z5YJwIHuFKbGQZedbsSVPSZtkj8Qcw53haQdFOnJJ4p2MtyzIf9gPCUn8NJAul3
+         0WKA==
+X-Forwarded-Encrypted: i=1; AJvYcCVvurSKvgxLa89vxmuNsRX8FvVfB9Fhw6p1extF3zw3B20NY0qtUKaIg5U68//SPV90Qf44BsY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4oBbCW1SJHTzhhzEr1/IlivxFItMX8OIyDsVz2QbKUBGiC26o
+	HkAdrrPygcdVjH4X5ifeMO0w4GRIbsI6rqTmEycHAl5dPqKIaXKGmfklHaLHin4TRzXYfVtd4dA
+	qdh8+Qq/36WBrrAiwzZ4THWQFWbprmdprqq77
+X-Gm-Gg: AZuq6aLrT06lPwHGIUjWpMkd2zo7LirszGAKvsjS8BjP1IEGN37X60fCe2bwvoPeH/q
+	lSiMg3fkgELffE6nkVTBKGb6NNyAZlN/hDMkHKNpPBCVMq5eu9EZzC9y1N86cQ+y8M+qQadZJFv
+	FiMnYDB7axjtVbIgKwfM2Bup3L9pF+ZZtAymySYxOQ0IORopRW/93Bao78aFCbpKx1I/URnzjDS
+	SJDHXjpIBPQEcvtf+fRa1seFn36NDmYfNsNfjs2s54pVguNSN2VHXPFfS5MD1hq6yGC0e0W
+X-Received: by 2002:a17:907:7fa5:b0:b83:9767:c8ba with SMTP id
+ a640c23a62f3a-b8d3fa46b56mr20568766b.17.1769305928218; Sat, 24 Jan 2026
+ 17:52:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251216084334.903376-1-joonwonkang@google.com>
-In-Reply-To: <20251216084334.903376-1-joonwonkang@google.com>
+References: <20251216084435.903880-1-joonwonkang@google.com>
+In-Reply-To: <20251216084435.903880-1-joonwonkang@google.com>
 From: Jassi Brar <jassisinghbrar@gmail.com>
-Date: Sat, 24 Jan 2026 19:42:18 -0600
-X-Gm-Features: AZwV_QgijN2oexrG2LfmfcIUkp1z36F-46iHu5_OKT2Q9YLc-TzhUJUCi6aKPJo
-Message-ID: <CABb+yY39rhTZbtA21MecYk-R9fh7VQQr5kZUgCw4z92mWhZ1Rg@mail.gmail.com>
-Subject: Re: [PATCH 1/2 RESEND] mailbox: Use per-thread completion to fix
- wrong completion order
+Date: Sat, 24 Jan 2026 19:51:56 -0600
+X-Gm-Features: AZwV_QgfJ7ZoZKJfJtfMnG9UgnvLcakyLw1e6I-9FHCPh1WHWNUXkt4FQsL0c7c
+Message-ID: <CABb+yY2ucPfFhDq3hK6UR3QmqyA+950vkDx0QFtJB+_Yzw66SQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2 RESEND] mailbox: Make mbox_send_message() return error
+ code when tx fails
 To: Joonwon Kang <joonwonkang@google.com>
-Cc: thierry.reding@gmail.com, alexey.klimov@arm.com, sudeep.holla@arm.com, 
-	jonathanh@nvidia.com, linux-kernel@vger.kernel.org, 
-	linux-tegra@vger.kernel.org, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211475-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211476-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,arm.com,nvidia.com,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jassisinghbrar@gmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
-X-Rspamd-Queue-Id: A25DC7F6FB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CBB707F74A
 X-Rspamd-Action: no action
 
-On Tue, Dec 16, 2025 at 2:43=E2=80=AFAM Joonwon Kang <joonwonkang@google.co=
+On Tue, Dec 16, 2025 at 2:44=E2=80=AFAM Joonwon Kang <joonwonkang@google.co=
 m> wrote:
 >
-> Previously, a sender thread in mbox_send_message() could be woken up at
-> a wrong time in blocking mode. It is because there was only a single
-> completion for a channel whereas messages from multiple threads could be
-> sent on the same channel in any order; since the shared completion could
-> be signalled in any order, it could wake up a wrong sender thread.
+> Previously, when the mailbox controller failed transmitting message, the
+> error code was only passed to the client's tx done handler and not to
+> mbox_send_message(). For this reason, the function could return a false
+> success. This commit resolves the issue by introducing the tx status and
+> checking it before mbox_send_message() returns.
 >
-> This commit resolves the false wake-up issue with the following changes:
-> - Completions are created just as many as the number of concurrent sender
->   threads
-> - A completion is created on a sender thread's stack
-> - Each slot of the message queue, i.e. `msg_data`, contains a pointer to
->   its target completion
-> - tx_tick() signals the completion of the currently active slot of the
->   message queue
->
-Mailbox API does not support shared channels. Each channel is supposed
-to be owned by one client. Though a client can serve multiple users of
-the channel, but then it will have to serialize access to the channel.
-The implication is mailbox_send_message should not be called before
-the last call returns (in blocking mode).
-Even with this patch, consider when threadA is active and threadB too
-is waiting next. If the tx_tout races with threadA's transmission,
-threadB may timeout and call tx_tick() on the channel thereby
-affecting threadA. Which also eventually proceeds to complete on
-threadB's tx_complete which was on the stack and hence no more exists
-thereby causing UAF. So if you have multiple users in blocking mode,
-have a local queuing mechanism.
-
-Thanks.
+A client submitted the message, and that client gets the actual
+status. mbox_send_message does not (can not) tell if the message was
+successfully sent or not. For example, consider non-blocking mode when
+mbox_send_message() immediately returns after simply placing the
+message in the fifo. It returns 0, but still the message transmission
+may fail when its turn comes. So I think it is fine as is.
+Thanks,
 Jassi
 
