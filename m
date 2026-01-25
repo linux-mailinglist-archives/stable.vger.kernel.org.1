@@ -1,244 +1,150 @@
-Return-Path: <stable+bounces-211494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211495-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Xp92MqxsdmmmQgEAu9opvQ
-	(envelope-from <stable+bounces-211494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 20:19:08 +0100
+	id 6IzeLuR9dmnyRAEAu9opvQ
+	(envelope-from <stable+bounces-211495-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 21:32:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA55820E1
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 20:19:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C3582635
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 21:32:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 358B83006387
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 19:19:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68F20300D308
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 20:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248182F361F;
-	Sun, 25 Jan 2026 19:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="izcuCUGi"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4C922D9F7;
+	Sun, 25 Jan 2026 20:32:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFC2255F5E
-	for <stable@vger.kernel.org>; Sun, 25 Jan 2026 19:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8440B23EA88
+	for <stable@vger.kernel.org>; Sun, 25 Jan 2026 20:32:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769368740; cv=none; b=mg0FrEp85coxlGYYqJIS0a1weuyFIkx+vIzAHx7m82CJGWX/2DQFdEnLr9yQMhgLHX19LoLuh24fL574mFLHqzoAJTRwYpHV/p7Lss7d28+gsxblo1OAHN9FvCIfYGdY8La+4cAIi4DifVPP3DfBG+x8EpRXC4sEKh86yivyadY=
+	t=1769373123; cv=none; b=Ze04VrKMMUcrYurRH2Fn1B1jDMZtWmsQKhtYJpqCcS2K8NOg+TmqTf3wJgCXHC5Nu/3Bq+sbcOWurnzAwOw1frqT6rr4bX9uGzyasPAg0HvZqagsX9F9km7y+Aac9yTUSyYL/ckkwSmPZ+bBZFlaC+6eKLuy0HkPwh9dgAE+YmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769368740; c=relaxed/simple;
-	bh=2fmjkzCKOujvwPwn4NDfyFdwq2yVYXAp4mogONgeCBs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfUYYKduqQz15KLl40ZFS4WorTaOdC16X+e6kDfqXRhzg+r7Nf4Un0tkWiMQrb4iNfK4g7e4OeJ49zI3RzCQ84ESsPmnUu2/gMRDu+GPYsUQs1yTpH5I2dFjQ8bLQq0ljQ568TrFOTN18PjFi9aLzDHITHxhKZfwm6Z98wH5E3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izcuCUGi; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47ee301a06aso44256285e9.0
-        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 11:18:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769368738; x=1769973538; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CL3p6PaKPijKcvqNpPtX3cZg2GLs3mUV1zMahLx71cQ=;
-        b=izcuCUGiQAJz2XK4odWaUJXfgsTO13CtuBo9icBgL2Q0RiZu3QAep9R54qWsj78Hn9
-         sQM6MFgthys2kuOrAW2hroIJX2rPa7I7gdLkEWbRPiRXzCSpPLGZPmvl25WvvzExCd/d
-         y6U44NhMuKT2e/pYyXWd9mSm4DSfgYTYPbtz8qCVKi9QxKWUrqt32/EYHQQ1yvpDOUzz
-         GVuVby505qLj1g6wg0gUr1cxtlQZ2aeh5PE+0zHVw23QGpbbzJa8HkBSWpNI70woeA7Y
-         qn2/9+LSHUGmWpd6GHqy+aUdtr4mFuKKeZg5bJyzjN7yh8MB6Dap24F1kPvZKEkcxX7F
-         cSbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769368738; x=1769973538;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CL3p6PaKPijKcvqNpPtX3cZg2GLs3mUV1zMahLx71cQ=;
-        b=V4HW3HS/8sJp+XDfeBMef5JaPLLYXYcaZhRn/otSCWHUVRbRY+7JWGL+BxI1vEpT3k
-         zL4j1b/06hj4vSyxjVgCY+loS+jX4zp1aADNLgf37LoZl0bSg0aecdaNhd8hKcxLOyLM
-         l2+M5ipwEbZyV1lL4gVL0HJ7/TKC/vHcsDgmWfu0s8ult7282IQdXYCYOKKGJOwa7u6O
-         I2/Cjb0lN9h1pbVRNP3PCUU4JvJ9jDWLRq5LkP9YMEF3JzveDrcjsWCKbMyRlyPnNlkp
-         PjiFu4tHpEGNZtmMF8S2vwubvqFrprojRkYogQUycGKosv6X35XhxEfTvi3JC+W8DoHW
-         H9jA==
-X-Forwarded-Encrypted: i=1; AJvYcCVOGNG4UHl7PyKK5YSPu1Us2qVsxihcLEggC3dNhNjpD7n1Yk//Slla2qD+mk0UV76DFCmQ6LY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNzWXd1teA+EuSZSAdSs0jNqkopfPBm8I5ShPGRA0Q44o5y3JF
-	OIbkAmpO1RDj8zckWpQIOi8LTIZ9ti5SCQ0JlwUMhI268Tn1VHKzYket
-X-Gm-Gg: AZuq6aJ7pNGozH6HFqsvT0COLowe+zvBcofA7nRirYq11YqD2WszU1MeOYCDD4mFCUp
-	ZxRaJd3ddFHDeA687xg70sMMRaAs5b2aIINQxCX2i48vqB4r34eD+QC8qSLe1WZJ2gdYjezWSH4
-	2jzDdXApZx8+1oszyVU5+Hevpp3+SOjNBnBIjhHL5c+U7P3zCiAHYre9XDtVmTIkviIfWazADgD
-	abtz0bPAHvuVrGlH00pToOUQkXaebPFumjiEHFO9NEOqbvhjgAVgYdlugNxizhaTL0x0xDLgQbO
-	LoAbjY0XyBtUz/b8A6+nplz1f28VNNcUXi1IFsqrkoQ0KROhPv6+V2+zI5fhNi0QUTguXUHnJ8f
-	+XG+rdyY31o0eon4iF78YgXAy5toJp/hIINTyl0aB6B3IsDU7FRCnRqpOFzAGjS5iJxKttQUnW2
-	jDds1rm7U=
-X-Received: by 2002:a05:600c:6818:b0:47e:e48b:506d with SMTP id 5b1f17b1804b1-4805ce5068amr44282105e9.16.1769368737480;
-        Sun, 25 Jan 2026 11:18:57 -0800 (PST)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4804d3ae17esm86692895e9.0.2026.01.25.11.18.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 25 Jan 2026 11:18:56 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: brauner@kernel.org
-Cc: amir73il@gmail.com,
-	jack@suse.cz,
-	jlayton@kernel.org,
-	josef@toxicpanda.com,
-	lennart@poettering.net,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org,
-	viro@zeniv.linux.org.uk,
-	zbyszek@in.waw.pl
-Subject: Re: [PATCH v2 0/4] fs: add immutable rootfs
-Date: Sun, 25 Jan 2026 22:18:49 +0300
-Message-ID: <20260125191849.1944886-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260112-work-immutable-rootfs-v2-0-88dd1c34a204@kernel.org>
-References: <20260112-work-immutable-rootfs-v2-0-88dd1c34a204@kernel.org>
+	s=arc-20240116; t=1769373123; c=relaxed/simple;
+	bh=YnMx0eEYzQGzmrr6b2k8FMoqXxVVo5+fLM7T8WRpSFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mRDn7U5l1ythr2jkr8q8xdckjaYdiluU+apc3ec86X1y+Mu473yzQvCWYW5D4EJGBFYbUO1XvFE+sv5e/fv0Ghctpts7TWq1AGX16aIkTaKscLVU+koqAIg8lku3ifE18TvqCXG9U5IZIVsvw9dJZvY7LtJbfkStbL8cAaxlPUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vk6lp-0006Cb-PX; Sun, 25 Jan 2026 21:31:41 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vk6lo-002T5n-0Y;
+	Sun, 25 Jan 2026 21:31:39 +0100
+Received: from pengutronix.de (unknown [IPv6:2a01:4f8:1c1c:29e9:22:41ff:fe00:1400])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id E9B934D7CFD;
+	Sun, 25 Jan 2026 20:31:38 +0000 (UTC)
+Date: Sun, 25 Jan 2026 21:31:38 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Cc: mailhol@kernel.org, alexandre.belloni@bootlin.com, 
+	nicolas.ferre@microchip.com, claudiu.beznea@tuxon.dev, linux-can@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] can: at91_can: fix an error handle in at91_can_probe()
+Message-ID: <20260125-towering-faithful-axolotl-bebe3e-mkl@pengutronix.de>
+References: <20260125120947.1997682-1-lihaoxiang@isrc.iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ohny4f6pmfsa4ffv"
+Content-Disposition: inline
+In-Reply-To: <20260125120947.1997682-1-lihaoxiang@isrc.iscas.ac.cn>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-2.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211494-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,suse.cz,kernel.org,toxicpanda.com,poettering.net,vger.kernel.org,zeniv.linux.org.uk,in.waw.pl];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[safinaskar@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	TAGGED_FROM(0.00)[bounces-211495-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1FA55820E1
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 02C3582635
 X-Rspamd-Action: no action
 
-Christian Brauner <brauner@kernel.org>:
-> Currently pivot_root() doesn't work on the real rootfs because it
-> cannot be unmounted. Userspace has to do a recursive removal of the
-> initramfs contents manually before continuing the boot.
-> 
-> Really all we want from the real rootfs is to serve as the parent mount
 
-Note: this *is* possible to get access to nullfs.
+--ohny4f6pmfsa4ffv
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] can: at91_can: fix an error handle in at91_can_probe()
+MIME-Version: 1.0
 
-In the end of this email you will find code, which proves this. I tested it
-on current vfs.all. The program will print "done", and this will prove my
-statement.
+On 25.01.2026 20:09:47, Haoxiang Li wrote:
+> In at91_can_probe(), if devm_phy_optional_get() fails,
+> the memory allocated by alloc_candev() should be freed.
+> Modify the goto label to do so.
+>
+> Fixes: 3ecc09856afb ("can: at91_can: add CAN transceiver support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-I think this is not a bug. I just want to make sure you are aware of this.
+A similar patch has just been reported, see:
+https://lore.kernel.org/all/20260122114128.643752-1-zilin@seu.edu.cn/
 
-=====
+Thanks,
+Marc
 
-#define GNU_SOURCE
-#define _GNU_SOURCE
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-#include <fcntl.h>
-#include <sys/mount.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <errno.h>
-#include <sys/stat.h>
-#include <sched.h>
-#include <sys/wait.h>
+--ohny4f6pmfsa4ffv
+Content-Type: application/pgp-signature; name="signature.asc"
 
-#define OPEN_TREE_NAMESPACE	(1 << 1)	/* Clone the target tree into a new mount namespace */
+-----BEGIN PGP SIGNATURE-----
 
-/* Get information about namespace. */
-#define NS_MNT_GET_INFO _IOR(0xb7, 10, struct mnt_ns_info)
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAml2facACgkQDHRl3/mQ
+kZzVUQf/dMddQDTEMqCsbECHSaI7kMuAp/4m0wV+bzXVjfpY2wkIa7+toivtGCfz
+MH2conhtvSsTpgIZVj3sxuWg4jYn65mz+XQBWD/Gi4ki8FvJzOy06/MhHt5SSV3P
+uRc2/0WGHLZAqBjEPuSMF37e3gfCyoqPvIiIMRFkrZoSXG9ZkU+q7iGfveKW5XMd
+jETr3IHlMkv25Iz+IaVUMQg1j/rbQNIjcqEMkdPeX8IDjbdlf7YDoI5qQ1FN2ga1
+QDcJK2Cm8U3SCi25uYLv4hd9KeN1AybRaab95LV53DbF3bUAlq0CD2gq+/YQRC88
+tyjY52ayT/hAnKLrDDpZqyzzZBpULQ==
+=I6yb
+-----END PGP SIGNATURE-----
 
-struct mnt_ns_info {
-	__u32 size;
-	__u32 nr_mounts;
-	__u64 mnt_ns_id;
-};
-
-int
-main (void)
-{
-    mkdir ("/foo", 0777);
-    if (mount ("tmpfsfoo", "/foo", "tmpfs", 0, NULL) == -1)
-        {
-            fprintf (stderr, "mount\n");
-            return 1;
-        }
-    int ns = open_tree (-EBADFD, "/foo", OPEN_TREE_NAMESPACE);
-    if (ns == -1)
-        {
-            fprintf (stderr, "open_tree failed\n");
-            return 1;
-        }
-    if (fork () == 0)
-        {
-            if (setns (ns, CLONE_NEWNS) == -1)
-                {
-                    abort ();
-                }
-            if (umount2 ("/", MNT_DETACH) == -1) // This umount2 will succeed
-                {
-                    abort ();
-                }
-            _exit (0);
-        }
-    {
-        int status;
-        if (wait (&status) == -1)
-            {
-                abort ();
-            }
-        if (status != 0)
-            {
-                abort ();
-            }
-    }
-    if (fork () == 0)
-        {
-            if (setns (ns, CLONE_NEWNS) == -1)
-                {
-                    abort ();
-                }
-            if (umount2 ("/", MNT_DETACH) == 0) // This umount2 will fail, because we got to nullfs
-                {
-                    abort ();
-                }
-            _exit (0);
-        }
-    {
-        int status;
-        if (wait (&status) == -1)
-            {
-                abort ();
-            }
-        if (status != 0)
-            {
-                abort ();
-            }
-    }
-    printf ("done\n");
-    return 0;
-}
-
--- 
-Askar Safin
+--ohny4f6pmfsa4ffv--
 
