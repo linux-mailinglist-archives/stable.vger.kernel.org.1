@@ -1,100 +1,98 @@
-Return-Path: <stable+bounces-211493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LffC1VQdmk4PQEAu9opvQ
-	(envelope-from <stable+bounces-211493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 18:18:13 +0100
+	id Xp92MqxsdmmmQgEAu9opvQ
+	(envelope-from <stable+bounces-211494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 20:19:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A78081929
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 18:18:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA55820E1
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 20:19:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0053D3001F9D
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 17:18:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 358B83006387
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 19:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327BD23E340;
-	Sun, 25 Jan 2026 17:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248182F361F;
+	Sun, 25 Jan 2026 19:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RZzVFnCD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="izcuCUGi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12EA2206AC
-	for <stable@vger.kernel.org>; Sun, 25 Jan 2026 17:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFC2255F5E
+	for <stable@vger.kernel.org>; Sun, 25 Jan 2026 19:18:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769361485; cv=none; b=iRL/kcuxJU9dVKiJTS1aL9bl0d90XL9LXyO99DYDfAK9hMRFUskfZAQA66xbIsiHAwIgdXY/KGzWObJdjf28s2l2dDcf/XNB6U7C3YFX8C9i2r1cP57VRyQpkndcPAfXBesZVNERPCeeGHOoXvZoiw4W7+67Nmc7iz5U7g0K9d0=
+	t=1769368740; cv=none; b=mg0FrEp85coxlGYYqJIS0a1weuyFIkx+vIzAHx7m82CJGWX/2DQFdEnLr9yQMhgLHX19LoLuh24fL574mFLHqzoAJTRwYpHV/p7Lss7d28+gsxblo1OAHN9FvCIfYGdY8La+4cAIi4DifVPP3DfBG+x8EpRXC4sEKh86yivyadY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769361485; c=relaxed/simple;
-	bh=SoaC+bTBADZsZ6lBW8YnpUI8AOZA6Bnbyobzs3M9ObI=;
+	s=arc-20240116; t=1769368740; c=relaxed/simple;
+	bh=2fmjkzCKOujvwPwn4NDfyFdwq2yVYXAp4mogONgeCBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AT8jZLj1BeghjvgGwiZqP6gE6oul1vbcAONwnbLm1XPqEKmm1ukFt8UiTd7TBTG/afTaduDL2sQ5LZAHroQzawRbeWMvq1kgwIhaFKQDK/gc1EQjyPN8+kmbC2hD0K5Li6QQMa7iV/rCXVCi+0tR2z4kzWk3DZxOXuNIbBO4C+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RZzVFnCD; arc=none smtp.client-ip=209.85.214.174
+	 MIME-Version; b=bfUYYKduqQz15KLl40ZFS4WorTaOdC16X+e6kDfqXRhzg+r7Nf4Un0tkWiMQrb4iNfK4g7e4OeJ49zI3RzCQ84ESsPmnUu2/gMRDu+GPYsUQs1yTpH5I2dFjQ8bLQq0ljQ568TrFOTN18PjFi9aLzDHITHxhKZfwm6Z98wH5E3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=izcuCUGi; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a2ea96930cso23430115ad.2
-        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 09:18:03 -0800 (PST)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-47ee301a06aso44256285e9.0
+        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 11:18:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769361483; x=1769966283; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769368738; x=1769973538; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=l9H4UePuprwIqygwTYXIxu8X5uuYTZS1QdaUvyOfOkw=;
-        b=RZzVFnCDOydk6G/N+EnSGCb0lhH/ldFiFgLgYCZFSN42B0rZKqsKOCGbTEkxPrx98r
-         WoCCwYRavF/HYnQ+/qWzhQ5L1KyeqHhHmCGm6EPA0RvbYH7G5oF5pkFN8Es1rJ5JZyxA
-         1nluzrj+yfZr2inGwLY0gmVaGoJuftFt0mI8Ngqen20pDQQT6uchQwRd3ZRt1rhUoi5K
-         u8DRUQ0XBF4c7+sc/p/d0T8GFzN51m4Kf9uBzf28yAibDaAuhtyVpaNBFMY+ycUA2RTn
-         A6E/kDSO9yTvbTklIMmENi6Ssr6TW/4aOK0reNL6kYpHG6R9H3kCMiGkr1IX68Ic37bs
-         BL7w==
+        bh=CL3p6PaKPijKcvqNpPtX3cZg2GLs3mUV1zMahLx71cQ=;
+        b=izcuCUGiQAJz2XK4odWaUJXfgsTO13CtuBo9icBgL2Q0RiZu3QAep9R54qWsj78Hn9
+         sQM6MFgthys2kuOrAW2hroIJX2rPa7I7gdLkEWbRPiRXzCSpPLGZPmvl25WvvzExCd/d
+         y6U44NhMuKT2e/pYyXWd9mSm4DSfgYTYPbtz8qCVKi9QxKWUrqt32/EYHQQ1yvpDOUzz
+         GVuVby505qLj1g6wg0gUr1cxtlQZ2aeh5PE+0zHVw23QGpbbzJa8HkBSWpNI70woeA7Y
+         qn2/9+LSHUGmWpd6GHqy+aUdtr4mFuKKeZg5bJyzjN7yh8MB6Dap24F1kPvZKEkcxX7F
+         cSbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769361483; x=1769966283;
+        d=1e100.net; s=20230601; t=1769368738; x=1769973538;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=l9H4UePuprwIqygwTYXIxu8X5uuYTZS1QdaUvyOfOkw=;
-        b=UiEIrPG5T3EO4RxH+2Z4tH7GQ6LH/vcLQjAdFDO+H6Sy82jeUasbpMDhVpoDItUfmw
-         vlw6TAke4svGltLzpzZv81qkqXMWjwQzx4sFZ2p6Qk1Z94nOEDbnmbcY2Iv/oQGTnxms
-         tKMZM6wqJ9y7ntvv9w7MSlmGE7MMFowcAnuCH1Mu/KgKNGu0ui5GcKmwv5BE6+86n4mm
-         MVHxQBCxOm5BYXv2k4Mk8npJaBwQ6HJBbEHap30CJH53Cj73BtHkHymIzFfBQhFZuW8o
-         l4U0jmYOyLR/u80G/DP14EU9rLzwzTWQedQAM9nlkApClXjaOyX23izGjVkdJ0wEuI49
-         3Wrg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+O3PBW2iGSBrQSIFouW9WsNa99fZPF7kB1y2fXUEHZJZ2GsnhIsVJfFQpIiuzk/jMH+aUyoY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzFB+NqmC3C/VH42kCYshIPbI2x1XITyCYNUYfwBmCxRIzUFBH
-	HnmE/zmBMi+I/+ki1crPkiZ/Y4b5LjP5CqP5P3YlRtTgEZjZGFYmtqbH
-X-Gm-Gg: AZuq6aKU7EWDS0QMGLl3igAIPufeuaJbgQXUb00lgaTFIgfmT7DwxZPN5aI4gSCO2HM
-	DUM5rcOtTE2MWI5YvzQYkzWpc/vdh7GU7MzTHgCM+pfOHvuLffySO49DCDT8LIqgoQh1wuoJ5D5
-	mX43iUXLCU435RGsdUSE1sgsXcMcEvrz/9DjpPtE5+RH7KvLRa4lxjEh1p72N2RegImMROQe0Ig
-	FhILZoVEu8skjqTzYmr8lmR/TtOqjLCy0Y0iiZrHohbmcbaAEaZwCkToau6wJi8c/XKGcR8AZ+X
-	mdSu0y5y3lGZmhdMjbJdW4bxksTBIoNG6AxqME1iH1vUOnvp/TYLfEFMcV6Mr4ZVe+b6+V2mzgk
-	DkCM6C1Kx7/FxxTEIQ1ri9H+7edcmEXtmu4UreycEy+GrA4wXVM/I7/DAUUyc3leYP54ad4TOzQ
-	xbMJE209mclbUtWIkTQ+cDuEpThC2h/2Yaat9i
-X-Received: by 2002:a17:902:f541:b0:29f:301a:f6cf with SMTP id d9443c01a7336-2a8452f0c27mr22161865ad.35.1769361482880;
-        Sun, 25 Jan 2026 09:18:02 -0800 (PST)
-Received: from saikiran-Yoga-Slim-7-14Q8X9 ([2402:e280:3d17:646:35ca:7619:a2ef:5e6c])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c635a3f2e12sm6924293a12.22.2026.01.25.09.17.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 09:18:02 -0800 (PST)
-From: Saikiran <bjsaikiran@gmail.com>
-To: linux-media@vger.kernel.org
-Cc: linux-arm-msm@vger.kernel.org,
-	rfoss@kernel.org,
-	todor.too@gmail.com,
-	bryan.odonoghue@linaro.org,
-	bod@kernel.org,
-	vladimir.zapolskiy@linaro.org,
-	hansg@kernel.org,
-	sakari.ailus@linux.intel.com,
-	mchehab@kernel.org,
-	Saikiran <bjsaikiran@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] media: i2c: ov02c10: Check for errors in disable_streams
-Date: Sun, 25 Jan 2026 22:47:45 +0530
-Message-ID: <20260125171745.484806-3-bjsaikiran@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260125171745.484806-1-bjsaikiran@gmail.com>
-References: <20260125171745.484806-1-bjsaikiran@gmail.com>
+        bh=CL3p6PaKPijKcvqNpPtX3cZg2GLs3mUV1zMahLx71cQ=;
+        b=V4HW3HS/8sJp+XDfeBMef5JaPLLYXYcaZhRn/otSCWHUVRbRY+7JWGL+BxI1vEpT3k
+         zL4j1b/06hj4vSyxjVgCY+loS+jX4zp1aADNLgf37LoZl0bSg0aecdaNhd8hKcxLOyLM
+         l2+M5ipwEbZyV1lL4gVL0HJ7/TKC/vHcsDgmWfu0s8ult7282IQdXYCYOKKGJOwa7u6O
+         I2/Cjb0lN9h1pbVRNP3PCUU4JvJ9jDWLRq5LkP9YMEF3JzveDrcjsWCKbMyRlyPnNlkp
+         PjiFu4tHpEGNZtmMF8S2vwubvqFrprojRkYogQUycGKosv6X35XhxEfTvi3JC+W8DoHW
+         H9jA==
+X-Forwarded-Encrypted: i=1; AJvYcCVOGNG4UHl7PyKK5YSPu1Us2qVsxihcLEggC3dNhNjpD7n1Yk//Slla2qD+mk0UV76DFCmQ6LY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNzWXd1teA+EuSZSAdSs0jNqkopfPBm8I5ShPGRA0Q44o5y3JF
+	OIbkAmpO1RDj8zckWpQIOi8LTIZ9ti5SCQ0JlwUMhI268Tn1VHKzYket
+X-Gm-Gg: AZuq6aJ7pNGozH6HFqsvT0COLowe+zvBcofA7nRirYq11YqD2WszU1MeOYCDD4mFCUp
+	ZxRaJd3ddFHDeA687xg70sMMRaAs5b2aIINQxCX2i48vqB4r34eD+QC8qSLe1WZJ2gdYjezWSH4
+	2jzDdXApZx8+1oszyVU5+Hevpp3+SOjNBnBIjhHL5c+U7P3zCiAHYre9XDtVmTIkviIfWazADgD
+	abtz0bPAHvuVrGlH00pToOUQkXaebPFumjiEHFO9NEOqbvhjgAVgYdlugNxizhaTL0x0xDLgQbO
+	LoAbjY0XyBtUz/b8A6+nplz1f28VNNcUXi1IFsqrkoQ0KROhPv6+V2+zI5fhNi0QUTguXUHnJ8f
+	+XG+rdyY31o0eon4iF78YgXAy5toJp/hIINTyl0aB6B3IsDU7FRCnRqpOFzAGjS5iJxKttQUnW2
+	jDds1rm7U=
+X-Received: by 2002:a05:600c:6818:b0:47e:e48b:506d with SMTP id 5b1f17b1804b1-4805ce5068amr44282105e9.16.1769368737480;
+        Sun, 25 Jan 2026 11:18:57 -0800 (PST)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4804d3ae17esm86692895e9.0.2026.01.25.11.18.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 25 Jan 2026 11:18:56 -0800 (PST)
+From: Askar Safin <safinaskar@gmail.com>
+To: brauner@kernel.org
+Cc: amir73il@gmail.com,
+	jack@suse.cz,
+	jlayton@kernel.org,
+	josef@toxicpanda.com,
+	lennart@poettering.net,
+	linux-fsdevel@vger.kernel.org,
+	stable@vger.kernel.org,
+	viro@zeniv.linux.org.uk,
+	zbyszek@in.waw.pl
+Subject: Re: [PATCH v2 0/4] fs: add immutable rootfs
+Date: Sun, 25 Jan 2026 22:18:49 +0300
+Message-ID: <20260125191849.1944886-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260112-work-immutable-rootfs-v2-0-88dd1c34a204@kernel.org>
+References: <20260112-work-immutable-rootfs-v2-0-88dd1c34a204@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,80 +102,143 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,linaro.org,linux.intel.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-211493-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211494-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,suse.cz,kernel.org,toxicpanda.com,poettering.net,vger.kernel.org,zeniv.linux.org.uk,in.waw.pl];
 	RCVD_COUNT_FIVE(0.00)[5];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[safinaskar@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1A78081929
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1FA55820E1
 X-Rspamd-Action: no action
 
-The ov02c10_disable_streams() function ignores the return value from
-cci_write() when stopping the sensor. If the I2C write fails (e.g.,
-due to CCI timeout, power management race, or device removal), the
-error is silently lost.
+Christian Brauner <brauner@kernel.org>:
+> Currently pivot_root() doesn't work on the real rootfs because it
+> cannot be unmounted. Userspace has to do a recursive removal of the
+> initramfs contents manually before continuing the boot.
+> 
+> Really all we want from the real rootfs is to serve as the parent mount
 
-While we still need to return 0 and call pm_runtime_put() regardless
-of hardware state (to prevent PM reference leaks and pipeline lock
-issues), we should at least log when the hardware stop fails.
+Note: this *is* possible to get access to nullfs.
 
-This change:
-1. Captures the cci_write() return value
-2. Logs an error if the write fails
-3. Still returns 0 to ensure proper cleanup
+In the end of this email you will find code, which proves this. I tested it
+on current vfs.all. The program will print "done", and this will prove my
+statement.
 
-Returning an error from disable_streams would cause the camss driver's
-video_stop_streaming() to exit early without releasing the pipeline
-lock, permanently locking the camera.
+I think this is not a bug. I just want to make sure you are aware of this.
 
-Fixes: 0e98938b0157 ("media: i2c: add OmniVision OV02C10 sensor driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Saikiran <bjsaikiran@gmail.com>
----
- drivers/media/i2c/ov02c10.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+=====
 
-diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
-index b86cae3d2b74..743d8544ac53 100644
---- a/drivers/media/i2c/ov02c10.c
-+++ b/drivers/media/i2c/ov02c10.c
-@@ -629,8 +629,12 @@ static int ov02c10_disable_streams(struct v4l2_subdev *sd,
- 				   u32 pad, u64 streams_mask)
- {
- 	struct ov02c10 *ov02c10 = to_ov02c10(sd);
-+	int ret;
-+
-+	ret = cci_write(ov02c10->regmap, OV02C10_REG_STREAM_CONTROL, 0, NULL);
-+	if (ret)
-+		dev_err(ov02c10->dev, "failed to stop streaming: %d\n", ret);
- 
--	cci_write(ov02c10->regmap, OV02C10_REG_STREAM_CONTROL, 0, NULL);
- 	pm_runtime_put(ov02c10->dev);
- 
- 	return 0;
+#define GNU_SOURCE
+#define _GNU_SOURCE
+
+#include <fcntl.h>
+#include <sys/mount.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sched.h>
+#include <sys/wait.h>
+
+#define OPEN_TREE_NAMESPACE	(1 << 1)	/* Clone the target tree into a new mount namespace */
+
+/* Get information about namespace. */
+#define NS_MNT_GET_INFO _IOR(0xb7, 10, struct mnt_ns_info)
+
+struct mnt_ns_info {
+	__u32 size;
+	__u32 nr_mounts;
+	__u64 mnt_ns_id;
+};
+
+int
+main (void)
+{
+    mkdir ("/foo", 0777);
+    if (mount ("tmpfsfoo", "/foo", "tmpfs", 0, NULL) == -1)
+        {
+            fprintf (stderr, "mount\n");
+            return 1;
+        }
+    int ns = open_tree (-EBADFD, "/foo", OPEN_TREE_NAMESPACE);
+    if (ns == -1)
+        {
+            fprintf (stderr, "open_tree failed\n");
+            return 1;
+        }
+    if (fork () == 0)
+        {
+            if (setns (ns, CLONE_NEWNS) == -1)
+                {
+                    abort ();
+                }
+            if (umount2 ("/", MNT_DETACH) == -1) // This umount2 will succeed
+                {
+                    abort ();
+                }
+            _exit (0);
+        }
+    {
+        int status;
+        if (wait (&status) == -1)
+            {
+                abort ();
+            }
+        if (status != 0)
+            {
+                abort ();
+            }
+    }
+    if (fork () == 0)
+        {
+            if (setns (ns, CLONE_NEWNS) == -1)
+                {
+                    abort ();
+                }
+            if (umount2 ("/", MNT_DETACH) == 0) // This umount2 will fail, because we got to nullfs
+                {
+                    abort ();
+                }
+            _exit (0);
+        }
+    {
+        int status;
+        if (wait (&status) == -1)
+            {
+                abort ();
+            }
+        if (status != 0)
+            {
+                abort ();
+            }
+    }
+    printf ("done\n");
+    return 0;
+}
+
 -- 
-2.51.0
-
+Askar Safin
 
