@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-211488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211489-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GeiKDvgvdmmjNAEAu9opvQ
-	(envelope-from <stable+bounces-211488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 16:00:08 +0100
+	id EFT7CfsvdmmjNAEAu9opvQ
+	(envelope-from <stable+bounces-211489-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 16:00:11 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82EB581186
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 16:00:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C79CE8118E
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 16:00:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47B803004C6E
-	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 15:00:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9231530056C1
+	for <lists+stable@lfdr.de>; Sun, 25 Jan 2026 15:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA2531B80D;
-	Sun, 25 Jan 2026 15:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5D431B80D;
+	Sun, 25 Jan 2026 15:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TgS5R1GF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UYHXn2LK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0455B1F461D
-	for <stable@vger.kernel.org>; Sun, 25 Jan 2026 15:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CE231AF1E
+	for <stable@vger.kernel.org>; Sun, 25 Jan 2026 15:00:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769353204; cv=none; b=me3OGFlzCoYe5vE5/CVoW5rhGloTdym+kdZ0PMNOFmA5cC4xeR1mSZF/zVmaIru6AYlheNVufYs21XYoDddSOdPzzIasjhA74mIFBFNBkUytx0jwCc2fzkPo98IMBwOBSenGNWcrHNHXsM1V/E6Oh9ucK026N6D3jTrjBf0TrXI=
+	t=1769353206; cv=none; b=t5ojn9Sd+jmHmo10gqmTdG/jwZya1+dxGfBMUzKMDhBUQIk6wBVgJiLYyBCzPUmafbJk65VKg2NLXnLmAWhbyqgbhnWxUEO/Qy+KR0InbXMFDR8cmeIGgm5qRfWQQ8IgU4XBy0Y3t+Fd4Yxh2lLwHJzBpfdn4e0+cA251Vy/YBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769353204; c=relaxed/simple;
-	bh=IIaOkiMl0+0OniP81s+srZPjVFERVFHSDf8B5qCgaXQ=;
+	s=arc-20240116; t=1769353206; c=relaxed/simple;
+	bh=SoaC+bTBADZsZ6lBW8YnpUI8AOZA6Bnbyobzs3M9ObI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/9Jz0o5+9wb/9FOSPDhgNBl3IHyGslWqPMDEKnBS5kwU6nCS+SJCAZEstHIBAEC9Ts1oWXVNcuXwbfvfAss27Af5ikKYGWRI1x+Yp+IQ7OA6OHA9+NSK4LnM9dnkLuI7X6LBin7Csh0aC+OGsbY3MO6M0dW8ARbr5RpJQQb4Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TgS5R1GF; arc=none smtp.client-ip=209.85.210.170
+	 MIME-Version; b=n3XELGBMbh3MtqnZBr+v7d8+UkZahxeY8VBUKKrIpGfzw7ZMgk1JHhXmjFwVGweFhwdRe1vjFghFBNyiFvhz26z0thqQJg0ACyfUDngdB6RAR4XQNGEhdkEqTVcXpm84ddvv9TKj1SFKZyMz3jm+YHVVgql1Hu6/2sr8Uxstiv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UYHXn2LK; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-81e93c5961cso3257487b3a.0
-        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 07:00:02 -0800 (PST)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-81f5381d168so3589538b3a.2
+        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 07:00:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769353202; x=1769958002; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769353204; x=1769958004; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vtPcAa/eA0+6dIk9uSAqy9NJNwcCQhRCZhxbQHlEB6E=;
-        b=TgS5R1GF9OIObnRMDpm2l+XceOGnw0AbII+B6aSIFD+BSXDHNoVMnbHrrsusRcT99V
-         9CyzcP/rPlxAYjGF0K8V2ZQRefujaECSkxIPYF4PouAvVlPuU4ZwpjhPmZqM1UtgWuqZ
-         8Mp6fG0dQoLrAQILErhtY9kzAogvBPYKo3y4jxMZuFPzItlRJ4rr/uk00bNRoiI+DtsW
-         Mc/MVBN0B4pk40YYC4ZwhbBtJEEA/pxZozVQvcYLgzvlRTpLpImmc80KMCcFEfJ9hk0K
-         S5Da49BxtjYnQfo5vBmrbGTIQEEPTz5QfWrSdVdeo/zHPS7cRpokK1FhscVQsVsOwdbN
-         O9eQ==
+        bh=l9H4UePuprwIqygwTYXIxu8X5uuYTZS1QdaUvyOfOkw=;
+        b=UYHXn2LKGrkiyN6q33WaTUYMzWVLWil4FfGGnFcn8Urus+oOyKYeKWF737wkc2+kZe
+         oxlnBGa8fGyqm6Lbslht0creXQpnQR+KVvhI8Flp2ssU6XgkBtwmmiH9NMmu/Rg+26BJ
+         v2v+RtB+X+kz7YsZWBEnqGja0cCREwjyDZTG9bWKQFLsM3t4MzYMFg1M5DydTjQb971P
+         BrT66v8wTBBeQ5+dAe0IwTGwhcyrF+W58xBTCbG3dlTrIIB2IeTo78foI1HGjT4uBbri
+         9ZGMwCpLYQq4mShTH5CsCn/ox4gcOtNqGd/WjfyevtjGkEYVUfaAJksRFBkUIgDnjBYA
+         gUJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769353202; x=1769958002;
+        d=1e100.net; s=20230601; t=1769353204; x=1769958004;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=vtPcAa/eA0+6dIk9uSAqy9NJNwcCQhRCZhxbQHlEB6E=;
-        b=EklrH1BbwJtaeRR1k+OiEGc8c3KNjDoZezQdPp1MtCfwcaIiUFVZVsaPj7MwOgnNvI
-         7wKXKsd9p2mQ24duJ1OnveziaItNvrc5GHNrHlsY7mXl76hkpjecPSh535+Eo6n12kTD
-         HwfI3n85szK1o0qKsB8ZoAx7rjzHSYInmrVgk1kEeYHjFbGrd6aaNLIy26DHbc0MEAm4
-         wOIo/JRwLOf2D5FdX5TRqoa1c3QgnC8VwPnzGkKsf9M0i/GDdbaGn+YCX/zDmH8LuIz5
-         apKEgGtnEbScbdBwekxeKCKQb04/H2u3ZpHzhhAmtMtlsdeXUvEipSemywZfxZlpDmUy
-         Zd3w==
-X-Gm-Message-State: AOJu0YzYdhYnRLyVYEwYP3FQu2B3fxWxLiUHkhYmWE+Mt5DFCR9aOKDv
-	yWvSdZSgRgJvsTv2mI16ZFbRiRSb6tw8K4nDu9smD41unXcm3jbcqquF+rNiKszW
-X-Gm-Gg: AZuq6aJw8MJUtpKz1iVGz5Sr9VAyShfYadD1YPXbAdUTW/hfYn8ufL5iejJx93OXK25
-	FOQBRdNQtKURriqtkoAPhOshGyS/pWZhdrH/1tTN8a18bGakFxlE5Mm+MpKie3Hf1gyl+4htUPK
-	fsWsCs8a4iTc3SjyiNjlflYVQd4974ZqFovp3kwFD26YF//HHHuHLfgQQF9a4g8IEIfIUJCs1Vt
-	s8bbo6hL3qi6/sZHvQbBTNT1P/EDTm7PPdx+dwpWqU5IgM41fDjtjkPP3TeM4J+x8Hm4juT6jQt
-	mDduDeh7gk0D5oDs3d8Y+wKfTJBe7MxVCaFWRP8RHP/qXUM07Y6m3z7I9pjjM8r8D8Yu5e2se6z
-	ZRW+ad010cw+uk3my/oatUcWwp18NFccXWCSsdcW1t88ztxcZgmVKP/U0exobUy0IXddky4dkoP
-	G/n7Uw3dl8Jv4F8cxA3mMEdbY6T9c9w7Tuxjwf
-X-Received: by 2002:a05:6a00:7609:b0:823:878:dd40 with SMTP id d2e1a72fcca58-823411b8199mr1595565b3a.4.1769353202266;
-        Sun, 25 Jan 2026 07:00:02 -0800 (PST)
+        bh=l9H4UePuprwIqygwTYXIxu8X5uuYTZS1QdaUvyOfOkw=;
+        b=TuSlwoaHxp7cb84cSjRrSipDJOpdOVtywZ+WLmASFR19n2qDBm7tuq3OPW0fJ3Vc3r
+         VRXh1fzjkB31p5wFynifwphlQHiB8XcnMN47vqjAyrlN1JNHh2E1fuqgJGO/dd+xAGga
+         ciyV4+6kwc5/ZjlDOWBNQwxTk5lIdWe2OLI4+letZo3JIgHpToakYiohncsWRJLhGmuZ
+         40r2UsTV+aBVdAO7T+qHUrnbCGjXqNPZJnk3qJzCzcxufbnHk6RpqPv3WFysycjX4EV1
+         HLhU8gAeWtFZM9TKURK2GHoCwnoKeprg474oQp7TEkUpbzoZpcoIcLZWis6R9GEzyWJD
+         SEyg==
+X-Gm-Message-State: AOJu0YwBJivdlz4n6lcHt/xZsU65wz1ZBlZmf/uAQgOzYCOafAUM345v
+	aSHoNIP8OofEZPG2TEfE4xaMWbOy1ZbM61YsDl1JXHYJjwHWiBo9NrOmvO3gAm0D
+X-Gm-Gg: AZuq6aKmHdNIL5P9jSJBvLwlt/MJ91P65mYwPr+yfkITLv5/VWs7XSIdUhpHT3rQgBp
+	kpFSVPRzMuQ4dwSwfRtoADPTVYbSUbbHpbzub8JrJhjSyaQe7Jb1iqq5J/L4f+ogiwmehhWqn8q
+	MhJqMXk5egDSmjLvJU0tnXhvOKTAnNna2miM27Lhzj4317vSzTmRIxRR9CZxihMn2kjEb9DtLfM
+	hzvuivkGkjd2hF0DTlXqpP17dlSHok4AEDZHeDv0Z23BHEQNp/8wIJhHrfExBQzSffWFHt5NI45
+	Px2n2K9iHFAM3gvKvvjsDcnLb5IFJeeNzOhj6teZqPHTluI+rNAByw1yLiAbzY2p7519hpmC5hg
+	3InQTQdzwb/rFkG0xTx6f8r3+Vko/kqkPJ7pcIveNiM7wF+EoxXqlhtUs9gPqKaKlN15IBoNyx6
+	CZ0sX0DDmSr3fvazNHykH0AQF3rk2P1isbB9fRyidEpqhTqrc=
+X-Received: by 2002:a05:6a00:3012:b0:81e:af19:34bc with SMTP id d2e1a72fcca58-8234129f502mr1472202b3a.36.1769353203933;
+        Sun, 25 Jan 2026 07:00:03 -0800 (PST)
 Received: from saikiran-Yoga-Slim-7-14Q8X9 ([2402:e280:3d17:646:9eef:365d:4ce8:fead])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8231871dd7bsm7053317b3a.39.2026.01.25.07.00.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8231871dd7bsm7053317b3a.39.2026.01.25.07.00.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 07:00:01 -0800 (PST)
+        Sun, 25 Jan 2026 07:00:03 -0800 (PST)
 From: Saikiran <bjsaikiran@gmail.com>
 To: bjsaikiran@gmail.com
 Cc: stable@vger.kernel.org
-Subject: [PATCH] media: qcom: camss: Fix pipeline lock leak in stop_streaming
-Date: Sun, 25 Jan 2026 20:29:54 +0530
-Message-ID: <20260125145955.54069-2-bjsaikiran@gmail.com>
+Subject: [PATCH] media: i2c: ov02c10: Check for errors in disable_streams
+Date: Sun, 25 Jan 2026 20:29:55 +0530
+Message-ID: <20260125145955.54069-3-bjsaikiran@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260125145955.54069-1-bjsaikiran@gmail.com>
 References: <20260125145955.54069-1-bjsaikiran@gmail.com>
@@ -104,7 +104,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-211488-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211489-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
 	RCPT_COUNT_TWO(0.00)[2];
@@ -120,48 +120,52 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 82EB581186
+X-Rspamd-Queue-Id: C79CE8118E
 X-Rspamd-Action: no action
 
-When a browser or application closes the camera, if any subdevice fails
-to stop streaming, video_stop_streaming() returns early without calling
-video_device_pipeline_stop(). This leaves the pipeline permanently locked,
-preventing any future camera access until reboot.
+The ov02c10_disable_streams() function ignores the return value from
+cci_write() when stopping the sensor. If the I2C write fails (e.g.,
+due to CCI timeout, power management race, or device removal), the
+error is silently lost.
 
-Fix this by logging errors but continuing to stop all remaining subdevices
-and always releasing the pipeline lock, even when errors occur during the
-stop sequence.
+While we still need to return 0 and call pm_runtime_put() regardless
+of hardware state (to prevent PM reference leaks and pipeline lock
+issues), we should at least log when the hardware stop fails.
 
-Fixes: 89013969e232 ("media: camss: sm8250: Pipeline starting and stopping for multiple virtual channels")
+This change:
+1. Captures the cci_write() return value
+2. Logs an error if the write fails
+3. Still returns 0 to ensure proper cleanup
+
+Returning an error from disable_streams would cause the camss driver's
+video_stop_streaming() to exit early without releasing the pipeline
+lock, permanently locking the camera.
+
+Fixes: 0e98938b0157 ("media: i2c: add OmniVision OV02C10 sensor driver")
 Cc: stable@vger.kernel.org
-Tested-on: Lenovo Yoga Slim 7x (Snapdragon X Elite, ov02c10 camera)
 Signed-off-by: Saikiran <bjsaikiran@gmail.com>
 ---
- drivers/media/platform/qcom/camss/camss-video.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/i2c/ov02c10.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-video.c b/drivers/media/platform/qcom/camss/camss-video.c
-index 831486e14754..242c44f97801 100644
---- a/drivers/media/platform/qcom/camss/camss-video.c
-+++ b/drivers/media/platform/qcom/camss/camss-video.c
-@@ -312,9 +312,15 @@ static void video_stop_streaming(struct vb2_queue *q)
+diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
+index b86cae3d2b74..743d8544ac53 100644
+--- a/drivers/media/i2c/ov02c10.c
++++ b/drivers/media/i2c/ov02c10.c
+@@ -629,8 +629,12 @@ static int ov02c10_disable_streams(struct v4l2_subdev *sd,
+ 				   u32 pad, u64 streams_mask)
+ {
+ 	struct ov02c10 *ov02c10 = to_ov02c10(sd);
++	int ret;
++
++	ret = cci_write(ov02c10->regmap, OV02C10_REG_STREAM_CONTROL, 0, NULL);
++	if (ret)
++		dev_err(ov02c10->dev, "failed to stop streaming: %d\n", ret);
  
- 		ret = v4l2_subdev_call(subdev, video, s_stream, 0);
+-	cci_write(ov02c10->regmap, OV02C10_REG_STREAM_CONTROL, 0, NULL);
+ 	pm_runtime_put(ov02c10->dev);
  
-+		/*
-+		 * Don't return early on error - we must continue to stop
-+		 * remaining subdevices and release the pipeline lock to
-+		 * prevent the camera from being permanently locked.
-+		 */
- 		if (ret) {
--			dev_err(video->camss->dev, "Video pipeline stop failed: %d\n", ret);
--			return;
-+			dev_err(video->camss->dev,
-+				"Failed to stop subdev '%s': %d\n",
-+				subdev->name, ret);
- 		}
- 	}
- 
+ 	return 0;
 -- 
 2.51.0
 
