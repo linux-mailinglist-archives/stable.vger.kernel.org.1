@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-211505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Hq/CgXSdmmyXAEAu9opvQ
-	(envelope-from <stable+bounces-211505-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 03:31:33 +0100
+	id UB0NOh7SdmmyXAEAu9opvQ
+	(envelope-from <stable+bounces-211506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 03:31:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B081383871
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 03:31:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4A483886
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 03:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6677D3009568
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 02:31:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5048F301549F
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 02:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E752D2989B5;
-	Mon, 26 Jan 2026 02:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8772C234A;
+	Mon, 26 Jan 2026 02:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PAHZ408s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a5sQpun3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F45A1E1C02
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 02:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093C7299937
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 02:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769394668; cv=none; b=DtXYBNncgAdY9fiK+ijCOckIE6WrVrD5JGHqvcIV47S5AncNkPjOBwQ+rXAKuF1OpXzSV3RcRTXmDrKe6IDwNqu90XAuYvStjxa8YsY+v9SCWyMoSiMKcYegFfJqQRrnr8UfU2c6bHbP+xS4ioOUhRWBIQ2VFUaN3y5VMqbPbuQ=
+	t=1769394670; cv=none; b=kxsJp8hW6s2lTLgOa+wFLA5To5gNRVZSG5vxenACiCIp0AXDoshvH7vOH6Ic7BT0hAcaDKopNJlHD1De6a2ekG5S9PKsWCerozAqtyUpvcfx2nRK5ZqgzGYPUcFjq6vhKDLfim4Wa9/s4TdVQ2aOAS5CRLOm+Z5e3RN98BBjgzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769394668; c=relaxed/simple;
-	bh=2r3QgcjH7GZMruE67ZsjvUp6p/exK5sB1NKVz9e2BfM=;
+	s=arc-20240116; t=1769394670; c=relaxed/simple;
+	bh=xreigetpjHdKa6OZ71uh6zOcPjuDFrwATx0og6exOHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SfmDfucZPgnJyHibtS5+MbwHi96aKCNSC17e+FWEeq9nthMysxi0VoMOxe+ZpsyBjug8HKglu4DG5+SXo2DHMATkqmWi788YXL5JSN/yLkHa+Q1+mlb8XTKLHUXjVXzcGDKpgtaSLnkEE7elyHcNQt4rdi+R1BhC/UVHDj5KbE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PAHZ408s; arc=none smtp.client-ip=74.125.82.43
+	 MIME-Version; b=NKhPCp3XVskoAY7c1GBmt2WkwLc25VvG+JGkcIdoqaALuB8StikEYRAfIyInwmLm1nnxZ/bzyR5iV0hAaWWq9gita5xw4Yv3IhnpFwNW+VInkHoj+lLq1sR3J7xuHxfU9DOrG8afTrZp7GnrMpMRv6kkSwie4yKyCsQDiIAyLBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a5sQpun3; arc=none smtp.client-ip=74.125.82.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12331482b8fso1216260c88.1
-        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 18:31:07 -0800 (PST)
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1233c155a42so5551700c88.1
+        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 18:31:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769394666; x=1769999466; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769394668; x=1769999468; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0m877IielwhZYxUtpH2DsnWNPP6T5OXQthZEWEyOygI=;
-        b=PAHZ408sgWRqlfTkQMqroDt+XD+0tL/RZvpJPYvVjIgKYJJ29l/xASZO6X8WVHQ3Aq
-         0lEdfQQdp/ti6HvGzKgLbEFKXGSA1+s35Xw//2Lv9zu5CW1fizPPwzmVtG08GMufBOZA
-         Q8T0mp5xTCpN8THVp7Ej0y+W+WRzq2CXVcUtrqbxj7v5DyAMWcOgjx63fNh7oVfsNlGM
-         Y4+yWkk/jMoxbb0CDLGEAxuEPSlVRp+sJ4gqE3553l4wdESAckyHDuIlab58NVXWRoqg
-         cmYKvsk4sfbklu/760JBvlpU+PWJHgV3cm2d1aVfHyiCBoiMfgfd7Lh3oQMUOfQz3OIE
-         cQhg==
+        bh=7OeqEToDWh87NKXAJBkWa10HlZtuXDj/TYqt7IVavaQ=;
+        b=a5sQpun34domUif7GnfgZYl25NskFflCpMYZekv2FE2b3UNFQ4ca3mDL5YQP2bydJn
+         kLFIsU5x7RKY0qNA7WxGTaZTfCmihrhBOdW2uAVR4ZlHZfMrZDqhDi5gRZ0EOjw7N9Ub
+         kKD4UbMTvpzdVMFMlWwVD7zAbxnCjQrhSAAVQKjJPyPAHxtqTTjaNgUWaAOzYAUBd6p0
+         h2VgjQbGGjmZgjYh4zKp1zbohqaB32CrsMMJC0MT6E3ebMiMybed73hcnyshhvFdsHeB
+         vuHk7m9RFow6+pWpimROCROmWP9k7Jw/Rfhb4SEHmx1g691eb3P7Wi26tRBoVmrmpkS/
+         DpXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769394666; x=1769999466;
+        d=1e100.net; s=20230601; t=1769394668; x=1769999468;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=0m877IielwhZYxUtpH2DsnWNPP6T5OXQthZEWEyOygI=;
-        b=wJRwTe95X1vPKtS19uaciEWYZxpDLH6Q6exMaOx8TYlX4Uskte/f7enY1yBuBH/yDw
-         yBGRFtOR8NrxZvW90NHuPZExE4V3aNJQFJiwzVPg6zL0RmZ6uUPkhEkhugH0DhUu/NAE
-         +ltsw5c+NhSdvIZDNu/A+Hq0WFXJl7eNEmpFbBismNbFE8VTZ1pKi62e6Yc+/jf6kUEX
-         vz+jdlOg68ySOmuP1bTzs5x9Z83Ld7ylDkCtNfKMQW022ZTzN+HngjtI5fehv45xnP8+
-         ZZxgkhPz3Dwo9U87sg8SN0d1THGBAuGgomYlwpH0XE+4z4iPjzLA5s6+ojv1ZOyNzOEu
-         0mgg==
-X-Forwarded-Encrypted: i=1; AJvYcCVKrzyfxzekEvsNFniekC4/e/kBJISTVyjCH455zqub5Z6MMnBr0LmBa61Fn9Fj3RfJ10iP8X0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwisByJCIqSuFC/HXu6xfX842UUzorpWy5xyPbKXJaFxivynOV9
-	JwIs7tHeejn8IUQZDB12uSW8djgP1RjfOUg6ufnCQh6fdleHAc9gyxn7
-X-Gm-Gg: AZuq6aIMl9WyaWR4OoKQXntme8hkMuJqjVPwYkA8MXU9l5gIZrIdk80sWSK4kIuGFY1
-	FE3WYgqQBCb3xi4Qd3wWT+I9PEdDEEzMyy3mx7gwppdXklnLP8Nc9xMivO1cnEv+VusgR1cH9A9
-	g5DUWX3SFNe5L1ECogTyJMPv4FN0subOiMfDfKJ3ttxApnmtspc9J9rBINMSmN/qHws+X8WEt0M
-	Xu/2bpcZAvqdQkomezTp8wmDCHBQ/VXz3zwKQC+Ga6v8+Fn3oU3xM0BNAHkoSwc5USveEBs9/WI
-	MuHVB7bOTZjRks0sDhEAbwCqrSbDv6cgJs/zFXKmn8ufV0AJtmN1b2NF/enkozRRUic9u9jRajU
-	c2agzz0lvINtLlHtd+Mt7ITnFX017OzWFnbSSYa5gfLElorOBhwhNddMHQ7cKMxRyMphGPNoH9a
-	oP3hj6uiCRaEyDvXxGzgr1ecoyinIUlyJG34hAmrsOzaAYavKYxHIk
-X-Received: by 2002:a05:7022:6183:b0:123:3356:7abb with SMTP id a92af1059eb24-1248ec87252mr1826327c88.46.1769394666463;
-        Sun, 25 Jan 2026 18:31:06 -0800 (PST)
+        bh=7OeqEToDWh87NKXAJBkWa10HlZtuXDj/TYqt7IVavaQ=;
+        b=hOCrtWNC3XzMWrrJvU3s/02V4YVe6VlkBRvKktilInEEXtQWdHRU5KMjgxgNLNbpBj
+         dD6lSaIc4bdTX65Y1qpoGbVA0GwNjKBehuo0kAr5IvtOMoPKPtlUAhKEWt2Po9nM/T9U
+         U9uxaSUOE/Hyr7336d60/nLPlNhIbvyzN4febgHQ9EfzMW9tspdHAnoDSr+r2USuclBl
+         c7ErM4iCKW/z9nmu8C17Gsi9+rjqtKIf1DQffy8ouB55YvULCrIOh8lqVLgxFK89C4Us
+         4KSvtin+ld0ClYZsId9sd6v7l1b7zD6b4wUfWibDUFXYbyflFgGo9c/NyVTYNwPN9/+X
+         0oMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXwwjWSX9d2Kq6q4BIqi1cifqgRw/Wh4BBmfws6mxkIkIUICXpm6477fQuWjaQfTF7HF8WgKSk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypSuE+zVAPPuFSlPqT+sZlm8ccMe85MNEWdrZbPEevT69mkQNE
+	48HGF9R/x/d4KgcTGzdg5Kw8GPpBy8lCWQfON71JK7WEDvsEZx8xHn0Z
+X-Gm-Gg: AZuq6aIu9iN1OWjaZr4omPk4UXfmbS8cSS+r7VyrT5mbQDvgzPzPtQq/VCCKKV17m7d
+	qKFt1gyCciebnfQ7ke+zHNqLIShDIetKxoeRotxhGJraJ5XRB9V4LUT2hz/mTtj7HP8m0uQKy4Z
+	r89ZaS7tZM668pwFSzUrT5Cqr8Z4lGABiSLgd2qxIiFtAoQMC4LrRxWWmM79DdfaiSLk33wECXj
+	syvnzrxJYS/ZVBPnB2YdgnP81B4PKiarUCtHhKA2FLKmr2SoB7lc/eKXqlCIaY3Zr/1lJp5W0Vl
+	C4O8PJGvwMxe5afrz1wNCHwDOJQrokdWDBPryIErKdCeFstVa97kgN2jytPNCGeB0Fr3C8eTOUn
+	94BT5BO9kqc6ZAhhxgIFI1jTtBNK0hgWefkEBBSrdmSTKHO0NEVl6ZaE6oroEI2JYaxxjBYgViL
+	p0rbRBeufxJEVvawumaTdohmJJtwaoZ2E84MznXsgkJczl4sZvCTIt
+X-Received: by 2002:a05:7022:238d:b0:119:e56b:98a1 with SMTP id a92af1059eb24-1248ebe99acmr1414133c88.8.1769394668050;
+        Sun, 25 Jan 2026 18:31:08 -0800 (PST)
 Received: from luna.turtle.lan (static-23-234-93-211.cust.tzulo.com. [23.234.93.211])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247d91c52bsm17212277c88.6.2026.01.25.18.31.04
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247d91c52bsm17212277c88.6.2026.01.25.18.31.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 18:31:06 -0800 (PST)
+        Sun, 25 Jan 2026 18:31:07 -0800 (PST)
 From: Sam Edwards <cfsworks@gmail.com>
 X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
 To: Xiubo Li <xiubli@redhat.com>,
@@ -88,9 +88,9 @@ Cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
 	linux-kernel@vger.kernel.org,
 	Sam Edwards <CFSworks@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 1/4] ceph: do not propagate page array emplacement errors as batch errors
-Date: Sun, 25 Jan 2026 18:30:52 -0800
-Message-ID: <20260126023055.405401-2-CFSworks@gmail.com>
+Subject: [PATCH v3 2/4] ceph: fix write storm on fscrypted files
+Date: Sun, 25 Jan 2026 18:30:53 -0800
+Message-ID: <20260126023055.405401-3-CFSworks@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260126023055.405401-1-CFSworks@gmail.com>
 References: <20260126023055.405401-1-CFSworks@gmail.com>
@@ -107,7 +107,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -117,10 +117,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211505-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211506-lists,stable=lfdr.de];
 	FREEMAIL_TO(0.00)[redhat.com,gmail.com];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[cfsworks@gmail.com,stable@vger.kernel.org];
@@ -132,55 +132,59 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B081383871
+X-Rspamd-Queue-Id: 2E4A483886
 X-Rspamd-Action: no action
 
-When fscrypt is enabled, move_dirty_folio_in_page_array() may fail
-because it needs to allocate bounce buffers to store the encrypted
-versions of each folio. Each folio beyond the first allocates its bounce
-buffer with GFP_NOWAIT. Failures are common (and expected) under this
-allocation mode; they should flush (not abort) the batch.
+CephFS stores file data across multiple RADOS objects. An object is the
+atomic unit of storage, so the writeback code must clean only folios
+that belong to the same object with each OSD request.
 
-However, ceph_process_folio_batch() uses the same `rc` variable for its
-own return code and for capturing the return codes of its routine calls;
-failing to reset `rc` back to 0 results in the error being propagated
-out to the main writeback loop, which cannot actually tolerate any
-errors here: once `ceph_wbc.pages` is allocated, it must be passed to
-ceph_submit_write() to be freed. If it survives until the next iteration
-(e.g. due to the goto being followed), ceph_allocate_page_array()'s
-BUG_ON() will oops the worker.
+CephFS also supports RAID0-style striping of file contents: if enabled,
+each object stores multiple unbroken "stripe units" covering different
+portions of the file; if disabled, a "stripe unit" is simply the whole
+object. The stripe unit is (usually) reported as the inode's block size.
 
-Note that this failure mode is currently masked due to another bug
-(addressed next in this series) that prevents multiple encrypted folios
-from being selected for the same write.
+Though the writeback logic could, in principle, lock all dirty folios
+belonging to the same object, its current design is to lock only a
+single stripe unit at a time. Ever since this code was first written,
+it has determined this size by checking the inode's block size.
+However, the relatively-new fscrypt support needed to reduce the block
+size for encrypted inodes to the crypto block size (see 'fixes' commit),
+which causes an unnecessarily high number of write operations (~1024x as
+many, with 4MiB objects) and correspondingly degraded performance.
 
-For now, just reset `rc` when redirtying the folio to prevent errors in
-move_dirty_folio_in_page_array() from propagating. Note that
-move_dirty_folio_in_page_array() is careful never to return errors on
-the first folio, so there is no need to check for that. After this
-change, ceph_process_folio_batch() no longer returns errors; its only
-remaining failure indicator is `locked_pages == 0`, which the caller
-already handles correctly.
+Fix this (and clarify intent) by using i_layout.stripe_unit directly in
+ceph_define_write_size() so that encrypted inodes are written back with
+the same number of operations as if they were unencrypted.
 
-Fixes: ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method")
+This patch depends on the preceding commit ("ceph: do not propagate page
+array emplacement errors as batch errors") for correctness. While it
+applies cleanly on its own, applying it alone will introduce a
+regression. This dependency is only relevant for kernels where
+ce80b76dd327 ("ceph: introduce ceph_process_folio_batch() method") has
+been applied; stable kernels without that commit are unaffected.
+
+Fixes: 94af0470924c ("ceph: add some fscrypt guardrails")
 Cc: stable@vger.kernel.org
 Signed-off-by: Sam Edwards <CFSworks@gmail.com>
 ---
- fs/ceph/addr.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ceph/addr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 63b75d214210..3462df35d245 100644
+index 3462df35d245..39064893f35b 100644
 --- a/fs/ceph/addr.c
 +++ b/fs/ceph/addr.c
-@@ -1369,6 +1369,7 @@ int ceph_process_folio_batch(struct address_space *mapping,
- 		rc = move_dirty_folio_in_page_array(mapping, wbc, ceph_wbc,
- 				folio);
- 		if (rc) {
-+			rc = 0;
- 			folio_redirty_for_writepage(wbc, folio);
- 			folio_unlock(folio);
- 			break;
+@@ -1000,7 +1000,8 @@ unsigned int ceph_define_write_size(struct address_space *mapping)
+ {
+ 	struct inode *inode = mapping->host;
+ 	struct ceph_fs_client *fsc = ceph_inode_to_fs_client(inode);
+-	unsigned int wsize = i_blocksize(inode);
++	struct ceph_inode_info *ci = ceph_inode(inode);
++	unsigned int wsize = ci->i_layout.stripe_unit;
+ 
+ 	if (fsc->mount_options->wsize < wsize)
+ 		wsize = fsc->mount_options->wsize;
 -- 
 2.52.0
 
