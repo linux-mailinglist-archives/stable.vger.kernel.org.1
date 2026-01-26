@@ -1,62 +1,101 @@
-Return-Path: <stable+bounces-211659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8FpnBzGfd2kCjQEAu9opvQ
-	(envelope-from <stable+bounces-211659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:06:57 +0100
+	id UNLDKFmhd2kCjQEAu9opvQ
+	(envelope-from <stable+bounces-211660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:16:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CF78B46F
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:06:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3F58B5CE
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:16:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1491D307BB04
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:04:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 104D2300B12C
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59A8335547;
-	Mon, 26 Jan 2026 17:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A33C33A9D1;
+	Mon, 26 Jan 2026 17:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eelql6h4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zk0ZESLa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C642BE629
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 17:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B941733C197
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 17:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769447057; cv=none; b=N7YDJY/j7o0OO6ctn26auxHqHpREL7Gvj4HsMkF6o+fdFLV7UYGnUeCsvE3S8FEs9J/5NPJkGthAz0Wq/HjRY19SCVJaMjTT+aTtFNtx7ZdrWCOky4YEpME0qQje+ZPS8UWcpouH0WTuIb8b6g2StPzj1XC6J6rlYwB3VLX9nE0=
+	t=1769447699; cv=none; b=WCbN2cDBtIEdapZTysUEaj0qdQJcn2iYhFoIJdKjJT+L9v7Yf4V67u2sZKfdEW6mZvGgCWYAvQ0HPnPLZcy7Kzx4cfCOiARLIz0fvoa4SNySriGgWkwpxcHfDIsFKraG4i/dvL/ChUfjMod2nw+YqzD9FBzTtFCP3xIO5763MNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769447057; c=relaxed/simple;
-	bh=3dfcwzUctOH1XFj6gRlItQOhOCfMlP+aAnfkXw32S70=;
+	s=arc-20240116; t=1769447699; c=relaxed/simple;
+	bh=m7gtpX6JlLNBi33iHKaUJijwhNaqEtEM+3TbX6tlFCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHtQFmuq/dxN/1EYhul+O011TwLQca/gOJWqD0tYTl2M4gh4RFwp9hGccSvu4HmoWYrnMYIZUyYtQaGYCDbI0NPfnghvhIYs3wUa3dZeoqkfP2YK9rhY66Nu0FXB4rPU2reB4yOhRgkwH3Ahaj83Dyw7/kZqtmjsQsuc2MfEDig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eelql6h4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE016C2BC87;
-	Mon, 26 Jan 2026 17:04:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769447057;
-	bh=3dfcwzUctOH1XFj6gRlItQOhOCfMlP+aAnfkXw32S70=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eelql6h4ZTRh/RZC+KBzsj2h4NQT7Inph6LIs4DyXjUgzOEvHAuF7sy04D2uQV4WJ
-	 JZq7Zx8vJLQavrbFGQW9ZE8gQ/eeDsbjSkXHrimGGwPdSTSC3OSV/N6ZnFzx4hhdk5
-	 ASUzF0Rg8gapa9ZqpXpJv1tGT15iDChs/ThU9E3TUCZPwVwzkp6X0CJXGWCnxcVJ5d
-	 46OGdLooV+BH5q0CrGOQr+KFhFqKZI8gbTrpxNTI6x9IOc4cWlxAVF4PIAdUIYFbDB
-	 5XZQq8bSBuo2PnjnckrdoIoLEcubGKSclovQMlR6e6Ji3K0w5tf37y7B/8P+0L/TBh
-	 P218y+GLmBsgA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Rasmus Villemoes <ravi@prevas.dk>,
-	Peter Rosin <peda@axentia.se>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 3/3] iio: core: add separate lockdep class for info_exist_lock
-Date: Mon, 26 Jan 2026 12:04:13 -0500
-Message-ID: <20260126170413.3418184-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260126170413.3418184-1-sashal@kernel.org>
-References: <2026012655-stipend-xbox-ead1@gregkh>
- <20260126170413.3418184-1-sashal@kernel.org>
+	 MIME-Version; b=bDC8A/yDjwT6xZ3/R8b0v2OdWVQNe+oPlFNeLcjc7r8VIloU3R6C9sTg6wVuYH3IFKdTakzZXMXeSO4cyckRisc/xspczQ/WmlWo/Zdm47+SNhLvMMGBF1TF5adVge2UKuOoKY19WsLQmwBBYaRWjGdk4x+wKFXakq0aOk3D5Zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zk0ZESLa; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47fedb7c68dso48090625e9.2
+        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 09:14:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769447696; x=1770052496; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SHXVzDDBmvnIJ3lzKbW0IxNth1KaCaSoyXj6yfLdil0=;
+        b=Zk0ZESLaWO2nm1K9H7nQYEE7hCZCu0CSw0aqdObwypvMmsOkIy5xxvEiY0LgIGxFnk
+         cgpe5ayLD97dLwvsaVsqIl8Ye3U/S9WYXFPbd259yjVtLAz3nGta7e/kRRDmv370SUVf
+         uBz3yw6I1Z+2QkN1HoFYz4AMCR0SK1QuvDV6Ck1o/62D5k+O8TLbNPBL/VFJlwUAowvo
+         72YURjduAMfBCH1ghNAgELLItizw3BTcPHA3SR5JwBuhZB8pUJL/9C0TrqA5pViIMVuG
+         pZJnBg+wupLmdOXphyI4scH04DNFatLOmFsogGqWE/PKLRz3dmRhMKG68BbXmKjeMNCE
+         YfaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769447696; x=1770052496;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SHXVzDDBmvnIJ3lzKbW0IxNth1KaCaSoyXj6yfLdil0=;
+        b=Vb3por+wTOlrIDTaNHg4sMKvmiTyilgTIHxcNaU7yBMG+cv9c8pnoJSTJfT6taAkAu
+         iyh34jrDWvY901amRaD/SpkzG2r8FfNC7eJ6ls4Uf8/fQoIDhB1/KS7ltTZNhV8d7Hyq
+         6q9QzXqDRypVFlEWZwl3bfLjdBQtSkAfl7HGVY1QS0W4q1Tu7Z6WuyMeopTjuUYgJGDj
+         oF5f3HSGAjPEhghSQS4N+4iE9lSH+Af5zSFpC6rVQWD9s7/sdIYw2THmidKOVajgn/6g
+         9fRUmkBrCR4CzOOEs5O92h0ZB7Ezor4rZ+X3Mv0m0hLktEVjgd7otkNYa1dj9kBa5WyN
+         rSsA==
+X-Forwarded-Encrypted: i=1; AJvYcCX5F8Cj0fyabHVlt+DurvGMTqL6d9rb+XCV+tSwwz9v0GMMjgjUJuP0f6KRCI0rQvMMmlEkMq0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI2cb3t5cLkK6Hj1I8lfdmBEEKWj1S7rWbjzpZH+wQlYVt9Yvt
+	5Z4qOBY5m0Cidyj6UFX3SGNnEsEpRrBFPCgekgb1St5sGKH6ow64pWQ=
+X-Gm-Gg: AZuq6aLn731z2JwHQ3XNUG1QL0W7xTk9miTrYbmiDq6dfFpMy7WbRShwdzrGxEEzb0q
+	iOTFSHpAJDgGn2NFW20KybAGDKVjkO+AJXWNeqMf4lK0h8Sz5MyTgcabP1nQo5bR78I5v92sWMJ
+	e/fZGjWhD09sJaFkvgGaWOdpc7hit9lvXVZXK7bkD6tI9I0N6Nh1VhRW8h3c2FtIyEr2q/08GqE
+	G0Yh7eWu/ZqFSsp/0QLmfMJ53qDQ25f4dSTg5eBik7nH0eLSPLKgkJ+C46QAr5btYObMQ0OtPe0
+	FOTuqtlFtGn20zXlobVuCBDFFBJIXjhz5clDdE3X048THpuSj/Zgf95GJRXk/oJ0U2ErQX8LjRP
+	0JiJXVvhJxD08SJq53/qPkRn3/SkCrHNMTfQpfhE/fmUY3vcDdWYGg7o13Wg/MvkSz2W3nu3gEp
+	NeBur+
+X-Received: by 2002:a05:600c:5395:b0:46e:32dd:1b1a with SMTP id 5b1f17b1804b1-4805cd40961mr78662845e9.7.1769447695886;
+        Mon, 26 Jan 2026 09:14:55 -0800 (PST)
+Received: from localhost ([2a02:169:c21a:1:5aa8:4ea4:a58b:fc48])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066aaf30esm3136815e9.0.2026.01.26.09.14.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Jan 2026 09:14:55 -0800 (PST)
+From: Tomas Hlavacek <tmshlvck@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Yixun Lan <dlan@kernel.org>,
+	Vivian Wang <wangruikang@iscas.ac.cn>,
+	Tomas Hlavacek <tmshlvck@gmail.com>
+Subject: [PATCH net v2] net: spacemit: k1-emac: program frame size registers for jumbo frames
+Date: Mon, 26 Jan 2026 18:14:49 +0100
+Message-ID: <20260126171449.83288-1-tmshlvck@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260126135919.77168-1-tmshlvck@gmail.com>
+References: <20260126135919.77168-1-tmshlvck@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,149 +104,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211659-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[lists.infradead.org,lists.linux.dev,vger.kernel.org,davemloft.net,google.com,kernel.org,redhat.com,lunn.ch,iscas.ac.cn,gmail.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-211660-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[tmshlvck@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iio_dev.info:url,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,prevas.dk:email]
-X-Rspamd-Queue-Id: 74CF78B46F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0F3F58B5CE
 X-Rspamd-Action: no action
 
-From: Rasmus Villemoes <ravi@prevas.dk>
+The driver allows changing MTU up to 4K via emac_change_mtu() and
+allocates appropriately sized DMA buffers, but it never programs the
+MAC_MAXIMUM_FRAME_SIZE and MAC_RECEIVE_JABBER_SIZE registers.
 
-[ Upstream commit 9910159f06590c17df4fbddedaabb4c0201cc4cb ]
+This causes the MAC hardware to reject frames larger than the default
+1518 bytes, even when larger buffers are allocated. Frames exceeding
+the default size trigger jabber errors and are discarded.
 
-When one iio device is a consumer of another, it is possible that
-the ->info_exist_lock of both ends up being taken when reading the
-value of the consumer device.
-
-Since they currently belong to the same lockdep class (being
-initialized in a single location with mutex_init()), that results in a
-lockdep warning
-
-         CPU0
-         ----
-    lock(&iio_dev_opaque->info_exist_lock);
-    lock(&iio_dev_opaque->info_exist_lock);
-
-   *** DEADLOCK ***
-
-   May be due to missing lock nesting notation
-
-  4 locks held by sensors/414:
-   #0: c31fd6dc (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0x44/0x4e4
-   #1: c4f5a1c4 (&of->mutex){+.+.}-{3:3}, at: kernfs_seq_start+0x1c/0xac
-   #2: c2827548 (kn->active#34){.+.+}-{0:0}, at: kernfs_seq_start+0x30/0xac
-   #3: c1dd2b68 (&iio_dev_opaque->info_exist_lock){+.+.}-{3:3}, at: iio_read_channel_processed_scale+0x24/0xd8
-
-  stack backtrace:
-  CPU: 0 UID: 0 PID: 414 Comm: sensors Not tainted 6.17.11 #5 NONE
-  Hardware name: Generic AM33XX (Flattened Device Tree)
-  Call trace:
-   unwind_backtrace from show_stack+0x10/0x14
-   show_stack from dump_stack_lvl+0x44/0x60
-   dump_stack_lvl from print_deadlock_bug+0x2b8/0x334
-   print_deadlock_bug from __lock_acquire+0x13a4/0x2ab0
-   __lock_acquire from lock_acquire+0xd0/0x2c0
-   lock_acquire from __mutex_lock+0xa0/0xe8c
-   __mutex_lock from mutex_lock_nested+0x1c/0x24
-   mutex_lock_nested from iio_read_channel_raw+0x20/0x6c
-   iio_read_channel_raw from rescale_read_raw+0x128/0x1c4
-   rescale_read_raw from iio_channel_read+0xe4/0xf4
-   iio_channel_read from iio_read_channel_processed_scale+0x6c/0xd8
-   iio_read_channel_processed_scale from iio_hwmon_read_val+0x68/0xbc
-   iio_hwmon_read_val from dev_attr_show+0x18/0x48
-   dev_attr_show from sysfs_kf_seq_show+0x80/0x110
-   sysfs_kf_seq_show from seq_read_iter+0xdc/0x4e4
-   seq_read_iter from vfs_read+0x238/0x2e4
-   vfs_read from ksys_read+0x6c/0xec
-   ksys_read from ret_fast_syscall+0x0/0x1c
-
-Just as the mlock_key already has its own lockdep class, add a
-lock_class_key for the info_exist mutex.
-
-Note that this has in theory been a problem since before IIO first
-left staging, but it only occurs when a chain of consumers is in use
-and that is not often done.
-
-Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
-Signed-off-by: Rasmus Villemoes <ravi@prevas.dk>
-Reviewed-by: Peter Rosin <peda@axentia.se>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tomas Hlavacek <tmshlvck@gmail.com>
 ---
- drivers/iio/industrialio-core.c | 4 +++-
- include/linux/iio/iio-opaque.h  | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+v2: Added Fixes tag and Cc stable.
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index f08211730ca20..e7761b7d25a74 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1631,6 +1631,7 @@ static void iio_dev_release(struct device *device)
- 	mutex_destroy(&iio_dev_opaque->info_exist_lock);
- 	mutex_destroy(&iio_dev_opaque->mlock);
+ drivers/net/ethernet/spacemit/k1_emac.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+index 220eb5ce7583..31b1bdb2827e 100644
+--- a/drivers/net/ethernet/spacemit/k1_emac.c
++++ b/drivers/net/ethernet/spacemit/k1_emac.c
+@@ -228,6 +228,12 @@ static void emac_init_hw(struct emac_priv *priv)
+ 		DEFAULT_TX_THRESHOLD);
+ 	emac_wr(priv, MAC_RECEIVE_PACKET_START_THRESHOLD, DEFAULT_RX_THRESHOLD);
  
-+	lockdep_unregister_key(&iio_dev_opaque->info_exist_key);
- 	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
- 
- 	ida_free(&iio_ida, iio_dev_opaque->id);
-@@ -1696,9 +1697,10 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
- 
- 	lockdep_register_key(&iio_dev_opaque->mlock_key);
-+	lockdep_register_key(&iio_dev_opaque->info_exist_key);
- 
- 	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
--	mutex_init(&iio_dev_opaque->info_exist_lock);
-+	mutex_init_with_key(&iio_dev_opaque->info_exist_lock, &iio_dev_opaque->info_exist_key);
- 
- 	return indio_dev;
- }
-diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
-index 5aec3945555bf..0e184cd5d6acc 100644
---- a/include/linux/iio/iio-opaque.h
-+++ b/include/linux/iio/iio-opaque.h
-@@ -14,6 +14,7 @@
-  * @mlock:			lock used to prevent simultaneous device state changes
-  * @mlock_key:			lockdep class for iio_dev lock
-  * @info_exist_lock:		lock to prevent use during removal
-+ * @info_exist_key:		lockdep class for info_exist lock
-  * @trig_readonly:		mark the current trigger immutable
-  * @event_interface:		event chrdevs associated with interrupt lines
-  * @attached_buffers:		array of buffers statically attached by the driver
-@@ -47,6 +48,7 @@ struct iio_dev_opaque {
- 	struct mutex			mlock;
- 	struct lock_class_key		mlock_key;
- 	struct mutex			info_exist_lock;
-+	struct lock_class_key		info_exist_key;
- 	bool				trig_readonly;
- 	struct iio_event_interface	*event_interface;
- 	struct iio_buffer		**attached_buffers;
++	/* Set maximum frame size and jabber size based on configured buffer
++	 * size.
++	 */
++	emac_wr(priv, MAC_MAXIMUM_FRAME_SIZE, priv->dma_buf_sz);
++	emac_wr(priv, MAC_RECEIVE_JABBER_SIZE, priv->dma_buf_sz);
++
+ 	/* Configure flow control (enabled in emac_adjust_link() later) */
+ 	emac_set_mac_addr_reg(priv, fc_dest_addr, MAC_FC_SOURCE_ADDRESS_HIGH);
+ 	emac_wr(priv, MAC_FC_PAUSE_HIGH_THRESHOLD, DEFAULT_FC_FIFO_HIGH);
 -- 
-2.51.0
+2.52.0
 
 
