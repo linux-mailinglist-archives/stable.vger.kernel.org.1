@@ -1,191 +1,209 @@
-Return-Path: <stable+bounces-211675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211676-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OPhGLp+8d2l8kgEAu9opvQ
-	(envelope-from <stable+bounces-211675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:12:31 +0100
+	id WBgHMxy+d2l8kgEAu9opvQ
+	(envelope-from <stable+bounces-211676-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:18:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7B78C688
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:12:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B2B48C7AE
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:18:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 78B5030069B7
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 19:12:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BC79F3006828
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 19:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA1B278E63;
-	Mon, 26 Jan 2026 19:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F0427B34F;
+	Mon, 26 Jan 2026 19:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLf7fObf"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ez+DEnbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FC22773DA
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 19:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2688248B;
+	Mon, 26 Jan 2026 19:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769454745; cv=none; b=V1GCvNixS07QD9yz/pjeUj3KvggpCyaKvO9bLLPwpWs5xGMabI9wlyFE0KPW8m5w6YYr9zvbSp+yEqLXi6WWC8XjvxuvnvCTXRGniuRMnwZdI8f8BYTpt+1AeRRhtFkzQdTBWkJ5w+qqXdzDMRuZWQx/z6Btd+XNbufKxqNNIAU=
+	t=1769455128; cv=none; b=EOuGYIzBa5GmfQ984+tRBxHv6x5bLWUbCqPU5xZyT3nMeuLQPgw7pNn98Rlppz9641f3rz0eQovmFbpV4FVNaMwr3y7GSfXhIq/sVhexfHg/No2bUWQll6/wwm18K9y3YDX2jzqh8TRYUbXxK/B3EyD7KChClKhw8QesFA8DT2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769454745; c=relaxed/simple;
-	bh=e0/vaHaPtz5Vxgpku2Wq/cn0hghrT71mpdAsZ5bsMWI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAzhMFWPw19Xm8CD3+yHAyraY+RkctN1FXchsVkMKhc9et2o9CYNVthoxxtwQMna4+jiOhEvZCcgVkApuP8xwpFiIUpQdo//5TlIU1PMGdXeWE7IwE/kqWQUEWQJn0lwCwghV+Rb+hpDY3wlq/5tsHCrLTRmOPuGQ116j1ZK4SY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLf7fObf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2F6C19422;
-	Mon, 26 Jan 2026 19:12:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769454745;
-	bh=e0/vaHaPtz5Vxgpku2Wq/cn0hghrT71mpdAsZ5bsMWI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hLf7fObfD91Z/HHTwV/NGPlPOAo5GIwkFyMP/luFgImpQff2EauWnY573z5a6Fywy
-	 w+KwfnjSnJbrr2lAqbxP5wMm35qsi07pZjjp+3Pa8DwBri7EOTM7otAu7aYwBiuyk8
-	 dok8VK+ywzfXw78ATaCKCdc+avJoypFdwJlzL2OEVETGi1gO/boGO8lGEIreLFzWje
-	 py9VyyuhVe2T9uvQ2RwNgrM8TxSeIb8laBKn9UKND+PFvJQ/NoocHiOMQ249NVeBSi
-	 XuUUhUdMW9OkAcW6Nype+M8fW+QaMR2DSFXk9MLje9MNhCRmBIrcU9DSvGBb2F1uof
-	 J1ww3O2chsjtA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	"Uschakow, Stanislav" <suschako@amazon.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 2/2] mm/hugetlb: fix two comments related to huge_pmd_unshare()
-Date: Mon, 26 Jan 2026 14:12:21 -0500
-Message-ID: <20260126191221.3643780-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260126191221.3643780-1-sashal@kernel.org>
-References: <2026012615-emblaze-unified-1aeb@gregkh>
- <20260126191221.3643780-1-sashal@kernel.org>
+	s=arc-20240116; t=1769455128; c=relaxed/simple;
+	bh=Q7peF+PxOketRj3Hl/kQj/BSo4SpIydQAYUDzJuBoAM=;
+	h=Date:To:From:Subject:Message-Id; b=CPco7aXWWI//5ctUAvuxQvQBzlZ/LbwRLCMhN0jYUoDEvfS5Y22bcI3q2LCGS64iIoYUmeIla2ZqzrJJCAT3C4ET/R9YOeUORX5yrner8uy1biqYgb6OZ3GGrYc5HRXAe0UCtpVgqT5RCCzaz790wMJ5Ndd/VssDeGXSx7tER3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ez+DEnbm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEFDC116C6;
+	Mon, 26 Jan 2026 19:18:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769455127;
+	bh=Q7peF+PxOketRj3Hl/kQj/BSo4SpIydQAYUDzJuBoAM=;
+	h=Date:To:From:Subject:From;
+	b=Ez+DEnbmbKXMaSnRyQoEKyJkmSfFBvueUECIaWitVpRGgpbFtpNgV2U13g8AYHJIp
+	 4IQ6w5uhb61kYa20EgJADeoG3kKrHbpE1qL6ah4goUp5GknyPhLNwK+bu6i19FYtSh
+	 +UvU4B0UuF9Liv/4jnaaMTpKHlZ3Iz4yMDmj6Dy4=
+Date: Mon, 26 Jan 2026 11:18:46 -0800
+To: mm-commits@vger.kernel.org,vgoyal@redhat.com,stable@vger.kernel.org,dyoung@redhat.com,coxu@redhat.com,bhe@redhat.com,gor@linux.ibm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + crash_dump-fix-dm_crypt-keys-locking-and-ref-leak.patch added to mm-nonmm-unstable branch
+Message-Id: <20260126191847.6CEFDC116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211675-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-211676-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,amazon.de:email,oracle.com:email,huawei.com:email,suse.de:email]
-X-Rspamd-Queue-Id: DA7B78C688
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,smtp.kernel.org:mid]
+X-Rspamd-Queue-Id: 0B2B48C7AE
 X-Rspamd-Action: no action
 
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 
-[ Upstream commit 3937027caecb4f8251e82dd857ba1d749bb5a428 ]
+The patch titled
+     Subject: crash_dump: fix dm_crypt keys locking and ref leak
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     crash_dump-fix-dm_crypt-keys-locking-and-ref-leak.patch
 
-Ever since we stopped using the page count to detect shared PMD page
-tables, these comments are outdated.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/crash_dump-fix-dm_crypt-keys-locking-and-ref-leak.patch
 
-The only reason we have to flush the TLB early is because once we drop the
-i_mmap_rwsem, the previously shared page table could get freed (to then
-get reallocated and used for other purpose).  So we really have to flush
-the TLB before that could happen.
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-So let's simplify the comments a bit.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-The "If we unshared PMDs, the TLB flush was not recorded in mmu_gather."
-part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
-correctly after huge_pmd_unshare") was confusing: sure it is recorded in
-the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do anything.
-So let's drop that comment while at it as well.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-We'll centralize these comments in a single helper as we rework the code
-next.
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-Link: https://lkml.kernel.org/r/20251223214037.580860-3-david@kernel.org
-Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: "Uschakow, Stanislav" <suschako@amazon.de>
+------------------------------------------------------
+From: Vasily Gorbik <gor@linux.ibm.com>
+Subject: crash_dump: fix dm_crypt keys locking and ref leak
+Date: Mon, 26 Jan 2026 12:20:46 +0100
+
+crash_load_dm_crypt_keys() reads dm-crypt volume keys from the user
+keyring.  It uses user_key_payload_locked() without holding key->sem,
+which makes lockdep complain when kexec_file_load() assembles the crash
+image:
+
+  =============================
+  WARNING: suspicious RCU usage
+  -----------------------------
+  ./include/keys/user-type.h:53 suspicious rcu_dereference_protected() usage!
+
+  other info that might help us debug this:
+
+  rcu_scheduler_active = 2, debug_locks = 1
+  no locks held by kexec/4875.
+
+  stack backtrace:
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x5d/0x80
+   lockdep_rcu_suspicious.cold+0x4e/0x96
+   crash_load_dm_crypt_keys+0x314/0x390
+   bzImage64_load+0x116/0x9a0
+   ? __lock_acquire+0x464/0x1ba0
+   __do_sys_kexec_file_load+0x26a/0x4f0
+   do_syscall_64+0xbd/0x430
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+In addition, the key returned by request_key() is never key_put()'d,
+leaking a key reference on each load attempt.
+
+Take key->sem while copying the payload and drop the key reference
+afterwards.
+
+Link: https://lkml.kernel.org/r/patch.git-2d4d76083a5c.your-ad-here.call-01769426386-ext-2560@work.hours
+Fixes: 479e58549b0f ("crash_dump: store dm crypt keys in kdump reserved memory")
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Coiby Xu <coxu@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 4e016433e32e5..6a60af4798bee 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6005,17 +6005,10 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	tlb_end_vma(tlb, vma);
+ kernel/crash_dump_dm_crypt.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
+
+--- a/kernel/crash_dump_dm_crypt.c~crash_dump-fix-dm_crypt-keys-locking-and-ref-leak
++++ a/kernel/crash_dump_dm_crypt.c
+@@ -143,6 +143,7 @@ static int read_key_from_user_keying(str
+ {
+ 	const struct user_key_payload *ukp;
+ 	struct key *key;
++	int ret = 0;
  
- 	/*
--	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
--	 * could defer the flush until now, since by holding i_mmap_rwsem we
--	 * guaranteed that the last reference would not be dropped. But we must
--	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
--	 * dropped and the last reference to the shared PMDs page might be
--	 * dropped as well.
--	 *
--	 * In theory we could defer the freeing of the PMD pages as well, but
--	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
--	 * detect sharing, so we cannot defer the release of the page either.
--	 * Instead, do flush now.
-+	 * There is nothing protecting a previously-shared page table that we
-+	 * unshared through huge_pmd_unshare() from getting freed after we
-+	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-+	 * succeeded, flush the range corresponding to the pud.
- 	 */
- 	if (force_flush)
- 		tlb_flush_mmu_tlbonly(tlb);
-@@ -7226,11 +7219,10 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 		cond_resched();
+ 	kexec_dprintk("Requesting logon key %s", dm_key->key_desc);
+ 	key = request_key(&key_type_logon, dm_key->key_desc, NULL);
+@@ -152,20 +153,28 @@ static int read_key_from_user_keying(str
+ 		return PTR_ERR(key);
  	}
- 	/*
--	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
--	 * may have cleared our pud entry and done put_page on the page table:
--	 * once we release i_mmap_rwsem, another task can do the final put_page
--	 * and that page table be reused and filled with junk.  If we actually
--	 * did unshare a page of pmds, flush the range corresponding to the pud.
-+	 * There is nothing protecting a previously-shared page table that we
-+	 * unshared through huge_pmd_unshare() from getting freed after we
-+	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-+	 * succeeded, flush the range corresponding to the pud.
- 	 */
- 	if (shared_pmd)
- 		flush_hugetlb_tlb_range(vma, range.start, range.end);
--- 
-2.51.0
+ 
++	down_read(&key->sem);
+ 	ukp = user_key_payload_locked(key);
+-	if (!ukp)
+-		return -EKEYREVOKED;
++	if (!ukp) {
++		ret = -EKEYREVOKED;
++		goto out;
++	}
+ 
+ 	if (ukp->datalen > KEY_SIZE_MAX) {
+ 		pr_err("Key size %u exceeds maximum (%u)\n", ukp->datalen, KEY_SIZE_MAX);
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto out;
+ 	}
+ 
+ 	memcpy(dm_key->data, ukp->data, ukp->datalen);
+ 	dm_key->key_size = ukp->datalen;
+ 	kexec_dprintk("Get dm crypt key (size=%u) %s: %8ph\n", dm_key->key_size,
+ 		      dm_key->key_desc, dm_key->data);
+-	return 0;
++
++out:
++	up_read(&key->sem);
++	key_put(key);
++	return ret;
+ }
+ 
+ struct config_key {
+_
+
+Patches currently in -mm which might be from gor@linux.ibm.com are
+
+crash_dump-fix-dm_crypt-keys-locking-and-ref-leak.patch
 
 
