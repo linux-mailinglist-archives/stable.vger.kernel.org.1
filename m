@@ -1,133 +1,136 @@
-Return-Path: <stable+bounces-211642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iG6MNqiNd2m9hgEAu9opvQ
-	(envelope-from <stable+bounces-211642-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:52:08 +0100
+	id qItqAlCOd2m9hgEAu9opvQ
+	(envelope-from <stable+bounces-211643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:54:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A34D8A54B
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:52:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 550F48A5AB
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:54:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D15A13013D40
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:51:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3671A3004072
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BB6340A47;
-	Mon, 26 Jan 2026 15:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDF2340DA5;
+	Mon, 26 Jan 2026 15:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="beL5rRrI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRxBqdFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFF433E35D
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 15:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A4733FE01
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 15:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769442682; cv=none; b=FMYi3Nge3iE2oJ7lNQCttZUxpakFeJWQWmESl2JN/pl+ytiLN8t30bV6hz/4uNmEW0I7Lw/lZgz6hkgDYYI1F71tghwt0s593T3Ul/R3fCVZiHYYG/uwyC6RisGYxiV+QszLPkkfDoN0uQQizIN9rs0PxVvKAXsWiKnzkLocc74=
+	t=1769442886; cv=none; b=ToFm9KVgaWare56XTtOLhHwVsefpGh4fGSMcU0XoRw1UrEFXgyZXKYFxPxA3/U5L5hzlYXjaxXKYzmVWHMbZicmw2T+Gd8NOlYR8V4hc2pS7r4Jezbxsy/gmOUhYcfmAldbSHW3UCxWtY4EnR2U0gVut6gyGkcriMxt1V0f5J/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769442682; c=relaxed/simple;
-	bh=xeFdJ9LLOxMmy0KLBODKsm1h98uHx3SHMFPm5lt2giw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIz6a6sAVHsI3nPd4JGSoy5hDLnHtgixrZc1NVKYZL2OEmiflCT6foDfVMzZQJn9dNIi3sFs+TYNCqS9kkx1vvNDX2gXVBraGSmauk1N9YoHMqWI2kcRRA1qshslnPRluwzuVe8ON1sDYRF3WHsRdVbtKdzGP6MFLqfzAvu8t1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=beL5rRrI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9671C16AAE;
-	Mon, 26 Jan 2026 15:51:21 +0000 (UTC)
+	s=arc-20240116; t=1769442886; c=relaxed/simple;
+	bh=FHmDyE0UYE1xiwDpiZqyMHgZcrm4MmLL5FOpRSRN2rQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uTF39a3hMgUCd16L67U/uYUNxnW2kZjctDAUi+ZTFS0JjOIh5r8bY94ZbJFlk9/Fbc9X4Z/ujsQ23kU9+ujRZGVOTo07Ue+j1g5SuZtqiTU9ykBL+sxf47xD66SYZMx6daNaNPWvE9itDRNzipPAyy+Xdnr/InvKlQ7VR6LpvPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRxBqdFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB35C2BC9E
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 15:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769442682;
-	bh=xeFdJ9LLOxMmy0KLBODKsm1h98uHx3SHMFPm5lt2giw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=beL5rRrISqvdqSOlIXgjQjvBe9gkNacbmjFR4xAtgZ9jjgM9/6EF7WusUEsDlJX5B
-	 k2zUFo8kssaFiNbWURFfQwot/uXQWmWJK9TcvkbFTojWt9dVz1ADtbFhI+JD+l3VuU
-	 aHrOpNWZoAVrCDpoeqA6dH8ok4Sw4RvD9+jEkPx6pVr1PysHdff6Rs2eYnYUl4gcU4
-	 uayMf6YOWIy+NTulUn/D771Ra2OJJfCbiBCokIZfvVYq7OhwCAOxmKrGU/2XByGEiu
-	 NzmnRUPF+TS2NP3n3EJxh9DC3ml0xMqqHBbVm0GSxzBP7ocTwLau3SCSLMp4rMKrlh
-	 jg+JQ8nD8C9+A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Juergen Gross <jgross@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] scsi: xen: scsiback: Fix potential memory leak in scsiback_remove()
-Date: Mon, 26 Jan 2026 10:51:19 -0500
-Message-ID: <20260126155119.3323199-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260126155119.3323199-1-sashal@kernel.org>
-References: <2026012625-perky-unquote-b3a5@gregkh>
- <20260126155119.3323199-1-sashal@kernel.org>
+	s=k20201202; t=1769442886;
+	bh=FHmDyE0UYE1xiwDpiZqyMHgZcrm4MmLL5FOpRSRN2rQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=eRxBqdFpcbGEUKRYAfF7IbW7aZWqq7rHMQuKNXT/KihBElk1pMLgAmmuFPgD+uE/n
+	 aN6udDjwBD90s+NbECn52oUgJnh3Y8MUl2CVm/uHB7icL1nf3KW4VYpkP7SiptGeOM
+	 /r5iy/mC8+CCtPiH2xkU2uUfNTzGoe5G0M4Fbj0UKdF6A0rRhh5USxgyCWrlCKEpv+
+	 pyYg2RZWWyjnMth/lw/62fvvBHr1ByY1blij8ygUkFT7uUwfXHBGMY7FJ6yl1F0JGh
+	 uBShKvA0Y6yK+YxK936Qi7DpuCcRMTWnezaWRoABmNTEz9mPULZhtxGLCTdc1/tDGB
+	 UM7Ws2hKJT4cw==
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-59ddb31ddcaso4909758e87.2
+        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 07:54:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUDdZLkCcMFjLnwLPR6ezN2v0vM6KkqzHyfNqmsSxatVqOcaSZ3/MIZb7sUlPGuBf1VK8doxQU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+oDWMPoabWhP0VhiWqKH4OMD61PEnUXnMWhNU3OKgBd61rg8k
+	Pt6RAxXdtG+lr1Pv+yI81P22r0MJ5Sf+VsjuZPegsw17oVK1TZrZ8fPOoxin/IIvGFKZvliKB58
+	m9ZIQkp0uWra0XGTcx5iyhcjO9DDYXqpRuIwXlyj/aA==
+X-Received: by 2002:a05:6512:398f:b0:59b:b55a:a293 with SMTP id
+ 2adb3069b0e04-59df3a18ab8mr2231075e87.34.1769442885116; Mon, 26 Jan 2026
+ 07:54:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260126135627.34191-1-bartosz.golaszewski@oss.qualcomm.com> <5d9b79e9-64e0-4d62-857f-dd888e09d4bd@oss.qualcomm.com>
+In-Reply-To: <5d9b79e9-64e0-4d62-857f-dd888e09d4bd@oss.qualcomm.com>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Mon, 26 Jan 2026 16:54:33 +0100
+X-Gmail-Original-Message-ID: <CAMRc=Mfdw=AVr1PzyJnG__qKCJ_GHMDTQuGDYkq=o4H7G+HMbw@mail.gmail.com>
+X-Gm-Features: AZwV_Qi0omihUgX82PHastLczfWEHDDz-Ncj06TYBB7YnSD0-C80lYz5FekEzWg
+Message-ID: <CAMRc=Mfdw=AVr1PzyJnG__qKCJ_GHMDTQuGDYkq=o4H7G+HMbw@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: lpass-lpi: implement .get_direction() for the
+ GPIO driver
+To: Linus Walleij <linusw@kernel.org>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, stable@vger.kernel.org, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211642-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211643-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,suse.com:email]
-X-Rspamd-Queue-Id: 7A34D8A54B
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 550F48A5AB
 X-Rspamd-Action: no action
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+On Mon, Jan 26, 2026 at 3:41=E2=80=AFPM Konrad Dybcio
+<konrad.dybcio@oss.qualcomm.com> wrote:
+>
+> On 1/26/26 2:56 PM, Bartosz Golaszewski wrote:
+> > GPIO controller driver should typically implement the .get_direction()
+> > callback as GPIOLIB internals may try to use it to determine the state
+> > of a pin. Add it for the LPASS LPI driver.
+> >
+> > Reported-by: Abel Vesa <abelvesa@kernel.org>
+> > Cc: stable@vger.kernel.org
+> > Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl drive=
+r")
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
+m>
+> > ---
+>
+> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+> Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # X1E CRD
+>
 
-[ Upstream commit 901a5f309daba412e2a30364d7ec1492fa11c32c ]
+Linus,
 
-Memory allocated for struct vscsiblk_info in scsiback_probe() is not
-freed in scsiback_remove() leading to potential memory leaks on remove,
-as well as in the scsiback_probe() error paths. Fix that by freeing it
-in scsiback_remove().
+Just a heads-up: this is v6.19-rc8 material, as it got uncovered with
+GPIO changes in rc6.
 
-Cc: stable@vger.kernel.org
-Fixes: d9d660f6e562 ("xen-scsiback: Add Xen PV SCSI backend driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://patch.msgid.link/20251223063012.119035-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/xen/xen-scsiback.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/xen/xen-scsiback.c b/drivers/xen/xen-scsiback.c
-index 954188b0b858a..dcc9d15504df0 100644
---- a/drivers/xen/xen-scsiback.c
-+++ b/drivers/xen/xen-scsiback.c
-@@ -1261,6 +1261,7 @@ static void scsiback_remove(struct xenbus_device *dev)
- 	gnttab_page_cache_shrink(&info->free_pages, 0);
- 
- 	dev_set_drvdata(&dev->dev, NULL);
-+	kfree(info);
- }
- 
- static int scsiback_probe(struct xenbus_device *dev,
--- 
-2.51.0
-
+Thanks,
+Bartosz
 
