@@ -1,307 +1,139 @@
-Return-Path: <stable+bounces-211637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMwCGi2Ld2m9hgEAu9opvQ
-	(envelope-from <stable+bounces-211637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:41:33 +0100
+	id kMyADrGLd2m9hgEAu9opvQ
+	(envelope-from <stable+bounces-211638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:43:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEB58A40D
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:41:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBBBF8A484
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:43:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6860E303206C
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:41:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4B1A13006788
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1792E340280;
-	Mon, 26 Jan 2026 15:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1E833DEED;
+	Mon, 26 Jan 2026 15:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDdmPIr8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hRF8Z8++"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8373633FE09
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 15:40:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769442060; cv=pass; b=oWszBMG8w7IrVgZ1Vfn0Z3/vX9p+/OAvi52IaxeR8kMkYInNm/VyKmjj0W7sT+cnPRK9XLnRytekFiU0jAtLd2+MA7VvFzZflpsxOdjlMCbZfHKiNNXrO2aB0BHFe/TeWxg1LsZGN3/+5kGK0+iHikxcc9DvPCXa1Tp1P9JgTYE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769442060; c=relaxed/simple;
-	bh=zwRBDHmFrmmmKheiwTc0t4jensYzVXi0yWNGwiA+LnY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ifJi/petJS5ZX4rBDqkBC7ru69tgU2OVEjsro4ANF+MBMFMYAbvNebzQpJju+v9A9+bYmke0fF5h/kpdTjnWZ1Vg/hSloK8pEcrvfsmvN5vmc4h4QjIVkXbXkeoPs/HPNVj8RQ0sgfnLJSJ29/Ud+et6jPM2CNbcMT4Qc0XzH6A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDdmPIr8; arc=pass smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a1388cdac3so34975145ad.0
-        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 07:40:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769442059; cv=none;
-        d=google.com; s=arc-20240605;
-        b=D9S8unxcRCdzWBlBiWsCIoRj6ZHwcSK1kjWEvm+wwZwWhwvVkl/EtRktA8D9JNUSQY
-         MYFxcUG+3dkpi5+UYlN/ZjTIOpRS2sdS+Jo+SayCOYDHpBmqXK5SHXhQubxkCSO6Jyli
-         XbadU6TQhsZ9iqMIbQRb97UakKoX83OmRxTmgTENkZ4B4ULTomMHjB+l7DC6cKm6P0dx
-         hRtToZ79hYbTBr97t94LOBIeDgCVO+qq/kNBcqVleSOHD5QqDWO9TMOJlFTN3AFj8or6
-         FB0VykLP4dkbOpDBaAUzPEtZH9vQHtlCu61rO+Xz3XlfYZb6lGdiywaj3f3s5ZZ2rNh2
-         BuRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bWDS/deVR9I3gWwY2taM2sYKhn8M8sJv7RX/kPUm08E=;
-        fh=Przsqchgbtx0LTsNFjG6BLcaJDR34Hcvno84iqBqbks=;
-        b=WUzatLWqqt0sx2ROoX+N4xFIyZTc1nudSG2CDVHdAiI6vtWdl9QjaFUELIU+2WrCk/
-         p2vCPzmwwHnjFGQEhXJ30N4MGtmQb8WrTHxrSwIoZAoYhaGTzVXwB8S5tENUcpQu+E9V
-         M9MqC2DHtuI69tA3X/3Z/x6OxtpL7//+LCIgnJPfPk/M+fHqoHOABcljvZCSKTwwZ6yB
-         kHwmPTVaYZ2AZdbmEKL02Brgj5dNyCrv3mogvcCoCN5FG+eFSUY8aXuKDqKPqPQY6H+5
-         PG0dCjWl2JWLwQdoaXTc+COQx/NRamXcV5jAzA4UqO/+EuDJtKfJ00pWQ4fdbHecIWwB
-         eleQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769442059; x=1770046859; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bWDS/deVR9I3gWwY2taM2sYKhn8M8sJv7RX/kPUm08E=;
-        b=jDdmPIr8RU3SZwfLc1+oAyBCAZnpi8LEhH5fw2Y/mdtEDllONqaFmCt7lSjOon25dg
-         gQivD62u57dnBZyiNZPPSIWdPFkDnVyOa/8J8kWNx7IGHF0CZiqvsf1buKB84t1UFoGc
-         nILPmS534l7LnKghpChZ6rd+M/Vj7JPQ0bvzrAsUqEdTyHbGXLbzIN428HLL1R84+PuV
-         FEG4BiwtAt7BUyXgzADBM06cDefsOF4oH4LfG7fT/1sLOLjr+XyddR0iBF9b45neZQY3
-         pfoPgZIH6c3cgIKr0L/0P+oWBRufU0z/QYGUH7qIDE7cfBBC+WLOWWdtMW0Yq0DDIJ5H
-         033Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769442059; x=1770046859;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bWDS/deVR9I3gWwY2taM2sYKhn8M8sJv7RX/kPUm08E=;
-        b=GFaAcT2uKQBYc+t9oOIrkRXOmvH1xROwF0we0yUEFkC1Uv6298MYvWT2nLw9BhmLDY
-         /PmKAyoM952chTdOlkIGbNlb/DcbclafQbk93ppYdRc/99x7YIB8uy0Ndy1JAdKXKAik
-         GHmyu1g+HV7OOCgFfsv0Fpv/XceTyWttVuoWGf67weC/5a2Y4/enNvSWqjufa8P7/Lin
-         mxpYgI/+tJ7/QdJEN9MyGQzAqGFa87e9K8KjUhNVumCjMmRPmYIcF3lE5PMin3StyYrD
-         YIt2WChZhEEHQci8ObLVkCuYTuwIiuId18tChctfQZV4BOUIs6VFIAI9ujDQNTVtSFda
-         Y/fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWBiAG1agOQ68P3kbNjf3o7xVkytDlQiOLLj1sxNB8KFQrDPfFtdGanUwafEkdEpTqRuTTX9YQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuE0260EN74VOPzwf7pamJW530bZuDSUglWQu4n1aPoYc1uxxs
-	OkWzEgLslp5CSf9HZkz4NwsOfkQILnUibpmP64C/bETpfR9a+VTEdAKttgAthfR9dl5EdgTeV2G
-	GI5+UjZUBFeyYpj2ryCo+/SOZucIKgCVMhAUNrtfkOw==
-X-Gm-Gg: AZuq6aJRU6R7phX//iE81MtMFVWIVOyozobq1EMvEJ/jOJwldN+M12fdz6evDfYB2L/
-	SXOJ1+GYI9f0CkFkFAK9M4G2D+C7ZIbb6LXzWdRQmG5BVtwlKhkCh7RQCIBdgL5fO4bRmUrY6HE
-	z4atRaoy/MFIjd5dhTrXxkSuzO4yYPr1sGZuDqQav9joMTqQ4UO+Zr8oEfF5I4sM/aegXyZdBQ2
-	BWYhZ6yuH8dQZ7Gf1/O6Oi74G+JWGTJN49AeU7iDU4rDwyuQXz2ccShCku/7kIpgGdpD9TlWWwN
-	MCQgccdcBPewMPOk7UhIpSUl8G8P
-X-Received: by 2002:a17:902:f687:b0:2a0:b44e:9ab6 with SMTP id
- d9443c01a7336-2a8452223f4mr49229545ad.7.1769442058797; Mon, 26 Jan 2026
- 07:40:58 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8E2340298
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 15:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769442218; cv=none; b=qRZ3IwC3Z3bwzvG+hFLuyT3dyFB4LUZvjLyu8mAh7ajI05Ku61QU/nyP8zUU6PqaU0cIaJJg0pjvSl/a1MvtGOHldeWqrjA0zwWkeukavn+HXKEjbtTFY3EsMHgIWR/NfEugE1CXieQv+eynd/oBHxXW+iCQ74yNSs9YcSz1y+s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769442218; c=relaxed/simple;
+	bh=ajJaiFheRV4IN9SuE0dsdQhk1yXInqD+peOJHXbBZ4c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V/yGffwM69h7LzL3DTN5d9GeJ82lKsiHm6Ekd5lH9waMpRCCopsuK8YCWy6vezrJ9pWenOPBXiyahvWCjVPHAuCE4kCeMvC2W1oCBECJvQGSs7KZRE5NJreBgZNOl6y4sTmJeP8eV5Bwy/5Zt8CPDddQb51+QxtkCavKampsxN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hRF8Z8++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A1BC2BC86;
+	Mon, 26 Jan 2026 15:43:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769442217;
+	bh=ajJaiFheRV4IN9SuE0dsdQhk1yXInqD+peOJHXbBZ4c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hRF8Z8++lLdizJORCuGxHHYLAeJN+929RU+IK1FBkWG3n4VXOa++Ktg8tHg4hTJ58
+	 86nOdpf7rBt5uStO8uNHDqw4iN6bTF3YOOPBIC11h71drkFpTv8bc398NEtzk1iYc0
+	 0vsj5shWfTeb4Z6wgnG6q52Rx3IXCeGUTz5ZKW24l3UHaXx0jPaaCOnWCfvtBChITm
+	 oIIg+AGmXBM9+yZNqsF4ovZVqoQvtEdhzhXKKgI8z1hKMGIVi/MJWZf3TyNxHxr+Y8
+	 oiyInYsXADNM8l0dTbYuWKutACEydeTP4mIvTLuLzu07RBqGiURrgFjm4ppb1Lwd0t
+	 nYaLdmrKKQ1Vg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Pradeep P V K <pradeep.pragallapati@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y] arm64: dts: qcom: talos: Correct UFS clocks ordering
+Date: Mon, 26 Jan 2026 10:43:34 -0500
+Message-ID: <20260126154334.3313728-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012606-rebel-animator-928a@gregkh>
+References: <2026012606-rebel-animator-928a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260125171745.484806-1-bjsaikiran@gmail.com> <20260126061528.63785-1-bjsaikiran@gmail.com>
- <20260126061528.63785-2-bjsaikiran@gmail.com> <ef6cf6c5-3b5d-45f2-af67-0567262a4561@linaro.org>
- <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com>
- <b699fcf5-5cb0-41eb-b9de-e5c6e98aefaa@linaro.org> <IlpLwcSSsQ89AZYFUkWtRcUkztg6PClgkVOyWG0StiDOUCE93t7KlF9q18JPi3GutJ1OQWj_2igjYq1OD8FLZg==@protonmail.internalid>
- <CAAFDt1tjiEXbuChcY73+NYxPW=rB83P4Bks1TPGsHTTqoSzOuw@mail.gmail.com>
- <ed1421d9-f094-4306-ae6d-e07b3a72f82b@kernel.org> <CAAFDt1ukAdXwADuFVoZrs6Ay2fB_sq6LMW5FCnsjqUL7V62mfg@mail.gmail.com>
- <eaf30b60-c0fb-4cf5-bc37-274faa187734@linaro.org> <CAAFDt1tgFf5MQcHm3s5DJEDHDtbTfj56_0-=fTz0ekDjSqY3CA@mail.gmail.com>
- <2084a247-053b-41c0-84ef-c56af640aa74@kernel.org> <I-1OPz69QKXF-LDqvufQARvv_3TIYaLyZIETdiGvSj_JSYhnJNeqiLERDUH2R0kclFyo6MqMRsaiZaS3RKmdZA==@protonmail.internalid>
- <CAAFDt1ufYyM4_xTy+AZTdXBB0cGNk+nFQHD5+5U7tUMQqZ+o=g@mail.gmail.com> <371b38d5-9322-4629-b378-ec62e0924fd4@kernel.org>
-In-Reply-To: <371b38d5-9322-4629-b378-ec62e0924fd4@kernel.org>
-From: Saikiran B <bjsaikiran@gmail.com>
-Date: Mon, 26 Jan 2026 21:10:47 +0530
-X-Gm-Features: AZwV_Qhlud8oUPekx6i6ENnr2kRsI9D2f9G25uacOGl9KQv7_---TR9F4VFcjYM
-Message-ID: <CAAFDt1u1PxgurdGigY+maPhssWgCrj6srqKwqF9d3oUFzv-yJg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] media: i2c: ov02c10: Keep power on and use reset
- for power management
-To: "Bryan O'Donoghue" <bod@kernel.org>
-Cc: Hans de Goede <hansg@kernel.org>, "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, 
-	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, rfoss@kernel.org, 
-	todor.too@gmail.com, vladimir.zapolskiy@linaro.org, 
-	sakari.ailus@linux.intel.com, mchehab@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211637-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,linaro.org,vger.kernel.org,gmail.com,linux.intel.com];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211638-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,0.0.0.36:email]
-X-Rspamd-Queue-Id: 0FEB58A40D
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,1d84000:email]
+X-Rspamd-Queue-Id: DBBBF8A484
 X-Rspamd-Action: no action
 
-"Failing that we should try a more liberal power_on() Assert Reset ...
-Wait 10ms ... Enable ... Wait 20ms ... Clock ..."
+From: Pradeep P V K <pradeep.pragallapati@oss.qualcomm.com>
 
-I have implemented a strict power sequencing in v3 as you and Hans requeste=
-d:
+[ Upstream commit 8bb3754909cde5df4f8c1012bde220b97d8ee3bc ]
 
-- Assert Reset (5ms)
-- Enable Regulators
-- Enable Clock
-- Wait 2ms
-- De-assert Reset
-- Wait 20ms (T2/Boot)
+The current UFS clocks does not align with their respective names,
+causing the ref_clk to be set to an incorrect frequency as below,
+which results in command timeouts.
 
-Regarding the root cause (LDO active discharge / pin states): I
-suspect you are right that active_discharge should be enabled by
-firmware but isn't, or the sleep state pinctrls are missing (causing
-back-feeding). I will investigate the SPMI registers and sleep
-pinctrls separately as a follow-up, as that affects the platform
-stability beyond just this driver.
+ufshcd-qcom 1d84000.ufshc: invalid ref_clk setting = 300000000
 
-For this patch series (v3): I have implemented Runtime PM Autosuspend
-(1000ms). This effectively masks the issue for the user (rapid
-open/close works instantly because regulators stay on), while using
-standard kernel infrastructure instead of custom workarounds.
+This commit fixes the issue by properly reordering the UFS clocks to
+match their names.
 
-This approach:
-- Fixes the immediate "camera fails on reload" user bug.
-- Uses the rigorous power sequence you defined.
-- Aligns with other drivers (e.g. ov2680) using autosuspend for
-performance/stability.
+Fixes: ea172f61f4fd ("arm64: dts: qcom: qcs615: Fix up UFS clocks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pradeep P V K <pradeep.pragallapati@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251126131146.16146-1-pradeep.pragallapati@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm64/boot/dts/qcom/sm6150.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I'm sending the v3 series in a bit with all these changes. I'll
-continue debugging the LDO configuration on the side.
+diff --git a/arch/arm64/boot/dts/qcom/sm6150.dtsi b/arch/arm64/boot/dts/qcom/sm6150.dtsi
+index 3d2a1cb02b628..64e7c9dbafc70 100644
+--- a/arch/arm64/boot/dts/qcom/sm6150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6150.dtsi
+@@ -1260,10 +1260,10 @@ ufs_mem_hc: ufshc@1d84000 {
+ 				 <&gcc GCC_AGGRE_UFS_PHY_AXI_CLK>,
+ 				 <&gcc GCC_UFS_PHY_AHB_CLK>,
+ 				 <&gcc GCC_UFS_PHY_UNIPRO_CORE_CLK>,
+-				 <&gcc GCC_UFS_PHY_ICE_CORE_CLK>,
+ 				 <&rpmhcc RPMH_CXO_CLK>,
+ 				 <&gcc GCC_UFS_PHY_TX_SYMBOL_0_CLK>,
+-				 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>;
++				 <&gcc GCC_UFS_PHY_RX_SYMBOL_0_CLK>,
++				 <&gcc GCC_UFS_PHY_ICE_CORE_CLK>;
+ 			clock-names = "core_clk",
+ 				      "bus_aggr_clk",
+ 				      "iface_clk",
+-- 
+2.51.0
 
-Thanks for all the feedback. Much appreciated.
-
-Thanks,
-Saikiran
-
-On Mon, Jan 26, 2026 at 8:34=E2=80=AFPM Bryan O'Donoghue <bod@kernel.org> w=
-rote:
->
-> On 26/01/2026 14:08, Saikiran B wrote:
-> > The exact issue is:
-> > 1. Open Camera -> Close -> Wait 3s -> Open: WORKS.
-> > 2. Open Camera -> Close -> Wait 1.5s -> Open: FAILS (I2C Timeout /
-> > Device Busy).
-> >
-> > If the VDD rail is floating in the brownout region (~1.0V) during that
-> > 1.5s window, does the sensor's internal Reset Logic Gate even have
-> > enough bias voltage to function?
->
-> I think the VDD rail floating is unlikely, this would require the
-> description of the LDO configured by XBL to be incorrect - possible but,
-> then you'd expect to see an update for Windows to fix it.
->
-> Have you gotten the latest firmware for the board from Lenovo ? A
-> misconfigured LDO - without active discharge set, should receive a
-> firmware update to address.
->
-> Another possibility is CCI is powering the chip in sleep.
->
-> Lets have a look at the CCI pins.
->
->          cam_rgb_default: cam-rgb-default-state {
->                  mclk-pins {
->                          pins =3D "gpio100";
->                          function =3D "cam_aon";
->                          drive-strength =3D <16>;
->                          bias-disable;
->                  };
->
->                  reset-n-pins {
->                          pins =3D "gpio237";
->                          function =3D "gpio";
->                          drive-strength =3D <2>;
->                          bias-disable;
->                  };
->          };
->
-> add
->         cam_rgb_sleep: cam-rgb-sleep-state {
->                  mclk-pins {
->                          pins =3D "gpio100";
->                          function =3D "cam_aon";
->                          drive-strength =3D <2>;
->                          bias-pull-down; // Force to Ground
->                  };
->
->                  reset-n-pins {
->                          pins =3D "gpio237";
->                          function =3D "gpio";
->                          drive-strength =3D <2>;
->                          bias-pull-down; // Force to Ground
->                  };
->          };
->
->
-> &cci1_i2c1 {
->          camera@36 {
->                  compatible =3D "ovti,ov02c10";
->                  reg =3D <0x36>;
->
->                  reset-gpios =3D <&tlmm 237 GPIO_ACTIVE_LOW>;
->                  pinctrl-names =3D "default", "sleep";
->                  pinctrl-0 =3D <&cam_rgb_default>;
->                  pinctrl-1 =3D <&cam_rgb_sleep>;
->
-> Failing that we should try a more liberal power_on()
->
-> power_on():
->
->      Assert Reset (GPIO Low).
->      Wait 10ms.
->      Enable all regulators (RPMh votes).
->      Wait 20ms (Allow PM8010 to ramp and stabilize).
->      Start the Clock (MCLK).
->      Wait 10ms.
->      De-assert Reset (GPIO High).
->      Wait 5ms.
->
-> If that doesn't work, we will have to go and look at the LDO
-> configuration via SPMI directly.
->
-> During the 2.3 second window can you run
->
-> Getting the kernel's view:
-> cat /sys/kernel/debug/regulator/regulator_summary
->
-> We are looking for use_count > 0 and open_count
->
-> We could also look at the SPMI LDO config register
->
-> Getting the firmware's view:
-> cat /sys/kernel/debug/regmap/spmi0-0x08/registers
->
-> It should be possible to interrogate the configruation of all of the
-> relevant LDOs and ascertain if active-discharge is set, which TBH it
-> should be.
->
-> > My testing suggests the sensor is physically incapable of processing
-> > the Reset signal until the rail fully discharges (~2.3s), which is why
-> > the 5ms delay has no effect.
->
-> Yes accepted but, a 2.3 second delay is avoidable if we root-cause.
-> P.S.
-> Please bottom post !
->
-> ---
-> bod
 
