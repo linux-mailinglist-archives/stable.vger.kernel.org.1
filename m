@@ -1,250 +1,132 @@
-Return-Path: <stable+bounces-211498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +It7D5O6dmkSVQEAu9opvQ
-	(envelope-from <stable+bounces-211498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 01:51:31 +0100
+	id IMiqAwDHdml7WAEAu9opvQ
+	(envelope-from <stable+bounces-211499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 02:44:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60022833B2
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 01:51:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 760C7835A8
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 02:44:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 04B193003EAA
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 00:51:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 202C73007671
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 01:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819FB49620;
-	Mon, 26 Jan 2026 00:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bFK+0C+5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EF71DFE22;
+	Mon, 26 Jan 2026 01:44:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922B2487BE
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 00:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FF81850A4;
+	Mon, 26 Jan 2026 01:44:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769388687; cv=none; b=Xt+IKtvm6X0fsHOvS2OWz5T7Zdna0+1X5f38kyMeWLAFX/GexaAMlOIBpBpX8BkdIwpHTCo27Zw7FFoh7pxBrogiIKY1uq5On8EiyTST2AZgAE/RpxmjkdPNAu8FUBU3ABC8daq61UZmx37gysKn0EQVeVHJRQLfcH/7p2kfpso=
+	t=1769391865; cv=none; b=aXvd4f7kYGtbxbO2Th0IXk8uSL5jlfXtNnB5VNFRq1UUY5tAi6wlK2ldhqqw22ti5PHxccj/PUsqctwTby5rTLz3Kg6GR6onb7aWM01PBqhSh+wDwx9A5s5mYxf++vuLSQRg0MAgYLezUkX80bHp0e1ZcmqfV/ak1JGm1ViAX6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769388687; c=relaxed/simple;
-	bh=WzvOvEujohhNCftvh/GuUipfHM9bf8cGtWNYNf0rVKw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JQQ+jFqaydV6P3q99YYdTSGixfSywCQ5WiXV9sWUc4hGH6xO/Mr1XEf6OllNljCsV3HYsnx02s8WYUctO5cVtL4Ylab34e/r8X7DfcHfumdtobSHcziHPq5iYp4vB/8zkUZqs7ffo769CgqAsjabN+Zk0rHzeDydZ03DzATrNaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bFK+0C+5; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Mon, 26 Jan 2026 08:51:10 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769388683;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+ZMWMY+mIk/ZareEAhb040770CIAQtwMX6nJgk+aGIU=;
-	b=bFK+0C+5whH7UFfoZq2PpP2omZlJpjnJVw3beo5c1GjYSQwSAmvXbbUO0Vqyjhnoh7R+gl
-	oTG8DkvXS2jFMZdX1S1N04KpvYEr8TClJJU4t0RN//4AzCu9JigQ4LOx7N/uTsR87osS1B
-	L6KVhQVKrWBg/Y+xonW68axjnb/FHug=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, linux-mm@kvack.org, 
-	cl@gentwo.org, rientjes@google.com, surenb@google.com, 
-	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: avoid allocating slabobj_ext array from its own
- slab
-Message-ID: <bbhrcvqbwuvf6l4xwv7ax6w5iwuixaivvuknvlgutnavxyllme@r5zkvsh7mwtw>
-References: <20260124104614.9739-1-harry.yoo@oracle.com>
+	s=arc-20240116; t=1769391865; c=relaxed/simple;
+	bh=nSfnJFRAVybtZukwVt9xRwce+NU+KVil1a4kgYOjjzk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ojnp6qzuhpQmnQz5zyI8N5qZvatYPeinclBRqxIYP35ceRIc+uVqxo90bt3e30vP4m7Xsp4IAoAZgVbJdXWpD+He+S0m1gPUqwRMREbjgbwdKwbGTxp+v1g6aCZo3nwYKeKVpWX/bigYLmH2xzDTtoYu3rAh6Tqmg1L7gBrKIh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
+Received: from localhost.localdomain (unknown [36.112.3.223])
+	by APP-01 (Coremail) with SMTP id qwCowADHbWntxnZpEFs_Bg--.35869S2;
+	Mon, 26 Jan 2026 09:44:13 +0800 (CST)
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+To: mchehab@kernel.org,
+	hverkuil@kernel.org,
+	laurent.pinchart+renesas@ideasonboard.com,
+	sakari.ailus@linux.intel.com,
+	jacopo.mondi@ideasonboard.com,
+	ezequiel@vanguardiasur.com.ar
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] media: omap3isp: drop the use count of v4l2 pipeline
+Date: Mon, 26 Jan 2026 09:44:12 +0800
+Message-Id: <20260126014412.2462864-1-lihaoxiang@isrc.iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260124104614.9739-1-harry.yoo@oracle.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADHbWntxnZpEFs_Bg--.35869S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7GFWfAFW8Jry8CF18ArW7twb_yoWfArb_Zr
+	nrWF4kWrykGr1qk3WYyrn3uFy5tw1kWr1fXF4aqa1ay3y5CrnxJFyj9rWfXrWUX3W2kFyD
+	Ww1YqFyxG343CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
+X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwsSE2l2MU9KcgADsX
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211498-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211499-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hao.li@linux.dev,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linux.dev:email,linux.dev:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: 60022833B2
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,isrc.iscas.ac.cn:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 760C7835A8
 X-Rspamd-Action: no action
 
-On Sat, Jan 24, 2026 at 07:46:14PM +0900, Harry Yoo wrote:
-> When allocating slabobj_ext array in alloc_slab_obj_exts(), the array
-> can be allocated from the same slab we're allocating the array for.
-> This led to obj_exts_in_slab() incorrectly returning true [1],
-> although the array is not allocated from wasted space of the slab.
+In isp_video_open(), drop the use count of v4l2
+pipeline if vb2_queue_init() fails.
 
-This is indeed a tricky issue to uncover.
+Fixes: 8fd390b89cc8 ("media: Split v4l2_pipeline_pm_use into v4l2_pipeline_pm_{get, put}")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+---
+ drivers/media/platform/ti/omap3isp/ispvideo.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> 
-> Vlastimil Babka observed that this problem should be fixed even when
-> ignoring its incompatibility with obj_exts_in_slab(), because it creates
-> slabs that are never freed as there is always at least one allocated
-> object.
-> 
-> To avoid this, use the next kmalloc size or large kmalloc when
-> kmalloc_slab() returns the same cache we're allocating the array for.
-
-Nice approach.
-
-> 
-> In case of random kmalloc caches, there are multiple kmalloc caches for
-> the same size and the cache is selected based on the caller address.
-> Because it is fragile to ensure the same caller address is passed to
-> kmalloc_slab(), kmalloc_noprof(), and kmalloc_node_noprof(), fall back
-> to (s->object_size + 1) when the sizes are equal.
-
-Good catch on this corner case!
-
-> 
-> Note that this doesn't happen when memory allocation profiling is
-> disabled, as when the allocation of the array is triggered by memory
-> cgroup (KMALLOC_CGROUP), the array is allocated from KMALLOC_NORMAL.
-> 
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com [1]
-> Cc: stable@vger.kernel.org
-> Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-
-Looks good to me!
-Reviewed-by: Hao Li <hao.li@linux.dev>
-
+diff --git a/drivers/media/platform/ti/omap3isp/ispvideo.c b/drivers/media/platform/ti/omap3isp/ispvideo.c
+index 0e7f0bf2b346..2d0061101a43 100644
+--- a/drivers/media/platform/ti/omap3isp/ispvideo.c
++++ b/drivers/media/platform/ti/omap3isp/ispvideo.c
+@@ -1324,6 +1324,7 @@ static int isp_video_open(struct file *file)
+ 
+ 	ret = vb2_queue_init(&handle->queue);
+ 	if (ret < 0) {
++		v4l2_pipeline_pm_put(&video->video.entity);
+ 		omap3isp_put(video->isp);
+ 		goto done;
+ 	}
 -- 
-Thanks,
-Hao
+2.25.1
 
-> ---
->  mm/slub.c | 62 ++++++++++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 55 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 3ff1c475b0f1..43ddb96c4081 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2104,6 +2104,52 @@ static inline void init_slab_obj_exts(struct slab *slab)
->  	slab->obj_exts = 0;
->  }
->  
-> +/*
-> + * Calculate the allocation size for slabobj_ext array.
-> + *
-> + * When memory allocation profiling is enabled, the obj_exts array
-> + * could be allocated from the same slab cache it's being allocated for.
-> + * This would prevent the slab from ever being freed because it would
-> + * always contain at least one allocated object (its own obj_exts array).
-> + *
-> + * To avoid this, increase the allocation size when we detect the array
-> + * would come from the same cache, forcing it to use a different cache.
-> + */
-> +static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
-> +					 struct slab *slab, gfp_t gfp)
-> +{
-> +	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
-> +	struct kmem_cache *obj_exts_cache;
-> +
-> +	/*
-> +	 * slabobj_ext array for KMALLOC_CGROUP allocations
-> +	 * are served from KMALLOC_NORMAL caches.
-> +	 */
-> +	if (!mem_alloc_profiling_enabled())
-> +		return sz;
-> +
-> +	if (sz > KMALLOC_MAX_CACHE_SIZE)
-> +		return sz;
-> +
-> +	obj_exts_cache = kmalloc_slab(sz, NULL, gfp, 0);
-> +	if (s == obj_exts_cache)
-> +		return obj_exts_cache->object_size + 1;
-> +
-> +	/*
-> +	 * Random kmalloc caches have multiple caches per size, and the cache
-> +	 * is selected by the caller address. Since caller address may differ
-> +	 * between kmalloc_slab() and actual allocation, bump size when both
-> +	 * are normal kmalloc caches of same size.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_RANDOM_KMALLOC_CACHES) &&
-> +			is_kmalloc_normal(s) &&
-> +			is_kmalloc_normal(obj_exts_cache) &&
-> +			(s->object_size == obj_exts_cache->object_size))
-> +		return obj_exts_cache->object_size + 1;
-> +
-> +	return sz;
-> +}
-> +
->  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  		        gfp_t gfp, bool new_slab)
->  {
-> @@ -2112,26 +2158,26 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  	unsigned long new_exts;
->  	unsigned long old_exts;
->  	struct slabobj_ext *vec;
-> +	size_t sz;
->  
->  	gfp &= ~OBJCGS_CLEAR_MASK;
->  	/* Prevent recursive extension vector allocation */
->  	gfp |= __GFP_NO_OBJ_EXT;
->  
-> +	sz = obj_exts_alloc_size(s, slab, gfp);
-> +
->  	/*
->  	 * Note that allow_spin may be false during early boot and its
->  	 * restricted GFP_BOOT_MASK. Due to kmalloc_nolock() only supporting
->  	 * architectures with cmpxchg16b, early obj_exts will be missing for
->  	 * very early allocations on those.
->  	 */
-> -	if (unlikely(!allow_spin)) {
-> -		size_t sz = objects * sizeof(struct slabobj_ext);
-> -
-> +	if (unlikely(!allow_spin))
->  		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
->  				     slab_nid(slab));
-> -	} else {
-> -		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
-> -				   slab_nid(slab));
-> -	}
-> +	else
-> +		vec = kmalloc_node(sz, gfp | __GFP_ZERO, slab_nid(slab));
-> +
->  	if (!vec) {
->  		/*
->  		 * Try to mark vectors which failed to allocate.
-> @@ -2145,6 +2191,8 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  		return -ENOMEM;
->  	}
->  
-> +	VM_WARN_ON_ONCE(virt_to_slab(vec)->slab_cache == s);
-> +
->  	new_exts = (unsigned long)vec;
->  	if (unlikely(!allow_spin))
->  		new_exts |= OBJEXTS_NOSPIN_ALLOC;
-> -- 
-> 2.43.0
-> 
 
