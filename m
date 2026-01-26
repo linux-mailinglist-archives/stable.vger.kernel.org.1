@@ -1,182 +1,307 @@
-Return-Path: <stable+bounces-211636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211637-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDzfLvaId2m9hgEAu9opvQ
-	(envelope-from <stable+bounces-211636-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:32:06 +0100
+	id WMwCGi2Ld2m9hgEAu9opvQ
+	(envelope-from <stable+bounces-211637-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:41:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 338588A2E2
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:32:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FEB58A40D
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:41:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 196363014C68
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:32:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6860E303206C
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52F433F368;
-	Mon, 26 Jan 2026 15:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1792E340280;
+	Mon, 26 Jan 2026 15:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZTIjr9iz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDdmPIr8"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51926334C3D;
-	Mon, 26 Jan 2026 15:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769441523; cv=none; b=lNjC4uPJJIQf3hgOcrO6eYStUvVk1hYrjEUwN9xz0j05ct9LBe1xv3kU2E4+ye4vzMwWX8VDZ06hcxj+TAVs2PQ+JNRU9zC3Dhie6rILZZjDi7yj03Fb1e9qF0++tDH3WaTXEn02uoZxqRUUCfl+EAJG1GpdivJgkyijRo7+Gz0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769441523; c=relaxed/simple;
-	bh=Za1NfCjlqimI7reRl4rc2aeaWjaJr0fiN7wZR3sIgnk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=I3vECbC4eEQAZIRNGI+FVTorYJvGetY1351tsH9UD+1g8s6lz+dniQ7FdrWb1ZxG5ZrH+0DpJT4Exe4rKyWteavXQ1EU7jHAsicI1lyMa/dQQHXGNdm0tpsLrFAK4ZaP2jpM9kWkSCk0dxJ1HsDNb9TbRiFqnbX2kv3TAo4oTSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZTIjr9iz; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60QF9Vxp028672;
-	Mon, 26 Jan 2026 15:31:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3NRCgo
-	uXtJWry/L7gBk13r2KQL/nufuQsClbyVdzlMM=; b=ZTIjr9izXR/aZY+SlrM99n
-	d9ILIZtv3c1QdF4g1Z+veVlK6OOU0VwXUR05No2lj8M02/lL0rGEAgj43COwgich
-	ecBtnlMvSi+sxAszx4XKIpNT1gy5aOvPiTtFjCj+CezqYk9iygznNelEObYg8CWt
-	CLMgBmXbdRyvLbFgeo5uQRIiv/fNYNcn6K0fY+qiaVEYWYXdhxoEOKeztJKW4Kmv
-	P5fj2MLli3FED3LAUaeAYXpJs9amAXRHTFTDPwG/KDyGFY7GZMNM/MSR0fFGPqUY
-	yrOutiwlUIm+6epSTUMxSoNMXbKO/uqTVi82w6QXTLw/IUCFHJ68anGB3R+mJd8w
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvmgfqhu1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Jan 2026 15:31:55 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60QCXL02023341;
-	Mon, 26 Jan 2026 15:31:54 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bwamjmwhj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Jan 2026 15:31:54 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60QFVojZ51118498
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 Jan 2026 15:31:51 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DAF1820043;
-	Mon, 26 Jan 2026 15:31:50 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AC54A20040;
-	Mon, 26 Jan 2026 15:31:50 +0000 (GMT)
-Received: from localhost (unknown [9.52.203.172])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 26 Jan 2026 15:31:50 +0000 (GMT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8373633FE09
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 15:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769442060; cv=pass; b=oWszBMG8w7IrVgZ1Vfn0Z3/vX9p+/OAvi52IaxeR8kMkYInNm/VyKmjj0W7sT+cnPRK9XLnRytekFiU0jAtLd2+MA7VvFzZflpsxOdjlMCbZfHKiNNXrO2aB0BHFe/TeWxg1LsZGN3/+5kGK0+iHikxcc9DvPCXa1Tp1P9JgTYE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769442060; c=relaxed/simple;
+	bh=zwRBDHmFrmmmKheiwTc0t4jensYzVXi0yWNGwiA+LnY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ifJi/petJS5ZX4rBDqkBC7ru69tgU2OVEjsro4ANF+MBMFMYAbvNebzQpJju+v9A9+bYmke0fF5h/kpdTjnWZ1Vg/hSloK8pEcrvfsmvN5vmc4h4QjIVkXbXkeoPs/HPNVj8RQ0sgfnLJSJ29/Ud+et6jPM2CNbcMT4Qc0XzH6A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDdmPIr8; arc=pass smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a1388cdac3so34975145ad.0
+        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 07:40:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769442059; cv=none;
+        d=google.com; s=arc-20240605;
+        b=D9S8unxcRCdzWBlBiWsCIoRj6ZHwcSK1kjWEvm+wwZwWhwvVkl/EtRktA8D9JNUSQY
+         MYFxcUG+3dkpi5+UYlN/ZjTIOpRS2sdS+Jo+SayCOYDHpBmqXK5SHXhQubxkCSO6Jyli
+         XbadU6TQhsZ9iqMIbQRb97UakKoX83OmRxTmgTENkZ4B4ULTomMHjB+l7DC6cKm6P0dx
+         hRtToZ79hYbTBr97t94LOBIeDgCVO+qq/kNBcqVleSOHD5QqDWO9TMOJlFTN3AFj8or6
+         FB0VykLP4dkbOpDBaAUzPEtZH9vQHtlCu61rO+Xz3XlfYZb6lGdiywaj3f3s5ZZ2rNh2
+         BuRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bWDS/deVR9I3gWwY2taM2sYKhn8M8sJv7RX/kPUm08E=;
+        fh=Przsqchgbtx0LTsNFjG6BLcaJDR34Hcvno84iqBqbks=;
+        b=WUzatLWqqt0sx2ROoX+N4xFIyZTc1nudSG2CDVHdAiI6vtWdl9QjaFUELIU+2WrCk/
+         p2vCPzmwwHnjFGQEhXJ30N4MGtmQb8WrTHxrSwIoZAoYhaGTzVXwB8S5tENUcpQu+E9V
+         M9MqC2DHtuI69tA3X/3Z/x6OxtpL7//+LCIgnJPfPk/M+fHqoHOABcljvZCSKTwwZ6yB
+         kHwmPTVaYZ2AZdbmEKL02Brgj5dNyCrv3mogvcCoCN5FG+eFSUY8aXuKDqKPqPQY6H+5
+         PG0dCjWl2JWLwQdoaXTc+COQx/NRamXcV5jAzA4UqO/+EuDJtKfJ00pWQ4fdbHecIWwB
+         eleQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769442059; x=1770046859; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bWDS/deVR9I3gWwY2taM2sYKhn8M8sJv7RX/kPUm08E=;
+        b=jDdmPIr8RU3SZwfLc1+oAyBCAZnpi8LEhH5fw2Y/mdtEDllONqaFmCt7lSjOon25dg
+         gQivD62u57dnBZyiNZPPSIWdPFkDnVyOa/8J8kWNx7IGHF0CZiqvsf1buKB84t1UFoGc
+         nILPmS534l7LnKghpChZ6rd+M/Vj7JPQ0bvzrAsUqEdTyHbGXLbzIN428HLL1R84+PuV
+         FEG4BiwtAt7BUyXgzADBM06cDefsOF4oH4LfG7fT/1sLOLjr+XyddR0iBF9b45neZQY3
+         pfoPgZIH6c3cgIKr0L/0P+oWBRufU0z/QYGUH7qIDE7cfBBC+WLOWWdtMW0Yq0DDIJ5H
+         033Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769442059; x=1770046859;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bWDS/deVR9I3gWwY2taM2sYKhn8M8sJv7RX/kPUm08E=;
+        b=GFaAcT2uKQBYc+t9oOIrkRXOmvH1xROwF0we0yUEFkC1Uv6298MYvWT2nLw9BhmLDY
+         /PmKAyoM952chTdOlkIGbNlb/DcbclafQbk93ppYdRc/99x7YIB8uy0Ndy1JAdKXKAik
+         GHmyu1g+HV7OOCgFfsv0Fpv/XceTyWttVuoWGf67weC/5a2Y4/enNvSWqjufa8P7/Lin
+         mxpYgI/+tJ7/QdJEN9MyGQzAqGFa87e9K8KjUhNVumCjMmRPmYIcF3lE5PMin3StyYrD
+         YIt2WChZhEEHQci8ObLVkCuYTuwIiuId18tChctfQZV4BOUIs6VFIAI9ujDQNTVtSFda
+         Y/fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWBiAG1agOQ68P3kbNjf3o7xVkytDlQiOLLj1sxNB8KFQrDPfFtdGanUwafEkdEpTqRuTTX9YQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuE0260EN74VOPzwf7pamJW530bZuDSUglWQu4n1aPoYc1uxxs
+	OkWzEgLslp5CSf9HZkz4NwsOfkQILnUibpmP64C/bETpfR9a+VTEdAKttgAthfR9dl5EdgTeV2G
+	GI5+UjZUBFeyYpj2ryCo+/SOZucIKgCVMhAUNrtfkOw==
+X-Gm-Gg: AZuq6aJRU6R7phX//iE81MtMFVWIVOyozobq1EMvEJ/jOJwldN+M12fdz6evDfYB2L/
+	SXOJ1+GYI9f0CkFkFAK9M4G2D+C7ZIbb6LXzWdRQmG5BVtwlKhkCh7RQCIBdgL5fO4bRmUrY6HE
+	z4atRaoy/MFIjd5dhTrXxkSuzO4yYPr1sGZuDqQav9joMTqQ4UO+Zr8oEfF5I4sM/aegXyZdBQ2
+	BWYhZ6yuH8dQZ7Gf1/O6Oi74G+JWGTJN49AeU7iDU4rDwyuQXz2ccShCku/7kIpgGdpD9TlWWwN
+	MCQgccdcBPewMPOk7UhIpSUl8G8P
+X-Received: by 2002:a17:902:f687:b0:2a0:b44e:9ab6 with SMTP id
+ d9443c01a7336-2a8452223f4mr49229545ad.7.1769442058797; Mon, 26 Jan 2026
+ 07:40:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20260125171745.484806-1-bjsaikiran@gmail.com> <20260126061528.63785-1-bjsaikiran@gmail.com>
+ <20260126061528.63785-2-bjsaikiran@gmail.com> <ef6cf6c5-3b5d-45f2-af67-0567262a4561@linaro.org>
+ <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com>
+ <b699fcf5-5cb0-41eb-b9de-e5c6e98aefaa@linaro.org> <IlpLwcSSsQ89AZYFUkWtRcUkztg6PClgkVOyWG0StiDOUCE93t7KlF9q18JPi3GutJ1OQWj_2igjYq1OD8FLZg==@protonmail.internalid>
+ <CAAFDt1tjiEXbuChcY73+NYxPW=rB83P4Bks1TPGsHTTqoSzOuw@mail.gmail.com>
+ <ed1421d9-f094-4306-ae6d-e07b3a72f82b@kernel.org> <CAAFDt1ukAdXwADuFVoZrs6Ay2fB_sq6LMW5FCnsjqUL7V62mfg@mail.gmail.com>
+ <eaf30b60-c0fb-4cf5-bc37-274faa187734@linaro.org> <CAAFDt1tgFf5MQcHm3s5DJEDHDtbTfj56_0-=fTz0ekDjSqY3CA@mail.gmail.com>
+ <2084a247-053b-41c0-84ef-c56af640aa74@kernel.org> <I-1OPz69QKXF-LDqvufQARvv_3TIYaLyZIETdiGvSj_JSYhnJNeqiLERDUH2R0kclFyo6MqMRsaiZaS3RKmdZA==@protonmail.internalid>
+ <CAAFDt1ufYyM4_xTy+AZTdXBB0cGNk+nFQHD5+5U7tUMQqZ+o=g@mail.gmail.com> <371b38d5-9322-4629-b378-ec62e0924fd4@kernel.org>
+In-Reply-To: <371b38d5-9322-4629-b378-ec62e0924fd4@kernel.org>
+From: Saikiran B <bjsaikiran@gmail.com>
+Date: Mon, 26 Jan 2026 21:10:47 +0530
+X-Gm-Features: AZwV_Qhlud8oUPekx6i6ENnr2kRsI9D2f9G25uacOGl9KQv7_---TR9F4VFcjYM
+Message-ID: <CAAFDt1u1PxgurdGigY+maPhssWgCrj6srqKwqF9d3oUFzv-yJg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] media: i2c: ov02c10: Keep power on and use reset
+ for power management
+To: "Bryan O'Donoghue" <bod@kernel.org>
+Cc: Hans de Goede <hansg@kernel.org>, "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, 
+	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, rfoss@kernel.org, 
+	todor.too@gmail.com, vladimir.zapolskiy@linaro.org, 
+	sakari.ailus@linux.intel.com, mchehab@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Jan 2026 16:31:50 +0100
-Message-Id: <DFYMO05UXGKY.2HG19ERN69ZUW@linux.ibm.com>
-Cc: <helgaas@kernel.org>, <lukas@wunner.de>, <alex@shazbot.org>,
-        <clg@redhat.com>, <stable@vger.kernel.org>, <schnelle@linux.ibm.com>,
-        <mjrosato@linux.ibm.com>, <julianr@linux.ibm.com>
-Subject: Re: [PATCH v8 9/9] vfio: Remove the pcie check for
- VFIO_PCI_ERR_IRQ_INDEX
-From: "Julian Ruess" <julianr@linux.ibm.com>
-To: "Farhan Ali" <alifm@linux.ibm.com>, <linux-s390@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260122194437.1903-1-alifm@linux.ibm.com>
- <20260122194437.1903-10-alifm@linux.ibm.com>
-In-Reply-To: <20260122194437.1903-10-alifm@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Z4vh3XRA c=1 sm=1 tr=0 ts=697788ec cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=Okk2yIgg9Z9Hp2RjL0IA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: OUPgyJ6cPDkrIK-rUKGZs12tq3GdnhO8
-X-Proofpoint-ORIG-GUID: OUPgyJ6cPDkrIK-rUKGZs12tq3GdnhO8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI2MDEzMSBTYWx0ZWRfX3qjgUcYByevO
- RA9Vgih70y53ruoeDz6l2xYNewvkH7k5rgoO+wdB5gDyZWLayLAPoUQuKVlb3PHIrdbSTuzrr7C
- WUwXc1N0FwTheVtLn1+KjW9YWWelk0P7UtUn0+uIiGKTbb1p9psMl7kiGoX9LJIsmbsYsUihyMa
- sM30SK5GoH+s/PHMXRK0GiHfjpZKvZvXOl7fw2RS3GmHKdEyFZotwedOQxhK9lum1jD4YUwT1ny
- O5d5JY4HziQqzj8A7utZP6dKB1B4ffdZlRt+uN8xNE9u+mdjuvt03Jh/kyImskF9sS58zIWMrr3
- Vg1XKrzVNEVhuP6Nd2Am383b+HyhwJs7cyePmdp9ykdsRDeaxEUuwKY65yHexmhuMkjTGIe+HOQ
- /N+LLHPB3rtSrT2yuo/+ZflfFMgkYIr1fSfkiKvzgeCnWGlJ/oTjpqIfAgQlNPWtpkEYfQdsHoV
- +lePA3mD4JupXMKI5cA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-26_03,2026-01-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 malwarescore=0 phishscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601260131
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-211636-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-211637-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,linaro.org,vger.kernel.org,gmail.com,linux.intel.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[julianr@linux.ibm.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 338588A2E2
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,0.0.0.36:email]
+X-Rspamd-Queue-Id: 0FEB58A40D
 X-Rspamd-Action: no action
 
-On Thu Jan 22, 2026 at 8:44 PM CET, Farhan Ali wrote:
-> We are configuring the error signaling on the vast majority of devices an=
-d
-> it's extremely rare that it fires anyway. This allows userspace to be
-> notified on errors for legacy PCI devices. The Internal Shared Memory (IS=
-M)
-> device on s390x is one such device. For PCI devices on IBM s390x error
-> recovery involves platform firmware and notification to operating system
-> is done by architecture specific way. So the ISM device can still be
-> recovered when notified of an error.
+"Failing that we should try a more liberal power_on() Assert Reset ...
+Wait 10ms ... Enable ... Wait 20ms ... Clock ..."
+
+I have implemented a strict power sequencing in v3 as you and Hans requeste=
+d:
+
+- Assert Reset (5ms)
+- Enable Regulators
+- Enable Clock
+- Wait 2ms
+- De-assert Reset
+- Wait 20ms (T2/Boot)
+
+Regarding the root cause (LDO active discharge / pin states): I
+suspect you are right that active_discharge should be enabled by
+firmware but isn't, or the sleep state pinctrls are missing (causing
+back-feeding). I will investigate the SPMI registers and sleep
+pinctrls separately as a follow-up, as that affects the platform
+stability beyond just this driver.
+
+For this patch series (v3): I have implemented Runtime PM Autosuspend
+(1000ms). This effectively masks the issue for the user (rapid
+open/close works instantly because regulators stay on), while using
+standard kernel infrastructure instead of custom workarounds.
+
+This approach:
+- Fixes the immediate "camera fails on reload" user bug.
+- Uses the rigorous power sequence you defined.
+- Aligns with other drivers (e.g. ov2680) using autosuspend for
+performance/stability.
+
+I'm sending the v3 series in a bit with all these changes. I'll
+continue debugging the LDO configuration on the side.
+
+Thanks for all the feedback. Much appreciated.
+
+Thanks,
+Saikiran
+
+On Mon, Jan 26, 2026 at 8:34=E2=80=AFPM Bryan O'Donoghue <bod@kernel.org> w=
+rote:
 >
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+> On 26/01/2026 14:08, Saikiran B wrote:
+> > The exact issue is:
+> > 1. Open Camera -> Close -> Wait 3s -> Open: WORKS.
+> > 2. Open Camera -> Close -> Wait 1.5s -> Open: FAILS (I2C Timeout /
+> > Device Busy).
+> >
+> > If the VDD rail is floating in the brownout region (~1.0V) during that
+> > 1.5s window, does the sensor's internal Reset Logic Gate even have
+> > enough bias voltage to function?
+>
+> I think the VDD rail floating is unlikely, this would require the
+> description of the LDO configured by XBL to be incorrect - possible but,
+> then you'd expect to see an update for Windows to fix it.
+>
+> Have you gotten the latest firmware for the board from Lenovo ? A
+> misconfigured LDO - without active discharge set, should receive a
+> firmware update to address.
+>
+> Another possibility is CCI is powering the chip in sleep.
+>
+> Lets have a look at the CCI pins.
+>
+>          cam_rgb_default: cam-rgb-default-state {
+>                  mclk-pins {
+>                          pins =3D "gpio100";
+>                          function =3D "cam_aon";
+>                          drive-strength =3D <16>;
+>                          bias-disable;
+>                  };
+>
+>                  reset-n-pins {
+>                          pins =3D "gpio237";
+>                          function =3D "gpio";
+>                          drive-strength =3D <2>;
+>                          bias-disable;
+>                  };
+>          };
+>
+> add
+>         cam_rgb_sleep: cam-rgb-sleep-state {
+>                  mclk-pins {
+>                          pins =3D "gpio100";
+>                          function =3D "cam_aon";
+>                          drive-strength =3D <2>;
+>                          bias-pull-down; // Force to Ground
+>                  };
+>
+>                  reset-n-pins {
+>                          pins =3D "gpio237";
+>                          function =3D "gpio";
+>                          drive-strength =3D <2>;
+>                          bias-pull-down; // Force to Ground
+>                  };
+>          };
+>
+>
+> &cci1_i2c1 {
+>          camera@36 {
+>                  compatible =3D "ovti,ov02c10";
+>                  reg =3D <0x36>;
+>
+>                  reset-gpios =3D <&tlmm 237 GPIO_ACTIVE_LOW>;
+>                  pinctrl-names =3D "default", "sleep";
+>                  pinctrl-0 =3D <&cam_rgb_default>;
+>                  pinctrl-1 =3D <&cam_rgb_sleep>;
+>
+> Failing that we should try a more liberal power_on()
+>
+> power_on():
+>
+>      Assert Reset (GPIO Low).
+>      Wait 10ms.
+>      Enable all regulators (RPMh votes).
+>      Wait 20ms (Allow PM8010 to ramp and stabilize).
+>      Start the Clock (MCLK).
+>      Wait 10ms.
+>      De-assert Reset (GPIO High).
+>      Wait 5ms.
+>
+> If that doesn't work, we will have to go and look at the LDO
+> configuration via SPMI directly.
+>
+> During the 2.3 second window can you run
+>
+> Getting the kernel's view:
+> cat /sys/kernel/debug/regulator/regulator_summary
+>
+> We are looking for use_count > 0 and open_count
+>
+> We could also look at the SPMI LDO config register
+>
+> Getting the firmware's view:
+> cat /sys/kernel/debug/regmap/spmi0-0x08/registers
+>
+> It should be possible to interrogate the configruation of all of the
+> relevant LDOs and ascertain if active-discharge is set, which TBH it
+> should be.
+>
+> > My testing suggests the sensor is physically incapable of processing
+> > the Reset signal until the rail fully discharges (~2.3s), which is why
+> > the 5ms delay has no effect.
+>
+> Yes accepted but, a 2.3 second delay is avoidable if we root-cause.
+> P.S.
+> Please bottom post !
+>
 > ---
->  drivers/vfio/pci/vfio_pci_core.c  | 8 ++------
->  drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
->  2 files changed, 3 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index c92c6c512b24..9d44df9e21db 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -778,8 +778,7 @@ static int vfio_pci_get_irq_count(struct vfio_pci_cor=
-e_device *vdev, int irq_typ
->  			return (flags & PCI_MSIX_FLAGS_QSIZE) + 1;
->  		}
->  	} else if (irq_type =3D=3D VFIO_PCI_ERR_IRQ_INDEX) {
-> -		if (pci_is_pcie(vdev->pdev))
-
-I'm wondering why this pci_is_pcie was introduced here in the first place.
-Do you have any ideas?
-
--- snip --
+> bod
 
