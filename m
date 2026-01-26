@@ -1,141 +1,179 @@
-Return-Path: <stable+bounces-211556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPtIKtBYd2lneQEAu9opvQ
-	(envelope-from <stable+bounces-211556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:06:40 +0100
+	id +GksK0Bad2maeQEAu9opvQ
+	(envelope-from <stable+bounces-211557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:12:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C4D87FF1
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:06:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 073D188109
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:12:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A78F030066BC
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:06:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B96A43013A4A
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:12:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B850A3346BF;
-	Mon, 26 Jan 2026 12:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fFPgtgwZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C95C335064;
+	Mon, 26 Jan 2026 12:12:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD9630ACE5;
-	Mon, 26 Jan 2026 12:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B975F331A62;
+	Mon, 26 Jan 2026 12:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769429195; cv=none; b=MiwuyYIJO5KZNaTJXnXPVTITQ8UIbOGMpQ6E42q+bUNrgiFkusBkwUYhGOzadSUFhVJ4MG+pVtAIlOzRryAf3pmQX0LL3kqjkEr5/BJH3igUEkBN7vXOtJPrDzQ/u/DXBDtNq4/1ySKjjPdKFMlBxWbfubb4KW2YuvdQ9g+lEe4=
+	t=1769429559; cv=none; b=twDrnBWmtKd8Ujj6bLm5WNmtCNZ157YVv6LeXCDgN9S0JnWjgHMP4P08nr4tNYDKrqA4Qq1BFK2Xp/JV7Pwbd3Mi2Tr5fVqkL41or3wMCWdRAIaWRt0EQPp1jD4yS+O/lOQGf6EZ0Z6eJ+27c4n/zAdl9/AILbD1JLw4mPph0VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769429195; c=relaxed/simple;
-	bh=Z4Veix6NtwpfiIxDAwJ3jCyGzKANeHY8XJrrxz48FSo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ud5ewGHokJm0omI5Ad+bT/ICtkm99JaD8taLMpz9U3OrQiJ3VCpQ+xDutOW4sCe/7uUDRU2SZs7LUAQDL4kKs9IjOrB459BW25yJWTEXWXd72ccM2/d8js7pU+JI4fC0mk1yjLa3XOAIUIwN0POxTTlWZ18bN3cixqzPo93oft4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fFPgtgwZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F0FC19422;
-	Mon, 26 Jan 2026 12:06:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769429195;
-	bh=Z4Veix6NtwpfiIxDAwJ3jCyGzKANeHY8XJrrxz48FSo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fFPgtgwZJkVrOMC5Rrs3n3lRayaLmHCbpvj/2ILhqZr03LsBK0Z2L4hVCOcYQZb3D
-	 mjvaUh+h7Ypl7/rSxsKdHGTDvlkp4HwDcoNn3HE+AvoyKBjXbTVrPXJqEDJ26wIqHy
-	 mepxa5nVWknBeF1dUYsjbxZTu2sYv8nrnMkIbPIAHKOf3O/PQdDiKNxfrRUyzGgOou
-	 yrUQlrU1VEkD1vHlICiE0eUvbZFr0U5ESRh3KqzwkRJCgQpGLiOyMGNbPCMpgVQkye
-	 9Y6x6znTl4VwvT7ru/2eo1ZzNvBBxYwuC0Jfa2suT4CyuuEA4ePZESAu9gN9figsHT
-	 f3HWLodOfNPXg==
-Message-ID: <ed1421d9-f094-4306-ae6d-e07b3a72f82b@kernel.org>
-Date: Mon, 26 Jan 2026 12:06:30 +0000
+	s=arc-20240116; t=1769429559; c=relaxed/simple;
+	bh=V27tRFOW/2e4kAzEuqU2G1Ilb5aoN4aQIZHli6QmI+c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fCusvHY4ARMmV5tn51Wn0b9S1YVjE8LkyYJY7mO+32odQ4ADUaaUnQAdlyxLMC0J9gFNzwjfgrYWZhCnZEIqhkTzZHbuH9j9TphAKeVFf8JAmxyKXaHggdfHk3zk2o5m25d3168pfxBtb/Hf8rNwnJRVpP1o1QKPbD0lFGia7o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5E6B7339;
+	Mon, 26 Jan 2026 04:12:29 -0800 (PST)
+Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.85])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 852153F5CA;
+	Mon, 26 Jan 2026 04:12:34 -0800 (PST)
+From: Robin Murphy <robin.murphy@arm.com>
+To: brgl@kernel.org,
+	linusw@kernel.org,
+	heiko@sntech.de
+Cc: sebastian.reichel@collabora.com,
+	m.szyprowski@samsung.com,
+	linux-rockchip@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] gpio/rockchip: Stop calling pinctrl for set_direction
+Date: Mon, 26 Jan 2026 12:12:26 +0000
+Message-Id: <bddc0469f25843ca5ae0cf578ab3671435ae98a7.1769429546.git.robin.murphy@arm.com>
+X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] media: i2c: ov02c10: Keep power on and use reset
- for power management
-To: Saikiran B <bjsaikiran@gmail.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- rfoss@kernel.org, todor.too@gmail.com, vladimir.zapolskiy@linaro.org,
- hansg@kernel.org, sakari.ailus@linux.intel.com, mchehab@kernel.org,
- stable@vger.kernel.org
-References: <20260125171745.484806-1-bjsaikiran@gmail.com>
- <20260126061528.63785-1-bjsaikiran@gmail.com>
- <20260126061528.63785-2-bjsaikiran@gmail.com>
- <ef6cf6c5-3b5d-45f2-af67-0567262a4561@linaro.org>
- <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com>
- <b699fcf5-5cb0-41eb-b9de-e5c6e98aefaa@linaro.org>
- <IlpLwcSSsQ89AZYFUkWtRcUkztg6PClgkVOyWG0StiDOUCE93t7KlF9q18JPi3GutJ1OQWj_2igjYq1OD8FLZg==@protonmail.internalid>
- <CAAFDt1tjiEXbuChcY73+NYxPW=rB83P4Bks1TPGsHTTqoSzOuw@mail.gmail.com>
-From: Bryan O'Donoghue <bod@kernel.org>
-Content-Language: en-US
-In-Reply-To: <CAAFDt1tjiEXbuChcY73+NYxPW=rB83P4Bks1TPGsHTTqoSzOuw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.14 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211556-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,linaro.org,linux.intel.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,linaro.org];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bod@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 38C4D87FF1
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211557-lists,stable=lfdr.de];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.994];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 073D188109
 X-Rspamd-Action: no action
 
-On 26/01/2026 11:58, Saikiran B wrote:
-> "I don't think we've established the regulator is at fault. That's the
-> feedback I'm giving you here. ... vreg_cam_1p8: regulator-cam-1p8 {
-> compatible = "regulator-fixed";"
-> 
-> Just to clarify on the regulators: on the Slim 7x, the camera supplies
-> (avdd, dvdd, dovdd) are all RPMh-controlled LDOs (pm8010 and pm8550),
-> not generic fixed regulators.
+Marking the whole controller as sleeping due to the pinctrl calls in the
+.direction_{input,output} callbacks has the unfortunate side effect that
+legitimate invocations of .get and .set, which cannot themselves sleep,
+in atomic context now spew WARN()s from gpiolib.
 
-Slim7x - not the Dell right ;)
+However, as Heiko points out, the driver doing this is a bit silly to
+begin with, as the pinctrl .gpio_set_direction hook doesn't even care
+about the direction, the hook is only used to claim the mux. And sure
+enough, the .gpio_request_enable hook exists to serve this very purpose,
+so switch to that and remove the problematic business entirely.
 
-> As I've confirmed that the qcom-rpmh-regulator driver doesn't natively
-> support active discharge or parsing off-on-delay-us (generic
-> property), which explains why the physical discharge constraint wasn't
-> being respected.
-
-No, the RPMh firmware should know how to do that. Not the Linux side, 
-this is the part of your brown-out story that doesn't make sense.
-
-BTW, did you try my given sequence - particularly the XSHUTDOWN in 
-power_on(); ?
-
-If the XSHUTDOWN pin is for example floating or not in the correct 
-logical state when you power-on, the chip may not initialise correctly.
-
-Which could lead you to conclude - you are having a regulator problem, 
-when in fact you are having a sensor state-machine init problem.
-
-?
-
+Cc: stable@vger.kernel.org
+Fixes: 20cf2aed89ac ("gpio: rockchip: mark the GPIO controller as sleeping")
+Suggested-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
 ---
-bod
+If I don't have to redesign bits of the GPIO subsystem itself, this much
+I can do :)
+
+Tested on RK3399 NanoPC-T4 with GPIOs with and without explicit pinctrl,
+and PROVE_LOCKING and DEBUG_ATOMIC_SLEEP stayed quiet (although I don't
+think this board has any shared pins)
+---
+ drivers/gpio/gpio-rockchip.c       | 8 --------
+ drivers/pinctrl/pinctrl-rockchip.c | 9 ++++-----
+ 2 files changed, 4 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
+index bae2061f15fc..0fff4a699f12 100644
+--- a/drivers/gpio/gpio-rockchip.c
++++ b/drivers/gpio/gpio-rockchip.c
+@@ -18,7 +18,6 @@
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_irq.h>
+-#include <linux/pinctrl/consumer.h>
+ #include <linux/pinctrl/pinconf-generic.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+@@ -164,12 +163,6 @@ static int rockchip_gpio_set_direction(struct gpio_chip *chip,
+ 	unsigned long flags;
+ 	u32 data = input ? 0 : 1;
+ 
+-
+-	if (input)
+-		pinctrl_gpio_direction_input(chip, offset);
+-	else
+-		pinctrl_gpio_direction_output(chip, offset);
+-
+ 	raw_spin_lock_irqsave(&bank->slock, flags);
+ 	rockchip_gpio_writel_bit(bank, offset, data, bank->gpio_regs->port_ddr);
+ 	raw_spin_unlock_irqrestore(&bank->slock, flags);
+@@ -593,7 +586,6 @@ static int rockchip_gpiolib_register(struct rockchip_pin_bank *bank)
+ 	gc->ngpio = bank->nr_pins;
+ 	gc->label = bank->name;
+ 	gc->parent = bank->dev;
+-	gc->can_sleep = true;
+ 
+ 	ret = gpiochip_add_data(gc, bank);
+ 	if (ret) {
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index e44ef262beec..2fc67aeafdb3 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -3545,10 +3545,9 @@ static int rockchip_pmx_set(struct pinctrl_dev *pctldev, unsigned selector,
+ 	return 0;
+ }
+ 
+-static int rockchip_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
+-					   struct pinctrl_gpio_range *range,
+-					   unsigned offset,
+-					   bool input)
++static int rockchip_pmx_gpio_request_enable(struct pinctrl_dev *pctldev,
++					    struct pinctrl_gpio_range *range,
++					    unsigned int offset)
+ {
+ 	struct rockchip_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
+ 	struct rockchip_pin_bank *bank;
+@@ -3562,7 +3561,7 @@ static const struct pinmux_ops rockchip_pmx_ops = {
+ 	.get_function_name	= rockchip_pmx_get_func_name,
+ 	.get_function_groups	= rockchip_pmx_get_groups,
+ 	.set_mux		= rockchip_pmx_set,
+-	.gpio_set_direction	= rockchip_pmx_gpio_set_direction,
++	.gpio_request_enable	= rockchip_pmx_gpio_request_enable,
+ };
+ 
+ /*
+-- 
+2.39.2.101.g768bb238c484.dirty
+
 
