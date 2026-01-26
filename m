@@ -1,129 +1,342 @@
-Return-Path: <stable+bounces-211521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211522-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFNjGkcZd2kCcQEAu9opvQ
-	(envelope-from <stable+bounces-211521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 08:35:35 +0100
+	id 2MAtB3kZd2kCcQEAu9opvQ
+	(envelope-from <stable+bounces-211522-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 08:36:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD15B84DF2
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 08:35:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7047384E01
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 08:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BAFD5300AC3D
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:35:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83D393003EBE
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DC22C2360;
-	Mon, 26 Jan 2026 07:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005FE2C11E8;
+	Mon, 26 Jan 2026 07:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="jc3nYqHo";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hhGU+wB7";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="jc3nYqHo";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hhGU+wB7"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E314A2356BE;
-	Mon, 26 Jan 2026 07:35:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1E7237180
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 07:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769412926; cv=none; b=L+Vesj8TOzRRqS0m+38/FRrMPYgol84OhS1L7PTomMvj2K+apdxbi2azCf5dT0uhJvIYAXQE5lhtrPQmBIFXicDbpeV7/RyiY4nHW+BjclEa8PkJOcxSlXusez7Z1YdRgaLdaiF+qZ+GPcxcF0PXNIoZGJL2Wkh/WvGWc9OAM2M=
+	t=1769412980; cv=none; b=bQbnEEqlNVazm/XJ0SLNHjdKVM81+1KAXKJ0JQvZTL8sQXJkew/ohtptKc4u1loMCJu4h4GywYsbOu/eSVlSBZ8/cMZwojcqs2Xi3riO+d+u3nDKejecyUhdEYbWwUPJfRXc2YGCyZy6hujV1wR6RV/+e6Ypa7R6uA/ZV86J0xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769412926; c=relaxed/simple;
-	bh=++4bCg/Uz/nnLb+MCEFRDc5gxdAVZwCkCRDbsfPbXpQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mYwMNCdix0ToJA9AwCi6Hdw9vexb6eldVN7m20GBh/IcYgMA2NF0FMtteoNH4moK9e5HQKmjOsIskuxD87O9AuINJp5b9+4MHB3kQ11hR+i85kd1LHjz3cLPHsx5n5VnhvssIMdSZow85Fhtgp/52IdxpAMalcFQceA/Y8jfI+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 8ce55210fa8911f0b0f03b4cfa9209d1-20260126
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.6,REQID:c97f1c9b-a24e-44b2-a391-c6af613fde52,IP:0,UR
-	L:0,TC:0,Content:0,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:25
-X-CID-META: VersionHash:a9d874c,CLOUDID:9d92300b93688c440104e3bfd947c284,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:102|898,TC:nil,Content:0|15|50,EDM:5,IP:
-	nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:
-	0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 8ce55210fa8911f0b0f03b4cfa9209d1-20260126
-X-User: zhangheng@kylinos.cn
-Received: from kylin-pc.. [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zhangheng@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1125213167; Mon, 26 Jan 2026 15:35:12 +0800
-From: Zhang Heng <zhangheng@kylinos.cn>
-To: perex@perex.cz,
-	tiwai@suse.com,
-	sbinding@opensource.cirrus.com,
-	kailang@realtek.com,
-	chris.chiu@canonical.com,
-	edip@medip.dev
-Cc: linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Zhang Heng <zhangheng@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] ALSA: hda/realtek: fix right sounds and mute/micmute LEDs for HP machine
-Date: Mon, 26 Jan 2026 15:35:07 +0800
-Message-ID: <20260126073508.3897461-1-zhangheng@kylinos.cn>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1769412980; c=relaxed/simple;
+	bh=EMynoi20VU5rE9tX9QngZyGm9gZLrMIVdPgwitCbG1A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=glspA2SeEXqniFn0b//pSy+W/4bQxXq5B0AuGmZtwBRouxSJjh54OhlG9Q4JgiutLyNq8/jF901Eka8EVWWKgnK/6QbOyX8vVl+dal8G1nYHyeXyk3znIDmKt4owkWK7TjRSdkHOp+QmyqMv/4CUAVQe8okI02gkKtQ5zq5aTEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=jc3nYqHo; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hhGU+wB7; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=jc3nYqHo; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hhGU+wB7; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 23AD05BCC9;
+	Mon, 26 Jan 2026 07:36:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769412977; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tg6Un9JDoItEu2TLhpUrMlNcAaah4S+DhL52h5p3KdM=;
+	b=jc3nYqHo+UAiWqIRSu8cBvux7S43/SrKDjWr+w1msHpp3uoQbfsNEQ9hjufSVWKxN7huaO
+	J+6mTWbKZyvMfSsUBvgG9DqH282Mb4+WiN+kbnOEHbPaf/UNvWUZPfVzwz6qcypUdgJYQQ
+	Ww+pgmD0UgSZ9/mfU74uHyV0+0rZlOY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769412977;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tg6Un9JDoItEu2TLhpUrMlNcAaah4S+DhL52h5p3KdM=;
+	b=hhGU+wB7h48uhizsUBhD+usUwtZMk3oOzfuow5bSCW1zMH8jd5KUT+GtiB0Zs5hJnvMNGG
+	GhPHnF/0/nqDoDAA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769412977; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tg6Un9JDoItEu2TLhpUrMlNcAaah4S+DhL52h5p3KdM=;
+	b=jc3nYqHo+UAiWqIRSu8cBvux7S43/SrKDjWr+w1msHpp3uoQbfsNEQ9hjufSVWKxN7huaO
+	J+6mTWbKZyvMfSsUBvgG9DqH282Mb4+WiN+kbnOEHbPaf/UNvWUZPfVzwz6qcypUdgJYQQ
+	Ww+pgmD0UgSZ9/mfU74uHyV0+0rZlOY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769412977;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tg6Un9JDoItEu2TLhpUrMlNcAaah4S+DhL52h5p3KdM=;
+	b=hhGU+wB7h48uhizsUBhD+usUwtZMk3oOzfuow5bSCW1zMH8jd5KUT+GtiB0Zs5hJnvMNGG
+	GhPHnF/0/nqDoDAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 02A8A139E9;
+	Mon, 26 Jan 2026 07:36:17 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 0uVEAHEZd2kKZQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 26 Jan 2026 07:36:17 +0000
+Message-ID: <2b116198-b27a-4b20-90b2-951343f9fff1@suse.cz>
+Date: Mon, 26 Jan 2026 08:36:16 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slab: avoid allocating slabobj_ext array from its own
+ slab
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, cl@gentwo.org, rientjes@google.com,
+ surenb@google.com, hao.li@linux.dev,
+ kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
+References: <20260124104614.9739-1-harry.yoo@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260124104614.9739-1-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spam-Level: 
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhangheng@kylinos.cn,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	TAGGED_FROM(0.00)[bounces-211522-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[kylinos.cn];
-	PRECEDENCE_BULK(0.00)[];
+	DMARC_NA(0.00)[suse.cz];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211521-lists,stable=lfdr.de];
-	R_DKIM_NA(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: DD15B84DF2
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@suse.cz,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,suse.cz:mid,suse.cz:dkim,oracle.com:email]
+X-Rspamd-Queue-Id: 7047384E01
 X-Rspamd-Action: no action
 
-The HP EliteBook 630 G11 (103c:8c8f) is using ALC236 codec which used 0x02
-to control mute LED and 0x01 to control micmute LED. Therefore, add a quirk
-to make it works.
+On 1/24/26 11:46, Harry Yoo wrote:
+> When allocating slabobj_ext array in alloc_slab_obj_exts(), the array
+> can be allocated from the same slab we're allocating the array for.
+> This led to obj_exts_in_slab() incorrectly returning true [1],
+> although the array is not allocated from wasted space of the slab.
+> 
+> Vlastimil Babka observed that this problem should be fixed even when
+> ignoring its incompatibility with obj_exts_in_slab(), because it creates
+> slabs that are never freed as there is always at least one allocated
+> object.
+> 
+> To avoid this, use the next kmalloc size or large kmalloc when
+> kmalloc_slab() returns the same cache we're allocating the array for.
+> 
+> In case of random kmalloc caches, there are multiple kmalloc caches for
+> the same size and the cache is selected based on the caller address.
+> Because it is fragile to ensure the same caller address is passed to
+> kmalloc_slab(), kmalloc_noprof(), and kmalloc_node_noprof(), fall back
+> to (s->object_size + 1) when the sizes are equal.
+> 
+> Note that this doesn't happen when memory allocation profiling is
+> disabled, as when the allocation of the array is triggered by memory
+> cgroup (KMALLOC_CGROUP), the array is allocated from KMALLOC_NORMAL.
+> 
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com [1]
+> Cc: stable@vger.kernel.org
+> Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220828
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
----
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks! Just wondering if we could simplify a bit.
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 7cc844c32474..928204df0ee3 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -6813,6 +6813,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c8d, "HP ProBook 440 G11", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c8e, "HP ProBook 460 G11", ALC236_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c8f, "HP EliteBook 630 G11", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c90, "HP EliteBook 640", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c91, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
--- 
-2.47.1
+> ---
+>  mm/slub.c | 62 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 55 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 3ff1c475b0f1..43ddb96c4081 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2104,6 +2104,52 @@ static inline void init_slab_obj_exts(struct slab *slab)
+>  	slab->obj_exts = 0;
+>  }
+>  
+> +/*
+> + * Calculate the allocation size for slabobj_ext array.
+> + *
+> + * When memory allocation profiling is enabled, the obj_exts array
+> + * could be allocated from the same slab cache it's being allocated for.
+> + * This would prevent the slab from ever being freed because it would
+> + * always contain at least one allocated object (its own obj_exts array).
+> + *
+> + * To avoid this, increase the allocation size when we detect the array
+> + * would come from the same cache, forcing it to use a different cache.
+> + */
+> +static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
+> +					 struct slab *slab, gfp_t gfp)
+> +{
+> +	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
+> +	struct kmem_cache *obj_exts_cache;
+> +
+> +	/*
+> +	 * slabobj_ext array for KMALLOC_CGROUP allocations
+> +	 * are served from KMALLOC_NORMAL caches.
+> +	 */
+> +	if (!mem_alloc_profiling_enabled())
+> +		return sz;
+> +
+> +	if (sz > KMALLOC_MAX_CACHE_SIZE)
+> +		return sz;
+
+Could we bail out here immediately if !is_kmalloc_normal(s)?
+
+> +
+> +	obj_exts_cache = kmalloc_slab(sz, NULL, gfp, 0);
+
+Then do this.
+
+> +	if (s == obj_exts_cache)
+> +		return obj_exts_cache->object_size + 1;
+
+But not this.
+
+> +	/*
+> +	 * Random kmalloc caches have multiple caches per size, and the cache
+> +	 * is selected by the caller address. Since caller address may differ
+> +	 * between kmalloc_slab() and actual allocation, bump size when both
+> +	 * are normal kmalloc caches of same size.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_RANDOM_KMALLOC_CACHES) &&
+
+Instead just compare object_size unconditionally.
+
+> +			is_kmalloc_normal(s) &&
+
+This we already checked.
+
+> +			is_kmalloc_normal(obj_exts_cache) &&
+
+I think this is guaranteed thanks to "gfp &= ~OBJCGS_CLEAR_MASK;" below so
+we don't need it.
+
+> +			(s->object_size == obj_exts_cache->object_size))
+> +		return obj_exts_cache->object_size + 1;
+> +
+> +	return sz;
+> +}
+> +
+>  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  		        gfp_t gfp, bool new_slab)
+>  {
+> @@ -2112,26 +2158,26 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  	unsigned long new_exts;
+>  	unsigned long old_exts;
+>  	struct slabobj_ext *vec;
+> +	size_t sz;
+>  
+>  	gfp &= ~OBJCGS_CLEAR_MASK;
+>  	/* Prevent recursive extension vector allocation */
+>  	gfp |= __GFP_NO_OBJ_EXT;
+>  
+> +	sz = obj_exts_alloc_size(s, slab, gfp);
+> +
+>  	/*
+>  	 * Note that allow_spin may be false during early boot and its
+>  	 * restricted GFP_BOOT_MASK. Due to kmalloc_nolock() only supporting
+>  	 * architectures with cmpxchg16b, early obj_exts will be missing for
+>  	 * very early allocations on those.
+>  	 */
+> -	if (unlikely(!allow_spin)) {
+> -		size_t sz = objects * sizeof(struct slabobj_ext);
+> -
+> +	if (unlikely(!allow_spin))
+>  		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
+>  				     slab_nid(slab));
+> -	} else {
+> -		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
+> -				   slab_nid(slab));
+> -	}
+> +	else
+> +		vec = kmalloc_node(sz, gfp | __GFP_ZERO, slab_nid(slab));
+> +
+>  	if (!vec) {
+>  		/*
+>  		 * Try to mark vectors which failed to allocate.
+> @@ -2145,6 +2191,8 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  		return -ENOMEM;
+>  	}
+>  
+> +	VM_WARN_ON_ONCE(virt_to_slab(vec)->slab_cache == s);
+> +
+>  	new_exts = (unsigned long)vec;
+>  	if (unlikely(!allow_spin))
+>  		new_exts |= OBJEXTS_NOSPIN_ALLOC;
 
 
