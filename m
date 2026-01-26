@@ -1,63 +1,88 @@
-Return-Path: <stable+bounces-211513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFVzMUQJd2lGawEAu9opvQ
-	(envelope-from <stable+bounces-211513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:27:16 +0100
+	id aBU0A4EJd2lGawEAu9opvQ
+	(envelope-from <stable+bounces-211514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:28:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC2384837
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 728D384872
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:28:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AFACB3040FA1
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 06:24:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7DD1530120E1
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 06:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506472741DF;
-	Mon, 26 Jan 2026 06:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8707626E6F8;
+	Mon, 26 Jan 2026 06:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="FAEACfoy"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aJC6mvi1"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B17D27B4FB;
-	Mon, 26 Jan 2026 06:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE1786250
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 06:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769408605; cv=none; b=lMQozIT++X/uEq0soenssiCWaBtcip+CuJW+FMpSHwo2sV3zWj8AVf16b0thwvrsrIHOfZjMcYipwked15/IDFm/HTUvN1sjdRZR3iuNOp2b5DgvOHnM6QVrH23R8ulrqzn6vSW0s9J9EKaxrp1m+JM6jN2usZ73BKtxHLRXBuA=
+	t=1769408717; cv=none; b=IOVaofpItfIhlrGa97lLFm0RAskQKgSENAdFaCRVTJtRi6KCHJ02VIrNQNjuPMyOCG4+OB/gpc/cGkLvGwp7JLeztdXBQ2h+FFQUheTxfc9OuqtVg0mo7DWOFEZDv2pDgfaf1UcrEjho0aGiAZwk0JJ1BW96IEfGFEUEs89Ud4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769408605; c=relaxed/simple;
-	bh=5kCPEOD+PaXCGQXRgOfei3ya8nySHRJvqN6Bxpv9oGk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IqHFFiHma9A0Bhq/AcOVnBd7VBKq3aPmI5d/5ExDW03GO2AJMWOxc13mow2aV0J6BrIpyF6kUiYZLH+QtyBlvP+RgJCwxE2Xj0AK0d8YR5ZSvVltyGDUSiLSUK6GoPozKUbKiOSGRsIiB+wZYp4uR84nGu8S3ShwD5SF7QbQIO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=FAEACfoy; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1769408717; c=relaxed/simple;
+	bh=/4EWuN8l4q4Og797mTc4CidhOA9Bdhs1yZfewqPbTiU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L9h85MtqsV32QHonAl6mAmtWhr66AWL5oAp4zznpjj+YRWeu3bz1Cv6Arxau5wU1LI01VeHWCyBWrKsxlPpBvdR0aeUDI8UaIvXOm0zoV5n9NTAgqn+hRru92O58UMuAXDPK/Q7YUZ1Ex9T7GPoJ1yQxqGH+0brIpK2TIbt4rO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aJC6mvi1; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47edffe5540so47319825e9.0
+        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 22:25:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=FAEACfoyRQtmS3aS26u6Ji4HWugyF8SxCkeiU40AmXTiqy27Ui2pSXgmfLC0L9cnwnf3ggohDjV1f
-	 LeRQbkYAN4CMIkWR2lxcpki0h3DYz8zKkucwxpAQ2y5L0d5JmzGp/FF3UWJHtGShfC92JOTUSFnP79
-	 OhlDN1iXG5rS48qw=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-02-12080 (RichMail) with SMTP id 2f3069770793b93-00ba2;
-	Mon, 26 Jan 2026 14:20:10 +0800 (CST)
-X-RM-TRANSID:2f3069770793b93-00ba2
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	kubik.bartlomiej@gmail.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	almaz.alexandrovich@paragon-software.com,
-	ntfs3@lists.linux.dev,
-	khalid@kernel.org
-Subject: [PATCH 5.15.y] fs/ntfs3: Initialize allocated memory before use
-Date: Mon, 26 Jan 2026 14:19:56 +0800
-Message-Id: <20260126061956.1206899-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+        d=suse.com; s=google; t=1769408713; x=1770013513; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=63OFM9QgnRQ1EDzZTsdKOdlQxfJDgB8cLPkDkghIv7w=;
+        b=aJC6mvi1BPKgmqiiRKxU5WT0zjQkGO2iIFHKW/SKKUsnFviZlY1MbpkPTk9X+1jcsJ
+         DY/juCb1eVLVvDfXEPKzGT/+wXtIgk2Mrh5MwR5K05jZM897cabgVzzkbS2mGcHIotl6
+         OSvd8OTYVgp93BO7RmWCOXctiCidJiFDpPoZBLNpHpmLDbASYZzUhGP0NL+JAX6ER5Ff
+         fqNMHrIwaY5AoOijcEc0RV0cZsdz8qDIC36vjHP9BVm2wOO2gLeYZ8uDh0ie7GNfCfF4
+         obT0hOXEvtnkD4fcokADqi1l454eIkrJjoGLZjIIoFTtHSSi8RqjwKCLS36nU/ZWF8wC
+         zIbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769408713; x=1770013513;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=63OFM9QgnRQ1EDzZTsdKOdlQxfJDgB8cLPkDkghIv7w=;
+        b=Xp+65P/nvjbz6tc+pyUIJc57c3Sehi432ifkoFJsx5wwXcoZeH47aMohiD+KkM4g3i
+         mN1gfby319gpiGQgmwpEsFzjMBy5Cmk7YH/30x4ZeRQk0sYkQsJo0V0ErFGGeNx4ozS5
+         jULIwqKHbTej+Yy2bf2/931t1d3T08QKPrmdh/YV9gU5rIC+o1tzq17986BkMAdBrBd5
+         XyzPq2nFN6rxe7pB+2D3YWnfkwOfg4u3JPdEHb0w8/jagYptRPIKIJcWZBIW5PQ4J35h
+         n+ry00bWJNrZH5QealZDg5tj2+lazP0sOOJIflHf+BhJiyVFXppWZnG47oVgawamkVOF
+         D2Bw==
+X-Gm-Message-State: AOJu0YylikulaczNjcW29jn6j7Rql2Pgi2Be5rtW/FojnRQdnArKsoSF
+	mSesZK7Ki4WsjFfvGq7SHknK2FKT9UAt8iMkH5uoFkAQEKWI5OYJ4wHcc69sneOlMFmHZYXG8Mf
+	n3W1n
+X-Gm-Gg: AZuq6aKX2xCozoOlNHch1rP4sQQ0aR3C3YzM1IQZF3sscx9sbVfgQkSKfHfQLI3xAL5
+	TYqxhSSyR/GFBfEkfebNV5pa3cpaUN/KtjdmHz2AqEcCMMxGf5JMv+IWOSefWCQ0Qimvj2Qo3a7
+	bUZJPeCNOVebVnUbDE5gGNx3TzK/U6q4vVAieEOni7DBxSUrDItbuGHdEWT7gPdMpzET1sfikr+
+	nhDiIw+sVhxRL7E1tdwOAVLpOzO+P3HRK5r58oaNj8q7utMwog3QOdb49ZWz709gYv/3QVq4Axc
+	JW9wia+S28/rwHqDTFSo3fHUDxgVqc1Q5MN/C0P/QtWbNN29P1LsH3sH4oKJrTZMkGDd3Jz2676
+	JofjFUUwNJqwCkcbE8bsLXE5DDgsxuNGfHPY028yU5oo78bzemM72nN1Sgn0w+mw8BNGz0n7mER
+	jpB7Un7uPvgQ00dou3QNqNmRooQUWqfS+EBakVrux6
+X-Received: by 2002:a05:600c:530e:b0:47a:935f:61a0 with SMTP id 5b1f17b1804b1-4805ccddb9bmr59584965e9.0.1769408713550;
+        Sun, 25 Jan 2026 22:25:13 -0800 (PST)
+Received: from localhost (27-240-121-17.adsl.fetnet.net. [27.240.121.17])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4804d8a5b67sm254792925e9.10.2026.01.25.22.25.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Jan 2026 22:25:13 -0800 (PST)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: stable@vger.kernel.org
+Cc: Ihor Solodrai <ihor.solodrai@pm.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH stable v2 6.12 6.6 1/1] selftests/bpf: Check for timeout in perf_link test
+Date: Mon, 26 Jan 2026 14:25:04 +0800
+Message-ID: <20260126062507.12876-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,108 +91,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-211513-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-211514-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[139.com];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,paragon-software.com:email,syzkaller.appspot.com:url,appspotmail.com:email,139.com:mid,139.com:email]
-X-Rspamd-Queue-Id: 3BC2384837
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,suse.com:dkim,suse.com:mid]
+X-Rspamd-Queue-Id: 728D384872
 X-Rspamd-Action: no action
 
-From: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
+From: Ihor Solodrai <ihor.solodrai@pm.me>
 
-[ Upstream commit a8a3ca23bbd9d849308a7921a049330dc6c91398 ]
+commit e6c209da7e0e9aaf955a7b59e91ed78c2b6c96fb upstream.
 
-KMSAN reports: Multiple uninitialized values detected:
+Recently perf_link test started unreliably failing on libbpf CI:
+  * https://github.com/libbpf/libbpf/actions/runs/11260672407/job/31312405473
+  * https://github.com/libbpf/libbpf/actions/runs/11260992334/job/31315514626
+  * https://github.com/libbpf/libbpf/actions/runs/11263162459/job/31320458251
 
-- KMSAN: uninit-value in ntfs_read_hdr (3)
-- KMSAN: uninit-value in bcmp (3)
+Part of the test is running a dummy loop for a while and then checking
+for a counter incremented by the test program.
 
-Memory is allocated by __getname(), which is a wrapper for
-kmem_cache_alloc(). This memory is used before being properly
-cleared. Change kmem_cache_alloc() to kmem_cache_zalloc() to
-properly allocate and clear memory before use.
+Instead of waiting for an arbitrary number of loop iterations once,
+check for the test counter in a loop and use get_time_ns() helper to
+enforce a 100ms timeout.
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Tested-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=332bd4e9d148f11a87dc
+v1: https://lore.kernel.org/bpf/zuRd072x9tumn2iN4wDNs5av0nu5nekMNV4PkR-YwCT10eFFTrUtZBRkLWFbrcCe7guvLStGQlhibo8qWojCO7i2-NGajes5GYIyynexD-w=@pm.me/
 
-Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
-Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
-Tested-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
-Reported-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0399100e525dd9696764
-
-Reviewed-by: Khalid Aziz <khalid@kernel.org>
-Signed-off-by: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241011153104.249800-1-ihor.solodrai@pm.me
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 ---
- fs/ntfs3/inode.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Stablizes BPF selftests. Previous submission[1] missed reference to
+upstream commit.
+1: https://lore.kernel.org/stable/20250609052941.52073-1-shung-hsi.yu@suse.com/
+---
+ .../testing/selftests/bpf/prog_tests/perf_link.c  | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 7ac76e6c35dc..acd5be0d36c0 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -1298,7 +1298,7 @@ struct inode *ntfs_create_inode(struct user_namespace *mnt_userns,
- 		fa |= FILE_ATTRIBUTE_READONLY;
+diff --git a/tools/testing/selftests/bpf/prog_tests/perf_link.c b/tools/testing/selftests/bpf/prog_tests/perf_link.c
+index 3a25f1c743a1..d940ff87fa08 100644
+--- a/tools/testing/selftests/bpf/prog_tests/perf_link.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_link.c
+@@ -4,8 +4,12 @@
+ #include <pthread.h>
+ #include <sched.h>
+ #include <test_progs.h>
++#include "testing_helpers.h"
+ #include "test_perf_link.skel.h"
  
- 	/* Allocate PATH_MAX bytes. */
--	new_de = __getname();
-+	new_de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!new_de) {
- 		err = -ENOMEM;
- 		goto out1;
-@@ -1694,10 +1694,9 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
- 	struct ATTR_FILE_NAME *de_name;
++#define BURN_TIMEOUT_MS 100
++#define BURN_TIMEOUT_NS BURN_TIMEOUT_MS * 1000000
++
+ static void burn_cpu(void)
+ {
+ 	volatile int j = 0;
+@@ -32,6 +36,7 @@ void serial_test_perf_link(void)
+ 	int run_cnt_before, run_cnt_after;
+ 	struct bpf_link_info info;
+ 	__u32 info_len = sizeof(info);
++	__u64 timeout_time_ns;
  
- 	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
--	memset(de, 0, PATH_MAX);
+ 	/* create perf event */
+ 	memset(&attr, 0, sizeof(attr));
+@@ -63,8 +68,14 @@ void serial_test_perf_link(void)
+ 	ASSERT_GT(info.prog_id, 0, "link_prog_id");
  
- 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
- 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
-@@ -1742,7 +1741,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
- 		return -EINVAL;
+ 	/* ensure we get at least one perf_event prog execution */
+-	burn_cpu();
+-	ASSERT_GT(skel->bss->run_cnt, 0, "run_cnt");
++	timeout_time_ns = get_time_ns() + BURN_TIMEOUT_NS;
++	while (true) {
++		burn_cpu();
++		if (skel->bss->run_cnt > 0)
++			break;
++	        if (!ASSERT_LT(get_time_ns(), timeout_time_ns, "run_cnt_timeout"))
++			break;
++	}
  
- 	/* Allocate PATH_MAX bytes. */
--	de = __getname();
-+	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
- 	if (!de)
- 		return -ENOMEM;
- 
+ 	/* perf_event is still active, but we close link and BPF program
+ 	 * shouldn't be executed anymore
 -- 
-2.34.1
-
+2.52.0
 
 
