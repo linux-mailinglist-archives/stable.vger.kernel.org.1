@@ -1,130 +1,212 @@
-Return-Path: <stable+bounces-211655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211656-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KAtzLPibd2nOjAEAu9opvQ
-	(envelope-from <stable+bounces-211655-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:53:12 +0100
+	id 8O+0OPmbd2nOjAEAu9opvQ
+	(envelope-from <stable+bounces-211656-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:53:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4088AFC9
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:53:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9E68AFD1
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:53:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3705C3004635
+	by sin.lore.kernel.org (Postfix) with ESMTP id E7D923006807
 	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C1C344026;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB340346FC3;
 	Mon, 26 Jan 2026 16:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cv6BW3mh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ay4r3VqQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E033375DD
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 16:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC8A3375DD
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 16:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769446386; cv=none; b=WxfPe7laQDHq9I/vLZ2SiPCXnbPSqW3YLIsaV26Dbcjfqrj6AEJlsGRMQ0YmF6NmhVYiWir4XhcwaMnXDxsBfo6bW1e1EJ96zzIREijOrIsb1Jw4oUdatkk5y0mewrSJJ0OOh7Pp0g5GpD+jk044JYl/rrQ0RWMh38jcqjFBc6U=
+	t=1769446386; cv=none; b=Hpk/+QEHF9Me5zmzPeDb966aSlHPaWQdBYsQY6PY/uc5gOoVeZBHu0cMay7LxPy6pOSJFWuB5/7yncROQellYifmyoWselYulTPJBdxLaOJ5EhinpXhsDPJom2L67ixmBKPwWAt0vhLO9S/ZGQ305lZUngBGBMFFqp0ZPruR40g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769446386; c=relaxed/simple;
-	bh=XY4oa1x0ETKvJaZFjXrc6mFzPl7V7og1Ff8A7ViwCQo=;
+	bh=lytw1C9L2scVcTC6h8ixCo4+Rf/PYZPg7Nk4de1rM9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tmKsDW2B4DpMEeQdJOc0HG5TnJsd+rNYNDSmO0R6FQciZZh3QEybAC1ozHKP7mjhVRj+aLnx1OhnDggHlKagjqZnf1bV5jgdgkTKfS/t8dZIO9tmF1B5PN0kgA0Wscq49eLR/TrQyEFyi0TBkPtrDhLnECeCH5y3mzVdsf4mok8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cv6BW3mh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7CB7C116C6;
-	Mon, 26 Jan 2026 16:53:04 +0000 (UTC)
+	 MIME-Version; b=sONqEZOL4J9R9xMkCrj6JKZmv+VLKCP0xKuuwWNJb0Y+2herGZmb5DRF/1zmmEieu/EU/ApdkeMA+KmyRHrdzeCCes7/y1BYXGh44mcsOK8QEaNjJknZ4j0fElYIcZvMEZuX+whuGZXr6H76HWyp71hGda7bn0HUdhmbTGmUpn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ay4r3VqQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFDDC16AAE;
+	Mon, 26 Jan 2026 16:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769446385;
-	bh=XY4oa1x0ETKvJaZFjXrc6mFzPl7V7og1Ff8A7ViwCQo=;
+	s=k20201202; t=1769446386;
+	bh=lytw1C9L2scVcTC6h8ixCo4+Rf/PYZPg7Nk4de1rM9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cv6BW3mhZrTyzertFdj/aYNAyfE8DSL6U4/L5uYMH+w7q/0I434l8bxQoErqX2INK
-	 VmDPeyjYV6WsVUDmT6jSlYkNtyayQpv2j/8NEgquM12MDMqQ7HW4sAOLrFd43lZQS1
-	 NnKs8L690En3J1ylpjoEWaCDjGPY+UVqUQbJXsB0eVFyY9T7+wb9Jkals90FM22MIu
-	 pTh2CzXZtlbPKTTTehMAsWXcbN/oEFqSKsIowt+4RcgktECbV+P1p8ZqGP/sjvkc6m
-	 nE5zpNVzssggTI4bOS/xJpmYQ7Tz2PPF3GOzVIIZfySbtQfEjVJ9OYOM3d/LJDAUOJ
-	 4nbZbgsEr+qwQ==
+	b=ay4r3VqQScZoud6RNJ8XDmeOxFvUn/ghoEu6ux1caKr2LRF/CWsOEcybsnVLw0c5e
+	 wtcSASGCybHTLF8lzn12+iALl3A7RRMfEJL1cvnGaVNCbSd8k4OG6FDWoBwZenAek0
+	 jskrmIA4MCX8BFub7whqjiorbVcZ0R6YohviS2LTQs4dmKjEJoxwuWJtRYEcjKyo6J
+	 qujFG3jx/cM/aFX45HJBf/xLeYshfnr57iyhIXIDNkrXmp9G4vPxEQiZcSZuISr87h
+	 56nUV9cCASBG7gkHxzs4+14kYwEZzTyPhuXurA8OBvmxKilhJQuYauKN2jaHNNKJjx
+	 5HYcJO0OnZLPQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+Cc: Rasmus Villemoes <ravi@prevas.dk>,
+	Peter Rosin <peda@axentia.se>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 1/2] iio: core: Replace lockdep_set_class() + mutex_init() by combined call
-Date: Mon, 26 Jan 2026 11:53:02 -0500
-Message-ID: <20260126165303.3408060-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y 2/2] iio: core: add separate lockdep class for info_exist_lock
+Date: Mon, 26 Jan 2026 11:53:03 -0500
+Message-ID: <20260126165303.3408060-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012654-trend-outback-5af6@gregkh>
+In-Reply-To: <20260126165303.3408060-1-sashal@kernel.org>
 References: <2026012654-trend-outback-5af6@gregkh>
+ <20260126165303.3408060-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211655-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211656-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,intel.com:email,analog.com:email]
-X-Rspamd-Queue-Id: CD4088AFC9
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,iio_dev.info:url,prevas.dk:email]
+X-Rspamd-Queue-Id: 0A9E68AFD1
 X-Rspamd-Action: no action
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Rasmus Villemoes <ravi@prevas.dk>
 
-[ Upstream commit c76ba4b2644424b8dbacee80bb40991eac29d39e ]
+[ Upstream commit 9910159f06590c17df4fbddedaabb4c0201cc4cb ]
 
-Replace lockdep_set_class() + mutex_init() by combined call
-mutex_init_with_key().
+When one iio device is a consumer of another, it is possible that
+the ->info_exist_lock of both ends up being taken when reading the
+value of the consumer device.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Since they currently belong to the same lockdep class (being
+initialized in a single location with mutex_init()), that results in a
+lockdep warning
+
+         CPU0
+         ----
+    lock(&iio_dev_opaque->info_exist_lock);
+    lock(&iio_dev_opaque->info_exist_lock);
+
+   *** DEADLOCK ***
+
+   May be due to missing lock nesting notation
+
+  4 locks held by sensors/414:
+   #0: c31fd6dc (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0x44/0x4e4
+   #1: c4f5a1c4 (&of->mutex){+.+.}-{3:3}, at: kernfs_seq_start+0x1c/0xac
+   #2: c2827548 (kn->active#34){.+.+}-{0:0}, at: kernfs_seq_start+0x30/0xac
+   #3: c1dd2b68 (&iio_dev_opaque->info_exist_lock){+.+.}-{3:3}, at: iio_read_channel_processed_scale+0x24/0xd8
+
+  stack backtrace:
+  CPU: 0 UID: 0 PID: 414 Comm: sensors Not tainted 6.17.11 #5 NONE
+  Hardware name: Generic AM33XX (Flattened Device Tree)
+  Call trace:
+   unwind_backtrace from show_stack+0x10/0x14
+   show_stack from dump_stack_lvl+0x44/0x60
+   dump_stack_lvl from print_deadlock_bug+0x2b8/0x334
+   print_deadlock_bug from __lock_acquire+0x13a4/0x2ab0
+   __lock_acquire from lock_acquire+0xd0/0x2c0
+   lock_acquire from __mutex_lock+0xa0/0xe8c
+   __mutex_lock from mutex_lock_nested+0x1c/0x24
+   mutex_lock_nested from iio_read_channel_raw+0x20/0x6c
+   iio_read_channel_raw from rescale_read_raw+0x128/0x1c4
+   rescale_read_raw from iio_channel_read+0xe4/0xf4
+   iio_channel_read from iio_read_channel_processed_scale+0x6c/0xd8
+   iio_read_channel_processed_scale from iio_hwmon_read_val+0x68/0xbc
+   iio_hwmon_read_val from dev_attr_show+0x18/0x48
+   dev_attr_show from sysfs_kf_seq_show+0x80/0x110
+   sysfs_kf_seq_show from seq_read_iter+0xdc/0x4e4
+   seq_read_iter from vfs_read+0x238/0x2e4
+   vfs_read from ksys_read+0x6c/0xec
+   ksys_read from ret_fast_syscall+0x0/0x1c
+
+Just as the mlock_key already has its own lockdep class, add a
+lock_class_key for the info_exist mutex.
+
+Note that this has in theory been a problem since before IIO first
+left staging, but it only occurs when a chain of consumers is in use
+and that is not often done.
+
+Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
+Signed-off-by: Rasmus Villemoes <ravi@prevas.dk>
+Reviewed-by: Peter Rosin <peda@axentia.se>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 9910159f0659 ("iio: core: add separate lockdep class for info_exist_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/industrialio-core.c | 4 +++-
+ include/linux/iio/iio-opaque.h  | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 5d2f35cf18bc3..f69deefcfb6fd 100644
+index f69deefcfb6fd..117ffad4f3769 100644
 --- a/drivers/iio/industrialio-core.c
 +++ b/drivers/iio/industrialio-core.c
-@@ -1717,9 +1717,8 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+@@ -1657,6 +1657,7 @@ static void iio_dev_release(struct device *device)
+ 	mutex_destroy(&iio_dev_opaque->info_exist_lock);
+ 	mutex_destroy(&iio_dev_opaque->mlock);
+ 
++	lockdep_unregister_key(&iio_dev_opaque->info_exist_key);
+ 	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
+ 
+ 	ida_free(&iio_ida, iio_dev_opaque->id);
+@@ -1717,9 +1718,10 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
  	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
  
  	lockdep_register_key(&iio_dev_opaque->mlock_key);
--	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
++	lockdep_register_key(&iio_dev_opaque->info_exist_key);
  
--	mutex_init(&iio_dev_opaque->mlock);
-+	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
- 	mutex_init(&iio_dev_opaque->info_exist_lock);
+ 	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
+-	mutex_init(&iio_dev_opaque->info_exist_lock);
++	mutex_init_with_key(&iio_dev_opaque->info_exist_lock, &iio_dev_opaque->info_exist_key);
  
  	indio_dev->dev.parent = parent;
+ 	indio_dev->dev.type = &iio_device_type;
+diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
+index 4247497f3f8bd..b87841a355f80 100644
+--- a/include/linux/iio/iio-opaque.h
++++ b/include/linux/iio/iio-opaque.h
+@@ -14,6 +14,7 @@
+  * @mlock:			lock used to prevent simultaneous device state changes
+  * @mlock_key:			lockdep class for iio_dev lock
+  * @info_exist_lock:		lock to prevent use during removal
++ * @info_exist_key:		lockdep class for info_exist lock
+  * @trig_readonly:		mark the current trigger immutable
+  * @event_interface:		event chrdevs associated with interrupt lines
+  * @attached_buffers:		array of buffers statically attached by the driver
+@@ -47,6 +48,7 @@ struct iio_dev_opaque {
+ 	struct mutex			mlock;
+ 	struct lock_class_key		mlock_key;
+ 	struct mutex			info_exist_lock;
++	struct lock_class_key		info_exist_key;
+ 	bool				trig_readonly;
+ 	struct iio_event_interface	*event_interface;
+ 	struct iio_buffer		**attached_buffers;
 -- 
 2.51.0
 
