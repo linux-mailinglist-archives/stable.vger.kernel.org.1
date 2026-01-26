@@ -1,154 +1,182 @@
-Return-Path: <stable+bounces-211635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFtwI56Hd2m9hgEAu9opvQ
-	(envelope-from <stable+bounces-211635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:26:22 +0100
+	id sDzfLvaId2m9hgEAu9opvQ
+	(envelope-from <stable+bounces-211636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:32:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C87B8A1F1
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:26:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 338588A2E2
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:32:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 67F6D301C91A
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:25:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 196363014C68
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0041DFDB8;
-	Mon, 26 Jan 2026 15:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52F433F368;
+	Mon, 26 Jan 2026 15:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b39j7BQa"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZTIjr9iz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0513A33EB0B;
-	Mon, 26 Jan 2026 15:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51926334C3D;
+	Mon, 26 Jan 2026 15:32:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769441099; cv=none; b=JhH4sx18BYtyOHoQpAkfsZ9irKtwKWwRVPagV1nkAQpwELh16UeX5fjf7N64hLXH9FCdSeXbjfWTi4bw5UeWqYx34KfrxP5m+bQ0aJiccLrpb12eENPoVbMJC3PEt2DONyH5U08HBZLWpY78LytcWIiykyZp8Bu+04eskj6v5UI=
+	t=1769441523; cv=none; b=lNjC4uPJJIQf3hgOcrO6eYStUvVk1hYrjEUwN9xz0j05ct9LBe1xv3kU2E4+ye4vzMwWX8VDZ06hcxj+TAVs2PQ+JNRU9zC3Dhie6rILZZjDi7yj03Fb1e9qF0++tDH3WaTXEn02uoZxqRUUCfl+EAJG1GpdivJgkyijRo7+Gz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769441099; c=relaxed/simple;
-	bh=qW3jLL79ZgShufLkh2Ostlhg6VKDXwftvT7kEgnyCiQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T26svICt/hUcfeCUR5TgXg1OR3bJmRmbSXbO/ubZ9LTYfurKwFa+qX0DK8ygt1nR8nWLMT4zygyVvX3W5zPs58gleeMFY0meF7KukvEhS76UsvPj9Hnv2MR+vEvL1rSWeB/ZqauqUEJJ+mXuQasG0D6VDdb878MLNLUnnEUgZcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b39j7BQa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F585C116C6;
-	Mon, 26 Jan 2026 15:24:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769441098;
-	bh=qW3jLL79ZgShufLkh2Ostlhg6VKDXwftvT7kEgnyCiQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b39j7BQaYouf4gz+Q2m1L5B3DJX95wpHUaOro2P5FPbyd9RVieP9xBAEZgiw568Jy
-	 m58jQpbeAxmlFvZdu1KuBUbwi1SWNb+0vS/8v6ZIxOywTfYmcDoVJmV1BIT9V62ddF
-	 eFvY/iRi4I9CrBx6hV318GyeBq02Z4lmqJsslmB0=
-Date: Mon, 26 Jan 2026 16:24:55 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Xingjing Deng <micro6947@gmail.com>
-Cc: srini@kernel.org, amahesh@qti.qualcomm.com, arnd@arndb.de,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Xingjing Deng <xjdeng@buaa.edu.cn>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v5] misc: fastrpc: check qcom_scm_assign_mem() return in
- rpmsg_probe
-Message-ID: <2026012631-suffice-enforcer-8553@gregkh>
-References: <20260117140351.875511-1-xjdeng@buaa.edu.cn>
+	s=arc-20240116; t=1769441523; c=relaxed/simple;
+	bh=Za1NfCjlqimI7reRl4rc2aeaWjaJr0fiN7wZR3sIgnk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=I3vECbC4eEQAZIRNGI+FVTorYJvGetY1351tsH9UD+1g8s6lz+dniQ7FdrWb1ZxG5ZrH+0DpJT4Exe4rKyWteavXQ1EU7jHAsicI1lyMa/dQQHXGNdm0tpsLrFAK4ZaP2jpM9kWkSCk0dxJ1HsDNb9TbRiFqnbX2kv3TAo4oTSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZTIjr9iz; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60QF9Vxp028672;
+	Mon, 26 Jan 2026 15:31:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=3NRCgo
+	uXtJWry/L7gBk13r2KQL/nufuQsClbyVdzlMM=; b=ZTIjr9izXR/aZY+SlrM99n
+	d9ILIZtv3c1QdF4g1Z+veVlK6OOU0VwXUR05No2lj8M02/lL0rGEAgj43COwgich
+	ecBtnlMvSi+sxAszx4XKIpNT1gy5aOvPiTtFjCj+CezqYk9iygznNelEObYg8CWt
+	CLMgBmXbdRyvLbFgeo5uQRIiv/fNYNcn6K0fY+qiaVEYWYXdhxoEOKeztJKW4Kmv
+	P5fj2MLli3FED3LAUaeAYXpJs9amAXRHTFTDPwG/KDyGFY7GZMNM/MSR0fFGPqUY
+	yrOutiwlUIm+6epSTUMxSoNMXbKO/uqTVi82w6QXTLw/IUCFHJ68anGB3R+mJd8w
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvmgfqhu1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Jan 2026 15:31:55 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60QCXL02023341;
+	Mon, 26 Jan 2026 15:31:54 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bwamjmwhj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Jan 2026 15:31:54 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60QFVojZ51118498
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 26 Jan 2026 15:31:51 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DAF1820043;
+	Mon, 26 Jan 2026 15:31:50 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AC54A20040;
+	Mon, 26 Jan 2026 15:31:50 +0000 (GMT)
+Received: from localhost (unknown [9.52.203.172])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 26 Jan 2026 15:31:50 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260117140351.875511-1-xjdeng@buaa.edu.cn>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 26 Jan 2026 16:31:50 +0100
+Message-Id: <DFYMO05UXGKY.2HG19ERN69ZUW@linux.ibm.com>
+Cc: <helgaas@kernel.org>, <lukas@wunner.de>, <alex@shazbot.org>,
+        <clg@redhat.com>, <stable@vger.kernel.org>, <schnelle@linux.ibm.com>,
+        <mjrosato@linux.ibm.com>, <julianr@linux.ibm.com>
+Subject: Re: [PATCH v8 9/9] vfio: Remove the pcie check for
+ VFIO_PCI_ERR_IRQ_INDEX
+From: "Julian Ruess" <julianr@linux.ibm.com>
+To: "Farhan Ali" <alifm@linux.ibm.com>, <linux-s390@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260122194437.1903-1-alifm@linux.ibm.com>
+ <20260122194437.1903-10-alifm@linux.ibm.com>
+In-Reply-To: <20260122194437.1903-10-alifm@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Z4vh3XRA c=1 sm=1 tr=0 ts=697788ec cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=Okk2yIgg9Z9Hp2RjL0IA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: OUPgyJ6cPDkrIK-rUKGZs12tq3GdnhO8
+X-Proofpoint-ORIG-GUID: OUPgyJ6cPDkrIK-rUKGZs12tq3GdnhO8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI2MDEzMSBTYWx0ZWRfX3qjgUcYByevO
+ RA9Vgih70y53ruoeDz6l2xYNewvkH7k5rgoO+wdB5gDyZWLayLAPoUQuKVlb3PHIrdbSTuzrr7C
+ WUwXc1N0FwTheVtLn1+KjW9YWWelk0P7UtUn0+uIiGKTbb1p9psMl7kiGoX9LJIsmbsYsUihyMa
+ sM30SK5GoH+s/PHMXRK0GiHfjpZKvZvXOl7fw2RS3GmHKdEyFZotwedOQxhK9lum1jD4YUwT1ny
+ O5d5JY4HziQqzj8A7utZP6dKB1B4ffdZlRt+uN8xNE9u+mdjuvt03Jh/kyImskF9sS58zIWMrr3
+ Vg1XKrzVNEVhuP6Nd2Am383b+HyhwJs7cyePmdp9ykdsRDeaxEUuwKY65yHexmhuMkjTGIe+HOQ
+ /N+LLHPB3rtSrT2yuo/+ZflfFMgkYIr1fSfkiKvzgeCnWGlJ/oTjpqIfAgQlNPWtpkEYfQdsHoV
+ +lePA3mD4JupXMKI5cA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-26_03,2026-01-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 phishscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601260131
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211635-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-211636-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[julianr@linux.ibm.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[buaa.edu.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 4C87B8A1F1
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 338588A2E2
 X-Rspamd-Action: no action
 
-On Sat, Jan 17, 2026 at 10:03:51PM +0800, Xingjing Deng wrote:
-> In the SDSP probe path, qcom_scm_assign_mem() is used to assign the
-> reserved memory to the configured VMIDs, but its return value was not
-> checked.
-> 
-> Fail the probe if the SCM call fails to avoid continuing with an
-> unexpected/incorrect memory permission configuration.
-> 
-> The file has passed the check of checkpatch.
-> 
-> Fixes: c3c0363bc72d4 ("misc: fastrpc: support complete DMA pool access to the DSP")
-> Cc: stable@vger.kernel.org # 6.11-rc1
-> Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
+On Thu Jan 22, 2026 at 8:44 PM CET, Farhan Ali wrote:
+> We are configuring the error signaling on the vast majority of devices an=
+d
+> it's extremely rare that it fires anyway. This allows userspace to be
+> notified on errors for legacy PCI devices. The Internal Shared Memory (IS=
+M)
+> device on s390x is one such device. For PCI devices on IBM s390x error
+> recovery involves platform firmware and notification to operating system
+> is done by architecture specific way. So the ISM device can still be
+> recovered when notified of an error.
+>
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
 > ---
-> v5:
-> - Squash the functional change and indentation fix into a single patch.
-> - Link to v4: https://lore.kernel.org/linux-arm-msm/2026011637-statute-showy-2c3f@gregkh/T/#t
-> 
-> v4:
-> - Format the indentation
-> - Link to v3: https://lore.kernel.org/linux-arm-msm/20260113084352.72itrloj5w7qb5o3@hu-mojha-hyd.qualcomm.com/T/#t
-> 
-> v3:
-> - Add missing linux-kernel@vger.kernel.org to cc list.
-> - Standarlize changelog placement/format.
-> - Link to v2: https://lore.kernel.org/linux-arm-msm/20260113063618.e2ke47gy3hnfi67e@hu-mojha-hyd.qualcomm.com/T/#t
-> 
-> v2:
-> - Add Fixes: and Cc: stable tags.
-> - Link to v1: https://lore.kernel.org/linux-arm-msm/20260113022550.4029635-1-xjdeng@buaa.edu.cn/T/#u
-> ---
->  drivers/misc/fastrpc.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-> index fb3b54e05928..d9650efa443f 100644
-> --- a/drivers/misc/fastrpc.c
-> +++ b/drivers/misc/fastrpc.c
-> @@ -2338,8 +2338,13 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
->  		if (!err) {
->  			src_perms = BIT(QCOM_SCM_VMID_HLOS);
->  
-> -			qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
-> -				    data->vmperms, data->vmcount);
-> +			err = qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
-> +					data->vmperms, data->vmcount);
-> +			if (err) {
-> +				dev_err(rdev, "Failed to assign memory phys 0x%llx size 0x%llx err %d",
-> +				    res.start, resource_size(&res), err);
+>  drivers/vfio/pci/vfio_pci_core.c  | 8 ++------
+>  drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
+>  2 files changed, 3 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index c92c6c512b24..9d44df9e21db 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -778,8 +778,7 @@ static int vfio_pci_get_irq_count(struct vfio_pci_cor=
+e_device *vdev, int irq_typ
+>  			return (flags & PCI_MSIX_FLAGS_QSIZE) + 1;
+>  		}
+>  	} else if (irq_type =3D=3D VFIO_PCI_ERR_IRQ_INDEX) {
+> -		if (pci_is_pcie(vdev->pdev))
 
-Shouldn't the caller function report the error?
+I'm wondering why this pci_is_pcie was introduced here in the first place.
+Do you have any ideas?
 
-How as this found and tested?
-
-thanks,
-
-greg k-h
+-- snip --
 
