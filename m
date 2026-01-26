@@ -1,192 +1,145 @@
-Return-Path: <stable+bounces-211567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDRmII1od2nCfQEAu9opvQ
-	(envelope-from <stable+bounces-211567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:13:49 +0100
+	id WHIYBPNod2nCfQEAu9opvQ
+	(envelope-from <stable+bounces-211568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:15:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A28988A91
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:13:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E73188ACC
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:15:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BDE93050D3C
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:11:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D4D63047E7F
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42209338587;
-	Mon, 26 Jan 2026 13:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B80338594;
+	Mon, 26 Jan 2026 13:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FxiDhn0M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAhER4of"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23413382E3;
-	Mon, 26 Jan 2026 13:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E66D33858E
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 13:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769433109; cv=none; b=qizBK9RQ8ZEFHanq6OlnhAorkCRJ7AbO9rx4n1JY+KIIC58/oH7DvsqzpdYc4+mRUfaZjNcW3Mqju4j8ZENe74QEgSuX3gSN6Jbxim8jq/0EoLvITiqlp7PbcVuUKQ6azFGuSW6ik9LZfScv0BMhC83X3hr3ulnZiyLUkciXQ/0=
+	t=1769433209; cv=none; b=COtHdF6/2fC7AAeGLPFON5RVQ4FHgWrRxJZABC0YUw7ofoo9dWVC1mgJKpYZdbjYUIQqcx4rpB38hnVPiDRPZe9HI60VFE3FSDeT4Ud054SW6NickuxYilf35kuEupRAQlN/muHJa71cMAWboORHFe0YsTH/IQAgbUtW3lgy5ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769433109; c=relaxed/simple;
-	bh=HzovIko6p1oZiDuHaWX+trvrpsQeRFadqkx3PZQ/G1o=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=jOP7KMmQP9DnDd8Wk1HlPEqFwp0hR04pzpTj4x2N1FF5cm0Rakl4qXrG6sgEIHitFPFy1TWTB73Zu27txvrdRE2jJuFIwJxKYNWbKyp+KClbyUutkRWfhFqDMgyvPiwkctq2WlcNydf4XS9SpMx1P1+RpkSwwvxp6gwNtzXMeME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FxiDhn0M; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60PJuLxo028552;
-	Mon, 26 Jan 2026 13:11:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=JI/+pT
-	wyNrmLic2KBBIzLBvMgqE9z2pLpfVA1fdwKp4=; b=FxiDhn0MZIoEicZFvOjFST
-	YkcnsDNSn04p7Re2TpRX25zALVcL6e6UTB95lm8lTtYYvWE7j2E/THmk2uA1a2W+
-	8xHQ2/GXdtWBFuV0syyVTMCWIXtuY/OKo3/Hnr3df1+mp8QNP9/xYbx+5b9UC+i+
-	8dDDKHVoUxfef+joBTOycc/0RFKB6dU98BQ12RNlBoLUKKzOzQ4spNTkj+5M6vFy
-	w4pP7JaGQcvHb6ZKkL5wmBL1gM6wGWW3HJhIrNjjcSbiyfjsiFbFvoVS8P3oyOO/
-	ekz7tWvdaEMexdlxDCmS2RgziU3zDHcE7x6j3aBrmsoBweT/c8455fQDPy6CK9xQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnt7g3ax-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Jan 2026 13:11:41 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60QAqMVt006687;
-	Mon, 26 Jan 2026 13:11:40 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw8sy4rcu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Jan 2026 13:11:39 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60QDBZmc51773810
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 Jan 2026 13:11:35 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C615920049;
-	Mon, 26 Jan 2026 13:11:35 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 937AE20040;
-	Mon, 26 Jan 2026 13:11:35 +0000 (GMT)
-Received: from localhost (unknown [9.52.203.172])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 26 Jan 2026 13:11:35 +0000 (GMT)
+	s=arc-20240116; t=1769433209; c=relaxed/simple;
+	bh=GD8vTwM5+KAhqbe/3G8w59s3WmfOSgok03ONo56Acho=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GyiF5u+M6Crk0ko7ICFghssDrS+Pi71V/gVJJ7whH4dUDvVYcxMHAQwOiexYP6TkL6NzsOTNImReaA4mL3H5CdYuRMhqUOpJ0+8h3SvSKfLPYa4MbUcExeshofSck0onuAtcUzzX0iwZBe2lSMxqTXBCxj65KoYEWmRbdiF7BRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAhER4of; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4EFC116C6;
+	Mon, 26 Jan 2026 13:13:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1769433209;
+	bh=GD8vTwM5+KAhqbe/3G8w59s3WmfOSgok03ONo56Acho=;
+	h=Subject:To:Cc:From:Date:From;
+	b=sAhER4ofSE2xkmWd/eDEPiDsLloaWVTNG0KLQOWsx2O+DA0OpzeIAiSMgFPN/ZCag
+	 2ZxFmbZ9nbtBZfui4MarTaCHvQyRpgRNOd0jEAXHSJEDjNoOkQQ5NttFQeus7IH3O0
+	 yxT1Go/+tT/TJ/wbaS/9KX7Co675aHsCwKY1aliI=
+Subject: FAILED: patch "[PATCH] scsi: xen: scsiback: Fix potential memory leak in" failed to apply to 6.1-stable tree
+To: nihaal@cse.iitm.ac.in,jgross@suse.com,martin.petersen@oracle.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 26 Jan 2026 14:13:25 +0100
+Message-ID: <2026012625-perky-unquote-b3a5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 26 Jan 2026 14:11:35 +0100
-Message-Id: <DFYJOMBIETXN.2WABG9BS0HG2H@linux.ibm.com>
-From: "Julian Ruess" <julianr@linux.ibm.com>
-To: "Farhan Ali" <alifm@linux.ibm.com>, <linux-s390@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Cc: <helgaas@kernel.org>, <lukas@wunner.de>, <alex@shazbot.org>,
-        <clg@redhat.com>, <stable@vger.kernel.org>, <schnelle@linux.ibm.com>,
-        <mjrosato@linux.ibm.com>, <julianr@linux.ibm.com>,
-        "Benjamin Block"
- <bblock@linux.ibm.com>
-Subject: Re: [PATCH v8 4/9] PCI: Add additional checks for flr reset
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260122194437.1903-1-alifm@linux.ibm.com>
- <20260122194437.1903-5-alifm@linux.ibm.com>
-In-Reply-To: <20260122194437.1903-5-alifm@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: rYiUiZEHKW-IeWPsppGRHuF7bxKDqW-s
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI2MDEwOSBTYWx0ZWRfX826iJkkZUHPr
- LXfOhiISsptOTfMl4roK0qYGEqUpLBzlHE8n0X831KQOX80BaEj/lJCOjqfFStMIjBzabevhoiM
- OT3R8QT/h9e9PQnPnplZg4doNxD7yTJLYHrsS5Xv1MhHi+4FwQSb1htdPw2LMs0JfbcWZuoju9R
- ZL9W5vOGQNVfRoGd8qoQTgmjz3+WTABnMFUHphKJrumJKkcq9oDcPBii08gL7IGIST8mMqxn6oN
- gJaeo9LKb1KNMIen0louu+NnyBtzTLuNTNsV3lytAdxqsSrnDK+EGZD/KYOKICtKzj8vRGBYV29
- /tMUPDfiH2JEBp2v4XPGAMRQFxbK/wCJuOlz1kyNhje+2/bMFDDGzCe6Sjrstxb5xjM3BOwRv2J
- YYfNBp1faoqJRbEY+AcEqqQwO43gPbFvrt/bnV/QyzAeYxPBEVuXVjD37+jRBeDhsJA9XCSpWyd
- 4lzCEOu0RLZS2Mmrk3w==
-X-Authority-Analysis: v=2.4 cv=Zs3g6t7G c=1 sm=1 tr=0 ts=6977680d cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=23YMnp3XVaxGsJNIDs4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: rYiUiZEHKW-IeWPsppGRHuF7bxKDqW-s
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
- definitions=2026-01-26_03,2026-01-22_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 adultscore=0 phishscore=0 suspectscore=0
- bulkscore=0 impostorscore=0 priorityscore=1501 malwarescore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601260109
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211567-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[julianr@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211568-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 1A28988A91
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,oracle.com:email,suse.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5E73188ACC
 X-Rspamd-Action: no action
 
-On Thu Jan 22, 2026 at 8:44 PM CET, Farhan Ali wrote:
-> If a device is in an error state, then any reads of device registers can
-> return error value. Add addtional checks to validate if a device is in an
 
-typo: additional
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> error state before doing an flr reset.
->
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-> Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
-> ---
->  drivers/pci/pci.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index e7beaf1f65a7..2d0a4c7714af 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -4358,12 +4358,19 @@ EXPORT_SYMBOL_GPL(pcie_flr);
->   */
->  int pcie_reset_flr(struct pci_dev *dev, bool probe)
->  {
-> +	u32 reg;
-> +
->  	if (dev->dev_flags & PCI_DEV_FLAGS_NO_FLR_RESET)
->  		return -ENOTTY;
-> =20
->  	if (!(dev->devcap & PCI_EXP_DEVCAP_FLR))
->  		return -ENOTTY;
-> =20
-> +	if (pcie_capability_read_dword(dev, PCI_EXP_DEVCAP, &reg)) {
-> +		pci_warn(dev, "Device unable to do an FLR\n");
-> +		return -ENOTTY;
-> +	}
-> +
->  	if (probe)
->  		return 0;
-> =20
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 901a5f309daba412e2a30364d7ec1492fa11c32c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012625-perky-unquote-b3a5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 901a5f309daba412e2a30364d7ec1492fa11c32c Mon Sep 17 00:00:00 2001
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Date: Tue, 23 Dec 2025 12:00:11 +0530
+Subject: [PATCH] scsi: xen: scsiback: Fix potential memory leak in
+ scsiback_remove()
+
+Memory allocated for struct vscsiblk_info in scsiback_probe() is not
+freed in scsiback_remove() leading to potential memory leaks on remove,
+as well as in the scsiback_probe() error paths. Fix that by freeing it
+in scsiback_remove().
+
+Cc: stable@vger.kernel.org
+Fixes: d9d660f6e562 ("xen-scsiback: Add Xen PV SCSI backend driver")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://patch.msgid.link/20251223063012.119035-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+
+diff --git a/drivers/xen/xen-scsiback.c b/drivers/xen/xen-scsiback.c
+index 0c51edfd13dc..7d5117e5efe0 100644
+--- a/drivers/xen/xen-scsiback.c
++++ b/drivers/xen/xen-scsiback.c
+@@ -1262,6 +1262,7 @@ static void scsiback_remove(struct xenbus_device *dev)
+ 	gnttab_page_cache_shrink(&info->free_pages, 0);
+ 
+ 	dev_set_drvdata(&dev->dev, NULL);
++	kfree(info);
+ }
+ 
+ static int scsiback_probe(struct xenbus_device *dev,
 
 
