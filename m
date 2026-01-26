@@ -1,455 +1,237 @@
-Return-Path: <stable+bounces-211551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCN8FWVPd2n0dwEAu9opvQ
-	(envelope-from <stable+bounces-211551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:26:29 +0100
+	id CProKP5Sd2mdeAEAu9opvQ
+	(envelope-from <stable+bounces-211552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:41:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F382E87A0E
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:26:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08CB387B96
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B81D301B718
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 11:23:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E1F03019B80
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 11:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61525332919;
-	Mon, 26 Jan 2026 11:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A434332ED1;
+	Mon, 26 Jan 2026 11:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vl5YTcN2"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="N7CeY/hK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A32232C941
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 11:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769426626; cv=pass; b=I6D5aDcyfO3N1b+NqUtb//ZN6IvLQOai2Bke2LAhyOQR3skBOx1jPiOqG+fTnXu7fn+ucRL40//bTkTB5m/1M7KxoejjqVGnHFhmF+/KkdA0CGWO0nfSLC9PEY0KzGGrLF/JGtrJ6MSGiatKQYivlGzhv/k+xQtBBx1Ztc+GkcQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769426626; c=relaxed/simple;
-	bh=IQCbKeJZSYei7ssSGmC2maGEK0rZqERmfT9zLaKYOiM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NJ7W9or5yQvqyQVo+uJgDtbA3rtR+3tTYGy1K0XnP1brKRmkJ39sIlF4dN6SCd7Nl1ix00BGXf+3goanbL+90DIL2S09zgvmNBL6K9kd/EICi/rd9RLNRsJtIeVs1mgF1xeW/AsnG13fnawedjNYImEesar2McIiXfwKoctLoek=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vl5YTcN2; arc=pass smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-352e3d18fa7so3083189a91.1
-        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 03:23:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769426624; cv=none;
-        d=google.com; s=arc-20240605;
-        b=OaEnQzjSXm5T0+43OEleua+pQj62KAvNhv1OWRFs4lf9NrJH/Eb7Cz1YfSeUbUUswd
-         WKHq0RBoOEQ4iICK7RHj8tFxvLp0OHkf+mggggAgjhH/YKYXRn7qmiOtWB+sa54tVPAa
-         YyzRe+Gl7eGmt/IpfYsLQd4eaYdKAogt000S1hHXCi/Mue4pHjf+RBYwqSqy/+FnAbqL
-         1mG5QzHxakGR7uyshrQsxcQuRMnifrmpHdnZmMrBFjEJ+6Tdh5DryQMNW6pWKEMzHnC2
-         SdNoutmakQEB4fMWkk+ddfi0tRkR1yBdmRA1+Dt+hpD6+xH9/htP7y86P4A3oa7xuN/d
-         Nw4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=blQRGDfCa98eK+RQCqGftRIq4FTOXC9Z5O4HK6CMBIM=;
-        fh=/ZQJgxLrUkVTM2wfTH6XzMFTMZ7wUXSixcWmKPVvNVE=;
-        b=GSbyaNYZwHX2vsC9xY2HbwRHbxxkEYOXecoYMneZnVHVYeVqjVokNkx6aLgwvB990X
-         GoITO1tcgW+lGTMPSOKsUMvT2viRZC4i8ZTp4ExF2f7iP7Tj/6D+KcrlKsXrJD5J6LwA
-         DVci6Vks0ObYmsSZDv0GkhfvwzAdd5wiGeAVSJWKoq754wxTv0uES6x0HbkOhLOSQr1r
-         pdAriBZre2jyu30vJdMNMXYvyhGzGudhjIVv0LS7+DmqplpPQ/RspQFn9gK6HzRWSRpP
-         ESk7cP8jK418AwKtEc/4KoNfXPEdzOkQ5DjJkFMFAWQudte+HTkifXdmKymE/8U3QUWO
-         wuzw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942D3331A70
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 11:41:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769427691; cv=none; b=RDdxTlT9KZDFmd5ERA9DpqXa7NxZB6nB19xhIOydmw+zcm6r/soQ96q7vUcpvGPpa1y4D48PMzL3StJ+WU47B3W8UmIqreNA6QixLHx2o6ZdbEH5tsxuAjK5P2tm793CEtERktYc/bAyePRb8G8C3K9DmT1iWmW+xFhkr6rZijE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769427691; c=relaxed/simple;
+	bh=AxiyoaABzXqMP4w/uMab+PrtYh1Z0TFJQkq97Gw4i8Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lai8utYN+RVjeYV4j4w/V4gJuXNsfcM6ZezfoET4gs0vv8aqpP3BwtEsc3EhyNbWeskz58vJeuMAugtd6EHbUJuO4alnNDPQwNLVIRJcSMIH5NVKfx6yOcvM8cOQB1hT+u2F6wrxyyN7cFZ+f2LFbnEvzYb/jRYB/vXwh2PcKZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=N7CeY/hK; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42fb5810d39so2786000f8f.2
+        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 03:41:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769426624; x=1770031424; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=blQRGDfCa98eK+RQCqGftRIq4FTOXC9Z5O4HK6CMBIM=;
-        b=Vl5YTcN2bNsQUwxdJC+K0PIlhYCuDif81zpXCclxCE8HlU9LZWwMsKL6x/O/Owh2fi
-         U4l7+8yNDPwmbSBfejSBhv1OXzF4uyJDR30Wo6CVXsviiCbbsGjf/clTEkEFrqZCzMdc
-         23ralFCoU+i4tx5/rGh4BlhSJN6GB2jENTMoXw6QmlrnHkdnOjVbmkJ34PbDpcNn2g1D
-         WlyQXRPwQG9M6Hcd6aI/87bNqIiNjBjCLuA2n4b9FYA0xb6Za2jl8hzMrB8gNpJkergc
-         qGKN1oSfk89PNFHZAsvA3Xu8c7dQqbsmadhBKtEea0oFrLP5AKNkz148htcv9iXIRfwy
-         5bFQ==
+        d=linaro.org; s=google; t=1769427688; x=1770032488; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rN1oSNDkGLBy6EHwhjHDF6Jrov42HwjEw9RdQlJcNw0=;
+        b=N7CeY/hKava6XQQ/h38THONZbwLfrd8ykCvvjqfwdFmS+pBHPJdSfjuMd+EVN4HD/Z
+         pg/fnlUkjlQ5nMT575LsObgYKXv+a+Qna1IHm8/ge+4UT+nwcswITHgmt5RHab7965PK
+         vh462n6WONI3ZQX2IRclp0bTd+c3qHsLzUcvr+Jym2knvMeB3ClEXVhm+aAh1M4irkVz
+         o/rL2K/+9wWGPwX0GYGYedwpw/1IoNzqRV00cQqTi1lgQyN1wQX4v75HmaDd4aHxT/9e
+         auPsRzPHtfa2d68Su6Rb+XGAkejiLTUClBfQ6mnhUG+FAyOYmui2gU6Leri8kf3LlNrB
+         Kucw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769426624; x=1770031424;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=blQRGDfCa98eK+RQCqGftRIq4FTOXC9Z5O4HK6CMBIM=;
-        b=J94PBbVikenceM5txD0WQ57uWgc+slfSGosm7OK2ifdLVo5q2WgEim1zq9+jY8R4uQ
-         LV1mTXlna2qBcCu2Ld7KyYdGxxLK25XgFXRVznsFMHtgr8wsENQZpNgq3JmBIdqk6bPA
-         dONlXEbkkZ7Z3p/D1ffrZYAjy1Y16oMC4Nu1pi+WduLtGFFqtlRvnN8fr4WsrRatR51k
-         pJIsaJT2zWEYE/1rvDmOSPtLo7RQYTDTEgWcOZD1as9+NkA/tN6yoX0GVGHUUxve/b5w
-         8DwrL5hDOGi12eNJxQxb0yFCpHs45JRQ7LuBR8AWeIxB6HLwicXOF+S5i1JeYVUXW1un
-         K6DA==
-X-Forwarded-Encrypted: i=1; AJvYcCXxML4x1MvsF5WPl0vEID4CM0lMbNe/vWKt9Au8O8obhcQE5aFfn4SSZTMWbO+0IszrenAVJRA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3s5viaYmF2vm72aA+P01H1u0UbbRZeKF41NM76r9720J7pA2p
-	KwDl2KlZ8qYrfIsDgvwdiVYL8BSO8ylB3anUN5SNV6R+6YxhgdeVA2E7VA3r3frrsCgdcZ8Ekx8
-	exBGjzyCz/0UYPOcqoF6a+7jPHre/pX8=
-X-Gm-Gg: AZuq6aIt2nXBIVND6oqCXzgy7yEuVWYIknTCXJm3ht+JAbEBCvjN4UtFrvRWy7oBAqm
-	6fJkuwoP7fm3rHS1c/wurnf1M8CYxdjJdePEAbRsvv72CL3HfKUV7pR6pl4teoZp5i5Qa4CAp2q
-	iEwQBOQydtmjQeYNTgEX5fhGpJ0SqNcUtvmM7sekhZ+tvy5TxEEnmHynWFPD6UkDfOEzKyNPq4j
-	kSkfWloAq/k+fGYG53pVEC0MA+UAJhRdPaKH3+a7ZTg/yy7ZER99hmsms/qqtg8iDY+41tIbjkC
-	hojOPRSBBEnxxAdWNgE6gUN8CoaQ
-X-Received: by 2002:a17:90b:4e8c:b0:34a:e9b:26b1 with SMTP id
- 98e67ed59e1d1-353c417d8a4mr3675478a91.26.1769426623674; Mon, 26 Jan 2026
- 03:23:43 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769427688; x=1770032488;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rN1oSNDkGLBy6EHwhjHDF6Jrov42HwjEw9RdQlJcNw0=;
+        b=pTZdA8/O+OSjPmWEk7TEG9JMosUNxO27A/X1eDQMip/IHvoP8nAX7gHdBUom84HTe/
+         lLGwMMsiR60TQT9SZDDnrsIKfPDSW7glViU/BkwmcAie593dNjuv+trOxuSYh1jEMm3a
+         4adSDmm20YwBdzwKlIm4zmqYJJI/Q5U8twG8NXRGNAmfKWxX4APpboYzKNkb1/tHcHvP
+         e0oo/e/dnYxLEn+mDQUWknsitiZ2zoggUPWQlxLp6gys0OiXxX6ei2RV1qBo/iMfmSs0
+         K2xH3WaymhQpjCDvptY7ol78KuQCVf68izc+R9PDefCh8tgCL75Wc7R55jznKLedDF2z
+         X+Pw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGYKSgVD+x3DpKdtYcqnQaxlfrVY3IcEkuAr8dDTcBFvbFw2mG30upcVAsbwSghbG5t7Kf0rU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIO1ORWrF+di7SU+N3YyhlSYSrORc8v5+IdN3eP92HthFEwZPY
+	2tkETr8Z9HFd/PMFbUvQf4Sl3QhQAMJSQk3wPPx/sqIvkoSXrNLzpiGDw8VrO6RO2dU=
+X-Gm-Gg: AZuq6aKbzq99TYAvdkHawh3TP4tAw3CpykIyrdw08NH/kiqjN9H1f7G+RFoVeB43TLE
+	FSxNPSdQmZdJ/KmB6/az97ahRbAQuFUhfpd5N+D3KtZYqdczqEUArdE6v4t2DcN3+z7tZ/tQdql
+	CkovfTyHJOhGK2QCwKNIbbbJW05h4Uu/CRmt6lfOWmGnAYehzds2sPKaoYK4HvydWtvb5LO3Stu
+	QEoQ0u5AT9AZu42giWUI9/huO7I1CQVgb3qqLwPhjMZrPwgC2dKt9XEeOXXQuBEIAm/d7OCYDOV
+	3AuR7Etv6Nd6TXcyC4cnMK7YMfo376wt8b7PDqhtJ6wyN3h0RwS1/ntT8t1EpZ6r9LMEVzfbGuJ
+	PgMS57v3NWJRfp+Y2HPq5J0c/uNXlWe134NGLcZe/I5rFxJq9wA8XXgf2BHmlwZmowWVyoLZ14A
+	rs8ARXmQB0RaSoZr5A3P8iUfDnBcgQJjaqU/u2UPdfmTfMyZzx8Lsg
+X-Received: by 2002:a05:6000:230e:b0:432:c0e6:cfcc with SMTP id ffacd0b85a97d-435ca0ef509mr6845789f8f.23.1769427687426;
+        Mon, 26 Jan 2026 03:41:27 -0800 (PST)
+Received: from [192.168.0.40] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1f73855sm28803758f8f.29.2026.01.26.03.41.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Jan 2026 03:41:26 -0800 (PST)
+Message-ID: <b699fcf5-5cb0-41eb-b9de-e5c6e98aefaa@linaro.org>
+Date: Mon, 26 Jan 2026 11:41:25 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260125171745.484806-1-bjsaikiran@gmail.com> <20260126061528.63785-1-bjsaikiran@gmail.com>
- <20260126061528.63785-2-bjsaikiran@gmail.com> <ef6cf6c5-3b5d-45f2-af67-0567262a4561@linaro.org>
-In-Reply-To: <ef6cf6c5-3b5d-45f2-af67-0567262a4561@linaro.org>
-From: Saikiran B <bjsaikiran@gmail.com>
-Date: Mon, 26 Jan 2026 16:53:32 +0530
-X-Gm-Features: AZwV_QjiFkOwrqNyXqjXlscyVFSqBgCPVKaRf61hcAGSxVI90l0jbhS3ZM5O3-o
-Message-ID: <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 1/1] media: i2c: ov02c10: Keep power on and use reset
  for power management
-To: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, bod@kernel.org, 
-	rfoss@kernel.org, todor.too@gmail.com, vladimir.zapolskiy@linaro.org, 
-	hansg@kernel.org, sakari.ailus@linux.intel.com, mchehab@kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Saikiran B <bjsaikiran@gmail.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ bod@kernel.org, rfoss@kernel.org, todor.too@gmail.com,
+ vladimir.zapolskiy@linaro.org, hansg@kernel.org,
+ sakari.ailus@linux.intel.com, mchehab@kernel.org, stable@vger.kernel.org
+References: <20260125171745.484806-1-bjsaikiran@gmail.com>
+ <20260126061528.63785-1-bjsaikiran@gmail.com>
+ <20260126061528.63785-2-bjsaikiran@gmail.com>
+ <ef6cf6c5-3b5d-45f2-af67-0567262a4561@linaro.org>
+ <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Content-Language: en-US
+In-Reply-To: <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211551-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,linaro.org,linux.intel.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211552-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bryan.odonoghue@linaro.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: F382E87A0E
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:mid,linaro.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,0.0.0.36:email]
+X-Rspamd-Queue-Id: 08CB387B96
 X-Rspamd-Action: no action
 
-"Where do you get this conclusion from ? Are you inferring it from
-what you see on the platform or can you point to some known
-data-source for this ?"
+On 26/01/2026 11:23, Saikiran B wrote:
+> "Where do you get this conclusion from ? Are you inferring it from
+> what you see on the platform or can you point to some known
+> data-source for this ?"
+> 
+> This is determined on the Lenovo Yoga Slim 7x (X1E80100). I tested
+> extensively and found that if I attempt to power-on the sensor less
+> than ~2.3 seconds after power-off, it fails to identify or times out
+> on I2C (brownout behavior). If we wait >2.3s, it works reliably 100%
+> of the time.
 
-This is determined on the Lenovo Yoga Slim 7x (X1E80100). I tested
-extensively and found that if I attempt to power-on the sensor less
-than ~2.3 seconds after power-off, it fails to identify or times out
-on I2C (brownout behavior). If we wait >2.3s, it works reliably 100%
-of the time.
+I don't think we've established the regulator is at fault. That's the 
+feedback I'm giving you here.
 
-"2 seconds to discharge ? These regulators are PM8010 anyway - so
-you're saying the PMIC takes two seconds to discharge ?"
+I think it is far, far, far more likely the power-on sequence of the 
+sensor needs tweaking.
 
-Yes. I checked the regulator driver
-(drivers/regulator/qcom-rpmh-regulator.c) and found that unlike other
-Qualcomm regulator drivers (e.g., spmi/glink), it currently lacks
-active_discharge / pull-down support. Without active discharge, the
-voltage rails float and decay very slowly via leakage current when the
-load (sensor) is in reset/high-Z.
+> 
+> "2 seconds to discharge ? These regulators are PM8010 anyway - so
+> you're saying the PMIC takes two seconds to discharge ?"
+> 
+> Yes. I checked the regulator driver
+> (drivers/regulator/qcom-rpmh-regulator.c) and found that unlike other
+> Qualcomm regulator drivers (e.g., spmi/glink), it currently lacks
+> active_discharge / pull-down support. Without active discharge, the
+> voltage rails float and decay very slowly via leakage current when the
+> load (sensor) is in reset/high-Z.
 
-"Did you try out the suggested fix I gave you yesterday ? Make
-power_on/power_off be more consistent with the data-sheet."
 
-Yes, I implemented your suggested power sequence (asserting reset
-before power-on, respecting T1 and T2 timings). While this is correct
-and good practice, it did not solve the brownout issue during rapid
-cycling. The sensor internal state machine seems to require the rails
-to drop near 0V to reset completely, and the passive discharge is
-simply too slow on this platform.
+Right so looking at the power for this part we have:
 
-"If we really can establish and show a two second discharge delay then
-the thing that needs to change is the regulator driver"
+&cci1_i2c1 {
+	camera@36 {
+		compatible = "ovti,ov02c10";
+		reg = <0x36>;
 
-I agree with you and Hans that solving the discharge time belongs in
-the regulator driver. However, implementing off-on-delay or active
-discharge in the shared RPMh driver is a larger task that affects the
-whole platform.
+		reset-gpios = <&tlmm 237 GPIO_ACTIVE_LOW>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&cam_rgb_default>;
 
-As Hans suggested, I will switch to using Runtime PM Autosuspend with
-a ~2s delay and check.
+		clocks = <&camcc CAM_CC_MCLK4_CLK>;
+		assigned-clocks = <&camcc CAM_CC_MCLK4_CLK>;
+		assigned-clock-rates = <19200000>;
 
-Thanks & Regards,
-Saikiran
+		orientation = <0>; /* front facing */
 
-On Mon, Jan 26, 2026 at 4:39=E2=80=AFPM Bryan O'Donoghue
-<bryan.odonoghue@linaro.org> wrote:
->
-> On 26/01/2026 06:15, Saikiran wrote:
-> > The OV02C10 sensor was experiencing brownout conditions during rapid
-> > power cycles (e.g., browser WebRTC permission checks) on Qualcomm
-> > platforms, causing the sensor to lock up and require a system reboot.
-> >
-> > Root cause:
-> > The Qualcomm RPMh regulator driver does not support active discharge,
-> > requiring regulators to passively discharge via leakage current. This
-> > takes 2+ seconds on X1E80100 platforms. Without complete voltage
-> > discharge, the sensor's internal microcontroller does not fully reset,
-> > leading to I2C timeouts and a locked state.
->
-> Where do you get this conclusion from ?
->
-> Are you inferring it from what you see on the platform or can you point
-> to some known data-source for this ?
->
-> 2 seconds to discharge ? These regulators are PM8010 anyway - so you're
-> saying the PMIC takes two seconds to discharge ?
->
-> > Solution:
-> > Instead of power cycling the regulators, keep them continuously enabled
-> > and use reset signals to control the sensor state:
->
-> If this is really a problem with the regulators and I don't think we
-> have established that - then it is a fix that needs to go into the
-> regulators.
->
-> Did you try out the suggested fix I gave you yesterday ?
->
-> The options are:
->
-> 1. Make power_on/power_off be more consistent with the data-sheet.
->     This I'd guess 99% certain what is going wrong for you or
->
-> 2. If we really can establish and show a two second discharge delay
->     then bring the required delay into the RPMh code so that
->     regulator_bulk_disable(); is atomic from the perspective of the
->     caller.
->
-> I honestly can't imagine two seconds is a real thing here but, if it is,
-> then the thing that needs to change is the regulator driver to account
-> for that long delay not the users of the regulators.
-> > - power_off(): Assert hardware reset GPIO (keep regulators/clock ON)
-> > - power_on(): Release hardware reset + trigger software reset via
-> >    register 0x0103 (standard OmniVision software reset)
-> >
-> > This approach:
-> > - Eliminates the 2+ second discharge delay
-> > - Enables instant camera reopening (~17ms vs 2.3s)
-> > - Properly resets the sensor state machine via reset signals
-> > - Maintains correct power sequencing on first initialization
-> > - Follows OmniVision sensor conventions (0x0103 software reset)
-> >
-> > The first power-on still performs full regulator and clock
-> > initialization. Subsequent power cycles only toggle reset signals,
-> > avoiding the discharge delay entirely.
-> >
-> > Tested on Lenovo Yoga Slim 7x (X1E80100) with rapid camera open/close
-> > cycles - no brownouts or lockups observed.
-> >
-> > Fixes: 44f89010dae0 ("media: i2c: add OmniVision OV02C10 sensor driver"=
-)
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Saikiran <bjsaikiran@gmail.com>
-> > ---
-> >   drivers/media/i2c/ov02c10.c | 119 +++++++++++++++++++++--------------=
--
-> >   1 file changed, 69 insertions(+), 50 deletions(-)
-> >
-> > diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
-> > index 7e9454e8540c..08d268de60ec 100644
-> > --- a/drivers/media/i2c/ov02c10.c
-> > +++ b/drivers/media/i2c/ov02c10.c
-> > @@ -22,6 +22,8 @@
-> >   #define OV02C10_CHIP_ID                     0x5602
-> >
-> >   #define OV02C10_REG_STREAM_CONTROL  CCI_REG8(0x0100)
-> > +#define OV02C10_REG_SOFTWARE_RESET   CCI_REG8(0x0103)
-> > +#define OV02C10_SOFTWARE_RESET_TRIGGER       0x01
-> >
-> >   #define OV02C10_REG_HTS                     CCI_REG16(0x380c)
-> >
-> > @@ -390,8 +392,8 @@ struct ov02c10 {
-> >       u32 link_freq_index;
-> >       u8 mipi_lanes;
-> >
-> > -     /* Power cycling rate limit */
-> > -     ktime_t last_power_off;
-> > +     /* Power management: track if regulators are enabled */
-> > +     bool powered;
-> >   };
-> >
-> >   static inline struct ov02c10 *to_ov02c10(struct v4l2_subdev *subdev)
-> > @@ -680,25 +682,16 @@ static int ov02c10_power_off(struct device *dev)
-> >       struct v4l2_subdev *sd =3D dev_get_drvdata(dev);
-> >       struct ov02c10 *ov02c10 =3D to_ov02c10(sd);
-> >
-> > -     /* 1. Assert Reset */
-> > -     gpiod_set_value_cansleep(ov02c10->reset, 1);
-> > -
-> > -     /* 2. Disable Clock (Stop sensor state machine) */
-> > -     clk_disable_unprepare(ov02c10->img_clk);
-> > -     usleep_range(1000, 1500);
-> > -
-> > -     /* 3. Disable Power */
-> > -     regulator_bulk_disable(ARRAY_SIZE(ov02c10_supply_names),
-> > -                            ov02c10->supplies);
-> > -
-> >       /*
-> > -      * 4. Discharge Wait
-> > -      * Wait for regulators to fully discharge before returning.
-> > -      * This delay ensures clean power cycling.
-> > +      * Keep regulators and clock ON to avoid discharge delay.
-> > +      * Just assert hardware reset to put sensor in reset state.
-> > +      * This allows instant power-on without waiting for regulator dis=
-charge.
-> >        */
-> > -     usleep_range(50000, 55000);
-> > +     if (ov02c10->reset)
-> > +             gpiod_set_value_cansleep(ov02c10->reset, 1);
-> >
-> > -     ov02c10->last_power_off =3D ktime_get();
-> > +     /* Keep clock running - sensor needs it for software reset */
-> > +     /* Keep regulators enabled - avoids 2.3s discharge delay */
-> >
-> >       return 0;
-> >   }
-> > @@ -708,50 +701,63 @@ static int ov02c10_power_on(struct device *dev)
-> >       struct v4l2_subdev *sd =3D dev_get_drvdata(dev);
-> >       struct ov02c10 *ov02c10 =3D to_ov02c10(sd);
-> >       int ret;
-> > -     s64 delta_us;
-> >
-> >       /*
-> > -      * Mandatory Cool-Down:
-> > -      * If the camera was powered off within the last 3 seconds, ensur=
-e at least
-> > -      * 2 seconds have elapsed to allow full regulator discharge and s=
-ensor reset.
-> > -      * This prevents brownouts during rapid open/close/open sequences=
-.
-> > +      * On first power-on, do full initialization.
-> > +      * On subsequent power-ons, regulators/clock are already on,
-> > +      * so we just need to release reset and do software reset.
-> >        */
-> > -     delta_us =3D ktime_us_delta(ktime_get(), ov02c10->last_power_off)=
-;
-> > -     if (delta_us < 3000000) {
-> > -             dev_dbg(dev, "Enforcing %lld us cool-down period\n", 2000=
-000 - delta_us);
-> > -             fsleep(2000000 - delta_us);
-> > +     if (!ov02c10->powered) {
-> > +             /* First time: enable everything */
-> > +             if (ov02c10->reset) {
-> > +                     gpiod_set_value_cansleep(ov02c10->reset, 1);
-> > +                     usleep_range(2000, 2200);
-> > +             }
-> > +
-> > +             ret =3D clk_prepare_enable(ov02c10->img_clk);
-> > +             if (ret < 0) {
-> > +                     dev_err(dev, "failed to enable imaging clock: %d"=
-, ret);
-> > +                     return ret;
-> > +             }
-> > +
-> > +             usleep_range(2000, 2200);
-> > +
-> > +             ret =3D regulator_bulk_enable(ARRAY_SIZE(ov02c10_supply_n=
-ames),
-> > +                                         ov02c10->supplies);
-> > +             if (ret < 0) {
-> > +                     dev_err(dev, "failed to enable regulators: %d", r=
-et);
-> > +                     clk_disable_unprepare(ov02c10->img_clk);
-> > +                     return ret;
-> > +             }
-> > +
-> > +             ov02c10->powered =3D true;
-> >       }
-> >
-> > -     /*
-> > -      * Standard Power-Up Sequence:
-> > -      * 1. Enable Regulators
-> > -      * 2. Enable Clock
-> > -      * 3. Release Reset (with ample boot time)
-> > -      */
-> > -
-> > -     ret =3D regulator_bulk_enable(ARRAY_SIZE(ov02c10_supply_names),
-> > -                                 ov02c10->supplies);
-> > -     if (ret < 0) {
-> > -             dev_err(dev, "failed to enable regulators: %d", ret);
-> > -             return ret;
-> > +     /* Release hardware reset */
-> > +     if (ov02c10->reset) {
-> > +             /* Ensure reset was asserted for at least 2ms */
-> > +             usleep_range(2000, 2200);
-> > +             gpiod_set_value_cansleep(ov02c10->reset, 0);
-> > +             /*
-> > +              * Wait for sensor microcontroller to stabilize after res=
-et release.
-> > +              * 50ms prevents black frames during rapid power cycling =
-by ensuring
-> > +              * the sensor's internal state machine is fully initializ=
-ed before
-> > +              * software reset and register configuration.
-> > +              */
-> > +             msleep(50);
-> >       }
-> >
-> > -     ret =3D clk_prepare_enable(ov02c10->img_clk);
-> > -     if (ret < 0) {
-> > -             dev_err(dev, "failed to enable imaging clock: %d", ret);
-> > -             regulator_bulk_disable(ARRAY_SIZE(ov02c10_supply_names),
-> > -                                    ov02c10->supplies);
-> > +     /* Perform software reset to ensure clean state */
-> > +     ret =3D cci_write(ov02c10->regmap, OV02C10_REG_SOFTWARE_RESET,
-> > +                     OV02C10_SOFTWARE_RESET_TRIGGER, NULL);
-> > +     if (ret) {
-> > +             dev_err(dev, "failed to send software reset: %d", ret);
-> >               return ret;
-> >       }
-> >
-> > -     /* Wait for power/clock to stabilize */
-> > +     /* Wait for software reset to complete */
-> >       usleep_range(5000, 5500);
-> >
-> > -     if (ov02c10->reset) {
-> > -             gpiod_set_value_cansleep(ov02c10->reset, 0);
-> > -             usleep_range(80000, 85000);
-> > -     }
-> > -
-> >       return 0;
-> >   }
-> >
-> > @@ -924,6 +930,19 @@ static void ov02c10_remove(struct i2c_client *clie=
-nt)
-> >               ov02c10_power_off(ov02c10->dev);
-> >               pm_runtime_set_suspended(ov02c10->dev);
-> >       }
-> > +
-> > +     /* Clean up regulators/clock if still enabled */
-> > +     if (ov02c10->powered) {
-> > +             /* Assert reset before disabling power for clean shutdown=
- */
-> > +             if (ov02c10->reset)
-> > +                     gpiod_set_value_cansleep(ov02c10->reset, 1);
-> > +
-> > +             clk_disable_unprepare(ov02c10->img_clk);
-> > +             regulator_bulk_disable(ARRAY_SIZE(ov02c10_supply_names),
-> > +                                    ov02c10->supplies);
-> > +             ov02c10->powered =3D false;
-> > +     }
-> > +
-> >       v4l2_subdev_cleanup(sd);
-> >       media_entity_cleanup(&sd->entity);
-> >       v4l2_ctrl_handler_free(sd->ctrl_handler);
->
+		avdd-supply = <&vreg_l7b_2p8>;
+		dvdd-supply = <&vreg_l7b_2p8>;
+		dovdd-supply = <&vreg_cam_1p8>;
+
+		port {
+			ov02e10_ep: endpoint {
+				data-lanes = <1 2>;
+				link-frequencies = /bits/ 64 <400000000>;
+				remote-endpoint = <&csiphy4_ep>;
+			};
+		};
+	};
+};
+
+// qcom standard RPMh -> PMIC LDO regulators
+// these are not the droids you are looking for
+vreg_l7b_2p8: ldo7 {
+	regulator-name = "vreg_l7b_2p8";
+	regulator-min-microvolt = <2800000>;
+	regulator-max-microvolt = <2800000>;
+	regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+};
+
+// this OTOH
+vreg_cam_1p8: regulator-cam-1p8 {
+	compatible = "regulator-fixed";
+
+	regulator-name = "VREG_CAM_1P8";
+	regulator-min-microvolt = <1800000>;
+	regulator-max-microvolt = <1800000>;
+
+	gpio = <&tlmm 91 GPIO_ACTIVE_HIGH>;
+	enable-active-high;
+
+	pinctrl-0 = <&cam_ldo_en>;
+	pinctrl-names = "default";
+};
+
+Dell has used - likely reused - part of the x86 design in the qcom 
+implementation - and toggles 1v8 via a GPIO directly.
+
+If your theory about brown-out is correct then
+
+vreg_cam_1p8: regulator-cam-1p8 {
+	// add this
+	off-on-delay-us = <20000>;
+};
+
+Then please let us know how she goes.
+
+---
+bod
 
