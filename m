@@ -1,241 +1,167 @@
-Return-Path: <stable+bounces-211533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FKAL2ord2nacwEAu9opvQ
-	(envelope-from <stable+bounces-211533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:52:58 +0100
+	id KIegKI0rd2nacwEAu9opvQ
+	(envelope-from <stable+bounces-211534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:53:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684CF85A2A
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:52:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 314D485A57
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:53:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 02AAB3004DE1
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 08:52:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 84143300E5CF
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 08:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AA63033E0;
-	Mon, 26 Jan 2026 08:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C43090C5;
+	Mon, 26 Jan 2026 08:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="HEdx1wUs"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="mvwkY5OJ"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0262F49F1
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 08:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EA61E5B73;
+	Mon, 26 Jan 2026 08:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769417572; cv=none; b=mWVvR7xpGu6o+gu0GaN6OUQmG2Uhzf8s0Dl7PYJgtxB7Rz2kJ6FdJ9h6c9giFe+iNduBo2GW9nyD0ev8veIxA35/vA4EZgYQRmvLLLRDF+omqOE3X2ImPm604hb8Fc/oS6WmPCZ4AQ51uPwdwpGBivcmQp3XhVG1k+qfWP95aBU=
+	t=1769417605; cv=none; b=W34tMzrt8riDDSp74uzB8wOKmDAXtDOkQveSrjlyWv/wApgeuogyDOTWfurLEp62L4pAU6A27hFCzdrVWU+UaqFRdSn6LvydeTW+q8bsNOgG3zPq9+BSsAPAqfDfMBWiQ+fZeQRozyWICVyE/Iww109rDFBnT/1vXf4zuafm0MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769417572; c=relaxed/simple;
-	bh=Vhk6fc6cJF9mNGngdNivZsRsh03T77pAjIVwNW9jMQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hbvoN9NiSuHhCjUSo2WictkXlHMdprbpW9PHeAhXRNz+jzrF8EjbPvZnjLdZlKiD+hn9pqsiiH4sjrqPH8SbyMzbDRKldQ4UOW95XP+nga07opDQqFyWyr8XFsFdgI3h3f951NQzchFlXOlGeQEuoiWj8cP4TaxIuFX1f17Xz1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=HEdx1wUs; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=9yDDnUML34EwSFqiYGW4g3jjzJ4Wv78SXcUZkWPmfWU=; b=HEdx1wUs6/lvT9QvUo1ZcNOwGq
-	SIH3A7kRq7i2//VtipfXTTLxceHYGGKm3gDYf1cjU8Sme0ty38pL9gGmDEuf/cko5UbN8vZaUIjS8
-	BltKjeOmkMkPuRfeuq28O8EGFBlm7ODvMCTiSCOdTfHDSmeWO585xxXkpKD4aWHiNkXzPSTEe1IqZ
-	gMF3njwDfODgmOvZANlQU1ltJ8JxRVrrBOQAt7QhWxXJlOa65Lt26U/yFUsgn0e9pX+JAep/5Cu0j
-	yBx+yz2vu7Hrqyvh0+4r70ofYHDEbbXo1iG9blSVjgkl4BKXVLfz26tcnEchAaZFi4gxzJ7+XzGgI
-	O9b+juIA==;
-Received: from [90.240.106.137] (helo=[192.168.0.101])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1vkIKo-009xBx-Ak; Mon, 26 Jan 2026 09:52:34 +0100
-Message-ID: <1db24d1e-113e-4bbf-8785-b608f725afb5@igalia.com>
-Date: Mon, 26 Jan 2026 08:52:33 +0000
+	s=arc-20240116; t=1769417605; c=relaxed/simple;
+	bh=BJZV3Cw0Vi7MkeA/1O9xXI98G1YadhiApczo4SXoCWY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DeXjHVJ+D8ByTk8RXAsJGflyOyiZbDXhcp0PQ1hv3p7n+gwKi1VsfBTiW1ku7CA7yzBPdvZKmsBwRQPyol5prPqdMZ+9pyDp4xU53aQn5tspnNOsmqtEyBkdH4y2kMQdMmgvDeFoANHSsMcfPojjjatD6RpOouAPjJgVa05inPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=mvwkY5OJ; arc=none smtp.client-ip=185.70.43.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1769417594; x=1769676794;
+	bh=BJZV3Cw0Vi7MkeA/1O9xXI98G1YadhiApczo4SXoCWY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=mvwkY5OJxXeFNzNr7ahxsOnntKz6G7CbV0YYAj4hQHpemmWFSwXQV9f6yfiDmexZN
+	 eycbtoZBeGj6BF+kHbqD4ELjBhyQij2RK0su6nP5jlOledkd1ON/qq9ClQFQQ9A16O
+	 2xbhyPrj5LKIrhjW/Ph3od2Fi4r7LfKObknDG7soGsyMlX7Oc11iySco7fWXPKeCgT
+	 EIfv5LiuDNKgKBERdXE7AE1yVJJc84NIqHIIRI0mMZYedgvbcYIvSXX2ruRTnh+Pgs
+	 GhHkoxPF/edOnFsU+8DEwOb2YJjrpk7lbLH0riglIQYyTgQXQ3CyGg3yY/Z/put1SE
+	 k6BCsuvUrpdAw==
+Date: Mon, 26 Jan 2026 08:53:10 +0000
+To: Victor Nogueira <victor@mojatatu.com>
+From: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v3 6/7] net/sched: act_gate: reject empty schedule list
+Message-ID: <77q-JcImMG2fuQxj_GMUtYmaFAIuPrYMasj4I3aqIVID-Op24JIShBIPgt9kozLZgN4HvsGCS8Ez16mKq4Wq9juL1IOKydWUJwMwCYgHRMg=@1g4.org>
+In-Reply-To: <412136f7-1d46-42ac-96f9-b6cc462204b2@mojatatu.com>
+References: <20260121131954.2710459-1-p@1g4.org> <20260121131954.2710459-7-p@1g4.org> <c8a8ae22-c5c4-4112-8084-0faa256a1d84@mojatatu.com> <412136f7-1d46-42ac-96f9-b6cc462204b2@mojatatu.com>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: c1fd98711753fdf12f01526c362f688a5aa969b6
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm: Do not allow userspace to trigger kernel warnings
- in drm_gem_change_handle_ioctl()
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- dri-devel@lists.freedesktop.org
-Cc: kernel-dev@igalia.com, Zhi Wang <wangzhi@stu.xidian.edu.cn>,
- David Francis <David.Francis@amd.com>,
- Felix Kuehling <felix.kuehling@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- stable@vger.kernel.org
-References: <9bde8c39-ba4c-49c5-a0bc-4e78338f055a@amd.com>
- <20260123141540.76540-1-tvrtko.ursulin@igalia.com>
- <0286a6fa-d767-41d3-8c61-c0b34e9a9b47@oracle.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <0286a6fa-d767-41d3-8c61-c0b34e9a9b47@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.36 / 15.00];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[igalia.com:-];
-	TAGGED_FROM(0.00)[bounces-211533-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[tvrtko.ursulin@igalia.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com];
+	TAGGED_FROM(0.00)[bounces-211534-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[1g4.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 684CF85A2A
+X-Rspamd-Queue-Id: 314D485A57
 X-Rspamd-Action: no action
 
+Should REPLACE with an explicit entry list that yields 0 entries return -EI=
+NVAL or should it be treated the same as omitting TCA_GATE_ENTRY_LIST and k=
+eeping the old schedule?
 
-On 23/01/2026 23:42, Harshit Mogalapalli wrote:
-> Hi,
-> 
-> On 23/01/26 19:45, Tvrtko Ursulin wrote:
->> Since GEM bo handles are u32 in the uapi and the internal implementation
->> uses idr_alloc() which uses int ranges, passing a new handle larger than
->> INT_MAX trivially triggers a kernel warning:
->>
->> idr_alloc():
->> ...
->>     if (WARN_ON_ONCE(start < 0))
->>         return -EINVAL;
->> ...
->>
->> Fix it by rejecting new handles above INT_MAX and at the same time make
->> the end limit calculation more obvious by moving into int domain.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->> Reported-by: Zhi Wang <wangzhi@stu.xidian.edu.cn>
->> Fixes: 53096728b891 ("drm: Add DRM prime interface to reassign GEM 
->> handle")
->> Cc: David Francis <David.Francis@amd.com>
->> Cc: Felix Kuehling <felix.kuehling@amd.com>
->> Cc: Christian König <christian.koenig@amd.com>
->> Cc: <stable@vger.kernel.org> # v6.18+
-> 
-> 
-> Thanks,
-> 
-> I have seen this WARN_ON as well and I have tested the reproducer 
-> against your patch and it works.
-> 
-> So:
-> 
-> Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+thanks,
+Paul
 
-Thank you! May I ask what test cases are you using to exercise it?
 
-> 
-> A question below:
-> 
->> ---
->> v2:
->>   * Rename local variable, re-position comment, drop the else block. 
->> (Christian)
->>   * Use local at more places.
->> ---
->>   drivers/gpu/drm/drm_gem.c | 18 ++++++++++++------
->>   1 file changed, 12 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
->> index 7ff6b7bbeb73..ffa7852c8f6c 100644
->> --- a/drivers/gpu/drm/drm_gem.c
->> +++ b/drivers/gpu/drm/drm_gem.c
->> @@ -1001,16 +1001,21 @@ int drm_gem_change_handle_ioctl(struct 
->> drm_device *dev, void *data,
->>   {
->>       struct drm_gem_change_handle *args = data;
->>       struct drm_gem_object *obj;
->> -    int ret;
->> +    int handle, ret;
->>       if (!drm_core_check_feature(dev, DRIVER_GEM))
->>           return -EOPNOTSUPP;
->> +    /* idr_alloc() limitation. */
->> +    if (args->new_handle > INT_MAX)
->> +        return -EINVAL;
-> 
-> INT_MAX is allowed.
-> 
->> +    handle = args->new_handle;
->> +
->>       obj = drm_gem_object_lookup(file_priv, args->handle);
->>       if (!obj)
->>           return -ENOENT;
->> -    if (args->handle == args->new_handle) {
->> +    if (args->handle == handle) {
->>           ret = 0;
->>           goto out;
->>       }
->> @@ -1018,18 +1023,19 @@ int drm_gem_change_handle_ioctl(struct 
->> drm_device *dev, void *data,
->>       mutex_lock(&file_priv->prime.lock);
->>       spin_lock(&file_priv->table_lock);
->> -    ret = idr_alloc(&file_priv->object_idr, obj,
->> -        args->new_handle, args->new_handle + 1, GFP_NOWAIT);
->> +    ret = idr_alloc(&file_priv->object_idr, obj, handle, handle + 1,
-> 
-> handle + 1 here would cause a signed integer overflow ?
 
-For the kernel it is fine due -fno-strict-overflow and idr_alloc() 
-explicitly handles it:
 
-...
-  * Allocates an unused ID in the range specified by @start and @end.  If
-  * @end is <= 0, it is treated as one larger than %INT_MAX.  This allows
-  * callers to use @start + N as @end as long as N is within integer range.
-...
-	ret = idr_alloc_u32(idr, ptr, &id, end > 0 ? end - 1 : INT_MAX, gfp);
 
-So for start == INT_MAX it ends up passing end == INT_MAX to 
-idr_alloc_u32, which, contrary to idr_alloc(), has it's end range 
-parameter _inclusive_.
+On Wednesday, January 21st, 2026 at 3:49 PM, Victor Nogueira <victor@mojata=
+tu.com> wrote:
 
-Simple huh? :))
-
-Regards,
-
-Tvrtko
-
-> 
-> 
-> 
-> Thanks,
-> Harshit
->> +            GFP_NOWAIT);
->>       spin_unlock(&file_priv->table_lock);
->>       if (ret < 0)
->>           goto out_unlock;
->>       if (obj->dma_buf) {
->> -        ret = drm_prime_add_buf_handle(&file_priv->prime, obj- 
->> >dma_buf, args->new_handle);
->> +        ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf,
->> +                           handle);
->>           if (ret < 0) {
->>               spin_lock(&file_priv->table_lock);
->> -            idr_remove(&file_priv->object_idr, args->new_handle);
->> +            idr_remove(&file_priv->object_idr, handle);
->>               spin_unlock(&file_priv->table_lock);
->>               goto out_unlock;
->>           }
-> 
-
+>=20
+>=20
+> On 21/01/2026 16:44, Victor Nogueira wrote:
+>=20
+> > On 21/01/2026 10:20, Paul Moses wrote:
+> >=20
+> > > Reject empty schedules (num_entries =3D=3D 0) so next_entry is always
+> > > valid and
+> > > RCU readers/timer logic never walk an empty list. taprio enforces the
+> > > same
+> > > constraint on schedules (sch_taprio.c, commit 09dbdf28f9f9fa).
+> > >=20
+> > > Fixes: a51c328df310 ("net: qos: introduce a gate control flow action"=
+)
+> > > Signed-off-by: Paul Moses p@1g4.org
+> > > Cc: stable@vger.kernel.org
+> > > ---
+> > > net/sched/act_gate.c | 6 ++++++
+> > > 1 file changed, 6 insertions(+)
+> > >=20
+> > > diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> > > index 48ff378bb051a..e4134b9a4a314 100644
+> > > --- a/net/sched/act_gate.c
+> > > +++ b/net/sched/act_gate.c
+> > > @@ -509,6 +509,12 @@ static int tcf_gate_init(struct net *net, struct
+> > > nlattr *nla,
+> > > cycletime_ext =3D nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
+> > > p->tcfg_cycletime_ext =3D cycletime_ext;
+> > > + if (p->num_entries =3D=3D 0) {
+> > > + NL_SET_ERR_MSG(extack, "The entry list is empty");
+> > > + err =3D -EINVAL;
+> > > + goto release_mem;
+> > > + }
+> >=20
+> > It would be simpler to check this in parse_gate_list.
+> > That way you could return -EINVAL there directly
+> > in case 0 entries were passed.
+>=20
+>=20
+> On second thought, I believe it would be better
+> to check whether parse_gate_list's return is 0
+> and the op is a create. Something like:
+>=20
+> err =3D parse_gate_list(tb[TCA_GATE_ENTRY_LIST], p, extack);
+> ...
+> if (!err && ret =3D=3D ACT_P_CREATED) {
+> NL_SET_ERR_MSG(extack, "The entry list is empty");
+> err =3D -EINVAL;
+> goto release_mem;
+> }
+>=20
+> so that you don't need to add new arguments to
+> parse_gate_list.
+>=20
+> cheers,
+> Victor
 
