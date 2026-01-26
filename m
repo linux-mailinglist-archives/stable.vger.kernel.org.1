@@ -1,212 +1,157 @@
-Return-Path: <stable+bounces-211656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8O+0OPmbd2nOjAEAu9opvQ
-	(envelope-from <stable+bounces-211656-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:53:13 +0100
+	id 8GNiEimfd2kCjQEAu9opvQ
+	(envelope-from <stable+bounces-211657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:06:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9E68AFD1
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:53:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD988B468
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:06:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E7D923006807
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:53:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1DA16302C6FB
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB340346FC3;
-	Mon, 26 Jan 2026 16:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88251344021;
+	Mon, 26 Jan 2026 17:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ay4r3VqQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXpvRFC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC8A3375DD
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 16:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C69F335547
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 17:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769446386; cv=none; b=Hpk/+QEHF9Me5zmzPeDb966aSlHPaWQdBYsQY6PY/uc5gOoVeZBHu0cMay7LxPy6pOSJFWuB5/7yncROQellYifmyoWselYulTPJBdxLaOJ5EhinpXhsDPJom2L67ixmBKPwWAt0vhLO9S/ZGQ305lZUngBGBMFFqp0ZPruR40g=
+	t=1769447056; cv=none; b=fNxo2Q8IHHLffOvapLOPu/cchfkZkBbgXBXJy/rWCIe7CwbA0/Rt8iyyPkxxtb9GL8YGb4NrEbFjyJGWhy8iQJTBgjyY/zgSqRijvw0DTp7phmaX2lT/xa1GdzdQfeZ7/yAP9nGGIdvwPA8hFzY/LQegO25jhyuDWn9udQjxcSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769446386; c=relaxed/simple;
-	bh=lytw1C9L2scVcTC6h8ixCo4+Rf/PYZPg7Nk4de1rM9Q=;
+	s=arc-20240116; t=1769447056; c=relaxed/simple;
+	bh=Nsgbiykaiv6wE8HrML3RAW32X13gMc9lRhsI1qNkY0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sONqEZOL4J9R9xMkCrj6JKZmv+VLKCP0xKuuwWNJb0Y+2herGZmb5DRF/1zmmEieu/EU/ApdkeMA+KmyRHrdzeCCes7/y1BYXGh44mcsOK8QEaNjJknZ4j0fElYIcZvMEZuX+whuGZXr6H76HWyp71hGda7bn0HUdhmbTGmUpn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ay4r3VqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFDDC16AAE;
-	Mon, 26 Jan 2026 16:53:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MN7xkKD6EbpaoLlaLJcMhziWOiQR5op9EixJ6iYFR3lJi6yXktm1/r0RXXgwH8+Yn53qmlL7ILLQSOA5haWaMkBoqIoHeDCDrmRsbIYmvzpXe8Cl6dT/Z+G39r3lu5z1EImdZ2+b08ld/d01YYrQFc0kFV0GVzvK3Az7fqc9+PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eXpvRFC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDD9C116C6;
+	Mon, 26 Jan 2026 17:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769446386;
-	bh=lytw1C9L2scVcTC6h8ixCo4+Rf/PYZPg7Nk4de1rM9Q=;
+	s=k20201202; t=1769447055;
+	bh=Nsgbiykaiv6wE8HrML3RAW32X13gMc9lRhsI1qNkY0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ay4r3VqQScZoud6RNJ8XDmeOxFvUn/ghoEu6ux1caKr2LRF/CWsOEcybsnVLw0c5e
-	 wtcSASGCybHTLF8lzn12+iALl3A7RRMfEJL1cvnGaVNCbSd8k4OG6FDWoBwZenAek0
-	 jskrmIA4MCX8BFub7whqjiorbVcZ0R6YohviS2LTQs4dmKjEJoxwuWJtRYEcjKyo6J
-	 qujFG3jx/cM/aFX45HJBf/xLeYshfnr57iyhIXIDNkrXmp9G4vPxEQiZcSZuISr87h
-	 56nUV9cCASBG7gkHxzs4+14kYwEZzTyPhuXurA8OBvmxKilhJQuYauKN2jaHNNKJjx
-	 5HYcJO0OnZLPQ==
+	b=eXpvRFC452Oq7GtppU2tFKjMik55qtzbaWkBB8JwXk3I7BeFj74CteOCfPtFa8aow
+	 byCSATi6TmU0k02FxwaVWj1Rc8tmpjYzrTxUGUPzCNsvIth7jZyUsvHGyvplwbFdLn
+	 1HPpxmjaTlQTd+6VRkgzf+uQxwVamVbaAaOLwuMMTbLxBBjlLbSu9c/edWnA8+KdIt
+	 oNDnabHTFuRwXTpGkrBbWnlrQ2ZdDKTp2YrqM1IH1dNDEpUNt4ZaO9DCZ4botzWAST
+	 zVwxEULph/3SWSZ1cmPBWCBHNkmpHjxUG3xKrAFejb6ayFVxQkM+v+jRz+ysuLZ7Ef
+	 ImBkanG4lG1Vw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Rasmus Villemoes <ravi@prevas.dk>,
-	Peter Rosin <peda@axentia.se>,
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 2/2] iio: core: add separate lockdep class for info_exist_lock
-Date: Mon, 26 Jan 2026 11:53:03 -0500
-Message-ID: <20260126165303.3408060-2-sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/3] iio: core: add missing mutex_destroy in iio_dev_release()
+Date: Mon, 26 Jan 2026 12:04:11 -0500
+Message-ID: <20260126170413.3418184-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260126165303.3408060-1-sashal@kernel.org>
-References: <2026012654-trend-outback-5af6@gregkh>
- <20260126165303.3408060-1-sashal@kernel.org>
+In-Reply-To: <2026012655-stipend-xbox-ead1@gregkh>
+References: <2026012655-stipend-xbox-ead1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211656-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211657-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,iio_dev.info:url,prevas.dk:email]
-X-Rspamd-Queue-Id: 0A9E68AFD1
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,intel.com:email,analog.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iio_dev.info:url]
+X-Rspamd-Queue-Id: 9CD988B468
 X-Rspamd-Action: no action
 
-From: Rasmus Villemoes <ravi@prevas.dk>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 9910159f06590c17df4fbddedaabb4c0201cc4cb ]
+[ Upstream commit f5d203467a31798191365efeb16cd619d2c8f23a ]
 
-When one iio device is a consumer of another, it is possible that
-the ->info_exist_lock of both ends up being taken when reading the
-value of the consumer device.
+Add missing mutex_destroy() call in iio_dev_release() to properly
+clean up the mutex initialized in iio_device_alloc(). Ensure proper
+resource cleanup and follows kernel practices.
 
-Since they currently belong to the same lockdep class (being
-initialized in a single location with mutex_init()), that results in a
-lockdep warning
+Found by code review.
 
-         CPU0
-         ----
-    lock(&iio_dev_opaque->info_exist_lock);
-    lock(&iio_dev_opaque->info_exist_lock);
+While at it, create a lockdep key before mutex initialisation.
+This will help with converting it to the better API in the future.
 
-   *** DEADLOCK ***
-
-   May be due to missing lock nesting notation
-
-  4 locks held by sensors/414:
-   #0: c31fd6dc (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0x44/0x4e4
-   #1: c4f5a1c4 (&of->mutex){+.+.}-{3:3}, at: kernfs_seq_start+0x1c/0xac
-   #2: c2827548 (kn->active#34){.+.+}-{0:0}, at: kernfs_seq_start+0x30/0xac
-   #3: c1dd2b68 (&iio_dev_opaque->info_exist_lock){+.+.}-{3:3}, at: iio_read_channel_processed_scale+0x24/0xd8
-
-  stack backtrace:
-  CPU: 0 UID: 0 PID: 414 Comm: sensors Not tainted 6.17.11 #5 NONE
-  Hardware name: Generic AM33XX (Flattened Device Tree)
-  Call trace:
-   unwind_backtrace from show_stack+0x10/0x14
-   show_stack from dump_stack_lvl+0x44/0x60
-   dump_stack_lvl from print_deadlock_bug+0x2b8/0x334
-   print_deadlock_bug from __lock_acquire+0x13a4/0x2ab0
-   __lock_acquire from lock_acquire+0xd0/0x2c0
-   lock_acquire from __mutex_lock+0xa0/0xe8c
-   __mutex_lock from mutex_lock_nested+0x1c/0x24
-   mutex_lock_nested from iio_read_channel_raw+0x20/0x6c
-   iio_read_channel_raw from rescale_read_raw+0x128/0x1c4
-   rescale_read_raw from iio_channel_read+0xe4/0xf4
-   iio_channel_read from iio_read_channel_processed_scale+0x6c/0xd8
-   iio_read_channel_processed_scale from iio_hwmon_read_val+0x68/0xbc
-   iio_hwmon_read_val from dev_attr_show+0x18/0x48
-   dev_attr_show from sysfs_kf_seq_show+0x80/0x110
-   sysfs_kf_seq_show from seq_read_iter+0xdc/0x4e4
-   seq_read_iter from vfs_read+0x238/0x2e4
-   vfs_read from ksys_read+0x6c/0xec
-   ksys_read from ret_fast_syscall+0x0/0x1c
-
-Just as the mlock_key already has its own lockdep class, add a
-lock_class_key for the info_exist mutex.
-
-Note that this has in theory been a problem since before IIO first
-left staging, but it only occurs when a chain of consumers is in use
-and that is not often done.
-
+Fixes: 847ec80bbaa7 ("Staging: IIO: core support for device registration and management")
 Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
-Signed-off-by: Rasmus Villemoes <ravi@prevas.dk>
-Reviewed-by: Peter Rosin <peda@axentia.se>
-Cc: <stable@vger.kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 9910159f0659 ("iio: core: add separate lockdep class for info_exist_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/industrialio-core.c | 4 +++-
- include/linux/iio/iio-opaque.h  | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/iio/industrialio-core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index f69deefcfb6fd..117ffad4f3769 100644
+index 6a6568d4a2cb3..43b842a062271 100644
 --- a/drivers/iio/industrialio-core.c
 +++ b/drivers/iio/industrialio-core.c
-@@ -1657,6 +1657,7 @@ static void iio_dev_release(struct device *device)
- 	mutex_destroy(&iio_dev_opaque->info_exist_lock);
- 	mutex_destroy(&iio_dev_opaque->mlock);
+@@ -1628,6 +1628,9 @@ static void iio_dev_release(struct device *device)
  
-+	lockdep_unregister_key(&iio_dev_opaque->info_exist_key);
+ 	iio_device_detach_buffers(indio_dev);
+ 
++	mutex_destroy(&iio_dev_opaque->info_exist_lock);
++	mutex_destroy(&iio_dev_opaque->mlock);
++
  	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
  
  	ida_free(&iio_ida, iio_dev_opaque->id);
-@@ -1717,9 +1718,10 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
- 
- 	lockdep_register_key(&iio_dev_opaque->mlock_key);
-+	lockdep_register_key(&iio_dev_opaque->info_exist_key);
- 
- 	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
--	mutex_init(&iio_dev_opaque->info_exist_lock);
-+	mutex_init_with_key(&iio_dev_opaque->info_exist_lock, &iio_dev_opaque->info_exist_key);
- 
- 	indio_dev->dev.parent = parent;
+@@ -1672,8 +1675,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
  	indio_dev->dev.type = &iio_device_type;
-diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
-index 4247497f3f8bd..b87841a355f80 100644
---- a/include/linux/iio/iio-opaque.h
-+++ b/include/linux/iio/iio-opaque.h
-@@ -14,6 +14,7 @@
-  * @mlock:			lock used to prevent simultaneous device state changes
-  * @mlock_key:			lockdep class for iio_dev lock
-  * @info_exist_lock:		lock to prevent use during removal
-+ * @info_exist_key:		lockdep class for info_exist lock
-  * @trig_readonly:		mark the current trigger immutable
-  * @event_interface:		event chrdevs associated with interrupt lines
-  * @attached_buffers:		array of buffers statically attached by the driver
-@@ -47,6 +48,7 @@ struct iio_dev_opaque {
- 	struct mutex			mlock;
- 	struct lock_class_key		mlock_key;
- 	struct mutex			info_exist_lock;
-+	struct lock_class_key		info_exist_key;
- 	bool				trig_readonly;
- 	struct iio_event_interface	*event_interface;
- 	struct iio_buffer		**attached_buffers;
+ 	indio_dev->dev.bus = &iio_bus_type;
+ 	device_initialize(&indio_dev->dev);
+-	mutex_init(&iio_dev_opaque->mlock);
+-	mutex_init(&iio_dev_opaque->info_exist_lock);
++
+ 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
+ 
+ 	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
+@@ -1696,6 +1698,9 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	lockdep_register_key(&iio_dev_opaque->mlock_key);
+ 	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
+ 
++	mutex_init(&iio_dev_opaque->mlock);
++	mutex_init(&iio_dev_opaque->info_exist_lock);
++
+ 	return indio_dev;
+ }
+ EXPORT_SYMBOL(iio_device_alloc);
 -- 
 2.51.0
 
