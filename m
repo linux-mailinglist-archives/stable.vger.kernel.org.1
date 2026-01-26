@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-211667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sGoHLn2nd2lrjwEAu9opvQ
-	(envelope-from <stable+bounces-211667-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:42:21 +0100
+	id CDhJOpWod2nrjwEAu9opvQ
+	(envelope-from <stable+bounces-211668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:47:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE7B98B98E
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:42:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CDE48BA2D
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:47:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 14803300698E
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:42:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 250673015485
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D227434D3BB;
-	Mon, 26 Jan 2026 17:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA6A2E8B8F;
+	Mon, 26 Jan 2026 17:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QntdRDk7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XohR/+Mx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9649133BBD3
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 17:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305D8238C0D
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 17:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769449334; cv=none; b=KTBeqJWZrLnuosKweYdw7wOLPYN9PFYL7vxXJ7nDOaeRhOq3zcj8QmB2b7Pt1tuPMc6bF3OZ+sJdgwdUgfXfBjpeLvgEu40Xp/0emfgtntC6w/rxHh4rZEW3nohyz8WSTxgnrwziswSHYMfHyfD9vvUc7S833J4JDhc99yQXx2k=
+	t=1769449617; cv=none; b=GjOo8IUivJTFfyAaezp5jNJxSSdZvRQha6fioTFp07KYPyAfNwve9HGE3wnM2xiTTqbDvPWlzWxMZQtNDZwF5Ms24Imi14q9K6gwO4bvSsL94Fm9p9j5Wcn43npQIJ1kfa9vCr+D67jN4uKg+kaKnC/IeP7LV8TTP3Mj9BAhrTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769449334; c=relaxed/simple;
-	bh=/6oTyU/FHCHObhp6MXUqc+x1DjEaIFeAjpptJsgYVMo=;
+	s=arc-20240116; t=1769449617; c=relaxed/simple;
+	bh=eVxyZVpphCu5K31kZj5MJ7SVfdg/Plr6Bf+KCRfAzj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9bTLdgof2h1QX9rCqyKv4ZPvmdhdZ5RCoiYwIp67WwnjthHHUCsl7XC1VrN1xo6LKDrTUsbKiYyxrPEtsddiQi3AJij8KKQVZKFgH2e7wLL5zbD6eB+i6h/LAf0Fjx6uvPHK2lv0+7cmiv5zVvOkc32i4pce0DpCH3ogQvKcGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QntdRDk7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2AFC2BC86;
-	Mon, 26 Jan 2026 17:42:13 +0000 (UTC)
+	 MIME-Version; b=k1IDeluNz/eHpecuOeMwT2rMDEePgUUPX8HSS4v78akkrfZbBrbVUoxx8RmsH0sPfvfltCSBdMGZyYYBnvIPCagNCoiITqf6zrMfTk/L9Mur5N9R+x423xUr4LXOPB8cLv8I2AtKMe4zTxcIHA6t3qd6kXc/NQRw5kK1fawhwJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XohR/+Mx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5E7C116C6;
+	Mon, 26 Jan 2026 17:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769449334;
-	bh=/6oTyU/FHCHObhp6MXUqc+x1DjEaIFeAjpptJsgYVMo=;
+	s=k20201202; t=1769449617;
+	bh=eVxyZVpphCu5K31kZj5MJ7SVfdg/Plr6Bf+KCRfAzj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QntdRDk7bR8tIBzVUEYRPWbX1O2avBf8DBuchNwkBT8Gb39XmadNCEMPute69oLPN
-	 u2ypxew9rRprc3seaiaxvb2V1PK4b1DCbIaWqPhAU6W+y6yPdTTKNWzeAz7e0Y+6Tm
-	 hOdnWX1UjrqzzlqVoM2nL9rQF5MHvZbZfQxeLLaGiozngvPmI6AGjVxxpG8mpzrlnA
-	 8B5DO94Jm4fyGN8LKRrfwKIqK8BVm3PHCiX1OwsRmgRgP+tmPai9WixPfx7ZTLToYr
-	 QinTd7yGEsPiNSQucxmKmUF/UMRyEtwyEtmTzLLI+78mI9ff2CBOVU4/rSzgH0pEPS
-	 aUS2OEayFMJNg==
+	b=XohR/+MxmNeIFH0MXjevv3kNY1GHTvWzJciFb5eBGx5ZC1CgbeiGfqIYGzpFHe1Ba
+	 GuAbuKqjFz2hD87jDlp1iZpbwASy6uHzwB8l9Lp9Lpc55HZsNTuLqhg5M7VJBMkJsL
+	 CwTUoTgjfsvf/HFnuqDWbjbQvd2Xduif/BYWH6lueTvA7YjVdN5NY6OtjI8G7zAUGs
+	 Tesw6bsMjceOKPP6Nxwvsj9czjZo4kvuupKjxYkX7YX+N4j1HOoCYR6C8eAwYicd09
+	 1tbt7/kirqI6ITyz5De4JW0RQF9L+coyfvu2uj0rS0xJkL7azlqoBK2FaEsBaxoKNG
+	 SAEJf8n1jPYLg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Abdun Nihaal <nihaal@cse.iitm.ac.in>,
 	Juergen Gross <jgross@suse.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] scsi: xen: scsiback: Fix potential memory leak in scsiback_remove()
-Date: Mon, 26 Jan 2026 12:42:12 -0500
-Message-ID: <20260126174212.3433842-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] scsi: xen: scsiback: Fix potential memory leak in scsiback_remove()
+Date: Mon, 26 Jan 2026 12:46:54 -0500
+Message-ID: <20260126174654.3437191-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012626-cognitive-spoiled-5d7d@gregkh>
-References: <2026012626-cognitive-spoiled-5d7d@gregkh>
+In-Reply-To: <2026012626-aghast-repeated-f60b@gregkh>
+References: <2026012626-aghast-repeated-f60b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211667-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211668-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -90,8 +90,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email,iitm.ac.in:email]
-X-Rspamd-Queue-Id: BE7B98B98E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email,suse.com:email,iitm.ac.in:email]
+X-Rspamd-Queue-Id: 2CDE48BA2D
 X-Rspamd-Action: no action
 
 From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
@@ -116,10 +116,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/xen/xen-scsiback.c b/drivers/xen/xen-scsiback.c
-index 0c5e565aa8cff..244029f4a96f1 100644
+index 9cd4fe8ce6803..fd0ce2f6bbe47 100644
 --- a/drivers/xen/xen-scsiback.c
 +++ b/drivers/xen/xen-scsiback.c
-@@ -1197,6 +1197,7 @@ static int scsiback_remove(struct xenbus_device *dev)
+@@ -1202,6 +1202,7 @@ static int scsiback_remove(struct xenbus_device *dev)
  	gnttab_page_cache_shrink(&info->free_pages, 0);
  
  	dev_set_drvdata(&dev->dev, NULL);
