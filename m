@@ -1,84 +1,57 @@
-Return-Path: <stable+bounces-211552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211553-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CProKP5Sd2mdeAEAu9opvQ
-	(envelope-from <stable+bounces-211552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:41:50 +0100
+	id yH/iLxdWd2nMeAEAu9opvQ
+	(envelope-from <stable+bounces-211553-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:55:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08CB387B96
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:41:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD9087E07
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E1F03019B80
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 11:41:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F47D303B4C4
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 11:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A434332ED1;
-	Mon, 26 Jan 2026 11:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC76332EC4;
+	Mon, 26 Jan 2026 11:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="N7CeY/hK"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="b9J9SHkj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942D3331A70
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 11:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440E933033C
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 11:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769427691; cv=none; b=RDdxTlT9KZDFmd5ERA9DpqXa7NxZB6nB19xhIOydmw+zcm6r/soQ96q7vUcpvGPpa1y4D48PMzL3StJ+WU47B3W8UmIqreNA6QixLHx2o6ZdbEH5tsxuAjK5P2tm793CEtERktYc/bAyePRb8G8C3K9DmT1iWmW+xFhkr6rZijE=
+	t=1769428227; cv=none; b=R01r3nGPpEdrS9W2tk3un8y7PMtBmls85XvFVChxag0Sb+ghftUMuZTDrTeuwoERT21fM94JtHrLCVPr6Kt+oc6aqDWcK0PXKwQExjjd77J40lF2GRxb2WxlBX4zbIhoiaCQSelX1pkqdiQFCd7QOiBvjA5TWm0GxQCZc8OtsYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769427691; c=relaxed/simple;
-	bh=AxiyoaABzXqMP4w/uMab+PrtYh1Z0TFJQkq97Gw4i8Q=;
+	s=arc-20240116; t=1769428227; c=relaxed/simple;
+	bh=vcrzpCDdtv6Hrev0Z5UmeaahAhfpfn7TvVcuoU3lJ9c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lai8utYN+RVjeYV4j4w/V4gJuXNsfcM6ZezfoET4gs0vv8aqpP3BwtEsc3EhyNbWeskz58vJeuMAugtd6EHbUJuO4alnNDPQwNLVIRJcSMIH5NVKfx6yOcvM8cOQB1hT+u2F6wrxyyN7cFZ+f2LFbnEvzYb/jRYB/vXwh2PcKZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=N7CeY/hK; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-42fb5810d39so2786000f8f.2
-        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 03:41:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769427688; x=1770032488; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rN1oSNDkGLBy6EHwhjHDF6Jrov42HwjEw9RdQlJcNw0=;
-        b=N7CeY/hKava6XQQ/h38THONZbwLfrd8ykCvvjqfwdFmS+pBHPJdSfjuMd+EVN4HD/Z
-         pg/fnlUkjlQ5nMT575LsObgYKXv+a+Qna1IHm8/ge+4UT+nwcswITHgmt5RHab7965PK
-         vh462n6WONI3ZQX2IRclp0bTd+c3qHsLzUcvr+Jym2knvMeB3ClEXVhm+aAh1M4irkVz
-         o/rL2K/+9wWGPwX0GYGYedwpw/1IoNzqRV00cQqTi1lgQyN1wQX4v75HmaDd4aHxT/9e
-         auPsRzPHtfa2d68Su6Rb+XGAkejiLTUClBfQ6mnhUG+FAyOYmui2gU6Leri8kf3LlNrB
-         Kucw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769427688; x=1770032488;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rN1oSNDkGLBy6EHwhjHDF6Jrov42HwjEw9RdQlJcNw0=;
-        b=pTZdA8/O+OSjPmWEk7TEG9JMosUNxO27A/X1eDQMip/IHvoP8nAX7gHdBUom84HTe/
-         lLGwMMsiR60TQT9SZDDnrsIKfPDSW7glViU/BkwmcAie593dNjuv+trOxuSYh1jEMm3a
-         4adSDmm20YwBdzwKlIm4zmqYJJI/Q5U8twG8NXRGNAmfKWxX4APpboYzKNkb1/tHcHvP
-         e0oo/e/dnYxLEn+mDQUWknsitiZ2zoggUPWQlxLp6gys0OiXxX6ei2RV1qBo/iMfmSs0
-         K2xH3WaymhQpjCDvptY7ol78KuQCVf68izc+R9PDefCh8tgCL75Wc7R55jznKLedDF2z
-         X+Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCWGYKSgVD+x3DpKdtYcqnQaxlfrVY3IcEkuAr8dDTcBFvbFw2mG30upcVAsbwSghbG5t7Kf0rU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIO1ORWrF+di7SU+N3YyhlSYSrORc8v5+IdN3eP92HthFEwZPY
-	2tkETr8Z9HFd/PMFbUvQf4Sl3QhQAMJSQk3wPPx/sqIvkoSXrNLzpiGDw8VrO6RO2dU=
-X-Gm-Gg: AZuq6aKbzq99TYAvdkHawh3TP4tAw3CpykIyrdw08NH/kiqjN9H1f7G+RFoVeB43TLE
-	FSxNPSdQmZdJ/KmB6/az97ahRbAQuFUhfpd5N+D3KtZYqdczqEUArdE6v4t2DcN3+z7tZ/tQdql
-	CkovfTyHJOhGK2QCwKNIbbbJW05h4Uu/CRmt6lfOWmGnAYehzds2sPKaoYK4HvydWtvb5LO3Stu
-	QEoQ0u5AT9AZu42giWUI9/huO7I1CQVgb3qqLwPhjMZrPwgC2dKt9XEeOXXQuBEIAm/d7OCYDOV
-	3AuR7Etv6Nd6TXcyC4cnMK7YMfo376wt8b7PDqhtJ6wyN3h0RwS1/ntT8t1EpZ6r9LMEVzfbGuJ
-	PgMS57v3NWJRfp+Y2HPq5J0c/uNXlWe134NGLcZe/I5rFxJq9wA8XXgf2BHmlwZmowWVyoLZ14A
-	rs8ARXmQB0RaSoZr5A3P8iUfDnBcgQJjaqU/u2UPdfmTfMyZzx8Lsg
-X-Received: by 2002:a05:6000:230e:b0:432:c0e6:cfcc with SMTP id ffacd0b85a97d-435ca0ef509mr6845789f8f.23.1769427687426;
-        Mon, 26 Jan 2026 03:41:27 -0800 (PST)
-Received: from [192.168.0.40] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1f73855sm28803758f8f.29.2026.01.26.03.41.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Jan 2026 03:41:26 -0800 (PST)
-Message-ID: <b699fcf5-5cb0-41eb-b9de-e5c6e98aefaa@linaro.org>
-Date: Mon, 26 Jan 2026 11:41:25 +0000
+	 In-Reply-To:Content-Type; b=NWPTSuCNwl1W2qngPvLGyz1M7v4XBrY5uhaMwAVQUFNmBkGuadgfIIZ9PkeXne0OrZ/Y0YsVDcFmRDVktsXDAKKDPA6bU9AkkqRG1Vwzp99ZLxXvPuGhF0HoTwnR3Hz0ZfKl7jR+Bj/sgowOwZbYYnFT1ubXLO+9OaohxUBuufc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=b9J9SHkj; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=fNdXdx3qpgtP8W7eHWimmJlGqGjPkF4bLSPE3qsDDxw=; b=b9J9SHkjo7vDS8rVgQb9Ekv8XW
+	ZtJu4j7xsdILnMAyjAO9GiewSYRe3AqXcUtC3oNZkFLsu+cFwKW+b2KrW0JRCeIx7hPqu0Quj7Fef
+	yWC58z14q3GHqX8XonMeb6IojX98lIgHoguoCfhj7NaaurZjqcELugQSshlb34/e/DhkPZjbqsg2c
+	ETBYK4Pi6fqz0FEX4RzXxufJ2WzZ6b+tzoOesfO5OTo6YgRXqHGOrUGCK7s2gnExgeiJVl6cjc4Gf
+	KwijCChSx+WQ/b1yfPzQUPmbXeZRRkHOao3cFmUlEraxiugChA+jE4qwuI5mqEG8glI/F1PQ1kA3G
+	j6DQYMSw==;
+Received: from [90.240.106.137] (helo=[192.168.0.101])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1vkL6j-00A1TM-Hn; Mon, 26 Jan 2026 12:50:13 +0100
+Message-ID: <03cd76ac-7cb9-4493-8695-3d2d60358709@igalia.com>
+Date: Mon, 26 Jan 2026 11:50:12 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,152 +59,146 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] media: i2c: ov02c10: Keep power on and use reset
- for power management
-To: Saikiran B <bjsaikiran@gmail.com>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- bod@kernel.org, rfoss@kernel.org, todor.too@gmail.com,
- vladimir.zapolskiy@linaro.org, hansg@kernel.org,
- sakari.ailus@linux.intel.com, mchehab@kernel.org, stable@vger.kernel.org
-References: <20260125171745.484806-1-bjsaikiran@gmail.com>
- <20260126061528.63785-1-bjsaikiran@gmail.com>
- <20260126061528.63785-2-bjsaikiran@gmail.com>
- <ef6cf6c5-3b5d-45f2-af67-0567262a4561@linaro.org>
- <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Content-Language: en-US
-In-Reply-To: <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com>
+Subject: Re: [PATCH v2] drm: Do not allow userspace to trigger kernel warnings
+ in drm_gem_change_handle_ioctl()
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, Zhi Wang <wangzhi@stu.xidian.edu.cn>,
+ David Francis <David.Francis@amd.com>,
+ Felix Kuehling <felix.kuehling@amd.com>, stable@vger.kernel.org
+References: <9bde8c39-ba4c-49c5-a0bc-4e78338f055a@amd.com>
+ <20260123141540.76540-1-tvrtko.ursulin@igalia.com>
+ <9e5f8140-d197-46f2-8324-bd705a889ecf@amd.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <9e5f8140-d197-46f2-8324-bd705a889ecf@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,linaro.org,linux.intel.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-211553-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211552-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linaro.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.997];
+	FROM_NEQ_ENVFROM(0.00)[tvrtko.ursulin@igalia.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bryan.odonoghue@linaro.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:mid,linaro.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,0.0.0.36:email]
-X-Rspamd-Queue-Id: 08CB387B96
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,igalia.com:email,amd.com:email,xidian.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0AD9087E07
 X-Rspamd-Action: no action
 
-On 26/01/2026 11:23, Saikiran B wrote:
-> "Where do you get this conclusion from ? Are you inferring it from
-> what you see on the platform or can you point to some known
-> data-source for this ?"
+
+On 26/01/2026 09:02, Christian König wrote:
 > 
-> This is determined on the Lenovo Yoga Slim 7x (X1E80100). I tested
-> extensively and found that if I attempt to power-on the sensor less
-> than ~2.3 seconds after power-off, it fails to identify or times out
-> on I2C (brownout behavior). If we wait >2.3s, it works reliably 100%
-> of the time.
+> 
+> On 1/23/26 15:15, Tvrtko Ursulin wrote:
+>> Since GEM bo handles are u32 in the uapi and the internal implementation
+>> uses idr_alloc() which uses int ranges, passing a new handle larger than
+>> INT_MAX trivially triggers a kernel warning:
+>>
+>> idr_alloc():
+>> ...
+>> 	if (WARN_ON_ONCE(start < 0))
+>> 		return -EINVAL;
+>> ...
+>>
+>> Fix it by rejecting new handles above INT_MAX and at the same time make
+>> the end limit calculation more obvious by moving into int domain.
+>>
+>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>> Reported-by: Zhi Wang <wangzhi@stu.xidian.edu.cn>
+>> Fixes: 53096728b891 ("drm: Add DRM prime interface to reassign GEM handle")
+>> Cc: David Francis <David.Francis@amd.com>
+>> Cc: Felix Kuehling <felix.kuehling@amd.com>
+>> Cc: Christian König <christian.koenig@amd.com>
+>> Cc: <stable@vger.kernel.org> # v6.18+
+> 
+> Reviewed-by: Christian König <christian.koenig@amd.com>
 
-I don't think we've established the regulator is at fault. That's the 
-feedback I'm giving you here.
+Pushed to drm-misc-fixes, thank you!
 
-I think it is far, far, far more likely the power-on sequence of the 
-sensor needs tweaking.
+Regards,
+
+Tvrtko
 
 > 
-> "2 seconds to discharge ? These regulators are PM8010 anyway - so
-> you're saying the PMIC takes two seconds to discharge ?"
+>> ---
+>> v2:
+>>   * Rename local variable, re-position comment, drop the else block. (Christian)
+>>   * Use local at more places.
+>> ---
+>>   drivers/gpu/drm/drm_gem.c | 18 ++++++++++++------
+>>   1 file changed, 12 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+>> index 7ff6b7bbeb73..ffa7852c8f6c 100644
+>> --- a/drivers/gpu/drm/drm_gem.c
+>> +++ b/drivers/gpu/drm/drm_gem.c
+>> @@ -1001,16 +1001,21 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+>>   {
+>>   	struct drm_gem_change_handle *args = data;
+>>   	struct drm_gem_object *obj;
+>> -	int ret;
+>> +	int handle, ret;
+>>   
+>>   	if (!drm_core_check_feature(dev, DRIVER_GEM))
+>>   		return -EOPNOTSUPP;
+>>   
+>> +	/* idr_alloc() limitation. */
+>> +	if (args->new_handle > INT_MAX)
+>> +		return -EINVAL;
+>> +	handle = args->new_handle;
+>> +
+>>   	obj = drm_gem_object_lookup(file_priv, args->handle);
+>>   	if (!obj)
+>>   		return -ENOENT;
+>>   
+>> -	if (args->handle == args->new_handle) {
+>> +	if (args->handle == handle) {
+>>   		ret = 0;
+>>   		goto out;
+>>   	}
+>> @@ -1018,18 +1023,19 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
+>>   	mutex_lock(&file_priv->prime.lock);
+>>   
+>>   	spin_lock(&file_priv->table_lock);
+>> -	ret = idr_alloc(&file_priv->object_idr, obj,
+>> -		args->new_handle, args->new_handle + 1, GFP_NOWAIT);
+>> +	ret = idr_alloc(&file_priv->object_idr, obj, handle, handle + 1,
+>> +			GFP_NOWAIT);
+>>   	spin_unlock(&file_priv->table_lock);
+>>   
+>>   	if (ret < 0)
+>>   		goto out_unlock;
+>>   
+>>   	if (obj->dma_buf) {
+>> -		ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf, args->new_handle);
+>> +		ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf,
+>> +					       handle);
+>>   		if (ret < 0) {
+>>   			spin_lock(&file_priv->table_lock);
+>> -			idr_remove(&file_priv->object_idr, args->new_handle);
+>> +			idr_remove(&file_priv->object_idr, handle);
+>>   			spin_unlock(&file_priv->table_lock);
+>>   			goto out_unlock;
+>>   		}
 > 
-> Yes. I checked the regulator driver
-> (drivers/regulator/qcom-rpmh-regulator.c) and found that unlike other
-> Qualcomm regulator drivers (e.g., spmi/glink), it currently lacks
-> active_discharge / pull-down support. Without active discharge, the
-> voltage rails float and decay very slowly via leakage current when the
-> load (sensor) is in reset/high-Z.
 
-
-Right so looking at the power for this part we have:
-
-&cci1_i2c1 {
-	camera@36 {
-		compatible = "ovti,ov02c10";
-		reg = <0x36>;
-
-		reset-gpios = <&tlmm 237 GPIO_ACTIVE_LOW>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&cam_rgb_default>;
-
-		clocks = <&camcc CAM_CC_MCLK4_CLK>;
-		assigned-clocks = <&camcc CAM_CC_MCLK4_CLK>;
-		assigned-clock-rates = <19200000>;
-
-		orientation = <0>; /* front facing */
-
-		avdd-supply = <&vreg_l7b_2p8>;
-		dvdd-supply = <&vreg_l7b_2p8>;
-		dovdd-supply = <&vreg_cam_1p8>;
-
-		port {
-			ov02e10_ep: endpoint {
-				data-lanes = <1 2>;
-				link-frequencies = /bits/ 64 <400000000>;
-				remote-endpoint = <&csiphy4_ep>;
-			};
-		};
-	};
-};
-
-// qcom standard RPMh -> PMIC LDO regulators
-// these are not the droids you are looking for
-vreg_l7b_2p8: ldo7 {
-	regulator-name = "vreg_l7b_2p8";
-	regulator-min-microvolt = <2800000>;
-	regulator-max-microvolt = <2800000>;
-	regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-};
-
-// this OTOH
-vreg_cam_1p8: regulator-cam-1p8 {
-	compatible = "regulator-fixed";
-
-	regulator-name = "VREG_CAM_1P8";
-	regulator-min-microvolt = <1800000>;
-	regulator-max-microvolt = <1800000>;
-
-	gpio = <&tlmm 91 GPIO_ACTIVE_HIGH>;
-	enable-active-high;
-
-	pinctrl-0 = <&cam_ldo_en>;
-	pinctrl-names = "default";
-};
-
-Dell has used - likely reused - part of the x86 design in the qcom 
-implementation - and toggles 1v8 via a GPIO directly.
-
-If your theory about brown-out is correct then
-
-vreg_cam_1p8: regulator-cam-1p8 {
-	// add this
-	off-on-delay-us = <20000>;
-};
-
-Then please let us know how she goes.
-
----
-bod
 
