@@ -1,223 +1,200 @@
-Return-Path: <stable+bounces-211632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211661-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBdMIrGCd2m9hgEAu9opvQ
-	(envelope-from <stable+bounces-211632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:05:21 +0100
+	id sMtTMBSld2k9jwEAu9opvQ
+	(envelope-from <stable+bounces-211661-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:32:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 297DB89E82
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:05:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 036AB8B819
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:32:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7443A3027136
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:04:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84A74302413D
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05303385BE;
-	Mon, 26 Jan 2026 15:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5CC34677D;
+	Mon, 26 Jan 2026 17:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYolDgiO"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="cNZ3vhf5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp117.iad3b.emailsrvr.com (smtp117.iad3b.emailsrvr.com [146.20.161.117])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E79155757;
-	Mon, 26 Jan 2026 15:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBA13469F5
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 17:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=146.20.161.117
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769439857; cv=none; b=dOb1yaEVqToSvaFp3T2z0MN+YP51LBMtLEPvlsIMDsH2cOy4eogEHuiGadaYwwbyUb/yRVpZpsozpRGxxoAc+A5SstbMNoj6MNzDpmZt1b17Lh/h/Y6D8XSLOWrVif6xwz2RWPxrJC2EfthT7Gle5ycFtYp2JsEZah5kxCnj9oQ=
+	t=1769448721; cv=none; b=hVvZXnrh6S5o/wu2S1RhO8T9NBM8504LGLGZwetvNb3UKT43pQZPDXiOOtPsiuC71DOvIjkV1z7xd4R96OCxFTIrsFcjJivkDQk36roI2QXE6XDptu80J/w1Zz+HufRLjsvUiT2FqhQ+k2PY6BPiC1LOmXxCI8DK5Co4R4TIMrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769439857; c=relaxed/simple;
-	bh=90wXXQLghKcVYE4mkja/yflNq8gl5ZORNyekyzBhurA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EAQfgDI4Ig76WgzB7bN0jF77UG25DsEyj7ZtuTXHNRDlm2YH3rPXznoOpK/rzeGKNtbdEOrUw4ie1EWmrywtprmsnj4VEi5dg2ZC+PuY7/rWqB07/MC3TCneem0zplod67hS41tspzS77dr2mySNIAzZvFuTisDBHhgKFt8G3dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYolDgiO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E27BC116C6;
-	Mon, 26 Jan 2026 15:04:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769439856;
-	bh=90wXXQLghKcVYE4mkja/yflNq8gl5ZORNyekyzBhurA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NYolDgiOir0gLmB1iXukU+T5Yx8o9+UfkV9lJp9m2+/PAg7D5a6oJEh7p1H8mtRfe
-	 z42HzPqTBvYF2zHGcq4nbZI0ihdqiPnBfJ+nMNr0oaJhlBgO7PbElnEWf8XsjNV74O
-	 jf0oBfve2VEX82AsXj8qrRyMP24XMDa0f1PuL9KKqWsEQdaL73fEbZOtAil4vzccyX
-	 kVq4jAfNw7MaZe4Pl3X94NvIaK5+OQ6cDbbmCVaAZPYZeaMByVWZX5nh+QHoFusaeo
-	 C5fW+NidaJuaYZNqWUJz+aZhPqaHU8m4xcJrW+lXBRot7le5e+GVaNhcgl+WA5ZlU2
-	 N3P8jhtvPnGJw==
-Message-ID: <371b38d5-9322-4629-b378-ec62e0924fd4@kernel.org>
-Date: Mon, 26 Jan 2026 15:04:12 +0000
+	s=arc-20240116; t=1769448721; c=relaxed/simple;
+	bh=jT4eHyMrbJdIAsMzTzqOeJQCEq3zn3HUCUYl0Lf77xw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ppVG12fe1tIvbyjt/E7HMZnd14+zPBDt9zrLWEmbI9W24lgZhcpTVqjMTV07HOfK4BB6tv9AtCyPab4IC/qh9uB9c7NkgvF07tw9XYU95fPyybcOK/EjaAGVRcOR0lmfhJvS9FiWR5u9mXfjn/hkxpue7CJH5gKn6HBtSzrXasQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=cNZ3vhf5; arc=none smtp.client-ip=146.20.161.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1769439917;
+	bh=jT4eHyMrbJdIAsMzTzqOeJQCEq3zn3HUCUYl0Lf77xw=;
+	h=From:To:Subject:Date:From;
+	b=cNZ3vhf5GPZC6Uowio6afTJPpFeTMgxz1QsAjQwKGV6qwud2EqfoeQDfaDn5uCk6M
+	 OBDxnZJsFmPIOXGE8geRBEvuCTRaG5Uxo4DkC00DdR9BBoodsaPh0wWnZ06nXqnVna
+	 Zc4JwCOkJVEgvVy5C5o8r0ZZLOpHejEd35PSum+8=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp15.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 3287CC0202;
+	Mon, 26 Jan 2026 10:05:17 -0500 (EST)
+From: Ian Abbott <abbotti@mev.co.uk>
+To: stable@vger.kernel.org
+Cc: Ian Abbott <abbotti@mev.co.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 5.10.y] comedi: Fix getting range information for subdevices 16 to 255
+Date: Mon, 26 Jan 2026 15:05:02 +0000
+Message-ID: <20260126150502.325175-1-abbotti@mev.co.uk>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012651-shivering-gizzard-0e35@gregkh>
+References: <2026012651-shivering-gizzard-0e35@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] media: i2c: ov02c10: Keep power on and use reset
- for power management
-To: Saikiran B <bjsaikiran@gmail.com>, Hans de Goede <hansg@kernel.org>
-Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- rfoss@kernel.org, todor.too@gmail.com, vladimir.zapolskiy@linaro.org,
- sakari.ailus@linux.intel.com, mchehab@kernel.org, stable@vger.kernel.org
-References: <20260125171745.484806-1-bjsaikiran@gmail.com>
- <20260126061528.63785-1-bjsaikiran@gmail.com>
- <20260126061528.63785-2-bjsaikiran@gmail.com>
- <ef6cf6c5-3b5d-45f2-af67-0567262a4561@linaro.org>
- <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com>
- <b699fcf5-5cb0-41eb-b9de-e5c6e98aefaa@linaro.org>
- <IlpLwcSSsQ89AZYFUkWtRcUkztg6PClgkVOyWG0StiDOUCE93t7KlF9q18JPi3GutJ1OQWj_2igjYq1OD8FLZg==@protonmail.internalid>
- <CAAFDt1tjiEXbuChcY73+NYxPW=rB83P4Bks1TPGsHTTqoSzOuw@mail.gmail.com>
- <ed1421d9-f094-4306-ae6d-e07b3a72f82b@kernel.org>
- <CAAFDt1ukAdXwADuFVoZrs6Ay2fB_sq6LMW5FCnsjqUL7V62mfg@mail.gmail.com>
- <eaf30b60-c0fb-4cf5-bc37-274faa187734@linaro.org>
- <CAAFDt1tgFf5MQcHm3s5DJEDHDtbTfj56_0-=fTz0ekDjSqY3CA@mail.gmail.com>
- <2084a247-053b-41c0-84ef-c56af640aa74@kernel.org>
- <I-1OPz69QKXF-LDqvufQARvv_3TIYaLyZIETdiGvSj_JSYhnJNeqiLERDUH2R0kclFyo6MqMRsaiZaS3RKmdZA==@protonmail.internalid>
- <CAAFDt1ufYyM4_xTy+AZTdXBB0cGNk+nFQHD5+5U7tUMQqZ+o=g@mail.gmail.com>
-From: Bryan O'Donoghue <bod@kernel.org>
-Content-Language: en-US
-In-Reply-To: <CAAFDt1ufYyM4_xTy+AZTdXBB0cGNk+nFQHD5+5U7tUMQqZ+o=g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Classification-ID: a5ac21c3-5920-48ed-b23d-23cd2ca8392f-1-1
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mev.co.uk,none];
+	R_DKIM_ALLOW(-0.20)[mev.co.uk:s=20221208-6x11dpa4];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linaro.org,vger.kernel.org,kernel.org,gmail.com,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-211632-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_PROHIBIT(0.00)[0.0.0.36:email];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bod@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211661-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[abbotti@mev.co.uk,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[mev.co.uk:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 297DB89E82
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mev.co.uk:email,mev.co.uk:dkim,mev.co.uk:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 036AB8B819
 X-Rspamd-Action: no action
 
-On 26/01/2026 14:08, Saikiran B wrote:
-> The exact issue is:
-> 1. Open Camera -> Close -> Wait 3s -> Open: WORKS.
-> 2. Open Camera -> Close -> Wait 1.5s -> Open: FAILS (I2C Timeout / 
-> Device Busy).
-> 
-> If the VDD rail is floating in the brownout region (~1.0V) during that 
-> 1.5s window, does the sensor's internal Reset Logic Gate even have 
-> enough bias voltage to function?
+commit 10d28cffb3f6ec7ad67f0a4cd32c2afa92909452 upstream.
 
-I think the VDD rail floating is unlikely, this would require the 
-description of the LDO configured by XBL to be incorrect - possible but, 
-then you'd expect to see an update for Windows to fix it.
+The `COMEDI_RANGEINFO` ioctl does not work properly for subdevice
+indices above 15.  Currently, the only in-tree COMEDI drivers that
+support more than 16 subdevices are the "8255" driver and the
+"comedi_bond" driver.  Making the ioctl work for subdevice indices up to
+255 is achievable.  It needs minor changes to the handling of the
+`COMEDI_RANGEINFO` and `COMEDI_CHANINFO` ioctls that should be mostly
+harmless to user-space, apart from making them less broken.  Details
+follow...
 
-Have you gotten the latest firmware for the board from Lenovo ? A 
-misconfigured LDO - without active discharge set, should receive a 
-firmware update to address.
+The `COMEDI_RANGEINFO` ioctl command gets the list of supported ranges
+(usually with units of volts or milliamps) for a COMEDI subdevice or
+channel.  (Only some subdevices have per-channel range tables, indicated
+by the `SDF_RANGETYPE` flag in the subdevice information.)  It uses a
+`range_type` value and a user-space pointer, both supplied by
+user-space, but the `range_type` value should match what was obtained
+using the `COMEDI_CHANINFO` ioctl (if the subdevice has per-channel
+range tables)  or `COMEDI_SUBDINFO` ioctl (if the subdevice uses a
+single range table for all channels).  Bits 15 to 0 of the `range_type`
+value contain the length of the range table, which is the only part that
+user-space should care about (so it can use a suitably sized buffer to
+fetch the range table).  Bits 23 to 16 store the channel index, which is
+assumed to be no more than 255 if the subdevice has per-channel range
+tables, and is set to 0 if the subdevice has a single range table.  For
+`range_type` values produced by the `COMEDI_SUBDINFO` ioctl, bits 31 to
+24 contain the subdevice index, which is assumed to be no more than 255.
+But for `range_type` values produced by the `COMEDI_CHANINFO` ioctl,
+bits 27 to 24 contain the subdevice index, which is assumed to be no
+more than 15, and bits 31 to 28 contain the COMEDI device's minor device
+number for some unknown reason lost in the mists of time.  The
+`COMEDI_RANGEINFO` ioctl extract the length from bits 15 to 0 of the
+user-supplied `range_type` value, extracts the channel index from bits
+23 to 16 (only used if the subdevice has per-channel range tables),
+extracts the subdevice index from bits 27 to 24, and ignores bits 31 to
+28.  So for subdevice indices 16 to 255, the `COMEDI_SUBDINFO` or
+`COMEDI_CHANINFO` ioctl will report a `range_type` value that doesn't
+work with the `COMEDI_RANGEINFO` ioctl.  It will either get the range
+table for the subdevice index modulo 16, or will fail with `-EINVAL`.
 
-Another possibility is CCI is powering the chip in sleep.
+To fix this, always use bits 31 to 24 of the `range_type` value to hold
+the subdevice index (assumed to be no more than 255).  This affects the
+`COMEDI_CHANINFO` and `COMEDI_RANGEINFO` ioctls.  There should not be
+anything in user-space that depends on the old, broken usage, although
+it may now see different values in bits 31 to 28 of the `range_type`
+values reported by the `COMEDI_CHANINFO` ioctl for subdevices that have
+per-channel subdevices.  User-space should not be trying to decode bits
+31 to 16 of the `range_type` values anyway.
 
-Lets have a look at the CCI pins.
-
-         cam_rgb_default: cam-rgb-default-state {
-                 mclk-pins {
-                         pins = "gpio100";
-                         function = "cam_aon";
-                         drive-strength = <16>;
-                         bias-disable;
-                 };
-
-                 reset-n-pins {
-                         pins = "gpio237";
-                         function = "gpio";
-                         drive-strength = <2>;
-                         bias-disable;
-                 };
-         };
-
-add
-	cam_rgb_sleep: cam-rgb-sleep-state {
-                 mclk-pins {
-                         pins = "gpio100";
-                         function = "cam_aon";
-                         drive-strength = <2>;
-                         bias-pull-down; // Force to Ground
-                 };
-
-                 reset-n-pins {
-                         pins = "gpio237";
-                         function = "gpio";
-                         drive-strength = <2>;
-                         bias-pull-down; // Force to Ground
-                 };
-         };
-
-
-&cci1_i2c1 {
-         camera@36 {
-                 compatible = "ovti,ov02c10";
-                 reg = <0x36>;
-
-                 reset-gpios = <&tlmm 237 GPIO_ACTIVE_LOW>;
-                 pinctrl-names = "default", "sleep";
-                 pinctrl-0 = <&cam_rgb_default>;
-                 pinctrl-1 = <&cam_rgb_sleep>;
-
-Failing that we should try a more liberal power_on()
-
-power_on():
-
-     Assert Reset (GPIO Low).
-     Wait 10ms.
-     Enable all regulators (RPMh votes).
-     Wait 20ms (Allow PM8010 to ramp and stabilize).
-     Start the Clock (MCLK).
-     Wait 10ms.
-     De-assert Reset (GPIO High).
-     Wait 5ms.
-
-If that doesn't work, we will have to go and look at the LDO 
-configuration via SPMI directly.
-
-During the 2.3 second window can you run
-
-Getting the kernel's view:
-cat /sys/kernel/debug/regulator/regulator_summary
-
-We are looking for use_count > 0 and open_count
-
-We could also look at the SPMI LDO config register
-
-Getting the firmware's view:
-cat /sys/kernel/debug/regmap/spmi0-0x08/registers
-
-It should be possible to interrogate the configruation of all of the 
-relevant LDOs and ascertain if active-discharge is set, which TBH it 
-should be.
-
-> ​My testing suggests the sensor is physically incapable of processing 
-> the Reset signal until the rail fully discharges (~2.3s), which is why 
-> the 5ms delay has no effect.
-
-Yes accepted but, a 2.3 second delay is avoidable if we root-cause.
-P.S.
-Please bottom post !
-
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable@vger.kernel.org #5.17+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20251203162438.176841-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(cherry picked from commit 10d28cffb3f6ec7ad67f0a4cd32c2afa92909452)
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
 ---
-bod
+ drivers/staging/comedi/comedi.h      | 2 +-
+ drivers/staging/comedi/comedi_fops.c | 2 +-
+ drivers/staging/comedi/range.c       | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/staging/comedi/comedi.h b/drivers/staging/comedi/comedi.h
+index b5d00a006dbb..a4e2a61e7cb0 100644
+--- a/drivers/staging/comedi/comedi.h
++++ b/drivers/staging/comedi/comedi.h
+@@ -640,7 +640,7 @@ struct comedi_chaninfo {
+ 
+ /**
+  * struct comedi_rangeinfo - used to retrieve the range table for a channel
+- * @range_type:		Encodes subdevice index (bits 27:24), channel index
++ * @range_type:		Encodes subdevice index (bits 31:24), channel index
+  *			(bits 23:16) and range table length (bits 15:0).
+  * @range_ptr:		Pointer to array of @struct comedi_krange to be filled
+  *			in with the range table for the channel or subdevice.
+diff --git a/drivers/staging/comedi/comedi_fops.c b/drivers/staging/comedi/comedi_fops.c
+index de89922e7397..1c36d34f9e33 100644
+--- a/drivers/staging/comedi/comedi_fops.c
++++ b/drivers/staging/comedi/comedi_fops.c
+@@ -1095,7 +1095,7 @@ static int do_chaninfo_ioctl(struct comedi_device *dev,
+ 		for (i = 0; i < s->n_chan; i++) {
+ 			int x;
+ 
+-			x = (dev->minor << 28) | (it->subdev << 24) | (i << 16) |
++			x = (it->subdev << 24) | (i << 16) |
+ 			    (s->range_table_list[i]->length);
+ 			if (put_user(x, it->rangelist + i))
+ 				return -EFAULT;
+diff --git a/drivers/staging/comedi/range.c b/drivers/staging/comedi/range.c
+index a4e6fe0fb729..1f38c896ed5b 100644
+--- a/drivers/staging/comedi/range.c
++++ b/drivers/staging/comedi/range.c
+@@ -52,7 +52,7 @@ int do_rangeinfo_ioctl(struct comedi_device *dev,
+ 	const struct comedi_lrange *lr;
+ 	struct comedi_subdevice *s;
+ 
+-	subd = (it->range_type >> 24) & 0xf;
++	subd = (it->range_type >> 24) & 0xff;
+ 	chan = (it->range_type >> 16) & 0xff;
+ 
+ 	if (!dev->attached)
+-- 
+2.51.0
+
 
