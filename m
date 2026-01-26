@@ -1,231 +1,132 @@
-Return-Path: <stable+bounces-211509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBLzCdPfdmmhYAEAu9opvQ
-	(envelope-from <stable+bounces-211509-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 04:30:27 +0100
+	id eJBZOc78dmk1aAEAu9opvQ
+	(envelope-from <stable+bounces-211510-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 06:34:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB3D83AF9
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 04:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E22E1842BC
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 06:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5CE1300422F
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 03:30:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CC0B3004F61
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 05:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C04F267B05;
-	Mon, 26 Jan 2026 03:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332FD227BA4;
+	Mon, 26 Jan 2026 05:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SQjsEPuF"
+	dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b="MpobRxaU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+Received: from sg-1-33.ptr.blmpb.com (sg-1-33.ptr.blmpb.com [118.26.132.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC81920B810
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 03:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789572236F2
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 05:33:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769398222; cv=none; b=ihzAoMlw+5dFZvkD9fgpph/5RiOIij+OfU0eQdEBhJlXWfEyoMHRT+IgoMlGSl3d/+dx0hXxI8xoBYZ4xdcGNXgCeg2Tg24iIpd6ovtGsnSeQKWIB21KT5L+fl923/ilfA311Ev0K5gPQjwG2JEDRhQFkyBfjazTxSQLnwJjtIA=
+	t=1769405643; cv=none; b=gh9F8gGbmin7aBl/mqrBRSmjMUZ8Sq5DkjKnNzK4tD2ZqdxjF0MHhNby40E1Z4vdUBC0Cl7FNAoqg0XrXMRbLceXlH9jYz0SUfbm7wjkcwrFzzpyeVl3h2NFQv7Rp09YwzjwjMXD6FWdisKf3xipj5LqaM0rCf3rLTMhEkTpIIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769398222; c=relaxed/simple;
-	bh=odnHQjFmvL9q0KAXvfxM5lKxhjvove08qebNT2N/TYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXQ2eXp+7kCyAPb2cJr2GQA/cjuMPSRzo+e/ECm/jwYJCkeDsFLoFuyQaahrZjzwsKUqnUiBR50fEblxIZMfsJLuSdkk2orJNDZE276JxYqEnh1KXiojWTaouT0+xChKMwJ+gV/NQTGuTyan64NEOVhUNgk8+EzirKIWsNyODHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SQjsEPuF; arc=none smtp.client-ip=74.125.82.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2b7070acfdcso4609284eec.0
-        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 19:30:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769398220; x=1770003020; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ALi30XfcHcP7oXf6VT++jD7PYo4ntaFHOPvpKBXFeRE=;
-        b=SQjsEPuFoIIv7vmZ7ST28ifCdVexsZ28ScvlTDN52PrkEH5NlA2sQIOUK10k3oAJL3
-         pa0k6jbiEkAgqUPf8wmr9U+BPL/DTTcKV0Ck2FHi+UzTTxlTuvkprKJNuENYnlPqv2qn
-         A5N+ybjv0TCQ/eO5lXJ92ICEjxvZw6wV+v4kMVRBxhuvTG7GB7iqBadSKun+Zwqfn0vt
-         Ng3CQENVMvyD9652ZpFMzEIfa0f3rS1Hh6HCeosfUMmsNDhnNoakjk44c8WyD+LrdlRT
-         WVBmufytixsYpL6pONB6BKDk1PEcDlHuCFCV81DB9Bvz5zkzeYJnwDWgHu5A0gTgdjZs
-         41tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769398220; x=1770003020;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ALi30XfcHcP7oXf6VT++jD7PYo4ntaFHOPvpKBXFeRE=;
-        b=DypxutJLGLrDiwTUoUlWvkVqHXPM4D2XQXkoawhUcmkkVldzhru1+9I9YHqb9P5e9X
-         Vl2BI+MzVL0nYGXmS+ATCrCNIdspLyDuO23sHvRsG6CKaF//mndkwC3iso0Pw26eFzUU
-         dRfppvVS3Mp4y4GqyVYfwyWHQXZnB0Dvo8RGq2KcwqsYvskz1QFvPplgFeah5JW8WZIA
-         JUsKDCOUf0bqDLspInp0fque+bWBnmODAqWiD+vfxY4qO8+XhmyTg1TdHXkGQnD1G5Rk
-         P3eBbvFWVK42LX2nq9ajbTGreTJwUyoyVp+OdUQ8b7Jt5zddooV/+uf5UulUVQK6jMPS
-         gijA==
-X-Forwarded-Encrypted: i=1; AJvYcCUsQkqWZ0yX1VCeXi/ggE7NLL4ykJBLJh9zXiP3JDOVLD/SvZ68RiqQIDti8ld9h2cc6BrQKuU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOteqd2hXMKCxPjFDGWQOGl5UVC0hSyeAwwS7TJ2INXdE9QWUG
-	V73N74MbEprFJ1Yqk9tOvldeMYhj5hLsVEox8AFmRbh9gIfwA13+NN1A
-X-Gm-Gg: AZuq6aITXHV9UMs4PVxIeHzl5WZTcyXMYz1k2G3xZqIu3EfASIZql0YemFLm4oL6ZWt
-	Sas7lSgJlzZ4P0A3lbyB5W1TjHbn9OBK0raPyb9v4SAc6tXiGVW29QA8JDrsrulB/gThxGQRT0o
-	BU9hF4y5mSn66/UdwqVbfy1bvlU5gRqBQfOmE9sCFybWTo9fCd4q5/va9McyHNPi4hwqD+DzP57
-	npU/5BJujaX1QVML3mf5l+frRHmPmqBGrRiqLuowkAEm+gjHM1XV85cwqquJeY2GEVZzDUKQpaP
-	SGpk5MJCa5IMOH5ToNhn/EaOtgC+pA/JhiCvgIEcEt0GFqvihhbOhyvDh7cH8RPN+2xuaH8ZHVf
-	O3WHQAEP/mx7UYZ0WYuvfqylmjRbrPinBH8PxofXdLfYae7nDxncqdD80KKuSjcsSdXZFzWtlTz
-	XbzHg=
-X-Received: by 2002:a05:7022:511:b0:123:345b:ba05 with SMTP id a92af1059eb24-1248ebf7011mr1465124c88.22.1769398219711;
-        Sun, 25 Jan 2026 19:30:19 -0800 (PST)
-Received: from debian ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247d90cda6sm15429026c88.1.2026.01.25.19.30.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 19:30:18 -0800 (PST)
-From: Qiliang Yuan <realwujing@gmail.com>
-To: dianders@chromium.org
-Cc: akpm@linux-foundation.org,
-	lihuafei1@huawei.com,
-	linux-kernel@vger.kernel.org,
-	mingo@kernel.org,
-	mm-commits@vger.kernel.org,
-	realwujing@gmail.com,
-	song@kernel.org,
-	stable@vger.kernel.org,
-	sunshx@chinatelecom.cn,
-	thorsten.blum@linux.dev,
-	wangjinchao600@gmail.com,
-	yangyicong@hisilicon.com,
-	yuanql9@chinatelecom.cn,
-	zhangjn11@chinatelecom.cn
-Subject: Re: [PATCH v3] watchdog/hardlockup: Fix UAF in perf event cleanup due to migration race
-Date: Sun, 25 Jan 2026 22:30:12 -0500
-Message-ID: <20260126033012.934143-1-realwujing@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <CAD=FV=Vmk1jA+dAgJNVDMtxrhhrPxgnXkNxiqJXWBvgUcZZUxQ@mail.gmail.com>
-References: <CAD=FV=Vmk1jA+dAgJNVDMtxrhhrPxgnXkNxiqJXWBvgUcZZUxQ@mail.gmail.com>
+	s=arc-20240116; t=1769405643; c=relaxed/simple;
+	bh=/wC5XtevS36sRDXlejWt29/7Fk//4a4NBkLTQuqkk/I=;
+	h=Cc:In-Reply-To:Mime-Version:References:Subject:Message-Id:From:
+	 Date:To:Content-Type; b=H0FMEDSMCSqMltASOXKlWXNaD0o5suaowwQgf8DD4ob5Skp8vyOSHfumHysHpyWhP3d0XKToioWtBDDajsm4L6vd+AN/ONenQNZ0cni//6csiK3Oc+jnORye1co+SWbGYKhfJoynkF091nDngTqeaINtMjog2oEVffAm8OeYbRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com; spf=pass smtp.mailfrom=fnnas.com; dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b=MpobRxaU; arc=none smtp.client-ip=118.26.132.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fnnas.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1769405629;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=VJ9LzF4Ct+myR84KeQEYhbJCkWiG0gF+QzYDvcErG4A=;
+ b=MpobRxaUMn9W/2rZYXG9P/sfEVayXekpok0JH1yUrsACTq4FqLuO/mUNigPqNM+IFeJssI
+ o77h8iOY7jl7XleRNsDDpXF9QYzHO/iV6utcjijAi/LIjrGM8B7nbSGn68GCQE/QMEqH91
+ ha15kMmw+7mCpb+O0IQbx9DboWb/oaBxWi0Nt3xPGCes4azqw/87UuANJAoYpYVaPb/Zh9
+ JtzjpNYx7fMdjg2l5xcJkIipq24zjbcvazRGrmrYhWVbvCrkxr/yUTpfAJV6Ut4wrSNHTe
+ HVKoUBxHtsBJTxhrxZdszLawtZPv5JDmlHM0hPfiqQf5Pt7aohwH9pF4JbpEiA==
+Cc: <stable@vger.kernel.org>, <yukuai@fnnas.com>
+In-Reply-To: <20260120102456.25169-1-jinpu.wang@ionos.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Lms-Return-Path: <lba+26976fcbb+d7271d+vger.kernel.org+yukuai@fnnas.com>
+References: <20260120102456.25169-1-jinpu.wang@ionos.com>
+Reply-To: yukuai@fnnas.com
+Subject: Re: [PATCH] md/bitmap: fix GPF in write_page caused by resize race
+Message-Id: <ad63a8bf-410f-4b91-aa89-3963dadf87af@fnnas.com>
+Content-Language: en-US
+Received: from [192.168.1.104] ([39.182.0.137]) by smtp.feishu.cn with ESMTPS; Mon, 26 Jan 2026 13:33:45 +0800
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+X-Original-From: Yu Kuai <yukuai@fnnas.com>
+From: "Yu Kuai" <yukuai@fnnas.com>
+Date: Mon, 26 Jan 2026 13:33:43 +0800
+To: "Jack Wang" <jinpu.wang@ionos.com>, <song@kernel.org>, 
+	<linux-raid@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset=UTF-8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[fnnas-com.20200927.dkim.feishu.cn:s=s1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211510-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211509-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linux-foundation.org,huawei.com,vger.kernel.org,kernel.org,gmail.com,chinatelecom.cn,linux.dev,hisilicon.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[fnnas.com];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[fnnas-com.20200927.dkim.feishu.cn:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fnnas-com.20200927.dkim.feishu.cn:dkim];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yukuai@fnnas.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FROM_NEQ_ENVFROM(0.00)[realwujing@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email]
-X-Rspamd-Queue-Id: 4EB3D83AF9
+	HAS_REPLYTO(0.00)[yukuai@fnnas.com]
+X-Rspamd-Queue-Id: E22E1842BC
 X-Rspamd-Action: no action
 
-Hi Doug,
+=E5=9C=A8 2026/1/20 18:24, Jack Wang =E5=86=99=E9=81=93:
 
-Thanks for your further questions and for digging into the 4.19 vs ToT
-differences.
+> A General Protection Fault occurs in write_page() during array resize:
+> RIP: 0010:write_page+0x22b/0x3c0 [md_mod]
+>
+> This is a use-after-free race between bitmap_daemon_work() and
+> __bitmap_resize(). The daemon iterates over `bitmap->storage.filemap`
+> without locking, while the resize path frees that storage via
+> md_bitmap_file_unmap(). `quiesce()` does not stop the md thread,
+> allowing concurrent access to freed pages.
+>
+> Fix by holding `mddev->bitmap_info.mutex` during the bitmap update.
+>
+> Closes:https://lore.kernel.org/linux-raid/CAMGffE=3DMbfp=3D7xD_hYxXk1PAaC=
+ZNSEAVeQGKGy7YF9f2S4=3DNEA@mail.gmail.com/T/#u
+> Cc:stable@vger.kernel.org
+> Signed-off-by: Jack Wang<jinpu.wang@ionos.com>
+> ---
+>   drivers/md/md-bitmap.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
-On Sat, 24 Jan 2026 15:36:01 Doug Anderson <dianders@chromium.org> wrote:
-> The part that doesn't make a lot of sense to me, though, is that v4.19
-> also doesn't have commit 930d8f8dbab9 ("watchdog/perf: adapt the
-> watchdog_perf interface for async model"), which is where we are
-> saying the problem was introduced.
-> 
-> ...so in v4.19 I think:
-> * hardlockup_detector_perf_init() is only called from watchdog_nmi_probe()
-> * watchdog_nmi_probe() is only called from lockup_detector_init()
-> * lockup_detector_init() is only called from kernel_init_freeable()
-> right before smp_init()
-> 
-> Thus I'm super confused about how you could have seen the problem on
-> v4.19. Maybe your v4.19 kernel has some backported patches that makes
-> this possible?
+Applied with a fixtag:
 
-You caught it! Here is the context for the differences:
+Fixes: d60b479d177a ("md/bitmap: add bitmap_resize function to allow=20
+bitmap resizing.")
 
-1. Mainline (ToT):
-   - `lockup_detector_init()` is always called before `smp_init()`
-     (pre-SMP phase).
-   - Risk source: The asynchronous retry path (`lockup_detector_delay_init`)
-     introduced by 930d8f8dbab9, which runs in a workqueue (post-SMP)
-     context and triggers the UAF.
-
-2. openEuler (4.19/5.10):
-   - Local `euler inclusion` patches moved `lockup_detector_init()` after
-     `do_basic_setup()` (post-SMP phase).
-   - Risk source: The initial probe occurs directly in a post-SMP
-     environment, exposing the race condition.
-
-For openEuler (4.19/5.10) kernel, the call stack looks like this:
-  kernel_init()
-  -> kernel_init_freeable()
-    -> lockup_detector_init()       <-- Called after smp_init()
-      -> watchdog_nmi_probe()
-        -> hardlockup_detector_perf_init()
-          -> hardlockup_detector_event_create()
-
-In mainline (ToT), the initial probe (safe) call stack is:
-  kernel_init()
-  -> kernel_init_freeable()
-    -> lockup_detector_init()       <-- Called before smp_init()
-      -> watchdog_hardlockup_probe()
-        -> hardlockup_detector_event_create()
-
-However, the asynchronous retry mechanism (commit 930d8f8dbab9) executes the
-probe logic in a post-SMP, preemptible context. 
-
-For the mainline (ToT) retry path (at risk), the call stack is:
-  kworker thread
-  -> process_one_work()
-    -> lockup_detector_delay_init()
-      -> watchdog_hardlockup_probe()
-        -> hardlockup_detector_event_create()
-
-Thus, `930d8f8dbab9` remains the correct "Fixes" target for ToT.
-
-> OK, fair enough. ...but I'm a bit curious why nobody else saw this
-> WARN_ON(). I'm also curious if you have tested the hardlockup detector
-> on newer kernels, or if all of your work has been done on 4.19. If all
-> your work has been done on 4.19, do we need to find someone to test
-> your patch on a newer kernel and make sure it works OK? If you've
-> tested on a newer kernel, did the hardlockup detector init from the
-> kernel's early-init code, or the retry code?
-
-In newer kernels, when the probe fails initially and falls
-back to the retry workqueue (or even during early init if preemption is
-enabled), the `WARN_ON(!is_percpu_thread())` in
-`hardlockup_detector_event_create()` does indeed trigger because
-`watchdog_hardlockup_probe()` is called from a non-bound context.
-
-I have verified this patch on the openEuler 4.19 kernel. During our stress
-testing, where we start dozens of VMs simultaneously to create high resource
-contention, the UAF was consistently reproducible without this fix and is now
-confirmed resolved.
-
-The v4 patch addresses this by refactoring the creation logic to be stateless
-and adding `cpu_hotplug_disable()` to ensure the probed CPU stays alive.
-
-I'll wait for your further thoughts on v4:
-https://lore.kernel.org/all/20260124070814.806828-1-realwujing@gmail.com/
-
-Best regards,
-Qiliang
+--=20
+Thansk,
+Kuai
 
