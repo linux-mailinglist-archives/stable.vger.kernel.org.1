@@ -1,204 +1,284 @@
-Return-Path: <stable+bounces-211553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yH/iLxdWd2nMeAEAu9opvQ
-	(envelope-from <stable+bounces-211553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:55:03 +0100
+	id QGvfMxZXd2nMeAEAu9opvQ
+	(envelope-from <stable+bounces-211554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:59:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD9087E07
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:55:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F8587EB3
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 12:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F47D303B4C4
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 11:50:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DED030075DC
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 11:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC76332EC4;
-	Mon, 26 Jan 2026 11:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204D233372E;
+	Mon, 26 Jan 2026 11:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="b9J9SHkj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GNnqwP/o"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440E933033C
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 11:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769428227; cv=none; b=R01r3nGPpEdrS9W2tk3un8y7PMtBmls85XvFVChxag0Sb+ghftUMuZTDrTeuwoERT21fM94JtHrLCVPr6Kt+oc6aqDWcK0PXKwQExjjd77J40lF2GRxb2WxlBX4zbIhoiaCQSelX1pkqdiQFCd7QOiBvjA5TWm0GxQCZc8OtsYI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769428227; c=relaxed/simple;
-	bh=vcrzpCDdtv6Hrev0Z5UmeaahAhfpfn7TvVcuoU3lJ9c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NWPTSuCNwl1W2qngPvLGyz1M7v4XBrY5uhaMwAVQUFNmBkGuadgfIIZ9PkeXne0OrZ/Y0YsVDcFmRDVktsXDAKKDPA6bU9AkkqRG1Vwzp99ZLxXvPuGhF0HoTwnR3Hz0ZfKl7jR+Bj/sgowOwZbYYnFT1ubXLO+9OaohxUBuufc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=b9J9SHkj; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=fNdXdx3qpgtP8W7eHWimmJlGqGjPkF4bLSPE3qsDDxw=; b=b9J9SHkjo7vDS8rVgQb9Ekv8XW
-	ZtJu4j7xsdILnMAyjAO9GiewSYRe3AqXcUtC3oNZkFLsu+cFwKW+b2KrW0JRCeIx7hPqu0Quj7Fef
-	yWC58z14q3GHqX8XonMeb6IojX98lIgHoguoCfhj7NaaurZjqcELugQSshlb34/e/DhkPZjbqsg2c
-	ETBYK4Pi6fqz0FEX4RzXxufJ2WzZ6b+tzoOesfO5OTo6YgRXqHGOrUGCK7s2gnExgeiJVl6cjc4Gf
-	KwijCChSx+WQ/b1yfPzQUPmbXeZRRkHOao3cFmUlEraxiugChA+jE4qwuI5mqEG8glI/F1PQ1kA3G
-	j6DQYMSw==;
-Received: from [90.240.106.137] (helo=[192.168.0.101])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1vkL6j-00A1TM-Hn; Mon, 26 Jan 2026 12:50:13 +0100
-Message-ID: <03cd76ac-7cb9-4493-8695-3d2d60358709@igalia.com>
-Date: Mon, 26 Jan 2026 11:50:12 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0E132E724
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 11:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769428746; cv=pass; b=WBZMKDybtu2wbr9RtyW3pOCmmSY9J3UvEY7L/pqUN3IvHUoOQbIiqtMqZxsV1VoRs9QiemlVV+pSR1OGH+/oNLy6JJHxntROi1oo5lRAJXns8gChVrMAQSuQsEcNj6zCMiX1RCMHQEHScszSEDL6kI86N190ats5K35Ut2Hl88I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769428746; c=relaxed/simple;
+	bh=ueDbZxfaJaRJBPNnQTV7LcSD+ot8kxI/8ecV5AaE3VI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ukvxD8mQ/qRrCw0jQNC2TEKX79dNbAB8qqtcOqeP4aBRHIb8ikBn3uFZ4aTNsjuCHeytXinyM9fPhvyu1fI9tZmP7JVscjtzp/L/xAlV35Ao3jgAz0oZHiqNj9yOSE+7oCXPo4wi/Huk1nCkcT3qT++VJtBtQYy9Ld7Jyvp4l7M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GNnqwP/o; arc=pass smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35334ea1f98so1988009a91.1
+        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 03:59:05 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769428745; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KnIvQ9WJmRdj6ofPC6Sp00yKixrMkLTN9tjbKSVE85lA8GUMMFF8zN/qh339aofw8y
+         jRqjKCRTawhAXl+DjD0IJvwbxHU1k6gMfi6VCahBLKWqjr4upw+Mqif3PD4IAS07y7qg
+         2bvoX5uBrt6Rbpamkqlrh2cpeOTLWz5oD/kXswAA+OZjTCNVRlCyfpm5PCEk4WzZkOX6
+         WSd3/1sQcSzWFPJsYCA6bW54ggMeLvL0fMw660seGNfYEypHi+EjLn7xEtlRLz4VyjHD
+         LtHaeMd03Cw1/+nVjUgnxmMwNGrCuArs+eeyYdi31LwP9f7Gwfi7BjB1ZJeHgxFrVYtl
+         9oMg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=lxU49EsEPtxJDyA2uj8GOndna+YV7i2iNMjekZIsTLQ=;
+        fh=eYGMWTRrz2bcdjBxhowGzyxgdhA3RDUihEYttjGJww0=;
+        b=XOeGGjxUDXwEHY1e13KQolGfDYX4LDncnbgGrDsq+ah2DA4D7GnRylvr5UKt2pXefA
+         2yOxOkTMaTjZCxMe0OL2YWTwxY3gS4SsX1XlbmhjbxT0wOZ/EgWeZoSlhJYl2BmclXHT
+         VkfrGkbs5e7RlzWQDN+QHZP8djD1IZ5IXRZpT3bXUKh1GcXY4+30ndu6sULLI7IHOPN8
+         6c/luY2v6ZgXFf4W6BT68TuD/gES2WbCl7sxHj0OmpcyzzhvliGQJ/30h0ZFB+YI79yj
+         LE+w9mQDWFBtrxwWk1Gb4SRXXoDziNVAXBRbbkiqH068p1k5Kq1tnrC23DNygZjAM24Q
+         TruQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769428745; x=1770033545; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lxU49EsEPtxJDyA2uj8GOndna+YV7i2iNMjekZIsTLQ=;
+        b=GNnqwP/o3de3k+xzZsEBRPGU/J3QAslnMXgPHrKAgDC+4Y1slMotI6LqZHou0gO/s7
+         7k0iHOsah8VReR/v7tqraP0kHjcNMYXkr8TPlZW8Ef60mIkZh0lfd3TL6iwwnwgo9m9K
+         YRn1A7meFFaojlgQZofHbkags79+NFYAhfeia0BDj3vc9f3pcwfSrwzVYoApjgkPNVX2
+         GcuLd7W38FExWcjaUPfe0YdZOXr1XXYgXkCNRR890ePj3n5Zc2DVV2+L487mjiMyrs35
+         5VrTL/F99X+zlScU0jUMJtvPxK2kMpg73MVKooLOTdGlT4Orwcm0USGNucWe31WkNYAc
+         5vhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769428745; x=1770033545;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lxU49EsEPtxJDyA2uj8GOndna+YV7i2iNMjekZIsTLQ=;
+        b=FBxL6dVlGapU6WaExNuCWLAx1m0JvX1sdifdhWIbcQJAdatWl0V1MTXJUGRj3SFEHC
+         3VyaiVEx23skhqf95cMIoAk24ad8fpjQQwo/pONBFE2B5VBg7aUwueJb9PywpzWbqoi4
+         sw/MGZRSOrE1QQ0Q7suTcmx4OfpHNI5MGHNUZWa61OUwLdJhhHwwDG552Th+k8URxed7
+         uelqtsix6bYvAAJ2KtG8a+Uj7ZQDGCiO5bnj/YPSbx+5jsomrTd+ordrUbxKbeAxjyBf
+         ZKfX8/yQ6rWd/s/R3j4hRp6tMeAN/6n4AE2WOBmB8W2dzsbQuC5OtrLOBsMIjVWnNAk/
+         AFjw==
+X-Forwarded-Encrypted: i=1; AJvYcCWWuPQzZSP/1zjGal3WnQ5Xx8fj/tyBnClkGwxVtNBvYvbtou6nh9hqdHFyjR6xONsFdVJaKBE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4g4azIZwGizmC1yZ2GenzgJaxwnofZ7a8r59cAToJSf7YD9LD
+	WPRw3QAcs0+HGBMKweYRAmhx5eCFqoPGd0x1oZoL1VfupjVQoVm151pH4m9Jh/pOpCqz1RQ0j8k
+	VMdxF0zjLAmMzXt+7UOUUXHig2u+OPBQ=
+X-Gm-Gg: AZuq6aJNcl9b1fV4zi7tTCvSBRDUX8530N4YBi5YyC77/7OMd9d9M3KyHgSPZwOZ7M8
+	rUVS1h0nd4kM6JcPcF1O9goZ5weo6mgzqP3KHPFtX9KZhtUzt0ef+6BCZttSgH7cXOCJXDjg3Ex
+	SVFUlb0kpub2qYfJgtrRdBVwDy9CO01hn0SWAOvxVfc/Kl4Hdxth1bVgoZbHpThLjxVcZj2gAqa
+	8E94t0cuo+kIIHWBRFYaFd2VlpjpHGrKwYDjFjiW1Rlub6i/UDmhw7pRJyDiIUAPVVGSCl4Xf5k
+	7eMxotQEyWxbVcEwGLtUiVXjjTmi
+X-Received: by 2002:a17:90b:1c11:b0:34c:7182:cf9d with SMTP id
+ 98e67ed59e1d1-353c41787efmr3269458a91.25.1769428744818; Mon, 26 Jan 2026
+ 03:59:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] drm: Do not allow userspace to trigger kernel warnings
- in drm_gem_change_handle_ioctl()
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- dri-devel@lists.freedesktop.org
-Cc: kernel-dev@igalia.com, Zhi Wang <wangzhi@stu.xidian.edu.cn>,
- David Francis <David.Francis@amd.com>,
- Felix Kuehling <felix.kuehling@amd.com>, stable@vger.kernel.org
-References: <9bde8c39-ba4c-49c5-a0bc-4e78338f055a@amd.com>
- <20260123141540.76540-1-tvrtko.ursulin@igalia.com>
- <9e5f8140-d197-46f2-8324-bd705a889ecf@amd.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <9e5f8140-d197-46f2-8324-bd705a889ecf@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260125171745.484806-1-bjsaikiran@gmail.com> <20260126061528.63785-1-bjsaikiran@gmail.com>
+ <20260126061528.63785-2-bjsaikiran@gmail.com> <ef6cf6c5-3b5d-45f2-af67-0567262a4561@linaro.org>
+ <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com> <b699fcf5-5cb0-41eb-b9de-e5c6e98aefaa@linaro.org>
+In-Reply-To: <b699fcf5-5cb0-41eb-b9de-e5c6e98aefaa@linaro.org>
+From: Saikiran B <bjsaikiran@gmail.com>
+Date: Mon, 26 Jan 2026 17:28:52 +0530
+X-Gm-Features: AZwV_QjRJQN9oQY4Bm_wvDz9C94tR-dF8CReD0RZ4DAvRDLQ6uVsM3VvLqo3HCI
+Message-ID: <CAAFDt1tjiEXbuChcY73+NYxPW=rB83P4Bks1TPGsHTTqoSzOuw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] media: i2c: ov02c10: Keep power on and use reset
+ for power management
+To: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org, bod@kernel.org, 
+	rfoss@kernel.org, todor.too@gmail.com, vladimir.zapolskiy@linaro.org, 
+	hansg@kernel.org, sakari.ailus@linux.intel.com, mchehab@kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.36 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211553-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211554-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,linaro.org,linux.intel.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[igalia.com:-];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	FROM_NEQ_ENVFROM(0.00)[tvrtko.ursulin@igalia.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:mid,igalia.com:email,amd.com:email,xidian.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0AD9087E07
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,0.0.0.36:email,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 79F8587EB3
 X-Rspamd-Action: no action
 
+"I don't think we've established the regulator is at fault. That's the
+feedback I'm giving you here. ... vreg_cam_1p8: regulator-cam-1p8 {
+compatible =3D "regulator-fixed";"
 
-On 26/01/2026 09:02, Christian König wrote:
-> 
-> 
-> On 1/23/26 15:15, Tvrtko Ursulin wrote:
->> Since GEM bo handles are u32 in the uapi and the internal implementation
->> uses idr_alloc() which uses int ranges, passing a new handle larger than
->> INT_MAX trivially triggers a kernel warning:
->>
->> idr_alloc():
->> ...
->> 	if (WARN_ON_ONCE(start < 0))
->> 		return -EINVAL;
->> ...
->>
->> Fix it by rejecting new handles above INT_MAX and at the same time make
->> the end limit calculation more obvious by moving into int domain.
->>
->> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->> Reported-by: Zhi Wang <wangzhi@stu.xidian.edu.cn>
->> Fixes: 53096728b891 ("drm: Add DRM prime interface to reassign GEM handle")
->> Cc: David Francis <David.Francis@amd.com>
->> Cc: Felix Kuehling <felix.kuehling@amd.com>
->> Cc: Christian König <christian.koenig@amd.com>
->> Cc: <stable@vger.kernel.org> # v6.18+
-> 
-> Reviewed-by: Christian König <christian.koenig@amd.com>
+Just to clarify on the regulators: on the Slim 7x, the camera supplies
+(avdd, dvdd, dovdd) are all RPMh-controlled LDOs (pm8010 and pm8550),
+not generic fixed regulators.
 
-Pushed to drm-misc-fixes, thank you!
+As I've confirmed that the qcom-rpmh-regulator driver doesn't natively
+support active discharge or parsing off-on-delay-us (generic
+property), which explains why the physical discharge constraint wasn't
+being respected.
 
-Regards,
+I'm taking your advice to fix this properly at the platform level in
+my local tree (patching the RPMh driver and DTS to enforce the
+discharge delay).
 
-Tvrtko
+For the media driver patch (v3): I will follow Hans's suggestion to
+use Runtime PM Autosuspend. This handles the rapid open/close UX
+problem gracefully by keeping the regulators on during quick toggles,
+avoiding the need for the driver to "know" about the platform
+regulator constraints.
 
-> 
->> ---
->> v2:
->>   * Rename local variable, re-position comment, drop the else block. (Christian)
->>   * Use local at more places.
->> ---
->>   drivers/gpu/drm/drm_gem.c | 18 ++++++++++++------
->>   1 file changed, 12 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
->> index 7ff6b7bbeb73..ffa7852c8f6c 100644
->> --- a/drivers/gpu/drm/drm_gem.c
->> +++ b/drivers/gpu/drm/drm_gem.c
->> @@ -1001,16 +1001,21 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
->>   {
->>   	struct drm_gem_change_handle *args = data;
->>   	struct drm_gem_object *obj;
->> -	int ret;
->> +	int handle, ret;
->>   
->>   	if (!drm_core_check_feature(dev, DRIVER_GEM))
->>   		return -EOPNOTSUPP;
->>   
->> +	/* idr_alloc() limitation. */
->> +	if (args->new_handle > INT_MAX)
->> +		return -EINVAL;
->> +	handle = args->new_handle;
->> +
->>   	obj = drm_gem_object_lookup(file_priv, args->handle);
->>   	if (!obj)
->>   		return -ENOENT;
->>   
->> -	if (args->handle == args->new_handle) {
->> +	if (args->handle == handle) {
->>   		ret = 0;
->>   		goto out;
->>   	}
->> @@ -1018,18 +1023,19 @@ int drm_gem_change_handle_ioctl(struct drm_device *dev, void *data,
->>   	mutex_lock(&file_priv->prime.lock);
->>   
->>   	spin_lock(&file_priv->table_lock);
->> -	ret = idr_alloc(&file_priv->object_idr, obj,
->> -		args->new_handle, args->new_handle + 1, GFP_NOWAIT);
->> +	ret = idr_alloc(&file_priv->object_idr, obj, handle, handle + 1,
->> +			GFP_NOWAIT);
->>   	spin_unlock(&file_priv->table_lock);
->>   
->>   	if (ret < 0)
->>   		goto out_unlock;
->>   
->>   	if (obj->dma_buf) {
->> -		ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf, args->new_handle);
->> +		ret = drm_prime_add_buf_handle(&file_priv->prime, obj->dma_buf,
->> +					       handle);
->>   		if (ret < 0) {
->>   			spin_lock(&file_priv->table_lock);
->> -			idr_remove(&file_priv->object_idr, args->new_handle);
->> +			idr_remove(&file_priv->object_idr, handle);
->>   			spin_unlock(&file_priv->table_lock);
->>   			goto out_unlock;
->>   		}
-> 
+I will proceed with my testing and will let you know of the results.
 
+Thanks for the feedback.
+
+Thanks,
+Saikiran
+
+
+On Mon, Jan 26, 2026 at 5:11=E2=80=AFPM Bryan O'Donoghue
+<bryan.odonoghue@linaro.org> wrote:
+>
+> On 26/01/2026 11:23, Saikiran B wrote:
+> > "Where do you get this conclusion from ? Are you inferring it from
+> > what you see on the platform or can you point to some known
+> > data-source for this ?"
+> >
+> > This is determined on the Lenovo Yoga Slim 7x (X1E80100). I tested
+> > extensively and found that if I attempt to power-on the sensor less
+> > than ~2.3 seconds after power-off, it fails to identify or times out
+> > on I2C (brownout behavior). If we wait >2.3s, it works reliably 100%
+> > of the time.
+>
+> I don't think we've established the regulator is at fault. That's the
+> feedback I'm giving you here.
+>
+> I think it is far, far, far more likely the power-on sequence of the
+> sensor needs tweaking.
+>
+> >
+> > "2 seconds to discharge ? These regulators are PM8010 anyway - so
+> > you're saying the PMIC takes two seconds to discharge ?"
+> >
+> > Yes. I checked the regulator driver
+> > (drivers/regulator/qcom-rpmh-regulator.c) and found that unlike other
+> > Qualcomm regulator drivers (e.g., spmi/glink), it currently lacks
+> > active_discharge / pull-down support. Without active discharge, the
+> > voltage rails float and decay very slowly via leakage current when the
+> > load (sensor) is in reset/high-Z.
+>
+>
+> Right so looking at the power for this part we have:
+>
+> &cci1_i2c1 {
+>         camera@36 {
+>                 compatible =3D "ovti,ov02c10";
+>                 reg =3D <0x36>;
+>
+>                 reset-gpios =3D <&tlmm 237 GPIO_ACTIVE_LOW>;
+>                 pinctrl-names =3D "default";
+>                 pinctrl-0 =3D <&cam_rgb_default>;
+>
+>                 clocks =3D <&camcc CAM_CC_MCLK4_CLK>;
+>                 assigned-clocks =3D <&camcc CAM_CC_MCLK4_CLK>;
+>                 assigned-clock-rates =3D <19200000>;
+>
+>                 orientation =3D <0>; /* front facing */
+>
+>                 avdd-supply =3D <&vreg_l7b_2p8>;
+>                 dvdd-supply =3D <&vreg_l7b_2p8>;
+>                 dovdd-supply =3D <&vreg_cam_1p8>;
+>
+>                 port {
+>                         ov02e10_ep: endpoint {
+>                                 data-lanes =3D <1 2>;
+>                                 link-frequencies =3D /bits/ 64 <400000000=
+>;
+>                                 remote-endpoint =3D <&csiphy4_ep>;
+>                         };
+>                 };
+>         };
+> };
+>
+> // qcom standard RPMh -> PMIC LDO regulators
+> // these are not the droids you are looking for
+> vreg_l7b_2p8: ldo7 {
+>         regulator-name =3D "vreg_l7b_2p8";
+>         regulator-min-microvolt =3D <2800000>;
+>         regulator-max-microvolt =3D <2800000>;
+>         regulator-initial-mode =3D <RPMH_REGULATOR_MODE_HPM>;
+> };
+>
+> // this OTOH
+> vreg_cam_1p8: regulator-cam-1p8 {
+>         compatible =3D "regulator-fixed";
+>
+>         regulator-name =3D "VREG_CAM_1P8";
+>         regulator-min-microvolt =3D <1800000>;
+>         regulator-max-microvolt =3D <1800000>;
+>
+>         gpio =3D <&tlmm 91 GPIO_ACTIVE_HIGH>;
+>         enable-active-high;
+>
+>         pinctrl-0 =3D <&cam_ldo_en>;
+>         pinctrl-names =3D "default";
+> };
+>
+> Dell has used - likely reused - part of the x86 design in the qcom
+> implementation - and toggles 1v8 via a GPIO directly.
+>
+> If your theory about brown-out is correct then
+>
+> vreg_cam_1p8: regulator-cam-1p8 {
+>         // add this
+>         off-on-delay-us =3D <20000>;
+> };
+>
+> Then please let us know how she goes.
+>
+> ---
+> bod
 
