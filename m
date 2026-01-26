@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-211512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211513-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GOBRAeIHd2lGawEAu9opvQ
-	(envelope-from <stable+bounces-211512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:21:22 +0100
+	id EFVzMUQJd2lGawEAu9opvQ
+	(envelope-from <stable+bounces-211513-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:27:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E6384727
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:21:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC2384837
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:27:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06926302D967
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 06:19:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFACB3040FA1
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 06:24:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC2226ED56;
-	Mon, 26 Jan 2026 06:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506472741DF;
+	Mon, 26 Jan 2026 06:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="ZVOVwXv2"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="FAEACfoy"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9427526CE39;
-	Mon, 26 Jan 2026 06:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B17D27B4FB;
+	Mon, 26 Jan 2026 06:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769408391; cv=none; b=FP+20WOKhqiUcixRDkgMmY2LpB8xpJA9xQXWnnzf/pLUEqwIyyw1E0LM2G3zrSR15Rj32OLv6Fg37gvnPLk2Xw8xJ12GF5o0I0ztp7wlLLSnxpZ28yOn8bp1w6xfA/seuMusPoBLKWyQfohSzaatvDa13GMbGMIBD65pJURezd0=
+	t=1769408605; cv=none; b=lMQozIT++X/uEq0soenssiCWaBtcip+CuJW+FMpSHwo2sV3zWj8AVf16b0thwvrsrIHOfZjMcYipwked15/IDFm/HTUvN1sjdRZR3iuNOp2b5DgvOHnM6QVrH23R8ulrqzn6vSW0s9J9EKaxrp1m+JM6jN2usZ73BKtxHLRXBuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769408391; c=relaxed/simple;
-	bh=QAzkvnDSh8EVakRZGhTsfu60Tz5Q4n3XRLKkg6cjY8k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VWZ8YuWyO8RXH0TCX4HaEO7F8Vk1qpIs2qzjeeYIowVU3OxDowWgjyHbGu8/twCMrQW+6zhTNHNLhXr9Mfc7spCU3zY52Mf82EgeAV4LHN3XhRGQ5IqZC69scqI3KywRI1b5reQs5qDDNxF0V/xv+tAYtbSZcGt3izaLKKhCHlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=ZVOVwXv2; arc=none smtp.client-ip=120.232.169.111
+	s=arc-20240116; t=1769408605; c=relaxed/simple;
+	bh=5kCPEOD+PaXCGQXRgOfei3ya8nySHRJvqN6Bxpv9oGk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IqHFFiHma9A0Bhq/AcOVnBd7VBKq3aPmI5d/5ExDW03GO2AJMWOxc13mow2aV0J6BrIpyF6kUiYZLH+QtyBlvP+RgJCwxE2Xj0AK0d8YR5ZSvVltyGDUSiLSUK6GoPozKUbKiOSGRsIiB+wZYp4uR84nGu8S3ShwD5SF7QbQIO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=FAEACfoy; arc=none smtp.client-ip=120.232.169.110
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=139.com; s=dkim; l=0;
 	h=from:subject:message-id:to:cc:mime-version;
 	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=ZVOVwXv2gm+2UMBOBAQvd9n5mVnM/e0DGFGw2QqNgwVpJzKXVs9pApidUhJOZ6ZxmO4rj+0TKStvW
-	 BGVLvJKRKfBzfHJrIm1/IGqGe+UhHF6KYKvl84mq6jKwuGoT3AKia4kCUk052nXs22TBGDAcmHwz6A
-	 wmdo8HMh2JnJFaBM=
+	b=FAEACfoyRQtmS3aS26u6Ji4HWugyF8SxCkeiU40AmXTiqy27Ui2pSXgmfLC0L9cnwnf3ggohDjV1f
+	 LeRQbkYAN4CMIkWR2lxcpki0h3DYz8zKkucwxpAQ2y5L0d5JmzGp/FF3UWJHtGShfC92JOTUSFnP79
+	 OhlDN1iXG5rS48qw=
 X-RM-TagInfo: emlType=0                                       
 X-RM-SPAM:                                                                                        
 X-RM-SPAM-FLAG:00000000
 Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-11-12089 (RichMail) with SMTP id 2f396977077642d-064a8;
-	Mon, 26 Jan 2026 14:19:35 +0800 (CST)
-X-RM-TRANSID:2f396977077642d-064a8
+	by rmsmtp-lg-appmail-02-12080 (RichMail) with SMTP id 2f3069770793b93-00ba2;
+	Mon, 26 Jan 2026 14:20:10 +0800 (CST)
+X-RM-TRANSID:2f3069770793b93-00ba2
 From: Li hongliang <1468888505@139.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
@@ -56,9 +54,9 @@ Cc: patches@lists.linux.dev,
 	almaz.alexandrovich@paragon-software.com,
 	ntfs3@lists.linux.dev,
 	khalid@kernel.org
-Subject: [PATCH 6.1.y] fs/ntfs3: Initialize allocated memory before use
-Date: Mon, 26 Jan 2026 14:19:33 +0800
-Message-Id: <20260126061933.1206836-1-1468888505@139.com>
+Subject: [PATCH 5.15.y] fs/ntfs3: Initialize allocated memory before use
+Date: Mon, 26 Jan 2026 14:19:56 +0800
+Message-Id: <20260126061956.1206899-1-1468888505@139.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -74,7 +72,7 @@ X-Spamd-Result: default: False [2.54 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -84,11 +82,11 @@ X-Spamd-Result: default: False [2.54 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-211512-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-211513-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[139.com:-];
 	TO_DN_NONE(0.00)[];
@@ -96,8 +94,8 @@ X-Spamd-Result: default: False [2.54 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	FREEMAIL_FROM(0.00)[139.com];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,paragon-software.com:email,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: B5E6384727
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,paragon-software.com:email,syzkaller.appspot.com:url,appspotmail.com:email,139.com:mid,139.com:email]
+X-Rspamd-Queue-Id: 3BC2384837
 X-Rspamd-Action: no action
 
 From: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
@@ -135,10 +133,10 @@ Signed-off-by: Li hongliang <1468888505@139.com>
  1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index e47eec61f237..b8ac0943e932 100644
+index 7ac76e6c35dc..acd5be0d36c0 100644
 --- a/fs/ntfs3/inode.c
 +++ b/fs/ntfs3/inode.c
-@@ -1294,7 +1294,7 @@ struct inode *ntfs_create_inode(struct user_namespace *mnt_userns,
+@@ -1298,7 +1298,7 @@ struct inode *ntfs_create_inode(struct user_namespace *mnt_userns,
  		fa |= FILE_ATTRIBUTE_READONLY;
  
  	/* Allocate PATH_MAX bytes. */
@@ -147,8 +145,8 @@ index e47eec61f237..b8ac0943e932 100644
  	if (!new_de) {
  		err = -ENOMEM;
  		goto out1;
-@@ -1698,10 +1698,9 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
- 	struct NTFS_DE *de;
+@@ -1694,10 +1694,9 @@ int ntfs_link_inode(struct inode *inode, struct dentry *dentry)
+ 	struct ATTR_FILE_NAME *de_name;
  
  	/* Allocate PATH_MAX bytes. */
 -	de = __getname();
@@ -159,7 +157,7 @@ index e47eec61f237..b8ac0943e932 100644
  
  	/* Mark rw ntfs as dirty. It will be cleared at umount. */
  	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
-@@ -1737,7 +1736,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
+@@ -1742,7 +1741,7 @@ int ntfs_unlink_inode(struct inode *dir, const struct dentry *dentry)
  		return -EINVAL;
  
  	/* Allocate PATH_MAX bytes. */
