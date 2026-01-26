@@ -1,167 +1,182 @@
-Return-Path: <stable+bounces-211534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIegKI0rd2nacwEAu9opvQ
-	(envelope-from <stable+bounces-211534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:53:33 +0100
+	id MOOkLlUvd2lVdAEAu9opvQ
+	(envelope-from <stable+bounces-211537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 10:09:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314D485A57
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:53:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 181BC85D5A
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 10:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 84143300E5CF
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 08:53:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 790BC304CA6F
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C43090C5;
-	Mon, 26 Jan 2026 08:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4C2303A01;
+	Mon, 26 Jan 2026 09:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="mvwkY5OJ"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="XJ1Kyd/j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4323.protonmail.ch (mail-4323.protonmail.ch [185.70.43.23])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EA61E5B73;
-	Mon, 26 Jan 2026 08:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B532F303C86
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 09:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769417605; cv=none; b=W34tMzrt8riDDSp74uzB8wOKmDAXtDOkQveSrjlyWv/wApgeuogyDOTWfurLEp62L4pAU6A27hFCzdrVWU+UaqFRdSn6LvydeTW+q8bsNOgG3zPq9+BSsAPAqfDfMBWiQ+fZeQRozyWICVyE/Iww109rDFBnT/1vXf4zuafm0MM=
+	t=1769418339; cv=none; b=kJ+LLr4Xv/ntM7xuhGBvbigcqzHkZ5vB0LNiB9rwM1Q0TgtBU7cDAYF+5mP87HI9YekDXuKD2iGar1goZqkIV3hfimCgHCYaRRxkY/v8JCvOTLWpUFpLbnmvgJzNr625p8koLlSC6u2ahP2/00d6kkkuu25aZI+5cyHbzepd4gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769417605; c=relaxed/simple;
-	bh=BJZV3Cw0Vi7MkeA/1O9xXI98G1YadhiApczo4SXoCWY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DeXjHVJ+D8ByTk8RXAsJGflyOyiZbDXhcp0PQ1hv3p7n+gwKi1VsfBTiW1ku7CA7yzBPdvZKmsBwRQPyol5prPqdMZ+9pyDp4xU53aQn5tspnNOsmqtEyBkdH4y2kMQdMmgvDeFoANHSsMcfPojjjatD6RpOouAPjJgVa05inPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=mvwkY5OJ; arc=none smtp.client-ip=185.70.43.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1769417594; x=1769676794;
-	bh=BJZV3Cw0Vi7MkeA/1O9xXI98G1YadhiApczo4SXoCWY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=mvwkY5OJxXeFNzNr7ahxsOnntKz6G7CbV0YYAj4hQHpemmWFSwXQV9f6yfiDmexZN
-	 eycbtoZBeGj6BF+kHbqD4ELjBhyQij2RK0su6nP5jlOledkd1ON/qq9ClQFQQ9A16O
-	 2xbhyPrj5LKIrhjW/Ph3od2Fi4r7LfKObknDG7soGsyMlX7Oc11iySco7fWXPKeCgT
-	 EIfv5LiuDNKgKBERdXE7AE1yVJJc84NIqHIIRI0mMZYedgvbcYIvSXX2ruRTnh+Pgs
-	 GhHkoxPF/edOnFsU+8DEwOb2YJjrpk7lbLH0riglIQYyTgQXQ3CyGg3yY/Z/put1SE
-	 k6BCsuvUrpdAw==
-Date: Mon, 26 Jan 2026 08:53:10 +0000
-To: Victor Nogueira <victor@mojatatu.com>
-From: Paul Moses <p@1g4.org>
-Cc: netdev@vger.kernel.org, Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v3 6/7] net/sched: act_gate: reject empty schedule list
-Message-ID: <77q-JcImMG2fuQxj_GMUtYmaFAIuPrYMasj4I3aqIVID-Op24JIShBIPgt9kozLZgN4HvsGCS8Ez16mKq4Wq9juL1IOKydWUJwMwCYgHRMg=@1g4.org>
-In-Reply-To: <412136f7-1d46-42ac-96f9-b6cc462204b2@mojatatu.com>
-References: <20260121131954.2710459-1-p@1g4.org> <20260121131954.2710459-7-p@1g4.org> <c8a8ae22-c5c4-4112-8084-0faa256a1d84@mojatatu.com> <412136f7-1d46-42ac-96f9-b6cc462204b2@mojatatu.com>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: c1fd98711753fdf12f01526c362f688a5aa969b6
+	s=arc-20240116; t=1769418339; c=relaxed/simple;
+	bh=GDq+qoAUvzLsEjMdNageU7aMHOx0h17R0XljH+D+e/0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=PTRKtRkp9R+HmnYYo4a5egpGtX/caLCaxO8qCtmUtH4ujuFEeMyMKaNy4Iyo/jHoOsLL7trjWhpJ3hQUDf/uCCk5n0sc7QfrNMifL9JZ0iLSI44kdefRmjBtq3QmYV4hwC6+G8uT4pIAYcXQCbweaVJP5s7+JPVd69oKhyCapS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=XJ1Kyd/j; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260126085703euoutp028d3d302712f1fa5c738ff6c3df703579~OPCLDoVc_2751127511euoutp02f
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 08:57:03 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260126085703euoutp028d3d302712f1fa5c738ff6c3df703579~OPCLDoVc_2751127511euoutp02f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1769417823;
+	bh=PWcnq9fS5szFbjeETPL6IVSHfuuHn9KkLDU267P2J7s=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=XJ1Kyd/jacBLckjoc9q6J+PjMcGS98Ycr1zUlH0t8Zc1c1FHEOhgAMZB27d0fppp/
+	 6wIF20UUhOo8cNSkR78SP6ZTumJN7SQiuspM+BOQcu2A9/yPxw39/cYReBwagn3ZxM
+	 314hRMlZUIUHMp/KScTzc7pms+qnMgCzpQ4Qrmx8=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20260126085703eucas1p1b2e7523f2f899396b9bc5eed64d63a7b~OPCKptgbw1601316013eucas1p1t;
+	Mon, 26 Jan 2026 08:57:03 +0000 (GMT)
+Received: from [106.210.134.192] (unknown [106.210.134.192]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20260126085702eusmtip28f556c7e1168f5170037948f35863cd0~OPCJ279El0256102561eusmtip2k;
+	Mon, 26 Jan 2026 08:57:02 +0000 (GMT)
+Message-ID: <1db5ffdf-924b-49cb-a057-802a1bfe6073@samsung.com>
+Date: Mon, 26 Jan 2026 09:57:01 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 1/3] drm/bridge: samsung-dsim: move bridge init sequence
+ to atomic_enable
+To: Kaustabh Chakraborty <kauschluss@disroot.org>, Inki Dae
+	<inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, Andrzej
+	Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>, Laurent Pinchart
+	<Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, Jernej
+	Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Content-Language: en-US
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+In-Reply-To: <20260124-exynos-dsim-fixes-v1-1-122d047a23d1@disroot.org>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20260126085703eucas1p1b2e7523f2f899396b9bc5eed64d63a7b
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20260124172136eucas1p1e7a2da65c3fca268ea68f12506c6c19e
+X-EPHeader: CA
+X-CMS-RootMailID: 20260124172136eucas1p1e7a2da65c3fca268ea68f12506c6c19e
+References: <20260124-exynos-dsim-fixes-v1-0-122d047a23d1@disroot.org>
+	<CGME20260124172136eucas1p1e7a2da65c3fca268ea68f12506c6c19e@eucas1p1.samsung.com>
+	<20260124-exynos-dsim-fixes-v1-1-122d047a23d1@disroot.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
+	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
+	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-211537-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[disroot.org,samsung.com,amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,mojatatu.com,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com];
-	TAGGED_FROM(0.00)[bounces-211534-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[samsung.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[1g4.org:+];
+	FROM_NEQ_ENVFROM(0.00)[m.szyprowski@samsung.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 314D485A57
+X-Rspamd-Queue-Id: 181BC85D5A
 X-Rspamd-Action: no action
 
-Should REPLACE with an explicit entry list that yields 0 entries return -EI=
-NVAL or should it be treated the same as omitting TCA_GATE_ENTRY_LIST and k=
-eeping the old schedule?
+On 24.01.2026 18:20, Kaustabh Chakraborty wrote:
+> Since commit c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain
+> pre-enable and post-disable"), pre-enable sequence is called before the
+> CRTC is enabled.
+>
+> This causes unintended side-effects (abberation among potentially other
+> things) in the display when samsung_dsim_init() is called in the
+> pre-enable part of the sequence. Call it in samsung_dsim_atomic_enable()
+> instead.
+>
+> Cc: stable@vger.kernel.org # v6.17 and later
+> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
 
-thanks,
-Paul
+I'm not sure if this will be needed:
+
+https://lore.kernel.org/all/20251205-drm-seq-fix-v1-0-fda68fa1b3de@ideasonboard.com/
 
 
+> ---
+>   drivers/gpu/drm/bridge/samsung-dsim.c | 13 +++++++------
+>   1 file changed, 7 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
+> index 1d85e706c74b9..975f8b50ae660 100644
+> --- a/drivers/gpu/drm/bridge/samsung-dsim.c
+> +++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+> @@ -1655,6 +1655,13 @@ static void samsung_dsim_atomic_pre_enable(struct drm_bridge *bridge,
+>   	}
+>   
+>   	dsi->state |= DSIM_STATE_ENABLED;
+> +}
+> +
+> +static void samsung_dsim_atomic_enable(struct drm_bridge *bridge,
+> +				       struct drm_atomic_state *state)
+> +{
+> +	struct samsung_dsim *dsi = bridge_to_dsi(bridge);
+> +	int ret;
+>   
+>   	/*
+>   	 * For Exynos-DSIM the downstream bridge, or panel are expecting
+> @@ -1665,12 +1672,6 @@ static void samsung_dsim_atomic_pre_enable(struct drm_bridge *bridge,
+>   		if (ret)
+>   			return;
+>   	}
+> -}
+> -
+> -static void samsung_dsim_atomic_enable(struct drm_bridge *bridge,
+> -				       struct drm_atomic_state *state)
+> -{
+> -	struct samsung_dsim *dsi = bridge_to_dsi(bridge);
+>   
+>   	samsung_dsim_set_display_mode(dsi);
+>   	samsung_dsim_set_display_enable(dsi, true);
+>
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-
-
-On Wednesday, January 21st, 2026 at 3:49 PM, Victor Nogueira <victor@mojata=
-tu.com> wrote:
-
->=20
->=20
-> On 21/01/2026 16:44, Victor Nogueira wrote:
->=20
-> > On 21/01/2026 10:20, Paul Moses wrote:
-> >=20
-> > > Reject empty schedules (num_entries =3D=3D 0) so next_entry is always
-> > > valid and
-> > > RCU readers/timer logic never walk an empty list. taprio enforces the
-> > > same
-> > > constraint on schedules (sch_taprio.c, commit 09dbdf28f9f9fa).
-> > >=20
-> > > Fixes: a51c328df310 ("net: qos: introduce a gate control flow action"=
-)
-> > > Signed-off-by: Paul Moses p@1g4.org
-> > > Cc: stable@vger.kernel.org
-> > > ---
-> > > net/sched/act_gate.c | 6 ++++++
-> > > 1 file changed, 6 insertions(+)
-> > >=20
-> > > diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
-> > > index 48ff378bb051a..e4134b9a4a314 100644
-> > > --- a/net/sched/act_gate.c
-> > > +++ b/net/sched/act_gate.c
-> > > @@ -509,6 +509,12 @@ static int tcf_gate_init(struct net *net, struct
-> > > nlattr *nla,
-> > > cycletime_ext =3D nla_get_u64(tb[TCA_GATE_CYCLE_TIME_EXT]);
-> > > p->tcfg_cycletime_ext =3D cycletime_ext;
-> > > + if (p->num_entries =3D=3D 0) {
-> > > + NL_SET_ERR_MSG(extack, "The entry list is empty");
-> > > + err =3D -EINVAL;
-> > > + goto release_mem;
-> > > + }
-> >=20
-> > It would be simpler to check this in parse_gate_list.
-> > That way you could return -EINVAL there directly
-> > in case 0 entries were passed.
->=20
->=20
-> On second thought, I believe it would be better
-> to check whether parse_gate_list's return is 0
-> and the op is a create. Something like:
->=20
-> err =3D parse_gate_list(tb[TCA_GATE_ENTRY_LIST], p, extack);
-> ...
-> if (!err && ret =3D=3D ACT_P_CREATED) {
-> NL_SET_ERR_MSG(extack, "The entry list is empty");
-> err =3D -EINVAL;
-> goto release_mem;
-> }
->=20
-> so that you don't need to add new arguments to
-> parse_gate_list.
->=20
-> cheers,
-> Victor
 
