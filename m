@@ -1,87 +1,90 @@
-Return-Path: <stable+bounces-211514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBU0A4EJd2lGawEAu9opvQ
-	(envelope-from <stable+bounces-211514-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:28:17 +0100
+	id +u2pKKwNd2nSbQEAu9opvQ
+	(envelope-from <stable+bounces-211515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:46:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728D384872
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:28:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 237E0849DE
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 07:46:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7DD1530120E1
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 06:25:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C59E03001308
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 06:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8707626E6F8;
-	Mon, 26 Jan 2026 06:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531A52848BE;
+	Mon, 26 Jan 2026 06:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="aJC6mvi1"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="C7C0DXDH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE1786250
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 06:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE7021ABC9
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 06:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769408717; cv=none; b=IOVaofpItfIhlrGa97lLFm0RAskQKgSENAdFaCRVTJtRi6KCHJ02VIrNQNjuPMyOCG4+OB/gpc/cGkLvGwp7JLeztdXBQ2h+FFQUheTxfc9OuqtVg0mo7DWOFEZDv2pDgfaf1UcrEjho0aGiAZwk0JJ1BW96IEfGFEUEs89Ud4s=
+	t=1769409961; cv=none; b=ce7Q9nEl9mCWFbN3u20qkD7OaiKlSW6/s1iV35UA78NbyzEU5xtVCPwwmB0KAN1rHs0E+0IE4q6f4mBg+y83Pt8VEJZkULYomUgZKpjxsing7qr3Foj0Is/LJYdxkMoT8EsBClKrNrb+bOyt39W+cZ7gR0g+HDNX4iST00ASIGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769408717; c=relaxed/simple;
-	bh=/4EWuN8l4q4Og797mTc4CidhOA9Bdhs1yZfewqPbTiU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=L9h85MtqsV32QHonAl6mAmtWhr66AWL5oAp4zznpjj+YRWeu3bz1Cv6Arxau5wU1LI01VeHWCyBWrKsxlPpBvdR0aeUDI8UaIvXOm0zoV5n9NTAgqn+hRru92O58UMuAXDPK/Q7YUZ1Ex9T7GPoJ1yQxqGH+0brIpK2TIbt4rO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=aJC6mvi1; arc=none smtp.client-ip=209.85.128.44
+	s=arc-20240116; t=1769409961; c=relaxed/simple;
+	bh=JB/axX11zdQ+sxdWsG/pqjEhrEKk8oyrUvLdkh1+Qkg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D4chJz2rdLtuZjdnpeyZ5gVwXq46PGozoLWhYfa5aE3fR8DELK3bg3eo8ZgZV5SosFpkMFrUD7+7zTJ6cgP68b45bnsOFSiII2eDXxUvnZVGTfgp2BFs8mCrbKnw4FJwkzqOaaZZ38oF8tY7xLsW7E+bzWbqUIcIzHQYASA6QSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=C7C0DXDH; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47edffe5540so47319825e9.0
-        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 22:25:15 -0800 (PST)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4801bbbdb4aso34416035e9.1
+        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 22:45:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769408713; x=1770013513; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1769409957; x=1770014757; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=63OFM9QgnRQ1EDzZTsdKOdlQxfJDgB8cLPkDkghIv7w=;
-        b=aJC6mvi1BPKgmqiiRKxU5WT0zjQkGO2iIFHKW/SKKUsnFviZlY1MbpkPTk9X+1jcsJ
-         DY/juCb1eVLVvDfXEPKzGT/+wXtIgk2Mrh5MwR5K05jZM897cabgVzzkbS2mGcHIotl6
-         OSvd8OTYVgp93BO7RmWCOXctiCidJiFDpPoZBLNpHpmLDbASYZzUhGP0NL+JAX6ER5Ff
-         fqNMHrIwaY5AoOijcEc0RV0cZsdz8qDIC36vjHP9BVm2wOO2gLeYZ8uDh0ie7GNfCfF4
-         obT0hOXEvtnkD4fcokADqi1l454eIkrJjoGLZjIIoFTtHSSi8RqjwKCLS36nU/ZWF8wC
-         zIbg==
+        bh=mpMpYkua0RQ6ZXsZQylHzyFg1nGJQ4rz1XBQLuEa4tU=;
+        b=C7C0DXDHm2e8NDUifMbej+/UicCP7h2myNMX2BOvBIYfp6KXkyuTCSszUEi2ClWq5X
+         dwT6Gc17VtNYHlVA4WEiG5ZDcfUIHu670gwH6l5oLgmQYycObPHKEz+R/msSB1Qp9N34
+         +Bov0XJu3AR7MQZ6xs2XtP4hj7V6b/FmBJaHqKPbnji/8msjpdRsi9UJ0rzTfCrbMm8H
+         gslpY8hmXmxRcyEW42iTksLn/1S/6WCC8+ntgSa7LX9ofc/8N8D/KKbX8hxn92OWUWVF
+         IkeFjzlDuB9z3QWFiNNftdB98jAHqGuf/juv2t/3hkYKRzRa7PZNDaWY4pM34k1E9VFq
+         JyQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769408713; x=1770013513;
+        d=1e100.net; s=20230601; t=1769409957; x=1770014757;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=63OFM9QgnRQ1EDzZTsdKOdlQxfJDgB8cLPkDkghIv7w=;
-        b=Xp+65P/nvjbz6tc+pyUIJc57c3Sehi432ifkoFJsx5wwXcoZeH47aMohiD+KkM4g3i
-         mN1gfby319gpiGQgmwpEsFzjMBy5Cmk7YH/30x4ZeRQk0sYkQsJo0V0ErFGGeNx4ozS5
-         jULIwqKHbTej+Yy2bf2/931t1d3T08QKPrmdh/YV9gU5rIC+o1tzq17986BkMAdBrBd5
-         XyzPq2nFN6rxe7pB+2D3YWnfkwOfg4u3JPdEHb0w8/jagYptRPIKIJcWZBIW5PQ4J35h
-         n+ry00bWJNrZH5QealZDg5tj2+lazP0sOOJIflHf+BhJiyVFXppWZnG47oVgawamkVOF
-         D2Bw==
-X-Gm-Message-State: AOJu0YylikulaczNjcW29jn6j7Rql2Pgi2Be5rtW/FojnRQdnArKsoSF
-	mSesZK7Ki4WsjFfvGq7SHknK2FKT9UAt8iMkH5uoFkAQEKWI5OYJ4wHcc69sneOlMFmHZYXG8Mf
-	n3W1n
-X-Gm-Gg: AZuq6aKX2xCozoOlNHch1rP4sQQ0aR3C3YzM1IQZF3sscx9sbVfgQkSKfHfQLI3xAL5
-	TYqxhSSyR/GFBfEkfebNV5pa3cpaUN/KtjdmHz2AqEcCMMxGf5JMv+IWOSefWCQ0Qimvj2Qo3a7
-	bUZJPeCNOVebVnUbDE5gGNx3TzK/U6q4vVAieEOni7DBxSUrDItbuGHdEWT7gPdMpzET1sfikr+
-	nhDiIw+sVhxRL7E1tdwOAVLpOzO+P3HRK5r58oaNj8q7utMwog3QOdb49ZWz709gYv/3QVq4Axc
-	JW9wia+S28/rwHqDTFSo3fHUDxgVqc1Q5MN/C0P/QtWbNN29P1LsH3sH4oKJrTZMkGDd3Jz2676
-	JofjFUUwNJqwCkcbE8bsLXE5DDgsxuNGfHPY028yU5oo78bzemM72nN1Sgn0w+mw8BNGz0n7mER
-	jpB7Un7uPvgQ00dou3QNqNmRooQUWqfS+EBakVrux6
-X-Received: by 2002:a05:600c:530e:b0:47a:935f:61a0 with SMTP id 5b1f17b1804b1-4805ccddb9bmr59584965e9.0.1769408713550;
-        Sun, 25 Jan 2026 22:25:13 -0800 (PST)
+        bh=mpMpYkua0RQ6ZXsZQylHzyFg1nGJQ4rz1XBQLuEa4tU=;
+        b=ESFq9wa81co29wHQebWjf+NTYXfeanXZmwvR+DVo7mtzX0LhnfSA6lCbfq70426ocb
+         JODiwWVjgTi9D9RVapLEvGUpnCnWJfR4hG/EoIwQT+Jqki0X8d6IQeAeVXQPi6F5P7E/
+         Vf1sOyEvR8D/ckfYciN+AARquz3iIQAdymVqRRFH6D6Z88ih6goUYNsOd1ml9FRsM6rA
+         rCDy1uF+vkTnktHh8oSQ3wFAT14WeIYB0jp3YC5EwnquSub1kyx1Bq6arHQuDi+4BvJN
+         JJ/i5RKq4TUM+sSWfe2u+P1uuH88AXOy9lal0YFnxyU5TYVxY9s9IONtBIYUcw5T3FZ9
+         P0VQ==
+X-Gm-Message-State: AOJu0YwN8dtGi/XfBlhAXVi1GE0D93AfyM1slfx3FmBaQ4xbLBQxnYEX
+	SljsginMlskkUcAMccf7jBqYkoYB75GpT6PdCk06GhKBA6EWmq7XeCSGONuMUNpF1f7tfEyJP6c
+	RAQ/p
+X-Gm-Gg: AZuq6aLHIdYGhWE40uQy9/1nOaYp55yiYkN1l9HIm0oMYCQZV/n1uayAt/oWIjK+TvB
+	kdLYy/W2Xp3/OROIdEJ9WfooJIxFw8jTPkios88YBnSiCDFkDdiS4pBb0DQUEI20KiQORU2F0ZM
+	f2oXi4Dyc7JR/5/+sQrzBkoC5aIxfbXt5H3hJcSzQKug5HWbxgniqZFQaB4QOMUHX/nvIT20Eaf
+	lRELXUNA/QqrwcFF9284Z31HA+J/rTTmEdyqRrpkWQm/CUSk9ML39mZwfEqgGfLDa1YyQXhZxL5
+	ybzoU/1mZGe8sEs5JktBsqF64SN59JrlaEZ7EeoIRRqGISqyYpfrhhtKSUjz+Fn3hSHMCVNUQ9L
+	0+9BRLe+TD93166O7h1MlkKGqZLFspdkH/5NK6HcRwqFbLCOuBRmBVoDtoPzo2QDE4UGXd4TSq1
+	jtSPfzv1zTa5fUC8NCbpXASVwfcLTKK8w5XBz9xNBb
+X-Received: by 2002:a05:600c:c097:b0:47f:1332:e5f with SMTP id 5b1f17b1804b1-4805ce4352emr46395665e9.12.1769409956845;
+        Sun, 25 Jan 2026 22:45:56 -0800 (PST)
 Received: from localhost (27-240-121-17.adsl.fetnet.net. [27.240.121.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4804d8a5b67sm254792925e9.10.2026.01.25.22.25.12
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-480470c1dc6sm303071755e9.10.2026.01.25.22.45.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Jan 2026 22:25:13 -0800 (PST)
+        Sun, 25 Jan 2026 22:45:56 -0800 (PST)
 From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 To: stable@vger.kernel.org
-Cc: Ihor Solodrai <ihor.solodrai@pm.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
+Cc: Daniel Borkmann <daniel@iogearbox.net>,
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH stable v2 6.12 6.6 1/1] selftests/bpf: Check for timeout in perf_link test
-Date: Mon, 26 Jan 2026 14:25:04 +0800
-Message-ID: <20260126062507.12876-1-shung-hsi.yu@suse.com>
+Subject: [PATCH stable 6.12 6.6 6.1 1/1] bpf: Do not let BPF test infra emit invalid GSO types to stack
+Date: Mon, 26 Jan 2026 14:45:48 +0800
+Message-ID: <20260126064550.16952-1-shung-hsi.yu@suse.com>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -94,106 +97,113 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211514-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-211515-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[suse.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,suse.com:dkim,suse.com:mid]
-X-Rspamd-Queue-Id: 728D384872
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.com:email,suse.com:dkim,suse.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iogearbox.net:email]
+X-Rspamd-Queue-Id: 237E0849DE
 X-Rspamd-Action: no action
 
-From: Ihor Solodrai <ihor.solodrai@pm.me>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit e6c209da7e0e9aaf955a7b59e91ed78c2b6c96fb upstream.
+commit 04a899573fb87273a656f178b5f920c505f68875 upstream.
 
-Recently perf_link test started unreliably failing on libbpf CI:
-  * https://github.com/libbpf/libbpf/actions/runs/11260672407/job/31312405473
-  * https://github.com/libbpf/libbpf/actions/runs/11260992334/job/31315514626
-  * https://github.com/libbpf/libbpf/actions/runs/11263162459/job/31320458251
+Yinhao et al. reported that their fuzzer tool was able to trigger a
+skb_warn_bad_offload() from netif_skb_features() -> gso_features_check().
+When a BPF program - triggered via BPF test infra - pushes the packet
+to the loopback device via bpf_clone_redirect() then mentioned offload
+warning can be seen. GSO-related features are then rightfully disabled.
 
-Part of the test is running a dummy loop for a while and then checking
-for a counter incremented by the test program.
+We get into this situation due to convert___skb_to_skb() setting
+gso_segs and gso_size but not gso_type. Technically, it makes sense
+that this warning triggers since the GSO properties are malformed due
+to the gso_type. Potentially, the gso_type could be marked non-trustworthy
+through setting it at least to SKB_GSO_DODGY without any other specific
+assumptions, but that also feels wrong given we should not go further
+into the GSO engine in the first place.
 
-Instead of waiting for an arbitrary number of loop iterations once,
-check for the test counter in a loop and use get_time_ns() helper to
-enforce a 100ms timeout.
+The checks were added in 121d57af308d ("gso: validate gso_type in GSO
+handlers") because there were malicious (syzbot) senders that combine
+a protocol with a non-matching gso_type. If we would want to drop such
+packets, gso_features_check() currently only returns feature flags via
+netif_skb_features(), so one location for potentially dropping such skbs
+could be validate_xmit_unreadable_skb(), but then otoh it would be
+an additional check in the fast-path for a very corner case. Given
+bpf_clone_redirect() is the only place where BPF test infra could emit
+such packets, lets reject them right there.
 
-v1: https://lore.kernel.org/bpf/zuRd072x9tumn2iN4wDNs5av0nu5nekMNV4PkR-YwCT10eFFTrUtZBRkLWFbrcCe7guvLStGQlhibo8qWojCO7i2-NGajes5GYIyynexD-w=@pm.me/
-
-Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241011153104.249800-1-ihor.solodrai@pm.me
+Fixes: 850a88cc4096 ("bpf: Expose __sk_buff wire_len/gso_segs to BPF_PROG_TEST_RUN")
+Fixes: cf62089b0edd ("bpf: Add gso_size to __sk_buff")
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20251020075441.127980-1-daniel@iogearbox.net
 Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 ---
-Stablizes BPF selftests. Previous submission[1] missed reference to
-upstream commit.
-1: https://lore.kernel.org/stable/20250609052941.52073-1-shung-hsi.yu@suse.com/
+Could possibly be backported further back to 5.15 and 5.10, but I doubt
+anyone actively test them with Syzkaller.
 ---
- .../testing/selftests/bpf/prog_tests/perf_link.c  | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ net/bpf/test_run.c | 5 +++++
+ net/core/filter.c  | 7 +++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/perf_link.c b/tools/testing/selftests/bpf/prog_tests/perf_link.c
-index 3a25f1c743a1..d940ff87fa08 100644
---- a/tools/testing/selftests/bpf/prog_tests/perf_link.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_link.c
-@@ -4,8 +4,12 @@
- #include <pthread.h>
- #include <sched.h>
- #include <test_progs.h>
-+#include "testing_helpers.h"
- #include "test_perf_link.skel.h"
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index ab8d21372b7d..9cbdfb9fd674 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1047,6 +1047,11 @@ static int convert___skb_to_skb(struct sk_buff *skb, struct __sk_buff *__skb)
  
-+#define BURN_TIMEOUT_MS 100
-+#define BURN_TIMEOUT_NS BURN_TIMEOUT_MS * 1000000
+ 	if (__skb->gso_segs > GSO_MAX_SEGS)
+ 		return -EINVAL;
 +
- static void burn_cpu(void)
- {
- 	volatile int j = 0;
-@@ -32,6 +36,7 @@ void serial_test_perf_link(void)
- 	int run_cnt_before, run_cnt_after;
- 	struct bpf_link_info info;
- 	__u32 info_len = sizeof(info);
-+	__u64 timeout_time_ns;
++	/* Currently GSO type is zero/unset. If this gets extended with
++	 * a small list of accepted GSO types in future, the filter for
++	 * an unset GSO type in bpf_clone_redirect() can be lifted.
++	 */
+ 	skb_shinfo(skb)->gso_segs = __skb->gso_segs;
+ 	skb_shinfo(skb)->gso_size = __skb->gso_size;
+ 	skb_shinfo(skb)->hwtstamps.hwtstamp = __skb->hwtstamp;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index dff4a008aba8..305c38636b32 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2444,6 +2444,13 @@ BPF_CALL_3(bpf_clone_redirect, struct sk_buff *, skb, u32, ifindex, u64, flags)
+ 	if (unlikely(flags & (~(BPF_F_INGRESS) | BPF_F_REDIRECT_INTERNAL)))
+ 		return -EINVAL;
  
- 	/* create perf event */
- 	memset(&attr, 0, sizeof(attr));
-@@ -63,8 +68,14 @@ void serial_test_perf_link(void)
- 	ASSERT_GT(info.prog_id, 0, "link_prog_id");
- 
- 	/* ensure we get at least one perf_event prog execution */
--	burn_cpu();
--	ASSERT_GT(skel->bss->run_cnt, 0, "run_cnt");
-+	timeout_time_ns = get_time_ns() + BURN_TIMEOUT_NS;
-+	while (true) {
-+		burn_cpu();
-+		if (skel->bss->run_cnt > 0)
-+			break;
-+	        if (!ASSERT_LT(get_time_ns(), timeout_time_ns, "run_cnt_timeout"))
-+			break;
-+	}
- 
- 	/* perf_event is still active, but we close link and BPF program
- 	 * shouldn't be executed anymore
++	/* BPF test infra's convert___skb_to_skb() can create type-less
++	 * GSO packets. gso_features_check() will detect this as a bad
++	 * offload. However, lets not leak them out in the first place.
++	 */
++	if (unlikely(skb_is_gso(skb) && !skb_shinfo(skb)->gso_type))
++		return -EBADMSG;
++
+ 	dev = dev_get_by_index_rcu(dev_net(skb->dev), ifindex);
+ 	if (unlikely(!dev))
+ 		return -EINVAL;
 -- 
 2.52.0
 
