@@ -1,59 +1,99 @@
-Return-Path: <stable+bounces-211503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4O2VDzrNdmlWWwEAu9opvQ
-	(envelope-from <stable+bounces-211503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 03:11:06 +0100
+	id aJi8AUPRdmmyXAEAu9opvQ
+	(envelope-from <stable+bounces-211504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 03:28:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA4A8373D
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 03:11:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6726F8381C
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 03:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B0CB3003336
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 02:11:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16FCA300E707
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 02:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422CD21257E;
-	Mon, 26 Jan 2026 02:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AEE928E59E;
+	Mon, 26 Jan 2026 02:27:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KSPmH/sM"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D011AC44D;
-	Mon, 26 Jan 2026 02:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9400F28725A
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 02:27:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769393459; cv=none; b=jXPHk5MEg/p2Y7INhoH/pMndjq//G4ESs4+UB7skMJVf9qoqGT7hGgwDFP8rD4RQ4eaLvgyTmvRDJ+MmfKXsDaetudjnIR100qxFPq2pt+zZ5h3pMlCW3+v+tKQKqMCL+zRwKsRH1GbJ6lZuYNvlgERs8ylE9XqeTlQcSxhD2rA=
+	t=1769394469; cv=none; b=oItjBXdIjU3okwQb2LURSzSeG3nRIFZJcxVtJaybQ9tvZ/hhWwwc7JtOXJeImtEkiaCpmB538gblH4g5Jqkdbkp3uHzKXX33C6AJNrYf+HnEI4ZxkAhxaKWSu1Dt5oXJn5+fmM4QllQxT5G6+MCqJ67N0tLTVM9YWWPXnWc9IzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769393459; c=relaxed/simple;
-	bh=kONB/iYaRl0XbyXiSod9ipd+ztmVUUWg295pQet6IYE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VjkLr6RG1so/BDeHe3lxNtygJJ/We+Xrv5hHqut7HClQN6RczdjZEXczFaKz76S3DGGotjIN+0I02TwNvksr9plwl8/fZIH/11mzLBw8VirBSON1aqdPUliaxA9tE2YhrTLsyXOeBSwpY0FzMbstWzxqRQYCRq7A8QjWN867gGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.223])
-	by APP-01 (Coremail) with SMTP id qwCowACHMm4nzXZpURdABg--.35965S2;
-	Mon, 26 Jan 2026 10:10:48 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: trondmy@kernel.org,
-	anna@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	llfamsec@gmail.com,
-	simo@redhat.com,
-	bfields@fieldses.org
-Cc: linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org,
+	s=arc-20240116; t=1769394469; c=relaxed/simple;
+	bh=elLdawZdiNF3T78K+DA6DMPmbUn63JQVKocXOMorMwY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KSxX+uhRZ82i80mew0xweaD7dsegc41sxjVwW3oWEtD9yodVLcYxZ4578HwhI+ljPkiZBVZmZ0E+ERkJq0WAXxcS58iYVICBIElBMeau1dAXUi3cOfKYZUgHYXBG7lnoEaMoQrjvlu2qO3hEPjuzxlybwF0W3gbWd/Y/hadOqFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KSPmH/sM; arc=none smtp.client-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1233702afd3so5469076c88.0
+        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 18:27:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769394468; x=1769999268; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yuyRS9NwFd3elvIRvYUasvxQvQ9+X8/Y2dmyuDNlfJI=;
+        b=KSPmH/sMAr/HOFG43/OysDUyiVMiYdgbkVnXZKOPH8d7a0c13eW8OeQ70FZe7+lnPE
+         X2xVsgTqrz0QWmhQj6gMRK8ipTh2v8zbBEhvDtL3m6b8uQKmR0qEAApsq4CY9UMwEyW6
+         McNXdbzayMYeR0mVKUS7vQZvv8DENwON3kwbgQjKHrANXFDwLSKg26Ydl/vWvsJA6gbG
+         wYwjbK3ikxsUbDtop2i/EWSpwLCjbk70Wy+lrxEqaTC6wbzTAwZs43fQWgN+xyIDqiuh
+         YXBNhSm7RjQcrsxwArChGWdarK2rTRVb+0aLh49p5/gmqYmnM8KCZZ7ZzHhp/6VuS9Vz
+         L1rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769394468; x=1769999268;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yuyRS9NwFd3elvIRvYUasvxQvQ9+X8/Y2dmyuDNlfJI=;
+        b=mbmACDFnAMzooqnRNj27WNul78CbdmDFfIaunsHr+GvX0qrWf5cfi2zAFz7QkoimuX
+         8VTVv5msGsKlLSO7eF2WqXElWgAVy4RXLwrjg03F9dKnMjvW18J0OCR84sqfOhlLq2X0
+         uzPVrzyjIHgOx4Xp9Qwf460qMjqP5W/GjjwjVxLqlpx+pSCjhFBPC3kxmYGc1XzDfD8v
+         QPz+WbVX6gxMBSR18Y/esdREH75rL+pedbrgdZI6gwykDC49As1W8U5Nmz7vDBRyUjzb
+         CqcfgazCyjrIFJTJ/+VznWBbljLmVC0gHpPeWwkAX7tmd216FkbGnoS/BkSn053HhZ9t
+         D0Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFP0riHegFhgJA4oPbfOYor+0Ws2XKKGERPwq7iiJ+uo6SEmsLyn+aRy8ltJFNTG4H+EtSyd0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbGAG2662P/WCB4+nkeNgwWZhv68hD4rNJS3fG0po7hxiq/SLt
+	nT781PJbB+4ea3ZhS6N5qjIVdyheXRvqY/KOQRyPQYyRth6eMS+yAHvGH++eDmJd
+X-Gm-Gg: AZuq6aLvCgyg/vxi20L85sH/BOUo80mE+n/KIMjp8SO1TJaWT9XRn0kA6BSvXBm5nEP
+	jNJ4MD81W7fYkU/iXv4RvnmuTogR2Q8Em+yg6qjynodsp2oZ806jzMYia3+N+IgDib20DqVzH2w
+	yXMxo9tkCRdHv/6Y3tO3tkuptult/2JIinrLfW/XuFME5KLhgSv23D7zXOCu+ry2cdXehx1uN1Y
+	7FYcYn6BksAmKxqzpjyP0l5qBbzYq5kcA45jiggC8AiXFoCYDTN0E2FpkyaUD0eHARiwO+551Ng
+	cye0WqPlVv2NnYTWRbCkiKRU2AYw29/k6AQ0Mkb1mYBOUSHFDy7zrriA3i3V/y0a8U1kwI4u6O1
+	NwP0bwuHmTRhGsNpFRHNsldNqQIRJivWzAuA/EEgA4X8QYjl2dzTaQcDgsvjNsVcbjhm5dxam7G
+	h6aXmdBbUqpGhRiSVvhBjmT9Mp0IBKU5dhxTqNvj2Wn9miC0HPNRzQ
+X-Received: by 2002:a05:7022:497:b0:11d:f44c:ad97 with SMTP id a92af1059eb24-1248ec6916cmr1706255c88.24.1769394467722;
+        Sun, 25 Jan 2026 18:27:47 -0800 (PST)
+Received: from luna.turtle.lan (static-23-234-93-211.cust.tzulo.com. [23.234.93.211])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1247d90cda6sm15266037c88.1.2026.01.25.18.27.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Jan 2026 18:27:47 -0800 (PST)
+From: Sam Edwards <cfsworks@gmail.com>
+X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
+To: Xiubo Li <xiubli@redhat.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Cc: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Milind Changire <mchangir@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	ceph-devel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Sam Edwards <CFSworks@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] sunrpc: fix a resource leak in gss_proxy_save_rsc()
-Date: Mon, 26 Jan 2026 10:10:47 +0800
-Message-Id: <20260126021047.2478741-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH 1/2] ceph: free page array when ceph_submit_write() fails
+Date: Sun, 25 Jan 2026 18:27:14 -0800
+Message-ID: <20260126022715.404984-2-CFSworks@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260126022715.404984-1-CFSworks@gmail.com>
+References: <20260126022715.404984-1-CFSworks@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,82 +101,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowACHMm4nzXZpURdABg--.35965S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKw48Xr47Aw4xKr1UAr1rXrb_yoWfuwb_WF
-	9rWFs8Xr4fu3W7Zw43JwnIvrWxG345JF18Gr9xKFyayr45tF1vyaykurn8Jr1Dury8Cws3
-	Jr1kZr9Iqwn7KjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
-	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiDAgTE2l2MUTgkAABsf
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	TAGGED_FROM(0.00)[bounces-211503-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[kernel.org,davemloft.net,google.com,redhat.com,gmail.com,fieldses.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_CC(0.00)[ibm.com,kernel.org,redhat.com,vger.kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211504-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[redhat.com,gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cfsworks@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[isrc.iscas.ac.cn:mid,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DEA4A8373D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6726F8381C
 X-Rspamd-Action: no action
 
-In gss_proxy_save_rsc(), if gss_import_sec_context() fails,
-call gss_mech_put() to release the reources acquired by
-gss_mech_get_by_OID().
+If `locked_pages` is zero, the page array must not be allocated:
+ceph_process_folio_batch() uses `locked_pages` to decide when to
+allocate `pages`, and redundant allocations trigger
+ceph_allocate_page_array()'s BUG_ON(), resulting in a worker oops (and
+writeback stall) or even a kernel panic. Consequently, the main loop in
+ceph_writepages_start() assumes that the lifetime of `pages` is confined
+to a single iteration.
 
-Fixes: 030d794bf498 ("SUNRPC: Use gssproxy upcall for server RPCGSS authentication.")
+The ceph_submit_write() function claims ownership of the page array on
+success (it is later freed when the write concludes). But failures only
+redirty/unlock the pages and fail to free the array, making the failure
+case in ceph_submit_write() fatal.
+
+Free the page array (and reset locked_pages) in ceph_submit_write()'s
+error-handling 'if' block so that the caller's invariant (that the array
+does not remain in ceph_wbc) is maintained unconditionally, making
+failures in ceph_submit_write() recoverable as originally intended.
+
+Fixes: 1551ec61dc55 ("ceph: introduce ceph_submit_write() method")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
 ---
- net/sunrpc/auth_gss/svcauth_gss.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ceph/addr.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/sunrpc/auth_gss/svcauth_gss.c b/net/sunrpc/auth_gss/svcauth_gss.c
-index a8ec30759a18..cdae1f23adfc 100644
---- a/net/sunrpc/auth_gss/svcauth_gss.c
-+++ b/net/sunrpc/auth_gss/svcauth_gss.c
-@@ -1268,8 +1268,10 @@ static int gss_proxy_save_rsc(struct cache_detail *cd,
- 						ud->out_handle.len,
- 						gm, &rsci.mechctx,
- 						&expiry, GFP_KERNEL);
--		if (status)
-+		if (status) {
-+			gss_mech_put(gm);
- 			goto out;
-+		}
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index 63b75d214210..c3e0b5b429ea 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -1470,6 +1470,14 @@ int ceph_submit_write(struct address_space *mapping,
+ 			unlock_page(page);
+ 		}
  
- 		getboottime64(&boot);
- 		expiry -= boot.tv_sec;
++		if (ceph_wbc->from_pool) {
++			mempool_free(ceph_wbc->pages, ceph_wb_pagevec_pool);
++			ceph_wbc->from_pool = false;
++		} else
++			kfree(ceph_wbc->pages);
++		ceph_wbc->pages = NULL;
++		ceph_wbc->locked_pages = 0;
++
+ 		ceph_osdc_put_request(req);
+ 		return -EIO;
+ 	}
 -- 
-2.25.1
+2.52.0
 
 
