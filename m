@@ -1,200 +1,192 @@
-Return-Path: <stable+bounces-211665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211666-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8J1vKs6ld2lrjwEAu9opvQ
-	(envelope-from <stable+bounces-211665-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:35:10 +0100
+	id 0EKpOZOmd2lrjwEAu9opvQ
+	(envelope-from <stable+bounces-211666-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:38:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182628B8A2
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:35:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E9B8B90D
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 18:38:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0FA1E301179F
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:35:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CBDB3028373
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 17:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08DD34C124;
-	Mon, 26 Jan 2026 17:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F1334D4D2;
+	Mon, 26 Jan 2026 17:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wj53pFdo"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IbyBwK12"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A333EBF2F
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 17:35:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623E6168BD;
+	Mon, 26 Jan 2026 17:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769448907; cv=none; b=av0rvG4qbkdnT1ZWrF0ffeRhbF10he/WLqhqozYYXWGh27iazlAgXfr43IA0fFNVBz/eFhgA+l7JtiSaOKQm+hXQ4qsk9R35fN5UsVAlioy/1Te/rP0mEYKyTudu+fB8T0W8vNbyIxRHB31mTr+4RiICoSP8SDqjGTWpMFOfjXE=
+	t=1769449101; cv=none; b=p8aOVWz5qPXUEssh3ukn5LhkuCEF2m6OHNe1+BM+dhmxexV/3B+pNcOSvD8h7bZwpJZwGK0wQMDt7kHqiUL3qdnfcPc82i092sfFcVZe4iwOSlgNEBCzVU2AEYmaiQsf4VCBG4Ex+0PwFXQ9+HROBNPNmkK97C3UG4Q1Nfw71jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769448907; c=relaxed/simple;
-	bh=05r0N/P1sH0YTipwKMxBYm438Ju3s7xaIh6VOJ1yiys=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o3mPPrFdPrX6EXzViH6Czz6Fsb/2PKQJu2oFaovHOg7TClcQdN2j0qvACQ2Fhfb2HxCpSbUHKEkDj//06d4TdTt2VjsdRRq3mwiZ/D7dqqUEdaE899dHkfWlOHERFmezHyJKZkFVfvDSmi5b7FZy3vl5dY15sDpI7g0Eb9iK+qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wj53pFdo; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-29f2676bb21so48544485ad.0
-        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 09:35:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769448906; x=1770053706; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H8RKPcwVeGZdKkCxqhj/W0dUP9zEkcKV20nHAwN/Abc=;
-        b=Wj53pFdouH2W34UYnfK3JjUwXTprQzj2Geo9SyQTayRbw06oCwNCD61QPgqAIddi2m
-         HvCvBrtwq/YuC9OqdSd7Ff8Gu8l7xS6AgUJ2CNr/P9gr8gVJqDnx4YeNcbIu9hiS4eV6
-         hTZOt7BmVh0OKBAFwjRZUb8yGHG8XVom1R7tKxyxsVU2yMWrm0Net+PdBkyDpwwpY4GC
-         zhuMrQO83baAnNWT7VjsteRai7kwpORq0KuPlVT/V6xCKrN0TX4nmPMUbvghyaMzW+jk
-         ChK28HXwVDA/7BPiV0dhhmxJ1gnlfVALUnhBSiefQuHzFCUhRIbzgKaaYRShDn8mP2cT
-         KxKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769448906; x=1770053706;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=H8RKPcwVeGZdKkCxqhj/W0dUP9zEkcKV20nHAwN/Abc=;
-        b=lOVXsHXQ65NNyvTiIqXj1MeGncbyqPR3WsNlGsNgyy5NmR97hvaFJG661gbbS6KGMG
-         OTEcixTe1EoMNvrvW1Z6bC46oYimG7pSjJpTc3ocpNh4G2yU7v4LjEyAJLZJd9Af+vru
-         urGqZkS+Auwukz8CDT/lq5AJIFRFGZXnzJHfDjdjLF39H+W39T1yVE97uPpi+M1winht
-         vpI0vTv3Dwin39KN2kXbhYNRtkZeuGKwVlpucNLkRDGjtFfoD0JbpASUpMiPUGxzHo1C
-         B+KF62xdVNv3GfFtUSAifHGV5wrBP8t1w4C22EIkdKavD3eaRi8Oy+xIxXF0c2zMZXRr
-         LKWA==
-X-Forwarded-Encrypted: i=1; AJvYcCXyXUJ0Ip+d1M+LZzaeEOvO5PIwdf8YFSkKGItQTibmrpLlq14Am1h5tMAmO75nNY3jp1BOasA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyz6UaqvN+qNTEzJgoQ7BAzT4jjZip6ZFbYfzRiCRipYUqyvkfD
-	K7qTqv9YOPr0VcHJZBSSUYn7K+89qqh2r0wH46/WljWRxk0xgpHEbh3P
-X-Gm-Gg: AZuq6aJvgjn1MpsX3UWOUvPgbK3fQ8WNVAyoLLfyZDQNTydlhCUUmtedDVgCHgVrMFE
-	bJOCNb2kIfsJnNEL2oO16tyAUw3M8A6cgpTQ76iGhCsAtrPfuVytZMRuTkMVsdiqYi0iECbVvqt
-	HyOS2qpxN8Bsq+tQzGaTS3rhjB/Tujub1KIE4NvhdHTqqgv25MvxL1/qTrd5GXLAzP4XpCHfeh2
-	44SoGTVudK06C50u0BA/cNzPYVp7NkE6urMw2N5SPRaUzT7Fb5uCoVY/5mivorgVowZnic6cbxh
-	2Q97um0fzwN70MhEuhLIY/6nGn9PUJM5g4Lkc1pkE7tb/Y7YMX9awKbU4YaEPDc1SQPa8tGmTmn
-	+gX1YNU949lOahM1eqziGEqfIEc4ief2KJrUWrZWC2qKdzCBYoMm0Uy4rAaZb661/LMOlgjFY6d
-	rYpQbbxK/71xEBe0lLq5IFp9xE8mqRsAf5o8vE
-X-Received: by 2002:a17:903:1a43:b0:2a0:86cd:1e3a with SMTP id d9443c01a7336-2a845325626mr44571925ad.44.1769448905944;
-        Mon, 26 Jan 2026 09:35:05 -0800 (PST)
-Received: from saikiran-Yoga-Slim-7-14Q8X9 ([2402:e280:3d17:646:e23f:af76:8280:9d84])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-353f61292bdsm86787a91.6.2026.01.26.09.35.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Jan 2026 09:35:05 -0800 (PST)
-From: Saikiran <bjsaikiran@gmail.com>
-To: linux-media@vger.kernel.org
-Cc: linux-arm-msm@vger.kernel.org,
-	rfoss@kernel.org,
-	todor.too@gmail.com,
-	bryan.odonoghue@linaro.org,
-	bod@kernel.org,
-	vladimir.zapolskiy@linaro.org,
-	hansg@kernel.org,
-	sakari.ailus@linux.intel.com,
-	mchehab@kernel.org,
-	stable@vger.kernel.org,
-	Saikiran <bjsaikiran@gmail.com>
-Subject: [PATCH v3 3/3] media: i2c: ov02c10: Use runtime PM autosuspend to avoid brownouts
-Date: Mon, 26 Jan 2026 23:04:44 +0530
-Message-ID: <20260126173444.10228-4-bjsaikiran@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260126173444.10228-1-bjsaikiran@gmail.com>
-References: <20260126173444.10228-1-bjsaikiran@gmail.com>
+	s=arc-20240116; t=1769449101; c=relaxed/simple;
+	bh=7tZOxm/f9TWhthbZfH8e1dR77+9Yhq9V3GEr567lFgI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lihwa6A2fCm/rjP4B+6UiztUrYDZuHBRSs9ax8qmEFppUChQY4Y1Fo9Rbsk2LHLE4flyBmVRl5yJmy221R73xGWEducvbiSp8nzM5ika6vu/07E+KoWEexE+MyUHXgcZdEXOhQ20NskO9csNbaHmiUHt981GwKDGa63xgILSOpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IbyBwK12; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60QFsxO9016363;
+	Mon, 26 Jan 2026 17:38:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=tGOfEE
+	XHGWGecGMH2ijG4TDmUOUPYZs4bsHOugMcYYw=; b=IbyBwK12jbAJCj92DO64+l
+	91yRe/fVGoJCP8fdagOHeLtblG/fmWQz6L3htkIlCDivjvc5LJpMSGpIUFCc/txf
+	ogGZtAtmHYtUMgaGRRJbOtoKUP3gNW6x4LaL6x0300U459/KRAhJqd8BYT5IxSBS
+	rMeFm1OZ1yNBuT56S/0D3F6YpBpCiKIyGk11i8sP/MoMMzblTHdvvLRjmWLH6SJN
+	ulkT9ep7Ki9yLy5FaLR7LWpOMVnLz5NS4hFTMe7IEnlgiG9oSmL5hiS2IOsdVw3y
+	oDase11VaLIvdnF66yPrYgFSh4LEg2HrLwewL7F2oFHZ95+1BX2m54vvLrx/jQ9Q
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnt7hae7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Jan 2026 17:38:13 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60QFeP14006741;
+	Mon, 26 Jan 2026 17:38:12 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw8sy5m6a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Jan 2026 17:38:12 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60QHcBor30933586
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 26 Jan 2026 17:38:11 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6834758058;
+	Mon, 26 Jan 2026 17:38:11 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9EE155805D;
+	Mon, 26 Jan 2026 17:38:10 +0000 (GMT)
+Received: from [9.61.248.165] (unknown [9.61.248.165])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 26 Jan 2026 17:38:10 +0000 (GMT)
+Message-ID: <6acb9f29-28bc-431c-bf72-099d698add29@linux.ibm.com>
+Date: Mon, 26 Jan 2026 09:38:10 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 9/9] vfio: Remove the pcie check for
+ VFIO_PCI_ERR_IRQ_INDEX
+To: Julian Ruess <julianr@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
+        stable@vger.kernel.org, schnelle@linux.ibm.com, mjrosato@linux.ibm.com
+References: <20260122194437.1903-1-alifm@linux.ibm.com>
+ <20260122194437.1903-10-alifm@linux.ibm.com>
+ <DFYMO05UXGKY.2HG19ERN69ZUW@linux.ibm.com>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <DFYMO05UXGKY.2HG19ERN69ZUW@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rPdC2KTTPVsWVVy4G-isNWMhQ7hAatVy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI2MDE0OCBTYWx0ZWRfX/fywO6AVPmjc
+ ztfRVJ0mCNailQ0dQbAiObue3WIpOXIlzjmAflBsy4EJqE0geWrBv4ccQARnHaRs/iU28Z8kt7y
+ Pa6jGJhvxy1fXGfUWbnw6Saw3be32tpidm6L3RQH2baL9CKdmHAyd9sOMTK1DBFPcvQeXWFQuC7
+ E7q5t9rCZurvfvLqapy6s4SBWtY4eg61/MZMQXZpe1Q4KRSFzZPB62urZX99M0yqBjTBOnO6vEx
+ p/iuD2HoCWeTlT/72wiDzUT7f2Ol7dKFcz163rh9rpz7hMCDG+vlI8JdsA5Z3H591oIUC/vVteo
+ yBCZmzXgnP1SUeJ5Fknmm7w3fE88BCvH0gUfZ35lo/VVhnM1ZNvE7iUw+O+Vt5p7FF0aHBpMVLa
+ vz746CHYXfYOjD9sPZoviY2g/KQ0ML53lEDgAekB+fkIanr6U2iWYTbs5gE0WOpt3uOn7mao5Cp
+ AB95smGsOE5kJ+rX+rg==
+X-Authority-Analysis: v=2.4 cv=Zs3g6t7G c=1 sm=1 tr=0 ts=6977a686 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=q_SdFccrKIupyLLHt0MA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: rPdC2KTTPVsWVVy4G-isNWMhQ7hAatVy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-26_04,2026-01-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 adultscore=0 phishscore=0 suspectscore=0
+ bulkscore=0 impostorscore=0 priorityscore=1501 malwarescore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601260148
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,linaro.org,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-211665-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211666-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 182628B8A2
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 92E9B8B90D
 X-Rspamd-Action: no action
 
-On Qualcomm X1E80100 platforms, the OV02C10 sensor experiences brownouts
-if power-cycled too quickly (< 2.3s) due to slow passive discharge of
-regulator rails.
 
-Implement Runtime PM Autosuspend with a delay of 1000ms. This keeps the
-regulators enabled for a short duration after the device is closed,
-preventing costly power-off/power-on cycles during rapid user
-interactions (e.g., browser permission checks).
+On 1/26/2026 7:31 AM, Julian Ruess wrote:
+> On Thu Jan 22, 2026 at 8:44 PM CET, Farhan Ali wrote:
+>> We are configuring the error signaling on the vast majority of devices and
+>> it's extremely rare that it fires anyway. This allows userspace to be
+>> notified on errors for legacy PCI devices. The Internal Shared Memory (ISM)
+>> device on s390x is one such device. For PCI devices on IBM s390x error
+>> recovery involves platform firmware and notification to operating system
+>> is done by architecture specific way. So the ISM device can still be
+>> recovered when notified of an error.
+>>
+>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+>> ---
+>>   drivers/vfio/pci/vfio_pci_core.c  | 8 ++------
+>>   drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
+>>   2 files changed, 3 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index c92c6c512b24..9d44df9e21db 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> @@ -778,8 +778,7 @@ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_typ
+>>   			return (flags & PCI_MSIX_FLAGS_QSIZE) + 1;
+>>   		}
+>>   	} else if (irq_type == VFIO_PCI_ERR_IRQ_INDEX) {
+>> -		if (pci_is_pcie(vdev->pdev))
+> I'm wondering why this pci_is_pcie was introduced here in the first place.
+>
+> Do you have any ideas?
+>
+We actually don't know why it was originally added. The change was added 
+with the commit dad9f89 "VFIO-AER:Vfio-pci driver changes for supporting 
+AER".
 
-This aligns the driver with standard power management practices used in
-other sensor drivers (e.g., ov2680) to handle platform latency
-constraints.
+But after discussion on it with Alex, we decided to remove the check 
+(https://lore.kernel.org/all/ffc2fc08-2e95-4b35-840c-be8f5511340f@linux.ibm.com/) 
 
-Tested-on: Lenovo Yoga Slim 7x (Snapdragon X Elite)
-Fixes: 44f8901 ("media: i2c: add OmniVision OV02C10 sensor driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Saikiran <bjsaikiran@gmail.com>
----
- drivers/media/i2c/ov02c10.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
-index ba8bbb4f433a..9f6c4e8b06cc 100644
---- a/drivers/media/i2c/ov02c10.c
-+++ b/drivers/media/i2c/ov02c10.c
-@@ -628,7 +628,7 @@ static int ov02c10_enable_streams(struct v4l2_subdev *sd,
- 	ret = cci_write(ov02c10->regmap, OV02C10_REG_STREAM_CONTROL, 1, NULL);
- out:
- 	if (ret)
--		pm_runtime_put(ov02c10->dev);
-+		pm_runtime_put_autosuspend(ov02c10->dev);
- 
- 	return ret;
- }
-@@ -640,7 +640,7 @@ static int ov02c10_disable_streams(struct v4l2_subdev *sd,
- 	struct ov02c10 *ov02c10 = to_ov02c10(sd);
- 
- 	cci_write(ov02c10->regmap, OV02C10_REG_STREAM_CONTROL, 0, NULL);
--	pm_runtime_put(ov02c10->dev);
-+	pm_runtime_put_autosuspend(ov02c10->dev);
- 
- 	return 0;
- }
-@@ -900,6 +900,7 @@ static void ov02c10_remove(struct i2c_client *client)
- 
- 	v4l2_async_unregister_subdev(sd);
- 	pm_runtime_disable(ov02c10->dev);
-+	pm_runtime_dont_use_autosuspend(ov02c10->dev);
- 	if (!pm_runtime_status_suspended(ov02c10->dev)) {
- 		ov02c10_power_off(ov02c10->dev);
- 		pm_runtime_set_suspended(ov02c10->dev);
-@@ -983,6 +984,8 @@ static int ov02c10_probe(struct i2c_client *client)
- 		goto probe_error_media_entity_cleanup;
- 	}
- 
-+	pm_runtime_set_autosuspend_delay(ov02c10->dev, 1000);
-+	pm_runtime_use_autosuspend(ov02c10->dev);
- 	pm_runtime_set_active(ov02c10->dev);
- 	pm_runtime_enable(ov02c10->dev);
- 
--- 
-2.51.0
+Thanks
 
+Farhan
+
+> -- snip --
 
