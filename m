@@ -1,65 +1,69 @@
-Return-Path: <stable+bounces-211674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Ht8Mp28d2l8kgEAu9opvQ
-	(envelope-from <stable+bounces-211674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:12:29 +0100
+	id OPhGLp+8d2l8kgEAu9opvQ
+	(envelope-from <stable+bounces-211675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:12:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443958C680
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:12:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA7B78C688
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:12:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 899B3301ABAA
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 19:12:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 78B5030069B7
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 19:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1075271468;
-	Mon, 26 Jan 2026 19:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA1B278E63;
+	Mon, 26 Jan 2026 19:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b+kLqftn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLf7fObf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6546A248886
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 19:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FC22773DA
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 19:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769454744; cv=none; b=f/dj6ASYil6urxfw5n8fpAMdq724icGD3BsHeBR9O7EeYdzEif6+stR44SaXppzTuffOipvODxRs6ymyL3+TFNIc283EqtCsG3kqGCNxPVjeObycrK1pwapDO2mTVE7zhq2wj2KbPPyP6YRFR4glvAbPMp5i8ZgjC4cR4zCTLF4=
+	t=1769454745; cv=none; b=V1GCvNixS07QD9yz/pjeUj3KvggpCyaKvO9bLLPwpWs5xGMabI9wlyFE0KPW8m5w6YYr9zvbSp+yEqLXi6WWC8XjvxuvnvCTXRGniuRMnwZdI8f8BYTpt+1AeRRhtFkzQdTBWkJ5w+qqXdzDMRuZWQx/z6Btd+XNbufKxqNNIAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769454744; c=relaxed/simple;
-	bh=pb4fYRuBt3mhkRykC6UWKFk6pcniBHZFYRUmOKoogTE=;
+	s=arc-20240116; t=1769454745; c=relaxed/simple;
+	bh=e0/vaHaPtz5Vxgpku2Wq/cn0hghrT71mpdAsZ5bsMWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IX2dpoLEHFGUjQrnGA0QiU+1ehrXXn7CPqjb06mDJAuPYPqV+1rq2qm/AQYmka92UsyU17awvODZA9Y0Kr28h+D1scwfeBG804GSenvSHX69YcUU0SL6/OCf18rKyNz9Qz5vnMJLuvgDIhuHTw8TUTMv0aAIYhBrVeP8IlXZ1kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b+kLqftn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E6AC116C6;
-	Mon, 26 Jan 2026 19:12:22 +0000 (UTC)
+	 MIME-Version; b=dAzhMFWPw19Xm8CD3+yHAyraY+RkctN1FXchsVkMKhc9et2o9CYNVthoxxtwQMna4+jiOhEvZCcgVkApuP8xwpFiIUpQdo//5TlIU1PMGdXeWE7IwE/kqWQUEWQJn0lwCwghV+Rb+hpDY3wlq/5tsHCrLTRmOPuGQ116j1ZK4SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLf7fObf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2F6C19422;
+	Mon, 26 Jan 2026 19:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769454744;
-	bh=pb4fYRuBt3mhkRykC6UWKFk6pcniBHZFYRUmOKoogTE=;
+	s=k20201202; t=1769454745;
+	bh=e0/vaHaPtz5Vxgpku2Wq/cn0hghrT71mpdAsZ5bsMWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+kLqftn243vkxB4IeCdTL5D8VSVjuC+AifUBJMmeiQEKFetHhtzJFe4E//xgmuLB
-	 MJkK4knNqmv6F14J/JtaldTC0hl3+7UOTmHsuTaMamSMpg+IoVSDWd0A0EbsWlB/90
-	 vXa6FPFydXbY4DO99sWh+Zan6im4JHtyE91UcUKzMB5+aJAtFJdQY+kJiLpz7anll5
-	 G+Cxoo980+Fhn0h5Ybs92tZyDFlSCIC5t3H+BZma71srCAqP4m3+FOthPGfnwDRTGf
-	 ePrBlEmvqPo5z98tK3DheFOVYxi+Eskwlwg9ARW+UQg3KLRY9UwLjLfua1MQjgdFEu
-	 iKgspbTxGCMIg==
+	b=hLf7fObfD91Z/HHTwV/NGPlPOAo5GIwkFyMP/luFgImpQff2EauWnY573z5a6Fywy
+	 w+KwfnjSnJbrr2lAqbxP5wMm35qsi07pZjjp+3Pa8DwBri7EOTM7otAu7aYwBiuyk8
+	 dok8VK+ywzfXw78ATaCKCdc+avJoypFdwJlzL2OEVETGi1gO/boGO8lGEIreLFzWje
+	 py9VyyuhVe2T9uvQ2RwNgrM8TxSeIb8laBKn9UKND+PFvJQ/NoocHiOMQ249NVeBSi
+	 XuUUhUdMW9OkAcW6Nype+M8fW+QaMR2DSFXk9MLje9MNhCRmBIrcU9DSvGBb2F1uof
+	 J1ww3O2chsjtA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: "jianyun.gao" <jianyungao89@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Dev Jain <dev.jain@arm.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Chris Li <chrisl@kernel.org>,
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Uschakow, Stanislav" <suschako@amazon.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 1/2] mm: fix some typos in mm module
-Date: Mon, 26 Jan 2026 14:12:20 -0500
-Message-ID: <20260126191221.3643780-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y 2/2] mm/hugetlb: fix two comments related to huge_pmd_unshare()
+Date: Mon, 26 Jan 2026 14:12:21 -0500
+Message-ID: <20260126191221.3643780-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012615-emblaze-unified-1aeb@gregkh>
+In-Reply-To: <20260126191221.3643780-1-sashal@kernel.org>
 References: <2026012615-emblaze-unified-1aeb@gregkh>
+ <20260126191221.3643780-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,329 +72,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,arm.com,oracle.com,linux-foundation.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211675-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211674-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email,oracle.com:email]
-X-Rspamd-Queue-Id: 443958C680
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,amazon.de:email,oracle.com:email,huawei.com:email,suse.de:email]
+X-Rspamd-Queue-Id: DA7B78C688
 X-Rspamd-Action: no action
 
-From: "jianyun.gao" <jianyungao89@gmail.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 
-[ Upstream commit b6c46600bfb28b4be4e9cff7bad4f2cf357e0fb7 ]
+[ Upstream commit 3937027caecb4f8251e82dd857ba1d749bb5a428 ]
 
-Below are some typos in the code comments:
+Ever since we stopped using the page count to detect shared PMD page
+tables, these comments are outdated.
 
-  intevals ==> intervals
-  addesses ==> addresses
-  unavaliable ==> unavailable
-  facor ==> factor
-  droping ==> dropping
-  exlusive ==> exclusive
-  decription ==> description
-  confict ==> conflict
-  desriptions ==> descriptions
-  otherwize ==> otherwise
-  vlaue ==> value
-  cheching ==> checking
-  exisitng ==> existing
-  modifed ==> modified
-  differenciate ==> differentiate
-  refernece ==> reference
-  permissons ==> permissions
-  indepdenent ==> independent
-  spliting ==> splitting
+The only reason we have to flush the TLB early is because once we drop the
+i_mmap_rwsem, the previously shared page table could get freed (to then
+get reallocated and used for other purpose).  So we really have to flush
+the TLB before that could happen.
 
-Just fix it.
+So let's simplify the comments a bit.
 
-Link: https://lkml.kernel.org/r/20250929002608.1633825-1-jianyungao89@gmail.com
-Signed-off-by: jianyun.gao <jianyungao89@gmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Acked-by: Chris Li <chrisl@kernel.org>
+The "If we unshared PMDs, the TLB flush was not recorded in mmu_gather."
+part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
+correctly after huge_pmd_unshare") was confusing: sure it is recorded in
+the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do anything.
+So let's drop that comment while at it as well.
+
+We'll centralize these comments in a single helper as we rework the code
+next.
+
+Link: https://lkml.kernel.org/r/20251223214037.580860-3-david@kernel.org
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 3937027caecb ("mm/hugetlb: fix two comments related to huge_pmd_unshare()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/sysfs.c     | 2 +-
- mm/gup.c             | 2 +-
- mm/hugetlb.c         | 6 +++---
- mm/hugetlb_vmemmap.c | 6 +++---
- mm/kmsan/core.c      | 2 +-
- mm/ksm.c             | 2 +-
- mm/memory-tiers.c    | 2 +-
- mm/memory.c          | 4 ++--
- mm/secretmem.c       | 2 +-
- mm/slab_common.c     | 2 +-
- mm/slub.c            | 2 +-
- mm/swapfile.c        | 2 +-
- mm/userfaultfd.c     | 2 +-
- mm/vma.c             | 4 ++--
- 14 files changed, 20 insertions(+), 20 deletions(-)
+ mm/hugetlb.c | 24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 2caeca5624ce8..dec9f5d0d5123 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1267,7 +1267,7 @@ enum damon_sysfs_cmd {
- 	DAMON_SYSFS_CMD_UPDATE_SCHEMES_EFFECTIVE_QUOTAS,
- 	/*
- 	 * @DAMON_SYSFS_CMD_UPDATE_TUNED_INTERVALS: Update the tuned monitoring
--	 * intevals.
-+	 * intervals.
- 	 */
- 	DAMON_SYSFS_CMD_UPDATE_TUNED_INTERVALS,
- 	/*
-diff --git a/mm/gup.c b/mm/gup.c
-index a8ba5112e4d09..d2524fe09338f 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2710,7 +2710,7 @@ EXPORT_SYMBOL(get_user_pages_unlocked);
-  *
-  *  *) ptes can be read atomically by the architecture.
-  *
-- *  *) valid user addesses are below TASK_MAX_SIZE
-+ *  *) valid user addresses are below TASK_MAX_SIZE
-  *
-  * The last two assumptions can be relaxed by the addition of helper functions.
-  *
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 0455119716ec0..4e016433e32e5 100644
+index 4e016433e32e5..6a60af4798bee 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -2934,7 +2934,7 @@ typedef enum {
- 	 * NOTE: This is mostly identical to MAP_CHG_NEEDED, except
- 	 * that currently vma_needs_reservation() has an unwanted side
- 	 * effect to either use end() or commit() to complete the
--	 * transaction.	 Hence it needs to differenciate from NEEDED.
-+	 * transaction. Hence it needs to differentiate from NEEDED.
- 	 */
- 	MAP_CHG_ENFORCED = 2,
- } map_chg_state;
-@@ -6007,7 +6007,7 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	/*
- 	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
- 	 * could defer the flush until now, since by holding i_mmap_rwsem we
--	 * guaranteed that the last refernece would not be dropped. But we must
-+	 * guaranteed that the last reference would not be dropped. But we must
- 	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
- 	 * dropped and the last reference to the shared PMDs page might be
- 	 * dropped as well.
-@@ -7193,7 +7193,7 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 		} else if (unlikely(is_pte_marker(pte))) {
- 			/*
- 			 * Do nothing on a poison marker; page is
--			 * corrupted, permissons do not apply.  Here
-+			 * corrupted, permissions do not apply. Here
- 			 * pte_marker_uffd_wp()==true implies !poison
- 			 * because they're mutual exclusive.
- 			 */
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index ba0fb1b6a5a8e..96ee2bd16ee15 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -75,7 +75,7 @@ static int vmemmap_split_pmd(pmd_t *pmd, struct page *head, unsigned long start,
- 	if (likely(pmd_leaf(*pmd))) {
- 		/*
- 		 * Higher order allocations from buddy allocator must be able to
--		 * be treated as indepdenent small pages (as they can be freed
-+		 * be treated as independent small pages (as they can be freed
- 		 * individually).
- 		 */
- 		if (!PageReserved(head))
-@@ -684,7 +684,7 @@ static void __hugetlb_vmemmap_optimize_folios(struct hstate *h,
- 		ret = hugetlb_vmemmap_split_folio(h, folio);
- 
- 		/*
--		 * Spliting the PMD requires allocating a page, thus lets fail
-+		 * Splitting the PMD requires allocating a page, thus let's fail
- 		 * early once we encounter the first OOM. No point in retrying
- 		 * as it can be dynamically done on remap with the memory
- 		 * we get back from the vmemmap deduplication.
-@@ -715,7 +715,7 @@ static void __hugetlb_vmemmap_optimize_folios(struct hstate *h,
- 		/*
- 		 * Pages to be freed may have been accumulated.  If we
- 		 * encounter an ENOMEM,  free what we have and try again.
--		 * This can occur in the case that both spliting fails
-+		 * This can occur in the case that both splitting fails
- 		 * halfway and head page allocation also failed. In this
- 		 * case __hugetlb_vmemmap_optimize_folio() would free memory
- 		 * allowing more vmemmap remaps to occur.
-diff --git a/mm/kmsan/core.c b/mm/kmsan/core.c
-index 35ceaa8adb41e..90f427b95a213 100644
---- a/mm/kmsan/core.c
-+++ b/mm/kmsan/core.c
-@@ -33,7 +33,7 @@ bool kmsan_enabled __read_mostly;
- 
- /*
-  * Per-CPU KMSAN context to be used in interrupts, where current->kmsan is
-- * unavaliable.
-+ * unavailable.
-  */
- DEFINE_PER_CPU(struct kmsan_ctx, kmsan_percpu_ctx);
- 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index ba97828f32903..4f672f4f21407 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -389,7 +389,7 @@ static unsigned long ewma(unsigned long prev, unsigned long curr)
-  * exponentially weighted moving average. The new pages_to_scan value is
-  * multiplied with that change factor:
-  *
-- *      new_pages_to_scan *= change facor
-+ *      new_pages_to_scan *= change factor
-  *
-  * The new_pages_to_scan value is limited by the cpu min and max values. It
-  * calculates the cpu percent for the last scan and calculates the new
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index 0ea5c13f10a23..864811fff4093 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -519,7 +519,7 @@ static inline void __init_node_memory_type(int node, struct memory_dev_type *mem
- 	 * for each device getting added in the same NUMA node
- 	 * with this specific memtype, bump the map count. We
- 	 * Only take memtype device reference once, so that
--	 * changing a node memtype can be done by droping the
-+	 * changing a node memtype can be done by dropping the
- 	 * only reference count taken here.
- 	 */
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index b59ae7ce42ebc..61748b762876f 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4328,7 +4328,7 @@ static inline bool should_try_to_free_swap(struct folio *folio,
- 	 * If we want to map a page that's in the swapcache writable, we
- 	 * have to detect via the refcount if we're really the exclusive
- 	 * user. Try freeing the swapcache to get rid of the swapcache
--	 * reference only in case it's likely that we'll be the exlusive user.
-+	 * reference only in case it's likely that we'll be the exclusive user.
- 	 */
- 	return (fault_flags & FAULT_FLAG_WRITE) && !folio_test_ksm(folio) &&
- 		folio_ref_count(folio) == (1 + folio_nr_pages(folio));
-@@ -5405,7 +5405,7 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
- 
- /**
-  * set_pte_range - Set a range of PTEs to point to pages in a folio.
-- * @vmf: Fault decription.
-+ * @vmf: Fault description.
-  * @folio: The folio that contains @page.
-  * @page: The first page to create a PTE for.
-  * @nr: The number of PTEs to create.
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index b59350daffe31..9b0f5d9ec6f4b 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -227,7 +227,7 @@ SYSCALL_DEFINE1(memfd_secret, unsigned int, flags)
- 	struct file *file;
- 	int fd, err;
- 
--	/* make sure local flags do not confict with global fcntl.h */
-+	/* make sure local flags do not conflict with global fcntl.h */
- 	BUILD_BUG_ON(SECRETMEM_FLAGS_MASK & O_CLOEXEC);
- 
- 	if (!secretmem_enable || !can_set_direct_map())
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 29be54153fa91..87bde1d8916be 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -259,7 +259,7 @@ static struct kmem_cache *create_cache(const char *name,
-  * @object_size: The size of objects to be created in this cache.
-  * @args: Additional arguments for the cache creation (see
-  *        &struct kmem_cache_args).
-- * @flags: See the desriptions of individual flags. The common ones are listed
-+ * @flags: See the descriptions of individual flags. The common ones are listed
-  *         in the description below.
-  *
-  * Not to be called directly, use the kmem_cache_create() wrapper with the same
-diff --git a/mm/slub.c b/mm/slub.c
-index 507f346102256..e4c47a6b726ad 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2533,7 +2533,7 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
- 		memset((char *)kasan_reset_tag(x) + inuse, 0,
- 		       s->size - inuse - rsize);
- 		/*
--		 * Restore orig_size, otherwize kmalloc redzone overwritten
-+		 * Restore orig_size, otherwise kmalloc redzone overwritten
- 		 * would be reported
- 		 */
- 		set_orig_size(s, x, orig_size);
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 82524f8595eda..89746abc47373 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1703,7 +1703,7 @@ static bool swap_entries_put_map_nr(struct swap_info_struct *si,
- 
- /*
-  * Check if it's the last ref of swap entry in the freeing path.
-- * Qualified vlaue includes 1, SWAP_HAS_CACHE or SWAP_MAP_SHMEM.
-+ * Qualified value includes 1, SWAP_HAS_CACHE or SWAP_MAP_SHMEM.
-  */
- static inline bool __maybe_unused swap_is_last_ref(unsigned char count)
- {
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index af61b95c89e4e..0630f188c847c 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1578,7 +1578,7 @@ static int validate_move_areas(struct userfaultfd_ctx *ctx,
+@@ -6005,17 +6005,10 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
+ 	tlb_end_vma(tlb, vma);
  
  	/*
- 	 * For now, we keep it simple and only move between writable VMAs.
--	 * Access flags are equal, therefore cheching only the source is enough.
-+	 * Access flags are equal, therefore checking only the source is enough.
+-	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
+-	 * could defer the flush until now, since by holding i_mmap_rwsem we
+-	 * guaranteed that the last reference would not be dropped. But we must
+-	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
+-	 * dropped and the last reference to the shared PMDs page might be
+-	 * dropped as well.
+-	 *
+-	 * In theory we could defer the freeing of the PMD pages as well, but
+-	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
+-	 * detect sharing, so we cannot defer the release of the page either.
+-	 * Instead, do flush now.
++	 * There is nothing protecting a previously-shared page table that we
++	 * unshared through huge_pmd_unshare() from getting freed after we
++	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
++	 * succeeded, flush the range corresponding to the pud.
  	 */
- 	if (!(src_vma->vm_flags & VM_WRITE))
- 		return -EINVAL;
-diff --git a/mm/vma.c b/mm/vma.c
-index abe0da33c8446..9127eaeea93ff 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -109,7 +109,7 @@ static inline bool is_mergeable_vma(struct vma_merge_struct *vmg, bool merge_nex
- static bool is_mergeable_anon_vma(struct vma_merge_struct *vmg, bool merge_next)
- {
- 	struct vm_area_struct *tgt = merge_next ? vmg->next : vmg->prev;
--	struct vm_area_struct *src = vmg->middle; /* exisitng merge case. */
-+	struct vm_area_struct *src = vmg->middle; /* existing merge case. */
- 	struct anon_vma *tgt_anon = tgt->anon_vma;
- 	struct anon_vma *src_anon = vmg->anon_vma;
- 
-@@ -798,7 +798,7 @@ static bool can_merge_remove_vma(struct vm_area_struct *vma)
-  * Returns: The merged VMA if merge succeeds, or NULL otherwise.
-  *
-  * ASSUMPTIONS:
-- * - The caller must assign the VMA to be modifed to @vmg->middle.
-+ * - The caller must assign the VMA to be modified to @vmg->middle.
-  * - The caller must have set @vmg->prev to the previous VMA, if there is one.
-  * - The caller must not set @vmg->next, as we determine this.
-  * - The caller must hold a WRITE lock on the mm_struct->mmap_lock.
+ 	if (force_flush)
+ 		tlb_flush_mmu_tlbonly(tlb);
+@@ -7226,11 +7219,10 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
+ 		cond_resched();
+ 	}
+ 	/*
+-	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
+-	 * may have cleared our pud entry and done put_page on the page table:
+-	 * once we release i_mmap_rwsem, another task can do the final put_page
+-	 * and that page table be reused and filled with junk.  If we actually
+-	 * did unshare a page of pmds, flush the range corresponding to the pud.
++	 * There is nothing protecting a previously-shared page table that we
++	 * unshared through huge_pmd_unshare() from getting freed after we
++	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
++	 * succeeded, flush the range corresponding to the pud.
+ 	 */
+ 	if (shared_pmd)
+ 		flush_hugetlb_tlb_range(vma, range.start, range.end);
 -- 
 2.51.0
 
