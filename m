@@ -1,54 +1,76 @@
-Return-Path: <stable+bounces-211499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMiqAwDHdml7WAEAu9opvQ
-	(envelope-from <stable+bounces-211499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 02:44:32 +0100
+	id QN5fGFzIdmk8WQEAu9opvQ
+	(envelope-from <stable+bounces-211500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 02:50:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 760C7835A8
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 02:44:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD0AB835E4
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 02:50:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 202C73007671
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 01:44:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8778E30056C1
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 01:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EF71DFE22;
-	Mon, 26 Jan 2026 01:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C5D1DFDB8;
+	Mon, 26 Jan 2026 01:50:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FF81850A4;
-	Mon, 26 Jan 2026 01:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07991A9F96;
+	Mon, 26 Jan 2026 01:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769391865; cv=none; b=aXvd4f7kYGtbxbO2Th0IXk8uSL5jlfXtNnB5VNFRq1UUY5tAi6wlK2ldhqqw22ti5PHxccj/PUsqctwTby5rTLz3Kg6GR6onb7aWM01PBqhSh+wDwx9A5s5mYxf++vuLSQRg0MAgYLezUkX80bHp0e1ZcmqfV/ak1JGm1ViAX6E=
+	t=1769392214; cv=none; b=H3ff0z7UjIx+CVHJPIgs/mWL+cr2Q75OmYug4+BxIeJ4u5wQX2vD0Rm38MsRZMY+3W8IwiNOWU05iGFW2pO1GpBqfk5Wl/XWkhhvNrJa2+RJfPbHaimZnnfAWQp6IGIsCAUTQxOPqoFt955z4zhU9AbZyGlLds3RqB3qWXNan9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769391865; c=relaxed/simple;
-	bh=nSfnJFRAVybtZukwVt9xRwce+NU+KVil1a4kgYOjjzk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ojnp6qzuhpQmnQz5zyI8N5qZvatYPeinclBRqxIYP35ceRIc+uVqxo90bt3e30vP4m7Xsp4IAoAZgVbJdXWpD+He+S0m1gPUqwRMREbjgbwdKwbGTxp+v1g6aCZo3nwYKeKVpWX/bigYLmH2xzDTtoYu3rAh6Tqmg1L7gBrKIh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.223])
-	by APP-01 (Coremail) with SMTP id qwCowADHbWntxnZpEFs_Bg--.35869S2;
-	Mon, 26 Jan 2026 09:44:13 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: mchehab@kernel.org,
-	hverkuil@kernel.org,
-	laurent.pinchart+renesas@ideasonboard.com,
-	sakari.ailus@linux.intel.com,
-	jacopo.mondi@ideasonboard.com,
-	ezequiel@vanguardiasur.com.ar
-Cc: linux-media@vger.kernel.org,
+	s=arc-20240116; t=1769392214; c=relaxed/simple;
+	bh=hsNu7sJY7ZEHJuK+LYe276KKt4iCnTvehngwjYey40g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mCOVOatS4gt6F3grcdy0y3sDgNkv+k5d5w5z8Xb0zevK/MTjAolfPx6IMyr4NO+Ygmf075MGXIy7AvLmDw1ptLHmiZ3fb25/+kBCwkdse12wFihCLkzd4ol5oieMpjdljIcly7W5h1DLUWcHSfBBYHldqZNYD5+FzaUkwSjKZ1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 5239493afa5911f0b0f03b4cfa9209d1-20260126
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.6,REQID:536a055b-92d4-4f09-b4e9-c140af8d5648,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:a9d874c,CLOUDID:9e356913761394897ef904518f973d24,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:102|898,TC:nil,Content:0|15|50,EDM:-3,IP
+	:nil,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV
+	:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 5239493afa5911f0b0f03b4cfa9209d1-20260126
+X-User: zhangheng@kylinos.cn
+Received: from kylin-pc.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <zhangheng@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1982474377; Mon, 26 Jan 2026 09:49:58 +0800
+From: Zhang Heng <zhangheng@kylinos.cn>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com
+Cc: alex.andries.aa@gmail.com,
+	syed.sabakareem@amd.com,
+	keenplify@gmail.com,
+	santesegabriel@gmail.com,
+	talhah.peerbhai@gmail.com,
+	elantsew.andrew@gmail.com,
+	queler@gmail.com,
+	ravenblack@gmail.com,
+	linux-sound@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Zhang Heng <zhangheng@kylinos.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] media: omap3isp: drop the use count of v4l2 pipeline
-Date: Mon, 26 Jan 2026 09:44:12 +0800
-Message-Id: <20260126014412.2462864-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH] ASoC: amd: yc: Add DMI quirk for Acer TravelMate P216-41-TCO
+Date: Mon, 26 Jan 2026 09:49:52 +0800
+Message-ID: <20260126014952.3674450-1-zhangheng@kylinos.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,77 +78,68 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADHbWntxnZpEFs_Bg--.35869S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7GFWfAFW8Jry8CF18ArW7twb_yoWfArb_Zr
-	nrWF4kWrykGr1qk3WYyrn3uFy5tw1kWr1fXF4aqa1ay3y5CrnxJFyj9rWfXrWUX3W2kFyD
-	Ww1YqFyxG343CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
-	Gr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
-	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiBwsSE2l2MU9KcgADsX
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211499-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-211500-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[kylinos.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[lihaoxiang@isrc.iscas.ac.cn,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,perex.cz,suse.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,isrc.iscas.ac.cn:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 760C7835A8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhangheng@kylinos.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,amd.com,vger.kernel.org,kylinos.cn];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	R_DKIM_NA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:mid,kylinos.cn:email]
+X-Rspamd-Queue-Id: DD0AB835E4
 X-Rspamd-Action: no action
 
-In isp_video_open(), drop the use count of v4l2
-pipeline if vb2_queue_init() fails.
+Add a DMI quirk for the Acer TravelMate P216-41-TCO fixing the
+issue where the internal microphone was not detected.
 
-Fixes: 8fd390b89cc8 ("media: Split v4l2_pipeline_pm_use into v4l2_pipeline_pm_{get, put}")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220983
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
 ---
- drivers/media/platform/ti/omap3isp/ispvideo.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/yc/acp6x-mach.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/media/platform/ti/omap3isp/ispvideo.c b/drivers/media/platform/ti/omap3isp/ispvideo.c
-index 0e7f0bf2b346..2d0061101a43 100644
---- a/drivers/media/platform/ti/omap3isp/ispvideo.c
-+++ b/drivers/media/platform/ti/omap3isp/ispvideo.c
-@@ -1324,6 +1324,7 @@ static int isp_video_open(struct file *file)
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index f801ce4741ff..c18da0915baa 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -682,6 +682,14 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "GOH-X"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "RB"),
++			DMI_MATCH(DMI_BOARD_NAME, "XyloD5_RBU"),
++		}
++	},
++
+ 	{}
+ };
  
- 	ret = vb2_queue_init(&handle->queue);
- 	if (ret < 0) {
-+		v4l2_pipeline_pm_put(&video->video.entity);
- 		omap3isp_put(video->isp);
- 		goto done;
- 	}
 -- 
-2.25.1
+2.47.1
 
 
