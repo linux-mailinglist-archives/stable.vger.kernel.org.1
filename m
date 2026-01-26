@@ -1,162 +1,197 @@
-Return-Path: <stable+bounces-211531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211532-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOqzLwEpd2lzcwEAu9opvQ
-	(envelope-from <stable+bounces-211531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:42:41 +0100
+	id YIIRB6Eqd2nacwEAu9opvQ
+	(envelope-from <stable+bounces-211532-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:49:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FB28591C
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:42:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D46859B0
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 09:49:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0AB4300615F
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 08:42:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6C88A3007CA4
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 08:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6A2311C09;
-	Mon, 26 Jan 2026 08:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B4C2FF646;
+	Mon, 26 Jan 2026 08:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Zii7k/ag";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PyBhJr9l";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Zii7k/ag";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PyBhJr9l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejOiCzrf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9323B26B741
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 08:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE293248880
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 08:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769416956; cv=none; b=dPol0sZpB8WanmaGGT7eI5exXPno/3/oQAfyUx2kjQqpKVWzcPu81W9bjTBIfHXzfizrGO4B+X5Wk2XJ8GJKQhpJHGNRkHxe2U30HVD+mUorizaJVQU/eTIDu/2XIOZ2OQ53Z2nGN+IWLpoJu/Bn2/gCkSJWDwiGkNg1Z9Sip20=
+	t=1769417368; cv=none; b=Ss4n6gDqWv1iWmlan89XPMUXlLEg5Ug8dr5GqYuzuttXKbz8uI/MdqQvLcMi44SWZmfWO/pLIyOtF2lDYeqPAydwPC+VA4tx144sDEKb+Zc8MZd8l+3A92ZI/Zx+oT1/I2N0S0c3Q6CEkhmHgG++J3gw3odD9vOstKFwo9TXG+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769416956; c=relaxed/simple;
-	bh=ZOW5m/pnZCW7WDiF/nOeeOSKnRdXtebF/bgiA6ksWU0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=snp9UmmPVwWwlUNPTFQYCQiAgALH3GCC7Uk9FERBQ4go8iehrOzWszjDq3nhPTymquqihoWZuBQCRkmnzl1U/kuZxDGw9dzX3+eB7x3JYG3u9N9+hPFtdC8izcK1Iyq1atEAasNvNcsE8AO5a9yDZ01Jiij6YKf0uLl+woJhWK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Zii7k/ag; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PyBhJr9l; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Zii7k/ag; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PyBhJr9l; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CE8E55BCEE;
-	Mon, 26 Jan 2026 08:42:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1769416953; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mJp9e9MnFDfaWNQaxHhHP898FPR/7lWxezxw3+j8p94=;
-	b=Zii7k/agDe2/NWdSDD4+I79NpHWnGhIQCdmrGBUmaPKE5pVWSsx6YgFW2NwHoVU9u5Gg5D
-	5/UNYL0Q+699T0AZzeUNW/IaUC6ihQwEWdL/hYnuPapO4PbvIWyh646w/dU2295vtUmSJI
-	4eiISq5e6JA9kCKYr9n8SNub0kPonrI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1769416953;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mJp9e9MnFDfaWNQaxHhHP898FPR/7lWxezxw3+j8p94=;
-	b=PyBhJr9lqVysxk2OlEjGKhjblpRbO416Uz8cXkWO0G8mUjNR2J+PEhFyT//6vKmQv041MS
-	2mnBNEJmX1TNcODw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1769416953; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mJp9e9MnFDfaWNQaxHhHP898FPR/7lWxezxw3+j8p94=;
-	b=Zii7k/agDe2/NWdSDD4+I79NpHWnGhIQCdmrGBUmaPKE5pVWSsx6YgFW2NwHoVU9u5Gg5D
-	5/UNYL0Q+699T0AZzeUNW/IaUC6ihQwEWdL/hYnuPapO4PbvIWyh646w/dU2295vtUmSJI
-	4eiISq5e6JA9kCKYr9n8SNub0kPonrI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1769416953;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mJp9e9MnFDfaWNQaxHhHP898FPR/7lWxezxw3+j8p94=;
-	b=PyBhJr9lqVysxk2OlEjGKhjblpRbO416Uz8cXkWO0G8mUjNR2J+PEhFyT//6vKmQv041MS
-	2mnBNEJmX1TNcODw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 79724139F0;
-	Mon, 26 Jan 2026 08:42:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 911UHPkod2mFKgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 26 Jan 2026 08:42:33 +0000
-Date: Mon, 26 Jan 2026 09:42:33 +0100
-Message-ID: <87ms20bw92.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Zhang Heng <zhangheng@kylinos.cn>
-Cc: perex@perex.cz,
-	tiwai@suse.com,
-	sbinding@opensource.cirrus.com,
-	kailang@realtek.com,
-	chris.chiu@canonical.com,
-	edip@medip.dev,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] ALSA: hda/realtek: fix right sounds and mute/micmute LEDs for HP machine
-In-Reply-To: <20260126073508.3897461-1-zhangheng@kylinos.cn>
-References: <20260126073508.3897461-1-zhangheng@kylinos.cn>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.1 Mule/6.0
+	s=arc-20240116; t=1769417368; c=relaxed/simple;
+	bh=FxNS7yMeaMMGExS9oCTJFUcXG9yW3cZSU+vkw2ft85g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m9C7mHbYeDpKxo87nhFngck/mNP/+Douffs57ePmPAmZPyOrrVv8hvdMOEe3TazGx7dgFftphvxe86+sN5MfOw6KHdoJN5tZarUBw7jRgDABp60HQ/pP9vqxiu0k2ZVwbKAE1qZ1j6031f6ZGew7zGiEQmYYh0oRVHaGJeGaMCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejOiCzrf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB04C19422
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 08:49:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769417368;
+	bh=FxNS7yMeaMMGExS9oCTJFUcXG9yW3cZSU+vkw2ft85g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ejOiCzrfB3ugjKY8fmB0dIhqllk0jbGF3e1woLrmRLZr7Z93QrepiNjuBBLhEeXwQ
+	 nKf9UB/jab2wnRYqRJSL51ro/QIGTdj/g2EBPZhIMp0RQVa3lCxGeo6232+T4pi4Cb
+	 /43+XEVFCbGH7j2aTJcdlP6B/9wsKooq2MLuhPDRWE2OP0P4RALiWHI98RXPEqHJUv
+	 a0jUGmFEr4XLh5x4heuW9QV20KEq59fFCIT64GYlyQLniH3r4RQAlnkczZGu/N6s2J
+	 nd5GLh6V31ZnrsUcfn5hXjuM8jzF2oqpuOOMigAUX5vhiLQns7hKZcSpRjGZh4L/Xo
+	 rYGaQIYEa+X+g==
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-59b679cff1fso4146664e87.0
+        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 00:49:28 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVHN0RsAkcaQJbl2dk/TwVXVumKqfwXtWoJg9ltkePIBzuk+pelDPkfiPXx9tUX4J1CpoeGhd4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyulftoI0c2fiWcSL/t89MKG/mFxc9kzHOGQ31tJSAz+z2TdNPj
+	ww26ATOaqRvPXxEg138qV3FFkMuXy5MzCbI6XjqAC3/VpK1DU3LzXBpdXMKKLOYFT9eEBVInS9z
+	7uwntibxtV2MzMpOEyZVy4AaUrXpZupS58IWuHip3MA==
+X-Received: by 2002:a05:6512:10c1:b0:59d:d64e:b3d7 with SMTP id
+ 2adb3069b0e04-59df3a82273mr1300484e87.46.1769417367064; Mon, 26 Jan 2026
+ 00:49:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Score: -3.30
-X-Spam-Level: 
-X-Spam-Flag: NO
+MIME-Version: 1.0
+References: <20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com>
+ <cb13c3df-be09-4cf3-b679-4431862d7264@arm.com> <CAMRc=MfUawHpDgxj=fP2OF_-qg1O+P3oM_cSvGsbvAdLRB=+hw@mail.gmail.com>
+ <3204984.tdWV9SEqCh@diego>
+In-Reply-To: <3204984.tdWV9SEqCh@diego>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Mon, 26 Jan 2026 09:49:15 +0100
+X-Gmail-Original-Message-ID: <CAMRc=MdNkjp6gZJcdTMoFtvQo8kW4damvNFA3+MhVbXhFU7D9w@mail.gmail.com>
+X-Gm-Features: AZwV_Qid_m7MIJWeeUTftl8ot9-gB4gBnX-3Xp4Ry9ijoNtlg41NuwGQDS78pYc
+Message-ID: <CAMRc=MdNkjp6gZJcdTMoFtvQo8kW4damvNFA3+MhVbXhFU7D9w@mail.gmail.com>
+Subject: Re: [PATCH] gpio: rockchip: mark the GPIO controller as sleeping
+To: =?UTF-8?Q?Heiko_St=C3=BCbner?= <heiko@sntech.de>
+Cc: Robin Murphy <robin.murphy@arm.com>, 
+	Sebastian Reichel <sebastian.reichel@collabora.com>, 
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Linus Walleij <linusw@kernel.org>, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211531-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_FROM(0.00)[bounces-211532-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,suse.de:mid,suse.de:dkim]
-X-Rspamd-Queue-Id: 29FB28591C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sntech.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 65D46859B0
 X-Rspamd-Action: no action
 
-On Mon, 26 Jan 2026 08:35:07 +0100,
-Zhang Heng wrote:
-> 
-> The HP EliteBook 630 G11 (103c:8c8f) is using ALC236 codec which used 0x02
-> to control mute LED and 0x01 to control micmute LED. Therefore, add a quirk
-> to make it works.
-> 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=220828
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+On Sun, Jan 25, 2026 at 2:23=E2=80=AFPM Heiko St=C3=BCbner <heiko@sntech.de=
+> wrote:
+>
+> Am Samstag, 24. Januar 2026, 22:07:12 Mitteleurop=C3=A4ische Normalzeit s=
+chrieb Bartosz Golaszewski:
+> > On Sat, 24 Jan 2026 00:45:25 +0100, Robin Murphy <robin.murphy@arm.com>=
+ said:
+> > > On 2026-01-23 9:52 pm, Heiko St=C3=BCbner wrote:
+>
+> [ snip to get to the core question at the bottom ]
+>
+> > > diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pin=
+ctrl-rockchip.c
+> > > index e44ef262beec..2fc67aeafdb3 100644
+> > > --- a/drivers/pinctrl/pinctrl-rockchip.c
+> > > +++ b/drivers/pinctrl/pinctrl-rockchip.c
+> > > @@ -3545,10 +3545,9 @@ static int rockchip_pmx_set(struct pinctrl_dev=
+ *pctldev, unsigned selector,
+> > >     return 0;
+> > >   }
+> > >
+> > > -static int rockchip_pmx_gpio_set_direction(struct pinctrl_dev *pctld=
+ev,
+> > > -                                      struct pinctrl_gpio_range *ran=
+ge,
+> > > -                                      unsigned offset,
+> > > -                                      bool input)
+> > > +static int rockchip_pmx_gpio_request_enable(struct pinctrl_dev *pctl=
+dev,
+> > > +                                       struct pinctrl_gpio_range *ra=
+nge,
+> > > +                                       unsigned int offset)
+> > >   {
+> > >     struct rockchip_pinctrl *info =3D pinctrl_dev_get_drvdata(pctldev=
+);
+> > >     struct rockchip_pin_bank *bank;
+> > > @@ -3562,7 +3561,7 @@ static const struct pinmux_ops rockchip_pmx_ops=
+ =3D {
+> > >     .get_function_name      =3D rockchip_pmx_get_func_name,
+> > >     .get_function_groups    =3D rockchip_pmx_get_groups,
+> > >     .set_mux                =3D rockchip_pmx_set,
+> > > -   .gpio_set_direction     =3D rockchip_pmx_gpio_set_direction,
+> > > +   .gpio_request_enable    =3D rockchip_pmx_gpio_request_enable,
+> > >   };
+> > >
+> > >   /*
+> > >
+> >
+> > I'm not sure what's going on here. You don't really need to call
+> > pinctrl_gpio_direction_input/output()?
+>
+> No we actually don't.
+>
+> The current _set_direction function:
+>
+> static int rockchip_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
+>                                            struct pinctrl_gpio_range *ran=
+ge,
+>                                            unsigned offset,
+>                                            bool input)
+> {
+>         struct rockchip_pinctrl *info =3D pinctrl_dev_get_drvdata(pctldev=
+);
+>         struct rockchip_pin_bank *bank;
+>
+>         bank =3D pin_to_bank(info, offset);
+>         return rockchip_set_mux(bank, offset - bank->pin_base, RK_FUNC_GP=
+IO);
+> }
+>
+> really only ever touches the pinmux and has nothing to do with setting
+> the direction, which is solely the task of the gpio-controller/-driver.
+>
+> So moving that to the request callback would likely solve all our current
+> problems?
+>
+> Heiko
+>
+>
+>
 
-Thanks, applied now.
+If that fixes the issue, allows us to revert cansleep to false and
+doesn't cause any problems - yes, for sure.
 
+Do you want to send a patch?
 
-Takashi
+Bartosz
 
