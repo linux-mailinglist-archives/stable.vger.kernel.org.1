@@ -1,163 +1,250 @@
-Return-Path: <stable+bounces-211497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211498-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJ2yHVa2dmkGVAEAu9opvQ
-	(envelope-from <stable+bounces-211497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 01:33:26 +0100
+	id +It7D5O6dmkSVQEAu9opvQ
+	(envelope-from <stable+bounces-211498-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 01:51:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9808333A
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 01:33:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60022833B2
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 01:51:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C79C930045AA
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 00:33:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04B193003EAA
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 00:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA1113A258;
-	Mon, 26 Jan 2026 00:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819FB49620;
+	Mon, 26 Jan 2026 00:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AcETk8PD"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bFK+0C+5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118B72AE77
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 00:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922B2487BE
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 00:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769387590; cv=none; b=r5t3KlmT0hz7Gfm4SnQk9GQRXCyYToNgdOX4gZKCtA+5D72E86MqkvV/zX8xLJXBfIyRV4qGjdRt/ZocaBQjdP14ER3kHgOQjyDdf3WKCXmMyj608nkkWnVpOg/VblpcO+HJ+IOg6pMJv4QBUFy5k8QKB2rbR6wqu2qY09zpUSM=
+	t=1769388687; cv=none; b=Xt+IKtvm6X0fsHOvS2OWz5T7Zdna0+1X5f38kyMeWLAFX/GexaAMlOIBpBpX8BkdIwpHTCo27Zw7FFoh7pxBrogiIKY1uq5On8EiyTST2AZgAE/RpxmjkdPNAu8FUBU3ABC8daq61UZmx37gysKn0EQVeVHJRQLfcH/7p2kfpso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769387590; c=relaxed/simple;
-	bh=LHP7vc+QAjKrcQ/nSd8XnShnI8hVZmkUtqzqx890SiM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bi+RRpDZ1hlnS0kJ0KXuqphjYJTZ7ijZHfK/CVpBBkF89P8dX6QdtjSzOVWH+hNwbXMCOaYnnXkflQjXjHDwS4enWsNVeYewYHQFhDSyBIO/4g4iObUzKREteZ/hhuXtW+84MeN4Vr1h2KCj9yj0c1WbTfXAmnaH/1s9ftR+Zyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AcETk8PD; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elver.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4804157a3c9so43412935e9.1
-        for <stable@vger.kernel.org>; Sun, 25 Jan 2026 16:33:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769387587; x=1769992387; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=y+0aVR3neN19eb/78h0OkLoTFjYmtJx01fQbpzy1/E0=;
-        b=AcETk8PDSMv8aVjSO+RdYOzTLb8vqVLKzAkIFVQ9+RAZJKz/9iYUVFDqUf6B3o3mM+
-         vw6y82JsMTl5hk8I83HFvpXzeqMsMOpLk4/GR2gVQ1xbSjfhENJu+hozVCk6h8DK1m8Z
-         3LZGmMatTig0blpyjcExkLhq2y65OCRtMc2Y/R0zmC3e+h48yJRitfTMjycJpZGk1HrR
-         OMCO70jYyqTWXbPZqI4h05rQz2yn6Tmz7Tkbrf4sSfapav2CEJt1QBsfq+mkpY990IWL
-         asvrt68VulZ0UIpqjvy6ERf8yBcD8MWrbYt2g99MvKCItp6VBZtt/Jk8EoqwWVP1ZzaQ
-         ogug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769387587; x=1769992387;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y+0aVR3neN19eb/78h0OkLoTFjYmtJx01fQbpzy1/E0=;
-        b=wW+14z6LK3AMg7yamorbrrlaZ94IyaVO9xbN/f2uu8V3wr3+AnmcXiZUQU4KIbCRJu
-         UaMjX5XIdXcdhiAN6YQR0qOrzWGguDwP5LRHXKaJcRqtcdJa/9Ln+UI8fxSdr0bmSca8
-         v3H2EFALpY+z5tSrdX8ewrumxanhWLdpzscwTgrkTRE0SBh1rc2MfwSlmIQIDedsxAdd
-         rI8v2wYSVCkE2RRF2Ncb8i/b/IA0Kwf79a5opydysIcmaA8MvqmvhdftYV1p8cD8Emxi
-         brJRs8rhzlMF0tX7QmXFToAiYiMh+r6mU2H2KJ78BgtPSm95CbgVOQlYZk/sIaUwQpaB
-         1Gog==
-X-Forwarded-Encrypted: i=1; AJvYcCUma/7ZVDqzxHoi0MUrOlUNq6phEouP+z8AcnrQo57iKMn2FT36NOKxPLeBee9r80wmJ0eTci8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyl0FoRSMfT4vSztgaiAn+oxU5jDrxAr5bPFc1tj18YMODsQ1GZ
-	tVIw3iTMm5A6bY2MYHwvJO7GBHWXvCq7cQi5WSdY2UEvr5Nl78iEgTbDLEFFsjO5krZ1c5qFU2u
-	8Bg==
-X-Received: from wmne21.prod.google.com ([2002:a05:600c:4395:b0:477:a181:1922])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600d:6405:10b0:475:dde5:d91b
- with SMTP id 5b1f17b1804b1-4805f624d56mr26596795e9.17.1769387587598; Sun, 25
- Jan 2026 16:33:07 -0800 (PST)
-Date: Mon, 26 Jan 2026 01:25:10 +0100
-In-Reply-To: <20260126002936.2676435-1-elver@google.com>
+	s=arc-20240116; t=1769388687; c=relaxed/simple;
+	bh=WzvOvEujohhNCftvh/GuUipfHM9bf8cGtWNYNf0rVKw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JQQ+jFqaydV6P3q99YYdTSGixfSywCQ5WiXV9sWUc4hGH6xO/Mr1XEf6OllNljCsV3HYsnx02s8WYUctO5cVtL4Ylab34e/r8X7DfcHfumdtobSHcziHPq5iYp4vB/8zkUZqs7ffo769CgqAsjabN+Zk0rHzeDydZ03DzATrNaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bFK+0C+5; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Mon, 26 Jan 2026 08:51:10 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769388683;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+ZMWMY+mIk/ZareEAhb040770CIAQtwMX6nJgk+aGIU=;
+	b=bFK+0C+5whH7UFfoZq2PpP2omZlJpjnJVw3beo5c1GjYSQwSAmvXbbUO0Vqyjhnoh7R+gl
+	oTG8DkvXS2jFMZdX1S1N04KpvYEr8TClJJU4t0RN//4AzCu9JigQ4LOx7N/uTsR87osS1B
+	L6KVhQVKrWBg/Y+xonW68axjnb/FHug=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, linux-mm@kvack.org, 
+	cl@gentwo.org, rientjes@google.com, surenb@google.com, 
+	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/slab: avoid allocating slabobj_ext array from its own
+ slab
+Message-ID: <bbhrcvqbwuvf6l4xwv7ax6w5iwuixaivvuknvlgutnavxyllme@r5zkvsh7mwtw>
+References: <20260124104614.9739-1-harry.yoo@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260126002936.2676435-1-elver@google.com>
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260126002936.2676435-2-elver@google.com>
-Subject: [PATCH 1/3] arm64: Fix non-atomic __READ_ONCE() with CONFIG_LTO=y
-From: Marco Elver <elver@google.com>
-To: elver@google.com, Peter Zijlstra <peterz@infradead.org>, Will Deacon <will@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Boqun Feng <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>, 
-	Bart Van Assche <bvanassche@acm.org>, llvm@lists.linux.dev, 
-	Catalin Marinas <catalin.marinas@arm.com>, Arnd Bergmann <arnd@arndb.de>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260124104614.9739-1-harry.yoo@oracle.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211497-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-211498-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[elver@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[kernel.org,linutronix.de,gmail.com,redhat.com,acm.org,lists.linux.dev,arm.com,arndb.de,lists.infradead.org,vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[hao.li@linux.dev,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EA9808333A
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linux.dev:email,linux.dev:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: 60022833B2
 X-Rspamd-Action: no action
 
-The implementation of __READ_ONCE() under CONFIG_LTO=y incorrectly
-qualified the fallback "once" access for types larger than 8 bytes,
-which are not atomic but should still happen "once" and suppress common
-compiler optimizations.
+On Sat, Jan 24, 2026 at 07:46:14PM +0900, Harry Yoo wrote:
+> When allocating slabobj_ext array in alloc_slab_obj_exts(), the array
+> can be allocated from the same slab we're allocating the array for.
+> This led to obj_exts_in_slab() incorrectly returning true [1],
+> although the array is not allocated from wasted space of the slab.
 
-The cast `volatile typeof(__x)` applied the volatile qualifier to the
-pointer type itself rather than the pointee. This created a volatile
-pointer to a non-volatile type, which violated __READ_ONCE() semantics.
+This is indeed a tricky issue to uncover.
 
-Fix this by casting to `volatile typeof(*__x) *`.
+> 
+> Vlastimil Babka observed that this problem should be fixed even when
+> ignoring its incompatibility with obj_exts_in_slab(), because it creates
+> slabs that are never freed as there is always at least one allocated
+> object.
+> 
+> To avoid this, use the next kmalloc size or large kmalloc when
+> kmalloc_slab() returns the same cache we're allocating the array for.
 
-With a defconfig + LTO + debug options build, we see the following
-functions to be affected:
+Nice approach.
 
-	xen_manage_runstate_time (884 -> 944 bytes)
-	xen_steal_clock (248 -> 340 bytes)
-	  ^-- use __READ_ONCE() to load vcpu_runstate_info structs
+> 
+> In case of random kmalloc caches, there are multiple kmalloc caches for
+> the same size and the cache is selected based on the caller address.
+> Because it is fragile to ensure the same caller address is passed to
+> kmalloc_slab(), kmalloc_noprof(), and kmalloc_node_noprof(), fall back
+> to (s->object_size + 1) when the sizes are equal.
 
-Fixes: e35123d83ee3 ("arm64: lto: Strengthen READ_ONCE() to acquire when CONFIG_LTO=y")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Marco Elver <elver@google.com>
----
- arch/arm64/include/asm/rwonce.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Good catch on this corner case!
 
-diff --git a/arch/arm64/include/asm/rwonce.h b/arch/arm64/include/asm/rwonce.h
-index 78beceec10cd..fc0fb42b0b64 100644
---- a/arch/arm64/include/asm/rwonce.h
-+++ b/arch/arm64/include/asm/rwonce.h
-@@ -58,7 +58,7 @@
- 	default:							\
- 		atomic = 0;						\
- 	}								\
--	atomic ? (typeof(*__x))__u.__val : (*(volatile typeof(__x))__x);\
-+	atomic ? (typeof(*__x))__u.__val : (*(volatile typeof(*__x) *)__x);\
- })
- 
- #endif	/* !BUILD_VDSO */
+> 
+> Note that this doesn't happen when memory allocation profiling is
+> disabled, as when the allocation of the array is triggered by memory
+> cgroup (KMALLOC_CGROUP), the array is allocated from KMALLOC_NORMAL.
+> 
+> Reported-by: kernel test robot <oliver.sang@intel.com>
+> Closes: https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com [1]
+> Cc: stable@vger.kernel.org
+> Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+
+Looks good to me!
+Reviewed-by: Hao Li <hao.li@linux.dev>
+
 -- 
-2.52.0.457.g6b5491de43-goog
+Thanks,
+Hao
 
+> ---
+>  mm/slub.c | 62 ++++++++++++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 55 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 3ff1c475b0f1..43ddb96c4081 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2104,6 +2104,52 @@ static inline void init_slab_obj_exts(struct slab *slab)
+>  	slab->obj_exts = 0;
+>  }
+>  
+> +/*
+> + * Calculate the allocation size for slabobj_ext array.
+> + *
+> + * When memory allocation profiling is enabled, the obj_exts array
+> + * could be allocated from the same slab cache it's being allocated for.
+> + * This would prevent the slab from ever being freed because it would
+> + * always contain at least one allocated object (its own obj_exts array).
+> + *
+> + * To avoid this, increase the allocation size when we detect the array
+> + * would come from the same cache, forcing it to use a different cache.
+> + */
+> +static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
+> +					 struct slab *slab, gfp_t gfp)
+> +{
+> +	size_t sz = sizeof(struct slabobj_ext) * slab->objects;
+> +	struct kmem_cache *obj_exts_cache;
+> +
+> +	/*
+> +	 * slabobj_ext array for KMALLOC_CGROUP allocations
+> +	 * are served from KMALLOC_NORMAL caches.
+> +	 */
+> +	if (!mem_alloc_profiling_enabled())
+> +		return sz;
+> +
+> +	if (sz > KMALLOC_MAX_CACHE_SIZE)
+> +		return sz;
+> +
+> +	obj_exts_cache = kmalloc_slab(sz, NULL, gfp, 0);
+> +	if (s == obj_exts_cache)
+> +		return obj_exts_cache->object_size + 1;
+> +
+> +	/*
+> +	 * Random kmalloc caches have multiple caches per size, and the cache
+> +	 * is selected by the caller address. Since caller address may differ
+> +	 * between kmalloc_slab() and actual allocation, bump size when both
+> +	 * are normal kmalloc caches of same size.
+> +	 */
+> +	if (IS_ENABLED(CONFIG_RANDOM_KMALLOC_CACHES) &&
+> +			is_kmalloc_normal(s) &&
+> +			is_kmalloc_normal(obj_exts_cache) &&
+> +			(s->object_size == obj_exts_cache->object_size))
+> +		return obj_exts_cache->object_size + 1;
+> +
+> +	return sz;
+> +}
+> +
+>  int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  		        gfp_t gfp, bool new_slab)
+>  {
+> @@ -2112,26 +2158,26 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  	unsigned long new_exts;
+>  	unsigned long old_exts;
+>  	struct slabobj_ext *vec;
+> +	size_t sz;
+>  
+>  	gfp &= ~OBJCGS_CLEAR_MASK;
+>  	/* Prevent recursive extension vector allocation */
+>  	gfp |= __GFP_NO_OBJ_EXT;
+>  
+> +	sz = obj_exts_alloc_size(s, slab, gfp);
+> +
+>  	/*
+>  	 * Note that allow_spin may be false during early boot and its
+>  	 * restricted GFP_BOOT_MASK. Due to kmalloc_nolock() only supporting
+>  	 * architectures with cmpxchg16b, early obj_exts will be missing for
+>  	 * very early allocations on those.
+>  	 */
+> -	if (unlikely(!allow_spin)) {
+> -		size_t sz = objects * sizeof(struct slabobj_ext);
+> -
+> +	if (unlikely(!allow_spin))
+>  		vec = kmalloc_nolock(sz, __GFP_ZERO | __GFP_NO_OBJ_EXT,
+>  				     slab_nid(slab));
+> -	} else {
+> -		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
+> -				   slab_nid(slab));
+> -	}
+> +	else
+> +		vec = kmalloc_node(sz, gfp | __GFP_ZERO, slab_nid(slab));
+> +
+>  	if (!vec) {
+>  		/*
+>  		 * Try to mark vectors which failed to allocate.
+> @@ -2145,6 +2191,8 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  		return -ENOMEM;
+>  	}
+>  
+> +	VM_WARN_ON_ONCE(virt_to_slab(vec)->slab_cache == s);
+> +
+>  	new_exts = (unsigned long)vec;
+>  	if (unlikely(!allow_spin))
+>  		new_exts |= OBJEXTS_NOSPIN_ALLOC;
+> -- 
+> 2.43.0
+> 
 
