@@ -1,138 +1,223 @@
-Return-Path: <stable+bounces-211631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +CpwFwmCd2m9hgEAu9opvQ
-	(envelope-from <stable+bounces-211631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:02:33 +0100
+	id IBdMIrGCd2m9hgEAu9opvQ
+	(envelope-from <stable+bounces-211632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:05:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27B289E1B
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:02:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 297DB89E82
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:05:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B3193050935
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:57:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7443A3027136
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C0F329E4B;
-	Mon, 26 Jan 2026 14:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05303385BE;
+	Mon, 26 Jan 2026 15:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XIkGZ/cv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYolDgiO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01862155757;
-	Mon, 26 Jan 2026 14:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E79155757;
+	Mon, 26 Jan 2026 15:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769439426; cv=none; b=o9eRmC491P3g+FEMzYDaJGNgDh4wYzjb2KZy9LSB/A5ZPq6vxLhHVQF08jLg1GI7tgb+lGDTana0ba1mDEkenrzPTdvI/IUuyNCv/fC4bAfgFbrLBjY0XH7Fcpun4T2Ee2yw9W+m5t2N1DFq+wT7vzcFN3Mkroih426hQ7WTbos=
+	t=1769439857; cv=none; b=dOb1yaEVqToSvaFp3T2z0MN+YP51LBMtLEPvlsIMDsH2cOy4eogEHuiGadaYwwbyUb/yRVpZpsozpRGxxoAc+A5SstbMNoj6MNzDpmZt1b17Lh/h/Y6D8XSLOWrVif6xwz2RWPxrJC2EfthT7Gle5ycFtYp2JsEZah5kxCnj9oQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769439426; c=relaxed/simple;
-	bh=1DW4MHZA/R670yXobGmTfLhfuZe7Y2lPBeO3TUWxyYI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=T9Y+phVKeI7QIqrOgIMyYa5e4G97Cj93LO74VBp8/ZZDbI3X9Zo4EJaBSuSm65gJIWHUBLgfYD1RH46iE6U0dWdd03W2lKNt4lzPB5N51hcPFwn9VfarGobdJqJFbj053qYx+f1zvrTNrRQDps0FFTgY/SKL4PNiCbJ32Wh5GXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XIkGZ/cv; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769439425; x=1800975425;
-  h=from:to:cc:in-reply-to:references:subject:message-id:
-   date:mime-version:content-transfer-encoding;
-  bh=1DW4MHZA/R670yXobGmTfLhfuZe7Y2lPBeO3TUWxyYI=;
-  b=XIkGZ/cvepD+NN7+FyKuRRdrdyZ6k+ZvWUQc9W6M/ML/Jx1dsHJDUs1+
-   GxoNcfCYY4nq5dLFlw5REz/gg2I62BYHmscCA+PFkAr8DKCBi/F7LuoJX
-   urhO2LLLZvQOaSk2ye3naLmrX3nJIuQTJN+M4dr5Y7xTY3dFkZ4yDf0Vc
-   kvqZtvcAamf9QDya7avdsiIZzfa78LXrJDiy2ygjPaivQYEK6+APeON8T
-   vksHr972CB2Gbug4IzORqCx33W5EBoQcjk6PsfFv9mbU4Vtv4S4FhF2OH
-   PMr+GovmFdrcipTsNl2dhHTg15Dluwaar9NH9PfnwqzMPsZhOaAyTL7Py
-   Q==;
-X-CSE-ConnectionGUID: DEc/1jLRSJaHQtEafP2MRw==
-X-CSE-MsgGUID: 6qHxhq+JQzeIjt+NWdsQ9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="70584635"
-X-IronPort-AV: E=Sophos;i="6.21,255,1763452800"; 
-   d="scan'208";a="70584635"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 06:57:04 -0800
-X-CSE-ConnectionGUID: OFG/43+gQ2egnuE/zCv8FQ==
-X-CSE-MsgGUID: QkO/UBiUQBqxRLozNFKlWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,255,1763452800"; 
-   d="scan'208";a="212166327"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.150])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jan 2026 06:57:01 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: david.e.box@linux.intel.com, hansg@kernel.org, 
- Kaushlendra Kumar <kaushlendra.kumar@intel.com>
-Cc: platform-driver-x86@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20251224032053.3915900-1-kaushlendra.kumar@intel.com>
-References: <20251224032053.3915900-1-kaushlendra.kumar@intel.com>
-Subject: Re: [PATCH] platform/x86: intel_telemetry: Fix swapped arrays in
- PSS output
-Message-Id: <176943941795.16098.16351611399994603049.b4-ty@linux.intel.com>
-Date: Mon, 26 Jan 2026 16:56:57 +0200
+	s=arc-20240116; t=1769439857; c=relaxed/simple;
+	bh=90wXXQLghKcVYE4mkja/yflNq8gl5ZORNyekyzBhurA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EAQfgDI4Ig76WgzB7bN0jF77UG25DsEyj7ZtuTXHNRDlm2YH3rPXznoOpK/rzeGKNtbdEOrUw4ie1EWmrywtprmsnj4VEi5dg2ZC+PuY7/rWqB07/MC3TCneem0zplod67hS41tspzS77dr2mySNIAzZvFuTisDBHhgKFt8G3dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYolDgiO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E27BC116C6;
+	Mon, 26 Jan 2026 15:04:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769439856;
+	bh=90wXXQLghKcVYE4mkja/yflNq8gl5ZORNyekyzBhurA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NYolDgiOir0gLmB1iXukU+T5Yx8o9+UfkV9lJp9m2+/PAg7D5a6oJEh7p1H8mtRfe
+	 z42HzPqTBvYF2zHGcq4nbZI0ihdqiPnBfJ+nMNr0oaJhlBgO7PbElnEWf8XsjNV74O
+	 jf0oBfve2VEX82AsXj8qrRyMP24XMDa0f1PuL9KKqWsEQdaL73fEbZOtAil4vzccyX
+	 kVq4jAfNw7MaZe4Pl3X94NvIaK5+OQ6cDbbmCVaAZPYZeaMByVWZX5nh+QHoFusaeo
+	 C5fW+NidaJuaYZNqWUJz+aZhPqaHU8m4xcJrW+lXBRot7le5e+GVaNhcgl+WA5ZlU2
+	 N3P8jhtvPnGJw==
+Message-ID: <371b38d5-9322-4629-b378-ec62e0924fd4@kernel.org>
+Date: Mon, 26 Jan 2026 15:04:12 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] media: i2c: ov02c10: Keep power on and use reset
+ for power management
+To: Saikiran B <bjsaikiran@gmail.com>, Hans de Goede <hansg@kernel.org>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ rfoss@kernel.org, todor.too@gmail.com, vladimir.zapolskiy@linaro.org,
+ sakari.ailus@linux.intel.com, mchehab@kernel.org, stable@vger.kernel.org
+References: <20260125171745.484806-1-bjsaikiran@gmail.com>
+ <20260126061528.63785-1-bjsaikiran@gmail.com>
+ <20260126061528.63785-2-bjsaikiran@gmail.com>
+ <ef6cf6c5-3b5d-45f2-af67-0567262a4561@linaro.org>
+ <CAAFDt1spRkj7kySCa8P=jehQHbYVT2j+nxLira1vwYkiCJ7LDw@mail.gmail.com>
+ <b699fcf5-5cb0-41eb-b9de-e5c6e98aefaa@linaro.org>
+ <IlpLwcSSsQ89AZYFUkWtRcUkztg6PClgkVOyWG0StiDOUCE93t7KlF9q18JPi3GutJ1OQWj_2igjYq1OD8FLZg==@protonmail.internalid>
+ <CAAFDt1tjiEXbuChcY73+NYxPW=rB83P4Bks1TPGsHTTqoSzOuw@mail.gmail.com>
+ <ed1421d9-f094-4306-ae6d-e07b3a72f82b@kernel.org>
+ <CAAFDt1ukAdXwADuFVoZrs6Ay2fB_sq6LMW5FCnsjqUL7V62mfg@mail.gmail.com>
+ <eaf30b60-c0fb-4cf5-bc37-274faa187734@linaro.org>
+ <CAAFDt1tgFf5MQcHm3s5DJEDHDtbTfj56_0-=fTz0ekDjSqY3CA@mail.gmail.com>
+ <2084a247-053b-41c0-84ef-c56af640aa74@kernel.org>
+ <I-1OPz69QKXF-LDqvufQARvv_3TIYaLyZIETdiGvSj_JSYhnJNeqiLERDUH2R0kclFyo6MqMRsaiZaS3RKmdZA==@protonmail.internalid>
+ <CAAFDt1ufYyM4_xTy+AZTdXBB0cGNk+nFQHD5+5U7tUMQqZ+o=g@mail.gmail.com>
+From: Bryan O'Donoghue <bod@kernel.org>
+Content-Language: en-US
+In-Reply-To: <CAAFDt1ufYyM4_xTy+AZTdXBB0cGNk+nFQHD5+5U7tUMQqZ+o=g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211631-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linaro.org,vger.kernel.org,kernel.org,gmail.com,linux.intel.com];
+	TAGGED_FROM(0.00)[bounces-211632-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	DBL_PROHIBIT(0.00)[0.0.0.36:email];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bod@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C27B289E1B
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 297DB89E82
 X-Rspamd-Action: no action
 
-On Wed, 24 Dec 2025 08:50:53 +0530, Kaushlendra Kumar wrote:
-
-> The LTR blocking statistics and wakeup event counters are incorrectly
-> cross-referenced during debugfs output rendering. The code populates
-> pss_ltr_blkd[] with LTR blocking data and pss_s0ix_wakeup[] with wakeup
-> data, but the display loops reference the wrong arrays.
+On 26/01/2026 14:08, Saikiran B wrote:
+> The exact issue is:
+> 1. Open Camera -> Close -> Wait 3s -> Open: WORKS.
+> 2. Open Camera -> Close -> Wait 1.5s -> Open: FAILS (I2C Timeout / 
+> Device Busy).
 > 
-> This causes the "LTR Blocking Status" section to print wakeup events
-> and the "Wakes Status" section to print LTR blockers, misleading power
-> management analysis and S0ix residency debugging.
-> 
-> [...]
+> If the VDD rail is floating in the brownout region (~1.0V) during that 
+> 1.5s window, does the sensor's internal Reset Logic Gate even have 
+> enough bias voltage to function?
+
+I think the VDD rail floating is unlikely, this would require the 
+description of the LDO configured by XBL to be incorrect - possible but, 
+then you'd expect to see an update for Windows to fix it.
+
+Have you gotten the latest firmware for the board from Lenovo ? A 
+misconfigured LDO - without active discharge set, should receive a 
+firmware update to address.
+
+Another possibility is CCI is powering the chip in sleep.
+
+Lets have a look at the CCI pins.
+
+         cam_rgb_default: cam-rgb-default-state {
+                 mclk-pins {
+                         pins = "gpio100";
+                         function = "cam_aon";
+                         drive-strength = <16>;
+                         bias-disable;
+                 };
+
+                 reset-n-pins {
+                         pins = "gpio237";
+                         function = "gpio";
+                         drive-strength = <2>;
+                         bias-disable;
+                 };
+         };
+
+add
+	cam_rgb_sleep: cam-rgb-sleep-state {
+                 mclk-pins {
+                         pins = "gpio100";
+                         function = "cam_aon";
+                         drive-strength = <2>;
+                         bias-pull-down; // Force to Ground
+                 };
+
+                 reset-n-pins {
+                         pins = "gpio237";
+                         function = "gpio";
+                         drive-strength = <2>;
+                         bias-pull-down; // Force to Ground
+                 };
+         };
 
 
-Thank you for your contribution, it has been applied to my local
-review-ilpo-fixes branch. Note it will show up in the public
-platform-drivers-x86/review-ilpo-fixes branch only once I've pushed my
-local branch there, which might take a while.
+&cci1_i2c1 {
+         camera@36 {
+                 compatible = "ovti,ov02c10";
+                 reg = <0x36>;
 
-The list of commits applied:
-[1/1] platform/x86: intel_telemetry: Fix swapped arrays in PSS output
-      commit: 25e9e322d2ab5c03602eff4fbf4f7c40019d8de2
+                 reset-gpios = <&tlmm 237 GPIO_ACTIVE_LOW>;
+                 pinctrl-names = "default", "sleep";
+                 pinctrl-0 = <&cam_rgb_default>;
+                 pinctrl-1 = <&cam_rgb_sleep>;
 
---
- i.
+Failing that we should try a more liberal power_on()
 
+power_on():
+
+     Assert Reset (GPIO Low).
+     Wait 10ms.
+     Enable all regulators (RPMh votes).
+     Wait 20ms (Allow PM8010 to ramp and stabilize).
+     Start the Clock (MCLK).
+     Wait 10ms.
+     De-assert Reset (GPIO High).
+     Wait 5ms.
+
+If that doesn't work, we will have to go and look at the LDO 
+configuration via SPMI directly.
+
+During the 2.3 second window can you run
+
+Getting the kernel's view:
+cat /sys/kernel/debug/regulator/regulator_summary
+
+We are looking for use_count > 0 and open_count
+
+We could also look at the SPMI LDO config register
+
+Getting the firmware's view:
+cat /sys/kernel/debug/regmap/spmi0-0x08/registers
+
+It should be possible to interrogate the configruation of all of the 
+relevant LDOs and ascertain if active-discharge is set, which TBH it 
+should be.
+
+> ​My testing suggests the sensor is physically incapable of processing 
+> the Reset signal until the rail fully discharges (~2.3s), which is why 
+> the 5ms delay has no effect.
+
+Yes accepted but, a 2.3 second delay is avoidable if we root-cause.
+P.S.
+Please bottom post !
+
+---
+bod
 
