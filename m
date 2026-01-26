@@ -1,136 +1,145 @@
-Return-Path: <stable+bounces-211643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qItqAlCOd2m9hgEAu9opvQ
-	(envelope-from <stable+bounces-211643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:54:56 +0100
+	id kDnnNWaPd2m9hgEAu9opvQ
+	(envelope-from <stable+bounces-211644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:59:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550F48A5AB
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:54:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BB98A6E3
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 16:59:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3671A3004072
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:54:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0CEF3013789
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 15:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EDF2340DA5;
-	Mon, 26 Jan 2026 15:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A6E34027E;
+	Mon, 26 Jan 2026 15:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRxBqdFp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bA4j9Fry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A4733FE01
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 15:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA16C26E6F4
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 15:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769442886; cv=none; b=ToFm9KVgaWare56XTtOLhHwVsefpGh4fGSMcU0XoRw1UrEFXgyZXKYFxPxA3/U5L5hzlYXjaxXKYzmVWHMbZicmw2T+Gd8NOlYR8V4hc2pS7r4Jezbxsy/gmOUhYcfmAldbSHW3UCxWtY4EnR2U0gVut6gyGkcriMxt1V0f5J/4=
+	t=1769443172; cv=none; b=Vg1j1fs8JLmiWwHSoSiWwhc3ndd1Pe+opKljXTC6VD3y8TAQUz/NNkV5x7tScp0sCbxNEZJAII014bg38KVakK2L9FWYlSKq7wc1J5a7AwuC0iEK5+BQKwsM7nwlIJDorP5jIlHMI9lt9VncwmlnY0j3UyKEGu3NkpKhSwiVjls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769442886; c=relaxed/simple;
-	bh=FHmDyE0UYE1xiwDpiZqyMHgZcrm4MmLL5FOpRSRN2rQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uTF39a3hMgUCd16L67U/uYUNxnW2kZjctDAUi+ZTFS0JjOIh5r8bY94ZbJFlk9/Fbc9X4Z/ujsQ23kU9+ujRZGVOTo07Ue+j1g5SuZtqiTU9ykBL+sxf47xD66SYZMx6daNaNPWvE9itDRNzipPAyy+Xdnr/InvKlQ7VR6LpvPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRxBqdFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB35C2BC9E
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 15:54:46 +0000 (UTC)
+	s=arc-20240116; t=1769443172; c=relaxed/simple;
+	bh=koOSQYAdIwY+/FkaRCvDAYsDte1R+WRLE3csHer9qv0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oRPXH3facD9/NTEASK9hS7S1VSgHbL2Sw5FC5gEv34EOlpCr2Jaqc4gjDGBMO5E9mSbiBSa1xwmzakefwjAPs90bJb176cEMnLb80RZbKwQN8H9uRZYiz9U4tfzcSibZsafuSIA/pnb5gsaUg0FrA0ZvVNfm3g1xG74nXkFo6EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bA4j9Fry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F55C116C6;
+	Mon, 26 Jan 2026 15:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769442886;
-	bh=FHmDyE0UYE1xiwDpiZqyMHgZcrm4MmLL5FOpRSRN2rQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eRxBqdFpcbGEUKRYAfF7IbW7aZWqq7rHMQuKNXT/KihBElk1pMLgAmmuFPgD+uE/n
-	 aN6udDjwBD90s+NbECn52oUgJnh3Y8MUl2CVm/uHB7icL1nf3KW4VYpkP7SiptGeOM
-	 /r5iy/mC8+CCtPiH2xkU2uUfNTzGoe5G0M4Fbj0UKdF6A0rRhh5USxgyCWrlCKEpv+
-	 pyYg2RZWWyjnMth/lw/62fvvBHr1ByY1blij8ygUkFT7uUwfXHBGMY7FJ6yl1F0JGh
-	 uBShKvA0Y6yK+YxK936Qi7DpuCcRMTWnezaWRoABmNTEz9mPULZhtxGLCTdc1/tDGB
-	 UM7Ws2hKJT4cw==
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-59ddb31ddcaso4909758e87.2
-        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 07:54:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUDdZLkCcMFjLnwLPR6ezN2v0vM6KkqzHyfNqmsSxatVqOcaSZ3/MIZb7sUlPGuBf1VK8doxQU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+oDWMPoabWhP0VhiWqKH4OMD61PEnUXnMWhNU3OKgBd61rg8k
-	Pt6RAxXdtG+lr1Pv+yI81P22r0MJ5Sf+VsjuZPegsw17oVK1TZrZ8fPOoxin/IIvGFKZvliKB58
-	m9ZIQkp0uWra0XGTcx5iyhcjO9DDYXqpRuIwXlyj/aA==
-X-Received: by 2002:a05:6512:398f:b0:59b:b55a:a293 with SMTP id
- 2adb3069b0e04-59df3a18ab8mr2231075e87.34.1769442885116; Mon, 26 Jan 2026
- 07:54:45 -0800 (PST)
+	s=k20201202; t=1769443171;
+	bh=koOSQYAdIwY+/FkaRCvDAYsDte1R+WRLE3csHer9qv0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bA4j9Fry/iTWkYaPYs+id2knJybxq0d6OflnkO2xcaZ6dGTGFOatHxtz46amRncn3
+	 ykJeLSUJkVUWLuT/oly7cU8vvzZ/OKcs4MOyIlJ/RwdqVN3Zl/OFQoLTDPKudIdbfZ
+	 BT5vTOAgxF7nrAKwjc/LDETBjPi1qoP/7u0lcinfhoD23zOHFGs+ZFbblnavMXzq4A
+	 8jSF5uWjn91DpHf1+G6ivVHxWFn7sDf4NgjQSscJ6sAokGGMMFAxtrLtJgksfuXHx+
+	 GHUgv+CgnHI2RqdZgsBM6A659PMGeoV2Q/2MLalE+9K8nZApdOu4yETi+HEqt7UBui
+	 2s/U6KHQmhy0A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Yang Guang <yang.guang5@zte.com.cn>,
+	Zeal Robot <zealci@zte.com.cn>,
+	David Yang <davidcomponentone@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] w1: w1_therm: use swap() to make code cleaner
+Date: Mon, 26 Jan 2026 10:59:28 -0500
+Message-ID: <20260126155929.3332297-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012603-washday-underfoot-7004@gregkh>
+References: <2026012603-washday-underfoot-7004@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126135627.34191-1-bartosz.golaszewski@oss.qualcomm.com> <5d9b79e9-64e0-4d62-857f-dd888e09d4bd@oss.qualcomm.com>
-In-Reply-To: <5d9b79e9-64e0-4d62-857f-dd888e09d4bd@oss.qualcomm.com>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Mon, 26 Jan 2026 16:54:33 +0100
-X-Gmail-Original-Message-ID: <CAMRc=Mfdw=AVr1PzyJnG__qKCJ_GHMDTQuGDYkq=o4H7G+HMbw@mail.gmail.com>
-X-Gm-Features: AZwV_Qi0omihUgX82PHastLczfWEHDDz-Ncj06TYBB7YnSD0-C80lYz5FekEzWg
-Message-ID: <CAMRc=Mfdw=AVr1PzyJnG__qKCJ_GHMDTQuGDYkq=o4H7G+HMbw@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: lpass-lpi: implement .get_direction() for the
- GPIO driver
-To: Linus Walleij <linusw@kernel.org>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Abel Vesa <abelvesa@kernel.org>, stable@vger.kernel.org, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[zte.com.cn,gmail.com,linuxfoundation.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-211644-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211643-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[brgl@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 550F48A5AB
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zte.com.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 11BB98A6E3
 X-Rspamd-Action: no action
 
-On Mon, Jan 26, 2026 at 3:41=E2=80=AFPM Konrad Dybcio
-<konrad.dybcio@oss.qualcomm.com> wrote:
->
-> On 1/26/26 2:56 PM, Bartosz Golaszewski wrote:
-> > GPIO controller driver should typically implement the .get_direction()
-> > callback as GPIOLIB internals may try to use it to determine the state
-> > of a pin. Add it for the LPASS LPI driver.
-> >
-> > Reported-by: Abel Vesa <abelvesa@kernel.org>
-> > Cc: stable@vger.kernel.org
-> > Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl drive=
-r")
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
-m>
-> > ---
->
-> Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-> Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # X1E CRD
->
+From: Yang Guang <yang.guang5@zte.com.cn>
 
-Linus,
+[ Upstream commit e233897b1f7a859092bd20b10bfd412013381a10 ]
 
-Just a heads-up: this is v6.19-rc8 material, as it got uncovered with
-GPIO changes in rc6.
+Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
+opencoding it.
 
-Thanks,
-Bartosz
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: David Yang <davidcomponentone@gmail.com>
+Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+Link: https://lore.kernel.org/r/cb14f9e6e86cf8494ed2ddce6eec8ebd988908d9.1640077704.git.yang.guang5@zte.com.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 761fcf46a1bd ("w1: therm: Fix off-by-one buffer overflow in alarms_store")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/w1/slaves/w1_therm.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
+index 3888643a22f60..ad8276cc82f5b 100644
+--- a/drivers/w1/slaves/w1_therm.c
++++ b/drivers/w1/slaves/w1_therm.c
+@@ -1783,7 +1783,7 @@ static ssize_t alarms_store(struct device *device,
+ 	u8 new_config_register[3];	/* array of data to be written */
+ 	int temp, ret;
+ 	char *token = NULL;
+-	s8 tl, th, tt;	/* 1 byte per value + temp ring order */
++	s8 tl, th;	/* 1 byte per value + temp ring order */
+ 	char *p_args, *orig;
+ 
+ 	p_args = orig = kmalloc(size, GFP_KERNEL);
+@@ -1834,9 +1834,8 @@ static ssize_t alarms_store(struct device *device,
+ 	th = int_to_short(temp);
+ 
+ 	/* Reorder if required th and tl */
+-	if (tl > th) {
+-		tt = tl; tl = th; th = tt;
+-	}
++	if (tl > th)
++		swap(tl, th);
+ 
+ 	/*
+ 	 * Read the scratchpad to change only the required bits
+-- 
+2.51.0
+
 
