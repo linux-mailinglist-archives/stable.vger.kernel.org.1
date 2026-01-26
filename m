@@ -1,209 +1,168 @@
-Return-Path: <stable+bounces-211676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211679-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBgHMxy+d2l8kgEAu9opvQ
-	(envelope-from <stable+bounces-211676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:18:52 +0100
+	id iOSGESHMd2mxlQEAu9opvQ
+	(envelope-from <stable+bounces-211679-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 21:18:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2B48C7AE
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:18:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8D6B8CF71
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 21:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BC79F3006828
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 19:18:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4CFD30177AC
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F0427B34F;
-	Mon, 26 Jan 2026 19:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D332D5410;
+	Mon, 26 Jan 2026 20:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ez+DEnbm"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="gG1qDI4x"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2688248B;
-	Mon, 26 Jan 2026 19:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3706B2D5408
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 20:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769455128; cv=none; b=EOuGYIzBa5GmfQ984+tRBxHv6x5bLWUbCqPU5xZyT3nMeuLQPgw7pNn98Rlppz9641f3rz0eQovmFbpV4FVNaMwr3y7GSfXhIq/sVhexfHg/No2bUWQll6/wwm18K9y3YDX2jzqh8TRYUbXxK/B3EyD7KChClKhw8QesFA8DT2Q=
+	t=1769458710; cv=none; b=CNwgCdfeEeCKDOGNJdBNbWSEhsuvb36bIc/z54xQIbH2ECcrEpnqHMZTmGuWsefbw7HJZ9a8Tzgem3gzGJ6gWnYmgEJ+bnETdX4RJTKDq+kjed/qPC41eBhheoIgyo0zfFsOoUEvYwJCVHH2hnuzrnKJXo8X5WytpE77NsThdA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769455128; c=relaxed/simple;
-	bh=Q7peF+PxOketRj3Hl/kQj/BSo4SpIydQAYUDzJuBoAM=;
-	h=Date:To:From:Subject:Message-Id; b=CPco7aXWWI//5ctUAvuxQvQBzlZ/LbwRLCMhN0jYUoDEvfS5Y22bcI3q2LCGS64iIoYUmeIla2ZqzrJJCAT3C4ET/R9YOeUORX5yrner8uy1biqYgb6OZ3GGrYc5HRXAe0UCtpVgqT5RCCzaz790wMJ5Ndd/VssDeGXSx7tER3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ez+DEnbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEFDC116C6;
-	Mon, 26 Jan 2026 19:18:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769455127;
-	bh=Q7peF+PxOketRj3Hl/kQj/BSo4SpIydQAYUDzJuBoAM=;
-	h=Date:To:From:Subject:From;
-	b=Ez+DEnbmbKXMaSnRyQoEKyJkmSfFBvueUECIaWitVpRGgpbFtpNgV2U13g8AYHJIp
-	 4IQ6w5uhb61kYa20EgJADeoG3kKrHbpE1qL6ah4goUp5GknyPhLNwK+bu6i19FYtSh
-	 +UvU4B0UuF9Liv/4jnaaMTpKHlZ3Iz4yMDmj6Dy4=
-Date: Mon, 26 Jan 2026 11:18:46 -0800
-To: mm-commits@vger.kernel.org,vgoyal@redhat.com,stable@vger.kernel.org,dyoung@redhat.com,coxu@redhat.com,bhe@redhat.com,gor@linux.ibm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + crash_dump-fix-dm_crypt-keys-locking-and-ref-leak.patch added to mm-nonmm-unstable branch
-Message-Id: <20260126191847.6CEFDC116C6@smtp.kernel.org>
+	s=arc-20240116; t=1769458710; c=relaxed/simple;
+	bh=883OQnrK3u4KkT2O3LdCEJZBt9hl5rjn6RdXH57LzF0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=WisbYi9C6kfi2m6Wt4ZdmjZmgQwHFXbQfD3R7UUcMh9yCmNxVp7TwE7ysV/ecqJ72JM5qDKedcPy6GsIfoB4wXxtgJJB0vircZF43KoMhN1cU+h8SrvLWfaolslUA0LJQAFKfwqrp89jGa9qevu7QPoKlgpq4AdzEfZkrzK0lUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=gG1qDI4x; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-Id:Date:Subject:From:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=D+m9Z9q6zpIF23wgUxajFToTj4vnZ9SP8J3X5KTTlcA=; b=gG1qDI4xQfc075KLktZ9uX0lsw
+	ZDMLstx9uPo7EW9FDJm3ZwZvhd8pRh/hQsccWsWleDIANc5kSOZ6KbCrHjQhI3qNKtgwBK+1mQdGK
+	a2QjNoRmOcnE7vPulHpzXzjADnX448QDkH4m+TwvsRLzRgofW3xtnnaTY3BQiyz3ha7E81ds7ZcOl
+	9HIEtEV6silPbsQQV2MAFlNd6/QmghSop//TrNpU3v4Gye2f7eJXjnAvNl0sX/SjUfHZdc3k5psNk
+	OpS5go8bfBGdAEXIcTG3QRvdqE8UYnj/HrnmTCjIWwujP+to+ctf5qewS3yeCICfmn6Dzqg+oWYCM
+	+6gPxtIg==;
+Received: from 189-14-88-37.vmaxnet.com.br ([189.14.88.37] helo=[127.0.1.1])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1vkT2G-00ABzB-BB; Mon, 26 Jan 2026 21:18:08 +0100
+From: Heitor Alves de Siqueira <halves@igalia.com>
+Subject: [PATCH 6.12 0/8] vsock: Backport nonlinear SKB allocation from
+ mainline
+Date: Mon, 26 Jan 2026 17:16:51 -0300
+Message-Id: <20260126-backport-vsock-nonlinear-skb-6-12-v1-0-ad5c34853a60@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3NwQrCMAyA4VcZORtZqlT0VcRD22UaKulIZAhj7
+ 27x+F3+fwNnE3a4DRsYr+LStIMOA5RX0iejTN0QxhBHojPmVOrS7IOrt1JRm75FORl6zRiRAl5
+ PmWK+TDOnAr2zGM/y/T/uEI8U4LHvP4rgwL55AAAA
+X-Change-ID: 20260114-backport-vsock-nonlinear-skb-6-12-93b16b7dfeac
+To: stable@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Will Deacon <will@kernel.org>
+Cc: kernel-dev@igalia.com, Heitor Alves de Siqueira <halves@igalia.com>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ syzbot+b4d960daf7a3c7c2b7b1@syzkaller.appspotmail.com
+X-Mailer: b4 0.14.3
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [1.14 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-211676-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211679-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linux-foundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: 0B2B48C7AE
+	FROM_NEQ_ENVFROM(0.00)[halves@igalia.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,b4d960daf7a3c7c2b7b1];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D8D6B8CF71
 X-Rspamd-Action: no action
 
+Hi stable maintainers,
 
-The patch titled
-     Subject: crash_dump: fix dm_crypt keys locking and ref leak
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     crash_dump-fix-dm_crypt-keys-locking-and-ref-leak.patch
+This series backports vsock nonlinear SKB allocation support to 6.12.
+We've uncovered significant memory allocation failures on ChromiumOS
+kernels for workloads that rely on ARCVM or crostini containers; e.g.
+when running Android apps, games or other intensive graphical
+applications.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/crash_dump-fix-dm_crypt-keys-locking-and-ref-leak.patch
+The memory allocation issues can be reproduced by stressing host/guest
+communication via vsock, and seems to have a bigger impact on low-memory
+devices (we've seen it mostly on devices with 4GB of total RAM), or when
+the system is under heavy memory pressure. A straightforward reproducer
+for ChromiumOS uses iperf3-vsock [0] running between the host and a
+Linux container setup via ChromiumOS' "Linux Developer environment",
+where the client will quickly fail with the following message:
+iperf3: error - unable to write to stream socket: Cannot allocate memory
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Patches 0001 through 0004 are required for the main nonlinear SKB
+allocation patches. Patches 0005 and 0006 introduce nonlinear SKB
+allocation support for the receive and transmit paths, respectively.
+Patches 0007 and 0008 fix a syzbot reported WARNING that was introduced
+by these patches in the transmit path. Patches 0001-0007 apply cleanly,
+and 0008 needed minor changes to one of the function signatures. All
+patches are already present in mainline and future stable kernels (v6.18
+at this time).
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+[0] https://github.com/stefano-garzarella/iperf-vsock
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Vasily Gorbik <gor@linux.ibm.com>
-Subject: crash_dump: fix dm_crypt keys locking and ref leak
-Date: Mon, 26 Jan 2026 12:20:46 +0100
-
-crash_load_dm_crypt_keys() reads dm-crypt volume keys from the user
-keyring.  It uses user_key_payload_locked() without holding key->sem,
-which makes lockdep complain when kexec_file_load() assembles the crash
-image:
-
-  =============================
-  WARNING: suspicious RCU usage
-  -----------------------------
-  ./include/keys/user-type.h:53 suspicious rcu_dereference_protected() usage!
-
-  other info that might help us debug this:
-
-  rcu_scheduler_active = 2, debug_locks = 1
-  no locks held by kexec/4875.
-
-  stack backtrace:
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x5d/0x80
-   lockdep_rcu_suspicious.cold+0x4e/0x96
-   crash_load_dm_crypt_keys+0x314/0x390
-   bzImage64_load+0x116/0x9a0
-   ? __lock_acquire+0x464/0x1ba0
-   __do_sys_kexec_file_load+0x26a/0x4f0
-   do_syscall_64+0xbd/0x430
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-In addition, the key returned by request_key() is never key_put()'d,
-leaking a key reference on each load attempt.
-
-Take key->sem while copying the payload and drop the key reference
-afterwards.
-
-Link: https://lkml.kernel.org/r/patch.git-2d4d76083a5c.your-ad-here.call-01769426386-ext-2560@work.hours
-Fixes: 479e58549b0f ("crash_dump: store dm crypt keys in kdump reserved memory")
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Coiby Xu <coxu@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
 ---
+Will Deacon (8):
+      vsock/virtio: Move length check to callers of virtio_vsock_skb_rx_put()
+      vsock/virtio: Rename virtio_vsock_alloc_skb()
+      vsock/virtio: Move SKB allocation lower-bound check to callers
+      vsock/virtio: Rename virtio_vsock_skb_rx_put()
+      vhost/vsock: Allocate nonlinear SKBs for handling large receive buffers
+      vsock/virtio: Allocate nonlinear SKBs for handling large transmit buffers
+      net: Introduce skb_copy_datagram_from_iter_full()
+      vsock/virtio: Fix message iterator handling on transmit path
 
- kernel/crash_dump_dm_crypt.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/vhost/vsock.c                   | 11 +++++-----
+ include/linux/skbuff.h                  |  2 ++
+ include/linux/virtio_vsock.h            | 39 ++++++++++++++++++++++++---------
+ net/core/datagram.c                     | 14 ++++++++++++
+ net/vmw_vsock/virtio_transport.c        |  6 +++--
+ net/vmw_vsock/virtio_transport_common.c |  9 +++++---
+ 6 files changed, 60 insertions(+), 21 deletions(-)
+---
+base-commit: abf529abd660d8ccad46dd8c8f20e93db6134f5f
+change-id: 20260114-backport-vsock-nonlinear-skb-6-12-93b16b7dfeac
 
---- a/kernel/crash_dump_dm_crypt.c~crash_dump-fix-dm_crypt-keys-locking-and-ref-leak
-+++ a/kernel/crash_dump_dm_crypt.c
-@@ -143,6 +143,7 @@ static int read_key_from_user_keying(str
- {
- 	const struct user_key_payload *ukp;
- 	struct key *key;
-+	int ret = 0;
- 
- 	kexec_dprintk("Requesting logon key %s", dm_key->key_desc);
- 	key = request_key(&key_type_logon, dm_key->key_desc, NULL);
-@@ -152,20 +153,28 @@ static int read_key_from_user_keying(str
- 		return PTR_ERR(key);
- 	}
- 
-+	down_read(&key->sem);
- 	ukp = user_key_payload_locked(key);
--	if (!ukp)
--		return -EKEYREVOKED;
-+	if (!ukp) {
-+		ret = -EKEYREVOKED;
-+		goto out;
-+	}
- 
- 	if (ukp->datalen > KEY_SIZE_MAX) {
- 		pr_err("Key size %u exceeds maximum (%u)\n", ukp->datalen, KEY_SIZE_MAX);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto out;
- 	}
- 
- 	memcpy(dm_key->data, ukp->data, ukp->datalen);
- 	dm_key->key_size = ukp->datalen;
- 	kexec_dprintk("Get dm crypt key (size=%u) %s: %8ph\n", dm_key->key_size,
- 		      dm_key->key_desc, dm_key->data);
--	return 0;
-+
-+out:
-+	up_read(&key->sem);
-+	key_put(key);
-+	return ret;
- }
- 
- struct config_key {
-_
-
-Patches currently in -mm which might be from gor@linux.ibm.com are
-
-crash_dump-fix-dm_crypt-keys-locking-and-ref-leak.patch
+Best regards,
+-- 
+Heitor Alves de Siqueira <halves@igalia.com>
 
 
