@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-211678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cGoAFh/Md2mxlQEAu9opvQ
-	(envelope-from <stable+bounces-211678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 21:18:39 +0100
+	id oOHWFTnMd2mxlQEAu9opvQ
+	(envelope-from <stable+bounces-211681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 21:19:05 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4AB28CF69
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 21:18:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D929E8CF96
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 21:19:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 818733016C95
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:18:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CFB9A3027B74
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 20:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B822D5925;
-	Mon, 26 Jan 2026 20:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCE82D5410;
+	Mon, 26 Jan 2026 20:18:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ehATmMLf"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="ZykBSOu7"
 X-Original-To: stable@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4972D4B77
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 20:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078AE2D5926
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 20:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769458710; cv=none; b=nfVK87XKJpZVMwuP+jxkD5MiyuDqtpVwbMngplH3yu5WHu4GqzyOYz6zVKK92dkkxRh/4ysAq9fsKvnEa6ugj8s1ui86erKs8BgKfa0BDjG/iLdKco82UHI4G8AU9dj7m/Xh8H2wCj5i2QBXFHKxVRRjEghlPFYhb5icQnoAXWo=
+	t=1769458719; cv=none; b=YDfiwjEoLVWq3MYnSXUejW1i8jZ8LcLgJS/hATXWaBD6Z7dPORk3pgz51pan5mrJj9/QEZp6rQyEHmRi4QyuhvdDOlOGOL085zBSGAWqWZGYalutCOKmjExQ+rPGZsn4+L5GO6gjKXYb0cXwwcsnUH01RqK0riWUFrQBITCcR5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769458710; c=relaxed/simple;
-	bh=3R59xqtc95E21qaRjlqcOywr1Wg5ySqPCz6pANeMvDs=;
+	s=arc-20240116; t=1769458719; c=relaxed/simple;
+	bh=fDRtHUgA1WogFs0L2DQ5EPvK18hMUjyrIfqGXtN+/fg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pVRnQBbcCwNxacuamsyIkKkCKDY62npz+0HF6FLjRvEmXhBcMwoNI2TPy8oJTCMCRw8nWZInlZoxKMouPM/aolR7KkVh0gU4XfsRk4oWDI/EOskZLfrM/P6M3ZLLu8d1C/4enFYTAlpOe/OhN4c8S38xFwkNNm3wpAvB0Eh8QIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ehATmMLf; arc=none smtp.client-ip=213.97.179.56
+	 In-Reply-To:To:Cc; b=PmqMN7HmOnNLz9YUCPpLjzvXdyoV/4nXUSPhY/bWdk/sclOP3g3PEoBxh1jjEJncaFImc8p/lexj/oTXLsbP2fG3rZmn10+0AywchgvHlOlve9GJ43U98x2HRqoEuBnRd4zn927L7Gc0ECn9TCs5q1CfcFzgnqTNLtvOVssxCO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=ZykBSOu7; arc=none smtp.client-ip=213.97.179.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -40,20 +40,19 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
 	:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7NcUpUV3FHeRT3DdAKa2U4/w+ob8lA1zHL93AjPFdEg=; b=ehATmMLfEgAOli3Uy9dk4Y4L89
-	13DS+dm2Js5LGha68FHJL+1EYV+4YnfbmwmSrc7DGfdNttiiziHxfunPNk9HeqihfDre+QKUtIabq
-	xLoFUfjAwbZime8ebVFZQq6kgjSq+G53RzqHnSwrtZaYVkC02/mZDdKisvNA/q4L93jOUmkoyXa3x
-	P5f/lsfwvwyfmkFAvCm6bAabddxBwLKfJNaCpYv79eh8BlAUBJkr/N+Hmx1JdWjHXsVkXpaJJMXpd
-	anLNUn/xfqm+MZGddosnbWJhQeT+B7E4OYSaJ2Fml5vQNuiha5LWEa5UYyn//xAgJYyTX+ML0YHca
-	nYGJpwKA==;
+	bh=ddXbmcOLsGFI7416xxlpgvGQdhDpt9oRVmp6dAYkNEE=; b=ZykBSOu7WKcVnwP6wGGfLnrX39
+	bcxdo7O6Pf89BaG3+VuwKYxfdg/9/oRQgz5SD9zLcmlCPyYpKAxVFvB7zYCMOXtJ2A3zmmdvY4wSk
+	fEveRHQ5HAoUW8AJ3ajM2AF72T4G+DE/w356tfSS32AKgWkF/pMRXgoUwXP4OeOyEP5XSeJnhZhaJ
+	OfhGpPJLza1SlFOeHRb281zR6HXy+FqM9G7jhj2gVsvSCgG+V21DXuoBPc8pNZ5gCQskTieyOlKdw
+	G8vQSnhhjRsZXvmJ/x8Ji0+jukuAufVW6AeFn/VZ98cx09k7w/4TVJTBH0Cg5U6+kI257TnCRvApz
+	zS1qDgdw==;
 Received: from 189-14-88-37.vmaxnet.com.br ([189.14.88.37] helo=[127.0.1.1])
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1vkT2R-00ABzB-6A; Mon, 26 Jan 2026 21:18:19 +0100
+	id 1vkT2U-00ABzB-Pl; Mon, 26 Jan 2026 21:18:23 +0100
 From: Heitor Alves de Siqueira <halves@igalia.com>
-Date: Mon, 26 Jan 2026 17:16:54 -0300
-Subject: [PATCH 6.12 3/8] vsock/virtio: Move SKB allocation lower-bound
- check to callers
+Date: Mon, 26 Jan 2026 17:16:55 -0300
+Subject: [PATCH 6.12 4/8] vsock/virtio: Rename virtio_vsock_skb_rx_put()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +61,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260126-backport-vsock-nonlinear-skb-6-12-v1-3-ad5c34853a60@igalia.com>
+Message-Id: <20260126-backport-vsock-nonlinear-skb-6-12-v1-4-ad5c34853a60@igalia.com>
 References: <20260126-backport-vsock-nonlinear-skb-6-12-v1-0-ad5c34853a60@igalia.com>
 In-Reply-To: <20260126-backport-vsock-nonlinear-skb-6-12-v1-0-ad5c34853a60@igalia.com>
 To: stable@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>, 
@@ -85,7 +84,7 @@ X-Spamd-Result: default: False [-0.36 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211678-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211681-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -101,61 +100,70 @@ X-Spamd-Result: default: False [-0.36 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E4AB28CF69
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,igalia.com:mid,igalia.com:email]
+X-Rspamd-Queue-Id: D929E8CF96
 X-Rspamd-Action: no action
 
 From: Will Deacon <will@kernel.org>
 
-[Upstream commit fac6b82e0f3eaca33c8c67ec401681b21143ae17]
+[Upstream commit 8ca76151d2c8219edea82f1925a2a25907ff6a9d]
 
-virtio_vsock_alloc_linear_skb() checks that the requested size is at
-least big enough for the packet header (VIRTIO_VSOCK_SKB_HEADROOM).
+In preparation for using virtio_vsock_skb_rx_put() when populating SKBs
+on the vsock TX path, rename virtio_vsock_skb_rx_put() to
+virtio_vsock_skb_put().
 
-Of the three callers of virtio_vsock_alloc_linear_skb(), only
-vhost_vsock_alloc_skb() can potentially pass a packet smaller than the
-header size and, as it already has a check against the maximum packet
-size, extend its bounds checking to consider the minimum packet size
-and remove the check from virtio_vsock_alloc_linear_skb().
+No functional change.
 
 Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 Signed-off-by: Will Deacon <will@kernel.org>
-Message-Id: <20250717090116.11987-7-will@kernel.org>
+Message-Id: <20250717090116.11987-9-will@kernel.org>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
 ---
- drivers/vhost/vsock.c        | 3 ++-
- include/linux/virtio_vsock.h | 3 ---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/vhost/vsock.c            | 2 +-
+ include/linux/virtio_vsock.h     | 2 +-
+ net/vmw_vsock/virtio_transport.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 4127c8d2b3bd..d351915e1a02 100644
+index d351915e1a02..6373b6d6d65d 100644
 --- a/drivers/vhost/vsock.c
 +++ b/drivers/vhost/vsock.c
-@@ -345,7 +345,8 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
- 
- 	len = iov_length(vq->iov, out);
- 
--	if (len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
-+	if (len < VIRTIO_VSOCK_SKB_HEADROOM ||
-+	    len > VIRTIO_VSOCK_MAX_PKT_BUF_SIZE + VIRTIO_VSOCK_SKB_HEADROOM)
+@@ -377,7 +377,7 @@ vhost_vsock_alloc_skb(struct vhost_virtqueue *vq,
  		return NULL;
+ 	}
  
- 	/* len contains both payload and hdr */
+-	virtio_vsock_skb_rx_put(skb, payload_len);
++	virtio_vsock_skb_put(skb, payload_len);
+ 
+ 	nbytes = copy_from_iter(skb->data, payload_len, &iov_iter);
+ 	if (nbytes != payload_len) {
 diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
-index 4504ea29ff82..36dd0cd55368 100644
+index 36dd0cd55368..39c818b4a057 100644
 --- a/include/linux/virtio_vsock.h
 +++ b/include/linux/virtio_vsock.h
-@@ -57,9 +57,6 @@ virtio_vsock_alloc_linear_skb(unsigned int size, gfp_t mask)
- {
- 	struct sk_buff *skb;
+@@ -47,7 +47,7 @@ static inline void virtio_vsock_skb_clear_tap_delivered(struct sk_buff *skb)
+ 	VIRTIO_VSOCK_SKB_CB(skb)->tap_delivered = false;
+ }
  
--	if (size < VIRTIO_VSOCK_SKB_HEADROOM)
--		return NULL;
--
- 	skb = alloc_skb(size, mask);
- 	if (!skb)
- 		return NULL;
+-static inline void virtio_vsock_skb_rx_put(struct sk_buff *skb, u32 len)
++static inline void virtio_vsock_skb_put(struct sk_buff *skb, u32 len)
+ {
+ 	skb_put(skb, len);
+ }
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index 80dcf6ac1e72..b6569b0ca2bb 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -657,7 +657,7 @@ static void virtio_transport_rx_work(struct work_struct *work)
+ 			}
+ 
+ 			if (payload_len)
+-				virtio_vsock_skb_rx_put(skb, payload_len);
++				virtio_vsock_skb_put(skb, payload_len);
+ 
+ 			virtio_transport_deliver_tap_pkt(skb);
+ 			virtio_transport_recv_pkt(&virtio_transport, skb);
 
 -- 
 2.52.0
