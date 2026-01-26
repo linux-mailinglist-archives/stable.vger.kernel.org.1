@@ -1,105 +1,108 @@
-Return-Path: <stable+bounces-211604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIT5MfVpd2nCfQEAu9opvQ
-	(envelope-from <stable+bounces-211604-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:19:49 +0100
+	id cBRcEIlqd2nCfQEAu9opvQ
+	(envelope-from <stable+bounces-211605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:22:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61FB788BF8
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:19:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F5188C3F
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:22:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A53353011BE3
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:19:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5F6F3301ABA4
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3A93314CD;
-	Mon, 26 Jan 2026 13:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253A93385BE;
+	Mon, 26 Jan 2026 13:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pxt/3TMC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf8YscnS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C8830E858
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 13:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA57D3382C0
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 13:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769433584; cv=none; b=rsTLuRbOVU1s/iTxGjYNnP7l1FuJqWuiGDrfWagIN07G74SybDkcMqT2DCEdlW2+TCWgeW7pcYXcIV6svhHWE5KBLTk8AtResn5k2QJCeKiPFR2mgFJEfbE0YV261eOSMEWezSFDCQwg9Oux7r+bhMMaAyb+Yv9+rJneBVyorVY=
+	t=1769433725; cv=none; b=S5mg53ptm+7gz2hSS2HIHPdjZUiy9x0MPIJwah7zvBYSkBiNb5npi/Llrsap1/R2AdC8+lIwCGI7ypMXT4Enps5nE9kFBOe05a1QQaIgnVkSXs/0QG2S2UuNmxldpfQQ0UY3FQw3Xl3ZGO1NE86FY5xqXHaYtrTq4vnSUAYR3Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769433584; c=relaxed/simple;
-	bh=m6v+aawph3ayoXgOQCY3LX1Lqt5Y5s8ToF3Z/bAGB2o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=I2VwgxQM/25UdHHkb+u2EhrrIC5o6uOGRrpzGGcqcxKCcYZkDBoM6Ja+xe4sbCJJVJG03f6ItdU7WZcv/yNN16nz4j3VGxSvX1p9GR4Le9TorqkL/SB/GLYCgwiQNsADbqEy1eaU1VbLcEtKXrQhR7NFjDHoSxPYb/uyq0o6tCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pxt/3TMC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17469C16AAE;
-	Mon, 26 Jan 2026 13:19:42 +0000 (UTC)
+	s=arc-20240116; t=1769433725; c=relaxed/simple;
+	bh=umu3iq1mZhVGqX3mMD6gdqv9mwFOCXjHtaji4dGbaso=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HvKtWsawMKVeeE1Kyfjaqubv+jeBmMBmN5BIM2ldZXonx6zb3t2rVSidNi8vqVX6dYQUXJu7YNxmj9PUVaCv9paIRTFfiLahOh3wZNDAsyd10fDZ9182kfEgQ0O2Cf/umM3gbWk/zFgzi+VmVihD+FwIqabnQIP5/usPOyI4+sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf8YscnS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B41BC116C6;
+	Mon, 26 Jan 2026 13:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769433583;
-	bh=m6v+aawph3ayoXgOQCY3LX1Lqt5Y5s8ToF3Z/bAGB2o=;
+	s=korg; t=1769433725;
+	bh=umu3iq1mZhVGqX3mMD6gdqv9mwFOCXjHtaji4dGbaso=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Pxt/3TMCfG57Owqq0+A9BFoUIcSG6XyrT02TfgkDiVGoeD4w3eOsWbmhYZ+Nsb/Pk
-	 VwHxgZB612UlMvgzyBm/3pWDnFiWuPZ3IAjSkc9xg3UpRvSyOSJNomCKhruzqv8w+K
-	 w25oZPJSLU/pMsUssL8bDfcysCehKSH1u4c6oSsg=
-Subject: FAILED: patch "[PATCH] mm/hugetlb: fix two comments related to huge_pmd_unshare()" failed to apply to 5.10-stable tree
-To: david@kernel.org,akpm@linux-foundation.org,harry.yoo@oracle.com,lance.yang@linux.dev,liushixin2@huawei.com,loberman@redhat.com,lorenzo.stoakes@oracle.com,osalvador@suse.de,riel@surriel.com,stable@vger.kernel.org,suschako@amazon.de
+	b=qf8YscnS0dk1n5PJSP7Z5e6Yp8ho3GvxPYUGl/f7GJrdOv/f1eEx+F7cl3JhnYmha
+	 qxpcq7y85kKAX/gmckE+ZqsOS9oREo3hK8r1Qbia3eF8XWlqP/e2KmIIphKv9zJ/TU
+	 /GVrRwzqb267wiw42Qpk3I7Xi3QMj1rp8nnOqSdE=
+Subject: FAILED: patch "[PATCH] mm: rename cpu_bitmap field to flexible_array" failed to apply to 6.18-stable tree
+To: mathieu.desnoyers@efficios.com,aboorvad@linux.ibm.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,brauner@kernel.org,broonie@kernel.org,christian.koenig@amd.com,cl@linux.com,david@redhat.com,dennis@kernel.org,hannes@cmpxchg.org,liam.howlett@oracle.com,linmiaohe@huawei.com,liumartin@google.com,lorenzo.stoakes@oracle.com,mhiramat@kernel.org,mhocko@suse.com,mjguzik@gmail.com,paulmck@kernel.org,peterz@infradead.org,richard.weiyang@gmail.com,rientjes@google.com,roman.gushchin@linux.dev,rostedt@goodmis.org,rppt@kernel.org,shakeel.butt@linux.dev,sj@kernel.org,stable@vger.kernel.org,surenb@google.com,sweettea-kernel@dorminy.me,tglx@kernel.org,tj@kernel.org,vbabka@suse.cz,viro@zeniv.linux.org.uk,willy@infradead.org,yuzhao@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Jan 2026 14:19:19 +0100
-Message-ID: <2026012619-plunder-corsage-43a0@gregkh>
+Date: Mon, 26 Jan 2026 14:22:02 +0100
+Message-ID: <2026012602-safehouse-overtime-6259@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211604-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211605-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[efficios.com,linux.ibm.com,linux-foundation.org,linux.alibaba.com,kernel.org,amd.com,linux.com,redhat.com,cmpxchg.org,oracle.com,huawei.com,google.com,suse.com,gmail.com,infradead.org,linux.dev,goodmis.org,vger.kernel.org,dorminy.me,suse.cz,zeniv.linux.org.uk];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[baolin.wang.linux.alibaba.com:query timed out];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,surriel.com:email,oracle.com:email,linuxfoundation.org:dkim,suse.de:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amazon.de:email,linux.dev:email,gregkh:email]
-X-Rspamd-Queue-Id: 61FB788BF8
+	RCPT_COUNT_TWELVE(0.00)[37];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 01F5188C3F
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3937027caecb4f8251e82dd857ba1d749bb5a428
+git cherry-pick -x 6ac433f8b2590b09ca00863d218665729ac985f7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012619-plunder-corsage-43a0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012602-safehouse-overtime-6259@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,85 +114,143 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3937027caecb4f8251e82dd857ba1d749bb5a428 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Date: Tue, 23 Dec 2025 22:40:35 +0100
-Subject: [PATCH] mm/hugetlb: fix two comments related to huge_pmd_unshare()
+From 6ac433f8b2590b09ca00863d218665729ac985f7 Mon Sep 17 00:00:00 2001
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Date: Wed, 24 Dec 2025 12:33:57 -0500
+Subject: [PATCH] mm: rename cpu_bitmap field to flexible_array
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Ever since we stopped using the page count to detect shared PMD page
-tables, these comments are outdated.
+The cpu_bitmap flexible array now contains more than just the cpu_bitmap.
+In preparation for changing the static mm_struct definitions to cover for
+the additional space required, change the cpu_bitmap type from "unsigned
+long" to "char", require an unsigned long alignment of the flexible array,
+and rename the field from "cpu_bitmap" to "flexible_array".
 
-The only reason we have to flush the TLB early is because once we drop the
-i_mmap_rwsem, the previously shared page table could get freed (to then
-get reallocated and used for other purpose).  So we really have to flush
-the TLB before that could happen.
+Introduce the MM_STRUCT_FLEXIBLE_ARRAY_INIT macro to statically initialize
+the flexible array.  This covers the init_mm and efi_mm static
+definitions.
 
-So let's simplify the comments a bit.
+This is a preparation step for fixing the missing mm_cid size for static
+mm_struct definitions.
 
-The "If we unshared PMDs, the TLB flush was not recorded in mmu_gather."
-part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
-correctly after huge_pmd_unshare") was confusing: sure it is recorded in
-the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do anything.
-So let's drop that comment while at it as well.
-
-We'll centralize these comments in a single helper as we rework the code
-next.
-
-Link: https://lkml.kernel.org/r/20251223214037.580860-3-david@kernel.org
-Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: "Uschakow, Stanislav" <suschako@amazon.de>
+Link: https://lkml.kernel.org/r/20251224173358.647691-3-mathieu.desnoyers@efficios.com
+Fixes: af7f588d8f73 ("sched: Introduce per-memory-map concurrency ID")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Christan König <christian.koenig@amd.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Martin Liu <liumartin@google.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index e0ab14020513..67131aa24d77 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5320,17 +5320,10 @@ void __unmap_hugepage_range(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	tlb_end_vma(tlb, vma);
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index f5ff6e84a9b7..17b5f3415465 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -74,10 +74,10 @@ struct mm_struct efi_mm = {
+ 	.page_table_lock	= __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
+ 	.mmlist			= LIST_HEAD_INIT(efi_mm.mmlist),
+ 	.user_ns		= &init_user_ns,
+-	.cpu_bitmap		= { [BITS_TO_LONGS(NR_CPUS)] = 0},
+ #ifdef CONFIG_SCHED_MM_CID
+ 	.mm_cid.lock		= __RAW_SPIN_LOCK_UNLOCKED(efi_mm.mm_cid.lock),
+ #endif
++	.flexible_array		= MM_STRUCT_FLEXIBLE_ARRAY_INIT,
+ };
  
- 	/*
--	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
--	 * could defer the flush until now, since by holding i_mmap_rwsem we
--	 * guaranteed that the last reference would not be dropped. But we must
--	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
--	 * dropped and the last reference to the shared PMDs page might be
--	 * dropped as well.
--	 *
--	 * In theory we could defer the freeing of the PMD pages as well, but
--	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
--	 * detect sharing, so we cannot defer the release of the page either.
--	 * Instead, do flush now.
-+	 * There is nothing protecting a previously-shared page table that we
-+	 * unshared through huge_pmd_unshare() from getting freed after we
-+	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-+	 * succeeded, flush the range corresponding to the pud.
+ struct workqueue_struct *efi_rts_wq;
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 42af2292951d..110b319a2ffb 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1329,7 +1329,7 @@ struct mm_struct {
+ 	 * The mm_cpumask needs to be at the end of mm_struct, because it
+ 	 * is dynamically sized based on nr_cpu_ids.
  	 */
- 	if (force_flush)
- 		tlb_flush_mmu_tlbonly(tlb);
-@@ -6552,11 +6545,10 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
- 		cond_resched();
- 	}
- 	/*
--	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
--	 * may have cleared our pud entry and done put_page on the page table:
--	 * once we release i_mmap_rwsem, another task can do the final put_page
--	 * and that page table be reused and filled with junk.  If we actually
--	 * did unshare a page of pmds, flush the range corresponding to the pud.
-+	 * There is nothing protecting a previously-shared page table that we
-+	 * unshared through huge_pmd_unshare() from getting freed after we
-+	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-+	 * succeeded, flush the range corresponding to the pud.
- 	 */
- 	if (shared_pmd)
- 		flush_hugetlb_tlb_range(vma, range.start, range.end);
+-	unsigned long cpu_bitmap[];
++	char flexible_array[] __aligned(__alignof__(unsigned long));
+ };
+ 
+ /* Copy value to the first system word of mm flags, non-atomically. */
+@@ -1366,19 +1366,24 @@ static inline void __mm_flags_set_mask_bits_word(struct mm_struct *mm,
+ 			 MT_FLAGS_USE_RCU)
+ extern struct mm_struct init_mm;
+ 
++#define MM_STRUCT_FLEXIBLE_ARRAY_INIT				\
++{								\
++	[0 ... sizeof(cpumask_t)-1] = 0				\
++}
++
+ /* Pointer magic because the dynamic array size confuses some compilers. */
+ static inline void mm_init_cpumask(struct mm_struct *mm)
+ {
+ 	unsigned long cpu_bitmap = (unsigned long)mm;
+ 
+-	cpu_bitmap += offsetof(struct mm_struct, cpu_bitmap);
++	cpu_bitmap += offsetof(struct mm_struct, flexible_array);
+ 	cpumask_clear((struct cpumask *)cpu_bitmap);
+ }
+ 
+ /* Future-safe accessor for struct mm_struct's cpu_vm_mask. */
+ static inline cpumask_t *mm_cpumask(struct mm_struct *mm)
+ {
+-	return (struct cpumask *)&mm->cpu_bitmap;
++	return (struct cpumask *)&mm->flexible_array;
+ }
+ 
+ #ifdef CONFIG_LRU_GEN
+@@ -1469,7 +1474,7 @@ static inline cpumask_t *mm_cpus_allowed(struct mm_struct *mm)
+ {
+ 	unsigned long bitmap = (unsigned long)mm;
+ 
+-	bitmap += offsetof(struct mm_struct, cpu_bitmap);
++	bitmap += offsetof(struct mm_struct, flexible_array);
+ 	/* Skip cpu_bitmap */
+ 	bitmap += cpumask_size();
+ 	return (struct cpumask *)bitmap;
+diff --git a/mm/init-mm.c b/mm/init-mm.c
+index a514f8ce47e3..c5556bb9d5f0 100644
+--- a/mm/init-mm.c
++++ b/mm/init-mm.c
+@@ -47,7 +47,7 @@ struct mm_struct init_mm = {
+ #ifdef CONFIG_SCHED_MM_CID
+ 	.mm_cid.lock = __RAW_SPIN_LOCK_UNLOCKED(init_mm.mm_cid.lock),
+ #endif
+-	.cpu_bitmap	= CPU_BITS_NONE,
++	.flexible_array	= MM_STRUCT_FLEXIBLE_ARRAY_INIT,
+ 	INIT_MM_CONTEXT(init_mm)
+ };
+ 
 
 
