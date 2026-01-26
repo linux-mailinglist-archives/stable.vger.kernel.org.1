@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-211580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABdADUppd2nCfQEAu9opvQ
-	(envelope-from <stable+bounces-211580-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:16:58 +0100
+	id 0Fh4CVNpd2nCfQEAu9opvQ
+	(envelope-from <stable+bounces-211581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:17:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9143D88B23
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:16:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F9F88B39
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F4583038A7E
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:15:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 76917303EABE
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D780119D074;
-	Mon, 26 Jan 2026 13:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189573321B3;
+	Mon, 26 Jan 2026 13:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfboWJj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h72RwgZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BEE815CD7E
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 13:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14E418DB2A
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 13:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769433352; cv=none; b=tMGa4yJWYfUzKWPGijxE4o/wZYfiTv2c/1W7r2tV9+GnQNejwrUDbcnWXhFwoTHVe4YQfRU3iNAZ/dNB5H45ibb+OEz07VSVTiYFRu8w11niM2+v41GuQDrpSilO5tm0CWSWzvuc/tmm6BHDenj6B+vXGYYFtCVsrCYFXL0KGNo=
+	t=1769433357; cv=none; b=FxEMY3ZFjH8axXA8yHlwfpBpq1D1hqVL1bju+YwE39h7C9LIFyiHuKwV+nRtn+4xNqpuDtxlF3VUpbxBK3F7o/NpffsdriS27ff2XJCFXYJVXhjeHePEFYrqq5C8PhRAWoLIRE/l7+QcD0GyksmbX6oaDDLLhPabBwNiS5dehIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769433352; c=relaxed/simple;
-	bh=zq2JopaUdT8BwZ0HGaqAQ8usYrt66EP4G0tKiKupffM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kAw2vHf62DowMW8WKCbJSr4D/fZLxvWpARaZ8LjG8ParHlNZFj6BX6KbtkcqfqxgXytkMddToLzj689ntt1RIN00jSjDphgW2zV+mogWzQHqMme8rzmChf73r48Gi2Vk3vzp0+TBcX/DRIDHLzZmyMtqK9kvVD3DljmEAu+YYG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfboWJj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1FBC116C6;
-	Mon, 26 Jan 2026 13:15:51 +0000 (UTC)
+	s=arc-20240116; t=1769433357; c=relaxed/simple;
+	bh=Vk5eV1lKH8UE80MZNzFafv18LAHSN6N0B6yYrNsND4U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h3pYWJB6i+PW5KypluiwEpWS+Lu0wEV9kkoXGUOaVl4W0eO27o+pK8AOAK1z9ytrQt2un1OyFQ1kKdhqVML3+cZR4LB7bA3m/C1PwRUc+nlYwxdeeRd3MNgJ/c3h3ZEMIX51As0lptMGpij6qzrDJKlpk28lY1Av2thIrxSNR7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h72RwgZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D13C19425;
+	Mon, 26 Jan 2026 13:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769433352;
-	bh=zq2JopaUdT8BwZ0HGaqAQ8usYrt66EP4G0tKiKupffM=;
+	s=korg; t=1769433357;
+	bh=Vk5eV1lKH8UE80MZNzFafv18LAHSN6N0B6yYrNsND4U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cfboWJj/PHyRzh2ODjs+8hfMNeFemEve8SeisAsK1JuSJ6mNmWF5rblN2d8WTmpMy
-	 X9owhTawA0OoPmr5d5SVjxzFt/2X+nb3+oLiFb47VhMl/pQc7egEjQfhKlFIWcdrmc
-	 y0xQWqf/juvI7qWof1l+w1TBsaGCqadhG8BKY2lU=
-Subject: FAILED: patch "[PATCH] rxrpc: Fix recvmsg() unconditional requeue" failed to apply to 5.10-stable tree
-To: dhowells@redhat.com,faith@zellic.io,horms@kernel.org,kuba@kernel.org,marc.dionne@auristor.com,niro@wiz.io,pumpkin@devco.re,w@1wt.eu
+	b=h72RwgZ1yKdhhJGMVO0QrO1SzJONnjj0Z7fZ+BMbYbUHFWBn+fRtOl+6ljY0kKAF9
+	 ep4l7M7LXyRrDttolJjuOPDkuMBdxpBvzZl34HvEXDWru+KuGtc+NeHqiw72OINPDu
+	 0TKCRH5Uq1KH5UyDIq5oRhzEssX9uqL+KWMGLBTo=
+Subject: FAILED: patch "[PATCH] iio: core: add separate lockdep class for info_exist_lock" failed to apply to 6.18-stable tree
+To: ravi@prevas.dk,Jonathan.Cameron@huawei.com,peda@axentia.se,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Jan 2026 14:15:33 +0100
-Message-ID: <2026012633-folk-rickety-ec55@gregkh>
+Date: Mon, 26 Jan 2026 14:15:54 +0100
+Message-ID: <2026012654-trend-outback-5af6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,48 +58,48 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211580-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211581-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,gregkh:email,linuxfoundation.org:dkim,wiz.io:email,zellic.io:email,infradead.org:email,1wt.eu:email]
-X-Rspamd-Queue-Id: 9143D88B23
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,prevas.dk:email,iio_dev.info:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email]
+X-Rspamd-Queue-Id: 86F9F88B39
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2c28769a51deb6022d7fbd499987e237a01dd63a
+git cherry-pick -x 9910159f06590c17df4fbddedaabb4c0201cc4cb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012633-folk-rickety-ec55@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012654-trend-outback-5af6@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,101 +111,113 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2c28769a51deb6022d7fbd499987e237a01dd63a Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Wed, 14 Jan 2026 22:03:23 +0000
-Subject: [PATCH] rxrpc: Fix recvmsg() unconditional requeue
+From 9910159f06590c17df4fbddedaabb4c0201cc4cb Mon Sep 17 00:00:00 2001
+From: Rasmus Villemoes <ravi@prevas.dk>
+Date: Mon, 15 Dec 2025 14:17:23 +0100
+Subject: [PATCH] iio: core: add separate lockdep class for info_exist_lock
 
-If rxrpc_recvmsg() fails because MSG_DONTWAIT was specified but the call at
-the front of the recvmsg queue already has its mutex locked, it requeues
-the call - whether or not the call is already queued.  The call may be on
-the queue because MSG_PEEK was also passed and so the call was not dequeued
-or because the I/O thread requeued it.
+When one iio device is a consumer of another, it is possible that
+the ->info_exist_lock of both ends up being taken when reading the
+value of the consumer device.
 
-The unconditional requeue may then corrupt the recvmsg queue, leading to
-things like UAFs or refcount underruns.
+Since they currently belong to the same lockdep class (being
+initialized in a single location with mutex_init()), that results in a
+lockdep warning
 
-Fix this by only requeuing the call if it isn't already on the queue - and
-moving it to the front if it is already queued.  If we don't queue it, we
-have to put the ref we obtained by dequeuing it.
+         CPU0
+         ----
+    lock(&iio_dev_opaque->info_exist_lock);
+    lock(&iio_dev_opaque->info_exist_lock);
 
-Also, MSG_PEEK doesn't dequeue the call so shouldn't call
-rxrpc_notify_socket() for the call if we didn't use up all the data on the
-queue, so fix that also.
+   *** DEADLOCK ***
 
-Fixes: 540b1c48c37a ("rxrpc: Fix deadlock between call creation and sendmsg/recvmsg")
-Reported-by: Faith <faith@zellic.io>
-Reported-by: Pumpkin Chang <pumpkin@devco.re>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Marc Dionne <marc.dionne@auristor.com>
-cc: Nir Ohfeld <niro@wiz.io>
-cc: Willy Tarreau <w@1wt.eu>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/95163.1768428203@warthog.procyon.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+   May be due to missing lock nesting notation
 
-diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
-index de6f6d25767c..869f97c9bf73 100644
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -322,6 +322,7 @@
- 	EM(rxrpc_call_put_kernel,		"PUT kernel  ") \
- 	EM(rxrpc_call_put_poke,			"PUT poke    ") \
- 	EM(rxrpc_call_put_recvmsg,		"PUT recvmsg ") \
-+	EM(rxrpc_call_put_recvmsg_peek_nowait,	"PUT peek-nwt") \
- 	EM(rxrpc_call_put_release_recvmsg_q,	"PUT rls-rcmq") \
- 	EM(rxrpc_call_put_release_sock,		"PUT rls-sock") \
- 	EM(rxrpc_call_put_release_sock_tba,	"PUT rls-sk-a") \
-@@ -340,6 +341,9 @@
- 	EM(rxrpc_call_see_input,		"SEE input   ") \
- 	EM(rxrpc_call_see_notify_released,	"SEE nfy-rlsd") \
- 	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
-+	EM(rxrpc_call_see_recvmsg_requeue,	"SEE recv-rqu") \
-+	EM(rxrpc_call_see_recvmsg_requeue_first, "SEE recv-rqF") \
-+	EM(rxrpc_call_see_recvmsg_requeue_move,	"SEE recv-rqM") \
- 	EM(rxrpc_call_see_release,		"SEE release ") \
- 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
- 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
-diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
-index 7fa7e77f6bb9..e1f7513a46db 100644
---- a/net/rxrpc/recvmsg.c
-+++ b/net/rxrpc/recvmsg.c
-@@ -518,7 +518,8 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 	if (rxrpc_call_has_failed(call))
- 		goto call_failed;
+  4 locks held by sensors/414:
+   #0: c31fd6dc (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0x44/0x4e4
+   #1: c4f5a1c4 (&of->mutex){+.+.}-{3:3}, at: kernfs_seq_start+0x1c/0xac
+   #2: c2827548 (kn->active#34){.+.+}-{0:0}, at: kernfs_seq_start+0x30/0xac
+   #3: c1dd2b68 (&iio_dev_opaque->info_exist_lock){+.+.}-{3:3}, at: iio_read_channel_processed_scale+0x24/0xd8
+
+  stack backtrace:
+  CPU: 0 UID: 0 PID: 414 Comm: sensors Not tainted 6.17.11 #5 NONE
+  Hardware name: Generic AM33XX (Flattened Device Tree)
+  Call trace:
+   unwind_backtrace from show_stack+0x10/0x14
+   show_stack from dump_stack_lvl+0x44/0x60
+   dump_stack_lvl from print_deadlock_bug+0x2b8/0x334
+   print_deadlock_bug from __lock_acquire+0x13a4/0x2ab0
+   __lock_acquire from lock_acquire+0xd0/0x2c0
+   lock_acquire from __mutex_lock+0xa0/0xe8c
+   __mutex_lock from mutex_lock_nested+0x1c/0x24
+   mutex_lock_nested from iio_read_channel_raw+0x20/0x6c
+   iio_read_channel_raw from rescale_read_raw+0x128/0x1c4
+   rescale_read_raw from iio_channel_read+0xe4/0xf4
+   iio_channel_read from iio_read_channel_processed_scale+0x6c/0xd8
+   iio_read_channel_processed_scale from iio_hwmon_read_val+0x68/0xbc
+   iio_hwmon_read_val from dev_attr_show+0x18/0x48
+   dev_attr_show from sysfs_kf_seq_show+0x80/0x110
+   sysfs_kf_seq_show from seq_read_iter+0xdc/0x4e4
+   seq_read_iter from vfs_read+0x238/0x2e4
+   vfs_read from ksys_read+0x6c/0xec
+   ksys_read from ret_fast_syscall+0x0/0x1c
+
+Just as the mlock_key already has its own lockdep class, add a
+lock_class_key for the info_exist mutex.
+
+Note that this has in theory been a problem since before IIO first
+left staging, but it only occurs when a chain of consumers is in use
+and that is not often done.
+
+Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
+Signed-off-by: Rasmus Villemoes <ravi@prevas.dk>
+Reviewed-by: Peter Rosin <peda@axentia.se>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index f69deefcfb6f..117ffad4f376 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1657,6 +1657,7 @@ static void iio_dev_release(struct device *device)
+ 	mutex_destroy(&iio_dev_opaque->info_exist_lock);
+ 	mutex_destroy(&iio_dev_opaque->mlock);
  
--	if (!skb_queue_empty(&call->recvmsg_queue))
-+	if (!(flags & MSG_PEEK) &&
-+	    !skb_queue_empty(&call->recvmsg_queue))
- 		rxrpc_notify_socket(call);
- 	goto not_yet_complete;
++	lockdep_unregister_key(&iio_dev_opaque->info_exist_key);
+ 	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
  
-@@ -549,11 +550,21 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- error_requeue_call:
- 	if (!(flags & MSG_PEEK)) {
- 		spin_lock_irq(&rx->recvmsg_lock);
--		list_add(&call->recvmsg_link, &rx->recvmsg_q);
--		spin_unlock_irq(&rx->recvmsg_lock);
-+		if (list_empty(&call->recvmsg_link)) {
-+			list_add(&call->recvmsg_link, &rx->recvmsg_q);
-+			rxrpc_see_call(call, rxrpc_call_see_recvmsg_requeue);
-+			spin_unlock_irq(&rx->recvmsg_lock);
-+		} else if (list_is_first(&call->recvmsg_link, &rx->recvmsg_q)) {
-+			spin_unlock_irq(&rx->recvmsg_lock);
-+			rxrpc_put_call(call, rxrpc_call_see_recvmsg_requeue_first);
-+		} else {
-+			list_move(&call->recvmsg_link, &rx->recvmsg_q);
-+			spin_unlock_irq(&rx->recvmsg_lock);
-+			rxrpc_put_call(call, rxrpc_call_see_recvmsg_requeue_move);
-+		}
- 		trace_rxrpc_recvmsg(call_debug_id, rxrpc_recvmsg_requeue, 0);
- 	} else {
--		rxrpc_put_call(call, rxrpc_call_put_recvmsg);
-+		rxrpc_put_call(call, rxrpc_call_put_recvmsg_peek_nowait);
- 	}
- error_no_call:
- 	release_sock(&rx->sk);
+ 	ida_free(&iio_ida, iio_dev_opaque->id);
+@@ -1717,9 +1718,10 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
+ 
+ 	lockdep_register_key(&iio_dev_opaque->mlock_key);
++	lockdep_register_key(&iio_dev_opaque->info_exist_key);
+ 
+ 	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
+-	mutex_init(&iio_dev_opaque->info_exist_lock);
++	mutex_init_with_key(&iio_dev_opaque->info_exist_lock, &iio_dev_opaque->info_exist_key);
+ 
+ 	indio_dev->dev.parent = parent;
+ 	indio_dev->dev.type = &iio_device_type;
+diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
+index 4247497f3f8b..b87841a355f8 100644
+--- a/include/linux/iio/iio-opaque.h
++++ b/include/linux/iio/iio-opaque.h
+@@ -14,6 +14,7 @@
+  * @mlock:			lock used to prevent simultaneous device state changes
+  * @mlock_key:			lockdep class for iio_dev lock
+  * @info_exist_lock:		lock to prevent use during removal
++ * @info_exist_key:		lockdep class for info_exist lock
+  * @trig_readonly:		mark the current trigger immutable
+  * @event_interface:		event chrdevs associated with interrupt lines
+  * @attached_buffers:		array of buffers statically attached by the driver
+@@ -47,6 +48,7 @@ struct iio_dev_opaque {
+ 	struct mutex			mlock;
+ 	struct lock_class_key		mlock_key;
+ 	struct mutex			info_exist_lock;
++	struct lock_class_key		info_exist_key;
+ 	bool				trig_readonly;
+ 	struct iio_event_interface	*event_interface;
+ 	struct iio_buffer		**attached_buffers;
 
 
