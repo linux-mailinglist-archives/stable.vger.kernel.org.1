@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-211586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211587-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oCSlGIRpd2nCfQEAu9opvQ
-	(envelope-from <stable+bounces-211586-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:17:56 +0100
+	id UCGdFKtpd2nCfQEAu9opvQ
+	(envelope-from <stable+bounces-211587-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:18:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C3B88B68
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:17:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A020A88B70
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 14:18:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8EB96305511D
-	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:16:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9F7030037DF
+	for <lists+stable@lfdr.de>; Mon, 26 Jan 2026 13:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8ED333750;
-	Mon, 26 Jan 2026 13:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4181A3016E2;
+	Mon, 26 Jan 2026 13:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2VTtJmy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNFNz64L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3ACC30E858
-	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 13:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0530815CD7E
+	for <stable@vger.kernel.org>; Mon, 26 Jan 2026 13:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769433376; cv=none; b=jpVA+JqcEzZY0OxH1jI3KgvsinOdkNlZ4QXigN6EzXV6+rVz24OrVpo3tSadgpKHE9OZTSouP592ae8kUzCiB+mSFVsPTYGgloYohiSY1ttRXpDiouodKeBQkEkC7giwR1NMFi3zzWOtPRTgoj5sdegqlRO5CZG/6Kgv01/rui4=
+	t=1769433414; cv=none; b=TitZedhyomNLTX7oDU7pPMI6leOEfv/b26FvQJc6oncXzty+WAFz8r1zlBUv4iSfI0JnWdP2vJRj4xR2pzlB0uj7lXMHjPlKnbks/vcOuH7m224CXsQIYww4FQsIlPAfzC49JZtAZy+2BaWGvWI/20s15AS6E7ELjp/yPZPYL5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769433376; c=relaxed/simple;
-	bh=QyN9w8j1wn7FV63iIt7nSGq7zyaaHfbqF3uSmi3JZvY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TzrRY9fCJ1YGJhGZMChYsfC/Cof5EiVw1UeigojrA5zNI6G2oD/Xwa6GRR0ZAXvih7fPd+C/SDZUMPMsvE6Dx5XDkO7nJfMoST3ongD1Km8jFVxiG9MZ+NUCEGVSxhpMc9OeMNCrusGV++yrGZNF91ZiqNxY3UahpwcC3I4U9V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2VTtJmy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D209C16AAE;
-	Mon, 26 Jan 2026 13:16:14 +0000 (UTC)
+	s=arc-20240116; t=1769433414; c=relaxed/simple;
+	bh=+qF5Q/B2WubIrc+e7r0rLN8vRh74cFGOr5n/PTYxZYA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fWaazzQsxh2Bi2XlwXWYrEhk3ozxEqRc8aghtLttNB8U2LT8vvJ4GaBCEjgknKJSZQkRY7uWlNyDaC0N7iFQzFzP8VaTeO8gFKDt5BV4Zhy6tFc4itTCJjGV+VlBUi5VZxpGuA5tTi5JjCpRBGg/0RloYJ2yXpZ+ZoQLIxOwEFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNFNz64L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCC7C116C6;
+	Mon, 26 Jan 2026 13:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769433375;
-	bh=QyN9w8j1wn7FV63iIt7nSGq7zyaaHfbqF3uSmi3JZvY=;
+	s=korg; t=1769433413;
+	bh=+qF5Q/B2WubIrc+e7r0rLN8vRh74cFGOr5n/PTYxZYA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=C2VTtJmyhWHiHHMgYb4nQNnRS3Dy+OhRSrKECXTb5bmR6OMp2Z0ZpO4KFLdlNyh6Z
-	 cbP6LmKi7MUAUgmzsw6hVLEvfAw8TB/9AiXa70hV6BbptShdHaBshOM5/fmlEcVdnU
-	 4g+D4ycAWBpTFR9U/4WEvi7QdMiPNIffSiStEoe0=
-Subject: FAILED: patch "[PATCH] iio: core: add separate lockdep class for info_exist_lock" failed to apply to 5.10-stable tree
-To: ravi@prevas.dk,Jonathan.Cameron@huawei.com,peda@axentia.se,stable@vger.kernel.org
+	b=wNFNz64Lfk4TB+W1ZQQvpgDEik05HMPU1c//BEN9IfCcWXzbFdot/oIRLaJmL/lgc
+	 p+eeZd7nkqEvMIIhR8WQdH8MCSe21OJlt5InnUd3y3p7TKG8PBoqyt8G0ZPumlZRfr
+	 h3FQEDjj3v2K63IfyPYgJVSA/5h6dU+uGPXkipmk=
+Subject: FAILED: patch "[PATCH] comedi: Fix getting range information for subdevices 16 to" failed to apply to 5.15-stable tree
+To: abbotti@mev.co.uk,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Jan 2026 14:15:59 +0100
-Message-ID: <2026012659-degrading-catfish-d7d3@gregkh>
+Date: Mon, 26 Jan 2026 14:16:50 +0100
+Message-ID: <2026012650-resemble-gentile-2a8c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,11 +65,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211586-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211587-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -77,29 +77,29 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,axentia.se:email,prevas.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B2C3B88B68
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A020A88B70
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9910159f06590c17df4fbddedaabb4c0201cc4cb
+git cherry-pick -x 10d28cffb3f6ec7ad67f0a4cd32c2afa92909452
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012659-degrading-catfish-d7d3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012650-resemble-gentile-2a8c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,113 +111,103 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9910159f06590c17df4fbddedaabb4c0201cc4cb Mon Sep 17 00:00:00 2001
-From: Rasmus Villemoes <ravi@prevas.dk>
-Date: Mon, 15 Dec 2025 14:17:23 +0100
-Subject: [PATCH] iio: core: add separate lockdep class for info_exist_lock
+From 10d28cffb3f6ec7ad67f0a4cd32c2afa92909452 Mon Sep 17 00:00:00 2001
+From: Ian Abbott <abbotti@mev.co.uk>
+Date: Wed, 3 Dec 2025 16:24:38 +0000
+Subject: [PATCH] comedi: Fix getting range information for subdevices 16 to
+ 255
 
-When one iio device is a consumer of another, it is possible that
-the ->info_exist_lock of both ends up being taken when reading the
-value of the consumer device.
+The `COMEDI_RANGEINFO` ioctl does not work properly for subdevice
+indices above 15.  Currently, the only in-tree COMEDI drivers that
+support more than 16 subdevices are the "8255" driver and the
+"comedi_bond" driver.  Making the ioctl work for subdevice indices up to
+255 is achievable.  It needs minor changes to the handling of the
+`COMEDI_RANGEINFO` and `COMEDI_CHANINFO` ioctls that should be mostly
+harmless to user-space, apart from making them less broken.  Details
+follow...
 
-Since they currently belong to the same lockdep class (being
-initialized in a single location with mutex_init()), that results in a
-lockdep warning
+The `COMEDI_RANGEINFO` ioctl command gets the list of supported ranges
+(usually with units of volts or milliamps) for a COMEDI subdevice or
+channel.  (Only some subdevices have per-channel range tables, indicated
+by the `SDF_RANGETYPE` flag in the subdevice information.)  It uses a
+`range_type` value and a user-space pointer, both supplied by
+user-space, but the `range_type` value should match what was obtained
+using the `COMEDI_CHANINFO` ioctl (if the subdevice has per-channel
+range tables)  or `COMEDI_SUBDINFO` ioctl (if the subdevice uses a
+single range table for all channels).  Bits 15 to 0 of the `range_type`
+value contain the length of the range table, which is the only part that
+user-space should care about (so it can use a suitably sized buffer to
+fetch the range table).  Bits 23 to 16 store the channel index, which is
+assumed to be no more than 255 if the subdevice has per-channel range
+tables, and is set to 0 if the subdevice has a single range table.  For
+`range_type` values produced by the `COMEDI_SUBDINFO` ioctl, bits 31 to
+24 contain the subdevice index, which is assumed to be no more than 255.
+But for `range_type` values produced by the `COMEDI_CHANINFO` ioctl,
+bits 27 to 24 contain the subdevice index, which is assumed to be no
+more than 15, and bits 31 to 28 contain the COMEDI device's minor device
+number for some unknown reason lost in the mists of time.  The
+`COMEDI_RANGEINFO` ioctl extract the length from bits 15 to 0 of the
+user-supplied `range_type` value, extracts the channel index from bits
+23 to 16 (only used if the subdevice has per-channel range tables),
+extracts the subdevice index from bits 27 to 24, and ignores bits 31 to
+28.  So for subdevice indices 16 to 255, the `COMEDI_SUBDINFO` or
+`COMEDI_CHANINFO` ioctl will report a `range_type` value that doesn't
+work with the `COMEDI_RANGEINFO` ioctl.  It will either get the range
+table for the subdevice index modulo 16, or will fail with `-EINVAL`.
 
-         CPU0
-         ----
-    lock(&iio_dev_opaque->info_exist_lock);
-    lock(&iio_dev_opaque->info_exist_lock);
+To fix this, always use bits 31 to 24 of the `range_type` value to hold
+the subdevice index (assumed to be no more than 255).  This affects the
+`COMEDI_CHANINFO` and `COMEDI_RANGEINFO` ioctls.  There should not be
+anything in user-space that depends on the old, broken usage, although
+it may now see different values in bits 31 to 28 of the `range_type`
+values reported by the `COMEDI_CHANINFO` ioctl for subdevices that have
+per-channel subdevices.  User-space should not be trying to decode bits
+31 to 16 of the `range_type` values anyway.
 
-   *** DEADLOCK ***
+Fixes: ed9eccbe8970 ("Staging: add comedi core")
+Cc: stable@vger.kernel.org #5.17+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20251203162438.176841-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-   May be due to missing lock nesting notation
-
-  4 locks held by sensors/414:
-   #0: c31fd6dc (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0x44/0x4e4
-   #1: c4f5a1c4 (&of->mutex){+.+.}-{3:3}, at: kernfs_seq_start+0x1c/0xac
-   #2: c2827548 (kn->active#34){.+.+}-{0:0}, at: kernfs_seq_start+0x30/0xac
-   #3: c1dd2b68 (&iio_dev_opaque->info_exist_lock){+.+.}-{3:3}, at: iio_read_channel_processed_scale+0x24/0xd8
-
-  stack backtrace:
-  CPU: 0 UID: 0 PID: 414 Comm: sensors Not tainted 6.17.11 #5 NONE
-  Hardware name: Generic AM33XX (Flattened Device Tree)
-  Call trace:
-   unwind_backtrace from show_stack+0x10/0x14
-   show_stack from dump_stack_lvl+0x44/0x60
-   dump_stack_lvl from print_deadlock_bug+0x2b8/0x334
-   print_deadlock_bug from __lock_acquire+0x13a4/0x2ab0
-   __lock_acquire from lock_acquire+0xd0/0x2c0
-   lock_acquire from __mutex_lock+0xa0/0xe8c
-   __mutex_lock from mutex_lock_nested+0x1c/0x24
-   mutex_lock_nested from iio_read_channel_raw+0x20/0x6c
-   iio_read_channel_raw from rescale_read_raw+0x128/0x1c4
-   rescale_read_raw from iio_channel_read+0xe4/0xf4
-   iio_channel_read from iio_read_channel_processed_scale+0x6c/0xd8
-   iio_read_channel_processed_scale from iio_hwmon_read_val+0x68/0xbc
-   iio_hwmon_read_val from dev_attr_show+0x18/0x48
-   dev_attr_show from sysfs_kf_seq_show+0x80/0x110
-   sysfs_kf_seq_show from seq_read_iter+0xdc/0x4e4
-   seq_read_iter from vfs_read+0x238/0x2e4
-   vfs_read from ksys_read+0x6c/0xec
-   ksys_read from ret_fast_syscall+0x0/0x1c
-
-Just as the mlock_key already has its own lockdep class, add a
-lock_class_key for the info_exist mutex.
-
-Note that this has in theory been a problem since before IIO first
-left staging, but it only occurs when a chain of consumers is in use
-and that is not often done.
-
-Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
-Signed-off-by: Rasmus Villemoes <ravi@prevas.dk>
-Reviewed-by: Peter Rosin <peda@axentia.se>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index f69deefcfb6f..117ffad4f376 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1657,6 +1657,7 @@ static void iio_dev_release(struct device *device)
- 	mutex_destroy(&iio_dev_opaque->info_exist_lock);
- 	mutex_destroy(&iio_dev_opaque->mlock);
+diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.c
+index 657c98cd723e..2c3eb9e89571 100644
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -1155,7 +1155,7 @@ static int do_chaninfo_ioctl(struct comedi_device *dev,
+ 		for (i = 0; i < s->n_chan; i++) {
+ 			int x;
  
-+	lockdep_unregister_key(&iio_dev_opaque->info_exist_key);
- 	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
+-			x = (dev->minor << 28) | (it->subdev << 24) | (i << 16) |
++			x = (it->subdev << 24) | (i << 16) |
+ 			    (s->range_table_list[i]->length);
+ 			if (put_user(x, it->rangelist + i))
+ 				return -EFAULT;
+diff --git a/drivers/comedi/range.c b/drivers/comedi/range.c
+index 8f43cf88d784..5b8f662365e3 100644
+--- a/drivers/comedi/range.c
++++ b/drivers/comedi/range.c
+@@ -52,7 +52,7 @@ int do_rangeinfo_ioctl(struct comedi_device *dev,
+ 	const struct comedi_lrange *lr;
+ 	struct comedi_subdevice *s;
  
- 	ida_free(&iio_ida, iio_dev_opaque->id);
-@@ -1717,9 +1718,10 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
- 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
+-	subd = (it->range_type >> 24) & 0xf;
++	subd = (it->range_type >> 24) & 0xff;
+ 	chan = (it->range_type >> 16) & 0xff;
  
- 	lockdep_register_key(&iio_dev_opaque->mlock_key);
-+	lockdep_register_key(&iio_dev_opaque->info_exist_key);
+ 	if (!dev->attached)
+diff --git a/include/uapi/linux/comedi.h b/include/uapi/linux/comedi.h
+index 7314e5ee0a1e..798ec9a39e12 100644
+--- a/include/uapi/linux/comedi.h
++++ b/include/uapi/linux/comedi.h
+@@ -640,7 +640,7 @@ struct comedi_chaninfo {
  
- 	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
--	mutex_init(&iio_dev_opaque->info_exist_lock);
-+	mutex_init_with_key(&iio_dev_opaque->info_exist_lock, &iio_dev_opaque->info_exist_key);
- 
- 	indio_dev->dev.parent = parent;
- 	indio_dev->dev.type = &iio_device_type;
-diff --git a/include/linux/iio/iio-opaque.h b/include/linux/iio/iio-opaque.h
-index 4247497f3f8b..b87841a355f8 100644
---- a/include/linux/iio/iio-opaque.h
-+++ b/include/linux/iio/iio-opaque.h
-@@ -14,6 +14,7 @@
-  * @mlock:			lock used to prevent simultaneous device state changes
-  * @mlock_key:			lockdep class for iio_dev lock
-  * @info_exist_lock:		lock to prevent use during removal
-+ * @info_exist_key:		lockdep class for info_exist lock
-  * @trig_readonly:		mark the current trigger immutable
-  * @event_interface:		event chrdevs associated with interrupt lines
-  * @attached_buffers:		array of buffers statically attached by the driver
-@@ -47,6 +48,7 @@ struct iio_dev_opaque {
- 	struct mutex			mlock;
- 	struct lock_class_key		mlock_key;
- 	struct mutex			info_exist_lock;
-+	struct lock_class_key		info_exist_key;
- 	bool				trig_readonly;
- 	struct iio_event_interface	*event_interface;
- 	struct iio_buffer		**attached_buffers;
+ /**
+  * struct comedi_rangeinfo - used to retrieve the range table for a channel
+- * @range_type:		Encodes subdevice index (bits 27:24), channel index
++ * @range_type:		Encodes subdevice index (bits 31:24), channel index
+  *			(bits 23:16) and range table length (bits 15:0).
+  * @range_ptr:		Pointer to array of @struct comedi_krange to be filled
+  *			in with the range table for the channel or subdevice.
 
 
