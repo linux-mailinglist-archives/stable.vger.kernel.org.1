@@ -1,162 +1,228 @@
-Return-Path: <stable+bounces-211880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EBYtNFgDeWkuugEAu9opvQ
-	(envelope-from <stable+bounces-211880-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 19:26:32 +0100
+	id QLKQGNgFeWlcugEAu9opvQ
+	(envelope-from <stable+bounces-211881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 19:37:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32A498FE9
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 19:26:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8466499337
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 19:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D4F653012C7D
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:26:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0BC00300468F
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D2E325729;
-	Tue, 27 Jan 2026 18:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7AF327C0F;
+	Tue, 27 Jan 2026 18:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rw2RjHAd"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="HFopyFhc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9535221540
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 18:26:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BF1246BC6
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 18:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769538381; cv=none; b=tgHqMNqFeeqLvF6zvEMsgVj9BY7wJR7kS+N152eXXTX8dRAzGCxxP5TycBZm7QGyWwq2v1S3vd552SwqDSTbGLGxOpM64R8G4Zqs6To4umGLaNUMeRTwTc9D6+tFqWiv7NOl6XmFxbXJRClWYPIXnaJln80jrTXsR6tFR99Bd/4=
+	t=1769539027; cv=none; b=GnFmksJuvdN4ig5f8wL0vViRnmoDURHJgxsBjGN+yZqpRpYy0h88E7rqOuuBs6XHrn9DO55HkaSVPh49HZbi5oI42i0amrRcbWkyziDThZf7XAqTna4AenxeCbsVb2wqCAHCm6JCLbMZsTy+v/uDip8su8rpfXiaSbqt5VBobgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769538381; c=relaxed/simple;
-	bh=iq05q6PDgmeGKZG+ZCZf4NVQ7qWHvgTbCPwJ9B3qJ/g=;
+	s=arc-20240116; t=1769539027; c=relaxed/simple;
+	bh=teAZMbI2AVQL+quc4ICpSEwSioo/BAWZQCEXQEbu1eI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7JrErk3ML3vH7YaRSNZwjH1AYFh5jQE2bdVziy2pS1MFhWMhaV1BOAMxFU0NXtYcRk1Wg0LoENK+9mdofWmb4Ymr6eRKEPqSfS22dldUspn41aQJXt4ZYj4Den/FVWtNK7I0gHQVsXFjbyfUkEOYR7k4Ywp/EVy1iQr21JhSQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rw2RjHAd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81F9C19422;
-	Tue, 27 Jan 2026 18:26:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769538381;
-	bh=iq05q6PDgmeGKZG+ZCZf4NVQ7qWHvgTbCPwJ9B3qJ/g=;
+	 MIME-Version:Content-Type; b=Ch1mHtgBxYj22+Igig7Fh3NF2ZqOvhytkqvOqAcrjSt+g/pYJAo/iikx8ZIN5v7+manxdhxQnOfU5mnT+Eo2SqksjQZEPOD0jNdVJsD+zcazQLQZNQAldJlhvWVUleXPex6gm2VGi7Ikb+Hjgq2lX3Und+BxB6pSM7cg4YojXJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=HFopyFhc; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1216)
+	id 571B220B7165; Tue, 27 Jan 2026 10:37:06 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 571B220B7165
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1769539026;
+	bh=QgepVqiF+kZbIdKMl73+/Ujwi+aEY2NJMBQV2clfcQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rw2RjHAdJdv8tzxUlBwKwdoodjYnvJvNsMXPuMgAcJYJ9h95TXHCK6e1v6ZZohoyK
-	 YyiMQZaNacMNkTUQcxLXXNI4cvn9ASoILb6Zwa2E//gUKhgWflVG0cJfwNOdB3zmBu
-	 3aQfI8ozIvU2ny5fDun06F+MPFQ6DlRGRCXeozXiSp72KtuJxRHaLiNopIh8MbQM6+
-	 UbSyZ75oeZMTRm05CUsnhbmc7hU9X226RfZp+3RYPs7MS+GVEQZpKcUhf8kXAzeZ6e
-	 EfQf41/U+cTHCes1dtpKxHE0mguE8+CAsu5xP7kGvFMmNHfIJze6DL2/1DUvGJt3y6
-	 73feTcS5Z40xg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] iio: adc: exynos_adc: fix OF populate on driver rebind
-Date: Tue, 27 Jan 2026 13:26:19 -0500
-Message-ID: <20260127182619.2050612-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012753-astonish-posting-f234@gregkh>
-References: <2026012753-astonish-posting-f234@gregkh>
+	b=HFopyFhcKIcnRWw+U7zcTzoujZZRbMo/ACujN+UMfa/ezNnKGA2Qb9hPeKuBZ8oek
+	 6Qp0yXIvhZ6xryRonrhNrsl7CguDBQNtniYaAG6t79g/4XE9Y9aiU3F5twukgQfihH
+	 of53eew1dfayMHK8sDRpdCIfWdbJRcovFdXj50Yw=
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+To: cascardo@igalia.com
+Cc: gregkh@linuxfoundation.org,
+	lizhi.xu@windriver.com,
+	patches@lists.linux.dev,
+	stable@vger.kernel.org,
+	syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com,
+	tytso@mit.edu
+Subject: Re: [PATCH 6.6 176/737] perf arm-spe: Extend branch operations
+Date: Tue, 27 Jan 2026 10:36:56 -0800
+Message-ID: <20260127183706.458136-1-hamzamahfooz@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <aWEFUlM6PsTMMXxr@quatroqueijos.cascardo.eti.br>
+References: <aWEFUlM6PsTMMXxr@quatroqueijos.cascardo.eti.br>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211880-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211881-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[hamzamahfooz@linux.microsoft.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: D32A498FE9
+	TAGGED_RCPT(0.00)[stable,340581ba9dceb7e06fb3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.microsoft.com:mid,linux.microsoft.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8466499337
 X-Rspamd-Action: no action
 
-From: Johan Hovold <johan@kernel.org>
+Hi,
 
-[ Upstream commit ea6b4feba85e996e840e0b661bc42793df6eb701 ]
+It appears that this patch broke the build, see:
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+In file included from util/arm-spe-decoder/arm-spe-pkt-decoder.h:10,
+                 from util/arm-spe-decoder/arm-spe-pkt-decoder.c:14:
+linux/tools/include/linux/bitfield.h: In function ‘le16_encode_bits’:
+linux/tools/include/linux/bitfield.h:166:38: error: implicit declaration of function ‘cpu_to_le16’ [-Wimplicit-function-declaration]
+  166 |         ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
+      |                                      ^~~~~~~~~
+linux/tools/include/linux/bitfield.h:149:16: note: in definition of macro ‘____MAKE_OP’
+  149 |         return to((v & field_mask(field)) * field_multiplier(field));   \
+      |                ^~
+linux/tools/include/linux/bitfield.h:170:1: note: in expansion of macro ‘__MAKE_OP’
+  170 | __MAKE_OP(16)
+      | ^~~~~~~~~
+linux/tools/include/linux/bitfield.h: In function ‘le16_get_bits’:
+linux/tools/include/linux/bitfield.h:166:54: error: implicit declaration of function ‘le16_to_cpu’ [-Wimplicit-function-declaration]
+  166 |         ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
+      |                                                      ^~
+linux/tools/include/linux/bitfield.h:163:17: note: in definition of macro ‘____MAKE_OP’
+  163 |         return (from(v) & field)/field_multiplier(field);               \
+      |                 ^~~~
+linux/tools/include/linux/bitfield.h:170:1: note: in expansion of macro ‘__MAKE_OP’
+  170 | __MAKE_OP(16)
+      | ^~~~~~~~~
+linux/tools/include/linux/bitfield.h: In function ‘be16_encode_bits’:
+linux/tools/include/linux/bitfield.h:167:38: error: implicit declaration of function ‘cpu_to_be16’ [-Wimplicit-function-declaration]
+  167 |         ____MAKE_OP(be##size,u##size,cpu_to_be##size,be##size##_to_cpu) \
+      |                                      ^~~~~~~~~
+linux/tools/include/linux/bitfield.h:149:16: note: in definition of macro ‘____MAKE_OP’
+  149 |         return to((v & field_mask(field)) * field_multiplier(field));   \
+      |                ^~
+linux/tools/include/linux/bitfield.h:170:1: note: in expansion of macro ‘__MAKE_OP’
+  170 | __MAKE_OP(16)
+      | ^~~~~~~~~
+linux/tools/include/linux/bitfield.h: In function ‘be16_get_bits’:
+linux/tools/include/linux/bitfield.h:167:54: error: implicit declaration of function ‘be16_to_cpu’ [-Wimplicit-function-declaration]
+  167 |         ____MAKE_OP(be##size,u##size,cpu_to_be##size,be##size##_to_cpu) \
+      |                                                      ^~
+linux/tools/include/linux/bitfield.h:163:17: note: in definition of macro ‘____MAKE_OP’
+  163 |         return (from(v) & field)/field_multiplier(field);               \
+      |                 ^~~~
+linux/tools/include/linux/bitfield.h:170:1: note: in expansion of macro ‘__MAKE_OP’
+  170 | __MAKE_OP(16)
+      | ^~~~~~~~~
+linux/tools/include/linux/bitfield.h: In function ‘le32_encode_bits’:
+linux/tools/include/linux/bitfield.h:166:38: error: implicit declaration of function ‘cpu_to_le32’ [-Wimplicit-function-declaration]
+  166 |         ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
+      |                                      ^~~~~~~~~
+linux/tools/include/linux/bitfield.h:149:16: note: in definition of macro ‘____MAKE_OP’
+  149 |         return to((v & field_mask(field)) * field_multiplier(field));   \
+      |                ^~
+linux/tools/include/linux/bitfield.h:171:1: note: in expansion of macro ‘__MAKE_OP’
+  171 | __MAKE_OP(32)
+      | ^~~~~~~~~
+linux/tools/include/linux/bitfield.h: In function ‘le32_get_bits’:
+linux/tools/include/linux/bitfield.h:166:54: error: implicit declaration of function ‘le32_to_cpu’ [-Wimplicit-function-declaration]
+  166 |         ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
+      |                                                      ^~
+linux/tools/include/linux/bitfield.h:163:17: note: in definition of macro ‘____MAKE_OP’
+  163 |         return (from(v) & field)/field_multiplier(field);               \
+      |                 ^~~~
+linux/tools/include/linux/bitfield.h:171:1: note: in expansion of macro ‘__MAKE_OP’
+  171 | __MAKE_OP(32)
+      | ^~~~~~~~~
+linux/tools/include/linux/bitfield.h: In function ‘be32_encode_bits’:
+linux/tools/include/linux/bitfield.h:167:38: error: implicit declaration of function ‘cpu_to_be32’ [-Wimplicit-function-declaration]
+  167 |         ____MAKE_OP(be##size,u##size,cpu_to_be##size,be##size##_to_cpu) \
+      |                                      ^~~~~~~~~
+linux/tools/include/linux/bitfield.h:149:16: note: in definition of macro ‘____MAKE_OP’
+  149 |         return to((v & field_mask(field)) * field_multiplier(field));   \
+      |                ^~
+linux/tools/include/linux/bitfield.h:171:1: note: in expansion of macro ‘__MAKE_OP’
+  171 | __MAKE_OP(32)
+      | ^~~~~~~~~
+linux/tools/include/linux/bitfield.h: In function ‘be32_get_bits’:
+linux/tools/include/linux/bitfield.h:167:54: error: implicit declaration of function ‘be32_to_cpu’ [-Wimplicit-function-declaration]
+  167 |         ____MAKE_OP(be##size,u##size,cpu_to_be##size,be##size##_to_cpu) \
+      |                                                      ^~
+linux/tools/include/linux/bitfield.h:163:17: note: in definition of macro ‘____MAKE_OP’
+  163 |         return (from(v) & field)/field_multiplier(field);               \
+      |                 ^~~~
+linux/tools/include/linux/bitfield.h:171:1: note: in expansion of macro ‘__MAKE_OP’
+  171 | __MAKE_OP(32)
+      | ^~~~~~~~~
+  CC      util/thread.o
+linux/tools/include/linux/bitfield.h: In function ‘le64_encode_bits’:
+linux/tools/include/linux/bitfield.h:166:38: error: implicit declaration of function ‘cpu_to_le64’ [-Wimplicit-function-declaration]
+  166 |         ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
+      |                                      ^~~~~~~~~
+linux/tools/include/linux/bitfield.h:149:16: note: in definition of macro ‘____MAKE_OP’
+  149 |         return to((v & field_mask(field)) * field_multiplier(field));   \
+      |                ^~
+linux/tools/include/linux/bitfield.h:172:1: note: in expansion of macro ‘__MAKE_OP’
+  172 | __MAKE_OP(64)
+      | ^~~~~~~~~
+linux/tools/include/linux/bitfield.h: In function ‘le64_get_bits’:
+linux/tools/include/linux/bitfield.h:166:54: error: implicit declaration of function ‘le64_to_cpu’ [-Wimplicit-function-declaration]
+  166 |         ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
+      |                                                      ^~
+linux/tools/include/linux/bitfield.h:163:17: note: in definition of macro ‘____MAKE_OP’
+  163 |         return (from(v) & field)/field_multiplier(field);               \
+      |                 ^~~~
+linux/tools/include/linux/bitfield.h:172:1: note: in expansion of macro ‘__MAKE_OP’
+  172 | __MAKE_OP(64)
+      | ^~~~~~~~~
+linux/tools/include/linux/bitfield.h: In function ‘be64_encode_bits’:
+  CC      util/thread_map.o
+linux/tools/include/linux/bitfield.h:167:38: error: implicit declaration of function ‘cpu_to_be64’ [-Wimplicit-function-declaration]
+  167 |         ____MAKE_OP(be##size,u##size,cpu_to_be##size,be##size##_to_cpu) \
+      |                                      ^~~~~~~~~
+linux/tools/include/linux/bitfield.h:149:16: note: in definition of macro ‘____MAKE_OP’
+  149 |         return to((v & field_mask(field)) * field_multiplier(field));   \
+      |                ^~
+linux/tools/include/linux/bitfield.h:172:1: note: in expansion of macro ‘__MAKE_OP’
+  172 | __MAKE_OP(64)
+      | ^~~~~~~~~
+linux/tools/include/linux/bitfield.h: In function ‘be64_get_bits’:
+linux/tools/include/linux/bitfield.h:167:54: error: implicit declaration of function ‘be64_to_cpu’ [-Wimplicit-function-declaration]
+  167 |         ____MAKE_OP(be##size,u##size,cpu_to_be##size,be##size##_to_cpu) \
+      |                                                      ^~
+linux/tools/include/linux/bitfield.h:163:17: note: in definition of macro ‘____MAKE_OP’
+  163 |         return (from(v) & field)/field_multiplier(field);               \
+      |                 ^~~~
+linux/tools/include/linux/bitfield.h:172:1: note: in expansion of macro ‘__MAKE_OP’
+  172 | __MAKE_OP(64)
+      | ^~~~~~~~~
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
-
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org	# 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/iio/adc/exynos_adc.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index 43c8af41b4a9d..a935ef1840a6f 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -721,14 +721,7 @@ static const struct iio_chan_spec exynos_adc_iio_channels[] = {
- 	ADC_CHANNEL(9, "adc9"),
- };
- 
--static int exynos_adc_remove_devices(struct device *dev, void *c)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--
--	platform_device_unregister(pdev);
- 
--	return 0;
--}
- 
- static int exynos_adc_ts_open(struct input_dev *dev)
- {
-@@ -929,8 +922,7 @@ static int exynos_adc_probe(struct platform_device *pdev)
- 	return 0;
- 
- err_of_populate:
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	if (has_ts) {
- 		input_unregister_device(info->input);
- 		free_irq(info->tsirq, info);
-@@ -959,8 +951,7 @@ static int exynos_adc_remove(struct platform_device *pdev)
- 		free_irq(info->tsirq, info);
- 		input_unregister_device(info->input);
- 	}
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	iio_device_unregister(indio_dev);
- 	free_irq(info->irq, info);
- 	if (info->data->exit_hw)
--- 
-2.51.0
-
+BR,
+Hamza
 
