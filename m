@@ -1,244 +1,158 @@
-Return-Path: <stable+bounces-211859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCfyCt7leGl1twEAu9opvQ
-	(envelope-from <stable+bounces-211859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:20:46 +0100
+	id SFzVJkXueGkCuAEAu9opvQ
+	(envelope-from <stable+bounces-211860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:56:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F20997A94
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:20:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C5E980D9
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:56:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4FE03011F3B
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:20:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0A77F3047C53
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD32360722;
-	Tue, 27 Jan 2026 16:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E046835B639;
+	Tue, 27 Jan 2026 16:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eFblznla"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCOkzOrK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A0E35CBD6
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 16:20:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769530841; cv=pass; b=V9/Zv3Ftni23yhToETEaAvo0LxXvE0Fx3/YVOfuZ61xAv4FIuJ1I2x2zWbFGLBPMsE9Pn3xdjMLLWg0BODX9BRqnVNu2JMQMZ89Gqp8fPNjai2SW7cDT6fQhFoMEgXrgsGk6m05KOXFQTn2pzuBV8VUFJtz9qGYMzCjicKpt9F4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769530841; c=relaxed/simple;
-	bh=p/BPlz45ZsnUOOv45A1fjPgdnS9vrperPPIkgwQyvPU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q3gwxXwkuUCCqdjEZBHlcyhhTe4bvT3Lh0M4ybqIBReiM5bW89Vu4jBSkXVCt/J5IL/J/WK5t3MYaK6KMfYOX9dtXIMc8VTU8AbMHiR0zcblT4XsB6dtsevOvmXasxUvCe73/oagJaHoT6/x23KS8HkX+GsWB5wnDX2X65yGHlI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eFblznla; arc=pass smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c61342a69b9so2092562a12.0
-        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 08:20:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769530840; cv=none;
-        d=google.com; s=arc-20240605;
-        b=KDhB6sHY4K+ljlstMNDIlmKakdVGUFaVt8h8RJqvckgaQMojzBwpaUNLV9jvpXLMiZ
-         w9VT6KcJnqkiwXKsYvz5q5voeXMw5I0n0VPirimFTLxglF8RUbsbSPppdncv7kpypFKO
-         5d6WDKoDcafowVxkBOHV+WUvPpWztLNUr1QFh6iv1zWGcTIr4o5T6wBUzWvl54AXbV69
-         hsORaokb5TPzPdmsoNy1RPTfAKhCdTTq4E2NIkP9DJQCmFZdncJk1rVHyd6IgEgOUiWB
-         oIMSJjYy7TIyWcONfvpQbKogpUvZSq27mm4Xpz44sOiP0Sxpj3zbrYoSC7IMN3zWxsfo
-         azdw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=d65yytJ1MW2JgMvRS0O1lQIMly3lo2OKXfhreY51uFQ=;
-        fh=jUMVflhURPN58VDqXErnKQBNjaqzuPgZ97aP2zHxdM4=;
-        b=QLocX/aYlCydu/mh2VGp2J62teTxcMd+0tQaFLDsr/U6Qh8kJSeJXCdmXaT1cItpjo
-         SvQFK7jwKKMC1+vuVvWkkYUb7arhoKOKozDcwQzEQ2B9KEykFNG9hE4a1vRr+dWc3ZMV
-         7JyDeFaI4AAeTT63F55708Cwv61RmQtaJHsUaKTwAtqH4oExVYOqKTdzcSbfI78MO55v
-         zi0pkfy4lcTzHjtwUTBR8Th9pIyk+mT9buiz/dnicCT3Lzidhg54woHfGffWE9JVLpwh
-         T9DxEohXsjMGjlgc1CYuW1xEh7MPAhsr1NcDGgQ+FPYHcQP3YEy+YAX49ssNK9hYttm2
-         NHMA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769530840; x=1770135640; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d65yytJ1MW2JgMvRS0O1lQIMly3lo2OKXfhreY51uFQ=;
-        b=eFblznlaAM8ejSVhSXhmavjFxMQf00lhD/5n/xkQ4GZm9pQ9y1SYBtDMtnud7+Dbkv
-         u1QkDeZDOczq1g5INH2DQXrf7lQJU3S7i0RLju03z9IWWbocTHFTO19bvby53/FexhXb
-         s5NsuQaQyfCfc1Rzi2zaPsDXBQceAk/dqcbeQW0bwQIZTS8g30i8LjwYM0Q8M+XzlDdb
-         ZnkkjChz9+kUrs984zjVkddMi9x9xacicZ/YYuaPGxwZkFHoJPhV6aTSkl+vSPqXKbq4
-         r8D6g5iKPLjRDkw7EXlPCfzdUyUE89pgk5kxigqOzn/6P4e5FegThzzkVvA7X+8SCbHq
-         sc2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769530840; x=1770135640;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=d65yytJ1MW2JgMvRS0O1lQIMly3lo2OKXfhreY51uFQ=;
-        b=HPAeMF/GNCoKDLMALJyrbjqqGGVwG4onrNKeUbMF4QatIbe2qKvl6Jh5oEMlI45/fV
-         oFuzPLSCovG0xLhIVmmIfYV7PFqKa8a90W+rBJRCE8XBC97Y0ARvREieWIRU2GkITcWc
-         /g25ZWraIdoF8IMRYL/SRfvLeuq/XfGpwLovZxnRXGfjqydQm0GYZ6b5huXmwO3JDUub
-         NkJuGB+PGTmHsWGxzKz6YITWtmKgzREa33RAlEMegg8ukB42/BssED9Ih7SutACJUghC
-         8RSnyJu14dOagCaybixSDjPpBOLsPBjuGqBchoG+n5eKs4VEclvUanJU5gh73GNgpycE
-         Iltw==
-X-Forwarded-Encrypted: i=1; AJvYcCWfWglg5xRoIVgstIAvAAebhIqdegjzRSJbeFMsOhaOaedx0cjCnkFS8CbWUSdAuinZD0IApaI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydF75VrASaohNfYtXJ+nsoN8XNAvB61yeh6MMTj62OhmhNvh5m
-	w0raXgQR2jO9QCBt3LJ0x7NHuDja5rhl4m/VJrmkLzOdrwVMmDfmnjsLARlRRYx5NqBF3CfL1Ui
-	Koao37sBUoMjQos/vxTD/oVmUGrZ89Ng=
-X-Gm-Gg: AZuq6aLgl29xpF1Ookb6Rw3zi6/94QOUC5OBRgNKeJa/q6MYcRCSCVk3wWHRuohh8Vr
-	4+4XM5J250Ic6FiPLaG1OsD3JyQkrAPsFdX3hSrGLJQvClVFzckcm10P79TN5uMWlGnm3KcZ92H
-	xG8ShD131rE07Q6/n37v274zzcOKau6wB7iXsDAiP/9iGKM+TaXOLAVMELcICsxoxHp30s9Lgqe
-	1BAHepHcq1jjRWDJkXZxl/+YRfEU9K26a1Ha9OaN1SFhss4QDiAEqC0XiFj5jdwOeWR+w8kVaVM
-	SLVqbEwBRIQLxtztWEsNZHkT8a0=
-X-Received: by 2002:a17:90b:3b85:b0:340:2a3a:71b7 with SMTP id
- 98e67ed59e1d1-353fecd6236mr2343805a91.12.1769530839689; Tue, 27 Jan 2026
- 08:20:39 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A244E3161B1;
+	Tue, 27 Jan 2026 16:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769531747; cv=none; b=sxtBJc96TKykzaWN2Si9U3RioAACVxmhXN2ExyQd7oX2BFumIVDVH8m3MuW8549/cYd/VvYWY8hd3tzJ8FiEqmiTJYvt3NR5UJHrpJ+VWoswHBFKU/WgZXi8dBQ6TPAt5odh1Yw9QxeJ2l51V0sONVsZVYWvOmddT6vzjgWexXE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769531747; c=relaxed/simple;
+	bh=cr26WC5/jQYq2j+tJmLcxta5293mWj+TZtRfHWsdvz4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=l7gNsI9rIuJdqwNW2qeHkbZzOcqXNmEQd/bNaJ8i6DTY3ctkzZoSdi+aH4dYTBD8iVqm36owK5a90QZvSiqF51GHzh/piAGJN7CMnrtK9iwt9r90Zqm+TeyB4XqBDojN43kiVOGeuTDS2iNUByYdKOEHgdkobb4CIIvDxppuKVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCOkzOrK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB818C116C6;
+	Tue, 27 Jan 2026 16:35:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769531747;
+	bh=cr26WC5/jQYq2j+tJmLcxta5293mWj+TZtRfHWsdvz4=;
+	h=From:Date:Subject:To:Cc:From;
+	b=CCOkzOrK25eLLiF0AJA5dN2tM+8+7kFCq8umKj8K69QJ5rSLutuPNVgytpQP38g2K
+	 8jU0nNCtCjTMGLkK8zLg2dee/hfxAr8tGzq5t+nDHCMBuZB7cv3TPTIvpJ+UOw2gfA
+	 LaUBhPRHixANi5sC81ZnY+uQl77LkEtxTFNEZKwTbqQA0kgk65DM8dCh7KgbHcIc+d
+	 o7EbSZjTDU+xa8KTsS9yt2tbw+8PQ6kW9CNQMfw2dJyD3GSMj6FozZGQ6uUDBJQVUy
+	 pL46WOWcQA4mYwWuyF5BzrYz/QSKaABiPK8tLM7ZFfG49MAWC40VgAMSJhRRzg369m
+	 8fLgsIyoLzv8A==
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 27 Jan 2026 11:35:43 -0500
+Subject: [PATCH v2] scripts: generate_rust_analyzer.py: avoid FD leak
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126173444.10228-1-bjsaikiran@gmail.com> <20260126173444.10228-4-bjsaikiran@gmail.com>
- <900cc5dd-c39d-42f6-9531-016f62da81e8@linaro.org> <CAAFDt1tsyvtAa84bFK2Hq5yG_F15SUUseBd5Xi-DB8GnUj7+7A@mail.gmail.com>
- <aaab1d32-9375-47d2-8524-e80e076b864e@linaro.org> <CAAFDt1vKn5ssoTQZduGKb5eOeN74P=FVk9f01go1d-JS71Zt0A@mail.gmail.com>
- <clmeor0Z59Dd_ymBj-m2zE0orMOFgVsPFXUBpBx39ZehM4t_GrlZV8y8f-lZbH6p9N-W7FLs7PqYhfG6VzwmBw==@protonmail.internalid>
- <571cd869-847f-4697-ace3-503f123e8486@linaro.org> <cb902c4e-f7b9-4d70-a997-1e84c90ea18b@kernel.org>
-In-Reply-To: <cb902c4e-f7b9-4d70-a997-1e84c90ea18b@kernel.org>
-From: Saikiran B <bjsaikiran@gmail.com>
-Date: Tue, 27 Jan 2026 21:50:28 +0530
-X-Gm-Features: AZwV_Qj_vb1x1lu6XXMunkVpxeZcvcZBHMOYFjYNAf2rHeYoii8GYdmNqCxCgXM
-Message-ID: <CAAFDt1s+RUpUEUEERCuXqDHijxHXW=PemVaWk=to7WtQ9cYKEg@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] media: i2c: ov02c10: Use runtime PM autosuspend to
- avoid brownouts
-To: "Bryan O'Donoghue" <bod@kernel.org>
-Cc: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, linux-media@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, rfoss@kernel.org, todor.too@gmail.com, 
-	vladimir.zapolskiy@linaro.org, Hans de Goede <hansg@kernel.org>, 
-	sakari.ailus@linux.intel.com, mchehab@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260127-rust-analyzer-fd-leak-v2-1-1bb55b9b6822@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ6CMBBFr0K6dkw7QEFW3sOwKDBAhRQzBSIS7
+ i7gAVy+5P33V+GJLXmRBatgmq23g9sBL4EoW+MaAlvtLFCilgoRePIjGGf65UMMdQU9mQ4KjJI
+ 0lJXWmsS+fTHV9n12H/mP/VQ8qRyP2GG01o8DL+fxrA7v38esQMEtiuMkSVVYoLx3xI7668CNy
+ Ldt+wLY/mCSzQAAAA==
+X-Change-ID: 20260122-rust-analyzer-fd-leak-b247830d666e
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+ Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Fiona Behrens <me@kloenk.dev>, Boris-Chengbiao Zhou <bobo1239@web.de>
+Cc: Kees Cook <kees@kernel.org>, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Tamir Duberstein <tamird@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openssh-sha256; t=1769531745; l=1497;
+ i=tamird@kernel.org; h=from:subject:message-id;
+ bh=cr26WC5/jQYq2j+tJmLcxta5293mWj+TZtRfHWsdvz4=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgtYz36g7iDMSkY5K7Ab51ksGX7hJgs
+ MRt+XVZTrIzMVIAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QN65+Zy/TyTBsEhHd95G2H430nlTNkkGyHi46HzKomof5m5D7AfFrLIl9NsboE3ddoPTm6jfO9l
+ gJ7bU0hmLrQY=
+X-Developer-Key: i=tamird@kernel.org; a=openssh;
+ fpr=SHA256:264rPmnnrb+ERkS7DDS3tuwqcJss/zevJRzoylqMsbc
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211859-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linaro.org,vger.kernel.org,kernel.org,gmail.com,linux.intel.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211860-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,kloenk.dev,web.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tamird@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 8F20997A94
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,kloenk.dev:email,collabora.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,umich.edu:email]
+X-Rspamd-Queue-Id: C2C5E980D9
 X-Rspamd-Action: no action
 
-Hi Bryan and Hans,
+Use `pathlib.Path.read_text()` to avoid leaking file descriptors.
 
-I implemented your suggested debug probe in qcom-rpmh-regulator.c to inspec=
-t
-the registers directly. Unfortunately, on this platform (X1E80100), it retu=
-rns:
-
-  rpmh_regulator_probe: --- OV02C10 PMIC DUMP: Failed to get parent regmap =
+Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 ---
+Changes in v2:
+- Use pathlib.Path.read_text. (Levi Zim)
+- Drop errant Tested-by tag. (Miguel Ojeda)
+- Link to v1: https://patch.msgid.link/20260122-rust-analyzer-fd-leak-v1-1-945577813b20@kernel.org
+---
+ scripts/generate_rust_analyzer.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-This confirms that the AP does not have direct access to the PMIC configura=
-tion
-registers (likely blocked by the RPMh firewall/access control).
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 3b645da90092..152bd3705303 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -190,9 +190,10 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+ 
+     def is_root_crate(build_file, target):
+         try:
+-            return f"{target}.o" in open(build_file).read()
++            contents = build_file.read_text()
+         except FileNotFoundError:
+             return False
++        return f"{target}.o" in contents
+ 
+     # Then, the rest outside of `rust/`.
+     #
 
-However, I have confirmed definitively that the root cause is the 2.3s pass=
-ive
-discharge requiring a mandatory off-time.
+---
+base-commit: 2af6ad09fc7dfe9b3610100983cccf16998bf34d
+change-id: 20260122-rust-analyzer-fd-leak-b247830d666e
 
-When I apply the `regulator-off-on-delay-us =3D <2300000>;` property to the
-camera regulators in the device tree (and patch the regulator driver to sup=
-port
-it), the camera operates flawlessly without needing any workarounds (like
-autosuspend / Software reset / additional delays) in the sensor driver.
-The regulator core correctly blocks the
-re-enable until the discharge constraint is met.
+Best regards,
+--  
+Tamir Duberstein <tamird@kernel.org>
 
-The regulator delay and figuring the 2.3s out is another issue which I
-will keep digging at from now.
-
-Plan for v4:
-
-1. For this ov02c10 series (v4), I will drop the "Autosuspend" patch as it =
-is
-   no longer needed with the correct platform fix.
-
-3. I will keep the "Race Fix" (Patch 1) and a cleaned-up "Power Sequence"
-   (Patch 2) which addresses Hans's feedback (5ms reset assertion, no
-software reset) to ensure
-   the driver is compliant with the datasheet.
-
-Please let me know if you have any questions.
-
-Regards,
-Saikiran
-
-On Tue, Jan 27, 2026 at 4:41=E2=80=AFPM Bryan O'Donoghue <bod@kernel.org> w=
-rote:
->
-> On 27/01/2026 11:06, Bryan O'Donoghue wrote:
-> > So, SPMI is not exported in /sys/kernel/debug/regmap - however
-> >
-> > drivers/regulator/qcom-rpmh-regulator.c
-> >
-> > Lets add this to probe
-> >
-> > unsigned int val, i;
-> >       u16 bases[] =3D {0x4000, 0x4300, 0x4600}; // LDO1, LDO4, LDO7
-> >       const char *names[] =3D {"LDO1(1.2V)", "LDO4(1.8V)", "LDO7(2.8V)"=
-};
-> >       struct regmap *p_regmap =3D dev_get_regmap(dev->parent, NULL);
-> >
-> >       if (p_regmap) {
-> >           pr_info("--- OV02C10 PMIC RAIL DUMP START ---\n");
-> >           for (i =3D 0; i < 3; i++) {
-> >               // Check Config (Active Discharge)
-> >               regmap_read(p_regmap, bases[i] + 0x41, &val);
-> >               pr_info("!!! %s SEC_CTRL (0x%04x) =3D 0x%02x (Bit7: Activ=
-e
-> > Discharge)\n",
-> >                       names[i], bases[i] + 0x41, val);
-> >
-> >               // Check Status (Is it actually on?)
-> >               regmap_read(p_regmap, bases[i] + 0x08, &val);
-> >               pr_info("!!! %s STATUS   (0x%04x) =3D 0x%02x (Bit7: VREG_=
-OK,
-> > Bit0: VREG_ON)\n",
-> >                       names[i], bases[i] + 0x08, val);
-> >
-> >               // Check Pull-down config (Secondary check)
-> >               regmap_read(p_regmap, bases[i] + 0x42, &val);
-> >               pr_info("!!! %s PD_CTRL   (0x%04x) =3D 0x%02x\n",
-> >                       names[i], bases[i] + 0x42, val);
-> >           }
-> >           pr_info("--- OV02C10 PMIC RAIL DUMP END ---\n");
-> >       }
->
-> Obviously only do this for PM8010 for the other RPMh which may not have
-> this offset.
->
-> ---
-> bod
 
