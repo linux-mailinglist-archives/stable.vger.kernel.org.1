@@ -1,139 +1,188 @@
-Return-Path: <stable+bounces-211873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KGreG0fweGkCuAEAu9opvQ
-	(envelope-from <stable+bounces-211873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:05:11 +0100
+	id jXfMMbnweGmGuAEAu9opvQ
+	(envelope-from <stable+bounces-211874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:07:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103C698274
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:05:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96235982D7
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:07:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8D9B9300833B
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:05:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F10F30157DA
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DDB362156;
-	Tue, 27 Jan 2026 17:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BD73624B0;
+	Tue, 27 Jan 2026 17:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PLslHcqX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PfxzEiyi"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DA73624B8
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 17:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0873D3624B8;
+	Tue, 27 Jan 2026 17:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769533506; cv=none; b=Ej9PmjzikyPVwW6emuSUzukmycoVhRjPwtoZlHpi84VOZCp8Z7CP/P8a/ZEI98OXD9eqEH3d/isStCZHEAf6IJ/kVqXag1hDdU+OweWIqzbRhDhyhith1vNuya/64Jeo1u2a81caa5UCwJT3+7l7IhvCsSMr6DRemxE8NXrq5dg=
+	t=1769533622; cv=none; b=lQcmL9LCwgMRACQLeMwNFCokTBqyTiPpZASrqlP2TFkjGWbb2SqJLrgl6oqrkM7QPUxl9aXSFhmTD41Ri8nY7ZXFoysQMbrWG0cULDSEW4xt8oQl8e6Bpk3whcMbmg0pYVI4FPuOaoPifqybLfmKIURV9uD9VGH/PbrGj7K0Phg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769533506; c=relaxed/simple;
-	bh=6piSAGUydFEVLrWUa1H6WrRq9PKT544OvcATww2IUdc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e3eJ6iK/PRh+zqbnAne4t4+Kp7cjAJIlbthrAoFp5uPt4YY/IHN6rYAgB/gEuv2T65qIMPsQjuBam58k/Vhz+n4zyuF+0VNgcj8eZ/VHBvPoSWGzojSYFkIetKn/vErWBkKbo6NaVR0s251nTGSTJ62tFFMr9VudAPxy6/x0IQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PLslHcqX; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1769533622; c=relaxed/simple;
+	bh=rTeakHWNKALUrBibETYJJNW2olbrl/Lrqdq8FlKwVuc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nQMc87knnqJIbtyfZTZ2zwi9rwuWX6COj+oP8wx8pAdWHbBUv6PRmCH0cWOy0M1BF03NPNNao93Mvla0lSHTSil43uOIXdE1JqddhyXJq5q2C5kJKVFpcpWZmitpdmI4aJnJs/YxgLU2U4KRQhMBloJu7V3n5V5HvHRCDWfuOPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PfxzEiyi; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769533505; x=1801069505;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6piSAGUydFEVLrWUa1H6WrRq9PKT544OvcATww2IUdc=;
-  b=PLslHcqXNCN+UqzU227yIZ6z4JaZ+Csme0qL6DzxhaqID8gk+46slCgm
-   v3XGpDLtsRdLKckdbeiIhCvYd03unJ/Ys0zVBBLDz5t7QgXsVcp1HU/C1
-   DTItasmAXCZXcSw38K6B5IaCrDZ2aA9XjMewq5QjyhWuazebwcy3Fc7/M
-   GpAQ3a99hDXjGWLiruieNjcLWujB/IVWttO9UORjym1iO/yGI0cSApmkj
-   qlnK5PqxlYHLIhWNEqJTt2uPAFZNLMq+Zp99mSzgqFpUPegWMKWwGuUcx
-   7wDvgMssBSHMJNbu7CVoy4exh4egMwW/rY2/R3SNKem+qibm2KIlfjX6z
-   A==;
-X-CSE-ConnectionGUID: SJT8PbgSQy6TKgLe57l48w==
-X-CSE-MsgGUID: qNVhabC4QhyAT31IkWawLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="93393529"
+  t=1769533621; x=1801069621;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=rTeakHWNKALUrBibETYJJNW2olbrl/Lrqdq8FlKwVuc=;
+  b=PfxzEiyicHKELYhjNtC4mud4mDfd3ruaFB4Y7VAAaen8xW6AtIrVChpL
+   wFu4Ber0ib/todiaoPBxS4HDO4yNqdbdEosl4lZIEuVxkcEYA5lRCt/99
+   J727YRDg30oq8KG6CrjShuOTtsWZhZYAE173RmdT+qZ99F/2cx1E7Ql9b
+   4Se4XN3QLhIypPV6sPPYE6jHLv09GtXLAtHoVWC2Ug6TKfrf1ddD8R0aW
+   zQPr+qdBqXwnEC0IHUHxvVFAsAgrRYadQ2cZHlfKbdkHZ4d4sJYOl8LZM
+   JLrg8HyjhpZvFGRriGRgO42iIyt9qOCAg3Hj3Kt7DZHkqPahx/4tXa4M8
+   Q==;
+X-CSE-ConnectionGUID: 9WDjYUcGQiCeUwfcEc3Fuw==
+X-CSE-MsgGUID: G0rAPgAGSI2gVGPXh6wvwA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="93394389"
 X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="93393529"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 09:04:58 -0800
-X-CSE-ConnectionGUID: 1Ya8M0chSWiDjKn9fkmMng==
-X-CSE-MsgGUID: yfnXmkAPRKiubeCwnmBioA==
+   d="scan'208";a="93394389"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 09:07:00 -0800
+X-CSE-ConnectionGUID: QeijQR3aSMiKnHvKtoJoaQ==
+X-CSE-MsgGUID: MXJeOtn/R6aSpuFdbwylFA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="208039398"
-Received: from guc-pnp-dev-box-1.fm.intel.com ([10.1.39.24])
-  by orviesa008.jf.intel.com with ESMTP; 27 Jan 2026 09:04:58 -0800
-From: Zhanjun Dong <zhanjun.dong@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Zhanjun Dong <zhanjun.dong@intel.com>,
-	stable@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH v4 4/5] drm/xe/guc: Ensure CT state transitions via STOP before DISABLED
-Date: Tue, 27 Jan 2026 12:04:54 -0500
-Message-Id: <20260127170455.618616-5-zhanjun.dong@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260127170455.618616-1-zhanjun.dong@intel.com>
-References: <20260127170455.618616-1-zhanjun.dong@intel.com>
+   d="scan'208";a="207271208"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO kekkonen.fi.intel.com) ([10.245.244.22])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 09:06:57 -0800
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id E372E11FCD3;
+	Tue, 27 Jan 2026 19:07:00 +0200 (EET)
+Date: Tue, 27 Jan 2026 19:07:00 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Saikiran <bjsaikiran@gmail.com>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	rfoss@kernel.org, todor.too@gmail.com, bryan.odonoghue@linaro.org,
+	bod@kernel.org, vladimir.zapolskiy@linaro.org, hansg@kernel.org,
+	mchehab@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] media: i2c: ov02c10: Correct power-on sequence
+ and timing
+Message-ID: <aXjwtBey0MRP0c7f@kekkonen.localdomain>
+References: <20260127165024.46156-1-bjsaikiran@gmail.com>
+ <20260127165024.46156-3-bjsaikiran@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260127165024.46156-3-bjsaikiran@gmail.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211873-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhanjun.dong@intel.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,linaro.org];
+	TAGGED_FROM(0.00)[bounces-211874-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: 103C698274
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:dkim,kekkonen.localdomain:mid]
+X-Rspamd-Queue-Id: 96235982D7
 X-Rspamd-Action: no action
 
-The GuC CT state transition requires moving to the STOP state before
-entering the DISABLED state. Update the driver teardown sequence to make
-the proper state machine transitions.
+HI Saikiran,
 
-Fixes: ee4b32220a6b ("drm/xe/guc: Add devm release action to safely tear down CT")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
----
- drivers/gpu/drm/xe/xe_guc_ct.c | 1 +
- 1 file changed, 1 insertion(+)
+On Tue, Jan 27, 2026 at 10:20:24PM +0530, Saikiran wrote:
+> The previous power-on sequence did not strictly follow the hardware timing
+> requirements (T1), potentially leading to initialization failures on some
+> platforms.
+> 
+> Update the sequence to match the datasheet and maintainer recommendations:
+> 1. Assert XSHUTDOWN (reset) for 5ms (T1 >= 5ms) before enabling power
+>    resources.
+> 2. Enable clock and regulators in the standard order.
+> 3. De-assert XSHUTDOWN.
+> 4. Wait 5ms (T2 >= 5ms) for sensor boot before I2C access (using a wider
+>    range for timer coalescing).
+> 
+> This ensures the sensor enters a clean state during cold boot.
+> 
+> Tested-on: Lenovo Yoga Slim 7x (Snapdragon X Elite)
+> Fixes: 44f8901 ("media: i2c: add OmniVision OV02C10 sensor driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Saikiran <bjsaikiran@gmail.com>
+> ---
+>  drivers/media/i2c/ov02c10.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
+> index fa7cc48b769a..3bfbd0deb126 100644
+> --- a/drivers/media/i2c/ov02c10.c
+> +++ b/drivers/media/i2c/ov02c10.c
+> @@ -676,6 +676,12 @@ static int ov02c10_power_on(struct device *dev)
+>  	struct ov02c10 *ov02c10 = to_ov02c10(sd);
+>  	int ret;
+>  
+> +	/* Assert reset for 5ms to ensure sensor is in reset state */
+> +	if (ov02c10->reset) {
+> +		gpiod_set_value_cansleep(ov02c10->reset, 1);
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index dfbf76037b04..6a658f085e0f 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -345,6 +345,7 @@ static void guc_action_disable_ct(void *arg)
- {
- 	struct xe_guc_ct *ct = arg;
- 
-+	xe_guc_ct_stop(ct);
- 	guc_ct_change_state(ct, XE_GUC_CT_STATE_DISABLED);
- }
- 
+Is this needed? Isn't XSHUTDOWN already asserted here?
+
+> +		usleep_range(5000, 6000);
+> +	}
+> +
+>  	ret = clk_prepare_enable(ov02c10->img_clk);
+>  	if (ret < 0) {
+>  		dev_err(dev, "failed to enable imaging clock: %d", ret);
+> @@ -691,10 +697,8 @@ static int ov02c10_power_on(struct device *dev)
+>  	}
+>  
+>  	if (ov02c10->reset) {
+> -		/* Assert reset for at least 2ms on back to back off-on */
+> -		usleep_range(2000, 2200);
+>  		gpiod_set_value_cansleep(ov02c10->reset, 0);
+> -		usleep_range(5000, 5100);
+> +		usleep_range(5000, 5500);
+
+According to the datasheet you seem to need 8192 XVCLK cycles after
+deasserting XSHUTDOWN before proceeding with I²C access.
+
+>  	}
+>  
+>  	return 0;
+
 -- 
-2.34.1
+Regards,
 
+Sakari Ailus
 
