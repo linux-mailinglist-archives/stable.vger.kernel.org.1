@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-211763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHIsE/a4eGlzsQEAu9opvQ
-	(envelope-from <stable+bounces-211763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:09:10 +0100
+	id +I9bMAi5eGlzsQEAu9opvQ
+	(envelope-from <stable+bounces-211764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:09:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB29894AD2
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:09:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C78A294AE3
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:09:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1530730054FF
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:09:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 73DD93008080
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840373559F8;
-	Tue, 27 Jan 2026 13:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D99325FA05;
+	Tue, 27 Jan 2026 13:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fi+TNp8A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqEcbXCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EF93559E4
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FEA346AC5
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769519343; cv=none; b=MqD5nwT0vDPI5oTxLLU3Tf0wMeFvvDWsiO7+v8svoaTlKjRnENFojJi6DcEcmpzhekgxVJIJzZSSACWMHEC9sX/m/Y/5BuhhATZY3Gg4gUzF3eMu5smZbBUPiSHTM/iLlp93rT6n7tQ809Sn92o8K8CNovGOkyCNJkKxxeJnQBI=
+	t=1769519349; cv=none; b=L6ALgBTxR4m4k+1iKwurQWGh7wbkF3CqHVZDknAjxRt5Tw4Ad+oZ2D8i/grP4g9MO8j4w0I683GV9OihiUaqcwn9yqReFDwmWf9X2CV+qnzkH5I+wBPhlPtMDp1hp1Y9aRGyMa777JbH16RlUb6akWxOZGqZV6xerYWjoG+Tukc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769519343; c=relaxed/simple;
-	bh=8PxbLKnCI2bBI+JHih4NugbPdCWZepJh1fAYuLJVxdk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sKrcC+nEtsay1gYgcAw2w3s13K2BtGVncgv/awWeirLboy8O0SspXgRkj6c5pAIlGfKzlI2Nyy9MQbpgn1vbJ6InkTshjvueq4kTuM1KBuf53UcvIX4bbulUZ6p/dO13ZlFMUhWpBScFw8ZtlUwmQQYPLBpy3VnBILxFosaCTfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fi+TNp8A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B46EC16AAE;
-	Tue, 27 Jan 2026 13:09:01 +0000 (UTC)
+	s=arc-20240116; t=1769519349; c=relaxed/simple;
+	bh=MJt+mG7bWWCqVDKc9x//lLhiWenSXodozgK0AySBCjw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a3Ziv+coftbdFrEHAPDlK3iG6cYKZCIXLlUKuqymGkdrlgDuObLoCYcrq+56/OoTB8SQ5g9joPUYup6JewItry97AGSJcgJQ2RtQjq391Tj+KAXNJMkz0UeP+sBqwVIMQ9sBzrKM0y9ZzutT2RZuPPSXGrhf3jjsUFXnwQlLjws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqEcbXCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4314AC116C6;
+	Tue, 27 Jan 2026 13:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769519342;
-	bh=8PxbLKnCI2bBI+JHih4NugbPdCWZepJh1fAYuLJVxdk=;
+	s=korg; t=1769519348;
+	bh=MJt+mG7bWWCqVDKc9x//lLhiWenSXodozgK0AySBCjw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Fi+TNp8AXyPr+WXLRnmok+11jFO6kMcXVpKHJ0475Kwfi0Ro0eF+wGSVM9I8TVwZl
-	 O5+XnXyY5zbLjuE8CgSu1m0ipKdBQY86I2QLxUHqmA9teIIuY5MlKskukk+t1AK8kG
-	 1v7m6yaXfVoSVqUgcbuCeaZB2AeLMOVDouJGysBg=
-Subject: FAILED: patch "[PATCH] of: platform: Use default match table for /firmware" failed to apply to 5.10-stable tree
-To: robh@kernel.org,sudeep.holla@arm.com
+	b=lqEcbXCmK8HjBjQzSpqh4esrKWUW9LcOs8gNP/+eHHWFiw2ipu0DyH3xKe3Ta7R+N
+	 Eye/BpIGqNM1WJ/Ox8YQzxKZyjzMIJmvjEcHn18GRmYusaJDhoDqSB65SnmcJLly39
+	 GyjpFzNjC3078eQgprIgezl9zxyClDE01LMpvRjU=
+Subject: FAILED: patch "[PATCH] migrate: correct lock ordering for hugetlb file folios" failed to apply to 6.12-stable tree
+To: willy@infradead.org,akpm@linux-foundation.org,apopple@nvidia.com,byungchul@sk.com,david@kernel.org,gourry@gourry.net,jannh@google.com,joshua.hahnjy@gmail.com,lance.yang@linux.dev,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,matthew.brost@intel.com,rakie.kim@sk.com,riel@surriel.com,stable@vger.kernel.org,vbabka@suse.cz,ying.huang@linux.alibaba.com,ziy@nvidia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 27 Jan 2026 14:08:51 +0100
-Message-ID: <2026012751-crescent-atlas-e3e1@gregkh>
+Date: Tue, 27 Jan 2026 14:09:05 +0100
+Message-ID: <2026012705-duress-reward-8530@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,51 +55,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211763-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211764-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	FREEMAIL_TO(0.00)[infradead.org,linux-foundation.org,nvidia.com,sk.com,kernel.org,gourry.net,google.com,gmail.com,linux.dev,oracle.com,intel.com,surriel.com,vger.kernel.org,suse.cz,linux.alibaba.com];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,arm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: CB29894AD2
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gregkh:email,intel.com:email,linuxfoundation.org:dkim,alibaba.com:email,suse.cz:email,linux.dev:email,infradead.org:email,nvidia.com:email,oracle.com:email,surriel.com:email,appspotmail.com:email,linux-foundation.org:email]
+X-Rspamd-Queue-Id: C78A294AE3
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 48e6a9c4a20870e09f85ff1a3628275d6bce31c0
+git cherry-pick -x b7880cb166ab62c2409046b2347261abf701530e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012751-crescent-atlas-e3e1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012705-duress-reward-8530@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,39 +113,104 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 48e6a9c4a20870e09f85ff1a3628275d6bce31c0 Mon Sep 17 00:00:00 2001
-From: "Rob Herring (Arm)" <robh@kernel.org>
-Date: Tue, 13 Jan 2026 19:51:58 -0600
-Subject: [PATCH] of: platform: Use default match table for /firmware
+From b7880cb166ab62c2409046b2347261abf701530e Mon Sep 17 00:00:00 2001
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Date: Fri, 9 Jan 2026 04:13:42 +0000
+Subject: [PATCH] migrate: correct lock ordering for hugetlb file folios
 
-Calling of_platform_populate() without a match table will only populate
-the immediate child nodes under /firmware. This is usually fine, but in
-the case of something like a "simple-mfd" node such as
-"raspberrypi,bcm2835-firmware", those child nodes will not be populated.
-And subsequent calls won't work either because the /firmware node is
-marked as processed already.
+Syzbot has found a deadlock (analyzed by Lance Yang):
 
-Switch the call to of_platform_default_populate() to solve this problem.
-It should be a nop for existing cases.
+1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
+2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
+folio_lock.
 
-Fixes: 3aa0582fdb82 ("of: platform: populate /firmware/ node from of_platform_default_populate_init()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://patch.msgid.link/20260114015158.692170-2-robh@kernel.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+migrate_pages()
+  -> migrate_hugetlbs()
+    -> unmap_and_move_huge_page()     <- Takes folio_lock!
+      -> remove_migration_ptes()
+        -> __rmap_walk_file()
+          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index f77cb19973a5..a6dca3a005aa 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -569,7 +569,7 @@ static int __init of_platform_default_populate_init(void)
+hugetlbfs_fallocate()
+  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
+    -> hugetlbfs_zero_partial_page()
+     -> filemap_lock_hugetlb_folio()
+      -> filemap_lock_folio()
+        -> __filemap_get_folio        <- Waits for folio_lock!
+
+The migration path is the one taking locks in the wrong order according to
+the documentation at the top of mm/rmap.c.  So expand the scope of the
+existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
+
+This is (mostly) how it used to be after commit c0d0381ade79.  That was
+removed by 336bf30eb765 for both file & anon hugetlb pages when it should
+only have been removed for anon hugetlb pages.
+
+Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
+Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
+Debugged-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Jann Horn <jannh@google.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 5169f9717f60..4688b9e38cd2 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1458,6 +1458,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 	int page_was_mapped = 0;
+ 	struct anon_vma *anon_vma = NULL;
+ 	struct address_space *mapping = NULL;
++	enum ttu_flags ttu = 0;
  
- 		node = of_find_node_by_path("/firmware");
- 		if (node) {
--			of_platform_populate(node, NULL, NULL, NULL);
-+			of_platform_default_populate(node, NULL, NULL);
- 			of_node_put(node);
- 		}
+ 	if (folio_ref_count(src) == 1) {
+ 		/* page was freed from under us. So we are done. */
+@@ -1498,8 +1499,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 		goto put_anon;
  
+ 	if (folio_mapped(src)) {
+-		enum ttu_flags ttu = 0;
+-
+ 		if (!folio_test_anon(src)) {
+ 			/*
+ 			 * In shared mappings, try_to_unmap could potentially
+@@ -1516,16 +1515,17 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 
+ 		try_to_migrate(src, ttu);
+ 		page_was_mapped = 1;
+-
+-		if (ttu & TTU_RMAP_LOCKED)
+-			i_mmap_unlock_write(mapping);
+ 	}
+ 
+ 	if (!folio_mapped(src))
+ 		rc = move_to_new_folio(dst, src, mode);
+ 
+ 	if (page_was_mapped)
+-		remove_migration_ptes(src, !rc ? dst : src, 0);
++		remove_migration_ptes(src, !rc ? dst : src,
++				ttu ? RMP_LOCKED : 0);
++
++	if (ttu & TTU_RMAP_LOCKED)
++		i_mmap_unlock_write(mapping);
+ 
+ unlock_put_anon:
+ 	folio_unlock(dst);
 
 
