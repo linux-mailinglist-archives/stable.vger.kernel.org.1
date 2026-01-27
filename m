@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-211787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qC7UJ9m6eGmasgEAu9opvQ
-	(envelope-from <stable+bounces-211787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:17:13 +0100
+	id gC+xFyy7eGm0sgEAu9opvQ
+	(envelope-from <stable+bounces-211789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:18:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B77C94BF9
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:17:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBCE94C77
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:18:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3E9C23019147
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:17:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA8573017FB5
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83A62BEFF8;
-	Tue, 27 Jan 2026 13:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDF5342500;
+	Tue, 27 Jan 2026 13:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDd3Vr2L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJHpSSg4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C08421ADC7
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E4432D0FE
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769519831; cv=none; b=VZsHbO7uLM3Csz3Gir9wWa5nTZ0DNrwYDiNyTwqcni7iuRq2wYTXLc1iFhh0v0izNsN1iHSPBxw4mnY77i/eJoji+KAE9XYcnL4juyipOG0OQU735NDkqdVafeYklYA0p7PSYmBx5qpR0aQ5BhHIvSfpFzMCAOidkRcwossP+44=
+	t=1769519911; cv=none; b=XUhiKjnyvlqOuJCq3HJ9RlS+lM4MWECKVXXETemkAwd3e6yiMgkyAP3/2w+dGcqzR8yl+1EyX2w3Um9qS5MW0XGs/Y4LDUsBhgejKD7ttlzDpgHw9r71m48yU6CEaoxJzUQZb2OEEDtlRetf7DxIEXbtfqcC6TvrKOI4VanENB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769519831; c=relaxed/simple;
-	bh=Vq43WcnlFXUPtkrBPZxQgtg4YfWXBtxX+PAKUvyn4do=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i6XmoQZfs6/LtXF/xvhZAYvq1TUEcs6EFKX43VtGa3c3P3vo4IitFKzibXjdYPPTxJgM5SM7tI0ft3m9tGNmSH2liqAiriqlH0Wqg/X4ZAsPV6f5pkGIFsO4ieV+3li+c6GEj7SdUa3ls/ljyj/16VQvT+BGq0uB6nM9YUMBicM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDd3Vr2L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3E2C116C6;
-	Tue, 27 Jan 2026 13:17:10 +0000 (UTC)
+	s=arc-20240116; t=1769519911; c=relaxed/simple;
+	bh=9bjfJhH7gbj/OIw5PYLvfr1kjqda8Dv+M51dZCPKjjc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=GZVoA8xY4dEwAp8d3GUVNWSg69/Q4/vBOxxyQ3lGMNdT4XgvaCOZ+cybHCyUhVuNsG2JEW9sbiVQ6t13H+aCvcYb9ML27jjfFeUiEV/JDvDrialEc34++iP/T63gIAmiy0lsv8Co/8LDw8UlYmed826Vt1p4EILUcl8BKHv+Oy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJHpSSg4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2FAC116C6;
+	Tue, 27 Jan 2026 13:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769519831;
-	bh=Vq43WcnlFXUPtkrBPZxQgtg4YfWXBtxX+PAKUvyn4do=;
+	s=korg; t=1769519911;
+	bh=9bjfJhH7gbj/OIw5PYLvfr1kjqda8Dv+M51dZCPKjjc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wDd3Vr2LAnLZcaSS0BXiKsi9MhT+AQHPb3INBK/0EQd4yu193skYGNStUEX0zVLOj
-	 lj5NjunsyM4eeupy96EgzZbJ8eIq0j7HZeqJv+o3pbDRc5DRXOXLIaecC6xY2lmyx7
-	 7Tl9waoGPhKH/TRkcfqBuZCcYw6uBwe+s1MgMN/4=
-Subject: FAILED: patch "[PATCH] ksmbd: smbd: fix dma_unmap_sg() nents" failed to apply to 5.15-stable tree
-To: fourier.thomas@gmail.com,linkinjeon@kernel.org,stable@vger.kernel.org,stfrench@microsoft.com
+	b=PJHpSSg4DlR4+yNFAVNR1ufH0zSGIXJytSQrR/GpuHHkb99RnVQY7fE7vbCj6vMW+
+	 iyNLXAZOdoXuiMFvIi/YogQKvdjzpHXx0zWsYJFGsV5ZBTlFmL5SFtKMbPsg3mnc2l
+	 1GnYgqWXy4riIHBU7Zqbf9maVrYR240fr+d+nxLk=
+Subject: FAILED: patch "[PATCH] tracing: Fix crash on synthetic stacktrace field usage" failed to apply to 5.15-stable tree
+To: rostedt@goodmis.org,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,zanussi@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 27 Jan 2026 14:16:57 +0100
-Message-ID: <2026012757-wrench-plated-2f22@gregkh>
+Date: Tue, 27 Jan 2026 14:18:28 +0100
+Message-ID: <2026012728-underuse-shut-cde6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,37 +55,35 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211787-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,vger.kernel.org,microsoft.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-211789-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4B77C94BF9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: CBBCE94C77
 X-Rspamd-Action: no action
 
 
@@ -98,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 98e3e2b561bc88f4dd218d1c05890672874692f6
+git cherry-pick -x 90f9f5d64cae4e72defd96a2a22760173cb3c9ec
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012757-wrench-plated-2f22@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012728-underuse-shut-cde6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -113,66 +111,160 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 98e3e2b561bc88f4dd218d1c05890672874692f6 Mon Sep 17 00:00:00 2001
-From: Thomas Fourier <fourier.thomas@gmail.com>
-Date: Fri, 9 Jan 2026 11:38:39 +0100
-Subject: [PATCH] ksmbd: smbd: fix dma_unmap_sg() nents
+From 90f9f5d64cae4e72defd96a2a22760173cb3c9ec Mon Sep 17 00:00:00 2001
+From: Steven Rostedt <rostedt@goodmis.org>
+Date: Thu, 22 Jan 2026 19:48:24 -0500
+Subject: [PATCH] tracing: Fix crash on synthetic stacktrace field usage
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+When creating a synthetic event based on an existing synthetic event that
+had a stacktrace field and the new synthetic event used that field a
+kernel crash occurred:
 
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+ ~# cd /sys/kernel/tracing
+ ~# echo 's:stack unsigned long stack[];' > dynamic_events
+ ~# echo 'hist:keys=prev_pid:s0=common_stacktrace if prev_state & 3' >> events/sched/sched_switch/trigger
+ ~# echo 'hist:keys=next_pid:s1=$s0:onmatch(sched.sched_switch).trace(stack,$s1)' >> events/sched/sched_switch/trigger
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index f585359684d4..8620690aa2ec 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -1353,14 +1353,12 @@ static int get_sg_list(void *buf, int size, struct scatterlist *sg_list, int nen
+The above creates a synthetic event that takes a stacktrace when a task
+schedules out in a non-running state and passes that stacktrace to the
+sched_switch event when that task schedules back in. It triggers the
+"stack" synthetic event that has a stacktrace as its field (called "stack").
+
+ ~# echo 's:syscall_stack s64 id; unsigned long stack[];' >> dynamic_events
+ ~# echo 'hist:keys=common_pid:s2=stack' >> events/synthetic/stack/trigger
+ ~# echo 'hist:keys=common_pid:s3=$s2,i0=id:onmatch(synthetic.stack).trace(syscall_stack,$i0,$s3)' >> events/raw_syscalls/sys_exit/trigger
+
+The above makes another synthetic event called "syscall_stack" that
+attaches the first synthetic event (stack) to the sys_exit trace event and
+records the stacktrace from the stack event with the id of the system call
+that is exiting.
+
+When enabling this event (or using it in a historgram):
+
+ ~# echo 1 > events/synthetic/syscall_stack/enable
+
+Produces a kernel crash!
+
+ BUG: unable to handle page fault for address: 0000000000400010
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP PTI
+ CPU: 6 UID: 0 PID: 1257 Comm: bash Not tainted 6.16.3+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.16.3-1
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+ RIP: 0010:trace_event_raw_event_synth+0x90/0x380
+ Code: c5 00 00 00 00 85 d2 0f 84 e1 00 00 00 31 db eb 34 0f 1f 00 66 66 2e 0f 1f 84 00 00 00 00 00 66 66 2e 0f 1f 84 00 00 00 00 00 <49> 8b 04 24 48 83 c3 01 8d 0c c5 08 00 00 00 01 cd 41 3b 5d 40 0f
+ RSP: 0018:ffffd2670388f958 EFLAGS: 00010202
+ RAX: ffff8ba1065cc100 RBX: 0000000000000000 RCX: 0000000000000000
+ RDX: 0000000000000001 RSI: fffff266ffda7b90 RDI: ffffd2670388f9b0
+ RBP: 0000000000000010 R08: ffff8ba104e76000 R09: ffffd2670388fa50
+ R10: ffff8ba102dd42e0 R11: ffffffff9a908970 R12: 0000000000400010
+ R13: ffff8ba10a246400 R14: ffff8ba10a710220 R15: fffff266ffda7b90
+ FS:  00007fa3bc63f740(0000) GS:ffff8ba2e0f48000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000400010 CR3: 0000000107f9e003 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  ? __tracing_map_insert+0x208/0x3a0
+  action_trace+0x67/0x70
+  event_hist_trigger+0x633/0x6d0
+  event_triggers_call+0x82/0x130
+  trace_event_buffer_commit+0x19d/0x250
+  trace_event_raw_event_sys_exit+0x62/0xb0
+  syscall_exit_work+0x9d/0x140
+  do_syscall_64+0x20a/0x2f0
+  ? trace_event_raw_event_sched_switch+0x12b/0x170
+  ? save_fpregs_to_fpstate+0x3e/0x90
+  ? _raw_spin_unlock+0xe/0x30
+  ? finish_task_switch.isra.0+0x97/0x2c0
+  ? __rseq_handle_notify_resume+0xad/0x4c0
+  ? __schedule+0x4b8/0xd00
+  ? restore_fpregs_from_fpstate+0x3c/0x90
+  ? switch_fpu_return+0x5b/0xe0
+  ? do_syscall_64+0x1ef/0x2f0
+  ? do_fault+0x2e9/0x540
+  ? __handle_mm_fault+0x7d1/0xf70
+  ? count_memcg_events+0x167/0x1d0
+  ? handle_mm_fault+0x1d7/0x2e0
+  ? do_user_addr_fault+0x2c3/0x7f0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The reason is that the stacktrace field is not labeled as such, and is
+treated as a normal field and not as a dynamic event that it is.
+
+In trace_event_raw_event_synth() the event is field is still treated as a
+dynamic array, but the retrieval of the data is considered a normal field,
+and the reference is just the meta data:
+
+// Meta data is retrieved instead of a dynamic array
+  str_val = (char *)(long)var_ref_vals[val_idx];
+
+// Then when it tries to process it:
+  len = *((unsigned long *)str_val) + 1;
+
+It triggers a kernel page fault.
+
+To fix this, first when defining the fields of the first synthetic event,
+set the filter type to FILTER_STACKTRACE. This is used later by the second
+synthetic event to know that this field is a stacktrace. When creating
+the field of the new synthetic event, have it use this FILTER_STACKTRACE
+to know to create a stacktrace field to copy the stacktrace into.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Link: https://patch.msgid.link/20260122194824.6905a38e@gandalf.local.home
+Fixes: 00cf3d672a9d ("tracing: Allow synthetic events to pass around stacktraces")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 5e6e70540eef..c97bb2fda5c0 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -2057,6 +2057,15 @@ static struct hist_field *create_hist_field(struct hist_trigger_data *hist_data,
+ 			hist_field->fn_num = HIST_FIELD_FN_RELDYNSTRING;
+ 		else
+ 			hist_field->fn_num = HIST_FIELD_FN_PSTRING;
++	} else if (field->filter_type == FILTER_STACKTRACE) {
++		flags |= HIST_FIELD_FL_STACKTRACE;
++
++		hist_field->size = MAX_FILTER_STR_VAL;
++		hist_field->type = kstrdup_const(field->type, GFP_KERNEL);
++		if (!hist_field->type)
++			goto free;
++
++		hist_field->fn_num = HIST_FIELD_FN_STACK;
+ 	} else {
+ 		hist_field->size = field->size;
+ 		hist_field->is_signed = field->is_signed;
+diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+index 4554c458b78c..45c187e77e21 100644
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -130,7 +130,9 @@ static int synth_event_define_fields(struct trace_event_call *call)
+ 	struct synth_event *event = call->data;
+ 	unsigned int i, size, n_u64;
+ 	char *name, *type;
++	int filter_type;
+ 	bool is_signed;
++	bool is_stack;
+ 	int ret = 0;
  
- static int get_mapped_sg_list(struct ib_device *device, void *buf, int size,
- 			      struct scatterlist *sg_list, int nentries,
--			      enum dma_data_direction dir)
-+			      enum dma_data_direction dir, int *npages)
- {
--	int npages;
--
--	npages = get_sg_list(buf, size, sg_list, nentries);
--	if (npages < 0)
-+	*npages = get_sg_list(buf, size, sg_list, nentries);
-+	if (*npages < 0)
- 		return -EINVAL;
--	return ib_dma_map_sg(device, sg_list, npages, dir);
-+	return ib_dma_map_sg(device, sg_list, *npages, dir);
- }
+ 	for (i = 0, n_u64 = 0; i < event->n_fields; i++) {
+@@ -138,8 +140,12 @@ static int synth_event_define_fields(struct trace_event_call *call)
+ 		is_signed = event->fields[i]->is_signed;
+ 		type = event->fields[i]->type;
+ 		name = event->fields[i]->name;
++		is_stack = event->fields[i]->is_stack;
++
++		filter_type = is_stack ? FILTER_STACKTRACE : FILTER_OTHER;
++
+ 		ret = trace_define_field(call, type, name, offset, size,
+-					 is_signed, FILTER_OTHER);
++					 is_signed, filter_type);
+ 		if (ret)
+ 			break;
  
- static int post_sendmsg(struct smbdirect_socket *sc,
-@@ -1431,12 +1429,13 @@ static int smb_direct_post_send_data(struct smbdirect_socket *sc,
- 	for (i = 0; i < niov; i++) {
- 		struct ib_sge *sge;
- 		int sg_cnt;
-+		int npages;
- 
- 		sg_init_table(sg, SMBDIRECT_SEND_IO_MAX_SGE - 1);
- 		sg_cnt = get_mapped_sg_list(sc->ib.dev,
- 					    iov[i].iov_base, iov[i].iov_len,
- 					    sg, SMBDIRECT_SEND_IO_MAX_SGE - 1,
--					    DMA_TO_DEVICE);
-+					    DMA_TO_DEVICE, &npages);
- 		if (sg_cnt <= 0) {
- 			pr_err("failed to map buffer\n");
- 			ret = -ENOMEM;
-@@ -1444,7 +1443,7 @@ static int smb_direct_post_send_data(struct smbdirect_socket *sc,
- 		} else if (sg_cnt + msg->num_sge > SMBDIRECT_SEND_IO_MAX_SGE) {
- 			pr_err("buffer not fitted into sges\n");
- 			ret = -E2BIG;
--			ib_dma_unmap_sg(sc->ib.dev, sg, sg_cnt,
-+			ib_dma_unmap_sg(sc->ib.dev, sg, npages,
- 					DMA_TO_DEVICE);
- 			goto err;
- 		}
 
 
