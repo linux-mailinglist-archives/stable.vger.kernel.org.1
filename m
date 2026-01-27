@@ -1,181 +1,162 @@
-Return-Path: <stable+bounces-211817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211819-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDJbHazBeGn6sgEAu9opvQ
-	(envelope-from <stable+bounces-211817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:46:20 +0100
+	id IFb2OHzDeGmltAEAu9opvQ
+	(envelope-from <stable+bounces-211819-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:54:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3454295120
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:46:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AA695299
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A04353014407
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:46:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5766430182A5
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB1A35B126;
-	Tue, 27 Jan 2026 13:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1D035B629;
+	Tue, 27 Jan 2026 13:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="goHiphA2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EWHDHtAD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09456350D6E
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F044635A95F
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:53:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769521572; cv=none; b=XvcMOqdLkOOwnpk6Q88soWKbjvJGKJokzrV2f80POI8ERg0B/xv9wwGF+J/hU2kA42yJZRN46HWw0M0EJA218znAN7q30ohww0sv+O4MxXrR2qSimEwKQu/6wLFgwbd13mfgwHnjLPJv+w0rmes6UKhM5SrqY56yXGFm+c8/14w=
+	t=1769522036; cv=none; b=Yvu8jTzTG2SENbtDfnJw5VaC4V2SU2dVwHdJOhCxCYo+npJ6VZYMDZZbpqNyaEz0i1KaR4oKnQS6tAQv7vrWsW4SBMf/9a+//WZUJYTGEMFEbWp4XNuJVAyT7/y4lYRqWgRwHiQBbFkHpXV40rHDynH4BXCotUv+xEQcq30fvgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769521572; c=relaxed/simple;
-	bh=re6NSiZizBDEm3EpB+1e8HbLc2V1raKduoGD2wp8Pe4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IyYsIIpXwYGKecVrHYgBrWa5tf4DHCUhrzro3IoUHIJcGDevF9IzJSMPF57YgotpU9Yehqux3JSrZXFBb718LWVlB6Y4cHEog+78FG5C9YsxW5Lh1ETzrp8ltt+31i7G87Bvmz6gnRoWPYDLlSNA5wnoENZToYV5RamTGidBWAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=goHiphA2; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43284ed32a0so3410574f8f.3
-        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 05:46:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769521569; x=1770126369; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=x6OQwLQVXz7cUVwRGuGUS5QtspAXdqTx91X6RLYCCic=;
-        b=goHiphA2BY86LhXWzMT9cZDXAFvdKVS5K0wRNu/VOX/YDeliq7P1qru4TNUkrV+mW5
-         2EpgC/05F8dCeMh/kn3W9x2pM1TlCHtiulznaekt1k2heI1ilxwDFFVhDPvrkOojAJXx
-         iXsLxklr5PTjLnYW59zBtkY7cIRpF/mxoqp1ofZkiWl6eaY063h9zl5u1Kv/N95QvTxU
-         hfFLR2RAKKd1aKr3PQAFyokEexebiLs/4Qrd8zx4pSC9ezL+K/APnmw5mzYCXMpkKvs9
-         oqcpkRrjmpfsAoQmMgjR+AHMK6gbQSw8Uu8pPExDS/tuj3NN8pqDLoPYoHuaF2qOwz9X
-         WgXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769521569; x=1770126369;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x6OQwLQVXz7cUVwRGuGUS5QtspAXdqTx91X6RLYCCic=;
-        b=KfKVtUcAU4Ul9m5m3Ydy69ccOmnkpgWg5KYeyCDu3fUW7GLFnv2GsFKuomAvssJJ+8
-         K5f2vJcf+/CSaQMSdxzWupHUB5gaVxhWkE6HX0rw6FmTnLgMDs2CmmhZ2yZccu8Fc68y
-         oD2BVTED8KS1u5aEVrK22esxBQ13KDB6h4Do2EJxKxxdoEn4eJqp+S26OCamz8To5ly2
-         hv67dh1a+YhWiztHXVOfLcbVKLRxQdsgBrnohbCtYi7nxgAX/QcoLtY5rjhY7DtIiQB4
-         bBKvmJYObdmHfeIYOhJr58Ppog1mAT+Aw1tNnx41UoYXBq+br4lF2C9gGVWhnBwCAdk5
-         T8VA==
-X-Forwarded-Encrypted: i=1; AJvYcCUx4u1U4ORSOKCZn7++twRd8w5DSDU3GGQ4MQZEV87zy+0HQr5LEKcTmMID52ivsWYvEbVIhbY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2TORGHKSPPpDxJVwWvx5rqo8Fm46+kVNKEiTc2UQ8ODO82wul
-	ejXAlAL5lG7DXKChtqZjJNpbRsOkGn4av8qnMUhvHkWXHvbZzjz24u8m
-X-Gm-Gg: AZuq6aLJ65mVqYCz1nqs9mc+1ueta01nvdc3X3QDxFu5t3Qpod8a82Jl+x5QNIEtlZU
-	gJfjG71ntIC51dNOGEQxh7qJTuuupszauG3AVMa4hEJJoYZ7+VRiYLmJZwgUOWtwqOulILcHZHR
-	cG1USGztYexJge70w5iZhTq2aD53brehU6cUz3P5F0hAB+a+Jf5P6CSDGrmwV6yuq1UKBlirViQ
-	FVrTE2nkF6mA9360vyeL52o6jUgy82QNgNmUjcz87KMtA4ER+nF/Egp39hSRAf0xhL0DbBLwKBl
-	a/C8NjcQc1iMQHNtMLA9QODq/r84hUbiJnO6wlNlSFNB6uzk+FIwubFayN5Xj+cbAyTaac8iuca
-	jl8Jkel3QJnowmbmC47CadSk4uXs8EIyENc1yTdNou1192h0Px6jmWWdpNQI2cyXdW1mhCTiWF2
-	hGq1ltft/ZR7farNyGuxfatgc=
-X-Received: by 2002:a05:6000:2c0c:b0:42b:3806:2ba0 with SMTP id ffacd0b85a97d-435dd02dc43mr2250887f8f.2.1769521569105;
-        Tue, 27 Jan 2026 05:46:09 -0800 (PST)
-Received: from debian.local ([2a0a:ef40:e94:5d01:a218:5589:9f9c:4f52])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435b1c24a8asm37902764f8f.12.2026.01.27.05.46.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 05:46:08 -0800 (PST)
-Date: Tue, 27 Jan 2026 13:46:06 +0000
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-Cc: "kvalo@kernel.org" <kvalo@kernel.org>,
-	"Berg, Johannes" <johannes.berg@intel.com>,
-	"benjamin@sipsolutions.net" <benjamin@sipsolutions.net>,
-	"gustavoars@kernel.org" <gustavoars@kernel.org>,
-	"linux-intel-wifi@intel.com" <linux-intel-wifi@intel.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] Revert "wifi: iwlwifi: trans: remove STATUS_SUSPENDED"
-Message-ID: <aXjBnu8MAg5ly76z@debian.local>
-References: <20260125233335.6875-1-chris.bainbridge@gmail.com>
- <DM3PPF63A6024A93B1437A144E82CC38B7AA393A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
- <aXcovK8uhsiaHumT@debian.local>
- <DM3PPF63A6024A907097A88AEB32669C1E5A393A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
- <CAP-bSRZ60CSEtR-_9OL6k_Lzg=w8MtD2i79KpwF+nYYzgak=-Q@mail.gmail.com>
- <DM3PPF63A6024A9FCE1CF29C0492A406E7AA390A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
- <aXit5795WQLL290t@debian.local>
- <DM3PPF63A6024A91EFB76D52F9590E82C30A390A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1769522036; c=relaxed/simple;
+	bh=D3wR+QL3e8s6K+2o7wnm+jXnQfyNc04L+7SRNlNbec0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LyHjgumgsqH9KWYxKOgtymDLVKmPphv6mqZHHZIkdU4GkvYKEgyg4x2u5XFgPOCr1cx+ORkBEzMK+AWSu2dbdmymDDOuZO94LVIcl4oYSRZHq32lpuFQZvAJ6TGlM7TYRsrqkfrr8wQ3oIu/0hv2sCCqQKVLNIYlLhe/rK+dbLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EWHDHtAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73D2C2BCB1
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:53:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769522035;
+	bh=D3wR+QL3e8s6K+2o7wnm+jXnQfyNc04L+7SRNlNbec0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=EWHDHtADPvumvhco5ZO6P1mfedT5G+mD5erodh8xhmVmqkFWAkh0PgmWJsvl+CcEH
+	 1fwhvZWyVSm0g+a2pMtpPQi1d7CkTVjJ1GHXbS9q2pRNAXgIrfYy06vNtZsgJwES3Z
+	 px5TlrnoPBSL//oALG53E3fdSsl1Zl5tid0jPdEQeFJUgGuqCf9wKNrO8c8HMw9Y6v
+	 vw0qgLJ16Ey4prN9tow93P+CMpVX5iv7/+VMYdpRh+EE3EG/T0WUpF9YNrAfd/2FVf
+	 oPeRpVHmcZhiXP4AvQvDDHRdEKM7jpQS5bAplCGjhlRN837bpBGDRkAB3BhF1fzhX+
+	 aB8uOZTvRv5Hg==
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59b9fee282dso5180629e87.3
+        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 05:53:55 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUg2MKH1ttOJLwqt56uENOwN4ejkuynj+KdyPtSTezyokO+siC++SAVmSoUJkhmeNC41N+DOXU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgRO+qEO3FBMJeCfF4JiUrqVRlfsBi59zYovxYzIIJkcFNMuTK
+	+JArb6bW4kJpc3xan1yuqPP8oFH+6kxBVTSyIqcvI9Cc+CevcowIZAkYYC3wSHoAI9kPFm7mtjA
+	WCW9Vtzxsq3QE/fRkBX5PHhQX/Gb40qo=
+X-Received: by 2002:a05:6512:3b99:b0:59e:359:7afd with SMTP id
+ 2adb3069b0e04-59e0402404cmr836765e87.19.1769522034299; Tue, 27 Jan 2026
+ 05:53:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM3PPF63A6024A91EFB76D52F9590E82C30A390A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+References: <20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org> <CANiq72kkxS9ACvR52q03AN+WdFV96cK+tvejnnDXKZTKuKZH9g@mail.gmail.com>
+In-Reply-To: <CANiq72kkxS9ACvR52q03AN+WdFV96cK+tvejnnDXKZTKuKZH9g@mail.gmail.com>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 27 Jan 2026 08:53:17 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9kiWZr=82sztLfYqtp-fvsQ2QTgTYqNg5hSsZMKCsvjZA@mail.gmail.com>
+X-Gm-Features: AZwV_QiIRHv8ebfqJ0OBns2FVWPBjsU2BCs_25E4T3uIoz6fpM04LJsH9Ore_Jg
+Message-ID: <CAJ-ks9kiWZr=82sztLfYqtp-fvsQ2QTgTYqNg5hSsZMKCsvjZA@mail.gmail.com>
+Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: define scripts
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, David Gow <davidgow@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@google.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211817-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211819-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[collabora.com,kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,kloenk.dev];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chrisbainbridge@gmail.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tamird@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[debian.local:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 3454295120
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,collabora.com:email]
+X-Rspamd-Queue-Id: 47AA695299
 X-Rspamd-Action: no action
 
-On Tue, Jan 27, 2026 at 01:22:06PM +0000, Korenblit, Miriam Rachel wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Chris Bainbridge <chris.bainbridge@gmail.com>
-> > Sent: Tuesday, January 27, 2026 2:22 PM
-> > To: Korenblit, Miriam Rachel <miriam.rachel.korenblit@intel.com>
-> > Cc: kvalo@kernel.org; Berg, Johannes <johannes.berg@intel.com>;
-> > benjamin@sipsolutions.net; gustavoars@kernel.org; linux-intel-wifi@intel.com;
-> > linux-wireless@vger.kernel.org; netdev@vger.kernel.org; linux-
-> > kernel@vger.kernel.org; stable@vger.kernel.org
-> > Subject: Re: [PATCH] Revert "wifi: iwlwifi: trans: remove STATUS_SUSPENDED"
-> > 
-> > On Tue, Jan 27, 2026 at 05:05:31AM +0000, Korenblit, Miriam Rachel wrote:
-> > >
-> > > Just making sure: have you been able to reproduce the assert
-> > (ADVANCED_SYSASSERT in the log), and then the panic didn't happen?
-> > 
-> > Yes, the ADVANCED_SYSASSERT was logged but there was no subsequent null
-> > pointer dereference.
-> > 
-> > > If yes, please test the attached patch, which is supposed to fix the assert itself.
-> > With this, you are not even supposed to see an assert.
-> > 
-> > I ran this through 15 suspend/resume cycles with network traffic. The
-> > ADVANCED_SYSASSERT did not occur, so it looks like the patch does fix the
-> > SYSASSERT. There was a warning logged once out of the 15 cycles:
-> > 
-> > I think that this is probably a different bug though - checking previous logs with
-> > journalctl, I see the same warning occurred once with 6.17.0-06871-
-> > gf79e772258df which predates the "remove STATUS_SUSPENDED"
-> > commit.
-> 
-> Thanks for the help!
-> 
-> Regarding the warning, please open Bugzilla ticket for that
-> 
-> Miri
+On Sun, Jan 25, 2026 at 9:09=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Thu, Jan 22, 2026 at 5:53=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
+rg> wrote:
+> >
+> > Generate rust-project.json entries for scripts written in Rust.
+> >
+> > Use `Pathlib.path.stem` for consistency.
+> >
+> > Fixes: 9a8ff24ce584 ("scripts: add `generate_rust_target.rs`")
+> > Cc: stable@vger.kernel.org
+> > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
+> > Reviewed-by: Fiona Behrens <me@kloenk.dev>
+> > Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> > Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+>
+> Hmm... This introduces support for scripts, right? i.e. it is a
+> feature, or am I misunderstanding the Fixes:/Cc: stable tags?
 
-Sure, ticket is https://bugzilla.kernel.org/show_bug.cgi?id=221017
+It depends on your perspective - I framed it as a fix of the commit
+that added the first script because that script was added without RA
+support. What do you think?
+
+> Also, I don't see the Tested-by from Daniel -- he gave it on the last
+> patch in v4, but not this one. Was it because it was assumed that
+> testing the last patch meant testing all? Generally that shouldn't be
+> assumed, e.g. he gave two Tested-by tags, so I guess he didn't mean to
+> give it to all.
+
+It was so long ago, I'm not sure. I'll remove the tag. Thanks for calling o=
+ut!
+
+> I would also suggest on apply to give it a bit more details.
+>
+> Anyway, this seems best suited for rust-analyzer-next after the merge
+> window when the above is sorted out.
+
+Will do.
+
+>
+> Thanks for reviving these patches and splitting them!
+>
+> Cheers,
+> Miguel
+>
 
