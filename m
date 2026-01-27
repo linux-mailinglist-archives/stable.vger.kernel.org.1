@@ -1,329 +1,220 @@
-Return-Path: <stable+bounces-211732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBAxLBRxeGnEpwEAu9opvQ
-	(envelope-from <stable+bounces-211732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 09:02:28 +0100
+	id kGBpADB0eGnEpwEAu9opvQ
+	(envelope-from <stable+bounces-211733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 09:15:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CAD90E21
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 09:02:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2BF90FA8
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 09:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 108F4300B466
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 08:02:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DB8FC3008CAB
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 08:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5E5217723;
-	Tue, 27 Jan 2026 08:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627422135C5;
+	Tue, 27 Jan 2026 08:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ftjCPuRA"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="q7UOdtOR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9273EBF1B
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 08:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BFD3C38;
+	Tue, 27 Jan 2026 08:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769500943; cv=none; b=lQPzFWJ1ubUiiy8KwPkgR9tq/LNWrMAys/bWe1IETZVG+GTHOzei5OzG3vuy/2RZ/YAkk3Sg6iKXLuJC2SdjI2uFnqsUBFcWkGbYprRIeAANj9ws50Ynozq3/YZw5pHKkbfTBxTdP6TsU5dpB/KmyoHcIsfolwRHY4aARwGeBm0=
+	t=1769501735; cv=none; b=tF9bz+rS/c9ee8nBWXbcfNSxKK13JKWACuyavqjhwU4gp410biHhrtDhWrL7dgmFph1cFQk4al4Jk0G79Vhh8nuOD4Hcuag1uD3sDNoop9uVhU5LW+QJ0B69PVOad+lYHaP2Rkew3hnkNrnAPRWMJnxbXvlrXlCE2NRVONzBpFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769500943; c=relaxed/simple;
-	bh=HsScYRN8C7XxHBUEFBrWlntzO0aUNoi24rZlNL0zzJY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gYnYEptthZ6etjaGk41jSW0C/u3MgJUWSDNE/Rg8MAlQyt9QON7ETPMdz+Z8zz6/bas3FpreTj/mWgSq1WioDsBAou/94GN2UVTMSNK+mRrtoh0c1NuIKbRKuGhztUoUwnYKotv+X2hssMClUScBwhzrbBKRrFMImPDbNiZ7AAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ftjCPuRA; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-88a35a00506so100065826d6.2
-        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 00:02:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769500941; x=1770105741; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gYyhxoUylHHW2V1XitCAxiaLRC0fKk6AB8sFPEBn1tg=;
-        b=ftjCPuRASxqKhEO7UMP2+uPIt8YnIGUwgt1pOhe7PzDckVoDQh83qK3EmZEnPbUiWR
-         pBhqU2hVJQzxC/ER7DVvuhYahNdMtj/PUsg+8yj9WAeOAutbmKyJsvyXZJmEvNOZsMk2
-         633oNNlfpBkyYGQc9vPbfHREYRqciRjDRXzun8hBs/GWDn8t4ToFJEkJvog/4pPm+537
-         NDPmolSJfAh0QquKiT3SAYcaPMJFhbmGJLO4YCdcni9YHFrIMViILs8Z8Dv9pVZRsQvS
-         CP4vdpQ1KdrxZB8oYVDHgOA+5nLV/Y0tW+MGvWoN/mlJyAOCx8z8FdCpq1vYNaXGHLlt
-         EJ9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769500941; x=1770105741;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gYyhxoUylHHW2V1XitCAxiaLRC0fKk6AB8sFPEBn1tg=;
-        b=rSS6RmcQyuHCIpNwqv8WBuGn4AWi7vTZGzus4SBUsS6Wrjjpj0pMGZPLOi2exSJz2J
-         zhc5rBWW0jQU3K5sgoDHUmdycioFla/W2oxASvpzHAXjTN44h7Hw5/tlSH2kqQwJynqj
-         9ANMPAAsiGDPLWuPOqK+ksaliFKTXhzBKyUdaCCsGXf9VllSid/KKnNnd9eRe5ek6O+C
-         0lC+fT9rqLRD9PtY1qXzve3nG0W8S7UfmYWOmaLgxJhiUCVDegA91WEIUosMTwpmcVfp
-         4QHpYbbQf7Kn+4sx5lSUXz0UWo5N6i2LXseUOv/6J2WU4oOVNAeAN+3l3q6AA1/qOldS
-         nQhw==
-X-Forwarded-Encrypted: i=1; AJvYcCVV0d6Uxe+h08uuhPdzDGHI/5xxUA0ZR0HaQ5WJBCZzKQYuOC4SatBikwJomEsW368ShOyRExc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJx9GrBCBzWxIg0yHctrgTQZAiXxyOkLGJeKUSO4IXNO3VoLCF
-	Xx00/xcCMmCFmJRS61p+ZyaPXGwnrX+TrNjZ5eeyXWhLg8lhIqrvATFvsPcI9g==
-X-Gm-Gg: AZuq6aKaZEG5O/zPFXF2930sg2bPprNiA2JfefQD0M0cRgM9Z5GPDpxWhxBfDVEEjZv
-	FtCbivSKVCFnwtGGh0L91Bmo4kPWRFxysnsvPLkXdbrs+865+b3vGtn8KOrF6IO+tDMW8JJQMfm
-	rQDoMJ7bDZbnFOb9k8ChnbUDPJgwzglCTLeTDVyk685BXzdOLioCE5JS7Zd9CGvtpNItWdy7Dgj
-	TtRtviN529PDiJv+cUyn5VVuWWh0EN3H8QLsa0SW0Bu/AIgXQKMIaCchSAKD8dBEXIeqGRj4Cu8
-	JHGwVCv+RhsSjnAx6yt4ujgQkVmWBWcDae+wMmnRJMhS+LUp+J5+aON0l4npj2Bf33x5aXLIHh3
-	oiodRFbW8hAZtPyPk4SiasXap8CLyySASnq1B3DS3yVhr5ERkzEXUfLEhIuqh9KTFqhRHqzQg6g
-	TviqmXj7/4v5V596yX40O3
-X-Received: by 2002:a05:622a:1453:b0:4ff:c144:a45 with SMTP id d75a77b69052e-5032f76dc5fmr8401861cf.1.1769500940541;
-        Tue, 27 Jan 2026 00:02:20 -0800 (PST)
-Received: from localhost.localdomain ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894aeb0ce21sm68244016d6.52.2026.01.27.00.02.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 00:02:20 -0800 (PST)
-From: Kevin Hao <haokexin@gmail.com>
-Date: Tue, 27 Jan 2026 16:02:07 +0800
-Subject: [PATCH net v3] net: cpsw_new: Execute ndo_set_rx_mode callback in
- a work queue
+	s=arc-20240116; t=1769501735; c=relaxed/simple;
+	bh=F0E7nYosuaQUjoEHCcGwgVEwx8Z8Q/uBLWfO23+tG8I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=nSuP/10zxhGZMeCFo/GawMAy802J8gDM4CKtmWKxi2lOsxnJFAHNqhT8JAtAC743ncEcIjmFsR63DZAZmAoTuYZtxxgXTw20B7xj3i7c0b3WzW9uADdWB047zdKcl+dzEJxD/gglVcYLqzKAtZWeXSOmR6gQIgsIfZaLdgI8aqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=q7UOdtOR; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60R5mfLt027227;
+	Tue, 27 Jan 2026 08:15:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=5cercG
+	Ynr3NipLgMN02u1JYISn/EnJIUYxWdekvMZxU=; b=q7UOdtORwJRudyvg7kFmgQ
+	GsTedx2v5NdG6BxO8w0P3L6Z4RhUImF4ZBxGBN8exeUFO6fiNV3XsEekOe3Ha+MF
+	TgN0OtAdGUvYIIolPTqqcZ1JCZk35ZP/GYy9ZJZFnSl1hW6HuRWN9jCOLk13iGhz
+	7pbynktvJIb9sTqTd3sMx2sBuqKxf8QhDshxjQq1MAgxcdelBQQJSTbpWXBxgVrz
+	oGu4OfzSNadf0gGYQ+ZqLRx7R8kO76TWJRelHryy7i2lP9q7STKpyoLCFZnoGeJU
+	5W7beYqEvT0N7cj4fDqZU+xs2Bi6VgHBwjb8L4X9+Zy87fvCLOdYtuswjXppGaeg
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnrtc5nj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jan 2026 08:15:27 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60R3BqdP026319;
+	Tue, 27 Jan 2026 08:15:26 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw9wk7tr1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jan 2026 08:15:26 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60R8FM7J44564924
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Jan 2026 08:15:22 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 258AA20040;
+	Tue, 27 Jan 2026 08:15:22 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EAFED20043;
+	Tue, 27 Jan 2026 08:15:21 +0000 (GMT)
+Received: from localhost (unknown [9.52.203.172])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 27 Jan 2026 08:15:21 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260127-bbb-v3-1-5e71f340c1e9@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAP5weGkC/1WMyw6CMBBFf4XM2po+oFVX/odxQV8wiVDTkkZD+
- Hdr3WDu6t6Zc1ZILqJLcGlWiC5jwjCXIg4NmLGfB0fQlg6cckkZF0RrTawRUnVeKmYplM9ndB5
- f1XKD2S1wL+OIaQnxXc2Z1dOfJDNSoqSmWrGTaO11mHp8HE2YKp/5nul+DP8yXau877U5W7Fnt
- m37ALL94w3PAAAA
-X-Change-ID: 20260123-bbb-dc3675f671d0
-To: netdev@vger.kernel.org
-Cc: Kevin Hao <haokexin@gmail.com>, stable@vger.kernel.org, 
- Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Vladimir Oltean <vladimir.oltean@nxp.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, linux-omap@vger.kernel.org
-X-Mailer: b4 0.14.2
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 27 Jan 2026 09:15:21 +0100
+Message-Id: <DFZ80CU1BHRM.1OALN64S2ULP@linux.ibm.com>
+To: "Farhan Ali" <alifm@linux.ibm.com>, <linux-s390@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Cc: <helgaas@kernel.org>, <lukas@wunner.de>, <alex@shazbot.org>,
+        <clg@redhat.com>, <stable@vger.kernel.org>, <schnelle@linux.ibm.com>,
+        <mjrosato@linux.ibm.com>, <julianr@linux.ibm.com>
+Subject: Re: [PATCH v8 9/9] vfio: Remove the pcie check for
+ VFIO_PCI_ERR_IRQ_INDEX
+From: "Julian Ruess" <julianr@linux.ibm.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260122194437.1903-1-alifm@linux.ibm.com>
+ <20260122194437.1903-10-alifm@linux.ibm.com>
+In-Reply-To: <20260122194437.1903-10-alifm@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 5nq5fY66aKLmUghryfvPIFxnQsWtuNpr
+X-Authority-Analysis: v=2.4 cv=Uptu9uwB c=1 sm=1 tr=0 ts=6978741f cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=E0RtPYjD2jRhVGfDaHcA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: 5nq5fY66aKLmUghryfvPIFxnQsWtuNpr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDA2MiBTYWx0ZWRfX0ousSD3KUfdK
+ eeEW2KqyZ/ytQmuyJFeTE7GTUZ1gkwWX+VImeuBHnxEZC+XGezhvH190YGmn4rYQSUFSkN2/YBg
+ tCzahpF+/XLTRAeEFwHGcrWbLtiUYiUDlpbF4BnVjLz/Cd7afzaDLBp25KfjQrj0S74Qr5RYhmZ
+ uHzWl46AlICeAi6CluM4L3ZK5csuv/hSsXBFazqmjXQB5AWGKbEqZUNuqwbB5pvFZ3qHzh4iGi2
+ lyZpLosjAWtGGszZw2eC76Fd5qtUeFHHv78UVZyy7FZ0V3zhwxVCHRv9hWs5G1FddWaSElQ783y
+ 35yarl6Jsz2uV4HbpzsURHdvBLRSlBNSLEpgrBixFmbCwWMKB/zzJ4z9/DV9PputWTSZMMgGKyB
+ 6GNIK8TEOJLwJUS/QQCvLcnqziAI2hlZq0wQdh/Sl1if5bhVJBhA2d71Kb6bTvc318R2GwtZjWw
+ 4p25O5WE74WPeHsiI/g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.20,FMLib:17.12.100.49
+ definitions=2026-01-27_01,2026-01-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
+ phishscore=0 adultscore=0 impostorscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601270062
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211732-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211733-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,ti.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,nxp.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[haokexin@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	FROM_NEQ_ENVFROM(0.00)[julianr@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,linux.dev:url,ti.com:email]
-X-Rspamd-Queue-Id: 47CAD90E21
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 2E2BF90FA8
 X-Rspamd-Action: no action
 
-Commit 1767bb2d47b7 ("ipv6: mcast: Don't hold RTNL for
-IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP.") removed the RTNL lock for
-IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP operations. However, this
-change triggered the following call trace on my BeagleBone Black board:
-  WARNING: net/8021q/vlan_core.c:236 at vlan_for_each+0x120/0x124, CPU#0: rpcbind/496
-  RTNL: assertion failed at net/8021q/vlan_core.c (236)
-  Modules linked in:
-  CPU: 0 UID: 997 PID: 496 Comm: rpcbind Not tainted 6.19.0-rc6-next-20260122-yocto-standard+ #8 PREEMPT
-  Hardware name: Generic AM33XX (Flattened Device Tree)
-  Call trace:
-   unwind_backtrace from show_stack+0x28/0x2c
-   show_stack from dump_stack_lvl+0x30/0x38
-   dump_stack_lvl from __warn+0xb8/0x11c
-   __warn from warn_slowpath_fmt+0x130/0x194
-   warn_slowpath_fmt from vlan_for_each+0x120/0x124
-   vlan_for_each from cpsw_add_mc_addr+0x54/0xd8
-   cpsw_add_mc_addr from __hw_addr_ref_sync_dev+0xc4/0xec
-   __hw_addr_ref_sync_dev from __dev_mc_add+0x78/0x88
-   __dev_mc_add from igmp6_group_added+0x84/0xec
-   igmp6_group_added from __ipv6_dev_mc_inc+0x1fc/0x2f0
-   __ipv6_dev_mc_inc from __ipv6_sock_mc_join+0x124/0x1b4
-   __ipv6_sock_mc_join from do_ipv6_setsockopt+0x84c/0x1168
-   do_ipv6_setsockopt from ipv6_setsockopt+0x88/0xc8
-   ipv6_setsockopt from do_sock_setsockopt+0xe8/0x19c
-   do_sock_setsockopt from __sys_setsockopt+0x84/0xac
-   __sys_setsockopt from ret_fast_syscall+0x0/0x5
+On Thu Jan 22, 2026 at 8:44 PM CET, Farhan Ali wrote:
+> We are configuring the error signaling on the vast majority of devices an=
+d
+> it's extremely rare that it fires anyway. This allows userspace to be
+> notified on errors for legacy PCI devices. The Internal Shared Memory (IS=
+M)
+> device on s390x is one such device. For PCI devices on IBM s390x error
+> recovery involves platform firmware and notification to operating system
+> is done by architecture specific way. So the ISM device can still be
+> recovered when notified of an error.
+>
+> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c  | 8 ++------
+>  drivers/vfio/pci/vfio_pci_intrs.c | 3 +--
+>  2 files changed, 3 insertions(+), 8 deletions(-)
+>
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index c92c6c512b24..9d44df9e21db 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -778,8 +778,7 @@ static int vfio_pci_get_irq_count(struct vfio_pci_cor=
+e_device *vdev, int irq_typ
+>  			return (flags & PCI_MSIX_FLAGS_QSIZE) + 1;
+>  		}
+>  	} else if (irq_type =3D=3D VFIO_PCI_ERR_IRQ_INDEX) {
+> -		if (pci_is_pcie(vdev->pdev))
+> -			return 1;
+> +		return 1;
+>  	} else if (irq_type =3D=3D VFIO_PCI_REQ_IRQ_INDEX) {
+>  		return 1;
+>  	}
+> @@ -1155,11 +1154,8 @@ static int vfio_pci_ioctl_get_irq_info(struct vfio=
+_pci_core_device *vdev,
+>  	switch (info.index) {
+>  	case VFIO_PCI_INTX_IRQ_INDEX ... VFIO_PCI_MSIX_IRQ_INDEX:
+>  	case VFIO_PCI_REQ_IRQ_INDEX:
+> -		break;
+>  	case VFIO_PCI_ERR_IRQ_INDEX:
+> -		if (pci_is_pcie(vdev->pdev))
+> -			break;
+> -		fallthrough;
+> +		break;
+>  	default:
+>  		return -EINVAL;
+>  	}
+> diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pc=
+i_intrs.c
+> index c76e753b3cec..b6cedaf0bcca 100644
+> --- a/drivers/vfio/pci/vfio_pci_intrs.c
+> +++ b/drivers/vfio/pci/vfio_pci_intrs.c
+> @@ -859,8 +859,7 @@ int vfio_pci_set_irqs_ioctl(struct vfio_pci_core_devi=
+ce *vdev, uint32_t flags,
+>  	case VFIO_PCI_ERR_IRQ_INDEX:
+>  		switch (flags & VFIO_IRQ_SET_ACTION_TYPE_MASK) {
+>  		case VFIO_IRQ_SET_ACTION_TRIGGER:
+> -			if (pci_is_pcie(vdev->pdev))
+> -				func =3D vfio_pci_set_err_trigger;
+> +			func =3D vfio_pci_set_err_trigger;
+>  			break;
+>  		}
+>  		break;
 
-This trace occurs because vlan_for_each() is called within
-cpsw_ndo_set_rx_mode(), which expects the RTNL lock to be held.
-Since modifying vlan_for_each() to operate without the RTNL lock is not
-straightforward, and because ndo_set_rx_mode() is invoked both with and
-without the RTNL lock across different code paths, simply adding
-rtnl_lock() in cpsw_ndo_set_rx_mode() is not a viable solution.
+Feel free to add my
+Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
 
-To resolve this issue, we opt to execute the actual processing within
-a work queue, following the approach used by the icssg-prueth driver.
-
-Fixes: 1767bb2d47b7 ("ipv6: mcast: Don't hold RTNL for IPV6_ADD_MEMBERSHIP and MCAST_JOIN_GROUP.")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Cc: stable@vger.kernel.org
----
-Changes in v3:
-- Resolve the deadlock issue identified in the AI review [2]
-  by moving the netif_running() check under the RTNL lock and removing the
-  cancel_work_sync() call in cpsw_ndo_stop().
-
-- Link to v2: https://lore.kernel.org/r/20260125-bbb-v2-1-1547ffabc9d3@gmail.com
-
-Changes in v2:
-- Addresses the issue identified in the AI review [1]:
-  - Adds a netif_running() check in cpsw_ndo_set_rx_mode_work()
-  - Cancels the rx_mode_work in cpsw_ndo_stop()
-
-- Link to v1: https://lore.kernel.org/r/20260123-bbb-v1-1-176b0b71834d@gmail.com
-
-[1] https://netdev-ai.bots.linux.dev/ai-review.html?id=bd885e1e-1aed-4755-ad60-7150737ad0f5
-[2] https://netdev-ai.bots.linux.dev/ai-review.html?id=c9fc3cf8-a06c-4cb8-b26b-910e775951a0
----
-Please note that the cpsw driver also has the same issue. If this resolution
-is acceptable, I will create another patch to fix the issue in cpsw.
-
-Cc: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: Roger Quadros <rogerq@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: linux-omap@vger.kernel.org
----
- drivers/net/ethernet/ti/cpsw_new.c  | 34 ++++++++++++++++++++++++++++++++--
- drivers/net/ethernet/ti/cpsw_priv.h |  2 ++
- 2 files changed, 34 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index ab88d4c02cbde76207f89cf433e2b383dcde6a83..838615c9a5ec3c9226c2aff6325ecda13ba9729f 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -248,15 +248,25 @@ static int cpsw_purge_all_mc(struct net_device *ndev, const u8 *addr, int num)
- 	return 0;
- }
- 
--static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
-+static void cpsw_ndo_set_rx_mode_work(struct work_struct *work)
- {
--	struct cpsw_priv *priv = netdev_priv(ndev);
-+	struct cpsw_priv *priv = container_of(work, struct cpsw_priv, rx_mode_work);
- 	struct cpsw_common *cpsw = priv->cpsw;
-+	struct net_device *ndev = priv->ndev;
- 
-+	rtnl_lock();
-+	if (!netif_running(ndev)) {
-+		rtnl_unlock();
-+		return;
-+	}
-+
-+	netif_addr_lock_bh(ndev);
- 	if (ndev->flags & IFF_PROMISC) {
- 		/* Enable promiscuous mode */
- 		cpsw_set_promiscious(ndev, true);
- 		cpsw_ale_set_allmulti(cpsw->ale, IFF_ALLMULTI, priv->emac_port);
-+		netif_addr_unlock_bh(ndev);
-+		rtnl_unlock();
- 		return;
- 	}
- 
-@@ -270,6 +280,16 @@ static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
- 	/* add/remove mcast address either for real netdev or for vlan */
- 	__hw_addr_ref_sync_dev(&ndev->mc, ndev, cpsw_add_mc_addr,
- 			       cpsw_del_mc_addr);
-+	netif_addr_unlock_bh(ndev);
-+	rtnl_unlock();
-+}
-+
-+static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
-+{
-+	struct cpsw_priv *priv = netdev_priv(ndev);
-+	struct cpsw_common *cpsw = priv->cpsw;
-+
-+	queue_work(cpsw->cmd_wq, &priv->rx_mode_work);
- }
- 
- static unsigned int cpsw_rxbuf_total_len(unsigned int len)
-@@ -1398,6 +1418,7 @@ static int cpsw_create_ports(struct cpsw_common *cpsw)
- 		priv->msg_enable = netif_msg_init(debug_level, CPSW_DEBUG);
- 		priv->emac_port = i + 1;
- 		priv->tx_packet_min = CPSW_MIN_PACKET_SIZE;
-+		INIT_WORK(&priv->rx_mode_work, cpsw_ndo_set_rx_mode_work);
- 
- 		if (is_valid_ether_addr(slave_data->mac_addr)) {
- 			ether_addr_copy(priv->mac_addr, slave_data->mac_addr);
-@@ -1976,6 +1997,13 @@ static int cpsw_probe(struct platform_device *pdev)
- 	}
- 	cpsw_split_res(cpsw);
- 
-+	cpsw->cmd_wq = create_singlethread_workqueue("cpsw_cmd_wq");
-+	if (!cpsw->cmd_wq) {
-+		dev_err(dev, "error initializing workqueue\n");
-+		ret = -ENOMEM;
-+		goto clean_cpts;
-+	}
-+
- 	/* setup netdevs */
- 	ret = cpsw_create_ports(cpsw);
- 	if (ret)
-@@ -2042,6 +2070,7 @@ static int cpsw_probe(struct platform_device *pdev)
- clean_unregister_notifiers:
- 	cpsw_unregister_notifiers(cpsw);
- clean_unregister_netdev:
-+	destroy_workqueue(cpsw->cmd_wq);
- 	cpsw_unregister_ports(cpsw);
- clean_cpts:
- 	cpts_release(cpsw->cpts);
-@@ -2068,6 +2097,7 @@ static void cpsw_remove(struct platform_device *pdev)
- 		return;
- 	}
- 
-+	destroy_workqueue(cpsw->cmd_wq);
- 	cpsw_unregister_notifiers(cpsw);
- 	cpsw_unregister_devlink(cpsw);
- 	cpsw_unregister_ports(cpsw);
-diff --git a/drivers/net/ethernet/ti/cpsw_priv.h b/drivers/net/ethernet/ti/cpsw_priv.h
-index 91add8925e235c6cf5542fde11f3383b9234c872..8cdf4bff198fcc05436ff381a7e4326b3e3c27b1 100644
---- a/drivers/net/ethernet/ti/cpsw_priv.h
-+++ b/drivers/net/ethernet/ti/cpsw_priv.h
-@@ -362,6 +362,7 @@ struct cpsw_common {
- 	struct net_device *hw_bridge_dev;
- 	bool ale_bypass;
- 	u8 base_mac[ETH_ALEN];
-+	struct workqueue_struct *cmd_wq;
- };
- 
- struct cpsw_ale_ratelimit {
-@@ -391,6 +392,7 @@ struct cpsw_priv {
- 	u32 tx_packet_min;
- 	struct cpsw_ale_ratelimit ale_bc_ratelimit;
- 	struct cpsw_ale_ratelimit ale_mc_ratelimit;
-+	struct work_struct rx_mode_work;
- };
- 
- #define ndev_to_cpsw(ndev) (((struct cpsw_priv *)netdev_priv(ndev))->cpsw)
-
----
-base-commit: 615aad0f61e0c7a898184a394dc895c610100d4f
-change-id: 20260123-bbb-dc3675f671d0
-
-Best regards,
--- 
-Kevin Hao <haokexin@gmail.com>
-
+Thanks,
+Julian
 
