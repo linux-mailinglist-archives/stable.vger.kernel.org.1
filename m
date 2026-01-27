@@ -1,216 +1,139 @@
-Return-Path: <stable+bounces-211768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8In2GxS5eGlzsQEAu9opvQ
-	(envelope-from <stable+bounces-211768-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:09:40 +0100
+	id GHP1AXO6eGmasgEAu9opvQ
+	(envelope-from <stable+bounces-211781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:15:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B8B94AFF
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:09:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5288794BAD
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:15:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3106A30205DC
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:09:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C1F99302BDFA
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB99355044;
-	Tue, 27 Jan 2026 13:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C88035295F;
+	Tue, 27 Jan 2026 13:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ui3LmeDP"
+	dkim=pass (1024-bit key) header.d=kxxt.dev header.i=@kxxt.dev header.b="ZODZwldz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.kxxt.dev (mail.kxxt.dev [74.48.220.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E056284690
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:09:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A8221ADC7;
+	Tue, 27 Jan 2026 13:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.48.220.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769519363; cv=none; b=cibYCFVI+Fe0NJ+WHLZi7JWh/iTD2uFIH62Iw222VP9dY4zqnj4ahm6jOnTd1+HkPOtEmPYcB+yyyLazk+YogGgEL7G3UqR5gu4OJwGys0WCIej61EXKIR4g1IS9JO83tW5mcAG/BtOGmqbnq4K/ZTiCKwlAb102WOilNM2o/Gs=
+	t=1769519723; cv=none; b=tLqYzqFuTRH1P/xw6xYjTXG5KQTYQqn4+m2B2c34QfkCmncu/yNIZSiXWnXtye6ejwVLBDtoqIS2yMgsG7RVKe1TFoiT8bco0zaI3t8E8PVFEvPIKEB1PSXaEZV5sPT8t8/uk8sJytXVo8G40/7Wg+E4VwLnvn5qZyDyOkxZLW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769519363; c=relaxed/simple;
-	bh=Bh7bGwLF+QVg0msFil1XIFNW1PFzI0DH6I24WI8aHsQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kahiaS4BMy86wDtGjNnnF1NTQidGSiMyxT/C4ryjCKMYT/eUz8hDtgjrr1Mg6kywOWzj7rfn2MxWh5iDj2xAiRicMrfMVXPiXmCJCrWMaPponp7rsiJFyq1udCxfwnQvoKSZPX5SpxnR6XWGpQ4361QUa9xIjSeMbooe4PgNH4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ui3LmeDP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181EFC116C6;
-	Tue, 27 Jan 2026 13:09:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769519362;
-	bh=Bh7bGwLF+QVg0msFil1XIFNW1PFzI0DH6I24WI8aHsQ=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Ui3LmeDPalR4KdsF0bV1MGUJrlbd5GH0zSiAAih1IGUq9tYw8X1c0houmLvE1veuq
-	 NPS0P5wno7V65j88nV662vr8/W33bTgb3lUrMc0uM4ZctoeVTwwD3AbjeDS5r8Y3sO
-	 TwwIkaBsHMDE94Wk0dEU8X9p/fFQtLl76Ny8Hx8U=
-Subject: FAILED: patch "[PATCH] migrate: correct lock ordering for hugetlb file folios" failed to apply to 5.10-stable tree
-To: willy@infradead.org,akpm@linux-foundation.org,apopple@nvidia.com,byungchul@sk.com,david@kernel.org,gourry@gourry.net,jannh@google.com,joshua.hahnjy@gmail.com,lance.yang@linux.dev,liam.howlett@oracle.com,lorenzo.stoakes@oracle.com,matthew.brost@intel.com,rakie.kim@sk.com,riel@surriel.com,stable@vger.kernel.org,vbabka@suse.cz,ying.huang@linux.alibaba.com,ziy@nvidia.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 27 Jan 2026 14:09:09 +0100
-Message-ID: <2026012709-jubilant-divinely-3a32@gregkh>
+	s=arc-20240116; t=1769519723; c=relaxed/simple;
+	bh=mFButoGHQZcrOyrgWBvTDZrcCDzB5RoEFmjHO/hbw1E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nFTfsxDqhP1lIE11kY8BR+3xcA7gdebO5fPFd/zSMg0yTAM40ky/tabAdCzHXBcwzCc4weK+TN+GasYa+8mFalNAtcYcPnxTAapvGJdDo8rQQo7JJaz+bZJ/geGHDoRArUDq6wARc1xE2zIm+CZlGZEDJHWmWVIJn/9B47KRIZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kxxt.dev; spf=pass smtp.mailfrom=kxxt.dev; dkim=pass (1024-bit key) header.d=kxxt.dev header.i=@kxxt.dev header.b=ZODZwldz; arc=none smtp.client-ip=74.48.220.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kxxt.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kxxt.dev
+Message-ID: <b07a1e07-9265-4b77-9665-0bfae9b506d3@kxxt.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kxxt.dev; s=mail;
+	t=1769519392;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lTbWecwoErc7fpelSZ8kiImPL5MfmGQxCTtL9RFgpUc=;
+	b=ZODZwldzPkeme8lmvl0AHh2DB5PSVZ/Fbs7CTXIcpCmm7FQlRU8SwK0dBYocITFfpoiF0W
+	KVS0yUe4KBh3nz/Al2Qx5wCuGoJHgbC7Tdsn4vEFELLKqxXIJE2Cdkb2dC0nSo5ERU5kei
+	5YTtjtxLqOHP/3w3Tn7fhHiUU4C4v1E=
+Date: Tue, 27 Jan 2026 21:09:41 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: avoid FD leak
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Tamir Duberstein <tamird@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boris-Chengbiao Zhou <bobo1239@web.de>,
+ Kees Cook <kees@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Daniel Almeida <daniel.almeida@collabora.com>, Fiona Behrens <me@kloenk.dev>
+References: <20260122-rust-analyzer-fd-leak-v1-1-945577813b20@kernel.org>
+ <CANiq72=+2s48M5imZ7tZj-0SN==f_mLmw_2cWfQYKtBhD1ROCA@mail.gmail.com>
+Content-Language: en-US
+From: Levi Zim <i@kxxt.dev>
+In-Reply-To: <CANiq72=+2s48M5imZ7tZj-0SN==f_mLmw_2cWfQYKtBhD1ROCA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kxxt.dev,reject];
+	R_DKIM_ALLOW(-0.20)[kxxt.dev:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211768-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-211781-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[infradead.org,linux-foundation.org,nvidia.com,sk.com,kernel.org,gourry.net,google.com,gmail.com,linux.dev,oracle.com,intel.com,surriel.com,vger.kernel.org,suse.cz,linux.alibaba.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
 	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,alibaba.com:email,suse.cz:email,linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,gregkh:email,appspotmail.com:email,infradead.org:email,surriel.com:email,oracle.com:email,linux-foundation.org:email,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 26B8B94AFF
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,web.de,vger.kernel.org,collabora.com,kloenk.dev];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[i@kxxt.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kxxt.dev:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[python.org:url,kxxt.dev:mid,kxxt.dev:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5288794BAD
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 1/26/26 10:09 AM, Miguel Ojeda wrote:
+> On Thu, Jan 22, 2026 at 5:44 PM Tamir Duberstein <tamird@kernel.org> wrote:
+>>
+>> Use a context manager to avoid leaking file descriptors.
+> 
+> This may have been intentionally written like that for simplicity,
+> since I think CPython closes them immediately in practice even if it
+> does not guarantee it (and I think the kernel may be assuming CPython
+> given the version requirement?).
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Path.read_text from pathlib would be a better choice for keeping the simplicity
+while ensuring the file is closed.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x b7880cb166ab62c2409046b2347261abf701530e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012709-jubilant-divinely-3a32@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+https://docs.python.org/3/library/pathlib.html#pathlib.Path.read_text
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From b7880cb166ab62c2409046b2347261abf701530e Mon Sep 17 00:00:00 2001
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Date: Fri, 9 Jan 2026 04:13:42 +0000
-Subject: [PATCH] migrate: correct lock ordering for hugetlb file folios
-
-Syzbot has found a deadlock (analyzed by Lance Yang):
-
-1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
-2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
-folio_lock.
-
-migrate_pages()
-  -> migrate_hugetlbs()
-    -> unmap_and_move_huge_page()     <- Takes folio_lock!
-      -> remove_migration_ptes()
-        -> __rmap_walk_file()
-          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
-
-hugetlbfs_fallocate()
-  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
-    -> hugetlbfs_zero_partial_page()
-     -> filemap_lock_hugetlb_folio()
-      -> filemap_lock_folio()
-        -> __filemap_get_folio        <- Waits for folio_lock!
-
-The migration path is the one taking locks in the wrong order according to
-the documentation at the top of mm/rmap.c.  So expand the scope of the
-existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
-
-This is (mostly) how it used to be after commit c0d0381ade79.  That was
-removed by 336bf30eb765 for both file & anon hugetlb pages when it should
-only have been removed for anon hugetlb pages.
-
-Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
-Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
-Debugged-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Jann Horn <jannh@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 5169f9717f60..4688b9e38cd2 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1458,6 +1458,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
- 	int page_was_mapped = 0;
- 	struct anon_vma *anon_vma = NULL;
- 	struct address_space *mapping = NULL;
-+	enum ttu_flags ttu = 0;
+Best regards,
+Levi
  
- 	if (folio_ref_count(src) == 1) {
- 		/* page was freed from under us. So we are done. */
-@@ -1498,8 +1499,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
- 		goto put_anon;
- 
- 	if (folio_mapped(src)) {
--		enum ttu_flags ttu = 0;
--
- 		if (!folio_test_anon(src)) {
- 			/*
- 			 * In shared mappings, try_to_unmap could potentially
-@@ -1516,16 +1515,17 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
- 
- 		try_to_migrate(src, ttu);
- 		page_was_mapped = 1;
--
--		if (ttu & TTU_RMAP_LOCKED)
--			i_mmap_unlock_write(mapping);
- 	}
- 
- 	if (!folio_mapped(src))
- 		rc = move_to_new_folio(dst, src, mode);
- 
- 	if (page_was_mapped)
--		remove_migration_ptes(src, !rc ? dst : src, 0);
-+		remove_migration_ptes(src, !rc ? dst : src,
-+				ttu ? RMP_LOCKED : 0);
-+
-+	if (ttu & TTU_RMAP_LOCKED)
-+		i_mmap_unlock_write(mapping);
- 
- unlock_put_anon:
- 	folio_unlock(dst);
+> Nevertheless, it is better to be explicit and proper, but it is not
+> urgent, so I would say let's put this in rust-analyzer after the merge
+> window even if you end up considering it a fix.
+> 
+> Like in the other one, I don't see the Tested-by from Daniel, so I
+> would suggest taking the chance to double-check that meanwhile too.
+> 
+> Thanks!
+> 
+> Cheers,
+> Miguel
+> 
 
 
