@@ -1,78 +1,64 @@
-Return-Path: <stable+bounces-211831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEGbL/DLeGmNtQEAu9opvQ
-	(envelope-from <stable+bounces-211831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:30:08 +0100
+	id eNeNHefMeGmNtQEAu9opvQ
+	(envelope-from <stable+bounces-211835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:34:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E7695B58
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:30:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6A195C9F
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:34:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AC2730131DA
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:24:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1FB81300BEB0
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88981357A48;
-	Tue, 27 Jan 2026 14:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="klIOYXtt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0321356A23;
+	Tue, 27 Jan 2026 14:31:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8907B350285
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 14:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420AC74BE1
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 14:31:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769523893; cv=none; b=NEbXfoN+b91fyvGlsftCPWP+epgcFU/QeS5QmgBeDJ85iAUFYrFdObiu6xm5yD7tJm95U3dwKc52X2wpre8dgmjbodsCLZFyjgglwNQwQZ69CucdRnh7G9G0mfKLEN3m1szE4/BcAa7fUmmwpn1CKdr+smwKvfpL4cUl6F1oiY4=
+	t=1769524297; cv=none; b=uume9J16CTpesJ9EjQsYltf7wTHBWzpFXV04lHMJXyYoAsqpD3yGaw3OPyrhw7MHOFbfn1Qv97L6+1bVxGJSo5mFMJZIhCR1Meu0mJBZg/wWhNjYpW/7XTDsKe1+iVoad9WfwlgR+ZE7a/2A4+4F5okRZaW2bRLCZ5IFABsjY2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769523893; c=relaxed/simple;
-	bh=YPzFNtlfW4++vbdLyuWLoT3MoQq96AOMwvHVmgq2LP0=;
+	s=arc-20240116; t=1769524297; c=relaxed/simple;
+	bh=lSI978hKGyk/9nJYK/7aJ7l3h/a+Mf0A69bBCpdnUzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhgb3KmfZRlQKalE8nkzugX3K6QKHOAHJ05Fto1B1L10GvQBqau0QDJPnddn0MGYARdhAoAT+sC6OT+hwD7e+FLGueFAKPi4Zm9PiMA/DoIAj66NMUJEktETEFiEpr8CP7VVS79OOk42prcM5TU9U11FwCl9MgsTtdrc4HtcUT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=klIOYXtt; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=MiofUhH/e+86UOwqVLcfN/bdlFcNM5NOwi2IhuUrk3g=; b=klIOYXtta4w7kYDc0F18/97xGA
-	jaA3PlLZq7NhFrUGrwtvfl4+G/ZrtgkeQeqOrxo59Z23i85PvvC1gGgmY8MPRgV1u1l8JujpBTlGr
-	WcnhDJWBrnPm6mOT+PIh4GPovEONdFOWxBHRf0WtKE9sjtMTeXwQuQAHg8PQzbolGx5E8xCFhuyin
-	e461OFgDx3n6yAuR2sGnB0j45MkB/V909XOdY6znE7/5uodXDN0PW/uTmIK1YDodbj4k/GVJdWpIL
-	DHbkVsdK1k3scFnzM3pDGvu9GU2Hf5Aqpuz7S40U/UlDZN6QztqtB6ou6kvY8vDc5g8UN1fd54hPF
-	EHPCUY3w==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkjzs-00000007YMi-3fWI;
-	Tue, 27 Jan 2026 14:24:48 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+	 MIME-Version; b=SaK/Ntnf49ZQWX2SXzc6dluepCBrTvfVZ/sXiwvTydGFh9SFW+0OcgtjzzzLqFW5hozCcS1KRC1qUKwR36BRqN+jsVfWWzO69TPcBw70Aa8L8shnNpCd5qIr4rfeae4x1bMQt9QLqCgPQSU2syQyxnbQ70OnJWS1sLbkiehfUaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vkk6P-0006dk-AR; Tue, 27 Jan 2026 15:31:33 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vkk6P-002lNK-2V;
+	Tue, 27 Jan 2026 15:31:33 +0100
+Received: from blackshift.org (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id D10C54D962A;
+	Tue, 27 Jan 2026 14:31:32 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: stable@vger.kernel.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
-	Lance Yang <lance.yang@linux.dev>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Jann Horn <jannh@google.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10.y] migrate: correct lock ordering for hugetlb file folios
-Date: Tue, 27 Jan 2026 14:24:44 +0000
-Message-ID: <20260127142444.1800351-1-willy@infradead.org>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15.y] can: esd_usb: esd_usb_read_bulk_callback(): fix URB memory leak
+Date: Tue, 27 Jan 2026 15:26:29 +0100
+Message-ID: <20260127142630.1416673-1-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012709-jubilant-divinely-3a32@gregkh>
-References: <2026012709-jubilant-divinely-3a32@gregkh>
+In-Reply-To: <2026012716-freight-preteen-bff5@gregkh>
+References: <2026012716-freight-preteen-bff5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,145 +66,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211831-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[infradead.org,syzkaller.appspotmail.com,linux.dev,kernel.org,nvidia.com,sk.com,gourry.net,google.com,gmail.com,oracle.com,intel.com,surriel.com,suse.cz,linux.alibaba.com,linux-foundation.org];
-	DKIM_TRACE(0.00)[infradead.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211835-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable,2d9c96466c978346b55f];
-	NEURAL_HAM(-0.00)[-0.997];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[surriel.com:email,infradead.org:email,infradead.org:dkim,infradead.org:mid,sk.com:email,linux.dev:email,alibaba.com:email,intel.com:email,suse.cz:email,nvidia.com:email,gourry.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,oracle.com:email]
-X-Rspamd-Queue-Id: 51E7695B58
+	NEURAL_HAM(-0.00)[-0.994];
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:mid,pengutronix.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 9D6A195C9F
 X-Rspamd-Action: no action
 
-Syzbot has found a deadlock (analyzed by Lance Yang):
+Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
+gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
-2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
-folio_lock.
+In esd_usb_open(), the URBs for USB-in transfers are allocated, added to
+the dev->rx_submitted anchor and submitted. In the complete callback
+esd_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
+esd_usb_close() the URBs are freed by calling
+usb_kill_anchored_urbs(&dev->rx_submitted).
 
-migrate_pages()
-  -> migrate_hugetlbs()
-    -> unmap_and_move_huge_page()     <- Takes folio_lock!
-      -> remove_migration_ptes()
-        -> __rmap_walk_file()
-          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in esd_usb_close().
 
-hugetlbfs_fallocate()
-  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
-    -> hugetlbfs_zero_partial_page()
-     -> filemap_lock_hugetlb_folio()
-      -> filemap_lock_folio()
-        -> __filemap_get_folio        <- Waits for folio_lock!
+Fix the memory leak by anchoring the URB in the
+esd_usb_read_bulk_callback() to the dev->rx_submitted anchor.
 
-The migration path is the one taking locks in the wrong order according to
-the documentation at the top of mm/rmap.c.  So expand the scope of the
-existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
-
-This is (mostly) how it used to be after commit c0d0381ade79.  That was
-removed by 336bf30eb765 for both file & anon hugetlb pages when it should
-only have been removed for anon hugetlb pages.
-
-Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
-Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
-Debugged-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Jann Horn <jannh@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit b7880cb166ab62c2409046b2347261abf701530e)
+Fixes: 96d8e90382dc ("can: Add driver for esd CAN-USB/2 device")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-2-4b8cb2915571@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+(cherry picked from commit 5a4391bdc6c8357242f62f22069c865b792406b3)
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- mm/migrate.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/net/can/usb/esd_usb2.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index aafad2112ec8..bf59b09455ad 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1289,6 +1289,7 @@ static int unmap_and_move_huge_page(new_page_t get_new_page,
- 	struct page *new_hpage;
- 	struct anon_vma *anon_vma = NULL;
- 	struct address_space *mapping = NULL;
-+	enum ttu_flags ttu = TTU_MIGRATION|TTU_IGNORE_MLOCK;
+diff --git a/drivers/net/can/usb/esd_usb2.c b/drivers/net/can/usb/esd_usb2.c
+index 14104cb02fb1..1430edf88983 100644
+--- a/drivers/net/can/usb/esd_usb2.c
++++ b/drivers/net/can/usb/esd_usb2.c
+@@ -440,13 +440,20 @@ static void esd_usb2_read_bulk_callback(struct urb *urb)
+ 			  urb->transfer_buffer, RX_BUFFER_SIZE,
+ 			  esd_usb2_read_bulk_callback, dev);
  
- 	/*
- 	 * Migratability of hugepages depends on architectures and their size.
-@@ -1336,9 +1337,6 @@ static int unmap_and_move_huge_page(new_page_t get_new_page,
- 		goto put_anon;
- 
- 	if (page_mapped(hpage)) {
--		bool mapping_locked = false;
--		enum ttu_flags ttu = TTU_MIGRATION|TTU_IGNORE_MLOCK;
--
- 		if (!PageAnon(hpage)) {
- 			/*
- 			 * In shared mappings, try_to_unmap could potentially
-@@ -1350,15 +1348,11 @@ static int unmap_and_move_huge_page(new_page_t get_new_page,
- 			if (unlikely(!mapping))
- 				goto unlock_put_anon;
- 
--			mapping_locked = true;
- 			ttu |= TTU_RMAP_LOCKED;
- 		}
- 
- 		try_to_unmap(hpage, ttu);
- 		page_was_mapped = 1;
--
--		if (mapping_locked)
--			i_mmap_unlock_write(mapping);
- 	}
- 
- 	if (!page_mapped(hpage))
-@@ -1366,7 +1360,11 @@ static int unmap_and_move_huge_page(new_page_t get_new_page,
- 
- 	if (page_was_mapped)
- 		remove_migration_ptes(hpage,
--			rc == MIGRATEPAGE_SUCCESS ? new_hpage : hpage, false);
-+			rc == MIGRATEPAGE_SUCCESS ? new_hpage : hpage,
-+				(ttu & TTU_RMAP_LOCKED) ? true : false);
++	usb_anchor_urb(urb, &dev->rx_submitted);
 +
-+	if (ttu & TTU_RMAP_LOCKED)
-+		i_mmap_unlock_write(mapping);
- 
- unlock_put_anon:
- 	unlock_page(new_hpage);
+ 	retval = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!retval)
++		return;
++
++	usb_unanchor_urb(urb);
++
+ 	if (retval == -ENODEV) {
+ 		for (i = 0; i < dev->net_count; i++) {
+ 			if (dev->nets[i])
+ 				netif_device_detach(dev->nets[i]->netdev);
+ 		}
+-	} else if (retval) {
++	} else {
+ 		dev_err(dev->udev->dev.parent,
+ 			"failed resubmitting read bulk urb: %d\n", retval);
+ 	}
 -- 
-2.47.3
+2.51.0
 
 
