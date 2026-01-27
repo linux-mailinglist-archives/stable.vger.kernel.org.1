@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-211868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211869-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBFuDCfteGkCuAEAu9opvQ
-	(envelope-from <stable+bounces-211868-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:51:51 +0100
+	id eOlfOT7teGkCuAEAu9opvQ
+	(envelope-from <stable+bounces-211869-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:52:14 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C319397FCF
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:51:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BEE97FDD
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D354E3040FBC
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:51:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8DD273047DC8
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8AB3624B0;
-	Tue, 27 Jan 2026 16:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBE3361DD7;
+	Tue, 27 Jan 2026 16:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jA07n2sU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lau6TCtt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C68F34A3CC
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 16:50:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D473624CF
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 16:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769532653; cv=none; b=MUv5dvmNuToVoIIp96pbRqfSwGW6rTtzd5W8uKiOy8ba17G/JrItCYNIrPotDDTLNbLww2Baf3rFLyE+LaINI5kU6Sxu9nyYS2F3ZGoeTSXS/MBCnKA6T9qeObEpXKbLzzGUVPmvlBVsudkkHUwZlOV7biGrwss7knrBvooCfYY=
+	t=1769532656; cv=none; b=L60hYsyszMi83yZYh05PkCmIPDWo5rm0L6Ln1oDRJ7TGAEK3MpJQ7tx8zWT6NbrDuNHXL5C650/wf1JV4MxgnjY0z9YpI4y3GSm9fzS6XFbMkAukxlTSqpAlDsg4lZ0fhYBIVTT1VBV3YcHytgARRdPL3xM2BpYIRdUcFgMT4Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769532653; c=relaxed/simple;
-	bh=1WGgjypg0PBheHfuaGYLd6B4hrFTtvJOaY0+TNgie7w=;
+	s=arc-20240116; t=1769532656; c=relaxed/simple;
+	bh=nuy9kCIcT6D2JU2yrVi1wvj+w0vJ76rxXT7o2vo9aSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NvYvuOHmJfJFsVAsEKCOQT9gFctkCbTkxQ+BAytRzGTY3Lqfo/7XDmFCSnbygJ1SDor0lC4RSNITWguIqWIJC2XzpXZnqGt8CU4B4IsPa7gvPRzvvznJSl2d4wuLP0fLT/zI/l9wgH5DdAS6VXTvjgGX0SPEfsF5uxAkt17yRSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jA07n2sU; arc=none smtp.client-ip=209.85.214.174
+	 MIME-Version; b=nMQx3oFjDPXdAPLsR5A+KU5FCJOXDaVbEyRKHSCKhOByylGvw0X7kZnPCImHC1/QzZoIiAkHcSWtCSFltcb1RnWg+C0DXLLwCMrryhumBzHvFjeakzn5/gipslfSMXId7D7r8OoCyYIzs7kzfEX05fWnEpVL7S+Pa6LBSS8Jy4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lau6TCtt; arc=none smtp.client-ip=209.85.214.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a0d67f1877so38698325ad.2
-        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 08:50:50 -0800 (PST)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so62029695ad.2
+        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 08:50:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769532650; x=1770137450; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769532655; x=1770137455; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=D5SO64hlGAGZzQm96wir8vkRTu1HntqB7h3c84mXcwA=;
-        b=jA07n2sUpZ0A7Mu07qloDPg5IdeecHj5rR0x9Wn84SPctyrtnPsRBCHOljfmQYIo0K
-         ZIZgiYzeUeBLXASvJlqvnMi5jFftxxSzuwIk8kFEDvv5TbkPG/6q8SIG7B2PiglgKgH+
-         cRa9ZM1Fn+xVBefpkcnLv/A33yvJ/OYDjgeHNuZziq4Sn94OVoTTF8jo5NsPNVHJSFVn
-         9AUL7I38YTXoa9CUnFYAspAUq70hwaFH+5XBKfgYUNyjBKQ05KCCBlG1aCJpgDH0UISk
-         4TR9mbNiCiLDPe/WxX3yccvmcsmOivDqm+Ap/3WIv60gVL+SELiqSqydfMl8fJreigcw
-         esyw==
+        bh=+BKn4aFL+2s1aT9WYTZvpY1Tv/MFVpnlV48wAgQcplo=;
+        b=Lau6TCttDiAvq1/mIDoYn9UZEi1GT1qTVdLNU0rmEXsr5hMuS2BQwEpDMl7hLZnga+
+         vQ1gBY4Kuc1M7MPiPKEN9BhhFKMEpeMfus5Wu5wW2eNjpQvc31tTNT6HPrff+RRhyL0a
+         Tgib6kOvBoi5r2g+GbtEkXexZODoOw5CJksV10Yww1FnzCDXAznpn95yqn6UUVdyT+Xf
+         44tbGYEHpfR+/lhcOz44HGj+FQtb4n6DH7pnoQrdtImPFwAuYa8sUcbUP7LPMfpkxd7X
+         tu9L95oKFBRHlKBUUN97f3mBnp/4FOLS2vL21X+rIrsdhlpk/TsuiGDtdLpHkxw7cYd7
+         tAgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769532650; x=1770137450;
+        d=1e100.net; s=20230601; t=1769532655; x=1770137455;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=D5SO64hlGAGZzQm96wir8vkRTu1HntqB7h3c84mXcwA=;
-        b=vFzOdqT6qWwUukVKE6jmUu0yBbFE594+tnSXBjUud1ClwmbC4+ZttAE4PXJBuMIpOV
-         tkshbqMPeBULQKwDSjkPWvA1sSwJg0xGFl1nD1zC2a/tikf6crcWmVOZ8Ky76eWZGEAu
-         fas+ydI0hbOiCWo4ZRbgoOjNXov1SO0ENFWMuB9GX5dyVIC+Nzn2rvoF9Ifybp/Iv4SE
-         SaIo3i/YparhoJlNEDDJBrpiIeUyFWy3u37Q8W8MYVYCQRLZiEA0t4XvYI16M6LjB2ln
-         AEfNc6zGC5Yfk5aGkETYZ2JSTO8kMGuNRyu4UnCGzEXjsc5ZyZdzTgbMvqBVdoC7U2nH
-         wtqg==
-X-Forwarded-Encrypted: i=1; AJvYcCVRt+zwr2D01MUC2wQDvBTvyV5BRrIFFWbQTQjO9QsMpOqDrUsSVGpc72TACWRWj2tDYcKQtt8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysL8XIsClbHT/tYJWsyKHrK6NAF5WaqCFLp2W7vDxcL1E6YiLB
-	z8ANTQ1+Al8R1IYUXaQnRjroVHxePGuBYvIaB8HJF7MyOL2UTnwQ9AEA
-X-Gm-Gg: AZuq6aK0MhZcRR3PzEr4nrv85KYQhh34wGuLlCr5a64UEmzKbEG0YnLM0wQYnO7Ftzj
-	MH3KsFz+1IdkpMnBFLd0msgMVUP+M4zspLGT4dl8t/GiuE9zCTGyY3Ye09gtHno0qsmsuMoh4Dj
-	7ccF+vSo5+7+A+zwVXUwP6yix1KP4eAD3wSgz/OjH0NXmf6hKo224Y3i3UuwLPvffLE5tpCtxUo
-	BStKHEkWZ3aAuqCw4ifOgwRLwhPKi3YBG/7Mgqus+w2mVSVGdtBK/L0wYfsmOJikmxDjJRdDLeh
-	UA223MrUG0aoLAtVK6xp/1rEpAZiqFCA0k7sGknD4SCXI4Pf18iF6hw86VBF4LXbUtWogH/EB9Z
-	lABKobAffHGpUijkV3eQpS8RZGhYBjRuEfAZb/FVGk08jto3iUkJoXmObsoH0tea6aOgywSqsH8
-	uLEO+8zxIBcEji1iyPm+1SIATTiyBjTRqu5Mc=
-X-Received: by 2002:a17:903:4b07:b0:2a0:993b:d72a with SMTP id d9443c01a7336-2a870da13fcmr16826975ad.4.1769532650395;
-        Tue, 27 Jan 2026 08:50:50 -0800 (PST)
+        bh=+BKn4aFL+2s1aT9WYTZvpY1Tv/MFVpnlV48wAgQcplo=;
+        b=aFGDVjF3yFJGhnWDoHVaPuwF/kPkapZFifcqN5DNeQBHMVz6ELNfPjD2a6aVS+8e/v
+         kRCdZ47e0kTWWpQdiBJ5ywjnt0UKts/EhR54TnFscjBpiooWAtUJ6cjfR2qnAsBtP+X+
+         vuKexgOgw35/gWUDKxhBCEZQ3/Avd4wGnolKmzia2AwE54/hcxm39/eFw3aI/SlpTs+U
+         GVJWvmCXLCc+w6LhTQGam52SwBdxTQ9aY0j4cUXcwlk2rJO6zAdlcB6l1lLJHUg+KnNJ
+         5YchvqWK8CVb9xDJoRorXUWok7q4lapX8HLmuC+29dGgAtVI9X/9YDDsx5v4QFuj1lnt
+         1R3g==
+X-Forwarded-Encrypted: i=1; AJvYcCWYDvMDZbYg1vk2dWgEA6T8H9UKxl/ws9KQD2z8KWsqlE0+U1LjKQr+XnqLQXHdP6WllJjjUcI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdwOP9SzWrDiOJ+sNBbXfg/xSf6lgR20TB7aIiaTJl0xx9EcZx
+	Z/XWsEylVsIb/ah9XKnteoHvZPOMSnx7ytWXycVxd6mdHWwS/Q5fOVLDJ+aHNByU
+X-Gm-Gg: AZuq6aJOkjIc78H/Ipv23v50/ieeb6cxdb+VcVkczPfZX7lAN/gPm3UTs18LqP+s9rA
+	B8bxEBrc+QGrocl4lZFMm7k5CTIyRztnWIMQx8QN6cH0w0NeBWouJ1LuJd7iHp3X9wlPf92sRaC
+	En2fvPWCTpjkjCUBMDp4E4UdZmP4VaFZGiv0qmXW5p1fcYtG22BLjUtQyBNa5+AB6FXULVcjYRP
+	q7YEywR36YJZwGDGaqeiw/zoaz44yGfXqETVyRwsSrsoOnqN07Gdd9e2XJZCJejeePH3xBgiuL/
+	hClDIlwN9rupnqPXM5/SuAMy3qHbuBjnNdbhjvfk11c0KCSi7AcQB6CrEi+1OEQ7FdRXhw7qpY9
+	HjavZmPqpA2i/EYvDnUizLan0eTmhN8pK03PBDVutnQRK6LWuHuoBRHPuLDAbqPAbcW8xkXhpOp
+	qd272u3VxckTYipxgp50UiBsmZKfrnZXQ4S+2ZBrWbxcMbJw==
+X-Received: by 2002:a17:903:3504:b0:2a0:d5bf:b271 with SMTP id d9443c01a7336-2a870e18902mr23308865ad.32.1769532654708;
+        Tue, 27 Jan 2026 08:50:54 -0800 (PST)
 Received: from saikiran-Yoga-Slim-7-14Q8X9 ([2402:e280:3d17:646:d29a:ea37:2567:751])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802daa46fsm120318675ad.21.2026.01.27.08.50.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a802daa46fsm120318675ad.21.2026.01.27.08.50.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 08:50:50 -0800 (PST)
+        Tue, 27 Jan 2026 08:50:54 -0800 (PST)
 From: Saikiran <bjsaikiran@gmail.com>
 To: linux-media@vger.kernel.org
 Cc: linux-arm-msm@vger.kernel.org,
@@ -89,9 +89,9 @@ Cc: linux-arm-msm@vger.kernel.org,
 	mchehab@kernel.org,
 	stable@vger.kernel.org,
 	Saikiran <bjsaikiran@gmail.com>
-Subject: [PATCH v4 1/2] media: i2c: ov02c10: Fix use-after-free in remove function
-Date: Tue, 27 Jan 2026 22:20:23 +0530
-Message-ID: <20260127165024.46156-2-bjsaikiran@gmail.com>
+Subject: [PATCH v4 2/2] media: i2c: ov02c10: Correct power-on sequence and timing
+Date: Tue, 27 Jan 2026 22:20:24 +0530
+Message-ID: <20260127165024.46156-3-bjsaikiran@gmail.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260127165024.46156-1-bjsaikiran@gmail.com>
 References: <20260127165024.46156-1-bjsaikiran@gmail.com>
@@ -115,7 +115,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,linaro.org,linux.intel.com];
-	TAGGED_FROM(0.00)[bounces-211868-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211869-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
@@ -132,64 +132,60 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C319397FCF
+X-Rspamd-Queue-Id: 95BEE97FDD
 X-Rspamd-Action: no action
 
-The ov02c10_remove() function has a race condition where v4l2_ctrl_handler
-and media_entity resources are freed before the device is powered off.
-If userspace (e.g., PipeWire/WirePlumber) accesses the device during
-removal, this causes a use-after-free leading to kernel oops with
-"Execute from non-executable memory" errors.
+The previous power-on sequence did not strictly follow the hardware timing
+requirements (T1), potentially leading to initialization failures on some
+platforms.
 
-The issue occurs because:
-1. v4l2_ctrl_handler_free() is called first
-2. Userspace may still have the device open
-3. Control access triggers use-after-free
-4. Device is powered off afterwards (too late)
+Update the sequence to match the datasheet and maintainer recommendations:
+1. Assert XSHUTDOWN (reset) for 5ms (T1 >= 5ms) before enabling power
+   resources.
+2. Enable clock and regulators in the standard order.
+3. De-assert XSHUTDOWN.
+4. Wait 5ms (T2 >= 5ms) for sensor boot before I2C access (using a wider
+   range for timer coalescing).
 
-Fix by reordering cleanup to disable runtime PM and power off the device
-BEFORE freeing v4l2_ctrl_handler and media_entity resources. This ensures
-the device is in a safe state before any resources are freed.
-
-Call sequence after fix:
-1. v4l2_async_unregister_subdev() - unregister from V4L2
-2. pm_runtime_disable() - disable runtime PM
-3. ov02c10_power_off() - power off device if needed
-4. v4l2_subdev_cleanup() - clean up subdev
-5. media_entity_cleanup() - clean up media entity
-6. v4l2_ctrl_handler_free() - free control handler (safe now)
+This ensures the sensor enters a clean state during cold boot.
 
 Tested-on: Lenovo Yoga Slim 7x (Snapdragon X Elite)
 Fixes: 44f8901 ("media: i2c: add OmniVision OV02C10 sensor driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Hans de Goede <hansg@kernel.org>
 Signed-off-by: Saikiran <bjsaikiran@gmail.com>
 ---
- drivers/media/i2c/ov02c10.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/i2c/ov02c10.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/media/i2c/ov02c10.c b/drivers/media/i2c/ov02c10.c
-index cf93d36032e1..fa7cc48b769a 100644
+index fa7cc48b769a..3bfbd0deb126 100644
 --- a/drivers/media/i2c/ov02c10.c
 +++ b/drivers/media/i2c/ov02c10.c
-@@ -864,14 +864,14 @@ static void ov02c10_remove(struct i2c_client *client)
+@@ -676,6 +676,12 @@ static int ov02c10_power_on(struct device *dev)
  	struct ov02c10 *ov02c10 = to_ov02c10(sd);
+ 	int ret;
  
- 	v4l2_async_unregister_subdev(sd);
--	v4l2_subdev_cleanup(sd);
--	media_entity_cleanup(&sd->entity);
--	v4l2_ctrl_handler_free(sd->ctrl_handler);
- 	pm_runtime_disable(ov02c10->dev);
- 	if (!pm_runtime_status_suspended(ov02c10->dev)) {
- 		ov02c10_power_off(ov02c10->dev);
- 		pm_runtime_set_suspended(ov02c10->dev);
++	/* Assert reset for 5ms to ensure sensor is in reset state */
++	if (ov02c10->reset) {
++		gpiod_set_value_cansleep(ov02c10->reset, 1);
++		usleep_range(5000, 6000);
++	}
++
+ 	ret = clk_prepare_enable(ov02c10->img_clk);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to enable imaging clock: %d", ret);
+@@ -691,10 +697,8 @@ static int ov02c10_power_on(struct device *dev)
  	}
-+	v4l2_subdev_cleanup(sd);
-+	media_entity_cleanup(&sd->entity);
-+	v4l2_ctrl_handler_free(sd->ctrl_handler);
- }
  
- static int ov02c10_probe(struct i2c_client *client)
+ 	if (ov02c10->reset) {
+-		/* Assert reset for at least 2ms on back to back off-on */
+-		usleep_range(2000, 2200);
+ 		gpiod_set_value_cansleep(ov02c10->reset, 0);
+-		usleep_range(5000, 5100);
++		usleep_range(5000, 5500);
+ 	}
+ 
+ 	return 0;
 -- 
 2.51.0
 
