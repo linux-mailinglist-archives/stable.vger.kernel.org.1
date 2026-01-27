@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-211736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211737-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +C+QFYV7eGnBqAEAu9opvQ
-	(envelope-from <stable+bounces-211736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 09:47:01 +0100
+	id sDJMK5x7eGnBqAEAu9opvQ
+	(envelope-from <stable+bounces-211737-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 09:47:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0484D913E5
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 09:47:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458F891402
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 09:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 637FE3004625
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 08:47:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9D2CE300B9FD
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 08:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A13D2BE629;
-	Tue, 27 Jan 2026 08:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6516C2BE629;
+	Tue, 27 Jan 2026 08:47:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75C013957E;
-	Tue, 27 Jan 2026 08:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD307283FF5;
+	Tue, 27 Jan 2026 08:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769503617; cv=none; b=CNXKbf7dZc1ydzwYMGb/dBZcTUbYt1aZhiJnUAbED9oKhBELEE1xxznId3DZeMbSmF2SHp88bJITyDkxC8gVpCHDrpVerICwQd9+Ts5pii8z0KGfYbnwuNqr3xm9i9792ltYiUzhqXwExlcP/53BUQARVtPN9cAJWFsplvkIfD0=
+	t=1769503640; cv=none; b=DjkQWkoJD5WO//es1c4xlIHglj+3PfY61m1N8FVX9Fzkn2OeB60G3uAr5PDmdww0W6ZsLYQN5sMBSiBs6RRNAMAwKafEoO1Hz2ivwZuRwxuRbNCahZbJAIriQNRtiqABn4TrkhZKFzy0mUH5Zyh6HiBq2u0W8UYDfLMjwPYC28c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769503617; c=relaxed/simple;
-	bh=2BtqhSooR3gcF8++FKjbQwloAUpYOoclRYfbQ+XvQ2o=;
+	s=arc-20240116; t=1769503640; c=relaxed/simple;
+	bh=7h07a0cHWbB+eDlpYQe+Ab4msRcMXThPTZd71fT99x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYQLEx1DZxxki/OGTYAVxge9jehoJS5ub9gI51RKsT67rpiKNWIbGIy/Agff9LqyJX/mxBjWrAkzc4mBKRRRM2TovFYSLXLS9F084sxWt9GuWCcR+/FT2pOgfyC77A3iL9PCRlH0O7+0DhKtO52bhMZfGWgawkcIvh3a3MuDVjc=
+	 MIME-Version; b=qnrfjgSbbAJPI+cMUglVqP73TQKAA5fLD5nhXhouN9knilOlMYRhAYV4Z4Be1pxjJUr28cGHCm+6WWXvdX1pz7PrFWCX2Qf99IY/F1g+oBgvpdL9/+gpdfznULR/cVV50DxQwSclq6hE7bSkm7Hl8LAy/DNEFsb7WwfzAvM1Trw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.69.42])
-	by gateway (Coremail) with SMTP id _____8AxCMJ5e3hpmg0NAA--.30214S3;
-	Tue, 27 Jan 2026 16:46:49 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8Dx98GLe3hprw0NAA--.30150S3;
+	Tue, 27 Jan 2026 16:47:07 +0800 (CST)
 Received: from localhost.localdomain (unknown [223.64.69.42])
-	by front1 (Coremail) with SMTP id qMiowJBxZcBke3hpNig0AA--.3500S3;
-	Tue, 27 Jan 2026 16:46:47 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJBxZcBke3hpNig0AA--.3500S4;
+	Tue, 27 Jan 2026 16:47:04 +0800 (CST)
 From: Huacai Chen <chenhuacai@loongson.cn>
 To: Huacai Chen <chenhuacai@kernel.org>
 Cc: loongarch@lists.linux.dev,
@@ -47,9 +47,9 @@ Cc: loongarch@lists.linux.dev,
 	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	stable@vger.kernel.org,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 2/3] LoongArch: Disable instrumentation for setup_ptwalker()
-Date: Tue, 27 Jan 2026 16:46:18 +0800
-Message-ID: <20260127084619.1140692-2-chenhuacai@loongson.cn>
+Subject: [PATCH 3/3] LoongArch: Rework KASAN initialization for PTW-enabled systems
+Date: Tue, 27 Jan 2026 16:46:19 +0800
+Message-ID: <20260127084619.1140692-3-chenhuacai@loongson.cn>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260127084619.1140692-1-chenhuacai@loongson.cn>
 References: <20260127084430.1135547-1-chenhuacai@loongson.cn>
@@ -61,15 +61,15 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxZcBke3hpNig0AA--.3500S3
+X-CM-TRANSID:qMiowJBxZcBke3hpNig0AA--.3500S4
 X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7uFW8ZFW5AF4kGr13Zr4fWFX_yoW8Xw4Upa
-	yS9r18Gr48XFn2qFyDZ3y8Zry7AFZxKay7uFs7ta4rXr1DZ34Sgrs3twnFqFy8J3yrXa4r
-	Zr12kry0q3WxAwcCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
+X-Coremail-Antispam: 1Uk129KBj93XoW3Wry5Kw1fAF4kAr1kGr13KFX_yoW7Cw1rpr
+	WkKa48Kr4vqr4qganxGw1UZryDJws3Ca97tFZxta95Kay3CF1Fqr1kGFyxZFyUWrW8JF1Y
+	yw1fAFZ8Gr45JacCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
 	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
 	0xBIdaVrnRJUUU9Fb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
 	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
 	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
 	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
 	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
@@ -85,14 +85,14 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-211736-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211737-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_NA(0.00)[loongson.cn];
@@ -102,55 +102,166 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCVD_COUNT_FIVE(0.00)[5];
 	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[loongson.cn:mid,loongson.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0484D913E5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,loongson.cn:mid,loongson.cn:email]
+X-Rspamd-Queue-Id: 458F891402
 X-Rspamd-Action: no action
 
 From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-According to Documentation/dev-tools/kasan.rst, software KASAN modes use
-compiler instrumentation to insert validity checks. Such instrumentation
-might be incompatible with some parts of the kernel, and therefore needs
-to be disabled, just use the attribute __no_sanitize_address to disable
-instrumentation for the low level function setup_ptwalker().
+kasan_init_generic() indicates that kasan is fully initialized, so it
+should be put at end of kasan_init().
 
-Otherwise bringing up the secondary CPUs failed when CONFIG_KASAN is set
-(especially when PTW is enabled), here are the call chains:
+Otherwise bringing up the primary CPU failed when CONFIG_KASAN is set
+on PTW-enabled systems, here are the call chains:
 
-    smpboot_entry()
-      start_secondary()
-        cpu_probe()
-          per_cpu_trap_init()
-            tlb_init()
-              setup_tlb_handler()
-                setup_ptwalker()
+    kernel_entry()
+      start_kernel()
+        setup_arch()
+          kasan_init()
+            kasan_init_generic()
 
-The reason is the PGD registers are configured in setup_ptwalker(), but
-KASAN instrumentation may cause TLB exceptions before that.
+The reason is PTW-enabled systems have speculative accesses which means
+memory accesses to the shadow memory after kasan_init() may be executed
+by hardware before. However, accessing shadow memory is safe only after
+kasan fully initialized because kasan_init() uses a temporary PGD table
+until we have populated all levels of shadow page tables and writen the
+PGD register. Moving kasan_init_generic() later can defer the occasion
+of kasan_enabled(), so as to avoid speculative accesses on shadow pages.
+
+After moving kasan_init_generic() to the end, kasan_init() can no longer
+call kasan_mem_to_shadow() for shadow address conversion because it will
+always return kasan_early_shadow_page. On the other hand, we should keep
+the current logic of kasan_mem_to_shadow() for both the early and final
+stage because there may be instrumentation before kasan_init().
+
+To solve this, we factor out a new mem_to_shadow() function from current
+kasan_mem_to_shadow() for the shadow address conversion in kasan_init().
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- arch/loongarch/mm/tlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/mm/kasan_init.c | 78 +++++++++++++++++-----------------
+ 1 file changed, 40 insertions(+), 38 deletions(-)
 
-diff --git a/arch/loongarch/mm/tlb.c b/arch/loongarch/mm/tlb.c
-index 4014c4469587..aaf7d685cc2a 100644
---- a/arch/loongarch/mm/tlb.c
-+++ b/arch/loongarch/mm/tlb.c
-@@ -202,7 +202,7 @@ void __update_tlb(struct vm_area_struct *vma, unsigned long address, pte_t *ptep
- 	local_irq_restore(flags);
+diff --git a/arch/loongarch/mm/kasan_init.c b/arch/loongarch/mm/kasan_init.c
+index 170da98ad4f5..0fc02ca06457 100644
+--- a/arch/loongarch/mm/kasan_init.c
++++ b/arch/loongarch/mm/kasan_init.c
+@@ -40,39 +40,43 @@ static pgd_t kasan_pg_dir[PTRS_PER_PGD] __initdata __aligned(PAGE_SIZE);
+ #define __pte_none(early, pte) (early ? pte_none(pte) : \
+ ((pte_val(pte) & _PFN_MASK) == (unsigned long)__pa(kasan_early_shadow_page)))
+ 
+-void *kasan_mem_to_shadow(const void *addr)
++static void *mem_to_shadow(const void *addr)
+ {
+-	if (!kasan_enabled()) {
++	unsigned long offset = 0;
++	unsigned long maddr = (unsigned long)addr;
++	unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
++
++	if (maddr >= FIXADDR_START)
+ 		return (void *)(kasan_early_shadow_page);
+-	} else {
+-		unsigned long maddr = (unsigned long)addr;
+-		unsigned long xrange = (maddr >> XRANGE_SHIFT) & 0xffff;
+-		unsigned long offset = 0;
+-
+-		if (maddr >= FIXADDR_START)
+-			return (void *)(kasan_early_shadow_page);
+-
+-		maddr &= XRANGE_SHADOW_MASK;
+-		switch (xrange) {
+-		case XKPRANGE_CC_SEG:
+-			offset = XKPRANGE_CC_SHADOW_OFFSET;
+-			break;
+-		case XKPRANGE_UC_SEG:
+-			offset = XKPRANGE_UC_SHADOW_OFFSET;
+-			break;
+-		case XKPRANGE_WC_SEG:
+-			offset = XKPRANGE_WC_SHADOW_OFFSET;
+-			break;
+-		case XKVRANGE_VC_SEG:
+-			offset = XKVRANGE_VC_SHADOW_OFFSET;
+-			break;
+-		default:
+-			WARN_ON(1);
+-			return NULL;
+-		}
+ 
+-		return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
++	maddr &= XRANGE_SHADOW_MASK;
++	switch (xrange) {
++	case XKPRANGE_CC_SEG:
++		offset = XKPRANGE_CC_SHADOW_OFFSET;
++		break;
++	case XKPRANGE_UC_SEG:
++		offset = XKPRANGE_UC_SHADOW_OFFSET;
++		break;
++	case XKPRANGE_WC_SEG:
++		offset = XKPRANGE_WC_SHADOW_OFFSET;
++		break;
++	case XKVRANGE_VC_SEG:
++		offset = XKVRANGE_VC_SHADOW_OFFSET;
++		break;
++	default:
++		WARN_ON(1);
++		return NULL;
+ 	}
++
++	return (void *)((maddr >> KASAN_SHADOW_SCALE_SHIFT) + offset);
++}
++
++void *kasan_mem_to_shadow(const void *addr)
++{
++	if (kasan_enabled())
++		return mem_to_shadow(addr);
++	else
++		return (void *)(kasan_early_shadow_page);
  }
  
--static void setup_ptwalker(void)
-+static void __no_sanitize_address setup_ptwalker(void)
- {
- 	unsigned long pwctl0, pwctl1;
- 	unsigned long pgd_i = 0, pgd_w = 0;
+ const void *kasan_shadow_to_mem(const void *shadow_addr)
+@@ -293,11 +297,8 @@ void __init kasan_init(void)
+ 	/* Maps everything to a single page of zeroes */
+ 	kasan_pgd_populate(KASAN_SHADOW_START, KASAN_SHADOW_END, NUMA_NO_NODE, true);
+ 
+-	kasan_populate_early_shadow(kasan_mem_to_shadow((void *)VMALLOC_START),
+-					kasan_mem_to_shadow((void *)KFENCE_AREA_END));
+-
+-	/* Enable KASAN here before kasan_mem_to_shadow(). */
+-	kasan_init_generic();
++	kasan_populate_early_shadow(mem_to_shadow((void *)VMALLOC_START),
++					mem_to_shadow((void *)KFENCE_AREA_END));
+ 
+ 	/* Populate the linear mapping */
+ 	for_each_mem_range(i, &pa_start, &pa_end) {
+@@ -307,13 +308,13 @@ void __init kasan_init(void)
+ 		if (start >= end)
+ 			break;
+ 
+-		kasan_map_populate((unsigned long)kasan_mem_to_shadow(start),
+-			(unsigned long)kasan_mem_to_shadow(end), NUMA_NO_NODE);
++		kasan_map_populate((unsigned long)mem_to_shadow(start),
++			(unsigned long)mem_to_shadow(end), NUMA_NO_NODE);
+ 	}
+ 
+ 	/* Populate modules mapping */
+-	kasan_map_populate((unsigned long)kasan_mem_to_shadow((void *)MODULES_VADDR),
+-		(unsigned long)kasan_mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
++	kasan_map_populate((unsigned long)mem_to_shadow((void *)MODULES_VADDR),
++		(unsigned long)mem_to_shadow((void *)MODULES_END), NUMA_NO_NODE);
+ 	/*
+ 	 * KAsan may reuse the contents of kasan_early_shadow_pte directly, so we
+ 	 * should make sure that it maps the zero page read-only.
+@@ -328,4 +329,5 @@ void __init kasan_init(void)
+ 
+ 	/* At this point kasan is fully initialized. Enable error messages */
+ 	init_task.kasan_depth = 0;
++	kasan_init_generic();
+ }
 -- 
 2.47.3
 
