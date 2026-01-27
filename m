@@ -1,204 +1,157 @@
-Return-Path: <stable+bounces-211808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFX8HHy9eGn6sgEAu9opvQ
-	(envelope-from <stable+bounces-211808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:28:28 +0100
+	id MOqaLHi+eGn6sgEAu9opvQ
+	(envelope-from <stable+bounces-211810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:32:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1925B94E62
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:28:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58C5294EFA
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:32:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7F9113006474
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:28:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B029303FDC5
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3FD357A29;
-	Tue, 27 Jan 2026 13:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A69D2E889C;
+	Tue, 27 Jan 2026 13:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="MnaTvR7p";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="q43V5TEc";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="MnaTvR7p";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="q43V5TEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="folgDE8L"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EEB35773E
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C35D357A52
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:29:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769520505; cv=none; b=dwf+zyKxqBN6JruuRpZLvU7CfMkG2E32SuByJ2QgccO0ZSkXPEO22cEWonK3nC+HVjfzVe8ybO85c/4pImZQsGZS8bPibzMqiwOEciXzDm1poEtDSwJ7n9pKme4+RneYFN/FV5qF8M8oNHxU26C+GGQ82sHlBKMm6m1QdwU5Miw=
+	t=1769520592; cv=none; b=E0jOjgkOfMiGLuRrSwNC5YFcIb6GMax9CXKU47Y8iJcCRPawh0Nem4mwvtUn3Px9+JR8HiKu64c82HZRo6Nu9Kn+E708IwVF5Q/RZCiuwoxxCV2KDOAYSZio2gRWo0nVes+eLxKSQq2e4IR7RWRZ3Dzj8LcrCd64/K5LZhPKs6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769520505; c=relaxed/simple;
-	bh=KvJCeaBKrUyoXs6+Jiei3R+9ViZMDENWqroC+vZYsHo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bY8UcMUqMsTkxqrQMrYQgXU0tnNxleBlJghlp0/+2do/ag3cTTji6UfzJVlW7ml9JEWE/5MTnka4/KgU2iaultFq6Am3vjre8U+TC7IgvNy1uvFxK21cy5o71KUlWIMDAouxmkwY3SMzaK4qTmk/hcFSnXmy2CQ69ho0XoWpmmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=MnaTvR7p; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=q43V5TEc; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=MnaTvR7p; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=q43V5TEc; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 0C6EA5BCF7;
-	Tue, 27 Jan 2026 13:28:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769520502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n0uonVfIBvj1V/Pw+/HE1uFbgGY4vu6yIeBLB+z1occ=;
-	b=MnaTvR7p0LwigHby8leCxZsgXU/R3eF7Dg7pKee2EPtPo3zD8dqmJbfCjzXjh95bsOEi13
-	BsSAK6O+Qn+1Pwp1oEjY7b3KICAMVTB/NhKFSP7vfJIhUpzfNsabXMZJ2Qp+bbT5qZzFfm
-	+HDyOEbaMYlc5Bc3JUzWSvQK3lIasfU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769520502;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n0uonVfIBvj1V/Pw+/HE1uFbgGY4vu6yIeBLB+z1occ=;
-	b=q43V5TEcwdL+kve9Vy0b+0op4rq4nrInjacegYa2Pk1fKl2Mpev+egrXy1j8S5G4NcXcuc
-	NhS7TbDABLpy3HCg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769520502; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n0uonVfIBvj1V/Pw+/HE1uFbgGY4vu6yIeBLB+z1occ=;
-	b=MnaTvR7p0LwigHby8leCxZsgXU/R3eF7Dg7pKee2EPtPo3zD8dqmJbfCjzXjh95bsOEi13
-	BsSAK6O+Qn+1Pwp1oEjY7b3KICAMVTB/NhKFSP7vfJIhUpzfNsabXMZJ2Qp+bbT5qZzFfm
-	+HDyOEbaMYlc5Bc3JUzWSvQK3lIasfU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769520502;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n0uonVfIBvj1V/Pw+/HE1uFbgGY4vu6yIeBLB+z1occ=;
-	b=q43V5TEcwdL+kve9Vy0b+0op4rq4nrInjacegYa2Pk1fKl2Mpev+egrXy1j8S5G4NcXcuc
-	NhS7TbDABLpy3HCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EA5ED3EA61;
-	Tue, 27 Jan 2026 13:28:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id OyYxOXW9eGkqCwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 27 Jan 2026 13:28:21 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id A2359A0A4A; Tue, 27 Jan 2026 14:28:21 +0100 (CET)
-Date: Tue, 27 Jan 2026 14:28:21 +0100
-From: Jan Kara <jack@suse.cz>
-To: jiucheng.xu@amlogic.com
-Cc: Theodore Ts'o <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, jianxin.pan@amlogic.com, tuan.zhang@amlogic.com
-Subject: Re: [PATCH] ext4: EXT4_I(sbi->s_buddy_cache)->i_state_flags is not
- initialized
-Message-ID: <4p2tihxb3pjmuyetcxb2zuoojhiss35g3zxpkocsma27mavxax@vewd3jr4f3gu>
-References: <20260127-origin-dev-v1-1-cafda25e307f@amlogic.com>
+	s=arc-20240116; t=1769520592; c=relaxed/simple;
+	bh=Hc6l7tFTqznB4E4N24EMkd7iEpYcipXJH1xcJY/84BY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XvjUzsdJc74ps1Ggs6x7/yr7fZlZAC1usCf+er/Ar7Sp2nNB52iYcF2eCyMGuAcQcRQxdJHchMs3ek9jj979vZmP1pVfuNMkDq9rDD4zOoy3DKKFUryGxAWX1Dmu5WRIHwf5dJfKF64szmlbCe3hneqBO/pdM6V4xg5h/Yo3Ndg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=folgDE8L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8240AC19422;
+	Tue, 27 Jan 2026 13:29:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1769520592;
+	bh=Hc6l7tFTqznB4E4N24EMkd7iEpYcipXJH1xcJY/84BY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=folgDE8Lr/Ak/Zni5n73qdvqhFvbVyGMYrDrRAJSUY6JxAon9DC4j+0G7l5EAJOr2
+	 xOyXghjauK5zAqvGvaT+aEv5dPv3v9yHDZ/IiZSo7CkrknufRa6YwECVaf1QRUr7Du
+	 hjWgWvWgf4wC6s1kT4Cj8M0Pbd9DL9o2FgVCqODs=
+Subject: FAILED: patch "[PATCH] gpio: cdev: Fix resource leaks on errors in" failed to apply to 6.12-stable tree
+To: tzungbi@kernel.org,bartosz.golaszewski@oss.qualcomm.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 27 Jan 2026 14:29:18 +0100
+Message-ID: <2026012718-antacid-populace-6683@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260127-origin-dev-v1-1-cafda25e307f@amlogic.com>
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
-X-Spam-Level: 
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	URIBL_MULTI_FAIL(0.00)[suse.com:server fail,amlogic.com:server fail,sto.lore.kernel.org:server fail,suse.cz:server fail];
-	TAGGED_FROM(0.00)[bounces-211808-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email,amlogic.com:email];
-	DMARC_NA(0.00)[suse.cz];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211810-lists,stable=lfdr.de];
+	SEM_URIBL_UNKNOWN_FAIL(0.00)[qualcomm.com:query timed out];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NO_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 1925B94E62
+	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:dkim,gregkh:email]
+X-Rspamd-Queue-Id: 58C5294EFA
 X-Rspamd-Action: no action
 
-On Tue 27-01-26 17:34:10, Jiucheng Xu via B4 Relay wrote:
-> From: Jiucheng Xu <jiucheng.xu@amlogic.com>
-> 
-> The i_state_flags originates from an inode that was previously
-> destroyed and then allocated to s_buddy_cache; it requires
-> reinitialization.
-> 
-> The relevant log during umount is shown below:
-> 
-> EXT4-fs (mmcblk0p28): unmounting filesystem xxx-xxx
-> EXT4-fs (mmcblk0p28): Inode 1 (39878178): inode tracked as orphan!
-> 39878178: 1411f3c7 e0182705 78cc454d ac11f000  .....'..ME.x....
-> da10433b: 1a2e0146 792e03d0 9c2a04d1 0c788ad3  F......y..*...x.
-> a91573cf: 44270388 4f4202ea 721a12ea 340cbce0  ..'D..BO...r...4
-> 89cb2f37: 0d13f000 4f270414 1a0b01f0 4f880fe0  ......'O.......O
-> 810e3bc2: 3f0c02f0 482b0009 02e048d0 83f43f2a  ...?..+H.H..*?..
-> 3f37c9f7: 02880aaf 00000000 00000000 00000000  ................
-> 
-> Signed-off-by: Jiucheng Xu <jiucheng.xu@amlogic.com>
 
-Thanks for the patch but this should be fixed since commit 4091c8206cfd
-("ext4: clear i_state_flags when alloc inode"). Can you confirm you cannot
-reproduce the issue with the latest upstream kernel?
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-								Honza
+To reproduce the conflict and resubmit, you may use the following commands:
 
-> ---
->  fs/ext4/mballoc.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-> index dbc82b65f810fed89da7fa7149d3a05de6f107d6..20b07b2bea31ea81ffbd0b4ace3a7b218c8f4dd5 100644
-> --- a/fs/ext4/mballoc.c
-> +++ b/fs/ext4/mballoc.c
-> @@ -3521,6 +3521,9 @@ static int ext4_mb_init_backend(struct super_block *sb)
->  	sbi->s_buddy_cache->i_ino = EXT4_BAD_INO;
->  	EXT4_I(sbi->s_buddy_cache)->i_disksize = 0;
->  	ext4_set_inode_mapping_order(sbi->s_buddy_cache);
-> +#if (BITS_PER_LONG < 64)
-> +	ext4_clear_state_flags(EXT4_I(sbi->s_buddy_cache));
-> +#endif
->  
->  	for (i = 0; i < ngroups; i++) {
->  		cond_resched();
-> 
-> ---
-> base-commit: 4f5e8e6f012349a107531b02eed5b5ace6181449
-> change-id: 20260126-origin-dev-9f84135b9555
-> 
-> Best regards,
-> -- 
-> Jiucheng Xu <jiucheng.xu@amlogic.com>
-> 
-> 
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8a8c942cad4cd12f739a8bb60cac77fd173c4e07
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012718-antacid-populace-6683@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8a8c942cad4cd12f739a8bb60cac77fd173c4e07 Mon Sep 17 00:00:00 2001
+From: Tzung-Bi Shih <tzungbi@kernel.org>
+Date: Tue, 20 Jan 2026 09:26:50 +0000
+Subject: [PATCH] gpio: cdev: Fix resource leaks on errors in
+ gpiolib_cdev_register()
+
+On error handling paths, gpiolib_cdev_register() doesn't free the
+allocated resources which results leaks.  Fix it.
+
+Cc: stable@vger.kernel.org
+Fixes: 7b9b77a8bba9 ("gpiolib: add a per-gpio_device line state notification workqueue")
+Fixes: d83cee3d2bb1 ("gpio: protect the pointer to gpio_chip in gpio_device with SRCU")
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://lore.kernel.org/r/20260120092650.2305319-1-tzungbi@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index ed249a45d658..2adc3c070908 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -2797,13 +2797,18 @@ int gpiolib_cdev_register(struct gpio_device *gdev, dev_t devt)
+ 		return -ENOMEM;
+ 
+ 	ret = cdev_device_add(&gdev->chrdev, &gdev->dev);
+-	if (ret)
++	if (ret) {
++		destroy_workqueue(gdev->line_state_wq);
+ 		return ret;
++	}
+ 
+ 	guard(srcu)(&gdev->srcu);
+ 	gc = srcu_dereference(gdev->chip, &gdev->srcu);
+-	if (!gc)
++	if (!gc) {
++		cdev_device_del(&gdev->chrdev, &gdev->dev);
++		destroy_workqueue(gdev->line_state_wq);
+ 		return -ENODEV;
++	}
+ 
+ 	gpiochip_dbg(gc, "added GPIO chardev (%d:%d)\n", MAJOR(devt), gdev->id);
+ 
+
 
