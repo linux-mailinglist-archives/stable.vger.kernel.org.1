@@ -1,75 +1,74 @@
-Return-Path: <stable+bounces-211870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MD7WC1rxeGmGuAEAu9opvQ
-	(envelope-from <stable+bounces-211870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:09:46 +0100
+	id cMHdDmjweGkCuAEAu9opvQ
+	(envelope-from <stable+bounces-211871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:05:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1010498375
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:09:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A469798293
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6DF230C45AB
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:05:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C1B1D302BA01
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F00362156;
-	Tue, 27 Jan 2026 17:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED92A3624B9;
+	Tue, 27 Jan 2026 17:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NYd83XVv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HF1xwx9M"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E5B3624C2
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 17:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F953362128
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 17:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769533503; cv=none; b=HreDN8ZrfrzHDpXBNJFvKTXnwkWZO/rglXesFtGQ4TMgDy3ily1+PSiYMCuqUPfnX7uivDiIXecbtYhbzzDmuh5Nc3RyJh++DpBoJSXeWnlZIK+yHZ533lFPqCOLqe9kf6OjXb48kED0aayMIQp8jHDpRuwAX0mZ53KgLfs90PM=
+	t=1769533504; cv=none; b=RCXNoNQ+cdNNdlgOxLXO2FlUb5hqwKRtP4i7EIEy9PvXazc0o5rE1dlNhGlgnWyhp6pQ6pa8rmADf67Sc7S3H8H+LkI9Y0XIsmiV1MMj2CqSnmRE7sANx9Dqpvp60pJNrLh34l3E+g93yvKn6tLegZIrwyOFfSUozXMnGKNdQB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769533503; c=relaxed/simple;
-	bh=5g7eNrockMgk0yivVHjBlRycQ6V13a9tjJgfB5sdCxI=;
+	s=arc-20240116; t=1769533504; c=relaxed/simple;
+	bh=fb6pI9aTPHVF85IUn8Z0Bx0gwKHL+eX8zeovOXPfiD8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W7d5Nh60ckTfxNXNBFPCZZqxNiSHwWH4j3JUfUMCH0w4AnJ3aPjvrSFGJ4gVF/RswI24FhbwYZsjE5ao5q9aUZ66ZdBnA278iM9l7q+dIf9E+jZGXIKiV/N+5oxYGA/tws+aHrnOpNXKLXaFulLHFSz8RAoah0AkE/TrHRSUmZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NYd83XVv; arc=none smtp.client-ip=198.175.65.9
+	 MIME-Version; b=pPVcGVL/bg5bSxHQLHfP+OOcXa8Hb6dhhvQcMKbwMrH+1JtEWenKL+XndJ3e6P9d3t1N3uzVcKlO8/D8ladN7a8qmuXf0pK28br8Fw+gsb+Kis3Po1uRP8mtkirZbianyXsiD0HvPOANBYj0fcqC+CwOz7p6x7zCA0I/hr8exPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HF1xwx9M; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769533502; x=1801069502;
+  t=1769533503; x=1801069503;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=5g7eNrockMgk0yivVHjBlRycQ6V13a9tjJgfB5sdCxI=;
-  b=NYd83XVvZm8xy2OkhrSIPrBhBA9M/PpDYk8Sl9RJg1clLrqH9z9+LK3N
-   jN6hL9WYzhfLkVdzBoPJSGVShsy31BwmcqZ2Q7czIglOWW4oq+E8bTvK3
-   px9TVju7Q81XJfO3eQxP/XPQXBy8cWbpAR7eqkAatq4DFXCu4UzfEWyrY
-   q3TK7eQuiuN6g9xKDcz7FyJJkl0BtiufyqYUp8rHBxhThboLXp0ZaZjaz
-   IXvg0rva2JOlXDUucRdFYXtQZduyUsanHzNzBrVTP/GOSWj7D0+3kpVs3
-   WLAkRIyH4MvCdwKEA1/rRBaoULwjVen3q8U8XtDVat9EPhl+bR1tm8+/q
+  bh=fb6pI9aTPHVF85IUn8Z0Bx0gwKHL+eX8zeovOXPfiD8=;
+  b=HF1xwx9M/xsc+qEaY+tNGL0cwWOsfO6wj/tNTTF/XkZQowbJpdkh/pGd
+   seIFe4bZ8dAusTtI9hCapwkO90WkBiG+8U5Z4zf5dMhFQ67wXoA0VBujf
+   6iQQdg7NcYepKy0CYmEm3+MeL1ttQ9yXA1pdKFZRZKrFmgEMz/Mo1AnVP
+   eStrkyfM2W8uuRo9wetvuFh4qq3ws+/tB/PggUJQs+RtrfjOZO/xxr2gl
+   LYtO6FsQLE/vts7jVC1U/ZMcYGJ984yzAr4/prplIfuGk/LYhYJrQEkF3
+   KWnB9GsZYh7xhGhKa2B26rNqNBwsa/dkdoYoG1gTaJNNw/0smtoANWBVQ
    A==;
-X-CSE-ConnectionGUID: WMB/D3OUTTGNIbgZdSfI6g==
-X-CSE-MsgGUID: EEgDLyBHSCa0RNpQqaeSlg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="93393523"
+X-CSE-ConnectionGUID: sfmQcJ63ST2Uc0gBAXaEAQ==
+X-CSE-MsgGUID: Nt+WaLIuSgi6G1UEhJPNMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="93393524"
 X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="93393523"
+   d="scan'208";a="93393524"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
   by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 09:04:57 -0800
-X-CSE-ConnectionGUID: Y2vXN4vtS3mCemYU34N2kA==
-X-CSE-MsgGUID: 2Gxn7tzMQECALw/ZuHgKZg==
+X-CSE-ConnectionGUID: 1E0zqbAnQyiVtZhmZ4Q/QA==
+X-CSE-MsgGUID: n11JefjYQVOhLLs46R9vJQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="208039388"
+   d="scan'208";a="208039392"
 Received: from guc-pnp-dev-box-1.fm.intel.com ([10.1.39.24])
   by orviesa008.jf.intel.com with ESMTP; 27 Jan 2026 09:04:57 -0800
 From: Zhanjun Dong <zhanjun.dong@intel.com>
 To: intel-xe@lists.freedesktop.org
 Cc: Matthew Brost <matthew.brost@intel.com>,
 	stable@vger.kernel.org,
-	Zhanjun Dong <zhanjun.dong@intel.com>,
-	Stuart Summers <stuart.summers@intel.com>
-Subject: [PATCH v4 1/5] drm/xe: Always kill exec queues in xe_guc_submit_pause_abort
-Date: Tue, 27 Jan 2026 12:04:51 -0500
-Message-Id: <20260127170455.618616-2-zhanjun.dong@intel.com>
+	Zhanjun Dong <zhanjun.dong@intel.com>
+Subject: [PATCH v4 2/5] drm/xe: Forcefully tear down exec queues in GuC submit fini
+Date: Tue, 27 Jan 2026 12:04:52 -0500
+Message-Id: <20260127170455.618616-3-zhanjun.dong@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260127170455.618616-1-zhanjun.dong@intel.com>
 References: <20260127170455.618616-1-zhanjun.dong@intel.com>
@@ -86,19 +85,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211870-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-211871-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[zhanjun.dong@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -106,40 +105,105 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1010498375
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid]
+X-Rspamd-Queue-Id: A469798293
 X-Rspamd-Action: no action
 
 From: Matthew Brost <matthew.brost@intel.com>
 
-xe_guc_submit_pause_abort is intended to be called after something
-disastrous occurs (e.g., VF migration fails, device wedging, or driver
-unload) and should immediately trigger the teardown of remaining
-submission state. With that, kill any remaining queues in this function.
+In GuC submit fini, forcefully tear down any exec queues by disabling
+CTs, stopping the scheduler (which cleans up lost G2H), killing all
+remaining queues, and resuming scheduling to allow any remaining cleanup
+actions to complete and signal any remaining fences.
 
-Fixes: 7c4b7e34c83b ("drm/xe/vf: Abort VF post migration recovery on failure")
+guc_submit_fini requires access to device hardware. Using a device-managed
+action guarantees the correct ordering of cleanup.
+
+v3:
+ - Add page fault fix
+v2:
+ - Fix VF failure (CI)
+
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
 Cc: stable@vger.kernel.org
 Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Stuart Summers <stuart.summers@intel.com>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_submit.c | 31 +++++++++++++++++++++---------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index 456f549c16f6..d61bd0094e0b 100644
+index d61bd0094e0b..92ea32423838 100644
 --- a/drivers/gpu/drm/xe/xe_guc_submit.c
 +++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -2774,8 +2774,7 @@ void xe_guc_submit_pause_abort(struct xe_guc *guc)
- 			continue;
- 
- 		xe_sched_submission_start(sched);
--		if (exec_queue_killed_or_banned_or_wedged(q))
--			xe_guc_exec_queue_trigger_cleanup(q);
-+		guc_exec_queue_kill(q);
- 	}
- 	mutex_unlock(&guc->submission_state.lock);
+@@ -239,13 +239,21 @@ static bool exec_queue_killed_or_banned_or_wedged(struct xe_exec_queue *q)
+ 		 EXEC_QUEUE_STATE_BANNED));
  }
+ 
+-static void guc_submit_fini(struct drm_device *drm, void *arg)
++static int __xe_guc_submit_reset_prepare(struct xe_guc *guc);
++
++static void guc_submit_fini(void *arg)
+ {
+ 	struct xe_guc *guc = arg;
+ 	struct xe_device *xe = guc_to_xe(guc);
+ 	struct xe_gt *gt = guc_to_gt(guc);
+ 	int ret;
+ 
++	/* Forcefully kill any remaining exec queues */
++	xe_guc_ct_stop(&guc->ct);
++	__xe_guc_submit_reset_prepare(guc);
++	xe_guc_submit_stop(guc);
++	xe_guc_submit_pause_abort(guc);
++
+ 	ret = wait_event_timeout(guc->submission_state.fini_wq,
+ 				 xa_empty(&guc->submission_state.exec_queue_lookup),
+ 				 HZ * 5);
+@@ -326,7 +334,7 @@ int xe_guc_submit_init(struct xe_guc *guc, unsigned int num_ids)
+ 
+ 	guc->submission_state.initialized = true;
+ 
+-	return drmm_add_action_or_reset(&xe->drm, guc_submit_fini, guc);
++	return devm_add_action_or_reset(xe->drm.dev, guc_submit_fini, guc);
+ }
+ 
+ /*
+@@ -2354,16 +2362,10 @@ static void guc_exec_queue_stop(struct xe_guc *guc, struct xe_exec_queue *q)
+ 	}
+ }
+ 
+-int xe_guc_submit_reset_prepare(struct xe_guc *guc)
++static int __xe_guc_submit_reset_prepare(struct xe_guc *guc)
+ {
+ 	int ret;
+ 
+-	if (xe_gt_WARN_ON(guc_to_gt(guc), vf_recovery(guc)))
+-		return 0;
+-
+-	if (!guc->submission_state.initialized)
+-		return 0;
+-
+ 	/*
+ 	 * Using an atomic here rather than submission_state.lock as this
+ 	 * function can be called while holding the CT lock (engine reset
+@@ -2378,6 +2380,17 @@ int xe_guc_submit_reset_prepare(struct xe_guc *guc)
+ 	return ret;
+ }
+ 
++int xe_guc_submit_reset_prepare(struct xe_guc *guc)
++{
++	if (xe_gt_WARN_ON(guc_to_gt(guc), vf_recovery(guc)))
++		return 0;
++
++	if (!guc->submission_state.initialized)
++		return 0;
++
++	return __xe_guc_submit_reset_prepare(guc);
++}
++
+ void xe_guc_submit_reset_wait(struct xe_guc *guc)
+ {
+ 	wait_event(guc->ct.wq, xe_device_wedged(guc_to_xe(guc)) ||
 -- 
 2.34.1
 
