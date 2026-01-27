@@ -1,155 +1,126 @@
-Return-Path: <stable+bounces-211815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PKHEAjAeGn6sgEAu9opvQ
-	(envelope-from <stable+bounces-211815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:39:20 +0100
+	id eHQ6OB3AeGn6sgEAu9opvQ
+	(envelope-from <stable+bounces-211816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:39:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4994594FF5
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:39:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C47994FFE
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:39:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 82408300460D
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:39:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18B04300613F
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD83359FB6;
-	Tue, 27 Jan 2026 13:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FATTbEIb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3E33590C0;
+	Tue, 27 Jan 2026 13:39:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEA8359F90
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D933590AB
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:39:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769521148; cv=none; b=UX44+dyjGCEPB4rfVOC2suu3OG1TrZBRJOZ4lULuPAByBlWUjevIT7GP9/sVioa9XqQl8djd3GcrtWUAmr9IZUmMBOnlE2SnhfISl7sDwOQTQcU16zsx5MZA2SnURDM03DvX2MZcOxZKcVKsBk0aEF9JsYhfPyul83bug5Y7tQk=
+	t=1769521178; cv=none; b=h9hReuHlveIg+Agaa8UpqcCUIbokI4w4oFFF2YnxgyZlojrhVezwas+FhnYOXdwWtImalF1d+HP+jBEY9XcgZG4ERTrtWuJOjr7cHlsTHt7tUA0iSZGaJxt+kV+z8qsH/DUvhmdIl+KxRWey2GNr4TdzM0ckst5Yx0ZFCqDSNgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769521148; c=relaxed/simple;
-	bh=BXBAVxyWkRwktqFoA1SWEnN3RAb2r/Avzdd8ijNHOwY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IsAAK3XGK9kQAfuLJ2P/e4poByvffom97WKQud/4t4Df3DRAXMPewROph3ttnv3w6O7SSYn/olVKETxQyUVTM4lcXVrr8bPjYgWxbZzjy0KZrl2OAefHXubhk9VS5m6OsmY76DScc9sxprswxQHkY9GbD1h3Ga2vlX/xjUt5530=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FATTbEIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008C4C4AF0D
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:39:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769521148;
-	bh=BXBAVxyWkRwktqFoA1SWEnN3RAb2r/Avzdd8ijNHOwY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=FATTbEIbOuaSOo2GCX0oiETbRVNZWxMom2Z1NFsB4zFmiPDnERHM+5r74V3Su1zs9
-	 qJ0f0dDPxubMqVxS40TkdWm5Zn2AzfLo5KXmhNdB5e8i6pOQ8jFbSUMjBlcSW1m1C1
-	 kA2KO0ogPRn1xhgdy5tGTIxq3VcFC22V5GP/syYwnF8Wd3N+XdEKNjLo6C6Bf/gRO1
-	 LU2N7FrV/JUwfDfYxjKmFDOtyhD2k9aWnhn0FxgQpmTMz7wzsf7kRKllbTkgoTmqXd
-	 ijWGHMdtGCNpCHPpO82/GYKGZQiFsP+BAwhN/ISGSD1pQD9UYUbnW9pSQD75vESV3c
-	 n8kG5shJUlNpA==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-59dd7bfeb8aso6990928e87.0
-        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 05:39:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWDSKe5LUSbL4z8+O/r/VSboifTeuzNJIiA7ZHv/OsoKBrnUAxqOQND1byfloGwBznpaDcBx0w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT5mG/zm8GyY46WDcpsrN9ebaAPdPVaua8z+qcS5M0W9NbOFcp
-	CELaOnT98BZE9Y209QdXO9XNou3YodH/hc+18Ao7CCo61SXWldVvAo3eUBgtnZQ465G3DzOpwjp
-	vYoCEjhba+aDpz8FD7myhjtVvCDWvElU=
-X-Received: by 2002:ac2:4f07:0:b0:59d:f475:40a5 with SMTP id
- 2adb3069b0e04-59e0412c67cmr807071e87.28.1769521146651; Tue, 27 Jan 2026
- 05:39:06 -0800 (PST)
+	s=arc-20240116; t=1769521178; c=relaxed/simple;
+	bh=03FnsWyK8BrH1Jw8K0sgP2NkdxeC7zPZ0UEqlEwj5R8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=e5UVD4OgQR+5FFlani8+JvMihbDPPF0sxzCKX0P2J1aU/RminapVN9BnCpaRTAiEsdTPKuQYR5K0utqs5fiDxnTQeV/jbgkC/bg7z8UyYhOpKSOq2mI+ZfHO5UfE4MTFlaEMRQNm1G7D1CBjaxq00ocH6KaIkxmVwOOlif1M3v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 662E91595;
+	Tue, 27 Jan 2026 05:39:30 -0800 (PST)
+Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 99E0C3F632;
+	Tue, 27 Jan 2026 05:39:35 -0800 (PST)
+From: Joey Gouly <joey.gouly@arm.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: david.spickett@arm.com,
+	joey.gouly@arm.com,
+	kevin.brodsky@arm.com,
+	mark.rutland@arm.com,
+	stable@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH v2] arm64: poe: fix stale POR_EL0 values for ptrace
+Date: Tue, 27 Jan 2026 13:39:26 +0000
+Message-Id: <20260127133926.2677180-1-joey.gouly@arm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260122-rust-analyzer-fd-leak-v1-1-945577813b20@kernel.org>
- <CANiq72=+2s48M5imZ7tZj-0SN==f_mLmw_2cWfQYKtBhD1ROCA@mail.gmail.com> <b07a1e07-9265-4b77-9665-0bfae9b506d3@kxxt.dev>
-In-Reply-To: <b07a1e07-9265-4b77-9665-0bfae9b506d3@kxxt.dev>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Tue, 27 Jan 2026 08:38:30 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9k92BRP=3-LL-d1YZzROE0ayEH7s5ptf+xPcPYBnb-7uA@mail.gmail.com>
-X-Gm-Features: AZwV_QhNhaJEiotjq3ZQI93lwlmWQGbyXYdpdDwMCzFfNiHMhq06xrewGGK3FzI
-Message-ID: <CAJ-ks9k92BRP=3-LL-d1YZzROE0ayEH7s5ptf+xPcPYBnb-7uA@mail.gmail.com>
-Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: avoid FD leak
-To: Levi Zim <i@kxxt.dev>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boris-Chengbiao Zhou <bobo1239@web.de>, Kees Cook <kees@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211815-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,garyguo.net,protonmail.com,google.com,umich.edu,web.de,vger.kernel.org,collabora.com,kloenk.dev];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211816-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tamird@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[joey.gouly@arm.com,stable@vger.kernel.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kxxt.dev:email,mail.gmail.com:mid,python.org:url]
-X-Rspamd-Queue-Id: 4994594FF5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6C47994FFE
 X-Rspamd-Action: no action
 
-On Tue, Jan 27, 2026 at 8:10=E2=80=AFAM Levi Zim <i@kxxt.dev> wrote:
->
->
-> On 1/26/26 10:09 AM, Miguel Ojeda wrote:
-> > On Thu, Jan 22, 2026 at 5:44=E2=80=AFPM Tamir Duberstein <tamird@kernel=
-.org> wrote:
-> >>
-> >> Use a context manager to avoid leaking file descriptors.
-> >
-> > This may have been intentionally written like that for simplicity,
-> > since I think CPython closes them immediately in practice even if it
-> > does not guarantee it (and I think the kernel may be assuming CPython
-> > given the version requirement?).
->
-> Path.read_text from pathlib would be a better choice for keeping the simp=
-licity
-> while ensuring the file is closed.
->
-> https://docs.python.org/3/library/pathlib.html#pathlib.Path.read_text
+If a process wrote to POR_EL0 and then crashed before a context switch
+happened, the coredump would contain an incorrect value for POR_EL0.
 
-Thanks, I thought this would change semantics because `open` would
-default to binary, but it defaults to text. I'll use read_text in v2.
+The value read in poe_get() would be a stale value left in thread.por_el0.  Fix
+this by reading the value from the system register, if the target thread is the
+current thread.
 
->
-> Best regards,
-> Levi
->
-> > Nevertheless, it is better to be explicit and proper, but it is not
-> > urgent, so I would say let's put this in rust-analyzer after the merge
-> > window even if you end up considering it a fix.
-> >
-> > Like in the other one, I don't see the Tested-by from Daniel, so I
-> > would suggest taking the chance to double-check that meanwhile too.
-> >
-> > Thanks!
-> >
-> > Cheers,
-> > Miguel
-> >
->
+This matches what gcs/fpsimd do.
+
+Fixes: 175198199262 ("arm64/ptrace: add support for FEAT_POE")
+Reported-by: David Spickett <david.spickett@arm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+---
+ arch/arm64/kernel/ptrace.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
+index b9bdd83fbbca..8a14b86cd066 100644
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -1486,6 +1486,9 @@ static int poe_get(struct task_struct *target,
+ 	if (!system_supports_poe())
+ 		return -EINVAL;
+ 
++	if (target == current)
++		current->thread.por_el0 = read_sysreg_s(SYS_POR_EL0);
++
+ 	return membuf_write(&to, &target->thread.por_el0,
+ 			    sizeof(target->thread.por_el0));
+ }
+-- 
+2.25.1
+
 
