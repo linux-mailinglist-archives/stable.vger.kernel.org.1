@@ -1,164 +1,191 @@
-Return-Path: <stable+bounces-211843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAdbGbzYeGmftgEAu9opvQ
-	(envelope-from <stable+bounces-211843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:24:44 +0100
+	id cKXyLsPdeGnytgEAu9opvQ
+	(envelope-from <stable+bounces-211846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:46:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F6C96A11
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:24:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A46E97028
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:46:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C28C319AACF
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:15:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 98809309D0B3
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E076362128;
-	Tue, 27 Jan 2026 15:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C757F360740;
+	Tue, 27 Jan 2026 15:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdePxxiy"
+	dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b="VZw7wMzF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.tecnico.ulisboa.pt (smtp1.tecnico.ulisboa.pt [193.136.128.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D4E35EDCF;
-	Tue, 27 Jan 2026 15:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4C7360724;
+	Tue, 27 Jan 2026 15:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.136.128.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769526660; cv=none; b=Uy1MwajoZn2BH3yeJ0O39O2tA4m/FzYx5eDylLNME4lk7BdkfrveyR0ZmKY0QU4zP/hYjSyrdLRm4ydsmdyX2Y/MwZFYCzzpAI9cHlKXyPHURZyzo/KRqWsY8DYIR9j9vbp021+9kOMH/XJGfvSaxoUAKaIAmcXPO7YxoSU/EjM=
+	t=1769527311; cv=none; b=VvZVZptERU50AeS6LT/21s8v65+Ke92MlZHznn/OXWEwqpNSFB+AkFxn9M90oaB9lW9pv611VZk8bIxooK2eSmwQd2mygCWrRZLY7MQCbTXRREgxFA/XvXyONBO7P+OnWKS1K/RQODA+d/TQ68P4jMihB9vpMFeHNJTmzipdP4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769526660; c=relaxed/simple;
-	bh=tmnHHyktYtkZZnXHfsHHrgH0b7Jn5yEbu456uezyJ+0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6SIJxHlnTlceAtDUcg3wHxsHIt8Y0uN0Imqe2JYF9H+VQSbqKUg5kSM4MJi+Pluue+3Y69GoXZoNBBFhYTs6+Q/7JNhL6r+UddBRmxmcW5PglJd3p/ZMB9TMY3s3oQxGcMTL7Q3TNe3R/4Ids6Urt+xilzT69M+2lJWXnikei0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdePxxiy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04221C4AF0C;
-	Tue, 27 Jan 2026 15:10:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769526660;
-	bh=tmnHHyktYtkZZnXHfsHHrgH0b7Jn5yEbu456uezyJ+0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kdePxxiymC0M1a2LflGAIdeHHXV3T/AISfyr5rThr6yvpT49ThPQLIGA8OGtbZM33
-	 v5/ad1AA4E8FtCTQx4O97P2OP3SvGmhF31nE8+n8tdnJlVDH3wUCms6a9PZM2v3sft
-	 sTEUWYzycku/+gdjqEVG+MHaGE4M2eqjvqIhD3LVIZ8YwaRJ7+YsZDgryKDqpRD7n+
-	 KqBUfB82kB9u8oTp0sWF9g/CDk4GFyFwu7XdRNOZJcwJmfopcgDkFiHw+Sr6FfJKO3
-	 JMxMJCKVDkaIJ9KZKR0Mow31HZgYcbVkiRbaEYWntC6YhqpsvNVNeonnt3swnrnbYT
-	 B3fYqcTSBSegA==
-From: Niklas Cassel <cassel@kernel.org>
-To: Jingoo Han <jingoohan1@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Frank Li <Frank.Li@nxp.com>
-Cc: Randolph Lin <randolph@andestech.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Charles Mirabile <cmirabil@redhat.com>,
-	tim609@andestech.com,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	dlemoal@kernel.org,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Niklas Cassel <cassel@kernel.org>,
-	stable@vger.kernel.org,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	linux-pci@vger.kernel.org
-Subject: [PATCH v5 1/3] PCI: dwc: Fix msg_atu_index assignment
-Date: Tue, 27 Jan 2026 16:10:39 +0100
-Message-ID: <20260127151038.1484881-6-cassel@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260127151038.1484881-5-cassel@kernel.org>
-References: <20260127151038.1484881-5-cassel@kernel.org>
+	s=arc-20240116; t=1769527311; c=relaxed/simple;
+	bh=PZoMFREOKYb5A2RBb3T/kOEVl2HYfvqsepMW8enuzrU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=K9+lVhc6uB4wBXcyc+y4ixYCfA9ZpAGIjiqKwsnT+hY0PlYelh91ji0+spbonbpqv5tc2SbZMj58PYmNrIgPa96oj5/RZm/DWrtCPT1E5zs7gAZ/8stca3u/ONslsG0IaxEVUX6+AKhsqFbNeAwjB552fyvUAtaC9nqWKToiRCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt; spf=pass smtp.mailfrom=tecnico.ulisboa.pt; dkim=pass (2048-bit key) header.d=tecnico.ulisboa.pt header.i=@tecnico.ulisboa.pt header.b=VZw7wMzF; arc=none smtp.client-ip=193.136.128.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tecnico.ulisboa.pt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tecnico.ulisboa.pt
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTP id B6EBB60020E1;
+	Tue, 27 Jan 2026 15:12:11 +0000 (WET)
+X-Virus-Scanned: by amavis-2.13.0 (20230106) (Debian) at tecnico.ulisboa.pt
+Received: from smtp1.tecnico.ulisboa.pt ([127.0.0.1])
+ by localhost (smtp1.tecnico.ulisboa.pt [127.0.0.1]) (amavis, port 10025)
+ with LMTP id 5itpaajWBzqb; Tue, 27 Jan 2026 15:12:09 +0000 (WET)
+Received: from mail1.tecnico.ulisboa.pt (mail1.ist.utl.pt [193.136.128.10])
+	by smtp1.tecnico.ulisboa.pt (Postfix) with ESMTPS id 0CD1560022F6;
+	Tue, 27 Jan 2026 15:12:08 +0000 (WET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tecnico.ulisboa.pt;
+	s=mail2; t=1769526728;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JNRbm588iHwZF1GxdMteQr8E3PEwbL6XNXp5vje3+7g=;
+	b=VZw7wMzFh65Q/cPZxUF7cvpWg9/0YWNg+8wazANDXB+D2BggUp6u0GrRSzvXl0/8IBQ5hl
+	e7SNMl/bxWF0qH4vadx6JIk9XsLnKeWo8eu22cVFBLYjJspDBpKWxGnN61ub/lbGkSrZVF
+	/RKHItx0dXfifjDeTj6Scd+r6ixa+iJsKYSJ5W2nnvNNLFkX5paL8SyYtCw9A8GUkeWtAF
+	HCEXyYb3H0HJE8XXMMfyMbSKKmAeUtY31hhrASttbZZFwTpDRB9/5BoPxuWSx0iEldinkL
+	1FJY+3bBCfxrxeSMuvA+3GfjBo81jkfmJasWb7NBYR7p2ykdvwrE8rJwIKQEjg==
+Received: from [192.168.2.110] (unknown [148.63.39.39])
+	(Authenticated sender: ist187313)
+	by mail1.tecnico.ulisboa.pt (Postfix) with ESMTPSA id 1DB273600A6;
+	Tue, 27 Jan 2026 15:12:06 +0000 (WET)
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Subject: [PATCH v2 0/6] Fixes to Tegra USB role switching and phy handling
+Date: Tue, 27 Jan 2026 15:11:46 +0000
+Message-Id: <20260127-diogo-tegra_phy-v2-0-787b9eed3ed5@tecnico.ulisboa.pt>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2236; i=cassel@kernel.org; h=from:subject; bh=tmnHHyktYtkZZnXHfsHHrgH0b7Jn5yEbu456uezyJ+0=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDIrrhYFhazeYWETK7+cX65pZpL3ghPGUc05AVnL1A+ta XpS1/Ouo5SFQYyLQVZMkcX3h8v+4m73KccV79jAzGFlAhnCwMUpABPZ9pCR4fnOSuHwXa12tRav 7qez7RH+9TRlb/LJ/BqfW+3r5s/kvczwz4BF/PDZjb4uf1a25N3+Upwisf6HkOb2+9IhoksyJ75 fwwAA
-X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WNwQrCMBAFf6Xs2ZQk2qZ68j+kSJquyYI0JYnFU
+ vLvxoInj/PgzWwQMRBGuFQbBFwokp8KyEMFxunJIqOxMEguGyG5YCN561lCG/R9divrWtOdjR7
+ UUSkorzngg9678dYXdhSTD+seWMR3/blOf65FMM4aoUunHfmA3TWhmcj4+vWkOHhdzwn6nPMH+
+ CEtercAAAA=
+X-Change-ID: 20251201-diogo-tegra_phy-86c89cab7377
+To: Mathias Nyman <mathias.nyman@intel.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, JC Kuo <jckuo@nvidia.com>, 
+ Vinod Koul <vkoul@kernel.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>
+Cc: linux-usb@vger.kernel.org, linux-tegra@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-phy@lists.infradead.org, 
+ devicetree@vger.kernel.org, Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769526725; l=2265;
+ i=diogo.ivo@tecnico.ulisboa.pt; s=20240529; h=from:subject:message-id;
+ bh=PZoMFREOKYb5A2RBb3T/kOEVl2HYfvqsepMW8enuzrU=;
+ b=D8MsCp26CqE8ASu3nLdiC1jufNdbt6L1Lp4OgiaNsEVhs6wqPOft+KGYsKf+Yjp1lYoVYNDgS
+ 9jzgwMt7t3TDJ+ZE4kXwu+C47Ue/5WIzm5kIWgv16o6n0OskPIs6R2L
+X-Developer-Key: i=diogo.ivo@tecnico.ulisboa.pt; a=ed25519;
+ pk=BRGXhMh1q5KDlZ9y2B8SodFFY8FGupal+NMtJPwRpUQ=
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[tecnico.ulisboa.pt,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[tecnico.ulisboa.pt:s=mail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211843-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-211846-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[intel.com,linuxfoundation.org,gmail.com,nvidia.com,kernel.org,linaro.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,google.com,nxp.com];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ulisboa.pt:email,tecnico.ulisboa.pt:mid,tecnico.ulisboa.pt:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassel@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[diogo.ivo@tecnico.ulisboa.pt,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[tecnico.ulisboa.pt:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nxp.com:email]
-X-Rspamd-Queue-Id: 98F6C96A11
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 7A46E97028
 X-Rspamd-Action: no action
 
-When dw_pcie_iatu_setup() configures outbound address translation for both
-type PCIE_ATU_TYPE_MEM and PCIE_ATU_TYPE_IO, the iATU index to use is
-incremented before calling dw_pcie_prog_outbound_atu().
+Hello,
 
-However, for msg_atu_index the index is not incremented before use,
-causing the iATU index to be the same as the last configured iATU index,
-which means that it will incorrectly use the same iATU index that is
-already in use, breaking outbound address translation.
+This patch series contains fixes/improvements for USB role switching on the
+Tegra210 and Tegra186 SoCs.
 
-In total there are three problems with this code:
--It assigns msg_atu_index the same index that was used for the last
- outbound address translation window, rather than incrementing the index
- before assignment.
--The index should only be incremented (and msg_atu_index assigned) if the
- use_atu_msg feature is actually requested/in use (pp->use_atu_msg is set).
--If the use_atu_msg feature is requested/in use, and there are no outbound
- iATUs available, the code should return an error, as otherwise when this
- this feature is used, it will use an iATU index that is out of bounds.
+The first patch addresses a wrong check on the logic that disables the
+VBUS regulator.
 
-Fixes: e1a4ec1a9520 ("PCI: dwc: Add generic MSG TLP support for sending PME_Turn_Off when system suspend")
-Cc: stable@vger.kernel.org
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+The second patch removes a redundant mutex lock when setting the PHY
+mode.
+
+The third patch guarantees proper ordering of events when switching PHY
+roles.
+
+The remaining patches are included to standardize the PHY .set_mode()
+callback between Tegra186 and Tegra210.
+
+With this patch series this feature can only be controlled from userspace,
+by writing the desired role to sysfs as
+
+echo "role" > /sys/class/usb_role/usb2-0-role-switch/role
+
+with role being one of {device, host, none}.
+
+Further patches will enable automatic role switching via the 'cros_ec_typec'
+driver which is currently broken on Smaug.
+
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 ---
- drivers/pci/controller/dwc/pcie-designware-host.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Changes in v2:
+- Remove DT patches already taken to be upstreamed
+- Add standardization between Tegra210 and Tegra186
+- Address review comments from v1, detailed descriptions in each patch
+- Link to v1: https://lore.kernel.org/r/20251204-diogo-tegra_phy-v1-0-51a2016d0be8@tecnico.ulisboa.pt
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
-index b3d6a474fd16..d7f57d77bdf5 100644
---- a/drivers/pci/controller/dwc/pcie-designware-host.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-host.c
-@@ -982,7 +982,14 @@ static int dw_pcie_iatu_setup(struct dw_pcie_rp *pp)
- 		dev_warn(pci->dev, "Ranges exceed outbound iATU size (%d)\n",
- 			 pci->num_ob_windows);
- 
--	pp->msg_atu_index = i;
-+	if (pp->use_atu_msg) {
-+		if (pci->num_ob_windows > ++i) {
-+			pp->msg_atu_index = i;
-+		} else {
-+			dev_err(pci->dev, "Cannot add outbound window for MSG TLP\n");
-+			return -ENOMEM;
-+		}
-+	}
- 
- 	i = 0;
- 	resource_list_for_each_entry(entry, &pp->bridge->dma_ranges) {
+---
+Diogo Ivo (6):
+      phy: tegra: xusb: Fix USB2 port regulator disable logic
+      usb: xhci: tegra: Remove redundant mutex when setting phy mode
+      phy: tegra: xusb: Fix ordering issue when switching roles on USB2 ports
+      phy: tegra: xusb: Add ID override support to padctl
+      phy: tegra: xusb: Move .set_mode() to a shared location
+      phy: tegra: xusb: Move T186 .set_mode() to common implementation
+
+ drivers/phy/tegra/xusb-tegra186.c   | 73 +++++----------------------------
+ drivers/phy/tegra/xusb-tegra210.c   | 42 +------------------
+ drivers/phy/tegra/xusb.c            | 80 +++++++++++++++++++++++++++++++++++++
+ drivers/phy/tegra/xusb.h            |  4 ++
+ drivers/usb/gadget/udc/tegra-xudc.c |  4 ++
+ drivers/usb/host/xhci-tegra.c       | 14 ++++---
+ include/linux/phy/tegra/xusb.h      |  3 ++
+ 7 files changed, 111 insertions(+), 109 deletions(-)
+---
+base-commit: b02a5530af8abe0d3cd4852ba48990716e962934
+change-id: 20251201-diogo-tegra_phy-86c89cab7377
+
+Best regards,
 -- 
-2.52.0
+Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
 
