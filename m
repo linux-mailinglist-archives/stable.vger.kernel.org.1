@@ -1,172 +1,138 @@
-Return-Path: <stable+bounces-211745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211746-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEMYCdCXeGkWrQEAu9opvQ
-	(envelope-from <stable+bounces-211745-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 11:47:44 +0100
+	id OEKOLkeXeGnmrAEAu9opvQ
+	(envelope-from <stable+bounces-211746-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 11:45:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FAE5931DC
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 11:47:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4451C9315F
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 11:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF4A1304DEA7
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 10:42:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B8710305BA56
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 10:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCD23446B3;
-	Tue, 27 Jan 2026 10:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F3B343201;
+	Tue, 27 Jan 2026 10:43:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F/jfU2uz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LzpujCWt"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B66342C8B;
-	Tue, 27 Jan 2026 10:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C387734106A;
+	Tue, 27 Jan 2026 10:43:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769510556; cv=none; b=BSE5Uy/LrVEXvfK45nMJFaeuXlHjh8A0XpS+SZ4CrtRsRx3qE9VkyPVEmHrLia4fQnCsy8sTpgHIIvc/gRj21cwVUFGyDidr703GGH91/T6WcosKqQIZ/2RDL0gY/pASGnHOqaeSb5UCzQ2EaYjfbvH3tzHHbc0mJtrNSUlm0Ik=
+	t=1769510596; cv=none; b=pY2lUdhNQ+X6l5dyKoOtcU8+j+nFvUq05r3dCD2ph1+KQrK+kF9sOANGWBSXV0EoE9cE9CUarHw8Ns9hlsGUYhZ38j7SgdIEkw0O3yZTXZnMWX/1iXwjkZCkML+V0ahEXChIhrRcfDAeS3cfLD60Nn0/wi7ZqqjFpxdm+K8TwRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769510556; c=relaxed/simple;
-	bh=geF5sj/jmwdPWTxyB3iA1a2JfJu4BPJEE1G2d4A9lHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KRgl29BP/3D7EGCxiyWEzkjajZe3hwTXESxCVolYrWq3yYVxoEL34fJlwS0xXC6TTnMHvUig624eQH8Rk7DXoNB7d6Qpe4ll8cZSGxHBwg5p7wHP2A7mEfzkrxx8n4aRJsQ5j/BzT4aaS+48gYIXSpiyhnVwiTl6J+XX8+PNafA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F/jfU2uz; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769510554; x=1801046554;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=geF5sj/jmwdPWTxyB3iA1a2JfJu4BPJEE1G2d4A9lHk=;
-  b=F/jfU2uzPeliUumg/v5cvqcJ8LdbFp7oCGi9bTh6bHxsJRzjzhgZW9nL
-   qyiAcCk02simYgUxDqukchVuVUFac6+9tA6UFJXZlmcNx+p+9vNb6KPtL
-   ncPjA0FHH3n1S6bgrQHYIiiqarTiP1yjFvm6xrGaqMICejQDo1k5uL/FG
-   nLLgy/SSpeNhPOD/z6Fu9FyWgnDvI+RTMshhE6i9FXkDlGT9P/xlJkw21
-   hp9fboibowNsGMvdSgiHrj5k4yGQX+lWB3HQ+rLXE6Rz1tbVYO0pzOv9n
-   HD6OnDVyEotcHS1munlvTuf5Yv92OivjCguZNozazygGTJRXFp9y8CBTG
-   Q==;
-X-CSE-ConnectionGUID: 3fkg44pbSaCCXbbyh7IPmA==
-X-CSE-MsgGUID: 20TewNRKR7qkbB7s9ctDcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11683"; a="74325558"
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
-   d="scan'208";a="74325558"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 02:42:31 -0800
-X-CSE-ConnectionGUID: pqlJ3fqBTeCsCl+BiiaO5w==
-X-CSE-MsgGUID: ct7ZOaZuQmG0IivPMXplNg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,256,1763452800"; 
-   d="scan'208";a="212056489"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.248])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 02:42:26 -0800
-Date: Tue, 27 Jan 2026 12:42:24 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, stable@vger.kernel.org,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	Andy Shevchenko <andy@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	David Jander <david@protonic.nl>
-Subject: Re: [PATCH v2 6/8] iio: dac: ds4424: fix -128 rejection and refactor
- raw access
-Message-ID: <aXiWkF04r7FkLPRx@smile.fi.intel.com>
-References: <20260127060939.3914006-1-o.rempel@pengutronix.de>
- <20260127060939.3914006-7-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1769510596; c=relaxed/simple;
+	bh=jyobfJ96OlW3K4tTEPQRzR6fuXN3a0yGmEi2N6tUdq0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ncpUH6P8qYSf2fKyT+r1oWcj+jGSDCYuim1ZOajHFjmJZ0DkyTWwHXIWSpTmW24tIHBJpDD7xmxXlc2/1b0TW7vmu6EucwY3n8smHwpw2itz+t/MYysMZ1XBcm2CED9EFFNuCYV0fXqeku49QVXjOXdxL9QrUF2Ck5PPDaLcdPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LzpujCWt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475F6C16AAE;
+	Tue, 27 Jan 2026 10:43:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769510596;
+	bh=jyobfJ96OlW3K4tTEPQRzR6fuXN3a0yGmEi2N6tUdq0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LzpujCWtRfwnE1AK1SESY8tr7XywPhiA0ZixYwF55yoG9RiBkg0vj35Yu73nAbpFj
+	 iH3NUk2CnLG/g3Ot5+P4aYKTiFyiBvcjacIWnIXWSvEc+lETjeeznIgyjsGYHTTlv9
+	 gIV7i/oQt3fcpigu8p057W6PshSnrMdh2Ew1rjO3g6DdvBLBrwiu1Ch0xg0N+qxgw5
+	 thofwu+CYHx6pA7bVksUZsEaZyFAKF2wYBXuS6WlwbbdHQroCRqxb3NvMav0bxrZD4
+	 6b2qrkcllsNEf4gZhgKgpJAtOryAGowu3MCHq/dNCUtKiQPIMmIbZ+QqVMvS6R+cF2
+	 AW+yTt+lqdy9g==
+Message-ID: <2ecfd6ff-8599-442e-aa9b-9e3d1e6c509f@kernel.org>
+Date: Tue, 27 Jan 2026 11:43:12 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260127060939.3914006-7-o.rempel@pengutronix.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] media: i2c: ov02c10: Use runtime PM autosuspend to
+ avoid brownouts
+To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Saikiran <bjsaikiran@gmail.com>, linux-media@vger.kernel.org
+Cc: linux-arm-msm@vger.kernel.org, rfoss@kernel.org, todor.too@gmail.com,
+ bod@kernel.org, vladimir.zapolskiy@linaro.org, sakari.ailus@linux.intel.com,
+ mchehab@kernel.org, stable@vger.kernel.org
+References: <20260126173444.10228-1-bjsaikiran@gmail.com>
+ <20260126173444.10228-4-bjsaikiran@gmail.com>
+ <900cc5dd-c39d-42f6-9531-016f62da81e8@linaro.org>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <900cc5dd-c39d-42f6-9531-016f62da81e8@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211745-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-211746-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com,linaro.org,linux.intel.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[linaro.org,gmail.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,dt];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smile.fi.intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim]
-X-Rspamd-Queue-Id: 7FAE5931DC
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hansg@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4451C9315F
 X-Rspamd-Action: no action
 
-On Tue, Jan 27, 2026 at 07:09:37AM +0100, Oleksij Rempel wrote:
-> The DS442x DAC uses sign-magnitude encoding, so -128 cannot be represented.
-> Previously, passing -128 resulted in a truncated value that programmed 0mA.
+Hi,
+
+On 27-Jan-26 10:46, Bryan O'Donoghue wrote:
+> On 26/01/2026 17:34, Saikiran wrote:
+>> On Qualcomm X1E80100 platforms, the OV02C10 sensor experiences brownouts
+>> if power-cycled too quickly (< 2.3s) due to slow passive discharge of
+>> regulator rails.
+>>
+>> Implement Runtime PM Autosuspend with a delay of 1000ms. This keeps the
+>> regulators enabled for a short duration after the device is closed,
+>> preventing costly power-off/power-on cycles during rapid user
+>> interactions (e.g., browser permission checks).
 > 
-> Fix this by validating the input against the 7-bit magnitude limit.
-> Additionally, refactor the raw access logic to use symmetrical bitwise
-> operations, replacing the union structure.
+> But if you try to power the sensor 1.1 seconds later what happens ?
+> 
+> With this commit log this submission is a NAK, for example why do I want this change on an x86 machine ?
+> 
+> We need to root-cause the failure not paper over it.
 
-> Fixes: d632a2bd8ffc ("iio: dac: ds4422/ds4424 dac driver")
+I agree the commit message needs work.
 
-Usually fixes go first in the series...
+This is overall a useful change to have though. Even on x86_64
+it is better to keep the sensor enabled when userspace
+does a stop + start stream in quick succession rather then
+needlessly powercycle it.
 
-...
+But the commit message needs to explain that this is generally
+a good thing to have to avoid unnecessary delays related to
+power-sequencing when userspace does a stop + start stream in quick
+succession.
 
-> +#define DS4424_DAC_MASK			GENMASK(6, 0)
-> +#define DS4424_DAC_SOURCE		BIT(7)
+Regards,
 
-+ bits.h ?
-
-...
-
->  	case IIO_CHAN_INFO_RAW:
-> -		if (val < S8_MIN || val > S8_MAX)
-> +		abs_val = abs(val);
-
-> +
-
-Redundant blank line.
-
-> +		if (abs_val > DS4424_DAC_MASK)
->  			return -EINVAL;
-
-...
-
-> +		/*
-> +		 * Currents exiting the IC (Source) are positive.
-> +		 * Canonicalize 0 to sink; datasheet treats sign as don't-care.
-> +		 */
-> +		if (val > 0)
-> +			abs_val |= DS4424_DAC_SOURCE;
-
-Hmm... Maybe 0 should be excluded as invalid?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Hans
 
 
