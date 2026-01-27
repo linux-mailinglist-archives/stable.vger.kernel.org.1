@@ -1,144 +1,163 @@
-Return-Path: <stable+bounces-211902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211903-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AjyDrA+eWkmwAEAu9opvQ
-	(envelope-from <stable+bounces-211902-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 23:39:44 +0100
+	id +CKyKJJQeWnYwQEAu9opvQ
+	(envelope-from <stable+bounces-211903-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 00:56:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7509B24C
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 23:39:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F169B87B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 00:56:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 07E9F3004CA2
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 22:39:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E3C2F3018C0F
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 23:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9822D94AC;
-	Tue, 27 Jan 2026 22:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0372F6181;
+	Tue, 27 Jan 2026 23:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FoVO8MSg"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XDfkmBEA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f73.google.com (mail-dl1-f73.google.com [74.125.82.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5DC2566D3;
-	Tue, 27 Jan 2026 22:39:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6B2245031
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 23:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769553578; cv=none; b=nH7jYOjpJBj0BtsT+GKgUVW5Rp3u55UNn+DMJ1zz7XEApsM/4rNYAplmoctk+KIgvg4Ai2wkvvaw9gWEsq5KnPVEhg1RIc04sakw739Re6ksZK//QkA/q5TZkqClzCYdpniHapCSTIby/ggsiESqwqxQKxaQk6979fscjaxsOdI=
+	t=1769558158; cv=none; b=EA98itIpxZZK/a27TLooNGd3dOBNkcbSMpRt/q8+MOcGlfgYy0AoaKe+jsPgzqcHdG91XIsqEWYOeq3yjslMw11huUhcPwg6r/xam/ZK7X4/KwjIyf7S+N0kDNCf4eprADFFOSSd8dMpcGzkYty+MoYV+SXuQB3ENt4cYRTzjBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769553578; c=relaxed/simple;
-	bh=vAKGXi5/xv7/iqoFOU9jUpxzNmiM/3g3ieVqB/OwEa0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=TUppYKrbjOCGWb3eX5FR5fcywZgrg88CGOqEuX70eY5O5+qZFjBYr+fsB99MteS4LvmVvpNWrDsNJWp75gTIJPpKTjQ7D6mEesfA8RdZRE7aYPEVKufBY7IN/as8PCQq3gF7jYzMPtN9kyicwwxhhsQN0hgiRb2unPt/4kWaDxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FoVO8MSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB37C116C6;
-	Tue, 27 Jan 2026 22:39:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769553578;
-	bh=vAKGXi5/xv7/iqoFOU9jUpxzNmiM/3g3ieVqB/OwEa0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=FoVO8MSgRtWBjpFwVkIoBs/XdmtkFtcYqTapvPYeUl/4q0Ytd402KQzmGFYFB2soB
-	 fh3cXFsEVQ9UCCAUuZZI6u36OwuRn4ncCSg8TJB1JYzafBqPPCK/gUcdSkJKtHMHF4
-	 98Kor5SUQB/AcfKWWHNBwcbo8ripvA29K6ldTR1Ib4RQjI7LGSsRQ9DrUSWzUByx3D
-	 Z7yejHKtepwmR7o39+Js+QHE/sWy3Ihvt/DhQ4Hxr8zkdge2edMyZIh3w4AOe6dXWb
-	 mxcqUgT46OIIdRbGV+5JwK3Y73t972sro7QrM02jYJ3rbupgO2SXUcy7jG7i0mL7e2
-	 OJcDa3ywisH8w==
-Date: Tue, 27 Jan 2026 16:39:37 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Malte =?utf-8?B?U2NocsO2ZGVy?= <malte+lkml@tnxip.de>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 02/23] PCI: Rewrite bridge window head alignment function
-Message-ID: <20260127223937.GA384008@bhelgaas>
+	s=arc-20240116; t=1769558158; c=relaxed/simple;
+	bh=1bdvDWy3ayORJJpYAh61pTdmvx/lpSGKvlPrNdsqbzE=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ow4zXTKwVKPqtKXIneom8JXucASg8WnqCvM5gCUYUAwLSLgsayyetlThgKHk0bL1urdLWo72QP3naC1JLgiXJhAQmkrUi2dtUwaMiF5Pc3jP71M2DTQwqAfRjTwtHRTHoC9fU+KYH6S0Wv1R2LuGUuGVDApH/wzJzCz0Fi9Yx9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XDfkmBEA; arc=none smtp.client-ip=74.125.82.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+Received: by mail-dl1-f73.google.com with SMTP id a92af1059eb24-1248da4d2d6so5036776c88.0
+        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 15:55:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769558156; x=1770162956; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=tdCSuV7lwZVI5Oxf115A/DnTg8grqC5WgVzeqsLUVUc=;
+        b=XDfkmBEAqTlQbG+DHKMGgirINNHy1Dw+bSzPjATWlqvfxaFOY4uxSWoCpG94bFJJXJ
+         DsGuH0by0Xh4Cfo2Q87gmBBb9uZAvUU2+oftoJuVB+Po8SKUafM1jY0AFqxffFhBC9yq
+         OdNSU8LilWGKHg2Ea1g7XsGuXMh1na63HzQbyeDqBTUPdurlQPt6TOtSDLgWCzRulRma
+         phDeVw5kDuop3D+ygstKo16cAo56hdnCdIhn4aW0KnCTjMtsoURY5Se+4EWOfY7HGVQc
+         nLYLbLrmvIcdvvmIDURuaQ/OCO14r1ZC4y1YWx0t4vbttLMMZEdQuVYfZQEfHS+crz0J
+         L1XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769558156; x=1770162956;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tdCSuV7lwZVI5Oxf115A/DnTg8grqC5WgVzeqsLUVUc=;
+        b=vLHPZvyTVNc0Zgv/0NXt/P+UA+mxzSEIHrBhVeAiF/LqPZ6wjphzwbEhrxFXiq38dd
+         RntGQU20t14Q3Ll7r5aTE05nH4vArFWoMOTcQbepj7opcd7lnVrWZKgPRJRxUc7SWMT+
+         bUiDstJcIdoIX3bU07lSx9lBA4g0UZNcvAk4LnWMad9hQ0pB2aKRAv1R8rxXc9mbdlIB
+         I6aHtiLlWj/JAZ2LioR4HA6wg3O7tKXnpJltrm0cNwuOrFpkKNTXF0DpzX+V0FeUx71z
+         WrJGMmoEl6ae+qK+mBI7Z8UUyFIf9HlRYhegUxQMea2q6cC8Eva3WVu7oOunpibpW2Nw
+         PkXw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbTntk0f2vCSzKJFd00jWyx7XzHMd71k+qv89oUNH5BvGG6heX5zW8I8vr8Qe5cxCtTq4yzKc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLWOws5NKl0ufz0i0axCPhp2ZR0MG1WRbVRPrTchIHiK6vMlfO
+	Ee9ZQfqoDJFDuz1cl/dy5GJNAvJLrxL2+UeOV7u8tVedRRup4lEfYR7uPpQDH0SkOuzAQD5rfwC
+	8XsJlBVSNpVAtCA==
+X-Received: from dltt2.prod.google.com ([2002:a05:701a:c962:b0:119:78ff:fe10])
+ (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7022:24a9:b0:119:e55a:9c08 with SMTP id a92af1059eb24-124a0114330mr1992149c88.36.1769558155760;
+ Tue, 27 Jan 2026 15:55:55 -0800 (PST)
+Date: Tue, 27 Jan 2026 23:55:10 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6405c825-6d8e-043c-38f1-e7e1a4ebf44a@linux.intel.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260127235545.2307876-1-cmllamas@google.com>
+Subject: [PATCH 1/2] rust_binderfs: fix ida_alloc_max() upper bound
+From: Carlos Llamas <cmllamas@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
+	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Dmitry Antipov <dmantipov@yandex.ru>, 
+	Al Viro <viro@zeniv.linux.org.uk>, NeilBrown <neil@brown.name>, 
+	Matt Gilbride <mattgilbride@google.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Li Li <dualli@google.com>, 
+	Paul Moore <paul@paul-moore.com>
+Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211902-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,android.com,kernel.org,google.com,yandex.ru,zeniv.linux.org.uk,brown.name,gmail.com,paul-moore.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-211903-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,lkml];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5B7509B24C
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cmllamas@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E9F169B87B
 X-Rspamd-Action: no action
 
-On Tue, Jan 27, 2026 at 01:22:22PM +0200, Ilpo Järvinen wrote:
-> On Mon, 26 Jan 2026, Bjorn Helgaas wrote:
-> > On Fri, Dec 19, 2025 at 07:40:15PM +0200, Ilpo Järvinen wrote:
-> > > The calculation of bridge window head alignment is done by
-> > > calculate_mem_align() [*]. With the default bridge window alignment, it
-> > > is used for both head and tail alignment.
-> ...
+The 'max' argument of ida_alloc_max() takes the maximum valid ID and not
+the "count". Using an ID of BINDERFS_MAX_MINOR (1 << 20) for dev->minor
+would exceed the limits of minor numbers (20-bits). Fix this off-by-one
+error by subtracting 1 from the 'max'.
 
-> > > Fixes: 5d0a8965aea9 ("[PATCH] 2.5.14: New PCI allocation code (alpha, arm, parisc) [2/2]")
-> > 
-> > check_commits complains that this SHA1 doesn't exist:
-> > 
-> >   In commit
-> > 
-> >     a21a27a0e893 ("PCI: Rewrite bridge window head alignment function")
-> > 
-> >   Fixes tag
-> > 
-> >     Fixes: 5d0a8965aea9 ("[PATCH] 2.5.14: New PCI allocation code (alpha, arm, parisc) [2/2]")
-> > 
-> >   has these problem(s):
-> > 
-> >     - Target SHA1 does not exist
-> > 
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5d0a8965aea9
-> > does find it, but says it's not reachable.
-> > 
-> > It's so old (2002) that I'm not sure it's worth including it as a
-> > Fixes: tag.
-> 
-> Hi,
-> 
-> The commit is in the history repo, and yes, even the git web ui for some 
-> reason says it's not reachable by any branch:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=5d0a8965aea93bd799ebcd671e562d90f3ec2711
-> 
-> ...But it's part of a tag for sure:
-> 
-> $ git describe --contains 5d0a8965aea93bd799ebcd671e562d90f3ec2711
-> v2.5.15~11^2~5^2~10
+Cc: stable@vger.kernel.org
+Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202512181203.IOv6IChH-lkp@intel.com/
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+ drivers/android/binder/rust_binderfs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Thanks, I made it a Link tag instead:
+diff --git a/drivers/android/binder/rust_binderfs.c b/drivers/android/binder/rust_binderfs.c
+index c69026df775c..88374b31ab7c 100644
+--- a/drivers/android/binder/rust_binderfs.c
++++ b/drivers/android/binder/rust_binderfs.c
+@@ -132,8 +132,8 @@ static int binderfs_binder_device_create(struct inode *ref_inode,
+ 	mutex_lock(&binderfs_minors_mutex);
+ 	if (++info->device_count <= info->mount_opts.max)
+ 		minor = ida_alloc_max(&binderfs_minors,
+-				      use_reserve ? BINDERFS_MAX_MINOR :
+-						    BINDERFS_MAX_MINOR_CAPPED,
++				      use_reserve ? BINDERFS_MAX_MINOR - 1 :
++						    BINDERFS_MAX_MINOR_CAPPED - 1,
+ 				      GFP_KERNEL);
+ 	else
+ 		minor = -ENOSPC;
+@@ -405,8 +405,8 @@ static int binderfs_binder_ctl_create(struct super_block *sb)
+ 	/* Reserve a new minor number for the new device. */
+ 	mutex_lock(&binderfs_minors_mutex);
+ 	minor = ida_alloc_max(&binderfs_minors,
+-			      use_reserve ? BINDERFS_MAX_MINOR :
+-					    BINDERFS_MAX_MINOR_CAPPED,
++			      use_reserve ? BINDERFS_MAX_MINOR - 1 :
++					    BINDERFS_MAX_MINOR_CAPPED - 1,
+ 			      GFP_KERNEL);
+ 	mutex_unlock(&binderfs_minors_mutex);
+ 	if (minor < 0) {
+-- 
+2.52.0.457.g6b5491de43-goog
 
-  Link: https://git.kernel.org/history/history/c/5d0a8965aea9 ("[PATCH] 2.5.14: New PCI allocation code (alpha, arm, parisc) [2/2]")
 
