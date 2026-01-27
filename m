@@ -1,105 +1,105 @@
-Return-Path: <stable+bounces-211807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211809-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aD+dGse8eGn6sgEAu9opvQ
-	(envelope-from <stable+bounces-211807-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:25:27 +0100
+	id 2CuUNc69eGn6sgEAu9opvQ
+	(envelope-from <stable+bounces-211809-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:29:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26DA94E06
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:25:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E75494E7F
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:29:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEFAE30238FA
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:24:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D53D8300D71A
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C543559D2;
-	Tue, 27 Jan 2026 13:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A403587A0;
+	Tue, 27 Jan 2026 13:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iom4PMOn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oroZYsER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA971355036
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AABD2D73AB
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769520288; cv=none; b=C1IC+k08L0ez13t9jDobEju+WIJeSNRb/YOmd1WoPWta12TYYBvSFVozOWT6knneDMzj8tG33gZdIM5a+GZWaRdR3bL6XwKLez6KYLD7ETAXXEh9o8Pkj7Ecm2c+74vKxoilWtPmGfbd89ZaOLEp5I/n9y3h91SoFdSflyhRBFQ=
+	t=1769520586; cv=none; b=uGfN5Y20jh/pV25qsA2u9SmCD/nKxVixi4GSVn2Q5O44Vyt8evi2Ccxa3WnGClNLDtBKwkYdEc/2bW48kcrc9iG9+I+WzegYfunvxre5vNQ32X86YhPgHICFf59qxqKKuUoUE77mLbZSt3nFSDFwvwWmQs1z4zWCByM+J1Duo1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769520288; c=relaxed/simple;
-	bh=9kCJo+LtixAxGH7n0spClKAkLutS0oNdKBdgRPWV7nU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Hyi7r6bKW+U7FBUQqjdT5PcmmUFk13aARmStAIgGmCvH3rYwPvwjoxMm5BygIHzo+i0DYNNpDfC9MnBVoDdokLSdy8XPyfkEoeQimgvIjKpvOFhxYR0UyEvBSiZPnd501pCeAbvLG526QgcywEuBzruyA0sxIJ0DYUmAQ1/ogf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iom4PMOn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFBEC116C6;
-	Tue, 27 Jan 2026 13:24:48 +0000 (UTC)
+	s=arc-20240116; t=1769520586; c=relaxed/simple;
+	bh=/cdbpMfRBY+h757XW7ICpzKlBRs1dvC/O83L1jkxNz8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UpZj4q8Qnr7ZeKCfa9XXHuKJe6ymuyALhAtXBkmwlXuF9F7yufHNVEQ0n1f8fTk4++SyRgmWhox+ImrfpaGV4xL/9BbJeTHN/bE33e8fvmlg6cg07PLRtep2qYYbtWkB1aQGE3keyhBOpuHB7uHExDOlLRHUFxFuZyb0JUav0U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oroZYsER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71703C116C6;
+	Tue, 27 Jan 2026 13:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769520288;
-	bh=9kCJo+LtixAxGH7n0spClKAkLutS0oNdKBdgRPWV7nU=;
+	s=korg; t=1769520585;
+	bh=/cdbpMfRBY+h757XW7ICpzKlBRs1dvC/O83L1jkxNz8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Iom4PMOn1LELL6+P4dCAviDGxXxIuezyuq+wmyuPsd/N7kQJz9lsHuLDdOKTHsrbQ
-	 ybPtmac+ZpdNLAv+Va13wTIrG+ygsCvVRw9wkyywgzVZI+52VuRliJ7M9TVPQCFsaW
-	 VDtXQfVcH+i9DMI+B26ZdYyPjNZkyDd8gZU7xZbk=
-Subject: FAILED: patch "[PATCH] drm/xe/uapi: disallow bind queue sharing" failed to apply to 6.12-stable tree
-To: matthew.auld@intel.com,arvind.yadav@intel.com,carl.zhang@intel.com,jose.souza@intel.com,matthew.brost@intel.com,michal.mrozek@intel.com,stable@vger.kernel.org,thomas.hellstrom@linux.intel.com
+	b=oroZYsERXjTw3oeczbCjL1Ndepu3U6zGvU2d7XlOfveC+cqz82oceSQuP45pSUR+s
+	 A25tcfvESojGgRPjRzElTnCasdtxPsXeZnksgw08RHlfpP40j0UZPfoJk8Wj5qnN8u
+	 sFVX/e+ZAb07WqT6tT/7ftLv1qSXfjPhaxN0QQJA=
+Subject: FAILED: patch "[PATCH] tracing: Fix crash on synthetic stacktrace field usage" failed to apply to 6.1-stable tree
+To: rostedt@goodmis.org,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,zanussi@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 27 Jan 2026 14:24:45 +0100
-Message-ID: <2026012745-sister-monopoly-735c@gregkh>
+Date: Tue, 27 Jan 2026 14:27:47 +0100
+Message-ID: <2026012747-unearned-ungodly-fb11@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211807-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211809-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,gregkh:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: C26DA94E06
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,efficios.com:email,goodmis.org:email,msgid.link:url]
+X-Rspamd-Queue-Id: 4E75494E7F
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6f4b7aed61817624250e590ba0ef304146d34614
+git cherry-pick -x 90f9f5d64cae4e72defd96a2a22760173cb3c9ec
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012745-sister-monopoly-735c@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012747-unearned-ungodly-fb11@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,204 +111,160 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6f4b7aed61817624250e590ba0ef304146d34614 Mon Sep 17 00:00:00 2001
-From: Matthew Auld <matthew.auld@intel.com>
-Date: Tue, 20 Jan 2026 11:06:10 +0000
-Subject: [PATCH] drm/xe/uapi: disallow bind queue sharing
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 90f9f5d64cae4e72defd96a2a22760173cb3c9ec Mon Sep 17 00:00:00 2001
+From: Steven Rostedt <rostedt@goodmis.org>
+Date: Thu, 22 Jan 2026 19:48:24 -0500
+Subject: [PATCH] tracing: Fix crash on synthetic stacktrace field usage
 
-Currently this is very broken if someone attempts to create a bind
-queue and share it across multiple VMs. For example currently we assume
-it is safe to acquire the user VM lock to protect some of the bind queue
-state, but if allow sharing the bind queue with multiple VMs then this
-quickly breaks down.
+When creating a synthetic event based on an existing synthetic event that
+had a stacktrace field and the new synthetic event used that field a
+kernel crash occurred:
 
-To fix this reject using a bind queue with any VM that is not the same
-VM that was originally passed when creating the bind queue. This a uAPI
-change, however this was more of an oversight on kernel side that we
-didn't reject this, and expectation is that userspace shouldn't be using
-bind queues in this way, so in theory this change should go unnoticed.
+ ~# cd /sys/kernel/tracing
+ ~# echo 's:stack unsigned long stack[];' > dynamic_events
+ ~# echo 'hist:keys=prev_pid:s0=common_stacktrace if prev_state & 3' >> events/sched/sched_switch/trigger
+ ~# echo 'hist:keys=next_pid:s1=$s0:onmatch(sched.sched_switch).trace(stack,$s1)' >> events/sched/sched_switch/trigger
 
-Based on a patch from Matt Brost.
+The above creates a synthetic event that takes a stacktrace when a task
+schedules out in a non-running state and passes that stacktrace to the
+sched_switch event when that task schedules back in. It triggers the
+"stack" synthetic event that has a stacktrace as its field (called "stack").
 
-v2 (Matt B):
-  - Hold the vm lock over queue create, to ensure it can't be closed as
-    we attach the user_vm to the queue.
-  - Make sure we actually check for NULL user_vm in destruction path.
-v3:
-  - Fix error path handling.
+ ~# echo 's:syscall_stack s64 id; unsigned long stack[];' >> dynamic_events
+ ~# echo 'hist:keys=common_pid:s2=stack' >> events/synthetic/stack/trigger
+ ~# echo 'hist:keys=common_pid:s3=$s2,i0=id:onmatch(synthetic.stack).trace(syscall_stack,$i0,$s3)' >> events/raw_syscalls/sys_exit/trigger
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Reported-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: José Roberto de Souza <jose.souza@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Michal Mrozek <michal.mrozek@intel.com>
-Cc: Carl Zhang <carl.zhang@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Acked-by: José Roberto de Souza <jose.souza@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Arvind Yadav <arvind.yadav@intel.com>
-Acked-by: Michal Mrozek <michal.mrozek@intel.com>
-Link: https://patch.msgid.link/20260120110609.77958-3-matthew.auld@intel.com
-(cherry picked from commit 9dd08fdecc0c98d6516c2d2d1fa189c1332f8dab)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+The above makes another synthetic event called "syscall_stack" that
+attaches the first synthetic event (stack) to the sys_exit trace event and
+records the stacktrace from the stack event with the id of the system call
+that is exiting.
 
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
-index 8724f8de67e2..779d7e7e2d2e 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.c
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.c
-@@ -328,6 +328,7 @@ struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe
-  * @xe: Xe device.
-  * @tile: tile which bind exec queue belongs to.
-  * @flags: exec queue creation flags
-+ * @user_vm: The user VM which this exec queue belongs to
-  * @extensions: exec queue creation extensions
-  *
-  * Normalize bind exec queue creation. Bind exec queue is tied to migration VM
-@@ -341,6 +342,7 @@ struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe
-  */
- struct xe_exec_queue *xe_exec_queue_create_bind(struct xe_device *xe,
- 						struct xe_tile *tile,
-+						struct xe_vm *user_vm,
- 						u32 flags, u64 extensions)
- {
- 	struct xe_gt *gt = tile->primary_gt;
-@@ -377,6 +379,9 @@ struct xe_exec_queue *xe_exec_queue_create_bind(struct xe_device *xe,
- 			xe_exec_queue_put(q);
- 			return ERR_PTR(err);
- 		}
+When enabling this event (or using it in a historgram):
+
+ ~# echo 1 > events/synthetic/syscall_stack/enable
+
+Produces a kernel crash!
+
+ BUG: unable to handle page fault for address: 0000000000400010
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP PTI
+ CPU: 6 UID: 0 PID: 1257 Comm: bash Not tainted 6.16.3+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.16.3-1
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+ RIP: 0010:trace_event_raw_event_synth+0x90/0x380
+ Code: c5 00 00 00 00 85 d2 0f 84 e1 00 00 00 31 db eb 34 0f 1f 00 66 66 2e 0f 1f 84 00 00 00 00 00 66 66 2e 0f 1f 84 00 00 00 00 00 <49> 8b 04 24 48 83 c3 01 8d 0c c5 08 00 00 00 01 cd 41 3b 5d 40 0f
+ RSP: 0018:ffffd2670388f958 EFLAGS: 00010202
+ RAX: ffff8ba1065cc100 RBX: 0000000000000000 RCX: 0000000000000000
+ RDX: 0000000000000001 RSI: fffff266ffda7b90 RDI: ffffd2670388f9b0
+ RBP: 0000000000000010 R08: ffff8ba104e76000 R09: ffffd2670388fa50
+ R10: ffff8ba102dd42e0 R11: ffffffff9a908970 R12: 0000000000400010
+ R13: ffff8ba10a246400 R14: ffff8ba10a710220 R15: fffff266ffda7b90
+ FS:  00007fa3bc63f740(0000) GS:ffff8ba2e0f48000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000400010 CR3: 0000000107f9e003 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  ? __tracing_map_insert+0x208/0x3a0
+  action_trace+0x67/0x70
+  event_hist_trigger+0x633/0x6d0
+  event_triggers_call+0x82/0x130
+  trace_event_buffer_commit+0x19d/0x250
+  trace_event_raw_event_sys_exit+0x62/0xb0
+  syscall_exit_work+0x9d/0x140
+  do_syscall_64+0x20a/0x2f0
+  ? trace_event_raw_event_sched_switch+0x12b/0x170
+  ? save_fpregs_to_fpstate+0x3e/0x90
+  ? _raw_spin_unlock+0xe/0x30
+  ? finish_task_switch.isra.0+0x97/0x2c0
+  ? __rseq_handle_notify_resume+0xad/0x4c0
+  ? __schedule+0x4b8/0xd00
+  ? restore_fpregs_from_fpstate+0x3c/0x90
+  ? switch_fpu_return+0x5b/0xe0
+  ? do_syscall_64+0x1ef/0x2f0
+  ? do_fault+0x2e9/0x540
+  ? __handle_mm_fault+0x7d1/0xf70
+  ? count_memcg_events+0x167/0x1d0
+  ? handle_mm_fault+0x1d7/0x2e0
+  ? do_user_addr_fault+0x2c3/0x7f0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The reason is that the stacktrace field is not labeled as such, and is
+treated as a normal field and not as a dynamic event that it is.
+
+In trace_event_raw_event_synth() the event is field is still treated as a
+dynamic array, but the retrieval of the data is considered a normal field,
+and the reference is just the meta data:
+
+// Meta data is retrieved instead of a dynamic array
+  str_val = (char *)(long)var_ref_vals[val_idx];
+
+// Then when it tries to process it:
+  len = *((unsigned long *)str_val) + 1;
+
+It triggers a kernel page fault.
+
+To fix this, first when defining the fields of the first synthetic event,
+set the filter type to FILTER_STACKTRACE. This is used later by the second
+synthetic event to know that this field is a stacktrace. When creating
+the field of the new synthetic event, have it use this FILTER_STACKTRACE
+to know to create a stacktrace field to copy the stacktrace into.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Link: https://patch.msgid.link/20260122194824.6905a38e@gandalf.local.home
+Fixes: 00cf3d672a9d ("tracing: Allow synthetic events to pass around stacktraces")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 5e6e70540eef..c97bb2fda5c0 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -2057,6 +2057,15 @@ static struct hist_field *create_hist_field(struct hist_trigger_data *hist_data,
+ 			hist_field->fn_num = HIST_FIELD_FN_RELDYNSTRING;
+ 		else
+ 			hist_field->fn_num = HIST_FIELD_FN_PSTRING;
++	} else if (field->filter_type == FILTER_STACKTRACE) {
++		flags |= HIST_FIELD_FL_STACKTRACE;
 +
-+		if (user_vm)
-+			q->user_vm = xe_vm_get(user_vm);
- 	}
- 
- 	return q;
-@@ -407,6 +412,11 @@ void xe_exec_queue_destroy(struct kref *ref)
- 			xe_exec_queue_put(eq);
- 	}
- 
-+	if (q->user_vm) {
-+		xe_vm_put(q->user_vm);
-+		q->user_vm = NULL;
-+	}
++		hist_field->size = MAX_FILTER_STR_VAL;
++		hist_field->type = kstrdup_const(field->type, GFP_KERNEL);
++		if (!hist_field->type)
++			goto free;
 +
- 	q->ops->destroy(q);
- }
- 
-@@ -742,6 +752,22 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
- 		    XE_IOCTL_DBG(xe, eci[0].engine_instance != 0))
- 			return -EINVAL;
- 
-+		vm = xe_vm_lookup(xef, args->vm_id);
-+		if (XE_IOCTL_DBG(xe, !vm))
-+			return -ENOENT;
-+
-+		err = down_read_interruptible(&vm->lock);
-+		if (err) {
-+			xe_vm_put(vm);
-+			return err;
-+		}
-+
-+		if (XE_IOCTL_DBG(xe, xe_vm_is_closed_or_banned(vm))) {
-+			up_read(&vm->lock);
-+			xe_vm_put(vm);
-+			return -ENOENT;
-+		}
-+
- 		for_each_tile(tile, xe, id) {
- 			struct xe_exec_queue *new;
- 
-@@ -749,9 +775,11 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
- 			if (id)
- 				flags |= EXEC_QUEUE_FLAG_BIND_ENGINE_CHILD;
- 
--			new = xe_exec_queue_create_bind(xe, tile, flags,
-+			new = xe_exec_queue_create_bind(xe, tile, vm, flags,
- 							args->extensions);
- 			if (IS_ERR(new)) {
-+				up_read(&vm->lock);
-+				xe_vm_put(vm);
- 				err = PTR_ERR(new);
- 				if (q)
- 					goto put_exec_queue;
-@@ -763,6 +791,8 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
- 				list_add_tail(&new->multi_gt_list,
- 					      &q->multi_gt_link);
- 		}
-+		up_read(&vm->lock);
-+		xe_vm_put(vm);
++		hist_field->fn_num = HIST_FIELD_FN_STACK;
  	} else {
- 		logical_mask = calc_validate_logical_mask(xe, eci,
- 							  args->width,
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.h b/drivers/gpu/drm/xe/xe_exec_queue.h
-index fda4d4f9bda8..37a9da22f420 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.h
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.h
-@@ -28,6 +28,7 @@ struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe
- 						 u32 flags, u64 extensions);
- struct xe_exec_queue *xe_exec_queue_create_bind(struct xe_device *xe,
- 						struct xe_tile *tile,
-+						struct xe_vm *user_vm,
- 						u32 flags, u64 extensions);
+ 		hist_field->size = field->size;
+ 		hist_field->is_signed = field->is_signed;
+diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+index 4554c458b78c..45c187e77e21 100644
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -130,7 +130,9 @@ static int synth_event_define_fields(struct trace_event_call *call)
+ 	struct synth_event *event = call->data;
+ 	unsigned int i, size, n_u64;
+ 	char *name, *type;
++	int filter_type;
+ 	bool is_signed;
++	bool is_stack;
+ 	int ret = 0;
  
- void xe_exec_queue_fini(struct xe_exec_queue *q);
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue_types.h b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-index 771ffe35cd0c..3a4263c92b3d 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
-+++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-@@ -54,6 +54,12 @@ struct xe_exec_queue {
- 	struct kref refcount;
- 	/** @vm: VM (address space) for this exec queue */
- 	struct xe_vm *vm;
-+	/**
-+	 * @user_vm: User VM (address space) for this exec queue (bind queues
-+	 * only)
-+	 */
-+	struct xe_vm *user_vm;
+ 	for (i = 0, n_u64 = 0; i < event->n_fields; i++) {
+@@ -138,8 +140,12 @@ static int synth_event_define_fields(struct trace_event_call *call)
+ 		is_signed = event->fields[i]->is_signed;
+ 		type = event->fields[i]->type;
+ 		name = event->fields[i]->name;
++		is_stack = event->fields[i]->is_stack;
 +
- 	/** @class: class of this exec queue */
- 	enum xe_engine_class class;
- 	/**
-diff --git a/drivers/gpu/drm/xe/xe_sriov_vf_ccs.c b/drivers/gpu/drm/xe/xe_sriov_vf_ccs.c
-index 797a4b866226..d963231b5135 100644
---- a/drivers/gpu/drm/xe/xe_sriov_vf_ccs.c
-+++ b/drivers/gpu/drm/xe/xe_sriov_vf_ccs.c
-@@ -346,7 +346,7 @@ int xe_sriov_vf_ccs_init(struct xe_device *xe)
- 		flags = EXEC_QUEUE_FLAG_KERNEL |
- 			EXEC_QUEUE_FLAG_PERMANENT |
- 			EXEC_QUEUE_FLAG_MIGRATE;
--		q = xe_exec_queue_create_bind(xe, tile, flags, 0);
-+		q = xe_exec_queue_create_bind(xe, tile, NULL, flags, 0);
- 		if (IS_ERR(q)) {
- 			err = PTR_ERR(q);
- 			goto err_ret;
-diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
-index 79ab6c512d3e..095bb197e8b0 100644
---- a/drivers/gpu/drm/xe/xe_vm.c
-+++ b/drivers/gpu/drm/xe/xe_vm.c
-@@ -1617,7 +1617,7 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags, struct xe_file *xef)
- 			if (!vm->pt_root[id])
- 				continue;
- 
--			q = xe_exec_queue_create_bind(xe, tile, create_flags, 0);
-+			q = xe_exec_queue_create_bind(xe, tile, vm, create_flags, 0);
- 			if (IS_ERR(q)) {
- 				err = PTR_ERR(q);
- 				goto err_close;
-@@ -3578,6 +3578,11 @@ int xe_vm_bind_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
- 		}
- 	}
- 
-+	if (XE_IOCTL_DBG(xe, q && vm != q->user_vm)) {
-+		err = -EINVAL;
-+		goto put_exec_queue;
-+	}
++		filter_type = is_stack ? FILTER_STACKTRACE : FILTER_OTHER;
 +
- 	/* Ensure all UNMAPs visible */
- 	xe_svm_flush(vm);
+ 		ret = trace_define_field(call, type, name, offset, size,
+-					 is_signed, FILTER_OTHER);
++					 is_signed, filter_type);
+ 		if (ret)
+ 			break;
  
 
 
