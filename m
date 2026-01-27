@@ -1,138 +1,162 @@
-Return-Path: <stable+bounces-211879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211880-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iEjnGsgCeWkdugEAu9opvQ
-	(envelope-from <stable+bounces-211879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 19:24:08 +0100
+	id EBYtNFgDeWkuugEAu9opvQ
+	(envelope-from <stable+bounces-211880-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 19:26:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1918F98F72
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 19:24:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D32A498FE9
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 19:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 69AC0302B810
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:24:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4F653012C7D
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E06326949;
-	Tue, 27 Jan 2026 18:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D2E325729;
+	Tue, 27 Jan 2026 18:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="FZTt+uLm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rw2RjHAd"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F99522D7B9
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 18:23:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9535221540
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 18:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769538236; cv=none; b=UwvLykFLYyinDYDxifrLqy+G9HPsMwfIvHH5Z2OcWjW34TnT82HZSfyiIXsEFNn0ih3Btm0XbL+R37WOkDfUCoCPL2wODRjf9ewkv6Sh0qihXh5YaiTrlTKDQW02MNtRoRC2uurGBtlELTz7QvoL6Cg/BMdDrpR/qBRyzeJajVo=
+	t=1769538381; cv=none; b=tgHqMNqFeeqLvF6zvEMsgVj9BY7wJR7kS+N152eXXTX8dRAzGCxxP5TycBZm7QGyWwq2v1S3vd552SwqDSTbGLGxOpM64R8G4Zqs6To4umGLaNUMeRTwTc9D6+tFqWiv7NOl6XmFxbXJRClWYPIXnaJln80jrTXsR6tFR99Bd/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769538236; c=relaxed/simple;
-	bh=tnZH3DBz7X9SjPZ0b7wT3oy6Lmm7Evgc748KfBngWoQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=fbbhYxk5JuHwhG9RjwAYf4Ifa4yoysXi5gOccbgCfLBaubLlg0pl4ky+uNji0BOOYmFsbN695p0NEnc9UHc5vThXof8doR5pcNhQy2/IOmeoqRadCLjZUOlCh7zTtbe5TFNkk6umfTJyt4RTNtjQZPXvHPkOxXUtJOSxplEiWAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=FZTt+uLm; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=In-Reply-To:References:Subject:Cc:To:From:Message-Id:Date:
-	Content-Type:Content-Transfer-Encoding:Mime-Version:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tnZH3DBz7X9SjPZ0b7wT3oy6Lmm7Evgc748KfBngWoQ=; b=FZTt+uLmb5KAM8tdgSeJdLwoMe
-	VtJq5vzBx1FFe3zI1v2bWAgsVIj+9rLihes4Ouh+QEyOE51yWMyq/Ix0Jm9+QpfqrWAYP9WNZai3h
-	6JPMQi6IZTppOIrcLdaUispwNsvlFvp3bo/I39orZzj7DbEL4tQp2qtK2TmBcIKC1ruFSa7eaBYb0
-	vUkw+B2+bx72EE+RTBvBZe/h+cxFLYRchrCLNrRLkqOI1o+TgZNe04g6icu6nRhvKXDNG/8NByb0O
-	uj/PO/mblinv4gpWS1lb5193oH+GrWrg2ZYAFjIojOh37fxkoRRAatd4nbtymnwPxzgf+Yfi1klO9
-	1vRhEKYQ==;
-Received: from 189-14-88-37.vmaxnet.com.br ([189.14.88.37] helo=localhost)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1vknj7-00Aa2H-MS; Tue, 27 Jan 2026 19:23:46 +0100
+	s=arc-20240116; t=1769538381; c=relaxed/simple;
+	bh=iq05q6PDgmeGKZG+ZCZf4NVQ7qWHvgTbCPwJ9B3qJ/g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p7JrErk3ML3vH7YaRSNZwjH1AYFh5jQE2bdVziy2pS1MFhWMhaV1BOAMxFU0NXtYcRk1Wg0LoENK+9mdofWmb4Ymr6eRKEPqSfS22dldUspn41aQJXt4ZYj4Den/FVWtNK7I0gHQVsXFjbyfUkEOYR7k4Ywp/EVy1iQr21JhSQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rw2RjHAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81F9C19422;
+	Tue, 27 Jan 2026 18:26:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769538381;
+	bh=iq05q6PDgmeGKZG+ZCZf4NVQ7qWHvgTbCPwJ9B3qJ/g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Rw2RjHAdJdv8tzxUlBwKwdoodjYnvJvNsMXPuMgAcJYJ9h95TXHCK6e1v6ZZohoyK
+	 YyiMQZaNacMNkTUQcxLXXNI4cvn9ASoILb6Zwa2E//gUKhgWflVG0cJfwNOdB3zmBu
+	 3aQfI8ozIvU2ny5fDun06F+MPFQ6DlRGRCXeozXiSp72KtuJxRHaLiNopIh8MbQM6+
+	 UbSyZ75oeZMTRm05CUsnhbmc7hU9X226RfZp+3RYPs7MS+GVEQZpKcUhf8kXAzeZ6e
+	 EfQf41/U+cTHCes1dtpKxHE0mguE8+CAsu5xP7kGvFMmNHfIJze6DL2/1DUvGJt3y6
+	 73feTcS5Z40xg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] iio: adc: exynos_adc: fix OF populate on driver rebind
+Date: Tue, 27 Jan 2026 13:26:19 -0500
+Message-ID: <20260127182619.2050612-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012753-astonish-posting-f234@gregkh>
+References: <2026012753-astonish-posting-f234@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 27 Jan 2026 15:23:25 -0300
-Message-Id: <DFZKXX7T2W9E.2HLVK9GPTCYJJ@igalia.com>
-From: "Heitor Alves de Siqueira" <halves@igalia.com>
-To: "Will Deacon" <will@kernel.org>
-Cc: <stable@vger.kernel.org>, "Stefan Hajnoczi" <stefanha@redhat.com>,
- "Stefano Garzarella" <sgarzare@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, "Jason Wang" <jasowang@redhat.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, "Xuan Zhuo"
- <xuanzhuo@linux.alibaba.com>, "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- <kernel-dev@igalia.com>, "Christian Brauner" <brauner@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- <syzbot+b4d960daf7a3c7c2b7b1@syzkaller.appspotmail.com>
-Subject: Re: [PATCH 6.12 0/8] vsock: Backport nonlinear SKB allocation from
- mainline
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260126-backport-vsock-nonlinear-skb-6-12-v1-0-ad5c34853a60@igalia.com> <aXicF1hKPWn6bSUY@willie-the-truck>
-In-Reply-To: <aXicF1hKPWn6bSUY@willie-the-truck>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.64 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211879-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211880-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[halves@igalia.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[igalia.com:-];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b4d960daf7a3c7c2b7b1];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[googlesource.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,igalia.com:mid]
-X-Rspamd-Queue-Id: 1918F98F72
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: D32A498FE9
 X-Rspamd-Action: no action
 
-On Tue Jan 27, 2026 at 8:05 AM -03, Will Deacon wrote:
->
-> I was worried that you'd missed 03a92f036a04 ("vsock/virtio: Resize
-> receive buffers so that each SKB fits in a 4K page") but it looks like
-> that's already in -stable for some reason. So I think you've got
-> everything here.
->
+From: Johan Hovold <johan@kernel.org>
 
-I think some of the patches from the original series were CC'ed to the stab=
-le
-list, so I picked up the others during the backport. Thanks for
-confirming these should be the required ones!
+[ Upstream commit ea6b4feba85e996e840e0b661bc42793df6eb701 ]
 
-> fwiw, I did a 6.6 backport for Android so if you end up needing that
-> just let me know...
->
+Since commit c6e126de43e7 ("of: Keep track of populated platform
+devices") child devices will not be created by of_platform_populate()
+if the devices had previously been deregistered individually so that the
+OF_POPULATED flag is still set in the corresponding OF nodes.
 
-Sure, I'd be happy to give these patches a try on a 6.6 kernel. Are they
-available in AOSP kernel sources? I did take a brief look into the
-common kernel repo [0], but didn't find anything related to this change
-there.
+Switch to using of_platform_depopulate() instead of open coding so that
+the child devices are created if the driver is rebound.
 
-Thanks,
-Heitor
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Cc: stable@vger.kernel.org	# 3.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/iio/adc/exynos_adc.c | 13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
-[0] https://android.googlesource.com/kernel/common/
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index 43c8af41b4a9d..a935ef1840a6f 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -721,14 +721,7 @@ static const struct iio_chan_spec exynos_adc_iio_channels[] = {
+ 	ADC_CHANNEL(9, "adc9"),
+ };
+ 
+-static int exynos_adc_remove_devices(struct device *dev, void *c)
+-{
+-	struct platform_device *pdev = to_platform_device(dev);
+-
+-	platform_device_unregister(pdev);
+ 
+-	return 0;
+-}
+ 
+ static int exynos_adc_ts_open(struct input_dev *dev)
+ {
+@@ -929,8 +922,7 @@ static int exynos_adc_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ err_of_populate:
+-	device_for_each_child(&indio_dev->dev, NULL,
+-				exynos_adc_remove_devices);
++	of_platform_depopulate(&indio_dev->dev);
+ 	if (has_ts) {
+ 		input_unregister_device(info->input);
+ 		free_irq(info->tsirq, info);
+@@ -959,8 +951,7 @@ static int exynos_adc_remove(struct platform_device *pdev)
+ 		free_irq(info->tsirq, info);
+ 		input_unregister_device(info->input);
+ 	}
+-	device_for_each_child(&indio_dev->dev, NULL,
+-				exynos_adc_remove_devices);
++	of_platform_depopulate(&indio_dev->dev);
+ 	iio_device_unregister(indio_dev);
+ 	free_irq(info->irq, info);
+ 	if (info->data->exit_hw)
+-- 
+2.51.0
+
 
