@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-211714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KI9lAbEpeGl7oQEAu9opvQ
-	(envelope-from <stable+bounces-211714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 03:57:53 +0100
+	id QFU4CrQpeGl7oQEAu9opvQ
+	(envelope-from <stable+bounces-211715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 03:57:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDBE8F475
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 03:57:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94AB48F484
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 03:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D1B083008D4F
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 02:57:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A0D953021D3D
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 02:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF7C2E541E;
-	Tue, 27 Jan 2026 02:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7564A2EA749;
+	Tue, 27 Jan 2026 02:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yg4iR/nc"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jgXBvqEe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC1127FB2E;
-	Tue, 27 Jan 2026 02:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A842D97A4;
+	Tue, 27 Jan 2026 02:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769482668; cv=none; b=Q90SLnaaeHOP+RJuOyZnXB5wcKZtujdRtGxT565xjR0CIQWNtfjBtpFqPESGht1tadzITIb8ZKMrqMpTio5jxSkqFYURAUNQE5U+gGqMRCEiGG8hniC0lp+gDWDDBq2CkhC6WQaQagDYZ2NezcyWRwFnkyn9lzojTkg4WTXkCFc=
+	t=1769482671; cv=none; b=jFEFNcKOAsIVK8+q8tQ6+pGoOMI5uKW3PxMtm3P4dhkBcT6Wo8SGutr+/UqtmWwok4gX6kkzMj7VBmxn7X5k2fIgLLWkBpIWoMRU35M7irZR+ZtIwYIwRvqUJA8QfhUpJyMZ31adljBvUQmi+mWuCwIIJ8iHeMVvlXXsIr/+yf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769482668; c=relaxed/simple;
-	bh=L270rayzRkStnXktKzReZ0G0WLHOD9I3U0htQb8tvUE=;
-	h=Date:To:From:Subject:Message-Id; b=dpucJijkP76wGV2oGVmXCALf8jgYxkaKjKzBmQ1zpoqOstdAfxiSCq0rUVGEA5oHaLsLxA6/I5p22oV25p+AiBQxcfFWV1eO/Y1OA6ejv9xCkji6JFf7MNqSgAZ3tMQCMIrOGGtb9fKg1C3dyA6mv948wkI7CCmExQYz6mpKkAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yg4iR/nc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 066E7C116C6;
-	Tue, 27 Jan 2026 02:57:47 +0000 (UTC)
+	s=arc-20240116; t=1769482671; c=relaxed/simple;
+	bh=xxVVmvV15zSYzwVYT6lrc56XfX4XhWSQtjw5RcY2PVQ=;
+	h=Date:To:From:Subject:Message-Id; b=NVkRGhs+d9Nn1dFHk11HZPXifUKo5WPpVWYG+xv/DKQHoxQfL/dq4nnzOett31Ew1OIHBfZvLU4KbAuc8gf7OMxAWd8TBMLSQ4m+pf0V+GEr9QAOuvTZLQ8NuRvh1MNqpgNUTUkQFF3z1YRGKMf26kZnEfpI/M4vWeidMmgiVvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jgXBvqEe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27AFC2BC87;
+	Tue, 27 Jan 2026 02:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769482668;
-	bh=L270rayzRkStnXktKzReZ0G0WLHOD9I3U0htQb8tvUE=;
+	s=korg; t=1769482670;
+	bh=xxVVmvV15zSYzwVYT6lrc56XfX4XhWSQtjw5RcY2PVQ=;
 	h=Date:To:From:Subject:From;
-	b=yg4iR/ncP1+Sv6m6hTQLZk6lrV5OnDnD4ZfsA6wO69XLIQka4u+ryQtTzE+WXTc8w
-	 zxOlojsOc3glOslixWeBLdNbu5itjNJOmgkynQuissT5ASCsB/m3SdC5UCEGB06x5N
-	 mSFFy8NtgNXhc1vkdkZU2w0lWZ4U/E+iuplhRTyI=
-Date: Mon, 26 Jan 2026 18:57:47 -0800
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,pratyush@kernel.org,pasha.tatashin@soleen.com,kent.overstreet@linux.dev,graf@amazon.com,ran.xiaokai@zte.com.cn,akpm@linux-foundation.org
+	b=jgXBvqEenzS1YAJR6vQ+8OgMBRnpggGaw8CnrMntcD1KvRpkpqzM9/PPSqcRjdO+y
+	 5Quj5+3oHXgZDt2BWots+EQmv8MrKJ5TDSzIFlXzQG+k7H5VR7tPTAOGuueKCnVtQP
+	 k4DEWPKPvRorj8IWcgHH88mm2m7E964uJR00zmEo=
+Date: Mon, 26 Jan 2026 18:57:50 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kees@kernel.org,gregkh@linuxfoundation.org,glider@google.com,ernesto.martinezgarcia@tugraz.at,elver@google.com,dvyukov@google.com,pimyn@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch removed from -mm tree
-Message-Id: <20260127025748.066E7C116C6@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-kfence-randomize-the-freelist-on-initialization.patch removed from -mm tree
+Message-Id: <20260127025750.C27AFC2BC87@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -62,7 +62,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-211714-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211715-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[linux-foundation.org];
@@ -72,85 +72,107 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: 8DDBE8F475
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,tugraz.at:email,smtp.kernel.org:mid]
+X-Rspamd-Queue-Id: 94AB48F484
 X-Rspamd-Action: no action
 
 
 The quilt patch titled
-     Subject: kho: init alloc tags when restoring pages from reserved memory
+     Subject: mm/kfence: randomize the freelist on initialization
 has been removed from the -mm tree.  Its filename was
-     kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+     mm-kfence-randomize-the-freelist-on-initialization.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Subject: kho: init alloc tags when restoring pages from reserved memory
-Date: Thu, 22 Jan 2026 13:27:40 +0000
+From: Pimyn Girgis <pimyn@google.com>
+Subject: mm/kfence: randomize the freelist on initialization
+Date: Tue, 20 Jan 2026 17:15:10 +0100
 
-Memblock pages (including reserved memory) should have their allocation
-tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-released to the page allocator.  When kho restores pages through
-kho_restore_page(), missing this call causes mismatched
-allocation/deallocation tracking and below warning message:
+Randomize the KFENCE freelist during pool initialization to make
+allocation patterns less predictable.  This is achieved by shuffling the
+order in which metadata objects are added to the freelist using
+get_random_u32_below().
 
-alloc_tag was not set
-WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
-RIP: 0010:___free_pages+0xb8/0x260
- kho_restore_vmalloc+0x187/0x2e0
- kho_test_init+0x3c4/0xa30
- do_one_initcall+0x62/0x2b0
- kernel_init_freeable+0x25b/0x480
- kernel_init+0x1a/0x1c0
- ret_from_fork+0x2d1/0x360
+Additionally, ensure the error path correctly calculates the address range
+to be reset if initialization fails, as the address increment logic has
+been moved to a separate loop.
 
-Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-fix this.
-
-Link: https://lkml.kernel.org/r/20260122132740.176468-1-ranxiaokai627@163.com
-Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
+Link: https://lkml.kernel.org/r/20260120161510.3289089-1-pimyn@google.com
+Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
+Signed-off-by: Pimyn Girgis <pimyn@google.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Ernesto Martnez Garca <ernesto.martinezgarcia@tugraz.at>
+Cc: Greg KH <gregkh@linuxfoundation.org>
+Cc: Kees Cook <kees@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- kernel/liveupdate/kexec_handover.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/kfence/core.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
---- a/kernel/liveupdate/kexec_handover.c~kho-init-alloc-tags-when-restoring-pages-from-reserved-memory
-+++ a/kernel/liveupdate/kexec_handover.c
-@@ -255,6 +255,14 @@ static struct page *kho_restore_page(phy
- 	if (is_folio && info.order)
- 		prep_compound_page(page, info.order);
+--- a/mm/kfence/core.c~mm-kfence-randomize-the-freelist-on-initialization
++++ a/mm/kfence/core.c
+@@ -596,7 +596,7 @@ static void rcu_guarded_free(struct rcu_
+ static unsigned long kfence_init_pool(void)
+ {
+ 	unsigned long addr, start_pfn;
+-	int i;
++	int i, rand;
  
-+	/* Always mark headpage's codetag as empty to avoid accounting mismatch */
-+	clear_page_tag_ref(page);
-+	if (!is_folio) {
-+		/* Also do that for the non-compound tail pages */
-+		for (unsigned int i = 1; i < nr_pages; i++)
-+			clear_page_tag_ref(page + i);
+ 	if (!arch_kfence_init_pool())
+ 		return (unsigned long)__kfence_pool;
+@@ -647,13 +647,27 @@ static unsigned long kfence_init_pool(vo
+ 		INIT_LIST_HEAD(&meta->list);
+ 		raw_spin_lock_init(&meta->lock);
+ 		meta->state = KFENCE_OBJECT_UNUSED;
+-		meta->addr = addr; /* Initialize for validation in metadata_to_pageaddr(). */
+-		list_add_tail(&meta->list, &kfence_freelist);
++		/* Use addr to randomize the freelist. */
++		meta->addr = i;
+ 
+ 		/* Protect the right redzone. */
+-		if (unlikely(!kfence_protect(addr + PAGE_SIZE)))
++		if (unlikely(!kfence_protect(addr + 2 * i * PAGE_SIZE + PAGE_SIZE)))
+ 			goto reset_slab;
 +	}
 +
- 	adjust_managed_page_count(page, nr_pages);
- 	return page;
- }
++	for (i = CONFIG_KFENCE_NUM_OBJECTS; i > 0; i--) {
++		rand = get_random_u32_below(i);
++		swap(kfence_metadata_init[i - 1].addr, kfence_metadata_init[rand].addr);
++	}
+ 
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		struct kfence_metadata *meta_1 = &kfence_metadata_init[i];
++		struct kfence_metadata *meta_2 = &kfence_metadata_init[meta_1->addr];
++
++		list_add_tail(&meta_2->list, &kfence_freelist);
++	}
++	for (i = 0; i < CONFIG_KFENCE_NUM_OBJECTS; i++) {
++		kfence_metadata_init[i].addr = addr;
+ 		addr += 2 * PAGE_SIZE;
+ 	}
+ 
+@@ -666,6 +680,7 @@ static unsigned long kfence_init_pool(vo
+ 	return 0;
+ 
+ reset_slab:
++	addr += 2 * i * PAGE_SIZE;
+ 	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
+ 		struct page *page;
+ 
 _
 
-Patches currently in -mm which might be from ran.xiaokai@zte.com.cn are
+Patches currently in -mm which might be from pimyn@google.com are
 
-alloc_tag-fix-rw-permission-issue-when-handling-boot-parameter.patch
 
 
