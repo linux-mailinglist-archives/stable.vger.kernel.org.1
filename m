@@ -1,213 +1,217 @@
-Return-Path: <stable+bounces-211822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211823-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yIGJIozHeGmltAEAu9opvQ
-	(envelope-from <stable+bounces-211822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:11:24 +0100
+	id 0KVzIKTHeGmDtQEAu9opvQ
+	(envelope-from <stable+bounces-211823-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:11:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2669565E
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:11:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D3095684
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:11:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F369A302A7DA
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:11:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3CFEC303321D
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADE735B122;
-	Tue, 27 Jan 2026 14:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996F333554B;
+	Tue, 27 Jan 2026 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hearboA6"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ELX3159Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB4934F472;
-	Tue, 27 Jan 2026 14:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BED828F50F
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 14:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769523053; cv=none; b=jaTZjMNxT7HG5nxkuQAH3Pddl73jEGdkgMa6Am/QDM4i1R6xEgHN2NvH5lGX3DWtayhNlz+oSaSPDrCL5QeYYTMbR7hn9ROLlWvjZZnJ0y8YuxIcwrCe0EP5C22OfHMO/zBe+cM38SQ3OKWOeQ7/Ud0SoqHA8QDCFSd47bE2TYo=
+	t=1769523061; cv=none; b=HJ4Rqiptv6LIXqEUQ/dRWVoYJ/j4NZljdJxKq6oRMdT6wiF7ixP2EdxeDsw2ZTShdAHeHpelKGU1PgSRvFh4hSKjKnq6pxOiG2MlRlyndIJ5F2WkW/W1V4vZ542mvujXY6zcm8ElpSyOdlB9o4OruxQzSjoAZEhDPWST9P+jjXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769523053; c=relaxed/simple;
-	bh=raT5qDfoCho1XB7kfBfjvEHWMDY42gL7+rt+GyZuwR4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KE2DcMA+4+kVLBxJKC0oVCcKz1/Z6SeSm2bgN0Nt54XV17u0SnZRqmBnAp1byRpzbTIiEUuY9Cpt0H/DgX0fR/LF9ZEFcdQaKYhUFQBeGeuvP6hCDm3xv9sghC2VF8VtKxBpKKxEHeFdAoz6DKbT/afTTDH7QAXE9aHgnSp5vx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hearboA6; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769523052; x=1801059052;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=raT5qDfoCho1XB7kfBfjvEHWMDY42gL7+rt+GyZuwR4=;
-  b=hearboA6tyiZemMZFb6KDzFijLB7ZSqQXlG+0RFEqHxr1m5onS1JHC4X
-   3+PhX6E4mXXgzCAeSUJG7ImMY/AblHK289tjJYDrW6Huy0LnJG0JJ5hFP
-   QjU2f/RDa3JRGq3mR7mM3JGC2cd7Zg60sFN9TmXSlJxoLGDksDMLcHqEF
-   Bj66TVjj0nROs7QZNv/8vGHvVbrF1L0CWK/q6F4IRbNgSi3O3v9yed4Tb
-   t1VwcmMsdlGe0ZaaMMz38M8n8i2v0zD6fbgq2SXbST0ffu2cnsznpBkYU
-   RCVLj2DnOJ1bflqSTUf1SGTMKwu6aIQKwlL3bOV5UuF6k4j9fcV4oZNX/
-   A==;
-X-CSE-ConnectionGUID: AvsFxUb1SlubtOXYI+riFA==
-X-CSE-MsgGUID: X8zgL8tMQZeFIKJEIOIRpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="81022303"
-X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="81022303"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 06:10:52 -0800
-X-CSE-ConnectionGUID: d6gKfEIsSr+Pi38RZnhhRg==
-X-CSE-MsgGUID: StlcWXzTRLiLHJHZwXK1Lg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
-   d="scan'208";a="212524574"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.248])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 06:10:48 -0800
-Date: Tue, 27 Jan 2026 16:10:45 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Petr Mladek <pmladek@suse.com>,
-	John Ogness <john.ogness@linutronix.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	linux-serial <linux-serial@vger.kernel.org>,
-	qianfan Zhao <qianfanguijin@163.com>,
-	Adriana Nicolae <adriana@arista.com>,
-	Markus Mayer <markus.mayer@linaro.org>,
-	Tim Kryger <tim.kryger@linaro.org>,
-	Matt Porter <matt.porter@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Jamie Iles <jamie@jamieiles.com>,
-	LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
-	"Bandal, Shankar" <shankar.bandal@intel.com>,
-	"Murthy, Shanth" <shanth.murthy@intel.com>
-Subject: Re: [PATCH 6/6] serial: 8250_dw: Ensure BUSY is deasserted
-Message-ID: <aXjHZQnIFjfPabdU@smile.fi.intel.com>
-References: <20260123172739.13410-1-ilpo.jarvinen@linux.intel.com>
- <20260123172739.13410-7-ilpo.jarvinen@linux.intel.com>
- <aXP5YMNix8EfbJeF@smile.fi.intel.com>
- <fc09f6fd-013f-25fd-484c-cac59b0a60b6@linux.intel.com>
+	s=arc-20240116; t=1769523061; c=relaxed/simple;
+	bh=WD2hL6bNvfQrYUXEwZ/bC16IBfc/oMsafbUa3gAek/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Cs1fcPvcHaNmj3vb27gDQjRMozKeOOX6XNMMJYlbPm5H0U3YME1dxa5Reo3idFjBiZ/04Cj3QlKklElL/RqMUjVja+uO6VZa5tb4kJANJkzHX1I2WR6J7QkbBEZvl4OkgDv1YdYTkoDGPVGkUkRSNkAdfx9xpjbGSvQu92FTr6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ELX3159Q; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=/brJ4Xtf+6x62mwbCU4Bw02lO3gRXTol27Xnki8YpdI=; b=ELX3159Qe7dr6jQeawY2TQYmIo
+	7N9rjY6gM05MZPBatH0EHSwBNlJxTRVSl9i7DEMGuSnTgEhXWNCtmu95v8UmKUURD7CGxrGFv3l2r
+	3mQeejbemKGW4iuQ8af++zO5ASKVorMOzDfhk+MQv5qmokgTqEAAEOYCKIsmHZ10fpI+FTUXTTGFL
+	LRITNMK4etMkQmApSBf0n0O20Ec9eEh28CPX3UmHAAwKrNSRVl5NlKdPet6tiNSb+bDnhm7wtva+a
+	qypWLzFQku2H0JxjtwcduNzKcG5iR3Z5v28tMdrctPZrS5TRWUZJ44TJ8PcVtKNt0Zy/gTYN9djM7
+	C+VRRAng==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vkjmR-00000007XPL-1kKX;
+	Tue, 27 Jan 2026 14:10:55 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: stable@vger.kernel.org
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
+	Lance Yang <lance.yang@linux.dev>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Jann Horn <jannh@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6.y] migrate: correct lock ordering for hugetlb file folios
+Date: Tue, 27 Jan 2026 14:10:50 +0000
+Message-ID: <20260127141050.1796699-1-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012706-expansion-twine-2d55@gregkh>
+References: <2026012706-expansion-twine-2d55@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fc09f6fd-013f-25fd-484c-cac59b0a60b6@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,163.com,arista.com,linaro.org,linux.intel.com,jamieiles.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-211822-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211823-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[infradead.org,syzkaller.appspotmail.com,linux.dev,kernel.org,nvidia.com,sk.com,gourry.net,google.com,gmail.com,oracle.com,intel.com,surriel.com,suse.cz,linux.alibaba.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[infradead.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smile.fi.intel.com:mid]
-X-Rspamd-Queue-Id: 4C2669565E
+	TAGGED_RCPT(0.00)[stable,2d9c96466c978346b55f];
+	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,nvidia.com:email,infradead.org:email,infradead.org:dkim,infradead.org:mid,gourry.net:email,oracle.com:email,sk.com:email,linux.dev:email,alibaba.com:email,intel.com:email]
+X-Rspamd-Queue-Id: E8D3095684
 X-Rspamd-Action: no action
 
-On Tue, Jan 27, 2026 at 03:35:27PM +0200, Ilpo Järvinen wrote:
-> On Sat, 24 Jan 2026, Andy Shevchenko wrote:
-> > On Fri, Jan 23, 2026 at 07:27:39PM +0200, Ilpo Järvinen wrote:
+Syzbot has found a deadlock (analyzed by Lance Yang):
 
-+Cc: printk people to check on printing from a serial driver routines.
+1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
+2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
+folio_lock.
 
-...
+migrate_pages()
+  -> migrate_hugetlbs()
+    -> unmap_and_move_huge_page()     <- Takes folio_lock!
+      -> remove_migration_ptes()
+        -> __rmap_walk_file()
+          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
 
-> > > +	/* Prevent triggering interrupt from RBR filling */
-> > > +	p->serial_out(p, UART_IER, 0);
-> > 
-> > Do we specifically use callbacks directly and not wrappers all over the change?
-> 
-> I guess it's just a habit, I suppose you meant using serial_port_in/out 
-> instead. I can try to change those.
+hugetlbfs_fallocate()
+  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
+    -> hugetlbfs_zero_partial_page()
+     -> filemap_lock_hugetlb_folio()
+      -> filemap_lock_folio()
+        -> __filemap_get_folio        <- Waits for folio_lock!
 
-Not (only) me. Jiri updated this driver (and many others) to use callbacks.
-That's why I added comments here and there about possible recursions.
+The migration path is the one taking locks in the wrong order according to
+the documentation at the top of mm/rmap.c.  So expand the scope of the
+existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
 
-...
+This is (mostly) how it used to be after commit c0d0381ade79.  That was
+removed by 336bf30eb765 for both file & anon hugetlb pages when it should
+only have been removed for anon hugetlb pages.
 
-> > > +	serial8250_fifo_wait_for_lsr_thre(up, p->fifosize);
-> > > +	ndelay(p->frame_time);
-> > 
-> > Wouldn't be a problem on lowest baud rates (exempli gratia 110)?
-> 
-> Perhaps, but until somebody comes with an issue report related to 110, I'm 
-> wondering if this really is worth trying to address. Any suggestion how is 
-> welcome as well?
+Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
+Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
+Debugged-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Jann Horn <jannh@google.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit b7880cb166ab62c2409046b2347261abf701530e)
+---
+ mm/migrate.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Polling work? Timer?
-
-> > > +	retries = 4;	/* Arbitrary limit, 2 was always enough in tests */
-> > > +	do {
-> > > +		serial8250_clear_fifos(up);
-> > > +		if (!(p->serial_in(p, usr_reg) & DW_UART_USR_BUSY))
-> > > +			break;
-> > > +		ndelay(p->frame_time);
-> > > +	} while (--retries);
-> > 
-> > read_poll_timeout_atomic() ? I assume it can't be used due to small frame time?
-> 
-> Frame time is in nanoseconds yes. I did consider 
-> read_poll_timeout_atomic() but it would have required nsec -> usec 
-> conversion so I left this as it is.
-
-Yeah with the same issue on low baud rates. So far I think we need to consider
-9600 as commonly used by the old HW (which may be connected to a modern PC with
-this new kernel running), so the frame time sounds like close to a millisecond.
-And this can be met in real life.
-
-Maybe put TODO/FIXME around these ndelay() calls?
-
-> > > +	if (d->in_idle) {
-> > 
-> > > +		/*
-> > > +		 * FIXME: this deadlocks if port->lock is already held
-> > > +		 * dev_err(p->dev, "Couldn't set LCR to %d\n", value);
-> > > +		 */
-> > 
-> > Hmm... That FIXME should gone since we have non-blocking consoles, no?
-> 
-> No, lockdep still gets angry if printing is used while holding port's 
-> lock.
-
-Hmm... Let's ask PRINTK people about this. John, do we still have a gap
-with nbcon? Or did I misunderstand the scope of its use?
-
-> What would be possible though, is to mark the port's lock critical section 
-> for print deferral (but it's outside the scope of this series). In case of 
-> serial, it would be justified to use deferred printing (which is only 
-> meant for special cases) because serial console and printing are related.
-> 
-> > > +		return;
-> > > +	}
-
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 4ed470885217..0e291c022140 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1369,6 +1369,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 	int page_was_mapped = 0;
+ 	struct anon_vma *anon_vma = NULL;
+ 	struct address_space *mapping = NULL;
++	enum ttu_flags ttu = 0;
+ 
+ 	if (folio_ref_count(src) == 1) {
+ 		/* page was freed from under us. So we are done. */
+@@ -1410,8 +1411,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 		goto put_anon;
+ 
+ 	if (folio_mapped(src)) {
+-		enum ttu_flags ttu = 0;
+-
+ 		if (!folio_test_anon(src)) {
+ 			/*
+ 			 * In shared mappings, try_to_unmap could potentially
+@@ -1428,9 +1427,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 
+ 		try_to_migrate(src, ttu);
+ 		page_was_mapped = 1;
+-
+-		if (ttu & TTU_RMAP_LOCKED)
+-			i_mmap_unlock_write(mapping);
+ 	}
+ 
+ 	if (!folio_mapped(src))
+@@ -1438,7 +1434,11 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 
+ 	if (page_was_mapped)
+ 		remove_migration_ptes(src,
+-			rc == MIGRATEPAGE_SUCCESS ? dst : src, false);
++			rc == MIGRATEPAGE_SUCCESS ? dst : src,
++				ttu ? true : false);
++
++	if (ttu & TTU_RMAP_LOCKED)
++		i_mmap_unlock_write(mapping);
+ 
+ unlock_put_anon:
+ 	folio_unlock(dst);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.47.3
 
 
