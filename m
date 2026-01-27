@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-211892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211893-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMc0E54peWkIvwEAu9opvQ
-	(envelope-from <stable+bounces-211892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 22:09:50 +0100
+	id cKfyJ1MpeWkIvwEAu9opvQ
+	(envelope-from <stable+bounces-211893-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 22:08:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27EA9A9E4
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 22:09:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 937C29A9A9
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 22:08:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 31C14302A507
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 21:07:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6AFC63006212
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 21:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD42E29AAEA;
-	Tue, 27 Jan 2026 21:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F68129B79B;
+	Tue, 27 Jan 2026 21:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SLjp1/Az"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kAHubap6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B0329992B
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 21:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035A5298CC0
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 21:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769548027; cv=none; b=XjzTjVxj3BLAvu5qBq6gHdWls7kS4cef2paIPXTEzYFmYRDLF+jbuegWL328TXAMCRSi37yYU2H3TuaG41Skb/OW7vhSFhTldL7s6PLblEnjJYS4uNXtxkEE/lAhvSMAgrcgpDAmEIFUwv0M1UCh5zSTQZz9PyXhTIJIJ1NJfek=
+	t=1769548107; cv=none; b=Tg8swWfXGcrzFjSC1acqBgZ6ie9pDhYpZqQLgf38SrIUF+5/Ud6T4xlUnru1oX2qo8TLXksfIND0Q8GHauWX88+37cJKMe2EBERhUAYY2/qMRHG230vKE7G7Hr1qCtT63GmMCvSYLV4NHzSKyQJwMPmEbOxlTKSkSg6CEDq+TMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769548027; c=relaxed/simple;
-	bh=iq05q6PDgmeGKZG+ZCZf4NVQ7qWHvgTbCPwJ9B3qJ/g=;
+	s=arc-20240116; t=1769548107; c=relaxed/simple;
+	bh=flEYR9I3tOefFnMdxN07pu+TilH8Kr8DXvvyicubKao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Um2/4u+6UB7RSzr3rdtY8tDneCuxNuztZ9/T8RWyxWnm/YEeDqCruDnnBF4FF7Djg+UKu++NeLfABXybyK9pSoCJ/3+GJbsywawLWciJngtcwOHi8MoR8bNOYaN92ucyPh6Wh56qsDx8DTSNwO8Hm7r4/jAw6uIdT0tf3MB2mSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SLjp1/Az; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C81C116C6;
-	Tue, 27 Jan 2026 21:07:06 +0000 (UTC)
+	 MIME-Version; b=u6CJ1jwuUTsHq9mYg8CvJGLqRIESlaixq4ndl9cMj3p8RFu7MXhHFlUwXSRwsHEb67XGi30pCq9e9zVBTXLVs7BMzsVxNgZ8QP9cbGjOGfGQkn/iTZbF4lJhFY2b/5Z6p8hY7q/510vHlazNa8Jv69HJjlecnK0N0MQGXj3NP/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kAHubap6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6547FC116C6;
+	Tue, 27 Jan 2026 21:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769548027;
-	bh=iq05q6PDgmeGKZG+ZCZf4NVQ7qWHvgTbCPwJ9B3qJ/g=;
+	s=k20201202; t=1769548106;
+	bh=flEYR9I3tOefFnMdxN07pu+TilH8Kr8DXvvyicubKao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLjp1/AzK23/zBOjaXkD5alJXKdZM8qvlF9q49WHUL3Gnwg4rRfA4hGl6EJpZIJI8
-	 Yso3YxltTPiu7dPF9FaV26qNzauOBAuJEmpv84SBJ7yCdBzICihoKvy9WoK5scT+s2
-	 wq0vsso+21+GugtP33rVqkT0bY9SgQsXleU9YEbsqxATlOJ5zO2Kw0ZHiz3O8nqSqE
-	 R4fGEG4TPVmOzMoX/mYLeCFEwCy2WdJYYXrR/eZi3wlYkRdUX9004Ka8BzOyfKYgZH
-	 sVbUUS1q+Tm96lAw8FfUuK2wDuD1L+7LyN4MA6Mjh25NifuAYsZgapHtsN1nvZXwYG
-	 6nBfVVoJSFxWQ==
+	b=kAHubap6QBUgl3O6vcJGTk/zCVkg41QHhyXprJgKVVpRBMV/9sw9hz6ZfvmhWED+R
+	 wDl+43UikW7rhxGW3XsX6H5+WBbpfh8dJymwtkIlS8gAFFmLA9jCRqROhbQjLAeuBX
+	 B7Tt1fcpMeuMZE4aI0hy7feAqDNYT9u5ULcSveoevCuwlWDmRccrP3YWQYqr8OKb8g
+	 Ab+Ma8K+aFkJxprzz9DvxTOFR6BjSk/Ne539ZYYOjAOfjspESAr/CjWkMrByba4SNH
+	 gAoMlmPsUM+UR+tldbBejLyRQt55pec3c0rKeJfxMrie0MGyeODXnHd63GbU86vlSO
+	 MyRIbPT2HHYpQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] iio: adc: exynos_adc: fix OF populate on driver rebind
-Date: Tue, 27 Jan 2026 16:07:04 -0500
-Message-ID: <20260127210704.2163667-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] ALSA: scarlett2: Fix buffer overflow in config retrieval
+Date: Tue, 27 Jan 2026 16:08:23 -0500
+Message-ID: <20260127210823.2165565-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012753-hangnail-upwind-6078@gregkh>
-References: <2026012753-hangnail-upwind-6078@gregkh>
+In-Reply-To: <2026012702-happier-luckily-8c7d@gregkh>
+References: <2026012702-happier-luckily-8c7d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,19 +68,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211892-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211893-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -89,73 +88,61 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
-X-Rspamd-Queue-Id: C27EA9A9E4
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 937C29A9A9
 X-Rspamd-Action: no action
 
-From: Johan Hovold <johan@kernel.org>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-[ Upstream commit ea6b4feba85e996e840e0b661bc42793df6eb701 ]
+[ Upstream commit 6f5c69f72e50d51be3a8c028ae7eda42c82902cb ]
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+The scarlett2_usb_get_config() function has a logic error in the
+endianness conversion code that can cause buffer overflows when
+count > 1.
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
+The code checks `if (size == 2)` where `size` is the total buffer size in
+bytes, then loops `count` times treating each element as u16 (2 bytes).
+This causes the loop to access `count * 2` bytes when the buffer only
+has `size` bytes allocated.
 
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org	# 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
+Fix by checking the element size (config_item->size) instead of the
+total buffer size. This ensures the endianness conversion matches the
+actual element type.
+
+Fixes: ac34df733d2d ("ALSA: usb-audio: scarlett2: Update get_config to do endian conversion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Link: https://patch.msgid.link/20260117012706.1715574-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ add 32-bit handling block ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/exynos_adc.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ sound/usb/mixer_scarlett2.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index 43c8af41b4a9d..a935ef1840a6f 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -721,14 +721,7 @@ static const struct iio_chan_spec exynos_adc_iio_channels[] = {
- 	ADC_CHANNEL(9, "adc9"),
- };
+diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
+index 316f1abefd51d..6112c3fb8ba68 100644
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -1408,11 +1408,16 @@ static int scarlett2_usb_get_config(
+ 		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
+ 		if (err < 0)
+ 			return err;
+-		if (size == 2) {
++		if (config_item->size == 16) {
+ 			u16 *buf_16 = buf;
  
--static int exynos_adc_remove_devices(struct device *dev, void *c)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--
--	platform_device_unregister(pdev);
- 
--	return 0;
--}
- 
- static int exynos_adc_ts_open(struct input_dev *dev)
- {
-@@ -929,8 +922,7 @@ static int exynos_adc_probe(struct platform_device *pdev)
- 	return 0;
- 
- err_of_populate:
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	if (has_ts) {
- 		input_unregister_device(info->input);
- 		free_irq(info->tsirq, info);
-@@ -959,8 +951,7 @@ static int exynos_adc_remove(struct platform_device *pdev)
- 		free_irq(info->tsirq, info);
- 		input_unregister_device(info->input);
+ 			for (i = 0; i < count; i++, buf_16++)
+ 				*buf_16 = le16_to_cpu(*(__le16 *)buf_16);
++		} else if (config_item->size == 32) {
++			u32 *buf_32 = (u32 *)buf;
++
++			for (i = 0; i < count; i++, buf_32++)
++				*buf_32 = le32_to_cpu(*(__le32 *)buf_32);
+ 		}
+ 		return 0;
  	}
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	iio_device_unregister(indio_dev);
- 	free_irq(info->irq, info);
- 	if (info->data->exit_hw)
 -- 
 2.51.0
 
