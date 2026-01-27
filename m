@@ -1,246 +1,274 @@
-Return-Path: <stable+bounces-211695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211696-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KB5hK6EOeGnRngEAu9opvQ
-	(envelope-from <stable+bounces-211695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 02:02:25 +0100
+	id vDdKNaMReGn7ngEAu9opvQ
+	(envelope-from <stable+bounces-211696-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 02:15:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 057938E9B8
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 02:02:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0578EA3A
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 02:15:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FDA63017C38
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 01:02:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 64EF33021584
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 01:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E5F204583;
-	Tue, 27 Jan 2026 01:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D412233723;
+	Tue, 27 Jan 2026 01:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wE4SUt2M"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LyhmGZ1S"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083D818CBE1
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 01:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281042356A4
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 01:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769475739; cv=none; b=EOEJGUQCnfre/vih/bup9agCKtmkezuHlIiv9GwDJh4hh39idbIXegXqeq0odwxAQDfPtKNxxc98cMd3j6e5BnLM5OF50Qj/1z5D5fN54Zv5KkfZnxkslzvhChCNVl9XRAvLVWRT5WsfEu7U7K1wKr3VAuY/AVwM1ODW/gzLoHY=
+	t=1769476512; cv=none; b=llQNaPp5sVSciWrwiZURzzwgPOjk2w6hIBVqBuS9kx+1wgcozSXC/WYnkisyL+430FKihpEmxqX9SKLtvFsS50lVsmqJmczoVdUCII7jMw7XGIULToCzcawjRP+iLFuAlwSllXLcSvYH0m7uyi/brd41GLdzCpXB8AYSO0YIJ0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769475739; c=relaxed/simple;
-	bh=zdJetp1O1ZvORiNn20moSdrXX3DYESBa1u9PB56wF/g=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZoSqOLkKnkZaDsWxklV0iLEn86Jkxbyxu4Stj3WKWPuMHEQ6w6a9jtH1+gXqlySbAq65ZfUs7g+NiqyUm6rv2HkYbk//e0qQxKJGw59MJU+M48mHe2JI5KhCEt/Ktdi8kHEr4f3z33RrReNW7DssweWTg4Jzhd0YgIQayl9Nsgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wE4SUt2M; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34ac819b2f2so4464049a91.0
-        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 17:02:17 -0800 (PST)
+	s=arc-20240116; t=1769476512; c=relaxed/simple;
+	bh=4hWe/ZeM0/dp3df6siLGhiMwgMH8EDIhO8UEJze1og4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZPkHfPnpWUoXsrCaLaLiBuj9FMsLWU3aMPh1EBajvJoNWcSgkuXaah7stfuMfKa77AJuQ2nMfU+EYkfLIxNSbBG2tqCPjhvmhTy9LBt+Jdz8EbRLIge7H2YGs383omP8n0NJ9Jantrd390Fg895lFfSDPBokAqSdUQKnKO8juwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=LyhmGZ1S; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-64c893f3a94so9877562a12.0
+        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 17:15:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769475737; x=1770080537; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4NgOfh1zEVM6ALsnvG7+EC5XrWm0zt0eNhDfo1U5SRc=;
-        b=wE4SUt2M1jZnWGP5HdQKkElDQIrrIROm3081rBvNg+Fo7Un1f7r4oGEFg+WWllCbkP
-         TXs0qsV0MnezNzs8tX2J3HWmBmE03x+kuGQgaFI30yIve2AoZniCc5KsAqA2V2sO1wT7
-         +3HtkThw7xNu3SYbQyQlV5/jJlRhx1zGZnvdkWa4lnt/eypjfHq2HEPEeQZC8tV8Dcip
-         Pmuq5q5Igd7sbtRs/XmKFzVjXSrPcBdXW6/7gbUSDtIpEH0QMqRD6F0t5NuB1+v2zlFu
-         jgZnL8X89LvEunTM5FBMdCw0L/axmGznuFEoTm9ixhMmMriMbiHp/p8uPA4ne6HOaobk
-         0ykQ==
+        d=chromium.org; s=google; t=1769476507; x=1770081307; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V0WNey5zwe01UB/P+i2RgBgqNj6Zk0tMin0y60LW9DU=;
+        b=LyhmGZ1SjaKcXkdPeUy3t1G4mJ6tqe2tqKiv8Ka2YmsY0n/qEtOfQu3u3atQfqJ4FY
+         eb065r52Ndvk156jmTru4PZrfLZ7yGcRzCJFbigSe/JdrFDKMBTvPirZRtLp949yhoo6
+         M2d+TU2u4FooR7tvfJDdnfWcFoWfoR/caZBDs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769475737; x=1770080537;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4NgOfh1zEVM6ALsnvG7+EC5XrWm0zt0eNhDfo1U5SRc=;
-        b=C82M70FLZplsixicae50PHAOyLcQfyFBcyIUJ7tqS7gSq92zCiGHjnm28pg/JsHMcI
-         8pFj51jQi4OQEBymbjad4qZUC8/Zt6KEwTwk55uGpugxtd8/OBvbpgd2Tl7WGoz5B5FN
-         zUp8ie7SzpbAGBJ7cRtC1jNUHuqlrIXYUkad+bkFHhZiz+0c38VRgCuiXZKcE0vK9oSQ
-         zzqyu8eDPYsjIF+BjcbJKxgyOlB3eAomJPDDkJd1+VNc9DsuU4ZIV9R1HJPPHFP8dN0+
-         +ST0hgDQr1yXRN7E/GRys5k/c7ih0WxCAbMEsxY9qirq9XJFAZVuvtJfGTX5Sp5SAxKW
-         QXhw==
-X-Forwarded-Encrypted: i=1; AJvYcCXeMQUkvwj2tfDkzT8yvu766I70puov578UnqbleUJGZBW8nZ5tyKVFo79nXwAaLoez8CgiqVA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrOrakua18AZTbqwyjC/HaeJSzFUWRxif4GY3Lm5fnq1+0hpYe
-	BrG67evj2DepuSFSwM3rk0g+hIYrF/4yegOs+aHjSOjNWdWXcX/vYPl/8T9AmXlDEVg4VIcEnj0
-	x3OrN8kOdxups7gh00z4+nZy5JA==
-X-Received: from pjbjx12.prod.google.com ([2002:a17:90b:46cc:b0:34f:8ef8:5834])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2d83:b0:34e:5aa2:cf68 with SMTP id 98e67ed59e1d1-353fed8a891mr81138a91.30.1769475737301;
- Mon, 26 Jan 2026 17:02:17 -0800 (PST)
-Date: Tue, 27 Jan 2026 01:02:10 +0000
+        d=1e100.net; s=20230601; t=1769476507; x=1770081307;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=V0WNey5zwe01UB/P+i2RgBgqNj6Zk0tMin0y60LW9DU=;
+        b=YfxICJvCyMDnhsi5M/nqd8FQnUW3TyexEGEP38vdQeO/U02EcLqDCATn/SnF7NbCpK
+         0dyZLePSp8b/NVocHRyy55kmB16zQ5G2AJcC9ZCWXuRUJowkdIsTDbf7GYvn0LxJranH
+         J3qdkypgkp9ADGOy4hFm4yvtv0Yxe8IF4Mt70ol20VmiFqNKvWEXyfjXU9HYsHAPiAyB
+         Ft9GSuZTzfFkFVmbTNR2CZ2B4lpnOgESa5hi3Vyn+HJ07kkiVfsVI32vpVvDIlFecFLq
+         /tWkyUyf5FrKH67eTNATeE0HvQmfHQNlYHvQIXXfyLOBWHJWRwqM+Cm7M6HpjP+MCG8u
+         3PCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVXhG6yDehcjGq5BpCwK8g7km44l8EZFrFtwfP2ZRxDDeHsklrRtOTAlrF8E4n1wlxrQVJ0E84=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwM3uPORbg717dTeh7x/xjdIrD2fgqrIdC2EppJTWiu/xjKUmIb
+	1vgpawtDoQtz2bY/+kK6eB6z701XWcAVDJC7M4UHs6ZVteW0/sag/Ll7AumFMU+Gr3AohfInH0L
+	Tpzj3mA==
+X-Gm-Gg: AZuq6aKq1dEs4+rfT3u0Vg+sDgZenMFkYkZt40xRyBeLlsZ3tPNGnUJ73OGcN6N9q6g
+	OmASTNxknW3LtVr8JxrJ1pZbphr/zbLuz4xDfWGeVCehrF1Vtaw8mutIcbi33x7T4FhzsP0ah10
+	whh9y6EU1J0VoZ7CkaLcOIW2Zroq7PdFvgqjMlNojtvL6jB3gjy5AtjtmEsLqsNGMbpYEcc02bC
+	BL6lVxJsS9CyLB3eJhSaXJv5FGMZZfbsu06g5mbpDKL9G/jqhl8oWR4d2wL0xr+JSS+KfV+J7Kq
+	p5HCMc9w2B9zRsdCeoUu/8XkRJlSqcdl1t2Pvc1BLAOVt/E7VH3oT3klc/sSVgU+bUyMNMn4i7q
+	FJrUD/J3FjlKEdzPiKwye+V0kb8hDvaKO0mYSFIL1Cxsi1ElW795lgY6WhhJ3LQYSOtJaCy1XBR
+	RBJ76922Z+IQU+zVwZiMUrLMvqcoXh0cAaL/fGTwCbD7Avd8eESw==
+X-Received: by 2002:a17:907:6d19:b0:b87:2882:bf7e with SMTP id a640c23a62f3a-b8ceed95ademr439295466b.11.1769476507003;
+        Mon, 26 Jan 2026 17:15:07 -0800 (PST)
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com. [209.85.221.52])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b885b6fc4aasm718862366b.36.2026.01.26.17.15.05
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Jan 2026 17:15:05 -0800 (PST)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4359249bbacso3891061f8f.0
+        for <stable@vger.kernel.org>; Mon, 26 Jan 2026 17:15:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWxBZRzS3COom1q4U92E5ytV1GBF+nozALr8lavenKFBx7JeCWE+VjUfu6/M4EvOxaiJQFfeHQ=@vger.kernel.org
+X-Received: by 2002:a5d:64e9:0:b0:430:2773:84d6 with SMTP id
+ ffacd0b85a97d-435c9d1a409mr9683879f8f.24.1769476505162; Mon, 26 Jan 2026
+ 17:15:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260127010210.969823-1-hramamurthy@google.com>
-Subject: [PATCH net] gve: fix probe failure if clock read fails
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	richardcochran@gmail.com, willemb@google.com, pkaligineedi@google.com, 
-	ziweixiao@google.com, jordanrhee@google.com, nktgrg@google.com, 
-	thostet@google.com, horms@kernel.org, yyd@google.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Shachar Raindel <shacharr@google.com>
+MIME-Version: 1.0
+References: <CAD=FV=Vmk1jA+dAgJNVDMtxrhhrPxgnXkNxiqJXWBvgUcZZUxQ@mail.gmail.com>
+ <20260126033012.934143-1-realwujing@gmail.com>
+In-Reply-To: <20260126033012.934143-1-realwujing@gmail.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Mon, 26 Jan 2026 17:14:53 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=WVtFAPZ3=6pPnOV=vbMhFwfH9LaZ5oNgAKtcj5hA0q2Q@mail.gmail.com>
+X-Gm-Features: AZwV_QjgByfA3hEAUN30WElxUvkskpDfD8rbwB8NvDK5sJAq06ev73kRykPD3JE
+Message-ID: <CAD=FV=WVtFAPZ3=6pPnOV=vbMhFwfH9LaZ5oNgAKtcj5hA0q2Q@mail.gmail.com>
+Subject: Re: [PATCH v3] watchdog/hardlockup: Fix UAF in perf event cleanup due
+ to migration race
+To: Qiliang Yuan <realwujing@gmail.com>
+Cc: akpm@linux-foundation.org, lihuafei1@huawei.com, 
+	linux-kernel@vger.kernel.org, mingo@kernel.org, mm-commits@vger.kernel.org, 
+	song@kernel.org, stable@vger.kernel.org, sunshx@chinatelecom.cn, 
+	thorsten.blum@linux.dev, wangjinchao600@gmail.com, yangyicong@hisilicon.com, 
+	yuanql9@chinatelecom.cn, zhangjn11@chinatelecom.cn
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211695-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux-foundation.org,huawei.com,vger.kernel.org,kernel.org,chinatelecom.cn,linux.dev,gmail.com,hisilicon.com];
+	TAGGED_FROM(0.00)[bounces-211696-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hramamurthy@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[google.com,lunn.ch,davemloft.net,kernel.org,redhat.com,gmail.com,vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 057938E9B8
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email,chromium.org:dkim]
+X-Rspamd-Queue-Id: 3F0578EA3A
 X-Rspamd-Action: no action
 
-From: Jordan Rhee <jordanrhee@google.com>
+Hi,
 
-If timestamping is supported, GVE reads the clock during probe,
-which can fail for various reasons. Previously, this failure would
-abort the driver probe, rendering the device unusable. This behavior
-has been observed on production GCP VMs, causing driver initialization
-to fail completely.
+On Sun, Jan 25, 2026 at 7:30=E2=80=AFPM Qiliang Yuan <realwujing@gmail.com>=
+ wrote:
+>
+> Hi Doug,
+>
+> Thanks for your further questions and for digging into the 4.19 vs ToT
+> differences.
+>
+> On Sat, 24 Jan 2026 15:36:01 Doug Anderson <dianders@chromium.org> wrote:
+> > The part that doesn't make a lot of sense to me, though, is that v4.19
+> > also doesn't have commit 930d8f8dbab9 ("watchdog/perf: adapt the
+> > watchdog_perf interface for async model"), which is where we are
+> > saying the problem was introduced.
+> >
+> > ...so in v4.19 I think:
+> > * hardlockup_detector_perf_init() is only called from watchdog_nmi_prob=
+e()
+> > * watchdog_nmi_probe() is only called from lockup_detector_init()
+> > * lockup_detector_init() is only called from kernel_init_freeable()
+> > right before smp_init()
+> >
+> > Thus I'm super confused about how you could have seen the problem on
+> > v4.19. Maybe your v4.19 kernel has some backported patches that makes
+> > this possible?
+>
+> You caught it! Here is the context for the differences:
+>
+> 1. Mainline (ToT):
+>    - `lockup_detector_init()` is always called before `smp_init()`
+>      (pre-SMP phase).
+>    - Risk source: The asynchronous retry path (`lockup_detector_delay_ini=
+t`)
+>      introduced by 930d8f8dbab9, which runs in a workqueue (post-SMP)
+>      context and triggers the UAF.
+>
+> 2. openEuler (4.19/5.10):
+>    - Local `euler inclusion` patches moved `lockup_detector_init()` after
+>      `do_basic_setup()` (post-SMP phase).
+>    - Risk source: The initial probe occurs directly in a post-SMP
+>      environment, exposing the race condition.
+>
+> For openEuler (4.19/5.10) kernel, the call stack looks like this:
+>   kernel_init()
+>   -> kernel_init_freeable()
+>     -> lockup_detector_init()       <-- Called after smp_init()
+>       -> watchdog_nmi_probe()
+>         -> hardlockup_detector_perf_init()
+>           -> hardlockup_detector_event_create()
+>
+> In mainline (ToT), the initial probe (safe) call stack is:
+>   kernel_init()
+>   -> kernel_init_freeable()
+>     -> lockup_detector_init()       <-- Called before smp_init()
+>       -> watchdog_hardlockup_probe()
+>         -> hardlockup_detector_event_create()
+>
+> However, the asynchronous retry mechanism (commit 930d8f8dbab9) executes =
+the
+> probe logic in a post-SMP, preemptible context.
+>
+> For the mainline (ToT) retry path (at risk), the call stack is:
+>   kworker thread
+>   -> process_one_work()
+>     -> lockup_detector_delay_init()
+>       -> watchdog_hardlockup_probe()
+>         -> hardlockup_detector_event_create()
+>
+> Thus, `930d8f8dbab9` remains the correct "Fixes" target for ToT.
 
-This patch allows the driver to degrade gracefully. If gve_init_clock()
-fails, it logs a warning and continues loading the driver without PTP
-support.
+OK, at least I'm not crazy! That does indeed explain why things seemed
+so wonky...
 
-Cc: stable@vger.kernel.org
-Fixes: a479a27f4da4 ("gve: Move gve_init_clock to after AQ CONFIGURE_DEVICE_RESOURCES call")
-Signed-off-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Shachar Raindel <shacharr@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
- drivers/net/ethernet/google/gve/gve.h         |  5 +++++
- drivers/net/ethernet/google/gve/gve_ethtool.c |  2 +-
- drivers/net/ethernet/google/gve/gve_main.c    | 12 +++++++-----
- drivers/net/ethernet/google/gve/gve_ptp.c     |  8 --------
- drivers/net/ethernet/google/gve/gve_rx_dqo.c  |  2 +-
- 5 files changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index 970d5ca8..cbdf3a84 100644
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -1206,6 +1206,11 @@ static inline bool gve_supports_xdp_xmit(struct gve_priv *priv)
- 	}
- }
- 
-+static inline bool gve_is_clock_enabled(struct gve_priv *priv)
-+{
-+	return priv->nic_ts_report;
-+}
-+
- /* gqi napi handler defined in gve_main.c */
- int gve_napi_poll(struct napi_struct *napi, int budget);
- 
-diff --git a/drivers/net/ethernet/google/gve/gve_ethtool.c b/drivers/net/ethernet/google/gve/gve_ethtool.c
-index f7864ae7..137dd728 100644
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -952,7 +952,7 @@ static int gve_get_ts_info(struct net_device *netdev,
- 
- 	ethtool_op_get_ts_info(netdev, info);
- 
--	if (priv->nic_timestamp_supported) {
-+	if (gve_is_clock_enabled(priv)) {
- 		info->so_timestamping |= SOF_TIMESTAMPING_RX_HARDWARE |
- 					 SOF_TIMESTAMPING_RAW_HARDWARE;
- 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 96adbbe1..dbc84de3 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -680,10 +680,12 @@ static int gve_setup_device_resources(struct gve_priv *priv)
- 		}
- 	}
- 
--	err = gve_init_clock(priv);
--	if (err) {
--		dev_err(&priv->pdev->dev, "Failed to init clock");
--		goto abort_with_ptype_lut;
-+	if (priv->nic_timestamp_supported) {
-+		err = gve_init_clock(priv);
-+		if (err) {
-+			dev_warn(&priv->pdev->dev, "Failed to init clock, continuing without PTP support");
-+			err = 0;
-+		}
- 	}
- 
- 	err = gve_init_rss_config(priv, priv->rx_cfg.num_queues);
-@@ -2183,7 +2185,7 @@ static int gve_set_ts_config(struct net_device *dev,
- 	}
- 
- 	if (kernel_config->rx_filter != HWTSTAMP_FILTER_NONE) {
--		if (!priv->nic_ts_report) {
-+		if (!gve_is_clock_enabled(priv)) {
- 			NL_SET_ERR_MSG_MOD(extack,
- 					   "RX timestamping is not supported");
- 			kernel_config->rx_filter = HWTSTAMP_FILTER_NONE;
-diff --git a/drivers/net/ethernet/google/gve/gve_ptp.c b/drivers/net/ethernet/google/gve/gve_ptp.c
-index 073677d8..de42fc2c 100644
---- a/drivers/net/ethernet/google/gve/gve_ptp.c
-+++ b/drivers/net/ethernet/google/gve/gve_ptp.c
-@@ -70,11 +70,6 @@ static int gve_ptp_init(struct gve_priv *priv)
- 	struct gve_ptp *ptp;
- 	int err;
- 
--	if (!priv->nic_timestamp_supported) {
--		dev_dbg(&priv->pdev->dev, "Device does not support PTP\n");
--		return -EOPNOTSUPP;
--	}
--
- 	priv->ptp = kzalloc(sizeof(*priv->ptp), GFP_KERNEL);
- 	if (!priv->ptp)
- 		return -ENOMEM;
-@@ -116,9 +111,6 @@ int gve_init_clock(struct gve_priv *priv)
- {
- 	int err;
- 
--	if (!priv->nic_timestamp_supported)
--		return 0;
--
- 	err = gve_ptp_init(priv);
- 	if (err)
- 		return err;
-diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-index f1bd8f5d..63a96106 100644
---- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -484,7 +484,7 @@ int gve_xdp_rx_timestamp(const struct xdp_md *_ctx, u64 *timestamp)
- {
- 	const struct gve_xdp_buff *ctx = (void *)_ctx;
- 
--	if (!ctx->gve->nic_ts_report)
-+	if (!gve_is_clock_enabled(ctx->gve))
- 		return -ENODATA;
- 
- 	if (!(ctx->compl_desc->ts_sub_nsecs_low & GVE_DQO_RX_HWTSTAMP_VALID))
--- 
-2.52.0.457.g6b5491de43-goog
+> > OK, fair enough. ...but I'm a bit curious why nobody else saw this
+> > WARN_ON(). I'm also curious if you have tested the hardlockup detector
+> > on newer kernels, or if all of your work has been done on 4.19. If all
+> > your work has been done on 4.19, do we need to find someone to test
+> > your patch on a newer kernel and make sure it works OK? If you've
+> > tested on a newer kernel, did the hardlockup detector init from the
+> > kernel's early-init code, or the retry code?
+>
+> In newer kernels, when the probe fails initially and falls
+> back to the retry workqueue (or even during early init if preemption is
+> enabled), the `WARN_ON(!is_percpu_thread())` in
+> `hardlockup_detector_event_create()` does indeed trigger because
+> `watchdog_hardlockup_probe()` is called from a non-bound context.
+>
+> I have verified this patch on the openEuler 4.19 kernel. During our stres=
+s
+> testing, where we start dozens of VMs simultaneously to create high resou=
+rce
+> contention, the UAF was consistently reproducible without this fix and is=
+ now
+> confirmed resolved.
+>
+> The v4 patch addresses this by refactoring the creation logic to be state=
+less
+> and adding `cpu_hotplug_disable()` to ensure the probed CPU stays alive.
 
+OK, so I think the answer is: you haven't actually seen the problem
+(or the WARN_ON) on a mainline kernel, only on the openEuler 4.19
+kernel...
+
+...actually, I looked and now think the problem doesn't exist on a
+mainline kernel. Specificaly, when we run lockup_detector_retry_init()
+we call schedule_work() to do the work. That schedules work on the
+"system_percpu_wq". While the work ends up being queued with
+"WORK_CPU_UNBOUND", I believe that we still end up running on a thread
+that's bound to just one CPU in the end.  This is presumably why
+nobody has reported that "WARN_ON(!is_percpu_thread())" actually
+hitting on mainline.
+
+Given the above, it sounds to me like the problem you're having is
+with a downstream kernel and upstream is actually fine. Did I
+understand that correctly?
+
+If that's the case, we'd definitely want to at least change the
+description and presumably _remove_ the Fixes tag? I actually still
+think the code looks nicer after your CL and (maybe?) we could even
+remove the whole schedule_work() for running this code? Maybe it was
+only added to deal with this exact problem? ...but the CL description
+would definitely need to be updated.
+
+
+> I'll wait for your further thoughts on v4:
+> https://lore.kernel.org/all/20260124070814.806828-1-realwujing@gmail.com/
+
+Sure. In the very least the CL description would need to be updated
+(assuming my understanding is correct), but for now let's avoid
+forking the conversation and resolve things here?
+
+-Doug
 
