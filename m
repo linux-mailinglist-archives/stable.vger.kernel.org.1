@@ -1,162 +1,194 @@
-Return-Path: <stable+bounces-211877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PQyOo/7eGlfuQEAu9opvQ
-	(envelope-from <stable+bounces-211877-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:53:19 +0100
+	id AKJILuIBeWmOuQEAu9opvQ
+	(envelope-from <stable+bounces-211878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 19:20:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8E598AB2
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:53:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E8F898F11
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 19:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ECD043060564
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:51:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4A4D307BB27
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 18:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C619D15530C;
-	Tue, 27 Jan 2026 17:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7335932693C;
+	Tue, 27 Jan 2026 18:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I2dhJ200"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=earth.li header.i=@earth.li header.b="n60CF9tj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from the.earth.li (the.earth.li [93.93.131.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA602882D3
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 17:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06621326945;
+	Tue, 27 Jan 2026 18:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.93.131.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769536292; cv=none; b=lNgBgkGZMtO31aB99KWrPmX9j6XzDCjlgCtIk0fuJjIUhWI/+kDbRfdAiPpRosONmW4JvRSiSts+d7znqf61QWfom/iR1OWc1Vrnvac2vW808+R12qUUoSpB3rui2m1zjyZjY/qQqp0z7p4MKQEzrt9ZGx2pr2AqxBfO8b12LlQ=
+	t=1769537959; cv=none; b=DippjMXi7DkvOXJ/UyIriy8oyJJ+PXg5qYlpWKw8fGU7XSA4erRrG3jo1v/b9jwPPYaNhu5PNj747Q9ykEU1AwEAPJBaJNvJuSJdTMYL8efhW37IPrbrNNq7xVzdo9kON5Asm8TwM8laTHjcQxeeZ2A09Dwx/yuehEDq3FQ3DkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769536292; c=relaxed/simple;
-	bh=LVDsetDM7yZq8t9pLkoFM1Ty4RzSTwc0L0qliyf4beQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAP/TU/s7cWEaLpgk/aeSIgrvJBIk1rxJjVxj3x/UD8f3wmbDWdrAHRmknJG2U8CRorPWpowureP3HUOOSsQjkaPMm6XilbRKI3TKX6fMWcX0X1hy2sRP9oCiMaS35iYDJm7Nf/Rv55/g/CpQL/w2oBgAtEC2sgQA7V+V4699lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I2dhJ200; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECD9C116C6;
-	Tue, 27 Jan 2026 17:51:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769536292;
-	bh=LVDsetDM7yZq8t9pLkoFM1Ty4RzSTwc0L0qliyf4beQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2dhJ200fbk3oFV09MRBcGfrx9YvdJM541kzNuSqgCHuIQ3vyqMqelpqohWbPV4mh
-	 b3BTkqHJ8H/Gtgj+E004ksgm1V5EzYMszIpCNpI8PzsC1JTCtka3+Fv3S4kXdkASMV
-	 q0dfIsubNBr10x0I4JTBuru3VJwplDBJAjU14/U8wSLSzK5PVNbLKl4JQELXyV41Tk
-	 NjF+GcZ5IIckMmy5OjMXInYchf8UOfgDn9xvRp/24v64wikP7IL3wiqsuLDdY0Goo4
-	 YWQhTt9uGq7V48d6jK9M3rsgUYDyiVj9gD8Z8uVcctB/eZITWT42yNR/dbxYws+xMn
-	 pJWX2Ngq1vhKw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] iio: adc: exynos_adc: fix OF populate on driver rebind
-Date: Tue, 27 Jan 2026 12:51:29 -0500
-Message-ID: <20260127175129.2025249-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012752-handgrip-bronco-0815@gregkh>
-References: <2026012752-handgrip-bronco-0815@gregkh>
+	s=arc-20240116; t=1769537959; c=relaxed/simple;
+	bh=5fMX1/ECBchGbinJQi24tMZwPt1WSzLt+BWU/KED+Dw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fc/bW/PwYD6T4Q5S2zafE5e3plsgfey4vXS/uNeA9akP/ufrKUaqtFJVlAj9z72hoyt7DBe8/z3a4rheqNVy1Jx6E5wP1SjM5wz89gDf638+TwPHS8o0GbowCPoU0efuWOiBR41ch0NtFjLDK+/fSYWA78LkgxZBriV6ai3maP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li; spf=pass smtp.mailfrom=earth.li; dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b=n60CF9tj; arc=none smtp.client-ip=93.93.131.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earth.li
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
+	s=the; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:
+	Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=uBLL9ZvNDL3CUghcZr3iwEXw7lwEbEStImsqSjcHyaM=; b=n60CF9tjkghfYkSrC3rl+UgPZK
+	wrjAN0pBIvz1AERGoop7kG8rabivnF5D1q7EkUZqE6z0DSOF7xyYbwRUT9cBnN1t62nWeWw8ZKpJu
+	6sKYy24JooX/6t9+tcw00kFEn3jyhxRpyGjDA5g3gx0sF1p4ksbBg6r4gm5GrXB5C+Z2KXBorNLuE
+	tk9pHbadQG+gPRSpcAbbV/eaaC36wtCvGovPkeJdEhF3VYm0ulG9Xt/ySukkM/N2jDmoNq1qkZXk8
+	TdO7kg3B5Qw7quhEV6NDkRTLDjaybIvK8lA0eTKmvVAV/R4RsLQzciGJPCfLd6OLZDcQjh2a4pABf
+	peVMlRBw==;
+Received: from noodles by the.earth.li with local (Exim 4.96)
+	(envelope-from <noodles@earth.li>)
+	id 1vknLf-009rMz-0b;
+	Tue, 27 Jan 2026 17:59:31 +0000
+Date: Tue, 27 Jan 2026 17:59:31 +0000
+From: Jonathan McDowell <noodles@earth.li>
+To: dima@arista.com
+Cc: Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Silvia Sisinni <silvia.sisinni@polito.it>,
+	Enrico Bravi <enrico.bravi@polito.it>,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Dmitry Safonov <0x7f454c46@gmail.com>
+Subject: Re: [PATCH v3] ima_fs: Avoid creating measurement lists for
+ unsupported hash algos
+Message-ID: <aXj9AwtTKVes5C38@earth.li>
+References: <20260127-ima-oob-v3-1-1dd09f4c2a6a@arista.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260127-ima-oob-v3-1-1dd09f4c2a6a@arista.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_REJECT(1.00)[earth.li:s=the];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211877-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-211878-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[earth.li];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linux.ibm.com,huawei.com,gmail.com,oracle.com,paul-moore.com,namei.org,hallyn.com,polito.it,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.985];
+	FROM_NEQ_ENVFROM(0.00)[noodles@earth.li,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[earth.li:-];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: 1F8E598AB2
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arista.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3E8F898F11
 X-Rspamd-Action: no action
 
-From: Johan Hovold <johan@kernel.org>
+On Tue, Jan 27, 2026 at 02:21:13PM +0000, Dmitry Safonov via B4 Relay wrote:
+>From: Dmitry Safonov <dima@arista.com>
+>
+>ima_init_crypto() skips initializing ima_algo_array[i] if the algorithm
+>from ima_tpm_chip->allocated_banks[i].crypto_id is not supported.
+>It seems avoid adding the unsupported algorithm to ima_algo_array will
+>break all the logic that relies on indexing by NR_BANKS(ima_tpm_chip).
+>
+>On 6.12.40 I observe the following read out-of-bounds in hash_algo_name:
+>
+>> ==================================================================
+>> BUG: KASAN: global-out-of-bounds in create_securityfs_measurement_lists+0x396/0x440
+>> Read of size 8 at addr ffffffff83e18138 by task swapper/0/1
+>>
+>> CPU: 4 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.40 #3
+>> Call Trace:
+>>  <TASK>
+>>  dump_stack_lvl+0x61/0x90
+>>  print_report+0xc4/0x580
+>>  ? kasan_addr_to_slab+0x26/0x80
+>>  ? create_securityfs_measurement_lists+0x396/0x440
+>>  kasan_report+0xc2/0x100
+>>  ? create_securityfs_measurement_lists+0x396/0x440
+>>  create_securityfs_measurement_lists+0x396/0x440
+>>  ima_fs_init+0xa3/0x300
+>>  ima_init+0x7d/0xd0
+>>  init_ima+0x28/0x100
+>>  do_one_initcall+0xa6/0x3e0
+>>  kernel_init_freeable+0x455/0x740
+>>  kernel_init+0x24/0x1d0
+>>  ret_from_fork+0x38/0x80
+>>  ret_from_fork_asm+0x11/0x20
+>>  </TASK>
+>>
+>> The buggy address belongs to the variable:
+>>  hash_algo_name+0xb8/0x420
+>>
+>> The buggy address belongs to the physical page:
+>> page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x107ce18
+>> flags: 0x8000000000002000(reserved|zone=2)
+>> raw: 8000000000002000 ffffea0041f38608 ffffea0041f38608 0000000000000000
+>> raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+>> page dumped because: kasan: bad access detected
+>>
+>> Memory state around the buggy address:
+>>  ffffffff83e18000: 00 01 f9 f9 f9 f9 f9 f9 00 01 f9 f9 f9 f9 f9 f9
+>>  ffffffff83e18080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>> >ffffffff83e18100: 00 00 00 00 00 00 00 f9 f9 f9 f9 f9 00 05 f9 f9
+>>                                         ^
+>>  ffffffff83e18180: f9 f9 f9 f9 00 00 00 00 00 00 00 04 f9 f9 f9 f9
+>>  ffffffff83e18200: 00 00 00 00 00 00 00 00 04 f9 f9 f9 f9 f9 f9 f9
+>> ==================================================================
+>
+>Seems like the TPM chip supports sha3_256, which isn't yet in
+>tpm_algorithms:
+>> tpm tpm0: TPM with unsupported bank algorithm 0x0027
+>
+>Grepping HASH_ALGO__LAST in security/integrity/ima/ shows that is
+>the check other logic relies on, so add files under TPM_ALG_<ID>
+>and print 0 as their hash_digest_size.
 
-[ Upstream commit ea6b4feba85e996e840e0b661bc42793df6eb701 ]
+Can I suggest, for better consistency, it's tpm_alg_<id> (i.e. lower 
+case, like the rest of the path)?
 
-Since commit c6e126de43e7 ("of: Keep track of populated platform
-devices") child devices will not be created by of_platform_populate()
-if the devices had previously been deregistered individually so that the
-OF_POPULATED flag is still set in the corresponding OF nodes.
+>This is how it looks on the test machine I have:
+>> # ls -1 /sys/kernel/security/ima/
+>> ascii_runtime_measurements
+>> ascii_runtime_measurements_TPM_ALG_27
+>> ascii_runtime_measurements_sha1
+>> ascii_runtime_measurements_sha256
+>> binary_runtime_measurements
+>> binary_runtime_measurements_TPM_ALG_27
+>> binary_runtime_measurements_sha1
+>> binary_runtime_measurements_sha256
+>> policy
+>> runtime_measurements_count
+>> violations
 
-Switch to using of_platform_depopulate() instead of open coding so that
-the child devices are created if the driver is rebound.
+J.
 
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Cc: stable@vger.kernel.org	# 3.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/iio/adc/exynos_adc.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index 4d00ee8dd14d0..b97d46c949edb 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -721,14 +721,7 @@ static const struct iio_chan_spec exynos_adc_iio_channels[] = {
- 	ADC_CHANNEL(9, "adc9"),
- };
- 
--static int exynos_adc_remove_devices(struct device *dev, void *c)
--{
--	struct platform_device *pdev = to_platform_device(dev);
--
--	platform_device_unregister(pdev);
- 
--	return 0;
--}
- 
- static int exynos_adc_ts_open(struct input_dev *dev)
- {
-@@ -929,8 +922,7 @@ static int exynos_adc_probe(struct platform_device *pdev)
- 	return 0;
- 
- err_of_populate:
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	if (has_ts) {
- 		input_unregister_device(info->input);
- 		free_irq(info->tsirq, info);
-@@ -959,8 +951,7 @@ static void exynos_adc_remove(struct platform_device *pdev)
- 		free_irq(info->tsirq, info);
- 		input_unregister_device(info->input);
- 	}
--	device_for_each_child(&indio_dev->dev, NULL,
--				exynos_adc_remove_devices);
-+	of_platform_depopulate(&indio_dev->dev);
- 	iio_device_unregister(indio_dev);
- 	free_irq(info->irq, info);
- 	if (info->data->exit_hw)
 -- 
-2.51.0
-
+"Why 'maybe' for everything?" "I'm using fluffy logic."
 
