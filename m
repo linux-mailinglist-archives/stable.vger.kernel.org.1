@@ -1,67 +1,68 @@
-Return-Path: <stable+bounces-211719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDjtOgk5eGmmowEAu9opvQ
-	(envelope-from <stable+bounces-211719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:03:21 +0100
+	id GCtNHyA5eGmmowEAu9opvQ
+	(envelope-from <stable+bounces-211720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:03:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 936648FC7C
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:03:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAFB8FC84
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79C6930107D0
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 04:03:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DBDC430095C4
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 04:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA13431619E;
-	Tue, 27 Jan 2026 04:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1CB3176E1;
+	Tue, 27 Jan 2026 04:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="u/uSEa5l"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="ZG27tbn5"
 X-Original-To: stable@vger.kernel.org
 Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1246A3161BA
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 04:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C72431619E
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 04:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769486596; cv=none; b=lM8FAA1raT3blBxc5sWKhWRa6GS5C752YEKaFIuto8pr0axUkvd+Xh1rs+f9e03x+RKOJqW5cGRkoRfYVfsq2ZSUUH8YW49HDxtSfLE29n5t+4FiCcYssLif9LYUMivQVEmXVnmar3HlhXeOG26hsRb9+0tBS0Uxfz7aDwV555c=
+	t=1769486620; cv=none; b=t5HxdiRui/uGsEJ7wsJIUXbTlv1LNKo2TfnkDQ94Yktof/FIGhdYb8nKvzKtoV/4BzENP0ZRRUftcZgDZDkjFHbX6wJHvFBP/QVZ3dyYu0N0tdIMD1g5OfZbth+iU3weGiNFJ+sTBXcn3OIJXT9Uf//AtrUcFJhtnrHZHfcRMtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769486596; c=relaxed/simple;
-	bh=z00k1mNJMCCnnMo882MdaKjIXkbHPxHg+aCyI9sy8kw=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=JG6dcHyY8moRVgF4UdkaGtl3XR6R9+nzjnAAkrMmXwJlI8hJayk2SF5fYevHlfUl1e8YYx14/WWA7/fIBOg4dTKcPNTd+h3WvfoXAHG+O4786rIEkKJ1adYDnToJm6XxbtmDb4oeCQGi86OeZz4haiZKS5nYY34SynRMVRdHeHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=u/uSEa5l; arc=none smtp.client-ip=162.62.57.210
+	s=arc-20240116; t=1769486620; c=relaxed/simple;
+	bh=Ib6Yd57WdBghu+vF445shZTD+HMlH1YLFnCKkQnTwqQ=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=rispCojEWLHZHzylLPZNWDzQ1octCYH97nYNVpzxBC4IC1G4Q7UsRcj6d/6ZU8rEvGKrFv7K881AzyOkmT3swnRVRP1Ge9Z+zBBuZUYBSsyuZDeYKYgW1T0qKXHVSQL0fqGSLwDvWswEoosNSr/eZgafFnCaYUnkEAo0DWoTMH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=ZG27tbn5; arc=none smtp.client-ip=162.62.57.210
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1769486582;
-	bh=YFKuTugJWj1dXQygRYo9wKTNykkK0JyFvdmnF5gzMec=;
+	s=s201512; t=1769486614;
+	bh=LFYAv93BuRb7R5NNr7VuLJ+tLbwiFCdVzcXngavjxkg=;
 	h=From:To:Cc:Subject:Date;
-	b=u/uSEa5l6Y3hPmEK6QgzDODBHbLhiUuXakq7X+JWDiELBhjsLkEGXTgtHOgVwB+n5
-	 o4fFDErCX6FJN5rdO7F3eI+nmEnO4GFZx5z1xsdFVc0RGXtyvj1ijAE6hAcCm6IpkW
-	 fOQBBSq3uSJn+FrJqDq7EICRsD4y7eamENp3O7AI=
+	b=ZG27tbn57DDgQ+GgfIEO1b7p2XiaBm7Yl27tpk6BUAJGeEMhgdUXvMFwYjXGPNG1z
+	 exdjxuZFEVWPHIxXW1fetCOROiToFBrjPn/riKo7ACMkPYQskAi0pOCAvptL6SCpr/
+	 JA39Fcb89GuQBhUxgVSzIXcYgqy+jw77McvBxS6M=
 Received: from ubuntu24.. ([2409:8a00:dd3:9760:874a:c122:32cf:6f61])
-	by newxmesmtplogicsvrszb51-0.qq.com (NewEsmtp) with SMTP
-	id B1B8E6C; Tue, 27 Jan 2026 12:02:49 +0800
-X-QQ-mid: xmsmtpt1769486569t2owj6jy0
-Message-ID: <tencent_6A48B46F35791FDA92E8D6A1384130E60D08@qq.com>
-X-QQ-XMAILINFO: Mi9y8J8807RSt3T4dTeDJtVtwOoAO4qa+Fl/2uUL2F1HsKC3ymb3W9SWZBSx8Y
-	 OS8Krl+5Lkgvkbm8ll8Lz4K/Os6cip03UCLKUc5CRJrN5k1uj00x7W/HmnhyZT5wuOdt+9aOQIRs
-	 Xcz66yoOnEC65mZwQvd6s8amOgn0RQaYKAbF7JMbsFdSuVzYY867E04uQknVHnZ9BUWN8zrZApbD
-	 Zo36u4PLojsERRddAgfLROu9N+Om1qZq071Y7IY/eRaesH4U5m9TmrvOSbrC6vJ4cX0vyXetJQ1Q
-	 G+wsq2Vhb4sWzf1Gc6fY0WCswtyD2FU784slLTcizAKaCQqzBCh6h1yEsbUqPuTEZ/xWG1IAlEJy
-	 rL+DhXcsb65FKObe67iJ2s5uPLThSqiLkG30WoyZ0/CW101RjfPNlssUmldRWAJ5GHsD7wZ08Mrv
-	 SU85JkM3RBeIp45csUUCml/fvqMyl9BL2njeoHSmYBGux7qlAomb3qNAcEfgLODtPCJrCHYzZ7WJ
-	 YSy+yCn+rnD0l6jLKoaJUQW6MOqgKJQWU7o3AxDMJndF3ixxabUDH8OBjgMoTTvhebG5Bjlx4Qhf
-	 ktsFTAp6bFokdJlkgyr52JM9Sim85HgFK41BXsAj/VdSKDKPtsOXo/70SfBHYSKrKzk/L3j491c5
-	 2toThICNvG70Lf20HXe/K8T1rwh0aSfuKgzTOgbLrUwFuB0Gx/zu9kxPTaWitwb+OJynLrxMq7r5
-	 rxqR/AB8sDxbfkkLOpzViq54dA/p11m5bJQ0iJ3jY2P4kXNqVJEpHMJjl4Or86lfrBqo/BgDvZl8
-	 ucQE6PpljMtAn2314749yMeoexT4HQ4xDYpjIdBsyOKqg3KEhFGzDMR5dje2DV4D7jK/VxOTLEKN
-	 AlzVvf4KPexY/sIfbU+fAEWYN/RH8AfAgb49RRrwZL0Ydl9Jyv0ByBuXnumPuls08X71V6biBqJ3
-	 qUwaCDix7FOOAR+WgfGwpDv7BqTeDi/GgE7x1iwGXY6QleoztPfggWVSBKxBaJ380OW3gTJGquaU
-	 cQ2c+5MeWMlni57SIrZd5eF8OsxFnPSqmEH5+7DaFFd4l2Y+x8KNvQPexl8zkD2Ea2PRYxGkk37n
-	 UfN6SRJ2U5RcTfYjY=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id DB33244; Tue, 27 Jan 2026 12:03:27 +0800
+X-QQ-mid: xmsmtpt1769486607t3v419dv0
+Message-ID: <tencent_9C6AFE3E9A2583AC3971A061001BDA681309@qq.com>
+X-QQ-XMAILINFO: NEu9ADsh1Y9sEtpUJdRHiSeZtV+XKdj4hrJJa7QVCo7p6V8TDQM5Lur689JY8q
+	 PG9PrVISBlYREzyGJdpInyY+w3QlwvzOcACakE5NEcjjjZSEtamxesdmZjXr01O3kpuiSJtY59st
+	 prJ+6rBYYQ2OZVtQIJmDzwAjV3GdVZLmyJmw5HapTWBtKmP7bDyXVQ/JEKtDN05/2CwYzaFCAcsX
+	 USIu2naGs2cL47XL2YGt/jSkMJa1uZ214JfxSmCU8bWI67O8Zgup8bL8Oh6SRCjBd0Ju6yQ/WuqX
+	 vt3spxEPEB4Mgwqif6jVNUHt8UpOMyWQYqoFoaV3VRk90VPqROvGYWrr2QHv6/zOPrdOtbteAH7B
+	 V5U+puqhLB7XRjLj/YfVypA+v43Yo/DfyjjlDrweT7QBdbnzXciqXfgkGvPAQ7tplHtAc3KfKVD4
+	 Wj1iJluqJl76xiQuu2hLImsUj/ZiTFM25Vq7QstckYM1/L2epGPjLMn8Zt8shEoTzjwtqdd/LwuE
+	 NozvhLQDF4emQTsynCFI8O0s6s/kWoBiAqCKW3Dg8zaKhxuFIW9H4eNHto8VsbDaFERYntetvTAT
+	 /A6Jcz9laPvB3NlDRhYRs3V9dnDbV7FoOu3lqtnG22mIBy+EntZeWDRCEz33SSTNQNPPXdvVbCsV
+	 1UttDkUUdq6ZRP9muy45JRQJ7q6UGdbZ1n9arXN/KGSjVEYosBQdzCyT/EbDUmOqUsm1qlRvEdFD
+	 ZLcXNDy6GSFC+zD0t9r1EYZMrXnAjm4f5ZYc+b3xWHL8bAg/hXfYXCGfPM1yQlZlryrJce6dnYP0
+	 gSXILoPAlxJk97P8ZtSyggCEZr2oLVQayOJmxd2MX0fMvJn0IOXqRIKKxuya7YJHOx7DcIlbqEAM
+	 mnXPh9qAueCuygmveVYbWNgyNz4ifXER+wgUMO9mnyzgmEUWMykPvcOoe7mTm0pUsH7BCCeXl21r
+	 OBFCLw9e4LYccp0Wzr0do2xVI8LopLq013MO5giKoePrFMksxxalFULCgNLe0LxrVXdS0mCj/mJk
+	 uBqMy1nfSknvcC/ak5AOdfHqmXb701Qm4LfxiAd8CCuN+DH7oceKw2864QHL8LoEYC0s5Bbj4xz8
+	 5aD2kg3RZz/zpeH1HXl8Fv/AU2vNXgc1a0z7qDpN11S2Mw+ZBPAOj5Q2Yd3p3E54dCU8XGmK+fou
+	 u3klQ=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
 From: alvalan9@foxmail.com
 To: stable@vger.kernel.org
 Cc: Waiman Long <longman@redhat.com>,
@@ -69,9 +70,9 @@ Cc: Waiman Long <longman@redhat.com>,
 	Tejun Heo <tj@kernel.org>,
 	Jens Axboe <axboe@kernel.dk>,
 	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.1.y] blk-cgroup: Reinit blkg_iostat_set after clearing in blkcg_reset_stats()
-Date: Tue, 27 Jan 2026 04:02:42 +0000
-X-OQ-MSGID: <20260127040242.5098-1-alvalan9@foxmail.com>
+Subject: [PATCH 5.15.y] blk-cgroup: Reinit blkg_iostat_set after clearing in blkcg_reset_stats()
+Date: Tue, 27 Jan 2026 04:03:26 +0000
+X-OQ-MSGID: <20260127040326.5133-1-alvalan9@foxmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -85,12 +86,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211719-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211720-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -104,11 +105,11 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[foxmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 936648FC7C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qq.com:mid]
+X-Rspamd-Queue-Id: 9AAFB8FC84
 X-Rspamd-Action: no action
 
 From: Waiman Long <longman@redhat.com>
@@ -146,10 +147,10 @@ Signed-off-by: Alva Lan <alvalan9@foxmail.com>
  1 file changed, 4 insertions(+)
 
 diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index ef596fc10465..f314192b6de8 100644
+index e372a3fc264e..61fdff5406b5 100644
 --- a/block/blk-cgroup.c
 +++ b/block/blk-cgroup.c
-@@ -531,8 +531,12 @@ static int blkcg_reset_stats(struct cgroup_subsys_state *css,
+@@ -491,8 +491,12 @@ static int blkcg_reset_stats(struct cgroup_subsys_state *css,
  			struct blkg_iostat_set *bis =
  				per_cpu_ptr(blkg->iostat_cpu, cpu);
  			memset(bis, 0, sizeof(*bis));
