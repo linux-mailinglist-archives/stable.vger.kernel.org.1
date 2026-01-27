@@ -1,155 +1,114 @@
-Return-Path: <stable+bounces-211851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211852-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEWQAJrgeGkXtwEAu9opvQ
-	(envelope-from <stable+bounces-211851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:58:18 +0100
+	id +FzrD5bgeGkGtwEAu9opvQ
+	(envelope-from <stable+bounces-211852-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:58:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA089740A
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:58:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52D197403
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:58:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 294E8300AC1E
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:52:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F15F300D44E
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086FA33D4F3;
-	Tue, 27 Jan 2026 15:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BD935D617;
+	Tue, 27 Jan 2026 15:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o+Y1qTAI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GY51Gr6x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E6420B810
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 15:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2CF1E8836;
+	Tue, 27 Jan 2026 15:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769529125; cv=none; b=TgiyhJjV3yi62EXX4KO/uOUFe2pN5gZ1dgnV0KMv/0dOlH3Jiu21CTPsgDqp4g/Yk5DBX12VRA5qV7pL+kwoVI8X5RNzvKh9tgyE39uzGD2noa0OUimMSQQzgaK9ln/r1/LlM8p/VeeZqDuiHcq/upXA1h7yVyskZjdKY2p+oZY=
+	t=1769529382; cv=none; b=L6ISEleMZKOtovmSwBmAfJPDded8Rpb1Knq7ORz8F3RGPK1/21QfctwiM0IPmWT4O7vAuY0p7tdCjOx5nVVqwzV4L2Xn+9a0OnxQFyhpCuAl59VRh7YtLas6pgxe9V4/5XiisnyyCyaz1Hwtb9aDzastcM92wlzIfBsoNd0GKro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769529125; c=relaxed/simple;
-	bh=5FJU4OgCOpfnzWdCyGfS8jDDD+283hQoX0yrU9QKiXM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+vCQRzPPFOmCASo7QL2zV4cpUPx5fqOLB1y28DmbSbF/cwiSSDWq2KhYe5Ri31IdyVbq4SBQ6ziI3ji8uY1v94qE+lgSrYbbtEKQ/vKG1D6sjHrWlXn2ZuNh0FarhY6ja8Tqd2D43v9b3nP+oJc0OkbKFNsZF98pA4yiHmZCIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o+Y1qTAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DFBC116C6;
-	Tue, 27 Jan 2026 15:52:04 +0000 (UTC)
+	s=arc-20240116; t=1769529382; c=relaxed/simple;
+	bh=Vsw2KdcG+jNPcOze8yBFFd5tT4lfuIXClv+3kx4q/4o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nUVkyN/hDnhMXIuK3kE6lT30B1FfI7oHH4M1Uq9zW3AyxMIifQMYNTN0df3WpvmqOJNLEMyAs5j6SJnJFvEeDTK+oaoDcU/J1k5jNqoz4oo47H+HDPrerpuRXQwtO9/bX/mKI1Xq5RlShbVjSIDymLIL+QNFWJ9ArJhzPIWv+1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GY51Gr6x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5692AC116C6;
+	Tue, 27 Jan 2026 15:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769529125;
-	bh=5FJU4OgCOpfnzWdCyGfS8jDDD+283hQoX0yrU9QKiXM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+Y1qTAIUKjkgnLS99VJbxyI2w6GMNoZK979j7zQQ3BehfjdpUR49oDgjFMephJaW
-	 hJF5dK7C/ic1+TE/KYX2OO4+bmb9D4gEx7o9RTj4lPdxJunloPVunfpjeNhpSnQi8z
-	 jsF7pq41BJR4EJx/yG2nYHrb/QfjBLf2YJahcaKQAFH17e531j6V8HVPHcrUkea/e8
-	 AHPnDO6pE2Xe/LgKyN9mhvFc2CDUIJsySXlPpTyNlqqrAhdHACOq+Q5A/onGYicaT5
-	 R7w5rLQXtrD7bNARD4F0+o5tJn+zagpaXWgG7wSr0dHlR2R4SfKhNmD2orq/Gr0Ky+
-	 lDlJhsZZgE1bQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Fiona Klute <fiona.klute@gmx.de>,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] iio: chemical: scd4x: fix reported channel endianness
-Date: Tue, 27 Jan 2026 10:52:02 -0500
-Message-ID: <20260127155202.1927098-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012713-ethically-lily-296c@gregkh>
-References: <2026012713-ethically-lily-296c@gregkh>
+	s=k20201202; t=1769529382;
+	bh=Vsw2KdcG+jNPcOze8yBFFd5tT4lfuIXClv+3kx4q/4o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GY51Gr6xwzl+MCnjwtkYPCbv4Q/Hr4Yj0JTyrZM7GC4+TqE9QsOGCIAwicyhzjnqz
+	 xpemhWx7FW+AizUhiWt6j+VFaUM8SUpS5AK4Hy1MKPMuMlmf8HkLGs9zR1Mj8EPK8G
+	 0rgtWDmbuucINvO5BZ58+jquuE8nAYsEcJacXLFCMPT15fmEwimBmWHgAfcTpcPqIV
+	 YZt+ALPuB/sEcyX36vGGHA+qgLE01VH5C94uQdGdNIwQ1QkeiU3lyZOqfPE58fX3mr
+	 UxEiPJGxgk7xOasfSeJFL5cdVdZ2YzcINhKySNVN+IseoSS8FvyJYlmUyRHy0hfwEy
+	 lERF5klFLQrZA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vklQN-00000000719-0EV5;
+	Tue, 27 Jan 2026 16:56:15 +0100
+Date: Tue, 27 Jan 2026 16:56:15 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Peter Rosin <peda@axentia.se>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Andrew Davis <afd@ti.com>
+Subject: Re: [PATCH] mux: mmio: fix regmap leak on probe failure
+Message-ID: <aXjgH6RCFq8y97-3@hovoldconsulting.com>
+References: <20251127134702.1915-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251127134702.1915-1-johan@kernel.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmx.de,baylibre.com,huawei.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-211851-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-211852-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.989];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,huawei.com:email,gmx.de:email]
-X-Rspamd-Queue-Id: 7FA089740A
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hovoldconsulting.com:mid]
+X-Rspamd-Queue-Id: B52D197403
 X-Rspamd-Action: no action
 
-From: Fiona Klute <fiona.klute@gmx.de>
+On Thu, Nov 27, 2025 at 02:47:02PM +0100, Johan Hovold wrote:
+> The mmio regmap that may be allocated during probe is never freed.
+> 
+> Switch to using the device managed allocator so that the regmap is
+> released on probe failures (e.g. probe deferral) and on driver unbind.
+> 
+> Fixes: 61de83fd8256 ("mux: mmio: Do not use syscon helper to build regmap")
+> Cc: stable@vger.kernel.org	# 6.16
+> Cc: Andrew Davis <afd@ti.com>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
 
-[ Upstream commit 81d5a5366d3c20203fb9d7345e1aa46d668445a2 ]
+Can this one be picked up for 6.20?
 
-The driver converts values read from the sensor from BE to CPU
-endianness in scd4x_read_meas(). The result is then pushed into the
-buffer in scd4x_trigger_handler(), so on LE architectures parsing the
-buffer using the reported BE type gave wrong results.
-
-scd4x_read_raw() which provides sysfs *_raw values is not affected, it
-used the values returned by scd4x_read_meas() without further
-conversion.
-
-Fixes: 49d22b695cbb6 ("drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor")
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/iio/chemical/scd4x.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iio/chemical/scd4x.c b/drivers/iio/chemical/scd4x.c
-index 54066532ea458..690c70b94a57b 100644
---- a/drivers/iio/chemical/scd4x.c
-+++ b/drivers/iio/chemical/scd4x.c
-@@ -518,7 +518,7 @@ static const struct iio_chan_spec scd4x_channels[] = {
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_BE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- 	{
-@@ -533,7 +533,7 @@ static const struct iio_chan_spec scd4x_channels[] = {
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_BE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- 	{
-@@ -546,7 +546,7 @@ static const struct iio_chan_spec scd4x_channels[] = {
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_BE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- };
--- 
-2.51.0
-
+Johan
 
