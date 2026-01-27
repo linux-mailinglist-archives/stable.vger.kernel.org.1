@@ -1,159 +1,257 @@
-Return-Path: <stable+bounces-211837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211838-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMlKMl3OeGmNtQEAu9opvQ
-	(envelope-from <stable+bounces-211837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:40:29 +0100
+	id uF5eML7PeGmNtQEAu9opvQ
+	(envelope-from <stable+bounces-211838-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:46:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D1195DB9
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:40:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDBB95F4A
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:46:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 396F43008757
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:38:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F1B93302D92D
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A22A2E718B;
-	Tue, 27 Jan 2026 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1AB363C4F;
+	Tue, 27 Jan 2026 14:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TJ2CN8Cr"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2648526F296
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 14:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACE235C188;
+	Tue, 27 Jan 2026 14:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769524682; cv=none; b=mfiXYOP2Q6TLRcJGYgyjABrDkNvsbWoqdMd9hgd1tiDy7Wp5F1EMnIldVY1JHCv4x5JNMvfBzf9YZON9BwipG0Uk1/9BDvONINziOOAWJprLgs8i2sYutbMVlFi2AINNulA3YjsJi/VDNR38bZHaNIhBBYDDsOm35P4G6LG6+ts=
+	t=1769524841; cv=none; b=jG0UABmSowuLGyWMwJH5cFjEC3rzpH9P/QDxLlWxuF8y/6VEoZV3zhLN8XZ8yWql6gUC8Dp3ru4sEvMo4cjSkdZMbCrop3+J2ZXug6BfaEwDGo8QJm62onT5kjs7qk5jMnf60HWM/+06aQjc1xSqY6+93kRfSRnz0Fa3sBZckUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769524682; c=relaxed/simple;
-	bh=pt778lMUMfQ9k/QeUOEnu1uR5bjfQzGhXX13T/rfrbY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmmzH0Z5ZGoOmLK/xeGOLywu97/QF2OOKMfdeG4cJ4K4rZ7hSYJqPKLc0wBc023HY4AKN/ZoSVXRoVcQ5vzDZr1kO52Gfz0Ihdy3IYKJaEun7Mi5R+BbsdsorwQnCW74HQm9u7jjmQQZmcp/GIZjvIxwkyjNQ7AKPe/1bRgSH1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vkkCc-0007Nl-6p; Tue, 27 Jan 2026 15:37:58 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vkkCc-002lT7-2B;
-	Tue, 27 Jan 2026 15:37:58 +0100
-Received: from blackshift.org (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B579F4D9645;
-	Tue, 27 Jan 2026 14:37:57 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: stable@vger.kernel.org
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.6.y] can: esd_usb: esd_usb_read_bulk_callback(): fix URB memory leak
-Date: Tue, 27 Jan 2026 15:37:52 +0100
-Message-ID: <20260127143752.1430078-1-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012715-dividers-displace-ed3c@gregkh>
-References: <2026012715-dividers-displace-ed3c@gregkh>
+	s=arc-20240116; t=1769524841; c=relaxed/simple;
+	bh=mXRBNsG1KvltKGLWMjB9OhvYSZUWg1JfD4N+xZ/vjto=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=COm9ppWq8HLlwR+mv58wBLs/0drFGiY7lIYlXGWAcz7AXaVARM3sEZiv3he5FEJl/b8HcW8oXvKAPjQOAa05zrHnDzRhqBmGwhsh12xNX6j7Dr/zW/6/lnCmB7Jf24VGEByHRE/S/RaC6K4jYR9eCIYRNcRmjcwTSfADCNxxIe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TJ2CN8Cr; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769524840; x=1801060840;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=mXRBNsG1KvltKGLWMjB9OhvYSZUWg1JfD4N+xZ/vjto=;
+  b=TJ2CN8CrzlXOnhc1UElZcJhawv/7mBKWkcK7Q4iaTLLOvgY7ZR0g0lH0
+   Rg7sCYbfgWZ7l6nkYhWSaVRtC70jJwlJZkjQXJ3B2MSCeUPXGjziVduDC
+   II1C5KaXlVxBQMIQXcvp9lvj6kmcmKXhwLx7knUm3K3fEAq/slQgWQIjo
+   dDQJQjHVWtolOAEnzzFrhKG2zTq0BFQZ3tdjxL1eUDCYvSAUWSw7Rcocl
+   CmpJucfDBtlF7yxFQO7SfrSY6+KvU+51OrX52/7dOKIgXqvf1NJU0KdFL
+   dI3Mtwu/UGMt5Hy0oM9WZXHnUsUpQGQ20AN8e0w8svfyY2AwyMbeBXNwv
+   w==;
+X-CSE-ConnectionGUID: CGTu9dU9SVupw07ho5p6fA==
+X-CSE-MsgGUID: 7mcYIUYsQl+zFMN21eCKew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="82086059"
+X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
+   d="scan'208";a="82086059"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 06:40:39 -0800
+X-CSE-ConnectionGUID: 6sh9hCMKQyqWj2mWPnfFqA==
+X-CSE-MsgGUID: k7g4QTf8TD2VVBG9XzPC/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
+   d="scan'208";a="207787333"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.67])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 06:40:32 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 27 Jan 2026 16:40:28 +0200 (EET)
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+cc: Petr Mladek <pmladek@suse.com>, John Ogness <john.ogness@linutronix.de>, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Jiri Slaby <jirislaby@kernel.org>, 
+    linux-serial <linux-serial@vger.kernel.org>, 
+    qianfan Zhao <qianfanguijin@163.com>, Adriana Nicolae <adriana@arista.com>, 
+    Markus Mayer <markus.mayer@linaro.org>, Tim Kryger <tim.kryger@linaro.org>, 
+    Matt Porter <matt.porter@linaro.org>, 
+    Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+    Jamie Iles <jamie@jamieiles.com>, LKML <linux-kernel@vger.kernel.org>, 
+    stable@vger.kernel.org, "Bandal, Shankar" <shankar.bandal@intel.com>, 
+    "Murthy, Shanth" <shanth.murthy@intel.com>
+Subject: Re: [PATCH 6/6] serial: 8250_dw: Ensure BUSY is deasserted
+In-Reply-To: <aXjHZQnIFjfPabdU@smile.fi.intel.com>
+Message-ID: <379cc557-7d09-d6e9-3b16-9621e344bd36@linux.intel.com>
+References: <20260123172739.13410-1-ilpo.jarvinen@linux.intel.com> <20260123172739.13410-7-ilpo.jarvinen@linux.intel.com> <aXP5YMNix8EfbJeF@smile.fi.intel.com> <fc09f6fd-013f-25fd-484c-cac59b0a60b6@linux.intel.com> <aXjHZQnIFjfPabdU@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: multipart/mixed; boundary="8323328-20834577-1769524828=:1055"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	CTYPE_MIXED_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211837-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[suse.com,linutronix.de,linuxfoundation.org,kernel.org,vger.kernel.org,163.com,arista.com,linaro.org,linux.intel.com,jamieiles.com,intel.com];
+	TAGGED_FROM(0.00)[bounces-211838-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+,1:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
-	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,pengutronix.de:mid,pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 29D1195DB9
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:dkim]
+X-Rspamd-Queue-Id: 7DDBB95F4A
 X-Rspamd-Action: no action
 
-Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
-gs_usb_receive_bulk_callback(): fix URB memory leak").
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-In esd_usb_open(), the URBs for USB-in transfers are allocated, added to
-the dev->rx_submitted anchor and submitted. In the complete callback
-esd_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
-esd_usb_close() the URBs are freed by calling
-usb_kill_anchored_urbs(&dev->rx_submitted).
+--8323328-20834577-1769524828=:1055
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-However, this does not take into account that the USB framework unanchors
-the URB before the complete function is called. This means that once an
-in-URB has been completed, it is no longer anchored and is ultimately not
-released in esd_usb_close().
+On Tue, 27 Jan 2026, Andy Shevchenko wrote:
 
-Fix the memory leak by anchoring the URB in the
-esd_usb_read_bulk_callback() to the dev->rx_submitted anchor.
+> On Tue, Jan 27, 2026 at 03:35:27PM +0200, Ilpo J=E4rvinen wrote:
+> > On Sat, 24 Jan 2026, Andy Shevchenko wrote:
+> > > On Fri, Jan 23, 2026 at 07:27:39PM +0200, Ilpo J=E4rvinen wrote:
+>=20
+> +Cc: printk people to check on printing from a serial driver routines.
+>=20
+> ...
+>=20
+> > > > +=09/* Prevent triggering interrupt from RBR filling */
+> > > > +=09p->serial_out(p, UART_IER, 0);
+> > >=20
+> > > Do we specifically use callbacks directly and not wrappers all over t=
+he change?
+> >=20
+> > I guess it's just a habit, I suppose you meant using serial_port_in/out=
+=20
+> > instead. I can try to change those.
+>=20
+> Not (only) me. Jiri updated this driver (and many others) to use callback=
+s.
+> That's why I added comments here and there about possible recursions.
 
-Fixes: 96d8e90382dc ("can: Add driver for esd CAN-USB/2 device")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-2-4b8cb2915571@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-(cherry picked from commit 5a4391bdc6c8357242f62f22069c865b792406b3)
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/usb/esd_usb.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Fair, this patch originated from a time way older than Jiri's conversion
+(not an excuse, just stating how it came to be and I've not realized=20
+using an old way until you mentioned).
 
-diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
-index 03ad10b01867..fdf2136824b3 100644
---- a/drivers/net/can/usb/esd_usb.c
-+++ b/drivers/net/can/usb/esd_usb.c
-@@ -539,13 +539,20 @@ static void esd_usb_read_bulk_callback(struct urb *urb)
- 			  urb->transfer_buffer, ESD_USB_RX_BUFFER_SIZE,
- 			  esd_usb_read_bulk_callback, dev);
- 
-+	usb_anchor_urb(urb, &dev->rx_submitted);
-+
- 	retval = usb_submit_urb(urb, GFP_ATOMIC);
-+	if (!retval)
-+		return;
-+
-+	usb_unanchor_urb(urb);
-+
- 	if (retval == -ENODEV) {
- 		for (i = 0; i < dev->net_count; i++) {
- 			if (dev->nets[i])
- 				netif_device_detach(dev->nets[i]->netdev);
- 		}
--	} else if (retval) {
-+	} else {
- 		dev_err(dev->udev->dev.parent,
- 			"failed resubmitting read bulk urb: %d\n", retval);
- 	}
--- 
-2.51.0
+> > > > +=09serial8250_fifo_wait_for_lsr_thre(up, p->fifosize);
+> > > > +=09ndelay(p->frame_time);
+> > >=20
+> > > Wouldn't be a problem on lowest baud rates (exempli gratia 110)?
+> >=20
+> > Perhaps, but until somebody comes with an issue report related to 110, =
+I'm=20
+> > wondering if this really is worth trying to address. Any suggestion how=
+ is=20
+> > welcome as well?
+>=20
+> Polling work? Timer?
 
+And how do I prevent others messing with the UART during that time? While=
+=20
+IER is zeroed here (and I could make up->ier zero as well, I think), I=20
+can't hold port's lock if I do either of those.
+
+And I can't take the tty_port's mutex here either because the caller=20
+is already holding port's lock (and it wouldn't prevent console writes=20
+anyway as that, I think, only takes port's lock).
+
+Sadly THRE/TEMT are not trustworthy as they are set before all those=20
+non-data bits have been fully blasted on to the wire (we learned this with=
+=20
+rs485 half-duplex scenarios).
+
+
+Normal behavioral exceptation what I have here is that userspace is sane=20
+and won't do LCR write and tx at the same time but I don't know how to=20
+ensure that. Perhaps using now > last xmit timestamp + frame_time could=20
+avoid this unconditional delay.
+
+> > > > +=09retries =3D 4;=09/* Arbitrary limit, 2 was always enough in tes=
+ts */
+> > > > +=09do {
+> > > > +=09=09serial8250_clear_fifos(up);
+> > > > +=09=09if (!(p->serial_in(p, usr_reg) & DW_UART_USR_BUSY))
+> > > > +=09=09=09break;
+> > > > +=09=09ndelay(p->frame_time);
+> > > > +=09} while (--retries);
+> > >=20
+> > > read_poll_timeout_atomic() ? I assume it can't be used due to small f=
+rame time?
+> >=20
+> > Frame time is in nanoseconds yes. I did consider=20
+> > read_poll_timeout_atomic() but it would have required nsec -> usec=20
+> > conversion so I left this as it is.
+>=20
+> Yeah with the same issue on low baud rates. So far I think we need to con=
+sider
+> 9600 as commonly used by the old HW (which may be connected to a modern P=
+C with
+> this new kernel running), so the frame time sounds like close to a millis=
+econd.
+> And this can be met in real life.
+>=20
+> Maybe put TODO/FIXME around these ndelay() calls?
+
+Seems reasonable, I'll add that.
+
+I'm under impression that all LCR writes occur from contexts that are=20
+non-atomic by nature (except they are holding the port's lock, of course)=
+=20
+so this should never delay an interrupt handler.
+
+> > > > +=09if (d->in_idle) {
+> > >=20
+> > > > +=09=09/*
+> > > > +=09=09 * FIXME: this deadlocks if port->lock is already held
+> > > > +=09=09 * dev_err(p->dev, "Couldn't set LCR to %d\n", value);
+> > > > +=09=09 */
+> > >=20
+> > > Hmm... That FIXME should gone since we have non-blocking consoles, no=
+?
+> >=20
+> > No, lockdep still gets angry if printing is used while holding port's=
+=20
+> > lock.
+>=20
+> Hmm... Let's ask PRINTK people about this. John, do we still have a gap
+> with nbcon? Or did I misunderstand the scope of its use?
+>=20
+> > What would be possible though, is to mark the port's lock critical sect=
+ion=20
+> > for print deferral (but it's outside the scope of this series). In case=
+ of=20
+> > serial, it would be justified to use deferred printing (which is only=
+=20
+> > meant for special cases) because serial console and printing are relate=
+d.
+> >=20
+> > > > +=09=09return;
+> > > > +=09}
+>=20
+>=20
+
+--=20
+ i.
+
+--8323328-20834577-1769524828=:1055--
 
