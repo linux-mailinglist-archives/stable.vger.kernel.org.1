@@ -1,146 +1,244 @@
-Return-Path: <stable+bounces-211858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aEdUH6HseGkCuAEAu9opvQ
-	(envelope-from <stable+bounces-211858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:49:37 +0100
+	id kCfyCt7leGl1twEAu9opvQ
+	(envelope-from <stable+bounces-211859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:20:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B9997F41
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:49:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F20997A94
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 17:20:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 528D230CBBF1
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:19:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4FE03011F3B
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2B135EDAD;
-	Tue, 27 Jan 2026 16:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD32360722;
+	Tue, 27 Jan 2026 16:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ufdKbr4O";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="abXFZ/MN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eFblznla"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3F335CBC6;
-	Tue, 27 Jan 2026 16:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769530752; cv=none; b=u0nhRXDWaRT6L6ijiefBw8zn64FnhWYczzUEK+fxBs53zHfdAEwn2EXTirhudcQSyckZ3ZfO4v/KYKWZelHY7vtgn0GQKLOfrdRgVkG93cxFM+Ka3skPFMfuFPQ/kbVak7n5frlvouT70NUbL/56lUVrMzv60E8FVAq5GB9IyDs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769530752; c=relaxed/simple;
-	bh=Y1R+TJNguLWi69GtS7mRj+xsWoAN4CJgoKP+3u0CB4Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=uBnnI8i1lR0kM7E/JcVJHkgNPL6ldmhHxmqDxu+9gnxb042GbllNb3jhO0D8ZOYlcGOj7YK+xraSGD2WKMTBpX8twdw5fW3FEVAmV5kjyTcp8PO5knRp3EmNl1s9sT2oEzCr53AlK/CB2R64rzOYcTXqX23FpBgnrW2KkKzpLtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ufdKbr4O; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=abXFZ/MN; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1769530749;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5rTWFCtf+mdQvk1B3TlRGJzO6FYqSCXfxkBPbyjRRz0=;
-	b=ufdKbr4Oqx/uYlPl3IAPk0gx8FgxGgkBFVhOgua7A07i2Cnam5feqLGvLEEGFKL/GO7Y+k
-	2TmQ2TG8ndfoSl2SudkSQuvJi6OOqcFqkpoQ2MKaQsmK/hR3KSY5zyP9bU1BWrQTP/oGS1
-	810cwHj+ehIG2WYYWcsqq44bsI/oLI43mHZ+6nnYjWI3XlKF+jwQoYyYyYLad1xrmqzsq3
-	ALlpTRJQGhyt6rEen6aOT9QqRKJdyQFOY+IQnzGMTS04GQ0AMtKQpzmM3/iViv2qhl7iT2
-	Ynw+4c2dpmWj+iC+XXTHd0Oln3iiPbVOueSqOF8ieshjPnveiDAr7RXdl7B7AA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1769530749;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5rTWFCtf+mdQvk1B3TlRGJzO6FYqSCXfxkBPbyjRRz0=;
-	b=abXFZ/MNcUARd7jEp9+PwBfc2hc3SIU3Xezk1TDbGygK45me6LMH7BdLw8fpraAVFrd7o8
-	Oa2hT11/vC1kSTAw==
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Ilpo =?utf-8?Q?J?=
- =?utf-8?Q?=C3=A4rvinen?=
- <ilpo.jarvinen@linux.intel.com>, Petr Mladek <pmladek@suse.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
- <jirislaby@kernel.org>, linux-serial <linux-serial@vger.kernel.org>,
- qianfan Zhao <qianfanguijin@163.com>, Adriana Nicolae
- <adriana@arista.com>, Markus Mayer <markus.mayer@linaro.org>, Tim Kryger
- <tim.kryger@linaro.org>, Matt Porter <matt.porter@linaro.org>, Heikki
- Krogerus <heikki.krogerus@linux.intel.com>, Jamie Iles
- <jamie@jamieiles.com>, LKML <linux-kernel@vger.kernel.org>,
- stable@vger.kernel.org, "Bandal, Shankar" <shankar.bandal@intel.com>,
- "Murthy, Shanth" <shanth.murthy@intel.com>
-Subject: Re: [PATCH 6/6] serial: 8250_dw: Ensure BUSY is deasserted
-In-Reply-To: <aXjHZQnIFjfPabdU@smile.fi.intel.com>
-References: <20260123172739.13410-1-ilpo.jarvinen@linux.intel.com>
- <20260123172739.13410-7-ilpo.jarvinen@linux.intel.com>
- <aXP5YMNix8EfbJeF@smile.fi.intel.com>
- <fc09f6fd-013f-25fd-484c-cac59b0a60b6@linux.intel.com>
- <aXjHZQnIFjfPabdU@smile.fi.intel.com>
-Date: Tue, 27 Jan 2026 17:25:08 +0106
-Message-ID: <871pjb6nb7.fsf@jogness.linutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A0E35CBD6
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 16:20:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769530841; cv=pass; b=V9/Zv3Ftni23yhToETEaAvo0LxXvE0Fx3/YVOfuZ61xAv4FIuJ1I2x2zWbFGLBPMsE9Pn3xdjMLLWg0BODX9BRqnVNu2JMQMZ89Gqp8fPNjai2SW7cDT6fQhFoMEgXrgsGk6m05KOXFQTn2pzuBV8VUFJtz9qGYMzCjicKpt9F4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769530841; c=relaxed/simple;
+	bh=p/BPlz45ZsnUOOv45A1fjPgdnS9vrperPPIkgwQyvPU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q3gwxXwkuUCCqdjEZBHlcyhhTe4bvT3Lh0M4ybqIBReiM5bW89Vu4jBSkXVCt/J5IL/J/WK5t3MYaK6KMfYOX9dtXIMc8VTU8AbMHiR0zcblT4XsB6dtsevOvmXasxUvCe73/oagJaHoT6/x23KS8HkX+GsWB5wnDX2X65yGHlI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eFblznla; arc=pass smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c61342a69b9so2092562a12.0
+        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 08:20:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769530840; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KDhB6sHY4K+ljlstMNDIlmKakdVGUFaVt8h8RJqvckgaQMojzBwpaUNLV9jvpXLMiZ
+         w9VT6KcJnqkiwXKsYvz5q5voeXMw5I0n0VPirimFTLxglF8RUbsbSPppdncv7kpypFKO
+         5d6WDKoDcafowVxkBOHV+WUvPpWztLNUr1QFh6iv1zWGcTIr4o5T6wBUzWvl54AXbV69
+         hsORaokb5TPzPdmsoNy1RPTfAKhCdTTq4E2NIkP9DJQCmFZdncJk1rVHyd6IgEgOUiWB
+         oIMSJjYy7TIyWcONfvpQbKogpUvZSq27mm4Xpz44sOiP0Sxpj3zbrYoSC7IMN3zWxsfo
+         azdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=d65yytJ1MW2JgMvRS0O1lQIMly3lo2OKXfhreY51uFQ=;
+        fh=jUMVflhURPN58VDqXErnKQBNjaqzuPgZ97aP2zHxdM4=;
+        b=QLocX/aYlCydu/mh2VGp2J62teTxcMd+0tQaFLDsr/U6Qh8kJSeJXCdmXaT1cItpjo
+         SvQFK7jwKKMC1+vuVvWkkYUb7arhoKOKozDcwQzEQ2B9KEykFNG9hE4a1vRr+dWc3ZMV
+         7JyDeFaI4AAeTT63F55708Cwv61RmQtaJHsUaKTwAtqH4oExVYOqKTdzcSbfI78MO55v
+         zi0pkfy4lcTzHjtwUTBR8Th9pIyk+mT9buiz/dnicCT3Lzidhg54woHfGffWE9JVLpwh
+         T9DxEohXsjMGjlgc1CYuW1xEh7MPAhsr1NcDGgQ+FPYHcQP3YEy+YAX49ssNK9hYttm2
+         NHMA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769530840; x=1770135640; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d65yytJ1MW2JgMvRS0O1lQIMly3lo2OKXfhreY51uFQ=;
+        b=eFblznlaAM8ejSVhSXhmavjFxMQf00lhD/5n/xkQ4GZm9pQ9y1SYBtDMtnud7+Dbkv
+         u1QkDeZDOczq1g5INH2DQXrf7lQJU3S7i0RLju03z9IWWbocTHFTO19bvby53/FexhXb
+         s5NsuQaQyfCfc1Rzi2zaPsDXBQceAk/dqcbeQW0bwQIZTS8g30i8LjwYM0Q8M+XzlDdb
+         ZnkkjChz9+kUrs984zjVkddMi9x9xacicZ/YYuaPGxwZkFHoJPhV6aTSkl+vSPqXKbq4
+         r8D6g5iKPLjRDkw7EXlPCfzdUyUE89pgk5kxigqOzn/6P4e5FegThzzkVvA7X+8SCbHq
+         sc2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769530840; x=1770135640;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=d65yytJ1MW2JgMvRS0O1lQIMly3lo2OKXfhreY51uFQ=;
+        b=HPAeMF/GNCoKDLMALJyrbjqqGGVwG4onrNKeUbMF4QatIbe2qKvl6Jh5oEMlI45/fV
+         oFuzPLSCovG0xLhIVmmIfYV7PFqKa8a90W+rBJRCE8XBC97Y0ARvREieWIRU2GkITcWc
+         /g25ZWraIdoF8IMRYL/SRfvLeuq/XfGpwLovZxnRXGfjqydQm0GYZ6b5huXmwO3JDUub
+         NkJuGB+PGTmHsWGxzKz6YITWtmKgzREa33RAlEMegg8ukB42/BssED9Ih7SutACJUghC
+         8RSnyJu14dOagCaybixSDjPpBOLsPBjuGqBchoG+n5eKs4VEclvUanJU5gh73GNgpycE
+         Iltw==
+X-Forwarded-Encrypted: i=1; AJvYcCWfWglg5xRoIVgstIAvAAebhIqdegjzRSJbeFMsOhaOaedx0cjCnkFS8CbWUSdAuinZD0IApaI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydF75VrASaohNfYtXJ+nsoN8XNAvB61yeh6MMTj62OhmhNvh5m
+	w0raXgQR2jO9QCBt3LJ0x7NHuDja5rhl4m/VJrmkLzOdrwVMmDfmnjsLARlRRYx5NqBF3CfL1Ui
+	Koao37sBUoMjQos/vxTD/oVmUGrZ89Ng=
+X-Gm-Gg: AZuq6aLgl29xpF1Ookb6Rw3zi6/94QOUC5OBRgNKeJa/q6MYcRCSCVk3wWHRuohh8Vr
+	4+4XM5J250Ic6FiPLaG1OsD3JyQkrAPsFdX3hSrGLJQvClVFzckcm10P79TN5uMWlGnm3KcZ92H
+	xG8ShD131rE07Q6/n37v274zzcOKau6wB7iXsDAiP/9iGKM+TaXOLAVMELcICsxoxHp30s9Lgqe
+	1BAHepHcq1jjRWDJkXZxl/+YRfEU9K26a1Ha9OaN1SFhss4QDiAEqC0XiFj5jdwOeWR+w8kVaVM
+	SLVqbEwBRIQLxtztWEsNZHkT8a0=
+X-Received: by 2002:a17:90b:3b85:b0:340:2a3a:71b7 with SMTP id
+ 98e67ed59e1d1-353fecd6236mr2343805a91.12.1769530839689; Tue, 27 Jan 2026
+ 08:20:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260126173444.10228-1-bjsaikiran@gmail.com> <20260126173444.10228-4-bjsaikiran@gmail.com>
+ <900cc5dd-c39d-42f6-9531-016f62da81e8@linaro.org> <CAAFDt1tsyvtAa84bFK2Hq5yG_F15SUUseBd5Xi-DB8GnUj7+7A@mail.gmail.com>
+ <aaab1d32-9375-47d2-8524-e80e076b864e@linaro.org> <CAAFDt1vKn5ssoTQZduGKb5eOeN74P=FVk9f01go1d-JS71Zt0A@mail.gmail.com>
+ <clmeor0Z59Dd_ymBj-m2zE0orMOFgVsPFXUBpBx39ZehM4t_GrlZV8y8f-lZbH6p9N-W7FLs7PqYhfG6VzwmBw==@protonmail.internalid>
+ <571cd869-847f-4697-ace3-503f123e8486@linaro.org> <cb902c4e-f7b9-4d70-a997-1e84c90ea18b@kernel.org>
+In-Reply-To: <cb902c4e-f7b9-4d70-a997-1e84c90ea18b@kernel.org>
+From: Saikiran B <bjsaikiran@gmail.com>
+Date: Tue, 27 Jan 2026 21:50:28 +0530
+X-Gm-Features: AZwV_Qj_vb1x1lu6XXMunkVpxeZcvcZBHMOYFjYNAf2rHeYoii8GYdmNqCxCgXM
+Message-ID: <CAAFDt1s+RUpUEUEERCuXqDHijxHXW=PemVaWk=to7WtQ9cYKEg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] media: i2c: ov02c10: Use runtime PM autosuspend to
+ avoid brownouts
+To: "Bryan O'Donoghue" <bod@kernel.org>
+Cc: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, linux-media@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, rfoss@kernel.org, todor.too@gmail.com, 
+	vladimir.zapolskiy@linaro.org, Hans de Goede <hansg@kernel.org>, 
+	sakari.ailus@linux.intel.com, mchehab@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211858-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,163.com,arista.com,linaro.org,linux.intel.com,jamieiles.com,intel.com];
-	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-211859-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linaro.org,vger.kernel.org,kernel.org,gmail.com,linux.intel.com];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[john.ogness@linutronix.de,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bjsaikiran@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A0B9997F41
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 8F20997A94
 X-Rspamd-Action: no action
 
-On 2026-01-27, Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
->> > > +	if (d->in_idle) {
->> > 
->> > > +		/*
->> > > +		 * FIXME: this deadlocks if port->lock is already held
->> > > +		 * dev_err(p->dev, "Couldn't set LCR to %d\n", value);
->> > > +		 */
->> > 
->> > Hmm... That FIXME should gone since we have non-blocking consoles, no?
->> 
->> No, lockdep still gets angry if printing is used while holding port's 
->> lock.
+Hi Bryan and Hans,
+
+I implemented your suggested debug probe in qcom-rpmh-regulator.c to inspec=
+t
+the registers directly. Unfortunately, on this platform (X1E80100), it retu=
+rns:
+
+  rpmh_regulator_probe: --- OV02C10 PMIC DUMP: Failed to get parent regmap =
+---
+
+This confirms that the AP does not have direct access to the PMIC configura=
+tion
+registers (likely blocked by the RPMh firewall/access control).
+
+However, I have confirmed definitively that the root cause is the 2.3s pass=
+ive
+discharge requiring a mandatory off-time.
+
+When I apply the `regulator-off-on-delay-us =3D <2300000>;` property to the
+camera regulators in the device tree (and patch the regulator driver to sup=
+port
+it), the camera operates flawlessly without needing any workarounds (like
+autosuspend / Software reset / additional delays) in the sensor driver.
+The regulator core correctly blocks the
+re-enable until the discharge constraint is met.
+
+The regulator delay and figuring the 2.3s out is another issue which I
+will keep digging at from now.
+
+Plan for v4:
+
+1. For this ov02c10 series (v4), I will drop the "Autosuspend" patch as it =
+is
+   no longer needed with the correct platform fix.
+
+3. I will keep the "Race Fix" (Patch 1) and a cleaned-up "Power Sequence"
+   (Patch 2) which addresses Hans's feedback (5ms reset assertion, no
+software reset) to ensure
+   the driver is compliant with the datasheet.
+
+Please let me know if you have any questions.
+
+Regards,
+Saikiran
+
+On Tue, Jan 27, 2026 at 4:41=E2=80=AFPM Bryan O'Donoghue <bod@kernel.org> w=
+rote:
 >
-> Hmm... Let's ask PRINTK people about this. John, do we still have a gap
-> with nbcon? Or did I misunderstand the scope of its use?
-
-The 8250 has not yet been converted to a nbcon. I am still working on
-it. Unfortunately I got side-tracked first fixing the broken 8250
-console hardware-flow-control support. :-/
-
-So the comment is correct. Once the driver converts to nbcon, the
-dev_err() is fine.
-
-Note that if the message is important, you could use a printk_deferred()
-here with a FIXME to say to convert it to dev_err() once the 8250
-supports nbcon.
-
-John Ogness
+> On 27/01/2026 11:06, Bryan O'Donoghue wrote:
+> > So, SPMI is not exported in /sys/kernel/debug/regmap - however
+> >
+> > drivers/regulator/qcom-rpmh-regulator.c
+> >
+> > Lets add this to probe
+> >
+> > unsigned int val, i;
+> >       u16 bases[] =3D {0x4000, 0x4300, 0x4600}; // LDO1, LDO4, LDO7
+> >       const char *names[] =3D {"LDO1(1.2V)", "LDO4(1.8V)", "LDO7(2.8V)"=
+};
+> >       struct regmap *p_regmap =3D dev_get_regmap(dev->parent, NULL);
+> >
+> >       if (p_regmap) {
+> >           pr_info("--- OV02C10 PMIC RAIL DUMP START ---\n");
+> >           for (i =3D 0; i < 3; i++) {
+> >               // Check Config (Active Discharge)
+> >               regmap_read(p_regmap, bases[i] + 0x41, &val);
+> >               pr_info("!!! %s SEC_CTRL (0x%04x) =3D 0x%02x (Bit7: Activ=
+e
+> > Discharge)\n",
+> >                       names[i], bases[i] + 0x41, val);
+> >
+> >               // Check Status (Is it actually on?)
+> >               regmap_read(p_regmap, bases[i] + 0x08, &val);
+> >               pr_info("!!! %s STATUS   (0x%04x) =3D 0x%02x (Bit7: VREG_=
+OK,
+> > Bit0: VREG_ON)\n",
+> >                       names[i], bases[i] + 0x08, val);
+> >
+> >               // Check Pull-down config (Secondary check)
+> >               regmap_read(p_regmap, bases[i] + 0x42, &val);
+> >               pr_info("!!! %s PD_CTRL   (0x%04x) =3D 0x%02x\n",
+> >                       names[i], bases[i] + 0x42, val);
+> >           }
+> >           pr_info("--- OV02C10 PMIC RAIL DUMP END ---\n");
+> >       }
+>
+> Obviously only do this for PM8010 for the other RPMh which may not have
+> this offset.
+>
+> ---
+> bod
 
