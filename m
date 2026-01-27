@@ -1,159 +1,186 @@
-Return-Path: <stable+bounces-211839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJ0HEnbReGmNtQEAu9opvQ
-	(envelope-from <stable+bounces-211839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:53:42 +0100
+	id WKtRLZfReGmNtQEAu9opvQ
+	(envelope-from <stable+bounces-211840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:54:15 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8C2960FD
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:53:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3B696139
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:54:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AA127301E307
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:46:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 93718305724A
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C6935DCED;
-	Tue, 27 Jan 2026 14:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C6035CBA6;
+	Tue, 27 Jan 2026 14:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N7KrMF+B"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F1F35DCFE
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 14:42:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA3F35CBB2;
+	Tue, 27 Jan 2026 14:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769524976; cv=none; b=gfQUNizviyy2linNjEX6JiXIjJpcX9bZvFGaiITlRKx2D1wdp+uHwJw8rLD511Pylq7GuO6SQJVlY4ZznHapen3qLxjkRG8OZrHiJfsf+2YKNpVAeg4IFqlt5gIrOgfC/S+80pJ4vUoCY3UIJPiTHhQbelnN07a1v0FDdNV3GN4=
+	t=1769525118; cv=none; b=RcoEpMAaruyJWkYWHEjHKiUo4tDq71l377BuWXwQAah5XSsrll+h5H/Ew+eF1N7FAOsZVcEmxZL1wZxH5I1B/FAePhrpLbeRFQvWblmvg0XIJOXElZUmHet9jVlMxO2hTaZl+qR5SwiQvBviYMKMIE+QC6sKyZRmnFRjzDoLvgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769524976; c=relaxed/simple;
-	bh=YrLj42I8Zjlv2ToZZDhU8cacCZAP0+l79SZDvrK3jHA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jvxv4q0Un+qM26d6L2GtEsWSoKDBkSQe9nHzJ1NL0gk2z1lbJZC7If7yldSLafz22ka7tjv/SdQTU3u58wqVupeFPiVihvGKP58fvdyEs8LHKuoE0HvbHd0k+czXOwr4T7ot9nNu04Tf7jwvlKNyIEQ850XqpDbe5E0Djr4xWWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vkkHM-0000wB-5e; Tue, 27 Jan 2026 15:42:52 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vkkHM-002lTm-24;
-	Tue, 27 Jan 2026 15:42:52 +0100
-Received: from blackshift.org (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id AE5684D968F;
-	Tue, 27 Jan 2026 14:42:51 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: stable@vger.kernel.org
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1.y] can: esd_usb: esd_usb_read_bulk_callback(): fix URB memory leak
-Date: Tue, 27 Jan 2026 15:42:38 +0100
-Message-ID: <20260127144239.1441699-1-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012716-condense-unblended-43b9@gregkh>
-References: <2026012716-condense-unblended-43b9@gregkh>
+	s=arc-20240116; t=1769525118; c=relaxed/simple;
+	bh=FZSLZndPM2IFrzMqbhFWGL/bCVFHfI5oqgjmq1IXq3k=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=fDA5mC1TFh9s+CTv4Py8rFJyxZyEtVXMbRKdSQyIjsvzcFEZ8GDJf7D54w9s9rWrIhKBpn0X0sNRNLIE1OkajoF0c6jU42dS6d28+LDoHcLGfO0C3stWy5Wu9vskw213GP3SZkY1Tq+CnY1tp96ozaWhd7rb30oLh30OVT5vMT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N7KrMF+B; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769525117; x=1801061117;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version:content-id;
+  bh=FZSLZndPM2IFrzMqbhFWGL/bCVFHfI5oqgjmq1IXq3k=;
+  b=N7KrMF+Bx3RPDBqgKn3UP6RgqCymJcwFuiSsgDkBwhG0p+BM7wyHToNw
+   wB80O0LM9a4ts1T6yf5LzMSUWbQ8JtMPuBOeJI/IQ1WwNU1WH4T68z031
+   wBP6380x//ne+4YkIIkD5TjXsNSDLzJRVOZWhhkOo/TefEsnhGx6zSYBM
+   hbjvW8Oa5vkjqavs93R3/ytSX3a4e45PrDOT/7Wp1RX17DaKPInVsT+Ce
+   fJhLhxcvwee1HVpCDPLF15v8Txq224oi7cxwS0+kscIzw1tXRiYjIQNB0
+   EaMVQrv+FNwPMmMXvHSlGhrCF/E1DFtyiZme/mPLbydiie4bLcgvqCeVN
+   Q==;
+X-CSE-ConnectionGUID: b8Q+Ml+9RQutuqGex9sgtQ==
+X-CSE-MsgGUID: +cNgRNAcR+WMAtw2pvGNwQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="74344222"
+X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
+   d="scan'208";a="74344222"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 06:45:17 -0800
+X-CSE-ConnectionGUID: 59t1uevXQpSsaQYRGsZMIg==
+X-CSE-MsgGUID: mv/AoVqSQFa1o7aR1v7LdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,257,1763452800"; 
+   d="scan'208";a="207788311"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.67])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2026 06:45:11 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 27 Jan 2026 16:45:08 +0200 (EET)
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+cc: Jiri Slaby <jirislaby@kernel.org>, 
+    linux-serial <linux-serial@vger.kernel.org>, 
+    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+    qianfan Zhao <qianfanguijin@163.com>, Adriana Nicolae <adriana@arista.com>, 
+    Markus Mayer <markus.mayer@linaro.org>, Tim Kryger <tim.kryger@linaro.org>, 
+    Matt Porter <matt.porter@linaro.org>, 
+    Heikki Krogerus <heikki.krogerus@linux.intel.com>, 
+    Jamie Iles <jamie@jamieiles.com>, LKML <linux-kernel@vger.kernel.org>, 
+    stable@vger.kernel.org, "Bandal, Shankar" <shankar.bandal@intel.com>, 
+    "Murthy, Shanth" <shanth.murthy@intel.com>
+Subject: Re: [PATCH 6/6] serial: 8250_dw: Ensure BUSY is deasserted
+In-Reply-To: <2026012608-slicing-vehicular-6987@gregkh>
+Message-ID: <608bedc0-41b4-8d00-b586-5adf8754c701@linux.intel.com>
+References: <20260123172739.13410-1-ilpo.jarvinen@linux.intel.com> <20260123172739.13410-7-ilpo.jarvinen@linux.intel.com> <2026012608-slicing-vehicular-6987@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: multipart/mixed; BOUNDARY="8323328-2035551506-1769521494=:1055"
+Content-ID: <da8768f5-3a13-5971-af1e-c82c279f1563@linux.intel.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	CTYPE_MIXED_BOGUS(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211839-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,linux.intel.com,163.com,arista.com,linaro.org,jamieiles.com,intel.com];
+	TAGGED_FROM(0.00)[bounces-211840-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+,1:+];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
-	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,pengutronix.de:mid,pengutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DC8C2960FD
+	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,arista.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.intel.com:mid]
+X-Rspamd-Queue-Id: 2D3B696139
 X-Rspamd-Action: no action
 
-Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
-gs_usb_receive_bulk_callback(): fix URB memory leak").
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-In esd_usb_open(), the URBs for USB-in transfers are allocated, added to
-the dev->rx_submitted anchor and submitted. In the complete callback
-esd_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
-esd_usb_close() the URBs are freed by calling
-usb_kill_anchored_urbs(&dev->rx_submitted).
+--8323328-2035551506-1769521494=:1055
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-ID: <b5ab8498-ef41-ce3b-79df-e4f4ccecfea6@linux.intel.com>
 
-However, this does not take into account that the USB framework unanchors
-the URB before the complete function is called. This means that once an
-in-URB has been completed, it is no longer anchored and is ultimately not
-released in esd_usb_close().
+On Mon, 26 Jan 2026, Greg Kroah-Hartman wrote:
 
-Fix the memory leak by anchoring the URB in the
-esd_usb_read_bulk_callback() to the dev->rx_submitted anchor.
+> On Fri, Jan 23, 2026 at 07:27:39PM +0200, Ilpo J=E4rvinen wrote:
+> > DW UART cannot write to LCR, DLL, and DLH while BUSY is asserted.
+> > Existance of BUSY depends on uart_16550_compatible, if UART HW is
+> > configured with 16550 compatible those registers can always be written.
+> >=20
+> > There currently is dw8250_force_idle() which attempts to archive
+> > non-BUSY state by disabling FIFO, however, the solution is unreliable
+> > when Rx keeps getting more and more characters.
+> >=20
+> > Create a sequence of operations to enforce that ensures UART cannot
+> > keep BUSY asserted indefinitely. The new sequence relies on enabling
+> > loopback mode temporarily to prevent incoming Rx characters keeping
+> > UART BUSY.
+> >=20
+> > Ensure no Tx in ongoing while the UART is switches into the loopback
+> > mode (requires exporting serial8250_fifo_wait_for_lsr_thre() and adding
+> > DMA Tx pause/resume functions).
+> >=20
+> > According to tests performed by Adriana Nicolae <adriana@arista.com>,
+> > simply disabling FIFO or clearing FIFOs only once does not always
+> > ensure BUSY is deasserted but up to two tries may be needed. This could
+> > be related to ongoing Rx of a character (a guess, not known for sure).
+> > Therefore, retry FIFO clearing a few times (retry limit 4 is arbitrary
+> > number but using, e.g., p->fifosize seems overly large). Tests
+> > performed by others did not exhibit similar challenge but it does not
+> > seem harmful to leave the FIFO clearing loop in place for all DW UARTs
+> > with BUSY functionality.
+> >=20
+> > Use the new dw8250_idle_enter/exit() to do divisor writes and LCR
+> > writes. In case of plain LCR writes, opportunistically try to update
+> > LCR first and only invoke dw8250_idle_enter() if the write did not
+> > succeed (it has been observed that in practice most LCR writes do
+> > succeed without complications).
+> >=20
+> > This issue was first reported by qianfan Zhao who put lots of debugging
+> > effort into understanding the solution space.
+> >=20
+> > Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaroun=
+d")
+> > Fixes: 7d4008ebb1c9 ("tty: add a DesignWare 8250 driver")
+> > Cc: <stable@vger.kernel.org>
+>=20
+> Why is patch 6/6 only marked for stable?  If this is needed "now",
+> shouldn't this be a separate patch?  Do you need all of the first 5 for
+> this to work properly?
 
-Fixes: 96d8e90382dc ("can: Add driver for esd CAN-USB/2 device")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-2-4b8cb2915571@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-(cherry picked from commit 5a4391bdc6c8357242f62f22069c865b792406b3)
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/usb/esd_usb.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Some of those are really dependencies but I'll try to improve this=20
+situation for v2 and add a few more Fixes tag to the introducing commits.
 
-diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
-index 578b25f873e5..155f5460c7ea 100644
---- a/drivers/net/can/usb/esd_usb.c
-+++ b/drivers/net/can/usb/esd_usb.c
-@@ -447,13 +447,20 @@ static void esd_usb_read_bulk_callback(struct urb *urb)
- 			  urb->transfer_buffer, RX_BUFFER_SIZE,
- 			  esd_usb_read_bulk_callback, dev);
- 
-+	usb_anchor_urb(urb, &dev->rx_submitted);
-+
- 	retval = usb_submit_urb(urb, GFP_ATOMIC);
-+	if (!retval)
-+		return;
-+
-+	usb_unanchor_urb(urb);
-+
- 	if (retval == -ENODEV) {
- 		for (i = 0; i < dev->net_count; i++) {
- 			if (dev->nets[i])
- 				netif_device_detach(dev->nets[i]->netdev);
- 		}
--	} else if (retval) {
-+	} else {
- 		dev_err(dev->udev->dev.parent,
- 			"failed resubmitting read bulk urb: %d\n", retval);
- 	}
--- 
-2.51.0
+> I can't take this series as-is because I don't know how to route it :(
 
+
+--=20
+ i.
+--8323328-2035551506-1769521494=:1055--
 
