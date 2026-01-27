@@ -1,162 +1,217 @@
-Return-Path: <stable+bounces-211819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211820-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFb2OHzDeGmltAEAu9opvQ
-	(envelope-from <stable+bounces-211819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:54:04 +0100
+	id GGUTLoTGeGlYtQEAu9opvQ
+	(envelope-from <stable+bounces-211820-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:07:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47AA695299
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:54:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C69E9554C
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5766430182A5
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:54:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6CFC0300A8E1
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1D035B629;
-	Tue, 27 Jan 2026 13:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51A327FB35;
+	Tue, 27 Jan 2026 14:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EWHDHtAD"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Iv3FBCQJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F044635A95F
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54397288C13
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 14:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769522036; cv=none; b=Yvu8jTzTG2SENbtDfnJw5VaC4V2SU2dVwHdJOhCxCYo+npJ6VZYMDZZbpqNyaEz0i1KaR4oKnQS6tAQv7vrWsW4SBMf/9a+//WZUJYTGEMFEbWp4XNuJVAyT7/y4lYRqWgRwHiQBbFkHpXV40rHDynH4BXCotUv+xEQcq30fvgM=
+	t=1769522811; cv=none; b=AIh7rXYr2rzwnIlwM/wDwpLenmUT2nLc0/l8HI21Ha4tRXUGi6ykgG3JHGDObNTf+p0+Jv+wf0J8wxPjxkC2IimA6DekAYEv2pfLkS2KTpA0/CftJwYLq+x1At8mF7eRw7m7F0Y5NHI8+1lhy9RknOwzs4ODzKfUSOgXy58gqMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769522036; c=relaxed/simple;
-	bh=D3wR+QL3e8s6K+2o7wnm+jXnQfyNc04L+7SRNlNbec0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LyHjgumgsqH9KWYxKOgtymDLVKmPphv6mqZHHZIkdU4GkvYKEgyg4x2u5XFgPOCr1cx+ORkBEzMK+AWSu2dbdmymDDOuZO94LVIcl4oYSRZHq32lpuFQZvAJ6TGlM7TYRsrqkfrr8wQ3oIu/0hv2sCCqQKVLNIYlLhe/rK+dbLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EWHDHtAD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73D2C2BCB1
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:53:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769522035;
-	bh=D3wR+QL3e8s6K+2o7wnm+jXnQfyNc04L+7SRNlNbec0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EWHDHtADPvumvhco5ZO6P1mfedT5G+mD5erodh8xhmVmqkFWAkh0PgmWJsvl+CcEH
-	 1fwhvZWyVSm0g+a2pMtpPQi1d7CkTVjJ1GHXbS9q2pRNAXgIrfYy06vNtZsgJwES3Z
-	 px5TlrnoPBSL//oALG53E3fdSsl1Zl5tid0jPdEQeFJUgGuqCf9wKNrO8c8HMw9Y6v
-	 vw0qgLJ16Ey4prN9tow93P+CMpVX5iv7/+VMYdpRh+EE3EG/T0WUpF9YNrAfd/2FVf
-	 oPeRpVHmcZhiXP4AvQvDDHRdEKM7jpQS5bAplCGjhlRN837bpBGDRkAB3BhF1fzhX+
-	 aB8uOZTvRv5Hg==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-59b9fee282dso5180629e87.3
-        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 05:53:55 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUg2MKH1ttOJLwqt56uENOwN4ejkuynj+KdyPtSTezyokO+siC++SAVmSoUJkhmeNC41N+DOXU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgRO+qEO3FBMJeCfF4JiUrqVRlfsBi59zYovxYzIIJkcFNMuTK
-	+JArb6bW4kJpc3xan1yuqPP8oFH+6kxBVTSyIqcvI9Cc+CevcowIZAkYYC3wSHoAI9kPFm7mtjA
-	WCW9Vtzxsq3QE/fRkBX5PHhQX/Gb40qo=
-X-Received: by 2002:a05:6512:3b99:b0:59e:359:7afd with SMTP id
- 2adb3069b0e04-59e0402404cmr836765e87.19.1769522034299; Tue, 27 Jan 2026
- 05:53:54 -0800 (PST)
+	s=arc-20240116; t=1769522811; c=relaxed/simple;
+	bh=cronYFylj50HiBl6vXF/N2xEqiv1ixVEsnAOGt1hskE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gnFZQ7iKxlxqfMoccR7v6WqoZ9ZtC1/phD8rJeBjwLqIUKsP1cMJcEmPOfp/R34A1g1RrRcW11wX3/icsKatlLOUtCSKHNp1eabof12lVTn51xV5f/0N9WXyTE++XdGCie1x3xiCkJZSMmXKQeA7vuDzTHCV/ziFss25kWRg+58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Iv3FBCQJ; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=0GP7bsge5/tyC/JJon/nrTveFrAmtquAJm349FE56pI=; b=Iv3FBCQJEcP/etMfy0o9skOncs
+	nwubdvzpSnUls2NgT4KkVB2je8CKNDEYGWigDXB9q7vnnuGFGRziAtLUdROPGkYBiT/b5OvLpen2h
+	gpu7j8WF0eF/41l4XgW4cz/fHC7WDeB5fERawFVQesouVxMxsEvUJ8j/nqTcHqSopz4mHq27wvHny
+	USZCzRJOnTprCSW4WdItEhx0y6qD3zQTO3Z0NpmhxUc9Z59kp5EKiNf/bHI7wnyyMP7DCfhJQFWie
+	GaYeATqnEVsAJ2Z4jhTHQ13nt3MuJdbGx9r7SDN2gW4VcZ+POg2talD4W0SsywY9imqwCq6CiX5/k
+	3CaRLQwA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vkjiI-00000007X6L-2HiV;
+	Tue, 27 Jan 2026 14:06:38 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: stable@vger.kernel.org
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
+	Lance Yang <lance.yang@linux.dev>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Jann Horn <jannh@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12.y] migrate: correct lock ordering for hugetlb file folios
+Date: Tue, 27 Jan 2026 14:06:30 +0000
+Message-ID: <20260127140630.1795517-1-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012705-duress-reward-8530@gregkh>
+References: <2026012705-duress-reward-8530@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org> <CANiq72kkxS9ACvR52q03AN+WdFV96cK+tvejnnDXKZTKuKZH9g@mail.gmail.com>
-In-Reply-To: <CANiq72kkxS9ACvR52q03AN+WdFV96cK+tvejnnDXKZTKuKZH9g@mail.gmail.com>
-From: Tamir Duberstein <tamird@kernel.org>
-Date: Tue, 27 Jan 2026 08:53:17 -0500
-X-Gmail-Original-Message-ID: <CAJ-ks9kiWZr=82sztLfYqtp-fvsQ2QTgTYqNg5hSsZMKCsvjZA@mail.gmail.com>
-X-Gm-Features: AZwV_QiIRHv8ebfqJ0OBns2FVWPBjsU2BCs_25E4T3uIoz6fpM04LJsH9Ore_Jg
-Message-ID: <CAJ-ks9kiWZr=82sztLfYqtp-fvsQ2QTgTYqNg5hSsZMKCsvjZA@mail.gmail.com>
-Subject: Re: [PATCH] scripts: generate_rust_analyzer.py: define scripts
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Kees Cook <kees@kernel.org>, David Gow <davidgow@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Fiona Behrens <me@kloenk.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211819-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[collabora.com,kernel.org,gmail.com,garyguo.net,protonmail.com,google.com,umich.edu,vger.kernel.org,kloenk.dev];
 	RCPT_COUNT_TWELVE(0.00)[19];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211820-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[infradead.org,syzkaller.appspotmail.com,linux.dev,kernel.org,nvidia.com,sk.com,gourry.net,google.com,gmail.com,oracle.com,intel.com,surriel.com,suse.cz,linux.alibaba.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[infradead.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tamird@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[willy@infradead.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,collabora.com:email]
-X-Rspamd-Queue-Id: 47AA695299
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable,2d9c96466c978346b55f];
+	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,gourry.net:email,linux.dev:email,sk.com:email,infradead.org:email,infradead.org:dkim,infradead.org:mid,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 5C69E9554C
 X-Rspamd-Action: no action
 
-On Sun, Jan 25, 2026 at 9:09=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Thu, Jan 22, 2026 at 5:53=E2=80=AFPM Tamir Duberstein <tamird@kernel.o=
-rg> wrote:
-> >
-> > Generate rust-project.json entries for scripts written in Rust.
-> >
-> > Use `Pathlib.path.stem` for consistency.
-> >
-> > Fixes: 9a8ff24ce584 ("scripts: add `generate_rust_target.rs`")
-> > Cc: stable@vger.kernel.org
-> > Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-> > Tested-by: Daniel Almeida <daniel.almeida@collabora.com>
-> > Reviewed-by: Fiona Behrens <me@kloenk.dev>
-> > Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> > Signed-off-by: Tamir Duberstein <tamird@kernel.org>
->
-> Hmm... This introduces support for scripts, right? i.e. it is a
-> feature, or am I misunderstanding the Fixes:/Cc: stable tags?
+Syzbot has found a deadlock (analyzed by Lance Yang):
 
-It depends on your perspective - I framed it as a fix of the commit
-that added the first script because that script was added without RA
-support. What do you think?
+1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
+2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
+folio_lock.
 
-> Also, I don't see the Tested-by from Daniel -- he gave it on the last
-> patch in v4, but not this one. Was it because it was assumed that
-> testing the last patch meant testing all? Generally that shouldn't be
-> assumed, e.g. he gave two Tested-by tags, so I guess he didn't mean to
-> give it to all.
+migrate_pages()
+  -> migrate_hugetlbs()
+    -> unmap_and_move_huge_page()     <- Takes folio_lock!
+      -> remove_migration_ptes()
+        -> __rmap_walk_file()
+          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
 
-It was so long ago, I'm not sure. I'll remove the tag. Thanks for calling o=
-ut!
+hugetlbfs_fallocate()
+  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
+    -> hugetlbfs_zero_partial_page()
+     -> filemap_lock_hugetlb_folio()
+      -> filemap_lock_folio()
+        -> __filemap_get_folio        <- Waits for folio_lock!
 
-> I would also suggest on apply to give it a bit more details.
->
-> Anyway, this seems best suited for rust-analyzer-next after the merge
-> window when the above is sorted out.
+The migration path is the one taking locks in the wrong order according to
+the documentation at the top of mm/rmap.c.  So expand the scope of the
+existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
 
-Will do.
+This is (mostly) how it used to be after commit c0d0381ade79.  That was
+removed by 336bf30eb765 for both file & anon hugetlb pages when it should
+only have been removed for anon hugetlb pages.
 
->
-> Thanks for reviving these patches and splitting them!
->
-> Cheers,
-> Miguel
->
+Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
+Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
+Debugged-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Jann Horn <jannh@google.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit b7880cb166ab62c2409046b2347261abf701530e)
+---
+ mm/migrate.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index bc6d5aeec718..6247317d6600 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1439,6 +1439,7 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 	int page_was_mapped = 0;
+ 	struct anon_vma *anon_vma = NULL;
+ 	struct address_space *mapping = NULL;
++	enum ttu_flags ttu = 0;
+ 
+ 	if (folio_ref_count(src) == 1) {
+ 		/* page was freed from under us. So we are done. */
+@@ -1479,8 +1480,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 		goto put_anon;
+ 
+ 	if (folio_mapped(src)) {
+-		enum ttu_flags ttu = 0;
+-
+ 		if (!folio_test_anon(src)) {
+ 			/*
+ 			 * In shared mappings, try_to_unmap could potentially
+@@ -1497,9 +1496,6 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 
+ 		try_to_migrate(src, ttu);
+ 		page_was_mapped = 1;
+-
+-		if (ttu & TTU_RMAP_LOCKED)
+-			i_mmap_unlock_write(mapping);
+ 	}
+ 
+ 	if (!folio_mapped(src))
+@@ -1507,7 +1503,11 @@ static int unmap_and_move_huge_page(new_folio_t get_new_folio,
+ 
+ 	if (page_was_mapped)
+ 		remove_migration_ptes(src,
+-			rc == MIGRATEPAGE_SUCCESS ? dst : src, 0);
++			rc == MIGRATEPAGE_SUCCESS ? dst : src,
++				ttu ? RMP_LOCKED : 0);
++
++	if (ttu & TTU_RMAP_LOCKED)
++		i_mmap_unlock_write(mapping);
+ 
+ unlock_put_anon:
+ 	folio_unlock(dst);
+-- 
+2.47.3
+
 
