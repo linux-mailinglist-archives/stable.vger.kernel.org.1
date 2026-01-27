@@ -1,265 +1,240 @@
-Return-Path: <stable+bounces-211895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OG47CjIweWlovwEAu9opvQ
-	(envelope-from <stable+bounces-211895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 22:37:54 +0100
+	id sH7sKrsxeWmAvwEAu9opvQ
+	(envelope-from <stable+bounces-211896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 22:44:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863139ABFD
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 22:37:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 589A99AC9E
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 22:44:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 570473023DBF
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 21:37:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D53F3301DAE2
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 21:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53969284884;
-	Tue, 27 Jan 2026 21:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5222F2616;
+	Tue, 27 Jan 2026 21:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="MDa8iGtn"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="bLmWIGcQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BEB285C9F
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 21:37:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1989A28CF6F;
+	Tue, 27 Jan 2026 21:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769549868; cv=none; b=M+Q9I8SbmMYbx7gq4Lz0qX47xiyWr8MsJ3TybA8EhrBkWyI+dQDll82K/q5wWfT8fkLWsQjotSH0PoqntE+8Aw91mzKKpp33DFaO7S6y2muochDkHGrgpAevJMzQw09kfHxbAnTdmcGeOLsQWGmZv85aAbfZgl9C8k+QLATlBa8=
+	t=1769550262; cv=none; b=KTl8SLWQ3vz2W+G0KvZe0TCgxxoBLRoztwfYw30ukCNxNCmjbV0pK6MapPO9dcM7EOjvBjiZgCnUcPDB3gg6XrusQBfOuR6C3mpFznZR3hW88Ap3dlorVP4jfLCY1+Yb39Bvg2E5XmZoVQSe/YqKzgNw+m1kffa8QI+7eQWBKzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769549868; c=relaxed/simple;
-	bh=k24rl2pwV9S8wdx5Q4EogcGa3+wRhwsfuFNfVIXD2zU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JsMUqt1pkgJGbO46d4aBrE43hlEM+9HqT5fZYL93dtZLjRKbQ5GmLuchgIwB0+8gvcN+XxOqS+voNrFsj4oHjDHMwxouHUQc+B4Qk1KCho70ZEJ8cOPPZySqTIzRp7Z6LBbc++GMp5TgVdy/zcApvY31bDBhN0olRj2r5xgnHBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=MDa8iGtn; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-65378ba2ff7so9273692a12.2
-        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:37:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1769549862; x=1770154662; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RxlQ2VzYf/wW3fAaLmPPug/KF1BdVRcmQSMFTpedgt8=;
-        b=MDa8iGtn+BFB5NWhX5JY9J4tHEGcIcWD8pjpYgikefJ7lFYRFsWzvxCDwEUfHKL9UB
-         kGf2qqitQ6hYcQ88RU/qNClUT5fF5/5P2YwnDDbFluqEqINecC3GnwxST5u5q2UJ0Q7z
-         wl9huOTUJLTaulEWuj7SdgKR3K6KEQbg3j8Bk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769549862; x=1770154662;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RxlQ2VzYf/wW3fAaLmPPug/KF1BdVRcmQSMFTpedgt8=;
-        b=U53ct8j17qYwoSLA076OfCnp/uSu7cmVRRsot/XntHk8XQzWQBJoFV+iVykBCX5un9
-         yAGTkCDx5tiC4fLt6lwVe3eQGfeFsKirZ/RfQXZm7DD2y0R3r8HlPD25rYLdenJ3bvKR
-         XKYIObijWgPwOnWm5USq1WDxDFCGn81p5gQzqR8VGl5Nfbva9mgJHAehYc8idniBc0EH
-         bsJk8TFF1HEzFoo3RJwwzA8j1CMFGn+b6btGP9AthMgx8lSCIcDKvzekV11D0ckWMuQW
-         k89LuApseRKNqkvw1+mCiM+K7ktnxh5+Kezks735CLIw+suopf4gLSQahBsfPNqPsaeq
-         7Owg==
-X-Forwarded-Encrypted: i=1; AJvYcCVi7Uz2Zx3V1OqLjV+Y/vrM+h961jeT6+LoIRi7zlZLJSLOkc1tRqAr4XDvMkk07bxG2KCxfZY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywbo1U43TH5DBSZ3i7FmXS0To7RLWXkeLSksu9GoaP1mmx0flX9
-	uFBbwIHzVHSdIUhtxX6Jl1LAdUu8HzcTr5kdFuC8pygkMY3YThg/YJlaiqYONq1ymJKSx+5DX6I
-	BX3FVJa6/
-X-Gm-Gg: AZuq6aLlxo8e/xR6601ieBnkkpoWPmpUoVTdpUwd/7qD9VmN5ZKPphoukS1+aEjn9c7
-	2WEiQvT1yz/wGnvd+Ise7O7bZnztqFd0BmQjFzXVQnrgdX8JxEGwsbS0i3jBFcWi9uO7VCLUlaZ
-	7F37RfUbjxN+gRgtCOUqn70L6i0RNasyCpZhA3x/zPgBjo1fpjxk/2sQErOSbjdsOL+hLvEt1Fi
-	lOP5Xkz2milsri7OLCqj9KlwvyArZZ6f0Cubot0D/Eg/Uo00ip4t336jzPaMYPC3s+3gOxjQNp4
-	pgDcTTlUciczt3Q5GbywOOJeb63f6LkYteP1xewnmz6pWSO6SrD2UoYBxqOzkiwFCJhOnR+adfE
-	V6UfqJ0V8PYPDFX7mQKAkqIyCziJ26/BE97J9pMG3gPp9R6N0W8yDtTbzwjAip8n6w1LiHWGxNm
-	U7tZtneSid4iMHCQuirGM37a0DFiT5pdSR0FqgcZPMh5RPxqQtTQ==
-X-Received: by 2002:a17:907:3e8d:b0:b87:7485:b4bf with SMTP id a640c23a62f3a-b8daae2888dmr215792266b.0.1769549862270;
-        Tue, 27 Jan 2026 13:37:42 -0800 (PST)
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com. [209.85.128.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbf1c02c5sm33990866b.50.2026.01.27.13.37.40
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Jan 2026 13:37:40 -0800 (PST)
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4801bc32725so47810005e9.0
-        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:37:40 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVRwpGqM0U7DIoF8P15tINriM3YWNWr8xeiD2Ub6jeaDTUSjM3ICmwQF+aT0oG77DrMqpUYM9I=@vger.kernel.org
-X-Received: by 2002:a05:600c:4fd4:b0:47e:e807:a05a with SMTP id
- 5b1f17b1804b1-48069c98d9fmr34891525e9.33.1769549859984; Tue, 27 Jan 2026
- 13:37:39 -0800 (PST)
+	s=arc-20240116; t=1769550262; c=relaxed/simple;
+	bh=6l4bw1Yd2nKjt4FYBBDoW4HOZYcuu8LUi8DIaDhYbaI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gFPkHs/pE5zpdQJj554uhJOKIjNz9OIG5TWSrLoWffCdwS3XEUkpojcl0/wmmMQwoDspMjO8jwRZ0ri8SSavOW0+Qf114Qd7Dt0p/lTAOLp5JON4CUQqXe/Je0iY/L3cIOVRHgobr2NfFsAX/GxAGaugX+CfQf1qpwCoWmigFVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=bLmWIGcQ; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60RFbcJF000830;
+	Tue, 27 Jan 2026 21:44:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=rn+QcU
+	wSICptGaK9tl4YzxIYdrdZLakI0LXwRLBdivM=; b=bLmWIGcQ4pQUlTqEndBgBb
+	UW4OGds6qWBJdCxRkJsigOZ9Blm1fYf0a1tKLUdMuo1sgaO89ax/ABPEeIyWKdaY
+	E0wefxCrU/4sxJruVMSHMmv1h8pRMFyNBbIxrKL4Xf+YBOkPSt9mdUddf7FejCYp
+	UtHiUs70wzxe8vM3u7uXJLn/K6lT4heYkwPyO3iUWYSg+Kqb3BYLXzuJTBWgJ6wv
+	JKRoFtI4HhYyL1aH4qk2JxUbqKugo2LxgSAMXTgSWwfvcsZaoklu4ppkru0NZUjg
+	u9xy0I4DIZu9OD7pEC37bPudd8vTRmmEqN1gc3lUlVrIIdPbdDtNmqqTVyerdP1Q
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvmgfx2ja-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jan 2026 21:44:14 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60RL5DOp006737;
+	Tue, 27 Jan 2026 21:44:14 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw8syanmq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Jan 2026 21:44:14 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60RLiCwF25231898
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 27 Jan 2026 21:44:12 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C715A58063;
+	Tue, 27 Jan 2026 21:44:12 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9B9C55804B;
+	Tue, 27 Jan 2026 21:44:11 +0000 (GMT)
+Received: from [9.61.255.161] (unknown [9.61.255.161])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 27 Jan 2026 21:44:11 +0000 (GMT)
+Message-ID: <88289f74-3d4f-4dd9-8f2a-8871d150fd50@linux.ibm.com>
+Date: Tue, 27 Jan 2026 13:44:11 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAD=FV=WVtFAPZ3=6pPnOV=vbMhFwfH9LaZ5oNgAKtcj5hA0q2Q@mail.gmail.com>
- <20260127021711.1180952-1-realwujing@gmail.com>
-In-Reply-To: <20260127021711.1180952-1-realwujing@gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Tue, 27 Jan 2026 13:37:28 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=U6sM71UuPbYZRWV87=p1ZO8-gpv3yzK8eMEv3dRNVgdA@mail.gmail.com>
-X-Gm-Features: AZwV_QiU8gpalCQDsUTyyF4ZWe7CLPzTE1Lpz8wLHzb0knYx6-2dFCpdGvU65rM
-Message-ID: <CAD=FV=U6sM71UuPbYZRWV87=p1ZO8-gpv3yzK8eMEv3dRNVgdA@mail.gmail.com>
-Subject: Re: [PATCH v4] watchdog/hardlockup: Fix UAF in perf event cleanup due
- to migration race
-To: Qiliang Yuan <realwujing@gmail.com>
-Cc: akpm@linux-foundation.org, lihuafei1@huawei.com, 
-	linux-kernel@vger.kernel.org, mingo@kernel.org, mm-commits@vger.kernel.org, 
-	song@kernel.org, stable@vger.kernel.org, sunshx@chinatelecom.cn, 
-	thorsten.blum@linux.dev, wangjinchao600@gmail.com, yangyicong@hisilicon.com, 
-	yuanql9@chinatelecom.cn, zhangjn11@chinatelecom.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 7/9] vfio-pci/zdev: Add a device feature for error
+ information
+To: Niklas Schnelle <schnelle@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Cc: helgaas@kernel.org, lukas@wunner.de, alex@shazbot.org, clg@redhat.com,
+        stable@vger.kernel.org, mjrosato@linux.ibm.com, julianr@linux.ibm.com
+References: <20260122194437.1903-1-alifm@linux.ibm.com>
+ <20260122194437.1903-8-alifm@linux.ibm.com>
+ <74ce68664925fa4cc4207c97d431b851b8ec8afc.camel@linux.ibm.com>
+Content-Language: en-US
+From: Farhan Ali <alifm@linux.ibm.com>
+In-Reply-To: <74ce68664925fa4cc4207c97d431b851b8ec8afc.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Z4vh3XRA c=1 sm=1 tr=0 ts=697931ae cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=qNG8fd7tPmr0NF9BgyQA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: rf2bCnUKEYgdWetLimMC-RmEyjUMLDSw
+X-Proofpoint-ORIG-GUID: rf2bCnUKEYgdWetLimMC-RmEyjUMLDSw
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI3MDE3MyBTYWx0ZWRfX2Ldxx74P60Km
+ TlUUCpI9vH0oT5W1464PJ+4dr8UlLTRd1BfrK2MqAUCdKTFYwJXSCEOBXbcZLBF2MVpF0QZWHxK
+ nfhA0wQku/Po/a4JlshMZtsb8+DREXvs/w4YBh1blVTZn6HXuxDXku4s/z0w2Er/7f/uhbemQMO
+ IM5Ntml1iQuZTMovmbXA597VrYnvklhnNX+2yN/fawqf0z3ViYDYeEWax40lKB+ru26081YNsr+
+ 8iI2Xx1H2SlhHQ4HRnZlAV7lZCoXt0iWGRy9t3nqhJBeyHgi4sIHlf5aEn/pv8Az3idKziZqnSo
+ Cn/KqxYX6lo1/hYpn2E41TMpRg9xXOVJCnrcNrgJ7MT9WIDkzmRcAu2YS5T8vxLbZVHGCBUNqDz
+ cSDx3nn1dlc1NSALCDPCwHIYRUQzuBEnJGMJkBWYPNxBkyXBtaqJOADKuObpM/rfyYyF6EZPkG5
+ nSACBR9GYZ0pElxprRA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-27_04,2026-01-27_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 phishscore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 clxscore=1015 lowpriorityscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2601270173
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux-foundation.org,huawei.com,vger.kernel.org,kernel.org,chinatelecom.cn,linux.dev,gmail.com,hisilicon.com];
-	TAGGED_FROM(0.00)[bounces-211895-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211896-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 863139ABFD
+	FROM_NEQ_ENVFROM(0.00)[alifm@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 589A99AC9E
 X-Rspamd-Action: no action
 
-Hi,
 
-On Mon, Jan 26, 2026 at 6:17=E2=80=AFPM Qiliang Yuan <realwujing@gmail.com>=
- wrote:
+On 1/27/2026 2:53 AM, Niklas Schnelle wrote:
+> On Thu, 2026-01-22 at 11:44 -0800, Farhan Ali wrote:
+>> For zPCI devices, we have platform specific error information. The platform
+>> firmware provides this error information to the operating system in an
+>> architecture specific mechanism. To enable recovery from userspace for
+>> these devices, we want to expose this error information to userspace. Add a
+>> new device feature to expose this information.
+>>
+>> Signed-off-by: Farhan Ali <alifm@linux.ibm.com>
+>> ---
+>>   drivers/vfio/pci/vfio_pci_core.c |  2 ++
+>>   drivers/vfio/pci/vfio_pci_priv.h |  9 ++++++++
+>>   drivers/vfio/pci/vfio_pci_zdev.c | 35 ++++++++++++++++++++++++++++++++
+>>   include/uapi/linux/vfio.h        | 16 +++++++++++++++
+>>   4 files changed, 62 insertions(+)
+>>
+> --- snip ---
+>>   
+>> +int vfio_pci_zdev_feature_err(struct vfio_device *device, u32 flags,
+>> +			      void __user *arg, size_t argsz)
+>> +{
+>> +	struct vfio_device_feature_zpci_err err;
+>> +	struct vfio_pci_core_device *vdev;
+>> +	struct zpci_dev *zdev;
+>> +	int head = 0;
+>> +	int ret;
+>> +
+>> +	vdev = container_of(device, struct vfio_pci_core_device, vdev);
+>> +	zdev = to_zpci(vdev->pdev);
+>> +	if (!zdev)
+>> +		return -ENODEV;
+>> +
+>> +	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_GET,
+>> +				 sizeof(err));
+>> +	if (ret != 1)
+>> +		return ret;
+>> +
+>> +	mutex_lock(&zdev->pending_errs_lock);
+>> +	if (zdev->pending_errs.count) {
+>> +		head = zdev->pending_errs.head % ZPCI_ERR_PENDING_MAX;
+>> +		err.pec = zdev->pending_errs.err[head].pec;
+> In the previous patch you saved the entire struct zpci_ccdf_err now you
+> only copy out and expose the PCI event code, though? If you do want to
+> only expose that the commit message should state this and the reason
+> for this restriction. Additionally I think the struct
+> vfio_device_feature_zpci_err should include a mechanism (version +
+> size?) to allow upgrading it to the full error information in the
+> future.
+
+I think having explicit version variable in the struct should be 
+sufficient (the __pad can be replaced with version). I don't think we 
+need explicit size variable? I have looked at some of the capability 
+structures in vfio_zdev.h, as examples and so we could use a similar 
+approach here when we need to extend the vfio_device_feature_zpci_err?
+
+Though I don't see any other vfio device feature structure being 
+explicitly versioned. I am open to any guidance/suggestions on the best 
+practices on how to we version VFIO device feature structs.
+
+
 >
-> Hi Doug,
->
-> Thanks for your insightful follow-up! It's great to have the openEuler vs=
-. Mainline
-> timing differences clarified=E2=80=94it definitely explains why we hit th=
-is so reliably
-> in our downstream environment.
->
-> On Mon, Jan 26, 2026 at 5:14 PM Doug Anderson <dianders@chromium.org> wro=
-te:
-> > OK, so I think the answer is: you haven't actually seen the problem
-> > (or the WARN_ON) on a mainline kernel, only on the openEuler 4.19
-> > kernel...
-> >
-> > ...actually, I looked and now think the problem doesn't exist on a
-> > mainline kernel. Specificaly, when we run lockup_detector_retry_init()
-> > we call schedule_work() to do the work. That schedules work on the
-> > "system_percpu_wq". While the work ends up being queued with
-> > "WORK_CPU_UNBOUND", I believe that we still end up running on a thread
-> > that's bound to just one CPU in the end. This is presumably why
-> > nobody has reported that "WARN_ON(!is_percpu_thread())" actually
-> > hitting on mainline.
->
-> You are right that in the latest mainline, schedule_work() has been updat=
-ed
-> to use 'system_percpu_wq'. However, in many LTS kernels (including 4.19),
-> schedule_work() still submits to 'system_wq', which lacks the per-cpu
-> guarantee.
+> Then again why not just expose the entire CCDF? It's an architected
+> data structure without and if you add it at the end of struct
+> vfio_device_feature_zpci_err and add a size you should even be able to
+> handle if it ever needs to grow. Of course you'd have to create a copy
+> of the struct to use the the uAPI types so I'd probably also add a
+> BUILD_BUG_ON() check on matching size. Or am I missing a reason to keep
+> just the PEC?
 
-Really, it matters what schedule_work() does on anyone who happens to
-have commit 930d8f8dbab9 ("watchdog/perf: adapt the watchdog_perf
-interface for async model")... While I can sympathize with supporting
-older kernels and doing backports, we have to focus on supporting the
-mainline kernel here. If we're claiming that we're fixing a bug (and
-even your newest CL says it's fixing a UAF and has a Fixes tag) then
-the bug has to actually be there.
+I wanted to keep the information exposed to userspace minimal. The CCDF 
+exposes far more information and may not be needed by userspace/VM. 
+Today the PEC is sufficient for user space(QEMU) to take bubble up to a 
+VM. I also wanted to avoid having a copy of the struct in 2 places.
 
+Thanks
 
-> More importantly, even on 'system_percpu_wq', the worker threads do not
-> carry the PF_PERCPU_THREAD flag. is_percpu_thread() specifically checks
-> (current->flags & PF_PERCPU_THREAD), which is reserved for kthreads
-> specifically pinned via kthread_create_on_cpu().
+Farhan
 
-I think we need to keep the focus on mainline or at least the kernel
-as of commit 930d8f8dbab9. The grep for "PF_PERCPU_THREAD" has no hits
-in either. In both cases, it is:
-
-return (current->flags & PF_NO_SETAFFINITY) &&
-    (current->nr_cpus_allowed  =3D=3D 1);
-
-
-> Therefore, the
-> WARN_ON(!is_percpu_thread()) in hardlockup_detector_event_create() is
-> still violated in the retry path even on mainline.
-
-To ask directly: have you seen this WARN_ON in mainline, or is this
-all speculative?
-
-I'm going to assert that the WARN_ON is _not_ seen on mainline and
-wasn't there as of commit 930d8f8dbab9. Specifically, the same set of
-patches that added the "retry" for the hardlockup detector had the
-WARN_ON(). It feels highly unlikely the WARN_ON was firing at that
-point in time. You can see the whole series of patches at:
-
-https://lore.kernel.org/linux-arm-kernel/20220903093415.15850-1-lecopzer.ch=
-en@mediatek.com/
-
-...yes, I ended up rebasing them and included them when I landed the
-buddy lockup detector where they landed, but they should have been
-equivalent to Lecopzer's patches.
-
-
-> The UAF risk stems from the fact that preemption is enabled during the
-> probe. If the worker thread (even if on a per-cpu wq) is preempted or
-> if the logic assumes the task cannot migrate (which is_percpu_thread
-> usually guarantees), we have a logical gap. By making the probe path
-> stateless and using cpu_hotplug_disable(), we eliminate this dependency
-> entirely.
->
-> > If that's the case, we'd definitely want to at least change the
-> > description and presumably _remove_ the Fixes tag? I actually still
-> > think the code looks nicer after your CL and (maybe?) we could even
-> > remove the whole schedule_work() for running this code? Maybe it was
-> > only added to deal with this exact problem? ...but the CL description
-> > would definitely need to be updated.
->
-> The schedule_work() in lockup_detector_retry_init() (added by 930d8f8dbab=
-9)
-> is necessary for platforms where the PMU or other dependencies aren't rea=
-dy
-> during early init.
->
-> I agree that the commit description should be updated to clarify that
-> while the issue was caught in a downstream kernel with shifted init timin=
-gs,
-> it identifies a latent race condition in the mainline retry path.
->
-> Regarding the 'Fixes' tag, since 930d8f8dbab9 introduced the asynchronous
-> retry path which calls the probe logic from a non-percpu-thread context,
-> it still seems like the appropriate target for the "root cause" of the
-> vulnerability.
->
-> I'll refactor the commit message in V5 to better reflect this context
-> and remove the emphasis on ToT being "broken" out-of-the-box (since early
-> init is indeed safe there).
->
-> How does that sound to you?
-
-I'm still not convinced that there was ever a UAF in mainline nor that
-this actually "Fixes" anything in mainline. I do agree that the code
-is better by not having it write the per-cpu variable at probe time,
-but unless you can say that you've actually tested _on mainline_ and
-demonstrated that the WARN_ON() is truly hitting _on mainline_ by
-providing a printout of it happening _on mainline_ or somehow shown
-the UAF actually happening _on mainline_ then we simply can't claim
-that this is a Fix. Although I supposed I'd also be OK with doing any
-of the above on any pure upstream kernel after commit 930d8f8dbab9, as
-well.
-
--Doug
+>> +		zdev->pending_errs.head++;
+>> +		zdev->pending_errs.count--;
+>> +		err.pending_errors = zdev->pending_errs.count;
+>> +	}
+>> +	mutex_unlock(&zdev->pending_errs_lock);
+>> +
+>> +	if (copy_to_user(arg, &err, sizeof(err)))
+>> +		return -EFAULT;
+>> +
+>> +	return 0;
+>> +}
+>> +
 
