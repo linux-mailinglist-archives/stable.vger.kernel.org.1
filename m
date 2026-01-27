@@ -1,169 +1,180 @@
-Return-Path: <stable+bounces-211720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCtNHyA5eGmmowEAu9opvQ
-	(envelope-from <stable+bounces-211720-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:03:44 +0100
+	id iMkKHIM5eGmmowEAu9opvQ
+	(envelope-from <stable+bounces-211721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:05:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAFB8FC84
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:03:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C31CA8FC9A
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DBDC430095C4
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 04:03:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BEA73033519
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 04:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1CB3176E1;
-	Tue, 27 Jan 2026 04:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA52318EFF;
+	Tue, 27 Jan 2026 04:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="ZG27tbn5"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="hmeafQuG"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-57-210.mail.qq.com (out162-62-57-210.mail.qq.com [162.62.57.210])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C72431619E
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 04:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919523191D2;
+	Tue, 27 Jan 2026 04:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769486620; cv=none; b=t5HxdiRui/uGsEJ7wsJIUXbTlv1LNKo2TfnkDQ94Yktof/FIGhdYb8nKvzKtoV/4BzENP0ZRRUftcZgDZDkjFHbX6wJHvFBP/QVZ3dyYu0N0tdIMD1g5OfZbth+iU3weGiNFJ+sTBXcn3OIJXT9Uf//AtrUcFJhtnrHZHfcRMtE=
+	t=1769486693; cv=none; b=AtBlsjA7/tQo7U/OuC49Ixu2be+swonywweYchd75gd1bwIdMz6x2BFn9+q5vsMAimAbTrRMIMt3xBoseK87HHwsnHI1qrAwdZYEt5NyU2zqB9Qn9SCvceZM1K4EhPb4HaQw5Je4XMap2OWT86Qa2kMD4XH9NVAillHBKLCNFvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769486620; c=relaxed/simple;
-	bh=Ib6Yd57WdBghu+vF445shZTD+HMlH1YLFnCKkQnTwqQ=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=rispCojEWLHZHzylLPZNWDzQ1octCYH97nYNVpzxBC4IC1G4Q7UsRcj6d/6ZU8rEvGKrFv7K881AzyOkmT3swnRVRP1Ge9Z+zBBuZUYBSsyuZDeYKYgW1T0qKXHVSQL0fqGSLwDvWswEoosNSr/eZgafFnCaYUnkEAo0DWoTMH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=ZG27tbn5; arc=none smtp.client-ip=162.62.57.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1769486614;
-	bh=LFYAv93BuRb7R5NNr7VuLJ+tLbwiFCdVzcXngavjxkg=;
-	h=From:To:Cc:Subject:Date;
-	b=ZG27tbn57DDgQ+GgfIEO1b7p2XiaBm7Yl27tpk6BUAJGeEMhgdUXvMFwYjXGPNG1z
-	 exdjxuZFEVWPHIxXW1fetCOROiToFBrjPn/riKo7ACMkPYQskAi0pOCAvptL6SCpr/
-	 JA39Fcb89GuQBhUxgVSzIXcYgqy+jw77McvBxS6M=
-Received: from ubuntu24.. ([2409:8a00:dd3:9760:874a:c122:32cf:6f61])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id DB33244; Tue, 27 Jan 2026 12:03:27 +0800
-X-QQ-mid: xmsmtpt1769486607t3v419dv0
-Message-ID: <tencent_9C6AFE3E9A2583AC3971A061001BDA681309@qq.com>
-X-QQ-XMAILINFO: NEu9ADsh1Y9sEtpUJdRHiSeZtV+XKdj4hrJJa7QVCo7p6V8TDQM5Lur689JY8q
-	 PG9PrVISBlYREzyGJdpInyY+w3QlwvzOcACakE5NEcjjjZSEtamxesdmZjXr01O3kpuiSJtY59st
-	 prJ+6rBYYQ2OZVtQIJmDzwAjV3GdVZLmyJmw5HapTWBtKmP7bDyXVQ/JEKtDN05/2CwYzaFCAcsX
-	 USIu2naGs2cL47XL2YGt/jSkMJa1uZ214JfxSmCU8bWI67O8Zgup8bL8Oh6SRCjBd0Ju6yQ/WuqX
-	 vt3spxEPEB4Mgwqif6jVNUHt8UpOMyWQYqoFoaV3VRk90VPqROvGYWrr2QHv6/zOPrdOtbteAH7B
-	 V5U+puqhLB7XRjLj/YfVypA+v43Yo/DfyjjlDrweT7QBdbnzXciqXfgkGvPAQ7tplHtAc3KfKVD4
-	 Wj1iJluqJl76xiQuu2hLImsUj/ZiTFM25Vq7QstckYM1/L2epGPjLMn8Zt8shEoTzjwtqdd/LwuE
-	 NozvhLQDF4emQTsynCFI8O0s6s/kWoBiAqCKW3Dg8zaKhxuFIW9H4eNHto8VsbDaFERYntetvTAT
-	 /A6Jcz9laPvB3NlDRhYRs3V9dnDbV7FoOu3lqtnG22mIBy+EntZeWDRCEz33SSTNQNPPXdvVbCsV
-	 1UttDkUUdq6ZRP9muy45JRQJ7q6UGdbZ1n9arXN/KGSjVEYosBQdzCyT/EbDUmOqUsm1qlRvEdFD
-	 ZLcXNDy6GSFC+zD0t9r1EYZMrXnAjm4f5ZYc+b3xWHL8bAg/hXfYXCGfPM1yQlZlryrJce6dnYP0
-	 gSXILoPAlxJk97P8ZtSyggCEZr2oLVQayOJmxd2MX0fMvJn0IOXqRIKKxuya7YJHOx7DcIlbqEAM
-	 mnXPh9qAueCuygmveVYbWNgyNz4ifXER+wgUMO9mnyzgmEUWMykPvcOoe7mTm0pUsH7BCCeXl21r
-	 OBFCLw9e4LYccp0Wzr0do2xVI8LopLq013MO5giKoePrFMksxxalFULCgNLe0LxrVXdS0mCj/mJk
-	 uBqMy1nfSknvcC/ak5AOdfHqmXb701Qm4LfxiAd8CCuN+DH7oceKw2864QHL8LoEYC0s5Bbj4xz8
-	 5aD2kg3RZz/zpeH1HXl8Fv/AU2vNXgc1a0z7qDpN11S2Mw+ZBPAOj5Q2Yd3p3E54dCU8XGmK+fou
-	 u3klQ=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-From: alvalan9@foxmail.com
-To: stable@vger.kernel.org
-Cc: Waiman Long <longman@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 5.15.y] blk-cgroup: Reinit blkg_iostat_set after clearing in blkcg_reset_stats()
-Date: Tue, 27 Jan 2026 04:03:26 +0000
-X-OQ-MSGID: <20260127040326.5133-1-alvalan9@foxmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1769486693; c=relaxed/simple;
+	bh=wt8QP+/D3ntBtKipjWyeYkn/ZCLF8LRN2iTuJsbrkfk=;
+	h=Date:To:From:Subject:Message-Id; b=gJLwFfYYyMATHzDnvxu8XbBom01ebyEonhpCWO9j+SJV+K1nzCcc2mmDJscWX8WXuFeFkhA/LAmHINmVrZhNnk277kx5ybQfgmDHF/wDcstBprhPR+cMbg56y93lhb4OWhVRmjmjsmfBCCxlK06+biUSQixfYndhsAX+i3bU4fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=hmeafQuG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BE9C116C6;
+	Tue, 27 Jan 2026 04:04:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769486693;
+	bh=wt8QP+/D3ntBtKipjWyeYkn/ZCLF8LRN2iTuJsbrkfk=;
+	h=Date:To:From:Subject:From;
+	b=hmeafQuGQlJ/wbIj6mMAqCnqIpR1XlzWG2X2DdVpltHnNwqJuMvZ3PGcnLzmRgduh
+	 ieYn7LB2QaBX5cirvYzlfkNj1IEEazAP/m0doZjb9Hvy+PV11iWhSTmVnf0SyEgkd1
+	 GxeVH5YZuH86qpPCJsYsp9THoXDHOaVALHe8/rN0=
+Date: Mon, 26 Jan 2026 20:04:52 -0800
+To: mm-commits@vger.kernel.org,urezki@gmail.com,stable@vger.kernel.org,hdanton@sina.com,kartikey406@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node.patch removed from -mm tree
+Message-Id: <20260127040453.61BE9C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211720-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[foxmail.com];
-	FREEMAIL_CC(0.00)[redhat.com,kernel.org,kernel.dk,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-211721-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,sina.com,linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[foxmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,qq.com:mid]
-X-Rspamd-Queue-Id: 9AAFB8FC84
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C31CA8FC9A
 X-Rspamd-Action: no action
 
-From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 3d2af77e31ade05ff7ccc3658c3635ec1bea0979 ]
+The quilt patch titled
+     Subject: mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
+has been removed from the -mm tree.  Its filename was
+     mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node.patch
 
-When blkg_alloc() is called to allocate a blkcg_gq structure
-with the associated blkg_iostat_set's, there are 2 fields within
-blkg_iostat_set that requires proper initialization - blkg & sync.
-The former field was introduced by commit 3b8cc6298724 ("blk-cgroup:
-Optimize blkcg_rstat_flush()") while the later one was introduced by
-commit f73316482977 ("blk-cgroup: reimplement basic IO stats using
-cgroup rstat").
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Unfortunately those fields in the blkg_iostat_set's are not properly
-re-initialized when they are cleared in v1's blkcg_reset_stats(). This
-can lead to a kernel panic due to NULL pointer access of the blkg
-pointer. The missing initialization of sync is less problematic and
-can be a problem in a debug kernel due to missing lockdep initialization.
+------------------------------------------------------
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
+Date: Mon, 12 Jan 2026 16:06:12 +0530
 
-Fix these problems by re-initializing them after memory clearing.
+When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
+vmalloc cleanup triggers expensive stack unwinding that acquires RCU read
+locks.  Processing a large purge_list without rescheduling can cause the
+task to hold CPU for extended periods (10+ seconds), leading to RCU stalls
+and potential OOM conditions.
 
-Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
-Fixes: f73316482977 ("blk-cgroup: reimplement basic IO stats using cgroup rstat")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20230606180724.2455066-1-longman@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ Remove this line: bis -> blkg = blkg for blkg was introduced by commit
-  3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()") since v6.2. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
+where iterating through hundreds or thousands of vmap_area entries and
+freeing their associated shadow pages causes:
+
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
+  ...
+  task:kworker/0:17 state:R running task stack:28840 pid:6229
+  ...
+  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
+  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
+
+Each call to kasan_release_vmalloc() can free many pages, and with
+page_owner tracking, each free triggers save_stack() which performs stack
+unwinding under RCU read lock.  Without yielding, this creates an
+unbounded RCU critical section.
+
+Add periodic cond_resched() calls within the loop to allow:
+- RCU grace periods to complete
+- Other tasks to run
+- Scheduler to preempt when needed
+
+The fix uses need_resched() for immediate response under load, with a
+batch count of 32 as a guaranteed upper bound to prevent worst-case stalls
+even under light load.
+
+Link: https://lkml.kernel.org/r/20260112103612.627247-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
+Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
+Suggested-by: Uladzislau Rezki <urezki@gmail.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- block/blk-cgroup.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index e372a3fc264e..61fdff5406b5 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -491,8 +491,12 @@ static int blkcg_reset_stats(struct cgroup_subsys_state *css,
- 			struct blkg_iostat_set *bis =
- 				per_cpu_ptr(blkg->iostat_cpu, cpu);
- 			memset(bis, 0, sizeof(*bis));
-+
-+			/* Re-initialize the cleared blkg_iostat_set */
-+			u64_stats_init(&bis->sync);
- 		}
- 		memset(&blkg->iostat, 0, sizeof(blkg->iostat));
-+		u64_stats_init(&blkg->iostat.sync);
+ mm/vmalloc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+--- a/mm/vmalloc.c~mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node
++++ a/mm/vmalloc.c
+@@ -2273,11 +2273,14 @@ decay_va_pool_node(struct vmap_node *vn,
+ 	reclaim_list_global(&decay_list);
+ }
  
- 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
- 			struct blkcg_policy *pol = blkcg_policy[i];
--- 
-2.43.0
++#define KASAN_RELEASE_BATCH_SIZE 32
++
+ static void
+ kasan_release_vmalloc_node(struct vmap_node *vn)
+ {
+ 	struct vmap_area *va;
+ 	unsigned long start, end;
++	unsigned int batch_count = 0;
+ 
+ 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
+ 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
+@@ -2287,6 +2290,11 @@ kasan_release_vmalloc_node(struct vmap_n
+ 			kasan_release_vmalloc(va->va_start, va->va_end,
+ 				va->va_start, va->va_end,
+ 				KASAN_VMALLOC_PAGE_RANGE);
++
++		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
++			cond_resched();
++			batch_count = 0;
++		}
+ 	}
+ 
+ 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
+_
+
+Patches currently in -mm which might be from kartikey406@gmail.com are
+
 
 
