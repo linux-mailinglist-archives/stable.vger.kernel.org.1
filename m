@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-211776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKlXIJK5eGlzsQEAu9opvQ
-	(envelope-from <stable+bounces-211776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:11:46 +0100
+	id eIG6Cqe5eGlzsQEAu9opvQ
+	(envelope-from <stable+bounces-211778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:12:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E5794B68
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:11:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89EA294B76
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:12:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E006630440B9
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:11:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D2FE301B931
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 13:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813583559D1;
-	Tue, 27 Jan 2026 13:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823DB3559D1;
+	Tue, 27 Jan 2026 13:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCmDZOoU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2jM7rEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4520B34C9AC
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460E0355024
+	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 13:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769519474; cv=none; b=B900CZyuFYVIBkf8cXW/MxKYQSJIOI7WNpO5C4lJPrEoQEBz75cmOSDg+aAFR911jWFLqI28oNffmJfjSpsEQv7MenEQUBrgnkv98TrkPyH1OZ8XV5QCFoTKq8ApoRbOsyxgqOmIRkLpAADyLBSPOic5ElYzB0gFnMgxQxrwswc=
+	t=1769519513; cv=none; b=Cq0o2EJHOuccOPPQn82+l/fgoG3pEhqoIAIszT+TKjQ6tOcvAkL6urNCbiJKSUL0D3Eqx1X3ZwvPE9NHHN+JVjO7r/v/dXnRQzmsePo+YcUd2G9nm7IQnjUnGy93XApzSAh4Uw+8lgr/9lOffmEFjlj0xT6J+bZVcwLPM/qHylk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769519474; c=relaxed/simple;
-	bh=vZTSA/D9eaemFgr00O5hKdqlplFISe65CDgxHzRjXqs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fYjzgsZEI5jtShUpwA7ltMenuI+B71jmzBMDFzm6E0ynD3POykxNXfj//QyNruTah2pTUwxJxMb8rAHb+6mOHfBtehLHqIeOLmkPaId2m0z80SKjGA9gZjg2XFQUocXSWp2jgLtyRr2xgIR1AO/MYoBd8EYNVl20U5f9en8j9s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YCmDZOoU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7D0C116C6;
-	Tue, 27 Jan 2026 13:11:13 +0000 (UTC)
+	s=arc-20240116; t=1769519513; c=relaxed/simple;
+	bh=ZCjCoTLMMBJiq/mWz0JS/zqnA3jy2uYaaBawzKKp4Fo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=u3ATR9QXfvlVV3enDPkCn2uIKMvVgOU4V0x0QBVDY/lARq6r/NWdmtnqWrsDlA7YuHZz8Yfj2w2/3dkUKsSxbBEibX6AYt528adtuX2g4uTz/lS8wAQfrZqtKvANoxcQIPo3Es5eUTmvnvvUBs03Sy6u0F2uZEpxlotHuwiYJiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2jM7rEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC33C116C6;
+	Tue, 27 Jan 2026 13:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769519474;
-	bh=vZTSA/D9eaemFgr00O5hKdqlplFISe65CDgxHzRjXqs=;
+	s=korg; t=1769519513;
+	bh=ZCjCoTLMMBJiq/mWz0JS/zqnA3jy2uYaaBawzKKp4Fo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=YCmDZOoU+cgwI4yzX3v76RI64iSOzjjeZKRynrKXl2MyHgNV6urZklZ5YfcxXasgM
-	 5AooxuAiiAN+ZbJQMWnmHzhFDHtuQDNUJ/CO33kBQmyRK+yaxk8ky6kLMrRRflGrci
-	 oNt41hcFc7p7saFLz9f+VKv1bjNR/u8bVcHjS4So=
-Subject: FAILED: patch "[PATCH] ALSA: scarlett2: Fix buffer overflow in config retrieval" failed to apply to 5.15-stable tree
-To: samasth.norway.ananda@oracle.com,tiwai@suse.de
+	b=x2jM7rEElw8dpGh7TqtmK43Txah3qtyeUQWQkTunWkr18zfWDBVPP7wceInjCqpGw
+	 MkeWpSEol4Jv2q+pGfQvFzKD4OiH1CIc1H1bAX2u3PYilVmP8NHPxv17T6r5k0+5Ul
+	 vcIeKsO5A6qGqRkjpAOr49t3VhcKxVJQxhcRgIiM=
+Subject: FAILED: patch "[PATCH] mmc: sdhci-of-dwcmshc: Prevent illegal clock reduction in" failed to apply to 6.1-stable tree
+To: shawn.lin@rock-chips.com,sebastian.reichel@collabora.com,ulf.hansson@linaro.org,yifeng.zhao@rock-chips.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 27 Jan 2026 14:11:03 +0100
-Message-ID: <2026012703-wrecking-unpicked-b43c@gregkh>
+Date: Tue, 27 Jan 2026 14:11:50 +0100
+Message-ID: <2026012749-barrier-oppressor-3ac6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,11 +65,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211776-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211778-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
@@ -77,29 +77,29 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,gregkh:email,msgid.link:url,linuxfoundation.org:dkim,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F1E5794B68
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,debian:email,collabora.com:email,rock-chips.com:email]
+X-Rspamd-Queue-Id: 89EA294B76
 X-Rspamd-Action: no action
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6f5c69f72e50d51be3a8c028ae7eda42c82902cb
+git cherry-pick -x 3009738a855cf938bbfc9078bec725031ae623a4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012703-wrecking-unpicked-b43c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026012749-barrier-oppressor-3ac6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,50 +111,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6f5c69f72e50d51be3a8c028ae7eda42c82902cb Mon Sep 17 00:00:00 2001
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Date: Fri, 16 Jan 2026 17:27:06 -0800
-Subject: [PATCH] ALSA: scarlett2: Fix buffer overflow in config retrieval
+From 3009738a855cf938bbfc9078bec725031ae623a4 Mon Sep 17 00:00:00 2001
+From: Shawn Lin <shawn.lin@rock-chips.com>
+Date: Mon, 22 Dec 2025 15:11:25 +0800
+Subject: [PATCH] mmc: sdhci-of-dwcmshc: Prevent illegal clock reduction in
+ HS200/HS400 mode
 
-The scarlett2_usb_get_config() function has a logic error in the
-endianness conversion code that can cause buffer overflows when
-count > 1.
+When operating in HS200 or HS400 timing modes, reducing the clock frequency
+below 52MHz will lead to link broken as the Rockchip DWC MSHC controller
+requires maintaining a minimum clock of 52MHz in these modes.
 
-The code checks `if (size == 2)` where `size` is the total buffer size in
-bytes, then loops `count` times treating each element as u16 (2 bytes).
-This causes the loop to access `count * 2` bytes when the buffer only
-has `size` bytes allocated.
+Add a check to prevent illegal clock reduction through debugfs:
 
-Fix by checking the element size (config_item->size) instead of the
-total buffer size. This ensures the endianness conversion matches the
-actual element type.
+root@debian:/# echo 50000000 > /sys/kernel/debug/mmc0/clock
+root@debian:/# [   30.090146] mmc0: running CQE recovery
+mmc0: cqhci: Failed to halt
+mmc0: cqhci: spurious TCN for tag 0
+WARNING: drivers/mmc/host/cqhci-core.c:797 at cqhci_irq+0x254/0x818, CPU#1: kworker/1:0H/24
+Modules linked in:
+CPU: 1 UID: 0 PID: 24 Comm: kworker/1:0H Not tainted 6.19.0-rc1-00001-g09db0998649d-dirty #204 PREEMPT
+Hardware name: Rockchip RK3588 EVB1 V10 Board (DT)
+Workqueue: kblockd blk_mq_run_work_fn
+pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : cqhci_irq+0x254/0x818
+lr : cqhci_irq+0x254/0x818
+...
 
-Fixes: ac34df733d2d ("ALSA: usb-audio: scarlett2: Update get_config to do endian conversion")
+Fixes: c6f361cba51c ("mmc: sdhci-of-dwcmshc: add support for rk3588")
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: Yifeng Zhao <yifeng.zhao@rock-chips.com>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Link: https://patch.msgid.link/20260117012706.1715574-1-samasth.norway.ananda@oracle.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
-index f2446bf3982c..bef8c9e544dd 100644
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -2533,13 +2533,13 @@ static int scarlett2_usb_get_config(
- 		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
- 		if (err < 0)
- 			return err;
--		if (size == 2) {
-+		if (config_item->size == 16) {
- 			u16 *buf_16 = buf;
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index 51949cde0958..204830b40587 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -739,6 +739,13 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 	sdhci_writel(host, extra, reg);
  
- 			for (i = 0; i < count; i++, buf_16++)
- 				*buf_16 = le16_to_cpu(*(__le16 *)buf_16);
--		} else if (size == 4) {
--			u32 *buf_32 = buf;
-+		} else if (config_item->size == 32) {
-+			u32 *buf_32 = (u32 *)buf;
- 
- 			for (i = 0; i < count; i++, buf_32++)
- 				*buf_32 = le32_to_cpu(*(__le32 *)buf_32);
+ 	if (clock <= 52000000) {
++		if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
++		    host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
++			dev_err(mmc_dev(host->mmc),
++				"Can't reduce the clock below 52MHz in HS200/HS400 mode");
++			return;
++		}
++
+ 		/*
+ 		 * Disable DLL and reset both of sample and drive clock.
+ 		 * The bypass bit and start bit need to be set if DLL is not locked.
 
 
