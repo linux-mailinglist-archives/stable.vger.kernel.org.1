@@ -1,180 +1,198 @@
-Return-Path: <stable+bounces-211721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211722-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMkKHIM5eGmmowEAu9opvQ
-	(envelope-from <stable+bounces-211721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:05:23 +0100
+	id iK1WHmJBeGlspAEAu9opvQ
+	(envelope-from <stable+bounces-211722-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:38:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C31CA8FC9A
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:05:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D354D8FDE3
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 05:38:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BEA73033519
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 04:04:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 809C6301DB87
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 04:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA52318EFF;
-	Tue, 27 Jan 2026 04:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="hmeafQuG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4C72D248D;
+	Tue, 27 Jan 2026 04:38:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919523191D2;
-	Tue, 27 Jan 2026 04:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8253F3C2F;
+	Tue, 27 Jan 2026 04:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769486693; cv=none; b=AtBlsjA7/tQo7U/OuC49Ixu2be+swonywweYchd75gd1bwIdMz6x2BFn9+q5vsMAimAbTrRMIMt3xBoseK87HHwsnHI1qrAwdZYEt5NyU2zqB9Qn9SCvceZM1K4EhPb4HaQw5Je4XMap2OWT86Qa2kMD4XH9NVAillHBKLCNFvA=
+	t=1769488728; cv=none; b=h0yyplQzRdb2Hi8YFLBx0Du59BxPOtwpYcmSa1FCnTaGqG0n5QbnBnvCdZ14b4CHvkxaADZdE1hhbutg4pFBiXnmqvqwHNzuubk8xrrM6/6/Koc1CAUF5dSpmd1g90ARTQRtdgaNtVtb6BRl9znu5E7UG/P9KJXyqhX6VQeS274=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769486693; c=relaxed/simple;
-	bh=wt8QP+/D3ntBtKipjWyeYkn/ZCLF8LRN2iTuJsbrkfk=;
-	h=Date:To:From:Subject:Message-Id; b=gJLwFfYYyMATHzDnvxu8XbBom01ebyEonhpCWO9j+SJV+K1nzCcc2mmDJscWX8WXuFeFkhA/LAmHINmVrZhNnk277kx5ybQfgmDHF/wDcstBprhPR+cMbg56y93lhb4OWhVRmjmjsmfBCCxlK06+biUSQixfYndhsAX+i3bU4fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=hmeafQuG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61BE9C116C6;
-	Tue, 27 Jan 2026 04:04:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769486693;
-	bh=wt8QP+/D3ntBtKipjWyeYkn/ZCLF8LRN2iTuJsbrkfk=;
-	h=Date:To:From:Subject:From;
-	b=hmeafQuGQlJ/wbIj6mMAqCnqIpR1XlzWG2X2DdVpltHnNwqJuMvZ3PGcnLzmRgduh
-	 ieYn7LB2QaBX5cirvYzlfkNj1IEEazAP/m0doZjb9Hvy+PV11iWhSTmVnf0SyEgkd1
-	 GxeVH5YZuH86qpPCJsYsp9THoXDHOaVALHe8/rN0=
-Date: Mon, 26 Jan 2026 20:04:52 -0800
-To: mm-commits@vger.kernel.org,urezki@gmail.com,stable@vger.kernel.org,hdanton@sina.com,kartikey406@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node.patch removed from -mm tree
-Message-Id: <20260127040453.61BE9C116C6@smtp.kernel.org>
+	s=arc-20240116; t=1769488728; c=relaxed/simple;
+	bh=2pxIiiqvyVltJcyDScY3y+LrRMiWAYkh+pHfqfGsi9A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CrWhwgQ/VhHw9kG7GJayEjbQUUqJ00+WcF7ysoEPNjZxZ2ZrGCew2RvoU8hJ+KwU0z01jBQ4V/QxC+2muftc8ehXapm1lCBJYNWm4KbW7hMnmKYqxxGHER6V/tnyBNpU7BJXAkesVRa8sfw44k1gVPibTauS159jKgbnKXsV+R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [10.213.22.4] (unknown [210.73.43.101])
+	by APP-03 (Coremail) with SMTP id rQCowAC31dxGQXhpI1vqBg--.61005S2;
+	Tue, 27 Jan 2026 12:38:31 +0800 (CST)
+Message-ID: <42765b5f-2d94-4fd6-8cd9-977729220696@iscas.ac.cn>
+Date: Tue, 27 Jan 2026 12:38:30 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: spacemit: k1-emac: program frame size
+ registers for jumbo frames
+To: Tomas Hlavacek <tmshlvck@gmail.com>, netdev@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Yixun Lan <dlan@kernel.org>
+References: <20260126135919.77168-1-tmshlvck@gmail.com>
+ <20260126171449.83288-1-tmshlvck@gmail.com>
+Content-Language: en-US
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+In-Reply-To: <20260126171449.83288-1-tmshlvck@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:rQCowAC31dxGQXhpI1vqBg--.61005S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZw17Jw1xCFW7XF4kuF4UArb_yoW5ArWkpa
+	y5XasI9r4jyF1xKa1kAa18X34rJa1IqFyUCFyYvrWrZ3WDJr17WryrKFW3Cr98urWrWw1S
+	va4UZw43CF1DZaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9ab7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
+	c7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r45MxAIw28IcxkI7VAKI48JMxC20s026x
+	CaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_
+	JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r
+	1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_
+	Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8Jr
+	UvcSsGvfC2KfnxnUUI43ZEXa7IU5MwZ3UUUUU==
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-211721-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,sina.com,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211722-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wangruikang@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C31CA8FC9A
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D354D8FDE3
 X-Rspamd-Action: no action
 
+Hi Tomas,
 
-The quilt patch titled
-     Subject: mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
-has been removed from the -mm tree.  Its filename was
-     mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node.patch
+Thanks for the fix. Just a few more things...
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Firstly, I believe it is preferred to send a new patch version in its
+own thread with a link to the previous version. See
+Documentation/process/maintainer-netdev.rst:
 
-------------------------------------------------------
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
-Date: Mon, 12 Jan 2026 16:06:12 +0530
+  The new version of patches should be posted as a separate thread,
+  not as a reply to the previous posting. Change log should include a lin=
+k
+  to the previous posting (see :ref:`Changes requested`).
 
-When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
-vmalloc cleanup triggers expensive stack unwinding that acquires RCU read
-locks.  Processing a large purge_list without rescheduling can cause the
-task to hold CPU for extended periods (10+ seconds), leading to RCU stalls
-and potential OOM conditions.
+You can do that for v3.
 
-The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
-where iterating through hundreds or thousands of vmap_area entries and
-freeing their associated shadow pages causes:
+Secondly...
 
-  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
-  ...
-  task:kworker/0:17 state:R running task stack:28840 pid:6229
-  ...
-  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
-  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
+On 1/27/26 01:14, Tomas Hlavacek wrote:
+> [...]
+>
+> diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethe=
+rnet/spacemit/k1_emac.c
+> index 220eb5ce7583..31b1bdb2827e 100644
+> --- a/drivers/net/ethernet/spacemit/k1_emac.c
+> +++ b/drivers/net/ethernet/spacemit/k1_emac.c
+> @@ -228,6 +228,12 @@ static void emac_init_hw(struct emac_priv *priv)
+>  		DEFAULT_TX_THRESHOLD);
+>  	emac_wr(priv, MAC_RECEIVE_PACKET_START_THRESHOLD, DEFAULT_RX_THRESHOL=
+D);
+> =20
+> +	/* Set maximum frame size and jabber size based on configured buffer
+> +	 * size.
+> +	 */
+> +	emac_wr(priv, MAC_MAXIMUM_FRAME_SIZE, priv->dma_buf_sz);
+> +	emac_wr(priv, MAC_RECEIVE_JABBER_SIZE, priv->dma_buf_sz);
+> +
 
-Each call to kasan_release_vmalloc() can free many pages, and with
-page_owner tracking, each free triggers save_stack() which performs stack
-unwinding under RCU read lock.  Without yielding, this creates an
-unbounded RCU critical section.
+I tested this (also setting MAC_TRANSMIT_JABBER_SIZE, as Yixun
+described)=C2=A0and it appears that this has surfaced a latent bug in the=
+ code.
 
-Add periodic cond_resched() calls within the loop to allow:
-- RCU grace periods to complete
-- Other tasks to run
-- Scheduler to preempt when needed
+I found that the hardware can't actually handle 4096-byte buffers, since
+the size field is only 12-bit. (It was my fault to assume that existing
+code was right in this regard...) So MTU larger than ~2000 breaks the
+hardware, and also triggers the WARN_ON_ONCE() in emac_rx_frame_good().
+4095 works just fine.
 
-The fix uses need_resched() for immediate response under load, with a
-batch count of 32 as a guaranteed upper bound to prevent worst-case stalls
-even under light load.
+Can you include this in v3 as well? Maybe also reword the commit
+messages a bit. Thanks.
 
-Link: https://lkml.kernel.org/r/20260112103612.627247-1-kartikey406@gmail.com
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
-Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
-Suggested-by: Uladzislau Rezki <urezki@gmail.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+(Here's hoping Thunderbird hasn't destroyed the whitespace...)
 
- mm/vmalloc.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethern=
+et/spacemit/k1_emac.c
+index 31b1bdb2827e..78306a06a329 100644
+--- a/drivers/net/ethernet/spacemit/k1_emac.c
++++ b/drivers/net/ethernet/spacemit/k1_emac.c
+@@ -38,7 +38,7 @@
+=20
+ #define EMAC_DEFAULT_BUFSIZE		1536
+ #define EMAC_RX_BUF_2K			2048
+-#define EMAC_RX_BUF_4K			4096
++#define EMAC_RX_BUF_MAX			FIELD_MAX(RX_DESC_1_BUFFER_SIZE_1_MASK)
+=20
+ /* Tuning parameters from SpacemiT */
+ #define EMAC_TX_FRAMES			64
+@@ -937,7 +937,7 @@ static int emac_change_mtu(struct net_device *ndev, i=
+nt mtu)
+ 	else if (frame_len <=3D EMAC_RX_BUF_2K)
+ 		priv->dma_buf_sz =3D EMAC_RX_BUF_2K;
+ 	else
+-		priv->dma_buf_sz =3D EMAC_RX_BUF_4K;
++		priv->dma_buf_sz =3D EMAC_RX_BUF_MAX;
+=20
+ 	ndev->mtu =3D mtu;
+=20
+@@ -2011,7 +2011,7 @@ static int emac_probe(struct platform_device *pdev)=
 
---- a/mm/vmalloc.c~mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node
-+++ a/mm/vmalloc.c
-@@ -2273,11 +2273,14 @@ decay_va_pool_node(struct vmap_node *vn,
- 	reclaim_list_global(&decay_list);
- }
- 
-+#define KASAN_RELEASE_BATCH_SIZE 32
-+
- static void
- kasan_release_vmalloc_node(struct vmap_node *vn)
- {
- 	struct vmap_area *va;
- 	unsigned long start, end;
-+	unsigned int batch_count = 0;
- 
- 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
- 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
-@@ -2287,6 +2290,11 @@ kasan_release_vmalloc_node(struct vmap_n
- 			kasan_release_vmalloc(va->va_start, va->va_end,
- 				va->va_start, va->va_end,
- 				KASAN_VMALLOC_PAGE_RANGE);
-+
-+		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
-+			cond_resched();
-+			batch_count = 0;
-+		}
- 	}
- 
- 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
-_
-
-Patches currently in -mm which might be from kartikey406@gmail.com are
-
+ 	ndev->hw_features =3D NETIF_F_SG;
+ 	ndev->features |=3D ndev->hw_features;
+=20
+-	ndev->max_mtu =3D EMAC_RX_BUF_4K - (ETH_HLEN + ETH_FCS_LEN);
++	ndev->max_mtu =3D EMAC_RX_BUF_MAX - (ETH_HLEN + ETH_FCS_LEN);
+ 	ndev->pcpu_stat_type =3D NETDEV_PCPU_STAT_DSTATS;
+=20
+ 	priv =3D netdev_priv(ndev);
 
 
