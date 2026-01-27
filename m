@@ -1,159 +1,321 @@
-Return-Path: <stable+bounces-211841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211842-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GJ8NITSeGmNtQEAu9opvQ
-	(envelope-from <stable+bounces-211841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:58:12 +0100
+	id qPp8MC3VeGmNtQEAu9opvQ
+	(envelope-from <stable+bounces-211842-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:09:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583F196293
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:58:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F466965DF
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 16:09:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 70F9D31730F5
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 14:48:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DC4330E18A3
+	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 15:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2A035CBB4;
-	Tue, 27 Jan 2026 14:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7193B35D611;
+	Tue, 27 Jan 2026 15:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aTa4+Y5x"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BF13587C2
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 14:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFD135CBB8;
+	Tue, 27 Jan 2026 15:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769525273; cv=none; b=LFXZinwuLjB6MZ/zqwvPjpntdF+IY7DUqhu+VeHQRk9LWhA52MpfippKuIisHUbsprEYGXd4myCOPWyDMBPUwpGQcOcbaIdBj1tL9ukgHRydTXLCFTjZN0AhcUPex8qKPmoR+Nufq+naibOcJNKBnhfapc4h0JUyKU7cvU0upcg=
+	t=1769526245; cv=none; b=b57hcD5HWmJQTATArTUBKppDsSYRzkTUrQz/1pC5kIj9uCBuGkvT8mcjNvxNBZWJd6DEakbOr0pa+sU4SvDnnBTDAPLFqUt0V2njc8A+eFoO6dae5B4ks9F+29xxchOqL+kdDKWeKQedWf8JiIOAoII8pkEImY9NCVVSAfQncR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769525273; c=relaxed/simple;
-	bh=udRNf6AuPzs8b7VmBXMRfQTi/d0+AJRL72dnp3uJGas=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxsxxFC449O2bfBZQ2y4MMlGz1BapcAl/wQ9OFOi6J9bJgvQc4McxOg8UpXp802AxEGOhRj8bs3mK/L5NO3gtMAt4bSHPjGkDJnsPmpUhT43pQnDTw1zpQYbteWrEjp6tVW8g/ga2Fp/SyXz9ViBdfrmCiLoMZjZNOEAoViB7VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vkkM9-0001qB-Ft; Tue, 27 Jan 2026 15:47:49 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vkkM9-002lUp-36;
-	Tue, 27 Jan 2026 15:47:49 +0100
-Received: from blackshift.org (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 18D024D96A0;
-	Tue, 27 Jan 2026 14:47:49 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: stable@vger.kernel.org
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10.y] can: esd_usb: esd_usb_read_bulk_callback(): fix URB memory leak
-Date: Tue, 27 Jan 2026 15:47:36 +0100
-Message-ID: <20260127144736.1444636-1-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012717-unimpeded-portside-0a1d@gregkh>
-References: <2026012717-unimpeded-portside-0a1d@gregkh>
+	s=arc-20240116; t=1769526245; c=relaxed/simple;
+	bh=IZ2U++iYob4bPRc7rFTS3Idcps1mxPfWbxAVVkGL7/s=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=SIudaQjlfQQJX0HqaOvtmCvf+JH+Yf7zoaLzMpvWt02EXFxsM3CW3r7+lTyUuZlR/dGMLMvCPvFD2xSoqZONgkuwPoxDnPst45tDYOFtt9TzJRPlduL8jBp+FevmaAqNOwglixyMlcbyYwGFUm8ax35IAJnU11yls0aJeqd5oC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aTa4+Y5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A4B8EC2BC86;
+	Tue, 27 Jan 2026 15:04:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769526244;
+	bh=IZ2U++iYob4bPRc7rFTS3Idcps1mxPfWbxAVVkGL7/s=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=aTa4+Y5xMzjNAghho/Z/w/Tedb86dRQAnxKxdBPJTfB8XOsB7feyYxrBJti/tUwZP
+	 LxisqYmGazgTUgg9YAtexV4eUlcnxrI8lDP4SZN61W2zgy44XOpWG3nW5kxmHZi3Ks
+	 5nePBIjodvoRkOQT+lgzhedsTTqEb2lU8Vx6nzuFwOrf/KsnFabX6C96iIZhAHUZ8d
+	 SOh32bzjBXbadIm0rrlr4NydBOZB2SOQhqMM/SgSUv0m7TsISJ6b70Ldt5HC+xPPzf
+	 GtCkWLafbBiTVjQRf489ojCHi571BS8w6781zzA+v7ofzqPJG/WuuJFgkPJyVc3NsS
+	 oIXdCpew7hKoA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9ABDDD2F033;
+	Tue, 27 Jan 2026 15:04:04 +0000 (UTC)
+From: Dmitry Safonov via B4 Relay <devnull+dima.arista.com@kernel.org>
+Date: Tue, 27 Jan 2026 15:03:55 +0000
+Subject: [PATCH v4] ima_fs: Avoid creating measurement lists for
+ unsupported hash algos
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260127-ima-oob-v4-1-bf0cd7f9b4d4@arista.com>
+X-B4-Tracking: v=1; b=H4sIANvTeGkC/3XNSw6CMBgE4KuQrq3pCyiuvIdx8fclXUBNSxoN4
+ e627AxhOcl8MytKNnqb0K1ZUbTZJx/mEsSlQXqE+WWxNyUjRlhHKOuxnwCHoPDgQHLouDC9QqX
+ 9jtb5z770eJasIFmsIsx6rH6CtNhYi6NPS4jf/THTWj+OZ4opZkYwxwWVtu3vEAuDqw4TquuZn
+ UBWoOMSqNSyJdodID+BvEBqDBmc0Aw6+IPbtv0A426wqSoBAAA=
+X-Change-ID: 20260127-ima-oob-9fa83a634d7b
+To: Mimi Zohar <zohar@linux.ibm.com>, 
+ Roberto Sassu <roberto.sassu@huawei.com>, 
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+ Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, 
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+ Silvia Sisinni <silvia.sisinni@polito.it>, 
+ Enrico Bravi <enrico.bravi@polito.it>
+Cc: linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Dmitry Safonov <0x7f454c46@gmail.com>, Dmitry Safonov <dima@arista.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769526243; l=7350;
+ i=dima@arista.com; s=20250521; h=from:subject:message-id;
+ bh=0AkeOCmKPP2c51CYjq6niks0p6IekSQkns2k9gvZ5rA=;
+ b=SXYOCsFlGx3soR/M0Cmf8qp4u6OBq5w85w+BL6cTLhDO2my4HxDLurlst54YX+cjQfWOSs4sb
+ 1RQdPqC9VAnBcSvbcCCvr9mhFHWRb4FB80w1/a+B5Q5jLNK9LQjyjKa
+X-Developer-Key: i=dima@arista.com; a=ed25519;
+ pk=/z94x2T59rICwjRqYvDsBe0MkpbkkdYrSW2J1G2gIcU=
+X-Endpoint-Received: by B4 Relay for dima@arista.com/20250521 with
+ auth_id=405
+X-Original-From: Dmitry Safonov <dima@arista.com>
+Reply-To: dima@arista.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211841-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCPT_COUNT_TWO(0.00)[2];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-211842-lists,stable=lfdr.de,dima.arista.com];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[linux.ibm.com,huawei.com,gmail.com,oracle.com,paul-moore.com,namei.org,hallyn.com,polito.it];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,arista.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	HAS_REPLYTO(0.00)[dima@arista.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
-	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:mid,pengutronix.de:email]
-X-Rspamd-Queue-Id: 583F196293
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arista.com:replyto,arista.com:email,arista.com:mid,huawei.com:email]
+X-Rspamd-Queue-Id: 3F466965DF
 X-Rspamd-Action: no action
 
-Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
-gs_usb_receive_bulk_callback(): fix URB memory leak").
+From: Dmitry Safonov <dima@arista.com>
 
-In esd_usb_open(), the URBs for USB-in transfers are allocated, added to
-the dev->rx_submitted anchor and submitted. In the complete callback
-esd_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
-esd_usb_close() the URBs are freed by calling
-usb_kill_anchored_urbs(&dev->rx_submitted).
+ima_init_crypto() skips initializing ima_algo_array[i] if the algorithm
+from ima_tpm_chip->allocated_banks[i].crypto_id is not supported.
+It seems avoid adding the unsupported algorithm to ima_algo_array will
+break all the logic that relies on indexing by NR_BANKS(ima_tpm_chip).
 
-However, this does not take into account that the USB framework unanchors
-the URB before the complete function is called. This means that once an
-in-URB has been completed, it is no longer anchored and is ultimately not
-released in esd_usb_close().
+On 6.12.40 I observe the following read out-of-bounds in hash_algo_name:
 
-Fix the memory leak by anchoring the URB in the
-esd_usb_read_bulk_callback() to the dev->rx_submitted anchor.
+> ==================================================================
+> BUG: KASAN: global-out-of-bounds in create_securityfs_measurement_lists+0x396/0x440
+> Read of size 8 at addr ffffffff83e18138 by task swapper/0/1
+>
+> CPU: 4 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.12.40 #3
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x61/0x90
+>  print_report+0xc4/0x580
+>  ? kasan_addr_to_slab+0x26/0x80
+>  ? create_securityfs_measurement_lists+0x396/0x440
+>  kasan_report+0xc2/0x100
+>  ? create_securityfs_measurement_lists+0x396/0x440
+>  create_securityfs_measurement_lists+0x396/0x440
+>  ima_fs_init+0xa3/0x300
+>  ima_init+0x7d/0xd0
+>  init_ima+0x28/0x100
+>  do_one_initcall+0xa6/0x3e0
+>  kernel_init_freeable+0x455/0x740
+>  kernel_init+0x24/0x1d0
+>  ret_from_fork+0x38/0x80
+>  ret_from_fork_asm+0x11/0x20
+>  </TASK>
+>
+> The buggy address belongs to the variable:
+>  hash_algo_name+0xb8/0x420
+>
+> The buggy address belongs to the physical page:
+> page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x107ce18
+> flags: 0x8000000000002000(reserved|zone=2)
+> raw: 8000000000002000 ffffea0041f38608 ffffea0041f38608 0000000000000000
+> raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+> page dumped because: kasan: bad access detected
+>
+> Memory state around the buggy address:
+>  ffffffff83e18000: 00 01 f9 f9 f9 f9 f9 f9 00 01 f9 f9 f9 f9 f9 f9
+>  ffffffff83e18080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+> >ffffffff83e18100: 00 00 00 00 00 00 00 f9 f9 f9 f9 f9 00 05 f9 f9
+>                                         ^
+>  ffffffff83e18180: f9 f9 f9 f9 00 00 00 00 00 00 00 04 f9 f9 f9 f9
+>  ffffffff83e18200: 00 00 00 00 00 00 00 00 04 f9 f9 f9 f9 f9 f9 f9
+> ==================================================================
 
-Fixes: 96d8e90382dc ("can: Add driver for esd CAN-USB/2 device")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-2-4b8cb2915571@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-(cherry picked from commit 5a4391bdc6c8357242f62f22069c865b792406b3)
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Seems like the TPM chip supports sha3_256, which isn't yet in
+tpm_algorithms:
+> tpm tpm0: TPM with unsupported bank algorithm 0x0027
+
+Use TPM_ALG_<ID> as a postfix for file names for unsupported hashing algorithms.
+
+This is how it looks on the test machine I have:
+> # ls -1 /sys/kernel/security/ima/
+> ascii_runtime_measurements
+> ascii_runtime_measurements_TPM_ALG_27
+> ascii_runtime_measurements_sha1
+> ascii_runtime_measurements_sha256
+> binary_runtime_measurements
+> binary_runtime_measurements_TPM_ALG_27
+> binary_runtime_measurements_sha1
+> binary_runtime_measurements_sha256
+> policy
+> runtime_measurements_count
+> violations
+
+Fixes: 9fa8e7625008 ("ima: add crypto agility support for template-hash algorithm")
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+Cc: Enrico Bravi <enrico.bravi@polito.it>
+Cc: Silvia Sisinni <silvia.sisinni@polito.it>
+Cc: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
 ---
- drivers/net/can/usb/esd_usb2.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Changes in v4:
+- Use ima_tpm_chip->allocated_banks[algo_idx].digest_size instead of hash_digest_size[algo]
+  (Roberto Sassu)
+- Link to v3: https://lore.kernel.org/r/20260127-ima-oob-v3-1-1dd09f4c2a6a@arista.com
+Testing note: I test it on v6.12.40 kernel backport, which slightly differs as
+lookup_template_data_hash_algo() was yet present.
 
-diff --git a/drivers/net/can/usb/esd_usb2.c b/drivers/net/can/usb/esd_usb2.c
-index c9ccce6c60b4..fb28e688300d 100644
---- a/drivers/net/can/usb/esd_usb2.c
-+++ b/drivers/net/can/usb/esd_usb2.c
-@@ -441,13 +441,20 @@ static void esd_usb2_read_bulk_callback(struct urb *urb)
- 			  urb->transfer_buffer, RX_BUFFER_SIZE,
- 			  esd_usb2_read_bulk_callback, dev);
+Changes in v3:
+- Now fix the spelling *for real* (sorry, messed it up in v2)
+- Link to v2: https://lore.kernel.org/r/20260127-ima-oob-v2-1-f38a18c850cf@arista.com
+
+Changes in v2:
+- Instead of skipping unknown algorithms, add files under their TPM_ALG_ID (Roberto Sassu)
+- Fix spelling (Roberto Sassu)
+- Copy @stable on the fix
+- Link to v1: https://lore.kernel.org/r/20260127-ima-oob-v1-1-2d42f3418e57@arista.com
+---
+ security/integrity/ima/ima_fs.c | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
+
+diff --git a/security/integrity/ima/ima_fs.c b/security/integrity/ima/ima_fs.c
+index 012a58959ff0..9a00a0547619 100644
+--- a/security/integrity/ima/ima_fs.c
++++ b/security/integrity/ima/ima_fs.c
+@@ -132,16 +132,12 @@ int ima_measurements_show(struct seq_file *m, void *v)
+ 	char *template_name;
+ 	u32 pcr, namelen, template_data_len; /* temporary fields */
+ 	bool is_ima_template = false;
+-	enum hash_algo algo;
+ 	int i, algo_idx;
  
-+	usb_anchor_urb(urb, &dev->rx_submitted);
-+
- 	retval = usb_submit_urb(urb, GFP_ATOMIC);
-+	if (!retval)
-+		return;
-+
-+	usb_unanchor_urb(urb);
-+
- 	if (retval == -ENODEV) {
- 		for (i = 0; i < dev->net_count; i++) {
- 			if (dev->nets[i])
- 				netif_device_detach(dev->nets[i]->netdev);
- 		}
--	} else if (retval) {
-+	} else {
- 		dev_err(dev->udev->dev.parent,
- 			"failed resubmitting read bulk urb: %d\n", retval);
- 	}
+ 	algo_idx = ima_sha1_idx;
+-	algo = HASH_ALGO_SHA1;
+ 
+-	if (m->file != NULL) {
++	if (m->file != NULL)
+ 		algo_idx = (unsigned long)file_inode(m->file)->i_private;
+-		algo = ima_algo_array[algo_idx].algo;
+-	}
+ 
+ 	/* get entry */
+ 	e = qe->entry;
+@@ -160,7 +156,8 @@ int ima_measurements_show(struct seq_file *m, void *v)
+ 	ima_putc(m, &pcr, sizeof(e->pcr));
+ 
+ 	/* 2nd: template digest */
+-	ima_putc(m, e->digests[algo_idx].digest, hash_digest_size[algo]);
++	ima_putc(m, e->digests[algo_idx].digest,
++		 ima_tpm_chip->allocated_banks[algo_idx].digest_size);
+ 
+ 	/* 3rd: template name size */
+ 	namelen = !ima_canonical_fmt ? strlen(template_name) :
+@@ -229,16 +226,12 @@ static int ima_ascii_measurements_show(struct seq_file *m, void *v)
+ 	struct ima_queue_entry *qe = v;
+ 	struct ima_template_entry *e;
+ 	char *template_name;
+-	enum hash_algo algo;
+ 	int i, algo_idx;
+ 
+ 	algo_idx = ima_sha1_idx;
+-	algo = HASH_ALGO_SHA1;
+ 
+-	if (m->file != NULL) {
++	if (m->file != NULL)
+ 		algo_idx = (unsigned long)file_inode(m->file)->i_private;
+-		algo = ima_algo_array[algo_idx].algo;
+-	}
+ 
+ 	/* get entry */
+ 	e = qe->entry;
+@@ -252,7 +245,8 @@ static int ima_ascii_measurements_show(struct seq_file *m, void *v)
+ 	seq_printf(m, "%2d ", e->pcr);
+ 
+ 	/* 2nd: template hash */
+-	ima_print_digest(m, e->digests[algo_idx].digest, hash_digest_size[algo]);
++	ima_print_digest(m, e->digests[algo_idx].digest,
++			 ima_tpm_chip->allocated_banks[algo_idx].digest_size);
+ 
+ 	/* 3th:  template name */
+ 	seq_printf(m, " %s", template_name);
+@@ -404,16 +398,24 @@ static int __init create_securityfs_measurement_lists(void)
+ 		char file_name[NAME_MAX + 1];
+ 		struct dentry *dentry;
+ 
+-		sprintf(file_name, "ascii_runtime_measurements_%s",
+-			hash_algo_name[algo]);
++		if (algo == HASH_ALGO__LAST)
++			sprintf(file_name, "ascii_runtime_measurements_TPM_ALG_%x",
++				ima_tpm_chip->allocated_banks[i].alg_id);
++		else
++			sprintf(file_name, "ascii_runtime_measurements_%s",
++				hash_algo_name[algo]);
+ 		dentry = securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
+ 						ima_dir, (void *)(uintptr_t)i,
+ 						&ima_ascii_measurements_ops);
+ 		if (IS_ERR(dentry))
+ 			return PTR_ERR(dentry);
+ 
+-		sprintf(file_name, "binary_runtime_measurements_%s",
+-			hash_algo_name[algo]);
++		if (algo == HASH_ALGO__LAST)
++			sprintf(file_name, "binary_runtime_measurements_TPM_ALG_%x",
++				ima_tpm_chip->allocated_banks[i].alg_id);
++		else
++			sprintf(file_name, "binary_runtime_measurements_%s",
++				hash_algo_name[algo]);
+ 		dentry = securityfs_create_file(file_name, S_IRUSR | S_IRGRP,
+ 						ima_dir, (void *)(uintptr_t)i,
+ 						&ima_measurements_ops);
+
+---
+base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+change-id: 20260127-ima-oob-9fa83a634d7b
+
+Best regards,
 -- 
-2.51.0
+Dmitry Safonov <dima@arista.com>
+
 
 
