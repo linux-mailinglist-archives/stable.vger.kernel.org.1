@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aED4MRA2eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212406-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:12 +0100
+	id eJFAEOU7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6ACEA5531
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B183EA5F84
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 507663058B7F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7A723147D1B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4B92FDC5D;
-	Wed, 28 Jan 2026 15:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686BB2DF138;
+	Wed, 28 Jan 2026 16:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1J9Co1G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZSlAPYE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BE82E2DF4;
-	Wed, 28 Jan 2026 15:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B99025783A;
+	Wed, 28 Jan 2026 16:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615411; cv=none; b=QQF2KeGbNQAQAH8Y3aECa2pfnR4/LKLzbI1wGpX/15HcAoSWXiDYndQXRqdYbKtb7A1H4T5b4uX7Lh4AnQDO9C7DFejCC7Ebi3PSQYVYlSeliXnN2MSEAJtl/vrne9iLSHvjMoEY12IZhS2qtFx9WYwSJnxbJdjKQE1+4n0KBHk=
+	t=1769616049; cv=none; b=c3pDm04WP9O1Rb7auNhr4VJ0bjdVL8ZgMqY8TdbMWO4XfXT1lFYqYMQHSLrFTqh3m4A9ODCHkBpu87C1nVvlZFHo7907o/bG6vihTm+kWQ2Rt5XnFSRMP2XW+h4BLVbdSp8gFdCXg4qKC+2Q5OF4fN1+w8UmQJ/UJNaHk2p+tKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615411; c=relaxed/simple;
-	bh=Wd5wK3NIU2+XlIwKkhAPVzAmR2rdbeaaWUNT8ZGfJQ4=;
+	s=arc-20240116; t=1769616049; c=relaxed/simple;
+	bh=uk2kq3JCcr9+t5mJRXx3PsRczl9ZTA7/cXmYb2KzBGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ciUvNR0ERGMCelhbqieqP8uCQ9y8C1QsOpBNwzwFgLu4/QaA3sU1+A86rfMzw0xN11n2p+f7BD2uxN0DYTKijrzGWFzqde9Mj/pxlQmUUCEdanZjN7W7nP+8tJJ1+BnZ4o2HmHoISbnys/RWMKsWr5PQ42o003ibdUFt2rywXYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1J9Co1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EC0C4CEF1;
-	Wed, 28 Jan 2026 15:50:10 +0000 (UTC)
+	 MIME-Version; b=Jqmt+fIjrAniEaIleDQcsZVDVc33nUpq6wldQAKp6o5RgrwSmVMgFoRwT5k2LsJEsM1qWxK6adEEP8cvhny2qJm2wQ6hPORGBAdRfMX8wGP6Xwp8nB55K2fzDHjYUt8r5aSOJgjJ1B0XtoXXx+ZZW/N6YwWxt+3N2nZDmjySo60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZSlAPYE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC7BC116C6;
+	Wed, 28 Jan 2026 16:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615410;
-	bh=Wd5wK3NIU2+XlIwKkhAPVzAmR2rdbeaaWUNT8ZGfJQ4=;
+	s=korg; t=1769616049;
+	bh=uk2kq3JCcr9+t5mJRXx3PsRczl9ZTA7/cXmYb2KzBGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x1J9Co1GdfGZPW8LrmOdSdoNfeUR9FhXwyU327fMS78Wk5kXRNucdMsa0r/1TJ3+P
-	 cRpinIsRZJ1j8+BOdxfiY8EBy6e1huPu2/iJfZayF4szBg45vU+Zw/4TNEluo4+zYW
-	 HtMvoXzyR6cAKz8ZeEiH3IyE9CDwvcOVrUAvrmbQ=
+	b=WZSlAPYEm/yjudJVyxP8A7qOh8R4szl+1yw2pqxXpQBGwhxHkoaUTrzLT39KGHkxY
+	 WsXxe9EEkgm76Rv9bCFaarnW2r+MHVWfaiZSQjiSxs8mejiaiKoxVuV3NTSzJQvAiQ
+	 w9WaodxukxgveATIBfqCP7wPf7SqDUSpDZ47ThxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 153/169] iio: core: Replace lockdep_set_class() + mutex_init() by combined call
+	Wenkai Lin <linwenkai6@hisilicon.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: [PATCH 6.18 191/227] uacce: fix cdev handling in the cleanup path
 Date: Wed, 28 Jan 2026 16:23:56 +0100
-Message-ID: <20260128145339.514394625@linuxfoundation.org>
+Message-ID: <20260128145351.319459532@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +63,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212406-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212596-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,analog.com:email,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E6ACEA5531
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B183EA5F84
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Wenkai Lin <linwenkai6@hisilicon.com>
 
-[ Upstream commit c76ba4b2644424b8dbacee80bb40991eac29d39e ]
+commit a3bece3678f6c88db1f44c602b2a63e84b4040ac upstream.
 
-Replace lockdep_set_class() + mutex_init() by combined call
-mutex_init_with_key().
+When cdev_device_add fails, it internally releases the cdev memory,
+and if cdev_device_del is then executed, it will cause a hang error.
+To fix it, we check the return value of cdev_device_add() and clear
+uacce->cdev to avoid calling cdev_device_del in the uacce_remove.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 9910159f0659 ("iio: core: add separate lockdep class for info_exist_lock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 015d239ac014 ("uacce: add uacce driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Link: https://patch.msgid.link/20251202061256.4158641-2-huangchenghai2@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/industrialio-core.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/misc/uacce/uacce.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1696,9 +1696,8 @@ struct iio_dev *iio_device_alloc(struct
- 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
+--- a/drivers/misc/uacce/uacce.c
++++ b/drivers/misc/uacce/uacce.c
+@@ -519,6 +519,8 @@ EXPORT_SYMBOL_GPL(uacce_alloc);
+  */
+ int uacce_register(struct uacce_device *uacce)
+ {
++	int ret;
++
+ 	if (!uacce)
+ 		return -ENODEV;
  
- 	lockdep_register_key(&iio_dev_opaque->mlock_key);
--	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
+@@ -529,7 +531,11 @@ int uacce_register(struct uacce_device *
+ 	uacce->cdev->ops = &uacce_fops;
+ 	uacce->cdev->owner = THIS_MODULE;
  
--	mutex_init(&iio_dev_opaque->mlock);
-+	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
- 	mutex_init(&iio_dev_opaque->info_exist_lock);
+-	return cdev_device_add(uacce->cdev, &uacce->dev);
++	ret = cdev_device_add(uacce->cdev, &uacce->dev);
++	if (ret)
++		uacce->cdev = NULL;
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(uacce_register);
  
- 	return indio_dev;
 
 
 
