@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-212265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cD0tL9Mwemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:51 +0100
+	id 2CckLJ01eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:13:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 204E4A49F4
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109F2A547E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:13:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05C1931AEFCB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:43:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CB6530421D1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2308E30217A;
-	Wed, 28 Jan 2026 15:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076182D77F7;
+	Wed, 28 Jan 2026 15:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbahMf/x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDDOC4in"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8292FDC38;
-	Wed, 28 Jan 2026 15:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09862C237E;
+	Wed, 28 Jan 2026 15:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614936; cv=none; b=jNjyOsvtiOxXiIMdo9TVsXwmsDsu5nwNyOq14tzS+apRM8Y1l75mhtqWEpAgfz9xINCPws7mPFhNGHHR/IAabowWGNkJFCTTNoAtXK7wqikTw13WShhKQeu0iabD1OA8mvluCgpIXoBcFKvEW3fBCuf+46qjOYMzTRr2/VnVgDg=
+	t=1769614578; cv=none; b=Rc88GoONkdj0n9JMvcaK/cNlqkLYyEiCAnJFVT0B0s5ak/c/IkG12/DTHIapEg0whK6UY0RTbEZe/PeXRwQ4xV/mj5HX1z8cebpyPEnsKaf8tE5UOrFQ2sjCSDtQLHTvJSqql1jOeYzyrSnmjib6YNBg1S8W4wqm7lkmyr6oHNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614936; c=relaxed/simple;
-	bh=C35ZmbEUrO+nwSc/J3t0GqUA08VFxCYyfg4iPeSLYOg=;
+	s=arc-20240116; t=1769614578; c=relaxed/simple;
+	bh=LqpUMjJSwdOGXPJ833opjmcoxKVNmsM+muNxX+wrHLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqDHQIDI0YuZgNGiikncxvXGR+ZapnJYjS7XqARsAohbA0HEbJbWFhupCYWZ7Qe59Oa98Z1yyv8SIwbTsgquyrYn330t9AZqmO+V7w/oSNoISNA0bJOAORudRLmKt29nKbLQr+C0leooiS3+8H7515jQheoSgjnOERDZT/HoxtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbahMf/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEFCC4CEF1;
-	Wed, 28 Jan 2026 15:42:14 +0000 (UTC)
+	 MIME-Version; b=Ritjxwr2lj2MoNWAL65KRvkSHkITrCTuqtyfVxk29kTUYbl4ZFhNR6PAs+4YykZd7oDv54i+E7jBRzBKigM7nggELLDMmyJhna9dXKi7mYcAWfTvR+7FtZW1yLb6dh+q22JXD1L55dod954oSW3sF4DOwVzFa9oajwHSo7FFtoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDDOC4in; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE3AC4CEF1;
+	Wed, 28 Jan 2026 15:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614935;
-	bh=C35ZmbEUrO+nwSc/J3t0GqUA08VFxCYyfg4iPeSLYOg=;
+	s=korg; t=1769614578;
+	bh=LqpUMjJSwdOGXPJ833opjmcoxKVNmsM+muNxX+wrHLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zbahMf/xeDZsFDcb53u24A0jZS7IJNvESXbya5zFQPzVpk+I9RklSSZmVyDtK8Hqw
-	 uKxerQrtcvmbs69CZDpXyE+xb12hY+F8Cpjs04spPOjhJDOlWjtOt2I9Q5/3LbV28N
-	 KP6KLYFGJCF1inXc8lYYxmOzRtyR3KwapkhnmoZQ=
+	b=GDDOC4inBY0tPqCxe2b/A3TODMu9oQc0ql6+gJhiRZ0l1n+A6MGWj1DTXpV90XwcT
+	 4SQKYXq1x56ehZm/89Y8LAnkI7qmjyZwY60DmqRwhUPSdpWPRijM+jHFphVTomk55K
+	 9t/kBQ+NJk0X1ef+cnz5ehjoiVliU3y98Hek+BHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Chen <chenzhen126@huawei.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/169] sctp: move SCTP_CMD_ASSOC_SHKEY right after SCTP_CMD_PEER_INIT
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 6.6 137/254] w1: therm: Fix off-by-one buffer overflow in alarms_store
 Date: Wed, 28 Jan 2026 16:21:53 +0100
-Message-ID: <20260128145335.106675109@linuxfoundation.org>
+Message-ID: <20260128145349.748311089@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,137 +64,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212265-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212156-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 204E4A49F4
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 109F2A547E
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit a80c9d945aef55b23b54838334345f20251dad83 ]
+commit 761fcf46a1bd797bd32d23f3ea0141ffd437668a upstream.
 
-A null-ptr-deref was reported in the SCTP transmit path when SCTP-AUTH key
-initialization fails:
+The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
+bytes and a NUL terminator is appended. However, the 'size' argument
+does not account for this extra byte. The original code then allocated
+'size' bytes and used strcpy() to copy 'buf', which always writes one
+byte past the allocated buffer since strcpy() copies until the NUL
+terminator at index 'size'.
 
-  ==================================================================
-  KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
-  CPU: 0 PID: 16 Comm: ksoftirqd/0 Tainted: G W 6.6.0 #2
-  RIP: 0010:sctp_packet_bundle_auth net/sctp/output.c:264 [inline]
-  RIP: 0010:sctp_packet_append_chunk+0xb36/0x1260 net/sctp/output.c:401
-  Call Trace:
+Fix this by parsing the 'buf' parameter directly using simple_strtoll()
+without allocating any intermediate memory or string copying. This
+removes the overflow while simplifying the code.
 
-  sctp_packet_transmit_chunk+0x31/0x250 net/sctp/output.c:189
-  sctp_outq_flush_data+0xa29/0x26d0 net/sctp/outqueue.c:1111
-  sctp_outq_flush+0xc80/0x1240 net/sctp/outqueue.c:1217
-  sctp_cmd_interpreter.isra.0+0x19a5/0x62c0 net/sctp/sm_sideeffect.c:1787
-  sctp_side_effects net/sctp/sm_sideeffect.c:1198 [inline]
-  sctp_do_sm+0x1a3/0x670 net/sctp/sm_sideeffect.c:1169
-  sctp_assoc_bh_rcv+0x33e/0x640 net/sctp/associola.c:1052
-  sctp_inq_push+0x1dd/0x280 net/sctp/inqueue.c:88
-  sctp_rcv+0x11ae/0x3100 net/sctp/input.c:243
-  sctp6_rcv+0x3d/0x60 net/sctp/ipv6.c:1127
-
-The issue is triggered when sctp_auth_asoc_init_active_key() fails in
-sctp_sf_do_5_1C_ack() while processing an INIT_ACK. In this case, the
-command sequence is currently:
-
-- SCTP_CMD_PEER_INIT
-- SCTP_CMD_TIMER_STOP (T1_INIT)
-- SCTP_CMD_TIMER_START (T1_COOKIE)
-- SCTP_CMD_NEW_STATE (COOKIE_ECHOED)
-- SCTP_CMD_ASSOC_SHKEY
-- SCTP_CMD_GEN_COOKIE_ECHO
-
-If SCTP_CMD_ASSOC_SHKEY fails, asoc->shkey remains NULL, while
-asoc->peer.auth_capable and asoc->peer.peer_chunks have already been set by
-SCTP_CMD_PEER_INIT. This allows a DATA chunk with auth = 1 and shkey = NULL
-to be queued by sctp_datamsg_from_user().
-
-Since command interpretation stops on failure, no COOKIE_ECHO should been
-sent via SCTP_CMD_GEN_COOKIE_ECHO. However, the T1_COOKIE timer has already
-been started, and it may enqueue a COOKIE_ECHO into the outqueue later. As
-a result, the DATA chunk can be transmitted together with the COOKIE_ECHO
-in sctp_outq_flush_data(), leading to the observed issue.
-
-Similar to the other places where it calls sctp_auth_asoc_init_active_key()
-right after sctp_process_init(), this patch moves the SCTP_CMD_ASSOC_SHKEY
-immediately after SCTP_CMD_PEER_INIT, before stopping T1_INIT and starting
-T1_COOKIE. This ensures that if shared key generation fails, authenticated
-DATA cannot be sent. It also allows the T1_INIT timer to retransmit INIT,
-giving the client another chance to process INIT_ACK and retry key setup.
-
-Fixes: 730fc3d05cd4 ("[SCTP]: Implete SCTP-AUTH parameter processing")
-Reported-by: Zhen Chen <chenzhen126@huawei.com>
-Tested-by: Zhen Chen <chenzhen126@huawei.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/44881224b375aa8853f5e19b4055a1a56d895813.1768324226.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://patch.msgid.link/20251216145007.44328-2-thorsten.blum@linux.dev
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sm_statefuns.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/w1/slaves/w1_therm.c |   60 +++++++++++++------------------------------
+ 1 file changed, 19 insertions(+), 41 deletions(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index dc66dff33d6d4..966bd6a44594a 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -603,6 +603,11 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
- 	sctp_add_cmd_sf(commands, SCTP_CMD_PEER_INIT,
- 			SCTP_PEER_INIT(initchunk));
+--- a/drivers/w1/slaves/w1_therm.c
++++ b/drivers/w1/slaves/w1_therm.c
+@@ -1846,53 +1846,35 @@ static ssize_t alarms_store(struct devic
+ 	struct w1_slave *sl = dev_to_w1_slave(device);
+ 	struct therm_info info;
+ 	u8 new_config_register[3];	/* array of data to be written */
+-	int temp, ret;
+-	char *token = NULL;
++	long long temp;
++	int ret = 0;
+ 	s8 tl, th;	/* 1 byte per value + temp ring order */
+-	char *p_args, *orig;
++	const char *p = buf;
++	char *endp;
  
-+	/* SCTP-AUTH: generate the association shared keys so that
-+	 * we can potentially sign the COOKIE-ECHO.
-+	 */
-+	sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_SHKEY, SCTP_NULL());
-+
- 	/* Reset init error count upon receipt of INIT-ACK.  */
- 	sctp_add_cmd_sf(commands, SCTP_CMD_INIT_COUNTER_RESET, SCTP_NULL());
- 
-@@ -617,11 +622,6 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
- 	sctp_add_cmd_sf(commands, SCTP_CMD_NEW_STATE,
- 			SCTP_STATE(SCTP_STATE_COOKIE_ECHOED));
- 
--	/* SCTP-AUTH: generate the association shared keys so that
--	 * we can potentially sign the COOKIE-ECHO.
--	 */
--	sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_SHKEY, SCTP_NULL());
+-	p_args = orig = kmalloc(size, GFP_KERNEL);
+-	/* Safe string copys as buf is const */
+-	if (!p_args) {
+-		dev_warn(device,
+-			"%s: error unable to allocate memory %d\n",
+-			__func__, -ENOMEM);
+-		return size;
+-	}
+-	strcpy(p_args, buf);
 -
- 	/* 5.1 C) "A" shall then send the State Cookie received in the
- 	 * INIT ACK chunk in a COOKIE ECHO chunk, ...
- 	 */
--- 
-2.51.0
-
+-	/* Split string using space char */
+-	token = strsep(&p_args, " ");
+-
+-	if (!token)	{
+-		dev_info(device,
+-			"%s: error parsing args %d\n", __func__, -EINVAL);
+-		goto free_m;
+-	}
+-
+-	/* Convert 1st entry to int */
+-	ret = kstrtoint (token, 10, &temp);
++	temp = simple_strtoll(p, &endp, 10);
++	if (p == endp || *endp != ' ')
++		ret = -EINVAL;
++	else if (temp < INT_MIN || temp > INT_MAX)
++		ret = -ERANGE;
+ 	if (ret) {
+ 		dev_info(device,
+ 			"%s: error parsing args %d\n", __func__, ret);
+-		goto free_m;
++		return size;
+ 	}
+ 
+ 	tl = int_to_short(temp);
+ 
+-	/* Split string using space char */
+-	token = strsep(&p_args, " ");
+-	if (!token)	{
+-		dev_info(device,
+-			"%s: error parsing args %d\n", __func__, -EINVAL);
+-		goto free_m;
+-	}
+-	/* Convert 2nd entry to int */
+-	ret = kstrtoint (token, 10, &temp);
++	p = endp + 1;
++	temp = simple_strtoll(p, &endp, 10);
++	if (p == endp)
++		ret = -EINVAL;
++	else if (temp < INT_MIN || temp > INT_MAX)
++		ret = -ERANGE;
+ 	if (ret) {
+ 		dev_info(device,
+ 			"%s: error parsing args %d\n", __func__, ret);
+-		goto free_m;
++		return size;
+ 	}
+ 
+ 	/* Prepare to cast to short by eliminating out of range values */
+@@ -1915,7 +1897,7 @@ static ssize_t alarms_store(struct devic
+ 		dev_info(device,
+ 			"%s: error reading from the slave device %d\n",
+ 			__func__, ret);
+-		goto free_m;
++		return size;
+ 	}
+ 
+ 	/* Write data in the device RAM */
+@@ -1923,7 +1905,7 @@ static ssize_t alarms_store(struct devic
+ 		dev_info(device,
+ 			"%s: Device not supported by the driver %d\n",
+ 			__func__, -ENODEV);
+-		goto free_m;
++		return size;
+ 	}
+ 
+ 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
+@@ -1932,10 +1914,6 @@ static ssize_t alarms_store(struct devic
+ 			"%s: error writing to the slave device %d\n",
+ 			__func__, ret);
+ 
+-free_m:
+-	/* free allocated memory */
+-	kfree(orig);
+-
+ 	return size;
+ }
+ 
 
 
 
