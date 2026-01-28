@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iB17B6Mwemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212270-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:03 +0100
+	id aFzcJ4Y1eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51B4A4962
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3BA0A5477
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 88E2530564A5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:43:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 379343076EC1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6823090F7;
-	Wed, 28 Jan 2026 15:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F642D5940;
+	Wed, 28 Jan 2026 15:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyvRRZ1M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOLOVDQ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5033074B1;
-	Wed, 28 Jan 2026 15:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D52C2C237E;
+	Wed, 28 Jan 2026 15:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614955; cv=none; b=blMZV8MU6ZosdcUCOpCunWEz/f4fQnKD59p1iq81dRQVGQgfMfvo0ChbnPZhrPAdbCJ9D6azJa1vyQH1ZZFj4JRGuXw3E3ihwGzZVthayRifyN9z4rpZ4+h7Bshkkm2G6u79GDd387bdMkYVZVo0AEEYGdQ3OzHZ7nqqS3XZLms=
+	t=1769614562; cv=none; b=B/xhjDI6rUzLld6+hyt2p9suFsdE+4vHYzW5Xx/RF4vlp0TlCv0rYtTOO5ZXkaFD4Pu/1gGYujSnFtNNrkPuBAClUWpAOhLuXHVVLjIvlFzuliEv8q50gmax9UCX+fGJln8jA6VoRVqF1xKBW7OakdKt4hMm9elCUdpUtw1n0TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614955; c=relaxed/simple;
-	bh=WLk5EgqFbSl0KssoOmuxAhZZx6asp9BmPU9aL17wxVo=;
+	s=arc-20240116; t=1769614562; c=relaxed/simple;
+	bh=5u0WtFgUtnPxN1RuVLEcVXQfN1xV2SMwrSMyXZDg11s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FpeGLlZ3hhpX7P9eu3GdiWp5Do0mStE6kkp6peDU8o7slMNgQe7s7JUdGfjtdO7iGGwcv/MyXi4AhCTzAtf+bV4DtyeS/+ZxYuXUoBnCou3j2hC2hQk1hx79X72DWLIAV8OseSsWziGKtu627Cc10OMp2YQaXrGgq4rGz2geAfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyvRRZ1M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F655C4CEF1;
-	Wed, 28 Jan 2026 15:42:33 +0000 (UTC)
+	 MIME-Version; b=BYdAVtSKYrFXy+zBSkcoereqmilj+nZObtca3U3Klvzm5HuFsgM68AoCGLVZCcEiMbe4a0OjfdVc6/3gwWi6z1dBCamyOwui8I0gWrkk7RN9d7QcW6INL+od05xg3OgmdM1+4sx465M15aLqVJGGfBtPwpKp8yvfGKbmhXV227w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOLOVDQ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFEAC4CEF1;
+	Wed, 28 Jan 2026 15:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614954;
-	bh=WLk5EgqFbSl0KssoOmuxAhZZx6asp9BmPU9aL17wxVo=;
+	s=korg; t=1769614562;
+	bh=5u0WtFgUtnPxN1RuVLEcVXQfN1xV2SMwrSMyXZDg11s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyvRRZ1MDCfo1VNWjaZ+Ts2OG/WJXrdgF5C21HPUEg88XJ6PIgSbdNUCXxb9UrExY
-	 VP6NqDJD1n6B400adrhDLdniaXOI0TtWSMy82mlblhDLQYW+2SQs3AkROddpzSKxys
-	 cFB7fYL5KgT3W+JgIINWqKURT0voKicSmwQhcRXM=
+	b=tOLOVDQ+oje5n/P9waK+Zn0XflE5/aUfYOfpdyEUin4ktNwHi/U8TeFYMFqWpMg2K
+	 JvvFKp/9hM5N+BvSwkVZ6AfRHoodVdGfLrqbwlfS5qbGRSJXKNTlONBCj86ah7mbnF
+	 Wjv4eBuyVSqzX18Unu4YWbBvLG3butyTHRZo9kog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Yang <mmyangfl@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 035/169] veth: fix data race in veth_get_ethtool_stats
+	stable@kernel.org,
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 142/254] scsi: storvsc: Process unsupported MODE_SENSE_10
 Date: Wed, 28 Jan 2026 16:21:58 +0100
-Message-ID: <20260128145335.284145140@linuxfoundation.org>
+Message-ID: <20260128145349.926700181@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,88 +68,78 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212270-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,outlook.com,oracle.com];
+	TAGGED_FROM(0.00)[bounces-212151-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A51B4A4962
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email]
+X-Rspamd-Queue-Id: F3BA0A5477
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Yang <mmyangfl@gmail.com>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit b47adaab8b3d443868096bac08fdbb3d403194ba ]
+commit 9eacec5d18f98f89be520eeeef4b377acee3e4b8 upstream.
 
-In veth_get_ethtool_stats(), some statistics protected by
-u64_stats_sync, are read and accumulated in ignorance of possible
-u64_stats_fetch_retry() events. These statistics, peer_tq_xdp_xmit and
-peer_tq_xdp_xmit_err, are already accumulated by veth_xdp_xmit(). Fix
-this by reading them into a temporary buffer first.
+The Hyper-V host does not support MODE_SENSE_10 and MODE_SENSE.  The
+driver handles MODE_SENSE as unsupported command, but not for
+MODE_SENSE_10. Add MODE_SENSE_10 to the same handling logic and return
+correct code to SCSI layer.
 
-Fixes: 5fe6e56776ba ("veth: rely on peer veth_rq for ndo_xdp_xmit accounting")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
-Link: https://patch.msgid.link/20260114122450.227982-1-mmyangfl@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 89ae7d709357 ("Staging: hv: storvsc: Move the storage driver out of the staging area")
+Cc: stable@kernel.org
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/20260117010302.294068-1-longli@linux.microsoft.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/veth.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/scsi/storvsc_drv.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 4ff0d4232914f..77e4b0d1ca557 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -227,16 +227,20 @@ static void veth_get_ethtool_stats(struct net_device *dev,
- 		const struct veth_rq_stats *rq_stats = &rcv_priv->rq[i].stats;
- 		const void *base = (void *)&rq_stats->vs;
- 		unsigned int start, tx_idx = idx;
-+		u64 buf[VETH_TQ_STATS_LEN];
- 		size_t offset;
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1145,7 +1145,7 @@ static void storvsc_on_io_completion(str
+ 	 * The current SCSI handling on the host side does
+ 	 * not correctly handle:
+ 	 * INQUIRY command with page code parameter set to 0x80
+-	 * MODE_SENSE command with cmd[2] == 0x1c
++	 * MODE_SENSE and MODE_SENSE_10 command with cmd[2] == 0x1c
+ 	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
+ 	 *
+ 	 * Setup srb and scsi status so this won't be fatal.
+@@ -1155,6 +1155,7 @@ static void storvsc_on_io_completion(str
  
--		tx_idx += (i % dev->real_num_tx_queues) * VETH_TQ_STATS_LEN;
- 		do {
- 			start = u64_stats_fetch_begin(&rq_stats->syncp);
- 			for (j = 0; j < VETH_TQ_STATS_LEN; j++) {
- 				offset = veth_tq_stats_desc[j].offset;
--				data[tx_idx + j] += *(u64 *)(base + offset);
-+				buf[j] = *(u64 *)(base + offset);
- 			}
- 		} while (u64_stats_fetch_retry(&rq_stats->syncp, start));
-+
-+		tx_idx += (i % dev->real_num_tx_queues) * VETH_TQ_STATS_LEN;
-+		for (j = 0; j < VETH_TQ_STATS_LEN; j++)
-+			data[tx_idx + j] += buf[j];
- 	}
- 	pp_idx = idx + dev->real_num_tx_queues * VETH_TQ_STATS_LEN;
- 
--- 
-2.51.0
-
+ 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
+ 	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
++	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE_10) ||
+ 	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
+ 	   hv_dev_is_fc(device))) {
+ 		vstor_packet->vm_srb.scsi_status = 0;
 
 
 
