@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMS2L7pUemnk5AEAu9opvQ
-	(envelope-from <stable+bounces-212656-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:26:02 +0100
+	id COqxAc5Uemnk5AEAu9opvQ
+	(envelope-from <stable+bounces-212657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:26:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE1CA7BC3
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:26:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3FBA7BD0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:26:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2F682300FB46
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:26:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 61FFA300E5EC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E4B36F43D;
-	Wed, 28 Jan 2026 18:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8BB32F74D;
+	Wed, 28 Jan 2026 18:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVDfPhwM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n4HbabS6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E7B371046
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 18:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82ACD2C0F8C
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 18:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769624757; cv=none; b=jBLTyuFcKwnkD25VHVBDfqvuM4D5cM58g5DtpyD+KhHd7PgDe8O1w0SwupsxmDgrN0hYhwcjzBU0kP0X/STY/iBwSEhCHWhi0UfGD+I1syX31WqwB7kL2EXqQZb7zgnZGU2Skmn+hwKLaMPwb9LXNYZdZ4LBr64QGihWN8VcqDs=
+	t=1769624777; cv=none; b=Bcha0eMv+rPoAjDQwltr3aDhRuZuzQtgBvenJwCi/QloHdgRwECp9A3HrVVJrV1AXEUbtJ7eejXoPgHv1cQ6kqP/Ew1GLKOGLLgFh19enFf1YOBT+BN3xfei6+nJB7z5zvOJpY+BzAZXnKRA2jY3LaQoAjckVAps802aVZG6dJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769624757; c=relaxed/simple;
-	bh=+1Y90Rj300NgAvzinOZyxDTjHQWWRQCXI+caTvlvyFQ=;
+	s=arc-20240116; t=1769624777; c=relaxed/simple;
+	bh=AwlUMITnq/8APJ54MfXtAP4ujHSaF4vaUD8teVnjXko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UoSivZ0v3E+jYzUi7E01Q19hLhOYQtEuuHEJKLbkjqj0BMC3qW1oy1V4CJZPxAWOoFPWFiXh63DUmcfRneTa+khfFhGAkkNkujii047Mfmc9MZ95moBM80kI9tSScPlPK5dAkPneY7ckelwpf6qVQ/u37nwo6qS2FIxS3uTfQfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVDfPhwM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118AFC4CEF7;
-	Wed, 28 Jan 2026 18:25:55 +0000 (UTC)
+	 MIME-Version; b=fizD7ektOvpFICdobWIZZKra8q3CfHBeHFqsL+nzktgyYP9hJS4t/4/+8r1PVWNCxzHVNZ4tnBTG7vnj3QPqAPTbNa6Ou1YlBZ7wg6Xw94Dzpzuc/Lka8SZCi7zok46UeUvXyR+sVJjc9grnQmW0n4mPAjhKQrrrcg1qbJ4KeSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n4HbabS6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A8FC4CEF1;
+	Wed, 28 Jan 2026 18:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769624756;
-	bh=+1Y90Rj300NgAvzinOZyxDTjHQWWRQCXI+caTvlvyFQ=;
+	s=k20201202; t=1769624777;
+	bh=AwlUMITnq/8APJ54MfXtAP4ujHSaF4vaUD8teVnjXko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVDfPhwMdeUj2i7u0DRXgpfS15Ypv1+7Wy9VUPFdRkirQFRxuY3+4mPfxCaisWaBQ
-	 tioriNjs6oVFM3xvnmZQyGbfPlJHPfFpHvR10tkvZNXXagHdBTWu/CQNYo/IFtH1H8
-	 wMYpLriKHQL5XSsotD/VFHkIzIMWnzJdPbR77JyDTpRB8RKARY5Tqt5teTZRjS2+Nn
-	 CC6AaryTqQL2Lxuyq7XVMHqXwU3Ur+lBELvn6fl3FuzBsw4RFdsLZCMVqiSwIEEG/E
-	 tI783oudywblH31Owm5bEzQML3lni+ozpX/Ja64hDqp6axLJNUsBz4wXFEGW5kU1bV
-	 1Yjymu5Me1KhQ==
+	b=n4HbabS6Wd+cI4scTDmDKBnU3m4kRW+14rcIVT9/eMIJ8j0DLzh/GuG+RUhfU3wv/
+	 BsodArPxuqkCgFmvFr8IqOW90k3nBdEz4LEvNYJkY5CQjQH4UPayR6L/NSeheurNvR
+	 B8Xf+dVHHEaWMWsBPQsUPXGMMxi1acbWVqNSj1F3iew/Rbch1jRvfGr9KAiW8AhRu4
+	 cmnO9Q2aku9mJhJd5dm8l1l9FdMZSkM3QgbMllsX0ZhgcogXZTIXLgIe6TzYpm/1HG
+	 I48Q4WW6Tf8Z9/bbNtnyJGYc4jxk6WxWkztFY4/HLTGwVLZxBpskoTJb9pvwPCH0qP
+	 zCUAYPCjk4Nsw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+Cc: Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 2/2] w1: therm: Fix off-by-one buffer overflow in alarms_store
-Date: Wed, 28 Jan 2026 13:25:52 -0500
-Message-ID: <20260128182552.2659610-2-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] mmc: sdhci-of-dwcmshc: Update DLL and pre-change delay for rockchip platform
+Date: Wed, 28 Jan 2026 13:26:14 -0500
+Message-ID: <20260128182615.2660161-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260128182552.2659610-1-sashal@kernel.org>
-References: <2026012736-refined-nullify-a548@gregkh>
- <20260128182552.2659610-1-sashal@kernel.org>
+In-Reply-To: <2026012749-barrier-oppressor-3ac6@gregkh>
+References: <2026012749-barrier-oppressor-3ac6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212656-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212657-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
@@ -90,139 +89,71 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email]
-X-Rspamd-Queue-Id: 3BE1CA7BC3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,rock-chips.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6C3FBA7BD0
 X-Rspamd-Action: no action
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit 761fcf46a1bd797bd32d23f3ea0141ffd437668a ]
+[ Upstream commit b75a52b0dda353aeefb4830a320589a363f49579 ]
 
-The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
-bytes and a NUL terminator is appended. However, the 'size' argument
-does not account for this extra byte. The original code then allocated
-'size' bytes and used strcpy() to copy 'buf', which always writes one
-byte past the allocated buffer since strcpy() copies until the NUL
-terminator at index 'size'.
+For Rockchip platform, DLL bypass bit and start bit need to be set if
+DLL is not locked. And adjust pre-change delay to 0x3 for better signal
+test result.
 
-Fix this by parsing the 'buf' parameter directly using simple_strtoll()
-without allocating any intermediate memory or string copying. This
-removes the overflow while simplifying the code.
-
-Cc: stable@vger.kernel.org
-Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20251216145007.44328-2-thorsten.blum@linux.dev
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://lore.kernel.org/r/1675298118-64243-2-git-send-email-shawn.lin@rock-chips.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 3009738a855c ("mmc: sdhci-of-dwcmshc: Prevent illegal clock reduction in HS200/HS400 mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/w1/slaves/w1_therm.c | 62 ++++++++++++------------------------
- 1 file changed, 20 insertions(+), 42 deletions(-)
+ drivers/mmc/host/sdhci-of-dwcmshc.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
-index ad8276cc82f5b..8c97706cfc28c 100644
---- a/drivers/w1/slaves/w1_therm.c
-+++ b/drivers/w1/slaves/w1_therm.c
-@@ -1781,53 +1781,35 @@ static ssize_t alarms_store(struct device *device,
- 	struct w1_slave *sl = dev_to_w1_slave(device);
- 	struct therm_info info;
- 	u8 new_config_register[3];	/* array of data to be written */
--	int temp, ret;
--	char *token = NULL;
-+	long long temp;
-+	int ret = 0;
- 	s8 tl, th;	/* 1 byte per value + temp ring order */
--	char *p_args, *orig;
--
--	p_args = orig = kmalloc(size, GFP_KERNEL);
--	/* Safe string copys as buf is const */
--	if (!p_args) {
--		dev_warn(device,
--			"%s: error unable to allocate memory %d\n",
--			__func__, -ENOMEM);
--		return size;
--	}
--	strcpy(p_args, buf);
--
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--
--	/* Convert 1st entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	const char *p = buf;
-+	char *endp;
-+
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp || *endp != ' ')
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
+diff --git a/drivers/mmc/host/sdhci-of-dwcmshc.c b/drivers/mmc/host/sdhci-of-dwcmshc.c
+index b07c737593555..19376bee9ec13 100644
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -48,6 +48,7 @@
+ #define DWCMSHC_EMMC_DLL_RXCLK_SRCSEL	29
+ #define DWCMSHC_EMMC_DLL_START_POINT	16
+ #define DWCMSHC_EMMC_DLL_INC		8
++#define DWCMSHC_EMMC_DLL_BYPASS		BIT(24)
+ #define DWCMSHC_EMMC_DLL_DLYENA		BIT(27)
+ #define DLL_TXCLK_TAPNUM_DEFAULT	0x10
+ #define DLL_TXCLK_TAPNUM_90_DEGREES	0xA
+@@ -60,6 +61,7 @@
+ #define DLL_RXCLK_NO_INVERTER		1
+ #define DLL_RXCLK_INVERTER		0
+ #define DLL_CMDOUT_TAPNUM_90_DEGREES	0x8
++#define DLL_RXCLK_ORI_GATE		BIT(31)
+ #define DLL_CMDOUT_TAPNUM_FROM_SW	BIT(24)
+ #define DLL_CMDOUT_SRC_CLK_NEG		BIT(28)
+ #define DLL_CMDOUT_EN_SRC_CLK_NEG	BIT(29)
+@@ -234,9 +236,12 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
+ 	sdhci_writel(host, extra, reg);
+ 
+ 	if (clock <= 52000000) {
+-		/* Disable DLL and reset both of sample and drive clock */
+-		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_CTRL);
+-		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_RXCLK);
++		/*
++		 * Disable DLL and reset both of sample and drive clock.
++		 * The bypass bit and start bit need to be set if DLL is not locked.
++		 */
++		sdhci_writel(host, DWCMSHC_EMMC_DLL_BYPASS | DWCMSHC_EMMC_DLL_START, DWCMSHC_EMMC_DLL_CTRL);
++		sdhci_writel(host, DLL_RXCLK_ORI_GATE, DWCMSHC_EMMC_DLL_RXCLK);
+ 		sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_TXCLK);
+ 		sdhci_writel(host, 0, DECMSHC_EMMC_DLL_CMDOUT);
+ 		/*
+@@ -279,7 +284,7 @@ static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock
  	}
  
- 	tl = int_to_short(temp);
- 
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--	/* Convert 2nd entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	p = endp + 1;
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp)
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	/* Prepare to cast to short by eliminating out of range values */
-@@ -1850,7 +1832,7 @@ static ssize_t alarms_store(struct device *device,
- 		dev_info(device,
- 			"%s: error reading from the slave device %d\n",
- 			__func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	/* Write data in the device RAM */
-@@ -1858,7 +1840,7 @@ static ssize_t alarms_store(struct device *device,
- 		dev_info(device,
- 			"%s: Device not supported by the driver %d\n",
- 			__func__, -ENODEV);
--		goto free_m;
-+		return size;
- 	}
- 
- 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
-@@ -1867,10 +1849,6 @@ static ssize_t alarms_store(struct device *device,
- 			"%s: error writing to the slave device %d\n",
- 			__func__, ret);
- 
--free_m:
--	/* free allocated memory */
--	kfree(orig);
--
- 	return size;
- }
+ 	extra = 0x1 << 16 | /* tune clock stop en */
+-		0x2 << 17 | /* pre-change delay */
++		0x3 << 17 | /* pre-change delay */
+ 		0x3 << 19;  /* post-change delay */
+ 	sdhci_writel(host, extra, dwc_priv->vendor_specific_area1 + DWCMSHC_EMMC_ATCTRL);
  
 -- 
 2.51.0
