@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-212699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DFSHZuPemmz7wEAu9opvQ
-	(envelope-from <stable+bounces-212699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:37:15 +0100
+	id eJVtOaCPemmz7wEAu9opvQ
+	(envelope-from <stable+bounces-212700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:37:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D5FA9A6E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:37:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95228A9A75
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0654304D26B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:34:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A76A30238DB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C7C34320F;
-	Wed, 28 Jan 2026 22:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D32D344046;
+	Wed, 28 Jan 2026 22:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFT+SJQe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WOidNRKD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E871DE3A4;
-	Wed, 28 Jan 2026 22:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDE51DE3A4;
+	Wed, 28 Jan 2026 22:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769639640; cv=none; b=gPDaX7+l54kk7+z1j9KBLMZEduCROPMpr7JLSfg5/X/ZSkLhmf3iYv+k97tZj0GBVFWbJyWSfFmGaydufRribxeACrcbb06nuroMYJQ9QhWc2tInvvaOtIFNw4EgLF8D+iO6JJQr4tDJ0U4JhDeNgdDqWEQlmZGVi/qAXcuaFsw=
+	t=1769639641; cv=none; b=CN5fJyxpnrPIia8JD2L6rqaT74UG/tUyeo697X2UiDlArhQfOQJvS9E4vRdNhnFqcTMawfe6LDjcSV++sDRjKztMZvBXj1fb2EB0EwY8GnlMSbOqFf73uxKEkaSh53ITSTO1jnnSt3U6kN4EQe+A9+n2YL1qwrJMBvuUfn2ED18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769639640; c=relaxed/simple;
-	bh=+xRV2HkEsfrdZMBafEPY++3IUBK8ed73YGyM9OSrTOo=;
+	s=arc-20240116; t=1769639641; c=relaxed/simple;
+	bh=4WPF0RWd/+xw+ffbBSv0gvLKr2HM/4sbMFAx5UJIYNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PFtPPDMfxlqHyBHY9L6mr7CozTnQSv2cuhLra6Tak1XE5vst+UjUEfi/9DR3MLnq+7IOblooIewd1J+gVvhEdapFhUOWc9GrykPZOPqvkX3ekmElb62fhS56dVROLfMXSRnWUpbf0vf3I5XVVn773ACZ2WV9HHgiYhNtkGTxKrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFT+SJQe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F05C4CEF1;
-	Wed, 28 Jan 2026 22:33:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FnOVbuPDYGh7Nq1RS+R1a4avw0W6xUb9Z5hce9kc+LDAX2CqPJy+1TQD0Rsf4e3wFMZOpLJpi6OgqeGop3s0fTBQnFAwe9E513laubGoTv/DjMwWiJCTELY3Ea1Vj63BnlBixX2luFkPappFksfBChl6MGuCmqeR+ipd5rrjFOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WOidNRKD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF50C4CEF1;
+	Wed, 28 Jan 2026 22:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769639639;
-	bh=+xRV2HkEsfrdZMBafEPY++3IUBK8ed73YGyM9OSrTOo=;
+	s=k20201202; t=1769639640;
+	bh=4WPF0RWd/+xw+ffbBSv0gvLKr2HM/4sbMFAx5UJIYNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFT+SJQeWAxJBzAONEHlTGwIFAve74HlsN9l13gpE9tz/7iC7F/ISJiNzx7vK7W19
-	 wXWwm/bmuO+oyDtQwVHGCyNojeyjoX6cFiIswjJYGs+4Df7AkFK1US4WpAFHUvAud9
-	 ZWqXjwBVCfS8kigZf8AD/msz+Z71O63FtZkLB3AUaqZqnMgyjLEzD3MAfy+3eD++/W
-	 7Sk65RpglYcX62AISqL5InJ1zY08+imf60SdPuNqzIf9xzzYx4KDQNKRSszL0KJRbV
-	 Q9LI2t7OBvA8PRE/EL8rv7aFRKpm1JMmWIBPAltw29d0f/Nqka2rujCfRpEyc+tLIQ
-	 UZUJ3794T/22g==
+	b=WOidNRKDZzQnwHheHoHJMk05fevG2uX2QybQtwC7fq3AU42VbYOTuGJU08/8ZLdap
+	 Sq6JM2Q+2uD/pUq3zs08Hzc6RQZssXymzp5p3NiG5kbOcWEl8MYpNZWGehbx2DTBcQ
+	 HDBowqdxRTMBPOtpANjQ80+GF/K6cEXsri13UzfZGo85P47kxy9TmqQYA5fkTxBEHK
+	 E+VP9sae46wc7/uC+GMgbM1pmle2PUAJAwCQrZKEmNCW26dybtHgSQ3lwpEc4KCL+p
+	 KiNqmbnYRtc2Xf6wql6dMkVFepZXU7HPVtiCVIVuglHJLZv3j2L9jpHFpIYaEBWsBh
+	 hiS6DyNS4B4Fw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Paul Walmsley <pjw@kernel.org>,
+Cc: Kaushlendra Kumar <kaushlendra.kumar@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alexghiti@rivosinc.com,
-	cyrilbur@tenstorrent.com,
-	jszhang@kernel.org,
-	aurelien@aurel32.net,
-	tglx@kernel.org,
-	cleger@rivosinc.com,
-	linux-riscv@lists.infradead.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.18] riscv: Use 64-bit variable for output in __get_user_asm
-Date: Wed, 28 Jan 2026 17:33:12 -0500
-Message-ID: <20260128223332.2806589-14-sashal@kernel.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.6] regmap: maple: free entry on mas_store_gfp() failure
+Date: Wed, 28 Jan 2026 17:33:13 -0500
+Message-ID: <20260128223332.2806589-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260128223332.2806589-1-sashal@kernel.org>
 References: <20260128223332.2806589-1-sashal@kernel.org>
@@ -75,240 +66,122 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.7
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212699-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212700-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C8D5FA9A6E
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 95228A9A75
 X-Rspamd-Action: no action
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
 
-[ Upstream commit bdce162f2e57a969803e5e9375999a3e0546905f ]
+[ Upstream commit f3f380ce6b3d5c9805c7e0b3d5bc28d9ec41e2e8 ]
 
-After commit f6bff7827a48 ("riscv: uaccess: use 'asm_goto_output' for
-get_user()"), which was the first commit that started using asm goto
-with outputs on RISC-V, builds of clang built with assertions enabled
-start crashing in certain files that use get_user() with:
+regcache_maple_write() allocates a new block ('entry') to merge
+adjacent ranges and then stores it with mas_store_gfp().
+When mas_store_gfp() fails, the new 'entry' remains allocated and
+is never freed, leaking memory.
 
-  clang: llvm/lib/CodeGen/SelectionDAG/SelectionDAGBuilder.cpp:12743: Register FollowCopyChain(MachineRegisterInfo &, Register): Assertion `MI->getOpcode() == TargetOpcode::COPY && "start of copy chain MUST be COPY"' failed.
+Free 'entry' on the failure path; on success continue freeing the
+replaced neighbor blocks ('lower', 'upper').
 
-Internally, LLVM generates an addiw instruction when the output of the
-inline asm (which may be any scalar type) needs to be sign extended for
-ABI reasons, such as a later function call, so that basic block does not
-have to do it.
-
-Use a temporary 64-bit variable as the output of the inline assembly in
-__get_user_asm() and explicitly cast it to truncate it if necessary,
-avoiding the addiw that triggers the assertion.
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/2092
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://patch.msgid.link/20260116-riscv-wa-llvm-asm-goto-outputs-assertion-failure-v3-1-55b5775f989b@kernel.org
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Kaushlendra Kumar <kaushlendra.kumar@intel.com>
+Link: https://patch.msgid.link/20260105031820.260119-1-kaushlendra.kumar@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Looking at the full analysis based on what we have:
+### SUMMARY
 
-## Analysis Summary
+**What the commit fixes:**
+A memory leak in `regcache_maple_write()` where the allocated `entry`
+block is not freed when `mas_store_gfp()` fails. This is a clear
+resource leak bug.
 
-### 1. COMMIT MESSAGE ANALYSIS
+**Why it matters to stable users:**
+- Memory leaks affect system stability over time, especially on long-
+  running embedded systems that commonly use regmap
+- Under memory pressure scenarios, this leak compounds the problem
+- regmap is core infrastructure used by many hardware drivers
 
-The commit message clearly states:
-- **After commit f6bff7827a48** - Clearly identifies the regressing
-  commit
-- **Builds of clang built with assertions enabled start crashing** -
-  This is a **build failure**, not just a warning
-- Provides a link to the ClangBuiltLinux issue tracker
-  (https://github.com/ClangBuiltLinux/linux/issues/2092)
-- The assertion failure message is in LLVM's code generation phase
-- Author: Nathan Chancellor (ClangBuiltLinux maintainer, well-known
-  kernel/LLVM expert)
+**Stable kernel criteria assessment:**
+1. ✅ **Obviously correct**: The fix follows standard kernel error
+   handling patterns - allocate, try to use, free on failure
+2. ✅ **Fixes a real bug**: Memory leak is a real, user-visible issue
+3. ✅ **Important issue**: Memory leaks can lead to system
+   instability/OOM
+4. ✅ **Small and contained**: ~8 lines changed in a single file, single
+   function
+5. ✅ **No new features**: Pure bug fix
+6. ✅ **Clean backport**: Self-contained fix with no dependencies
 
-### 2. CODE CHANGE ANALYSIS
+**Risk vs Benefit:**
+- **Risk**: Very low - the change only affects the error path of
+  `mas_store_gfp()` failure
+- **Benefit**: Fixes a memory leak in widely-used infrastructure code
+- The logic is straightforward and the fix is obviously correct
 
-The change is small and surgical:
-- **Old code (asm_goto_output path):**
-  ```c
-  #define __get_user_asm(insn, x, ptr, label)  \
-  asm_goto_output(                          \
-  "1:\n"                                 \
-  "  " insn " %0, %1\n"                  \
-  _ASM_EXTABLE_UACCESS_ERR(1b, %l2, %0)  \
-  : "=&r" (x)                            \
-  : "m" (*(ptr)) : : label)
-  ```
+**Affected versions:**
+- The regcache-maple.c file was introduced in v6.4
+- Applicable to stable trees: 6.4.y, 6.6.y (LTS), and newer
 
-- **New code:**
-  ```c
-  #define __get_user_asm(insn, x, ptr, label)  \
-  do {                                          \
-  u64 __tmp;                                \
-  asm_goto_output(                          \
-  "1:\n"                                 \
-  "  " insn " %0, %1\n"                  \
-  _ASM_EXTABLE_UACCESS_ERR(1b, %l2, %0)  \
-  : "=&r" (__tmp)                        \
-  : "m" (*(ptr)) : : label);             \
-  (x) = (__typeof__(x))__tmp;               \
-  } while (0)
-  ```
-
-**Technical mechanism:**
-- The fix uses a 64-bit temporary variable (`u64 __tmp`) as the output
-  of the inline assembly
-- Then explicitly casts it to the expected type of `x`
-- This avoids LLVM generating an `addiw` instruction to sign-extend the
-  output for ABI reasons
-- The `addiw` was causing an assertion failure in LLVM's code generation
-  because it wasn't recognized as a proper copy instruction
-
-### 3. CLASSIFICATION
-
-This is a **BUILD FIX** - one of the exception categories that is
-explicitly allowed in stable:
-- Prevents compilation with Clang/LLVM on RISC-V
-- Without this fix, users cannot build kernel for RISC-V when using
-  Clang with assertions enabled
-- The underlying bug likely causes incorrect code generation even when
-  assertions are disabled
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-**Lines changed:** ~10 lines, all in a single macro definition
-**Files touched:** 1 (arch/riscv/include/asm/uaccess.h)
-**Subsystem:** RISC-V uaccess (user-space access)
-**Risk:** Very low
-- Uses a temporary variable to hold the assembly output then casts it
-- This is a known safe pattern (used elsewhere in the kernel)
-- Does not change any runtime behavior for GCC builds
-- Only affects the `CONFIG_CC_HAS_ASM_GOTO_OUTPUT` code path
-  (Clang/modern GCC)
-
-### 5. USER IMPACT
-
-- **Who is affected:** All RISC-V kernel developers and users building
-  with Clang/LLVM
-- **Severity:** Cannot build the kernel at all on RISC-V with Clang
-  (when using assertion-enabled builds)
-- RISC-V is an increasingly popular architecture
-- Clang is a major compiler used by many distributions
-
-### 6. STABILITY INDICATORS
-
-- Written by Nathan Chancellor (ClangBuiltLinux project lead, kernel
-  developer)
-- Clear reference to upstream bug reports
-- Follows a known workaround pattern
-
-### 7. DEPENDENCY CHECK
-
-**Critical:** This fix depends on commit **f6bff7827a48** ("riscv:
-uaccess: use 'asm_goto_output' for get_user()"), which was introduced in
-**v6.16-rc1**.
-
-The fix is only relevant for stable trees that contain v6.16+. For older
-stable trees (6.15.y and earlier), the problematic code doesn't exist,
-so this fix is not needed and wouldn't apply.
-
-### Risk vs. Benefit Analysis
-
-**Benefits:**
-- Fixes a **complete build failure** on RISC-V with Clang
-- Build fixes are explicitly allowed in stable rules
-- Critical for RISC-V users who use Clang
-
-**Risks:**
-- Minimal - adds a temporary variable and explicit cast
-- Does not change runtime behavior for correct code
-- Pattern is well-understood and used elsewhere
-
-### Concerns
-
-1. **Dependency:** Only applicable to stable trees containing 6.16+
-   (which have commit f6bff7827a48)
-2. **LLVM Bug:** This is a workaround for an LLVM bug (tracked at llvm-
-   project#143795). The LLVM bug may eventually be fixed, but kernel
-   builds need to work now.
-
-### Conclusion
-
-This commit is a **build fix** that solves a Clang compilation failure
-on RISC-V. Build fixes are explicitly allowed in stable kernel rules.
-The fix is:
-- Small (10 lines)
-- Surgical (single macro)
-- Safe (temporary variable + cast pattern)
-- Critical (prevents build failure)
-- Well-documented (links to bug reports)
-- Written by an expert (Nathan Chancellor)
-
-The only consideration is that it should only be backported to stable
-trees that contain the parent commit f6bff7827a48 (v6.16+), otherwise
-the fix addresses code that doesn't exist.
+**Concerns:**
+- None - this is a textbook stable backport candidate
 
 **YES**
 
- arch/riscv/include/asm/uaccess.h | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/base/regmap/regcache-maple.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/include/asm/uaccess.h b/arch/riscv/include/asm/uaccess.h
-index f5f4f7f85543f..1029c31026dcf 100644
---- a/arch/riscv/include/asm/uaccess.h
-+++ b/arch/riscv/include/asm/uaccess.h
-@@ -97,13 +97,23 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm, unsigne
-  */
+diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
+index 2319c30283a6d..9cf0384ce7b95 100644
+--- a/drivers/base/regmap/regcache-maple.c
++++ b/drivers/base/regmap/regcache-maple.c
+@@ -95,12 +95,13 @@ static int regcache_maple_write(struct regmap *map, unsigned int reg,
  
- #ifdef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
-+/*
-+ * Use a temporary variable for the output of the asm goto to avoid a
-+ * triggering an LLVM assertion due to sign extending the output when
-+ * it is used in later function calls:
-+ * https://github.com/llvm/llvm-project/issues/143795
-+ */
- #define __get_user_asm(insn, x, ptr, label)			\
-+do {								\
-+	u64 __tmp;						\
- 	asm_goto_output(					\
- 		"1:\n"						\
- 		"	" insn " %0, %1\n"			\
- 		_ASM_EXTABLE_UACCESS_ERR(1b, %l2, %0)		\
--		: "=&r" (x)					\
--		: "m" (*(ptr)) : : label)
-+		: "=&r" (__tmp)					\
-+		: "m" (*(ptr)) : : label);			\
-+	(x) = (__typeof__(x))__tmp;				\
-+} while (0)
- #else /* !CONFIG_CC_HAS_ASM_GOTO_OUTPUT */
- #define __get_user_asm(insn, x, ptr, label)			\
- do {								\
+ 	mas_unlock(&mas);
+ 
+-	if (ret == 0) {
+-		kfree(lower);
+-		kfree(upper);
++	if (ret) {
++		kfree(entry);
++		return ret;
+ 	}
+-	
+-	return ret;
++	kfree(lower);
++	kfree(upper);
++	return 0;
+ }
+ 
+ static int regcache_maple_drop(struct regmap *map, unsigned int min,
 -- 
 2.51.0
 
