@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-212605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212395-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qA5iLe80eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:10:23 +0100
+	id EKBqJrEyeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212395-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2295BA533E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:10:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4727DA4EB7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A966D3168DF7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:01:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8669E31461AF
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E102DF138;
-	Wed, 28 Jan 2026 16:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE8A2F745C;
+	Wed, 28 Jan 2026 15:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCLZZuM4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYDNR+AF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394B92836A6;
-	Wed, 28 Jan 2026 16:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E7F2DF155;
+	Wed, 28 Jan 2026 15:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616080; cv=none; b=aaeln8XjZGMEl6M8lY6/5/1RF0VPjHYTnv1sJN3IpBh+RxQdzVrYnYePy8IKEXUlNg7kpeYXCUmSZXqTa5rOlb+/9MZeoSnTmQ+niOIVMvD5wrCZ1ylDK+uK2nKymtgA/AcJeav8nyfUh3aa7NmZ7sW4O75TM7Rop/Y7SxZ/ggQ=
+	t=1769615375; cv=none; b=HacMHjYc+X07JaIynHJiaZPJKb6TwX4a99ITw9H1QGd4NI+IlRlQ9umaDG6ds9SwHpQKOTPWq1sogCrj53MxHWPJJWe9OpZaa/zX/nSC/8J1KynyNj8xeHv9ydsTlsY2ZOazs+N68HrtlimUjrYEzWXQPfqvhp4abXT2InwTT/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616080; c=relaxed/simple;
-	bh=HM6v5pVWyktMp5URKq2ZjQTYWIcXGDKJVhTnYc4Mpqw=;
+	s=arc-20240116; t=1769615375; c=relaxed/simple;
+	bh=nBdQrDcebKOccqvNRfOSUphHsWjV4QfzKTtcwQYqZTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+fjMlAPIHwK1jUg/WOEkv/+DTt/YbNFDNj4+PIqR6+0tbsQGmecRVGe+/7Q6ZEhGh2DDws2eWZ44h11KormSe0AECNMlQrWWYBjkYtFTmhxXy4GO8DuIbtgFEXunUjM65X1G/y2ySSc/SCdpyNtKSaYBMXJg/I3ieN+Rg8BYuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCLZZuM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFD2C4CEF1;
-	Wed, 28 Jan 2026 16:01:19 +0000 (UTC)
+	 MIME-Version; b=JakIQAiP94n6asSVM5j2wq/asHCeat5PYOHpLBILdRTewHgsBa8H+No2h5hGvdegMXe+LzaDdMqbIZOkr5Ts5ovoUF0wh17mArpYAXvcw40YAEnNiGfhuH5RMATYppHQvgnwolZ/+BV2hPocDwOPB+4NJsoXJgYESGNl6vWC1E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYDNR+AF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AF1C4CEF1;
+	Wed, 28 Jan 2026 15:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616080;
-	bh=HM6v5pVWyktMp5URKq2ZjQTYWIcXGDKJVhTnYc4Mpqw=;
+	s=korg; t=1769615374;
+	bh=nBdQrDcebKOccqvNRfOSUphHsWjV4QfzKTtcwQYqZTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCLZZuM4XEZQPTg2uaBu1gt6+vYPHmC80VfcvDk7GOn7Vk9bmhsuW47Xwx6LPOXX1
-	 W+2ua8oMSmQvfsNy4n4Sgjossdao5LmzMsoXf2cCGeJYbaM/KKsCcRtmyKZRtOI/Yp
-	 RUpIag0sjmDPMPWVwvhXnlJs/1Z3mAP8ENLRP878=
+	b=BYDNR+AF5zDaeBBfXHPIM2aiGBRNyOIh++SRBO7PtrFC2KgX3u9QV9Jl1/S1GFsZo
+	 RVJmxBStcjhcEGRIlI+MerT5FpwRwS8+ZxemZA2L+ELXVLlXOhqcLLB+KH09jX8d/0
+	 sDZOxGyBtqBzARu+Ok5D7ZfjWSzuC1qmHL7ceisc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.18 199/227] rust: io: always inline functions using build_assert with arguments
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Kang Yang <quic_kangyang@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.12 161/169] wifi: ath11k: fix RCU stall while reaping monitor destination ring
 Date: Wed, 28 Jan 2026 16:24:04 +0100
-Message-ID: <20260128145351.603308222@linuxfoundation.org>
+Message-ID: <20260128145339.812548350@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +68,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,quicinc.com,kernel.org,oss.qualcomm.com,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212605-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212395-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2295BA533E
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 4727DA4EB7
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Courbot <acourbot@nvidia.com>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-commit 33d19f621641de1b6ec6fe1bb2ac68a7d2c61f6a upstream.
+[ Upstream commit 16c6c35c03ea73054a1f6d3302a4ce4a331b427d ]
 
-`build_assert` relies on the compiler to optimize out its error path.
-Functions using it with its arguments must thus always be inlined,
-otherwise the error path of `build_assert` might not be optimized out,
-triggering a build error.
+While processing the monitor destination ring, MSDUs are reaped from the
+link descriptor based on the corresponding buf_id.
 
-Cc: stable@vger.kernel.org
-Fixes: ce30d94e6855 ("rust: add `io::{Io, IoRaw}` base types")
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Alexandre Courbot <acourbot@nvidia.com>
-Tested-by: Timur Tabi <ttabi@nvidia.com>
-Link: https://patch.msgid.link/20251208-io-build-assert-v3-2-98aded02c1ea@nvidia.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+However, sometimes the driver cannot obtain a valid buffer corresponding
+to the buf_id received from the hardware. This causes an infinite loop
+in the destination processing, resulting in a kernel crash.
+
+kernel log:
+ath11k_pci 0000:58:00.0: data msdu_pop: invalid buf_id 309
+ath11k_pci 0000:58:00.0: data dp_rx_monitor_link_desc_return failed
+ath11k_pci 0000:58:00.0: data msdu_pop: invalid buf_id 309
+ath11k_pci 0000:58:00.0: data dp_rx_monitor_link_desc_return failed
+
+Fix this by skipping the problematic buf_id and reaping the next entry,
+replacing the break with the next MSDU processing.
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Acked-by: Kalle Valo <kvalo@kernel.org>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Link: https://patch.msgid.link/20241219110531.2096-2-quic_kangyang@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/io.rs          |    9 ++++++---
- rust/kernel/io/resource.rs |    2 ++
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -140,7 +140,8 @@ macro_rules! define_read {
-         /// Bound checks are performed on compile time, hence if the offset is not known at compile
-         /// time, the build will fail.
-         $(#[$attr])*
--        #[inline]
-+        // Always inline to optimize out error path of `io_addr_assert`.
-+        #[inline(always)]
-         pub fn $name(&self, offset: usize) -> $type_name {
-             let addr = self.io_addr_assert::<$type_name>(offset);
- 
-@@ -169,7 +170,8 @@ macro_rules! define_write {
-         /// Bound checks are performed on compile time, hence if the offset is not known at compile
-         /// time, the build will fail.
-         $(#[$attr])*
--        #[inline]
-+        // Always inline to optimize out error path of `io_addr_assert`.
-+        #[inline(always)]
-         pub fn $name(&self, value: $type_name, offset: usize) {
-             let addr = self.io_addr_assert::<$type_name>(offset);
- 
-@@ -237,7 +239,8 @@ impl<const SIZE: usize> Io<SIZE> {
-         self.addr().checked_add(offset).ok_or(EINVAL)
-     }
- 
--    #[inline]
-+    // Always inline to optimize out error path of `build_assert`.
-+    #[inline(always)]
-     fn io_addr_assert<U>(&self, offset: usize) -> usize {
-         build_assert!(Self::offset_valid::<U>(offset, SIZE));
- 
---- a/rust/kernel/io/resource.rs
-+++ b/rust/kernel/io/resource.rs
-@@ -222,6 +222,8 @@ impl Flags {
-     /// Resource represents a memory region that must be ioremaped using `ioremap_np`.
-     pub const IORESOURCE_MEM_NONPOSTED: Flags = Flags::new(bindings::IORESOURCE_MEM_NONPOSTED);
- 
-+    // Always inline to optimize out error path of `build_assert`.
-+    #[inline(always)]
-     const fn new(value: u32) -> Self {
-         crate::build_assert!(value as u64 <= c_ulong::MAX as u64);
-         Flags(value as c_ulong)
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -4777,7 +4777,7 @@ ath11k_dp_rx_mon_mpdu_pop(struct ath11k
+ 			if (!msdu) {
+ 				ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
+ 					   "msdu_pop: invalid buf_id %d\n", buf_id);
+-				break;
++				goto next_msdu;
+ 			}
+ 			rxcb = ATH11K_SKB_RXCB(msdu);
+ 			if (!rxcb->unmapped) {
+@@ -5404,7 +5404,7 @@ ath11k_dp_rx_full_mon_mpdu_pop(struct at
+ 					   "full mon msdu_pop: invalid buf_id %d\n",
+ 					    buf_id);
+ 				spin_unlock_bh(&rx_ring->idr_lock);
+-				break;
++				goto next_msdu;
+ 			}
+ 			idr_remove(&rx_ring->bufs_idr, buf_id);
+ 			spin_unlock_bh(&rx_ring->idr_lock);
 
 
 
