@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-212280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212456-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HxFDsUwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:37 +0100
+	id MDjDOF4zeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212456-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74B4A49CA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B25EA4FF1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 84AFA30312C5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63B2B30517C0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3A8301465;
-	Wed, 28 Jan 2026 15:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972E030CDBE;
+	Wed, 28 Jan 2026 15:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvgQCkXy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s32PF8lL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E661630DED8;
-	Wed, 28 Jan 2026 15:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D53302741;
+	Wed, 28 Jan 2026 15:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614990; cv=none; b=WSG1kn46ZCA8uQa5zpKfogfdtGw29UualKPCOHV8AfT5fd3ETiqipWzkcINDnozrs0cUKpv047So9rCQjqG7fTpHQWqQ9X/HtXUBUy5WVlA6krg+KPuLSnUkHFK3e4dFqiuRe+QISO05qPym7C2bvJt49pYfnsp1wrCHSEAEDrI=
+	t=1769615581; cv=none; b=JRJRGeaSK8go+/eDg0lpnjvTuVk9GMZhk97q6o8DwwybN4iZF5xV2MTyT+qqckI47C7wj5P00C9U/t6vDQ/OATzU2sIT7diHF7O0waX73Er7gizWn6KFk2gSLcO3+j/CkbPO04WPo1iWcY1jpUONh60p7cdwst4ZxpiZsn7aMfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614990; c=relaxed/simple;
-	bh=qNTohIxFW2j/EwXaNfp+jG9g6TogB5/023dltnRguaQ=;
+	s=arc-20240116; t=1769615581; c=relaxed/simple;
+	bh=dNqF7bHS4Vd+lyz3PSNgK36k7He89iYdeMJUAgCqWjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qwM6e8rrB2SQbATO6EgNfc/HxPzTj0WEClzQjFvUAG47RtSsbL5zgXDQuAURO6YAx/q4o5alucly4G1CixH/dAGtBYhu2NNfmbzXBXHdw0RAaNZLWjNag5LIITNrqANCMFLlMwVE2hONDdS4uLz7F56w+toNgIYqF2WqbdrdKUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvgQCkXy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DEBC4CEF1;
-	Wed, 28 Jan 2026 15:43:08 +0000 (UTC)
+	 MIME-Version; b=khMi97Pdc3qnP7+AjKUD8nVglX5JvZaVj1nOx22piXfUnO/vsTXg9Cup9b4lZ0C3SYlf0NBS1dQnCc2R8wbpj5cZHDPktEd9Dm7EBMbGh3iZaBJfUxJDaTdMGHWaPfmOydnIFSTFk5RR40Pi//i1xrBOUxV6wvVKsalNiPSkgHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s32PF8lL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C5AC4CEF1;
+	Wed, 28 Jan 2026 15:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614989;
-	bh=qNTohIxFW2j/EwXaNfp+jG9g6TogB5/023dltnRguaQ=;
+	s=korg; t=1769615581;
+	bh=dNqF7bHS4Vd+lyz3PSNgK36k7He89iYdeMJUAgCqWjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvgQCkXy4HX+reZoSDmBmy/9z61pLiKGDluNu9Xh7S2qaEkIPf6gaYgrcZk/g6nV/
-	 4ssjXx9hdgTFPDhnrKKSugemqMDfduJOHy7+zKbho69Z8+WK1nMPmhM44T8njcxSKH
-	 V6ByFwF+UjIbsryRZzWxAIdAC8Z2rE+U58/uuT0k=
+	b=s32PF8lLDGd7xpbZw/Az/sBKdqzhC0xRsaLQzpBZAvbczr+fEkvG5lu4dfJmsIX5Y
+	 GPb4+sUCZOMdhWQK6ay3TopTbdcuDtzl8UQ3UxbQoUsnf3KscgO0c4CldearJxgVa4
+	 XiVFUB1h6O7yS82KN7MxomuoF5EYa+oDCdpkiif0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Wolf <wolf@yoxt.cc>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/169] ata: ahci: Do not read the per port area for unimplemented ports
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.18 051/227] comedi: dmm32at: serialize use of paged registers
 Date: Wed, 28 Jan 2026 16:21:36 +0100
-Message-ID: <20260128145334.493088050@linuxfoundation.org>
+Message-ID: <20260128145346.179344215@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +61,163 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212280-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212456-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,yoxt.cc:email]
-X-Rspamd-Queue-Id: C74B4A49CA
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5B25EA4FF1
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit ea4d4ea6d10a561043922d285f1765c7e4bfd32a ]
+commit e03b29b55f2b7c345a919a6ee36633b06bf3fb56 upstream.
 
-An AHCI HBA specifies the number of ports it supports using CAP.NP.
-The HBA is free to only make a subset of the number of ports available
-using the PI (Ports Implemented) register.
+Some of the hardware registers of the DMM-32-AT board are multiplexed,
+using the least significant two bits of the Miscellaneous Control
+register to select the function of registers at offsets 12 to 15:
 
-libata currently creates dummy ports for HBA ports that are provided by
-the HBA, but which are marked as "unavailable" using the PI register.
+ 00 => 8254 timer/counter registers are accessible
+ 01 => 8255 digital I/O registers are accessible
+ 10 => Reserved
+ 11 => Calibration registers are accessible
 
-Each port will have a per port area of registers in the HBA, regardless
-if the port is marked as "unavailable" or not.
+The interrupt service routine (`dmm32at_isr()`) clobbers the bottom two
+bits of the register with value 00, which would interfere with access to
+the 8255 registers by the `dm32at_8255_io()` function (used for Comedi
+instruction handling on the digital I/O subdevice).
 
-ahci_mark_external_port() currently reads this per port area of registers
-using readl() to see if the port is marked as external/hotplug-capable.
+Make use of the generic Comedi device spin-lock `dev->spinlock` (which
+is otherwise unused by this driver) to serialize access to the
+miscellaneous control register and paged registers.
 
-However, AHCI 1.3.1, section "3.1.4 Offset 0Ch: PI – Ports Implemented"
-states: "Software must not read or write to registers within unavailable
-ports."
-
-Thus, make sure that we only call ahci_mark_external_port() and
-ahci_update_initial_lpm_policy() for ports that are implemented.
-
->From a libata perspective, this should not change anything related to LPM,
-as dummy ports do not provide any ap->ops (they do not have a .set_lpm()
-callback), so even if EH were to call .set_lpm() on a dummy port, it was
-already a no-op.
-
-Fixes: f7131935238d ("ata: ahci: move marking of external port earlier")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Tested-by: Wolf <wolf@yoxt.cc>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3c501880ac44 ("Staging: comedi: add dmm32at driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260112162835.91688-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/ahci.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/comedi/drivers/dmm32at.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 944e44caa2606..e78b97fe81708 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -2071,13 +2071,13 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		if (ap->flags & ATA_FLAG_EM)
- 			ap->em_message_type = hpriv->em_msg_type;
+--- a/drivers/comedi/drivers/dmm32at.c
++++ b/drivers/comedi/drivers/dmm32at.c
+@@ -330,6 +330,7 @@ static int dmm32at_ai_cmdtest(struct com
  
--		ahci_mark_external_port(ap);
--
--		ahci_update_initial_lpm_policy(ap);
--
- 		/* disabled/not-implemented port */
--		if (!(hpriv->port_map & (1 << i)))
-+		if (!(hpriv->port_map & (1 << i))) {
- 			ap->ops = &ata_dummy_port_ops;
-+		} else {
-+			ahci_mark_external_port(ap);
-+			ahci_update_initial_lpm_policy(ap);
-+		}
+ static void dmm32at_setaitimer(struct comedi_device *dev, unsigned int nansec)
+ {
++	unsigned long irq_flags;
+ 	unsigned char lo1, lo2, hi2;
+ 	unsigned short both2;
+ 
+@@ -342,6 +343,9 @@ static void dmm32at_setaitimer(struct co
+ 	/* set counter clocks to 10MHz, disable all aux dio */
+ 	outb(0, dev->iobase + DMM32AT_CTRDIO_CFG_REG);
+ 
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* get access to the clock regs */
+ 	outb(DMM32AT_CTRL_PAGE_8254, dev->iobase + DMM32AT_CTRL_REG);
+ 
+@@ -354,6 +358,8 @@ static void dmm32at_setaitimer(struct co
+ 	outb(lo2, dev->iobase + DMM32AT_CLK2);
+ 	outb(hi2, dev->iobase + DMM32AT_CLK2);
+ 
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
+ 	/* enable the ai conversion interrupt and the clock to start scans */
+ 	outb(DMM32AT_INTCLK_ADINT |
+ 	     DMM32AT_INTCLK_CLKEN | DMM32AT_INTCLK_CLKSEL,
+@@ -363,13 +369,19 @@ static void dmm32at_setaitimer(struct co
+ static int dmm32at_ai_cmd(struct comedi_device *dev, struct comedi_subdevice *s)
+ {
+ 	struct comedi_cmd *cmd = &s->async->cmd;
++	unsigned long irq_flags;
+ 	int ret;
+ 
+ 	dmm32at_ai_set_chanspec(dev, s, cmd->chanlist[0], cmd->chanlist_len);
+ 
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* reset the interrupt just in case */
+ 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
+ 
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
+ 	/*
+ 	 * wait for circuit to settle
+ 	 * we don't have the 'insn' here but it's not needed
+@@ -429,8 +441,13 @@ static irqreturn_t dmm32at_isr(int irq,
+ 		comedi_handle_events(dev, s);
  	}
  
- 	/* apply workaround for ASUS P5W DH Deluxe mainboard */
--- 
-2.51.0
-
++	/* serialize access to control register and paged registers */
++	spin_lock(&dev->spinlock);
++
+ 	/* reset the interrupt */
+ 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
++
++	spin_unlock(&dev->spinlock);
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -481,14 +498,25 @@ static int dmm32at_ao_insn_write(struct
+ static int dmm32at_8255_io(struct comedi_device *dev,
+ 			   int dir, int port, int data, unsigned long regbase)
+ {
++	unsigned long irq_flags;
++	int ret;
++
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* get access to the DIO regs */
+ 	outb(DMM32AT_CTRL_PAGE_8255, dev->iobase + DMM32AT_CTRL_REG);
+ 
+ 	if (dir) {
+ 		outb(data, dev->iobase + regbase + port);
+-		return 0;
++		ret = 0;
++	} else {
++		ret = inb(dev->iobase + regbase + port);
+ 	}
+-	return inb(dev->iobase + regbase + port);
++
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
++	return ret;
+ }
+ 
+ /* Make sure the board is there and put it to a known state */
 
 
 
