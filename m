@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-212090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AOnHicsemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:55 +0100
+	id uNHpJ4Qzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 414F6A3EF4
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 418A0A5040
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C319F300E0DC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C0D4327737C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E99F248F72;
-	Wed, 28 Jan 2026 15:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61703305057;
+	Wed, 28 Jan 2026 15:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEEG6B80"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V94ANwzR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DE523E358;
-	Wed, 28 Jan 2026 15:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243EE2EA172;
+	Wed, 28 Jan 2026 15:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614367; cv=none; b=szSxYDewgF1O+aOpwZXg23DGrp2LCe/trNtTaBnKgr7mdRTkTx+5eMuLZrUimCq5Rn0ZceEKTOfjR/bN6FY/igQ4Veab38oo+tm7/pTRZ4MHwijOgONmD1sCpx9PCi24n1+IbovgEJOc4BlpXxllN3/RvMwEYpbGZhR/2NDa/O4=
+	t=1769615561; cv=none; b=Ao0D6FZiKOp3ZimeTq4PJ3XpTb7jKMDUT9RgL7iQG9iAx7J0y2nWbjaYxZ2r2sy5PrPbk3gnybo+0FD/nf74ae4NP43/5KiqWlTetrK4/hMASOJNFabzTG3RKernaX2SuBw01OvySEiYfNqyGzm+wngM1KVRVEVV/lBN0X2uC0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614367; c=relaxed/simple;
-	bh=FiHB6+mYOqJikbsQ/BlK8w3YWwdjKimpP7y2wFywWCc=;
+	s=arc-20240116; t=1769615561; c=relaxed/simple;
+	bh=yXNuCZSXuFVnJW2Fu3t2JrooBUST4ju9EuHrVyc+YEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ac/tZl2T1o1TW54E5sOkgOqMeIhBRw6UlJ1vgqqG2zvrVrfLJvhSPP0pKwhRubBSQsupjSdsJVholj6vQKwcN4tpO+mmiIWvk/7T4Lr0fmexLYsRc0gSSVFH9TfseYJIQD6PvJLl8Up4kke8YwSuRMTPXsJdHBTmWK4qWKPSgrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEEG6B80; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F47C16AAE;
-	Wed, 28 Jan 2026 15:32:46 +0000 (UTC)
+	 MIME-Version; b=T0hAkesmkJeg+T0nhB+akYRudRZ3dgY+IKXG7UaeGHPn2qx80vXLqjOQOP4FS/TG9K5KBoJz/PfPO5HfEggULn2iBa2X9jDRJ02pKgukvBlRPP98LJw5CoMfM1twzyeSjuD3hqjc6FXtagSyawpUuhWD8b6M8mDCkCsay9xKKdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V94ANwzR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64461C4CEF1;
+	Wed, 28 Jan 2026 15:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614367;
-	bh=FiHB6+mYOqJikbsQ/BlK8w3YWwdjKimpP7y2wFywWCc=;
+	s=korg; t=1769615560;
+	bh=yXNuCZSXuFVnJW2Fu3t2JrooBUST4ju9EuHrVyc+YEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dEEG6B80mrnSF2riHAM3aQEoh0NlM+kHoM7GSCyF82chv2XHzHl0n4xuqj38IPfN3
-	 6099NL+lv1s37slYwEQW9qeoi5gDBWY/pl6iVgvd3mki4Y6CGZ2IrQPB0aNDUOi430
-	 QfxQKfnJzr73TSVymIroSf3ZuzRGMy5B0t9IkZVA=
+	b=V94ANwzR1NNWPG8EHUDmT1zMYmRx0qJ2RilxpiBC6KLhRgmKVIwF7VlWWPbgsYCKp
+	 1XJF5GsD6osyxXNV2QPburOZa+HyrV5ZSm5qg9W6pBeHJjB0ngIyoVjAPttwL4JLf8
+	 y8wyXI1Ls9SfJKI1Gp0uUpzwFWrWIrqjMLuDLZM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.6 115/254] ice: initialize ring_stats->syncp
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 046/227] net/sched: qfq: Use cl_is_active to determine whether class is active in qfq_rm_from_ag
 Date: Wed, 28 Jan 2026 16:21:31 +0100
-Message-ID: <20260128145348.961720753@linuxfoundation.org>
+Message-ID: <20260128145346.001388169@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,78 +69,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212090-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212450-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 414F6A3EF4
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 418A0A5040
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit 8439016c3b8b5ab687c2420317b1691585106611 ]
+[ Upstream commit d837fbee92453fbb829f950c8e7cf76207d73f33 ]
 
-The u64_stats_sync structure is empty on 64-bit systems. However, on 32-bit
-systems it contains a seqcount_t which needs to be initialized. While the
-memory is zero-initialized, a lack of u64_stats_init means that lockdep
-won't get initialized properly. Fix this by adding u64_stats_init() calls
-to the rings just after allocation.
+This is more of a preventive patch to make the code more consistent and
+to prevent possible exploits that employ child qlen manipulations on qfq.
+use cl_is_active instead of relying on the child qdisc's qlen to determine
+class activation.
 
-Fixes: 2b245cb29421 ("ice: Implement transmit and NAPI support")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 462dbc9101acd ("pkt_sched: QFQ Plus: fair-queueing service at DRR cost")
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260114160243.913069-3-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/sched/sch_qfq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index a6a290514e548..972c515d8789f 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -396,6 +396,8 @@ static int ice_vsi_alloc_ring_stats(struct ice_vsi *vsi)
- 			if (!ring_stats)
- 				goto err_out;
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index 9b16ad431028f..f94c9c9c90424 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -373,7 +373,7 @@ static void qfq_rm_from_agg(struct qfq_sched *q, struct qfq_class *cl)
+ /* Deschedule class and remove it from its parent aggregate. */
+ static void qfq_deact_rm_from_agg(struct qfq_sched *q, struct qfq_class *cl)
+ {
+-	if (cl->qdisc->q.qlen > 0) /* class is active */
++	if (cl_is_active(cl)) /* class is active */
+ 		qfq_deactivate_class(q, cl);
  
-+			u64_stats_init(&ring_stats->syncp);
-+
- 			WRITE_ONCE(tx_ring_stats[i], ring_stats);
- 		}
- 
-@@ -415,6 +417,8 @@ static int ice_vsi_alloc_ring_stats(struct ice_vsi *vsi)
- 			if (!ring_stats)
- 				goto err_out;
- 
-+			u64_stats_init(&ring_stats->syncp);
-+
- 			WRITE_ONCE(rx_ring_stats[i], ring_stats);
- 		}
- 
+ 	qfq_rm_from_agg(q, cl);
 -- 
 2.51.0
 
