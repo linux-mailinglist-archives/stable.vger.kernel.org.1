@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-212344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AL+xNJcwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:51 +0100
+	id uGE9K1Q1eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35612A4928
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F0DA5436
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B683C3080BFE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 181E931A9270
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4412830C635;
-	Wed, 28 Jan 2026 15:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050D42DB789;
+	Wed, 28 Jan 2026 15:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t69NmAYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2J7eIPOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077192F0C70;
-	Wed, 28 Jan 2026 15:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AF72DA765;
+	Wed, 28 Jan 2026 15:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615204; cv=none; b=S0pqwGmjYzHJBwTavfLuav1c6amP3j6XzIiCJIz+9puT9j0KLu1h9JyPTijmQpKji9KL4FQcG8gAn7/eXEteO8cKFPmfVE6qGuK1k1v/sKpEA4UM3f/1TYhW8YORyvDEx6edzd8lHHtxz7XYVnDwLEK2wbeTGMBRPyC6dTaJRlM=
+	t=1769614608; cv=none; b=liKiYYfOC1hv/iU76YwDk93QBk2OcEWmTDmOj1LybShG1XZ8V01CNksvMGMF0bdl1+LVK48hY8D4TDPxsqknKwg7m7anNfpT6h5t/K6A8jJHDxfKupJZf/gmVYDFsd5l9dR0J4Noc0ZmiNNJKGmlaDsayFKp287SlSxt4KLPBQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615204; c=relaxed/simple;
-	bh=uR6WeBy2faHqni3tuCJ6VsPb9K/xcXm4ztrVwRBnjbw=;
+	s=arc-20240116; t=1769614608; c=relaxed/simple;
+	bh=WZF7otD+xN72WQs9ine46MrwsKr2dqKVIdTdCqOkuHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYKHmu75ZHsnz6fgyK3eWMIL7XaaZCdGLfDs35dKhHnMfjUdIEHotjDDAx3qMJrZCQcBM0HA6U5bSvfqndrhH/eBydHZEeFoslCu/go9dS/qympzpCCGjy0lRMyMdG1jg9ta8kxHJ4+gUYTKQu/VbkQFDhWrBchdjg7jZ8sJXqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t69NmAYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEFEC4CEF1;
-	Wed, 28 Jan 2026 15:46:43 +0000 (UTC)
+	 MIME-Version; b=gPGhtpfkO4O1Iz5twi7ShDW0SscvLF/JKeHW69BXUMnF6eep5iGN4fsigCMWRfESbO0NqD4UTc6KH9aK2LedKUilEeVdsT1AsPDJc2Fey9ELNeHvmz8ecyLLL4TDWPk+Ydidp/wnjU1EoRUKcjhinnC8Gh+em6zriAO1jheSflA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2J7eIPOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B8BC4CEF7;
+	Wed, 28 Jan 2026 15:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615203;
-	bh=uR6WeBy2faHqni3tuCJ6VsPb9K/xcXm4ztrVwRBnjbw=;
+	s=korg; t=1769614608;
+	bh=WZF7otD+xN72WQs9ine46MrwsKr2dqKVIdTdCqOkuHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t69NmAYEl1xF/V6PZHOZbvNA0UGKZ2O58Vf78S1cwGx5c7s3OEUPmMzz1ksQIvRQi
-	 pMIATkJUTLPisssR4AxqLs2dUi9TED6VfHsQOCf1sFUIf5vE+EKMbyxYqLC1yygYFN
-	 mpGmtNQuIsyJPjJ5zu/Rc/qLpHDyY8grTB9jV0no=
+	b=2J7eIPOKB9R44T1hTFWN4IvsktWdzJ+L6mB9e1bxxlaVIFbxU395npGnME0xzcyPq
+	 YnJUKojAFJJCn+YpArFLGMDCbeo41noPKsFMA7WIgwzLc0HwQzncM4x4NctZo+Lilb
+	 WOjahdSiRitageZrO3B+b7OU7eiU0nWySHO9xDf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Wu <wusamuel@google.com>,
-	Alex Hoh <Alex.Hoh@mediatek.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 082/169] sched/fair: Fix pelt clock sync when entering idle
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 189/254] iio: adc: at91-sama5d2_adc: Fix potential use-after-free in sama5d2_adc driver
 Date: Wed, 28 Jan 2026 16:22:45 +0100
-Message-ID: <20260128145336.956642527@linuxfoundation.org>
+Message-ID: <20260128145351.601653151@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,101 +69,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212344-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212165-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linaro.org:email,infradead.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 35612A4928
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 07F0DA5436
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-[ Upstream commit 98c88dc8a1ace642d9021b103b28cba7b51e3abc ]
+commit dbdb442218cd9d613adeab31a88ac973f22c4873 upstream.
 
-Samuel and Alex reported regressions of the util_avg of RT rq with
-commit 17e3e88ed0b6 ("sched/fair: Fix pelt lost idle time detection").
-It happens that fair is updating and syncing the pelt clock with task one
-when pick_next_task_fair() fails to pick a task but before the prev
-scheduling class got a chance to update its pelt signals.
+at91_adc_interrupt can call at91_adc_touch_data_handler function
+to start the work by schedule_work(&st->touch_st.workq).
 
-Move update_idle_rq_clock_pelt() in set_next_task_idle() which is called
-after prev class has been called.
+If we remove the module which will call at91_adc_remove to
+make cleanup, it will free indio_dev through iio_device_unregister but
+quite a bit later. While the work mentioned above will be used. The
+sequence of operations that may lead to a UAF bug is as follows:
 
-Fixes: 17e3e88ed0b6 ("sched/fair: Fix pelt lost idle time detection")
-Closes: https://lore.kernel.org/all/CAG2KctpO6VKS6GN4QWDji0t92_gNBJ7HjjXrE+6H+RwRXt=iLg@mail.gmail.com/
-Closes: https://lore.kernel.org/all/8cf19bf0e0054dcfed70e9935029201694f1bb5a.camel@mediatek.com/
-Reported-by: Samuel Wu <wusamuel@google.com>
-Reported-by: Alex Hoh <Alex.Hoh@mediatek.com>
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Samuel Wu <wusamuel@google.com>
-Tested-by: Alex Hoh <Alex.Hoh@mediatek.com>
-Link: https://patch.msgid.link/20260121163317.505635-1-vincent.guittot@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU0                                      CPU1
+
+                                     | at91_adc_workq_handler
+at91_adc_remove                      |
+iio_device_unregister(indio_dev)     |
+//free indio_dev a bit later         |
+                                     | iio_push_to_buffers(indio_dev)
+                                     | //use indio_dev
+
+Fix it by ensuring that the work is canceled before proceeding with
+the cleanup in at91_adc_remove.
+
+Fixes: 23ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/fair.c | 6 ------
- kernel/sched/idle.c | 6 ++++++
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/iio/adc/at91-sama5d2_adc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 1436d6bb86ec4..6efb1dfcd943a 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -9033,12 +9033,6 @@ pick_next_task_fair(struct rq *rq, struct task_struct *prev, struct rq_flags *rf
- 			goto again;
- 	}
+--- a/drivers/iio/adc/at91-sama5d2_adc.c
++++ b/drivers/iio/adc/at91-sama5d2_adc.c
+@@ -2504,6 +2504,7 @@ static int at91_adc_remove(struct platfo
+ 	struct at91_adc_state *st = iio_priv(indio_dev);
  
--	/*
--	 * rq is about to be idle, check if we need to update the
--	 * lost_idle_time of clock_pelt
--	 */
--	update_idle_rq_clock_pelt(rq);
--
- 	return NULL;
- }
+ 	iio_device_unregister(indio_dev);
++	cancel_work_sync(&st->touch_st.workq);
  
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index 53bb9193c537a..624ef809f6715 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -462,6 +462,12 @@ static void set_next_task_idle(struct rq *rq, struct task_struct *next, bool fir
- 	scx_update_idle(rq, true, true);
- 	schedstat_inc(rq->sched_goidle);
- 	next->se.exec_start = rq_clock_task(rq);
-+
-+	/*
-+	 * rq is about to be idle, check if we need to update the
-+	 * lost_idle_time of clock_pelt
-+	 */
-+	update_idle_rq_clock_pelt(rq);
- }
+ 	at91_adc_dma_disable(st);
  
- struct task_struct *pick_task_idle(struct rq *rq)
--- 
-2.51.0
-
 
 
 
