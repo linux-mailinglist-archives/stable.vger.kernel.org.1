@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGzBKQ88emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212613-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:47 +0100
+	id ICsfIhExemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03ACEA5FB8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162F1A4A91
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED74031912E5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:01:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0463F30E078F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD942DF138;
-	Wed, 28 Jan 2026 16:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FF22F90E0;
+	Wed, 28 Jan 2026 15:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkoHvPd2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFgdTGm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000A181AA8;
-	Wed, 28 Jan 2026 16:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7082DE200;
+	Wed, 28 Jan 2026 15:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616107; cv=none; b=Mcqm73haYlYFhxIkXuQeXuwB0/MU2P+ZGMXsk1f+4yqxmHNW6ig97dsrsanO238luBz0+iqOD3gdbYQxsCXJm1q8ZhHNwMXT5gubClmoQgRlTNHa+n1K8Tbo4H1iimamwHJIoCgDwVnwHJTzJ2116tur7gTnNpE7iYzeHDIuO9c=
+	t=1769614834; cv=none; b=XObzxY6Wd9gYuiRDpVyWqTxPzHkC+1k2XAfPXF8CBjExVsI52v3YbbncMTQUkAmQShJbYYclYw/cenQHwnwdtP1RFrtSAw1oz5uY2kF4StCkKnDa/yHb8kgnZ3YLBg9xR860fqHLlFJiHInQfV6iX+7tlUuMCYQhxloTY97Dif0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616107; c=relaxed/simple;
-	bh=55x+eIGV0hk4S/sIHpFFRqcv3TSrxWyd5RwTkTmjO9Q=;
+	s=arc-20240116; t=1769614834; c=relaxed/simple;
+	bh=15eGbPckJ5L5raoEhu08DJCQeNXkh626HEmVpCBrDNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S7Sc00Z+yXInzAK03qlKO5Q4ZLuIjebS5T2qvY+e8UdZ+0n8DBVCHyg9l1+8IcLGiBBuUZS+zE0J8I0RRjRe3qmuOcnO+4zDwcX4/weayS5vzD+M/tmxdB4L6/S667dF3H9IWvtXc9rOJ7H3mmPPltZ5s/p0aggDD7rDqGr9BAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkoHvPd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65461C4CEF1;
-	Wed, 28 Jan 2026 16:01:46 +0000 (UTC)
+	 MIME-Version; b=Sjx60Qzu1Bayp5uYHJe0+3iOBH+7RJF1mISMBcIZLoMk3B4T3EwGOw1tNVbaZqHoRZ74makiYGJIMZVew6bbsdDIMGELWVb/NNr6WAh76F39lFvr8Moi5k2UEZG3OBUPwqm2tTZ2CbfWWq+cAnyZ+j39WcZfXsK+dx4kaYOUrcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFgdTGm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D26FFC116C6;
+	Wed, 28 Jan 2026 15:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616106;
-	bh=55x+eIGV0hk4S/sIHpFFRqcv3TSrxWyd5RwTkTmjO9Q=;
+	s=korg; t=1769614833;
+	bh=15eGbPckJ5L5raoEhu08DJCQeNXkh626HEmVpCBrDNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkoHvPd21mkTi0kz+tmm+5dq31u5JapoDTLraJwbRFaVvLmoubSGFgBhXm5gBzRa7
-	 Tlvh5airZUZ7o1oSi29meFtTxIntilQBTIVLvry6FpJ3EzCpE19fcBZkjj26r8s9sV
-	 tyPl4ngSxf31V9HBG9cCAxWQFomRQ/E9Z5sT4eDc=
+	b=bFgdTGm+HBB7uBYrEpNnTNrXrUwRfudJTQc6i4hsCC8hABDshpx8DvrQgir5I2LjF
+	 3DJEVnlJ/ZeNaz8EeI6hjyFMD93SOcJf1q+0OQB9MljwoohL2gOywkEddrSPKTfV8T
+	 vpDfxrX2fQMl9PNHguQLPOOh1uII/NTYMicG+Wkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jeff Chen <jeff.chen_1@nxp.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.18 176/227] wifi: mwifiex: Fix a loop in mwifiex_update_ampdu_rxwinsize()
-Date: Wed, 28 Jan 2026 16:23:41 +0100
-Message-ID: <20260128145350.782269447@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Zqiang <qiang.zhang@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.6 246/254] usbnet: Fix using smp_processor_id() in preemptible code warnings
+Date: Wed, 28 Jan 2026 16:23:42 +0100
+Message-ID: <20260128145353.650193051@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +70,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212234-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linux.dev,redhat.com,163.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212613-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.977];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,nxp.com:email]
-X-Rspamd-Queue-Id: 03ACEA5FB8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 162F1A4A91
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zqiang <qiang.zhang@linux.dev>
 
-commit 2120f3a3738a65730c81bf10447b1ff776078915 upstream.
+[ Upstream commit 327cd4b68b4398b6c24f10eb2b2533ffbfc10185 ]
 
-The "i" iterator variable is used to count two different things but
-unfortunately we can't store two different numbers in the same variable.
-Use "i" for the outside loop and "j" for the inside loop.
+Syzbot reported the following warning:
 
-Cc: stable@vger.kernel.org
-Fixes: d219b7eb3792 ("mwifiex: handle BT coex event to adjust Rx BA window size")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
-Link: https://patch.msgid.link/aWAM2MGUWRP0zWUd@stanley.mountain
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
+caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+ check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
+ usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
+ usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
+ usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
+ __dev_set_mtu net/core/dev.c:9443 [inline]
+ netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
+ netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
+ dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
+ dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
+ dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
+ sock_do_ioctl+0x19d/0x280 net/socket.c:1204
+ sock_ioctl+0x42f/0x6a0 net/socket.c:1311
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:906 [inline]
+ __se_sys_ioctl fs/ioctl.c:892 [inline]
+ __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+For historical and portability reasons, the netif_rx() is usually
+run in the softirq or interrupt context, this commit therefore add
+local_bh_disable/enable() protection in the usbnet_resume_rx().
+
+Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
+Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ The context change is due to the commit 2c04d279e857
+("net: usb: Convert tasklet API to new bottom half workqueue mechanism")
+in v6.17 which is irrelevant to the logic of this patch.]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/usb/usbnet.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-+++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-@@ -825,7 +825,7 @@ void mwifiex_update_rxreor_flags(struct
- static void mwifiex_update_ampdu_rxwinsize(struct mwifiex_adapter *adapter,
- 					   bool coex_flag)
- {
--	u8 i;
-+	u8 i, j;
- 	u32 rx_win_size;
- 	struct mwifiex_private *priv;
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -702,6 +702,7 @@ void usbnet_resume_rx(struct usbnet *dev
+ 	struct sk_buff *skb;
+ 	int num = 0;
  
-@@ -863,8 +863,8 @@ static void mwifiex_update_ampdu_rxwinsi
- 		if (rx_win_size != priv->add_ba_param.rx_win_size) {
- 			if (!priv->media_connected)
- 				continue;
--			for (i = 0; i < MAX_NUM_TID; i++)
--				mwifiex_11n_delba(priv, i);
-+			for (j = 0; j < MAX_NUM_TID; j++)
-+				mwifiex_11n_delba(priv, j);
- 		}
++	local_bh_disable();
+ 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
+ 
+ 	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
+@@ -710,6 +711,7 @@ void usbnet_resume_rx(struct usbnet *dev
  	}
- }
+ 
+ 	tasklet_schedule(&dev->bh);
++	local_bh_enable();
+ 
+ 	netif_dbg(dev, rx_status, dev->net,
+ 		  "paused rx queue disabled, %d skbs requeued\n", num);
 
 
 
