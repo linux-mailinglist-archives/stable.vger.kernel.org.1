@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-212570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MHWKI47emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212570-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:38 +0100
+	id cLJICCgwemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24237A5EE9
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C8EA480F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B6AD31B8593
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7689831345CE
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AEF1D6AA;
-	Wed, 28 Jan 2026 15:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA112E36F8;
+	Wed, 28 Jan 2026 15:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMZ9B0So"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeJHz7Ir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A912874FE;
-	Wed, 28 Jan 2026 15:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B038F2DC76D;
+	Wed, 28 Jan 2026 15:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615961; cv=none; b=YtF9wS5fMXHaSrtB7kGaEgW7lkPo0rAG+D4WNbtM+SRiZObJoEUR7fThEADfDbo22sQEP1pjOnBS+igdAXDpdo+yNIy/aNEY9s1XYgtq6SG/ot69xvFVvqo6slz6lqQieQ5ZgmpP8t3jX4cByNbfMKdj+8FrhMiEnRHolGwtM6o=
+	t=1769614760; cv=none; b=ozN4J4npON3DmXyyBT0tYeo+dmkNF6gae7oF0iSRu0lLLPQrwQZ6ciYrXReTlDHduL9gQSRMZUcWJtuIDiNvLjcEqu7PNK6Nd034+vmXXK6TSTbP2sJH8d0jq0LECIDL+WYDHQl7xb5pnINHraxQ7RYObNIUDTqQEn4Oh3k7+Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615961; c=relaxed/simple;
-	bh=iLcGVKO7uu/D/ezrEk89swetY3RRo1RJwFwY1UZAZdI=;
+	s=arc-20240116; t=1769614760; c=relaxed/simple;
+	bh=HQ4I+udmuK4eKAKFvoT6RuOgrfY9PuDysVRS0oDBvjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LSgKnruYTSMo4+KWM5wW0pqSR+aMcaSIlKkduwU07RzrRatxO2uA2VaIY+ZVja18Zypb/Ci1Qq2Mfn4yFiY3zZR7RPliZKoDYbNsM2Q+aDTI22yN19zqRHYE3xo5gwsG6IYK7Kejk/zTMblH/RvOmS7fxYeqITjr3qwjB/fh4jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMZ9B0So; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABACEC4CEF1;
-	Wed, 28 Jan 2026 15:59:20 +0000 (UTC)
+	 MIME-Version; b=KjLKuJg9T2mDB+iGVZwGpZG9bEXJ68m586N3PPjE+ef5WMfJZ1G7JKWGZkiaPuKCxQ9NzvcxhVCRQIckK09C77NLzsKKBmBOTJJO1Yw0SbFjax8VBrrjV9SvXWhFXYMnu1/HOn2WTSB6m30gWEcEExWm3lPIr5wInyFPTms/3v0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeJHz7Ir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2816CC4CEF1;
+	Wed, 28 Jan 2026 15:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615961;
-	bh=iLcGVKO7uu/D/ezrEk89swetY3RRo1RJwFwY1UZAZdI=;
+	s=korg; t=1769614760;
+	bh=HQ4I+udmuK4eKAKFvoT6RuOgrfY9PuDysVRS0oDBvjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QMZ9B0SoGjdM98aRGNUJFP3OsflOjqjwhxPCLti/PE3BHy0345CvDMmOYyxha8ACV
-	 x1zxGGcBFUTrejy7ctTeCgCBXFIKM3ZhSGFelVWRiBG46cz84YZoqZ1+wU+Qg3B5YI
-	 AyXyFh1iptmPvaW22o/bFXtL70yd7noD3LoDuvlk=
+	b=IeJHz7Ir6p+ZSb/VOra+zCzYlabf4IZXvH2fnAuzmp5sHcEXtCh5AblMvAl6YKrT7
+	 rGEJOAzHSDB2ZVAZH1xNaoabPHd7v0cMtz/k6Y42HcMi8ITXRuLiwlAT7e6GWjs5JR
+	 Tm3o/RLMrruTd9xCzfpp4b9gcmIRSsDvjBUHKoic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 164/227] iio: dac: ad3552r-hs: fix out-of-bound write in ad3552r_hs_write_data_source
+	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+	Johan Hovold <johan@kernel.org>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 233/254] dmaengine: stm32: dmamux: fix device leak on route allocation
 Date: Wed, 28 Jan 2026 16:23:29 +0100
-Message-ID: <20260128145350.353655590@linuxfoundation.org>
+Message-ID: <20260128145353.173840695@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +65,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,analog.com,intel.com,baylibre.com,huawei.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212570-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212212-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,analog.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 24237A5EE9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,st.com:email]
+X-Rspamd-Queue-Id: 89C8EA480F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 978d28136c53df38f8f0b747191930e2f95e9084 upstream.
+[ Upstream commit dd6e4943889fb354efa3f700e42739da9bddb6ef ]
 
-When simple_write_to_buffer() succeeds, it returns the number of bytes
-actually copied to the buffer. The code incorrectly uses 'count'
-as the index for null termination instead of the actual bytes copied.
-If count exceeds the buffer size, this leads to out-of-bounds write.
-Add a check for the count and use the return value as the index.
+Make sure to drop the reference taken when looking up the DMA mux
+platform device during route allocation.
 
-The bug was validated using a demo module that mirrors the original
-code and was tested under QEMU.
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-Pattern of the bug:
-- A fixed 64-byte stack buffer is filled using count.
-- If count > 64, the code still does buf[count] = '\0', causing an
-- out-of-bounds write on the stack.
-
-Steps for reproduce:
-- Opens the device node.
-- Writes 128 bytes of A to it.
-- This overflows the 64-byte stack buffer and KASAN reports the OOB.
-
-Found via static analysis. This is similar to the
-commit da9374819eb3 ("iio: backend: fix out-of-bound write")
-
-Fixes: b1c5d68ea66e ("iio: dac: ad3552r-hs: add support for internal ramp")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
+Cc: stable@vger.kernel.org	# 4.15
+Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Link: https://patch.msgid.link/20251117161258.10679-11-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad3552r-hs.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/dma/stm32-dmamux.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/drivers/iio/dac/ad3552r-hs.c
-+++ b/drivers/iio/dac/ad3552r-hs.c
-@@ -549,12 +549,15 @@ static ssize_t ad3552r_hs_write_data_sou
+--- a/drivers/dma/stm32-dmamux.c
++++ b/drivers/dma/stm32-dmamux.c
+@@ -90,23 +90,25 @@ static void *stm32_dmamux_route_allocate
+ 	struct stm32_dmamux_data *dmamux = platform_get_drvdata(pdev);
+ 	struct stm32_dmamux *mux;
+ 	u32 i, min, max;
+-	int ret;
++	int ret = -EINVAL;
+ 	unsigned long flags;
  
- 	guard(mutex)(&st->lock);
+ 	if (dma_spec->args_count != 3) {
+ 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
  
-+	if (count >= sizeof(buf))
-+		return -ENOSPC;
+ 	if (dma_spec->args[0] > dmamux->dmamux_requests) {
+ 		dev_err(&pdev->dev, "invalid mux request number: %d\n",
+ 			dma_spec->args[0]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
+-	if (!mux)
+-		return ERR_PTR(-ENOMEM);
++	if (!mux) {
++		ret = -ENOMEM;
++		goto err_put_pdev;
++	}
+ 
+ 	spin_lock_irqsave(&dmamux->lock, flags);
+ 	mux->chan_id = find_first_zero_bit(dmamux->dma_inuse,
+@@ -133,7 +135,6 @@ static void *stm32_dmamux_route_allocate
+ 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", i - 1);
+ 	if (!dma_spec->np) {
+ 		dev_err(&pdev->dev, "can't get dma master\n");
+-		ret = -EINVAL;
+ 		goto error;
+ 	}
+ 
+@@ -160,6 +161,8 @@ static void *stm32_dmamux_route_allocate
+ 	dev_dbg(&pdev->dev, "Mapping DMAMUX(%u) to DMA%u(%u)\n",
+ 		mux->request, mux->master, mux->chan_id);
+ 
++	put_device(&pdev->dev);
 +
- 	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
- 				     count);
- 	if (ret < 0)
- 		return ret;
+ 	return mux;
  
--	buf[count] = '\0';
-+	buf[ret] = '\0';
+ error:
+@@ -167,6 +170,9 @@ error:
  
- 	ret = match_string(dbgfs_attr_source, ARRAY_SIZE(dbgfs_attr_source),
- 			   buf);
+ error_chan_id:
+ 	kfree(mux);
++err_put_pdev:
++	put_device(&pdev->dev);
++
+ 	return ERR_PTR(ret);
+ }
+ 
 
 
 
