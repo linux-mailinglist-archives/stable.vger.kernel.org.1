@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6P9NAaYyeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:38 +0100
+	id ILZMKL80eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4789A4E95
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1124AA52CA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1857E3230E00
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C27A93212A97
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32263064B3;
-	Wed, 28 Jan 2026 15:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FB8242D7F;
+	Wed, 28 Jan 2026 15:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdhfqOeI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CA7NCz85"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60B6288C22;
-	Wed, 28 Jan 2026 15:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5913081BA;
+	Wed, 28 Jan 2026 15:58:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615361; cv=none; b=O/VP9CYlez5Lau0d68VxtR3ioPpNcXliOOwoiiGK0CrpVu0K9U3THhonwviaK6u0Qgg1dVNly119W+o3m5FSF+6SM8gMcu/QDZuF8+Fq8W71jtJrsqgF6mGUk0LVaGDmG6ZVOH3IvzHzF+zlDIi+A5NEhNpJz0MyFQPtDwwn4+A=
+	t=1769615918; cv=none; b=oOjmpeKnvys2ygXDig9Rfjq/6xIMmXqthxF2XaOvovtQf/CFXaEDfR4HszTTNvJ+Wn21Lh3xR6IHqiBILHkh4n58Dd5Xd/iiI6uuocYhB+gn2ORaYeJGyC5Wjm5sax/WAZ5Ox9tWZurcqChX9Bx43fSbXyNjEVcMlRiJJw00fpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615361; c=relaxed/simple;
-	bh=hbizAjs2WfZZ9OCqgC4G1/JYVeHvDournV4zhJqNLPw=;
+	s=arc-20240116; t=1769615918; c=relaxed/simple;
+	bh=acjSUe6s4OXQs6Y63e7tyoeKUjkLToLX8YkyNMAIBdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcHZyjt4dfpjeddawsZmZpJN8b6l5BYyjV48QYe1E0WFN7GfE1FBPRfwEaTe2Wcaef5Voc3KbfpiSpu4XKWr5S1DUh9sqYqePWHb8EIyj9zZOqbmsn7iJQO2DyyRCiXK2lnIoryF9yYmCclnUMXu38GXn6IXu7+zX5Si7Te5FXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdhfqOeI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43576C4CEF1;
-	Wed, 28 Jan 2026 15:49:21 +0000 (UTC)
+	 MIME-Version; b=INsegt+mCrbYgkfM8BYOF8DhbRkxFA+XEG8u2AMYfMuT5wfPMN0w8bHVVSCDxlC16qPyZNqROYeVR5fi1Nq1qZECsU0bI9PH7zP8XEB3i+N9cOXbgx9KKuK0TbeKQTVvVL74LFwJQLrGiFwCIwfuQxbb1dyrUaT6lQtLKpPS/n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CA7NCz85; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7763EC4CEF7;
+	Wed, 28 Jan 2026 15:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615361;
-	bh=hbizAjs2WfZZ9OCqgC4G1/JYVeHvDournV4zhJqNLPw=;
+	s=korg; t=1769615918;
+	bh=acjSUe6s4OXQs6Y63e7tyoeKUjkLToLX8YkyNMAIBdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FdhfqOeI00QER/TR6qpErZ848JtIYU01pRkqTWzEXA9tHz3OFfNkO9KgahWD+tNjR
-	 J9NLSBHLrPRZ4dmxxoNUYNZcMf+rJX7rKur4M9IxOT8Rm2ZBWC8m46E0hNo7Dy22Cj
-	 50PBIDNBDlXxEHFx8ehhwx0JVmwDflne3kUhUpls=
+	b=CA7NCz85XpI9fHlPHln0CBW2SN0KqHAdM3rLPtfAQwewhhb1qbmTW9VS287EeINMd
+	 fFWPkUXkbPNS7mFyBLdqjLJYcjl0xvOhIhwPjwX9N7dyeIWxUyFMkzg7LU1F6N1UHK
+	 V2qaK8VSLUe+4/0K2LWPcXmUQAaK+m+JQu+SBUnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Ricky WU <ricky_wu@realtek.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 114/169] mmc: rtsx_pci_sdmmc: implement sdmmc_card_busy function
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Sebastian Reichel <sre@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.18 152/227] leds: led-class: Only Add LED to leds_list when it is fully ready
 Date: Wed, 28 Jan 2026 16:23:17 +0100
-Message-ID: <20260128145338.107099578@linuxfoundation.org>
+Message-ID: <20260128145349.924598294@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,117 +67,113 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212391-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[ulf.hansson.linaro.org:query timed out];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212557-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A4789A4E95
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 1124AA52CA
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-commit 122610220134b32c742cc056eaf64f7017ac8cd9 upstream.
+commit d1883cefd31752f0504b94c3bcfa1f6d511d6e87 upstream.
 
-rtsx_pci_sdmmc does not have an sdmmc_card_busy function, so any voltage
-switches cause a kernel warning, "mmc0: cannot verify signal voltage
-switch."
+Before this change the LED was added to leds_list before led_init_core()
+gets called adding it the list before led_classdev.set_brightness_work gets
+initialized.
 
-Copy the sdmmc_card_busy function from rtsx_pci_usb to rtsx_pci_sdmmc to
-fix this.
+This leaves a window where led_trigger_register() of a LED's default
+trigger will call led_trigger_set() which calls led_set_brightness()
+which in turn will end up queueing the *uninitialized*
+led_classdev.set_brightness_work.
 
-Fixes: ff984e57d36e ("mmc: Add realtek pcie sdmmc host driver")
-Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Tested-by: Ricky WU <ricky_wu@realtek.com>
-Reviewed-by: Ricky WU <ricky_wu@realtek.com>
+This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
+2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
+succession. The first led_classdev_register() causes an async modprobe of
+snd_ctl_led to run and that async modprobe manages to exactly hit
+the window where the second LED is on the leds_list without led_init_core()
+being called for it, resulting in:
+
+ ------------[ cut here ]------------
+ WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
+ Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
+ ...
+ Call trace:
+  __flush_work+0x344/0x390 (P)
+  flush_work+0x2c/0x50
+  led_trigger_set+0x1c8/0x340
+  led_trigger_register+0x17c/0x1c0
+  led_trigger_register_simple+0x84/0xe8
+  snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
+  do_one_initcall+0x5c/0x318
+  do_init_module+0x9c/0x2b8
+  load_module+0x7e0/0x998
+
+Close the race window by moving the adding of the LED to leds_list to
+after the led_init_core() call.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
+Link: https://patch.msgid.link/20251211163727.366441-1-johannes.goede@oss.qualcomm.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/rtsx_pci_sdmmc.c |   41 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ drivers/leds/led-class.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-@@ -1308,6 +1308,46 @@ out:
- 	return err;
- }
+--- a/drivers/leds/led-class.c
++++ b/drivers/leds/led-class.c
+@@ -560,11 +560,6 @@ int led_classdev_register_ext(struct dev
+ #ifdef CONFIG_LEDS_BRIGHTNESS_HW_CHANGED
+ 	led_cdev->brightness_hw_changed = -1;
+ #endif
+-	/* add to the list of leds */
+-	down_write(&leds_list_lock);
+-	list_add_tail(&led_cdev->node, &leds_list);
+-	up_write(&leds_list_lock);
+-
+ 	if (!led_cdev->max_brightness)
+ 		led_cdev->max_brightness = LED_FULL;
  
-+static int sdmmc_card_busy(struct mmc_host *mmc)
-+{
-+	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
-+	struct rtsx_pcr *pcr = host->pcr;
-+	int err;
-+	u8 stat;
-+	u8 mask = SD_DAT3_STATUS | SD_DAT2_STATUS | SD_DAT1_STATUS
-+	| SD_DAT0_STATUS;
+@@ -574,6 +569,11 @@ int led_classdev_register_ext(struct dev
+ 
+ 	led_init_core(led_cdev);
+ 
++	/* add to the list of leds */
++	down_write(&leds_list_lock);
++	list_add_tail(&led_cdev->node, &leds_list);
++	up_write(&leds_list_lock);
 +
-+	mutex_lock(&pcr->pcr_mutex);
-+
-+	rtsx_pci_start_run(pcr);
-+
-+	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
-+				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP,
-+			       SD_CLK_TOGGLE_EN);
-+	if (err)
-+		goto out;
-+
-+	mdelay(1);
-+
-+	err = rtsx_pci_read_register(pcr, SD_BUS_STAT, &stat);
-+	if (err)
-+		goto out;
-+
-+	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
-+				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP, 0);
-+out:
-+	mutex_unlock(&pcr->pcr_mutex);
-+
-+	if (err)
-+		return err;
-+
-+	/* check if any pin between dat[0:3] is low */
-+	if ((stat & mask) != mask)
-+		return 1;
-+	else
-+		return 0;
-+}
-+
- static int sdmmc_execute_tuning(struct mmc_host *mmc, u32 opcode)
- {
- 	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
-@@ -1420,6 +1460,7 @@ static const struct mmc_host_ops realtek
- 	.get_ro = sdmmc_get_ro,
- 	.get_cd = sdmmc_get_cd,
- 	.start_signal_voltage_switch = sdmmc_switch_voltage,
-+	.card_busy = sdmmc_card_busy,
- 	.execute_tuning = sdmmc_execute_tuning,
- 	.init_sd_express = sdmmc_init_sd_express,
- };
+ #ifdef CONFIG_LEDS_TRIGGERS
+ 	led_trigger_set_default(led_cdev);
+ #endif
 
 
 
