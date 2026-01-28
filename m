@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-212683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CANcIPGLemkE7gEAu9opvQ
-	(envelope-from <stable+bounces-212683-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:21:37 +0100
+	id +AgcH/OLemkE7gEAu9opvQ
+	(envelope-from <stable+bounces-212684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:21:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCC2A9874
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:21:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7C0A987B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B578302C6C6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:20:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD44730305CD
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C201E342C92;
-	Wed, 28 Jan 2026 22:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A92A34320C;
+	Wed, 28 Jan 2026 22:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PoNzHfMn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZQSoHS92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8631334253C
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 22:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD10342C92
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 22:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769638826; cv=none; b=bPZ79nV1Hco/5+Sh5cxboL58eOYrB66iuusihSaDsy3FHp0N+vSLz0OyxzUMW+qDwiHXUbbvMt37APeKvwl6+VSNWKdWeRlsRzwIO/7TeCgQKgu4tekpFIZ8T6y91L2PfR6dQj+NXBARQy2g5ot2eLE0Xerw/VqTK81kzoHphv4=
+	t=1769638836; cv=none; b=FP0qAER1SH6I8lI3T4YmOuWSdb/ExarZZuKFc8Wgw4vSlmnDaqBbzP/0Tq2SWlxaHK+toxECWee2ezhLxWudpwq40n4XIlCEaq5DWcRgz9W7ZLwo4Rt9jin3uzKhe4kegjrf5eOKr2nWf4FlPo+egUAyxtbEN2M/0tZz17JruJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769638826; c=relaxed/simple;
-	bh=SmdLVH7z8CM5ynk21rZrSTuGb7x5qqZx8Un66avhDNY=;
+	s=arc-20240116; t=1769638836; c=relaxed/simple;
+	bh=VtIN9N7/9XBOEXBamCpOHFwcc6M4Qe04yZURBZoMJSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4RkBzP00QGS9RS25D49VEPB4oc+92f/2dTxkh1+D7HaJfOX9eHCItTHU+VHmUV0xy/QmjG9RrJWXAWlZPTuDX2KopAcjf5k83oLGpZ70+qkKZf63Lfu6WTLkK5z+PugeF5c10IYwFARd9FUuAKCgNVuYysT7qP6g5rikwogUIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PoNzHfMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2BFC4CEF1;
-	Wed, 28 Jan 2026 22:20:25 +0000 (UTC)
+	 MIME-Version; b=NYFrSRF5mL2lVuMC/FyNp+IAPF8c61krjD/VHrU57eVOCqgXm/r0ViaiwP39fREsGnhx6i94Zj/Q+BuT0sNVRwMbTy+IgK9No39hCz06yE4E0h6l/9oi8DjtC1DjaRU/Qm3m0qFJeUue1zA1/I4vVJaWfIKSeESshG2iPiWessE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZQSoHS92; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06FC0C4CEF1;
+	Wed, 28 Jan 2026 22:20:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769638826;
-	bh=SmdLVH7z8CM5ynk21rZrSTuGb7x5qqZx8Un66avhDNY=;
+	s=k20201202; t=1769638835;
+	bh=VtIN9N7/9XBOEXBamCpOHFwcc6M4Qe04yZURBZoMJSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PoNzHfMns+NNs8jA9STDKfliH+jF04vReE1Mgk+D7cDTdJhLNCZaFmpNBG6UOJuZO
-	 XCVBdMZN9JyaLzD062P7z/s6MfQeHWoAyfsgnbT4JQ100gH0QTShiQYZd/ENMZ5fO8
-	 b8DU/sQbXnH+0yHgQPcO534FAE4FcAkD2L2inSqD/XgDd+geCU5CrmFyxH+spWbuVJ
-	 HDMz3hPNeKhV8m95EyBqp+Fz4XhvOo0p/0/sErf9lE8a+KzFEWeIIFEpQ2dMNooA//
-	 C795bncKq3F3LLFokj6Cmmh9cy8Y9qXCUZdFjVJDhadb/TvIA+vKU1BLah8wFEvxpC
-	 mOB5Pyxw9KwOg==
+	b=ZQSoHS92MrTCmE98WDry0yyvsdexFFHO6+efRxHihtrLlxyf7Zld8SY2PlG60fBpA
+	 xAKrhbDAv97cl/qIuU4qtC85JMciCRzxHH9wNEluNA7y++xqRtm97jmzDW5KvrWT7F
+	 6TpQhvvf+tvfOYaTErwD8ZHkVzA6FpepM8kodoOaiq2C/rkdHuaHMiEKlmqVqHVYSP
+	 Xjp6Nbze0FS8G/ReSzgaQAVsI7pTmkEG/BYuYNz7ex5oqOpr+0oyRaetR4hx3brtwI
+	 jvmqHioN+Any0WBMIFwKwrB1OaMX+6KSFUFZtWrUDux/B4aMua+SZ5zUoENCv1Sbji
+	 0yiL9jxMPzJKw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Ming Qian <ming.qian@oss.nxp.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] ksmbd: smbd: fix dma_unmap_sg() nents
-Date: Wed, 28 Jan 2026 17:20:21 -0500
-Message-ID: <20260128222021.2800060-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] pmdomain: imx8m-blk-ctrl: Remove separate rst and clk mask for 8mq vpu
+Date: Wed, 28 Jan 2026 17:20:33 -0500
+Message-ID: <20260128222033.2800495-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012757-crazed-cupbearer-fa32@gregkh>
-References: <2026012757-crazed-cupbearer-fa32@gregkh>
+In-Reply-To: <2026012709-declared-threefold-0e87@gregkh>
+References: <2026012709-declared-threefold-0e87@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,103 +66,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,microsoft.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212683-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-212684-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2CCC2A9874
+X-Rspamd-Queue-Id: 0A7C0A987B
 X-Rspamd-Action: no action
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-[ Upstream commit 98e3e2b561bc88f4dd218d1c05890672874692f6 ]
+[ Upstream commit 3de49966499634454fd59e0e6fecd50baab7febd ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+For i.MX8MQ platform, the ADB in the VPUMIX domain has no separate reset
+and clock enable bits, but is ungated and reset together with the VPUs.
+So we can't reset G1 or G2 separately, it may led to the system hang.
+Remove rst_mask and clk_mask of imx8mq_vpu_blk_ctl_domain_data.
+Let imx8mq_vpu_power_notifier() do really vpu reset.
 
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Context ]
+Fixes: 608d7c325e85 ("soc: imx: imx8m-blk-ctrl: add i.MX8MQ VPU blk-ctrl")
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/soc/imx/imx8m-blk-ctrl.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 81da8a5c1e0db..1290c0fa7dd18 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -1103,14 +1103,12 @@ static int get_sg_list(void *buf, int size, struct scatterlist *sg_list, int nen
- 
- static int get_mapped_sg_list(struct ib_device *device, void *buf, int size,
- 			      struct scatterlist *sg_list, int nentries,
--			      enum dma_data_direction dir)
-+			      enum dma_data_direction dir, int *npages)
- {
--	int npages;
--
--	npages = get_sg_list(buf, size, sg_list, nentries);
--	if (npages < 0)
-+	*npages = get_sg_list(buf, size, sg_list, nentries);
-+	if (*npages < 0)
- 		return -EINVAL;
--	return ib_dma_map_sg(device, sg_list, npages, dir);
-+	return ib_dma_map_sg(device, sg_list, *npages, dir);
+diff --git a/drivers/soc/imx/imx8m-blk-ctrl.c b/drivers/soc/imx/imx8m-blk-ctrl.c
+index 00879615a7015..a430c14ce16d3 100644
+--- a/drivers/soc/imx/imx8m-blk-ctrl.c
++++ b/drivers/soc/imx/imx8m-blk-ctrl.c
+@@ -810,22 +810,25 @@ static int imx8mq_vpu_power_notifier(struct notifier_block *nb,
+ 	return NOTIFY_OK;
  }
  
- static int post_sendmsg(struct smb_direct_transport *t,
-@@ -1179,12 +1177,13 @@ static int smb_direct_post_send_data(struct smb_direct_transport *t,
- 	for (i = 0; i < niov; i++) {
- 		struct ib_sge *sge;
- 		int sg_cnt;
-+		int npages;
++/*
++ * For i.MX8MQ, the ADB in the VPUMIX domain has no separate reset and clock
++ * enable bits, but is ungated and reset together with the VPUs.
++ * Resetting G1 or G2 separately may led to system hang.
++ * Remove the rst_mask and clk_mask from the domain data of G1 and G2,
++ * Let imx8mq_vpu_power_notifier() do really vpu reset.
++ */
+ static const struct imx8m_blk_ctrl_domain_data imx8mq_vpu_blk_ctl_domain_data[] = {
+ 	[IMX8MQ_VPUBLK_PD_G1] = {
+ 		.name = "vpublk-g1",
+ 		.clk_names = (const char *[]){ "g1", },
+ 		.num_clks = 1,
+ 		.gpc_name = "g1",
+-		.rst_mask = BIT(1),
+-		.clk_mask = BIT(1),
+ 	},
+ 	[IMX8MQ_VPUBLK_PD_G2] = {
+ 		.name = "vpublk-g2",
+ 		.clk_names = (const char *[]){ "g2", },
+ 		.num_clks = 1,
+ 		.gpc_name = "g2",
+-		.rst_mask = BIT(0),
+-		.clk_mask = BIT(0),
+ 	},
+ };
  
- 		sg_init_table(sg, SMB_DIRECT_MAX_SEND_SGES - 1);
- 		sg_cnt = get_mapped_sg_list(t->cm_id->device,
- 					    iov[i].iov_base, iov[i].iov_len,
- 					    sg, SMB_DIRECT_MAX_SEND_SGES - 1,
--					    DMA_TO_DEVICE);
-+					    DMA_TO_DEVICE, &npages);
- 		if (sg_cnt <= 0) {
- 			pr_err("failed to map buffer\n");
- 			ret = -ENOMEM;
-@@ -1192,7 +1191,7 @@ static int smb_direct_post_send_data(struct smb_direct_transport *t,
- 		} else if (sg_cnt + msg->num_sge > SMB_DIRECT_MAX_SEND_SGES) {
- 			pr_err("buffer not fitted into sges\n");
- 			ret = -E2BIG;
--			ib_dma_unmap_sg(t->cm_id->device, sg, sg_cnt,
-+			ib_dma_unmap_sg(t->cm_id->device, sg, npages,
- 					DMA_TO_DEVICE);
- 			goto err;
- 		}
 -- 
 2.51.0
 
