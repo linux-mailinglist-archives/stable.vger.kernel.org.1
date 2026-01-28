@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CURGBIvemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212095-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:22 +0100
+	id +HxFDsUwemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE7DA458A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C74B4A49CA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A4401321D0FE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 84AFA30312C5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40323248F72;
-	Wed, 28 Jan 2026 15:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3A8301465;
+	Wed, 28 Jan 2026 15:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voTJQkEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvgQCkXy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040D22512FF;
-	Wed, 28 Jan 2026 15:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E661630DED8;
+	Wed, 28 Jan 2026 15:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614384; cv=none; b=DRrlGJUggF5O9NHkh/gXkQtMUzbxkobACnFnw8GJeRWH9KpDruMmBm+jpMhDIWrHcR0m1CgyKJyU9ydpW/nxvQglb18r0KSG8fmxCKQtYXBRK7bzYHXmUdfVdg5i40PioF1BoCsb5toTTBw0cG48i91shodOZkLG2Ffv1r2pqzU=
+	t=1769614990; cv=none; b=WSG1kn46ZCA8uQa5zpKfogfdtGw29UualKPCOHV8AfT5fd3ETiqipWzkcINDnozrs0cUKpv047So9rCQjqG7fTpHQWqQ9X/HtXUBUy5WVlA6krg+KPuLSnUkHFK3e4dFqiuRe+QISO05qPym7C2bvJt49pYfnsp1wrCHSEAEDrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614384; c=relaxed/simple;
-	bh=iA19AhpldGnvCs3+y9ay4UAE/Ga0PsiZkqTNqRnSqg4=;
+	s=arc-20240116; t=1769614990; c=relaxed/simple;
+	bh=qNTohIxFW2j/EwXaNfp+jG9g6TogB5/023dltnRguaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKdYEOo7J2nzdIHeDMM0x7c4mYFmwHPJlNvm76dlvwl6sivBgj7gShiqTdUF9YP9lCYPdxDcSj3DAl1kgtX+3zKasqdiv99uPCCKRja0ZCpjYANM8Xwd2RTJIXw96GFwGN6YFjOElnKvXA2JClrC8+xeae+MZXQ0Zb/uuCkYeBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voTJQkEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FD1C4CEF1;
-	Wed, 28 Jan 2026 15:33:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qwM6e8rrB2SQbATO6EgNfc/HxPzTj0WEClzQjFvUAG47RtSsbL5zgXDQuAURO6YAx/q4o5alucly4G1CixH/dAGtBYhu2NNfmbzXBXHdw0RAaNZLWjNag5LIITNrqANCMFLlMwVE2hONDdS4uLz7F56w+toNgIYqF2WqbdrdKUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvgQCkXy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DEBC4CEF1;
+	Wed, 28 Jan 2026 15:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614383;
-	bh=iA19AhpldGnvCs3+y9ay4UAE/Ga0PsiZkqTNqRnSqg4=;
+	s=korg; t=1769614989;
+	bh=qNTohIxFW2j/EwXaNfp+jG9g6TogB5/023dltnRguaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=voTJQkEunGdOrOm90H3G2lzi3xcoTRYMFqGLEX98QLeiMFpcvcZCH68o0rNQIh9l7
-	 7iIuQu4BH3W39IzfiHw0TuqHRLQmpz8y/Hpg2zMk2A1hfupew/hCNDPwsotX67+63b
-	 ngeaco3tnWS+CgKTZRQocHlWjJrIMjqmderMYwWs=
+	b=FvgQCkXy4HX+reZoSDmBmy/9z61pLiKGDluNu9Xh7S2qaEkIPf6gaYgrcZk/g6nV/
+	 4ssjXx9hdgTFPDhnrKKSugemqMDfduJOHy7+zKbho69Z8+WK1nMPmhM44T8njcxSKH
+	 V6ByFwF+UjIbsryRZzWxAIdAC8Z2rE+U58/uuT0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Wolf <wolf@yoxt.cc>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/254] selftests/net: convert fib-onlink-tests.sh to run it in unique namespace
+Subject: [PATCH 6.12 013/169] ata: ahci: Do not read the per port area for unimplemented ports
 Date: Wed, 28 Jan 2026 16:21:36 +0100
-Message-ID: <20260128145349.141352657@linuxfoundation.org>
+Message-ID: <20260128145334.493088050@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +64,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212280-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-212095-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.984];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lib.sh:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8DE7DA458A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,yoxt.cc:email]
+X-Rspamd-Queue-Id: C74B4A49CA
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 3a06833b2adc0a902f2469ad4ce41ccd64f1f3ab ]
+[ Upstream commit ea4d4ea6d10a561043922d285f1765c7e4bfd32a ]
 
-Remove PEER_CMD, which is not used in this test
+An AHCI HBA specifies the number of ports it supports using CAP.NP.
+The HBA is free to only make a subset of the number of ports available
+using the PI (Ports Implemented) register.
 
-Here is the test result after conversion.
+libata currently creates dummy ports for HBA ports that are provided by
+the HBA, but which are marked as "unavailable" using the PI register.
 
- ]# ./fib-onlink-tests.sh
- Error: ipv4: FIB table does not exist.
- Flush terminated
- Error: ipv6: FIB table does not exist.
- Flush terminated
+Each port will have a per port area of registers in the HBA, regardless
+if the port is marked as "unavailable" or not.
 
- ########################################
- Configuring interfaces
+ahci_mark_external_port() currently reads this per port area of registers
+using readl() to see if the port is marked as external/hotplug-capable.
 
-   ...
+However, AHCI 1.3.1, section "3.1.4 Offset 0Ch: PI – Ports Implemented"
+states: "Software must not read or write to registers within unavailable
+ports."
 
-     TEST: Gateway resolves to wrong nexthop device - VRF      [ OK ]
+Thus, make sure that we only call ahci_mark_external_port() and
+ahci_update_initial_lpm_policy() for ports that are implemented.
 
- Tests passed:  38
- Tests failed:   0
+>From a libata perspective, this should not change anything related to LPM,
+as dummy ports do not provide any ap->ops (they do not have a .set_lpm()
+callback), so even if EH were to call .set_lpm() on a dummy port, it was
+already a no-op.
 
-Acked-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20231213060856.4030084-11-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 4f5f148dd7c0 ("selftests: net: fib-onlink-tests: Convert to use namespaces by default")
+Fixes: f7131935238d ("ata: ahci: move marking of external port earlier")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Tested-by: Wolf <wolf@yoxt.cc>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fib-onlink-tests.sh | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/ata/ahci.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
-index c287b90b8af80..ec2d6ceb1f08d 100755
---- a/tools/testing/selftests/net/fib-onlink-tests.sh
-+++ b/tools/testing/selftests/net/fib-onlink-tests.sh
-@@ -3,6 +3,7 @@
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 944e44caa2606..e78b97fe81708 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -2071,13 +2071,13 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		if (ap->flags & ATA_FLAG_EM)
+ 			ap->em_message_type = hpriv->em_msg_type;
  
- # IPv4 and IPv6 onlink tests
- 
-+source lib.sh
- PAUSE_ON_FAIL=${PAUSE_ON_FAIL:=no}
- VERBOSE=0
- 
-@@ -74,9 +75,6 @@ TEST_NET4IN6[2]=10.2.1.254
- # mcast address
- MCAST6=ff02::1
- 
+-		ahci_mark_external_port(ap);
 -
--PEER_NS=bart
--PEER_CMD="ip netns exec ${PEER_NS}"
- VRF=lisa
- VRF_TABLE=1101
- PBR_TABLE=101
-@@ -176,8 +174,7 @@ setup()
- 	set -e
+-		ahci_update_initial_lpm_policy(ap);
+-
+ 		/* disabled/not-implemented port */
+-		if (!(hpriv->port_map & (1 << i)))
++		if (!(hpriv->port_map & (1 << i))) {
+ 			ap->ops = &ata_dummy_port_ops;
++		} else {
++			ahci_mark_external_port(ap);
++			ahci_update_initial_lpm_policy(ap);
++		}
+ 	}
  
- 	# create namespace
--	ip netns add ${PEER_NS}
--	ip -netns ${PEER_NS} li set lo up
-+	setup_ns PEER_NS
- 
- 	# add vrf table
- 	ip li add ${VRF} type vrf table ${VRF_TABLE}
-@@ -219,7 +216,7 @@ setup()
- cleanup()
- {
- 	# make sure we start from a clean slate
--	ip netns del ${PEER_NS} 2>/dev/null
-+	cleanup_ns ${PEER_NS} 2>/dev/null
- 	for n in 1 3 5 7; do
- 		ip link del ${NETIFS[p${n}]} 2>/dev/null
- 	done
+ 	/* apply workaround for ASUS P5W DH Deluxe mainboard */
 -- 
 2.51.0
 
