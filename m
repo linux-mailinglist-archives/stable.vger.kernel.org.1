@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-212337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212194-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGP/JFI1eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212337-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:02 +0100
+	id GFHnJ8Ivemkc4gEAu9opvQ
+	(envelope-from <stable+bounces-212194-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65D6A542F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1FAA4731
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 90A69306AE50
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BEFF312288C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F2E30BF7D;
-	Wed, 28 Jan 2026 15:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9891B2DB791;
+	Wed, 28 Jan 2026 15:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16ULM+Ol"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8JzOvX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC449301465;
-	Wed, 28 Jan 2026 15:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00112D9EFB;
+	Wed, 28 Jan 2026 15:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615180; cv=none; b=hvwscbPGXdklVSsNmfrm/Vs3EoFVg6DDClRW6iX3rGPuQUjqzoJav7QDjenQWz/kx/ezhhtJS7RbPXb0mj02Qzq1S5svR5wCjx97OyDqS3+omLRa7NPaJLGgPKR/vxRDxEbw+W/0AND9MmixnFOQhgrLbeFoFQwwK3GWZrpZ588=
+	t=1769614703; cv=none; b=nV1GNRyW9toGEeZaI0g8wRSZ7BM6dsv2HLLLtgHeswFhbnpzvzoeqBiP5oZO44D1hGRkf6gzSrDrE7BqeQDO7aTl3W7uXxKbdio3z6D7bJFPresjzonKUNtmtAqD8Upb4P+kVV7qZBzeF/t79HS4TckpIle9a67+4TceZl5JLg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615180; c=relaxed/simple;
-	bh=xerMyxEx3Qzge01mSxFhsdQpDjh66uTpQ93x2898dCQ=;
+	s=arc-20240116; t=1769614703; c=relaxed/simple;
+	bh=IaDRmDB3AmC/grKZQfZTzf0JbeL3WNDX9uNe4awQw6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtWGI4sUQ+yCXEix8YCX8wJsEBCa2QXy0GgsaHOyakap0kTKM88NA70d6B+h7OGYQZ7/jolJIh35PqS59BZ1JMjT0medlweKi+s/sG8HAFisUocILdu4am1HlfVBbX6rqvg3YHTjML6qKGp2QOd4HT0VvyGTkq2Kfh07QSDeux0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16ULM+Ol; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB17C4CEF1;
-	Wed, 28 Jan 2026 15:46:19 +0000 (UTC)
+	 MIME-Version; b=M4W8jdqYbO2Qnew1qC8NwwTUtoKqUo+OL5n25dVsvPjxXwt6uSVhO7ZWiLhvswBHQFHFbl+3C3AD/d3aDnfs2vceYquw17Dzt6x/gSlHqYjNU1cAAxWkVGv3hBvYTgm1dVd6/5HCBSiv12uLL45quWooV8IQNjcFhtRVm/V+vAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8JzOvX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCD7C2BC86;
+	Wed, 28 Jan 2026 15:38:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615180;
-	bh=xerMyxEx3Qzge01mSxFhsdQpDjh66uTpQ93x2898dCQ=;
+	s=korg; t=1769614703;
+	bh=IaDRmDB3AmC/grKZQfZTzf0JbeL3WNDX9uNe4awQw6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16ULM+OlDQjPhQx/weE/JANgheYUOypQ6wN1kqWyjYHia9E3Esim3YUUQa3UIXxFZ
-	 uIDkqo4emlQmvGv5VCSR0JV7EiKyWn7Q3UcMVEtKQOLpBfgnHx6eBLUewHoD3rgOKa
-	 9fi11/SXEpCeGk7kN36lQ8hxb7BtP8WvA676oiWQ=
+	b=U8JzOvX3gENTJmnwRjPthWpoJIfNvLxypVEqqS3e9DE8RZJVl8cAXKIOtXPJmMvOe
+	 +u+MPfAHipSEmK1O5qE1XRSJzw3h21BXSLOhdE+5ZYdLPNMxd8ExZILz6bxrnp6Cjp
+	 V1RFoqgATXje32kXexFtZU59ydqXkbkEXOszUoO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weigang He <geoffreyhe2@gmail.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.12 102/169] of: fix reference count leak in of_alias_scan()
+	Yang Shen <shenyang39@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: [PATCH 6.6 209/254] uacce: implement mremap in uacce_vm_ops to return -EPERM
 Date: Wed, 28 Jan 2026 16:23:05 +0100
-Message-ID: <20260128145337.679876007@linuxfoundation.org>
+Message-ID: <20260128145352.315147621@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +67,85 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212337-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212194-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D65D6A542F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2B1FAA4731
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weigang He <geoffreyhe2@gmail.com>
+From: Yang Shen <shenyang39@huawei.com>
 
-commit 81122fba08fa3ccafab6ed272a5c6f2203923a7e upstream.
+commit 02695347be532b628f22488300d40c4eba48b9b7 upstream.
 
-of_find_node_by_path() returns a device_node with its refcount
-incremented. When kstrtoint() fails or dt_alloc() fails, the function
-continues to the next iteration without calling of_node_put(), causing
-a reference count leak.
+The current uacce_vm_ops does not support the mremap operation of
+vm_operations_struct. Implement .mremap to return -EPERM to remind
+users.
 
-Add of_node_put(np) before continue on both error paths to properly
-release the device_node reference.
+The reason we need to explicitly disable mremap is that when the
+driver does not implement .mremap, it uses the default mremap
+method. This could lead to a risk scenario:
 
-Fixes: 611cad720148 ("dt: add of_alias_scan and of_alias_get_id")
+An application might first mmap address p1, then mremap to p2,
+followed by munmap(p1), and finally munmap(p2). Since the default
+mremap copies the original vma's vm_private_data (i.e., q) to the
+new vma, both munmap operations would trigger vma_close, causing
+q->qfr to be freed twice(qfr will be set to null here, so repeated
+release is ok).
+
+Fixes: 015d239ac014 ("uacce: add uacce driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
-Link: https://patch.msgid.link/20260117091238.481243-1-geoffreyhe2@gmail.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Yang Shen <shenyang39@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Link: https://patch.msgid.link/20251202061256.4158641-4-huangchenghai2@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/base.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/misc/uacce/uacce.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1822,13 +1822,17 @@ void of_alias_scan(void * (*dt_alloc)(u6
- 			end--;
- 		len = end - start;
+--- a/drivers/misc/uacce/uacce.c
++++ b/drivers/misc/uacce/uacce.c
+@@ -211,8 +211,14 @@ static void uacce_vma_close(struct vm_ar
+ 	}
+ }
  
--		if (kstrtoint(end, 10, &id) < 0)
-+		if (kstrtoint(end, 10, &id) < 0) {
-+			of_node_put(np);
- 			continue;
-+		}
++static int uacce_vma_mremap(struct vm_area_struct *area)
++{
++	return -EPERM;
++}
++
+ static const struct vm_operations_struct uacce_vm_ops = {
+ 	.close = uacce_vma_close,
++	.mremap = uacce_vma_mremap,
+ };
  
- 		/* Allocate an alias_prop with enough space for the stem */
- 		ap = dt_alloc(sizeof(*ap) + len + 1, __alignof__(*ap));
--		if (!ap)
-+		if (!ap) {
-+			of_node_put(np);
- 			continue;
-+		}
- 		memset(ap, 0, sizeof(*ap) + len + 1);
- 		ap->alias = start;
- 		of_alias_add(ap, np, id, start, len);
+ static int uacce_fops_mmap(struct file *filep, struct vm_area_struct *vma)
 
 
 
