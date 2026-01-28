@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-212158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPS/AMEuemmO3wEAu9opvQ
-	(envelope-from <stable+bounces-212158-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:01 +0100
+	id +NlFAZkyeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D29A4514
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89E3A4E7E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 35E36303AFF3
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:36:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE3AA3013DBA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D841E2D6400;
-	Wed, 28 Jan 2026 15:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C50D1D6AA;
+	Wed, 28 Jan 2026 15:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijHYkxpe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJuPFCMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF362D6605;
-	Wed, 28 Jan 2026 15:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2E318027;
+	Wed, 28 Jan 2026 15:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614585; cv=none; b=ciqVsX0Iu95HV/sUbd+h9uxMD2cW34cY6tzkp6vOjHQfDXTUc25Q2tt8PGY1M9DX02Jqtf6lYBibMmwmdsmSkOtfD6uKjb40324E7W1dFTm8CfgR30QQ3r1hyKhQBEOQWsRdUMrKd5rfOKHKuFMVkWEnZ4hCMEkZQVPB76DlwiU=
+	t=1769615783; cv=none; b=iNtmGEKIJ0Byk5UL7HEb30GI8zXBN3LtXgBHPcmhZoqIt06dkJsICw6S9RF1ibL/9rHYEkMY7mxw2bH20S1ev/KOz9U065yOcmfAyJ6TtxFuCfet84BF/5zNvX+fHXYIWpdhdtAYrVX8enz2FYREMEM7pr0/aocFQDNNBDM5PeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614585; c=relaxed/simple;
-	bh=yeB+xjXPmPdIYeyyYTT7PZuG1VqLst+f8XQkIg/Gnx4=;
+	s=arc-20240116; t=1769615783; c=relaxed/simple;
+	bh=jmFEt0qEt6/LiQyMcvmpWZaPgKDIz25AE+ht5ezpTNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7VzE4LW36f0Fjhs07FwmIfOmciUvvgaEIsLYethmOQm70T7tZyIYMKZ3XAN8LSwZ6O/jheHfsIWPrUedRnP0L+Wj6ju3TzcVJ5Xn8W10WZSb12TfnHYqJsYEPOq3vM8xC98jWa1+rS1uc9G1VbOQkr/ScWX5IgF4zXrYOwewuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijHYkxpe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5B2C16AAE;
-	Wed, 28 Jan 2026 15:36:24 +0000 (UTC)
+	 MIME-Version; b=XMzf0Xt7yuTMH3VDTa8hCKRUOkhImHeVVtwaU3TxaX+Rkdi1RDrkdYjXP2DkITXcSG8REan0YhFA9hHG839Tvpkqu1hFp8eeomvkFP+ETYHRgML8yNoVRP2zY67mD8TU4owKLbMOAJ+fZe4/JSlxEXsCaWV+nwAn/+3Cj5GC5EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJuPFCMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E6AC4CEF1;
+	Wed, 28 Jan 2026 15:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614585;
-	bh=yeB+xjXPmPdIYeyyYTT7PZuG1VqLst+f8XQkIg/Gnx4=;
+	s=korg; t=1769615782;
+	bh=jmFEt0qEt6/LiQyMcvmpWZaPgKDIz25AE+ht5ezpTNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijHYkxpe5Sz2uzpanLltiNFMTLgIM1riER2nGt/hFBuFnStMkg84yWKHBGFui3NJI
-	 mTE8qO9h7IGbDDufyJOVdMFvum0I9vVMZA521F1nACxlfQ/rdbHadDRCtf1Z7I4qia
-	 Fqy8GCEVeOo0cb45rz9E8KKUYgTPFBNrOt1VgOm8=
+	b=WJuPFCMYV4oX7v+XNQiruawm8EH2M6rOG9/651bJXyGfJ2Qs5rBmp9tRFfmlBN3JP
+	 mus+nREF8w1C1Xj/jKOBEEyQ7zcq6N8J7H5WzS932fL44Qckh9C297LyqmNL3KVDYE
+	 5hIT7oVbtyI8kIGkopFl0FnNMT6N+oI+DaKUQHfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Yotam Gigi <yotam.gi@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jijie Shao <shaojijie@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/254] net/sched: act_ife: avoid possible NULL deref
+Subject: [PATCH 6.18 113/227] net: hns3: fix the HCLGE_FD_AD_NXT_KEY error setting issue
 Date: Wed, 28 Jan 2026 16:22:38 +0100
-Message-ID: <20260128145351.353445915@linuxfoundation.org>
+Message-ID: <20260128145348.532362509@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,116 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212158-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,gmail.com,mojatatu.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212517-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,5cf914f193dffde3bd3c];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,appspotmail.com:email,mojatatu.com:email]
-X-Rspamd-Queue-Id: 21D29A4514
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B89E3A4E7E
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 27880b0b0d35ad1c98863d09788254e36f874968 ]
+[ Upstream commit f87e034d16e43af984380a95c32c25201b7759a7 ]
 
-tcf_ife_encode() must make sure ife_encode() does not return NULL.
+Use next_input_key instead of counter_id to set HCLGE_FD_AD_NXT_KEY.
 
-syzbot reported:
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
- RIP: 0010:ife_tlv_meta_encode+0x41/0xa0 net/ife/ife.c:166
-CPU: 3 UID: 0 PID: 8990 Comm: syz.0.696 Not tainted syzkaller #0 PREEMPT(full)
-Call Trace:
- <TASK>
-  ife_encode_meta_u32+0x153/0x180 net/sched/act_ife.c:101
-  tcf_ife_encode net/sched/act_ife.c:841 [inline]
-  tcf_ife_act+0x1022/0x1de0 net/sched/act_ife.c:877
-  tc_act include/net/tc_wrapper.h:130 [inline]
-  tcf_action_exec+0x1c0/0xa20 net/sched/act_api.c:1152
-  tcf_exts_exec include/net/pkt_cls.h:349 [inline]
-  mall_classify+0x1a0/0x2a0 net/sched/cls_matchall.c:42
-  tc_classify include/net/tc_wrapper.h:197 [inline]
-  __tcf_classify net/sched/cls_api.c:1764 [inline]
-  tcf_classify+0x7f2/0x1380 net/sched/cls_api.c:1860
-  multiq_classify net/sched/sch_multiq.c:39 [inline]
-  multiq_enqueue+0xe0/0x510 net/sched/sch_multiq.c:66
-  dev_qdisc_enqueue+0x45/0x250 net/core/dev.c:4147
-  __dev_xmit_skb net/core/dev.c:4262 [inline]
-  __dev_queue_xmit+0x2998/0x46c0 net/core/dev.c:4798
-
-Fixes: 295a6e06d21e ("net/sched: act_ife: Change to use ife module")
-Reported-by: syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6970d61d.050a0220.706b.0010.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Yotam Gigi <yotam.gi@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260121133724.3400020-1-edumazet@google.com
+Fixes: 117328680288 ("net: hns3: Add input key and action config support for flow director")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Link: https://patch.msgid.link/20260119132840.410513-3-shaojijie@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_ife.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
-index 431921204f660..567a58d30df8d 100644
---- a/net/sched/act_ife.c
-+++ b/net/sched/act_ife.c
-@@ -821,6 +821,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 	/* could be stupid policy setup or mtu config
- 	 * so lets be conservative.. */
- 	if ((action == TC_ACT_SHOT) || exceed_mtu) {
-+drop:
- 		qstats_drop_inc(this_cpu_ptr(ife->common.cpu_qstats));
- 		return TC_ACT_SHOT;
- 	}
-@@ -829,6 +830,8 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 		skb_push(skb, skb->dev->hard_header_len);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 1b103d1154da9..5cc5ee9dcd982 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -5690,7 +5690,7 @@ static int hclge_fd_ad_config(struct hclge_dev *hdev, u8 stage, int loc,
+ 			HCLGE_FD_AD_COUNTER_NUM_S, action->counter_id);
+ 	hnae3_set_bit(ad_data, HCLGE_FD_AD_NXT_STEP_B, action->use_next_stage);
+ 	hnae3_set_field(ad_data, HCLGE_FD_AD_NXT_KEY_M, HCLGE_FD_AD_NXT_KEY_S,
+-			action->counter_id);
++			action->next_input_key);
  
- 	ife_meta = ife_encode(skb, metalen);
-+	if (!ife_meta)
-+		goto drop;
- 
- 	spin_lock(&ife->tcf_lock);
- 
-@@ -844,8 +847,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 		if (err < 0) {
- 			/* too corrupt to keep around if overwritten */
- 			spin_unlock(&ife->tcf_lock);
--			qstats_drop_inc(this_cpu_ptr(ife->common.cpu_qstats));
--			return TC_ACT_SHOT;
-+			goto drop;
- 		}
- 		skboff += err;
- 	}
+ 	req->ad_data = cpu_to_le64(ad_data);
+ 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
 -- 
 2.51.0
 
