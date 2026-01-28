@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-212087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HxnMusuemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:43 +0100
+	id ECgTI7Ezeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DB6A4564
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAAB2A5088
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7903930D8185
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 37A243053C80
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6751E9B1A;
-	Wed, 28 Jan 2026 15:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A73305057;
+	Wed, 28 Jan 2026 15:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYTqmBkg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWl21XOB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A541510A1E;
-	Wed, 28 Jan 2026 15:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AEC3033C4;
+	Wed, 28 Jan 2026 15:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614357; cv=none; b=ZFIZuJIqlZuRIpQj2J6E/zWCfQkUDSds6p3/vjmvwL0tUMss+XJXRBt7TUpJx8mhDD8vcygRXBjcTU0xZ/9+53cw3uzY8rsZGN3CQJnvVThtdFCofUTws+FTY4PMEAKlaW/mqPGlx2DgNgApdk0GbWoNDVldDZ5jqcc1XAXbtJQ=
+	t=1769615637; cv=none; b=ueo6NtQPsfAu1MDXIwY1etRyhvW7DhZuMI00p5cl8UXufoaGQSmXoWQmZg7U++vSQcd//2BMcylxVW3FaQYbNs4gLmXa0knGmuuLaGs1SsVLrZV8RmaE5AiuNXx/9iRdgy0XOoTIY/cVEXF9lxM8JH7c6faskTmAEfLaRDDyXf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614357; c=relaxed/simple;
-	bh=+00gDk0Jcfx5kEgIDAo9dbwKwfLV1wKt2ADYr/4K8iU=;
+	s=arc-20240116; t=1769615637; c=relaxed/simple;
+	bh=AG4Yf1wpt2WYF9ByK1bZ1k2Rx9laZ9N0gyqVZ9nAdCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PvQwahrPCkxQv5dYxedIR/c9cdptnnDgv/a5Zi8KW6/NESv6K5rw+F/nakBnOhs/ueWn8R39zCk1p5ejBOAyhvUTopgvmj/xWIY/jeeFHdtXz6bTac1qH4g8ayyWVtbnSQUwmiZDxmdTCHPKbULWiuEUQpSXJy+WgNvfvBMlNNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYTqmBkg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EFBC4CEF1;
-	Wed, 28 Jan 2026 15:32:36 +0000 (UTC)
+	 MIME-Version; b=dD7XD/AB2QkL2NEJ9jwPaAKrMRSN+eqhJwfVk6nwwuobqrCGXc/ZTAXc/rqHr15Mq7uEZWuwv6dOirY7OK+R7zEM49EVnS96/FQUzk+O6OiRsv8leniz8PIAtxzqzGUzda8Xp0yM85tvI2z2sCNk6xQq6Ul3wxrAqHBD0BdchKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWl21XOB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C424FC4CEF1;
+	Wed, 28 Jan 2026 15:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614357;
-	bh=+00gDk0Jcfx5kEgIDAo9dbwKwfLV1wKt2ADYr/4K8iU=;
+	s=korg; t=1769615637;
+	bh=AG4Yf1wpt2WYF9ByK1bZ1k2Rx9laZ9N0gyqVZ9nAdCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYTqmBkgA1ig7NfefNxzpd8D5U+tivE1Z2OnGoPIaZIQYda5hnf8deOHEMwf2YHy9
-	 /yA8akCMqubnGxsAYs9oIsdOZ0sGjb74S+YdjsdePO6bjQCcEAUIf2i7uhUzXNb08v
-	 JrHX3BI7p9avLd0oAdTEaKEdo2KUikdQOQEwuyp4=
+	b=SWl21XOB7l8yr0r9luq8mm4Ea0+iztOEBhetxRriE2GEh3OhVQlvkxlNNpFmGCO/Y
+	 ZmSJWdp+j4n1Lkg3s/uLhJEk/H9OAbKTyqozptRWF1DK25Q2iXcfKuo3rVSm9pFaBQ
+	 UsbmRPwsJCgmce8aVOTeMtT8AUiN2iQcQH2qp6mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	syzbot+4d8c7d16b0e95c0d0f0d@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/254] dt-bindings: power: qcom,rpmpd: document the SM8650 RPMh Power Domains
-Date: Wed, 28 Jan 2026 16:21:20 +0100
-Message-ID: <20260128145348.568426649@linuxfoundation.org>
+Subject: [PATCH 6.18 036/227] gue: Fix skb memleak with inner IP protocol 0.
+Date: Wed, 28 Jan 2026 16:21:21 +0100
+Message-ID: <20260128145345.642894163@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +67,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212087-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212473-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: 45DB6A4564
+	TAGGED_RCPT(0.00)[stable,4d8c7d16b0e95c0d0f0d];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: EAAB2A5088
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit d4d56c079ddd19293b11de1f2309add0b8972af2 ]
+[ Upstream commit 9a56796ad258786d3624eef5aefba394fc9bdded ]
 
-Document the RPMh Power Domains on the SM8650 Platform.
+syzbot reported skb memleak below. [0]
 
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231025-topic-sm8650-upstream-rpmpd-v1-1-f25d313104c6@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 45e1be5ddec9 ("dt-bindings: power: qcom,rpmpd: Add SC8280XP_MXC_AO")
+The repro generated a GUE packet with its inner protocol 0.
+
+gue_udp_recv() returns -guehdr->proto_ctype for "resubmit"
+in ip_protocol_deliver_rcu(), but this only works with
+non-zero protocol number.
+
+Let's drop such packets.
+
+Note that 0 is a valid number (IPv6 Hop-by-Hop Option).
+
+I think it is not practical to encap HOPOPT in GUE, so once
+someone starts to complain, we could pass down a resubmit
+flag pointer to distinguish two zeros from the upper layer:
+
+  * no error
+  * resubmit HOPOPT
+
+[0]
+BUG: memory leak
+unreferenced object 0xffff888109695a00 (size 240):
+  comm "syz.0.17", pid 6088, jiffies 4294943096
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 40 c2 10 81 88 ff ff 00 00 00 00 00 00 00 00  .@..............
+  backtrace (crc a84b336f):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    kmem_cache_alloc_noprof+0x3b4/0x590 mm/slub.c:5270
+    __build_skb+0x23/0x60 net/core/skbuff.c:474
+    build_skb+0x20/0x190 net/core/skbuff.c:490
+    __tun_build_skb drivers/net/tun.c:1541 [inline]
+    tun_build_skb+0x4a1/0xa40 drivers/net/tun.c:1636
+    tun_get_user+0xc12/0x2030 drivers/net/tun.c:1770
+    tun_chr_write_iter+0x71/0x120 drivers/net/tun.c:1999
+    new_sync_write fs/read_write.c:593 [inline]
+    vfs_write+0x45d/0x710 fs/read_write.c:686
+    ksys_write+0xa7/0x170 fs/read_write.c:738
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 37dd0247797b1 ("gue: Receive side for Generic UDP Encapsulation")
+Reported-by: syzbot+4d8c7d16b0e95c0d0f0d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6965534b.050a0220.38aacd.0001.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260115172533.693652-2-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/power/qcom,rpmpd.yaml | 1 +
- include/dt-bindings/power/qcom,rpmhpd.h                 | 1 +
- 2 files changed, 2 insertions(+)
+ net/ipv4/fou_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-index d38c762e12804..2803f7d568217 100644
---- a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-+++ b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-@@ -55,6 +55,7 @@ properties:
-           - qcom,sm8350-rpmhpd
-           - qcom,sm8450-rpmhpd
-           - qcom,sm8550-rpmhpd
-+          - qcom,sm8650-rpmhpd
-       - items:
-           - enum:
-               - qcom,msm8937-rpmpd
-diff --git a/include/dt-bindings/power/qcom,rpmhpd.h b/include/dt-bindings/power/qcom,rpmhpd.h
-index 7c201a66bc691..0f6a74e099701 100644
---- a/include/dt-bindings/power/qcom,rpmhpd.h
-+++ b/include/dt-bindings/power/qcom,rpmhpd.h
-@@ -26,5 +26,6 @@
- #define RPMHPD_QPHY             16
- #define RPMHPD_DDR              17
- #define RPMHPD_XO               18
-+#define RPMHPD_NSP2             19
+diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+index 3970b6b7ace53..ab8f309f8925d 100644
+--- a/net/ipv4/fou_core.c
++++ b/net/ipv4/fou_core.c
+@@ -215,6 +215,9 @@ static int gue_udp_recv(struct sock *sk, struct sk_buff *skb)
+ 		return gue_control_message(skb, guehdr);
  
- #endif
+ 	proto_ctype = guehdr->proto_ctype;
++	if (unlikely(!proto_ctype))
++		goto drop;
++
+ 	__skb_pull(skb, sizeof(struct udphdr) + hdrlen);
+ 	skb_reset_transport_header(skb);
+ 
 -- 
 2.51.0
 
