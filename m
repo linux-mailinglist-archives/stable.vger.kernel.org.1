@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPOjKykxemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212373-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:17 +0100
+	id MGzBKQ88emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27924A4AF2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03ACEA5FB8
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B67F330A503F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED74031912E5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE9E3043B2;
-	Wed, 28 Jan 2026 15:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD942DF138;
+	Wed, 28 Jan 2026 16:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/V2mORu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkoHvPd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537FB2D3EC7;
-	Wed, 28 Jan 2026 15:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000A181AA8;
+	Wed, 28 Jan 2026 16:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615303; cv=none; b=ONYKp9gRY+9I0oyk3CYProvtNfm119lzQH4IzgP8CVq+RR67QoGOLewIFczsyKyG803Jwl84FOtT71Pp6pLDDO5eY3gmqAAHB8QRKH5fTRlQfkFa94evaTQGdQBCoVPafdKOkYshhMUqvRJyqJb4NYiiOhij0KzKzWlsROKG/f8=
+	t=1769616107; cv=none; b=Mcqm73haYlYFhxIkXuQeXuwB0/MU2P+ZGMXsk1f+4yqxmHNW6ig97dsrsanO238luBz0+iqOD3gdbYQxsCXJm1q8ZhHNwMXT5gubClmoQgRlTNHa+n1K8Tbo4H1iimamwHJIoCgDwVnwHJTzJ2116tur7gTnNpE7iYzeHDIuO9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615303; c=relaxed/simple;
-	bh=fIB15zlxWCgCPPqLsoOanGBHCubi1WpykaCckCDTtnQ=;
+	s=arc-20240116; t=1769616107; c=relaxed/simple;
+	bh=55x+eIGV0hk4S/sIHpFFRqcv3TSrxWyd5RwTkTmjO9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6uXSGW9fo30bgDiX5sWJtLvtDPtTKcGjIKzru8Y4sBNbGYkh1y62ONEvsrwWxx0LigMdOlybjq0hxxUAUcjPZKyUHfN6nL6XBfpqlo/dJV9RXbzq5zy0D4RzjSG6OY5UpfdmihYj+tWNzEGcQvvCinXux+pWnU6aTV4/SdLQ2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/V2mORu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74046C116C6;
-	Wed, 28 Jan 2026 15:48:22 +0000 (UTC)
+	 MIME-Version; b=S7Sc00Z+yXInzAK03qlKO5Q4ZLuIjebS5T2qvY+e8UdZ+0n8DBVCHyg9l1+8IcLGiBBuUZS+zE0J8I0RRjRe3qmuOcnO+4zDwcX4/weayS5vzD+M/tmxdB4L6/S667dF3H9IWvtXc9rOJ7H3mmPPltZ5s/p0aggDD7rDqGr9BAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkoHvPd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65461C4CEF1;
+	Wed, 28 Jan 2026 16:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615302;
-	bh=fIB15zlxWCgCPPqLsoOanGBHCubi1WpykaCckCDTtnQ=;
+	s=korg; t=1769616106;
+	bh=55x+eIGV0hk4S/sIHpFFRqcv3TSrxWyd5RwTkTmjO9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/V2mORuFZuxTRUGoHP7Vy1wRXOwAhLcdgdQSRx4hEt8l7LTZQnMcucNCdQ5sHY8o
-	 /oUn+w4CvfS7dl5DrwaSgeZe7HwHQy2tV+y0l0EGB0T89zs9xKgkIta65NCW0h3bYw
-	 5xoGD3POuSk4GVCuiik4ePInx1cs/WZtY+LPxriA=
+	b=lkoHvPd21mkTi0kz+tmm+5dq31u5JapoDTLraJwbRFaVvLmoubSGFgBhXm5gBzRa7
+	 Tlvh5airZUZ7o1oSi29meFtTxIntilQBTIVLvry6FpJ3EzCpE19fcBZkjj26r8s9sV
+	 tyPl4ngSxf31V9HBG9cCAxWQFomRQ/E9Z5sT4eDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.12 138/169] irqchip/gic-v3-its: Avoid truncating memory addresses
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.18 176/227] wifi: mwifiex: Fix a loop in mwifiex_update_ampdu_rxwinsize()
 Date: Wed, 28 Jan 2026 16:23:41 +0100
-Message-ID: <20260128145338.973266378@linuxfoundation.org>
+Message-ID: <20260128145350.782269447@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,106 +67,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212373-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212613-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 27924A4AF2
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,nxp.com:email]
+X-Rspamd-Queue-Id: 03ACEA5FB8
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 8d76a7d89c12d08382b66e2f21f20d0627d14859 upstream.
+commit 2120f3a3738a65730c81bf10447b1ff776078915 upstream.
 
-On 32-bit machines with CONFIG_ARM_LPAE, it is possible for lowmem
-allocations to be backed by addresses physical memory above the 32-bit
-address limit, as found while experimenting with larger VMSPLIT
-configurations.
+The "i" iterator variable is used to count two different things but
+unfortunately we can't store two different numbers in the same variable.
+Use "i" for the outside loop and "j" for the inside loop.
 
-This caused the qemu virt model to crash in the GICv3 driver, which
-allocates the 'itt' object using GFP_KERNEL. Since all memory below
-the 4GB physical address limit is in ZONE_DMA in this configuration,
-kmalloc() defaults to higher addresses for ZONE_NORMAL, and the
-ITS driver stores the physical address in a 32-bit 'unsigned long'
-variable.
-
-Change the itt_addr variable to the correct phys_addr_t type instead,
-along with all other variables in this driver that hold a physical
-address.
-
-The gicv5 driver correctly uses u64 variables, while all other irqchip
-drivers don't call virt_to_phys or similar interfaces. It's expected that
-other device drivers have similar issues, but fixing this one is
-sufficient for booting a virtio based guest.
-
-Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260119201603.2713066-1-arnd@kernel.org
+Fixes: d219b7eb3792 ("mwifiex: handle BT coex event to adjust Rx BA window size")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
+Link: https://patch.msgid.link/aWAM2MGUWRP0zWUd@stanley.mountain
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -619,7 +619,7 @@ static struct its_collection *its_build_
- 						 struct its_cmd_block *cmd,
- 						 struct its_cmd_desc *desc)
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -825,7 +825,7 @@ void mwifiex_update_rxreor_flags(struct
+ static void mwifiex_update_ampdu_rxwinsize(struct mwifiex_adapter *adapter,
+ 					   bool coex_flag)
  {
--	unsigned long itt_addr;
-+	phys_addr_t itt_addr;
- 	u8 size = ilog2(desc->its_mapd_cmd.dev->nr_ites);
+-	u8 i;
++	u8 i, j;
+ 	u32 rx_win_size;
+ 	struct mwifiex_private *priv;
  
- 	itt_addr = virt_to_phys(desc->its_mapd_cmd.dev->itt);
-@@ -790,7 +790,7 @@ static struct its_vpe *its_build_vmapp_c
- 					   struct its_cmd_desc *desc)
- {
- 	struct its_vpe *vpe = valid_vpe(its, desc->its_vmapp_cmd.vpe);
--	unsigned long vpt_addr, vconf_addr;
-+	phys_addr_t vpt_addr, vconf_addr;
- 	u64 target;
- 	bool alloc;
- 
-@@ -2395,10 +2395,10 @@ retry_baser:
- 	baser->psz = psz;
- 	tmp = indirect ? GITS_LVL1_ENTRY_SIZE : esz;
- 
--	pr_info("ITS@%pa: allocated %d %s @%lx (%s, esz %d, psz %dK, shr %d)\n",
-+	pr_info("ITS@%pa: allocated %d %s @%llx (%s, esz %d, psz %dK, shr %d)\n",
- 		&its->phys_base, (int)(PAGE_ORDER_TO_SIZE(order) / (int)tmp),
- 		its_base_type_string[type],
--		(unsigned long)virt_to_phys(base),
-+		(u64)virt_to_phys(base),
- 		indirect ? "indirect" : "flat", (int)esz,
- 		psz / SZ_1K, (int)shr >> GITS_BASER_SHAREABILITY_SHIFT);
- 
+@@ -863,8 +863,8 @@ static void mwifiex_update_ampdu_rxwinsi
+ 		if (rx_win_size != priv->add_ba_param.rx_win_size) {
+ 			if (!priv->media_connected)
+ 				continue;
+-			for (i = 0; i < MAX_NUM_TID; i++)
+-				mwifiex_11n_delba(priv, i);
++			for (j = 0; j < MAX_NUM_TID; j++)
++				mwifiex_11n_delba(priv, j);
+ 		}
+ 	}
+ }
 
 
 
