@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-212403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOJUCfs4eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212403-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:39 +0100
+	id mDv7Jgs2eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E78A5A6A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA424A5519
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4EBC30AF210
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 57D4E3058B57
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566D32EA172;
-	Wed, 28 Jan 2026 15:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067C02F25EF;
+	Wed, 28 Jan 2026 15:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVt0AOGl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zm1oUnal"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1CC2DF138;
-	Wed, 28 Jan 2026 15:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE4C288C22;
+	Wed, 28 Jan 2026 15:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615401; cv=none; b=URqmfRs89Ypm+SnpcoB7jDci8eztWSHxCikM5E3DDl2D6CSXxKKwIsrfBJy8OH26hmn6OY2WVa/aeHGtYIEF5MDywEWFCbN+uVc28V46G5zsDannWN/0t4lBAFd29nJojUrFuevEKHDGYJptbiEdF5cU8v6e3Q/y/djL9uKxpag=
+	t=1769615407; cv=none; b=FXiCP35ULuMXIYv3PoBhNh9VElmxgFL/HCyWbTkhx6vedhdDRtrHsilv48xk9NSbGLdHlJ1m1aNrC8R+XW2NQo14/uXIzuFo7IdehgJYSBJMPmjqgZ65J585L+PLonl9RL3F6GhncJaa87TZ2bpJYkat79x+icfvrwVUOBhtmJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615401; c=relaxed/simple;
-	bh=AYZUS5vQOrSM7zEsodlzPCC+Q4Q/8BL4NRNoval4g3U=;
+	s=arc-20240116; t=1769615407; c=relaxed/simple;
+	bh=XP7iCW/fFtecCpQAoo011EIJc0uVNDNz5KgGXu2SuZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9yDUXC+JlwBNu4A1HV426bAx3oF9qO8fJHjJSv3dmQHJ5sFoEXt/sHfhDs+Bo4RNhqeFeKyDuIQK+Rg9fBmc7A1zky+imsBRggVxD9EZP0++IDuIlOt3NqeCIZg7J6Wz4QgRW1QrrT0H/K3YBF2qcS2wjrbqBR7IEIVLM7CGCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVt0AOGl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D802C4CEF1;
-	Wed, 28 Jan 2026 15:49:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y946f0m8/ps3jmbcvRGEcX+tkuLVarrqkSZxFxaIo046gElc5LDbD0TREmz3sTZiAQ2BS6/VJNGS3qkLg1oQx46Zxs1nw32TDHIihUk9koZwDgT4yk14+T/ZvyQ4G1CDpMPOgsR4hzvYlPhTEKx01vtYxm4nO+MttCoTFcAk7HU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zm1oUnal; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00BBC4CEF1;
+	Wed, 28 Jan 2026 15:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615400;
-	bh=AYZUS5vQOrSM7zEsodlzPCC+Q4Q/8BL4NRNoval4g3U=;
+	s=korg; t=1769615407;
+	bh=XP7iCW/fFtecCpQAoo011EIJc0uVNDNz5KgGXu2SuZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVt0AOGl10vqQAXdPVYKZl3HbUbQzUBjaYMjb5NJeNvzEd+R0ouNE4gDO+VVM+OEP
-	 KUSGwRffL3v+ADRq5BlkO3XkdhPt/e0hsDmGnM4+Gu4DZd64/LA0cCwqsGltZvz/v4
-	 UEX9Y7PmaMp5AO6W4LYdTqxEbExSah4mA/iyybwQ=
+	b=zm1oUnalVOY7P1PIgQ0wCJEd1J49Mxmr/gxRErnsPl721N/LM7VVcXSqeeeenoFE5
+	 XornW4Sa/DqWHhVWgmioTlEBIFtwlxwLsG5LkWKyUWHGvhjVtZYPmVI3D+ogVPoPdm
+	 2Y8u1+gyCXIo0TKWefFTlSXceM1iwpA88sh8bg8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Geraldo Nascimento <geraldogabriel@gmail.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 151/169] arm64: dts: rockchip: remove redundant max-link-speed from nanopi-r4s
-Date: Wed, 28 Jan 2026 16:23:54 +0100
-Message-ID: <20260128145339.439136743@linuxfoundation.org>
+Subject: [PATCH 6.12 152/169] iio: core: add missing mutex_destroy in iio_dev_release()
+Date: Wed, 28 Jan 2026 16:23:55 +0100
+Message-ID: <20260128145339.475910119@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
 References: <20260128145334.006287341@linuxfoundation.org>
@@ -65,75 +64,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212405-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,manjaro.org,gmail.com,rock-chips.com,sntech.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212403-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,rock-chips.com:email,manjaro.org:email]
-X-Rspamd-Queue-Id: 84E78A5A6A
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,analog.com:email]
+X-Rspamd-Queue-Id: BA424A5519
 X-Rspamd-Action: no action
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geraldo Nascimento <geraldogabriel@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit ce652c98a7bfa0b7c675ef5cd85c44c186db96af ]
+[ Upstream commit f5d203467a31798191365efeb16cd619d2c8f23a ]
 
-This is already the default in rk3399-base.dtsi, remove redundant
-declaration from rk3399-nanopi-r4s.dtsi.
+Add missing mutex_destroy() call in iio_dev_release() to properly
+clean up the mutex initialized in iio_device_alloc(). Ensure proper
+resource cleanup and follows kernel practices.
 
-Fixes: db792e9adbf8 ("rockchip: rk3399: Add support for FriendlyARM NanoPi R4S")
-Cc: stable@vger.kernel.org
-Reported-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/6694456a735844177c897581f785cc00c064c7d1.1763415706.git.geraldogabriel@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-[ adapted file path from rk3399-nanopi-r4s.dtsi to rk3399-nanopi-r4s.dts ]
+Found by code review.
+
+While at it, create a lockdep key before mutex initialisation.
+This will help with converting it to the better API in the future.
+
+Fixes: 847ec80bbaa7 ("Staging: IIO: core support for device registration and management")
+Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 9910159f0659 ("iio: core: add separate lockdep class for info_exist_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/iio/industrialio-core.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
-@@ -73,7 +73,6 @@
- };
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1628,6 +1628,9 @@ static void iio_dev_release(struct devic
  
- &pcie0 {
--	max-link-speed = <1>;
- 	num-lanes = <1>;
- 	vpcie3v3-supply = <&vcc3v3_sys>;
- };
+ 	iio_device_detach_buffers(indio_dev);
+ 
++	mutex_destroy(&iio_dev_opaque->info_exist_lock);
++	mutex_destroy(&iio_dev_opaque->mlock);
++
+ 	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
+ 
+ 	ida_free(&iio_ida, iio_dev_opaque->id);
+@@ -1672,8 +1675,7 @@ struct iio_dev *iio_device_alloc(struct
+ 	indio_dev->dev.type = &iio_device_type;
+ 	indio_dev->dev.bus = &iio_bus_type;
+ 	device_initialize(&indio_dev->dev);
+-	mutex_init(&iio_dev_opaque->mlock);
+-	mutex_init(&iio_dev_opaque->info_exist_lock);
++
+ 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
+ 
+ 	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
+@@ -1696,6 +1698,9 @@ struct iio_dev *iio_device_alloc(struct
+ 	lockdep_register_key(&iio_dev_opaque->mlock_key);
+ 	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
+ 
++	mutex_init(&iio_dev_opaque->mlock);
++	mutex_init(&iio_dev_opaque->info_exist_lock);
++
+ 	return indio_dev;
+ }
+ EXPORT_SYMBOL(iio_device_alloc);
 
 
 
