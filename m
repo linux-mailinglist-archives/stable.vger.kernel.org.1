@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMS2E+0semnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212145-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:36:13 +0100
+	id qNHVCu43eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C089BA40D7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:36:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB09A5835
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 01B1B30164A7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D43A31E4A68
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9ED82D6E63;
-	Wed, 28 Jan 2026 15:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64731313267;
+	Wed, 28 Jan 2026 15:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqRSVjt6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANjLXOmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF9B2D0C62;
-	Wed, 28 Jan 2026 15:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2898F313272;
+	Wed, 28 Jan 2026 15:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614542; cv=none; b=TghqKszeUM5Z3RwnT11B/qmV/7ZWr3tDiKyJk+JQiO6roqYD5lZf9gOAThUDTy7bvgFoQlQ6bTIQB7la6MF/I21RF2at4zjOEsSHfYBfPE64zhvbwTSBRzO//KoZZ4GwNlEoc0J32TdJk4O9ohpZ6TbgN+uqgFl2HXBu0ewRQtI=
+	t=1769615040; cv=none; b=nLU4xFaAT510UY2OikogsLi5yUel7p/CA7DWx7BCg68b2WvpMsdV281HAgPGpgszSblefGGqc40TOfCtI9hnrHyek1cqBqHt9Y4SA1ArC1CyMbgw/OQFpVWzVY1WW2FsJUwlocmbRszu37XDnlgdm+dbDmljB4p3IgrjdrjHXk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614542; c=relaxed/simple;
-	bh=3jJc+ByqzsTicWlKTgvpkoF1mBJrx4umyOgY0nOlKnE=;
+	s=arc-20240116; t=1769615040; c=relaxed/simple;
+	bh=RmaeVAdfQDJZDQCtwTRQ+mGHB9ir0AaIu5tpIXZF3Ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S94hfuqOLC9WC8dtGpZhHZODBxaeYRbHPsprsPlaJGwpa38PdZLQ5EwTJLF5SUvlkFW5dG+XuN5ooIiR60tOSuNir3xH+IFefG8V0ytvEU4TsfFSxl1LYWcN2Wa1tgFnvNOoVl3hGKdunrw1chHBDt4bwtBENyFZb+hL0O6fkMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqRSVjt6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EA4C4CEF1;
-	Wed, 28 Jan 2026 15:35:41 +0000 (UTC)
+	 MIME-Version; b=PJlkocryeY4hSfJOL4mvob0JNv1iPjxyjFkeE50LdBsgbuC0WDk/yoD48nVML/SbUMr0GaqyvnYU9BWjzN5tIlirYNv/h3TD3cK19pMa69gW3ea6Va7a0oU4OyyH3UkSkVZ66OUcjKcRh0bsHrM5FJxUKTjvob2t/Z1i3lnsGmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANjLXOmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC39FC4CEF1;
+	Wed, 28 Jan 2026 15:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614542;
-	bh=3jJc+ByqzsTicWlKTgvpkoF1mBJrx4umyOgY0nOlKnE=;
+	s=korg; t=1769615040;
+	bh=RmaeVAdfQDJZDQCtwTRQ+mGHB9ir0AaIu5tpIXZF3Ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZqRSVjt6FixR1Mxh1fPVfZTkaIFRD0sUtHOTYUuMoG1wzfktZBWFUyE8J1ksJCP7O
-	 4L4W3sRgrpA4WSXXKCh/ncZJUtfsQjf62QAaqfWU4wvDEDqegBBw5CzDOI4n8QQchW
-	 cq+IKDPz1gZsGiZpHUqxD1xIhC1Iy4DY7bLidrJ4=
+	b=ANjLXOmcy4HaspmCjdQ7pposV0dipH22UVIrLDA8EQWWFP2vRhUXJzZCslaupMoCA
+	 n42bQsgWmxWNL53MJroFpqhMdas4vOXqXAkq8xlxvAm19ybu3Cu+0WkNvpYpPqarpC
+	 xlVsf8pAwvBbQIcNxSWSm/myNRND1LBoa6I2AQs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/254] net: hns3: fix the HCLGE_FD_AD_NXT_KEY error setting issue
-Date: Wed, 28 Jan 2026 16:22:23 +0100
-Message-ID: <20260128145350.817734591@linuxfoundation.org>
+Subject: [PATCH 6.12 061/169] iio: adc: ad7280a: handle spi_setup() errors in probe()
+Date: Wed, 28 Jan 2026 16:22:24 +0100
+Message-ID: <20260128145336.208137769@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,64 +70,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212295-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212145-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,huawei.com:email]
-X-Rspamd-Queue-Id: C089BA40D7
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kaspersky.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,analog.com:email,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 8FB09A5835
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-[ Upstream commit f87e034d16e43af984380a95c32c25201b7759a7 ]
+[ Upstream commit 6b39824ac4c15783787e6434449772bfb2e31214 ]
 
-Use next_input_key instead of counter_id to set HCLGE_FD_AD_NXT_KEY.
+The probe() function ignored the return value of spi_setup(), leaving SPI
+configuration failures undetected. If spi_setup() fails, the driver should
+stop initialization and propagate the error to the caller.
 
-Fixes: 117328680288 ("net: hns3: Add input key and action config support for flow director")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20260119132840.410513-3-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Add proper error handling: check the return value of spi_setup() and return
+it on failure.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 2051f25d2a26 ("iio: adc: New driver for AD7280A Lithium Ion Battery Monitoring System")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7280a.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 2df0c6305b908..72a5df4e3a329 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -5617,7 +5617,7 @@ static int hclge_fd_ad_config(struct hclge_dev *hdev, u8 stage, int loc,
- 			HCLGE_FD_AD_COUNTER_NUM_S, action->counter_id);
- 	hnae3_set_bit(ad_data, HCLGE_FD_AD_NXT_STEP_B, action->use_next_stage);
- 	hnae3_set_field(ad_data, HCLGE_FD_AD_NXT_KEY_M, HCLGE_FD_AD_NXT_KEY_S,
--			action->counter_id);
-+			action->next_input_key);
+diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
+index 37522dca2c7c8..01d5719aa3eac 100644
+--- a/drivers/iio/adc/ad7280a.c
++++ b/drivers/iio/adc/ad7280a.c
+@@ -1026,7 +1026,9 @@ static int ad7280_probe(struct spi_device *spi)
  
- 	req->ad_data = cpu_to_le64(ad_data);
- 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
+ 	st->spi->max_speed_hz = AD7280A_MAX_SPI_CLK_HZ;
+ 	st->spi->mode = SPI_MODE_1;
+-	spi_setup(st->spi);
++	ret = spi_setup(st->spi);
++	if (ret < 0)
++		return ret;
+ 
+ 	st->ctrl_lb = FIELD_PREP(AD7280A_CTRL_LB_ACQ_TIME_MSK, st->acquisition_time) |
+ 		FIELD_PREP(AD7280A_CTRL_LB_THERMISTOR_MSK, st->thermistor_term_en);
 -- 
 2.51.0
 
