@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212414-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cB0WEd0temnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:13 +0100
+	id UM7oGz82eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212414-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A67CA42A4
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B69A559B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8ECB332805E2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:30:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5C4533085F40
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68A1155757;
-	Wed, 28 Jan 2026 15:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B233E308F3B;
+	Wed, 28 Jan 2026 15:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epXAe5Dy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5jWjnLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0A2244667;
-	Wed, 28 Jan 2026 15:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745503064B3;
+	Wed, 28 Jan 2026 15:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614246; cv=none; b=ZZQVTj9xK37zFWc9iuJu3Z7O6ACPtvtiIX1tt5q6lIHUvhznICxu50SvdGmZSBYkaeGxZUEPcmR80WJi19Mfhy8heCfpdjSvHekimuqENJT60c5WYV9+hA5WiuX1Ey9cmTJuv3JRcwTYb0DEFfXdy29RVldJuNGRfygywYc5i2U=
+	t=1769615438; cv=none; b=ewEGpZ3VVao/eHhGpziZQqvv+eKm5mLnQezPdvfy1KuOMoZkfcdR0+W7W5G7mhpqePe/dwXb3985aQNSqBE+0mS0lT55s6Mzc7tNplvdv60bKS1CCEphdhv1apy1zk0CXxuT2oamUavcyPDt1x3DtfMubBLPFH/zeDcG83S9c9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614246; c=relaxed/simple;
-	bh=lYAzpUJaM/lf0nfhM3PPSvLXXRxHDvQpzlhd0OcEr2w=;
+	s=arc-20240116; t=1769615438; c=relaxed/simple;
+	bh=AgJb3jtJDmLlK53GoCnquGt9MZ7mIwsUrZVuQ+Gy4Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6e6P5tSu8hZlX2KWwva7GHNmDo8QWzLoQZu5tnK2DOkcunyZrRm+1hPS9pS0wazOf6dB41U16suznDVtrCvZdFELmQDhTo8sgOpCol4yR1EdCfh7zvuKDUVwv3RiHWTHs6qCBNSHM286IbZ5pxUvOKr5GqT5Jr/hF+HBIiPUrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epXAe5Dy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0096DC4CEF1;
-	Wed, 28 Jan 2026 15:30:45 +0000 (UTC)
+	 MIME-Version; b=hkrct/Lndjnm/AMZ0/Hxd44KOgAitlFRYKc6fex9eMdY91yTV75W1ccXkMBXesheIITRbXUhhuJMUWb8RebwMPWT4L7G9TGTFS/Rj109RJkiJP73c6DPjpLsyfhvTQpp5h7D0kdVw03BiuHQb5WMQGQbMidvvKnO9CfWg832+Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5jWjnLN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE162C4AF0F;
+	Wed, 28 Jan 2026 15:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614246;
-	bh=lYAzpUJaM/lf0nfhM3PPSvLXXRxHDvQpzlhd0OcEr2w=;
+	s=korg; t=1769615438;
+	bh=AgJb3jtJDmLlK53GoCnquGt9MZ7mIwsUrZVuQ+Gy4Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=epXAe5Dy761DXg1lvuqj3BPQA6Xf2WirnEMyrwIT/cRUh2eZYkHzLY/Ka8nQwNNjK
-	 wtkurLgP5j3+9gHopiE8K4DXnzLyA6RlLWLyBeapqjAl8ri8GY/Jkl+/pvp9mrWiKA
-	 25p2n8Syor8q/j4BHs1CG0q4jEBbAMqc60c2gwZI=
+	b=J5jWjnLN3z0QPOfxTDEzaUlGIU40/JPIjY26nKHgnsfqs6X2lhWWxVqofyxPbEH3J
+	 Hr/tM2b6ac+7AgXyyUeDCYa8N+iqm6DCQAqUA+HT39oPAE82vpkkTKN/+eH546YuO2
+	 ZkOpE6UhUXNlvQ22/BITVWmo6bqYiFQ5UEJChbSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 079/254] dmaengine: at_hdmac: fix device leak on of_dma_xlate()
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 010/227] wifi: ath12k: dont force radio frequency check in freq_to_idx()
 Date: Wed, 28 Jan 2026 16:20:55 +0100
-Message-ID: <20260128145347.536341058@linuxfoundation.org>
+Message-ID: <20260128145344.711379886@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212054-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212414-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,63 +90,152 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email]
-X-Rspamd-Queue-Id: 8A67CA42A4
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,qualcomm.com:email]
+X-Rspamd-Queue-Id: A0B69A559B
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
 
-commit b9074b2d7a230b6e28caa23165e9d8bc0677d333 upstream.
+[ Upstream commit 1fed08c5519d2f929457f354d3c06c6a8c33829c ]
 
-Make sure to drop the reference taken when looking up the DMA platform
-device during of_dma_xlate() when releasing channel resources.
+freq_to_idx() is used to map a channel to a survey index. Commit
+acc152f9be20 ("wifi: ath12k: combine channel list for split-phy devices in
+single-wiphy") adds radio specific frequency range check in this helper to
+make sure an invalid index is returned if the channel falls outside that
+range. However, this check introduces a race, resulting in below warnings
+as reported in [1].
 
-Note that commit 3832b78b3ec2 ("dmaengine: at_hdmac: add missing
-put_device() call in at_dma_xlate()") fixed the leak in a couple of
-error paths but the reference is still leaking on successful allocation.
+	ath12k_pci 0000:08:00.0: chan info: invalid frequency 6455 (idx 101 out of bounds)
+	ath12k_pci 0000:08:00.0: chan info: invalid frequency 6535 (idx 101 out of bounds)
+	ath12k_pci 0000:08:00.0: chan info: invalid frequency 6615 (idx 101 out of bounds)
+	ath12k_pci 0000:08:00.0: chan info: invalid frequency 6695 (idx 101 out of bounds)
+	ath12k_pci 0000:08:00.0: chan info: invalid frequency 6775 (idx 101 out of bounds)
+	ath12k_pci 0000:08:00.0: chan info: invalid frequency 6855 (idx 101 out of bounds)
+	ath12k_pci 0000:08:00.0: chan info: invalid frequency 6935 (idx 101 out of bounds)
+	ath12k_pci 0000:08:00.0: chan info: invalid frequency 7015 (idx 101 out of bounds)
+	ath12k_pci 0000:08:00.0: chan info: invalid frequency 7095 (idx 101 out of bounds)
+	ath12k_pci 0000:08:00.0: chan info: invalid frequency 6435 (idx 101 out of bounds)
 
-Fixes: bbe89c8e3d59 ("at_hdmac: move to generic DMA binding")
-Fixes: 3832b78b3ec2 ("dmaengine: at_hdmac: add missing put_device() call in at_dma_xlate()")
-Cc: stable@vger.kernel.org	# 3.10: 3832b78b3ec2
-Cc: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251117161258.10679-2-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Race scenario:
+
+ 1) A regdomain covering below frequency range is uploaded to host via
+    WMI_REG_CHAN_LIST_CC_EXT_EVENTID event:
+
+	Country 00, CFG Regdomain UNSET FW Regdomain 0, num_reg_rules 6
+ 	1. (2402 - 2472 @ 40) (0, 20) (0 ms) (FLAGS 360448) (0, 0)
+ 	2. (2457 - 2477 @ 20) (0, 20) (0 ms) (FLAGS 360576) (0, 0)
+ 	3. (5170 - 5330 @ 160) (0, 20) (0 ms) (FLAGS 264320) (0, 0)
+ 	4. (5490 - 5730 @ 160) (0, 20) (0 ms) (FLAGS 264320) (0, 0)
+ 	5. (5735 - 5895 @ 160) (0, 20) (0 ms) (FLAGS 264320) (0, 0)
+ 	6. (5925 - 7125 @ 320) (0, 24) (0 ms) (FLAGS 2056) (0, 255)
+
+    As a result, radio frequency range is updated as [2402, 7125]
+
+	ath12k_pci 0000:08:00.0: mac pdev 0 freq limit updated. New range 2402->7125 MHz
+
+    If no scan in progress or after scan finished, command
+    WMI_SCAN_CHAN_LIST_CMDID is sent to firmware notifying that firmware
+    is allowed to do scan on all channels within that range.
+
+    The running path is:
+
+	   /* redomain uploaded */
+	1. WMI_REG_CHAN_LIST_CC_EXT_EVENTID
+	2.   ath12k_reg_chan_list_event()
+	3.     ath12k_reg_handle_chan_list()
+	4.       queue_work(..., &ar->regd_update_work)
+	5.         ath12k_regd_update_work()
+	6.           ath12k_regd_update()
+	               /* update radio frequency range */
+	7.             ath12k_mac_update_freq_range()
+	8.               regulatory_set_wiphy_regd()
+	9.                 ath12k_reg_notifier()
+	10.                  ath12k_reg_update_chan_list()
+	11.                    queue_work(..., &ar->regd_channel_update_work)
+	12.                       ath12k_regd_update_chan_list_work()
+	                            /* wait scan finishes */
+	13.                         wait_for_completion_timeout(&ar->scan.completed, ...)
+	                            /* command notifying list of valid channels */
+	14.                         ath12k_wmi_send_scan_chan_list_cmd()
+
+ 2) Hardware scan is triggered on all allowed channels.
+ 3) Before scan completed, 11D mechanism detects a new country code
+
+	ath12k_pci 0000:08:00.0: wmi 11d new cc GB
+
+    With this code sent to firmware, firmware uploads a new regdomain
+
+	Country GB, CFG Regdomain ETSI FW Regdomain 2, num_reg_rules 9
+ 	1. (2402 - 2482 @ 40) (0, 20) (0 ms) (FLAGS 360448) (0, 0)
+ 	2. (5170 - 5250 @ 80) (0, 23) (0 ms) (FLAGS 264192) (0, 0)
+ 	3. (5250 - 5330 @ 80) (0, 23) (0 ms) (FLAGS 264216) (0, 0)
+ 	4. (5490 - 5590 @ 80) (0, 30) (0 ms) (FLAGS 264208)
+ 	5. (5590 - 5650 @ 40) (0, 30) (600000 ms) (FLAGS 264208)
+ 	6. (5650 - 5730 @ 80) (0, 30) (0 ms) (FLAGS 264208)
+ 	7. (5735 - 5875 @ 80) (0, 14) (0 ms) (FLAGS 264192) (0, 0)
+ 	8. (5855 - 5875 @ 20) (0, 14) (0 ms) (FLAGS 264192) (0, 0)
+ 	9. (5945 - 6425 @ 320) (0, 24) (0 ms) (FLAGS 2056) (0, 11)
+
+    Then radio frequency range is updated as [2402, 6425]
+
+	ath12k_pci 0000:08:00.0: mac pdev 0 freq limit updated. New range 2402->6425 MHz
+
+    Please note this is a smaller range than the previous one. Later host
+    runs the same path for the purpose of notifying the new channel list.
+    However since scan not completed, host just waits there. Meanwhile,
+    firmware is possibly scanning channels outside the new range. As a
+    result, WMI_CHAN_INFO_EVENTID events for those channels fail
+    freq_to_idx() check and triggers warnings above.
+
+Fix this issue by removing radio frequency check in freq_to_idx(). This is
+valid because channels being scanned do not synchronize with frequency
+range update. Besides, this won't cause any problem, since freq_to_idx()
+is only used for survey data. Even out-of-range channels filled in the
+survey, they won't get delivered to userspace due to the range check
+already there in ath12k_mac_op_get_survey().
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+
+Fixes: acc152f9be20 ("wifi: ath12k: combine channel list for split-phy devices in single-wiphy")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220871 # 1
+Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260108-ath12k-fix-freq-to-idx-v1-1-b2458cf7aa0d@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_hdmac.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/drivers/dma/at_hdmac.c
-+++ b/drivers/dma/at_hdmac.c
-@@ -1755,6 +1755,7 @@ static int atc_alloc_chan_resources(stru
- static void atc_free_chan_resources(struct dma_chan *chan)
- {
- 	struct at_dma_chan	*atchan = to_at_dma_chan(chan);
-+	struct at_dma_slave	*atslave;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index e647b842a6a1c..44e99b47e445d 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -6520,16 +6520,9 @@ static int freq_to_idx(struct ath12k *ar, int freq)
+ 		if (!sband)
+ 			continue;
  
- 	BUG_ON(atc_chan_is_enabled(atchan));
+-		for (ch = 0; ch < sband->n_channels; ch++, idx++) {
+-			if (sband->channels[ch].center_freq <
+-			    KHZ_TO_MHZ(ar->freq_range.start_freq) ||
+-			    sband->channels[ch].center_freq >
+-			    KHZ_TO_MHZ(ar->freq_range.end_freq))
+-				continue;
+-
++		for (ch = 0; ch < sband->n_channels; ch++, idx++)
+ 			if (sband->channels[ch].center_freq == freq)
+ 				goto exit;
+-		}
+ 	}
  
-@@ -1764,8 +1765,12 @@ static void atc_free_chan_resources(stru
- 	/*
- 	 * Free atslave allocated in at_dma_xlate()
- 	 */
--	kfree(chan->private);
--	chan->private = NULL;
-+	atslave = chan->private;
-+	if (atslave) {
-+		put_device(atslave->dma_dev);
-+		kfree(atslave);
-+		chan->private = NULL;
-+	}
- 
- 	dev_vdbg(chan2dev(chan), "free_chan_resources: done\n");
- }
+ exit:
+-- 
+2.51.0
+
 
 
 
