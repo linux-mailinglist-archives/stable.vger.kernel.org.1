@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-212180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AL/RBQM2eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:14:59 +0100
+	id eHnLOEE4eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:24:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8AEA5504
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:14:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313A4A590F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:24:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E06CD30EC05B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F1E8D302ADB6
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26542D9780;
-	Wed, 28 Jan 2026 15:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CB030E849;
+	Wed, 28 Jan 2026 15:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKQ8dewS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqZCujgn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A370A2D8760;
-	Wed, 28 Jan 2026 15:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B3C303A15;
+	Wed, 28 Jan 2026 15:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614656; cv=none; b=b3uUgXGRsAHZPoR6g5WKCGpwCHAL32agCqlS4FtulRPVJO8dxH0QB/jryxvH4JUz9b30sUQShtkAavc7kjBtVaz42vrNNcdqEQ2mmhtob27v6joieLFfCFFGrJne/AqTKPDJT6sUBP26S3/SVZZ1XUhBHKgZJxUdfC2Xzysdvxc=
+	t=1769615871; cv=none; b=spHnENHWSIv3HXwA9QUfZuctLwGZJPktuSAb4DZcrsDSqx5tPk1LnikmT0fRCGETjbCr91ajiOnb1EY1y83ycuXPRceFen+zl3XCgDE8IJK1vMmXwaTtY5Ti+JwGchdDtZp+k40wbGxRRKD0+Dgr9mhM7cE5g5QtgSTH5A4zR74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614656; c=relaxed/simple;
-	bh=nOt1KlxLmnDvHNZHTNrEzMIEsX/t/35eA33x6ygPUwI=;
+	s=arc-20240116; t=1769615871; c=relaxed/simple;
+	bh=qgSz4hj3xMqFI2UXfrSFy0s23pa+ju/3gu9jNQw2AW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bz4Bp3m2Qrrj4neGDCTQ6SYVF4mRHgatjk1PIidj9065wePSW5kKjngeVTkWTo0ho56EDupVz6lnk7uSXq6XUu1ow3QoOpyDjBUJM3zTxG1w29FqKRALLHC9B7ODGOq9Fss9XaqC5TW6QS5yUVPi6lJV7l7Y83pkwN9jq83vINI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKQ8dewS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98ACC2BCB0;
-	Wed, 28 Jan 2026 15:37:35 +0000 (UTC)
+	 MIME-Version; b=LJBoryTp9PqUkJQVPVYrDWPnH2WbKLDpKVbF9hWDVPYSdX2U9NJTCae3LL2DGByrP8Q5yHKB+HgcToo8hNGTjOyMfIBtfna4k4JSihzhQ3//3m2TdcXuz6FybqPXjzZscmIWzF3SxX6n0y/dCYFEQoaUMOh7ueO3yIfhhlrbnko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqZCujgn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AFBC4CEF1;
+	Wed, 28 Jan 2026 15:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614656;
-	bh=nOt1KlxLmnDvHNZHTNrEzMIEsX/t/35eA33x6ygPUwI=;
+	s=korg; t=1769615871;
+	bh=qgSz4hj3xMqFI2UXfrSFy0s23pa+ju/3gu9jNQw2AW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SKQ8dewSoyD5NiHnihZA2CkYi2GH7oNP0OdjQ+AD/7aV0OOWtznPuRN+375aSW2o+
-	 ciZT9bm6kaW7UYzqX3GBUvntz/xsD7sA22ZpbRudykQ3GJMRxiqfcb30SJlJBPwIdE
-	 ZoqlVy1SYBwAktYgcckM6KDyAEpkmzw5ATAA0x+0=
+	b=DqZCujgna3gbF76pFtXvgjDBFp5yY+U9ETooDlTPQAUYtvAx2j1dqMVC9qGUxJuPk
+	 YkORDMIJrDfdLhAV6niNe53cG8UwyMiGBI2mtJjGQlcn15v2HOVBIMf6cUTZTFM0dR
+	 RFeNje3ZvEhVfM2Qc89bqrEQtMk09/uFrRatUcTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c46409299c70a221415e@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Matteo Croce <mcroce@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/254] bonding: provide a net pointer to __skb_flow_dissect()
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Greenwalt <paul.greenwalt@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.18 106/227] ice: fix devlink reload call trace
 Date: Wed, 28 Jan 2026 16:22:31 +0100
-Message-ID: <20260128145351.102509605@linuxfoundation.org>
+Message-ID: <20260128145348.283494976@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,100 +68,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212180-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212543-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,c46409299c70a221415e];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7A8AEA5504
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,mpg.de:email]
+X-Rspamd-Queue-Id: 313A4A590F
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Paul Greenwalt <paul.greenwalt@intel.com>
 
-[ Upstream commit 5f9b329096596b7e53e07d041d7fca4cbe1be752 ]
+[ Upstream commit d3f867e7a04678640ebcbfb81893c59f4af48586 ]
 
-After 3cbf4ffba5ee ("net: plumb network namespace into __skb_flow_dissect")
-we have to provide a net pointer to __skb_flow_dissect(),
-either via skb->dev, skb->sk, or a user provided pointer.
+Commit 4da71a77fc3b ("ice: read internal temperature sensor") introduced
+internal temperature sensor reading via HWMON. ice_hwmon_init() was added
+to ice_init_feature() and ice_hwmon_exit() was added to ice_remove(). As a
+result if devlink reload is used to reinit the device and then the driver
+is removed, a call trace can occur.
 
-In the following case, syzbot was able to cook a bare skb.
-
-WARNING: net/core/flow_dissector.c:1131 at __skb_flow_dissect+0xb57/0x68b0 net/core/flow_dissector.c:1131, CPU#1: syz.2.1418/11053
+BUG: unable to handle page fault for address: ffffffffc0fd4b5d
 Call Trace:
- <TASK>
-  bond_flow_dissect drivers/net/bonding/bond_main.c:4093 [inline]
-  __bond_xmit_hash+0x2d7/0xba0 drivers/net/bonding/bond_main.c:4157
-  bond_xmit_hash_xdp drivers/net/bonding/bond_main.c:4208 [inline]
-  bond_xdp_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5139 [inline]
-  bond_xdp_get_xmit_slave+0x1fd/0x710 drivers/net/bonding/bond_main.c:5515
-  xdp_master_redirect+0x13f/0x2c0 net/core/filter.c:4388
-  bpf_prog_run_xdp include/net/xdp.h:700 [inline]
-  bpf_test_run+0x6b2/0x7d0 net/bpf/test_run.c:421
-  bpf_prog_test_run_xdp+0x795/0x10e0 net/bpf/test_run.c:1390
-  bpf_prog_test_run+0x2c7/0x340 kernel/bpf/syscall.c:4703
-  __sys_bpf+0x562/0x860 kernel/bpf/syscall.c:6182
-  __do_sys_bpf kernel/bpf/syscall.c:6274 [inline]
-  __se_sys_bpf kernel/bpf/syscall.c:6272 [inline]
-  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:6272
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xec/0xf80 arch/x86/entry/syscall_64.c:94
+ string+0x48/0xe0
+ vsnprintf+0x1f9/0x650
+ sprintf+0x62/0x80
+ name_show+0x1f/0x30
+ dev_attr_show+0x19/0x60
 
-Fixes: 58deb77cc52d ("bonding: balance ICMP echoes in layer3+4 mode")
-Reported-by: syzbot+c46409299c70a221415e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/696faa23.050a0220.4cb9c.001f.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Matteo Croce <mcroce@redhat.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20260120161744.1893263-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The call trace repeats approximately every 10 minutes when system
+monitoring tools (e.g., sadc) attempt to read the orphaned hwmon sysfs
+attributes that reference freed module memory.
+
+The sequence is:
+1. Driver load, ice_hwmon_init() gets called from ice_init_feature()
+2. Devlink reload down, flow does not call ice_remove()
+3. Devlink reload up, ice_hwmon_init() gets called from
+   ice_init_feature() resulting in a second instance
+4. Driver unload, ice_hwmon_exit() called from ice_remove() leaving the
+   first hwmon instance orphaned with dangling pointer
+
+Fix this by moving ice_hwmon_exit() from ice_remove() to
+ice_deinit_features() to ensure proper cleanup symmetry with
+ice_hwmon_init().
+
+Fixes: 4da71a77fc3b ("ice: read internal temperature sensor")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Paul Greenwalt <paul.greenwalt@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 9dfbbf4cd71f0..9385c3ac0c83c 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -4186,8 +4186,9 @@ static bool bond_flow_dissect(struct bonding *bond, struct sk_buff *skb, const v
- 	case BOND_XMIT_POLICY_ENCAP23:
- 	case BOND_XMIT_POLICY_ENCAP34:
- 		memset(fk, 0, sizeof(*fk));
--		return __skb_flow_dissect(NULL, skb, &flow_keys_bonding,
--					  fk, data, l2_proto, nhoff, hlen, 0);
-+		return __skb_flow_dissect(dev_net(bond->dev), skb,
-+					  &flow_keys_bonding, fk, data,
-+					  l2_proto, nhoff, hlen, 0);
- 	default:
- 		break;
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 6c392495f4a76..fc284802e2bcd 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -4845,6 +4845,7 @@ static void ice_deinit_features(struct ice_pf *pf)
+ 		ice_dpll_deinit(pf);
+ 	if (pf->eswitch_mode == DEVLINK_ESWITCH_MODE_SWITCHDEV)
+ 		xa_destroy(&pf->eswitch.reprs);
++	ice_hwmon_exit(pf);
+ }
+ 
+ static void ice_init_wakeup(struct ice_pf *pf)
+@@ -5446,8 +5447,6 @@ static void ice_remove(struct pci_dev *pdev)
+ 		ice_free_vfs(pf);
  	}
+ 
+-	ice_hwmon_exit(pf);
+-
+ 	if (!ice_is_safe_mode(pf))
+ 		ice_remove_arfs(pf);
+ 
 -- 
 2.51.0
 
