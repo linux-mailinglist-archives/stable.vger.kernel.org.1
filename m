@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-212129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOXuEWkuemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:33 +0100
+	id +PNoMu4wemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACCEDA43D2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F32A4A3E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EBC95302ADAC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 91E1B307379B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C054F2C1586;
-	Wed, 28 Jan 2026 15:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459DA2F9D82;
+	Wed, 28 Jan 2026 15:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ofc6PEUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zE8E7yVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6282BE04C;
-	Wed, 28 Jan 2026 15:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BC626461F;
+	Wed, 28 Jan 2026 15:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614490; cv=none; b=dvmZ9dT32kaSLu/FSc35Vf2H9JcrIJzUgQyPJigZoQxZg+dJWIpN+xfGPBXYsI7o2WSBb7kfPhw9oAocTbcEbhcwDI3jbjcFTlCL3sdSsdrUf7JLQ7NZ+7b9f6dsA1nSfV/rrhzFL7ImihndFbe5dFXU6th4KJwB9Gth9V+bngc=
+	t=1769615050; cv=none; b=qJ0CgVBOyugPQ2hETY16a5brcqEQOSK24+DXePVjLRwUdHNlta6lL0NmAtK5gJR9yX1TfcvB7ndsOPwZkHFNOpmLg9IahIDGd/HOHlWWhjIGwK8lCuw5HICHm3xWqsOfeh345IFeLEy64kspeEJSjBv+DyHFe2tf8AsEGanVuro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614490; c=relaxed/simple;
-	bh=9XfhUg/dW/MC04Q5np7zNZh7qgI/UzUiwv+XbopQJd8=;
+	s=arc-20240116; t=1769615050; c=relaxed/simple;
+	bh=lYyWy04hy5bBfRrngIPq3QZMPuLIA2lQLdVeOja5KTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hxx5Undr3gUzTw2E3SrVbXP0j3rpZTFf73D1kzQtOG+jvUcyuRVVTNFaTjCggllyTqtXBHS4Oqub9FVyukZi09HP0w7QO9y4gPUZ+IAPp6f47PPUgY0PgqtoH9jXks4dLPxBe0uYmRu85BPLI3tNoB1X4EvKkkPzPx5MNUaTa9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ofc6PEUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE6CC4CEF7;
-	Wed, 28 Jan 2026 15:34:49 +0000 (UTC)
+	 MIME-Version; b=uDmtfiLLNDj/NhWKp16ozKdLVochCLAXJ0A/odDbmZrtR1il3bikBWgffm+b96xxRRFErAgrExuumJkN4CRsmPFxXz8YPcpT7lclNvm03raeEGTOIYYM1brBkD2DUHwXHRU9gX4jYACccu79Ggfsp+bezP5JJiyZaU8/d/ePGzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zE8E7yVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85608C4CEF1;
+	Wed, 28 Jan 2026 15:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614489;
-	bh=9XfhUg/dW/MC04Q5np7zNZh7qgI/UzUiwv+XbopQJd8=;
+	s=korg; t=1769615049;
+	bh=lYyWy04hy5bBfRrngIPq3QZMPuLIA2lQLdVeOja5KTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ofc6PEUKC16U743bpawNk6PHg35YsVS9ItsMkyhGQoVBg6E9tMGk7c/j5QpWy7Y6/
-	 JrviFqCwyo+IArNg/+jeQ6zvbsREhbEAMN+lNOw/DO4i2cke1JfHvkJAyrLUMI+grI
-	 yI3nZ37QCUGrUllRc1ZPVXWZA34nApJ2aq0cvVSo=
+	b=zE8E7yVenzRo0nggJAB6lXbzsBf9v0wsp4F1lLaf9WeDyT5wGNoTxCZF7NAdRh1N+
+	 3j0mYyN1/Zg+8bYc8R190U8R6+4VHp44pmdL9Rkvp/G2DE6yzuSh9zGHJuTIGBA8Wa
+	 0yxkzSPH8gWGrGiJVO/ml5hySlUOj4RHxr/cS5W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georgi Djakov <djakov@kernel.org>,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/254] interconnect: debugfs: initialize src_node and dst_node to empty strings
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 6.12 046/169] w1: fix redundant counter decrement in w1_attach_slave_device()
 Date: Wed, 28 Jan 2026 16:22:09 +0100
-Message-ID: <20260128145350.317019193@linuxfoundation.org>
+Message-ID: <20260128145335.675811658@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,77 +69,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212129-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212298-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ACCEDA43D2
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 71F32A4A3E
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georgi Djakov <djakov@kernel.org>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 8cc27f5c6dd17dd090f3a696683f04336c162ff5 ]
+commit cc8f92e41eb76f450f05234fef2054afc3633100 upstream.
 
-The debugfs_create_str() API assumes that the string pointer is either NULL
-or points to valid kmalloc() memory. Leaving the pointer uninitialized can
-cause problems.
+In w1_attach_slave_device(), if __w1_attach_slave_device() fails,
+put_device() -> w1_slave_release() is called to do the cleanup job.
+In w1_slave_release(), sl->family->refcnt and sl->master->slave_count
+have already been decremented. There is no need to decrement twice
+in w1_attach_slave_device().
 
-Initialize src_node and dst_node to empty strings before creating the
-debugfs entries to guarantee that reads and writes are safe.
-
-Fixes: 770c69f037c1 ("interconnect: Add debugfs test client")
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Tested-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Link: https://lore.kernel.org/r/20260109122523.125843-1-djakov@kernel.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c927c0c73fd ("w1: Fix slave count on 1-Wire bus (resend)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20251218111414.564403-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/debugfs-client.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/w1/w1.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/interconnect/debugfs-client.c b/drivers/interconnect/debugfs-client.c
-index 778deeb4a7e8a..24d7b5a577945 100644
---- a/drivers/interconnect/debugfs-client.c
-+++ b/drivers/interconnect/debugfs-client.c
-@@ -150,6 +150,11 @@ int icc_debugfs_client_init(struct dentry *icc_dir)
- 		return ret;
- 	}
- 
-+	src_node = devm_kstrdup(&pdev->dev, "", GFP_KERNEL);
-+	dst_node = devm_kstrdup(&pdev->dev, "", GFP_KERNEL);
-+	if (!src_node || !dst_node)
-+		return -ENOMEM;
-+
- 	client_dir = debugfs_create_dir("test_client", icc_dir);
- 
- 	debugfs_create_str("src_node", 0600, client_dir, &src_node);
--- 
-2.51.0
-
+--- a/drivers/w1/w1.c
++++ b/drivers/w1/w1.c
+@@ -758,8 +758,6 @@ int w1_attach_slave_device(struct w1_mas
+ 	if (err < 0) {
+ 		dev_err(&dev->dev, "%s: Attaching %s failed.\n", __func__,
+ 			 sl->name);
+-		dev->slave_count--;
+-		w1_family_put(sl->family);
+ 		atomic_dec(&sl->master->refcnt);
+ 		kfree(sl);
+ 		return err;
 
 
 
