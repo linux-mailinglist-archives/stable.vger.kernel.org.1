@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-212357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aE5PMcswemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:43 +0100
+	id 0Fq3Nnszeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468B3A49E5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC7FA5021
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A4FED301FC87
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 008193027002
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06FA2C2346;
-	Wed, 28 Jan 2026 15:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB232874FE;
+	Wed, 28 Jan 2026 15:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2RoCSDy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9iDn6vq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717E71E1DFC;
-	Wed, 28 Jan 2026 15:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F573033C4;
+	Wed, 28 Jan 2026 15:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615248; cv=none; b=WCRYnfCmfpVqsK+v4hHGbRgopW0lzY7vrAmZEVvNeNRVuZBgZ5JGbdzZjdH4Y093otS3MVan1M4KfcEHbhliBDAx2BDSCmZqxIY8KH1z03TEvudPMkMrOkn/JDG6Xfbx3Wn1gJfkeggvutyud2UhGCeepki7VTLeal4cSZPRFGE=
+	t=1769615921; cv=none; b=TPhtvWPtkLBmfBoEpr+N8vyTqd2lPX+AOzfuFHLBodOI6S3bhtFpLX2QJa1YfeNG19tth9bTBB1M4YWcZyZJwNGKf2iWiDZSPxmxkfFEhvWk6VonKQ5aBFGdeNJ1Pm+T4paCmTMTnTAXskQBCXr1wWXBrz+954DiINQhKNX0L70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615248; c=relaxed/simple;
-	bh=RqL5IlyZqgV8cmmE8bcqTspQK3ytk4OIreGjW4Wji6I=;
+	s=arc-20240116; t=1769615921; c=relaxed/simple;
+	bh=fOK+cxiqC3Av4hc68UkY8n7KK8GSTtaC3ntasj9lUK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gesSHPcbUH5CeAFFxr9EEGnn3XcvYuXNo1/ugfGynihM6EfUvSwj9KDMGOxSjwKceW8RTLw6qy1dLCTdJxBmOdhjf2GiAWxD55GjbiJE15YJd0ESATgyGIX78L2FIdCOPNujsuXq4em1BdBCclOryp8BHAg+H5jDtRoMnOLu85w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2RoCSDy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F006EC4CEF1;
-	Wed, 28 Jan 2026 15:47:27 +0000 (UTC)
+	 MIME-Version; b=fYmrfGVyloHlrmns9vsrAlgqg9e4UumILNh7sIsb2cmlqsP1CHdEvUEWL4JIRcTwxx985yOuhFJa09R6849+FT0WuHBjy8UiIMwWYe1blcwF/5sATviywNSJMXPV8+Hft1duXRqRcokyMI4cOPzjvtByyGk2B2DWrighH7FOsKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9iDn6vq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8473C4CEF1;
+	Wed, 28 Jan 2026 15:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615248;
-	bh=RqL5IlyZqgV8cmmE8bcqTspQK3ytk4OIreGjW4Wji6I=;
+	s=korg; t=1769615921;
+	bh=fOK+cxiqC3Av4hc68UkY8n7KK8GSTtaC3ntasj9lUK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k2RoCSDyJ2bTt9gejI9mDRDlV+0WhhQNk658HVVHkf7Pbw6eHsgGMtcadbuIzW8UG
-	 QoDM25hcvk7y9ueXC+3wB1M1yihOkujZFO7ztiE9YyfEppMky7ni0Gl7bnack3E0gL
-	 kLTWjyzw5sdUov2QDkzp5v6OH0z8rk4tf/6QS9lY=
+	b=V9iDn6vqC2LJtvUEiH23WsuXKiHfgBW8ItQAnRGBA06ISp4Tv5Ls/kVKD1l3OZBxP
+	 ZGmQkzH1NlkrGzXqR5axHLQym30LOUTmZsY5Y4hyGuChcH84dUiSqWnQW+jBkSYoIF
+	 g/e+MumyrLBCgHiyByH/UXSDl5F3u0YIFWyGzPw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Yifeng Zhao <yifeng.zhao@rock-chips.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 115/169] mmc: sdhci-of-dwcmshc: Prevent illegal clock reduction in HS200/HS400 mode
+	Gal Pressman <gal@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Feng Tang <feng.tang@linux.alibaba.com>,
+	Joel Granados <joel.granados@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 153/227] panic: only warn about deprecated panic_print on write access
 Date: Wed, 28 Jan 2026 16:23:18 +0100
-Message-ID: <20260128145338.142909660@linuxfoundation.org>
+Message-ID: <20260128145349.960034539@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +73,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,78 +81,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212357-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212558-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email,debian:email]
-X-Rspamd-Queue-Id: 468B3A49E5
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,nvidia.com:email,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 7CC7FA5021
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Gal Pressman <gal@nvidia.com>
 
-commit 3009738a855cf938bbfc9078bec725031ae623a4 upstream.
+commit 90f3c123247e9564f2ecf861946ec41ceaf5e198 upstream.
 
-When operating in HS200 or HS400 timing modes, reducing the clock frequency
-below 52MHz will lead to link broken as the Rockchip DWC MSHC controller
-requires maintaining a minimum clock of 52MHz in these modes.
+The panic_print_deprecated() warning is being triggered on both read and
+write operations to the panic_print parameter.
 
-Add a check to prevent illegal clock reduction through debugfs:
+This causes spurious warnings when users run 'sysctl -a' to list all
+sysctl values, since that command reads /proc/sys/kernel/panic_print and
+triggers the deprecation notice.
 
-root@debian:/# echo 50000000 > /sys/kernel/debug/mmc0/clock
-root@debian:/# [   30.090146] mmc0: running CQE recovery
-mmc0: cqhci: Failed to halt
-mmc0: cqhci: spurious TCN for tag 0
-WARNING: drivers/mmc/host/cqhci-core.c:797 at cqhci_irq+0x254/0x818, CPU#1: kworker/1:0H/24
-Modules linked in:
-CPU: 1 UID: 0 PID: 24 Comm: kworker/1:0H Not tainted 6.19.0-rc1-00001-g09db0998649d-dirty #204 PREEMPT
-Hardware name: Rockchip RK3588 EVB1 V10 Board (DT)
-Workqueue: kblockd blk_mq_run_work_fn
-pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : cqhci_irq+0x254/0x818
-lr : cqhci_irq+0x254/0x818
-...
+Modify the handlers to only emit the deprecation warning when the
+parameter is actually being set:
 
-Fixes: c6f361cba51c ("mmc: sdhci-of-dwcmshc: add support for rk3588")
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: Yifeng Zhao <yifeng.zhao@rock-chips.com>
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+ - sysctl_panic_print_handler(): check 'write' flag before warning.
+ - panic_print_get(): remove the deprecation call entirely.
+
+This way, users are only warned when they actively try to use the
+deprecated parameter, not when passively querying system state.
+
+Link: https://lkml.kernel.org/r/20260106163321.83586-1-gal@nvidia.com
+Fixes: ee13240cd78b ("panic: add note that panic_print sysctl interface is deprecated")
+Fixes: 2683df6539cb ("panic: add note that 'panic_print' parameter is deprecated")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Cc: Feng Tang <feng.tang@linux.alibaba.com>
+Cc: Joel Granados <joel.granados@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-of-dwcmshc.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/panic.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci-of-dwcmshc.c
-+++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
-@@ -650,6 +650,13 @@ static void dwcmshc_rk3568_set_clock(str
- 	sdhci_writel(host, extra, reg);
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -131,7 +131,8 @@ static int proc_taint(const struct ctl_t
+ static int sysctl_panic_print_handler(const struct ctl_table *table, int write,
+ 			   void *buffer, size_t *lenp, loff_t *ppos)
+ {
+-	panic_print_deprecated();
++	if (write)
++		panic_print_deprecated();
+ 	return proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
+ }
  
- 	if (clock <= 52000000) {
-+		if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
-+		    host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
-+			dev_err(mmc_dev(host->mmc),
-+				"Can't reduce the clock below 52MHz in HS200/HS400 mode");
-+			return;
-+		}
-+
- 		/*
- 		 * Disable DLL and reset both of sample and drive clock.
- 		 * The bypass bit and start bit need to be set if DLL is not locked.
+@@ -1010,7 +1011,6 @@ static int panic_print_set(const char *v
+ 
+ static int panic_print_get(char *val, const struct kernel_param *kp)
+ {
+-	panic_print_deprecated();
+ 	return  param_get_ulong(val, kp);
+ }
+ 
 
 
 
