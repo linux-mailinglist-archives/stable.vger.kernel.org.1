@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212550-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0AtYDZQvemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:32 +0100
+	id eFmoHK00eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212550-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7112A46A8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2244A528C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0D60E301A618
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2D7230F7692
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983CF2F747D;
-	Wed, 28 Jan 2026 15:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A9C1D6AA;
+	Wed, 28 Jan 2026 15:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCuU0xxu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWc3Mowc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6202D9EDB;
-	Wed, 28 Jan 2026 15:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CACF146D53;
+	Wed, 28 Jan 2026 15:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614807; cv=none; b=uSekViVzFvuNw05cyJfPljeK7wKcn0fXPIqDSSQu2cwS06fIklrBZNDDtouMVzuvgb4ci5o+oCRomx4+jjjuFevGlV5QNpjxbeZtgPPhTZsed6ldzzed1XWVFBlYpqdGh92zrtcw92tHkXnPG8k7VVGhs+yVIfzOukNl3FqGouY=
+	t=1769615895; cv=none; b=AIRtv4l+IgyvtexK4Kf/8bzCTB2cOHuE0jByhp4cebEzCoQ+nQwDWsoV/xp53Ea3jv0GCOG9krcn5IrRjg73B2hjLiXCpzvW3QcHKRFSVBLXahnBNEA4KRE2yPsAs0Xh085RuxfeRAyXuCadMJE09eRiJPbgTWSI782zMy50WAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614807; c=relaxed/simple;
-	bh=ayNWvU2cCfMQmdD0xBLtSBeJ8CS9dcTPbrAgn9gbFyY=;
+	s=arc-20240116; t=1769615895; c=relaxed/simple;
+	bh=PzGJxdZS05MHU366gbiqvgRULcrtQJGkzSNzz7XvYjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e85SWNxRmcjmNjg9IleNmd1YVUZ/aaTCl6OlbvYL94YCn4aBFzYZoW4jZr+7Qp4a+Th8eaBoLN+rXfbLqSUOgSOrTbL+7TXLf+fVgZ/XjRZk8BiSe2iTnDpIU08lso4Tv3mwWI3NeLUmfyLWGv4ACf1D6utoT9QGTBufJHNUvsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCuU0xxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C468C4CEF1;
-	Wed, 28 Jan 2026 15:40:06 +0000 (UTC)
+	 MIME-Version; b=Gw8y2PhiGDj7ygyrT0euPlla0x4U1mNFZ9g9g/mbvJnrBqvsSsy7ExleqRnjLh4uoFRFl8E6zW7Dak29gKuhsfYQCZ/rLxJwGqWofUX3JurWN/JozSzKum696JkyPN/xRzT9xiqH1Kya7eAaJu9lYvlxeCUEp6w+9YskyK2mz8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWc3Mowc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94ECC4CEF1;
+	Wed, 28 Jan 2026 15:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614806;
-	bh=ayNWvU2cCfMQmdD0xBLtSBeJ8CS9dcTPbrAgn9gbFyY=;
+	s=korg; t=1769615895;
+	bh=PzGJxdZS05MHU366gbiqvgRULcrtQJGkzSNzz7XvYjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UCuU0xxuVMfJKRdRp/re4vHeDv8qlVdmhEA26fKBNhFOM1RGg9gp1GlYpV0faE1u6
-	 2ikxymbo3/54k3l6WKjkWTuTKFcZi8JtobOQAO64EVpzq2Yjv5AErtFSzBAmKHdf00
-	 Lj2v4RUc5kr6SBfFtE9QwsVEL9dDS455F8izHatM=
+	b=sWc3Mowc67XwYoHkj7ENPSc6TQ/45dE7f8ijHOeR4wAjPuNVNCU2FjVOwH30ncGPr
+	 dt86IiHEKHUnYaiUdX8ckJaUgTF5jgBey7q0I2i0HQFqpITbtxnCAGeF+D0sx5F7ec
+	 F5YLWhCe2BrHsrT5x0YCC+/KZbkGLm8uMD+axEl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 215/254] irqchip/gic-v3-its: Avoid truncating memory addresses
+	Zhu Yikai <zhuyikai1@h-partners.com>,
+	Fan Gong <gongfan1@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 146/227] hinic3: Fix netif_queue_set_napi queue_index input parameter error
 Date: Wed, 28 Jan 2026 16:23:11 +0100
-Message-ID: <20260128145352.527451897@linuxfoundation.org>
+Message-ID: <20260128145349.711949061@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,105 +70,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212550-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212226-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C7112A46A8
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,h-partners.com:email]
+X-Rspamd-Queue-Id: A2244A528C
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Fan Gong <gongfan1@huawei.com>
 
-commit 8d76a7d89c12d08382b66e2f21f20d0627d14859 upstream.
+[ Upstream commit fb2bb2a1ebf7b9514c32b03bb5c3be5d518d437b ]
 
-On 32-bit machines with CONFIG_ARM_LPAE, it is possible for lowmem
-allocations to be backed by addresses physical memory above the 32-bit
-address limit, as found while experimenting with larger VMSPLIT
-configurations.
+Incorrectly transmitted interrupt number instead of queue number
+when using netif_queue_set_napi. Besides, move this to appropriate
+code location to set napi.
 
-This caused the qemu virt model to crash in the GICv3 driver, which
-allocates the 'itt' object using GFP_KERNEL. Since all memory below
-the 4GB physical address limit is in ZONE_DMA in this configuration,
-kmalloc() defaults to higher addresses for ZONE_NORMAL, and the
-ITS driver stores the physical address in a 32-bit 'unsigned long'
-variable.
+Remove redundant netif_stop_subqueue beacuase it is not part of the
+hinic3_send_one_skb process.
 
-Change the itt_addr variable to the correct phys_addr_t type instead,
-along with all other variables in this driver that hold a physical
-address.
-
-The gicv5 driver correctly uses u64 variables, while all other irqchip
-drivers don't call virt_to_phys or similar interfaces. It's expected that
-other device drivers have similar issues, but fixing this one is
-sufficient for booting a virtio based guest.
-
-Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260119201603.2713066-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
+Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
+Link: https://patch.msgid.link/7b8e4eb5c53cbd873ee9aaefeb3d9dbbaff52deb.1769070766.git.zhuyikai1@h-partners.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../net/ethernet/huawei/hinic3/hinic3_irq.c   | 22 +++++++++++--------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -616,7 +616,7 @@ static struct its_collection *its_build_
- 						 struct its_cmd_block *cmd,
- 						 struct its_cmd_desc *desc)
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+index a69b361225e90..84bee5d6e638e 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
+@@ -43,21 +43,12 @@ static void qp_add_napi(struct hinic3_irq_cfg *irq_cfg)
+ 	struct hinic3_nic_dev *nic_dev = netdev_priv(irq_cfg->netdev);
+ 
+ 	netif_napi_add(nic_dev->netdev, &irq_cfg->napi, hinic3_poll);
+-	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
+-			     NETDEV_QUEUE_TYPE_RX, &irq_cfg->napi);
+-	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
+-			     NETDEV_QUEUE_TYPE_TX, &irq_cfg->napi);
+ 	napi_enable(&irq_cfg->napi);
+ }
+ 
+ static void qp_del_napi(struct hinic3_irq_cfg *irq_cfg)
  {
--	unsigned long itt_addr;
-+	phys_addr_t itt_addr;
- 	u8 size = ilog2(desc->its_mapd_cmd.dev->nr_ites);
+ 	napi_disable(&irq_cfg->napi);
+-	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
+-			     NETDEV_QUEUE_TYPE_RX, NULL);
+-	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
+-			     NETDEV_QUEUE_TYPE_TX, NULL);
+-	netif_stop_subqueue(irq_cfg->netdev, irq_cfg->irq_id);
+ 	netif_napi_del(&irq_cfg->napi);
+ }
  
- 	itt_addr = virt_to_phys(desc->its_mapd_cmd.dev->itt);
-@@ -787,7 +787,7 @@ static struct its_vpe *its_build_vmapp_c
- 					   struct its_cmd_desc *desc)
- {
- 	struct its_vpe *vpe = valid_vpe(its, desc->its_vmapp_cmd.vpe);
--	unsigned long vpt_addr, vconf_addr;
-+	phys_addr_t vpt_addr, vconf_addr;
- 	u64 target;
- 	bool alloc;
+@@ -150,6 +141,11 @@ int hinic3_qps_irq_init(struct net_device *netdev)
+ 			goto err_release_irqs;
+ 		}
  
-@@ -2404,10 +2404,10 @@ retry_baser:
- 	baser->psz = psz;
- 	tmp = indirect ? GITS_LVL1_ENTRY_SIZE : esz;
- 
--	pr_info("ITS@%pa: allocated %d %s @%lx (%s, esz %d, psz %dK, shr %d)\n",
-+	pr_info("ITS@%pa: allocated %d %s @%llx (%s, esz %d, psz %dK, shr %d)\n",
- 		&its->phys_base, (int)(PAGE_ORDER_TO_SIZE(order) / (int)tmp),
- 		its_base_type_string[type],
--		(unsigned long)virt_to_phys(base),
-+		(u64)virt_to_phys(base),
- 		indirect ? "indirect" : "flat", (int)esz,
- 		psz / SZ_1K, (int)shr >> GITS_BASER_SHAREABILITY_SHIFT);
- 
++		netif_queue_set_napi(irq_cfg->netdev, q_id,
++				     NETDEV_QUEUE_TYPE_RX, &irq_cfg->napi);
++		netif_queue_set_napi(irq_cfg->netdev, q_id,
++				     NETDEV_QUEUE_TYPE_TX, &irq_cfg->napi);
++
+ 		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
+ 						irq_cfg->msix_entry_idx,
+ 						HINIC3_SET_MSIX_AUTO_MASK);
+@@ -164,6 +160,10 @@ int hinic3_qps_irq_init(struct net_device *netdev)
+ 		q_id--;
+ 		irq_cfg = &nic_dev->q_params.irq_cfg[q_id];
+ 		qp_del_napi(irq_cfg);
++		netif_queue_set_napi(irq_cfg->netdev, q_id,
++				     NETDEV_QUEUE_TYPE_RX, NULL);
++		netif_queue_set_napi(irq_cfg->netdev, q_id,
++				     NETDEV_QUEUE_TYPE_TX, NULL);
+ 		hinic3_set_msix_state(nic_dev->hwdev, irq_cfg->msix_entry_idx,
+ 				      HINIC3_MSIX_DISABLE);
+ 		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
+@@ -184,6 +184,10 @@ void hinic3_qps_irq_uninit(struct net_device *netdev)
+ 	for (q_id = 0; q_id < nic_dev->q_params.num_qps; q_id++) {
+ 		irq_cfg = &nic_dev->q_params.irq_cfg[q_id];
+ 		qp_del_napi(irq_cfg);
++		netif_queue_set_napi(irq_cfg->netdev, q_id,
++				     NETDEV_QUEUE_TYPE_RX, NULL);
++		netif_queue_set_napi(irq_cfg->netdev, q_id,
++				     NETDEV_QUEUE_TYPE_TX, NULL);
+ 		hinic3_set_msix_state(nic_dev->hwdev, irq_cfg->msix_entry_idx,
+ 				      HINIC3_MSIX_DISABLE);
+ 		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
+-- 
+2.51.0
+
 
 
 
