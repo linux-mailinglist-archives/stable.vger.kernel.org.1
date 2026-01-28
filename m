@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-212367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212221-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJjXA3Q4eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212367-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:24 +0100
+	id IJlCJ5Axemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212221-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8144CA5976
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCF6A4BEE
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C21C13051867
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DAFEE3019961
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175313033F4;
-	Wed, 28 Jan 2026 15:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D222F4A14;
+	Wed, 28 Jan 2026 15:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t31gqjN6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fxv0yP20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C247E2F745C;
-	Wed, 28 Jan 2026 15:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA2A2F3C31;
+	Wed, 28 Jan 2026 15:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615282; cv=none; b=lJuteUV/DbPemgvTRt+NitREGmPsi4nzMNEzjZVbs1QlcTtuMSkKtLMyuPK0khg1PQoGr27W2hfM2JgBVloVcn5Ty0hdACMpeCNNfvrHF9vLxA7E3zO4PVh5OsrSsrMcgSdXNea7qXKRXqbEy5d9RTZwmcVDZunVc79TEPgRkI8=
+	t=1769614790; cv=none; b=XMsJTI5VUkh/kXSbMjrqJhziNr582q52i+UEhRICRdnE1IEwlQOh1yMC9U/J0XtPV3oOaCpAFoo42lQUhgBHF87etgEZNwQJozgKwOrLahaJXVNNsg0PXX5FTfdMOmlPtyCvpcylrMX0DgRMWKswQjxDLKyIfIMa5GszIZH06xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615282; c=relaxed/simple;
-	bh=yw8yucNHTen4CrH6pE67F4qVZbVw4Y7kzYjusp2HCms=;
+	s=arc-20240116; t=1769614790; c=relaxed/simple;
+	bh=/QwkfbcgC8YELA5gj1/cN5rPIAk77Vd33Uo3wEHknks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BUp2sHhrL3r6qVvzajz1wwiVxVJtVrAJT3Vb7NwuQ0zszyemMCjcMHT/vXbDfD0nm+swrFxD+TrKxn/MLgX681hl/LEMk7N17lw6bzKeT/iRQ1Nsri2TdAdE069VZyBz+sZ1Xhpyf5QBwd90a9DTFs2f5QqfLfk0VHuZn5FE09o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t31gqjN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7C4C4CEF1;
-	Wed, 28 Jan 2026 15:48:01 +0000 (UTC)
+	 MIME-Version; b=BYytOUKwt3Oii0Z+gMzifkphbQAYCa8e5XD1FrlvAROLS4SvmqJ1K8XTTUN5FRIG8J01Hqblc3qmT+KcagrRVowF7XC7MmabUBMJnXSzX4DoHonYR/OROmggXV6KtkC92VjErgr12AtNEHSpVP1bc7JWCtVKi2mrIoILzmleNT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fxv0yP20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA6BC4CEF1;
+	Wed, 28 Jan 2026 15:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615282;
-	bh=yw8yucNHTen4CrH6pE67F4qVZbVw4Y7kzYjusp2HCms=;
+	s=korg; t=1769614790;
+	bh=/QwkfbcgC8YELA5gj1/cN5rPIAk77Vd33Uo3wEHknks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t31gqjN6JwiFNeL9Vgg1bL38rg8smNumEV51tQibB3H1GNiKxJcAj7RgW8JupxXWH
-	 sNDz5u6NEh3rBxFEhIt9LGd2wiJ42OupcELnNEjVR2JwXxLImFdmjLZOtDgkjTRSzm
-	 kTOUH4wergQ77Md03Z9gRtFMBY3F7v2hr3n+1mrY=
+	b=Fxv0yP20fV5dBAX2WK9fIaFTEpZA1gpRM/gzo7IkLWdfXIywSWTGBzM5jKjxYsEST
+	 YIAfEHPwuJtBLAFGJH9mxdb+3sJyIsNHDwA5StEq4ztm9B8yeIuzEi3bnKsh7Ri42Z
+	 Qr41SYfv4yqQJ/Jw0rJUrbBF3Fi0/SxRpapAh7YI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Yang Shen <shenyang39@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 6.12 133/169] uacce: ensure safe queue release with state management
-Date: Wed, 28 Jan 2026 16:23:36 +0100
-Message-ID: <20260128145338.793780110@linuxfoundation.org>
+	Srinivas Kandagatla <srini@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 241/254] ASoC: codecs: wsa883x: fix unnecessary initialisation
+Date: Wed, 28 Jan 2026 16:23:37 +0100
+Message-ID: <20260128145353.467652544@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,120 +72,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212221-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212367-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8144CA5976
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EDCF6A4BEE
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 26c08dabe5475d99a13f353d8dd70e518de45663 upstream.
+[ Upstream commit 49aadf830eb048134d33ad7329d92ecff45d8dbb ]
 
-Directly calling `put_queue` carries risks since it cannot
-guarantee that resources of `uacce_queue` have been fully released
-beforehand. So adding a `stop_queue` operation for the
-UACCE_CMD_PUT_Q command and leaving the `put_queue` operation to
-the final resource release ensures safety.
+The soundwire update_status() callback may be called multiple times with
+the same ATTACHED status but initialisation should only be done when
+transitioning from UNATTACHED to ATTACHED.
 
-Queue states are defined as follows:
-- UACCE_Q_ZOMBIE: Initial state
-- UACCE_Q_INIT: After opening `uacce`
-- UACCE_Q_STARTED: After `start` is issued via `ioctl`
+This avoids repeated initialisation of the codecs during boot of
+machines like the Lenovo ThinkPad X13s:
 
-When executing `poweroff -f` in virt while accelerator are still
-working, `uacce_fops_release` and `uacce_remove` may execute
-concurrently. This can cause `uacce_put_queue` within
-`uacce_fops_release` to access a NULL `ops` pointer. Therefore, add
-state checks to prevent accessing freed pointers.
+[   11.614523] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.618022] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.621377] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.624065] wsa883x-codec sdw:1:0:0217:0202:00:1: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.631382] wsa883x-codec sdw:1:0:0217:0202:00:2: WSA883X Version 1_1, Variant: WSA8835_V2
+[   11.634424] wsa883x-codec sdw:1:0:0217:0202:00:2: WSA883X Version 1_1, Variant: WSA8835_V2
 
-Fixes: 015d239ac014 ("uacce: add uacce driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Yang Shen <shenyang39@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-5-huangchenghai2@huawei.com
+Fixes: 43b8c7dc85a1 ("ASoC: codecs: add wsa883x amplifier support")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: Srinivas Kandagatla <srini@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260102111413.9605-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/uacce/uacce.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ sound/soc/codecs/wsa883x.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -40,20 +40,34 @@ static int uacce_start_queue(struct uacc
+--- a/sound/soc/codecs/wsa883x.c
++++ b/sound/soc/codecs/wsa883x.c
+@@ -444,6 +444,7 @@ struct wsa883x_priv {
+ 	int active_ports;
+ 	int dev_mode;
+ 	int comp_offset;
++	bool hw_init;
+ };
+ 
+ enum {
+@@ -1003,6 +1004,9 @@ static int wsa883x_init(struct wsa883x_p
+ 	struct regmap *regmap = wsa883x->regmap;
+ 	int variant, version, ret;
+ 
++	if (wsa883x->hw_init)
++		return 0;
++
+ 	ret = regmap_read(regmap, WSA883X_OTP_REG_0, &variant);
+ 	if (ret)
+ 		return ret;
+@@ -1046,6 +1050,8 @@ static int wsa883x_init(struct wsa883x_p
+ 				   wsa883x->comp_offset);
+ 	}
+ 
++	wsa883x->hw_init = true;
++
  	return 0;
  }
  
--static int uacce_put_queue(struct uacce_queue *q)
-+static int uacce_stop_queue(struct uacce_queue *q)
+@@ -1054,6 +1060,9 @@ static int wsa883x_update_status(struct
  {
- 	struct uacce_device *uacce = q->uacce;
+ 	struct wsa883x_priv *wsa883x = dev_get_drvdata(&slave->dev);
  
--	if ((q->state == UACCE_Q_STARTED) && uacce->ops->stop_queue)
-+	if (q->state != UACCE_Q_STARTED)
-+		return 0;
++	if (status == SDW_SLAVE_UNATTACHED)
++		wsa883x->hw_init = false;
 +
-+	if (uacce->ops->stop_queue)
- 		uacce->ops->stop_queue(q);
+ 	if (status == SDW_SLAVE_ATTACHED && slave->dev_num > 0)
+ 		return wsa883x_init(wsa883x);
  
--	if ((q->state == UACCE_Q_INIT || q->state == UACCE_Q_STARTED) &&
--	     uacce->ops->put_queue)
-+	q->state = UACCE_Q_INIT;
-+
-+	return 0;
-+}
-+
-+static void uacce_put_queue(struct uacce_queue *q)
-+{
-+	struct uacce_device *uacce = q->uacce;
-+
-+	uacce_stop_queue(q);
-+
-+	if (q->state != UACCE_Q_INIT)
-+		return;
-+
-+	if (uacce->ops->put_queue)
- 		uacce->ops->put_queue(q);
- 
- 	q->state = UACCE_Q_ZOMBIE;
--
--	return 0;
- }
- 
- static long uacce_fops_unl_ioctl(struct file *filep,
-@@ -80,7 +94,7 @@ static long uacce_fops_unl_ioctl(struct
- 		ret = uacce_start_queue(q);
- 		break;
- 	case UACCE_CMD_PUT_Q:
--		ret = uacce_put_queue(q);
-+		ret = uacce_stop_queue(q);
- 		break;
- 	default:
- 		if (uacce->ops->ioctl)
 
 
 
