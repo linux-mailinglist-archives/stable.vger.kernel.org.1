@@ -1,61 +1,72 @@
-Return-Path: <stable+bounces-212275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2PV4O0c0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:35 +0100
+	id YEdwHzM6emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121A1A51F2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA66A5CB7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0E4843136C16
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D981B30D2665
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5593E309EEC;
-	Wed, 28 Jan 2026 15:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CDE2DF155;
+	Wed, 28 Jan 2026 15:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJinz5CL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1DH/R9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7EE30BB96;
-	Wed, 28 Jan 2026 15:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C522E2DF4;
+	Wed, 28 Jan 2026 15:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614972; cv=none; b=A//5b7tZn/x+mI1/dgloySCj5vuBBlV+yDBcJaE3CN03cPypdduJ3oEa0M1BBje+5I9dEk1Dk3BOosjpL5QMSgzvniR+jNQ28ADn9yFfcnt1dJ7YdsWeupTbQHaMgntlVjYX3+/K/1smHExbLF8AwU9LqrdvjOHM/WORp7ef1ks=
+	t=1769615666; cv=none; b=siv9euI90GKVpkFHjy7w4EGU2pR8OBCAxZp67YgRnFzJBXC9PyVWN9+kI2Dyq5DTDYVKywUTqLSvCGQ9DFLlJt1qiPST9sjtFlYi2MrNtrVVBOZyzb0Nhn8pGj/QpguGNYKBI2B0STCquGgQSmwYGQBMIKJuSA5Cd/iZQATfqUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614972; c=relaxed/simple;
-	bh=Dn7yo9uqPrJyWbiHOdXfKrTyyBDpNW8EkRyE3YW5Ik4=;
+	s=arc-20240116; t=1769615666; c=relaxed/simple;
+	bh=JH3fdT9tchRJTgiN5nfFtg08PdnmjkbCw+SC1lRp2CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=csruqJnFCeSaBJ1G5uhD5IlhHutCdAgClDWz3JoSsks/+zFINigKLKHu4Hrb8hmr1u8LSu3LNKmikdYn9HTo2ByHcPwoX4jnXxhkSdPeQvUa8scgbPgBbKffD8GT+n/7yytS8F7A5/eVAeXbG5hCpGAcTxVZ0IHI18f5g90KkFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJinz5CL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB4DC4CEF1;
-	Wed, 28 Jan 2026 15:42:51 +0000 (UTC)
+	 MIME-Version; b=sMkCrLnLmU9eSz7RNGJeirohRRKV5eJ1BvKurZB5RgWF8yPR3EpNAuzHY3tK6Hx86lJYABBwQ6T5dsjb+gGC7qXQ9xbuXkDQQgTfSqxRTRc3F94KtuaR9fLsEAYAEDzBxUmPVkmuEP585asmi33eKCseeVYGpfvWQC20vf7YbdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1DH/R9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64C1C4CEF1;
+	Wed, 28 Jan 2026 15:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614972;
-	bh=Dn7yo9uqPrJyWbiHOdXfKrTyyBDpNW8EkRyE3YW5Ik4=;
+	s=korg; t=1769615666;
+	bh=JH3fdT9tchRJTgiN5nfFtg08PdnmjkbCw+SC1lRp2CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJinz5CLALvJzIm13KzYzIjnFb+qe36D7RabsOcxRkFuKTZ/ldnjV8Zl7Dv6Xdk8v
-	 L/VNJSz7md2QAh14ltK57+z8dBMbeYzNMQMpugP9KwTIhaSwkRkOppRa1zLxbE2a2f
-	 IAWte3Z23idQ3R6Q6mchRNypAfYcKp6OvBeIDGhk=
+	b=w1DH/R9MDRj08Adg5o/nhbX8NRYULVkMAQaotB+XlvIurDr2p32VwbMSOh0/VJzfG
+	 O8ZdZ66uPfPjOchIXSPFqw7q0dCtRimPdnEWyI2E0oHrYPN4HxwnMakOSUfikQ6bBg
+	 02LLI43LKSZLzcpV96hqqKZJTJ+tRXuNsThI/aQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/169] net/sched: Enforce that teql can only be used as root qdisc
-Date: Wed, 28 Jan 2026 16:22:02 +0100
-Message-ID: <20260128145335.428624971@linuxfoundation.org>
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Wei Xu <weixugc@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 078/227] mm: restore per-memcg proactive reclaim with !CONFIG_NUMA
+Date: Wed, 28 Jan 2026 16:22:03 +0100
+Message-ID: <20260128145347.150482229@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,104 +76,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212275-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212482-lists,stable=lfdr.de];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 121A1A51F2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linux-foundation.org:email,suse.com:email,suse.cz:email,cmpxchg.org:email]
+X-Rspamd-Queue-Id: DFA66A5CB7
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-[ Upstream commit 50da4b9d07a7a463e2cfb738f3ad4cff6b2c9c3b ]
+commit 16aca2c98a6fdf071e5a1a765a295995d7c7e346 upstream.
 
-Design intent of teql is that it is only supposed to be used as root qdisc.
-We need to check for that constraint.
+Commit 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
+moved proactive reclaim logic from memory.reclaim handler to a generic
+user_proactive_reclaim() helper to be used for per-node proactive reclaim.
 
-Although not important, I will describe the scenario that unearthed this
-issue for the curious.
+However, user_proactive_reclaim() was only defined under CONFIG_NUMA, with
+a stub always returning 0 otherwise.  This broke memory.reclaim on
+!CONFIG_NUMA configs, causing it to report success without actually
+attempting reclaim.
 
-GangMin Kim <km.kim1503@gmail.com> managed to concot a scenario as follows:
+Move the definition of user_proactive_reclaim() outside CONFIG_NUMA, and
+instead define a stub for __node_reclaim() in the !CONFIG_NUMA case.
+__node_reclaim() is only called from user_proactive_reclaim() when a write
+is made to sys/devices/system/node/nodeX/reclaim, which is only defined
+with CONFIG_NUMA.
 
-ROOT qdisc 1:0 (QFQ)
-  ├── class 1:1 (weight=15, lmax=16384) netem with delay 6.4s
-  └── class 1:2 (weight=1, lmax=1514) teql
-
-GangMin sends a packet which is enqueued to 1:1 (netem).
-Any invocation of dequeue by QFQ from this class will not return a packet
-until after 6.4s. In the meantime, a second packet is sent and it lands on
-1:2. teql's enqueue will return success and this will activate class 1:2.
-Main issue is that teql only updates the parent visible qlen (sch->q.qlen)
-at dequeue. Since QFQ will only call dequeue if peek succeeds (and teql's
-peek always returns NULL), dequeue will never be called and thus the qlen
-will remain as 0. With that in mind, when GangMin updates 1:2's lmax value,
-the qfq_change_class calls qfq_deact_rm_from_agg. Since the child qdisc's
-qlen was not incremented, qfq fails to deactivate the class, but still
-frees its pointers from the aggregate. So when the first packet is
-rescheduled after 6.4 seconds (netem's delay), a dangling pointer is
-accessed causing GangMin's causing a UAF.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260114160243.913069-2-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20260116205247.928004-1-yosry.ahmed@linux.dev
+Fixes: 2b7226af730c ("mm/memcg: make memory.reclaim interface generic")
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Wei Xu <weixugc@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_teql.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ mm/internal.h |    8 --------
+ mm/vmscan.c   |   13 +++++++++++--
+ 2 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index 8badec6d82a24..6e4bdaa876ed6 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -178,6 +178,11 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
- 	if (m->dev == dev)
- 		return -ELOOP;
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -538,16 +538,8 @@ extern unsigned long highest_memmap_pfn;
+ bool folio_isolate_lru(struct folio *folio);
+ void folio_putback_lru(struct folio *folio);
+ extern void reclaim_throttle(pg_data_t *pgdat, enum vmscan_throttle_state reason);
+-#ifdef CONFIG_NUMA
+ int user_proactive_reclaim(char *buf,
+ 			   struct mem_cgroup *memcg, pg_data_t *pgdat);
+-#else
+-static inline int user_proactive_reclaim(char *buf,
+-			   struct mem_cgroup *memcg, pg_data_t *pgdat)
+-{
+-	return 0;
+-}
+-#endif
  
-+	if (sch->parent != TC_H_ROOT) {
-+		NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root");
-+		return -EOPNOTSUPP;
-+	}
+ /*
+  * in mm/rmap.c:
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7740,6 +7740,17 @@ int node_reclaim(struct pglist_data *pgd
+ 	return ret;
+ }
+ 
++#else
 +
- 	q->m = m;
++static unsigned long __node_reclaim(struct pglist_data *pgdat, gfp_t gfp_mask,
++				    unsigned long nr_pages,
++				    struct scan_control *sc)
++{
++	return 0;
++}
++
++#endif
++
+ enum {
+ 	MEMORY_RECLAIM_SWAPPINESS = 0,
+ 	MEMORY_RECLAIM_SWAPPINESS_MAX,
+@@ -7847,8 +7858,6 @@ int user_proactive_reclaim(char *buf,
+ 	return 0;
+ }
  
- 	skb_queue_head_init(&q->q);
--- 
-2.51.0
-
+-#endif
+-
+ /**
+  * check_move_unevictable_folios - Move evictable folios to appropriate zone
+  * lru list
 
 
 
