@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLJICCgwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:00 +0100
+	id gD/wE9cwemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C8EA480F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF59EA4A02
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7689831345CE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A7AA308F2D4
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA112E36F8;
-	Wed, 28 Jan 2026 15:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29EAD30FC16;
+	Wed, 28 Jan 2026 15:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeJHz7Ir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoVJUrl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B038F2DC76D;
-	Wed, 28 Jan 2026 15:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09EF30F950;
+	Wed, 28 Jan 2026 15:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614760; cv=none; b=ozN4J4npON3DmXyyBT0tYeo+dmkNF6gae7oF0iSRu0lLLPQrwQZ6ciYrXReTlDHduL9gQSRMZUcWJtuIDiNvLjcEqu7PNK6Nd034+vmXXK6TSTbP2sJH8d0jq0LECIDL+WYDHQl7xb5pnINHraxQ7RYObNIUDTqQEn4Oh3k7+Vw=
+	t=1769615260; cv=none; b=mRSAXK5070AkxU/vZGpcO0R4Bb6xxY0cErvqaa/MLWgtqCQWc/f8vxhMIMyBnXCZnltRQgb08tQugSAtRMNselw9SbG1yHDJHsg0+xzuPk1pGXwyi9cKmYLpJfHoOPI2sKSr2gelL6gurn4ShKd/jQ6V0vz9hN7r6f89Swij2Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614760; c=relaxed/simple;
-	bh=HQ4I+udmuK4eKAKFvoT6RuOgrfY9PuDysVRS0oDBvjY=;
+	s=arc-20240116; t=1769615260; c=relaxed/simple;
+	bh=fItSl7a+po9big32oNiRRaMVHmFxNuWCkbZSGTvFHkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjLKuJg9T2mDB+iGVZwGpZG9bEXJ68m586N3PPjE+ef5WMfJZ1G7JKWGZkiaPuKCxQ9NzvcxhVCRQIckK09C77NLzsKKBmBOTJJO1Yw0SbFjax8VBrrjV9SvXWhFXYMnu1/HOn2WTSB6m30gWEcEExWm3lPIr5wInyFPTms/3v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeJHz7Ir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2816CC4CEF1;
-	Wed, 28 Jan 2026 15:39:19 +0000 (UTC)
+	 MIME-Version; b=iJZ02lgu5mQ1f719TeDaQ2/1DBeltK/EmdiFD3PGKfxRpMo+2tgttTxmm32eva79X8YGvGCmoHeN2/oAPef6ALGEQyaY4018+QFft6FLsIOa3++dTO/C5cBca1b7C2JEGQDzmzGY3PZJ5qIciWObfXbinmYcYUqKxQH94A7ZwuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoVJUrl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57EEC4CEF7;
+	Wed, 28 Jan 2026 15:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614760;
-	bh=HQ4I+udmuK4eKAKFvoT6RuOgrfY9PuDysVRS0oDBvjY=;
+	s=korg; t=1769615259;
+	bh=fItSl7a+po9big32oNiRRaMVHmFxNuWCkbZSGTvFHkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IeJHz7Ir6p+ZSb/VOra+zCzYlabf4IZXvH2fnAuzmp5sHcEXtCh5AblMvAl6YKrT7
-	 rGEJOAzHSDB2ZVAZH1xNaoabPHd7v0cMtz/k6Y42HcMi8ITXRuLiwlAT7e6GWjs5JR
-	 Tm3o/RLMrruTd9xCzfpp4b9gcmIRSsDvjBUHKoic=
+	b=MoVJUrl1qDAVW2qdpGXYkSimdyphaTsG7t4ryq9OiN+UHXPmg3uGzGjzIPGxaW1tL
+	 gcFON3vQ8itLRrJEHnPoV212zYn+KAKDI7B0y3k/PZ4b0TqjcPpTmbjNdH7O59tpYS
+	 ynFbhD5eAX9oDHNWjX+fQvnRmf3zI6gw5LV509dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
-	Johan Hovold <johan@kernel.org>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 233/254] dmaengine: stm32: dmamux: fix device leak on route allocation
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 126/169] tracing: Fix crash on synthetic stacktrace field usage
 Date: Wed, 28 Jan 2026 16:23:29 +0100
-Message-ID: <20260128145353.173840695@linuxfoundation.org>
+Message-ID: <20260128145338.543455723@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,117 +70,188 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212360-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212212-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,st.com:email]
-X-Rspamd-Queue-Id: 89C8EA480F
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BF59EA4A02
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit dd6e4943889fb354efa3f700e42739da9bddb6ef ]
+commit 90f9f5d64cae4e72defd96a2a22760173cb3c9ec upstream.
 
-Make sure to drop the reference taken when looking up the DMA mux
-platform device during route allocation.
+When creating a synthetic event based on an existing synthetic event that
+had a stacktrace field and the new synthetic event used that field a
+kernel crash occurred:
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+ ~# cd /sys/kernel/tracing
+ ~# echo 's:stack unsigned long stack[];' > dynamic_events
+ ~# echo 'hist:keys=prev_pid:s0=common_stacktrace if prev_state & 3' >> events/sched/sched_switch/trigger
+ ~# echo 'hist:keys=next_pid:s1=$s0:onmatch(sched.sched_switch).trace(stack,$s1)' >> events/sched/sched_switch/trigger
 
-Fixes: df7e762db5f6 ("dmaengine: Add STM32 DMAMUX driver")
-Cc: stable@vger.kernel.org	# 4.15
-Cc: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Link: https://patch.msgid.link/20251117161258.10679-11-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The above creates a synthetic event that takes a stacktrace when a task
+schedules out in a non-running state and passes that stacktrace to the
+sched_switch event when that task schedules back in. It triggers the
+"stack" synthetic event that has a stacktrace as its field (called "stack").
+
+ ~# echo 's:syscall_stack s64 id; unsigned long stack[];' >> dynamic_events
+ ~# echo 'hist:keys=common_pid:s2=stack' >> events/synthetic/stack/trigger
+ ~# echo 'hist:keys=common_pid:s3=$s2,i0=id:onmatch(synthetic.stack).trace(syscall_stack,$i0,$s3)' >> events/raw_syscalls/sys_exit/trigger
+
+The above makes another synthetic event called "syscall_stack" that
+attaches the first synthetic event (stack) to the sys_exit trace event and
+records the stacktrace from the stack event with the id of the system call
+that is exiting.
+
+When enabling this event (or using it in a historgram):
+
+ ~# echo 1 > events/synthetic/syscall_stack/enable
+
+Produces a kernel crash!
+
+ BUG: unable to handle page fault for address: 0000000000400010
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0000 [#1] SMP PTI
+ CPU: 6 UID: 0 PID: 1257 Comm: bash Not tainted 6.16.3+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.16.3-1
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+ RIP: 0010:trace_event_raw_event_synth+0x90/0x380
+ Code: c5 00 00 00 00 85 d2 0f 84 e1 00 00 00 31 db eb 34 0f 1f 00 66 66 2e 0f 1f 84 00 00 00 00 00 66 66 2e 0f 1f 84 00 00 00 00 00 <49> 8b 04 24 48 83 c3 01 8d 0c c5 08 00 00 00 01 cd 41 3b 5d 40 0f
+ RSP: 0018:ffffd2670388f958 EFLAGS: 00010202
+ RAX: ffff8ba1065cc100 RBX: 0000000000000000 RCX: 0000000000000000
+ RDX: 0000000000000001 RSI: fffff266ffda7b90 RDI: ffffd2670388f9b0
+ RBP: 0000000000000010 R08: ffff8ba104e76000 R09: ffffd2670388fa50
+ R10: ffff8ba102dd42e0 R11: ffffffff9a908970 R12: 0000000000400010
+ R13: ffff8ba10a246400 R14: ffff8ba10a710220 R15: fffff266ffda7b90
+ FS:  00007fa3bc63f740(0000) GS:ffff8ba2e0f48000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000400010 CR3: 0000000107f9e003 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  ? __tracing_map_insert+0x208/0x3a0
+  action_trace+0x67/0x70
+  event_hist_trigger+0x633/0x6d0
+  event_triggers_call+0x82/0x130
+  trace_event_buffer_commit+0x19d/0x250
+  trace_event_raw_event_sys_exit+0x62/0xb0
+  syscall_exit_work+0x9d/0x140
+  do_syscall_64+0x20a/0x2f0
+  ? trace_event_raw_event_sched_switch+0x12b/0x170
+  ? save_fpregs_to_fpstate+0x3e/0x90
+  ? _raw_spin_unlock+0xe/0x30
+  ? finish_task_switch.isra.0+0x97/0x2c0
+  ? __rseq_handle_notify_resume+0xad/0x4c0
+  ? __schedule+0x4b8/0xd00
+  ? restore_fpregs_from_fpstate+0x3c/0x90
+  ? switch_fpu_return+0x5b/0xe0
+  ? do_syscall_64+0x1ef/0x2f0
+  ? do_fault+0x2e9/0x540
+  ? __handle_mm_fault+0x7d1/0xf70
+  ? count_memcg_events+0x167/0x1d0
+  ? handle_mm_fault+0x1d7/0x2e0
+  ? do_user_addr_fault+0x2c3/0x7f0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The reason is that the stacktrace field is not labeled as such, and is
+treated as a normal field and not as a dynamic event that it is.
+
+In trace_event_raw_event_synth() the event is field is still treated as a
+dynamic array, but the retrieval of the data is considered a normal field,
+and the reference is just the meta data:
+
+// Meta data is retrieved instead of a dynamic array
+  str_val = (char *)(long)var_ref_vals[val_idx];
+
+// Then when it tries to process it:
+  len = *((unsigned long *)str_val) + 1;
+
+It triggers a kernel page fault.
+
+To fix this, first when defining the fields of the first synthetic event,
+set the filter type to FILTER_STACKTRACE. This is used later by the second
+synthetic event to know that this field is a stacktrace. When creating
+the field of the new synthetic event, have it use this FILTER_STACKTRACE
+to know to create a stacktrace field to copy the stacktrace into.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Link: https://patch.msgid.link/20260122194824.6905a38e@gandalf.local.home
+Fixes: 00cf3d672a9d ("tracing: Allow synthetic events to pass around stacktraces")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/stm32-dmamux.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ kernel/trace/trace_events_hist.c  |    9 +++++++++
+ kernel/trace/trace_events_synth.c |    8 +++++++-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/dma/stm32-dmamux.c
-+++ b/drivers/dma/stm32-dmamux.c
-@@ -90,23 +90,25 @@ static void *stm32_dmamux_route_allocate
- 	struct stm32_dmamux_data *dmamux = platform_get_drvdata(pdev);
- 	struct stm32_dmamux *mux;
- 	u32 i, min, max;
--	int ret;
-+	int ret = -EINVAL;
- 	unsigned long flags;
- 
- 	if (dma_spec->args_count != 3) {
- 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	if (dma_spec->args[0] > dmamux->dmamux_requests) {
- 		dev_err(&pdev->dev, "invalid mux request number: %d\n",
- 			dma_spec->args[0]);
--		return ERR_PTR(-EINVAL);
-+		goto err_put_pdev;
- 	}
- 
- 	mux = kzalloc(sizeof(*mux), GFP_KERNEL);
--	if (!mux)
--		return ERR_PTR(-ENOMEM);
-+	if (!mux) {
-+		ret = -ENOMEM;
-+		goto err_put_pdev;
-+	}
- 
- 	spin_lock_irqsave(&dmamux->lock, flags);
- 	mux->chan_id = find_first_zero_bit(dmamux->dma_inuse,
-@@ -133,7 +135,6 @@ static void *stm32_dmamux_route_allocate
- 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", i - 1);
- 	if (!dma_spec->np) {
- 		dev_err(&pdev->dev, "can't get dma master\n");
--		ret = -EINVAL;
- 		goto error;
- 	}
- 
-@@ -160,6 +161,8 @@ static void *stm32_dmamux_route_allocate
- 	dev_dbg(&pdev->dev, "Mapping DMAMUX(%u) to DMA%u(%u)\n",
- 		mux->request, mux->master, mux->chan_id);
- 
-+	put_device(&pdev->dev);
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -2040,6 +2040,15 @@ static struct hist_field *create_hist_fi
+ 			hist_field->fn_num = HIST_FIELD_FN_RELDYNSTRING;
+ 		else
+ 			hist_field->fn_num = HIST_FIELD_FN_PSTRING;
++	} else if (field->filter_type == FILTER_STACKTRACE) {
++		flags |= HIST_FIELD_FL_STACKTRACE;
 +
- 	return mux;
- 
- error:
-@@ -167,6 +170,9 @@ error:
- 
- error_chan_id:
- 	kfree(mux);
-+err_put_pdev:
-+	put_device(&pdev->dev);
++		hist_field->size = MAX_FILTER_STR_VAL;
++		hist_field->type = kstrdup_const(field->type, GFP_KERNEL);
++		if (!hist_field->type)
++			goto free;
 +
- 	return ERR_PTR(ret);
- }
++		hist_field->fn_num = HIST_FIELD_FN_STACK;
+ 	} else {
+ 		hist_field->size = field->size;
+ 		hist_field->is_signed = field->is_signed;
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -137,7 +137,9 @@ static int synth_event_define_fields(str
+ 	struct synth_event *event = call->data;
+ 	unsigned int i, size, n_u64;
+ 	char *name, *type;
++	int filter_type;
+ 	bool is_signed;
++	bool is_stack;
+ 	int ret = 0;
+ 
+ 	for (i = 0, n_u64 = 0; i < event->n_fields; i++) {
+@@ -145,8 +147,12 @@ static int synth_event_define_fields(str
+ 		is_signed = event->fields[i]->is_signed;
+ 		type = event->fields[i]->type;
+ 		name = event->fields[i]->name;
++		is_stack = event->fields[i]->is_stack;
++
++		filter_type = is_stack ? FILTER_STACKTRACE : FILTER_OTHER;
++
+ 		ret = trace_define_field(call, type, name, offset, size,
+-					 is_signed, FILTER_OTHER);
++					 is_signed, filter_type);
+ 		if (ret)
+ 			break;
  
 
 
