@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELSXF8Evemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:17 +0100
+	id sAAIFb00eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D462EA4728
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A84A52C1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC19831196B1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4ED1531AC35F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077542D8760;
-	Wed, 28 Jan 2026 15:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C18C2F9D83;
+	Wed, 28 Jan 2026 15:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBRsY2pY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ohjrlq3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE3A2DEA6B;
-	Wed, 28 Jan 2026 15:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5772DE1E4;
+	Wed, 28 Jan 2026 15:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614700; cv=none; b=TYdkeZei0eOVbgkPT/xLu1mBiOZYsWv98Nwfl/NuS/onC03sUCAAB8bxG28ECZOcxfGJ6q7RzafLl3fwRoa82jCZaqIUyi/SgQRgK4fC5vBYvn7RPazA4QVxcRpisFJWyVVxtJrPX1rCkW4FNgrWd/Yv6dDk555gvwxysMa74h8=
+	t=1769615060; cv=none; b=TjVccvOKpfPMRF8o3lmWS1K0Vxzmkfufg5nS3k1xv4ZdkEqMiNKt/a5uOJAAXxOV5ikYRaVhcaoxNdovvv+sWkhh1pu08JF5eXYpMQO71yiCyfHnQlyralXIbRhuIBjGo8PizGhGAY1BYeH31pO8kiv8pC3YsQCMZUBVBV0fwSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614700; c=relaxed/simple;
-	bh=gXAs7AB66Gq8S+cndFWLGlC8A99ghCMChqieRLLtCic=;
+	s=arc-20240116; t=1769615060; c=relaxed/simple;
+	bh=gsbo0QS0njhCoJ46Z5ytLm6PGMQzeufSV4mA0kQn4t0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hTKilnNSbDYhfw2Yad1cagnwUdODiZOLUjrKnTCC3m0hmb/KOgzzoWloiPkIMtMyo4Tco/ukFh+K77C8XS640n3o7b/OwJHC9l17HvZJDPz4YzmFTsdveLdLdEXRDqKRfhaCzI1LUGv6ZiwBp5aG/tcfPW8ADmguMDfrnjxtt6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBRsY2pY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC477C4CEF1;
-	Wed, 28 Jan 2026 15:38:19 +0000 (UTC)
+	 MIME-Version; b=kFBsmslzH/d5TeTs5N/BhkDBnxyz7Ur3Td1yis9nI+YDbbdGGKY4iw1/hJnKMJi/msW5TjBUh6PMJvV8sWw2CF8Yqa2KgOsUnz5c60IwYRphmjGHt7hOruyTmlYu1rMSTT4hH0x0AYk9PKndxMfWphsURGm1CeK2SsBYW2/DQTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ohjrlq3Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E8EC4CEF1;
+	Wed, 28 Jan 2026 15:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614700;
-	bh=gXAs7AB66Gq8S+cndFWLGlC8A99ghCMChqieRLLtCic=;
+	s=korg; t=1769615059;
+	bh=gsbo0QS0njhCoJ46Z5ytLm6PGMQzeufSV4mA0kQn4t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBRsY2pYVXaWD77shlnTZl1fO53sJ7dQlovOnDJSeQNMRfFOUJWwE6yihZVDQVgyU
-	 OXDr+arfGNftwC2Xq7EYNG8qbjD6A3nI+SS/jc5xZMAyjAJoJpyQpbuqo4MWgrYMuJ
-	 PRy4k8pIr2vcSUezEB3Y8V+vPee37zXIq9/frHvo=
+	b=Ohjrlq3QwMtIaA7pEEcj3d5vdG3oJz2OqkZvneyXmNDSN3M5u3bfN3ll30eul7B1Y
+	 AWHeUJ5cj4aerPiC4YLawWwKD4TTnjJtginQfpnCwBwQfidymq8t/g/uV+hOLlSw8K
+	 AcvPXV5WtDxLXPWa9q9mOjMBuyfcG4yUL4sJCFQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Naohiko Shimizu <naohiko.shimizu@gmail.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/254] drm/amd/pm: Workaround SI powertune issue on Radeon 430 (v2)
-Date: Wed, 28 Jan 2026 16:22:28 +0100
-Message-ID: <20260128145350.995337318@linuxfoundation.org>
+Subject: [PATCH 6.12 066/169] riscv: clocksource: Fix stimecmp update hazard on RV32
+Date: Wed, 28 Jan 2026 16:22:29 +0100
+Message-ID: <20260128145336.384847485@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +64,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212193-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212301-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,brainfault.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D462EA4728
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,brainfault.org:email]
+X-Rspamd-Queue-Id: 81A84A52C1
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Naohiko Shimizu <naohiko.shimizu@gmail.com>
 
-[ Upstream commit 764a90eb02268a23b1bb98be5f4a13671346804a ]
+[ Upstream commit eaa9bb1d39d59e7c17b06cec12622b7c586ab629 ]
 
-Radeon 430 and 520 are OEM GPUs from 2016~2017
-They have the same device id: 0x6611 and revision: 0x87
+On RV32, updating the 64-bit stimecmp (or vstimecmp) CSR requires two
+separate 32-bit writes. A race condition exists if the timer triggers
+during these two writes.
 
-On the Radeon 430, powertune is buggy and throttles the GPU,
-never allowing it to reach its maximum SCLK. Work around this
-bug by raising the TDP limits we program to the SMC from
-24W (specified by the VBIOS on Radeon 430) to 32W.
+The RISC-V Privileged Specification (e.g., Section 3.2.1 for mtimecmp)
+recommends a specific 3-step sequence to avoid spurious interrupts
+when updating 64-bit comparison registers on 32-bit systems:
 
-Disabling powertune entirely is	not a viable workaround,
-because	it causes the Radeon 520 to heat up above 100 C,
-which I prefer to avoid.
+1. Set the low-order bits (stimecmp) to all ones (ULONG_MAX).
+2. Set the high-order bits (stimecmph) to the desired value.
+3. Set the low-order bits (stimecmp) to the desired value.
 
-Additionally, revise the maximum SCLK limit. Considering the
-above issue, these GPUs never reached a high SCLK on Linux,
-and the workarounds were added before the GPUs were released,
-so the workaround likely didn't target these specifically.
-Use 780 MHz (the maximum SCLK according to the VBIOS on the
-Radeon 430). Note that the Radeon 520 VBIOS has a higher
-maximum SCLK: 905 MHz, but in practice it doesn't seem to
-perform better with the higher clock, only heats up more.
+Current implementation writes the LSB first without ensuring a future
+value, which may lead to a transient state where the 64-bit comparison
+is incorrectly evaluated as "expired" by the hardware. This results in
+spurious timer interrupts.
 
-v2:
-Move the workaround to si_populate_smc_tdp_limits.
+This patch adopts the spec-recommended 3-step sequence to ensure the
+intermediate 64-bit state is never smaller than the current time.
 
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 966d70f1e160bdfdecaf7ff2b3f22ad088516e9f)
+Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
+Signed-off-by: Naohiko Shimizu <naohiko.shimizu@gmail.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://patch.msgid.link/20260104135938.524-2-naohiko.shimizu@gmail.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-riscv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index e8ca74fc089b7..caf590caaf2c7 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -2265,6 +2265,12 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
- 		if (ret)
- 			return ret;
+diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+index 4d7cf338824a3..cfc4d83c42c03 100644
+--- a/drivers/clocksource/timer-riscv.c
++++ b/drivers/clocksource/timer-riscv.c
+@@ -50,8 +50,9 @@ static int riscv_clock_next_event(unsigned long delta,
  
-+		if (adev->pdev->device == 0x6611 && adev->pdev->revision == 0x87) {
-+			/* Workaround buggy powertune on Radeon 430 and 520. */
-+			tdp_limit = 32;
-+			near_tdp_limit = 28;
-+		}
-+
- 		smc_table->dpm2Params.TDPLimit =
- 			cpu_to_be32(si_scale_power_for_smc(tdp_limit, scaling_factor) * 1000);
- 		smc_table->dpm2Params.NearTDPLimit =
-@@ -3448,10 +3454,15 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- 		    (adev->pdev->revision == 0x80) ||
- 		    (adev->pdev->revision == 0x81) ||
- 		    (adev->pdev->revision == 0x83) ||
--		    (adev->pdev->revision == 0x87) ||
-+		    (adev->pdev->revision == 0x87 &&
-+				adev->pdev->device != 0x6611) ||
- 		    (adev->pdev->device == 0x6604) ||
- 		    (adev->pdev->device == 0x6605)) {
- 			max_sclk = 75000;
-+		} else if (adev->pdev->revision == 0x87 &&
-+				adev->pdev->device == 0x6611) {
-+			/* Radeon 430 and 520 */
-+			max_sclk = 78000;
- 		}
- 	}
- 
+ 	if (static_branch_likely(&riscv_sstc_available)) {
+ #if defined(CONFIG_32BIT)
+-		csr_write(CSR_STIMECMP, next_tval & 0xFFFFFFFF);
++		csr_write(CSR_STIMECMP, ULONG_MAX);
+ 		csr_write(CSR_STIMECMPH, next_tval >> 32);
++		csr_write(CSR_STIMECMP, next_tval & 0xFFFFFFFF);
+ #else
+ 		csr_write(CSR_STIMECMP, next_tval);
+ #endif
 -- 
 2.51.0
 
