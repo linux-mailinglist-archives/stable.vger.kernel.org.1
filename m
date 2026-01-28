@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JPYIuoxemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:30 +0100
+	id wI+dHH0uemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA5EDA4CD1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7939EA443E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 26C4232060EC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0A69D302D33E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761E32D3EC7;
-	Wed, 28 Jan 2026 15:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEFB2D5408;
+	Wed, 28 Jan 2026 15:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaN39HnJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMyYjlCx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CAB2F3618;
-	Wed, 28 Jan 2026 15:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4982C237E;
+	Wed, 28 Jan 2026 15:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615123; cv=none; b=M9ETqK2CJZlHL7WJQITcIg4ZDtPxQEKct56JAUSmr5WkHQSrWDlZGdCijVEZJUGSfq+ZJXyGKvXEUNuKGCyOcR3FhAVodLHxPyYqrkRHgNA0qRQeOwssBZB7dlLAwFMvzn4Y6HG/eDQDc+HCLWaefJh/Y/Y5s8x2B/lrAN5lc9k=
+	t=1769614518; cv=none; b=OY2b6NccD2q3U7l+Mf6sjk/WL7joKseVMOwYPeZvgIbpNk9Px/YK6vTOQL6K0WzdkL/8L2cH49HEdRtliJ6sGA0iErvNmyTus+ixLaAI7Dx2Mex46fbMvlB7zKhmkP7NxbeAkc3MjPiYtVdBLSwtSXG5R6ViXz4lF8a+2pfnXm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615123; c=relaxed/simple;
-	bh=UWVwbfB1f+rfn2L8QFPTihKFppJeLq4YQmGfRh6KN5I=;
+	s=arc-20240116; t=1769614518; c=relaxed/simple;
+	bh=BUF4jHEYV0108bEFMUwOC7RPnYt5ou0gd53lKs/iAD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ept/o6oWfchyejHc9hzPMT16pGQtlZFCLWOFpjPvmzZSycJh27N2ZXXb0DBKqKsYFo7OjVKXZcLTOdp0EYjBkvZl84tR+LN/StOB+xhQdzktp+yStLMfNRIeO51yQ3jOgSxaD9aQZShvVSKjDdXO42iftZgChV43GnvmfyBFFQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaN39HnJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15CDC4CEF1;
-	Wed, 28 Jan 2026 15:45:22 +0000 (UTC)
+	 MIME-Version; b=JzXsZdHZYI3c1WcPmzQpjOGl2+wMShytJ73SszTwBjYErydiwTk4f4mNyrK/r++dyeRXTnz21sNYIXeGMAFpr9jDP8y0NooUrdrFtaLJ/EuqZ3X2Hgd8YZWPYYgTmqjdqHQtHLNh3QVRDnTdxsBTQBZJZQpe5mCfUWf+dZco/uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMyYjlCx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2B6C4CEF1;
+	Wed, 28 Jan 2026 15:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615123;
-	bh=UWVwbfB1f+rfn2L8QFPTihKFppJeLq4YQmGfRh6KN5I=;
+	s=korg; t=1769614518;
+	bh=BUF4jHEYV0108bEFMUwOC7RPnYt5ou0gd53lKs/iAD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zaN39HnJBXEYYGkJft3TpP8AXyJurXkL7yEG8CgBEiWZgAqSqWsGtyxJEK7qoDt8u
-	 o/E3KXgjwnH6kJZvsBk1ftrhJzexnCqUccYc+W2C321tSrFCaV6THSCw8nPjmxXMaJ
-	 vcgMb6y1p9PPr+/Zh+FZdztdW2dFDT2qPS4rGTbo=
+	b=aMyYjlCx0lISTnsA0YbYCHEuFy/y9V/7bNQUSR7Uc7LYRMsast5pijgDQseCaw80a
+	 3zFPK+g0nFgwqfLdqAfVR2cTYWVTP0aZ4G3RyTXcI9Z9KMVRVjZJvyL1fXFkGq0MKE
+	 QRX/TGaoVMy26BT7hFwITRgwRjlntKRcooSu65jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Jirman <megi@xff.cz>,
-	Rudraksha Gupta <guptarud@gmail.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.12 053/169] arm64: dts: rockchip: Fix voltage threshold for volume keys for Pinephone Pro
-Date: Wed, 28 Jan 2026 16:22:16 +0100
-Message-ID: <20260128145335.923339393@linuxfoundation.org>
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 161/254] scsi: qla2xxx: Sanitize payload size to prevent member overflow
+Date: Wed, 28 Jan 2026 16:22:17 +0100
+Message-ID: <20260128145350.603840664@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,84 +70,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212320-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,xff.cz,gmail.com,ucw.cz,sntech.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212138-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
-	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EA5EDA4CD1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: 7939EA443E
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Jirman <megi@xff.cz>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit 5497ffe305b2ea31ae62d4a311d7cabfb671f54a upstream.
+[ Upstream commit 19bc5f2a6962dfaa0e32d0e0bc2271993d85d414 ]
 
-Previously sometimes pressing the volume-down button would register as
-a volume-up button. Match the thresholds as shown in the Pinephone Pro
-schematic.
+In qla27xx_copy_fpin_pkt() and qla27xx_copy_multiple_pkt(), the frame_size
+reported by firmware is used to calculate the copy length into
+item->iocb. However, the iocb member is defined as a fixed-size 64-byte
+array within struct purex_item.
 
-Tests:
+If the reported frame_size exceeds 64 bytes, subsequent memcpy calls will
+overflow the iocb member boundary. While extra memory might be allocated,
+this cross-member write is unsafe and triggers warnings under
+CONFIG_FORTIFY_SOURCE.
 
-~ $ evtest
-    // Mashed the volume down ~100 times with varying intensity
-    Event: time xxx, type 1 (EV_KEY), code 114 (KEY_VOLUMEDOWN), value 1
-    Event: time xxx, type 1 (EV_KEY), code 114 (KEY_VOLUMEDOWN), value 0
-    // Mashed the volume up ~100 times with varying intensity
-    Event: time xxx, type 1 (EV_KEY), code 115 (KEY_VOLUMEUP), value 1
-    Event: time xxx, type 1 (EV_KEY), code 115 (KEY_VOLUMEUP), value 0
+Fix this by capping total_bytes to the size of the iocb member (64 bytes)
+before allocation and copying. This ensures all copies remain within the
+bounds of the destination structure member.
 
-Fixes: d3150ed53580 ("arm64: dts: rockchip: Add support for volume keys to rk3399-pinephone-pro")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
-Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
-Reviewed-by: Pavel Machek <pavel@ucw.cz>
-Link: https://patch.msgid.link/20251124-ppp_light_accel_mag_vol-down-v5-4-f9a10a0a50eb@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20260106205344.18031-1-jiashengjiangcool@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_isr.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
-@@ -40,13 +40,13 @@
- 		button-up {
- 			label = "Volume Up";
- 			linux,code = <KEY_VOLUMEUP>;
--			press-threshold-microvolt = <100000>;
-+			press-threshold-microvolt = <2000>;
- 		};
+diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
+index a85d3a40ee490..ae2bea27a18a6 100644
+--- a/drivers/scsi/qla2xxx/qla_isr.c
++++ b/drivers/scsi/qla2xxx/qla_isr.c
+@@ -878,6 +878,9 @@ qla27xx_copy_multiple_pkt(struct scsi_qla_host *vha, void **pkt,
+ 		payload_size = sizeof(purex->els_frame_payload);
+ 	}
  
- 		button-down {
- 			label = "Volume Down";
- 			linux,code = <KEY_VOLUMEDOWN>;
--			press-threshold-microvolt = <600000>;
-+			press-threshold-microvolt = <300000>;
- 		};
- 	};
++	if (total_bytes > sizeof(item->iocb.iocb))
++		total_bytes = sizeof(item->iocb.iocb);
++
+ 	pending_bytes = total_bytes;
+ 	no_bytes = (pending_bytes > payload_size) ? payload_size :
+ 		   pending_bytes;
+@@ -1163,6 +1166,10 @@ qla27xx_copy_fpin_pkt(struct scsi_qla_host *vha, void **pkt,
  
+ 	total_bytes = (le16_to_cpu(purex->frame_size) & 0x0FFF)
+ 	    - PURX_ELS_HEADER_SIZE;
++
++	if (total_bytes > sizeof(item->iocb.iocb))
++		total_bytes = sizeof(item->iocb.iocb);
++
+ 	pending_bytes = total_bytes;
+ 	entry_count = entry_count_remaining = purex->entry_count;
+ 	no_bytes = (pending_bytes > sizeof(purex->els_frame_payload))  ?
+-- 
+2.51.0
+
 
 
 
