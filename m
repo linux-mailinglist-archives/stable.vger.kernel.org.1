@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COfKMe41eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212171-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:14:38 +0100
+	id iA++GMEwemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FA2CA54DE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:14:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8998AA49BB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 680133115FC8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7C4B308B079
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D172F2D7D2F;
-	Wed, 28 Jan 2026 15:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DAF52F261C;
+	Wed, 28 Jan 2026 15:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ck5qrY34"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsmtB6ma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944072D660E;
-	Wed, 28 Jan 2026 15:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E992C11FD;
+	Wed, 28 Jan 2026 15:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614625; cv=none; b=qO4WqwF0aUtdLfBY+ILZPgr5Oa/wxnEMNfC7BqhOHyU6SXX3qkZsDTLiuT9ckp6m5Dg8BW1KM1jtJ4eFfUZsffx7WF7QxVQaVVI8H/jxoolJ3CQzO2KddvOJ4lH/50G2SvHeE/cI4Dq6WVrcSR01hSRVR/I1IuI7mAoKVL1aqlA=
+	t=1769615238; cv=none; b=lLsh6v5QuIihu+h2q9+NjkN7MUXjK2rnEchSRMwUSrZS2Au7wrhn35HZ+nptrKKYQUifmy/8YY5lRQoUvPz+cXCeXpFq455cQKcWYVy69AJziV0/XMJTZ6L8npSoyGS3lXuWHdxMRkFdmfITxeVreyxbpiMeuAf08pDeYMsC77E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614625; c=relaxed/simple;
-	bh=Ap8vaY7A55SI7UaPv9D+SzYt6ydpd5lKwt087+SuXUU=;
+	s=arc-20240116; t=1769615238; c=relaxed/simple;
+	bh=HEp0tmb9b+RMXn48eQJuMjBQVODDwfrBIBxh2r3j9H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTefnPDdRu/zqDHtRs6IYTusKvauL6F+BAoIgkiMwA/FwMnwjsZ7E5n0GnSlsElYU/4jWupk10gwGwWZgs1A1OCn3C5dPQWth5IlP+drxlOhH/ut7P+RhVVLNNyL7u2HNbeSjS1NwzGJKn9Ogzn/iRMyzAJdxxJ9n+EqqI0TrMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ck5qrY34; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151A2C4CEF1;
-	Wed, 28 Jan 2026 15:37:04 +0000 (UTC)
+	 MIME-Version; b=jNX/JnEExfmFvS9hL1iCiXkBBp1g3/c+ee3j3Mqs5QkT94ifTRpl1EeNFZAvbrC1NclECj1wQxA2Zhkh+HQzC3l8O7cIVrH6zUaQbc4V1twHBpO4X6y6aUbiHB5i6gUjXSFHy0NWS/RH+0ZSA4r39wu/P/Pg2AawgCO2s07YaQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsmtB6ma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5D1C4CEF1;
+	Wed, 28 Jan 2026 15:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614625;
-	bh=Ap8vaY7A55SI7UaPv9D+SzYt6ydpd5lKwt087+SuXUU=;
+	s=korg; t=1769615238;
+	bh=HEp0tmb9b+RMXn48eQJuMjBQVODDwfrBIBxh2r3j9H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ck5qrY34dR4tYiLHh+9U3YiIyph5KuOsNz1n2VH7rBo5vxLjndlcbd76fBXRw+wvH
-	 PBdNI7Za+6oS7k72urgzXowbu5a0m5KdfD5lExUH5WJ8b2ZBkNeJx9T+OaI9lMrDK5
-	 NuErq99zh6pitKAEruO3zGqvHYzxixF+7qte1378=
+	b=HsmtB6maNy8jMDA67ZOTMRWWMNEGo+ENA1kDaHpxHL9+NssA7wjYOgPJrECzsbE1j
+	 Q5Fd3CRFgsdbX1nFclZa2m9gXXKJajdNgXUxrukGH20Xhr+OOQv83zH/n1jaiq2UJP
+	 r8+yRRC8ft5lI3bBd+2LflxnzSROCwroQuCB5WWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 193/254] ALSA: usb-audio: Fix use-after-free in snd_usb_mixer_free()
-Date: Wed, 28 Jan 2026 16:22:49 +0100
-Message-ID: <20260128145351.743250598@linuxfoundation.org>
+	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 087/169] be2net: Fix NULL pointer dereference in be_cmd_get_mac_from_list
+Date: Wed, 28 Jan 2026 16:22:50 +0100
+Message-ID: <20260128145337.138040844@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,99 +67,86 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212171-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212354-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.989];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3FA2CA54DE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,crpt.ru:email]
+X-Rspamd-Queue-Id: 8998AA49BB
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-commit 930e69757b74c3ae083b0c3c7419bfe7f0edc7b2 upstream.
+[ Upstream commit 8215794403d264739cc676668087512950b2ff31 ]
 
-When snd_usb_create_mixer() fails, snd_usb_mixer_free() frees
-mixer->id_elems but the controls already added to the card still
-reference the freed memory. Later when snd_card_register() runs,
-the OSS mixer layer calls their callbacks and hits a use-after-free read.
+When the parameter pmac_id_valid argument of be_cmd_get_mac_from_list() is
+set to false, the driver may request the PMAC_ID from the firmware of the
+network card, and this function will store that PMAC_ID at the provided
+address pmac_id. This is the contract of this function.
 
-Call trace:
-  get_ctl_value+0x63f/0x820 sound/usb/mixer.c:411
-  get_min_max_with_quirks.isra.0+0x240/0x1f40 sound/usb/mixer.c:1241
-  mixer_ctl_feature_info+0x26b/0x490 sound/usb/mixer.c:1381
-  snd_mixer_oss_build_test+0x174/0x3a0 sound/core/oss/mixer_oss.c:887
-  ...
-  snd_card_register+0x4ed/0x6d0 sound/core/init.c:923
-  usb_audio_probe+0x5ef/0x2a90 sound/usb/card.c:1025
+However, there is a location within the driver where both
+pmac_id_valid == false and pmac_id == NULL are being passed. This could
+result in dereferencing a NULL pointer.
 
-Fix by calling snd_ctl_remove() for all mixer controls before freeing
-id_elems. We save the next pointer first because snd_ctl_remove()
-frees the current element.
+To resolve this issue, it is necessary to pass the address of a stub
+variable to the function.
 
-Fixes: 6639b6c2367f ("[ALSA] usb-audio - add mixer control notifications")
-Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260120102855.7300-1-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 95046b927a54 ("be2net: refactor MAC-addr setup code")
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Link: https://patch.msgid.link/20260120113734.20193-1-a.vatoropin@crpt.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -2938,10 +2938,23 @@ static int parse_audio_unit(struct mixer
- 
- static void snd_usb_mixer_free(struct usb_mixer_interface *mixer)
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index 779f1324bb5f8..0cda78b78fb87 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -3797,6 +3797,7 @@ int be_cmd_get_perm_mac(struct be_adapter *adapter, u8 *mac)
  {
-+	struct usb_mixer_elem_list *list, *next;
-+	int id;
-+
- 	/* kill pending URBs */
- 	snd_usb_mixer_disconnect(mixer);
+ 	int status;
+ 	bool pmac_valid = false;
++	u32 pmac_id;
  
--	kfree(mixer->id_elems);
-+	/* Unregister controls first, snd_ctl_remove() frees the element */
-+	if (mixer->id_elems) {
-+		for (id = 0; id < MAX_ID_ELEMS; id++) {
-+			for (list = mixer->id_elems[id]; list; list = next) {
-+				next = list->next_id_elem;
-+				if (list->kctl)
-+					snd_ctl_remove(mixer->chip->card, list->kctl);
-+			}
-+		}
-+		kfree(mixer->id_elems);
-+	}
- 	if (mixer->urb) {
- 		kfree(mixer->urb->transfer_buffer);
- 		usb_free_urb(mixer->urb);
+ 	eth_zero_addr(mac);
+ 
+@@ -3809,7 +3810,7 @@ int be_cmd_get_perm_mac(struct be_adapter *adapter, u8 *mac)
+ 						       adapter->if_handle, 0);
+ 	} else {
+ 		status = be_cmd_get_mac_from_list(adapter, mac, &pmac_valid,
+-						  NULL, adapter->if_handle, 0);
++						  &pmac_id, adapter->if_handle, 0);
+ 	}
+ 
+ 	return status;
+-- 
+2.51.0
+
 
 
 
