@@ -1,163 +1,167 @@
-Return-Path: <stable+bounces-212670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HmbHxVvemlI6QEAu9opvQ
-	(envelope-from <stable+bounces-212670-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:18:29 +0100
+	id UI8BJF5zemng6gEAu9opvQ
+	(envelope-from <stable+bounces-212671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:36:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0760A86C6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:18:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1092A8AB7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:36:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2CB0A3007A76
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 20:18:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B8193064EB0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 20:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF46328634;
-	Wed, 28 Jan 2026 20:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30239374734;
+	Wed, 28 Jan 2026 20:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F6piQs0B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cNoX00SJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB112291C3F
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 20:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7AC37475B
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 20:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769631504; cv=none; b=MlcWFU9WoEIY9CWtJNqD/vvEMBAWYqs6tb8Pku7H/bdqAj9m4bRU1ujvpl7CLHnFATWCynJG0/Riy85rsYn/vYHgthI696pwkFSUCu543+Wh66Vi4e3IgjWzSBwG26h+nn7Bg4uNYP5gqPFllpY7UQJwaGHom3OmlIVnQT201lw=
+	t=1769632375; cv=none; b=N1ONvg1Y94qJ+AukBNLd5htubvPq9mh8yA0e6jR4XS9xxQYWDIIysHY8svURE1J0Cc8fkSTgD+CKopWudSkEPQCYSlgrgwU8R8eCo0HmvIl3sk3FnUl9oPhJd2x41tUP+n86HiL0bK/s6KZOKfF9OX2MYBgJGmcWSsNGBMM1TrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769631504; c=relaxed/simple;
-	bh=9mph6xTtQkmaNeghWSKq7NNljHdk57mypRBuyUulH3g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=scLp7jtpcwHYYNMo1C0xm+/ULQzRwlEigTOoPm+YgtZYXr74hBRMxxO4S9ce/4V8iCNHTrxJ36OWSMxQyWZ5jnT7cQgST00Q7kGH0s9WbQhcd/q37f3xTmEAyDbkON+s1YL6iu0tJTF0aCnjL/HELNVayt+e/RcyhDs8JMJfpz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F6piQs0B; arc=none smtp.client-ip=74.125.82.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-124a1b4dd40so510152c88.0
-        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 12:18:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769631502; x=1770236302; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jYqawXnHzJ4c9BVq3aW9QguYoXUPSj/Zq7c8p0HJoeM=;
-        b=F6piQs0BUrTYUX1P+tBCEePTc50gDwWmfFZDCDE92kgyeWTMH7m+PLvGt1/H9TfZ4v
-         leylwaTJfgtBv8N5g2qbSy7rPU44JlKPJSl7ZToqTG0//+Z6rKt0ENPPVRNV87slES8Q
-         tCe/mUQWWdixH3/5AGTwfSRgnxLOKOl432k8aW5xTNFpds/n62brlOj3zZaU7vWX2T/j
-         pfaC04GynKSm60nWkI2RkHQCb0USVk3+1Sl+6qJrI7CtPt0HI94rEFa8v+B74D6hQuS/
-         hM4ft8ZFeJqx05/ywJIr/ZMc4FWNkGxxGqQQj8vABeHVQeiXZa7XnVGhczgmESRFtcUM
-         XMsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769631502; x=1770236302;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jYqawXnHzJ4c9BVq3aW9QguYoXUPSj/Zq7c8p0HJoeM=;
-        b=oiNSfSviRmpcELkSMUvN/7mnVOVLHzYrts3wylImdJdw9kKeC3/jY+BzeUCR5dAAb0
-         xuSCyaOj4hMJCNmJn1L18+Iq/N/L/fqJ0ftKUt1/3n3k8Q09gdwkVaG5Sj42IEvQH+tv
-         oFV3Pp96EPdIcIxQdCensuhkZdkw3ldeIj8dFqOBt+6q6+EcjERcA2V+Nmw7ZnKmwX47
-         n9lMzMOUVmCLoZIvEnTtcf39YAVdDXH+VXNgIa9J8mh5xuyICYTt15/bj9tor5cuMoOW
-         6o9OKqtb4Iux3Fh/XoyWNZICXBtYrp0QDs1ROS2iMYsI79a+ZzS76J2f566PxMn8VD6F
-         aNvA==
-X-Forwarded-Encrypted: i=1; AJvYcCVr+kLxUMlHEoyywDLwomWPxp3IhXLkz/I5yCJHSOnxC7/jy6ESbKrOrxs7gxUPOxVJjnIpvdk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9zNEBmRTT+G8ITDd6YBl/lskjXe7Bilm0lzdOBSXcIuMikaBm
-	0rbthDG6hfQ42oUrIFZJYOlxcBDPuXBXTHNAlUzl3mQkRrNCj/bfnvWl2uXaUg==
-X-Gm-Gg: AZuq6aKMe4o/pvNlvDjcvPamWuel2IHVDxIni4dYaHorESR8N4x4jGASCg1Nmdpy2NI
-	NcfTgiDpIxqqG4xD077BHfpElwBnf5VDjCnBzJ3mL0N+5bXkZir1XThm12ZV8HXfIYXkCAUIO6M
-	yln/xXNkwdA76HWSSX2Jb53uCtCzNVHLYEIvNIZofrQPGbhiqUtVz8JeYSfewi9l9/RW9qEHyEh
-	tp1g34LRstJ0eklu80VvXrX+WLkE7mUapYLXCaePX/YvXk1tvS1pCQXFzlVbBOgXTB8gRkYp4a/
-	efMhpVJe4cCQKDVRXchgwECWxQaN8Ksd2JkjlvZVTUk/OiF8f6nlQApi55gxLf2ePjwOdl9pdQZ
-	pzcmnO9bNNbbARr1FtREfmGTlgcSu2d/EUEjILPt+vLnGNnynVuw3aP5wj40IfaD2uF+wWgO5UB
-	fRLJmUnyAdR5EvwPCK+zCCglfT6OX61Yk5FoT/EA==
-X-Received: by 2002:a05:7300:6ca1:b0:2b7:1d54:87e5 with SMTP id 5a478bee46e88-2b78d90c1camr3872742eec.13.1769631501760;
-        Wed, 28 Jan 2026 12:18:21 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a1add664sm4200634eec.26.2026.01.28.12.18.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Jan 2026 12:18:21 -0800 (PST)
-Message-ID: <aca8894a-518e-4b90-ae92-cf3a24f52ce7@gmail.com>
-Date: Wed, 28 Jan 2026 12:18:19 -0800
+	s=arc-20240116; t=1769632375; c=relaxed/simple;
+	bh=7F60oaeT5MzFIlwL9flGFjJY6KT6LoBjbvdNzvpG3UQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=b7qw+9m1hArPY4N3bJZZHUBxykg3OlJoIyFWvd3tVveHWHgVW45UGHoAdp/ugCZOMxgWD5PMwc8MNyg5c73S/b+nRJTR8q+8nNKwF5NIthVnT5XVbEUbBcr1LiT5tgN1G4CAU3OgGB1XmURDjR3zNPw0wftObZXQIuy9L6PMXYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cNoX00SJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD6EC4CEF1;
+	Wed, 28 Jan 2026 20:32:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769632375;
+	bh=7F60oaeT5MzFIlwL9flGFjJY6KT6LoBjbvdNzvpG3UQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cNoX00SJOBaKCRmdVPdn23RK7V1gBX3D4hLKaUhVq0u4os9cogoStoIgAqZMWxEiK
+	 KpORG4Dfb5KPiy/AN0eTQXIIuaUBKEFeL3JmfIbWqhxbcG6yfMtH4DD4LTi3b4BIE1
+	 dUCj8XqeEH9uy1dWVm84ClfH7HL4V1diXkTxPJVjahZBriKDV94UPZ5vnhCtV8jwPK
+	 aJuBPPVd4m9Lm6kuioM/pwTYF1JLdinH3HyADM9YFNT+ULXTIkvIFiQFtgvEMYLeA1
+	 fYRvyIS0IBGeQWBHk0M8a4WFzoq/pJgcY2iZyPxXb7AvCstfs0dVzl2u/oGpsSPZOz
+	 ZxV2f6JcirRrQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] ksmbd: smbd: fix dma_unmap_sg() nents
+Date: Wed, 28 Jan 2026 15:32:52 -0500
+Message-ID: <20260128203252.2719545-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012756-tribesman-blasphemy-c0e6@gregkh>
+References: <2026012756-tribesman-blasphemy-c0e6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/227] 6.18.8-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260128145344.331957407@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212670-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,microsoft.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212671-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.992];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A0760A86C6
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E1092A8AB7
 X-Rspamd-Action: no action
 
-On 1/28/26 07:20, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.8 release.
-> There are 227 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 30 Jan 2026 14:53:02 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.8-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+[ Upstream commit 98e3e2b561bc88f4dd218d1c05890672874692f6 ]
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/server/transport_rdma.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index bf79c066a982e..d15c33480e0a9 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -1108,14 +1108,12 @@ static int get_sg_list(void *buf, int size, struct scatterlist *sg_list, int nen
+ 
+ static int get_mapped_sg_list(struct ib_device *device, void *buf, int size,
+ 			      struct scatterlist *sg_list, int nentries,
+-			      enum dma_data_direction dir)
++			      enum dma_data_direction dir, int *npages)
+ {
+-	int npages;
+-
+-	npages = get_sg_list(buf, size, sg_list, nentries);
+-	if (npages < 0)
++	*npages = get_sg_list(buf, size, sg_list, nentries);
++	if (*npages < 0)
+ 		return -EINVAL;
+-	return ib_dma_map_sg(device, sg_list, npages, dir);
++	return ib_dma_map_sg(device, sg_list, *npages, dir);
+ }
+ 
+ static int post_sendmsg(struct smb_direct_transport *t,
+@@ -1184,12 +1182,13 @@ static int smb_direct_post_send_data(struct smb_direct_transport *t,
+ 	for (i = 0; i < niov; i++) {
+ 		struct ib_sge *sge;
+ 		int sg_cnt;
++		int npages;
+ 
+ 		sg_init_table(sg, SMB_DIRECT_MAX_SEND_SGES - 1);
+ 		sg_cnt = get_mapped_sg_list(t->cm_id->device,
+ 					    iov[i].iov_base, iov[i].iov_len,
+ 					    sg, SMB_DIRECT_MAX_SEND_SGES - 1,
+-					    DMA_TO_DEVICE);
++					    DMA_TO_DEVICE, &npages);
+ 		if (sg_cnt <= 0) {
+ 			pr_err("failed to map buffer\n");
+ 			ret = -ENOMEM;
+@@ -1197,7 +1196,7 @@ static int smb_direct_post_send_data(struct smb_direct_transport *t,
+ 		} else if (sg_cnt + msg->num_sge > SMB_DIRECT_MAX_SEND_SGES) {
+ 			pr_err("buffer not fitted into sges\n");
+ 			ret = -E2BIG;
+-			ib_dma_unmap_sg(t->cm_id->device, sg, sg_cnt,
++			ib_dma_unmap_sg(t->cm_id->device, sg, npages,
+ 					DMA_TO_DEVICE);
+ 			goto err;
+ 		}
 -- 
-Florian
+2.51.0
+
 
