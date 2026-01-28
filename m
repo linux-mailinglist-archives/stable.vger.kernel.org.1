@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHpDMnsyeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:55 +0100
+	id 2Ez4GeEwemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30DFBA4E40
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F934A4A17
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00E9E319F6C1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 98685300D252
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5361306B06;
-	Wed, 28 Jan 2026 15:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804882EC0A6;
+	Wed, 28 Jan 2026 15:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOsnetFd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmBM59SM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ECF3043B2;
-	Wed, 28 Jan 2026 15:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8B22EB87E;
+	Wed, 28 Jan 2026 15:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615349; cv=none; b=OyXcMBwQnVNckw9xP6sg7AMcYLDJwBl84fbbAPt4p3/pv35d6C43HGNpPyc81PaHqh0Gbc1/vFEX8L9Rg/6aUw2T90SA1ew0bzF0uX1wik+rEpzLvOYKWSjEqMWdDkl03+G7GFbetR66/792BY4bbZpkz9NF4LdKdGIYYd6/XHQ=
+	t=1769614744; cv=none; b=jpycEetPYEMimvFtIKj4q+LdanvA4JgXjsTl82pYradK6SEBkowu+DQI7VRnL89XgCT47c21/WS5SGgQ591oV6ZCJXKIREvdUATqKqpuhj5aWqRmuilKCQsHltQHvxXvKS5JNWEFRSnlbKwMlqezfx8+Xlr8SpuJ4iHy//PQ6B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615349; c=relaxed/simple;
-	bh=KjwKhvZgTXP0Jfq8uS8qjtmzxVpdh1JYzCkQSxNkKcI=;
+	s=arc-20240116; t=1769614744; c=relaxed/simple;
+	bh=g+1Q0fWFrc/FsUP4UA0snU4qS/pTfklfQWiB63FXVEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UB6QV11Qo8ZYULHFpAyB7xYiVV8twabHqJ6qt/ab3zNel+duXnhQ2sWZma4dpd0d/PdKUSKVw4wD0adWGPmhYmyVSY/6p7Rhm9LiI8ec3rj5DbmhZYEaHz7JC9qYgkEJgtVWHF+aeR89vFwRkWEzrr28YKobVqstuP7wn0UC0+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOsnetFd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F93C4CEF1;
-	Wed, 28 Jan 2026 15:49:08 +0000 (UTC)
+	 MIME-Version; b=rqDrOfl2F/oXzF4rpNa5sfxq44DZn4/Te6FKIVfPvzme6dYnk0/8ZqxdwUby7mS3jU8jmTW+yQJ10mLtt6XvbRtG+6/QAyDfnTuZ2DRgUUlrjIrsnV1PCUvpYHWVDuYdH4Po0qYV52no3CmVJoyI9m1agmUuNH39N4Le2Z4qDlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmBM59SM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D7CC4CEF1;
+	Wed, 28 Jan 2026 15:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615349;
-	bh=KjwKhvZgTXP0Jfq8uS8qjtmzxVpdh1JYzCkQSxNkKcI=;
+	s=korg; t=1769614743;
+	bh=g+1Q0fWFrc/FsUP4UA0snU4qS/pTfklfQWiB63FXVEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOsnetFdx0ZeDxP4WaXsQc+yeDSMoE/5WjQinbhQV/hE0DPwGxiKuRwQJi88Psett
-	 SqI0WF/VJOv8ZVZpljQgaZ167QVNtF472R1KQGMOpe6ImBOgyvjzL/Nqmkp+rlDpFV
-	 ya2N7mAFnicfu+5GAmtF7CynGNZ5uuHWJDI4QG5g=
+	b=DmBM59SMaSWC4hruwhj/WhEHF6Fu8DK5MmrMPvlHPT33m1b+34rPXqW6r0lUP3UeQ
+	 4Q1StikO2yXnmOnUZplOhT+aeYxEiVrmYxet84b0xx1RMeULG3Rx/WryzFI//r1WeJ
+	 9ZcwKjFDWHLt3OHVzZrG1ozGay02FCFywlXzXW8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 120/169] wifi: rsi: Fix memory corruption due to not set vif driver data size
-Date: Wed, 28 Jan 2026 16:23:23 +0100
-Message-ID: <20260128145338.322849355@linuxfoundation.org>
+	Rasmus Villemoes <ravi@prevas.dk>,
+	Peter Rosin <peda@axentia.se>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 228/254] iio: core: add separate lockdep class for info_exist_lock
+Date: Wed, 28 Jan 2026 16:23:24 +0100
+Message-ID: <20260128145352.990724483@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +68,142 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212387-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212207-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 30DFBA4E40
+X-Rspamd-Queue-Id: 3F934A4A17
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Rasmus Villemoes <ravi@prevas.dk>
 
-commit 4f431d88ea8093afc7ba55edf4652978c5a68f33 upstream.
+[ Upstream commit 9910159f06590c17df4fbddedaabb4c0201cc4cb ]
 
-The struct ieee80211_vif contains trailing space for vif driver data,
-when struct ieee80211_vif is allocated, the total memory size that is
-allocated is sizeof(struct ieee80211_vif) + size of vif driver data.
-The size of vif driver data is set by each WiFi driver as needed.
+When one iio device is a consumer of another, it is possible that
+the ->info_exist_lock of both ends up being taken when reading the
+value of the consumer device.
 
-The RSI911x driver does not set vif driver data size, no trailing space
-for vif driver data is therefore allocated past struct ieee80211_vif .
-The RSI911x driver does however use the vif driver data to store its
-vif driver data structure "struct vif_priv". An access to vif->drv_priv
-leads to access out of struct ieee80211_vif bounds and corruption of
-some memory.
+Since they currently belong to the same lockdep class (being
+initialized in a single location with mutex_init()), that results in a
+lockdep warning
 
-In case of the failure observed locally, rsi_mac80211_add_interface()
-would write struct vif_priv *vif_info = (struct vif_priv *)vif->drv_priv;
-vif_info->vap_id = vap_idx. This write corrupts struct fq_tin member
-struct list_head new_flows . The flow = list_first_entry(head, struct
-fq_flow, flowchain); in fq_tin_reset() then reports non-NULL bogus
-address, which when accessed causes a crash.
+         CPU0
+         ----
+    lock(&iio_dev_opaque->info_exist_lock);
+    lock(&iio_dev_opaque->info_exist_lock);
 
-The trigger is very simple, boot the machine with init=/bin/sh , mount
-devtmpfs, sysfs, procfs, and then do "ip link set wlan0 up", "sleep 1",
-"ip link set wlan0 down" and the crash occurs.
+   *** DEADLOCK ***
 
-Fix this by setting the correct size of vif driver data, which is the
-size of "struct vif_priv", so that memory is allocated and the driver
-can store its driver data in it, instead of corrupting memory around
-it.
+   May be due to missing lock nesting notation
 
-Cc: stable@vger.kernel.org
-Fixes: dad0d04fa7ba ("rsi: Add RS9113 wireless driver")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Link: https://patch.msgid.link/20260109235817.150330-1-marex@nabladev.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+  4 locks held by sensors/414:
+   #0: c31fd6dc (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0x44/0x4e4
+   #1: c4f5a1c4 (&of->mutex){+.+.}-{3:3}, at: kernfs_seq_start+0x1c/0xac
+   #2: c2827548 (kn->active#34){.+.+}-{0:0}, at: kernfs_seq_start+0x30/0xac
+   #3: c1dd2b68 (&iio_dev_opaque->info_exist_lock){+.+.}-{3:3}, at: iio_read_channel_processed_scale+0x24/0xd8
+
+  stack backtrace:
+  CPU: 0 UID: 0 PID: 414 Comm: sensors Not tainted 6.17.11 #5 NONE
+  Hardware name: Generic AM33XX (Flattened Device Tree)
+  Call trace:
+   unwind_backtrace from show_stack+0x10/0x14
+   show_stack from dump_stack_lvl+0x44/0x60
+   dump_stack_lvl from print_deadlock_bug+0x2b8/0x334
+   print_deadlock_bug from __lock_acquire+0x13a4/0x2ab0
+   __lock_acquire from lock_acquire+0xd0/0x2c0
+   lock_acquire from __mutex_lock+0xa0/0xe8c
+   __mutex_lock from mutex_lock_nested+0x1c/0x24
+   mutex_lock_nested from iio_read_channel_raw+0x20/0x6c
+   iio_read_channel_raw from rescale_read_raw+0x128/0x1c4
+   rescale_read_raw from iio_channel_read+0xe4/0xf4
+   iio_channel_read from iio_read_channel_processed_scale+0x6c/0xd8
+   iio_read_channel_processed_scale from iio_hwmon_read_val+0x68/0xbc
+   iio_hwmon_read_val from dev_attr_show+0x18/0x48
+   dev_attr_show from sysfs_kf_seq_show+0x80/0x110
+   sysfs_kf_seq_show from seq_read_iter+0xdc/0x4e4
+   seq_read_iter from vfs_read+0x238/0x2e4
+   vfs_read from ksys_read+0x6c/0xec
+   ksys_read from ret_fast_syscall+0x0/0x1c
+
+Just as the mlock_key already has its own lockdep class, add a
+lock_class_key for the info_exist mutex.
+
+Note that this has in theory been a problem since before IIO first
+left staging, but it only occurs when a chain of consumers is in use
+and that is not often done.
+
+Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
+Signed-off-by: Rasmus Villemoes <ravi@prevas.dk>
+Reviewed-by: Peter Rosin <peda@axentia.se>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/rsi/rsi_91x_mac80211.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/industrialio-core.c |    3 ++-
+ include/linux/iio/iio-opaque.h  |    2 ++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-+++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
-@@ -2028,6 +2028,7 @@ int rsi_mac80211_attach(struct rsi_commo
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1621,6 +1621,7 @@ static void iio_dev_release(struct devic
+ 	mutex_destroy(&iio_dev_opaque->info_exist_lock);
+ 	mutex_destroy(&iio_dev_opaque->mlock);
  
- 	hw->queues = MAX_HW_QUEUES;
- 	hw->extra_tx_headroom = RSI_NEEDED_HEADROOM;
-+	hw->vif_data_size = sizeof(struct vif_priv);
++	lockdep_unregister_key(&iio_dev_opaque->info_exist_key);
+ 	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
  
- 	hw->max_rates = 1;
- 	hw->max_rate_tries = MAX_RETRIES;
+ 	ida_free(&iio_ida, iio_dev_opaque->id);
+@@ -1687,7 +1688,7 @@ struct iio_dev *iio_device_alloc(struct
+ 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
+ 
+ 	lockdep_register_key(&iio_dev_opaque->mlock_key);
+-	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
++	lockdep_register_key(&iio_dev_opaque->info_exist_key);
+ 
+ 	mutex_init(&iio_dev_opaque->mlock);
+ 	mutex_init(&iio_dev_opaque->info_exist_lock);
+--- a/include/linux/iio/iio-opaque.h
++++ b/include/linux/iio/iio-opaque.h
+@@ -14,6 +14,7 @@
+  * @mlock:			lock used to prevent simultaneous device state changes
+  * @mlock_key:			lockdep class for iio_dev lock
+  * @info_exist_lock:		lock to prevent use during removal
++ * @info_exist_key:		lockdep class for info_exist lock
+  * @trig_readonly:		mark the current trigger immutable
+  * @event_interface:		event chrdevs associated with interrupt lines
+  * @attached_buffers:		array of buffers statically attached by the driver
+@@ -47,6 +48,7 @@ struct iio_dev_opaque {
+ 	struct mutex			mlock;
+ 	struct lock_class_key		mlock_key;
+ 	struct mutex			info_exist_lock;
++	struct lock_class_key		info_exist_key;
+ 	bool				trig_readonly;
+ 	struct iio_event_interface	*event_interface;
+ 	struct iio_buffer		**attached_buffers;
 
 
 
