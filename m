@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-212478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEIVDR86eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:31 +0100
+	id 8JexNNEzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7ACA5C5D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3586EA50DC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0FDC302F73F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 887C531BF738
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0949D288C22;
-	Wed, 28 Jan 2026 15:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FC12F25EF;
+	Wed, 28 Jan 2026 15:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxnFGY64"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Znc1/HT1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB432857CD;
-	Wed, 28 Jan 2026 15:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C422DF155;
+	Wed, 28 Jan 2026 15:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615653; cv=none; b=Pkm5yGjJdz9VwT1wCHT2pHXDExPPUFiowT/YNRfZlN30gZRUAozKz0ShSmKjs6KMWFxjzjz9EjDnaEYmCjjdSJxNneq5HvQQmohLWHRlT2WqeU+SNOp67zf67ADCSVSljx5Bj7Iw867YnjjyoxqbvX6f+gj8ce/qdlAtN1qpX6I=
+	t=1769615657; cv=none; b=AgqZ8CD5lE4y2Y5ZN+ARvxnnouU+//5b3pfBrJRa1GmiCxjr0warkShLysFm45zkNbVf2vnF3IOqo2ko+LphJi2IK4ytamGuuDh0RiKnH5FQkCkcUFePoQ2fZKph4ILAYkfILwMVf0SmRD7F+6n5LdD3yWYnV+HSh/H3Jr2EjHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615653; c=relaxed/simple;
-	bh=gesYcr46AihN+TW018rRIfk6dDCgQSkLYh9UiTpe8Tg=;
+	s=arc-20240116; t=1769615657; c=relaxed/simple;
+	bh=K/IOevqp3EXpTxRPxXXEZfzDbSECHytKFnhsNBuiM9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VWisYHK5UBlLKTymsT4wbt/dPgLM4nLPimOz5D/S3YaVA+aIlnkHr5e9Bzc1NvL8PMBp9vKEfpdMDtuie2YtSuHNS+z3QS6JiDmH/ilYvfhKlma38BXFrQfyQH3ZOlPn5Pq1KDCaXlLc+4onkCeMqE7xqHZTawb8IjkB+B9OsLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxnFGY64; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32001C4CEF1;
-	Wed, 28 Jan 2026 15:54:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TmAO29aEJ/KEN7dME9G9JFftfO04Q+4FqSZOP6gySiYlKTJphI1OJ/cqrJuN9PPmaE/PgW4ZD1XA2CEjvoOL4FTNCresoVadzF6vu9VurYk6chFPor+tfznV88sevsiMyzGOkQTwdZCajEJVFNLYGSmmaiHV7yy6W1DC+Z+CI4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Znc1/HT1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D21BC4CEF1;
+	Wed, 28 Jan 2026 15:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615653;
-	bh=gesYcr46AihN+TW018rRIfk6dDCgQSkLYh9UiTpe8Tg=;
+	s=korg; t=1769615657;
+	bh=K/IOevqp3EXpTxRPxXXEZfzDbSECHytKFnhsNBuiM9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OxnFGY64MxrDXWYqaEqKdOIldt/BN40OchpROqUSUbtU9/f9uuTr9f6821fqR3ci9
-	 FhnVXVCqqNGMCEqz8Nj05WIAj1omHfTd54hIE1qkz4AOurB1PZ6j4TfWN8n0HSga+y
-	 vVZc8T92ScKMQmqHBxbdIvjwW9g2Gm52EjUEyLUM=
+	b=Znc1/HT1NDzg1bN8T1Jhr7NIHXTTGCD8Z+HROJVxuUrDxCUloVslMY7/kXe2AAN2Y
+	 F0WZDkxIaAzTFIRyCdKZJd7X8TC20uF9jntATZVcehBWX7f20MnZ51Dvu/8CJmpA6w
+	 UnoUPl/SDmOgeBtzehfnayHdnx9h8LsiJHU2YaJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Mario Limonciello <mario.limonciello@amd.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.18 074/227] platform/x86: hp-bioscfg: Fix kobject warnings for empty attribute names
-Date: Wed, 28 Jan 2026 16:21:59 +0100
-Message-ID: <20260128145347.006964673@linuxfoundation.org>
+Subject: [PATCH 6.18 075/227] platform/x86: hp-bioscfg: Fix kernel panic in GET_INSTANCE_ID macro
+Date: Wed, 28 Jan 2026 16:22:00 +0100
+Message-ID: <20260128145347.042007260@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
 References: <20260128145344.331957407@linuxfoundation.org>
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212478-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212479-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -90,8 +90,8 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: BB7ACA5C5D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3586EA50DC
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
@@ -100,55 +100,61 @@ X-Rspamd-Action: no action
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit fdee1b09721605f532352628d0a24623e7062efb upstream.
+commit 25150715e0b049b99df664daf05dab12f41c3e13 upstream.
 
-The hp-bioscfg driver attempts to register kobjects with empty names when
-the HP BIOS returns attributes with empty name strings. This causes
-multiple kernel warnings:
+The GET_INSTANCE_ID macro that caused a kernel panic when accessing sysfs
+attributes:
 
-  kobject: (00000000135fb5e6): attempted to be registered with empty name!
-  WARNING: CPU: 14 PID: 3336 at lib/kobject.c:219 kobject_add_internal+0x2eb/0x310
+1. Off-by-one error: The loop condition used '<=' instead of '<',
+   causing access beyond array bounds. Since array indices are 0-based
+   and go from 0 to instances_count-1, the loop should use '<'.
 
-Add validation in hp_init_bios_buffer_attribute() to check if the
-attribute name is empty after parsing it from the WMI buffer. If empty,
-log a debug message and skip registration of that attribute, allowing the
-module to continue processing other valid attributes.
+2. Missing NULL check: The code dereferenced attr_name_kobj->name
+   without checking if attr_name_kobj was NULL, causing a null pointer
+   dereference in min_length_show() and other attribute show functions.
+
+The panic occurred when fwupd tried to read BIOS configuration attributes:
+
+  Oops: general protection fault [#1] SMP KASAN NOPTI
+  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+  RIP: 0010:min_length_show+0xcf/0x1d0 [hp_bioscfg]
+
+Add a NULL check for attr_name_kobj before dereferencing and corrects
+the loop boundary to match the pattern used elsewhere in the driver.
 
 Cc: stable@vger.kernel.org
-Fixes: a34fc329b189 ("platform/x86: hp-bioscfg: bioscfg")
+Fixes: 5f94f181ca25 ("platform/x86: hp-bioscfg: bioscfg-h")
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20260115203725.828434-2-mario.limonciello@amd.com
+Link: https://patch.msgid.link/20260115203725.828434-3-mario.limonciello@amd.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/bioscfg.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.h |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-@@ -10,6 +10,8 @@
- #include <linux/fs.h>
+--- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.h
++++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.h
+@@ -10,6 +10,7 @@
+ 
+ #include <linux/wmi.h>
+ #include <linux/types.h>
++#include <linux/string.h>
+ #include <linux/device.h>
  #include <linux/module.h>
  #include <linux/kernel.h>
-+#include <linux/printk.h>
-+#include <linux/string.h>
- #include <linux/wmi.h>
- #include "bioscfg.h"
- #include "../../firmware_attributes_class.h"
-@@ -781,6 +783,12 @@ static int hp_init_bios_buffer_attribute
- 	if (ret < 0)
- 		goto buff_attr_exit;
- 
-+	if (strlen(str) == 0) {
-+		pr_debug("Ignoring attribute with empty name\n");
-+		ret = 0;
-+		goto buff_attr_exit;
-+	}
-+
- 	if (attr_type == HPWMI_PASSWORD_TYPE ||
- 	    attr_type == HPWMI_SECURE_PLATFORM_TYPE)
- 		temp_kset = bioscfg_drv.authentication_dir_kset;
+@@ -285,8 +286,9 @@ enum hp_wmi_data_elements {
+ 	{								\
+ 		int i;							\
+ 									\
+-		for (i = 0; i <= bioscfg_drv.type##_instances_count; i++) { \
+-			if (!strcmp(kobj->name, bioscfg_drv.type##_data[i].attr_name_kobj->name)) \
++		for (i = 0; i < bioscfg_drv.type##_instances_count; i++) { \
++			if (bioscfg_drv.type##_data[i].attr_name_kobj &&	\
++			    !strcmp(kobj->name, bioscfg_drv.type##_data[i].attr_name_kobj->name)) \
+ 				return i;				\
+ 		}							\
+ 		return -EIO;						\
 
 
 
