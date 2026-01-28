@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNZpG90semnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212140-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:57 +0100
+	id 2DxBMf0zeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5154A4089
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1833FA5133
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7C58E3015495
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2014A31E4EF9
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:55:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F5F2D6E63;
-	Wed, 28 Jan 2026 15:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E534D309DD2;
+	Wed, 28 Jan 2026 15:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEnfqoef"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YAYR66Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BFB2D5408;
-	Wed, 28 Jan 2026 15:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974611D6AA;
+	Wed, 28 Jan 2026 15:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614525; cv=none; b=ao3p20o7bQeHiLiP2c7bTGaWISu7QSa2g64mi64jIVq/lmV+tYYtSSYaFZSPOQVDgF3uGC1Vl+p7JZLXb7cINNSrT9eA3w5pRtFLhLqzxzw3VFUaXejCtGUshxTTgxJ1O8proThLaIgCXFkZSZQExytGu3CIymKpOQMovtXl20o=
+	t=1769615729; cv=none; b=ea4qxPN168YgRZy6R4IgYvLKOyENQU4tFuALE46BRgpIF8lcj68qGUNALnPS4zxqn70fETVnw65RxaZbK/hHT/h3NMr7ZpFZOAx/AkvMqCKgBkRM/yPIvghhak8KrHfNRnCbYML4WxOq1iu9fcT0gzjI9AlY/Ci53aQpQZqQ5MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614525; c=relaxed/simple;
-	bh=UrVCHxh0hsdR86IeF8FZtzilSoeo0bOXj+407H+b0b4=;
+	s=arc-20240116; t=1769615729; c=relaxed/simple;
+	bh=VlLJrFSmb4RZadccmNbTvsOK3aTaIf4UEpgTT78RKto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jw10NSvYFs9f8IiEMUoEszkS1iKjQKbyRlD+MsHBNgntw5uodh0CkEMQ58GU2M+Ge3JhaMRqGfWUbSYj5dSEyodDqswoTi6+ke2Wqof3LPw2Imvw6e/Vf6wKBwog78iMIsgop1aaiLmTs4v4v0o75NVFs/9jZSCXzIrz8uum2Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEnfqoef; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD404C4CEF1;
-	Wed, 28 Jan 2026 15:35:24 +0000 (UTC)
+	 MIME-Version; b=b5/YfOs+iE31NJGrDEYE+dE9kCpphjv67NJhfqYRvoU+VuhR9tD6CtXPGDnLD5ozN+TySkXtqGYbcXmHYQE7ZtjudArVV2mqyYufjhnafOUXWVQG+fg0+poWa11zpUcGGKDs+MYiTLyJfI4FHOBXL62irGORkG9kGxnfRtb8mhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YAYR66Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2531C4AF09;
+	Wed, 28 Jan 2026 15:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614525;
-	bh=UrVCHxh0hsdR86IeF8FZtzilSoeo0bOXj+407H+b0b4=;
+	s=korg; t=1769615729;
+	bh=VlLJrFSmb4RZadccmNbTvsOK3aTaIf4UEpgTT78RKto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rEnfqoefJQyKQK/mP/9YwBzdtCo2k9/1HZM8LTFAUfyDFx5XA1fL4NF1vRbOQNJGd
-	 5T2TaHldEmIf1LbYrRoGFfjUrjbsZUjh5u14NfYkBA55ZQELI2NkMGE/ZtOcnuzU7d
-	 sXJNnOO+4rpVKXGuOe4bKwNU9TzcfyzzwjGjvnuU=
+	b=1YAYR66Yj5hRk3NJ+Lkl2zW+l9fC84X4WcD7nW2KEuFMKv6z6gdWYc5ofC1kCQfEz
+	 UI7jMna2+IjKVjd46tIgNphrRYWaWiWP8JQ68svCHB9tHTM7jk8SwoKWsdb4ILU4il
+	 4uz169/vZYTkF7lLQaSoSj28KIELYyqwh7OzP5rU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Yun Lu <luyun@kylinos.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
+	fuyuanli <fuyuanli0722@gmail.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jon Mason <jdmason@kudzu.us>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/254] netdevsim: fix a race issue related to the operation on bpf_bound_progs list
-Date: Wed, 28 Jan 2026 16:22:19 +0100
-Message-ID: <20260128145350.675286899@linuxfoundation.org>
+Subject: [PATCH 6.18 095/227] ntb: transport: Fix uninitialized mutex
+Date: Wed, 28 Jan 2026 16:22:20 +0100
+Message-ID: <20260128145347.751674336@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,157 +70,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kudzu.us,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212501-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212140-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.974];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: C5154A4089
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1833FA5133
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit b97d5eedf4976cc94321243be83b39efe81a0e15 ]
+[ Upstream commit 2ccb5e8dbcd2dedf13e0270165ac48bd79b7f673 ]
 
-The netdevsim driver lacks a protection mechanism for operations on the
-bpf_bound_progs list. When the nsim_bpf_create_prog() performs
-list_add_tail, it is possible that nsim_bpf_destroy_prog() is
-simultaneously performs list_del. Concurrent operations on the list may
-lead to list corruption and trigger a kernel crash as follows:
+When the mutex 'link_event_lock' was introduced, it was never
+initialized and it triggers kernel warnings when used with locking
+debug turned on. Add initialization for the mutex.
 
-[  417.290971] kernel BUG at lib/list_debug.c:62!
-[  417.290983] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[  417.290992] CPU: 10 PID: 168 Comm: kworker/10:1 Kdump: loaded Not tainted 6.19.0-rc5 #1
-[  417.291003] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  417.291007] Workqueue: events bpf_prog_free_deferred
-[  417.291021] RIP: 0010:__list_del_entry_valid_or_report+0xa7/0xc0
-[  417.291034] Code: a8 ff 0f 0b 48 89 fe 48 89 ca 48 c7 c7 48 a1 eb ae e8 ed fb a8 ff 0f 0b 48 89 fe 48 89 c2 48 c7 c7 80 a1 eb ae e8 d9 fb a8 ff <0f> 0b 48 89 d1 48 c7 c7 d0 a1 eb ae 48 89 f2 48 89 c6 e8 c2 fb a8
-[  417.291040] RSP: 0018:ffffb16a40807df8 EFLAGS: 00010246
-[  417.291046] RAX: 000000000000006d RBX: ffff8e589866f500 RCX: 0000000000000000
-[  417.291051] RDX: 0000000000000000 RSI: ffff8e59f7b23180 RDI: ffff8e59f7b23180
-[  417.291055] RBP: ffffb16a412c9000 R08: 0000000000000000 R09: 0000000000000003
-[  417.291059] R10: ffffb16a40807c80 R11: ffffffffaf9edce8 R12: ffff8e594427ac20
-[  417.291063] R13: ffff8e59f7b44780 R14: ffff8e58800b7a05 R15: 0000000000000000
-[  417.291074] FS:  0000000000000000(0000) GS:ffff8e59f7b00000(0000) knlGS:0000000000000000
-[  417.291079] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  417.291083] CR2: 00007fc4083efe08 CR3: 00000001c3626006 CR4: 0000000000770ee0
-[  417.291088] PKRU: 55555554
-[  417.291091] Call Trace:
-[  417.291096]  <TASK>
-[  417.291103]  nsim_bpf_destroy_prog+0x31/0x80 [netdevsim]
-[  417.291154]  __bpf_prog_offload_destroy+0x2a/0x80
-[  417.291163]  bpf_prog_dev_bound_destroy+0x6f/0xb0
-[  417.291171]  bpf_prog_free_deferred+0x18e/0x1a0
-[  417.291178]  process_one_work+0x18a/0x3a0
-[  417.291188]  worker_thread+0x27b/0x3a0
-[  417.291197]  ? __pfx_worker_thread+0x10/0x10
-[  417.291207]  kthread+0xe5/0x120
-[  417.291214]  ? __pfx_kthread+0x10/0x10
-[  417.291221]  ret_from_fork+0x31/0x50
-[  417.291230]  ? __pfx_kthread+0x10/0x10
-[  417.291236]  ret_from_fork_asm+0x1a/0x30
-[  417.291246]  </TASK>
-
-Add a mutex lock, to prevent simultaneous addition and deletion operations
-on the list.
-
-Fixes: 31d3ad832948 ("netdevsim: add bpf offload support")
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Link: https://patch.msgid.link/20260116095308.11441-1-luyun_611@163.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 3db835dd8f9a ("ntb: Add mutex to make link_event_callback executed linearly.")
+Cc: fuyuanli <fuyuanli0722@gmail.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/bpf.c       | 6 ++++++
- drivers/net/netdevsim/dev.c       | 2 ++
- drivers/net/netdevsim/netdevsim.h | 1 +
- 3 files changed, 9 insertions(+)
+ drivers/ntb/ntb_transport.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/netdevsim/bpf.c b/drivers/net/netdevsim/bpf.c
-index 608953d4f98da..ca64136372fca 100644
---- a/drivers/net/netdevsim/bpf.c
-+++ b/drivers/net/netdevsim/bpf.c
-@@ -244,7 +244,9 @@ static int nsim_bpf_create_prog(struct nsim_dev *nsim_dev,
- 			    &state->state, &nsim_bpf_string_fops);
- 	debugfs_create_bool("loaded", 0400, state->ddir, &state->is_loaded);
+diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+index eb875e3db2e3b..71d4bb25f7fdd 100644
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -1394,6 +1394,7 @@ static int ntb_transport_probe(struct ntb_client *self, struct ntb_dev *ndev)
+ 			goto err2;
+ 	}
  
-+	mutex_lock(&nsim_dev->progs_list_lock);
- 	list_add_tail(&state->l, &nsim_dev->bpf_bound_progs);
-+	mutex_unlock(&nsim_dev->progs_list_lock);
++	mutex_init(&nt->link_event_lock);
+ 	INIT_DELAYED_WORK(&nt->link_work, ntb_transport_link_work);
+ 	INIT_WORK(&nt->link_cleanup, ntb_transport_link_cleanup_work);
  
- 	prog->aux->offload->dev_priv = state;
- 
-@@ -273,12 +275,16 @@ static int nsim_bpf_translate(struct bpf_prog *prog)
- static void nsim_bpf_destroy_prog(struct bpf_prog *prog)
- {
- 	struct nsim_bpf_bound_prog *state;
-+	struct nsim_dev *nsim_dev;
- 
- 	state = prog->aux->offload->dev_priv;
-+	nsim_dev = state->nsim_dev;
- 	WARN(state->is_loaded,
- 	     "offload state destroyed while program still bound");
- 	debugfs_remove_recursive(state->ddir);
-+	mutex_lock(&nsim_dev->progs_list_lock);
- 	list_del(&state->l);
-+	mutex_unlock(&nsim_dev->progs_list_lock);
- 	kfree(state);
- }
- 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index 3e0b61202f0c9..2614d6509954c 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -1545,6 +1545,7 @@ int nsim_drv_probe(struct nsim_bus_dev *nsim_bus_dev)
- 	nsim_dev->max_macs = NSIM_DEV_MAX_MACS_DEFAULT;
- 	nsim_dev->test1 = NSIM_DEV_TEST1_DEFAULT;
- 	spin_lock_init(&nsim_dev->fa_cookie_lock);
-+	mutex_init(&nsim_dev->progs_list_lock);
- 
- 	dev_set_drvdata(&nsim_bus_dev->dev, nsim_dev);
- 
-@@ -1683,6 +1684,7 @@ void nsim_drv_remove(struct nsim_bus_dev *nsim_bus_dev)
- 	devl_unregister(devlink);
- 	kfree(nsim_dev->vfconfigs);
- 	kfree(nsim_dev->fa_cookie);
-+	mutex_destroy(&nsim_dev->progs_list_lock);
- 	devl_unlock(devlink);
- 	devlink_free(devlink);
- 	dev_set_drvdata(&nsim_bus_dev->dev, NULL);
-diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
-index dfc6e00b718e3..f2a31acc5e2e4 100644
---- a/drivers/net/netdevsim/netdevsim.h
-+++ b/drivers/net/netdevsim/netdevsim.h
-@@ -295,6 +295,7 @@ struct nsim_dev {
- 	u32 prog_id_gen;
- 	struct list_head bpf_bound_progs;
- 	struct list_head bpf_bound_maps;
-+	struct mutex progs_list_lock;
- 	struct netdev_phys_item_id switch_id;
- 	struct list_head port_list;
- 	bool fw_update_status;
 -- 
 2.51.0
 
