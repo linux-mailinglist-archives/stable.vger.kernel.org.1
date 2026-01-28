@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODo9Gaczeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212470-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:55 +0100
+	id GPvuL1wuemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0368A5081
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0358A43A5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2BB8830A221B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AFD22301429E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378DC30E834;
-	Wed, 28 Jan 2026 15:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BF32512FF;
+	Wed, 28 Jan 2026 15:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEoZIIsZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6s0hTxe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3012F25EF;
-	Wed, 28 Jan 2026 15:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D71C10A1E;
+	Wed, 28 Jan 2026 15:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615628; cv=none; b=PSoHQIrMGYRJVebjsAE4FNE4Bu0jLHeB8si2imjLy0Svoyix2YE4AlPR++pLuPhl3KzeUXCrWO7Iv/wOS9wkwZ53Sj7hE2JB4iqNodqHlThwsolVkgT/tkr9LUVrLckRqyRNdSeQUKDsmcxEI8l2x5KNeluRwb/oiX9ZZT3WaRo=
+	t=1769614464; cv=none; b=msKpfejESTMe9WFFhgfWNEDKW6tqame+7BOoXIxe+Xrcct8OGMa6XBDVrvGUYc61bZvgSRm71i44StP+4mkKjMRRATLwjw3Axqo0Fs4jXMjOf0xq3OXq8BqdSb/2W5s0PRermhdEjojt6hZAD9KWlafMwKd0EZNYzA481DFjp5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615628; c=relaxed/simple;
-	bh=9KYV42BCiGA9uYUvd9Pz+SbDyk2NCwlr+7VpJe+nIJY=;
+	s=arc-20240116; t=1769614464; c=relaxed/simple;
+	bh=pCQJeh3dCgOVUoP9SO3fzJ1OvrxpOkl6h+fEtp4QCMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=haKUW2QKwiS7Y+aW5RPK1sG8ZXDVuiRFArLuFbZ9VQQAQTU5kD9T/r8W4FrLHKSlyZsrmBasEjDjQjf/zxai4ZzBO4/tCwTlzTTRNdmOP3Ur3LHpOl3n29EJIHh0N0lLqxIudse1IHEYOyAoBxLcrOTLcRbDQmtIpW3lanMtfHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEoZIIsZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7494DC4CEF1;
-	Wed, 28 Jan 2026 15:53:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EUjPCGPJpqrrKR/bmrijkRyFaXt7Egw0Mm2gXji8oYEb15XZ0gz9NYz9tcszPOIzQUi2LaYoK5XbCidwd43D3dz/KTuq0AJnOKaFoBMKxQfhVuSA+zDwxiAUyLZ+bpD4YjDapMU+Furxfv3SLGfYMsop4DQdelkZ7FvVmWrIlDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6s0hTxe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB88C4CEF1;
+	Wed, 28 Jan 2026 15:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615627;
-	bh=9KYV42BCiGA9uYUvd9Pz+SbDyk2NCwlr+7VpJe+nIJY=;
+	s=korg; t=1769614464;
+	bh=pCQJeh3dCgOVUoP9SO3fzJ1OvrxpOkl6h+fEtp4QCMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uEoZIIsZNrUzjycl4Gc0NHvEYP/5gg9BfWvDegflnMQaRIDkvSRmsHeLsgRptjdCf
-	 PnArHjpOJgGK7MpVyBiXdhffZv8+KBr0aqNh32z9A7QEEAX4ONOEa9Ak39VWYWSu6+
-	 9FaQVOH0vvx07hK3J56G7yLkDMuWDfSGPUXLj7p4=
+	b=t6s0hTxetykD3yYFJCT2nuAMUsgdLbLpXm/cxW2Y8F2yJQjJ3O97vjpm7gxC0C/CJ
+	 tUrAI0DbAEdG4cVDyCO98gi4ueZMffU3x5siVmoG2ngGGyJcurTeh5kRSMthOshnJs
+	 PwO+kaeUedH3eP0T5K/Fdmodo5uKG6eIH32xkL1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	=?UTF-8?q?Otto=20Pfl=C3=BCger?= <otto.pflueger@abscue.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 033/227] can: gs_usb: gs_usb_receive_bulk_callback(): unanchor URL on usb_submit_urb() error
-Date: Wed, 28 Jan 2026 16:21:18 +0100
-Message-ID: <20260128145345.536281652@linuxfoundation.org>
+Subject: [PATCH 6.6 103/254] dt-bindings: power: rpmpd: Add MSM8917, MSM8937 and QM215
+Date: Wed, 28 Jan 2026 16:21:19 +0100
+Message-ID: <20260128145348.531864982@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,191 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212121-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212470-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:email]
-X-Rspamd-Queue-Id: D0368A5081
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F0358A43A5
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Otto Pflüger <otto.pflueger@abscue.de>
 
-[ Upstream commit 79a6d1bfe1148bc921b8d7f3371a7fbce44e30f7 ]
+[ Upstream commit 61848698288d93a230cab9c0585e726df66f2402 ]
 
-In commit 7352e1d5932a ("can: gs_usb: gs_usb_receive_bulk_callback(): fix
-URB memory leak"), the URB was re-anchored before usb_submit_urb() in
-gs_usb_receive_bulk_callback() to prevent a leak of this URB during
-cleanup.
+The MSM8917, MSM8937 and QM215 SoCs have VDDCX and VDDMX power domains
+controlled in voltage level mode. Define the MSM8937 and QM215 power
+domains as aliases because these SoCs are similar to MSM8917 and may
+share some parts of the device tree.
 
-However, this patch did not take into account that usb_submit_urb() could
-fail. The URB remains anchored and
-usb_kill_anchored_urbs(&parent->rx_submitted) in gs_can_close() loops
-infinitely since the anchor list never becomes empty.
+Also add the compatibles for these SoCs to the documentation, with
+qcom,msm8937-rpmpd using qcom,msm8917-rpmpd as a fallback compatible
+because there are no known differences. QM215 is not compatible with
+these because it uses different regulators.
 
-To fix the bug, unanchor the URB when an usb_submit_urb() error occurs,
-also print an info message.
-
-Fixes: 7352e1d5932a ("can: gs_usb: gs_usb_receive_bulk_callback(): fix URB memory leak")
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/all/20260110223836.3890248-1-kuba@kernel.org/
-Link: https://patch.msgid.link/20260116-can_usb-fix-reanchor-v1-1-9d74e7289225@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Otto Pflüger <otto.pflueger@abscue.de>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231014133823.14088-2-otto.pflueger@abscue.de
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 45e1be5ddec9 ("dt-bindings: power: qcom,rpmpd: Add SC8280XP_MXC_AO")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/gs_usb.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ .../devicetree/bindings/power/qcom,rpmpd.yaml | 81 ++++++++++---------
+ include/dt-bindings/power/qcom-rpmpd.h        | 21 +++++
+ 2 files changed, 65 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-index b14b132ad8e6a..fd7fb21b10989 100644
---- a/drivers/net/can/usb/gs_usb.c
-+++ b/drivers/net/can/usb/gs_usb.c
-@@ -754,6 +754,10 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 	usb_anchor_urb(urb, &parent->rx_submitted);
+diff --git a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
+index 53886f02d98a9..d38c762e12804 100644
+--- a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
++++ b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
+@@ -15,43 +15,50 @@ description:
  
- 	rc = usb_submit_urb(urb, GFP_ATOMIC);
-+	if (!rc)
-+		return;
+ properties:
+   compatible:
+-    enum:
+-      - qcom,mdm9607-rpmpd
+-      - qcom,msm8226-rpmpd
+-      - qcom,msm8909-rpmpd
+-      - qcom,msm8916-rpmpd
+-      - qcom,msm8939-rpmpd
+-      - qcom,msm8953-rpmpd
+-      - qcom,msm8976-rpmpd
+-      - qcom,msm8994-rpmpd
+-      - qcom,msm8996-rpmpd
+-      - qcom,msm8998-rpmpd
+-      - qcom,qcm2290-rpmpd
+-      - qcom,qcs404-rpmpd
+-      - qcom,qdu1000-rpmhpd
+-      - qcom,sa8155p-rpmhpd
+-      - qcom,sa8540p-rpmhpd
+-      - qcom,sa8775p-rpmhpd
+-      - qcom,sdm660-rpmpd
+-      - qcom,sc7180-rpmhpd
+-      - qcom,sc7280-rpmhpd
+-      - qcom,sc8180x-rpmhpd
+-      - qcom,sc8280xp-rpmhpd
+-      - qcom,sdm670-rpmhpd
+-      - qcom,sdm845-rpmhpd
+-      - qcom,sdx55-rpmhpd
+-      - qcom,sdx65-rpmhpd
+-      - qcom,sdx75-rpmhpd
+-      - qcom,sm6115-rpmpd
+-      - qcom,sm6125-rpmpd
+-      - qcom,sm6350-rpmhpd
+-      - qcom,sm6375-rpmpd
+-      - qcom,sm7150-rpmhpd
+-      - qcom,sm8150-rpmhpd
+-      - qcom,sm8250-rpmhpd
+-      - qcom,sm8350-rpmhpd
+-      - qcom,sm8450-rpmhpd
+-      - qcom,sm8550-rpmhpd
++    oneOf:
++      - enum:
++          - qcom,mdm9607-rpmpd
++          - qcom,msm8226-rpmpd
++          - qcom,msm8909-rpmpd
++          - qcom,msm8916-rpmpd
++          - qcom,msm8917-rpmpd
++          - qcom,msm8939-rpmpd
++          - qcom,msm8953-rpmpd
++          - qcom,msm8976-rpmpd
++          - qcom,msm8994-rpmpd
++          - qcom,msm8996-rpmpd
++          - qcom,msm8998-rpmpd
++          - qcom,qcm2290-rpmpd
++          - qcom,qcs404-rpmpd
++          - qcom,qdu1000-rpmhpd
++          - qcom,qm215-rpmpd
++          - qcom,sa8155p-rpmhpd
++          - qcom,sa8540p-rpmhpd
++          - qcom,sa8775p-rpmhpd
++          - qcom,sc7180-rpmhpd
++          - qcom,sc7280-rpmhpd
++          - qcom,sc8180x-rpmhpd
++          - qcom,sc8280xp-rpmhpd
++          - qcom,sdm660-rpmpd
++          - qcom,sdm670-rpmhpd
++          - qcom,sdm845-rpmhpd
++          - qcom,sdx55-rpmhpd
++          - qcom,sdx65-rpmhpd
++          - qcom,sdx75-rpmhpd
++          - qcom,sm6115-rpmpd
++          - qcom,sm6125-rpmpd
++          - qcom,sm6350-rpmhpd
++          - qcom,sm6375-rpmpd
++          - qcom,sm7150-rpmhpd
++          - qcom,sm8150-rpmhpd
++          - qcom,sm8250-rpmhpd
++          - qcom,sm8350-rpmhpd
++          - qcom,sm8450-rpmhpd
++          - qcom,sm8550-rpmhpd
++      - items:
++          - enum:
++              - qcom,msm8937-rpmpd
++          - const: qcom,msm8917-rpmpd
+ 
+   '#power-domain-cells':
+     const: 1
+diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
+index 83be996cb5eb9..7f4e2983a4c57 100644
+--- a/include/dt-bindings/power/qcom-rpmpd.h
++++ b/include/dt-bindings/power/qcom-rpmpd.h
+@@ -278,6 +278,27 @@
+ #define MSM8909_VDDMX		MSM8916_VDDMX
+ #define MSM8909_VDDMX_AO	MSM8916_VDDMX_AO
+ 
++/* MSM8917 Power Domain Indexes */
++#define MSM8917_VDDCX		0
++#define MSM8917_VDDCX_AO	1
++#define MSM8917_VDDCX_VFL	2
++#define MSM8917_VDDMX		3
++#define MSM8917_VDDMX_AO	4
 +
-+	usb_unanchor_urb(urb);
- 
- 	/* USB failure take down all interfaces */
- 	if (rc == -ENODEV) {
-@@ -762,6 +766,9 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
- 			if (parent->canch[rc])
- 				netif_device_detach(parent->canch[rc]->netdev);
- 		}
-+	} else if (rc != -ESHUTDOWN && net_ratelimit()) {
-+		netdev_info(netdev, "failed to re-submit IN URB: %pe\n",
-+			    ERR_PTR(urb->status));
- 	}
- }
- 
++/* MSM8937 Power Domain Indexes */
++#define MSM8937_VDDCX		MSM8917_VDDCX
++#define MSM8937_VDDCX_AO	MSM8917_VDDCX_AO
++#define MSM8937_VDDCX_VFL	MSM8917_VDDCX_VFL
++#define MSM8937_VDDMX		MSM8917_VDDMX
++#define MSM8937_VDDMX_AO	MSM8917_VDDMX_AO
++
++/* QM215 Power Domain Indexes */
++#define QM215_VDDCX		MSM8917_VDDCX
++#define QM215_VDDCX_AO		MSM8917_VDDCX_AO
++#define QM215_VDDCX_VFL		MSM8917_VDDCX_VFL
++#define QM215_VDDMX		MSM8917_VDDMX
++#define QM215_VDDMX_AO		MSM8917_VDDMX_AO
++
+ /* MSM8953 Power Domain Indexes */
+ #define MSM8953_VDDMD		0
+ #define MSM8953_VDDMD_AO	1
 -- 
 2.51.0
 
