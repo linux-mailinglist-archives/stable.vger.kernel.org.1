@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-212655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212656-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJPcGbpUemnk5AEAu9opvQ
-	(envelope-from <stable+bounces-212655-lists+stable=lfdr.de@vger.kernel.org>)
+	id eMS2L7pUemnk5AEAu9opvQ
+	(envelope-from <stable+bounces-212656-lists+stable=lfdr.de@vger.kernel.org>)
 	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:26:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CECE3A7BC2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:26:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE1CA7BC3
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C8E0C300E61F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:26:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2F682300FB46
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7356B37104A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E4B36F43D;
 	Wed, 28 Jan 2026 18:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eyPcweT8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVDfPhwM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8994636EA9D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E7B371046
 	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 18:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769624756; cv=none; b=GIiwOOSpAYutALU3a+/MBxo3cQ1/yMmAJ69VaTo8Q8XqFpVr4AtsJ5ag0Vd6VQ0xz3yR8Ww/TrClpfkiop/DF8vgT8TFUNpjNjp4IubV6JG4yWplokARCKzNQtZuDgvL9XRiEUBlDfeMykXlsggWDrqiBWaTjN3tGlVdYRkFyFo=
+	t=1769624757; cv=none; b=jBLTyuFcKwnkD25VHVBDfqvuM4D5cM58g5DtpyD+KhHd7PgDe8O1w0SwupsxmDgrN0hYhwcjzBU0kP0X/STY/iBwSEhCHWhi0UfGD+I1syX31WqwB7kL2EXqQZb7zgnZGU2Skmn+hwKLaMPwb9LXNYZdZ4LBr64QGihWN8VcqDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769624756; c=relaxed/simple;
-	bh=koOSQYAdIwY+/FkaRCvDAYsDte1R+WRLE3csHer9qv0=;
+	s=arc-20240116; t=1769624757; c=relaxed/simple;
+	bh=+1Y90Rj300NgAvzinOZyxDTjHQWWRQCXI+caTvlvyFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V2BIfbZizXw9CCyXKKbwNo1GruW18e0G3qLXrnzmqbTZYklEitjvP2YhE/PQHJlOrxBz7tBZRw2X0sygKxVZ8HwjgxabGDOLfLFs1pK7NDpCu81mnFFPWyawHiR7GNWM0UCsj4bwPWCHhP2kWQlOSkgazZbDfKQ7hwRw8PIVZsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eyPcweT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DD6C4CEF1;
+	 MIME-Version; b=UoSivZ0v3E+jYzUi7E01Q19hLhOYQtEuuHEJKLbkjqj0BMC3qW1oy1V4CJZPxAWOoFPWFiXh63DUmcfRneTa+khfFhGAkkNkujii047Mfmc9MZ95moBM80kI9tSScPlPK5dAkPneY7ckelwpf6qVQ/u37nwo6qS2FIxS3uTfQfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVDfPhwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118AFC4CEF7;
 	Wed, 28 Jan 2026 18:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769624755;
-	bh=koOSQYAdIwY+/FkaRCvDAYsDte1R+WRLE3csHer9qv0=;
+	s=k20201202; t=1769624756;
+	bh=+1Y90Rj300NgAvzinOZyxDTjHQWWRQCXI+caTvlvyFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyPcweT8R/QV9aqSQnz3smbzV23y2ZQpZz9r6uyTy4uqyq8fuPZgVCeADmsFXB1b8
-	 tH1Gp6Z+HaNB4SmBhU7LfLAQINAf7c9hJ/JwPyUfmLVkU2X2vyw46mlCkSbFOhxrES
-	 6hReKoWZ0XIA9s+cxjGBHLWrwWvcH2jcovuPEFlLBx7lqDh5k3761RiRBuOWGJafWP
-	 25UQlusvnT/4nH0vr1cmOJbbI4nFwhW28L53e2/YvrTDabItn3CUMxSuw53xX0Qh/m
-	 oen4VTHuAWfIqpVolwkO0vWmZ6hvEVAdzdJ/1oulShXDemTfjXFHIJIvNSPohaX8E3
-	 1xArmJZogeeCw==
+	b=VVDfPhwMdeUj2i7u0DRXgpfS15Ypv1+7Wy9VUPFdRkirQFRxuY3+4mPfxCaisWaBQ
+	 tioriNjs6oVFM3xvnmZQyGbfPlJHPfFpHvR10tkvZNXXagHdBTWu/CQNYo/IFtH1H8
+	 wMYpLriKHQL5XSsotD/VFHkIzIMWnzJdPbR77JyDTpRB8RKARY5Tqt5teTZRjS2+Nn
+	 CC6AaryTqQL2Lxuyq7XVMHqXwU3Ur+lBELvn6fl3FuzBsw4RFdsLZCMVqiSwIEEG/E
+	 tI783oudywblH31Owm5bEzQML3lni+ozpX/Ja64hDqp6axLJNUsBz4wXFEGW5kU1bV
+	 1Yjymu5Me1KhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Yang Guang <yang.guang5@zte.com.cn>,
-	Zeal Robot <zealci@zte.com.cn>,
-	David Yang <davidcomponentone@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y 1/2] w1: w1_therm: use swap() to make code cleaner
-Date: Wed, 28 Jan 2026 13:25:51 -0500
-Message-ID: <20260128182552.2659610-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y 2/2] w1: therm: Fix off-by-one buffer overflow in alarms_store
+Date: Wed, 28 Jan 2026 13:25:52 -0500
+Message-ID: <20260128182552.2659610-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012736-refined-nullify-a548@gregkh>
+In-Reply-To: <20260128182552.2659610-1-sashal@kernel.org>
 References: <2026012736-refined-nullify-a548@gregkh>
+ <20260128182552.2659610-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,75 +69,161 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[zte.com.cn,gmail.com,linuxfoundation.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212655-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212656-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zte.com.cn:email]
-X-Rspamd-Queue-Id: CECE3A7BC2
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email]
+X-Rspamd-Queue-Id: 3BE1CA7BC3
 X-Rspamd-Action: no action
 
-From: Yang Guang <yang.guang5@zte.com.cn>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit e233897b1f7a859092bd20b10bfd412013381a10 ]
+[ Upstream commit 761fcf46a1bd797bd32d23f3ea0141ffd437668a ]
 
-Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
-opencoding it.
+The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
+bytes and a NUL terminator is appended. However, the 'size' argument
+does not account for this extra byte. The original code then allocated
+'size' bytes and used strcpy() to copy 'buf', which always writes one
+byte past the allocated buffer since strcpy() copies until the NUL
+terminator at index 'size'.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: David Yang <davidcomponentone@gmail.com>
-Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
-Link: https://lore.kernel.org/r/cb14f9e6e86cf8494ed2ddce6eec8ebd988908d9.1640077704.git.yang.guang5@zte.com.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 761fcf46a1bd ("w1: therm: Fix off-by-one buffer overflow in alarms_store")
+Fix this by parsing the 'buf' parameter directly using simple_strtoll()
+without allocating any intermediate memory or string copying. This
+removes the overflow while simplifying the code.
+
+Cc: stable@vger.kernel.org
+Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://patch.msgid.link/20251216145007.44328-2-thorsten.blum@linux.dev
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/w1/slaves/w1_therm.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/w1/slaves/w1_therm.c | 62 ++++++++++++------------------------
+ 1 file changed, 20 insertions(+), 42 deletions(-)
 
 diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
-index 3888643a22f60..ad8276cc82f5b 100644
+index ad8276cc82f5b..8c97706cfc28c 100644
 --- a/drivers/w1/slaves/w1_therm.c
 +++ b/drivers/w1/slaves/w1_therm.c
-@@ -1783,7 +1783,7 @@ static ssize_t alarms_store(struct device *device,
+@@ -1781,53 +1781,35 @@ static ssize_t alarms_store(struct device *device,
+ 	struct w1_slave *sl = dev_to_w1_slave(device);
+ 	struct therm_info info;
  	u8 new_config_register[3];	/* array of data to be written */
- 	int temp, ret;
- 	char *token = NULL;
--	s8 tl, th, tt;	/* 1 byte per value + temp ring order */
-+	s8 tl, th;	/* 1 byte per value + temp ring order */
- 	char *p_args, *orig;
- 
- 	p_args = orig = kmalloc(size, GFP_KERNEL);
-@@ -1834,9 +1834,8 @@ static ssize_t alarms_store(struct device *device,
- 	th = int_to_short(temp);
- 
- 	/* Reorder if required th and tl */
--	if (tl > th) {
--		tt = tl; tl = th; th = tt;
+-	int temp, ret;
+-	char *token = NULL;
++	long long temp;
++	int ret = 0;
+ 	s8 tl, th;	/* 1 byte per value + temp ring order */
+-	char *p_args, *orig;
+-
+-	p_args = orig = kmalloc(size, GFP_KERNEL);
+-	/* Safe string copys as buf is const */
+-	if (!p_args) {
+-		dev_warn(device,
+-			"%s: error unable to allocate memory %d\n",
+-			__func__, -ENOMEM);
+-		return size;
 -	}
-+	if (tl > th)
-+		swap(tl, th);
+-	strcpy(p_args, buf);
+-
+-	/* Split string using space char */
+-	token = strsep(&p_args, " ");
+-
+-	if (!token)	{
+-		dev_info(device,
+-			"%s: error parsing args %d\n", __func__, -EINVAL);
+-		goto free_m;
+-	}
+-
+-	/* Convert 1st entry to int */
+-	ret = kstrtoint (token, 10, &temp);
++	const char *p = buf;
++	char *endp;
++
++	temp = simple_strtoll(p, &endp, 10);
++	if (p == endp || *endp != ' ')
++		ret = -EINVAL;
++	else if (temp < INT_MIN || temp > INT_MAX)
++		ret = -ERANGE;
+ 	if (ret) {
+ 		dev_info(device,
+ 			"%s: error parsing args %d\n", __func__, ret);
+-		goto free_m;
++		return size;
+ 	}
  
- 	/*
- 	 * Read the scratchpad to change only the required bits
+ 	tl = int_to_short(temp);
+ 
+-	/* Split string using space char */
+-	token = strsep(&p_args, " ");
+-	if (!token)	{
+-		dev_info(device,
+-			"%s: error parsing args %d\n", __func__, -EINVAL);
+-		goto free_m;
+-	}
+-	/* Convert 2nd entry to int */
+-	ret = kstrtoint (token, 10, &temp);
++	p = endp + 1;
++	temp = simple_strtoll(p, &endp, 10);
++	if (p == endp)
++		ret = -EINVAL;
++	else if (temp < INT_MIN || temp > INT_MAX)
++		ret = -ERANGE;
+ 	if (ret) {
+ 		dev_info(device,
+ 			"%s: error parsing args %d\n", __func__, ret);
+-		goto free_m;
++		return size;
+ 	}
+ 
+ 	/* Prepare to cast to short by eliminating out of range values */
+@@ -1850,7 +1832,7 @@ static ssize_t alarms_store(struct device *device,
+ 		dev_info(device,
+ 			"%s: error reading from the slave device %d\n",
+ 			__func__, ret);
+-		goto free_m;
++		return size;
+ 	}
+ 
+ 	/* Write data in the device RAM */
+@@ -1858,7 +1840,7 @@ static ssize_t alarms_store(struct device *device,
+ 		dev_info(device,
+ 			"%s: Device not supported by the driver %d\n",
+ 			__func__, -ENODEV);
+-		goto free_m;
++		return size;
+ 	}
+ 
+ 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
+@@ -1867,10 +1849,6 @@ static ssize_t alarms_store(struct device *device,
+ 			"%s: error writing to the slave device %d\n",
+ 			__func__, ret);
+ 
+-free_m:
+-	/* free allocated memory */
+-	kfree(orig);
+-
+ 	return size;
+ }
+ 
 -- 
 2.51.0
 
