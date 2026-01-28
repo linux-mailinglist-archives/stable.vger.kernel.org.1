@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-212514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SA8mLW05eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212514-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:29:33 +0100
+	id cKAhD6gxemlp4gEAu9opvQ
+	(envelope-from <stable+bounces-212307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9336A5B64
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:29:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F802A4C2B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0D33A317812F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:56:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F060D306DE7E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53AF313272;
-	Wed, 28 Jan 2026 15:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83BF30DEC1;
+	Wed, 28 Jan 2026 15:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ak1iw8uu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4WDYdis"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93D13093A8;
-	Wed, 28 Jan 2026 15:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A69309DD2;
+	Wed, 28 Jan 2026 15:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615772; cv=none; b=ncIedgKp1a6+f7/iwNoRPri7+UWHPCtEv8lD1YiqHvq7VKjlYKTFe0VTV0Dc0Ro6sxVKbi4dFEGrbokTE/XwQPzjqFfN/2gn4kn6OTEeX+4ztOumM8oDWgdQjecrcH1n/w007filNsGkGzLM0abGi2aCidYdeRrdi6caczHjp+g=
+	t=1769615079; cv=none; b=nI+lpyT7/d/YEZLpuqM21dIDHaAnrCfmbsjKcl/apTsECPY2u4O13VVzyUFXXTHfQZCwdGwLVFtxGiN1rzjte0GyDpm7bsYICVB4o53uxzN1cz1LvQUaI8tXIq3c5tljJ8uCC6NT5zldBMcGRfPzxuynTi7736gBON2ZcoUWWws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615772; c=relaxed/simple;
-	bh=/5uWlqUOiVm+emkeZoVuit4wZR04nlC45VVoPPgC9Pk=;
+	s=arc-20240116; t=1769615079; c=relaxed/simple;
+	bh=tuXt/5RWZjT3BelV1XYZS/mr4yqmoDtrswOGIMXzyP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jw1uutKdpIJzPns9nkuW19zJvWrMjKTHD+yjbvQ667pYI31827ykh/eE0KMBp4YupIQXkNThsCjbYupo7Pz/dh8pCCTgp/SwlOKwyHTX1cTu5Oy/dv6EMUBa9mV96u7wCN4oiKV/7uOQNN76JU4kL4YN0k9IhaZMjsSLwTRxWy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ak1iw8uu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12930C4CEF1;
-	Wed, 28 Jan 2026 15:56:11 +0000 (UTC)
+	 MIME-Version; b=K9rmsA63M4sBuHGE759agUZY6yYSCCdm1jRlb5yR49vaUpCnpohnVSKA/ToKsxPUrPB53rLALcCvgwDXd5dXUl9hiTML5ny9JXaQYBVmzZfUfK+Ah8hnBq2V8G70HY3VyDYEdcoxPnNCHZPDzvIXfSWjHV/uymOXsSqP6h1JT64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4WDYdis; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F9CC4CEF1;
+	Wed, 28 Jan 2026 15:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615772;
-	bh=/5uWlqUOiVm+emkeZoVuit4wZR04nlC45VVoPPgC9Pk=;
+	s=korg; t=1769615079;
+	bh=tuXt/5RWZjT3BelV1XYZS/mr4yqmoDtrswOGIMXzyP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ak1iw8uuU6BsJrgWBxMCW7GW+vesE8h0dblOdJMU8dJTrRXFs6LCtsRosQaMP6j/T
-	 y+29UkHX+HkxuFUXiQPiWrxByA9ARocrbA0N+DtSTTL5/X8MGMleZc+Y0lHQrT21TB
-	 cIHAuZbsz0tBOa5hN126e6PrZwnUmqZMSTGDGBrI=
+	b=E4WDYdisEXmE05MYlNuYe/gdJQJrtyaYhCI6eqEA73RicfQWAj+emszdTPsZOKS80
+	 htCGk8i9bOWTOFtV2/o2t9+g/+bp57HQZT5GcnlC2WlYdSOGM+BOVxnTyWfbTxM0hc
+	 LCyBpPiy11yVGjh9LdAgc3UIBvowgMJUweaAViBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Yang <mmyangfl@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Yun Lu <luyun@kylinos.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 110/227] idpf: Fix data race in idpf_net_dim
+Subject: [PATCH 6.12 072/169] netdevsim: fix a race issue related to the operation on bpf_bound_progs list
 Date: Wed, 28 Jan 2026 16:22:35 +0100
-Message-ID: <20260128145348.426910922@linuxfoundation.org>
+Message-ID: <20260128145336.598663605@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,101 +71,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212514-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212307-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D9336A5B64
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7F802A4C2B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Yang <mmyangfl@gmail.com>
+From: Yun Lu <luyun@kylinos.cn>
 
-[ Upstream commit 5fbe395cd1fdbc883584e7f38369e4ba5ca778d2 ]
+[ Upstream commit b97d5eedf4976cc94321243be83b39efe81a0e15 ]
 
-In idpf_net_dim(), some statistics protected by u64_stats_sync, are read
-and accumulated in ignorance of possible u64_stats_fetch_retry() events.
-The correct way to copy statistics is already illustrated by
-idpf_add_queue_stats(). Fix this by reading them into temporary variables
-first.
+The netdevsim driver lacks a protection mechanism for operations on the
+bpf_bound_progs list. When the nsim_bpf_create_prog() performs
+list_add_tail, it is possible that nsim_bpf_destroy_prog() is
+simultaneously performs list_del. Concurrent operations on the list may
+lead to list corruption and trigger a kernel crash as follows:
 
-Fixes: c2d548cad150 ("idpf: add TX splitq napi poll support")
-Fixes: 3a8845af66ed ("idpf: add RX splitq napi poll support")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260119162720.1463859-1-mmyangfl@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[  417.290971] kernel BUG at lib/list_debug.c:62!
+[  417.290983] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[  417.290992] CPU: 10 PID: 168 Comm: kworker/10:1 Kdump: loaded Not tainted 6.19.0-rc5 #1
+[  417.291003] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[  417.291007] Workqueue: events bpf_prog_free_deferred
+[  417.291021] RIP: 0010:__list_del_entry_valid_or_report+0xa7/0xc0
+[  417.291034] Code: a8 ff 0f 0b 48 89 fe 48 89 ca 48 c7 c7 48 a1 eb ae e8 ed fb a8 ff 0f 0b 48 89 fe 48 89 c2 48 c7 c7 80 a1 eb ae e8 d9 fb a8 ff <0f> 0b 48 89 d1 48 c7 c7 d0 a1 eb ae 48 89 f2 48 89 c6 e8 c2 fb a8
+[  417.291040] RSP: 0018:ffffb16a40807df8 EFLAGS: 00010246
+[  417.291046] RAX: 000000000000006d RBX: ffff8e589866f500 RCX: 0000000000000000
+[  417.291051] RDX: 0000000000000000 RSI: ffff8e59f7b23180 RDI: ffff8e59f7b23180
+[  417.291055] RBP: ffffb16a412c9000 R08: 0000000000000000 R09: 0000000000000003
+[  417.291059] R10: ffffb16a40807c80 R11: ffffffffaf9edce8 R12: ffff8e594427ac20
+[  417.291063] R13: ffff8e59f7b44780 R14: ffff8e58800b7a05 R15: 0000000000000000
+[  417.291074] FS:  0000000000000000(0000) GS:ffff8e59f7b00000(0000) knlGS:0000000000000000
+[  417.291079] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  417.291083] CR2: 00007fc4083efe08 CR3: 00000001c3626006 CR4: 0000000000770ee0
+[  417.291088] PKRU: 55555554
+[  417.291091] Call Trace:
+[  417.291096]  <TASK>
+[  417.291103]  nsim_bpf_destroy_prog+0x31/0x80 [netdevsim]
+[  417.291154]  __bpf_prog_offload_destroy+0x2a/0x80
+[  417.291163]  bpf_prog_dev_bound_destroy+0x6f/0xb0
+[  417.291171]  bpf_prog_free_deferred+0x18e/0x1a0
+[  417.291178]  process_one_work+0x18a/0x3a0
+[  417.291188]  worker_thread+0x27b/0x3a0
+[  417.291197]  ? __pfx_worker_thread+0x10/0x10
+[  417.291207]  kthread+0xe5/0x120
+[  417.291214]  ? __pfx_kthread+0x10/0x10
+[  417.291221]  ret_from_fork+0x31/0x50
+[  417.291230]  ? __pfx_kthread+0x10/0x10
+[  417.291236]  ret_from_fork_asm+0x1a/0x30
+[  417.291246]  </TASK>
+
+Add a mutex lock, to prevent simultaneous addition and deletion operations
+on the list.
+
+Fixes: 31d3ad832948 ("netdevsim: add bpf offload support")
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Signed-off-by: Yun Lu <luyun@kylinos.cn>
+Link: https://patch.msgid.link/20260116095308.11441-1-luyun_611@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/net/netdevsim/bpf.c       | 6 ++++++
+ drivers/net/netdevsim/dev.c       | 2 ++
+ drivers/net/netdevsim/netdevsim.h | 1 +
+ 3 files changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index f66948f5de78b..a48088eb9b822 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -3941,7 +3941,7 @@ static void idpf_update_dim_sample(struct idpf_q_vector *q_vector,
- static void idpf_net_dim(struct idpf_q_vector *q_vector)
+diff --git a/drivers/net/netdevsim/bpf.c b/drivers/net/netdevsim/bpf.c
+index 608953d4f98da..ca64136372fca 100644
+--- a/drivers/net/netdevsim/bpf.c
++++ b/drivers/net/netdevsim/bpf.c
+@@ -244,7 +244,9 @@ static int nsim_bpf_create_prog(struct nsim_dev *nsim_dev,
+ 			    &state->state, &nsim_bpf_string_fops);
+ 	debugfs_create_bool("loaded", 0400, state->ddir, &state->is_loaded);
+ 
++	mutex_lock(&nsim_dev->progs_list_lock);
+ 	list_add_tail(&state->l, &nsim_dev->bpf_bound_progs);
++	mutex_unlock(&nsim_dev->progs_list_lock);
+ 
+ 	prog->aux->offload->dev_priv = state;
+ 
+@@ -273,12 +275,16 @@ static int nsim_bpf_translate(struct bpf_prog *prog)
+ static void nsim_bpf_destroy_prog(struct bpf_prog *prog)
  {
- 	struct dim_sample dim_sample = { };
--	u64 packets, bytes;
-+	u64 packets, bytes, pkts, bts;
- 	u32 i;
+ 	struct nsim_bpf_bound_prog *state;
++	struct nsim_dev *nsim_dev;
  
- 	if (!IDPF_ITR_IS_DYNAMIC(q_vector->tx_intr_mode))
-@@ -3953,9 +3953,12 @@ static void idpf_net_dim(struct idpf_q_vector *q_vector)
+ 	state = prog->aux->offload->dev_priv;
++	nsim_dev = state->nsim_dev;
+ 	WARN(state->is_loaded,
+ 	     "offload state destroyed while program still bound");
+ 	debugfs_remove_recursive(state->ddir);
++	mutex_lock(&nsim_dev->progs_list_lock);
+ 	list_del(&state->l);
++	mutex_unlock(&nsim_dev->progs_list_lock);
+ 	kfree(state);
+ }
  
- 		do {
- 			start = u64_stats_fetch_begin(&txq->stats_sync);
--			packets += u64_stats_read(&txq->q_stats.packets);
--			bytes += u64_stats_read(&txq->q_stats.bytes);
-+			pkts = u64_stats_read(&txq->q_stats.packets);
-+			bts = u64_stats_read(&txq->q_stats.bytes);
- 		} while (u64_stats_fetch_retry(&txq->stats_sync, start));
-+
-+		packets += pkts;
-+		bytes += bts;
- 	}
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index 3e0b61202f0c9..2614d6509954c 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -1545,6 +1545,7 @@ int nsim_drv_probe(struct nsim_bus_dev *nsim_bus_dev)
+ 	nsim_dev->max_macs = NSIM_DEV_MAX_MACS_DEFAULT;
+ 	nsim_dev->test1 = NSIM_DEV_TEST1_DEFAULT;
+ 	spin_lock_init(&nsim_dev->fa_cookie_lock);
++	mutex_init(&nsim_dev->progs_list_lock);
  
- 	idpf_update_dim_sample(q_vector, &dim_sample, &q_vector->tx_dim,
-@@ -3972,9 +3975,12 @@ static void idpf_net_dim(struct idpf_q_vector *q_vector)
+ 	dev_set_drvdata(&nsim_bus_dev->dev, nsim_dev);
  
- 		do {
- 			start = u64_stats_fetch_begin(&rxq->stats_sync);
--			packets += u64_stats_read(&rxq->q_stats.packets);
--			bytes += u64_stats_read(&rxq->q_stats.bytes);
-+			pkts = u64_stats_read(&rxq->q_stats.packets);
-+			bts = u64_stats_read(&rxq->q_stats.bytes);
- 		} while (u64_stats_fetch_retry(&rxq->stats_sync, start));
-+
-+		packets += pkts;
-+		bytes += bts;
- 	}
- 
- 	idpf_update_dim_sample(q_vector, &dim_sample, &q_vector->rx_dim,
+@@ -1683,6 +1684,7 @@ void nsim_drv_remove(struct nsim_bus_dev *nsim_bus_dev)
+ 	devl_unregister(devlink);
+ 	kfree(nsim_dev->vfconfigs);
+ 	kfree(nsim_dev->fa_cookie);
++	mutex_destroy(&nsim_dev->progs_list_lock);
+ 	devl_unlock(devlink);
+ 	devlink_free(devlink);
+ 	dev_set_drvdata(&nsim_bus_dev->dev, NULL);
+diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
+index 84181dcb98831..736d0dde679ec 100644
+--- a/drivers/net/netdevsim/netdevsim.h
++++ b/drivers/net/netdevsim/netdevsim.h
+@@ -308,6 +308,7 @@ struct nsim_dev {
+ 	u32 prog_id_gen;
+ 	struct list_head bpf_bound_progs;
+ 	struct list_head bpf_bound_maps;
++	struct mutex progs_list_lock;
+ 	struct netdev_phys_item_id switch_id;
+ 	struct list_head port_list;
+ 	bool fw_update_status;
 -- 
 2.51.0
 
