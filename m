@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-212248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212449-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YDssAdUvemkc4gEAu9opvQ
-	(envelope-from <stable+bounces-212248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:37 +0100
+	id WCgMD4Qzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212449-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9310FA475D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9338A5039
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B887330BADDD
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C82A327734D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143C42E6CC0;
-	Wed, 28 Jan 2026 15:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142DA3033F4;
+	Wed, 28 Jan 2026 15:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jjf6En4i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/jQxSvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB90F23EA92;
-	Wed, 28 Jan 2026 15:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF952DF155;
+	Wed, 28 Jan 2026 15:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614880; cv=none; b=Ttny8LRgikDVvL6uFvUHRCLqO1e0v+eKTR9gW6DyZbcu3OpTKZE66twAdm+Rr+N4b8Gfs9J+wgnUVlS7R4HxmYiSkIp2Cjmi6rkfCdDcjXo9umJb+A8vc2dk8T1xBFD4BUDca44aW9y3aiDZW282p12g156PLaYBD/kfk6XWmWo=
+	t=1769615557; cv=none; b=c00nEddgZEFyBC8txdPvSzJSffQ0uhHgXf9YOiMkPAPdkXAzaZUlExrnWfxU61Saejvmh1PEI/9709TyJ97Lt0rfkw2TrO5sTfHMVFNrwDQzSPdcsjuZHj3kAFlojUmXR9G8xCuvYJ7mezWqRf4Jj2Zp5cnFFSU3kaOc+K22sMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614880; c=relaxed/simple;
-	bh=lWldC9dwZVyVc4zBslh0wysIvNwNcTVJAlRvVnFqpPk=;
+	s=arc-20240116; t=1769615557; c=relaxed/simple;
+	bh=IKtKp1YhZUCYLKVJXvEtc1tCmVzPUPfmwV8ZGVLYbu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AsddTmFOo63FlYZx1P1Silwm5GOmYQltsHy3lLDbHQ4Jnbakk5Pi3HMZ2TotkaZkEe4J77pl6tNZFAHvdM2uGOLauNLEhwY5NnR/JwMHpYJQ6oMVnz9+nlnaZASVO0JzAQDZqSaKUkezQcRh6lzeORPFDxKE0Kubenfu0I95KPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jjf6En4i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409EEC4CEF1;
-	Wed, 28 Jan 2026 15:41:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jwVFLv+3PiKkps1z7TgNxLrpqcHMhgEBp6EwlvsEGOCQYvEackgs2Y9mjLom0aMPX0LqFIKUFAXfyKMiDDeBqseJh5ctA9bM1fm2NeyL1L+WsnAqhCFGxIJQx9/0p3wSeUJss78wUt3ZXKCMdXXEalOrzYA5IfHP6LS3NvAP2U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/jQxSvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0A2C4CEF1;
+	Wed, 28 Jan 2026 15:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614880;
-	bh=lWldC9dwZVyVc4zBslh0wysIvNwNcTVJAlRvVnFqpPk=;
+	s=korg; t=1769615557;
+	bh=IKtKp1YhZUCYLKVJXvEtc1tCmVzPUPfmwV8ZGVLYbu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jjf6En4iW4grbxU4042hWGR/EiyfQtBsIm82TD8bI8rr0oQ1+Ese/monMIzWYlWFj
-	 ZYs5B6PLKiMVg7JrK0xotINyfL+fFd/+83Y9ig3GOKsmyua7kNcPt4U3JueJ35Krtt
-	 /anttwzKyKPR4FyhF+iTGUI2/7lNZOkuV+L0Bmno=
+	b=C/jQxSvYjnilKwzA6nEdHh2O32rcSK7Y6/NPAd8xVAdzozxffeTEYEPWrN4HhKG/r
+	 4/i9cRYUHhq8dY3GMOO5yrJYg2iPC7/ZDqpC7d8Z7GV4cHMuMc6aduXlMNbdxcH9ts
+	 jumXt7oGvJlWXUMRQX7Ya1efm02aSidQ3Yhh1MiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	GangMin Kim <km.kim1503@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/169] dt-bindings: power: qcom-rpmpd: split RPMh domains definitions
+Subject: [PATCH 6.18 045/227] net/sched: Enforce that teql can only be used as root qdisc
 Date: Wed, 28 Jan 2026 16:21:30 +0100
-Message-ID: <20260128145334.278621554@linuxfoundation.org>
+Message-ID: <20260128145345.965236109@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,552 +65,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212248-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212449-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 9310FA475D
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B9338A5039
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit dcb8d01b65fb5a891ddbbedcbe6eff0b8ec37867 ]
+[ Upstream commit 50da4b9d07a7a463e2cfb738f3ad4cff6b2c9c3b ]
 
-Historically both RPM and RPMh domain definitions were a part of the
-same, qcom-rpmpd.h header. Now as we have a separate header for RPMh
-definitions, qcom,rpmhpd.h, move all RPMh power domain definitions to
-that header.
+Design intent of teql is that it is only supposed to be used as root qdisc.
+We need to check for that constraint.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20250718-rework-rpmhpd-rpmpd-v1-1-eedca108e540@oss.qualcomm.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 5bc3e720e725 ("pmdomain: qcom: rpmhpd: Add MXC to SC8280XP")
+Although not important, I will describe the scenario that unearthed this
+issue for the curious.
+
+GangMin Kim <km.kim1503@gmail.com> managed to concot a scenario as follows:
+
+ROOT qdisc 1:0 (QFQ)
+  ├── class 1:1 (weight=15, lmax=16384) netem with delay 6.4s
+  └── class 1:2 (weight=1, lmax=1514) teql
+
+GangMin sends a packet which is enqueued to 1:1 (netem).
+Any invocation of dequeue by QFQ from this class will not return a packet
+until after 6.4s. In the meantime, a second packet is sent and it lands on
+1:2. teql's enqueue will return success and this will activate class 1:2.
+Main issue is that teql only updates the parent visible qlen (sch->q.qlen)
+at dequeue. Since QFQ will only call dequeue if peek succeeds (and teql's
+peek always returns NULL), dequeue will never be called and thus the qlen
+will remain as 0. With that in mind, when GangMin updates 1:2's lmax value,
+the qfq_change_class calls qfq_deact_rm_from_agg. Since the child qdisc's
+qlen was not incremented, qfq fails to deactivate the class, but still
+frees its pointers from the aggregate. So when the first packet is
+rescheduled after 6.4 seconds (netem's delay), a dangling pointer is
+accessed causing GangMin's causing a UAF.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: GangMin Kim <km.kim1503@gmail.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260114160243.913069-2-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/power/qcom,rpmhpd.h | 233 ++++++++++++++++++++++++
- include/dt-bindings/power/qcom-rpmpd.h  | 228 +----------------------
- 2 files changed, 234 insertions(+), 227 deletions(-)
+ net/sched/sch_teql.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/dt-bindings/power/qcom,rpmhpd.h b/include/dt-bindings/power/qcom,rpmhpd.h
-index e54ffa3614515..73cceb88953f7 100644
---- a/include/dt-bindings/power/qcom,rpmhpd.h
-+++ b/include/dt-bindings/power/qcom,rpmhpd.h
-@@ -29,4 +29,237 @@
- #define RPMHPD_NSP2             19
- #define RPMHPD_GMXC		20
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 8badec6d82a24..6e4bdaa876ed6 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -178,6 +178,11 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 	if (m->dev == dev)
+ 		return -ELOOP;
  
-+/* RPMh Power Domain performance levels */
-+#define RPMH_REGULATOR_LEVEL_RETENTION		16
-+#define RPMH_REGULATOR_LEVEL_MIN_SVS		48
-+#define RPMH_REGULATOR_LEVEL_LOW_SVS_D3		50
-+#define RPMH_REGULATOR_LEVEL_LOW_SVS_D2		52
-+#define RPMH_REGULATOR_LEVEL_LOW_SVS_D1		56
-+#define RPMH_REGULATOR_LEVEL_LOW_SVS_D0		60
-+#define RPMH_REGULATOR_LEVEL_LOW_SVS		64
-+#define RPMH_REGULATOR_LEVEL_LOW_SVS_P1		72
-+#define RPMH_REGULATOR_LEVEL_LOW_SVS_L1		80
-+#define RPMH_REGULATOR_LEVEL_LOW_SVS_L2		96
-+#define RPMH_REGULATOR_LEVEL_SVS		128
-+#define RPMH_REGULATOR_LEVEL_SVS_L0		144
-+#define RPMH_REGULATOR_LEVEL_SVS_L1		192
-+#define RPMH_REGULATOR_LEVEL_SVS_L2		224
-+#define RPMH_REGULATOR_LEVEL_NOM		256
-+#define RPMH_REGULATOR_LEVEL_NOM_L0		288
-+#define RPMH_REGULATOR_LEVEL_NOM_L1		320
-+#define RPMH_REGULATOR_LEVEL_NOM_L2		336
-+#define RPMH_REGULATOR_LEVEL_TURBO		384
-+#define RPMH_REGULATOR_LEVEL_TURBO_L0		400
-+#define RPMH_REGULATOR_LEVEL_TURBO_L1		416
-+#define RPMH_REGULATOR_LEVEL_TURBO_L2		432
-+#define RPMH_REGULATOR_LEVEL_TURBO_L3		448
-+#define RPMH_REGULATOR_LEVEL_TURBO_L4		452
-+#define RPMH_REGULATOR_LEVEL_TURBO_L5		456
-+#define RPMH_REGULATOR_LEVEL_SUPER_TURBO	464
-+#define RPMH_REGULATOR_LEVEL_SUPER_TURBO_NO_CPR	480
++	if (sch->parent != TC_H_ROOT) {
++		NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root");
++		return -EOPNOTSUPP;
++	}
 +
-+/*
-+ * Platform-specific power domain bindings. Don't add new entries here, use
-+ * RPMHPD_* above.
-+ */
-+
-+/* SA8775P Power Domain Indexes */
-+#define SA8775P_CX	0
-+#define SA8775P_CX_AO	1
-+#define SA8775P_DDR	2
-+#define SA8775P_EBI	3
-+#define SA8775P_GFX	4
-+#define SA8775P_LCX	5
-+#define SA8775P_LMX	6
-+#define SA8775P_MMCX	7
-+#define SA8775P_MMCX_AO	8
-+#define SA8775P_MSS	9
-+#define SA8775P_MX	10
-+#define SA8775P_MX_AO	11
-+#define SA8775P_MXC	12
-+#define SA8775P_MXC_AO	13
-+#define SA8775P_NSP0	14
-+#define SA8775P_NSP1	15
-+#define SA8775P_XO	16
-+
-+/* SDM670 Power Domain Indexes */
-+#define SDM670_MX	0
-+#define SDM670_MX_AO	1
-+#define SDM670_CX	2
-+#define SDM670_CX_AO	3
-+#define SDM670_LMX	4
-+#define SDM670_LCX	5
-+#define SDM670_GFX	6
-+#define SDM670_MSS	7
-+
-+/* SDM845 Power Domain Indexes */
-+#define SDM845_EBI	0
-+#define SDM845_MX	1
-+#define SDM845_MX_AO	2
-+#define SDM845_CX	3
-+#define SDM845_CX_AO	4
-+#define SDM845_LMX	5
-+#define SDM845_LCX	6
-+#define SDM845_GFX	7
-+#define SDM845_MSS	8
-+
-+/* SDX55 Power Domain Indexes */
-+#define SDX55_MSS	0
-+#define SDX55_MX	1
-+#define SDX55_CX	2
-+
-+/* SDX65 Power Domain Indexes */
-+#define SDX65_MSS	0
-+#define SDX65_MX	1
-+#define SDX65_MX_AO	2
-+#define SDX65_CX	3
-+#define SDX65_CX_AO	4
-+#define SDX65_MXC	5
-+
-+/* SM6350 Power Domain Indexes */
-+#define SM6350_CX	0
-+#define SM6350_GFX	1
-+#define SM6350_LCX	2
-+#define SM6350_LMX	3
-+#define SM6350_MSS	4
-+#define SM6350_MX	5
-+
-+/* SM8150 Power Domain Indexes */
-+#define SM8150_MSS	0
-+#define SM8150_EBI	1
-+#define SM8150_LMX	2
-+#define SM8150_LCX	3
-+#define SM8150_GFX	4
-+#define SM8150_MX	5
-+#define SM8150_MX_AO	6
-+#define SM8150_CX	7
-+#define SM8150_CX_AO	8
-+#define SM8150_MMCX	9
-+#define SM8150_MMCX_AO	10
-+
-+/* SA8155P is a special case, kept for backwards compatibility */
-+#define SA8155P_CX	SM8150_CX
-+#define SA8155P_CX_AO	SM8150_CX_AO
-+#define SA8155P_EBI	SM8150_EBI
-+#define SA8155P_GFX	SM8150_GFX
-+#define SA8155P_MSS	SM8150_MSS
-+#define SA8155P_MX	SM8150_MX
-+#define SA8155P_MX_AO	SM8150_MX_AO
-+
-+/* SM8250 Power Domain Indexes */
-+#define SM8250_CX	0
-+#define SM8250_CX_AO	1
-+#define SM8250_EBI	2
-+#define SM8250_GFX	3
-+#define SM8250_LCX	4
-+#define SM8250_LMX	5
-+#define SM8250_MMCX	6
-+#define SM8250_MMCX_AO	7
-+#define SM8250_MX	8
-+#define SM8250_MX_AO	9
-+
-+/* SM8350 Power Domain Indexes */
-+#define SM8350_CX	0
-+#define SM8350_CX_AO	1
-+#define SM8350_EBI	2
-+#define SM8350_GFX	3
-+#define SM8350_LCX	4
-+#define SM8350_LMX	5
-+#define SM8350_MMCX	6
-+#define SM8350_MMCX_AO	7
-+#define SM8350_MX	8
-+#define SM8350_MX_AO	9
-+#define SM8350_MXC	10
-+#define SM8350_MXC_AO	11
-+#define SM8350_MSS	12
-+
-+/* SM8450 Power Domain Indexes */
-+#define SM8450_CX	0
-+#define SM8450_CX_AO	1
-+#define SM8450_EBI	2
-+#define SM8450_GFX	3
-+#define SM8450_LCX	4
-+#define SM8450_LMX	5
-+#define SM8450_MMCX	6
-+#define SM8450_MMCX_AO	7
-+#define SM8450_MX	8
-+#define SM8450_MX_AO	9
-+#define SM8450_MXC	10
-+#define SM8450_MXC_AO	11
-+#define SM8450_MSS	12
-+
-+/* SM8550 Power Domain Indexes */
-+#define SM8550_CX	0
-+#define SM8550_CX_AO	1
-+#define SM8550_EBI	2
-+#define SM8550_GFX	3
-+#define SM8550_LCX	4
-+#define SM8550_LMX	5
-+#define SM8550_MMCX	6
-+#define SM8550_MMCX_AO	7
-+#define SM8550_MX	8
-+#define SM8550_MX_AO	9
-+#define SM8550_MXC	10
-+#define SM8550_MXC_AO	11
-+#define SM8550_MSS	12
-+#define SM8550_NSP	13
-+
-+/* QDU1000/QRU1000 Power Domain Indexes */
-+#define QDU1000_EBI	0
-+#define QDU1000_MSS	1
-+#define QDU1000_CX	2
-+#define QDU1000_MX	3
-+
-+/* SC7180 Power Domain Indexes */
-+#define SC7180_CX	0
-+#define SC7180_CX_AO	1
-+#define SC7180_GFX	2
-+#define SC7180_MX	3
-+#define SC7180_MX_AO	4
-+#define SC7180_LMX	5
-+#define SC7180_LCX	6
-+#define SC7180_MSS	7
-+
-+/* SC7280 Power Domain Indexes */
-+#define SC7280_CX	0
-+#define SC7280_CX_AO	1
-+#define SC7280_EBI	2
-+#define SC7280_GFX	3
-+#define SC7280_MX	4
-+#define SC7280_MX_AO	5
-+#define SC7280_LMX	6
-+#define SC7280_LCX	7
-+#define SC7280_MSS	8
-+
-+/* SC8180X Power Domain Indexes */
-+#define SC8180X_CX	0
-+#define SC8180X_CX_AO	1
-+#define SC8180X_EBI	2
-+#define SC8180X_GFX	3
-+#define SC8180X_LCX	4
-+#define SC8180X_LMX	5
-+#define SC8180X_MMCX	6
-+#define SC8180X_MMCX_AO	7
-+#define SC8180X_MSS	8
-+#define SC8180X_MX	9
-+#define SC8180X_MX_AO	10
-+
-+/* SC8280XP Power Domain Indexes */
-+#define SC8280XP_CX		0
-+#define SC8280XP_CX_AO		1
-+#define SC8280XP_DDR		2
-+#define SC8280XP_EBI		3
-+#define SC8280XP_GFX		4
-+#define SC8280XP_LCX		5
-+#define SC8280XP_LMX		6
-+#define SC8280XP_MMCX		7
-+#define SC8280XP_MMCX_AO	8
-+#define SC8280XP_MSS		9
-+#define SC8280XP_MX		10
-+#define SC8280XP_MXC		12
-+#define SC8280XP_MX_AO		11
-+#define SC8280XP_NSP		13
-+#define SC8280XP_QPHY		14
-+#define SC8280XP_XO		15
-+
- #endif
-diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
-index 5bc4735fb3e6e..109d450978f3d 100644
---- a/include/dt-bindings/power/qcom-rpmpd.h
-+++ b/include/dt-bindings/power/qcom-rpmpd.h
-@@ -4,66 +4,7 @@
- #ifndef _DT_BINDINGS_POWER_QCOM_RPMPD_H
- #define _DT_BINDINGS_POWER_QCOM_RPMPD_H
+ 	q->m = m;
  
--/* SA8775P Power Domain Indexes */
--#define SA8775P_CX	0
--#define SA8775P_CX_AO	1
--#define SA8775P_DDR	2
--#define SA8775P_EBI	3
--#define SA8775P_GFX	4
--#define SA8775P_LCX	5
--#define SA8775P_LMX	6
--#define SA8775P_MMCX	7
--#define SA8775P_MMCX_AO	8
--#define SA8775P_MSS	9
--#define SA8775P_MX	10
--#define SA8775P_MX_AO	11
--#define SA8775P_MXC	12
--#define SA8775P_MXC_AO	13
--#define SA8775P_NSP0	14
--#define SA8775P_NSP1	15
--#define SA8775P_XO	16
--
--/* SDM670 Power Domain Indexes */
--#define SDM670_MX	0
--#define SDM670_MX_AO	1
--#define SDM670_CX	2
--#define SDM670_CX_AO	3
--#define SDM670_LMX	4
--#define SDM670_LCX	5
--#define SDM670_GFX	6
--#define SDM670_MSS	7
--
--/* SDM845 Power Domain Indexes */
--#define SDM845_EBI	0
--#define SDM845_MX	1
--#define SDM845_MX_AO	2
--#define SDM845_CX	3
--#define SDM845_CX_AO	4
--#define SDM845_LMX	5
--#define SDM845_LCX	6
--#define SDM845_GFX	7
--#define SDM845_MSS	8
--
--/* SDX55 Power Domain Indexes */
--#define SDX55_MSS	0
--#define SDX55_MX	1
--#define SDX55_CX	2
--
--/* SDX65 Power Domain Indexes */
--#define SDX65_MSS	0
--#define SDX65_MX	1
--#define SDX65_MX_AO	2
--#define SDX65_CX	3
--#define SDX65_CX_AO	4
--#define SDX65_MXC	5
--
--/* SM6350 Power Domain Indexes */
--#define SM6350_CX	0
--#define SM6350_GFX	1
--#define SM6350_LCX	2
--#define SM6350_LMX	3
--#define SM6350_MSS	4
--#define SM6350_MX	5
-+#include <dt-bindings/power/qcom,rpmhpd.h>
- 
- /* SM6350 Power Domain Indexes */
- #define SM6375_VDDCX		0
-@@ -77,173 +18,6 @@
- #define SM6375_VDD_LPI_CX	8
- #define SM6375_VDD_LPI_MX	9
- 
--/* SM8150 Power Domain Indexes */
--#define SM8150_MSS	0
--#define SM8150_EBI	1
--#define SM8150_LMX	2
--#define SM8150_LCX	3
--#define SM8150_GFX	4
--#define SM8150_MX	5
--#define SM8150_MX_AO	6
--#define SM8150_CX	7
--#define SM8150_CX_AO	8
--#define SM8150_MMCX	9
--#define SM8150_MMCX_AO	10
--
--/* SA8155P is a special case, kept for backwards compatibility */
--#define SA8155P_CX	SM8150_CX
--#define SA8155P_CX_AO	SM8150_CX_AO
--#define SA8155P_EBI	SM8150_EBI
--#define SA8155P_GFX	SM8150_GFX
--#define SA8155P_MSS	SM8150_MSS
--#define SA8155P_MX	SM8150_MX
--#define SA8155P_MX_AO	SM8150_MX_AO
--
--/* SM8250 Power Domain Indexes */
--#define SM8250_CX	0
--#define SM8250_CX_AO	1
--#define SM8250_EBI	2
--#define SM8250_GFX	3
--#define SM8250_LCX	4
--#define SM8250_LMX	5
--#define SM8250_MMCX	6
--#define SM8250_MMCX_AO	7
--#define SM8250_MX	8
--#define SM8250_MX_AO	9
--
--/* SM8350 Power Domain Indexes */
--#define SM8350_CX	0
--#define SM8350_CX_AO	1
--#define SM8350_EBI	2
--#define SM8350_GFX	3
--#define SM8350_LCX	4
--#define SM8350_LMX	5
--#define SM8350_MMCX	6
--#define SM8350_MMCX_AO	7
--#define SM8350_MX	8
--#define SM8350_MX_AO	9
--#define SM8350_MXC	10
--#define SM8350_MXC_AO	11
--#define SM8350_MSS	12
--
--/* SM8450 Power Domain Indexes */
--#define SM8450_CX	0
--#define SM8450_CX_AO	1
--#define SM8450_EBI	2
--#define SM8450_GFX	3
--#define SM8450_LCX	4
--#define SM8450_LMX	5
--#define SM8450_MMCX	6
--#define SM8450_MMCX_AO	7
--#define SM8450_MX	8
--#define SM8450_MX_AO	9
--#define SM8450_MXC	10
--#define SM8450_MXC_AO	11
--#define SM8450_MSS	12
--
--/* SM8550 Power Domain Indexes */
--#define SM8550_CX	0
--#define SM8550_CX_AO	1
--#define SM8550_EBI	2
--#define SM8550_GFX	3
--#define SM8550_LCX	4
--#define SM8550_LMX	5
--#define SM8550_MMCX	6
--#define SM8550_MMCX_AO	7
--#define SM8550_MX	8
--#define SM8550_MX_AO	9
--#define SM8550_MXC	10
--#define SM8550_MXC_AO	11
--#define SM8550_MSS	12
--#define SM8550_NSP	13
--
--/* QDU1000/QRU1000 Power Domain Indexes */
--#define QDU1000_EBI	0
--#define QDU1000_MSS	1
--#define QDU1000_CX	2
--#define QDU1000_MX	3
--
--/* SC7180 Power Domain Indexes */
--#define SC7180_CX	0
--#define SC7180_CX_AO	1
--#define SC7180_GFX	2
--#define SC7180_MX	3
--#define SC7180_MX_AO	4
--#define SC7180_LMX	5
--#define SC7180_LCX	6
--#define SC7180_MSS	7
--
--/* SC7280 Power Domain Indexes */
--#define SC7280_CX	0
--#define SC7280_CX_AO	1
--#define SC7280_EBI	2
--#define SC7280_GFX	3
--#define SC7280_MX	4
--#define SC7280_MX_AO	5
--#define SC7280_LMX	6
--#define SC7280_LCX	7
--#define SC7280_MSS	8
--
--/* SC8180X Power Domain Indexes */
--#define SC8180X_CX	0
--#define SC8180X_CX_AO	1
--#define SC8180X_EBI	2
--#define SC8180X_GFX	3
--#define SC8180X_LCX	4
--#define SC8180X_LMX	5
--#define SC8180X_MMCX	6
--#define SC8180X_MMCX_AO	7
--#define SC8180X_MSS	8
--#define SC8180X_MX	9
--#define SC8180X_MX_AO	10
--
--/* SC8280XP Power Domain Indexes */
--#define SC8280XP_CX		0
--#define SC8280XP_CX_AO		1
--#define SC8280XP_DDR		2
--#define SC8280XP_EBI		3
--#define SC8280XP_GFX		4
--#define SC8280XP_LCX		5
--#define SC8280XP_LMX		6
--#define SC8280XP_MMCX		7
--#define SC8280XP_MMCX_AO	8
--#define SC8280XP_MSS		9
--#define SC8280XP_MX		10
--#define SC8280XP_MXC		12
--#define SC8280XP_MX_AO		11
--#define SC8280XP_NSP		13
--#define SC8280XP_QPHY		14
--#define SC8280XP_XO		15
--
--/* SDM845 Power Domain performance levels */
--#define RPMH_REGULATOR_LEVEL_RETENTION		16
--#define RPMH_REGULATOR_LEVEL_MIN_SVS		48
--#define RPMH_REGULATOR_LEVEL_LOW_SVS_D3		50
--#define RPMH_REGULATOR_LEVEL_LOW_SVS_D2		52
--#define RPMH_REGULATOR_LEVEL_LOW_SVS_D1		56
--#define RPMH_REGULATOR_LEVEL_LOW_SVS_D0		60
--#define RPMH_REGULATOR_LEVEL_LOW_SVS		64
--#define RPMH_REGULATOR_LEVEL_LOW_SVS_P1		72
--#define RPMH_REGULATOR_LEVEL_LOW_SVS_L1		80
--#define RPMH_REGULATOR_LEVEL_LOW_SVS_L2		96
--#define RPMH_REGULATOR_LEVEL_SVS		128
--#define RPMH_REGULATOR_LEVEL_SVS_L0		144
--#define RPMH_REGULATOR_LEVEL_SVS_L1		192
--#define RPMH_REGULATOR_LEVEL_SVS_L2		224
--#define RPMH_REGULATOR_LEVEL_NOM		256
--#define RPMH_REGULATOR_LEVEL_NOM_L0		288
--#define RPMH_REGULATOR_LEVEL_NOM_L1		320
--#define RPMH_REGULATOR_LEVEL_NOM_L2		336
--#define RPMH_REGULATOR_LEVEL_TURBO		384
--#define RPMH_REGULATOR_LEVEL_TURBO_L0		400
--#define RPMH_REGULATOR_LEVEL_TURBO_L1		416
--#define RPMH_REGULATOR_LEVEL_TURBO_L2		432
--#define RPMH_REGULATOR_LEVEL_TURBO_L3		448
--#define RPMH_REGULATOR_LEVEL_TURBO_L4		452
--#define RPMH_REGULATOR_LEVEL_TURBO_L5		456
--#define RPMH_REGULATOR_LEVEL_SUPER_TURBO 	464
--#define RPMH_REGULATOR_LEVEL_SUPER_TURBO_NO_CPR	480
--
- /* MDM9607 Power Domains */
- #define MDM9607_VDDCX		0
- #define MDM9607_VDDCX_AO	1
+ 	skb_queue_head_init(&q->q);
 -- 
 2.51.0
 
