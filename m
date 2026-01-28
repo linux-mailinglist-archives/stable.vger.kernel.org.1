@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-212430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UF6cD0wyemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:08 +0100
+	id 4JeqAKMuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E952A4DE3
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDA3A44D2
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A5FA30EBF7E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B6B930D6A44
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA5A30F816;
-	Wed, 28 Jan 2026 15:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C64242D86;
+	Wed, 28 Jan 2026 15:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9iCXBRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gI1JI5EE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C201A305057;
-	Wed, 28 Jan 2026 15:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B27A1E9B1A;
+	Wed, 28 Jan 2026 15:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615492; cv=none; b=RaQPdIf7s2BuMcQ5O2V7ZyoxzBr8wJwOURqFmS1kxJ7VDz5TfCmwcsQJ1oIKwb3r9JC6pEBHJZ1WbaS7Atr7NoVPcRciUtOYkZqBGQAr8Jjf57vU/LvOYXHJvUnURArDGwZJShWYxOvKRDBo94WxAdUDn+G6VVRJgbKsD2GtkSU=
+	t=1769614300; cv=none; b=UY225p8RYOe5rz39Ji21peNPibJes4u/byPaNTmY0okHCgHzGLUYEXzP2Hp5i5cVoTwh9OqsbR/KgZf2XXeXvoWutIV0vswJc2oSDAJIyrxUhkzqEdf+1OIBZsvIrneYoP4nvuUZue3hGOD2Tnj1XRErHVTODHN1mtGTmNPoMfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615492; c=relaxed/simple;
-	bh=I6pgY2mPybt48s2jN7U08TdZ1oVhpPUvnn3w/FXPCM8=;
+	s=arc-20240116; t=1769614300; c=relaxed/simple;
+	bh=SDdG2h+/5V1hhoxgFB7bNd9VzTXBj/BbMuxm6FD3fCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A9r8YeB98PrKwrJ4v49FAkRvh9100Sqj24sXLbSvk5h3NJ7hhNfNV2qgh/FiN3nklHuseWwuaECnv+EegMvYxwUGkM1SoqPkMnSXo4DWNI019QKUbyP7rAPmcZWtl0vqi/e/VHXds7zZw2wO22OzySUEvGhs0bq4MIVTmwm+oV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9iCXBRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504E3C4CEF1;
-	Wed, 28 Jan 2026 15:51:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UYFJTTMMHS70t5QZu/As4vbmJvP9ohtwIzYaCthgcVblHRTY6Gn8sUEvI7PhpYxLWpxn7W/HfluZKnjdBB1L7Ho95wmjhb6YLRm8cHDOscp+SaWrXYUjCswiR/qYHD+LmxoKreZSHaDLVCsEOkZqlzDVl39NuidtueuwBEucYsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gI1JI5EE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14DDC4CEF7;
+	Wed, 28 Jan 2026 15:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615492;
-	bh=I6pgY2mPybt48s2jN7U08TdZ1oVhpPUvnn3w/FXPCM8=;
+	s=korg; t=1769614300;
+	bh=SDdG2h+/5V1hhoxgFB7bNd9VzTXBj/BbMuxm6FD3fCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9iCXBRcg4i5frkJapztOTAHKxyl4pqOOloIbpGpEOm6Ofl2WF8XPfuSI+g9VWpab
-	 pBhsl7uU3+YbBy0ELG3oDeDXhwEPLF0TsYV6mV4r4GgT6KUkO6mzFMuiZl6znCd9Oh
-	 rUYuH/vw5lAugCOF1HNtJl7Kn3oi8ykI+QXwZavI=
+	b=gI1JI5EEj/o2y//Vl4o8HPtYBM+zYn6frMPQ+wzyRJVpCaDppumnICrOWq1vwb0QL
+	 /CY9SfuWkW5PLl/lGuNc1oDhzdZu/d/1AxJ4b9BkPzdO6xmqbHvJCs/qDp9Jf8xvlT
+	 GPn/au87nirsxwPZbB++tdQwUx923BlTfIuZbrzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avi Shalev <avi.shalev@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Song Yoong Siang <yoong.siang.song@intel.com>,
-	Chwee-Lin Choong <chwee.lin.choong@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Wojtek Wasko <wwasko@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 025/227] igc: fix race condition in TX timestamp read for register 0
+Subject: [PATCH 6.6 094/254] ptp: Add PHC file mode checks. Allow RO adjtime() without FMODE_WRITE.
 Date: Wed, 28 Jan 2026 16:21:10 +0100
-Message-ID: <20260128145345.251826475@linuxfoundation.org>
+Message-ID: <20260128145348.210690269@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,158 +66,146 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212430-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com,linutronix.de,davemloft.net,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212070-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8E952A4DE3
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6DDA3A44D2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+From: Wojtek Wasko <wwasko@nvidia.com>
 
-[ Upstream commit 6990dc392a9ab10e52af37e0bee8c7b753756dc4 ]
+[ Upstream commit b4e53b15c04e3852949003752f48f7a14ae39e86 ]
 
-The current HW bug workaround checks the TXTT_0 ready bit first,
-then reads TXSTMPL_0 twice (before and after reading TXSTMPH_0)
-to detect whether a new timestamp was captured by timestamp
-register 0 during the workaround.
+Many devices implement highly accurate clocks, which the kernel manages
+as PTP Hardware Clocks (PHCs). Userspace applications rely on these
+clocks to timestamp events, trace workload execution, correlate
+timescales across devices, and keep various clocks in sync.
 
-This sequence has a race: if a new timestamp is captured after
-checking the TXTT_0 bit but before the first TXSTMPL_0 read, the
-detection fails because both the "old" and "new" values come from
-the same timestamp.
+The kernel’s current implementation of PTP clocks does not enforce file
+permissions checks for most device operations except for POSIX clock
+operations, where file mode is verified in the POSIX layer before
+forwarding the call to the PTP subsystem. Consequently, it is common
+practice to not give unprivileged userspace applications any access to
+PTP clocks whatsoever by giving the PTP chardevs 600 permissions. An
+example of users running into this limitation is documented in [1].
+Additionally, POSIX layer requires WRITE permission even for readonly
+adjtime() calls which are used in PTP layer to return current frequency
+offset applied to the PHC.
 
-Fix by reading TXSTMPL_0 first to establish a baseline, then
-checking the TXTT_0 bit. This ensures any timestamp captured
-during the race window will be detected.
+Add permission checks for functions that modify the state of a PTP
+device. Continue enforcing permission checks for POSIX clock operations
+(settime, adjtime) in the POSIX layer. Only require WRITE access for
+dynamic clocks adjtime() if any flags are set in the modes field.
 
-Old sequence:
-  1. Check TXTT_0 ready bit
-  2. Read TXSTMPL_0 (baseline)
-  3. Read TXSTMPH_0 (interrupt workaround)
-  4. Read TXSTMPL_0 (detect changes vs baseline)
+[1] https://lists.nwtime.org/sympa/arc/linuxptp-users/2024-01/msg00036.html
 
-New sequence:
-  1. Read TXSTMPL_0 (baseline)
-  2. Check TXTT_0 ready bit
-  3. Read TXSTMPH_0 (interrupt workaround)
-  4. Read TXSTMPL_0 (detect changes vs baseline)
+Changes in v4:
+- Require FMODE_WRITE in ajtime() only for calls modifying the clock in
+  any way.
 
-Fixes: c789ad7cbebc ("igc: Work around HW bug causing missing timestamps")
-Suggested-by: Avi Shalev <avi.shalev@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Co-developed-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ptp.c | 43 ++++++++++++++----------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+ drivers/ptp/ptp_chardev.c | 16 ++++++++++++++++
+ kernel/time/posix-clock.c |  2 +-
+ 2 files changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index b7b46d863bee4..7aae83c108fd7 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -774,36 +774,43 @@ static void igc_ptp_tx_reg_to_stamp(struct igc_adapter *adapter,
- static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
- {
- 	struct igc_hw *hw = &adapter->hw;
-+	u32 txstmpl_old;
- 	u64 regval;
- 	u32 mask;
- 	int i;
+diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
+index 6eecb53b3e670..1ed12e86ee000 100644
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -153,6 +153,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
  
-+	/* Establish baseline of TXSTMPL_0 before checking TXTT_0.
-+	 * This baseline is used to detect if a new timestamp arrives in
-+	 * register 0 during the hardware bug workaround below.
-+	 */
-+	txstmpl_old = rd32(IGC_TXSTMPL);
-+
- 	mask = rd32(IGC_TSYNCTXCTL) & IGC_TSYNCTXCTL_TXTT_ANY;
- 	if (mask & IGC_TSYNCTXCTL_TXTT_0) {
- 		regval = rd32(IGC_TXSTMPL);
- 		regval |= (u64)rd32(IGC_TXSTMPH) << 32;
- 	} else {
--		/* There's a bug in the hardware that could cause
--		 * missing interrupts for TX timestamping. The issue
--		 * is that for new interrupts to be triggered, the
--		 * IGC_TXSTMPH_0 register must be read.
-+		/* TXTT_0 not set - register 0 has no new timestamp initially.
-+		 *
-+		 * Hardware bug: Future timestamp interrupts won't fire unless
-+		 * TXSTMPH_0 is read, even if the timestamp was captured in
-+		 * registers 1-3.
- 		 *
--		 * To avoid discarding a valid timestamp that just
--		 * happened at the "wrong" time, we need to confirm
--		 * that there was no timestamp captured, we do that by
--		 * assuming that no two timestamps in sequence have
--		 * the same nanosecond value.
-+		 * Workaround: Read TXSTMPH_0 here to enable future interrupts.
-+		 * However, this read clears TXTT_0. If a timestamp arrives in
-+		 * register 0 after checking TXTT_0 but before this read, it
-+		 * would be lost.
- 		 *
--		 * So, we read the "low" register, read the "high"
--		 * register (to latch a new timestamp) and read the
--		 * "low" register again, if "old" and "new" versions
--		 * of the "low" register are different, a valid
--		 * timestamp was captured, we can read the "high"
--		 * register again.
-+		 * To detect this race: We saved a baseline read of TXSTMPL_0
-+		 * before TXTT_0 check. After performing the workaround read of
-+		 * TXSTMPH_0, we read TXSTMPL_0 again. Since consecutive
-+		 * timestamps never share the same nanosecond value, a change
-+		 * between the baseline and new TXSTMPL_0 indicates a timestamp
-+		 * arrived during the race window. If so, read the complete
-+		 * timestamp.
- 		 */
--		u32 txstmpl_old, txstmpl_new;
-+		u32 txstmpl_new;
+ 	case PTP_EXTTS_REQUEST:
+ 	case PTP_EXTTS_REQUEST2:
++		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
++			err = -EACCES;
++			break;
++		}
+ 		memset(&req, 0, sizeof(req));
  
--		txstmpl_old = rd32(IGC_TXSTMPL);
- 		rd32(IGC_TXSTMPH);
- 		txstmpl_new = rd32(IGC_TXSTMPL);
+ 		if (copy_from_user(&req.extts, (void __user *)arg,
+@@ -194,6 +198,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
  
-@@ -818,7 +825,7 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
+ 	case PTP_PEROUT_REQUEST:
+ 	case PTP_PEROUT_REQUEST2:
++		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
++			err = -EACCES;
++			break;
++		}
+ 		memset(&req, 0, sizeof(req));
  
- done:
- 	/* Now that the problematic first register was handled, we can
--	 * use retrieve the timestamps from the other registers
-+	 * retrieve the timestamps from the other registers
- 	 * (starting from '1') with less complications.
- 	 */
- 	for (i = 1; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
+ 		if (copy_from_user(&req.perout, (void __user *)arg,
+@@ -262,6 +270,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+ 
+ 	case PTP_ENABLE_PPS:
+ 	case PTP_ENABLE_PPS2:
++		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
++			err = -EACCES;
++			break;
++		}
+ 		memset(&req, 0, sizeof(req));
+ 
+ 		if (!capable(CAP_SYS_TIME))
+@@ -400,6 +412,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+ 
+ 	case PTP_PIN_SETFUNC:
+ 	case PTP_PIN_SETFUNC2:
++		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
++			err = -EACCES;
++			break;
++		}
+ 		if (copy_from_user(&pd, (void __user *)arg, sizeof(pd))) {
+ 			err = -EFAULT;
+ 			break;
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index b130bb56cc4e0..827abede72745 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -253,7 +253,7 @@ static int pc_clock_adjtime(clockid_t id, struct __kernel_timex *tx)
+ 	if (err)
+ 		return err;
+ 
+-	if ((cd.fp->f_mode & FMODE_WRITE) == 0) {
++	if (tx->modes && (cd.fp->f_mode & FMODE_WRITE) == 0) {
+ 		err = -EACCES;
+ 		goto out;
+ 	}
 -- 
 2.51.0
 
