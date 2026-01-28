@@ -1,72 +1,56 @@
-Return-Path: <stable+bounces-212026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212027-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BkqN8sremnz3gEAu9opvQ
-	(envelope-from <stable+bounces-212026-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:31:23 +0100
+	id iGuFGNgsemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212027-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AB2A3E3B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:31:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E643EA4074
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E2401301E2BA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7036C31CCF01
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB2E36C58B;
-	Wed, 28 Jan 2026 15:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0965236C0CD;
+	Wed, 28 Jan 2026 15:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilDDJaNs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjxUFuym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DA9367F36;
-	Wed, 28 Jan 2026 15:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12AB368297;
+	Wed, 28 Jan 2026 15:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614150; cv=none; b=FQrQwOJ5MsiI2Eqz94iZw3rC9sNvNtFF1ZuY8fomiqWyqEJ7qkly7ClXKfP9cYfDNBdFVghDpQc84O/W6l+8sVMr0z5h90hcrjk5xRICHMcCqU/qfqeSlMDLIQoEvTXVCxqQdkxDz+N1tQSbU7+nKRkgvlGCoDeI3zevdumjjfs=
+	t=1769614153; cv=none; b=NWsaqandLYyMtLBsMr1PTypcD0+4jdRBJRsYGD4VOylh8bNMssQzLD6fwP+2TVY2fRJTpYayAr1m5z0Q1h49tf6Xf7sj0EkcyAwDBU/Stk0w7noUIw2/om9poyiag4vD/g5diCBCixpW7SgMpLJA/a0Tjef+utJ33L82QIVAslw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614150; c=relaxed/simple;
-	bh=k6eAjAozGnK6mOUowo4C+brgu346Gq4EygeKkr/31xQ=;
+	s=arc-20240116; t=1769614153; c=relaxed/simple;
+	bh=3n9/bpqXhri/hXzyilJIFBhc2hbZu5QewTZASPUJjOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8XIvKBj2asGizJbIlGnfmd1/XNCq0WK2x+7EcgqJVPjNBZn0RHbgoLkbqyoGbsBGsK0HxIFR+XpVcZjQdAGOML5clsvaA1h7/ZmK7Ktj3BjhXfuABNe6tkrzICTyhVkJbXo6eWuC0pgrXGIjVq3ofGY4dfYN3RdoK17rU/Qd7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilDDJaNs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4018C4CEF1;
-	Wed, 28 Jan 2026 15:29:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=saVzFQM1ireoKhwwL12hAuqVCOKDWKMmUP3U4Qr7u9/n3Ixdd9u3rlWshoOy9bIX42kQ2V0UEm06Cl3QPSxa4aGCiybxDfuZieZw4GXztxDo0QA2xEWoYUekCj+bcLLSZvxtsee9tj/hvHRilgqFGPSDBj9XCu3ZWyzjYEMKGWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjxUFuym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378A8C4CEF1;
+	Wed, 28 Jan 2026 15:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614150;
-	bh=k6eAjAozGnK6mOUowo4C+brgu346Gq4EygeKkr/31xQ=;
+	s=korg; t=1769614153;
+	bh=3n9/bpqXhri/hXzyilJIFBhc2hbZu5QewTZASPUJjOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ilDDJaNsGVYGSn/SziScT/7uITgkTI7+MIO3RZ5wjKmSu2ICsfBMYj/NfWgNMs42h
-	 +O5ub8wdkvNs3G+h8+KctgdJ9xZ2Ubxx8gZeKGHpcXvnTZMnomzjHtB810e1XppOTp
-	 oc2uiODdVxc3fltoaAsqpljRP0NtRjplx9xviKXM=
+	b=DjxUFuymH9BwjhCEeJLCEoOgyMLJ7cRcBCGgKeUNg1T9Pvx+/7Ry90Ns+MrctfMX2
+	 W0nhh4GAh0aWqL4rPDqceXLr/MRtT3Vtq5Dz/QnzO3tvwy3bMGeogMZyd1AjQMtwiA
+	 p3+7EjzToS/7Pwbgmbm6RIESH4KnT9fyIImJ+3Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andy Lutomirski <luto@kernel.org>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Yasunori Goto <y-goto@fujitsu.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 6.6 051/254] x86/kaslr: Recognize all ZONE_DEVICE users as physaddr consumers
-Date: Wed, 28 Jan 2026 16:20:27 +0100
-Message-ID: <20260128145346.537715362@linuxfoundation.org>
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 052/254] phy: rockchip: inno-usb2: fix communication disruption in gadget mode
+Date: Wed, 28 Jan 2026 16:20:28 +0100
+Message-ID: <20260128145346.573638523@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -79,149 +63,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_FROM(0.00)[bounces-212027-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[suse.com:query timed out,msgid.link:query timed out,fujitsu.com:query timed out,infradead.org:query timed out,oracle.com:query timed out,intel.com:query timed out,suse.cz:query timed out,linuxfoundation.org:query timed out,deltatee.com:query timed out];
-	ASN_FAIL(0.00)[74.135.232.172.asn.rspamd.com:query timed out];
-	TAGGED_FROM(0.00)[bounces-212026-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,oracle.com:email,nvidia.com:email,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,linux-foundation.org:email]
-X-Rspamd-Queue-Id: A1AB2A3E3B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E643EA4074
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit 269031b15c1433ff39e30fa7ea3ab8f0be9d6ae2 upstream.
+commit 7d8f725b79e35fa47e42c88716aad8711e1168d8 upstream.
 
-Commit 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
-is too narrow. The effect being mitigated in that commit is caused by
-ZONE_DEVICE which PCI_P2PDMA has a dependency. ZONE_DEVICE, in general,
-lets any physical address be added to the direct-map. I.e. not only ACPI
-hotplug ranges, CXL Memory Windows, or EFI Specific Purpose Memory, but
-also any PCI MMIO range for the DEVICE_PRIVATE and PCI_P2PDMA cases. Update
-the mitigation, limit KASLR entropy, to apply in all ZONE_DEVICE=y cases.
+When the OTG USB port is used to power to SoC, configured as peripheral and
+used in gadget mode, communication stops without notice about 6 seconds
+after the gadget is configured and enumerated.
 
-Distro kernels typically have PCI_P2PDMA=y, so the practical exposure of
-this problem is limited to the PCI_P2PDMA=n case.
+The problem was observed on a Radxa Rock Pi S board, which can only be
+powered by the only USB-C connector. That connector is the only one usable
+in gadget mode. This implies the USB cable is connected from before boot
+and never disconnects while the kernel runs.
 
-A potential path to recover entropy would be to walk ACPI and determine the
-limits for hotplug and PCI MMIO before kernel_randomize_memory(). On
-smaller systems that could yield some KASLR address bits. This needs
-additional investigation to determine if some limited ACPI table scanning
-can happen this early without an open coded solution like
-arch/x86/boot/compressed/acpi.c needs to deploy.
+The related code flow in the PHY driver code can be summarized as:
 
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Logan Gunthorpe <logang@deltatee.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Fixes: 7ffb791423c7 ("x86/kaslr: Reduce KASLR entropy on most x86 systems")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Tested-by: Yasunori Goto <y-goto@fujitsu.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: http://patch.msgid.link/692e08b2516d4_261c1100a3@dwillia2-mobl4.notmuch
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+ * the first time chg_detect_work starts (6 seconds after gadget is
+   configured and enumerated)
+   -> rockchip_chg_detect_work():
+       if chg_state is UNDEFINED:
+          property_enable(base, &rphy->phy_cfg->chg_det.opmode, false); [Y]
+
+ * rockchip_chg_detect_work() changes state and re-triggers itself a few
+   times until it reaches the DETECTED state:
+   -> rockchip_chg_detect_work():
+       if chg_state is DETECTED:
+          property_enable(base, &rphy->phy_cfg->chg_det.opmode, true); [Z]
+
+At [Y] all existing communications stop. E.g. using a CDC serial gadget,
+the /dev/tty* devices are still present on both host and device, but no
+data is transferred anymore. The later call with a 'true' argument at [Z]
+does not restore it.
+
+Due to the lack of documentation, what chg_det.opmode does exactly is not
+clear, however by code inspection it seems reasonable that is disables
+something needed to keep the communication working, and testing proves that
+disabling these lines lets gadget mode keep working. So prevent changes to
+chg_det.opmode when there is a cable connected (VBUS present).
+
+Fixes: 98898f3bc83c ("phy: rockchip-inno-usb2: support otg-port for rk3399")
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/lkml/20250414185458.7767aabc@booty/
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://patch.msgid.link/20251127-rk3308-fix-usb-gadget-phy-disconnect-v2-2-dac8a02cd2ca@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/kaslr.c |   10 +++++-----
- drivers/pci/Kconfig |    6 ------
- mm/Kconfig          |   10 +++++++---
- 3 files changed, 12 insertions(+), 14 deletions(-)
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/x86/mm/kaslr.c
-+++ b/arch/x86/mm/kaslr.c
-@@ -111,12 +111,12 @@ void __init kernel_randomize_memory(void
- 
- 	/*
- 	 * Adapt physical memory region size based on available memory,
--	 * except when CONFIG_PCI_P2PDMA is enabled. P2PDMA exposes the
--	 * device BAR space assuming the direct map space is large enough
--	 * for creating a ZONE_DEVICE mapping in the direct map corresponding
--	 * to the physical BAR address.
-+	 * except when CONFIG_ZONE_DEVICE is enabled. ZONE_DEVICE wants to map
-+	 * any physical address into the direct-map. KASLR wants to reliably
-+	 * steal some physical address bits. Those design choices are in direct
-+	 * conflict.
- 	 */
--	if (!IS_ENABLED(CONFIG_PCI_P2PDMA) && (memory_tb < kaslr_regions[0].size_tb))
-+	if (!IS_ENABLED(CONFIG_ZONE_DEVICE) && (memory_tb < kaslr_regions[0].size_tb))
- 		kaslr_regions[0].size_tb = memory_tb;
- 
- 	/*
---- a/drivers/pci/Kconfig
-+++ b/drivers/pci/Kconfig
-@@ -180,12 +180,6 @@ config PCI_P2PDMA
- 	  P2P DMA transactions must be between devices behind the same root
- 	  port.
- 
--	  Enabling this option will reduce the entropy of x86 KASLR memory
--	  regions. For example - on a 46 bit system, the entropy goes down
--	  from 16 bits to 15 bits. The actual reduction in entropy depends
--	  on the physical address bits, on processor features, kernel config
--	  (5 level page table) and physical memory present on the system.
--
- 	  If unsure, say N.
- 
- config PCI_LABEL
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1067,10 +1067,14 @@ config ZONE_DEVICE
- 	  Device memory hotplug support allows for establishing pmem,
- 	  or other device driver discovered memory regions, in the
- 	  memmap. This allows pfn_to_page() lookups of otherwise
--	  "device-physical" addresses which is needed for using a DAX
--	  mapping in an O_DIRECT operation, among other things.
-+	  "device-physical" addresses which is needed for DAX, PCI_P2PDMA, and
-+	  DEVICE_PRIVATE features among others.
- 
--	  If FS_DAX is enabled, then say Y.
-+	  Enabling this option will reduce the entropy of x86 KASLR memory
-+	  regions. For example - on a 46 bit system, the entropy goes down
-+	  from 16 bits to 15 bits. The actual reduction in entropy depends
-+	  on the physical address bits, on processor features, kernel config
-+	  (5 level page table) and physical memory present on the system.
- 
- #
- # Helpers to mirror range of the CPU page tables of a process into device page
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -799,7 +799,8 @@ static void rockchip_chg_detect_work(str
+ 		if (!rport->suspended)
+ 			rockchip_usb2phy_power_off(rport->phy);
+ 		/* put the controller in non-driving mode */
+-		property_enable(base, &rphy->phy_cfg->chg_det.opmode, false);
++		if (!vbus_attach)
++			property_enable(base, &rphy->phy_cfg->chg_det.opmode, false);
+ 		/* Start DCD processing stage 1 */
+ 		rockchip_chg_enable_dcd(rphy, true);
+ 		rphy->chg_state = USB_CHG_STATE_WAIT_FOR_DCD;
+@@ -862,7 +863,8 @@ static void rockchip_chg_detect_work(str
+ 		fallthrough;
+ 	case USB_CHG_STATE_DETECTED:
+ 		/* put the controller in normal mode */
+-		property_enable(base, &rphy->phy_cfg->chg_det.opmode, true);
++		if (!vbus_attach)
++			property_enable(base, &rphy->phy_cfg->chg_det.opmode, true);
+ 		rockchip_usb2phy_otg_sm_work(&rport->otg_sm_work.work);
+ 		dev_dbg(&rport->phy->dev, "charger = %s\n",
+ 			 chg_to_string(rphy->chg_type));
 
 
 
