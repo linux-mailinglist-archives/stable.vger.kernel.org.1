@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8D3eL+8vemkc4gEAu9opvQ
-	(envelope-from <stable+bounces-212316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:03 +0100
+	id YJjiKW8uemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2656AA4783
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F86CA43F4
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B65C305F6DF
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9A39F302BFA5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D9E324B06;
-	Wed, 28 Jan 2026 15:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375002D1911;
+	Wed, 28 Jan 2026 15:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXgTJysJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Axf1Ez4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5174D32470D;
-	Wed, 28 Jan 2026 15:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4871D2D131D;
+	Wed, 28 Jan 2026 15:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615109; cv=none; b=BIXE3NdSQTZx7QWMmlgSP1M/NvFj2h5XKJvD5RBWyods9xk3+pD4rh7lEq0NtzXlodhJX8zi+/wVk0dJ2e6SW9m03sg9t3h3XKy02fpfs8wjRVdzRFhIvANWw3Gzl98gurOUrY/hj7IL2tBs84mum9jdpuXEEey/6dhXZ2dMTbY=
+	t=1769614499; cv=none; b=dHsHMRKQPbk2JrCBvrc4w/0SMJYw5Pb4dGF1BWTwT/qookZvYQLymUcP6LZPoUhGpo/Ripg3QEIs2zWm+u+TBpSVxiOTpT9Bd1bYDpL4TgSxcqTBVa/FsYo5QB07qtt9NbZhYYJdF5xUaU4cQFCRnT3YG3QV0Vg2EDUYKaD/6E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615109; c=relaxed/simple;
-	bh=VH1ZUqNShe7EENACYi+aGySGb7CRrQJhpNTztSvdeFg=;
+	s=arc-20240116; t=1769614499; c=relaxed/simple;
+	bh=bYQ9VN6mWGGbVnFVK8P+uDiuMnMEbDf2xbYEIxCsuPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2fGe50NabUKD1NeR+ayqJeSA2CFyoMKsk+8wWXQO4WnPq89IvelnR6RY/MytOqhc0Rzz4AH/vFzODKTmMPbD10HdKlGnNkEiZ+lKkLDIxq2Oz80BVYqnHSErQX1vBPg8tvuMEkq0SK0TZcZv49kNMJaGof+9esUpsj3kbCLonY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXgTJysJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD2DC4CEF1;
-	Wed, 28 Jan 2026 15:45:08 +0000 (UTC)
+	 MIME-Version; b=oEIp4UqM8vtJsUnYJBEBqP9Z6gqSxjesWcPJuvG79WIc2oNFqCVaEKCwP+ckV8ESNRr+4vuJ6M0XEV8t7n0UEd4y0wRFkfL5LJH1qr8K/B7HbRrREAJ4iz/25RhGvrNRXvId7Jn5RRq6dNWuiGPkwjwqZpeUXpDNtSt6ZSJX2vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Axf1Ez4f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F77C4CEF1;
+	Wed, 28 Jan 2026 15:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615109;
-	bh=VH1ZUqNShe7EENACYi+aGySGb7CRrQJhpNTztSvdeFg=;
+	s=korg; t=1769614498;
+	bh=bYQ9VN6mWGGbVnFVK8P+uDiuMnMEbDf2xbYEIxCsuPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXgTJysJ1UjTAXFQTlXr6rofuzljdYhS2GajXCKfNtE59GttE8C74BvDHZRQ4rAho
-	 drJIQ6wiBE+8kywcLVogk2l7HCs2aFjQSqluBw6q572bxxmcVIrjMzV2yfb1fD6+0B
-	 VJIkzK6G1KuNXtiOVxVYL4YIpzrWLCJY+pnR3TXo=
+	b=Axf1Ez4ftGXJESmRM+VrezKcJYIytQPsksJpBZHbliqnnecE5DVsDDllHluZqRC8l
+	 X1otXWAW9ixNfgXQPEMVC5McyPTalZerSDSluhnsaOmJB9OqhFiSsRao79gjpAXs6P
+	 bG025S/Ooqe3cCkyExb3OlU64HWy8VrwuQOS7vtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	feng <alec.jiang@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 049/169] Input: i8042 - add quirk for ASUS Zenbook UX425QA_UM425QA
+	Felix Gu <gu_0233@qq.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 156/254] spi: spi-sprd-adi: Fix double free in probe error path
 Date: Wed, 28 Jan 2026 16:22:12 +0100
-Message-ID: <20260128145335.781663804@linuxfoundation.org>
+Message-ID: <20260128145350.425259103@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +66,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212316-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212132-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.990];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2656AA4783
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,alibaba.com:email]
+X-Rspamd-Queue-Id: 1F86CA43F4
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: feng <alec.jiang@gmail.com>
+From: Felix Gu <gu_0233@qq.com>
 
-commit 2934325f56150ad8dab8ab92cbe2997242831396 upstream.
+[ Upstream commit 383d4f5cffcc8df930d95b06518a9d25a6d74aac ]
 
-The ASUS Zenbook UX425QA_UM425QA fails to initialize the keyboard after
-a cold boot.
+The driver currently uses spi_alloc_host() to allocate the controller
+but registers it using devm_spi_register_controller().
 
-A quirk already exists for "ZenBook UX425", but some Zenbooks report
-"Zenbook" with a lowercase 'b'. Since DMI matching is case-sensitive,
-the existing quirk is not applied to these "extra special" Zenbooks.
+If devm_register_restart_handler() fails, the code jumps to the
+put_ctlr label and calls spi_controller_put(). However, since the
+controller was registered via a devm function, the device core will
+automatically call spi_controller_put() again when the probe fails.
+This results in a double-free of the spi_controller structure.
 
-Testing confirms that this model needs the same quirks as the ZenBook
-UX425 variants.
+Fix this by switching to devm_spi_alloc_host() and removing the
+manual spi_controller_put() call.
 
-Signed-off-by: feng <alec.jiang@gmail.com>
-Link: https://patch.msgid.link/20260122013957.11184-1-alec.jiang@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ac17750 ("spi: sprd: Add the support of restarting the system")
+Signed-off-by: Felix Gu <gu_0233@qq.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Link: https://patch.msgid.link/tencent_AC7D389CE7E24318445E226F7CDCCC2F0D07@qq.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/spi/spi-sprd-adi.c | 33 ++++++++++-----------------------
+ 1 file changed, 10 insertions(+), 23 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -116,6 +116,17 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_NEVER)
- 	},
- 	{
-+		/*
-+		 * ASUS Zenbook UX425QA_UM425QA
-+		 * Some Zenbooks report "Zenbook" with a lowercase b.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Zenbook UX425QA_UM425QA"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_PROBE_DEFER | SERIO_QUIRK_RESET_NEVER)
-+	},
-+	{
- 		/* ASUS ZenBook UX425UA/QA */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index 262c11d977ea3..f25b34a91756f 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -528,7 +528,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	pdev->id = of_alias_get_id(np, "spi");
+ 	num_chipselect = of_get_child_count(np);
+ 
+-	ctlr = spi_alloc_host(&pdev->dev, sizeof(struct sprd_adi));
++	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(struct sprd_adi));
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 
+@@ -536,10 +536,8 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	sadi = spi_controller_get_devdata(ctlr);
+ 
+ 	sadi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+-	if (IS_ERR(sadi->base)) {
+-		ret = PTR_ERR(sadi->base);
+-		goto put_ctlr;
+-	}
++	if (IS_ERR(sadi->base))
++		return PTR_ERR(sadi->base);
+ 
+ 	sadi->slave_vbase = (unsigned long)sadi->base +
+ 			    data->slave_offset;
+@@ -551,18 +549,15 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	if (ret > 0 || (IS_ENABLED(CONFIG_HWSPINLOCK) && ret == 0)) {
+ 		sadi->hwlock =
+ 			devm_hwspin_lock_request_specific(&pdev->dev, ret);
+-		if (!sadi->hwlock) {
+-			ret = -ENXIO;
+-			goto put_ctlr;
+-		}
++		if (!sadi->hwlock)
++			return -ENXIO;
+ 	} else {
+ 		switch (ret) {
+ 		case -ENOENT:
+ 			dev_info(&pdev->dev, "no hardware spinlock supplied\n");
+ 			break;
+ 		default:
+-			dev_err_probe(&pdev->dev, ret, "failed to find hwlock id\n");
+-			goto put_ctlr;
++			return dev_err_probe(&pdev->dev, ret, "failed to find hwlock id\n");
+ 		}
+ 	}
+ 
+@@ -579,26 +574,18 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	ctlr->transfer_one = sprd_adi_transfer_one;
+ 
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to register SPI controller\n");
+-		goto put_ctlr;
+-	}
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "failed to register SPI controller\n");
+ 
+ 	if (sadi->data->restart) {
+ 		ret = devm_register_restart_handler(&pdev->dev,
+ 						    sadi->data->restart,
+ 						    sadi);
+-		if (ret) {
+-			dev_err(&pdev->dev, "can not register restart handler\n");
+-			goto put_ctlr;
+-		}
++		if (ret)
++			return dev_err_probe(&pdev->dev, ret, "can not register restart handler\n");
+ 	}
+ 
+ 	return 0;
+-
+-put_ctlr:
+-	spi_controller_put(ctlr);
+-	return ret;
+ }
+ 
+ static struct sprd_adi_data sc9860_data = {
+-- 
+2.51.0
+
 
 
 
