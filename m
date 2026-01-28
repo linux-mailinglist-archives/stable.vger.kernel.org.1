@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-212438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212054-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBl4DyM0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:59 +0100
+	id cB0WEd0temnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212054-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B98A5199
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A67CA42A4
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 745C630C80F2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8ECB332805E2
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B2F30B50F;
-	Wed, 28 Jan 2026 15:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68A1155757;
+	Wed, 28 Jan 2026 15:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9jlaChG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epXAe5Dy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D586C2FE044;
-	Wed, 28 Jan 2026 15:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0A2244667;
+	Wed, 28 Jan 2026 15:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615519; cv=none; b=lcwcK3lLa3yPda5hc4piRYnJIR9GG4z1mJ9fr74csP/ra0e4WCRijwZfHH6T86GFKBaXM2C8PDrRmOKT5L12Mdp2DO7cFqD6yF8ltZiwO2dSZ+m88sAw+RPGm5EZGrYKDmiGcv7qNHJi7MoJVv3pYG//Q0gXFzKlTa1k758/pMo=
+	t=1769614246; cv=none; b=ZZQVTj9xK37zFWc9iuJu3Z7O6ACPtvtiIX1tt5q6lIHUvhznICxu50SvdGmZSBYkaeGxZUEPcmR80WJi19Mfhy8heCfpdjSvHekimuqENJT60c5WYV9+hA5WiuX1Ey9cmTJuv3JRcwTYb0DEFfXdy29RVldJuNGRfygywYc5i2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615519; c=relaxed/simple;
-	bh=dIWee2nD9/+w3t5V/WGxYvwHYAxrwJAsQdXvGZLnDaY=;
+	s=arc-20240116; t=1769614246; c=relaxed/simple;
+	bh=lYAzpUJaM/lf0nfhM3PPSvLXXRxHDvQpzlhd0OcEr2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATLpH9hxicp8fKgjBicDpsYfHAlz4eQ40pxg2DTFNYQhh9TDbTSy32hB1A5m0SyGuZTzT2H26vuG2xO2ArwAWGlXkAtnP0ScIxrmvYeEWR0G4kdgxVttsA2eGGOKYUJYrXibG0At9mNHFqLAfyuIO7S6kIfp1dVEAnrS7ZVpk4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9jlaChG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1A8C4CEF1;
-	Wed, 28 Jan 2026 15:51:58 +0000 (UTC)
+	 MIME-Version; b=U6e6P5tSu8hZlX2KWwva7GHNmDo8QWzLoQZu5tnK2DOkcunyZrRm+1hPS9pS0wazOf6dB41U16suznDVtrCvZdFELmQDhTo8sgOpCol4yR1EdCfh7zvuKDUVwv3RiHWTHs6qCBNSHM286IbZ5pxUvOKr5GqT5Jr/hF+HBIiPUrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epXAe5Dy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0096DC4CEF1;
+	Wed, 28 Jan 2026 15:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615519;
-	bh=dIWee2nD9/+w3t5V/WGxYvwHYAxrwJAsQdXvGZLnDaY=;
+	s=korg; t=1769614246;
+	bh=lYAzpUJaM/lf0nfhM3PPSvLXXRxHDvQpzlhd0OcEr2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v9jlaChGMFFtnjuw3oxIb4ftjlBdda/3Qzt6GgXx0OkRQHnh1nc7spZ1xJKMQwGFz
-	 vdFLX4aAmNJrsE/heI8igFf3VN6zAi8CYwAR6S8fAwA6osrS5LOrFLerh+8pgXuuXS
-	 BCocg4gCajqSnMESuTtjY6c4RDl/VKakQhfSQ5+o=
+	b=epXAe5Dy761DXg1lvuqj3BPQA6Xf2WirnEMyrwIT/cRUh2eZYkHzLY/Ka8nQwNNjK
+	 wtkurLgP5j3+9gHopiE8K4DXnzLyA6RlLWLyBeapqjAl8ri8GY/Jkl+/pvp9mrWiKA
+	 25p2n8Syor8q/j4BHs1CG0q4jEBbAMqc60c2gwZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 009/227] pmdomain: qcom: rpmhpd: Add MXC to SC8280XP
-Date: Wed, 28 Jan 2026 16:20:54 +0100
-Message-ID: <20260128145344.675085257@linuxfoundation.org>
+	Yu Kuai <yukuai3@huawei.com>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 079/254] dmaengine: at_hdmac: fix device leak on of_dma_xlate()
+Date: Wed, 28 Jan 2026 16:20:55 +0100
+Message-ID: <20260128145347.536341058@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,81 +69,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212438-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212054-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: 50B98A5199
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email]
+X-Rspamd-Queue-Id: 8A67CA42A4
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 5bc3e720e725cd5fa34875fa1e5434d565858067 ]
+commit b9074b2d7a230b6e28caa23165e9d8bc0677d333 upstream.
 
-This was apparently accounted for in dt-bindings, but never made its
-way into the driver.
+Make sure to drop the reference taken when looking up the DMA platform
+device during of_dma_xlate() when releasing channel resources.
 
-Fix it for SC8280XP and its VDD_GFX-less cousin, SA8540P.
+Note that commit 3832b78b3ec2 ("dmaengine: at_hdmac: add missing
+put_device() call in at_dma_xlate()") fixed the leak in a couple of
+error paths but the reference is still leaking on successful allocation.
 
-Fixes: f68f1cb3437d ("soc: qcom: rpmhpd: add sc8280xp & sa8540p rpmh power-domains")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20251202-topic-8280_mxc-v2-2-46cdf47a829e@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bbe89c8e3d59 ("at_hdmac: move to generic DMA binding")
+Fixes: 3832b78b3ec2 ("dmaengine: at_hdmac: add missing put_device() call in at_dma_xlate()")
+Cc: stable@vger.kernel.org	# 3.10: 3832b78b3ec2
+Cc: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-2-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/qcom/rpmhpd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/dma/at_hdmac.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pmdomain/qcom/rpmhpd.c b/drivers/pmdomain/qcom/rpmhpd.c
-index 4faa8a2561862..4c3cbf3abc750 100644
---- a/drivers/pmdomain/qcom/rpmhpd.c
-+++ b/drivers/pmdomain/qcom/rpmhpd.c
-@@ -246,6 +246,8 @@ static struct rpmhpd *sa8540p_rpmhpds[] = {
- 	[SC8280XP_MMCX_AO] = &mmcx_ao,
- 	[SC8280XP_MX] = &mx,
- 	[SC8280XP_MX_AO] = &mx_ao,
-+	[SC8280XP_MXC] = &mxc,
-+	[SC8280XP_MXC_AO] = &mxc_ao,
- 	[SC8280XP_NSP] = &nsp,
- };
+--- a/drivers/dma/at_hdmac.c
++++ b/drivers/dma/at_hdmac.c
+@@ -1755,6 +1755,7 @@ static int atc_alloc_chan_resources(stru
+ static void atc_free_chan_resources(struct dma_chan *chan)
+ {
+ 	struct at_dma_chan	*atchan = to_at_dma_chan(chan);
++	struct at_dma_slave	*atslave;
  
-@@ -675,6 +677,8 @@ static struct rpmhpd *sc8280xp_rpmhpds[] = {
- 	[SC8280XP_MMCX_AO] = &mmcx_ao,
- 	[SC8280XP_MX] = &mx,
- 	[SC8280XP_MX_AO] = &mx_ao,
-+	[SC8280XP_MXC] = &mxc,
-+	[SC8280XP_MXC_AO] = &mxc_ao,
- 	[SC8280XP_NSP] = &nsp,
- 	[SC8280XP_QPHY] = &qphy,
- };
--- 
-2.51.0
-
+ 	BUG_ON(atc_chan_is_enabled(atchan));
+ 
+@@ -1764,8 +1765,12 @@ static void atc_free_chan_resources(stru
+ 	/*
+ 	 * Free atslave allocated in at_dma_xlate()
+ 	 */
+-	kfree(chan->private);
+-	chan->private = NULL;
++	atslave = chan->private;
++	if (atslave) {
++		put_device(atslave->dma_dev);
++		kfree(atslave);
++		chan->private = NULL;
++	}
+ 
+ 	dev_vdbg(chan2dev(chan), "free_chan_resources: done\n");
+ }
 
 
 
