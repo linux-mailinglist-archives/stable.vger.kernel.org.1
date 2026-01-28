@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212056-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iL6MGAcyemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:59 +0100
+	id 8ASqGu8temnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212056-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC04CA4D16
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B27ABA42D7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0ABB4307158C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7B253315E264
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4380D3033C3;
-	Wed, 28 Jan 2026 15:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA0026ED4F;
+	Wed, 28 Jan 2026 15:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxmU6Zii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ryw3ZCHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFA72FE044;
-	Wed, 28 Jan 2026 15:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D2113B7A3;
+	Wed, 28 Jan 2026 15:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615445; cv=none; b=DTSdgsz85e2sTD1jF/xG8oNusIKyeXm+Sc/92z4wCD2jbSgx8kMKGm8E74yY6urcL20vih2J3R8pY9efQqm3E+wXZI4/bQ2PRZWD1/W6w0MuaYVIqpPqIpywA6INb2Z3ZfgU6/NAm9kqlTBEx3okwZNAQmc/4FCNW9NaG1ToK34=
+	t=1769614253; cv=none; b=h/n9kCFSGsm4OCvedXEAvb4hmk/h5JMQEK0gNMNDPxVPvpAzxVFEIZeMu8MMf/K4sZv/xpihc8buqULri8n9wG4614wPG65zqI7qKl1h4GyNnq1p5+5PlK8XVq8GfQ4Qhz23USOpc64TgX4L4tdvbnu2CaWw9GX0q66z+VpnVG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615445; c=relaxed/simple;
-	bh=AIeXJKwx2MdNMJRbSO/ne61IFOMjWJpcgojp5Hf8LUQ=;
+	s=arc-20240116; t=1769614253; c=relaxed/simple;
+	bh=9/nPAM6bhJKlOac0r+IBNFuSZh1MYwp8Z2826sauD0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q34G6HRjw+QTJELUXp8K7KTVdPxeWzbpBhm6E5diC2myzCZC+GywBMqRxL8KO4NOx3Z9SusYUmVdvMercEAwtHqwxle9J13ynAEaE9c5KpVot9tyxp1wDC1tQveVyGW43rUIpbC9XosboKIqPMSHCwDcHSoEU+ZK8iVZzOoMOsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxmU6Zii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62592C4CEF1;
-	Wed, 28 Jan 2026 15:50:44 +0000 (UTC)
+	 MIME-Version; b=qRgBX+67wRoBQ15rpWkfodM1ejRrmTiFfknmUQ2xDeQsm+JAmZ1vsJakTAcZhAzpzegfUlKSz3o18udjrm28geFnp0Vo0Aor82s9QMLVmFsxW1pnoXyDsZI5b2qHl9ypYh8SZ+VSvRf1T1BrHvBGhBSjzMitk1UGIxEXa2HOpos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ryw3ZCHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0157C4CEF7;
+	Wed, 28 Jan 2026 15:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615444;
-	bh=AIeXJKwx2MdNMJRbSO/ne61IFOMjWJpcgojp5Hf8LUQ=;
+	s=korg; t=1769614253;
+	bh=9/nPAM6bhJKlOac0r+IBNFuSZh1MYwp8Z2826sauD0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxmU6Ziil+y1Xv4dW/Ti4UekwtPvdCRN6zD0yqC/Rr48uvF4U8biiXyVfeq/55Ixj
-	 IndxPmYOnFshhrZHxT8Kacp5anDdHq9FSLBquYAC/S2+Y175ZeC8yn+5VDi5IyiWP4
-	 IRvniMRRmJph96xOCrG08alxMPq8xL2YMZUqRTT8=
+	b=Ryw3ZCHOxpCsjfo+YYeBeO4PNkIft7jptZe1FAvRFoCMJPJiXAV3P4fLIC85kDTbX
+	 PTnStGqP4jA5e/yOoDF03Bq0n8q0ePnp4Ab20DaHGHQtR5mtDNaQrXuru2P+UrQc9N
+	 Zd3f1ZS7pV8PXoOHELAjnt4GENOQ1XghFY+Rv8Fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Wolf <wolf@yoxt.cc>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 012/227] ata: libata: Call ata_dev_config_lpm() for ATAPI devices
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 081/254] dmaengine: dw: dmamux: fix OF node leak on route allocation failure
 Date: Wed, 28 Jan 2026 16:20:57 +0100
-Message-ID: <20260128145344.782098855@linuxfoundation.org>
+Message-ID: <20260128145347.609259864@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,77 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212416-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212056-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CC04CA4D16
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email]
+X-Rspamd-Queue-Id: B27ABA42D7
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 8f3fb33f8f3f825c708ece800c921977c157f9b6 ]
+commit ec25e60f9f95464aa11411db31d0906b3fb7b9f2 upstream.
 
-Commit d360121832d8 ("ata: libata-core: Introduce ata_dev_config_lpm()")
-introduced ata_dev_config_lpm(). However, it only called this function for
-ATA_DEV_ATA and ATA_DEV_ZAC devices, not for ATA_DEV_ATAPI devices.
+Make sure to drop the reference taken to the DMA master OF node also on
+late route allocation failures.
 
-Additionally, commit d99a9142e782 ("ata: libata-core: Move device LPM quirk
-settings to ata_dev_config_lpm()") moved the LPM quirk application from
-ata_dev_configure() to ata_dev_config_lpm(), causing LPM quirks for ATAPI
-devices to no longer be applied.
-
-Call ata_dev_config_lpm() also for ATAPI devices, such that LPM quirks are
-applied for ATAPI devices with an entry in __ata_dev_quirks once again.
-
-Fixes: d360121832d8 ("ata: libata-core: Introduce ata_dev_config_lpm()")
-Fixes: d99a9142e782 ("ata: libata-core: Move device LPM quirk settings to ata_dev_config_lpm()")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Tested-by: Wolf <wolf@yoxt.cc>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 134d9c52fca2 ("dmaengine: dw: dmamux: Introduce RZN1 DMA router support")
+Cc: stable@vger.kernel.org	# 5.19
+Cc: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20251117161258.10679-6-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/dma/dw/rzn1-dmamux.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 1216b4f2eb904..0a21804b133a4 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -3116,6 +3116,8 @@ int ata_dev_configure(struct ata_device *dev)
- 				     ata_mode_string(xfer_mask),
- 				     cdb_intr_string, atapi_an_string,
- 				     dma_dir_string);
-+
-+		ata_dev_config_lpm(dev);
+--- a/drivers/dma/dw/rzn1-dmamux.c
++++ b/drivers/dma/dw/rzn1-dmamux.c
+@@ -90,7 +90,7 @@ static void *rzn1_dmamux_route_allocate(
+ 
+ 	if (test_and_set_bit(map->req_idx, dmamux->used_chans)) {
+ 		ret = -EBUSY;
+-		goto free_map;
++		goto put_dma_spec_np;
  	}
  
- 	/* determine max_sectors */
--- 
-2.51.0
-
+ 	mask = BIT(map->req_idx);
+@@ -103,6 +103,8 @@ static void *rzn1_dmamux_route_allocate(
+ 
+ clear_bitmap:
+ 	clear_bit(map->req_idx, dmamux->used_chans);
++put_dma_spec_np:
++	of_node_put(dma_spec->np);
+ free_map:
+ 	kfree(map);
+ put_device:
 
 
 
