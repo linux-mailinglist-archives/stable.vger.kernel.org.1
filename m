@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mDv7Jgs2eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212405-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:07 +0100
+	id GIKKCOM7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA424A5519
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 689F2A5F7D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 57D4E3058B57
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E1A0330868A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067C02F25EF;
-	Wed, 28 Jan 2026 15:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A64F2DF138;
+	Wed, 28 Jan 2026 16:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zm1oUnal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWjycgHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE4C288C22;
-	Wed, 28 Jan 2026 15:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B2081AA8;
+	Wed, 28 Jan 2026 16:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615407; cv=none; b=FXiCP35ULuMXIYv3PoBhNh9VElmxgFL/HCyWbTkhx6vedhdDRtrHsilv48xk9NSbGLdHlJ1m1aNrC8R+XW2NQo14/uXIzuFo7IdehgJYSBJMPmjqgZ65J585L+PLonl9RL3F6GhncJaa87TZ2bpJYkat79x+icfvrwVUOBhtmJY=
+	t=1769616045; cv=none; b=P0AaWMM3h+nzWsTJMBI8Cd942i+zJ9IGjDfsN/3SzppqgRexIVIW9EpaYez/xhWDBLhyrjopJUeHWh3mrBzs9QQwDyu7wQ47//uiE0dY34NGYFmMXsd/DL8wT+lI4IP9KxeZB09qK07K4w8Y5XWR1QRFF9VnPhfxmCoW8SbucXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615407; c=relaxed/simple;
-	bh=XP7iCW/fFtecCpQAoo011EIJc0uVNDNz5KgGXu2SuZo=;
+	s=arc-20240116; t=1769616045; c=relaxed/simple;
+	bh=U5U+Dxyzbkv+frTwShZe3aDQQauM75213JRjwrOXeAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y946f0m8/ps3jmbcvRGEcX+tkuLVarrqkSZxFxaIo046gElc5LDbD0TREmz3sTZiAQ2BS6/VJNGS3qkLg1oQx46Zxs1nw32TDHIihUk9koZwDgT4yk14+T/ZvyQ4G1CDpMPOgsR4hzvYlPhTEKx01vtYxm4nO+MttCoTFcAk7HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zm1oUnal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00BBC4CEF1;
-	Wed, 28 Jan 2026 15:50:06 +0000 (UTC)
+	 MIME-Version; b=p5ArjUfH4tF4zngiPnM8Xzr6VMXW7e4m6xGtvPhmAHc2deTwM7JOmkOWua8V9MknEE26fIhvZ1wV5qUf9UgIGNjZNdl3+9l/bLiMqAwlPSnP66m/uDA3SpJS+/C3HI0odafaDjNtg31j6fS4kPIykLN69T4vmnC/0eOiRPCdpHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWjycgHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4697AC4CEF1;
+	Wed, 28 Jan 2026 16:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615407;
-	bh=XP7iCW/fFtecCpQAoo011EIJc0uVNDNz5KgGXu2SuZo=;
+	s=korg; t=1769616045;
+	bh=U5U+Dxyzbkv+frTwShZe3aDQQauM75213JRjwrOXeAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zm1oUnalVOY7P1PIgQ0wCJEd1J49Mxmr/gxRErnsPl721N/LM7VVcXSqeeeenoFE5
-	 XornW4Sa/DqWHhVWgmioTlEBIFtwlxwLsG5LkWKyUWHGvhjVtZYPmVI3D+ogVPoPdm
-	 2Y8u1+gyCXIo0TKWefFTlSXceM1iwpA88sh8bg8s=
+	b=iWjycgHgYG2B4oC1GG7Me4OmzbcKpQWNey7EdZM/YucXiq89YkmmkTrR3KKPk96z+
+	 arfJVLs21zaBfxgJvQwIKbqFFkXbCcbtcX9x1GyI/hYBRwYJgcpXHVXt/k7nb1zdHG
+	 FIbfunXBg7iOVJGssLqDgetEBRwnUMRyosNHSHQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 152/169] iio: core: add missing mutex_destroy in iio_dev_release()
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Egorenkov <egorenar@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.18 190/227] s390/boot/vmlinux.lds.S: Ensure bzImage ends with SecureBoot trailer
 Date: Wed, 28 Jan 2026 16:23:55 +0100
-Message-ID: <20260128145339.475910119@linuxfoundation.org>
+Message-ID: <20260128145351.282542187@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +63,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212405-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212595-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,analog.com:email]
-X-Rspamd-Queue-Id: BA424A5519
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 689F2A5F7D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Alexander Egorenkov <egorenar@linux.ibm.com>
 
-[ Upstream commit f5d203467a31798191365efeb16cd619d2c8f23a ]
+commit ddc6cbef3ef10359b5640b4ee810a520edc73586 upstream.
 
-Add missing mutex_destroy() call in iio_dev_release() to properly
-clean up the mutex initialized in iio_device_alloc(). Ensure proper
-resource cleanup and follows kernel practices.
+Since commit 3e86e4d74c04 ("kbuild: keep .modinfo section in
+vmlinux.unstripped") the .modinfo section which has SHF_ALLOC ends up
+in bzImage after the SecureBoot trailer. This breaks SecureBoot because
+the bootloader can no longer find the SecureBoot trailer with kernel's
+signature at the expected location in bzImage. To fix the bug,
+move discarded sections before the ELF_DETAILS macro and discard
+the .modinfo section which is not needed by the decompressor.
 
-Found by code review.
-
-While at it, create a lockdep key before mutex initialisation.
-This will help with converting it to the better API in the future.
-
-Fixes: 847ec80bbaa7 ("Staging: IIO: core support for device registration and management")
-Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 9910159f0659 ("iio: core: add separate lockdep class for info_exist_lock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3e86e4d74c04 ("kbuild: keep .modinfo section in vmlinux.unstripped")
+Cc: stable@vger.kernel.org
+Suggested-by: Vasily Gorbik <gor@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Tested-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/industrialio-core.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/s390/boot/vmlinux.lds.S |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1628,6 +1628,9 @@ static void iio_dev_release(struct devic
+--- a/arch/s390/boot/vmlinux.lds.S
++++ b/arch/s390/boot/vmlinux.lds.S
+@@ -137,6 +137,15 @@ SECTIONS
+ 	}
+ 	_end = .;
  
- 	iio_device_detach_buffers(indio_dev);
- 
-+	mutex_destroy(&iio_dev_opaque->info_exist_lock);
-+	mutex_destroy(&iio_dev_opaque->mlock);
++	/* Sections to be discarded */
++	/DISCARD/ : {
++		COMMON_DISCARDS
++		*(.eh_frame)
++		*(*__ksymtab*)
++		*(___kcrctab*)
++		*(.modinfo)
++	}
 +
- 	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
+ 	DWARF_DEBUG
+ 	ELF_DETAILS
  
- 	ida_free(&iio_ida, iio_dev_opaque->id);
-@@ -1672,8 +1675,7 @@ struct iio_dev *iio_device_alloc(struct
- 	indio_dev->dev.type = &iio_device_type;
- 	indio_dev->dev.bus = &iio_bus_type;
- 	device_initialize(&indio_dev->dev);
--	mutex_init(&iio_dev_opaque->mlock);
--	mutex_init(&iio_dev_opaque->info_exist_lock);
-+
- 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
- 
- 	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
-@@ -1696,6 +1698,9 @@ struct iio_dev *iio_device_alloc(struct
- 	lockdep_register_key(&iio_dev_opaque->mlock_key);
- 	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
- 
-+	mutex_init(&iio_dev_opaque->mlock);
-+	mutex_init(&iio_dev_opaque->info_exist_lock);
-+
- 	return indio_dev;
+@@ -161,12 +170,4 @@ SECTIONS
+ 		*(.rela.*) *(.rela_*)
+ 	}
+ 	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
+-
+-	/* Sections to be discarded */
+-	/DISCARD/ : {
+-		COMMON_DISCARDS
+-		*(.eh_frame)
+-		*(*__ksymtab*)
+-		*(___kcrctab*)
+-	}
  }
- EXPORT_SYMBOL(iio_device_alloc);
 
 
 
