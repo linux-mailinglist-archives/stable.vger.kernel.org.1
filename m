@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sD+ECXA6emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212496-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:33:52 +0100
+	id +JPYIuoxemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C389A5D03
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:33:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA5EDA4CD1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5078631D8005
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:55:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26C4232060EC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D48301465;
-	Wed, 28 Jan 2026 15:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761E32D3EC7;
+	Wed, 28 Jan 2026 15:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PujbZ5z/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaN39HnJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D875A2857CD;
-	Wed, 28 Jan 2026 15:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CAB2F3618;
+	Wed, 28 Jan 2026 15:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615711; cv=none; b=Yh+U5uLC2nWJOQP+Q934qPczMuLavHQe9Jk/2nXBgZ23V9Q0Ykd3Qmi8sbLoEV+iol5c2rby/atSsBOHusDAHSfpn7oNJsx71BgintP3HcaRR/wpa5pOBAcAA/LMFgJoipF+mNh9UMAFRq0oDBLzgsqncHlmWonAu9wBJnT1Ddo=
+	t=1769615123; cv=none; b=M9ETqK2CJZlHL7WJQITcIg4ZDtPxQEKct56JAUSmr5WkHQSrWDlZGdCijVEZJUGSfq+ZJXyGKvXEUNuKGCyOcR3FhAVodLHxPyYqrkRHgNA0qRQeOwssBZB7dlLAwFMvzn4Y6HG/eDQDc+HCLWaefJh/Y/Y5s8x2B/lrAN5lc9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615711; c=relaxed/simple;
-	bh=pkXGO+Hm6y+ZfImnuETDJ/iOmWxW+MmVsybg3SiKCIc=;
+	s=arc-20240116; t=1769615123; c=relaxed/simple;
+	bh=UWVwbfB1f+rfn2L8QFPTihKFppJeLq4YQmGfRh6KN5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IYzMJuOrIIslq7WogiI1xyD4BXkxZY1wOzck5Kat5+XKhxVSTwDnZA+oFLfRoamdaXrG6sJwBgRBvyB+sJuMnu4Qb4+B/JjzskBYFiVFOXcseG/5QpXNBjJ71vJiB+Z4jRLoVGtv41w6OvSPRZA+9wDb17kX28oF6136PVCq9XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PujbZ5z/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2F0C4CEF1;
-	Wed, 28 Jan 2026 15:55:11 +0000 (UTC)
+	 MIME-Version; b=ept/o6oWfchyejHc9hzPMT16pGQtlZFCLWOFpjPvmzZSycJh27N2ZXXb0DBKqKsYFo7OjVKXZcLTOdp0EYjBkvZl84tR+LN/StOB+xhQdzktp+yStLMfNRIeO51yQ3jOgSxaD9aQZShvVSKjDdXO42iftZgChV43GnvmfyBFFQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaN39HnJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15CDC4CEF1;
+	Wed, 28 Jan 2026 15:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615711;
-	bh=pkXGO+Hm6y+ZfImnuETDJ/iOmWxW+MmVsybg3SiKCIc=;
+	s=korg; t=1769615123;
+	bh=UWVwbfB1f+rfn2L8QFPTihKFppJeLq4YQmGfRh6KN5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PujbZ5z/5r7I0G2tRhvW4VS489rTwEyQIkjZIa6QiHXg93w9dLA0aQdM3bBdjJ+eK
-	 6s5pdqmht6FAJfM9KlaDEfLvULenoCnDHGc7oDtDVp8hXAxbpEXOjed3uc1P0jaYLn
-	 v8duWZSA9IoxwuHQ/nN0lHgLKMqSv3ppbq35wveA=
+	b=zaN39HnJBXEYYGkJft3TpP8AXyJurXkL7yEG8CgBEiWZgAqSqWsGtyxJEK7qoDt8u
+	 o/E3KXgjwnH6kJZvsBk1ftrhJzexnCqUccYc+W2C321tSrFCaV6THSCw8nPjmxXMaJ
+	 vcgMb6y1p9PPr+/Zh+FZdztdW2dFDT2qPS4rGTbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 091/227] platform/x86/amd: Fix memory leak in wbrf_record()
+	Ondrej Jirman <megi@xff.cz>,
+	Rudraksha Gupta <guptarud@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.12 053/169] arm64: dts: rockchip: Fix voltage threshold for volume keys for Pinephone Pro
 Date: Wed, 28 Jan 2026 16:22:16 +0100
-Message-ID: <20260128145347.609097305@linuxfoundation.org>
+Message-ID: <20260128145335.923339393@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212496-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212320-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,xff.cz,gmail.com,ucw.cz,sntech.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.986];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 6C389A5D03
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EA5EDA4CD1
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Ondrej Jirman <megi@xff.cz>
 
-[ Upstream commit 2bf1877b7094c684e1d652cac6912cfbc507ad3e ]
+commit 5497ffe305b2ea31ae62d4a311d7cabfb671f54a upstream.
 
-The tmp buffer is allocated using kcalloc() but is not freed if
-acpi_evaluate_dsm() fails. This causes a memory leak in the error path.
+Previously sometimes pressing the volume-down button would register as
+a volume-up button. Match the thresholds as shown in the Pinephone Pro
+schematic.
 
-Fix this by explicitly freeing the tmp buffer in the error handling
-path of acpi_evaluate_dsm().
+Tests:
 
-Fixes: 58e82a62669d ("platform/x86/amd: Add support for AMD ACPI based Wifi band RFI mitigation feature")
-Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Link: https://patch.msgid.link/20260106091318.747019-1-zilin@seu.edu.cn
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+~ $ evtest
+    // Mashed the volume down ~100 times with varying intensity
+    Event: time xxx, type 1 (EV_KEY), code 114 (KEY_VOLUMEDOWN), value 1
+    Event: time xxx, type 1 (EV_KEY), code 114 (KEY_VOLUMEDOWN), value 0
+    // Mashed the volume up ~100 times with varying intensity
+    Event: time xxx, type 1 (EV_KEY), code 115 (KEY_VOLUMEUP), value 1
+    Event: time xxx, type 1 (EV_KEY), code 115 (KEY_VOLUMEUP), value 0
+
+Fixes: d3150ed53580 ("arm64: dts: rockchip: Add support for volume keys to rk3399-pinephone-pro")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
+Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
+Reviewed-by: Pavel Machek <pavel@ucw.cz>
+Link: https://patch.msgid.link/20251124-ppp_light_accel_mag_vol-down-v5-4-f9a10a0a50eb@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/wbrf.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/wbrf.c b/drivers/platform/x86/amd/wbrf.c
-index dd197b3aebe06..0f58d252b620a 100644
---- a/drivers/platform/x86/amd/wbrf.c
-+++ b/drivers/platform/x86/amd/wbrf.c
-@@ -104,8 +104,10 @@ static int wbrf_record(struct acpi_device *adev, uint8_t action, struct wbrf_ran
- 	obj = acpi_evaluate_dsm(adev->handle, &wifi_acpi_dsm_guid,
- 				WBRF_REVISION, WBRF_RECORD, &argv4);
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+@@ -40,13 +40,13 @@
+ 		button-up {
+ 			label = "Volume Up";
+ 			linux,code = <KEY_VOLUMEUP>;
+-			press-threshold-microvolt = <100000>;
++			press-threshold-microvolt = <2000>;
+ 		};
  
--	if (!obj)
-+	if (!obj) {
-+		kfree(tmp);
- 		return -EINVAL;
-+	}
+ 		button-down {
+ 			label = "Volume Down";
+ 			linux,code = <KEY_VOLUMEDOWN>;
+-			press-threshold-microvolt = <600000>;
++			press-threshold-microvolt = <300000>;
+ 		};
+ 	};
  
- 	if (obj->type != ACPI_TYPE_INTEGER) {
- 		ret = -EINVAL;
--- 
-2.51.0
-
 
 
 
