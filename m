@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212492-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJwWIbgsemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:20 +0100
+	id UEJ1OQE0eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212492-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F43A4041
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE23A514F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 468833013ECA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 904EA30AF63A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1A12D1914;
-	Wed, 28 Jan 2026 15:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5901E301465;
+	Wed, 28 Jan 2026 15:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlYcjlEP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRyvuyRa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7E22D0C99;
-	Wed, 28 Jan 2026 15:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6E52857CD;
+	Wed, 28 Jan 2026 15:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614496; cv=none; b=DuPNRPFOwt0sweZyjny9bd1JJ+sSn/+NNj2E0y7GVCEW6y8pT2GqcNQhOu3cuyRdhfWDRID0bAu4OEGiJVh73bHXBtG9YwXaysq1M+mk1F3bLeS/ZjLIficLUuBYsp5tGfNZ0Sf/OJZW3A0wiIz3PVBGQMjDlEbDNF8ipahI0CY=
+	t=1769615698; cv=none; b=olEGG/rrDMiqzxCEQs5sFQg8UouaKyxxv7w6PkyIewH6mdUmt6WJudpuvyk88YdrPheIAU1Nv57z5x00exJ7wj+WiHcJ3uJpuYwLoEGOAmc2T78xTcrZ5JBsxSBPCxLu34lNxdvA5UhsuTdfxWOhgVvQFNRHLUShvDtQNaIpdg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614496; c=relaxed/simple;
-	bh=YjwjOiqyiSu8XbLdAmnfBai8l+7AOZPZcPgLX69Bbt8=;
+	s=arc-20240116; t=1769615698; c=relaxed/simple;
+	bh=+v9xhxd+nsnwJgyDJn8UStmI9kxd1dfAEu7X7TBXptg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNoTSsAEufeEI7DZy+UFy4mEoqf4vDc1xB0JAw9IYBJZapxHBd7y+D1pEsL1BnS9Aq/U7Zc8Cm0U9Iq6IK+7YRi/Npuy16gCh39MKv4P6RXyeSY99cQ5V1I123owQi2FM65LPpUesQ1haG0ZZx8mFMLn5NSrTyrDJUFIER5WPWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BlYcjlEP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D43DC4CEF1;
-	Wed, 28 Jan 2026 15:34:55 +0000 (UTC)
+	 MIME-Version; b=mr0s4BG464PwMzIdyYlPLt/DQOwDR7Jy5Dycam6lLLynXatotAV8YT86bFVqxJLHOExZfT4CR/cDrjYfT9MDIVHqFIR0t4SWFS9VV7eys3TXzpAp42WKRQaqnSs+M9PM/DL2LIiK2Sy25WQ5DKRIbVicJgoCPFohtjYevlD6bW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRyvuyRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837BEC4CEF1;
+	Wed, 28 Jan 2026 15:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614495;
-	bh=YjwjOiqyiSu8XbLdAmnfBai8l+7AOZPZcPgLX69Bbt8=;
+	s=korg; t=1769615698;
+	bh=+v9xhxd+nsnwJgyDJn8UStmI9kxd1dfAEu7X7TBXptg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BlYcjlEPGBlMByWSLiQR9YrudtvIV3a8t3u+l+pdWI+8Im0kAR28FrEqNorBZPw1J
-	 oyVOSoRLxf2aZD6bGKKjJbW+VuMqKiSiDC+uwuNP/2U4dpnRVV46Pt4k/Ur0dENx1S
-	 jvmPwyvDOGnIUc4XW3UfWTKTmVHzsGQByHNn8g/k=
+	b=TRyvuyRa418CUR/RblTihmR1hrd0asxxTFZLNZtWScbFvyIwviy1LXha7gYdw5pzQ
+	 Af8k9rgeW53XKTBgSnW+hS/JjPO/DFI4u9Uipc5lVI6KZexecFBVx2DmsD7aUCEPi/
+	 t3Emc/wYRlNM1+7CErh1YWmSoHVql87pIuzfqDqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Arusekk <floss@arusekk.pl>,
+	Nicolas Schier <nsc@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/254] spi: sprd-adi: switch to use spi_alloc_host()
-Date: Wed, 28 Jan 2026 16:22:11 +0100
-Message-ID: <20260128145350.389382141@linuxfoundation.org>
+Subject: [PATCH 6.18 087/227] kconfig: fix static linking of nconf
+Date: Wed, 28 Jan 2026 16:22:12 +0100
+Message-ID: <20260128145347.468540301@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212131-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212492-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,44 +90,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: C9F43A4041
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arusekk.pl:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 5DE23A514F
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Arkadiusz Kozdra <floss@arusekk.pl>
 
-[ Upstream commit 0a3d087d09a8f52c02d0014bad63be99c53c4812 ]
+[ Upstream commit baaecfcac559bcac73206df447eb5c385fa22f2a ]
 
-Switch to use modern name function spi_alloc_host().
+When running make nconfig with a static linking host toolchain,
+the libraries are linked in an incorrect order,
+resulting in errors similar to the following:
 
-No functional changed.
+$ MAKEFLAGS='HOSTCC=cc\ -static' make nconfig
+/usr/bin/ld: /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/libpanel.a(p_new.o): in function `new_panel':
+(.text+0x13): undefined reference to `_nc_panelhook_sp'
+/usr/bin/ld: (.text+0x6c): undefined reference to `_nc_panelhook_sp'
 
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://msgid.link/r/20231128093031.3707034-2-yangyingliang@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 383d4f5cffcc ("spi: spi-sprd-adi: Fix double free in probe error path")
+Fixes: 1c5af5cf9308 ("kconfig: refactor ncurses package checks for building mconf and nconf")
+Signed-off-by: Arusekk <floss@arusekk.pl>
+Link: https://patch.msgid.link/20260110114808.22595-1-floss@arusekk.pl
+[nsc: Added comment about library order]
+Signed-off-by: Nicolas Schier <nsc@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sprd-adi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/nconf-cfg.sh | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 58c3badd9c79a..262c11d977ea3 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -528,7 +528,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	pdev->id = of_alias_get_id(np, "spi");
- 	num_chipselect = of_get_child_count(np);
+diff --git a/scripts/kconfig/nconf-cfg.sh b/scripts/kconfig/nconf-cfg.sh
+index a20290b1a37d8..4d08453f9bdb7 100755
+--- a/scripts/kconfig/nconf-cfg.sh
++++ b/scripts/kconfig/nconf-cfg.sh
+@@ -6,8 +6,9 @@ set -eu
+ cflags=$1
+ libs=$2
  
--	ctlr = spi_alloc_master(&pdev->dev, sizeof(struct sprd_adi));
-+	ctlr = spi_alloc_host(&pdev->dev, sizeof(struct sprd_adi));
- 	if (!ctlr)
- 		return -ENOMEM;
+-PKG="ncursesw menuw panelw"
+-PKG2="ncurses menu panel"
++# Keep library order for static linking (HOSTCC='cc -static')
++PKG="menuw panelw ncursesw"
++PKG2="menu panel ncurses"
+ 
+ if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
+ 	if ${HOSTPKG_CONFIG} --exists $PKG; then
+@@ -28,19 +29,19 @@ fi
+ # find ncurses by pkg-config.)
+ if [ -f /usr/include/ncursesw/ncurses.h ]; then
+ 	echo -D_GNU_SOURCE -I/usr/include/ncursesw > ${cflags}
+-	echo -lncursesw -lmenuw -lpanelw > ${libs}
++	echo -lmenuw -lpanelw -lncursesw > ${libs}
+ 	exit 0
+ fi
+ 
+ if [ -f /usr/include/ncurses/ncurses.h ]; then
+ 	echo -D_GNU_SOURCE -I/usr/include/ncurses > ${cflags}
+-	echo -lncurses -lmenu -lpanel > ${libs}
++	echo -lmenu -lpanel -lncurses > ${libs}
+ 	exit 0
+ fi
+ 
+ if [ -f /usr/include/ncurses.h ]; then
+ 	echo -D_GNU_SOURCE > ${cflags}
+-	echo -lncurses -lmenu -lpanel > ${libs}
++	echo -lmenu -lpanel -lncurses > ${libs}
+ 	exit 0
+ fi
  
 -- 
 2.51.0
