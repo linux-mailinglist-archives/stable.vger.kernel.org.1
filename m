@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-212436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212085-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CELNeg2eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:18:48 +0100
+	id kPpZL+UuemmO3wEAu9opvQ
+	(envelope-from <stable+bounces-212085-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9A49A5660
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:18:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43122A455D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8FCC930C894C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD16B30D3B7D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B24308F2E;
-	Wed, 28 Jan 2026 15:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57DB71E9B1A;
+	Wed, 28 Jan 2026 15:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oR2s4RLA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJJMsNkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E6D2F25EF;
-	Wed, 28 Jan 2026 15:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA3023EAB7;
+	Wed, 28 Jan 2026 15:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615513; cv=none; b=LteRG120dZK1GY6oRSNxINKEmSp71JqUWAG8X9PwLDwKmRhniuu3/Qaj9TwFHc7ldHivDAVIQdeT3VwTiF8f6f8HKosVwLgzV5bRXsDQEi5c86WBgtF7kePvnh6qg28VJZzgbyhAcDuuUse0ugF8lf8Uoyxt5YdSXvnLLVGWhd8=
+	t=1769614351; cv=none; b=fcCf4cuEKYZ+MTWKppybA14+xEREBMBHijRR0Th6zmi1rtJgdgZ1tq3RpWDVKPyNjkNQdPq0oL6mzAvRnGc3Laeco1utNOtMf8ocIphFvXihgQp2mUvcSMi9wVPNF6MKBqYPnuRf7jNZ615zFS8EFrsvJ/VAaDLgkTORL6dLilA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615513; c=relaxed/simple;
-	bh=9/HJalGuBTvqeRAYdHpIOTg0BquDeKMrU3qaI4BbGYE=;
+	s=arc-20240116; t=1769614351; c=relaxed/simple;
+	bh=zOiO/owIhBkG335VNECLQ6by/L/1jVB7BgP6/1WpxKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EUmzqJ+h3JRvIGupBddW2Fg/Wpksck5QYNTWyH51PCn1HwU42579NaJ7LtWbOlR5dKVEbL5k3SCteLTKm5q/DO52Gid1AV12Fn+Ej4ZjaMy/iM5Pf6CWih0jV+pJJg6XgZdPmaBgII3Pr9CJORsDuoW1LK/rxrL8G57g9SUMJNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oR2s4RLA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7300FC4CEF1;
-	Wed, 28 Jan 2026 15:51:52 +0000 (UTC)
+	 MIME-Version; b=LNNFkS5EI+M5MjaUN2ztuCgb4cy5kg19Ix5IwaKL/byUtHGDh5y6UZICcYbhvbRRybI3CrZ9xjeiKPiyYVc+aXzOb1NpoC5Gkgn+B6xrvHguZlACyJvfsqv9QBQKx66zdXQU5RoAgScsNGyxe56vc62FR2cpXVpER+FhcbDdb4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJJMsNkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F15AC116C6;
+	Wed, 28 Jan 2026 15:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615513;
-	bh=9/HJalGuBTvqeRAYdHpIOTg0BquDeKMrU3qaI4BbGYE=;
+	s=korg; t=1769614350;
+	bh=zOiO/owIhBkG335VNECLQ6by/L/1jVB7BgP6/1WpxKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oR2s4RLAih8fBzUw/WUlPZGdcEWc/jwZH8XCb+uA8pEEMJhsYnxW73uUP2I+q8yI6
-	 4DP7GC/h2VwUY4b6ZPS1BnEd0qssRjMf0hRZykqWBVQstvqdnnmEaqxhOvuiJs3zwS
-	 /YX/G/pWK1hqOVsnzkT/2Z6VAY5tLTBMCfSh3kAU=
+	b=kJJMsNkrT6pDyM+lTSe69qNBAhzb1c/o4EotWFgvx+eLsji2kEPGuqOvNBhwmL5cJ
+	 XWtz5YrB7mmlFgb5Q4w3i8fCPwh0B3524R6NMgYj2t8QUkB9Dmy6aEHUUuCY4Cxbqb
+	 zilAiZNRUz8Bb43K+PUHueCtwapOkBK2UJlbB0S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <mark@harmstone.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 007/227] btrfs: fix missing fields in superblock backup with BLOCK_GROUP_TREE
-Date: Wed, 28 Jan 2026 16:20:52 +0100
-Message-ID: <20260128145344.603465743@linuxfoundation.org>
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Zack Rusin <zack.rusin@broadcom.com>
+Subject: [PATCH 6.6 077/254] drm/vmwgfx: Fix an error return check in vmw_compat_shader_add()
+Date: Wed, 28 Jan 2026 16:20:53 +0100
+Message-ID: <20260128145347.465387371@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,78 +68,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212436-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212085-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[harmstone.com:email,suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: D9A49A5660
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 43122A455D
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <mark@harmstone.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 1d8f69f453c2e8a2d99b158e58e02ed65031fa6d ]
+commit bf72b4b7bb7dbb643d204fa41e7463894a95999f upstream.
 
-When the BLOCK_GROUP_TREE compat_ro flag is set, the extent root and
-csum root fields are getting missed.
+In vmw_compat_shader_add(), the return value check of vmw_shader_alloc()
+is not proper. Modify the check for the return pointer 'res'.
 
-This is because EXTENT_TREE_V2 treated these differently, and when
-they were split off this special-casing was mistakenly assigned to
-BGT rather than the rump EXTENT_TREE_V2. There's no reason why the
-existence of the block group tree should mean that we don't record the
-details of the last commit's extent root and csum root.
+Found by code review and compiled on ubuntu 20.04.
 
-Fix the code in backup_super_roots() so that the correct check gets
-made.
-
-Fixes: 1c56ab991903 ("btrfs: separate BLOCK_GROUP_TREE compat RO flag from EXTENT_TREE_V2")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <mark@harmstone.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 18e4a4669c50 ("drm/vmwgfx: Fix compat shader namespace")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/20251224091105.1569464-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_shader.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 0aa7e5d1b05f6..a5336f530c8ed 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1666,7 +1666,7 @@ static void backup_super_roots(struct btrfs_fs_info *info)
- 	btrfs_set_backup_chunk_root_level(root_backup,
- 			       btrfs_header_level(info->chunk_root->node));
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
+@@ -923,8 +923,10 @@ int vmw_compat_shader_add(struct vmw_pri
+ 	ttm_bo_unreserve(&buf->tbo);
  
--	if (!btrfs_fs_compat_ro(info, BLOCK_GROUP_TREE)) {
-+	if (!btrfs_fs_incompat(info, EXTENT_TREE_V2)) {
- 		struct btrfs_root *extent_root = btrfs_extent_root(info, 0);
- 		struct btrfs_root *csum_root = btrfs_csum_root(info, 0);
+ 	res = vmw_shader_alloc(dev_priv, buf, size, 0, shader_type);
+-	if (unlikely(ret != 0))
++	if (IS_ERR(res)) {
++		ret = PTR_ERR(res);
+ 		goto no_reserve;
++	}
  
--- 
-2.51.0
-
+ 	ret = vmw_cmdbuf_res_add(man, vmw_cmdbuf_res_shader,
+ 				 vmw_shader_key(user_key, shader_type),
 
 
 
