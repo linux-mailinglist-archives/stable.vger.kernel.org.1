@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212310-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICr5FtQ3eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:22:44 +0100
+	id GEVDGawxemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212310-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 938ACA57ED
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:22:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F00A4C4B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C2D683178438
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:56:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F3E131F9CEE
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C474A3093A8;
-	Wed, 28 Jan 2026 15:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6911B2FF178;
+	Wed, 28 Jan 2026 15:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJXSn4NT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Zhm2TEt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7135818027;
-	Wed, 28 Jan 2026 15:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291D22DEA6B;
+	Wed, 28 Jan 2026 15:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615779; cv=none; b=W3QOG7SyBlaom/jGcfIxCgshqHzrNWte7TyQuBABt3uqibPEShYC8lVaNtNmA6UUmfpEhxt5Ia1kh8VKq1m2ieRtQOPNnd+Zf7KCXRmeONwe/R+DZ1wyZ7j9HGSWyxEGSRKQC+zh0aQiYu3na/uDZ7hOrOvasifQlmV7hv1KGi8=
+	t=1769615089; cv=none; b=MW0qx/8n47AE1g+yvCm/xudszZHdzJ+xGdcPc4XhzDKOl1TLXUizkXQejPoisdlKssbOIGzozP1aE6GSc7mmnQN8yKX1ATYtsmZo8birA1DNfT/lqa1agwcl8Vaqu+XUQ6eC7bntVHJe/D6l7yjUQ4KaEnHtoqJ4CuGAsAD22Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615779; c=relaxed/simple;
-	bh=TzWf8ABJETcTJet8E/5D+a5CG3V1gnNkaxJ0NbH7vDQ=;
+	s=arc-20240116; t=1769615089; c=relaxed/simple;
+	bh=1y0/brp4D0Mp+zqv/J38JfzEpGmsvO3JylfdLF3KyZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=biXV9iOyUphhjlvCntGpMkXPg6JYeCqmr+QgHrZcfLUpWSiewE1RK126vwPFd3pqmXELnQ8vaM3zBUX1GIoimlnJyEJYni6f651ZhG2u5p0vbC58Kwiz4xj1idsijYt4KX+A2/ikJLCSIx4DkqjOOhEv5FPNasBipSyEvIRbmE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJXSn4NT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF60FC4CEF1;
-	Wed, 28 Jan 2026 15:56:18 +0000 (UTC)
+	 MIME-Version; b=jVJxxInXKYoqSzi7xfIeOmuphsN9hRQ+k/4ncD1qdmpF8fyn6coE+Nfuf6pRMT7D1TeuUZnm+exA7x2i+bOCpcMsPxX6WirGsrSmRh2F//3Fg/hJzFBoyDIp/gWpjoz3zU0SHpuidr+Eu4GWsM5RFjNKQu6Q0ca9mcLp8NS0/uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Zhm2TEt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2393C4CEF7;
+	Wed, 28 Jan 2026 15:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615779;
-	bh=TzWf8ABJETcTJet8E/5D+a5CG3V1gnNkaxJ0NbH7vDQ=;
+	s=korg; t=1769615089;
+	bh=1y0/brp4D0Mp+zqv/J38JfzEpGmsvO3JylfdLF3KyZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJXSn4NT9YYBAh1kGPkEXDSZcdYdNlBdG63v8eo4POQTqGYKgDw+A8pY/RHy4M419
-	 yh/KYH2wyLnmeawbz/kB3qFaRy6gZEKg6WdCb2EwZezR8kAk/+5C1qiuuPiTMrLwPO
-	 qDBrTF6b+LfEyjNTMPBjcdenWwp7icXyKQMHHDEo=
+	b=0Zhm2TEtrTldt35GzQjZQ1QD8UcaPAgRVMWG0B50t4sdWs9jUqkutvKiA2JIftDSj
+	 sR8ql/bqVvPe4HMcDsbm5kDTPJIhuDGWOm4lxLo7XthdmL8+zZFd04uzigkIH2ByyV
+	 h21unwlEUAOsrX6m1MH3uBhzvCcMD+FypDf61Tsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
+	David Yang <mmyangfl@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 112/227] net: hns3: fix wrong GENMASK() for HCLGE_FD_AD_COUNTER_NUM_M
+Subject: [PATCH 6.12 074/169] net: hns3: fix data race in hns3_fetch_stats
 Date: Wed, 28 Jan 2026 16:22:37 +0100
-Message-ID: <20260128145348.497267823@linuxfoundation.org>
+Message-ID: <20260128145336.671442271@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,70 +67,142 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212516-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212310-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.986];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email]
-X-Rspamd-Queue-Id: 938ACA57ED
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C4F00A4C4B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: David Yang <mmyangfl@gmail.com>
 
-[ Upstream commit d57c67c956a1bad15115eba6e59d77a6dfeba01d ]
+[ Upstream commit 748a81c8ceda1fdbdcd0af595947422e810442aa ]
 
-HCLGE_FD_AD_COUNTER_NUM_M should be at GENMASK(19, 13),
-rather than at GENMASK(20, 13), because bit 20 is
-HCLGE_FD_AD_NXT_STEP_B.
+In hns3_fetch_stats(), ring statistics, protected by u64_stats_sync, are
+read and accumulated in ignorance of possible u64_stats_fetch_retry()
+events. These statistics are already accumulated by
+hns3_ring_stats_update(). Fix this by reading them into a temporary
+buffer first.
 
-This patch corrects the wrong definition.
-
-Fixes: 117328680288 ("net: hns3: Add input key and action config support for flow director")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20260119132840.410513-2-shaojijie@huawei.com
+Fixes: b20d7fe51e0d ("net: hns3: add some statitics info to tx process")
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+Link: https://patch.msgid.link/20260119160759.1455950-1-mmyangfl@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 69 ++++++++++---------
+ 1 file changed, 36 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-index 9bb708fa42f24..416e02e7b995f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-@@ -731,7 +731,7 @@ struct hclge_fd_tcam_config_3_cmd {
- #define HCLGE_FD_AD_QID_M		GENMASK(11, 2)
- #define HCLGE_FD_AD_USE_COUNTER_B	12
- #define HCLGE_FD_AD_COUNTER_NUM_S	13
--#define HCLGE_FD_AD_COUNTER_NUM_M	GENMASK(20, 13)
-+#define HCLGE_FD_AD_COUNTER_NUM_M	GENMASK(19, 13)
- #define HCLGE_FD_AD_NXT_STEP_B		20
- #define HCLGE_FD_AD_NXT_KEY_S		21
- #define HCLGE_FD_AD_NXT_KEY_M		GENMASK(25, 21)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 94432e237640d..b477bd286ed72 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -2500,44 +2500,47 @@ static netdev_features_t hns3_features_check(struct sk_buff *skb,
+ static void hns3_fetch_stats(struct rtnl_link_stats64 *stats,
+ 			     struct hns3_enet_ring *ring, bool is_tx)
+ {
++	struct ring_stats ring_stats;
+ 	unsigned int start;
+ 
+ 	do {
+ 		start = u64_stats_fetch_begin(&ring->syncp);
+-		if (is_tx) {
+-			stats->tx_bytes += ring->stats.tx_bytes;
+-			stats->tx_packets += ring->stats.tx_pkts;
+-			stats->tx_dropped += ring->stats.sw_err_cnt;
+-			stats->tx_dropped += ring->stats.tx_vlan_err;
+-			stats->tx_dropped += ring->stats.tx_l4_proto_err;
+-			stats->tx_dropped += ring->stats.tx_l2l3l4_err;
+-			stats->tx_dropped += ring->stats.tx_tso_err;
+-			stats->tx_dropped += ring->stats.over_max_recursion;
+-			stats->tx_dropped += ring->stats.hw_limitation;
+-			stats->tx_dropped += ring->stats.copy_bits_err;
+-			stats->tx_dropped += ring->stats.skb2sgl_err;
+-			stats->tx_dropped += ring->stats.map_sg_err;
+-			stats->tx_errors += ring->stats.sw_err_cnt;
+-			stats->tx_errors += ring->stats.tx_vlan_err;
+-			stats->tx_errors += ring->stats.tx_l4_proto_err;
+-			stats->tx_errors += ring->stats.tx_l2l3l4_err;
+-			stats->tx_errors += ring->stats.tx_tso_err;
+-			stats->tx_errors += ring->stats.over_max_recursion;
+-			stats->tx_errors += ring->stats.hw_limitation;
+-			stats->tx_errors += ring->stats.copy_bits_err;
+-			stats->tx_errors += ring->stats.skb2sgl_err;
+-			stats->tx_errors += ring->stats.map_sg_err;
+-		} else {
+-			stats->rx_bytes += ring->stats.rx_bytes;
+-			stats->rx_packets += ring->stats.rx_pkts;
+-			stats->rx_dropped += ring->stats.l2_err;
+-			stats->rx_errors += ring->stats.l2_err;
+-			stats->rx_errors += ring->stats.l3l4_csum_err;
+-			stats->rx_crc_errors += ring->stats.l2_err;
+-			stats->multicast += ring->stats.rx_multicast;
+-			stats->rx_length_errors += ring->stats.err_pkt_len;
+-		}
++		ring_stats = ring->stats;
+ 	} while (u64_stats_fetch_retry(&ring->syncp, start));
++
++	if (is_tx) {
++		stats->tx_bytes += ring_stats.tx_bytes;
++		stats->tx_packets += ring_stats.tx_pkts;
++		stats->tx_dropped += ring_stats.sw_err_cnt;
++		stats->tx_dropped += ring_stats.tx_vlan_err;
++		stats->tx_dropped += ring_stats.tx_l4_proto_err;
++		stats->tx_dropped += ring_stats.tx_l2l3l4_err;
++		stats->tx_dropped += ring_stats.tx_tso_err;
++		stats->tx_dropped += ring_stats.over_max_recursion;
++		stats->tx_dropped += ring_stats.hw_limitation;
++		stats->tx_dropped += ring_stats.copy_bits_err;
++		stats->tx_dropped += ring_stats.skb2sgl_err;
++		stats->tx_dropped += ring_stats.map_sg_err;
++		stats->tx_errors += ring_stats.sw_err_cnt;
++		stats->tx_errors += ring_stats.tx_vlan_err;
++		stats->tx_errors += ring_stats.tx_l4_proto_err;
++		stats->tx_errors += ring_stats.tx_l2l3l4_err;
++		stats->tx_errors += ring_stats.tx_tso_err;
++		stats->tx_errors += ring_stats.over_max_recursion;
++		stats->tx_errors += ring_stats.hw_limitation;
++		stats->tx_errors += ring_stats.copy_bits_err;
++		stats->tx_errors += ring_stats.skb2sgl_err;
++		stats->tx_errors += ring_stats.map_sg_err;
++	} else {
++		stats->rx_bytes += ring_stats.rx_bytes;
++		stats->rx_packets += ring_stats.rx_pkts;
++		stats->rx_dropped += ring_stats.l2_err;
++		stats->rx_errors += ring_stats.l2_err;
++		stats->rx_errors += ring_stats.l3l4_csum_err;
++		stats->rx_crc_errors += ring_stats.l2_err;
++		stats->multicast += ring_stats.rx_multicast;
++		stats->rx_length_errors += ring_stats.err_pkt_len;
++	}
+ }
+ 
+ static void hns3_nic_get_stats64(struct net_device *netdev,
 -- 
 2.51.0
 
