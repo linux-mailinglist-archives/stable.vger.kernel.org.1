@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212136-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAaVOugxemlp4gEAu9opvQ
-	(envelope-from <stable+bounces-212318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:28 +0100
+	id QIwBI3kuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212136-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179A9A4CBB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F47A4426
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 071413133FEA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A3AB5302CCD0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993FD308F1D;
-	Wed, 28 Jan 2026 15:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FF3293C4E;
+	Wed, 28 Jan 2026 15:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NrimUqcQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDWufUXo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8933101DC;
-	Wed, 28 Jan 2026 15:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466582D0C95;
+	Wed, 28 Jan 2026 15:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615116; cv=none; b=AldXzJqQeyhFHjLeO4RvpO4siEjMqFb8ulq64Sw3DVo0HhrKfRb2yS38au0VsXX8KVo+qGMZIjRwL4ogwXvy/b0TulKM8aXt6oZ2n1u2OgUGR8Lr8TnqbaOEwNLPK8lny/bbIlQ8/Y1SDV6lRKeSS58j1iEqwL8yaEzbUjWcdPQ=
+	t=1769614512; cv=none; b=I7D8EajXciFEh/mJwPk+IOYLBD1F0RAjqSbDsZamOmqpG0JStqseEFEqZ/Y1m/VXGa2yqHfAFVmtobzw4cuxEp25B2+RwfTnccIFn0BBlBy5Ujja3BRuuh7WkPiXYnP4/N4Lpt2Gl9Bnx57KumqNkHRKf4aK9e+7LOFFgGGRWRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615116; c=relaxed/simple;
-	bh=nqFOmkLJa2hMtm56oBWm+VWv3FVXI15XPKYalmZKcTQ=;
+	s=arc-20240116; t=1769614512; c=relaxed/simple;
+	bh=k2vfBgITx85jUOHqMxRJLB2JG+7Lih7xrzdu+q/1dT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S5s0Q6RNutaaDQp+PcgysON64aQEbfQ6YNMCK2C/3sgqjc45NTfAZ+2aZNXs6OE0HnpBZjXUnqqv095p3mWWjaaO18LcToj/tl8OrU+fOr5m5Zbbu622r38JAfzE+boIwckxJTkZb7NgGWCOPb5wRYBjr7lj3hguCD3nm42QE0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NrimUqcQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF36AC4CEF1;
-	Wed, 28 Jan 2026 15:45:15 +0000 (UTC)
+	 MIME-Version; b=iSwbcx5P0UgIBQeErOBdJ32xEhxR+kKendGXeFXBdUFPiHAo7U+GVxcyqkK0Re3939k5ajvdxMvmqYWx0n2TLFb8NIc42c9IgkJophyCoQDFk7HWyZtHU92B5B8tdsGxMZBdpgoLbBt+3Qk1xqcbZWLwnM3tK+tE5dYXfKd4Gj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDWufUXo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E64BC4CEF1;
+	Wed, 28 Jan 2026 15:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615116;
-	bh=nqFOmkLJa2hMtm56oBWm+VWv3FVXI15XPKYalmZKcTQ=;
+	s=korg; t=1769614511;
+	bh=k2vfBgITx85jUOHqMxRJLB2JG+7Lih7xrzdu+q/1dT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NrimUqcQQcZ5MPuRuDjQeLYTQ4TGScv4lF9dYhyj3wo6IWqCL8IjI1/tDSamofsjS
-	 NqYNItcqJREbgCl4jM+M3M5xnU20rdGYu4Tooe/6BVXZRZU6P8fB5zrwehsZBPVsOo
-	 hz+cJy3R4M7mJfvV9Kt1aUEFZuuXUQ7ur9MekQM0=
+	b=BDWufUXohy8xw4kn8kaKM99jJNCf/v81j9FIUCwBMJfceVqCchb/czkzDZ0knABNA
+	 6BTdNqiLeTtOA7XQfSK8luvK5fcoVRZ05VjtKgfrDiMjJiXTRwwf1FW0ryy0RvkWdl
+	 S2qz5hfG0y6ARXU9UUCiSdgheBWUfzZBA0IQTomU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Juergen Gross <jgross@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 051/169] scsi: xen: scsiback: Fix potential memory leak in scsiback_remove()
-Date: Wed, 28 Jan 2026 16:22:14 +0100
-Message-ID: <20260128145335.852662442@linuxfoundation.org>
+	Naohiko Shimizu <naohiko.shimizu@gmail.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 159/254] riscv: clocksource: Fix stimecmp update hazard on RV32
+Date: Wed, 28 Jan 2026 16:22:15 +0100
+Message-ID: <20260128145350.532888947@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +66,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212318-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212136-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,brainfault.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 179A9A4CBB
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,brainfault.org:email]
+X-Rspamd-Queue-Id: C4F47A4426
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Naohiko Shimizu <naohiko.shimizu@gmail.com>
 
-commit 901a5f309daba412e2a30364d7ec1492fa11c32c upstream.
+[ Upstream commit eaa9bb1d39d59e7c17b06cec12622b7c586ab629 ]
 
-Memory allocated for struct vscsiblk_info in scsiback_probe() is not
-freed in scsiback_remove() leading to potential memory leaks on remove,
-as well as in the scsiback_probe() error paths. Fix that by freeing it
-in scsiback_remove().
+On RV32, updating the 64-bit stimecmp (or vstimecmp) CSR requires two
+separate 32-bit writes. A race condition exists if the timer triggers
+during these two writes.
 
-Cc: stable@vger.kernel.org
-Fixes: d9d660f6e562 ("xen-scsiback: Add Xen PV SCSI backend driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://patch.msgid.link/20251223063012.119035-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The RISC-V Privileged Specification (e.g., Section 3.2.1 for mtimecmp)
+recommends a specific 3-step sequence to avoid spurious interrupts
+when updating 64-bit comparison registers on 32-bit systems:
+
+1. Set the low-order bits (stimecmp) to all ones (ULONG_MAX).
+2. Set the high-order bits (stimecmph) to the desired value.
+3. Set the low-order bits (stimecmp) to the desired value.
+
+Current implementation writes the LSB first without ensuring a future
+value, which may lead to a transient state where the 64-bit comparison
+is incorrectly evaluated as "expired" by the hardware. This results in
+spurious timer interrupts.
+
+This patch adopts the spec-recommended 3-step sequence to ensure the
+intermediate 64-bit state is never smaller than the current time.
+
+Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
+Signed-off-by: Naohiko Shimizu <naohiko.shimizu@gmail.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://patch.msgid.link/20260104135938.524-2-naohiko.shimizu@gmail.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/xen-scsiback.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/clocksource/timer-riscv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/xen/xen-scsiback.c
-+++ b/drivers/xen/xen-scsiback.c
-@@ -1262,6 +1262,7 @@ static void scsiback_remove(struct xenbu
- 	gnttab_page_cache_shrink(&info->free_pages, 0);
- 
- 	dev_set_drvdata(&dev->dev, NULL);
-+	kfree(info);
- }
- 
- static int scsiback_probe(struct xenbus_device *dev,
+diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+index da3071b387eb5..3d542d0f76034 100644
+--- a/drivers/clocksource/timer-riscv.c
++++ b/drivers/clocksource/timer-riscv.c
+@@ -39,8 +39,9 @@ static int riscv_clock_next_event(unsigned long delta,
+ 	csr_set(CSR_IE, IE_TIE);
+ 	if (static_branch_likely(&riscv_sstc_available)) {
+ #if defined(CONFIG_32BIT)
+-		csr_write(CSR_STIMECMP, next_tval & 0xFFFFFFFF);
++		csr_write(CSR_STIMECMP, ULONG_MAX);
+ 		csr_write(CSR_STIMECMPH, next_tval >> 32);
++		csr_write(CSR_STIMECMP, next_tval & 0xFFFFFFFF);
+ #else
+ 		csr_write(CSR_STIMECMP, next_tval);
+ #endif
+-- 
+2.51.0
+
 
 
 
