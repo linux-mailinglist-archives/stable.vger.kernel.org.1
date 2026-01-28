@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2L08D3gzeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:08 +0100
+	id IKGfOlAxemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EDDBA500C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86248A4B6A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54319304EEB9
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE67E306195D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11047238159;
-	Wed, 28 Jan 2026 15:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B1430F548;
+	Wed, 28 Jan 2026 15:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaPTbEWu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJ92hhoM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1D13033C4;
-	Wed, 28 Jan 2026 15:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3AE30EF7F;
+	Wed, 28 Jan 2026 15:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615597; cv=none; b=AOoPvIueVSnSZrUsf6CZlzeNeByE45+elY3Z7cNXpS0cpBTZDFIuWqZdG8urLXXuuuDVaWKE704kErYKSkPT1jbPTZ6YRV3qrTX58kMg+z3peP9Pw3lcRbY5BuHDqUAGXSxGNaqDbzv/kEbdyjkprD+xou/BSb7awB8+a/ilPb4=
+	t=1769615006; cv=none; b=Dzm6Bf81z9t2eQrZwllGZIure1VCNJ1Q+3bbEarkwjUVosYFYcYyfv96uN0qSWYH3O6BmCtmS3Fs+60T2tTK1bVJCDHdu6fwJojvii0/WN5g0jz0PvnLig2deo91UNtAz1L768rbM9JFncj2blAljxdNxdz8X7cdlQJJUaSz+GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615597; c=relaxed/simple;
-	bh=NuVUMhzwOazzLJIrQomvGYzzUN9fE/ixREc6b5R3jhg=;
+	s=arc-20240116; t=1769615006; c=relaxed/simple;
+	bh=pg2NRNgcm16VcKoo/BhGSs4WTEm0KfHtZD32DMSkMc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YugRIXtvjmtW/vIAw+ud9O076v3DAFbqSQQ8yMVntJx80ZL4BSmiKEhjmAYy+mNSn6ZWQ4Ui1Y8zUNNBzEEvHPWZ3uBwoTOxb0HLSGp5Iit8Lf74F+8gO5gmKESJGOQG8gCegpa+vph8x3ImI0wnfpX44B+qGMNJaRJExI+B8TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaPTbEWu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4E0C4CEF1;
-	Wed, 28 Jan 2026 15:53:16 +0000 (UTC)
+	 MIME-Version; b=PYeI58IIdpRMxNwH1u0KDBzVb95mCdMbXTvT08OfFGDdEHl3ICfICFDcRqWSmFIrgF9RQ3PRlCtP/c4CiJtcea9M5ntsC31VcCehpCabVIz4GE469sIory0rb4eX/3ogCpfJX2EHm5CvBP4IBK6Kc4lL/PNj9yguoOP2e6O+KIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJ92hhoM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2746FC116C6;
+	Wed, 28 Jan 2026 15:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615597;
-	bh=NuVUMhzwOazzLJIrQomvGYzzUN9fE/ixREc6b5R3jhg=;
+	s=korg; t=1769615006;
+	bh=pg2NRNgcm16VcKoo/BhGSs4WTEm0KfHtZD32DMSkMc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RaPTbEWuM9QfHLGU+bnz1+88nb4xdOez9r/rCGZLywo7lLm84WIG6EAq1ML9uZfdx
-	 OE/SxkzYBltIMJBFEGAlvwIfYJQ0lrw3l/fi7GtMJlF2UWAj89kY2WJAw5WjXRxyJT
-	 b66uGt2qojJuH8bp9iv6ZDuE8Qn+f1CZETR7LNLg=
+	b=LJ92hhoM+1mmsoPMvKlpWLKdTWN9wtlFrynqQXoCj+H/nXIMKRenzciRd1wrTHqe0
+	 7dIrSy2WAumHDCdGnvbN0noAvik9l01XPXS9SKG+I0jkXzJqvVKFNe3I3y7AIhcHpi
+	 HiJBBmp84b9dXBKFD5ZySwnzXUd0UO5ngkK8rQZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	feng <alec.jiang@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.18 056/227] Input: i8042 - add quirk for ASUS Zenbook UX425QA_UM425QA
+	Niklas Cassel <cassel@kernel.org>,
+	Wolf <wolf@yoxt.cc>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 018/169] ata: libata: Print features also for ATAPI devices
 Date: Wed, 28 Jan 2026 16:21:41 +0100
-Message-ID: <20260128145346.357295772@linuxfoundation.org>
+Message-ID: <20260128145334.671906543@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212461-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212285-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.991];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9EDDBA500C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 86248A4B6A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: feng <alec.jiang@gmail.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 2934325f56150ad8dab8ab92cbe2997242831396 upstream.
+[ Upstream commit c8c6fb886f57d5bf71fb6de6334a143608d35707 ]
 
-The ASUS Zenbook UX425QA_UM425QA fails to initialize the keyboard after
-a cold boot.
+Commit d633b8a702ab ("libata: print feature list on device scan")
+added a print of the features supported by the device for ATA_DEV_ATA and
+ATA_DEV_ZAC devices, but not for ATA_DEV_ATAPI devices.
 
-A quirk already exists for "ZenBook UX425", but some Zenbooks report
-"Zenbook" with a lowercase 'b'. Since DMI matching is case-sensitive,
-the existing quirk is not applied to these "extra special" Zenbooks.
+Fix this by printing the features also for ATAPI devices.
 
-Testing confirms that this model needs the same quirks as the ZenBook
-UX425 variants.
+Before changes:
+ata1.00: ATAPI: Slimtype DVD A  DU8AESH, 6C2M, max UDMA/133
 
-Signed-off-by: feng <alec.jiang@gmail.com>
-Link: https://patch.msgid.link/20260122013957.11184-1-alec.jiang@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After changes:
+ata1.00: ATAPI: Slimtype DVD A  DU8AESH, 6C2M, max UDMA/133
+ata1.00: Features: Dev-Attention HIPM DIPM
+
+Fixes: d633b8a702ab ("libata: print feature list on device scan")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Tested-by: Wolf <wolf@yoxt.cc>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/ata/libata-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -116,6 +116,17 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_NEVER)
- 	},
- 	{
-+		/*
-+		 * ASUS Zenbook UX425QA_UM425QA
-+		 * Some Zenbooks report "Zenbook" with a lowercase b.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Zenbook UX425QA_UM425QA"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_PROBE_DEFER | SERIO_QUIRK_RESET_NEVER)
-+	},
-+	{
- 		/* ASUS ZenBook UX425UA/QA */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index fba5166168978..33454d01c2044 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -3075,6 +3075,9 @@ int ata_dev_configure(struct ata_device *dev)
+ 				     dma_dir_string);
+ 
+ 		ata_dev_config_lpm(dev);
++
++		if (print_info)
++			ata_dev_print_features(dev);
+ 	}
+ 
+ 	/* determine max_sectors */
+-- 
+2.51.0
+
 
 
 
