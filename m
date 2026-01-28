@@ -1,61 +1,67 @@
-Return-Path: <stable+bounces-212267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212507-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPiLBEEyemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212267-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:58:57 +0100
+	id GCzBHaU3eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212507-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:21:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B2FA4DCC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:58:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2AEA5799
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:21:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2980C3106834
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:43:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 153E5319FCA1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CF13054D8;
-	Wed, 28 Jan 2026 15:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432C83043B2;
+	Wed, 28 Jan 2026 15:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbOg1+hX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZQuedNk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1288301000;
-	Wed, 28 Jan 2026 15:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AF73064B3;
+	Wed, 28 Jan 2026 15:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614944; cv=none; b=O3ljiiBSVkCQTgd5S2KKG/0yNRcWcq2caSAfvEbe/93mnR0PsvH6AVfnMXyWF8uOHVKB9pZY+m1GrcD/Z9ZhELhjiiQPbXCgE+knygEabtUfNFXSiWepUN8tBT6qy71QXsXqqr8dUe9aTqDysEJHd2+lUHjRgxwi1aNbI8+8R4I=
+	t=1769615750; cv=none; b=pk1d+d0qwIvBBrl6L9sUrq/Lpa3CQw+vS97mqnExjpbZVKG6sETPDs75KjUswXp/OCGX7Rj9WjbU1yJB1q89ern8Bh5FjErf4Bg4lqgayT8z5lFoLL0GROYa/zdddR5LsDRjpaveW5qOVsR9FRItu3EncsBsvVmj4ntrrbj7Ews=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614944; c=relaxed/simple;
-	bh=j2BIBMXsDfNqNzuHTAhclhzlZpy1QWM2WHWV2y7dEfQ=;
+	s=arc-20240116; t=1769615750; c=relaxed/simple;
+	bh=z35OiH+TcereLhkh40fVMkKqikiBeL+cNBOZfEK59LM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxpDMsUiyeAZlB6pNyKqDmDkdoSFxJLQbAhk5LnRLnEArJ6L1NAQcxvpNMbWYrK9ajRC6vAtqkBSH1q+xZo5hfhYH9Eu3qHTmz3x3ra1JiLe6dGeV15CrS0vNSZxlDwDIL29mWCFK4Idyc1Qa5PvdtK0kHRhd9b/eh9KzwxHBEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbOg1+hX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9AAC4CEF1;
-	Wed, 28 Jan 2026 15:42:23 +0000 (UTC)
+	 MIME-Version; b=e1hScUuE5prtqcU0UxVweuVtEfCwMsy/zANn9tekSfj5OZ8lQCa0AKDpJsghn7O0xRVYzaOTV4MLcPG2OuR0iMIo03k5jSGx3+Dg0odBmVCBUccbM7FPErlHXKcv0VVqz1sMm6K48oThNMdAot6KPgfyBaKAThYloQl1nD5nZFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZQuedNk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55386C4CEF1;
+	Wed, 28 Jan 2026 15:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614944;
-	bh=j2BIBMXsDfNqNzuHTAhclhzlZpy1QWM2WHWV2y7dEfQ=;
+	s=korg; t=1769615749;
+	bh=z35OiH+TcereLhkh40fVMkKqikiBeL+cNBOZfEK59LM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbOg1+hXwpqjCg5eO0HNv63X2H+RSVlN73lX1lxNx76g0xhPtC0/xbXOdrHnt389K
-	 vLBRr26sIxuf+vo/62BtzepL4VofgMf7enkaxMr5FZUPbx3vD2tByEDmKQRURbJGA1
-	 /19/2+Y61Myf2QL5bFEr5Mcp4wl4JVc0W5fz8gRY=
+	b=TZQuedNkAWHP4b7Hcl6iQPj/KxE743DGgFRv3c5xB/7HNNoVAlvfCI3Z2rMbAjqai
+	 CdYQYoIN7Ao2SYyzHDMCYqQnLH223gKgMppDqB9gHBk4vyG2XOs/ljkZUFD6O4ZEaH
+	 Gb2tuCFD6z1XWmYpIGK5B6ZivzUu+MCiesHDxrLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4d8c7d16b0e95c0d0f0d@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/169] gue: Fix skb memleak with inner IP protocol 0.
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Marco Elver <elver@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Jann Horn <jannh@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 070/227] x86/kfence: avoid writing L1TF-vulnerable PTEs
 Date: Wed, 28 Jan 2026 16:21:55 +0100
-Message-ID: <20260128145335.178351523@linuxfoundation.org>
+Message-ID: <20260128145346.859513792@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,117 +73,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212267-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212507-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,4d8c7d16b0e95c0d0f0d];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 33B2FA4DCC
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[zytor.com:email,intel.com:email,alien8.de:email,linutronix.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,citrix.com:email]
+X-Rspamd-Queue-Id: 9F2AEA5799
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Andrew Cooper <andrew.cooper3@citrix.com>
 
-[ Upstream commit 9a56796ad258786d3624eef5aefba394fc9bdded ]
+commit b505f1944535f83d369ae68813e7634d11b990d3 upstream.
 
-syzbot reported skb memleak below. [0]
+For native, the choice of PTE is fine.  There's real memory backing the
+non-present PTE.  However, for XenPV, Xen complains:
 
-The repro generated a GUE packet with its inner protocol 0.
+  (XEN) d1 L1TF-vulnerable L1e 8010000018200066 - Shadowing
 
-gue_udp_recv() returns -guehdr->proto_ctype for "resubmit"
-in ip_protocol_deliver_rcu(), but this only works with
-non-zero protocol number.
+To explain, some background on XenPV pagetables:
 
-Let's drop such packets.
+  Xen PV guests are control their own pagetables; they choose the new
+  PTE value, and use hypercalls to make changes so Xen can audit for
+  safety.
 
-Note that 0 is a valid number (IPv6 Hop-by-Hop Option).
+  In addition to a regular reference count, Xen also maintains a type
+  reference count.  e.g.  SegDesc (referenced by vGDT/vLDT), Writable
+  (referenced with _PAGE_RW) or L{1..4} (referenced by vCR3 or a lower
+  pagetable level).  This is in order to prevent e.g.  a page being
+  inserted into the pagetables for which the guest has a writable mapping.
 
-I think it is not practical to encap HOPOPT in GUE, so once
-someone starts to complain, we could pass down a resubmit
-flag pointer to distinguish two zeros from the upper layer:
+  For non-present mappings, all other bits become software accessible,
+  and typically contain metadata rather a real frame address.  There is
+  nothing that a reference count could sensibly be tied to.  As such, even
+  if Xen could recognise the address as currently safe, nothing would
+  prevent that frame from changing owner to another VM in the future.
 
-  * no error
-  * resubmit HOPOPT
+  When Xen detects a PV guest writing a L1TF-PTE, it responds by
+  activating shadow paging.  This is normally only used for the live phase
+  of migration, and comes with a reasonable overhead.
 
-[0]
-BUG: memory leak
-unreferenced object 0xffff888109695a00 (size 240):
-  comm "syz.0.17", pid 6088, jiffies 4294943096
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 40 c2 10 81 88 ff ff 00 00 00 00 00 00 00 00  .@..............
-  backtrace (crc a84b336f):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4958 [inline]
-    slab_alloc_node mm/slub.c:5263 [inline]
-    kmem_cache_alloc_noprof+0x3b4/0x590 mm/slub.c:5270
-    __build_skb+0x23/0x60 net/core/skbuff.c:474
-    build_skb+0x20/0x190 net/core/skbuff.c:490
-    __tun_build_skb drivers/net/tun.c:1541 [inline]
-    tun_build_skb+0x4a1/0xa40 drivers/net/tun.c:1636
-    tun_get_user+0xc12/0x2030 drivers/net/tun.c:1770
-    tun_chr_write_iter+0x71/0x120 drivers/net/tun.c:1999
-    new_sync_write fs/read_write.c:593 [inline]
-    vfs_write+0x45d/0x710 fs/read_write.c:686
-    ksys_write+0xa7/0x170 fs/read_write.c:738
-    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+KFENCE only cares about getting #PF to catch wild accesses; it doesn't
+care about the value for non-present mappings.  Use a fully inverted PTE,
+to avoid hitting the slow path when running under Xen.
 
-Fixes: 37dd0247797b1 ("gue: Receive side for Generic UDP Encapsulation")
-Reported-by: syzbot+4d8c7d16b0e95c0d0f0d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6965534b.050a0220.38aacd.0001.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260115172533.693652-2-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While adjusting the logic, take the opportunity to skip all actions if the
+PTE is already in the right state, half the number PVOps callouts, and
+skip TLB maintenance on a !P -> P transition which benefits non-Xen cases
+too.
+
+Link: https://lkml.kernel.org/r/20260106180426.710013-1-andrew.cooper3@citrix.com
+Fixes: 1dc0da6e9ec0 ("x86, kfence: enable KFENCE for x86")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Tested-by: Marco Elver <elver@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/fou_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/include/asm/kfence.h |   29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
-index 3e30745e2c09a..0e173998f1d7a 100644
---- a/net/ipv4/fou_core.c
-+++ b/net/ipv4/fou_core.c
-@@ -215,6 +215,9 @@ static int gue_udp_recv(struct sock *sk, struct sk_buff *skb)
- 		return gue_control_message(skb, guehdr);
+--- a/arch/x86/include/asm/kfence.h
++++ b/arch/x86/include/asm/kfence.h
+@@ -42,10 +42,34 @@ static inline bool kfence_protect_page(u
+ {
+ 	unsigned int level;
+ 	pte_t *pte = lookup_address(addr, &level);
++	pteval_t val;
  
- 	proto_ctype = guehdr->proto_ctype;
-+	if (unlikely(!proto_ctype))
-+		goto drop;
+ 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
+ 		return false;
+ 
++	val = pte_val(*pte);
 +
- 	__skb_pull(skb, sizeof(struct udphdr) + hdrlen);
- 	skb_reset_transport_header(skb);
++	/*
++	 * protect requires making the page not-present.  If the PTE is
++	 * already in the right state, there's nothing to do.
++	 */
++	if (protect != !!(val & _PAGE_PRESENT))
++		return true;
++
++	/*
++	 * Otherwise, invert the entire PTE.  This avoids writing out an
++	 * L1TF-vulnerable PTE (not present, without the high address bits
++	 * set).
++	 */
++	set_pte(pte, __pte(~val));
++
++	/*
++	 * If the page was protected (non-present) and we're making it
++	 * present, there is no need to flush the TLB at all.
++	 */
++	if (!protect)
++		return true;
++
+ 	/*
+ 	 * We need to avoid IPIs, as we may get KFENCE allocations or faults
+ 	 * with interrupts disabled. Therefore, the below is best-effort, and
+@@ -53,11 +77,6 @@ static inline bool kfence_protect_page(u
+ 	 * lazy fault handling takes care of faults after the page is PRESENT.
+ 	 */
  
--- 
-2.51.0
-
+-	if (protect)
+-		set_pte(pte, __pte(pte_val(*pte) & ~_PAGE_PRESENT));
+-	else
+-		set_pte(pte, __pte(pte_val(*pte) | _PAGE_PRESENT));
+-
+ 	/*
+ 	 * Flush this CPU's TLB, assuming whoever did the allocation/free is
+ 	 * likely to continue running on this CPU.
 
 
 
