@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-212209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +I4LLCUwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212209-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:57 +0100
+	id QDr4CsExemlr4gEAu9opvQ
+	(envelope-from <stable+bounces-212390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1376AA4807
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95149A4C6B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F08F314FB2A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 310B8303D391
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1F92E336F;
-	Wed, 28 Jan 2026 15:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC93C30CDBE;
+	Wed, 28 Jan 2026 15:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXiyJpGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fItpYE1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D384D2DC77F;
-	Wed, 28 Jan 2026 15:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6DF3054D8;
+	Wed, 28 Jan 2026 15:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614750; cv=none; b=OnqCX+liCO2mc8n9CevgpF6saixr5/XftmiaWCpr/106/rXjc15EaH1KCWdUnI6pEcgHRNF0J58w8FoRgqof3VtAn8YKziyqZGNp0WNE1Wpll2bONhNPHfok18aGWtvvIra1QW/i2xB2FhyGvB7KXJQGjL5Jc8N5gAaDDoblN7M=
+	t=1769615358; cv=none; b=nuxEfiQO+6xgEoPwvNkFx+So90z0vd6Ae8GLtzNr2rYsSefAC8bD4IxfSvaMD3xRrpFHGPWC08HnOy76NhrcyVTClTxbGob9DOoAQJkly3dlwc2u0Z4+WVzxTshocnrsMQuy7SRt30Lr5eWuxHo3Iy/NBP9CmeRQDP0RfUek6+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614750; c=relaxed/simple;
-	bh=vvvvG2OrNLbJr+8ap6/GqiuID6Jwi16Tpkpn39Ho5Tg=;
+	s=arc-20240116; t=1769615358; c=relaxed/simple;
+	bh=EICqtRQ6Lv1aSuY7BYuzYlxiNTYNHnSY1oJGHTHxPuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCBNojLFBkQsZiUfnvAJRIHDtd8zVy2bIe4Rnd+nKUz+7gwPprzFVr/8aeZDTq8a+H4JFel8R5muFBX/0QeVU/YdM3pqnDk4zxr5xcs7NdTcMl6rTmcgXt/+8t/nUkImmBQl9e+qryw2y1ocgD3flVVQNTIcdFmfjirSjHTIMLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXiyJpGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031B3C4CEF1;
-	Wed, 28 Jan 2026 15:39:09 +0000 (UTC)
+	 MIME-Version; b=XA3sdjg/+M6DYE0cmGxfVB61OctUjtYn/kIRb0b/coU49qof5gnXaRwQK8losuFeF0kBlZ2OFp0OOmHxhxzeixL/z5SNhRBQruNn5QHh72svH8hFhGGYiasbc1qBpQrKqYKi02vOTujWzh7AjbeHq3i4/ifQZ0SOvN5RdXyyACs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fItpYE1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A63C116C6;
+	Wed, 28 Jan 2026 15:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614750;
-	bh=vvvvG2OrNLbJr+8ap6/GqiuID6Jwi16Tpkpn39Ho5Tg=;
+	s=korg; t=1769615358;
+	bh=EICqtRQ6Lv1aSuY7BYuzYlxiNTYNHnSY1oJGHTHxPuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qXiyJpGHqnJIXjmdqxxSXHognmDU7CXgxQj0Q+BCVzNAM2P5WooklHHkkHGh9YdZK
-	 W//47v1lFmprRaFHPgSAQIgmGWw4rslLfyrvY3XV8dw5MYGe1IOzNe1PcLO1UV8KKI
-	 H98iB5VYQ+Z2XnHLchjawH/8IMA7hVACHgVtmxnk=
+	b=fItpYE1WTFFiJbByDvC0rgbdFzi+9VycCF/fgyUKG8hTpicANPeAoTWxarqPaL+r+
+	 Z9ntnHiJfrXhphR91RQ8OrLYlSU77KeV9j69Wqz7f5B5NCizU5sR2NLpB/g92RBeUS
+	 OZ4mq4Pen8kzZK2+6/64dN1XyXnFtkuTPXV29XMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragan Simic <dsimic@manjaro.org>,
-	Geraldo Nascimento <geraldogabriel@gmail.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 230/254] arm64: dts: rockchip: remove redundant max-link-speed from nanopi-r4s
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 123/169] octeontx2: Fix otx2_dma_map_page() error return code
 Date: Wed, 28 Jan 2026 16:23:26 +0100
-Message-ID: <20260128145353.064647992@linuxfoundation.org>
+Message-ID: <20260128145338.434094679@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,72 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,manjaro.org,gmail.com,rock-chips.com,sntech.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212209-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212390-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.989];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,manjaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sntech.de:email]
-X-Rspamd-Queue-Id: 1376AA4807
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 95149A4C6B
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geraldo Nascimento <geraldogabriel@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit ce652c98a7bfa0b7c675ef5cd85c44c186db96af ]
+commit d998b0e5afffa90d0f03770bad31083767079858 upstream.
 
-This is already the default in rk3399-base.dtsi, remove redundant
-declaration from rk3399-nanopi-r4s.dtsi.
+0 is a valid DMA address [1] so using it as the error value can lead to
+errors.  The error value of dma_map_XXX() functions is DMA_MAPPING_ERROR
+which is ~0.  The callers of otx2_dma_map_page() use dma_mapping_error()
+to test the return value of otx2_dma_map_page(). This means that they
+would not detect an error in otx2_dma_map_page().
 
-Fixes: db792e9adbf8 ("rockchip: rk3399: Add support for FriendlyARM NanoPi R4S")
-Cc: stable@vger.kernel.org
-Reported-by: Dragan Simic <dsimic@manjaro.org>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/6694456a735844177c897581f785cc00c064c7d1.1763415706.git.geraldogabriel@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-[ adapted file path from rk3399-nanopi-r4s.dtsi to rk3399-nanopi-r4s.dts ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make otx2_dma_map_page() return the raw value of dma_map_page_attrs().
+
+[1] https://lore.kernel.org/all/f977f68b-cec5-4ab7-b4bd-2cf6aca46267@intel.com
+
+Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20260114123107.42387-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
-@@ -73,7 +73,6 @@
- };
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -894,13 +894,8 @@ static inline dma_addr_t otx2_dma_map_pa
+ 					   size_t offset, size_t size,
+ 					   enum dma_data_direction dir)
+ {
+-	dma_addr_t iova;
+-
+-	iova = dma_map_page_attrs(pfvf->dev, page,
++	return dma_map_page_attrs(pfvf->dev, page,
+ 				  offset, size, dir, DMA_ATTR_SKIP_CPU_SYNC);
+-	if (unlikely(dma_mapping_error(pfvf->dev, iova)))
+-		return (dma_addr_t)NULL;
+-	return iova;
+ }
  
- &pcie0 {
--	max-link-speed = <1>;
- 	num-lanes = <1>;
- 	vpcie3v3-supply = <&vcc3v3_sys>;
- };
+ static inline void otx2_dma_unmap_page(struct otx2_nic *pfvf,
 
 
 
