@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-212587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aAfpATc6emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:55 +0100
+	id wH9vMoIxemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C23A5CC0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52225A4BCA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0D5C9303AFD0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA97B305D22B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B8B81AA8;
-	Wed, 28 Jan 2026 16:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCBB2C2346;
+	Wed, 28 Jan 2026 15:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcoxZjuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mft0qRxK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6869F302779;
-	Wed, 28 Jan 2026 16:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664552FE044;
+	Wed, 28 Jan 2026 15:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616018; cv=none; b=Cf93cJjD7f5InO9791TPUUHlPfHKnpzW0uY6XIARE16es3XoUdkcS4L+cTikTioAGezE/0zP4Uo3Hdtd7Ck8AO2gxe0qRT0cFl8X4LpODq8pT90gm8TsCmz70clZHdBCL3hcqUZvSMBKpD68IqWFVLBMeWJt4xaDz0dBxaYg/pU=
+	t=1769615329; cv=none; b=uXLwelzTFm5BN6Kg1ECJaBp/9D0foLJIOUn6VrTyQLPTqpNh04Hq30uhWWSNx8LSyDFg16XgCuVF4o16XmbmcTkvQ1uVgf8fJW67jQZDxAgRYvwCw5Aml48kHJPDDV8P/YgRulspn1OPvN3FPSsttMfe8jRartaZ4ecJTxZ5Yd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616018; c=relaxed/simple;
-	bh=9+v2YWqaQZ2zZ8XhwyFVcMoE+q+HHKtQX8v++ZXhiBY=;
+	s=arc-20240116; t=1769615329; c=relaxed/simple;
+	bh=BvWMQuLifGXD40IIuBptYfbqwVdMxUrm8+EfNqX8PF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l30M//e0+Ai9JRXOKXRthPGcCsH7DqBCJPgAkMo7RgJk+0owieR+yyGYSyhdbDCb4oAQBiV7srWRTaPLVw+vMw5eTJsVxjrCPWZvlS6SVwEFacCMC/PTMwuDiDAo6tTyM9Ipg+//Hh6YEWw3NHcRMUMNFoA7bOHeQMxM9A+B7wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcoxZjuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD423C4CEF1;
-	Wed, 28 Jan 2026 16:00:17 +0000 (UTC)
+	 MIME-Version; b=oRVlDJKmBtogZNlyLXQ27cHxIbJarkgTwmqyRh9gyu1vWbqFwEr8wwI4kA+fD/dJw5aYqsFiurMd1pMhE+iWEAKEo1bXEze4gMzUwl6ChvFhCEgRjhLqb1iFDi0PuPB0xAsly4Wp8tWQB2bxzw5bBLNmT9rKt7a8LHpGK+2+8qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mft0qRxK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DFCC4CEF1;
+	Wed, 28 Jan 2026 15:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616018;
-	bh=9+v2YWqaQZ2zZ8XhwyFVcMoE+q+HHKtQX8v++ZXhiBY=;
+	s=korg; t=1769615329;
+	bh=BvWMQuLifGXD40IIuBptYfbqwVdMxUrm8+EfNqX8PF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CcoxZjuDuqDNgAbzJVFy1aqn4mq+9yu1IS1EzsxfarzVB3o4N5SUx7eIESgEy/x2e
-	 2ZgZdkggekokqrCo7jUu+BEQBP8WhwHDoyyPuJgBgRjCmlWjBKPI6sKdDG7qFadt5f
-	 4krBOxztZtR5FVjWEMkKR0BpKB5rUiWbTHEvquzU=
+	b=Mft0qRxK0MaJWaqR1qs2tbuG9lDgzVT6jFdN3BXFCxtnzC6FTMzAoqFzMHYN8CEEG
+	 tqHn94CuHIPZLBIPmmb8X5FGeshPooQmBEg1yecfkzyrhrOu4JU2Y/hGB1h8tCk3Mq
+	 J/ehF+y7GAp7TotfPrYoIT9wPB61Cw9WntNOz5AA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 183/227] octeontx2: Fix otx2_dma_map_page() error return code
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 6.12 145/169] gpio: cdev: Correct return code on memory allocation failure
 Date: Wed, 28 Jan 2026 16:23:48 +0100
-Message-ID: <20260128145351.030836362@linuxfoundation.org>
+Message-ID: <20260128145339.224122332@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212587-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212381-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 11C23A5CC0
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 52225A4BCA
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-commit d998b0e5afffa90d0f03770bad31083767079858 upstream.
+commit faff6846474e99295a139997f93ef6db222b5cee upstream.
 
-0 is a valid DMA address [1] so using it as the error value can lead to
-errors.  The error value of dma_map_XXX() functions is DMA_MAPPING_ERROR
-which is ~0.  The callers of otx2_dma_map_page() use dma_mapping_error()
-to test the return value of otx2_dma_map_page(). This means that they
-would not detect an error in otx2_dma_map_page().
+-ENOMEM is a more appropriate return code for memory allocation
+failures.  Correct it.
 
-Make otx2_dma_map_page() return the raw value of dma_map_page_attrs().
-
-[1] https://lore.kernel.org/all/f977f68b-cec5-4ab7-b4bd-2cf6aca46267@intel.com
-
-Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260114123107.42387-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 20bddcb40b2b ("gpiolib: cdev: replace locking wrappers for gpio_device with guards")
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://lore.kernel.org/r/20260116081036.352286-6-tzungbi@kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpio/gpiolib-cdev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -934,13 +934,8 @@ static inline dma_addr_t otx2_dma_map_pa
- 					   size_t offset, size_t size,
- 					   enum dma_data_direction dir)
- {
--	dma_addr_t iova;
--
--	iova = dma_map_page_attrs(pfvf->dev, page,
-+	return dma_map_page_attrs(pfvf->dev, page,
- 				  offset, size, dir, DMA_ATTR_SKIP_CPU_SYNC);
--	if (unlikely(dma_mapping_error(pfvf->dev, iova)))
--		return (dma_addr_t)NULL;
--	return iova;
- }
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -2767,7 +2767,7 @@ static int gpio_chrdev_open(struct inode
  
- static inline void otx2_dma_unmap_page(struct otx2_nic *pfvf,
+ 	cdev = kzalloc(sizeof(*cdev), GFP_KERNEL);
+ 	if (!cdev)
+-		return -ENODEV;
++		return -ENOMEM;
+ 
+ 	cdev->watched_lines = bitmap_zalloc(gdev->ngpio, GFP_KERNEL);
+ 	if (!cdev->watched_lines)
 
 
 
