@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJytHY0yemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:13 +0100
+	id cKXgMTkxemlT4gEAu9opvQ
+	(envelope-from <stable+bounces-212284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6807A4E60
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38BC9A4B2C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C83CE311C4C4
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7ECF731C7A25
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F5930F81A;
-	Wed, 28 Jan 2026 15:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AD2305E2E;
+	Wed, 28 Jan 2026 15:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aV1qfWL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boVIvIZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C86F304968;
-	Wed, 28 Jan 2026 15:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2B73033F4;
+	Wed, 28 Jan 2026 15:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615594; cv=none; b=C4tfykRc/EDxcf3R7ETEKMlLAvpi0td3NJCART+so21GbSkxJoYe7DU9bmKAbc57ipfMNE7Q27NmjyTAGGUtrqWy/yu++v5DgYp/2IMbUdB0gsyYSXUeK/OWIpIgN3HdLBczeEGOfkMNllUt8EQ5OUdQ6+idJWqnW0ivqdzzcpo=
+	t=1769615003; cv=none; b=QlhE2veIh/uxd6TmPQe8GaIZUNt5BRAT5YOSzacs+CYA5yVsmPFWxD3wKY6x13e+Vmx4hjma+w3XRcvaKCbeI86tMbvbdQqbOUXa0VAmB+oWosbo4qY9mLm0RuzdEc8f9rLTlivTg6WUe+gTEEfJB4LRrQA4yQETj5ubqiU+C1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615594; c=relaxed/simple;
-	bh=D9tPILHVKhU9ZXQi1A7FEA/1bxYzhaL2xXq7na8BXKg=;
+	s=arc-20240116; t=1769615003; c=relaxed/simple;
+	bh=yGd2gnC0Z2xCfrYCMckzyG+vayaGNzQ5SKis5x7FviQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phdQFVAmgAKVPo/lXWbFhIDyxGPcPW8Mi8IAS9Bw6Gn1KejCt0S0HqcPXWbGDVHxAVGfqP//qr/esVVuAvy7ENhvy2gTBjkgvQTnEw7X8jS7Yk7VbBRUu+nl9L3DuSUlbDyW5xyOsH5Oux2o+qAsiehm2aY3tzSMYD4yu5D5AuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aV1qfWL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBEBC4CEF1;
-	Wed, 28 Jan 2026 15:53:13 +0000 (UTC)
+	 MIME-Version; b=L/UteRDGA5vACM23ioehlTBPNIsCQ/WZQMWLwql5KE/yZ00D8idUvueaEYuAQrd8UNtjwkKQO9EfAW2W7TnpgbBpU2GjZcUpbDYHLh+bDebcB8O3MZLsOfSV/uXAp2LLZUkF3nBNfcju3J+aSeSeErFnQ+l1a+HAKfgK07QM6rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boVIvIZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A068AC116C6;
+	Wed, 28 Jan 2026 15:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615594;
-	bh=D9tPILHVKhU9ZXQi1A7FEA/1bxYzhaL2xXq7na8BXKg=;
+	s=korg; t=1769615003;
+	bh=yGd2gnC0Z2xCfrYCMckzyG+vayaGNzQ5SKis5x7FviQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0aV1qfWL4mkAqJsEVLSsdcLSF54FYtDOStQs0mjJhKFHhlVF9nRndMRUlM2Cf/CS9
-	 IZBLIgGAwuzyvuDPHwTZKrdO+AFoB+317esTaic1oWuoL7UqRyBPC8bmpJoQoS6gir
-	 KXBThc5YxZfYaXmfgvnApGLgelwSC+yG9cap0A/E=
+	b=boVIvIZi0+R6YPbqMt7LK+hh68xgkEY2RWiwescm6v14D0c5m+hGJQV8alzPNNkTF
+	 Nac8Cluln73sEspXDvqepb0GZ1/dxbXCnVm40tt1u+PfQFVFitQRKerTWDMarTAGAJ
+	 T/3WrYwkMaQ8OiDbWvKNKfGfFQvxps53bIfDypt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	gongqi <550230171hxy@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.18 055/227] Input: i8042 - add quirks for MECHREVO Wujie 15X Pro
+	Niklas Cassel <cassel@kernel.org>,
+	Wolf <wolf@yoxt.cc>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 017/169] ata: libata: Call ata_dev_config_lpm() for ATAPI devices
 Date: Wed, 28 Jan 2026 16:21:40 +0100
-Message-ID: <20260128145346.322110746@linuxfoundation.org>
+Message-ID: <20260128145334.635443055@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +66,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212460-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	TAGGED_FROM(0.00)[bounces-212284-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.992];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D6807A4E60
+X-Rspamd-Queue-Id: 38BC9A4B2C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gongqi <550230171hxy@gmail.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 19a5d9ba6208e9006a2a9d5962aea4d6e427d8ab upstream.
+[ Upstream commit 8f3fb33f8f3f825c708ece800c921977c157f9b6 ]
 
-The MECHREVO Wujie 15X Pro requires several i8042 quirks to function
-correctly. Specifically, NOMUX, RESET_ALWAYS, NOLOOP, and NOPNP are
-needed to ensure the keyboard and touchpad work reliably.
+Commit d360121832d8 ("ata: libata-core: Introduce ata_dev_config_lpm()")
+introduced ata_dev_config_lpm(). However, it only called this function for
+ATA_DEV_ATA and ATA_DEV_ZAC devices, not for ATA_DEV_ATAPI devices.
 
-Signed-off-by: gongqi <550230171hxy@gmail.com>
-Link: https://patch.msgid.link/20260122155501.376199-3-550230171hxy@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Additionally, commit d99a9142e782 ("ata: libata-core: Move device LPM quirk
+settings to ata_dev_config_lpm()") moved the LPM quirk application from
+ata_dev_configure() to ata_dev_config_lpm(), causing LPM quirks for ATAPI
+devices to no longer be applied.
+
+Call ata_dev_config_lpm() also for ATAPI devices, such that LPM quirks are
+applied for ATAPI devices with an entry in __ata_dev_quirks once again.
+
+Fixes: d360121832d8 ("ata: libata-core: Introduce ata_dev_config_lpm()")
+Fixes: d99a9142e782 ("ata: libata-core: Move device LPM quirk settings to ata_dev_config_lpm()")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Tested-by: Wolf <wolf@yoxt.cc>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Stable-dep-of: c8c6fb886f57 ("ata: libata: Print features also for ATAPI devices")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/ata/libata-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1176,6 +1176,13 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
-+					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
-+	},
- 	/*
- 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
- 	 * after suspend fixable with the forcenorestore quirk.
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index cdb41b66bff2b..fba5166168978 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -3073,6 +3073,8 @@ int ata_dev_configure(struct ata_device *dev)
+ 				     ata_mode_string(xfer_mask),
+ 				     cdb_intr_string, atapi_an_string,
+ 				     dma_dir_string);
++
++		ata_dev_config_lpm(dev);
+ 	}
+ 
+ 	/* determine max_sectors */
+-- 
+2.51.0
+
 
 
 
