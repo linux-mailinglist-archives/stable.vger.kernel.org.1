@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WCLoKV46emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212489-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:33:34 +0100
+	id iMOsFrMsemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CE3A5CDE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:33:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6AEA4032
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF54931D2E4B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4601830164A1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29B1301465;
-	Wed, 28 Jan 2026 15:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16162868B2;
+	Wed, 28 Jan 2026 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClTfCNrw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLtq6msH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764162FF178;
-	Wed, 28 Jan 2026 15:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451D728B4FD;
+	Wed, 28 Jan 2026 15:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615688; cv=none; b=jhZrj4RGVRrdKAX1Ty/fairyKLB5cfuBxzQoOfz77smExF2SuAUBySQ5k1BmXMe3+dxZFesXeOdti6AzrDahSZjdz8RnF4MeMNByTNXs1QLuMi21kswazRzQvZl3r1ILo19LTqcGgCcI+Cw/OZDDOJ9HV9ne73YuZuvIr/Tv3YA=
+	t=1769614493; cv=none; b=YrcoVHDFsvLNyUuWZwKauac3sW/GqjwIFQMPRHYbjhoKmAPuWT9TaFoKYbZXU4iw+xbVGhvAP9NGFxkfavfD0zXphXi/1dn74qoyOFKcs+7MbCh5RjBlVOlGwi4RQf8c56VEQbKGUO2OdXfnq/tagkI6ZQ7ob20/LgevbrC+53Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615688; c=relaxed/simple;
-	bh=aw+HhDiCqGjLvIY5qRLFf2Vjnsmbv6dOanUb8dQV/sM=;
+	s=arc-20240116; t=1769614493; c=relaxed/simple;
+	bh=alTXFjzJWEBhzJrHFQ7HSoT1ppmfxlq1t4pGnsvB1N0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgbJqpS4gE8OJPXZkfZBn3xur1VOlvVRL+Q57gI6TVvaNiQQ/cAvA3n5xCKI+YoXa8/fEh6sBKo0ahH2TNYyRiR6WSI7aW/Ze1KXOWxn2cJgHjIZdEnoeXdrD/+DdoFw8UOr5fMR1dp+aX4BJuUIX1m16SLfJH+TWgHJIimQhms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ClTfCNrw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5AFC4CEF1;
-	Wed, 28 Jan 2026 15:54:47 +0000 (UTC)
+	 MIME-Version; b=tOHomuBwSMo8fpvPGdS+OmLPGGqlpVGgs1bGG70Zr4ZgZ6rWGPBD5J5Ss1Os8IOsHymAV3MeedGN7Q4CVTOFINF48R6lEd+TwxOyZ9VWtkZblNoylz1YuOokWGgINCdnjUshbMv6rrT0COCSI2yjYnWrLByrxNzkWxdrbxW+xz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLtq6msH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE42C4CEF1;
+	Wed, 28 Jan 2026 15:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615688;
-	bh=aw+HhDiCqGjLvIY5qRLFf2Vjnsmbv6dOanUb8dQV/sM=;
+	s=korg; t=1769614492;
+	bh=alTXFjzJWEBhzJrHFQ7HSoT1ppmfxlq1t4pGnsvB1N0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClTfCNrwpYQrxgQ9SHPotcWMX1CHko0hl1COfhh8YtozCfb7FFMDsPR2N9LYYS/S6
-	 lcUqi8oqn2doqORHP9ztjr5KmXGHwfCZBz3T4Ey1fAbfd+CzEuHUfulmc0QGebuDBy
-	 ml70/qDFTXXSVb6zX5zGk4VQqSUvV5HrZ0oTpNhM=
+	b=LLtq6msHYXEEmC9375Bo2LWKUIAplUeRVr0FCayWVMnRY2boaz4BMgNjpeVPUva5O
+	 7bvIhkCVyM2ekSxVGLr6macDXl3Y51/ZaO5+2q/Q2n3Fw52Fwj5yKbSaBJe5KIRxZJ
+	 2HtFFxbu65uxT2Qf30U1HZHGswqVectumjuoVJhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Georgi Djakov <djakov@kernel.org>,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Andrew Davis <afd@ti.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 084/227] interconnect: debugfs: initialize src_node and dst_node to empty strings
-Date: Wed, 28 Jan 2026 16:22:09 +0100
-Message-ID: <20260128145347.363032844@linuxfoundation.org>
+Subject: [PATCH 6.6 154/254] spi: sprd: adi: Use devm_register_restart_handler()
+Date: Wed, 28 Jan 2026 16:22:10 +0100
+Message-ID: <20260128145350.353155053@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +67,145 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212489-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212130-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 14CE3A5CDE
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ti.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BB6AEA4032
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georgi Djakov <djakov@kernel.org>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 8cc27f5c6dd17dd090f3a696683f04336c162ff5 ]
+[ Upstream commit 8e6a43961f24cf841d3c0d199521d0b284d948b9 ]
 
-The debugfs_create_str() API assumes that the string pointer is either NULL
-or points to valid kmalloc() memory. Leaving the pointer uninitialized can
-cause problems.
+Use device life-cycle managed register function to simplify probe error
+path and eliminate need for explicit remove function.
 
-Initialize src_node and dst_node to empty strings before creating the
-debugfs entries to guarantee that reads and writes are safe.
-
-Fixes: 770c69f037c1 ("interconnect: Add debugfs test client")
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Tested-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Link: https://lore.kernel.org/r/20260109122523.125843-1-djakov@kernel.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20231117161006.87734-5-afd@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 383d4f5cffcc ("spi: spi-sprd-adi: Fix double free in probe error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/debugfs-client.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-sprd-adi.c | 30 ++++++++----------------------
+ 1 file changed, 8 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/interconnect/debugfs-client.c b/drivers/interconnect/debugfs-client.c
-index 778deeb4a7e8a..24d7b5a577945 100644
---- a/drivers/interconnect/debugfs-client.c
-+++ b/drivers/interconnect/debugfs-client.c
-@@ -150,6 +150,11 @@ int icc_debugfs_client_init(struct dentry *icc_dir)
- 		return ret;
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index bf01feedbf93f..58c3badd9c79a 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -138,8 +138,7 @@ struct sprd_adi_data {
+ 	u32 slave_offset;
+ 	u32 slave_addr_size;
+ 	int (*read_check)(u32 val, u32 reg);
+-	int (*restart)(struct notifier_block *this,
+-		       unsigned long mode, void *cmd);
++	int (*restart)(struct sys_off_data *data);
+ 	void (*wdg_rst)(void *p);
+ };
+ 
+@@ -150,7 +149,6 @@ struct sprd_adi {
+ 	struct hwspinlock	*hwlock;
+ 	unsigned long		slave_vbase;
+ 	unsigned long		slave_pbase;
+-	struct notifier_block	restart_handler;
+ 	const struct sprd_adi_data *data;
+ };
+ 
+@@ -370,11 +368,9 @@ static void sprd_adi_set_wdt_rst_mode(void *p)
+ #endif
+ }
+ 
+-static int sprd_adi_restart(struct notifier_block *this, unsigned long mode,
+-				  void *cmd, struct sprd_adi_wdg *wdg)
++static int sprd_adi_restart(struct sprd_adi *sadi, unsigned long mode,
++			    const char *cmd, struct sprd_adi_wdg *wdg)
+ {
+-	struct sprd_adi *sadi = container_of(this, struct sprd_adi,
+-					     restart_handler);
+ 	u32 val, reboot_mode = 0;
+ 
+ 	if (!cmd)
+@@ -448,8 +444,7 @@ static int sprd_adi_restart(struct notifier_block *this, unsigned long mode,
+ 	return NOTIFY_DONE;
+ }
+ 
+-static int sprd_adi_restart_sc9860(struct notifier_block *this,
+-					   unsigned long mode, void *cmd)
++static int sprd_adi_restart_sc9860(struct sys_off_data *data)
+ {
+ 	struct sprd_adi_wdg wdg = {
+ 		.base = PMIC_WDG_BASE,
+@@ -458,7 +453,7 @@ static int sprd_adi_restart_sc9860(struct notifier_block *this,
+ 		.wdg_clk = PMIC_CLK_EN,
+ 	};
+ 
+-	return sprd_adi_restart(this, mode, cmd, &wdg);
++	return sprd_adi_restart(data->cb_data, data->mode, data->cmd, &wdg);
+ }
+ 
+ static void sprd_adi_hw_init(struct sprd_adi *sadi)
+@@ -590,9 +585,9 @@ static int sprd_adi_probe(struct platform_device *pdev)
  	}
  
-+	src_node = devm_kstrdup(&pdev->dev, "", GFP_KERNEL);
-+	dst_node = devm_kstrdup(&pdev->dev, "", GFP_KERNEL);
-+	if (!src_node || !dst_node)
-+		return -ENOMEM;
-+
- 	client_dir = debugfs_create_dir("test_client", icc_dir);
+ 	if (sadi->data->restart) {
+-		sadi->restart_handler.notifier_call = sadi->data->restart;
+-		sadi->restart_handler.priority = 128;
+-		ret = register_restart_handler(&sadi->restart_handler);
++		ret = devm_register_restart_handler(&pdev->dev,
++						    sadi->data->restart,
++						    sadi);
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "can not register restart handler\n");
+ 			goto put_ctlr;
+@@ -606,14 +601,6 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 	debugfs_create_str("src_node", 0600, client_dir, &src_node);
+-static void sprd_adi_remove(struct platform_device *pdev)
+-{
+-	struct spi_controller *ctlr = dev_get_drvdata(&pdev->dev);
+-	struct sprd_adi *sadi = spi_controller_get_devdata(ctlr);
+-
+-	unregister_restart_handler(&sadi->restart_handler);
+-}
+-
+ static struct sprd_adi_data sc9860_data = {
+ 	.slave_offset = ADI_10BIT_SLAVE_OFFSET,
+ 	.slave_addr_size = ADI_10BIT_SLAVE_ADDR_SIZE,
+@@ -657,7 +644,6 @@ static struct platform_driver sprd_adi_driver = {
+ 		.of_match_table = sprd_adi_of_match,
+ 	},
+ 	.probe = sprd_adi_probe,
+-	.remove_new = sprd_adi_remove,
+ };
+ module_platform_driver(sprd_adi_driver);
+ 
 -- 
 2.51.0
 
