@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AIrATcxemlT4gEAu9opvQ
-	(envelope-from <stable+bounces-212374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:31 +0100
+	id yAScCg8xemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C37DA4B23
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD03A4A90
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8FEFC305018A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7A9F930E0799
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD6D30BB82;
-	Wed, 28 Jan 2026 15:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE8F2F0661;
+	Wed, 28 Jan 2026 15:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1M6tI1lG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4GvEN6g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9C8309F1B;
-	Wed, 28 Jan 2026 15:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997CD2F0C70;
+	Wed, 28 Jan 2026 15:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615306; cv=none; b=gPt10RLFcZc18701E3H9EjZug1quoOfySKyg848FKau4KIwyK6GOVs3OcSyC8jwyUje8ueIHzdyKpYtxEAfGEKdvANat7OBY6+nnR7Grj0BtHKB549SaslD8dMZLpKtm3bc65a0SgPcumoRdzicizCTIH9+mPNLwBNbLwX1Vbr8=
+	t=1769614837; cv=none; b=uJY/HEoPqoYKS13VDfoRobVjHZKRlZtxVRjKEia2vq2AEY3KMlHHBu63ZNMC2ZKJGw6o6at8ARH3v+odGGJhN1k2siJIfe64g9h5lXfR/VuO7TQdaK2d8mUwcSwWfjxFdU/WYTStS/gLI27FdUJgtopoQ1+YPBj1lHdFB/UjyOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615306; c=relaxed/simple;
-	bh=xJ+XkHkMAnBR/Vu2z/043zKNJPUsSod73UmpAr213wA=;
+	s=arc-20240116; t=1769614837; c=relaxed/simple;
+	bh=EXOVJcZYoJjOsIF/2kYmLlC/PvMNrNyFJKdc818a9Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i24MAT7PPgdRFYo2JouVey6zQN+0GRNVKD+1w8nT4y08pP1dWYXrRaugOWzlLJFAQfeZLdHO0Vxa1/a9VlA/gnkJikd0aHk5ryJAHzlE1uICgIjJntQBNnTmg/u2psDmTvrdD2IjgZ3dA7dMwS50tUlM4bS2/G8sgHhtx5j2NNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1M6tI1lG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34C0C4CEF1;
-	Wed, 28 Jan 2026 15:48:25 +0000 (UTC)
+	 MIME-Version; b=mKWF5cOI+KMUiKYMrrwKpEw+kNggAox6bAOqxhdh/qTU3+YITcQyNrUZLcvqsnY2WLXMtH0KfH+z3XkRCowrrjQkG/qpk+Zk/6S5q2K+CjYPUsOF8GXj3vtsQsJbrb1eyeaADZKdxqqFBauNNy/CrF0XDGpI2XbViMX2hMvhtQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4GvEN6g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859BEC4CEF7;
+	Wed, 28 Jan 2026 15:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615306;
-	bh=xJ+XkHkMAnBR/Vu2z/043zKNJPUsSod73UmpAr213wA=;
+	s=korg; t=1769614837;
+	bh=EXOVJcZYoJjOsIF/2kYmLlC/PvMNrNyFJKdc818a9Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1M6tI1lG/AeW9hH7qYupcBeYfInhdCl9M2GOnr2wIGVbyPiOYG/bvwi47kjvNd/5T
-	 GXPzgcTZ5qruBJeDNKW62wqZVB1l6xMxzzG2vrRKa3O0cQnukRC4W2znRRaBd9+MKX
-	 i/7RewMbniVY4flbS69/hsdWmdgQeRtmqdFql5lA=
+	b=J4GvEN6gOVA1RNdbKtiugZaFO3UIZb42PbfTa30PWta/YxVrZBh/zId53F3T13g2W
+	 BW6KHLSiMB2+MWwyw7Gqq7ZpOLQyZkYkt90G055Oaq8UFfTnlq8g2XLzFNflAYYXe9
+	 GxX/PrAtQaaXhMaM4To/XwR2hevot8cn/Z8RwUgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamza Mahfooz <someguy@effective-light.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 139/169] net: sfp: add potron quirk to the H-COM SPP425H-GAB4 SFP+ Stick
-Date: Wed, 28 Jan 2026 16:23:42 +0100
-Message-ID: <20260128145339.008701342@linuxfoundation.org>
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.6 247/254] ksmbd: fix use-after-free in ksmbd_session_rpc_open
+Date: Wed, 28 Jan 2026 16:23:43 +0100
+Message-ID: <20260128145353.686626088@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,62 +70,147 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212235-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,doyensec.com,kernel.org,microsoft.com,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212374-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.957];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9C37DA4B23
+X-Rspamd-Queue-Id: 6DD03A4A90
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <someguy@effective-light.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit a92a6c50e35b75a8021265507f3c2a9084df0b94 upstream.
+[ Upstream commit a1f46c99d9ea411f9bf30025b912d881d36fc709 ]
 
-This is another one of those XGSPON ONU sticks that's using the
-X-ONU-SFPP internally, thus it also requires the potron quirk to avoid tx
-faults. So, add an entry for it in sfp_quirks[].
+A UAF issue can occur due to a race condition between
+ksmbd_session_rpc_open() and __session_rpc_close().
+Add rpc_lock to the session to protect it.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Hamza Mahfooz <someguy@effective-light.com>
-Link: https://patch.msgid.link/20260113232957.609642-1-someguy@effective-light.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ KSMBD_DEFAULT_GFP is introduced by commit 0066f623bce8 ("ksmbd: use __GFP_RETRY_MAYFAIL")
+ after linux-6.13. Here we still use GFP_KERNEL. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/sfp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/mgmt/user_session.c |   20 ++++++++++++++------
+ fs/smb/server/mgmt/user_session.h |    1 +
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -513,6 +513,8 @@ static const struct sfp_quirk sfp_quirks
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -59,10 +59,12 @@ static void ksmbd_session_rpc_clear_list
+ 	struct ksmbd_session_rpc *entry;
+ 	long index;
  
- 	SFP_QUIRK_F("HALNy", "HL-GSFP", sfp_fixup_halny_gsfp),
++	down_write(&sess->rpc_lock);
+ 	xa_for_each(&sess->rpc_handle_list, index, entry) {
+ 		xa_erase(&sess->rpc_handle_list, index);
+ 		__session_rpc_close(sess, entry);
+ 	}
++	up_write(&sess->rpc_lock);
  
-+	SFP_QUIRK_F("H-COM", "SPP425H-GAB4", sfp_fixup_potron),
-+
- 	// HG MXPD-483II-F 2.5G supports 2500Base-X, but incorrectly reports
- 	// 2600MBd in their EERPOM
- 	SFP_QUIRK_M("HG GENUINE", "MXPD-483II", sfp_quirk_2500basex),
+ 	xa_destroy(&sess->rpc_handle_list);
+ }
+@@ -92,7 +94,7 @@ int ksmbd_session_rpc_open(struct ksmbd_
+ {
+ 	struct ksmbd_session_rpc *entry, *old;
+ 	struct ksmbd_rpc_command *resp;
+-	int method;
++	int method, id;
+ 
+ 	method = __rpc_method(rpc_name);
+ 	if (!method)
+@@ -102,26 +104,29 @@ int ksmbd_session_rpc_open(struct ksmbd_
+ 	if (!entry)
+ 		return -ENOMEM;
+ 
++	down_read(&sess->rpc_lock);
+ 	entry->method = method;
+-	entry->id = ksmbd_ipc_id_alloc();
+-	if (entry->id < 0)
++	entry->id = id = ksmbd_ipc_id_alloc();
++	if (id < 0)
+ 		goto free_entry;
+-	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
++	old = xa_store(&sess->rpc_handle_list, id, entry, GFP_KERNEL);
+ 	if (xa_is_err(old))
+ 		goto free_id;
+ 
+-	resp = ksmbd_rpc_open(sess, entry->id);
++	resp = ksmbd_rpc_open(sess, id);
+ 	if (!resp)
+ 		goto erase_xa;
+ 
++	up_read(&sess->rpc_lock);
+ 	kvfree(resp);
+-	return entry->id;
++	return id;
+ erase_xa:
+ 	xa_erase(&sess->rpc_handle_list, entry->id);
+ free_id:
+ 	ksmbd_rpc_id_free(entry->id);
+ free_entry:
+ 	kfree(entry);
++	up_read(&sess->rpc_lock);
+ 	return -EINVAL;
+ }
+ 
+@@ -129,9 +134,11 @@ void ksmbd_session_rpc_close(struct ksmb
+ {
+ 	struct ksmbd_session_rpc *entry;
+ 
++	down_write(&sess->rpc_lock);
+ 	entry = xa_erase(&sess->rpc_handle_list, id);
+ 	if (entry)
+ 		__session_rpc_close(sess, entry);
++	up_write(&sess->rpc_lock);
+ }
+ 
+ int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id)
+@@ -438,6 +445,7 @@ static struct ksmbd_session *__session_c
+ 	sess->sequence_number = 1;
+ 	rwlock_init(&sess->tree_conns_lock);
+ 	atomic_set(&sess->refcnt, 2);
++	init_rwsem(&sess->rpc_lock);
+ 
+ 	ret = __init_smb2_session(sess);
+ 	if (ret)
+--- a/fs/smb/server/mgmt/user_session.h
++++ b/fs/smb/server/mgmt/user_session.h
+@@ -63,6 +63,7 @@ struct ksmbd_session {
+ 	rwlock_t			tree_conns_lock;
+ 
+ 	atomic_t			refcnt;
++	struct rw_semaphore		rpc_lock;
+ };
+ 
+ static inline int test_session_flag(struct ksmbd_session *sess, int bit)
 
 
 
