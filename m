@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-212070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212431-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JeqAKMuemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212070-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:31 +0100
+	id UHFyEkwyemlo4gEAu9opvQ
+	(envelope-from <stable+bounces-212431-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDA3A44D2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8C8A4DEA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B6B930D6A44
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2B7E530EC5C7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C64242D86;
-	Wed, 28 Jan 2026 15:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD2530BBA5;
+	Wed, 28 Jan 2026 15:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gI1JI5EE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5e66FHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B27A1E9B1A;
-	Wed, 28 Jan 2026 15:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F75A2FF178;
+	Wed, 28 Jan 2026 15:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614300; cv=none; b=UY225p8RYOe5rz39Ji21peNPibJes4u/byPaNTmY0okHCgHzGLUYEXzP2Hp5i5cVoTwh9OqsbR/KgZf2XXeXvoWutIV0vswJc2oSDAJIyrxUhkzqEdf+1OIBZsvIrneYoP4nvuUZue3hGOD2Tnj1XRErHVTODHN1mtGTmNPoMfk=
+	t=1769615496; cv=none; b=WJQdWAl62d3feH1SUcRmu6NMMxeEv+kn6arkxSYBOglSs+ODDZ1PRQWbvqDYCFwpiWbtCdjLFbJoowOhX6OdneWzZc/m75lgqYuYSTb1eXyf91tUYxToWc+Ni7u/x4TftXFpTp7rhiY7SMJR1fYA6tNnzYrnCNa4qj4M/IyjxGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614300; c=relaxed/simple;
-	bh=SDdG2h+/5V1hhoxgFB7bNd9VzTXBj/BbMuxm6FD3fCE=;
+	s=arc-20240116; t=1769615496; c=relaxed/simple;
+	bh=26Ww30JpgaZ33Bfi11SfwtKiA8yP8hImrEy5ytVjtNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UYFJTTMMHS70t5QZu/As4vbmJvP9ohtwIzYaCthgcVblHRTY6Gn8sUEvI7PhpYxLWpxn7W/HfluZKnjdBB1L7Ho95wmjhb6YLRm8cHDOscp+SaWrXYUjCswiR/qYHD+LmxoKreZSHaDLVCsEOkZqlzDVl39NuidtueuwBEucYsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gI1JI5EE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14DDC4CEF7;
-	Wed, 28 Jan 2026 15:31:39 +0000 (UTC)
+	 MIME-Version; b=unzQ9yBR8pNwP9jNnmVDYcNFGaML/EJPwOLUgrAIC1Wu31rFw9iPjF08eZy6AAIFcY7joMVoXIQ/ILzEx3ApSywDoJwdKnPvLoun7mES7n2nvgVH94vmqIAdQMPmRG7E4U3pUL2TY0MO1g/tOGm5I57/x3MeW4anTITEuYR7X8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5e66FHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAECC4CEF1;
+	Wed, 28 Jan 2026 15:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614300;
-	bh=SDdG2h+/5V1hhoxgFB7bNd9VzTXBj/BbMuxm6FD3fCE=;
+	s=korg; t=1769615496;
+	bh=26Ww30JpgaZ33Bfi11SfwtKiA8yP8hImrEy5ytVjtNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gI1JI5EEj/o2y//Vl4o8HPtYBM+zYn6frMPQ+wzyRJVpCaDppumnICrOWq1vwb0QL
-	 /CY9SfuWkW5PLl/lGuNc1oDhzdZu/d/1AxJ4b9BkPzdO6xmqbHvJCs/qDp9Jf8xvlT
-	 GPn/au87nirsxwPZbB++tdQwUx923BlTfIuZbrzA=
+	b=g5e66FHsKgW+eutmYlOFn7nYmIWqMFHdBB1uTHQZQkNNvPcuk2OEJkyPgNQXTnsRR
+	 FqgsT3j+OuHMhp25aSmv5mHbfWBtoLlIAh3W9FVZsQKkkLTXvHrDxrKZ7tQq9bRTDh
+	 eI6vIXl2ZZn6mO+IH4qxIaxUM8pkirhQAj78sDyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Wojtek Wasko <wwasko@nvidia.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
+	Zdenek Bouska <zdenek.bouska@siemens.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Chwee-Lin Choong <chwee.lin.choong@intel.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/254] ptp: Add PHC file mode checks. Allow RO adjtime() without FMODE_WRITE.
-Date: Wed, 28 Jan 2026 16:21:10 +0100
-Message-ID: <20260128145348.210690269@linuxfoundation.org>
+Subject: [PATCH 6.18 026/227] igc: Reduce TSN TX packet buffer from 7KB to 5KB per queue
+Date: Wed, 28 Jan 2026 16:21:11 +0100
+Message-ID: <20260128145345.287593477@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,146 +68,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com,linutronix.de,davemloft.net,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212070-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212431-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6DDA3A44D2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AF8C8A4DEA
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojtek Wasko <wwasko@nvidia.com>
+From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
 
-[ Upstream commit b4e53b15c04e3852949003752f48f7a14ae39e86 ]
+[ Upstream commit 8ad1b6c1e63d25f5465b7a8aa403bdcee84b86f9 ]
 
-Many devices implement highly accurate clocks, which the kernel manages
-as PTP Hardware Clocks (PHCs). Userspace applications rely on these
-clocks to timestamp events, trace workload execution, correlate
-timescales across devices, and keep various clocks in sync.
+The previous 7 KB per queue caused TX unit hangs under heavy
+timestamping load. Reducing to 5 KB avoids these hangs and matches
+the TSN recommendation in I225/I226 SW User Manual Section 7.5.4.
 
-The kernel’s current implementation of PTP clocks does not enforce file
-permissions checks for most device operations except for POSIX clock
-operations, where file mode is verified in the POSIX layer before
-forwarding the call to the PTP subsystem. Consequently, it is common
-practice to not give unprivileged userspace applications any access to
-PTP clocks whatsoever by giving the PTP chardevs 600 permissions. An
-example of users running into this limitation is documented in [1].
-Additionally, POSIX layer requires WRITE permission even for readonly
-adjtime() calls which are used in PTP layer to return current frequency
-offset applied to the PHC.
+The 8 KB "freed" by this change is currently unused. This reduction
+is not expected to impact throughput, as the i226 is PCIe-limited
+for small TSN packets rather than TX-buffer-limited.
 
-Add permission checks for functions that modify the state of a PTP
-device. Continue enforcing permission checks for POSIX clock operations
-(settime, adjtime) in the POSIX layer. Only require WRITE access for
-dynamic clocks adjtime() if any flags are set in the modes field.
-
-[1] https://lists.nwtime.org/sympa/arc/linuxptp-users/2024-01/msg00036.html
-
-Changes in v4:
-- Require FMODE_WRITE in ajtime() only for calls modifying the clock in
-  any way.
-
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 0d58cdc902da ("igc: optimize TX packet buffer utilization for TSN mode")
+Reported-by: Zdenek Bouska <zdenek.bouska@siemens.com>
+Closes: https://lore.kernel.org/netdev/AS1PR10MB5675DBFE7CE5F2A9336ABFA4EBEAA@AS1PR10MB5675.EURPRD10.PROD.OUTLOOK.COM/
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_chardev.c | 16 ++++++++++++++++
- kernel/time/posix-clock.c |  2 +-
- 2 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_defines.h | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index 6eecb53b3e670..1ed12e86ee000 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -153,6 +153,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
+diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
+index 498ba1522ca4d..9482ab11f050f 100644
+--- a/drivers/net/ethernet/intel/igc/igc_defines.h
++++ b/drivers/net/ethernet/intel/igc/igc_defines.h
+@@ -443,9 +443,10 @@
+ #define IGC_TXPBSIZE_DEFAULT ( \
+ 	IGC_TXPB0SIZE(20) | IGC_TXPB1SIZE(0) | IGC_TXPB2SIZE(0) | \
+ 	IGC_TXPB3SIZE(0) | IGC_OS2BMCPBSIZE(4))
++/* TSN value following I225/I226 SW User Manual Section 7.5.4 */
+ #define IGC_TXPBSIZE_TSN ( \
+-	IGC_TXPB0SIZE(7) | IGC_TXPB1SIZE(7) | IGC_TXPB2SIZE(7) | \
+-	IGC_TXPB3SIZE(7) | IGC_OS2BMCPBSIZE(4))
++	IGC_TXPB0SIZE(5) | IGC_TXPB1SIZE(5) | IGC_TXPB2SIZE(5) | \
++	IGC_TXPB3SIZE(5) | IGC_OS2BMCPBSIZE(4))
  
- 	case PTP_EXTTS_REQUEST:
- 	case PTP_EXTTS_REQUEST2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		memset(&req, 0, sizeof(req));
- 
- 		if (copy_from_user(&req.extts, (void __user *)arg,
-@@ -194,6 +198,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
- 
- 	case PTP_PEROUT_REQUEST:
- 	case PTP_PEROUT_REQUEST2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		memset(&req, 0, sizeof(req));
- 
- 		if (copy_from_user(&req.perout, (void __user *)arg,
-@@ -262,6 +270,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
- 
- 	case PTP_ENABLE_PPS:
- 	case PTP_ENABLE_PPS2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		memset(&req, 0, sizeof(req));
- 
- 		if (!capable(CAP_SYS_TIME))
-@@ -400,6 +412,10 @@ long ptp_ioctl(struct posix_clock_context *pccontext, unsigned int cmd,
- 
- 	case PTP_PIN_SETFUNC:
- 	case PTP_PIN_SETFUNC2:
-+		if ((pccontext->fp->f_mode & FMODE_WRITE) == 0) {
-+			err = -EACCES;
-+			break;
-+		}
- 		if (copy_from_user(&pd, (void __user *)arg, sizeof(pd))) {
- 			err = -EFAULT;
- 			break;
-diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
-index b130bb56cc4e0..827abede72745 100644
---- a/kernel/time/posix-clock.c
-+++ b/kernel/time/posix-clock.c
-@@ -253,7 +253,7 @@ static int pc_clock_adjtime(clockid_t id, struct __kernel_timex *tx)
- 	if (err)
- 		return err;
- 
--	if ((cd.fp->f_mode & FMODE_WRITE) == 0) {
-+	if (tx->modes && (cd.fp->f_mode & FMODE_WRITE) == 0) {
- 		err = -EACCES;
- 		goto out;
- 	}
+ #define IGC_DTXMXPKTSZ_TSN	0x19 /* 1600 bytes of max TX DMA packet size */
+ #define IGC_DTXMXPKTSZ_DEFAULT	0x98 /* 9728-byte Jumbo frames */
 -- 
 2.51.0
 
