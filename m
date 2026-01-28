@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-212128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SKUZK2cuemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212128-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:31 +0100
+	id iCYjC10xemlT4gEAu9opvQ
+	(envelope-from <stable+bounces-212287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB608A43BC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C13A5A4B87
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 79282302ACB6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1B18E306542A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B25A2C15A0;
-	Wed, 28 Jan 2026 15:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACD530F543;
+	Wed, 28 Jan 2026 15:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTlVLANK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9vQ2duU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A60C29B8C7;
-	Wed, 28 Jan 2026 15:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2168C30FC21;
+	Wed, 28 Jan 2026 15:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614487; cv=none; b=c4S3Y+Yp53pJ73EXmWf4qYJNw1LMwrtdwuHmDpkSGvNHaWU7L56hCXejO1NsmzL+MYcfmLBcvomYCbokB08yWR0YOm0puFdENqyE3kJz0LPR43S/ILWxpJ4JCfOO4WBvqXh7jTGD1hT+qFnkFOqhMtG80btgdw/3a+sjC8kpQ60=
+	t=1769615014; cv=none; b=txo61LHTI8jETJl0tQke24CYe68M6mJYG25i77tGv45S8flgGvzgW9lvzg65OL2UqrzY10U2KXWw/wM604zwngaPr/aTWPQ+7Vc2Vqq75N6SB8+2nMKPP7bOjLCYd5G8Mnu+2Riw6g4DU43gt79Ia4jYGA0FkEvtAEEJIwPYY+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614487; c=relaxed/simple;
-	bh=2xu2eNUsEE5dBIfysc6PoApvdjjyRVfn5VmAcUBTTXw=;
+	s=arc-20240116; t=1769615014; c=relaxed/simple;
+	bh=O4vc7yIErZhPD9+yfmHahpOk9E825nF6QhHLuzrLTyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MlQobHV0qncM0ODsUSvoCbo12/2qvil3o0fY6nHe9McFsiyVWIAqyUc+xsc4tgNKdmEq+ZJTyfSL0w/oqZOU/F3/rfZLf+08Ujh9QOUAHwNHJxwiITgE7a8ZKP3YV3mcwIc+BbWktHkKC6Hc+hFXA0xeNOvIqa8pfkpIhtf2x8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTlVLANK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DC9C4CEF1;
-	Wed, 28 Jan 2026 15:34:46 +0000 (UTC)
+	 MIME-Version; b=kGy5K9OrA2HQahgVXLkwWqslKIbRsH8cmjRtQomNRELVQifbH3oigrDp2riJcmiHEBIVcF5bQik8gzysnwC9thgPb+cXvO+zZgV1JUpETyWPiUtUunhYNPtqHQ4Xg40A/DgcM/Yg3m+CXpyTuC+AMMpb1ObsXCS9pea+Fmsbb94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9vQ2duU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4882CC4CEF7;
+	Wed, 28 Jan 2026 15:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614486;
-	bh=2xu2eNUsEE5dBIfysc6PoApvdjjyRVfn5VmAcUBTTXw=;
+	s=korg; t=1769615013;
+	bh=O4vc7yIErZhPD9+yfmHahpOk9E825nF6QhHLuzrLTyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTlVLANKTupSvJa04qhcGLe2smI8lZDHIt+5PxKs1UeUrP1LikFipV81yHAXvTly1
-	 VHufJt99kd88WDZBxM5QDhjnglL/CSj23IijAFDRCRIpt/6B0MdU8j4cYO+NFhDV7K
-	 6S/OeJDdyhdTz81ZLYNBxhJCAgsWhN4itQhzQD/4=
+	b=H9vQ2duUsMUsJOAucMAD5aAQMP236NFfbgbLBDUCWUQTBfkD93jYm55gNuj7BoPrc
+	 fs4UG2RWWQpkkAJlBvZ7GFXphKxyyfMEMM/Cn0WyLen/XtSIW7ZGb9EQRHTn8bxj8Q
+	 /AD3UJPqHuiGx2WlDOlsEt972pJ1KhFRtSKEnaWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/254] iio: adc: ad7280a: handle spi_setup() errors in probe()
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 6.12 045/169] w1: therm: Fix off-by-one buffer overflow in alarms_store
 Date: Wed, 28 Jan 2026 16:22:08 +0100
-Message-ID: <20260128145350.280811243@linuxfoundation.org>
+Message-ID: <20260128145335.640185404@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,78 +66,164 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212128-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212287-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kaspersky.com:email]
-X-Rspamd-Queue-Id: BB608A43BC
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C13A5A4B87
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 6b39824ac4c15783787e6434449772bfb2e31214 ]
+commit 761fcf46a1bd797bd32d23f3ea0141ffd437668a upstream.
 
-The probe() function ignored the return value of spi_setup(), leaving SPI
-configuration failures undetected. If spi_setup() fails, the driver should
-stop initialization and propagate the error to the caller.
+The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
+bytes and a NUL terminator is appended. However, the 'size' argument
+does not account for this extra byte. The original code then allocated
+'size' bytes and used strcpy() to copy 'buf', which always writes one
+byte past the allocated buffer since strcpy() copies until the NUL
+terminator at index 'size'.
 
-Add proper error handling: check the return value of spi_setup() and return
-it on failure.
+Fix this by parsing the 'buf' parameter directly using simple_strtoll()
+without allocating any intermediate memory or string copying. This
+removes the overflow while simplifying the code.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 2051f25d2a26 ("iio: adc: New driver for AD7280A Lithium Ion Battery Monitoring System")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Link: https://patch.msgid.link/20251216145007.44328-2-thorsten.blum@linux.dev
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7280a.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/w1/slaves/w1_therm.c |   60 +++++++++++++------------------------------
+ 1 file changed, 19 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
-index 9080c795dcb7e..10cc623bf62a3 100644
---- a/drivers/iio/adc/ad7280a.c
-+++ b/drivers/iio/adc/ad7280a.c
-@@ -1028,7 +1028,9 @@ static int ad7280_probe(struct spi_device *spi)
+--- a/drivers/w1/slaves/w1_therm.c
++++ b/drivers/w1/slaves/w1_therm.c
+@@ -1846,53 +1846,35 @@ static ssize_t alarms_store(struct devic
+ 	struct w1_slave *sl = dev_to_w1_slave(device);
+ 	struct therm_info info;
+ 	u8 new_config_register[3];	/* array of data to be written */
+-	int temp, ret;
+-	char *token = NULL;
++	long long temp;
++	int ret = 0;
+ 	s8 tl, th;	/* 1 byte per value + temp ring order */
+-	char *p_args, *orig;
++	const char *p = buf;
++	char *endp;
  
- 	st->spi->max_speed_hz = AD7280A_MAX_SPI_CLK_HZ;
- 	st->spi->mode = SPI_MODE_1;
--	spi_setup(st->spi);
-+	ret = spi_setup(st->spi);
-+	if (ret < 0)
-+		return ret;
+-	p_args = orig = kmalloc(size, GFP_KERNEL);
+-	/* Safe string copys as buf is const */
+-	if (!p_args) {
+-		dev_warn(device,
+-			"%s: error unable to allocate memory %d\n",
+-			__func__, -ENOMEM);
+-		return size;
+-	}
+-	strcpy(p_args, buf);
+-
+-	/* Split string using space char */
+-	token = strsep(&p_args, " ");
+-
+-	if (!token)	{
+-		dev_info(device,
+-			"%s: error parsing args %d\n", __func__, -EINVAL);
+-		goto free_m;
+-	}
+-
+-	/* Convert 1st entry to int */
+-	ret = kstrtoint (token, 10, &temp);
++	temp = simple_strtoll(p, &endp, 10);
++	if (p == endp || *endp != ' ')
++		ret = -EINVAL;
++	else if (temp < INT_MIN || temp > INT_MAX)
++		ret = -ERANGE;
+ 	if (ret) {
+ 		dev_info(device,
+ 			"%s: error parsing args %d\n", __func__, ret);
+-		goto free_m;
++		return size;
+ 	}
  
- 	st->ctrl_lb = FIELD_PREP(AD7280A_CTRL_LB_ACQ_TIME_MSK, st->acquisition_time) |
- 		FIELD_PREP(AD7280A_CTRL_LB_THERMISTOR_MSK, st->thermistor_term_en);
--- 
-2.51.0
-
+ 	tl = int_to_short(temp);
+ 
+-	/* Split string using space char */
+-	token = strsep(&p_args, " ");
+-	if (!token)	{
+-		dev_info(device,
+-			"%s: error parsing args %d\n", __func__, -EINVAL);
+-		goto free_m;
+-	}
+-	/* Convert 2nd entry to int */
+-	ret = kstrtoint (token, 10, &temp);
++	p = endp + 1;
++	temp = simple_strtoll(p, &endp, 10);
++	if (p == endp)
++		ret = -EINVAL;
++	else if (temp < INT_MIN || temp > INT_MAX)
++		ret = -ERANGE;
+ 	if (ret) {
+ 		dev_info(device,
+ 			"%s: error parsing args %d\n", __func__, ret);
+-		goto free_m;
++		return size;
+ 	}
+ 
+ 	/* Prepare to cast to short by eliminating out of range values */
+@@ -1915,7 +1897,7 @@ static ssize_t alarms_store(struct devic
+ 		dev_info(device,
+ 			"%s: error reading from the slave device %d\n",
+ 			__func__, ret);
+-		goto free_m;
++		return size;
+ 	}
+ 
+ 	/* Write data in the device RAM */
+@@ -1923,7 +1905,7 @@ static ssize_t alarms_store(struct devic
+ 		dev_info(device,
+ 			"%s: Device not supported by the driver %d\n",
+ 			__func__, -ENODEV);
+-		goto free_m;
++		return size;
+ 	}
+ 
+ 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
+@@ -1932,10 +1914,6 @@ static ssize_t alarms_store(struct devic
+ 			"%s: error writing to the slave device %d\n",
+ 			__func__, ret);
+ 
+-free_m:
+-	/* free allocated memory */
+-	kfree(orig);
+-
+ 	return size;
+ }
+ 
 
 
 
