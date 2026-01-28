@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLPIEqouemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:38 +0100
+	id 2AKsBW83eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:21:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8253A44D9
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45001A5754
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3948030C693F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 02ECC30EE9AA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5881E244667;
-	Wed, 28 Jan 2026 15:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B14F305E2E;
+	Wed, 28 Jan 2026 15:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4QchWVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnvg7eel"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEAC10A1E;
-	Wed, 28 Jan 2026 15:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFE02E2DF4;
+	Wed, 28 Jan 2026 15:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614304; cv=none; b=uZlRBcM9n014u6Z/NfO2DFBfWovagywmv6XNdPUclG2/axNPfK62qB3lL2I1Wky8yd2qLL7EQUQwhUGSH8XroJ2hJmYYfwlZZafQ6iV1vLxIptU9BJZuEnkHhiLbqjqA/XF28hQzUGz/UCL2aqYNWWUZHLIJFHQdL5ZXM3aKtYc=
+	t=1769615640; cv=none; b=Bfw/H9qvFZFCDBQkbPlhkt9ngo5jPfygLrxHrQhG/LrXRLE7vKhL8SZ1h9/FQXIfqpWXn1PNYB1UuG8eZdG3ULPzQwDA2ko1YmaxAg3EC3mKlXcnDiUGyrsxeI/ZjX9SVoDS4x3GDTN2qntLTLPjPEPdYKVrAkOkAitgFJib7os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614304; c=relaxed/simple;
-	bh=M2MLBbV1IAuQ7aNioHMFConF6NA7jaMue7cl5xzUDA8=;
+	s=arc-20240116; t=1769615640; c=relaxed/simple;
+	bh=pzrdnueCqbSOy+/PJbIMn1JgSrJ5z9RxPWFdgpkJeZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ih7ImyeBX7+wr6Ni7Liuo4L2kdpbt98qL5klBMkrRMcc+K5yB+q9wDFLlq4Xdh+02vbzNBWyIy8QTlZQt1eLIHkAUr+9F7yDCg1HJ8ezQUySohNmPMDF6mOCk5X2BZMKVA60yxhgkCnS2bi315WNqWUsnJeHWB4FP5BrogFBidY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4QchWVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFD6C4CEF1;
-	Wed, 28 Jan 2026 15:31:43 +0000 (UTC)
+	 MIME-Version; b=dais1VerqOK1nC8BXYhb565O6JGWDGWrL/83xjSOIZ2bwrbAmwQlcs5AuYx9mvAxtCfJ54Re1rlLOnHIWgcw1cuTr5xO6aYtdvrqMsNwhLAkPCPxkajiXggcn/TdHYvnmrJkERm6mafV6QHUy4iF4ecFqEmJMKFgp7wOuX4R21c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnvg7eel; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F285C4CEF1;
+	Wed, 28 Jan 2026 15:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614303;
-	bh=M2MLBbV1IAuQ7aNioHMFConF6NA7jaMue7cl5xzUDA8=;
+	s=korg; t=1769615640;
+	bh=pzrdnueCqbSOy+/PJbIMn1JgSrJ5z9RxPWFdgpkJeZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4QchWVQeuekZItM5Me+XrxQSb1r7bwp3YnvHYsumTDLR5Ylotm5sC0tsheTizHoO
-	 n1QWr2bZ31gi2/M7GD2boljvg+Sy30jivXcO3GFxsQJCWpF6u8L2bFuCse1J87uv3k
-	 kuXIy0viOx/KFFkAOnfBL6qquIihk+pcCy64jIMU=
+	b=rnvg7eelWOmjcx08QQ63TQm2jsUSIhCDBJ0WcCWiDVSFX89BNwNsiFhbYykvRhY9K
+	 iFeuMqzBwM7Gj0oTkNYgpgNB8gIufhxmOnN8tNQ/uj9QxMxSTPqW6BQPtMOyQtU85/
+	 X1Y2IPFX6KyrmNUnJdI8NPZfOlaxKK0gyPGW/pns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xabier Marquiegui <reibax@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Michal Luczaj <mhal@rbox.co>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/254] ptp: add testptp mask test
-Date: Wed, 28 Jan 2026 16:21:11 +0100
-Message-ID: <20260128145348.246509071@linuxfoundation.org>
+Subject: [PATCH 6.18 027/227] vsock/virtio: Coalesce only linear skb
+Date: Wed, 28 Jan 2026 16:21:12 +0100
+Message-ID: <20260128145345.322972691@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,142 +70,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,davemloft.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212071-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212474-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email,intel.com:email]
-X-Rspamd-Queue-Id: C8253A44D9
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,rbox.co:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 45001A5754
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xabier Marquiegui <reibax@gmail.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-[ Upstream commit 26285e689c6cd2cf3849568c83b2ebe53f467143 ]
+[ Upstream commit 0386bd321d0f95d041a7b3d7b07643411b044a96 ]
 
-Add option to test timestamp event queue mask manipulation in testptp.
+vsock/virtio common tries to coalesce buffers in rx queue: if a linear skb
+(with a spare tail room) is followed by a small skb (length limited by
+GOOD_COPY_LEN = 128), an attempt is made to join them.
 
-Option -F allows the user to specify a single channel that will be
-applied on the mask filter via IOCTL.
+Since the introduction of MSG_ZEROCOPY support, assumption that a small skb
+will always be linear is incorrect. In the zerocopy case, data is lost and
+the linear skb is appended with uninitialized kernel memory.
 
-The test program will maintain the file open until user input is
-received.
+Of all 3 supported virtio-based transports, only loopback-transport is
+affected. G2H virtio-transport rx queue operates on explicitly linear skbs;
+see virtio_vsock_alloc_linear_skb() in virtio_vsock_rx_fill(). H2G
+vhost-transport may allocate non-linear skbs, but only for sizes that are
+not considered for coalescence; see PAGE_ALLOC_COSTLY_ORDER in
+virtio_vsock_alloc_skb().
 
-This allows checking the effect of the IOCTL in debugfs.
+Ensure only linear skbs are coalesced. Note that skb_tailroom(last_skb) > 0
+guarantees last_skb is linear.
 
-eg:
-
-Console 1:
-```
-Channel 12 exclusively enabled. Check on debugfs.
-Press any key to continue
-```
-
-Console 2:
-```
-0x00000000 0x00000001 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
-0x00000000 0x00000000 0x00000000 0x00000000
-```
-
-Signed-off-by: Xabier Marquiegui <reibax@gmail.com>
-Suggested-by: Richard Cochran <richardcochran@gmail.com>
-Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
+Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://patch.msgid.link/20260113-vsock-recv-coalescence-v2-1-552b17837cf4@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ net/vmw_vsock/virtio_transport_common.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index c9f6cca4feb45..011252fe238c8 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -121,6 +121,7 @@ static void usage(char *progname)
- 		" -d name    device to open\n"
- 		" -e val     read 'val' external time stamp events\n"
- 		" -f val     adjust the ptp clock frequency by 'val' ppb\n"
-+		" -F chan    Enable single channel mask and keep device open for debugfs verification.\n"
- 		" -g         get the ptp clock time\n"
- 		" -h         prints this message\n"
- 		" -i val     index for event/trigger\n"
-@@ -187,6 +188,7 @@ int main(int argc, char *argv[])
- 	int pps = -1;
- 	int seconds = 0;
- 	int settime = 0;
-+	int channel = -1;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index dcc8a1d5851e6..26b979ad71f09 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1359,9 +1359,11 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
  
- 	int64_t t1, t2, tp;
- 	int64_t interval, offset;
-@@ -196,7 +198,7 @@ int main(int argc, char *argv[])
+ 	/* Try to copy small packets into the buffer of last packet queued,
+ 	 * to avoid wasting memory queueing the entire buffer with a small
+-	 * payload.
++	 * payload. Skip non-linear (e.g. zerocopy) skbs; these carry payload
++	 * in skb_shinfo.
+ 	 */
+-	if (len <= GOOD_COPY_LEN && !skb_queue_empty(&vvs->rx_queue)) {
++	if (len <= GOOD_COPY_LEN && !skb_queue_empty(&vvs->rx_queue) &&
++	    !skb_is_nonlinear(skb)) {
+ 		struct virtio_vsock_hdr *last_hdr;
+ 		struct sk_buff *last_skb;
  
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -210,6 +212,9 @@ int main(int argc, char *argv[])
- 		case 'f':
- 			adjfreq = atoi(optarg);
- 			break;
-+		case 'F':
-+			channel = atoi(optarg);
-+			break;
- 		case 'g':
- 			gettime = 1;
- 			break;
-@@ -604,6 +609,18 @@ int main(int argc, char *argv[])
- 		free(xts);
- 	}
- 
-+	if (channel >= 0) {
-+		if (ioctl(fd, PTP_MASK_CLEAR_ALL)) {
-+			perror("PTP_MASK_CLEAR_ALL");
-+		} else if (ioctl(fd, PTP_MASK_EN_SINGLE, (unsigned int *)&channel)) {
-+			perror("PTP_MASK_EN_SINGLE");
-+		} else {
-+			printf("Channel %d exclusively enabled. Check on debugfs.\n", channel);
-+			printf("Press any key to continue\n.");
-+			getchar();
-+		}
-+	}
-+
- 	close(fd);
- 	return 0;
- }
 -- 
 2.51.0
 
