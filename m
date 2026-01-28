@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-212490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212315-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFFzOv4zeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:22 +0100
+	id MHy+MDE1eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212315-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:11:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620ECA513A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C05A53FD
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:11:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5CFE33058B9E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3F1793182BC9
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25012FF178;
-	Wed, 28 Jan 2026 15:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5083112C2;
+	Wed, 28 Jan 2026 15:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rozsuadg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiwP2+H2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BCF288C22;
-	Wed, 28 Jan 2026 15:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C58308F02;
+	Wed, 28 Jan 2026 15:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615691; cv=none; b=QFQs2cF06s4m006exL4Y5Oyhu3HUPQhXFIWSRlN3pV2mz6N5fD4KNgMhpdzUkvAJeMStNSNv6GoKatljvGV15xrBqGcTVq6A59jJsDgSGifqdNSl1k8IhriqFV5M+VumBvWyj1kbg7mXD5qW+rUlr3dj3aivo8wYBaPAsPHxUOc=
+	t=1769615106; cv=none; b=NeOGaoYD0iBwOyY2T35V7OkzfvkA1hcdNrMEeNWJ95kFBFjjGdQoK9rJvpi7JOuEpci1wZ33rNU3YSbTSbDJa/ZoLJRw/1WiI+TTHVNqRnIkwWvhPiouDnMJQDx9cIpHQlGAWDn1umYoNSlXvbHWVVEAMF0DaBUdVoNk1vQjCd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615691; c=relaxed/simple;
-	bh=qDMwj5EjWfoyfS6ZgjS6uMCLsscC6ZX/OYaGn6A9dMo=;
+	s=arc-20240116; t=1769615106; c=relaxed/simple;
+	bh=oGA4EQad8IeKK6vSqsZ7BSt/yyPejH5pO4TikY/gY6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ryRjfTssQ2sZHVxwbIIDCq9OsxpuxsH/1kBBDBm1ZoPp5DZqZisr9Zu1upo1C0cnWlLVzXvyE6gGlugqSR2ctfUpL91+GRzukU7uPOHlg1/Xnx6VpTu0b50zi+DqevynQynyBZM5MKPAolizA25yZUPNnyzRi7tWVA7Y4gj8Fvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rozsuadg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188F4C4CEF1;
-	Wed, 28 Jan 2026 15:54:50 +0000 (UTC)
+	 MIME-Version; b=nFCDRwf1ql2gUAk6ffKX0A522eroIXlIx2eqtNrdnOCi9XLHRsOBFkGtzSelkJUrIjJjwXm5L6KYlH9u3Yf1DfJJKzQ4+WgF5JvDW454hC9XLkEkl9kV6pDKEvcdDRcF6Zr7ESjtVeIqYfT3X3t6kMsfvFOup9HTsJ4jw2SKdC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NiwP2+H2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88246C4CEF1;
+	Wed, 28 Jan 2026 15:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615691;
-	bh=qDMwj5EjWfoyfS6ZgjS6uMCLsscC6ZX/OYaGn6A9dMo=;
+	s=korg; t=1769615106;
+	bh=oGA4EQad8IeKK6vSqsZ7BSt/yyPejH5pO4TikY/gY6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rozsuadgrhc9mxQrNv1wjHKfQ9wr7tlUSaDIOahOCoYyYjNXA/QDVjXnSG8iIU8oU
-	 uAWcMvKfDFe/glbVWKpfqMbu3gJCZ5X3SfNh9s30X0dvZ0pnDD3p6LkUaz2pMRahYQ
-	 Q9ISRgF2jkFjJADjojV4bG1cLY5hyk/jcMHDW/4s=
+	b=NiwP2+H2wmq6dIu1Zmxb0nu/FdfT/DIaIcrpgzQZc30+2ZGTu0BJgkAgLPPJCm9CH
+	 EnuZUpTbjDlOXp4beSooNosCKvIkodV6NHiMenrcgvY1FQMHJ2eFaMa2BZaWzG9g4x
+	 b807Uer6PO0UFBF/ySDOaVAfz0Of+2jM3disCCBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <gu_0233@qq.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 085/227] spi: spi-sprd-adi: Fix double free in probe error path
-Date: Wed, 28 Jan 2026 16:22:10 +0100
-Message-ID: <20260128145347.398209360@linuxfoundation.org>
+	gongqi <550230171hxy@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 048/169] Input: i8042 - add quirks for MECHREVO Wujie 15X Pro
+Date: Wed, 28 Jan 2026 16:22:11 +0100
+Message-ID: <20260128145335.746307349@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,149 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linux.alibaba.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212490-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,alibaba.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 620ECA513A
+	TAGGED_FROM(0.00)[bounces-212315-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.991];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 21C05A53FD
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <gu_0233@qq.com>
+From: gongqi <550230171hxy@gmail.com>
 
-[ Upstream commit 383d4f5cffcc8df930d95b06518a9d25a6d74aac ]
+commit 19a5d9ba6208e9006a2a9d5962aea4d6e427d8ab upstream.
 
-The driver currently uses spi_alloc_host() to allocate the controller
-but registers it using devm_spi_register_controller().
+The MECHREVO Wujie 15X Pro requires several i8042 quirks to function
+correctly. Specifically, NOMUX, RESET_ALWAYS, NOLOOP, and NOPNP are
+needed to ensure the keyboard and touchpad work reliably.
 
-If devm_register_restart_handler() fails, the code jumps to the
-put_ctlr label and calls spi_controller_put(). However, since the
-controller was registered via a devm function, the device core will
-automatically call spi_controller_put() again when the probe fails.
-This results in a double-free of the spi_controller structure.
-
-Fix this by switching to devm_spi_alloc_host() and removing the
-manual spi_controller_put() call.
-
-Fixes: ac17750 ("spi: sprd: Add the support of restarting the system")
-Signed-off-by: Felix Gu <gu_0233@qq.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Link: https://patch.msgid.link/tencent_AC7D389CE7E24318445E226F7CDCCC2F0D07@qq.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: gongqi <550230171hxy@gmail.com>
+Link: https://patch.msgid.link/20260122155501.376199-3-550230171hxy@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sprd-adi.c | 33 ++++++++++-----------------------
- 1 file changed, 10 insertions(+), 23 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
-index 262c11d977ea3..f25b34a91756f 100644
---- a/drivers/spi/spi-sprd-adi.c
-+++ b/drivers/spi/spi-sprd-adi.c
-@@ -528,7 +528,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	pdev->id = of_alias_get_id(np, "spi");
- 	num_chipselect = of_get_child_count(np);
- 
--	ctlr = spi_alloc_host(&pdev->dev, sizeof(struct sprd_adi));
-+	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(struct sprd_adi));
- 	if (!ctlr)
- 		return -ENOMEM;
- 
-@@ -536,10 +536,8 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	sadi = spi_controller_get_devdata(ctlr);
- 
- 	sadi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
--	if (IS_ERR(sadi->base)) {
--		ret = PTR_ERR(sadi->base);
--		goto put_ctlr;
--	}
-+	if (IS_ERR(sadi->base))
-+		return PTR_ERR(sadi->base);
- 
- 	sadi->slave_vbase = (unsigned long)sadi->base +
- 			    data->slave_offset;
-@@ -551,18 +549,15 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	if (ret > 0 || (IS_ENABLED(CONFIG_HWSPINLOCK) && ret == 0)) {
- 		sadi->hwlock =
- 			devm_hwspin_lock_request_specific(&pdev->dev, ret);
--		if (!sadi->hwlock) {
--			ret = -ENXIO;
--			goto put_ctlr;
--		}
-+		if (!sadi->hwlock)
-+			return -ENXIO;
- 	} else {
- 		switch (ret) {
- 		case -ENOENT:
- 			dev_info(&pdev->dev, "no hardware spinlock supplied\n");
- 			break;
- 		default:
--			dev_err_probe(&pdev->dev, ret, "failed to find hwlock id\n");
--			goto put_ctlr;
-+			return dev_err_probe(&pdev->dev, ret, "failed to find hwlock id\n");
- 		}
- 	}
- 
-@@ -579,26 +574,18 @@ static int sprd_adi_probe(struct platform_device *pdev)
- 	ctlr->transfer_one = sprd_adi_transfer_one;
- 
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
--	if (ret) {
--		dev_err(&pdev->dev, "failed to register SPI controller\n");
--		goto put_ctlr;
--	}
-+	if (ret)
-+		return dev_err_probe(&pdev->dev, ret, "failed to register SPI controller\n");
- 
- 	if (sadi->data->restart) {
- 		ret = devm_register_restart_handler(&pdev->dev,
- 						    sadi->data->restart,
- 						    sadi);
--		if (ret) {
--			dev_err(&pdev->dev, "can not register restart handler\n");
--			goto put_ctlr;
--		}
-+		if (ret)
-+			return dev_err_probe(&pdev->dev, ret, "can not register restart handler\n");
- 	}
- 
- 	return 0;
--
--put_ctlr:
--	spi_controller_put(ctlr);
--	return ret;
- }
- 
- static struct sprd_adi_data sc9860_data = {
--- 
-2.51.0
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1176,6 +1176,13 @@ static const struct dmi_system_id i8042_
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
+ 	/*
+ 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
+ 	 * after suspend fixable with the forcenorestore quirk.
 
 
 
