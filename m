@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-212258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oI6BIi43eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:58 +0100
+	id sESADV4semnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:33:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8D7A56F3
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C749A3FB0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:33:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2443328385A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:42:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2FA0D3013890
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED22E2F3618;
-	Wed, 28 Jan 2026 15:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAC626ED40;
+	Wed, 28 Jan 2026 15:33:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pO8iQnGQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gTAYO0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01B11F0991;
-	Wed, 28 Jan 2026 15:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D602C1885A5;
+	Wed, 28 Jan 2026 15:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614914; cv=none; b=HjsRRzJvyla/l9GCLhZl6RSC+u0GrLMtYZA5JDyktImO15KMGAOzOFoI9KFIQWJy4vdMJh1Uh6uPAwFGF0YMOySBNkCW/vdoaVfpYG/NfE1ub9+BO3VIe4ya3wxQu6sHkZKEEK7kF7MVUIdefMKVo2/SYB/z0CJ/YbJMyh6fkbA=
+	t=1769614426; cv=none; b=LHN6uvfXwO5Kas986HaYqFTKDeYoT+iGdFWz727C7GJWPyuZs31HDBwtOp6Z6uWbEtowKcPHitJUlUYXSDtmRx7RO7Vy4irG62oWiZ2Ed/xFXlkHI6QiYrxTxvRT9EvRyTybPXZYfBaBLTTWYQbec/ytux8NvVIvqwXzqp/fkZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614914; c=relaxed/simple;
-	bh=aB1X6ZaiZ6SLdNOndF+qGIn4i4BmIZz5kCyUHxkzEL4=;
+	s=arc-20240116; t=1769614426; c=relaxed/simple;
+	bh=2htp+r6577cV9rPedJfoM9uWwzPh/g2x62+RlTwcFu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lF9yppEZNR6VCS2hU+lMUReZ7TjJuGvoMOPYyjkfhjYfB1tg1hynWA0IDDZCQpwcMQoSKpKXhl9CHzXHofMZ80DlExddo7ig60LPQN7OQiDNUjOg13fDctYaZ4JzCOrofC7C/OD8Rt9Q0h7r6lLrQAEXYLGpNsw2tRMk8VevYSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pO8iQnGQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A52C4CEF1;
-	Wed, 28 Jan 2026 15:41:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BlDlN6sG4A3C+EZV1FyYDThdI1qoo3oXb1xYEnU/fXPhT46G4lstwNrbmjCb814KXuH4xLJd0CIX5LRPgi3iVpF0p2NaaVraGtmI5TlwQT7nyG15SIk0/hCnk1zA0qupNJCijfiFDim+KZ+8YG6wDXivFhr/ZxSaZ92nYbeizOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gTAYO0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3D2C4CEF1;
+	Wed, 28 Jan 2026 15:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614914;
-	bh=aB1X6ZaiZ6SLdNOndF+qGIn4i4BmIZz5kCyUHxkzEL4=;
+	s=korg; t=1769614426;
+	bh=2htp+r6577cV9rPedJfoM9uWwzPh/g2x62+RlTwcFu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pO8iQnGQZTOUq7OUqqLSP1qI92e5mx8zqtOr+J8Bq7driUwZUPnIbAoLj8tYFOumk
-	 BX0Q7Ws8J9VdRRH95IJ33jLd0SCdidTKNrQ1BVbHlmQUTI3319oJyaxhhF798a3Li0
-	 LrphOAxIDw/7wXfZchzvuSmdFkt4KqjtpNSdqXIY=
+	b=2gTAYO0WQWF++c6PHqc6g4DluBije01ZkPqe5Lnb8sPS1S0HMSQB2w+4nzMX+7owE
+	 3vIv4F6I00fkXjgisMHlaVvs9R1GgRzO3Fi8TUdeGVBCvr9qb1QHYlWE8ENuU2f0xf
+	 R7SUHUZBd86wpna0q2lcvTMRPuaSVgJ18VU1HqmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Peter Korsgaard <peter@korsgaard.com>,
+	GangMin Kim <km.kim1503@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/169] net: usb: dm9601: remove broken SR9700 support
+Subject: [PATCH 6.6 132/254] net/sched: Enforce that teql can only be used as root qdisc
 Date: Wed, 28 Jan 2026 16:21:48 +0100
-Message-ID: <20260128145334.928581832@linuxfoundation.org>
+Message-ID: <20260128145349.571050659@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +65,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,korsgaard.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212258-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212109-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,korsgaard.com:email]
-X-Rspamd-Queue-Id: 0E8D7A56F3
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9C749A3FB0
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit 7d7dbafefbe74f5a25efc4807af093b857a7612e ]
+[ Upstream commit 50da4b9d07a7a463e2cfb738f3ad4cff6b2c9c3b ]
 
-The SR9700 chip sends more than one packet in a USB transaction,
-like the DM962x chips can optionally do, but the dm9601 driver does not
-support this mode, and the hardware does not have the DM962x
-MODE_CTL register to disable it, so this driver drops packets on SR9700
-devices. The sr9700 driver correctly handles receiving more than one
-packet per transaction.
+Design intent of teql is that it is only supposed to be used as root qdisc.
+We need to check for that constraint.
 
-While the dm9601 driver could be improved to handle this, the easiest
-way to fix this issue in the short term is to remove the SR9700 device
-ID from the dm9601 driver so the sr9700 driver is always used. This
-device ID should not have been in more than one driver to begin with.
+Although not important, I will describe the scenario that unearthed this
+issue for the curious.
 
-The "Fixes" commit was chosen so that the patch is automatically
-included in all kernels that have the sr9700 driver, even though the
-issue affects dm9601.
+GangMin Kim <km.kim1503@gmail.com> managed to concot a scenario as follows:
 
-Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Acked-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://patch.msgid.link/20260113063924.74464-1-enelsonmoore@gmail.com
+ROOT qdisc 1:0 (QFQ)
+  ├── class 1:1 (weight=15, lmax=16384) netem with delay 6.4s
+  └── class 1:2 (weight=1, lmax=1514) teql
+
+GangMin sends a packet which is enqueued to 1:1 (netem).
+Any invocation of dequeue by QFQ from this class will not return a packet
+until after 6.4s. In the meantime, a second packet is sent and it lands on
+1:2. teql's enqueue will return success and this will activate class 1:2.
+Main issue is that teql only updates the parent visible qlen (sch->q.qlen)
+at dequeue. Since QFQ will only call dequeue if peek succeeds (and teql's
+peek always returns NULL), dequeue will never be called and thus the qlen
+will remain as 0. With that in mind, when GangMin updates 1:2's lmax value,
+the qfq_change_class calls qfq_deact_rm_from_agg. Since the child qdisc's
+qlen was not incremented, qfq fails to deactivate the class, but still
+frees its pointers from the aggregate. So when the first packet is
+rescheduled after 6.4 seconds (netem's delay), a dangling pointer is
+accessed causing GangMin's causing a UAF.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: GangMin Kim <km.kim1503@gmail.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260114160243.913069-2-jhs@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/dm9601.c | 4 ----
- 1 file changed, 4 deletions(-)
+ net/sched/sch_teql.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
-index 8b6d6a1b3c2ec..2b4716ccf0c5b 100644
---- a/drivers/net/usb/dm9601.c
-+++ b/drivers/net/usb/dm9601.c
-@@ -603,10 +603,6 @@ static const struct usb_device_id products[] = {
- 	USB_DEVICE(0x0fe6, 0x8101),	/* DM9601 USB to Fast Ethernet Adapter */
- 	.driver_info = (unsigned long)&dm9601_info,
- 	 },
--	{
--	 USB_DEVICE(0x0fe6, 0x9700),	/* DM9601 USB to Fast Ethernet Adapter */
--	 .driver_info = (unsigned long)&dm9601_info,
--	 },
- 	{
- 	 USB_DEVICE(0x0a46, 0x9000),	/* DM9000E */
- 	 .driver_info = (unsigned long)&dm9601_info,
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 7721239c185fb..0a7856e14a975 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -178,6 +178,11 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
+ 	if (m->dev == dev)
+ 		return -ELOOP;
+ 
++	if (sch->parent != TC_H_ROOT) {
++		NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root");
++		return -EOPNOTSUPP;
++	}
++
+ 	q->m = m;
+ 
+ 	skb_queue_head_init(&q->q);
 -- 
 2.51.0
 
