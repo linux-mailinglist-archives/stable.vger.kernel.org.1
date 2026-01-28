@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-212094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EAGIGxMuemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:07 +0100
+	id oDOSOlUzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C020AA4303
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCAEA4FE0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F7F3321D0C7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB503309189F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA004288C96;
-	Wed, 28 Jan 2026 15:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752F430BF7D;
+	Wed, 28 Jan 2026 15:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVY7wQHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bb/0ua3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5E72512FF;
-	Wed, 28 Jan 2026 15:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3893C30BBA5;
+	Wed, 28 Jan 2026 15:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614380; cv=none; b=O9+0WVFnkjDg+NzPJMnFDLUKO+ONX6tnesUa+adrohXJw4qnHxVbzqjESUOBjfsCH7iQT296e695sQNY/R9SJXqNB5SHEclkJrmjTpf05Vzv0iYLZMRpjXM+BY4FHV5N26ANDpxsXuPHGx/UAIPaePiy1N/hipJ8CPacU6TZw2c=
+	t=1769615578; cv=none; b=Z0BJ+4tz4r091osq46vVMHi9SEiJkdSKX81tLXWDMoJ0hry+05jLw25S9tRjHQG/nfPGiDKb7EU/sqoRMFPJWea4NkssBEezeUV+rIDHOBJAOdik1VZ7YY1brNygWRWlJkO3cA0+bo5mzaa0jBmmy5mZWJVubdL/ggEEiTLkYb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614380; c=relaxed/simple;
-	bh=zzEhH3WE0MT8nO+HEXtJo8C03Zd7d9RULUo8ymoaF2g=;
+	s=arc-20240116; t=1769615578; c=relaxed/simple;
+	bh=y1F3T6ZHbZm7HAKTCnws6YrmZOgvTQoL05FxKJwv164=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2ACQX+Y6uZzp5Blvvu8RCFDpFia3mEOBHTK0mZQdzCZ8ZeuAbD49zmPYpDI2HOYnezdFj4QAPbUxJrc+j2qu1S/hYYypRx+bzIwmWYFWJ6w1zwOwPXytlWz6Cn3sUt0R9MDoYrl9WAqm9xqUjVav+EcSIsNPgdKcQVrSIqoDHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVY7wQHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AFCC4CEF1;
-	Wed, 28 Jan 2026 15:32:59 +0000 (UTC)
+	 MIME-Version; b=sH+Wjt14rvzYlVzZ5TdrTqcNQVFfGd3UfxD5PpgwsGWO4u4cfI2IQm+VIPmrFSvk1vCj8nqAoVnTR11ce/Yx+jGBcbbivRP4g/D6Kj4Lh1YqJGHbBOoQCIRYbiGOf0zBAYjLDv8xkkn4rYRlVejylw6TOLSt+zy2k56ah5nLxRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bb/0ua3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A112AC116C6;
+	Wed, 28 Jan 2026 15:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614380;
-	bh=zzEhH3WE0MT8nO+HEXtJo8C03Zd7d9RULUo8ymoaF2g=;
+	s=korg; t=1769615578;
+	bh=y1F3T6ZHbZm7HAKTCnws6YrmZOgvTQoL05FxKJwv164=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVY7wQHprj3I9UHMfjfdewU119yP+V1Zb0932K+eLE0514HAeeaJHQaAgMR5kEnhq
-	 U16DHpog/mnhdew4w15yoYUdQZQCtGq1g7QSqPrwIg0Ka7uXNxkr/695Bq8TO/yacO
-	 Q9jtkwcZVdd6rF55QvrLTmnTwfRH0waGd4Jp1xkc=
+	b=Bb/0ua3iqwWzZrHfowecSqKWm7JULxkafwE+LegwL2JCWX48fU092ydfZTLaRFdsF
+	 vzxiWU+uzJ0Jq3Kol7U4gAUPP6fM6isgj0ZfN9VRUMyyQT4T4tzBgQwPHTfA5u5CFn
+	 U4KaosJ9vso80FZWjamaHk3L95Oscyz1UPlAdB/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c081b17773615f24672@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/254] bonding: limit BOND_MODE_8023AD to Ethernet devices
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 6.18 050/227] serial: Fix not set tty->port race condition
 Date: Wed, 28 Jan 2026 16:21:35 +0100
-Message-ID: <20260128145349.105956094@linuxfoundation.org>
+Message-ID: <20260128145346.143774672@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,127 +64,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212094-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-212455-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,9c081b17773615f24672,netdev];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C020AA4303
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8BCAEA4FE0
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-[ Upstream commit c84fcb79e5dbde0b8d5aeeaf04282d2149aebcf6 ]
+commit 32f37e57583f869140cff445feedeea8a5fea986 upstream.
 
-BOND_MODE_8023AD makes sense for ARPHRD_ETHER only.
+Revert commit bfc467db60b7 ("serial: remove redundant
+tty_port_link_device()") because the tty_port_link_device() is not
+redundant: the tty->port has to be confured before we call
+uart_configure_port(), otherwise user-space can open console without TTY
+linked to the driver.
 
-syzbot reported:
+This tty_port_link_device() was added explicitly to avoid this exact
+issue in commit fb2b90014d78 ("tty: link tty and port before configuring
+it as console"), so offending commit basically reverted the fix saying
+it is redundant without addressing the actual race condition presented
+there.
 
- BUG: KASAN: global-out-of-bounds in __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
- BUG: KASAN: global-out-of-bounds in __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
-Read of size 16 at addr ffffffff8bf94040 by task syz.1.3580/19497
+Reproducible always as tty->port warning on Qualcomm SoC with most of
+devices disabled, so with very fast boot, and one serial device being
+the console:
 
-CPU: 1 UID: 0 PID: 19497 Comm: syz.1.3580 Tainted: G             L      syzkaller #0 PREEMPT(full)
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Call Trace:
- <TASK>
-  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0xca/0x240 mm/kasan/report.c:482
-  kasan_report+0x118/0x150 mm/kasan/report.c:595
- check_region_inline mm/kasan/generic.c:-1 [inline]
-  kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
-  __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
-  __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
-  __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
-  __dev_mc_add net/core/dev_addr_lists.c:868 [inline]
-  dev_mc_add+0xa1/0x120 net/core/dev_addr_lists.c:886
-  bond_enslave+0x2b8b/0x3ac0 drivers/net/bonding/bond_main.c:2180
-  do_set_master+0x533/0x6d0 net/core/rtnetlink.c:2963
-  do_setlink+0xcf0/0x41c0 net/core/rtnetlink.c:3165
-  rtnl_changelink net/core/rtnetlink.c:3776 [inline]
-  __rtnl_newlink net/core/rtnetlink.c:3935 [inline]
-  rtnl_newlink+0x161c/0x1c90 net/core/rtnetlink.c:4072
-  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6958
-  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2550
-  netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
-  netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1344
-  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1894
-  sock_sendmsg_nosec net/socket.c:727 [inline]
-  __sock_sendmsg+0x21c/0x270 net/socket.c:742
-  ____sys_sendmsg+0x505/0x820 net/socket.c:2592
-  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2646
-  __sys_sendmsg+0x164/0x220 net/socket.c:2678
-  do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
-  __do_fast_syscall_32+0x1dc/0x560 arch/x86/entry/syscall_32.c:307
-  do_fast_syscall_32+0x34/0x80 arch/x86/entry/syscall_32.c:332
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
- </TASK>
+  printk: legacy console [ttyMSM0] enabled
+  printk: legacy console [ttyMSM0] enabled
+  printk: legacy bootconsole [qcom_geni0] disabled
+  printk: legacy bootconsole [qcom_geni0] disabled
+  ------------[ cut here ]------------
+  tty_init_dev: ttyMSM driver does not set tty->port. This would crash the kernel. Fix the driver!
+  WARNING: drivers/tty/tty_io.c:1414 at tty_init_dev.part.0+0x228/0x25c, CPU#2: systemd/1
+  Modules linked in: socinfo tcsrcc_eliza gcc_eliza sm3_ce fuse ipv6
+  CPU: 2 UID: 0 PID: 1 Comm: systemd Tainted: G S                  6.19.0-rc4-next-20260108-00024-g2202f4d30aa8 #73 PREEMPT
+  Tainted: [S]=CPU_OUT_OF_SPEC
+  Hardware name: Qualcomm Technologies, Inc. Eliza (DT)
+  ...
+  tty_init_dev.part.0 (drivers/tty/tty_io.c:1414 (discriminator 11)) (P)
+  tty_open (arch/arm64/include/asm/atomic_ll_sc.h:95 (discriminator 3) drivers/tty/tty_io.c:2073 (discriminator 3) drivers/tty/tty_io.c:2120 (discriminator 3))
+  chrdev_open (fs/char_dev.c:411)
+  do_dentry_open (fs/open.c:962)
+  vfs_open (fs/open.c:1094)
+  do_open (fs/namei.c:4634)
+  path_openat (fs/namei.c:4793)
+  do_filp_open (fs/namei.c:4820)
+  do_sys_openat2 (fs/open.c:1391 (discriminator 3))
+  ...
+  Starting Network Name Resolution...
 
-The buggy address belongs to the variable:
- lacpdu_mcast_addr+0x0/0x40
+Apparently the flow with this small Yocto-based ramdisk user-space is:
 
-Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
-Reported-by: syzbot+9c081b17773615f24672@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6966946b.a70a0220.245e30.0002.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20260113191201.3970737-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+driver (qcom_geni_serial.c):                  user-space:
+============================                  ===========
+qcom_geni_serial_probe()
+ uart_add_one_port()
+  serial_core_register_port()
+   serial_core_add_one_port()
+    uart_configure_port()
+     register_console()
+    |
+    |                                         open console
+    |                                          ...
+    |                                          tty_init_dev()
+    |                                           driver->ports[idx] is NULL
+    |
+    tty_port_register_device_attr_serdev()
+     tty_port_link_device() <- set driver->ports[idx]
+
+Fixes: bfc467db60b7 ("serial: remove redundant tty_port_link_device()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://patch.msgid.link/20260123072139.53293-2-krzysztof.kozlowski@oss.qualcomm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 6 ++++++
+ drivers/tty/serial/serial_core.c |    6 ++++++
  1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index b3ccc064cbff2..9dfbbf4cd71f0 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1942,6 +1942,12 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 	 */
- 	if (!bond_has_slaves(bond)) {
- 		if (bond_dev->type != slave_dev->type) {
-+			if (slave_dev->type != ARPHRD_ETHER &&
-+			    BOND_MODE(bond) == BOND_MODE_8023AD) {
-+				SLAVE_NL_ERR(bond_dev, slave_dev, extack,
-+					     "8023AD mode requires Ethernet devices");
-+				return -EINVAL;
-+			}
- 			slave_dbg(bond_dev, slave_dev, "change device type from %d to %d\n",
- 				  bond_dev->type, slave_dev->type);
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -3102,6 +3102,12 @@ static int serial_core_add_one_port(stru
+ 	if (uport->cons && uport->dev)
+ 		of_console_check(uport->dev->of_node, uport->cons->name, uport->line);
  
--- 
-2.51.0
-
++	/*
++	 * TTY port has to be linked with the driver before register_console()
++	 * in uart_configure_port(), because user-space could open the console
++	 * immediately after.
++	 */
++	tty_port_link_device(port, drv->tty_driver, uport->line);
+ 	uart_configure_port(drv, state, uport);
+ 
+ 	port->console = uart_console(uport);
 
 
 
