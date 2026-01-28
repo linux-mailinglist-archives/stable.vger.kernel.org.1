@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YIFmJmQvemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212219-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:44 +0100
+	id YBxRFPI7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D614A4621
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF857A5F93
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DD41B3024374
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ECF62323327E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73742F3C1D;
-	Wed, 28 Jan 2026 15:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DBB302779;
+	Wed, 28 Jan 2026 16:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qut1Z/iH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpKR/oAg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897962F3618;
-	Wed, 28 Jan 2026 15:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8E52836A6;
+	Wed, 28 Jan 2026 16:01:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614783; cv=none; b=BdiRiFjawRXaCPXcegaKgLN2AGFw8ZTrWdtPCxnSz+bXcV8m2X2EzpMN9NmBn5Vl8b2P1Y5RdGiUQsDwQiuCxdB7G6MoQMxD0hz4yVd56LONiytkBQi21FOtD9J7HeI7DUdTMd3Aq3+Y9JPM+ntmKgNHY4caGYnMTLVPAmueh5g=
+	t=1769616069; cv=none; b=n8icMO7HWaAKgBW9VREjaKAHCeyYAUL2vhtW7e2x2qPXxDGcpHOTpNyBiouX8uZD58vmuBkhSWgUp2s6oTeKGPE4UbHWX+e1si5TQrF+1KSOVEjAx3lGo0iNBBjOehWVpZF9QUtd4mppW5aXk2R8ZGdUGbNYZ2UMlqXJnXx9QOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614783; c=relaxed/simple;
-	bh=BomN3kcH9VqHb3Ckkt2kPxBMEYT62U/Ti7rhBsntgy4=;
+	s=arc-20240116; t=1769616069; c=relaxed/simple;
+	bh=iOhyQtNz4Jj9EOfjw4puMCEyj7Ys3GkrGLP+FUYHyKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IzXKGpLq/H7a0PM+N95o0obaJ4nzej5slarnDAggzJZYILOsLx500lEq8IWoVz2J6eG9puPMZs0P51ioFIg18zfVPvEd1TbymlGxbhRhh4MCb8VI958hcJh6SxDHjzkss65HN8JsJS0I9Z7+7Mmmr+TV21/Q+ioKsOkwvp8KX34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qut1Z/iH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01366C4CEF1;
-	Wed, 28 Jan 2026 15:39:42 +0000 (UTC)
+	 MIME-Version; b=XpCBzaqv3ihh508rEPBW93WxgIWWu3VcyGEXEMVfBGxPRgzQoBvNO/cRPfAcBbJKLQCnJxgJjNSB0HGd+16XjecqnN3m44aM1xAp+Pi/ApNgy8ZLPZxxo6793T1YDbKECfw87ijBSD/VNtcVzrDWMD6H/egu9MQI6KXlgwW6pvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpKR/oAg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF712C116C6;
+	Wed, 28 Jan 2026 16:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614783;
-	bh=BomN3kcH9VqHb3Ckkt2kPxBMEYT62U/Ti7rhBsntgy4=;
+	s=korg; t=1769616069;
+	bh=iOhyQtNz4Jj9EOfjw4puMCEyj7Ys3GkrGLP+FUYHyKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qut1Z/iH8PU57/AWHZd9HW2fzc7DjG5BGRKebn/wSP4gJ2WL49AkFOWuyJ8COUrYe
-	 4nmVv5uGl0wFyMDmpCmOAWQh8Be/k2CcK31donpcqoNqLbBJFD8RTabyL4FmVcnw6T
-	 3dJcyevadRRK7ZhaQ7wpDAOod03dQJbppdc5RLgw=
+	b=GpKR/oAgb9wpTKfbJAl8D8W6pcwvbWx4C+3TM2szDvKwYXsIIHxbhdD6fGde5qPIv
+	 MMENGwJwfwNWb+XGFsrb/OsRXgsoItfMI+d0s4gVOHA9KsPTs/HlYuNHmmjMxo9Gna
+	 ej96SO/ZoEPojI7X46Pk+lpysIR/kZPGI3yYkKd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 239/254] ASoC: codecs: wsa881x: Drop unused version readout
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Ricky WU <ricky_wu@realtek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.18 170/227] mmc: rtsx_pci_sdmmc: implement sdmmc_card_busy function
 Date: Wed, 28 Jan 2026 16:23:35 +0100
-Message-ID: <20260128145353.394425910@linuxfoundation.org>
+Message-ID: <20260128145350.568400691@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212219-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212602-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,50 +90,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 2D614A4621
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,linux.dev:email]
+X-Rspamd-Queue-Id: AF857A5F93
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-[ Upstream commit 3d2a69eb503d15171a7ba51cf0b562728ac396b7 ]
+commit 122610220134b32c742cc056eaf64f7017ac8cd9 upstream.
 
-Driver does not use the device version after reading it from the
-registers, so simplify by dropping unneeded code.
+rtsx_pci_sdmmc does not have an sdmmc_card_busy function, so any voltage
+switches cause a kernel warning, "mmc0: cannot verify signal voltage
+switch."
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240710-asoc-wsa88xx-version-v1-1-f1c54966ccde@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 29d71b8a5a40 ("ASoC: codecs: wsa881x: fix unnecessary initialisation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Copy the sdmmc_card_busy function from rtsx_pci_usb to rtsx_pci_sdmmc to
+fix this.
+
+Fixes: ff984e57d36e ("mmc: Add realtek pcie sdmmc host driver")
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Tested-by: Ricky WU <ricky_wu@realtek.com>
+Reviewed-by: Ricky WU <ricky_wu@realtek.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wsa881x.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/mmc/host/rtsx_pci_sdmmc.c |   41 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
---- a/sound/soc/codecs/wsa881x.c
-+++ b/sound/soc/codecs/wsa881x.c
-@@ -680,7 +680,6 @@ struct wsa881x_priv {
- 	 * For backwards compatibility.
- 	 */
- 	unsigned int sd_n_val;
--	int version;
- 	int active_ports;
- 	bool port_prepared[WSA881X_MAX_SWR_PORTS];
- 	bool port_enable[WSA881X_MAX_SWR_PORTS];
-@@ -691,7 +690,6 @@ static void wsa881x_init(struct wsa881x_
- 	struct regmap *rm = wsa881x->regmap;
- 	unsigned int val = 0;
+--- a/drivers/mmc/host/rtsx_pci_sdmmc.c
++++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+@@ -1306,6 +1306,46 @@ out:
+ 	return err;
+ }
  
--	regmap_read(rm, WSA881X_CHIP_ID1, &wsa881x->version);
- 	regmap_register_patch(wsa881x->regmap, wsa881x_rev_2_0,
- 			      ARRAY_SIZE(wsa881x_rev_2_0));
- 
++static int sdmmc_card_busy(struct mmc_host *mmc)
++{
++	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
++	struct rtsx_pcr *pcr = host->pcr;
++	int err;
++	u8 stat;
++	u8 mask = SD_DAT3_STATUS | SD_DAT2_STATUS | SD_DAT1_STATUS
++	| SD_DAT0_STATUS;
++
++	mutex_lock(&pcr->pcr_mutex);
++
++	rtsx_pci_start_run(pcr);
++
++	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
++				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP,
++			       SD_CLK_TOGGLE_EN);
++	if (err)
++		goto out;
++
++	mdelay(1);
++
++	err = rtsx_pci_read_register(pcr, SD_BUS_STAT, &stat);
++	if (err)
++		goto out;
++
++	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
++				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP, 0);
++out:
++	mutex_unlock(&pcr->pcr_mutex);
++
++	if (err)
++		return err;
++
++	/* check if any pin between dat[0:3] is low */
++	if ((stat & mask) != mask)
++		return 1;
++	else
++		return 0;
++}
++
+ static int sdmmc_execute_tuning(struct mmc_host *mmc, u32 opcode)
+ {
+ 	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
+@@ -1418,6 +1458,7 @@ static const struct mmc_host_ops realtek
+ 	.get_ro = sdmmc_get_ro,
+ 	.get_cd = sdmmc_get_cd,
+ 	.start_signal_voltage_switch = sdmmc_switch_voltage,
++	.card_busy = sdmmc_card_busy,
+ 	.execute_tuning = sdmmc_execute_tuning,
+ 	.init_sd_express = sdmmc_init_sd_express,
+ };
 
 
 
