@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212448-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0BY6Khs3eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:39 +0100
+	id oIBTMdQ5emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212448-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:31:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC3CA56C7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F484A5BFC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D1053113F22
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7256B3277016
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E1D2DFA3A;
-	Wed, 28 Jan 2026 15:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF26304968;
+	Wed, 28 Jan 2026 15:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waUrxV2A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4yXHJpk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E4123EA92;
-	Wed, 28 Jan 2026 15:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815942F0C70;
+	Wed, 28 Jan 2026 15:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614877; cv=none; b=DKBCckNxxCzXsrCNew5wjQmW8EpXp8icPGVmTfmPpba0Se8g+qS8e0ZgLIOWhG2O1Thnw/EZDE21ND2pnw/SgkpK37Isf+eOMJM2rGBHfTckeBN/ZhM0mDdhcB+/7mNCuq/iVno7sRfSytej3aoEmMtfHgZgq0KS8Rr5DI2v3IQ=
+	t=1769615554; cv=none; b=myLP4yQ4UQn/cFOU7IUDAxmZ9h6FlpnXerJsWXWcs0FVF3E0EH9Q4obttIm+6wwtS0PmF4Mt+dlBTB0PQfliBSBWFQHu0qLN6D5GidnUYP5yv63a/3YkNmSdcdWmBRbiQy2Hz9bq++FKCqjOtUAvafcl/BkiBsSq6+IV2eIXGFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614877; c=relaxed/simple;
-	bh=+GC4k6c9FRKHLCzhQoGFfNLlPRhePnUzHHVPc0oQ2uE=;
+	s=arc-20240116; t=1769615554; c=relaxed/simple;
+	bh=jtN5BgxHUzuRehfYxI7RTUDJNi/oIt4yJwuB3b8cBEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECjm/HEzeUqeQ+I0DYa2/0g7YCtko/yuuJbxPNSf7SeL7WTI8wNqNLj8AG3ZK1iD+WiluymqNBSjCsutkEcHzwcKsQDz6qFYqtgvZ7sSJVtVTqJR6LCG26zDzZDh8mBJpT7IbKYDXuEzdkz7EySHkhJGiG965DstCtzt2yL6aok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waUrxV2A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EF2C4CEF1;
-	Wed, 28 Jan 2026 15:41:16 +0000 (UTC)
+	 MIME-Version; b=O3mjuQWBagUaXL0aZDQ8HKjx8Ie7teHq9acED2PmQrlnQaX1k+OkCMm75kQnOzaHIsy+x8tHqa+x4abgvUWmWuehZ6I6eiwp/RoHBUnmO8JHP9LOJylAi8knV8R+1D2D/ahPipcPgo2gLshK4eQdIerCdcJTi/IK4YOKLkGj8aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4yXHJpk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BFFC4CEF1;
+	Wed, 28 Jan 2026 15:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614877;
-	bh=+GC4k6c9FRKHLCzhQoGFfNLlPRhePnUzHHVPc0oQ2uE=;
+	s=korg; t=1769615554;
+	bh=jtN5BgxHUzuRehfYxI7RTUDJNi/oIt4yJwuB3b8cBEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=waUrxV2AZ6f7memm5hdyP179Gl4yDdOgCrdQLEL89SzVGHMfvhcspyycfoMaMRHaP
-	 dKtvVm8NnYzF9EVAYHjxV7jdXxzN/J7yh7U7lGRUNL9FLSWY19EPAEKVclQV0SNiSy
-	 3zRNt3DXuxD0o4w4HZ5uKksavG/rpM9cbizukvYY=
+	b=v4yXHJpkggl4zbudc2O0NwBms+tMMBsggu1VSu8d3lwej7zLQPBuBuMmKjMQYJr6r
+	 ECCrzbNQSmKkDZNT1+WlhsXAU6uq+ZEMezypVu1AzpxedRZgLyBkATiMKcd2jWk87y
+	 Yxup0rypd38mvvKAaoqll2LiaedZVmGLknUFF25s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/169] dt-bindings: power: qcom,rpmpd: add Turbo L5 corner
+Subject: [PATCH 6.18 044/227] octeontx2: cn10k: fix RX flowid TCAM mask handling
 Date: Wed, 28 Jan 2026 16:21:29 +0100
-Message-ID: <20260128145334.242705093@linuxfoundation.org>
+Message-ID: <20260128145345.929431587@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212247-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212448-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,47 +87,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url,linaro.org:email]
-X-Rspamd-Queue-Id: 0DC3CA56C7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,marvell.com:email]
+X-Rspamd-Queue-Id: 3F484A5BFC
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 1c402295c10891988fb2a6fc658e6e95d4852a20 ]
+[ Upstream commit ab9b218a1521133a4410722907fa7189566be9bc ]
 
-Update the RPMH level definitions to include TURBO_L5 corner.
+The RX flowid programming initializes the TCAM mask to all ones, but
+then overwrites it when clearing the MAC DA mask bits. This results
+in losing the intended initialization and may affect other match fields.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/661840/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Stable-dep-of: 5bc3e720e725 ("pmdomain: qcom: rpmhpd: Add MXC to SC8280XP")
+Update the code to clear the MAC DA bits using an AND operation, making
+the handling of mask[0] consistent with mask[1], where the field-specific
+bits are cleared after initializing the mask to ~0ULL.
+
+Fixes: 57d00d4364f3 ("octeontx2-pf: mcs: Match macsec ethertype along with DMAC")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Link: https://patch.msgid.link/20260116164724.2733511-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/power/qcom-rpmpd.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
-index df599bf462207..5bc4735fb3e6e 100644
---- a/include/dt-bindings/power/qcom-rpmpd.h
-+++ b/include/dt-bindings/power/qcom-rpmpd.h
-@@ -240,6 +240,7 @@
- #define RPMH_REGULATOR_LEVEL_TURBO_L2		432
- #define RPMH_REGULATOR_LEVEL_TURBO_L3		448
- #define RPMH_REGULATOR_LEVEL_TURBO_L4		452
-+#define RPMH_REGULATOR_LEVEL_TURBO_L5		456
- #define RPMH_REGULATOR_LEVEL_SUPER_TURBO 	464
- #define RPMH_REGULATOR_LEVEL_SUPER_TURBO_NO_CPR	480
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+index 4c7e0f345cb5b..060c715ebad0a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+@@ -328,7 +328,7 @@ static int cn10k_mcs_write_rx_flowid(struct otx2_nic *pfvf,
  
+ 	req->data[0] = FIELD_PREP(MCS_TCAM0_MAC_DA_MASK, mac_da);
+ 	req->mask[0] = ~0ULL;
+-	req->mask[0] = ~MCS_TCAM0_MAC_DA_MASK;
++	req->mask[0] &= ~MCS_TCAM0_MAC_DA_MASK;
+ 
+ 	req->data[1] = FIELD_PREP(MCS_TCAM1_ETYPE_MASK, ETH_P_MACSEC);
+ 	req->mask[1] = ~0ULL;
 -- 
 2.51.0
 
