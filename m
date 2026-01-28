@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-212190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212308-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKuAJ70vemkc4gEAu9opvQ
-	(envelope-from <stable+bounces-212190-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:13 +0100
+	id mDiJBRY4emkd4wEAu9opvQ
+	(envelope-from <stable+bounces-212308-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF75A4705
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 931EDA58B0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 532903116931
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1E03C31F97A6
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCC02DC76E;
-	Wed, 28 Jan 2026 15:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E9A30EF7E;
+	Wed, 28 Jan 2026 15:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIi5WgYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLqyHquc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122712D0C62;
-	Wed, 28 Jan 2026 15:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BF1302779;
+	Wed, 28 Jan 2026 15:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614690; cv=none; b=OX/nw+yamv9LMk9Rti+BMNub9HiGu5fdS+gs4yZqvs+DyD1e4QC6yvXtD3S3v1W6hoDVnQlRtjNPFwVW844WPKMqT7tcmNaaDRqNvxcSzf5OUt/s4wJ2Jgi9QXhy1HC6dI99y/GN5Z68tuy1oQYG6HW9qlkRuzSxsXV2c5Q4hoU=
+	t=1769615082; cv=none; b=Ttp34FzaM1Gxs38I0JDBKMbzcbyKJ92f1iWCNLJb3/jMi0f0c0v/7CPnKGb6u96f5Po0gwMaa6WczNNB8VxphL45rh96/wziBsrd+o3DE7UgRcOvIgkU/7XgBTKcrw51Aw8w6ESY79nhF7BW4C3zbepJcz4vPMJP2BrC5tvqbEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614690; c=relaxed/simple;
-	bh=A+fje13d6KLE3YaAIoP9vMCfRz/MCpIvo5TahzTG+Tk=;
+	s=arc-20240116; t=1769615082; c=relaxed/simple;
+	bh=DEok7o50vj7Vtfe6DYvNJK8QmoiWYmqD5Zj9Tp14iCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g1XX3dzmNT8ZS7oJd+z5wno6mvakC+PKn9h9ktFo7AAwep1gMu9YKuU4DRhZiTMOGJx3NyUkopOquijB2h/rcSn6qKkjqs9mcveGKNQOlnBNX9i4eCwQG0uVmQRZdO1SurHgW740KbIIAYmca6jlOEJhq7bQx9In8sgX/3MsyvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIi5WgYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134FFC4CEF1;
-	Wed, 28 Jan 2026 15:38:08 +0000 (UTC)
+	 MIME-Version; b=U8+K8rlqmOABULQwxwQrZWZtV92D8YBbtnbokDVBDE9aGTiGdyybAKEv+peLPPaPizLmuMpFFwBUQ3t9YKujhWmBE0bD9ahSPlMXnJmmWq3MYCZMQ1p61h1r7nX8FhjTB4+QNJ1YHwr5Swij7vmw0Mv4cdvi6Dt4o0gtA1KJN18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLqyHquc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253E6C4CEF1;
+	Wed, 28 Jan 2026 15:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614689;
-	bh=A+fje13d6KLE3YaAIoP9vMCfRz/MCpIvo5TahzTG+Tk=;
+	s=korg; t=1769615082;
+	bh=DEok7o50vj7Vtfe6DYvNJK8QmoiWYmqD5Zj9Tp14iCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JIi5WgYYDik4OlDxvK5Yh71DQV3Fb36MFfxNlCR7UJXbz+E00kInmw8EqXaL46sh1
-	 l7nOQ2xM/6IDjz4NCTgWzndJbGK3CHBXBKDbqax3QzM2or9rRCOu3EPlpQFNNfO5h4
-	 9U7Hs0goM9SGEJXQU6R/LyBH6x5TdIfI8cEqyUas=
+	b=GLqyHqucF20HR3qSLvBPv7y6wyrxYCx1Caq4uQMgzhVofG/2gOkj9VupWdm/IMN/X
+	 QTwvF/uUw58iv/J3yKyUSxaO6hgdlWll0OsW0Qv397k97sK9X0s9/gXMC7VPvQAdFe
+	 VUnnH1BvfnmOTLASPFRI/8W8KyxBGT/yhhBgaZp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Melbin K Mathew <mlbnkm1@gmail.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/254] vsock/virtio: fix potential underflow in virtio_transport_get_credit()
-Date: Wed, 28 Jan 2026 16:22:35 +0100
-Message-ID: <20260128145351.246192478@linuxfoundation.org>
+	Cody Haas <chaas@riotgames.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 073/169] ice: Fix persistent failure in ice_get_rxfh
+Date: Wed, 28 Jan 2026 16:22:36 +0100
+Message-ID: <20260128145336.634682225@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,122 +77,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212190-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212308-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 0CF75A4705
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,riotgames.com:email]
+X-Rspamd-Queue-Id: 931EDA58B0
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melbin K Mathew <mlbnkm1@gmail.com>
+From: Cody Haas <chaas@riotgames.com>
 
-[ Upstream commit 3ef3d52a1a9860d094395c7a3e593f3aa26ff012 ]
+[ Upstream commit f406220eb8e227ca344eef1a6d30aff53706b196 ]
 
-The credit calculation in virtio_transport_get_credit() uses unsigned
-arithmetic:
+Several ioctl functions have the ability to call ice_get_rxfh, however
+all of these ioctl functions do not provide all of the expected
+information in ethtool_rxfh_param. For example, ethtool_get_rxfh_indir does
+not provide an rss_key. This previously caused ethtool_get_rxfh_indir to
+always fail with -EINVAL.
 
-  ret = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
+This change draws inspiration from i40e_get_rss to handle this
+situation, by only calling the appropriate rss helpers when the
+necessary information has been provided via ethtool_rxfh_param.
 
-If the peer shrinks its advertised buffer (peer_buf_alloc) while bytes
-are in flight, the subtraction can underflow and produce a large
-positive value, potentially allowing more data to be queued than the
-peer can handle.
-
-Reuse virtio_transport_has_space() which already handles this case and
-add a comment to make it clear why we are doing that.
-
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
-[Stefano: use virtio_transport_has_space() instead of duplicating the code]
-[Stefano: tweak the commit message]
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Link: https://patch.msgid.link/20260121093628.9941-2-sgarzare@redhat.com
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b66a972abb6b ("ice: Refactor ice_set/get_rss into LUT and key specific functions")
+Signed-off-by: Cody Haas <chaas@riotgames.com>
+Closes: https://lore.kernel.org/intel-wired-lan/CAH7f-UKkJV8MLY7zCdgCrGE55whRhbGAXvgkDnwgiZ9gUZT7_w@mail.gmail.com/
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/ice/ice.h         |  1 +
+ drivers/net/ethernet/intel/ice/ice_ethtool.c |  6 +----
+ drivers/net/ethernet/intel/ice/ice_main.c    | 28 ++++++++++++++++++++
+ 3 files changed, 30 insertions(+), 5 deletions(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index c57fe7ddcf73b..1401177e26222 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -28,6 +28,7 @@
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index 0e699a0432c5b..bffdf537dafa8 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -952,6 +952,7 @@ void ice_map_xdp_rings(struct ice_vsi *vsi);
+ int
+ ice_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+ 	     u32 flags);
++int ice_get_rss(struct ice_vsi *vsi, u8 *seed, u8 *lut, u16 lut_size);
+ int ice_set_rss_lut(struct ice_vsi *vsi, u8 *lut, u16 lut_size);
+ int ice_get_rss_lut(struct ice_vsi *vsi, u8 *lut, u16 lut_size);
+ int ice_set_rss_key(struct ice_vsi *vsi, u8 *seed);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+index 2a2acbeb57221..5379fbe06b073 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -3649,11 +3649,7 @@ ice_get_rxfh(struct net_device *netdev, struct ethtool_rxfh_param *rxfh)
+ 	if (!lut)
+ 		return -ENOMEM;
  
- static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
- 					       bool cancel_timeout);
-+static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs);
+-	err = ice_get_rss_key(vsi, rxfh->key);
+-	if (err)
+-		goto out;
+-
+-	err = ice_get_rss_lut(vsi, lut, vsi->rss_table_size);
++	err = ice_get_rss(vsi, rxfh->key, lut, vsi->rss_table_size);
+ 	if (err)
+ 		goto out;
  
- static const struct virtio_transport *
- virtio_transport_get_ops(struct vsock_sock *vsk)
-@@ -316,9 +317,7 @@ u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 credit)
- 		return 0;
- 
- 	spin_lock_bh(&vvs->tx_lock);
--	ret = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
--	if (ret > credit)
--		ret = credit;
-+	ret = min_t(u32, credit, virtio_transport_has_space(vvs));
- 	vvs->tx_cnt += ret;
- 	spin_unlock_bh(&vvs->tx_lock);
- 
-@@ -684,11 +683,14 @@ u32 virtio_transport_seqpacket_has_data(struct vsock_sock *vsk)
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 4f4678607e55f..d024e71722de3 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -8042,6 +8042,34 @@ int ice_get_rss_key(struct ice_vsi *vsi, u8 *seed)
+ 	return status;
  }
- EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_has_data);
  
--static s64 virtio_transport_has_space(struct vsock_sock *vsk)
-+static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
- {
--	struct virtio_vsock_sock *vvs = vsk->trans;
- 	s64 bytes;
- 
-+	/* Use s64 arithmetic so if the peer shrinks peer_buf_alloc while
-+	 * we have bytes in flight (tx_cnt - peer_fwd_cnt), the subtraction
-+	 * does not underflow.
-+	 */
- 	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
- 	if (bytes < 0)
- 		bytes = 0;
-@@ -702,7 +704,7 @@ s64 virtio_transport_stream_has_space(struct vsock_sock *vsk)
- 	s64 bytes;
- 
- 	spin_lock_bh(&vvs->tx_lock);
--	bytes = virtio_transport_has_space(vsk);
-+	bytes = virtio_transport_has_space(vvs);
- 	spin_unlock_bh(&vvs->tx_lock);
- 
- 	return bytes;
-@@ -1301,7 +1303,7 @@ static bool virtio_transport_space_update(struct sock *sk,
- 	spin_lock_bh(&vvs->tx_lock);
- 	vvs->peer_buf_alloc = le32_to_cpu(hdr->buf_alloc);
- 	vvs->peer_fwd_cnt = le32_to_cpu(hdr->fwd_cnt);
--	space_available = virtio_transport_has_space(vsk);
-+	space_available = virtio_transport_has_space(vvs);
- 	spin_unlock_bh(&vvs->tx_lock);
- 	return space_available;
- }
++/**
++ * ice_get_rss - Get RSS LUT and/or key
++ * @vsi: Pointer to VSI structure
++ * @seed: Buffer to store the key in
++ * @lut: Buffer to store the lookup table entries
++ * @lut_size: Size of buffer to store the lookup table entries
++ *
++ * Return: 0 on success, negative on failure
++ */
++int ice_get_rss(struct ice_vsi *vsi, u8 *seed, u8 *lut, u16 lut_size)
++{
++	int err;
++
++	if (seed) {
++		err = ice_get_rss_key(vsi, seed);
++		if (err)
++			return err;
++	}
++
++	if (lut) {
++		err = ice_get_rss_lut(vsi, lut, lut_size);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
+ /**
+  * ice_set_rss_hfunc - Set RSS HASH function
+  * @vsi: Pointer to VSI structure
 -- 
 2.51.0
 
