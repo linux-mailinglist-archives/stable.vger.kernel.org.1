@@ -1,269 +1,210 @@
-Return-Path: <stable+bounces-211958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211959-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IL+zIXnyeWns1AEAu9opvQ
-	(envelope-from <stable+bounces-211958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 12:26:49 +0100
+	id GDA2O4j2eWkE1QEAu9opvQ
+	(envelope-from <stable+bounces-211959-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 12:44:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AAF6A0553
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 12:26:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49358A0B8C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 12:44:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E99130338A0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 11:24:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F24D305A219
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 11:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B764234A76E;
-	Wed, 28 Jan 2026 11:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B85734DCD2;
+	Wed, 28 Jan 2026 11:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GHKb8nJn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bs8SPQ5B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B40034A3D0
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 11:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769599485; cv=none; b=dCyirayJp5SfZzhAawEl1JRrvAzfeyOJqDVHLd8ipDN+YfMZ5VGuF8W7cshU94pfEt4jXa0mLRqmeAWpmqneJZMMcErJPD+1CO68m+cUF4qD4FTyGFJMv43sj27pH55a0Tzpmugjfes9W5KZq4WULJLcc1QOsVurOb0KJtrwoDE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769599485; c=relaxed/simple;
-	bh=25g4O43N1bLtkrkr1+uCwDw4ELnJ91ur3lmZvPxN5OU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l4YxhXN+QzBNFDzFxNzQM1kxYtoNwS10bft++umg0CypMmao9fCTYNKi9M9ME7CTd2uu/6N/WB5g8+wFZYRGybl5KDlFcPL2K8dZSqQZ08T434MVjaOOfQPxkb/cAmUxky5jxZ4/AbGpdhHiYyo3Byf4o9+tVazbJyMx/3hR4q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GHKb8nJn; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b885e8c679bso821218866b.1
-        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 03:24:41 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC719265CC2
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 11:33:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769599998; cv=pass; b=Mororb6CpajmdlCCkONiFsnh2F5irVLVndaqxq2sHuoA7xeVpxQnGrUyz8727IruKyFWnH4R6uUlHeMHpgSbUeZfRs246RjVV6riKJwQnlq21DvkjYQfW+fL+zUqJG0CkWID7iYTpjrUVb0JS87wC08tx0g5kZqGJNV1a4V9DyM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769599998; c=relaxed/simple;
+	bh=Jf9IV6TjsFbzC+hVKkIFHMb0l2+PLFOAjMrCEqOCULM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=poXw/ZHmQxTQWZN8eo2M22sNviHz6u0yawEErrIgvotwFSKkp7Y+aB75KwvAfI0qyiE0p/dFd+ZKYKyZHD0dW2p4thwS2wQzBzolsXThqH42Yczi3DiFdRbadGczV9JKu2FjQNgIl/0InC5ncDOMJEsG6S/PjX2kfo3L3fA4DDc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bs8SPQ5B; arc=pass smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6580dbdb41eso9572296a12.0
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 03:33:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769599995; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kDBxgZ+KreSkIVdtq/FGX0mwGKoPrFegO0kwag0CVVs3TzEE83rCMVV+Blt7yQY0gK
+         Q6z32v5qnqZqCYS3UJE5hCXV5/I3MEVJqNeyiQ+3O2XK1O51muQT7Y8BAYH2qdb6+vQw
+         LfrpGlnaGZobzi/zRk/L1NkaszbmfZZr69eNiABCE+llGmOA8PGbx+B4sC6qmnbom7gU
+         9HG3034Ar0d5i9rI2CVMb4wL1DDMBH2IeBCWldnIypeFqFUlt79rAq/CiG0ShJhTp2Xz
+         gxNy9szZHpF0lgulLJadVQMZs50aLqa5v6K4V0BdIKiakJuLsLGhbF8wD324KcsuAZsA
+         CLng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EmhMCmoAszEPdr+9RsUaeg+95/4OhviuV3/o+ZwYf4I=;
+        fh=LQh7eZJoyUQiYPRM1UTl9WsbkHvJWeYg96aT9BGxH8Q=;
+        b=FiX041ZN+nfHmVwDsxaeWVU4zIdHTOpe2qIovjIRFK2o4k8dFdjmVt3WN3pTTSfPd3
+         nWlfSbN5Kj6eDtwjfgETdvou7uTWtcqMAvmPJ5QOPgVlCdYqmMBpfAJ9r/qDdYLjHE3t
+         4mOMW1UQfRIrIrviV86j6ZqLq5R40VGPhqN8sXZF0SBrpTl97Zrmw/vifQUrl9k56xUy
+         UABUkJORwXKqzYfZErKCLeQ13mFjj+bPeVJjSlQHHv12FSxdZ0lTZTcYsKNCmJciAaVx
+         gmpC5XAN7Fut4WSXBzTzZR6B7KSPENW0rXBDLMv4upnUnLbWiK5jKmZHKxCGLzHGr3c6
+         tESg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769599480; x=1770204280; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FSYBM9xI9IDMaIPF6q/FwBQXTfrdcuEntAVRYe57nxg=;
-        b=GHKb8nJn9vcjA/qBENC7/KZ75xw/WdgFJCTpY7/GUH5D8NxI6lWMq209bN16S6k2iz
-         EDQiZyKWA0nSRNQ9N0chp5TeY8ErGrHUXU5++PPq1Hor1P+NWyQdjPNvxVR/7gGJDnHW
-         2z0mVc+3H7OOJnCay6WtPtitrzyx8SCsVhlCadxvCVRqREOEvTaROJN++dStvZzVvgVu
-         O1pYOodmAHsMh0EQUE6NuTw2Ekj3cOJsq5tNaJrYclr++GqEKMQMQxAx61mK0C8OMyoU
-         k/hUBNFLfkb8SPz9E9+FO+sVS9XmkB1iOT3Ln8bAv/s0i1Edi4BaGH23b7Hh6KjnKydr
-         KMxw==
+        d=gmail.com; s=20230601; t=1769599995; x=1770204795; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EmhMCmoAszEPdr+9RsUaeg+95/4OhviuV3/o+ZwYf4I=;
+        b=bs8SPQ5BV6MpUYg7rnUafPEcyNbupwakg1HhjOkqfbKtbwlAXaWW3JLsYmGNO/CkZS
+         rXquAhE2M+CYdUWGxNR9KjhWvsIsJUFMP02NJQZgavyX8qwaOfpjQe13hoIVjus/rwRM
+         0SbHKKLHFO94ENC3olrOQ6bKK99qe8stEcvYMUnL6+UOnpZ7NCady8GMrO91ELGxOd69
+         EPRz0CdOE4TE/tKEDDztVVyAf1poFRQNdDXDz5pdto0co4vgb/p/1FWBPwHF+ZRUmPeN
+         xFwU11lsNfXU9TU4ecK/fnRfr0CXZX/zA2gcU8E2CQlPqD+10Mo+gJC8s9LAFQOhXPsq
+         hDOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769599480; x=1770204280;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FSYBM9xI9IDMaIPF6q/FwBQXTfrdcuEntAVRYe57nxg=;
-        b=NLnaPdKiCSLVfFYkML60uLGlT+wPJ7XobaOJdS/ZEgv8m3p/XahunsOPjWeRSgSO7I
-         0pZmNdcWz54qgRrzdKvA5PYn1A0DzGVQ0W8y0Ig5GrP6yq7yIVamlrJyFIVyeqUsYJUA
-         1hvI/XNO0HtDsnLxY3PU9+eAWXymEl8HMfFa5wDDKznRgAn1+8OAEZwFOqY66NJNRk6z
-         /A02ra5mmQMHBkAo9I/QVAFE+N83Zb9fJm9K7Ip6inuz4ZhiD3rY9zCXkeElrAW1zTIz
-         +Lke2MXQMnbCcE+pGm8z0xPxjVUUMVZbmI2eIMeyoW/NJYNOmsOU+/gU9GtLZn8+T/FG
-         KHtw==
-X-Forwarded-Encrypted: i=1; AJvYcCW4I36/ZQn8ZyXTIE6mcB9UkH2pk6Q3LcvKZ/UuEBqP6LZWUFRG6jAOPJyZ4jH+ZnOVU2+nBDY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2NTnNUMLy7pw7yEN7FaspuVU/UOHP6L+Ctxe+HxU6XEu6QfJ3
-	GJnXAr1fpzfBmVO7d2OrOUipRLQISUnXN0d3kqg6a1wHzW8GgQx6mRB8/Kabh5PGoDY=
-X-Gm-Gg: AZuq6aK0uUObmFJ+gI09huWAaab/mZRVVd4t8FcBvxKj6T6srRHCG2piE1c6QysDWD5
-	bXqHeTLJWzHAmrd++1zDnoM90hm5wt+8dwVMIYMd+KwKGFDeCksR1IBnmP/0vNqlhhwzppmoX+1
-	Hej/jSOheuwAXeL7uD8sOyh1get1zGPXsWHF95qaWajKMUlOynJ/beSy+Py2KAzyin9rPzeANh+
-	R21jfs3Aybdeoha2637eLEyC2P8E41n2meXmOxQhH+o32Xu+epPWop8XnNVV9EICqJNlPOKtHqe
-	ED9ruyV1fUkgc2p3K81wF49y6rLSHKe2M30NSSFT8G1eu9xz6buTHsmkWK/9ycWLn4m6qF4rhcn
-	mlU3BdyIwu0rH+lgbOKk0/Fe0vOo9NLNtJXm5plLyF3hW3k485jnJHJaIVXM4AkX0ACyWUFrDlj
-	4l4T68zoTHTuznriGYF2Z72rziRr9cRncX810SNMM6ddeo3f4cOPJw2VDH51QO1/w=
-X-Received: by 2002:a17:907:2d26:b0:b87:7042:9aea with SMTP id a640c23a62f3a-b8dab1b52d7mr359022166b.18.1769599480450;
-        Wed, 28 Jan 2026 03:24:40 -0800 (PST)
-Received: from [192.168.0.40] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbf1baa42sm113930766b.46.2026.01.28.03.24.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Jan 2026 03:24:39 -0800 (PST)
-Message-ID: <efcd8387-22d0-413d-9631-f392a2e7f98d@linaro.org>
-Date: Wed, 28 Jan 2026 11:24:38 +0000
+        d=1e100.net; s=20230601; t=1769599995; x=1770204795;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EmhMCmoAszEPdr+9RsUaeg+95/4OhviuV3/o+ZwYf4I=;
+        b=AX/IIItCNhPWbbxe2nkj86Nq1QONmU2K0Nl6l/HmCjDSpQiIhk6bVznDVI2TnL6LVs
+         r/hC0aGdqKNzuP6/l2CZpN7J7tzESj5cO1nPZ2aOMS7NiV7H2J5f+EARjk3ZDhBuSFFw
+         CO6/qGolSijZTdhVctzo27qCJVjkFoL7FeIQdEVjKw6aKFYNx+EM65CRvSWQzHIujr2U
+         ejhxdrQ2NnIfs1NgNo4dB/f+lrfic95PSKH9DhnBW1rOttymOyojkymaSaDaXXA/oapK
+         qoKtrFRoJxEu1gadwPMy73KbNBwy3xn5Vb11+pUpsEnZRTQFmmEuw7p2qypDHMKPFYcT
+         3kRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXr7Ch37j5e/bxDYGkccdMVDivrEMyLDKTWfrBmt4YC9PMgYdzf3gKS4J/a9W/aQcCtS0oVRuA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwA1uYBvKrsQZ9arU8vww/lM/zgQdYHbIG39eaCxRe3Jsmd/Gd6
+	SA1AClQbjzj8NTTIiRRGuNNoPPw7oLRqREuhdLkaV83pAIhbZ49F5Fi4/iNU/de6CZrsXnL9kAv
+	T2eRKnJ+DYs2kgVN8E88zKy0rIX5vEoY=
+X-Gm-Gg: AZuq6aIC5VWpci3PvdEhAGJxWWwqzc/4u2LIW78BAZp3eRissgCEVrZszKHgoyYQG2G
+	Yfm1mclG9udRqyeUSYOUVEUirpAI5Av1JbuPnT0tI8fsVRugdumbkVakIxWRb0DCPg4c8z+fH1o
+	g46eDta1JhewFHN3ldNzFF9IDvL4I7QiyJl+V6etIynqi8JElQwJHHgVbuKUVo2/QRdGrDhfJYX
+	6vjpiVoZ1y2gRUVOqCx5y1hg5KwnlPncbnQXds+e+YQiX/VOqbmI64pXNbAvtZ//QsAGingvdwf
+	9sCm
+X-Received: by 2002:a17:906:d542:b0:b4f:e12e:aa24 with SMTP id
+ a640c23a62f3a-b8dab305bd6mr352887766b.22.1769599994921; Wed, 28 Jan 2026
+ 03:33:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] media: i2c: ov02c10: Correct power-on sequence and
- timing
-To: Saikiran B <bjsaikiran@gmail.com>
-Cc: Bryan O'Donoghue <bod@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, rfoss@kernel.org, todor.too@gmail.com,
- vladimir.zapolskiy@linaro.org, Hans de Goede <hansg@kernel.org>,
- mchehab@kernel.org, stable@vger.kernel.org
-References: <20260127165024.46156-1-bjsaikiran@gmail.com>
- <20260127165024.46156-3-bjsaikiran@gmail.com>
- <aXjwtBey0MRP0c7f@kekkonen.localdomain>
- <hAXW76sxpszN3JpApVO_ntI28dSyCTiDXIE-S1AJDCa7Mbp8-pHbGqhFhTh2FGPdj3TxO9AowyRRan2u8TTO6Q==@protonmail.internalid>
- <CAAFDt1vJtJc+C_J9Gv3SYjs_2zWFXsWqwq29=ig1o2_kSkjwLg@mail.gmail.com>
- <dbf73780-a33a-4fbf-8569-321b4f4e0a88@kernel.org>
- <MZajBkG4hU2kIZFDZbpq0WZOF_tJmASpmGr-7IH_qheO0We0Z45KNZPrQY4UmoqsWKOX3lSx1W_hnLtfKocXPw==@protonmail.internalid>
- <CAAFDt1vmXg9L6axsDN6kpCQKZifOCRxtQeDpmRpHyejS1ORR+Q@mail.gmail.com>
- <92131a67-471e-41e8-83d6-4f802103db7b@kernel.org>
- <CAAFDt1sqh=O-CpxbdcWueyqbiq4qyCrJHVH-_SS+KjEC9CyRhg@mail.gmail.com>
- <6692ca5f-216f-428c-96b2-511fdd769f04@linaro.org>
- <CAAFDt1u0uV+KpPxrhtwbvWgAYQET3HLg1nu4u7JgaNPFAKNLWg@mail.gmail.com>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Content-Language: en-US
-In-Reply-To: <CAAFDt1u0uV+KpPxrhtwbvWgAYQET3HLg1nu4u7JgaNPFAKNLWg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260127160128.243441-1-henrique.carvalho@suse.com>
+In-Reply-To: <20260127160128.243441-1-henrique.carvalho@suse.com>
+From: Shyam Prasad N <nspmangalore@gmail.com>
+Date: Wed, 28 Jan 2026 17:03:03 +0530
+X-Gm-Features: AZwV_QgvuJK7L9ge-yU4KMaAK4rVyD9Lbxz2KZDznUMwa1RPPx8swzPg55Nxj4I
+Message-ID: <CANT5p=q8trAvAMwVOczAuet2qFV_m0w9a9PJdJEtPhAsf5DGsQ@mail.gmail.com>
+Subject: Re: [PATCH v2] smb: client: split cached_fid bitfields to avoid
+ shared-byte RMW races
+To: Henrique Carvalho <henrique.carvalho@suse.com>
+Cc: sfrench@samba.org, pc@manguebit.org, ronniesahlberg@gmail.com, 
+	sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, 
+	ematsumiya@suse.de, linux-cifs@vger.kernel.org, stable@vger.kernel.org, 
+	Steve French <stfrench@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,linux.intel.com,vger.kernel.org,gmail.com,linaro.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-211959-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211958-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[samba.org,manguebit.org,gmail.com,microsoft.com,talpey.com,suse.de,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bryan.odonoghue@linaro.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nspmangalore@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0AAF6A0553
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,suse.com:email]
+X-Rspamd-Queue-Id: 49358A0B8C
 X-Rspamd-Action: no action
 
-On 28/01/2026 11:06, Saikiran B wrote:
-> On Wed, Jan 28, 2026 at 4:11 PM Bryan O'Donoghue
-> <bryan.odonoghue@linaro.org> wrote:
->>
->> On 28/01/2026 10:19, Saikiran B wrote:
->>>   > Just to be difficult - I'm specifically asking to test never switching
->>>   > the regulator off - not having a long delay.
->>>
->>> To be absolutely clear:
->>>
->>> ***I have tested exactly this.***
->>>
->>> In my local v2 testing, I modified the driver to keep the regulators
->>> permanently ENABLED and only toggled the software standby/reset lines.
->>>
->>> Result: The camera was 100% stable over hundreds of cycles.
->>>
->>> This isolates the issue:
->>> 1. CCI Leaking? No. If CCI were leaking, the "Always On" test would
->>> eventually
->>>      fail or show instability. It did not.
->>
->> I have to say, I'm not an electrical engineer by profession but, I don't
->> believe you can make this blanket statement.
->>
->> What is the problem with testing the hypothesis ?
->>
->>> 2. XSHUTDOWN Floating? No. The "Always On" test relies on XSHUTDOWN working
->>>      correctly to wake the sensor. It worked perfectly.
->>
->> Yes I agree there, if always-on shows no failure then XSHUTDOWN isnt'
->> floating.
->>
->> In which case this patch can be dropped, its not helping.
->>
->>> The instability ***only*** appears when we physically toggle the PMIC rail.
->>>
->>>   > Do not believe we have root caused a regulator brown out
->>>   > Believe we should interrogate the LDO settings
->>>
->>> I cannot easily dump raw SPMI registers on my personal machine, but
->>> we can derive the LDO state physically from the discharge curve (RC Time
->>> Constant).
->>
->> ?
->>
->> I gave you code to do just that. If you can iterate sensor and DTS
->> changes - you can use that code to dump out the requested LDO states.
->>
->>> We know the physics of the PM8550 PMIC:
->>> - Active Discharge Resistor (R_active): ~1 kΩ (Typical)
->>> - Bulk Capacitance (C_bulk): ~10 µF (Estimated for this rail)
->>>
->>> Scenario A: If Active Discharge IS set:
->>>      Time Constant (T) = R * C = 1000 * 10e-6 = 0.01s (10ms)
->>>      Complete discharge (5T) would happen in ~50ms.
->>>
->>> Scenario B: If Active Discharge is NOT set (Passive Leakage):
->>>      The rail discharges through the high-impedance sensor (~200kΩ+).
->>>      Time Constant (T) = 200,000 * 10e-6 = 2.0s.
->>>
->>> My measurements show the rail takes ~2.0s to reach the Brownout Threshold
->>> (failure point) and ~2.3s to reach a clean 0V (success point).
->>>
->>> This 2.3s duration is physically impossible if the Active Discharge bit
->>> was set.
->>> It mathematically proves the LDO is in High-Z mode (Passive Discharge).
->>>
->>> Here are the specific logs capturing the failure at exactly the 2.0s mark.
->> That's great. We should be able to interrogate the PMIC regs and see the
->> state of the LDO configuration - code I've shared with you.
->>
->> If they show active-state isn't set on one or more of our LDOs then we
->> can write some platform quirk code to set them.
->>
->> A 2.3 second delay on every start/stop stream is not an acceptable
->> upstream fix.
->>
->> And please stop top posting !
->>
->> ---
->> bod
-> 
-> Regarding the register dump code you shared:
-> 
-> I have already attempted to use it. It fails to read the registers on this
-> device. This is a consumer laptop secured by the Gunyah hypervisor
-> and TrustZone, not an open development board. The SPMI transactions to raw
-> PMIC addresses are firewalled by the firmware; the Linux HLOS is physically
-> blocked from reading them.
-> 
-> You mentioned in your previous reply that you are not an electrical engineer.
-> 
-> I am an Electronics Engineer.
-> 
-> The assertion that a 2.3s discharge time proves the absence of Active
-> Discharge is not a "blanket statement" - it is a fundamental calculation based
-> on the RC time constant. A 1kΩ active discharge path cannot physically sustain
-> voltage for 2.3 seconds against a 10µF load; it would drain in milliseconds.
-> Rejecting this derived data because it relies on physics rather than a
-> register bit (which the hardware prevents us from reading) is scientifically
-> unsound.
-> 
-> I have a full-time job and have spent significant personal time debugging this
-> to the millisecond.
-> 
-> Since we have reached an impasse where the physical
-> evidence is rejected in favor of impossible diagnostics, I am stopping here.
-> 
-> I will keep my patches in my local tree as now my laptop is usable to me.
-> 
-> I am withdrawing this patchset from upstream consideration.
-> 
-> Thank you.
-> 
-> Regards,
-> Saikiran
+On Tue, Jan 27, 2026 at 9:39=E2=80=AFPM Henrique Carvalho
+<henrique.carvalho@suse.com> wrote:
+>
+> is_open, has_lease and on_list are stored in the same bitfield byte in
+> struct cached_fid but are updated in different code paths that may run
+> concurrently. Bitfield assignments generate byte read=E2=80=93modify=E2=
+=80=93write
+> operations (e.g. `orb $mask, addr` on x86_64), so updating one flag can
+> restore stale values of the others.
+>
+> A possible interleaving is:
+>     CPU1: load old byte (has_lease=3D1, on_list=3D1)
+>     CPU2: clear both flags (store 0)
+>     CPU1: RMW store (old | IS_OPEN) -> reintroduces cleared bits
+>
+> To avoid this class of races, convert these flags to separate bool
+> fields.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: ebe98f1447bbc ("cifs: enable caching of directories for which a le=
+ase is held")
+> Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+> Signed-off-by: Steve French <stfrench@microsoft.com>
+> ---
+> v1 -> v2: Add Fixes: and Cc: stable tags
+>
+>  fs/smb/client/cached_dir.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/smb/client/cached_dir.h b/fs/smb/client/cached_dir.h
+> index 1e383db7c3374..5091bf45345e8 100644
+> --- a/fs/smb/client/cached_dir.h
+> +++ b/fs/smb/client/cached_dir.h
+> @@ -36,10 +36,10 @@ struct cached_fid {
+>         struct list_head entry;
+>         struct cached_fids *cfids;
+>         const char *path;
+> -       bool has_lease:1;
+> -       bool is_open:1;
+> -       bool on_list:1;
+> -       bool file_all_info_is_valid:1;
+> +       bool has_lease;
+> +       bool is_open;
+> +       bool on_list;
+> +       bool file_all_info_is_valid;
+>         unsigned long time; /* jiffies of when lease was taken */
+>         unsigned long last_access_time; /* jiffies of when last accessed =
+*/
+>         struct kref refcount;
+> --
+> 2.52.0
+>
+>
 
-That's a shame.
+Does making them as separate bool fields ensure that compiler does not
+optimize them into bitfields anyway?
+Ideally, we want to protect these fields with a mutex / spinlock,
+which doesn't leave us suspect to such issues.
 
----
-bod
+--=20
+Regards,
+Shyam
 
