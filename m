@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-211993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211994-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOeLOQQremmi3gEAu9opvQ
-	(envelope-from <stable+bounces-211993-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:28:04 +0100
+	id aNO5LQ0remnK3gEAu9opvQ
+	(envelope-from <stable+bounces-211994-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:28:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20999A3CA8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:27:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 125DFA3CE7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:28:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3672A3009F27
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:27:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6C0C1300C7EC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B7C36C0A8;
-	Wed, 28 Jan 2026 15:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8728C36C0CF;
+	Wed, 28 Jan 2026 15:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRdN6sLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Viv3AG2L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C0E36C0C0;
-	Wed, 28 Jan 2026 15:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1699236C0C7;
+	Wed, 28 Jan 2026 15:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614038; cv=none; b=mQpgIuWqlZ9c5e0DMS/0UQCZDKN4ti+aKOaOMgqjiF1BhirXi6k+KMMui6IArj2ByVxUQ3kPLVqU70KEf0SWsEmgPk+xIoyp7iWJFhEy4ihW8odSVuI3DEL6fFFkfshKZWwU2TqlKcTmlOYnS1NtUwgKWSwRxmdbOGAlLoDjImM=
+	t=1769614042; cv=none; b=m6kb3vAi2Lh1o/lk5V1e9GibqKzuln6DcYW8ZBla0zgYPU334ozPAo6J4nWJXDlLFCEYMNmbgFN1+gNmF3R/6IZbnPWwgQxbqmyDfVn8Pm8ieK/2a0xEuezhNl/wa0ATBmF8aNhNp3pztzajpGTgbUk18I8R/xe+clFVwklrioI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614038; c=relaxed/simple;
-	bh=ZhQm/plbLWNkV1EGqcS0mHu376t8I2bCe2Eh6YvZ7EU=;
+	s=arc-20240116; t=1769614042; c=relaxed/simple;
+	bh=D2oZRhmTJAiRSuiccxUCtQ4Gcmhj1FYFDviPe2B/TkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgjLAJxox0Q/7zjCuy0kfzdvvkWqAwwJ9lKYDJkPT5/9eMBvN3EI7UufA2x3X8FBm5WemTh3O0VhWWTKT5xG5dSW+iXoIwUjtouBPedKtcM69PVfetZb9Qw6p0QLVJ4ljAAvnXu72z4rYy64y8PAYYJwp2eAf8hon9G0QxFDOTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRdN6sLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0C3C4CEF1;
-	Wed, 28 Jan 2026 15:27:17 +0000 (UTC)
+	 MIME-Version; b=UPvogvbGNH+Rg5DQVtBHZAN3nKd/hbvasv/SXxx/ABgkZbL4i8ZbNYtSbsCTOFK0i0am5DDXoeehQXK133Fo/giSaPQgx2wE7DGYxc3/hxTPUb66FkpjQZcFcqNJSc89oEp7JL92W0ynxQeAvShhzA4apj6V5V3twattGAmwVo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Viv3AG2L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDAF7C4CEF1;
+	Wed, 28 Jan 2026 15:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614037;
-	bh=ZhQm/plbLWNkV1EGqcS0mHu376t8I2bCe2Eh6YvZ7EU=;
+	s=korg; t=1769614041;
+	bh=D2oZRhmTJAiRSuiccxUCtQ4Gcmhj1FYFDviPe2B/TkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wRdN6sLlhbu1zLY1E5N+7SdxvkpJ7gY5MOEUAFkw17/BmbRrPAUUVuvE+Zaag1uSW
-	 uFd5++ckekEMcFSfcGOXuo7IxydaOME1EH/TmP0DxIEygEsqJXAQ9heug94evLo52z
-	 aav+Ez0MyBaFfW77fxEXhvRO3H9qnkAxf/078OqI=
+	b=Viv3AG2LIeQUPtchreLJ7o2rQOmVGsKt2P7Psg047yteqbcgVZL3gO07aC0DmULuN
+	 bgPqbM4f7U+LZ0tI6peFGZmYNUAUzZ7LS1S8KLmjc9ymAhEmG7plYcWbXjHV1y8ZSq
+	 KLwVbjk2Wd9+IGys2z9DV5Gvr6QxpetThDNVc+3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/254] net/mlx5e: Restore destroying state bit after profile cleanup
-Date: Wed, 28 Jan 2026 16:19:54 +0100
-Message-ID: <20260128145345.362128463@linuxfoundation.org>
+Subject: [PATCH 6.6 019/254] btrfs: store fs_info in space_info
+Date: Wed, 28 Jan 2026 16:19:55 +0100
+Message-ID: <20260128145345.397708537@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -70,98 +71,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211993-lists,stable=lfdr.de];
-	RSPAMD_URIBL_FAIL(0.00)[nvidia.com:query timed out];
-	ASN_FAIL(0.00)[4.211.64.104.asn.rspamd.com:query timed out];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211994-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RSPAMD_URIBL_FAIL(0.00)[bur.io:server fail];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 20999A3CA8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,toxicpanda.com:email,wdc.com:email]
+X-Rspamd-Queue-Id: 125DFA3CE7
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 5629f8859dca7ef74d7314b60de6a957f23166c0 ]
+[ Upstream commit 42f620aec182f62ee72e3fce41cb3353951b3508 ]
 
-Profile rollback can fail in mlx5e_netdev_change_profile() and we will
-end up with invalid mlx5e_priv memset to 0, we must maintain the
-'destroying' bit in order to gracefully shutdown even if the
-profile/priv are not valid.
+This is handy when computing space_info dynamic reclaim thresholds where
+we do not have access to a block group. We could add it to the various
+functions as a parameter, but it seems reasonable for space_info to have
+an fs_info pointer.
 
-This patch maintains the previous state of the 'destroying' state of
-mlx5e_priv after priv cleanup, to allow the remove flow to cleanup
-common resources from mlx5_core to avoid FW fatal errors as seen below:
-
-$ devlink dev eswitch set pci/0000:00:03.0 mode switchdev
-    Error: mlx5_core: Failed setting eswitch to offloads.
-dmesg: mlx5_core 0000:00:03.0 enp0s3np0: failed to rollback to orig profile, ...
-
-$ devlink dev reload pci/0000:00:03.0
-
-mlx5_core 0000:00:03.0: E-Switch: Disable: mode(LEGACY), nvfs(0), necvfs(0), active vports(0)
-mlx5_core 0000:00:03.0: poll_health:803:(pid 519): Fatal error 3 detected
-mlx5_core 0000:00:03.0: firmware version: 28.41.1000
-mlx5_core 0000:00:03.0: 0.000 Gb/s available PCIe bandwidth (Unknown x255 link)
-mlx5_core 0000:00:03.0: mlx5_function_enable:1200:(pid 519): enable hca failed
-mlx5_core 0000:00:03.0: mlx5_function_enable:1200:(pid 519): enable hca failed
-mlx5_core 0000:00:03.0: mlx5_health_try_recover:340:(pid 141): handling bad device here
-mlx5_core 0000:00:03.0: mlx5_handle_bad_state:285:(pid 141): Expected to see disabled NIC but it is full driver
-mlx5_core 0000:00:03.0: mlx5_error_sw_reset:236:(pid 141): start
-mlx5_core 0000:00:03.0: NIC IFC still 0 after 4000ms.
-
-Fixes: c4d7eb57687f ("net/mxl5e: Add change profile method")
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260108212657.25090-5-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: a11224a016d6 ("btrfs: fix memory leaks in create_space_info() error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/space-info.c | 1 +
+ fs/btrfs/space-info.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 5c6f01abdcb91..03201bcda1a68 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5687,6 +5687,7 @@ int mlx5e_priv_init(struct mlx5e_priv *priv,
+diff --git a/fs/btrfs/space-info.c b/fs/btrfs/space-info.c
+index 27690c518f6d7..bf5e509eb9fa8 100644
+--- a/fs/btrfs/space-info.c
++++ b/fs/btrfs/space-info.c
+@@ -233,6 +233,7 @@ static int create_space_info(struct btrfs_fs_info *info, u64 flags)
+ 	if (!space_info)
+ 		return -ENOMEM;
  
- void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
- {
-+	bool destroying = test_bit(MLX5E_STATE_DESTROYING, &priv->state);
- 	int i;
++	space_info->fs_info = info;
+ 	for (i = 0; i < BTRFS_NR_RAID_TYPES; i++)
+ 		INIT_LIST_HEAD(&space_info->block_groups[i]);
+ 	init_rwsem(&space_info->groups_sem);
+diff --git a/fs/btrfs/space-info.h b/fs/btrfs/space-info.h
+index b0187f25dbb5e..39452e36625ae 100644
+--- a/fs/btrfs/space-info.h
++++ b/fs/btrfs/space-info.h
+@@ -84,6 +84,7 @@ enum btrfs_flush_state {
+ };
  
- 	/* bail if change profile failed and also rollback failed */
-@@ -5712,6 +5713,8 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
- 	}
+ struct btrfs_space_info {
++	struct btrfs_fs_info *fs_info;
+ 	spinlock_t lock;
  
- 	memset(priv, 0, sizeof(*priv));
-+	if (destroying) /* restore destroying bit, to allow unload */
-+		set_bit(MLX5E_STATE_DESTROYING, &priv->state);
- }
- 
- static unsigned int mlx5e_get_max_num_txqs(struct mlx5_core_dev *mdev,
+ 	u64 total_bytes;	/* total bytes in the space,
 -- 
 2.51.0
 
