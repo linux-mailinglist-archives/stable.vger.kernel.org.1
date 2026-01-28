@@ -1,73 +1,94 @@
-Return-Path: <stable+bounces-211921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eA+uJFWCeWmexQEAu9opvQ
-	(envelope-from <stable+bounces-211921-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 04:28:21 +0100
+	id mFc3OPaDeWnGxQEAu9opvQ
+	(envelope-from <stable+bounces-211922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 04:35:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542389CAC6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 04:28:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9939CBCE
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 04:35:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AE4653019386
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 03:27:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C056630093AC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 03:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8446732ED34;
-	Wed, 28 Jan 2026 03:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD09232F75B;
+	Wed, 28 Jan 2026 03:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="bi7C/Xfy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dOaFXmDX"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E209232F749;
-	Wed, 28 Jan 2026 03:27:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7BD82EC541
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 03:35:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769570842; cv=none; b=TmLgCy50W6VSj1Eps6F0P61rfaLwlO+aVEIt8VKMfsQDxxeY4rD3CPwVxr5wJwcaDkKb59eTvv70FijcV3UpyOcpPUTj946xi4OMrYto5Mn9Lw61kEV08tyia4j/1ByHFRtU7CB4h2LYBcv1NvUITapXKiiB+dL5sfjz4zcIGns=
+	t=1769571306; cv=none; b=Lgz9jz6CKu1OzuD30vNW8S9jWOxacNQJVgW06K65m499rFJy5e2kSVBEEXPbzLNe6bqXo8b5AsJf030mMZ9KpAzzkCbn8b9WCpMy9VtEB7fcsbhmoIRg9UYc52tMHiuErQmufv3F4Qslun0uAqJrRjzbFPWC5//xs/foQ3SsXoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769570842; c=relaxed/simple;
-	bh=vRJB2Coe4Kpd0P6nT/IWmv61J5HCax6++NWfn/2jZtg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BaKDfkcF4FIzEyqZOgPlsDSJ22o/Ded7CJBKAZAu4HbBan0ynMauTAFP/dgwVDYmvwLuZLWHpqM/60RxPx+YPRCipumbfUxG7lk0POm91QwiB52OQOrSqdCAiOMS3a6DPm+vf6uBvrGIHao9Aff1eLd3HoS8q3Hm+tnhg94B6ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=bi7C/Xfy; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1769571306; c=relaxed/simple;
+	bh=Ou+KR5KL+jX67jdhCMT9s0zKv0nF8rlEUrDRejVIUAU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MO+mTb/rBc2KsxE8aM+zbN5McsOjM6S/5O+42PTb2XkF/plTewSMKJKsikQ2C26gjFQu+kFrKR+SwfS42YdPGCzFRnhFBKsKt9uJaSveExADwUmLVoTFycst9V9tZWSWTGWbMunNhDRHrm8sShhCHf0tgEvHB5LEwokrDDfEDh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dOaFXmDX; arc=none smtp.client-ip=209.85.210.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-823075fed75so238834b3a.1
+        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 19:35:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=bi7C/XfyYJRDA+TU92t+IQb/KN4DmRcGqH27twgmkalh+9Dtv9WQ7uJ03ypbDD4uq1h14KS0Zc9+e
-	 ctHcM/O/dteIpkDq7e4g4CY105VS2ykjDXmpZVQX2oyqVefl0jjIZV8DPzTwjEzf9TNkhA3SVpv+03
-	 +SdeonLlE/6tIDDw=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-05-12083 (RichMail) with SMTP id 2f33697981da662-0066a;
-	Wed, 28 Jan 2026 11:26:20 +0800 (CST)
-X-RM-TRANSID:2f33697981da662-0066a
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	quic_ppranees@quicinc.com
-Cc: patches@lists.linux.dev,
+        d=gmail.com; s=20230601; t=1769571303; x=1770176103; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vHsef8Eavky6gF12HHQo8VAwR8PkAm6f6g30n7mS7sU=;
+        b=dOaFXmDXe0fHy7SYQUHn9NfCqqeNWUUsuzrqVRUujzDoDee/w6KK/y1Dqb1hpv2iIW
+         FLa3ESylHgRvC9Jk0OiaaB3ri3fZwd87DUl/I2Tdhv+yR+Hn0wMGe4X4Z6AfpoeuUslI
+         hzP8mflefeY2pnFeAUIrV1WvU+jte8mZDHhA9B8xH3ah0amd1pJJbgIXgpHx0dMuynEe
+         T81MqaLvwz2Zx3FUiItZBjqlsjuUt75k3gyLimNz73n2YLDgLj0TgwewG26jKrwp9qYR
+         8V2TTGcg50xT2Kr1n/kqpLHBQDrozSzQCYSMa1FsZd08pSJ/89JwEnc6Qwh7zxZNUwWd
+         DD0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769571303; x=1770176103;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vHsef8Eavky6gF12HHQo8VAwR8PkAm6f6g30n7mS7sU=;
+        b=nS+yweIYSgv1B7pviClfv1yMcjSUaa3HhtJTODrOfJdFt9LWQiFIS4aSJBcG+aOOQx
+         bk842jqmAhqRmimHf6af3A24BlL3p3EUfWa3s9ObJwhihQlc5aMdrBZLFWKqIzg7I7yy
+         5csORab5Yt5RoHgMai96A9gZ4iJXK0ANntHxluXvioV4jokrEOGvyvRT3UaMFQ+jyUB4
+         26yqi2pVjiT8M/fYFSdb4E6/6AP8BwQb/mcMYQDPWkyBQF6FgVY5ScCD6ituBQO+kDoV
+         o1P5OX9UI/VQPK0zW4joNrSk7qInG+3eUgft+e6VYp6h4FAY8OBFwjC1RbjJdKA2wvB8
+         mSMw==
+X-Forwarded-Encrypted: i=1; AJvYcCU7sbPt7c2QkxnjHNw6t81LTD+068guwNyHBWTcjO6E/8QcdUVZlpDhywuDspcJk94XF/crKuY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygxJl5OyKvotH6UUkr9zulR0PfYoG6BiTgbSQI+nHBe7T6egog
+	4kiSZqvbPyzw9zxxNEx2OUpK3l6D4sGaKjBY5fF5cGgmkl74gp77MOHa
+X-Gm-Gg: AZuq6aK2y07QdeYB4V5shkg5XuE+zo/P1R6sl0xGnG475NcWvzy0941l0ZQQcXT8WAB
+	gtbRtL6Z+T/TDxzj/WSms/VS24B38xEoI2820SDdjrPN4UqNRmlcK3liwmiWHROAdGOIh234i0G
+	B2cBEqehKLeLowaOz14+/iG5dqLpucEFqLeKNkGkmKMctrhmUs2HRbtv6gdJUQAlVmkOYEn5TQV
+	YrfuJUqZoTuFWfDccAQhDm69WZjXuQVUS2FTH0QuurNIjYnKV9/x9WSx7eIeJ7KxCCL9aQ/E1xv
+	6i+oLmoCj06DMvJbd8nLzMSbXxe1BVl9BG4Vu+zp5vs+BSZoP1flHaQQiOlgaXaqRQn53+ctx3p
+	oIiOgpxGpH0HXNy9aUSWZxmQ3l6mc8B08FhFmlXfLWya+MbMdHqEJ9PrdkJPXXZcHKm8gg8l+Qb
+	JPkVSE4kQx/F269nTpvdgXpzDNkJdbuZs=
+X-Received: by 2002:a05:6a00:886:b0:81f:535f:b48a with SMTP id d2e1a72fcca58-8236a14b4a7mr3625497b3a.7.1769571302990;
+        Tue, 27 Jan 2026 19:35:02 -0800 (PST)
+Received: from localhost.localdomain ([1.203.169.108])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379c226afsm948671b3a.49.2026.01.27.19.34.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jan 2026 19:35:02 -0800 (PST)
+From: Xingjing Deng <micro6947@gmail.com>
+X-Google-Original-From: Xingjing Deng <xjdeng@buaa.edu.cn>
+To: srini@kernel.org,
+	amahesh@qti.qualcomm.com,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	quic_kangyang@quicinc.com,
-	kvalo@kernel.org,
-	quic_jjohnson@quicinc.com,
-	jeff.johnson@oss.qualcomm.com,
-	jjohnson@kernel.org,
-	quic_msinada@quicinc.com,
-	rmanohar@codeaurora.org,
-	julia.lawall@lip6.fr,
-	quic_pradeepc@quicinc.com,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org
-Subject: [PATCH 6.6.y] wifi: ath11k: fix RCU stall while reaping monitor destination ring
-Date: Wed, 28 Jan 2026 11:27:15 +0800
-Message-Id: <20260128032715.1183385-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	Xingjing Deng <xjdeng@buaa.edu.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v6] misc: fastrpc: check qcom_scm_assign_mem() return in rpmsg_probe
+Date: Wed, 28 Jan 2026 11:34:54 +0800
+Message-Id: <20260128033454.2614886-1-xjdeng@buaa.edu.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,96 +97,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211921-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[139.com];
+	TAGGED_FROM(0.00)[bounces-211922-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[micro6947@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,139.com:mid,139.com:email,quicinc.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 542389CAC6
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[buaa.edu.cn:mid,buaa.edu.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3B9939CBCE
 X-Rspamd-Action: no action
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+In the SDSP probe path, qcom_scm_assign_mem() is used to assign the
+reserved memory to the configured VMIDs, but its return value was not checked.
 
-[ Upstream commit 16c6c35c03ea73054a1f6d3302a4ce4a331b427d ]
+Fail the probe if the SCM call fails to avoid continuing with an
+unexpected/incorrect memory permission configuration.
 
-While processing the monitor destination ring, MSDUs are reaped from the
-link descriptor based on the corresponding buf_id.
+This issue was detected by a private static analysis tool.
+No actual hardware testing was performed as the issue is purely
+code-level and verified via static analysis.
 
-However, sometimes the driver cannot obtain a valid buffer corresponding
-to the buf_id received from the hardware. This causes an infinite loop
-in the destination processing, resulting in a kernel crash.
-
-kernel log:
-ath11k_pci 0000:58:00.0: data msdu_pop: invalid buf_id 309
-ath11k_pci 0000:58:00.0: data dp_rx_monitor_link_desc_return failed
-ath11k_pci 0000:58:00.0: data msdu_pop: invalid buf_id 309
-ath11k_pci 0000:58:00.0: data dp_rx_monitor_link_desc_return failed
-
-Fix this by skipping the problematic buf_id and reaping the next entry,
-replacing the break with the next MSDU processing.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20241219110531.2096-2-quic_kangyang@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Fixes: c3c0363bc72d4 ("misc: fastrpc: support complete DMA pool access to the DSP")
+Cc: stable@vger.kernel.org # 6.11-rc1
+Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v6:
+- Add description of the detection tool.
+- Link to v5: https://lore.kernel.org/linux-arm-msm/20260117140351.875511-1-xjdeng@buaa.edu.cn/T/#u
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 8cc51ab699de..dc54ea16c12a 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -4728,7 +4728,7 @@ ath11k_dp_rx_mon_mpdu_pop(struct ath11k *ar, int mac_id,
- 			if (!msdu) {
- 				ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
- 					   "msdu_pop: invalid buf_id %d\n", buf_id);
--				break;
-+				goto next_msdu;
- 			}
- 			rxcb = ATH11K_SKB_RXCB(msdu);
- 			if (!rxcb->unmapped) {
-@@ -5362,7 +5362,7 @@ ath11k_dp_rx_full_mon_mpdu_pop(struct ath11k *ar,
- 					   "full mon msdu_pop: invalid buf_id %d\n",
- 					    buf_id);
- 				spin_unlock_bh(&rx_ring->idr_lock);
--				break;
-+				goto next_msdu;
- 			}
- 			idr_remove(&rx_ring->bufs_idr, buf_id);
- 			spin_unlock_bh(&rx_ring->idr_lock);
+v5:
+- Squash the functional change and indentation fix into a single patch.
+- Link to v4: https://lore.kernel.org/linux-arm-msm/2026011637-statute-showy-2c3f@gregkh/T/#t
+
+v4:
+- Format the indentation
+- Link to v3: https://lore.kernel.org/linux-arm-msm/20260113084352.72itrloj5w7qb5o3@hu-mojha-hyd.qualcomm.com/T/#t
+
+v3:
+- Add missing linux-kernel@vger.kernel.org to cc list.
+- Standarlize changelog placement/format.
+- Link to v2: https://lore.kernel.org/linux-arm-msm/20260113063618.e2ke47gy3hnfi67e@hu-mojha-hyd.qualcomm.com/T/#t
+
+v2:
+- Add Fixes: and Cc: stable tags.
+- Link to v1: https://lore.kernel.org/linux-arm-msm/20260113022550.4029635-1-xjdeng@buaa.edu.cn/T/#u
+---
+ drivers/misc/fastrpc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index ee652ef01534..8bac2216cb20 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -2337,8 +2337,11 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
+ 		if (!err) {
+ 			src_perms = BIT(QCOM_SCM_VMID_HLOS);
+ 
+-			qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
++			err = qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
+ 				    data->vmperms, data->vmcount);
++			if (err) {
++				goto err_free_data;
++			}
+ 		}
+ 
+ 	}
 -- 
-2.34.1
-
+2.25.1
 
 
