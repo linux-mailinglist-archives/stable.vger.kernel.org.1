@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDUJI/wremnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:12 +0100
+	id 0KB3HPIyeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:01:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4705FA3E8C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BE1A4F36
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:01:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 39422301106E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0983A31B3074
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:51:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8575244667;
-	Wed, 28 Jan 2026 15:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4682F745C;
+	Wed, 28 Jan 2026 15:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atrb/xH7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOT55faZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC3F23E358;
-	Wed, 28 Jan 2026 15:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A75288C22;
+	Wed, 28 Jan 2026 15:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614266; cv=none; b=LtQo58w0jKwHOBJzImmukRUZAbppwuhDohwTqD963PeSeMynPynFqX7pffvi2+sep5txCWIRq8U0zVOp/YeW8t/5CKQedkEYkLbkc+qf4haxcTMyNqb6yuHC9kaPoJBIciUWBBlqKHhRNufI5DLw+Y1GGmqVVDRZwRsN6lYFpak=
+	t=1769615458; cv=none; b=c7AyU5FS40th78RuRAdwBAQV51mvfERVo97JFGl0iVLy/USNLbYkg5Dj27C1hCTM2ne8OH97Ax1Va+YGsP9slK824lJqhvPV/NWherKahJd61EOazX9DEzRjLz1NVPm5Pb6w+Xmmw3FAnvqLD/GnZqFK2hp7kcf18Vg3AaCbIow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614266; c=relaxed/simple;
-	bh=R8dh3Wn7Mp1gVBx528GV0eiwt/jrqaEp6r1o7rEJpT4=;
+	s=arc-20240116; t=1769615458; c=relaxed/simple;
+	bh=x8PDpgvEnJ6UyVoJR8cohV9QAhRm4v6oMqp7WkRpWo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hAACkw/tSiNY5gzsk3qqLn84sbtM+XU8sONKqc+TVkTHU4+kAKHBG9l1MWgvjqsGfDGmiKxBBoQu/9DCcBOMv8UfgXRj7zW7HeCtAct9+nL0Eb4olAyZCNpugQzHpZpwN6wmudS4UaKK+YCzJ1tL4FCuQ7uZKY5D/MhJP9IQwcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atrb/xH7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A35C4CEF1;
-	Wed, 28 Jan 2026 15:31:05 +0000 (UTC)
+	 MIME-Version; b=b5rxHmXsCM+WIjQKr14KB4wcwiz4jDJUvkM2igVnKDvyYOfcebvdcwShorc7VpUDCX9rvsdIJjcyHmorHUBU66G6uF5+7FMzb1sWryR8t7tK2x8JBv6fmAsYqxE3HJsmxFi3UTPinfUXe4N8aKb8w4eqzZrsirvfV73gaJwD5TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GOT55faZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB710C4CEF1;
+	Wed, 28 Jan 2026 15:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614266;
-	bh=R8dh3Wn7Mp1gVBx528GV0eiwt/jrqaEp6r1o7rEJpT4=;
+	s=korg; t=1769615458;
+	bh=x8PDpgvEnJ6UyVoJR8cohV9QAhRm4v6oMqp7WkRpWo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atrb/xH7lrxzDMUfnOPhLzV9u5arEpKwZghFS32GbOYK/cr599dzGdv4KZ9Yqnc1V
-	 MZ8UURZT0JLsJOOf4lIS3lk7kDRkzQ4y5XqckZrUVfR+zCyImiUPb/qKA21ySe/q9C
-	 pz/RDrWqihhpm5T6tMEcV1Z4nFFC7V3Z+4f612L8=
+	b=GOT55faZJT/fNyNJ1KwbDVeWWUy2QYV+3KlqoWdJN1TZ+XE7s1qcoYB78aEzctA7Z
+	 LulNO1KMj0jvdEvQvepk0Iwfpb0J5xr/bouwDge+qIhRafdQYf5/Ol9TuWQMbrC8Le
+	 gy+eNAanxmkMARahBGwrpGQ8jd/VfoSg27iYAZMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 085/254] dmaengine: sh: rz-dmac: Fix rz_dmac_terminate_all()
+	Niklas Cassel <cassel@kernel.org>,
+	Wolf <wolf@yoxt.cc>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 016/227] ata: libata: Print features also for ATAPI devices
 Date: Wed, 28 Jan 2026 16:21:01 +0100
-Message-ID: <20260128145347.758272696@linuxfoundation.org>
+Message-ID: <20260128145344.927746288@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,86 +66,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212060-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212420-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_URIBL_FAIL(0.00)[yoxt.cc:server fail];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MSBL_EBL_FAIL(0.00)[stable@kernel.org:query timed out];
+	RSPAMD_EMAILBL_FAIL(0.00)[cassel.kernel.org:server fail,wolf.yoxt.cc:server fail,dlemoal.kernel.org:server fail];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,renesas.com:email]
-X-Rspamd-Queue-Id: 4705FA3E8C
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 69BE1A4F36
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 747213b08a1ab6a76e3e3b3e7a209cc1d402b5d0 upstream.
+[ Upstream commit c8c6fb886f57d5bf71fb6de6334a143608d35707 ]
 
-After audio full duplex testing, playing the recorded file contains a few
-playback frames from the previous time. The rz_dmac_terminate_all() does
-not reset all the hardware descriptors queued previously, leading to the
-wrong descriptor being picked up during the next DMA transfer. Fix the
-above issue by resetting all the descriptor headers for a channel in
-rz_dmac_terminate_all() as rz_dmac_lmdesc_recycle() points to the proper
-descriptor header filled by the rz_dmac_prepare_descs_for_slave_sg().
+Commit d633b8a702ab ("libata: print feature list on device scan")
+added a print of the features supported by the device for ATA_DEV_ATA and
+ATA_DEV_ZAC devices, but not for ATA_DEV_ATAPI devices.
 
-Cc: stable@kernel.org
-Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://patch.msgid.link/20251113195052.564338-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by printing the features also for ATAPI devices.
+
+Before changes:
+ata1.00: ATAPI: Slimtype DVD A  DU8AESH, 6C2M, max UDMA/133
+
+After changes:
+ata1.00: ATAPI: Slimtype DVD A  DU8AESH, 6C2M, max UDMA/133
+ata1.00: Features: Dev-Attention HIPM DIPM
+
+Fixes: d633b8a702ab ("libata: print feature list on device scan")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Tested-by: Wolf <wolf@yoxt.cc>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/sh/rz-dmac.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/ata/libata-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/dma/sh/rz-dmac.c
-+++ b/drivers/dma/sh/rz-dmac.c
-@@ -533,11 +533,16 @@ rz_dmac_prep_slave_sg(struct dma_chan *c
- static int rz_dmac_terminate_all(struct dma_chan *chan)
- {
- 	struct rz_dmac_chan *channel = to_rz_dmac_chan(chan);
-+	struct rz_lmdesc *lmdesc = channel->lmdesc.base;
- 	unsigned long flags;
-+	unsigned int i;
- 	LIST_HEAD(head);
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index c41714bea77e8..699919e4579e1 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -3119,6 +3119,9 @@ int ata_dev_configure(struct ata_device *dev)
+ 				     dma_dir_string);
  
- 	rz_dmac_disable_hw(channel);
- 	spin_lock_irqsave(&channel->vc.lock, flags);
-+	for (i = 0; i < DMAC_NR_LMDESC; i++)
-+		lmdesc[i].header = 0;
+ 		ata_dev_config_lpm(dev);
 +
- 	list_splice_tail_init(&channel->ld_active, &channel->ld_free);
- 	list_splice_tail_init(&channel->ld_queue, &channel->ld_free);
- 	spin_unlock_irqrestore(&channel->vc.lock, flags);
++		if (print_info)
++			ata_dev_print_features(dev);
+ 	}
+ 
+ 	/* determine max_sectors */
+-- 
+2.51.0
+
 
 
 
