@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-212074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212080-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMhcArYuemmO3wEAu9opvQ
-	(envelope-from <stable+bounces-212074-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:50 +0100
+	id yJ4QJNQuemmO3wEAu9opvQ
+	(envelope-from <stable+bounces-212080-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F45DA4500
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D960A4538
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E8AC30CA76E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E05BE302BE09
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C90248881;
-	Wed, 28 Jan 2026 15:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CEA23EAB7;
+	Wed, 28 Jan 2026 15:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqoOPNXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eFDc2kpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB547242D7F;
-	Wed, 28 Jan 2026 15:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1AD13B7A3;
+	Wed, 28 Jan 2026 15:32:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614313; cv=none; b=TIWdXBJrQIrJQFLF5Ozg5OcvttRn4DhfXgNibGRWHGqulaQ2XIBI9HHOqX6UdllA+0lxXnMLQpfFZ4JzDAIfRUv6JGEA3JWBDxfxUfcz1ioYdK5aD/tezUgr5unXX6k1AyUoMP8ZatZcdVxn+zaNEhCz16ZvZSDGDvezmxZi3Kg=
+	t=1769614334; cv=none; b=hYuvgL01SfYPfDjokwXv/5fS+3cGABpIS1jeuOF5Yr8bc4Qfn62b32nLjrNA44S42jeWAZlAkYBOzWDskGUkRkCHWY01CZQ2a1XTNsAD6AIPLIc7/leSZ07rrnE18bxDdIVLo5oHJ0PsTbXCgLjFbjkkxBz+c/OKvY29QT6rz0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614313; c=relaxed/simple;
-	bh=a2vm5U6ayVuFelazPCOHMLYIq0LJecDjEfVMqOhPgtY=;
+	s=arc-20240116; t=1769614334; c=relaxed/simple;
+	bh=oQzBAZyh0zfdteb6REq4WldWw467h1fWaYlQNmg8Xlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiUMqtKTJ42ZfQ26bT+2A9YO/XiEwXLOqBdZKZI08rYhhqqcDndyYd8WKWMcyRnDuf1QhOZWKvvtGlS6DaqkKfQox2C4XrqjZNN9PWhizG7PWkbU0G7bZ+dlPKDWk5CblLpeUAaR/iYWA98xJuqIwCDU+9uV3+z5m/ijc6EAObE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqoOPNXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10264C4CEF1;
-	Wed, 28 Jan 2026 15:31:52 +0000 (UTC)
+	 MIME-Version; b=n/XzBt/zyK+9QnFUS0Afb2X12aD1QsUQ6BFWX7SujZhKcfhbYukLz5Mv0R5U2bOsDJBLEmydWgWpIGhzlLkeOQ8anBdFowingyLhVZl9IeO65gQf/8ZbBebSpeXoZKSHwoD7FDCCC04QwCkz/88bHpnd8x0lMhATs49N7oWjXUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eFDc2kpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A095C4CEF1;
+	Wed, 28 Jan 2026 15:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614313;
-	bh=a2vm5U6ayVuFelazPCOHMLYIq0LJecDjEfVMqOhPgtY=;
+	s=korg; t=1769614334;
+	bh=oQzBAZyh0zfdteb6REq4WldWw467h1fWaYlQNmg8Xlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqoOPNXE779PehbrUDF+QGIh1lHbn8IoH0+/TpUbM6oTpQrHQNCxRBl+71reoo+QP
-	 yXNcbOF2hoMXA7gmWGvxMdA7plm4iNdB2RqaixkVt9QsEPfhbd2okpyJdJXHi7J30T
-	 r4koEBtQvGd4zegxE36ipBdTEVhG6UAvh5GDvUzY=
+	b=eFDc2kpW5k8u7r4QTFWvIj3hHQoML+JN3aap/RQR2n1I9epJS3HUffyaeAGE4NLtY
+	 kDWZ49s40i/nRJxjBFGSUmb6Dc2skGCnLHtMGge5I3C3ByHFXZqXyAYKFxwghoiK3D
+	 Zbtak6xTTFd3vXsLmCEVY0r1vvAcXEmRJP9JpYbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lisa Robinson <lisa@bytefly.space>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 071/254] LoongArch: Fix PMU counter allocation for mixed-type event groups
-Date: Wed, 28 Jan 2026 16:20:47 +0100
-Message-ID: <20260128145347.252316409@linuxfoundation.org>
+	Dianne Skoll <dianne@skoll.ca>,
+	Chris Park <chris.park@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Matthew Stewart <matthew.stewart2@amd.com>,
+	Dan Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 072/254] drm/amd/display: Bump the HDMI clock to 340MHz
+Date: Wed, 28 Jan 2026 16:20:48 +0100
+Message-ID: <20260128145347.287430814@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -68,155 +72,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212080-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212074-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytefly.space:email]
-X-Rspamd-Queue-Id: 5F45DA4500
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,skoll.ca:email]
+X-Rspamd-Queue-Id: 1D960A4538
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lisa Robinson <lisa@bytefly.space>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit a91f86e27087f250a5d9c89bb4a427b9c30fd815 upstream.
+commit fee50077656d8a58011f13bca48f743d1b6d6015 upstream.
 
-When validating a perf event group, validate_group() unconditionally
-attempts to allocate hardware PMU counters for the leader, sibling
-events and the new event being added.
+[Why]
+DP-HDMI dongles can execeed bandwidth requirements on high resolution
+monitors. This can lead to pruning the high resolution modes.
 
-This is incorrect for mixed-type groups. If a PERF_TYPE_SOFTWARE event
-is part of the group, the current code still tries to allocate a hardware
-PMU counter for it, which can wrongly consume hardware PMU resources and
-cause spurious allocation failures.
+HDMI 1.3 bumped the clock to 340MHz, but display code never matched it.
 
-Fix this by only allocating PMU counters for hardware events during group
-validation, and skipping software events.
+[How]
+Set default to (DVI) 165MHz.  Once HDMI display is identified update
+to 340MHz.
 
-A trimmed down reproducer is as simple as this:
-
-  #include <stdio.h>
-  #include <assert.h>
-  #include <unistd.h>
-  #include <string.h>
-  #include <sys/syscall.h>
-  #include <linux/perf_event.h>
-
-  int main (int argc, char *argv[])
-  {
-  	struct perf_event_attr attr = { 0 };
-  	int fds[5];
-
-  	attr.disabled = 1;
-  	attr.exclude_kernel = 1;
-  	attr.exclude_hv = 1;
-  	attr.read_format = PERF_FORMAT_TOTAL_TIME_ENABLED |
-  		PERF_FORMAT_TOTAL_TIME_RUNNING | PERF_FORMAT_ID | PERF_FORMAT_GROUP;
-  	attr.size = sizeof (attr);
-
-  	attr.type = PERF_TYPE_SOFTWARE;
-  	attr.config = PERF_COUNT_SW_DUMMY;
-  	fds[0] = syscall (SYS_perf_event_open, &attr, 0, -1, -1, 0);
-  	assert (fds[0] >= 0);
-
-  	attr.type = PERF_TYPE_HARDWARE;
-  	attr.config = PERF_COUNT_HW_CPU_CYCLES;
-  	fds[1] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
-  	assert (fds[1] >= 0);
-
-  	attr.type = PERF_TYPE_HARDWARE;
-  	attr.config = PERF_COUNT_HW_INSTRUCTIONS;
-  	fds[2] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
-  	assert (fds[2] >= 0);
-
-  	attr.type = PERF_TYPE_HARDWARE;
-  	attr.config = PERF_COUNT_HW_BRANCH_MISSES;
-  	fds[3] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
-  	assert (fds[3] >= 0);
-
-  	attr.type = PERF_TYPE_HARDWARE;
-  	attr.config = PERF_COUNT_HW_CACHE_REFERENCES;
-  	fds[4] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
-  	assert (fds[4] >= 0);
-
-  	printf ("PASSED\n");
-
-  	return 0;
-  }
-
+Reported-by: Dianne Skoll <dianne@skoll.ca>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4780
+Reviewed-by: Chris Park <chris.park@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Matthew Stewart <matthew.stewart2@amd.com>
+Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit ac1e65d8ade46c09fb184579b81acadf36dcb91e)
 Cc: stable@vger.kernel.org
-Fixes: b37042b2bb7c ("LoongArch: Add perf events support")
-Signed-off-by: Lisa Robinson <lisa@bytefly.space>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/perf_event.c |   21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_hdmi_types.h       |    2 +-
+ drivers/gpu/drm/amd/display/dc/link/link_detection.c |    4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/kernel/perf_event.c
-+++ b/arch/loongarch/kernel/perf_event.c
-@@ -637,6 +637,18 @@ static const struct loongarch_perf_event
- 	return pev;
- }
+--- a/drivers/gpu/drm/amd/display/dc/dc_hdmi_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_hdmi_types.h
+@@ -41,7 +41,7 @@
+ /* kHZ*/
+ #define DP_ADAPTOR_DVI_MAX_TMDS_CLK 165000
+ /* kHZ*/
+-#define DP_ADAPTOR_HDMI_SAFE_MAX_TMDS_CLK 165000
++#define DP_ADAPTOR_HDMI_SAFE_MAX_TMDS_CLK 340000
  
-+static inline bool loongarch_pmu_event_requires_counter(const struct perf_event *event)
-+{
-+	switch (event->attr.type) {
-+	case PERF_TYPE_HARDWARE:
-+	case PERF_TYPE_HW_CACHE:
-+	case PERF_TYPE_RAW:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- static int validate_group(struct perf_event *event)
- {
- 	struct cpu_hw_events fake_cpuc;
-@@ -644,15 +656,18 @@ static int validate_group(struct perf_ev
+ struct dp_hdmi_dongle_signature_data {
+ 	int8_t id[15];/* "DP-HDMI ADAPTOR"*/
+--- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+@@ -325,7 +325,7 @@ static void query_dp_dual_mode_adaptor(
  
- 	memset(&fake_cpuc, 0, sizeof(fake_cpuc));
+ 	/* Assume we have no valid DP passive dongle connected */
+ 	*dongle = DISPLAY_DONGLE_NONE;
+-	sink_cap->max_hdmi_pixel_clock = DP_ADAPTOR_HDMI_SAFE_MAX_TMDS_CLK;
++	sink_cap->max_hdmi_pixel_clock = DP_ADAPTOR_DVI_MAX_TMDS_CLK;
  
--	if (loongarch_pmu_alloc_counter(&fake_cpuc, &leader->hw) < 0)
-+	if (loongarch_pmu_event_requires_counter(leader) &&
-+	    loongarch_pmu_alloc_counter(&fake_cpuc, &leader->hw) < 0)
- 		return -EINVAL;
+ 	/* Read DP-HDMI dongle I2c (no response interpreted as DP-DVI dongle)*/
+ 	if (!i2c_read(
+@@ -381,6 +381,8 @@ static void query_dp_dual_mode_adaptor(
  
- 	for_each_sibling_event(sibling, leader) {
--		if (loongarch_pmu_alloc_counter(&fake_cpuc, &sibling->hw) < 0)
-+		if (loongarch_pmu_event_requires_counter(sibling) &&
-+		    loongarch_pmu_alloc_counter(&fake_cpuc, &sibling->hw) < 0)
- 			return -EINVAL;
+ 		}
  	}
++	if (is_valid_hdmi_signature)
++		sink_cap->max_hdmi_pixel_clock = DP_ADAPTOR_HDMI_SAFE_MAX_TMDS_CLK;
  
--	if (loongarch_pmu_alloc_counter(&fake_cpuc, &event->hw) < 0)
-+	if (loongarch_pmu_event_requires_counter(event) &&
-+	    loongarch_pmu_alloc_counter(&fake_cpuc, &event->hw) < 0)
- 		return -EINVAL;
- 
- 	return 0;
+ 	if (is_type2_dongle) {
+ 		uint32_t max_tmds_clk =
 
 
 
