@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-212235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAScCg8xemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:51 +0100
+	id qG85BEgxemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD03A4A90
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88058A4B55
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7A9F930E0799
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C870530AF34E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE8F2F0661;
-	Wed, 28 Jan 2026 15:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A8630BF62;
+	Wed, 28 Jan 2026 15:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4GvEN6g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPRNxarl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997CD2F0C70;
-	Wed, 28 Jan 2026 15:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959A3301465;
+	Wed, 28 Jan 2026 15:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614837; cv=none; b=uJY/HEoPqoYKS13VDfoRobVjHZKRlZtxVRjKEia2vq2AEY3KMlHHBu63ZNMC2ZKJGw6o6at8ARH3v+odGGJhN1k2siJIfe64g9h5lXfR/VuO7TQdaK2d8mUwcSwWfjxFdU/WYTStS/gLI27FdUJgtopoQ1+YPBj1lHdFB/UjyOY=
+	t=1769615309; cv=none; b=CRE6S8jTFgM0rFxLFrh2UAPjmsj/aPwDdFeyvF2CICttVfHFoEHVj43Uz2/6krntbvTbPEyAqHV9Cgeo5rGDavxrOsFUgaqpokHpu5xJIQyovZKcWNOkfXpuJWAax4zXuA//3tyHidvt3YA/XlrNpINFLHEWw9HsbkBO/I/W7gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614837; c=relaxed/simple;
-	bh=EXOVJcZYoJjOsIF/2kYmLlC/PvMNrNyFJKdc818a9Zk=;
+	s=arc-20240116; t=1769615309; c=relaxed/simple;
+	bh=NlVT/S5E72aCV8+ASps+dMHwWrANlBH98aFeADzaDfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKWF5cOI+KMUiKYMrrwKpEw+kNggAox6bAOqxhdh/qTU3+YITcQyNrUZLcvqsnY2WLXMtH0KfH+z3XkRCowrrjQkG/qpk+Zk/6S5q2K+CjYPUsOF8GXj3vtsQsJbrb1eyeaADZKdxqqFBauNNy/CrF0XDGpI2XbViMX2hMvhtQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4GvEN6g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859BEC4CEF7;
-	Wed, 28 Jan 2026 15:40:35 +0000 (UTC)
+	 MIME-Version; b=DMk2Y+F2B2SC4P0g9EIjUpuHkDJ/SJG8ITT2FD1N5rmufS3jfKYlSC3euKxXpA80XYsgQ91FFlVOs/jntyQXvtccyKScmjpznDeaUpEGRSjI+DRuo7UKuzaapVZQTE2dOIGARFLHleoBJcMNvGl5Pz2RtpP0KkBZZpXOqo1q3Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPRNxarl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA0EC4CEF7;
+	Wed, 28 Jan 2026 15:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614837;
-	bh=EXOVJcZYoJjOsIF/2kYmLlC/PvMNrNyFJKdc818a9Zk=;
+	s=korg; t=1769615309;
+	bh=NlVT/S5E72aCV8+ASps+dMHwWrANlBH98aFeADzaDfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4GvEN6gOVA1RNdbKtiugZaFO3UIZb42PbfTa30PWta/YxVrZBh/zId53F3T13g2W
-	 BW6KHLSiMB2+MWwyw7Gqq7ZpOLQyZkYkt90G055Oaq8UFfTnlq8g2XLzFNflAYYXe9
-	 GxX/PrAtQaaXhMaM4To/XwR2hevot8cn/Z8RwUgU=
+	b=YPRNxarl9u/2/t/K4+mq9KC4HQ3Io4S1VcONQFij6OPPlswSiV2Zmfe4HtHqaNObq
+	 UNFJniReuC3ceNck7QZX5A2RK6FVmeHePzncUvQ5pEjV6Gx02ePcDNAj3EhAykvy0p
+	 VY+OIYj/N88zDw+2i6gisu7/pe3b6GhxNJH4jsEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.6 247/254] ksmbd: fix use-after-free in ksmbd_session_rpc_open
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 140/169] can: ems_usb: ems_usb_read_bulk_callback(): fix URB memory leak
 Date: Wed, 28 Jan 2026 16:23:43 +0100
-Message-ID: <20260128145353.686626088@linuxfoundation.org>
+Message-ID: <20260128145339.043961598@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,149 +65,88 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212235-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,doyensec.com,kernel.org,microsoft.com,139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.957];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212375-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6DD03A4A90
+X-Rspamd-Queue-Id: 88058A4B55
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit a1f46c99d9ea411f9bf30025b912d881d36fc709 ]
+commit 0ce73a0eb5a27070957b67fd74059b6da89cc516 upstream.
 
-A UAF issue can occur due to a race condition between
-ksmbd_session_rpc_open() and __session_rpc_close().
-Add rpc_lock to the session to protect it.
+Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
+gs_usb_receive_bulk_callback(): fix URB memory leak").
 
+In ems_usb_open(), the URBs for USB-in transfers are allocated, added to
+the dev->rx_submitted anchor and submitted. In the complete callback
+ems_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
+ems_usb_close() the URBs are freed by calling
+usb_kill_anchored_urbs(&dev->rx_submitted).
+
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in ems_usb_close().
+
+Fix the memory leak by anchoring the URB in the
+ems_usb_read_bulk_callback() to the dev->rx_submitted anchor.
+
+Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
 Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ KSMBD_DEFAULT_GFP is introduced by commit 0066f623bce8 ("ksmbd: use __GFP_RETRY_MAYFAIL")
- after linux-6.13. Here we still use GFP_KERNEL. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-1-4b8cb2915571@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |   20 ++++++++++++++------
- fs/smb/server/mgmt/user_session.h |    1 +
- 2 files changed, 15 insertions(+), 6 deletions(-)
+ drivers/net/can/usb/ems_usb.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -59,10 +59,12 @@ static void ksmbd_session_rpc_clear_list
- 	struct ksmbd_session_rpc *entry;
- 	long index;
+--- a/drivers/net/can/usb/ems_usb.c
++++ b/drivers/net/can/usb/ems_usb.c
+@@ -486,11 +486,17 @@ resubmit_urb:
+ 			  urb->transfer_buffer, RX_BUFFER_SIZE,
+ 			  ems_usb_read_bulk_callback, dev);
  
-+	down_write(&sess->rpc_lock);
- 	xa_for_each(&sess->rpc_handle_list, index, entry) {
- 		xa_erase(&sess->rpc_handle_list, index);
- 		__session_rpc_close(sess, entry);
- 	}
-+	up_write(&sess->rpc_lock);
++	usb_anchor_urb(urb, &dev->rx_submitted);
++
+ 	retval = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!retval)
++		return;
++
++	usb_unanchor_urb(urb);
  
- 	xa_destroy(&sess->rpc_handle_list);
+ 	if (retval == -ENODEV)
+ 		netif_device_detach(netdev);
+-	else if (retval)
++	else
+ 		netdev_err(netdev,
+ 			   "failed resubmitting read bulk urb: %d\n", retval);
  }
-@@ -92,7 +94,7 @@ int ksmbd_session_rpc_open(struct ksmbd_
- {
- 	struct ksmbd_session_rpc *entry, *old;
- 	struct ksmbd_rpc_command *resp;
--	int method;
-+	int method, id;
- 
- 	method = __rpc_method(rpc_name);
- 	if (!method)
-@@ -102,26 +104,29 @@ int ksmbd_session_rpc_open(struct ksmbd_
- 	if (!entry)
- 		return -ENOMEM;
- 
-+	down_read(&sess->rpc_lock);
- 	entry->method = method;
--	entry->id = ksmbd_ipc_id_alloc();
--	if (entry->id < 0)
-+	entry->id = id = ksmbd_ipc_id_alloc();
-+	if (id < 0)
- 		goto free_entry;
--	old = xa_store(&sess->rpc_handle_list, entry->id, entry, GFP_KERNEL);
-+	old = xa_store(&sess->rpc_handle_list, id, entry, GFP_KERNEL);
- 	if (xa_is_err(old))
- 		goto free_id;
- 
--	resp = ksmbd_rpc_open(sess, entry->id);
-+	resp = ksmbd_rpc_open(sess, id);
- 	if (!resp)
- 		goto erase_xa;
- 
-+	up_read(&sess->rpc_lock);
- 	kvfree(resp);
--	return entry->id;
-+	return id;
- erase_xa:
- 	xa_erase(&sess->rpc_handle_list, entry->id);
- free_id:
- 	ksmbd_rpc_id_free(entry->id);
- free_entry:
- 	kfree(entry);
-+	up_read(&sess->rpc_lock);
- 	return -EINVAL;
- }
- 
-@@ -129,9 +134,11 @@ void ksmbd_session_rpc_close(struct ksmb
- {
- 	struct ksmbd_session_rpc *entry;
- 
-+	down_write(&sess->rpc_lock);
- 	entry = xa_erase(&sess->rpc_handle_list, id);
- 	if (entry)
- 		__session_rpc_close(sess, entry);
-+	up_write(&sess->rpc_lock);
- }
- 
- int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id)
-@@ -438,6 +445,7 @@ static struct ksmbd_session *__session_c
- 	sess->sequence_number = 1;
- 	rwlock_init(&sess->tree_conns_lock);
- 	atomic_set(&sess->refcnt, 2);
-+	init_rwsem(&sess->rpc_lock);
- 
- 	ret = __init_smb2_session(sess);
- 	if (ret)
---- a/fs/smb/server/mgmt/user_session.h
-+++ b/fs/smb/server/mgmt/user_session.h
-@@ -63,6 +63,7 @@ struct ksmbd_session {
- 	rwlock_t			tree_conns_lock;
- 
- 	atomic_t			refcnt;
-+	struct rw_semaphore		rpc_lock;
- };
- 
- static inline int test_session_flag(struct ksmbd_session *sess, int bit)
 
 
 
