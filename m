@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-212431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212071-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHFyEkwyemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212431-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:08 +0100
+	id WLPIEqouemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212071-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8C8A4DEA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8253A44D9
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2B7E530EC5C7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3948030C693F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD2530BBA5;
-	Wed, 28 Jan 2026 15:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5881E244667;
+	Wed, 28 Jan 2026 15:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5e66FHs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4QchWVQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F75A2FF178;
-	Wed, 28 Jan 2026 15:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEAC10A1E;
+	Wed, 28 Jan 2026 15:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615496; cv=none; b=WJQdWAl62d3feH1SUcRmu6NMMxeEv+kn6arkxSYBOglSs+ODDZ1PRQWbvqDYCFwpiWbtCdjLFbJoowOhX6OdneWzZc/m75lgqYuYSTb1eXyf91tUYxToWc+Ni7u/x4TftXFpTp7rhiY7SMJR1fYA6tNnzYrnCNa4qj4M/IyjxGM=
+	t=1769614304; cv=none; b=uZlRBcM9n014u6Z/NfO2DFBfWovagywmv6XNdPUclG2/axNPfK62qB3lL2I1Wky8yd2qLL7EQUQwhUGSH8XroJ2hJmYYfwlZZafQ6iV1vLxIptU9BJZuEnkHhiLbqjqA/XF28hQzUGz/UCL2aqYNWWUZHLIJFHQdL5ZXM3aKtYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615496; c=relaxed/simple;
-	bh=26Ww30JpgaZ33Bfi11SfwtKiA8yP8hImrEy5ytVjtNE=;
+	s=arc-20240116; t=1769614304; c=relaxed/simple;
+	bh=M2MLBbV1IAuQ7aNioHMFConF6NA7jaMue7cl5xzUDA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unzQ9yBR8pNwP9jNnmVDYcNFGaML/EJPwOLUgrAIC1Wu31rFw9iPjF08eZy6AAIFcY7joMVoXIQ/ILzEx3ApSywDoJwdKnPvLoun7mES7n2nvgVH94vmqIAdQMPmRG7E4U3pUL2TY0MO1g/tOGm5I57/x3MeW4anTITEuYR7X8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5e66FHs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAECC4CEF1;
-	Wed, 28 Jan 2026 15:51:35 +0000 (UTC)
+	 MIME-Version; b=Ih7ImyeBX7+wr6Ni7Liuo4L2kdpbt98qL5klBMkrRMcc+K5yB+q9wDFLlq4Xdh+02vbzNBWyIy8QTlZQt1eLIHkAUr+9F7yDCg1HJ8ezQUySohNmPMDF6mOCk5X2BZMKVA60yxhgkCnS2bi315WNqWUsnJeHWB4FP5BrogFBidY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4QchWVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFD6C4CEF1;
+	Wed, 28 Jan 2026 15:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615496;
-	bh=26Ww30JpgaZ33Bfi11SfwtKiA8yP8hImrEy5ytVjtNE=;
+	s=korg; t=1769614303;
+	bh=M2MLBbV1IAuQ7aNioHMFConF6NA7jaMue7cl5xzUDA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5e66FHsKgW+eutmYlOFn7nYmIWqMFHdBB1uTHQZQkNNvPcuk2OEJkyPgNQXTnsRR
-	 FqgsT3j+OuHMhp25aSmv5mHbfWBtoLlIAh3W9FVZsQKkkLTXvHrDxrKZ7tQq9bRTDh
-	 eI6vIXl2ZZn6mO+IH4qxIaxUM8pkirhQAj78sDyw=
+	b=p4QchWVQeuekZItM5Me+XrxQSb1r7bwp3YnvHYsumTDLR5Ylotm5sC0tsheTizHoO
+	 n1QWr2bZ31gi2/M7GD2boljvg+Sy30jivXcO3GFxsQJCWpF6u8L2bFuCse1J87uv3k
+	 kuXIy0viOx/KFFkAOnfBL6qquIihk+pcCy64jIMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zdenek Bouska <zdenek.bouska@siemens.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Simon Horman <horms@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Chwee-Lin Choong <chwee.lin.choong@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Xabier Marquiegui <reibax@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 026/227] igc: Reduce TSN TX packet buffer from 7KB to 5KB per queue
+Subject: [PATCH 6.6 095/254] ptp: add testptp mask test
 Date: Wed, 28 Jan 2026 16:21:11 +0100
-Message-ID: <20260128145345.287593477@linuxfoundation.org>
+Message-ID: <20260128145348.246509071@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,78 +71,142 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212431-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,davemloft.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212071-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.996];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AF8C8A4DEA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,davemloft.net:email,intel.com:email]
+X-Rspamd-Queue-Id: C8253A44D9
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+From: Xabier Marquiegui <reibax@gmail.com>
 
-[ Upstream commit 8ad1b6c1e63d25f5465b7a8aa403bdcee84b86f9 ]
+[ Upstream commit 26285e689c6cd2cf3849568c83b2ebe53f467143 ]
 
-The previous 7 KB per queue caused TX unit hangs under heavy
-timestamping load. Reducing to 5 KB avoids these hangs and matches
-the TSN recommendation in I225/I226 SW User Manual Section 7.5.4.
+Add option to test timestamp event queue mask manipulation in testptp.
 
-The 8 KB "freed" by this change is currently unused. This reduction
-is not expected to impact throughput, as the i226 is PCIe-limited
-for small TSN packets rather than TX-buffer-limited.
+Option -F allows the user to specify a single channel that will be
+applied on the mask filter via IOCTL.
 
-Fixes: 0d58cdc902da ("igc: optimize TX packet buffer utilization for TSN mode")
-Reported-by: Zdenek Bouska <zdenek.bouska@siemens.com>
-Closes: https://lore.kernel.org/netdev/AS1PR10MB5675DBFE7CE5F2A9336ABFA4EBEAA@AS1PR10MB5675.EURPRD10.PROD.OUTLOOK.COM/
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+The test program will maintain the file open until user input is
+received.
+
+This allows checking the effect of the IOCTL in debugfs.
+
+eg:
+
+Console 1:
+```
+Channel 12 exclusively enabled. Check on debugfs.
+Press any key to continue
+```
+
+Console 2:
+```
+0x00000000 0x00000001 0x00000000 0x00000000 0x00000000 0x00000000
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+0x00000000 0x00000000 0x00000000 0x00000000 0x00000000 0x00000000
+0x00000000 0x00000000 0x00000000 0x00000000
+```
+
+Signed-off-by: Xabier Marquiegui <reibax@gmail.com>
+Suggested-by: Richard Cochran <richardcochran@gmail.com>
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_defines.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/selftests/ptp/testptp.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
-index 498ba1522ca4d..9482ab11f050f 100644
---- a/drivers/net/ethernet/intel/igc/igc_defines.h
-+++ b/drivers/net/ethernet/intel/igc/igc_defines.h
-@@ -443,9 +443,10 @@
- #define IGC_TXPBSIZE_DEFAULT ( \
- 	IGC_TXPB0SIZE(20) | IGC_TXPB1SIZE(0) | IGC_TXPB2SIZE(0) | \
- 	IGC_TXPB3SIZE(0) | IGC_OS2BMCPBSIZE(4))
-+/* TSN value following I225/I226 SW User Manual Section 7.5.4 */
- #define IGC_TXPBSIZE_TSN ( \
--	IGC_TXPB0SIZE(7) | IGC_TXPB1SIZE(7) | IGC_TXPB2SIZE(7) | \
--	IGC_TXPB3SIZE(7) | IGC_OS2BMCPBSIZE(4))
-+	IGC_TXPB0SIZE(5) | IGC_TXPB1SIZE(5) | IGC_TXPB2SIZE(5) | \
-+	IGC_TXPB3SIZE(5) | IGC_OS2BMCPBSIZE(4))
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index c9f6cca4feb45..011252fe238c8 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -121,6 +121,7 @@ static void usage(char *progname)
+ 		" -d name    device to open\n"
+ 		" -e val     read 'val' external time stamp events\n"
+ 		" -f val     adjust the ptp clock frequency by 'val' ppb\n"
++		" -F chan    Enable single channel mask and keep device open for debugfs verification.\n"
+ 		" -g         get the ptp clock time\n"
+ 		" -h         prints this message\n"
+ 		" -i val     index for event/trigger\n"
+@@ -187,6 +188,7 @@ int main(int argc, char *argv[])
+ 	int pps = -1;
+ 	int seconds = 0;
+ 	int settime = 0;
++	int channel = -1;
  
- #define IGC_DTXMXPKTSZ_TSN	0x19 /* 1600 bytes of max TX DMA packet size */
- #define IGC_DTXMXPKTSZ_DEFAULT	0x98 /* 9728-byte Jumbo frames */
+ 	int64_t t1, t2, tp;
+ 	int64_t interval, offset;
+@@ -196,7 +198,7 @@ int main(int argc, char *argv[])
+ 
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -210,6 +212,9 @@ int main(int argc, char *argv[])
+ 		case 'f':
+ 			adjfreq = atoi(optarg);
+ 			break;
++		case 'F':
++			channel = atoi(optarg);
++			break;
+ 		case 'g':
+ 			gettime = 1;
+ 			break;
+@@ -604,6 +609,18 @@ int main(int argc, char *argv[])
+ 		free(xts);
+ 	}
+ 
++	if (channel >= 0) {
++		if (ioctl(fd, PTP_MASK_CLEAR_ALL)) {
++			perror("PTP_MASK_CLEAR_ALL");
++		} else if (ioctl(fd, PTP_MASK_EN_SINGLE, (unsigned int *)&channel)) {
++			perror("PTP_MASK_EN_SINGLE");
++		} else {
++			printf("Channel %d exclusively enabled. Check on debugfs.\n", channel);
++			printf("Press any key to continue\n.");
++			getchar();
++		}
++	}
++
+ 	close(fd);
+ 	return 0;
+ }
 -- 
 2.51.0
 
