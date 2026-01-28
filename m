@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIdVLXQtemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:28 +0100
+	id GLr9FoYxemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D32EA41B8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C5E0A4BD1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 32BA0301ACC1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 81FE331E8153
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2531B2D7DE1;
-	Wed, 28 Jan 2026 15:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88AD22F1FFA;
+	Wed, 28 Jan 2026 15:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QawucV5L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elWwCdTL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC74D2D6E63;
-	Wed, 28 Jan 2026 15:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8F6290D81;
+	Wed, 28 Jan 2026 15:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614618; cv=none; b=I8ULJe29a5GAMcTgnIHjg+t9GIG0yCYXuM+3hjrKof33BNjaYjME30/ZyGZkKEdVF6eTmPv/CpWnmzmk9urEX5BkrG+g2axEIhmpb3pTS51ly3gUGDB2sHc+BmOFR8dWZ89yyL8oSTPWoLkd39RaueJ98AQwFwNQ16p4IZPhSoY=
+	t=1769615066; cv=none; b=Dxs2d/MKO2u2EMU6i2oGpNW8Q20kNtP5l/jjXrbLixUP+Z6fPCk6Q/Csud4D1ER1oxii1x9a4iDkojMP6TlMnNt9os8djrtYaJOK8OtfbN5KzqYHQrQFMucUNHN5kqhEKPTXKR2U3MYKnRto18vkwO51cWEJTMhGd2eGyNdj6fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614618; c=relaxed/simple;
-	bh=ZRjx3J/Wt4hs3u0jrNgyPrTQ6VVsqOdvuk/xBzEQGIk=;
+	s=arc-20240116; t=1769615066; c=relaxed/simple;
+	bh=c2FvGUC+qtNzwMbR/1NP8cWiKeppB+NsZoTKDK3pJoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P93Op9/leaO+T18J80WwIQDLFCbxD1xIKevRYMlhtf+2w/b3B+resnhM+LTHbM/UBEfGED/iRFlmaSLeKoJflIvLFpkBDZ1TEHzJWv2r4q/C0EqF4WUtSJeciXc45k++xvxdZQWgP8k1elURloOisHkG0Hh6ANHwEZKfZ8M4J9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QawucV5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C18C4CEF1;
-	Wed, 28 Jan 2026 15:36:58 +0000 (UTC)
+	 MIME-Version; b=LviqJ8m3q+tScKA7JJrnFZ5CEUkKiXU6MNGAli6EllKXeBts+dQXB3E17yAnPmhuW9o9ZY0hj86x83JOyD+Q2m/WRWVWxbHUBO6uXXO23boHgwnLmSOjWPa/QtLW/CFNWeTIWThg4Z9Wmct/e4ANBqtZXWfTMIFNVKrCRrLuRI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elWwCdTL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73D3C4CEF1;
+	Wed, 28 Jan 2026 15:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614618;
-	bh=ZRjx3J/Wt4hs3u0jrNgyPrTQ6VVsqOdvuk/xBzEQGIk=;
+	s=korg; t=1769615066;
+	bh=c2FvGUC+qtNzwMbR/1NP8cWiKeppB+NsZoTKDK3pJoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QawucV5Lb5RMyYh+gJZ0eOZCkoup20SW8ph3ZFOcqhZ8OPYnJlP8GUwE4MSzuSmh8
-	 51pN82a5ZVMMnhzA5GU5Ez0Y9eBDgv1YsixguD22qi3n9oLqrTLlsjvz4DP2pTcMWa
-	 xo/2zUhPc5IGCAbEqDGuajmU6/Fs5k2elZesSSMA=
+	b=elWwCdTL0GTG4cV8QlUFHv+ZvfqYCBaYx1khB7LVJPRjs0g1Z9mdofuqGUDbLSFpn
+	 gDLiWpN3/K3JeZFz+FZ7T2S9SCTZCrTGwgS1zB/3mC2vThz2jf5kSwkM3HfQV/qRX2
+	 9gkHQ2T9JGXnsxdjUyrDz4l9Pw7TPMPD8/WcgN7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Jeffery <djeffery@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/254] selftests: net: amt: wait longer for connection before sending packets
-Date: Wed, 28 Jan 2026 16:22:30 +0100
-Message-ID: <20260128145351.067074810@linuxfoundation.org>
+Subject: [PATCH 6.12 068/169] scsi: core: Wake up the error handler when final completions race against each other
+Date: Wed, 28 Jan 2026 16:22:31 +0100
+Message-ID: <20260128145336.455287337@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +70,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212303-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212169-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.978];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,lib.sh:url]
-X-Rspamd-Queue-Id: 4D32EA41B8
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9C5E0A4BD1
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: David Jeffery <djeffery@redhat.com>
 
-[ Upstream commit 04708606fd7bdc34b69089a4ff848ff36d7088f9 ]
+[ Upstream commit fe2f8ad6f0999db3b318359a01ee0108c703a8c3 ]
 
-Both send_mcast4() and send_mcast6() use sleep 2 to wait for the tunnel
-connection between the gateway and the relay, and for the listener
-socket to be created in the LISTENER namespace.
+The fragile ordering between marking commands completed or failed so
+that the error handler only wakes when the last running command
+completes or times out has race conditions. These race conditions can
+cause the SCSI layer to fail to wake the error handler, leaving I/O
+through the SCSI host stuck as the error state cannot advance.
 
-However, tests sometimes fail because packets are sent before the
-connection is fully established.
+First, there is an memory ordering issue within scsi_dec_host_busy().
+The write which clears SCMD_STATE_INFLIGHT may be reordered with reads
+counting in scsi_host_busy(). While the local CPU will see its own
+write, reordering can allow other CPUs in scsi_dec_host_busy() or
+scsi_eh_inc_host_failed() to see a raised busy count, causing no CPU to
+see a host busy equal to the host_failed count.
 
-Increase the waiting time to make the tests more reliable, and use
-wait_local_port_listen() to explicitly wait for the listener socket.
+This race condition can be prevented with a memory barrier on the error
+path to force the write to be visible before counting host busy
+commands.
 
-Fixes: c08e8baea78e ("selftests: add amt interface selftest script")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Link: https://patch.msgid.link/20260120133930.863845-1-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Second, there is a general ordering issue with scsi_eh_inc_host_failed(). By
+counting busy commands before incrementing host_failed, it can race with a
+final command in scsi_dec_host_busy(), such that scsi_dec_host_busy() does
+not see host_failed incremented but scsi_eh_inc_host_failed() counts busy
+commands before SCMD_STATE_INFLIGHT is cleared by scsi_dec_host_busy(),
+resulting in neither waking the error handler task.
+
+This needs the call to scsi_host_busy() to be moved after host_failed is
+incremented to close the race condition.
+
+Fixes: 6eb045e092ef ("scsi: core: avoid host-wide host_busy counter for scsi_mq")
+Signed-off-by: David Jeffery <djeffery@redhat.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260113161036.6730-1-djeffery@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/amt.sh | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/scsi/scsi_error.c | 11 ++++++++++-
+ drivers/scsi/scsi_lib.c   |  8 ++++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/amt.sh b/tools/testing/selftests/net/amt.sh
-index 7e7ed6c558da9..ea40b469a8c11 100755
---- a/tools/testing/selftests/net/amt.sh
-+++ b/tools/testing/selftests/net/amt.sh
-@@ -73,6 +73,8 @@
- #       +------------------------+
- #==============================================================================
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index 35b841515d1d6..9a89a94784cd0 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -282,11 +282,20 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
+ {
+ 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
+ 	struct Scsi_Host *shost = scmd->device->host;
+-	unsigned int busy = scsi_host_busy(shost);
++	unsigned int busy;
+ 	unsigned long flags;
  
-+source lib.sh
+ 	spin_lock_irqsave(shost->host_lock, flags);
+ 	shost->host_failed++;
++	spin_unlock_irqrestore(shost->host_lock, flags);
++	/*
++	 * The counting of busy requests needs to occur after adding to
++	 * host_failed or after the lock acquire for adding to host_failed
++	 * to prevent a race with host unbusy and missing an eh wakeup.
++	 */
++	busy = scsi_host_busy(shost);
 +
- readonly LISTENER=$(mktemp -u listener-XXXXXXXX)
- readonly GATEWAY=$(mktemp -u gateway-XXXXXXXX)
- readonly RELAY=$(mktemp -u relay-XXXXXXXX)
-@@ -240,14 +242,15 @@ test_ipv6_forward()
- 
- send_mcast4()
- {
--	sleep 2
-+	sleep 5
-+	wait_local_port_listen ${LISTENER} 4000 udp
- 	ip netns exec "${SOURCE}" bash -c \
- 		'printf "%s %128s" 172.17.0.2 | nc -w 1 -u 239.0.0.1 4000' &
++	spin_lock_irqsave(shost->host_lock, flags);
+ 	scsi_eh_wakeup(shost, busy);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
  }
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index a4cafc688c2a1..55717fd3234be 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -373,6 +373,14 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
+ 	rcu_read_lock();
+ 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
+ 	if (unlikely(scsi_host_in_recovery(shost))) {
++		/*
++		 * Ensure the clear of SCMD_STATE_INFLIGHT is visible to
++		 * other CPUs before counting busy requests. Otherwise,
++		 * reordering can cause CPUs to race and miss an eh wakeup
++		 * when no CPU sees all busy requests as done or timed out.
++		 */
++		smp_mb();
++
+ 		unsigned int busy = scsi_host_busy(shost);
  
- send_mcast6()
- {
--	sleep 2
-+	wait_local_port_listen ${LISTENER} 6000 udp
- 	ip netns exec "${SOURCE}" bash -c \
- 		'printf "%s %128s" 2001:db8:3::2 | nc -w 1 -u ff0e::5:6 6000' &
- }
+ 		spin_lock_irqsave(shost->host_lock, flags);
 -- 
 2.51.0
 
