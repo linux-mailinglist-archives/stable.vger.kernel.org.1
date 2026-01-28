@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-212348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OE8eKKYwemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212348-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:06 +0100
+	id +D9vIUw7emlN4wEAu9opvQ
+	(envelope-from <stable+bounces-212554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:37:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C29DA4969
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0107FA5E5C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:37:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1EB6C304BC1D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91A90320BA58
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4026F30F52A;
-	Wed, 28 Jan 2026 15:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5EB3033C3;
+	Wed, 28 Jan 2026 15:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yunJA3LE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGYdq6FU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0290E2FB085;
-	Wed, 28 Jan 2026 15:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAE42FF178;
+	Wed, 28 Jan 2026 15:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615218; cv=none; b=kXx5IrCLcJj3yINvvrsTdAPbybmKVaKc2u6wv7C6ZEPIuLtm7JpoCSlBjjbM4Ks29EJmfLm/z2E7SZaiFNyVkpeD1lN3gDxKD/YGORd9us1xC0LCoXYP6D/BqkeLFMgETKJBvunMYZURhp1J0lDAQKcJlCrePSVPF9yJU3jKSJQ=
+	t=1769615908; cv=none; b=QHu7P/7T3Ru4ChT/3beIldj7C2EEDYaaBFnP2OMim9OeBJjsiBGhuBli0z8yZg2U0wdAU1Mcv9IYbb2B3lQXv+CIQ0sBsaAWC8990iCT7MXHuP1Pn64L5+82tPqXryaOxtcePReNfN1/Krt+YTU/qfRRUwUwUCEGUG5OMDfgFgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615218; c=relaxed/simple;
-	bh=bIEnHj8p9HOeERQpzYVY8TG7ZQfakaRdQzc3Y9eIvf4=;
+	s=arc-20240116; t=1769615908; c=relaxed/simple;
+	bh=wgjwVbS8ePusXgxicjjtBzO7MqseixBg2NnW1CiK9F4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SA6mQh1pDjyXbL7zZ94ieTOtD4nAXzazy80Xvdc163zlNrWfa3Ov0ouL/IJFeCJ0b/kyc+MTOitpF5CkUtttZHRLCc0WfBIA6h5Vf+f1AjpBMTdK2fjJptrbs+iUNY7giLOceDmJu/DjCQX5gE02rhG4y7gC8gXMRTskkGL3UAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yunJA3LE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B559C4CEF1;
-	Wed, 28 Jan 2026 15:46:57 +0000 (UTC)
+	 MIME-Version; b=IC7iIk6xCbTxEmPEbQeogaoMn2QMEyXsfIjVt6qi1zGcUXfUESH4Swm/Zhag7TKDpaKLpmlvbW+X5uHRz9CvoHeBXRUqaWhGhBR6W1WRIwWWCj1HCrD5ghoCXb9ISApiyGjNHoxf3dWsmuey58mDon6gKexmPzQHdmHuGLSURjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGYdq6FU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8778C4CEF7;
+	Wed, 28 Jan 2026 15:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615217;
-	bh=bIEnHj8p9HOeERQpzYVY8TG7ZQfakaRdQzc3Y9eIvf4=;
+	s=korg; t=1769615908;
+	bh=wgjwVbS8ePusXgxicjjtBzO7MqseixBg2NnW1CiK9F4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yunJA3LEfkNlO6BQjvdxy0LfulaUA5FJXSbq9cY6FKn8pIV1XsUvyjUwP0FItWZ4F
-	 bY6jsu95KbyJDPgigkYQAo7vOQEz+WwNjZhOzHwQhp70nNFzGXJdrTExKq07haGcjc
-	 OslddVO1p51NY6IhTiVSGp3iOsI+PWtNIUWbwpvg=
+	b=QGYdq6FUI6z9dNdr7KPI6K3uYjDGx2SvaUm9TkKmxLpIPJKzGNLz0rGkvrzEwRSpT
+	 9tT6t/AGjW0ZVRqYZoNuf968sQCLoLim800ptDouwnolOOq5q3/ZEjj65MGOnlHMes
+	 W1KwjXmhd5Invixgdt8rNmUSJ3efVmeUAHQKV9+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 112/169] ALSA: scarlett2: Fix buffer overflow in config retrieval
+	Cedric Xing <cedric.xing@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 150/227] x86: make page fault handling disable interrupts properly
 Date: Wed, 28 Jan 2026 16:23:15 +0100
-Message-ID: <20260128145338.036200800@linuxfoundation.org>
+Message-ID: <20260128145349.853665327@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +72,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212554-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212348-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 3C29DA4969
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0107FA5E5C
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Cedric Xing <cedric.xing@intel.com>
 
-commit 6f5c69f72e50d51be3a8c028ae7eda42c82902cb upstream.
+[ Upstream commit 614da1d3d4cdbd6e41aea06bc97ec15aacff6daf ]
 
-The scarlett2_usb_get_config() function has a logic error in the
-endianness conversion code that can cause buffer overflows when
-count > 1.
+There's a big comment in the x86 do_page_fault() about our interrupt
+disabling code:
 
-The code checks `if (size == 2)` where `size` is the total buffer size in
-bytes, then loops `count` times treating each element as u16 (2 bytes).
-This causes the loop to access `count * 2` bytes when the buffer only
-has `size` bytes allocated.
+    * User address page fault handling might have reenabled
+    * interrupts. Fixing up all potential exit points of
+    * do_user_addr_fault() and its leaf functions is just not
+    * doable w/o creating an unholy mess or turning the code
+    * upside down.
 
-Fix by checking the element size (config_item->size) instead of the
-total buffer size. This ensures the endianness conversion matches the
-actual element type.
+but it turns out that comment is subtly wrong, and the code as a result
+is also wrong.
 
-Fixes: ac34df733d2d ("ALSA: usb-audio: scarlett2: Update get_config to do endian conversion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Link: https://patch.msgid.link/20260117012706.1715574-1-samasth.norway.ananda@oracle.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Because it's certainly true that we may have re-enabled interrupts when
+handling user page faults.  And it's most certainly true that we don't
+want to bother fixing up all the cases.
+
+But what isn't true is that it's limited to user address page faults.
+
+The confusion stems from the fact that we have logic here that depends
+on the address range of the access, but other code then depends on the
+_context_ the access was done in.  The two are not related, even though
+both of them are about user-vs-kernel.
+
+In other words, both user and kernel addresses can cause interrupts to
+have been enabled (eg when __bad_area_nosemaphore() gets called for user
+accesses to kernel addresses).  As a result we should make sure to
+disable interrupts again regardless of the address range before
+returning to the low-level fault handling code.
+
+The __bad_area_nosemaphore() code actually did disable interrupts again
+after enabling them, just not consistently.  Ironically, as noted in the
+original comment, fixing up all the cases is just not worth it, when the
+simple solution is to just do it unconditionally in one single place.
+
+So remove the incomplete case that unsuccessfully tried to do what the
+comment said was "not doable" in commit ca4c6a9858c2 ("x86/traps: Make
+interrupt enable/disable symmetric in C code"), and just make it do the
+simple and straightforward thing.
+
+Signed-off-by: Cedric Xing <cedric.xing@intel.com>
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+Fixes: ca4c6a9858c2 ("x86/traps: Make interrupt enable/disable symmetric in C code")
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett2.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/mm/fault.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -2496,13 +2496,13 @@ static int scarlett2_usb_get_config(
- 		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
- 		if (err < 0)
- 			return err;
--		if (size == 2) {
-+		if (config_item->size == 16) {
- 			u16 *buf_16 = buf;
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 998bd807fc7ba..b83a06739b511 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -821,8 +821,6 @@ __bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
+ 		force_sig_pkuerr((void __user *)address, pkey);
+ 	else
+ 		force_sig_fault(SIGSEGV, si_code, (void __user *)address);
+-
+-	local_irq_disable();
+ }
  
- 			for (i = 0; i < count; i++, buf_16++)
- 				*buf_16 = le16_to_cpu(*(__le16 *)buf_16);
--		} else if (size == 4) {
--			u32 *buf_32 = buf;
-+		} else if (config_item->size == 32) {
-+			u32 *buf_32 = (u32 *)buf;
+ static noinline void
+@@ -1474,15 +1472,12 @@ handle_page_fault(struct pt_regs *regs, unsigned long error_code,
+ 		do_kern_addr_fault(regs, error_code, address);
+ 	} else {
+ 		do_user_addr_fault(regs, error_code, address);
+-		/*
+-		 * User address page fault handling might have reenabled
+-		 * interrupts. Fixing up all potential exit points of
+-		 * do_user_addr_fault() and its leaf functions is just not
+-		 * doable w/o creating an unholy mess or turning the code
+-		 * upside down.
+-		 */
+-		local_irq_disable();
+ 	}
++	/*
++	 * page fault handling might have reenabled interrupts,
++	 * make sure to disable them again.
++	 */
++	local_irq_disable();
+ }
  
- 			for (i = 0; i < count; i++, buf_32++)
- 				*buf_32 = le32_to_cpu(*(__le32 *)buf_32);
+ DEFINE_IDTENTRY_RAW_ERRORCODE(exc_page_fault)
+-- 
+2.51.0
+
 
 
 
