@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIBTMdQ5emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212448-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:31:16 +0100
+	id 4ImkMtYuemmO3wEAu9opvQ
+	(envelope-from <stable+bounces-212089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F484A5BFC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 315E9A453F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7256B3277016
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B606C30598B4
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF26304968;
-	Wed, 28 Jan 2026 15:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7491810A1E;
+	Wed, 28 Jan 2026 15:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4yXHJpk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8umQd6E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815942F0C70;
-	Wed, 28 Jan 2026 15:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380DA1885A5;
+	Wed, 28 Jan 2026 15:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615554; cv=none; b=myLP4yQ4UQn/cFOU7IUDAxmZ9h6FlpnXerJsWXWcs0FVF3E0EH9Q4obttIm+6wwtS0PmF4Mt+dlBTB0PQfliBSBWFQHu0qLN6D5GidnUYP5yv63a/3YkNmSdcdWmBRbiQy2Hz9bq++FKCqjOtUAvafcl/BkiBsSq6+IV2eIXGFM=
+	t=1769614364; cv=none; b=Fo+8sjgPYpTMd/YPf7CFoJ0dS6f7KsdDYYFHth8bjSARtq0a3ei8k7LoQS8i13W10QB0Nl+VdBKDXByXUtXgpD/Oagc8L4OiRqgCEXdLzm6EZmdkDRk4Ys3BmxH332iiq4VoTV+GAJYpF+q6veLz+OAvWiJPS02x/1T8tQdNYMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615554; c=relaxed/simple;
-	bh=jtN5BgxHUzuRehfYxI7RTUDJNi/oIt4yJwuB3b8cBEs=;
+	s=arc-20240116; t=1769614364; c=relaxed/simple;
+	bh=gPF2fSZQ4zirswiRYZB/Y2Pw6j5a5zPhjztkkZlMkeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3mjuQWBagUaXL0aZDQ8HKjx8Ie7teHq9acED2PmQrlnQaX1k+OkCMm75kQnOzaHIsy+x8tHqa+x4abgvUWmWuehZ6I6eiwp/RoHBUnmO8JHP9LOJylAi8knV8R+1D2D/ahPipcPgo2gLshK4eQdIerCdcJTi/IK4YOKLkGj8aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4yXHJpk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BFFC4CEF1;
-	Wed, 28 Jan 2026 15:52:33 +0000 (UTC)
+	 MIME-Version; b=TrKCOKuwWwU+7oU4JDazUpHrT2TUiK3bxJP37OuLHEDLGNRfcPUGPtsVvyE04Zhc0lTawTIM4i98m6BGnxlRCYrwOldk9onrglgfk6m2uANQYYZp9M/Vwnsw+66Yo9VdyFmNbcl2vm2tHzFVBxa5wT4ZgMGWu+4u4WGVU1EUnas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8umQd6E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20FAC4CEF1;
+	Wed, 28 Jan 2026 15:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615554;
-	bh=jtN5BgxHUzuRehfYxI7RTUDJNi/oIt4yJwuB3b8cBEs=;
+	s=korg; t=1769614364;
+	bh=gPF2fSZQ4zirswiRYZB/Y2Pw6j5a5zPhjztkkZlMkeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4yXHJpkggl4zbudc2O0NwBms+tMMBsggu1VSu8d3lwej7zLQPBuBuMmKjMQYJr6r
-	 ECCrzbNQSmKkDZNT1+WlhsXAU6uq+ZEMezypVu1AzpxedRZgLyBkATiMKcd2jWk87y
-	 Yxup0rypd38mvvKAaoqll2LiaedZVmGLknUFF25s=
+	b=t8umQd6EVTC/FovnBj9rSj3H/yWNj675PjIpaDH10nh2/WodLssJ5HiI/AxuZkXWk
+	 CoQIGSugqaTZnJw+eY1wO72Lx/oxazx1Ch6gtqgNGIqkCERRh+14zWsvWvmGSqZvdw
+	 R63uTHIiThRy5hiQ+IhG3gFJLS1iNPPRIqZqi7Ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Wolf <wolf@yoxt.cc>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 044/227] octeontx2: cn10k: fix RX flowid TCAM mask handling
-Date: Wed, 28 Jan 2026 16:21:29 +0100
-Message-ID: <20260128145345.929431587@linuxfoundation.org>
+Subject: [PATCH 6.6 114/254] ata: libata: Print features also for ATAPI devices
+Date: Wed, 28 Jan 2026 16:21:30 +0100
+Message-ID: <20260128145348.926164499@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212448-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212089-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,49 +92,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,marvell.com:email]
-X-Rspamd-Queue-Id: 3F484A5BFC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yoxt.cc:email]
+X-Rspamd-Queue-Id: 315E9A453F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit ab9b218a1521133a4410722907fa7189566be9bc ]
+[ Upstream commit c8c6fb886f57d5bf71fb6de6334a143608d35707 ]
 
-The RX flowid programming initializes the TCAM mask to all ones, but
-then overwrites it when clearing the MAC DA mask bits. This results
-in losing the intended initialization and may affect other match fields.
+Commit d633b8a702ab ("libata: print feature list on device scan")
+added a print of the features supported by the device for ATA_DEV_ATA and
+ATA_DEV_ZAC devices, but not for ATA_DEV_ATAPI devices.
 
-Update the code to clear the MAC DA bits using an AND operation, making
-the handling of mask[0] consistent with mask[1], where the field-specific
-bits are cleared after initializing the mask to ~0ULL.
+Fix this by printing the features also for ATAPI devices.
 
-Fixes: 57d00d4364f3 ("octeontx2-pf: mcs: Match macsec ethertype along with DMAC")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Link: https://patch.msgid.link/20260116164724.2733511-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Before changes:
+ata1.00: ATAPI: Slimtype DVD A  DU8AESH, 6C2M, max UDMA/133
+
+After changes:
+ata1.00: ATAPI: Slimtype DVD A  DU8AESH, 6C2M, max UDMA/133
+ata1.00: Features: Dev-Attention HIPM DIPM
+
+Fixes: d633b8a702ab ("libata: print feature list on device scan")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Tested-by: Wolf <wolf@yoxt.cc>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-index 4c7e0f345cb5b..060c715ebad0a 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
-@@ -328,7 +328,7 @@ static int cn10k_mcs_write_rx_flowid(struct otx2_nic *pfvf,
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index e51a27ae0a7d2..d5e713f284b71 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -3049,6 +3049,9 @@ int ata_dev_configure(struct ata_device *dev)
+ 				     dma_dir_string);
  
- 	req->data[0] = FIELD_PREP(MCS_TCAM0_MAC_DA_MASK, mac_da);
- 	req->mask[0] = ~0ULL;
--	req->mask[0] = ~MCS_TCAM0_MAC_DA_MASK;
-+	req->mask[0] &= ~MCS_TCAM0_MAC_DA_MASK;
+ 		ata_dev_config_lpm(dev);
++
++		if (print_info)
++			ata_dev_print_features(dev);
+ 	}
  
- 	req->data[1] = FIELD_PREP(MCS_TCAM1_ETYPE_MASK, ETH_P_MACSEC);
- 	req->mask[1] = ~0ULL;
+ 	/* determine max_sectors */
 -- 
 2.51.0
 
