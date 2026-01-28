@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KUcOhY5eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:28:06 +0100
+	id 8I1EAd47emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:58 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57078A5AA5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:28:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42064A5F67
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D686A314F4C4
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50F56323115E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEFB27BF79;
-	Wed, 28 Jan 2026 15:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82F9286D4B;
+	Wed, 28 Jan 2026 16:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4m8hJIN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkKD9A7C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A992E2DF4;
-	Wed, 28 Jan 2026 15:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CABB81AA8;
+	Wed, 28 Jan 2026 16:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615431; cv=none; b=QOFW2jHqVKFa9rDnC6qEJg4kUj1u8X4JP6ATZi/YbeBH8Uwusr6PNLAdjePYTpevkeMAE7gOps3SVtDligts88+ypDSyGC13qnlLSHAL1RgLqn2PQIabGe7qjyZcjQzyqgEJwJ5Ryjkt5sH3OtGGHeqoiOqUYfpJKq0buaFWeGU=
+	t=1769616035; cv=none; b=c6/S3cyPUBXtJB8wHyjX0Dy1+6QDm/XlFfWKYmNlLgP6C9wykU04+nsTuAN4vYIzBoi3EEPEZFJxEaQNSwJjxhK35AzKBAIsyXTdRCT20enSwmvEJgrcQV4uyKenpr+KTYIbwN1mBKJck2QL+1i7aF9zWBwdhcJqLng+oBEu/D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615431; c=relaxed/simple;
-	bh=7dOKrgXDPkz6zD4XhW1zoZ8jysE6/gL5zhv7aFNOs9E=;
+	s=arc-20240116; t=1769616035; c=relaxed/simple;
+	bh=lD0QduN87EJ/+R32hA+u3D/v8/+B9rOZ8lb2frC1VRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pLWHIFdDgiXLYvxEC8cH1iUEfoGnyWvqkvcS/T3UeqmjYV5zdz666RtglNNyHQWHLWxLhJoY4t2nzpuDa7MJR+S9D5EyDGYXKUuUOQ7CM3me82NtxNHR3MUNU69hOGH9tTDfpNAuAjPNq4B6ZosxrWs5Fbfl/s46Tft900Tluyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4m8hJIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BEDC4CEF1;
-	Wed, 28 Jan 2026 15:50:30 +0000 (UTC)
+	 MIME-Version; b=pmcVPZg/52aBvDCMlcVQtCtjSolAAWNtpzCogqcDcsSooobCIsJiT/SQpaou1IiSco9TBWQT+AYg2xQYCZ+IxSCWY7oF3EWpUEzXdTggqGOey82ZQ3OTyqWzrMl8Xo3mEn6vIcO4e+Ie+7lIBn+XZupwGO9ZHTWR+mqq1UpFU3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkKD9A7C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD02C4CEF1;
+	Wed, 28 Jan 2026 16:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615431;
-	bh=7dOKrgXDPkz6zD4XhW1zoZ8jysE6/gL5zhv7aFNOs9E=;
+	s=korg; t=1769616035;
+	bh=lD0QduN87EJ/+R32hA+u3D/v8/+B9rOZ8lb2frC1VRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4m8hJIN90M5Bwitkq1A3+SnuA6QUChE43j0wzpqt1OtQpdOVcgGQ4FfcXaBuLUMs
-	 tCfNRCC+1c/52XqERBUO7fjQgAUhF+quykoDyRM4YyYlnKf3uL2EhvJyixNAjKlZVZ
-	 799OhU5wUwGvBFUaZGevbDRAFIgyoeEahL2S2/2U=
+	b=tkKD9A7ChjoJAsO4OGzQOQ16VY09hRUgEyzTaJsYhxGD9r2zRut0r2weo42bXJ94m
+	 JVQ/w7QJN/w0gzBy5Fq6xUEyULNK6lPOfjeLBNn/Yoe4jueJVSX7OT13G0DtPcU4wj
+	 jRlm9ygJnHj6A9o0tC6+FXgtkareyF0O9xt4SYMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <ihor.solodrai@pm.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 149/169] selftests/bpf: Check for timeout in perf_link test
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.18 187/227] intel_th: fix device leak on output open()
 Date: Wed, 28 Jan 2026 16:23:52 +0100
-Message-ID: <20260128145339.367289379@linuxfoundation.org>
+Message-ID: <20260128145351.174564265@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212412-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212592-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,81 +91,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 57078A5AA5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 42064A5F67
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ihor Solodrai <ihor.solodrai@pm.me>
+From: Johan Hovold <johan@kernel.org>
 
-commit e6c209da7e0e9aaf955a7b59e91ed78c2b6c96fb upstream.
+commit 95fc36a234da24bbc5f476f8104a5a15f99ed3e3 upstream.
 
-Recently perf_link test started unreliably failing on libbpf CI:
-  * https://github.com/libbpf/libbpf/actions/runs/11260672407/job/31312405473
-  * https://github.com/libbpf/libbpf/actions/runs/11260992334/job/31315514626
-  * https://github.com/libbpf/libbpf/actions/runs/11263162459/job/31320458251
+Make sure to drop the reference taken when looking up the th device
+during output device open() on errors and on close().
 
-Part of the test is running a dummy loop for a while and then checking
-for a counter incremented by the test program.
+Note that a recent commit fixed the leak in a couple of open() error
+paths but not all of them, and the reference is still leaking on
+successful open().
 
-Instead of waiting for an arbitrary number of loop iterations once,
-check for the test counter in a loop and use get_time_ns() helper to
-enforce a 100ms timeout.
-
-v1: https://lore.kernel.org/bpf/zuRd072x9tumn2iN4wDNs5av0nu5nekMNV4PkR-YwCT10eFFTrUtZBRkLWFbrcCe7guvLStGQlhibo8qWojCO7i2-NGajes5GYIyynexD-w=@pm.me/
-
-Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241011153104.249800-1-ihor.solodrai@pm.me
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Fixes: 39f4034693b7 ("intel_th: Add driver infrastructure for Intel(R) Trace Hub devices")
+Fixes: 6d5925b667e4 ("intel_th: Fix error handling in intel_th_output_open")
+Cc: stable@vger.kernel.org	# 4.4: 6d5925b667e4
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251208153524.68637-2-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/perf_link.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/hwtracing/intel_th/core.c |   19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/bpf/prog_tests/perf_link.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_link.c
-@@ -4,8 +4,12 @@
- #include <pthread.h>
- #include <sched.h>
- #include <test_progs.h>
-+#include "testing_helpers.h"
- #include "test_perf_link.skel.h"
+--- a/drivers/hwtracing/intel_th/core.c
++++ b/drivers/hwtracing/intel_th/core.c
+@@ -810,9 +810,12 @@ static int intel_th_output_open(struct i
+ 	int err;
  
-+#define BURN_TIMEOUT_MS 100
-+#define BURN_TIMEOUT_NS BURN_TIMEOUT_MS * 1000000
+ 	dev = bus_find_device_by_devt(&intel_th_bus, inode->i_rdev);
+-	if (!dev || !dev->driver) {
++	if (!dev)
++		return -ENODEV;
 +
- static void burn_cpu(void)
- {
- 	volatile int j = 0;
-@@ -32,6 +36,7 @@ void serial_test_perf_link(void)
- 	int run_cnt_before, run_cnt_after;
- 	struct bpf_link_info info;
- 	__u32 info_len = sizeof(info);
-+	__u64 timeout_time_ns;
++	if (!dev->driver) {
+ 		err = -ENODEV;
+-		goto out_no_device;
++		goto out_put_device;
+ 	}
  
- 	/* create perf event */
- 	memset(&attr, 0, sizeof(attr));
-@@ -63,8 +68,14 @@ void serial_test_perf_link(void)
- 	ASSERT_GT(info.prog_id, 0, "link_prog_id");
+ 	thdrv = to_intel_th_driver(dev->driver);
+@@ -836,12 +839,22 @@ static int intel_th_output_open(struct i
  
- 	/* ensure we get at least one perf_event prog execution */
--	burn_cpu();
--	ASSERT_GT(skel->bss->run_cnt, 0, "run_cnt");
-+	timeout_time_ns = get_time_ns() + BURN_TIMEOUT_NS;
-+	while (true) {
-+		burn_cpu();
-+		if (skel->bss->run_cnt > 0)
-+			break;
-+	        if (!ASSERT_LT(get_time_ns(), timeout_time_ns, "run_cnt_timeout"))
-+			break;
-+	}
+ out_put_device:
+ 	put_device(dev);
+-out_no_device:
++
+ 	return err;
+ }
  
- 	/* perf_event is still active, but we close link and BPF program
- 	 * shouldn't be executed anymore
++static int intel_th_output_release(struct inode *inode, struct file *file)
++{
++	struct intel_th_device *thdev = file->private_data;
++
++	put_device(&thdev->dev);
++
++	return 0;
++}
++
+ static const struct file_operations intel_th_output_fops = {
+ 	.open	= intel_th_output_open,
++	.release = intel_th_output_release,
+ 	.llseek	= noop_llseek,
+ };
+ 
 
 
 
