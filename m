@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EM9sE9Ivemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:34 +0100
+	id SKBYMjMuemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17738A474F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D83EA4356
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4253A30B9FAA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2BD43115260
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F612E6CA0;
-	Wed, 28 Jan 2026 15:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE3A10A1E;
+	Wed, 28 Jan 2026 15:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuXrTxWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHthGLHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213A92DB79A;
-	Wed, 28 Jan 2026 15:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413B5242D86;
+	Wed, 28 Jan 2026 15:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614867; cv=none; b=Hr1DsgNeuDbJMVIaR20h9GmYgZ1rLasbZmpJmapzbX51oOnd6FDjeANdJXhFkVFbLzLrf0FY98MOQ3lUzAWY56hOOUUgemOrpYFv5OnZnJkqMsKzmsdmVHyucrEmyrAXctvx8GQ+umoZaXcTGTL2j0pizUx90YyvphejhuZ3U7A=
+	t=1769614458; cv=none; b=uEgVn0HrFjajd+VgreEY3UxvkTPiWx20XSezmB2HQWebVSNv4LJH4ZZ7aw/o6XISTWDzlEmDceYFacEUWQvVGi7xpR3ip1vcCoFK7k4h0u3P5nyPUBWGgjWmgd2EY4sR4BA3EJZQxa9W3kBbs1Rqg7i2FBJ/7SvipceH94InTyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614867; c=relaxed/simple;
-	bh=RaJePkBCBtcXkJl7pOzuknOiEDlOcuvODprQYbVyNuc=;
+	s=arc-20240116; t=1769614458; c=relaxed/simple;
+	bh=8xTecCyNw9NfiV2wW9ACDcEt5n8T3UjJXMtfFTq7dLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mDxYVH2mLrHhYiOoWuinqIn7RbGoHU3a/aQ+x09hwR8Hb3bxJnEJIUo9MI7V8dMdCK+Dx6hFzfzBHg+YDOx6+tl1klMmRujaHxHROaW9W0728z/LxEKJQoZqUEnjxbUWhwNNUm5B78KNc9wcVqZzTwZwAqKkBhcZBzS5MnJ1Xj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuXrTxWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567BAC4CEF1;
-	Wed, 28 Jan 2026 15:41:06 +0000 (UTC)
+	 MIME-Version; b=GSg6knfrsV4Ou217mpm4DQjdjoaZ+IoljoIC1OwCXo6N9fWNcR18idULDJ8d8eZU5YX4lPq8E5ewwwVVaUsSigSFE9CRYOMz/486k3AdL48i/otooEvm/3nxNtbVOQQTFhQyWJfxxNUGYswBA0aaTC+B/Ghdxdo+PHJHJH0E/G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHthGLHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A246AC4CEF1;
+	Wed, 28 Jan 2026 15:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614866;
-	bh=RaJePkBCBtcXkJl7pOzuknOiEDlOcuvODprQYbVyNuc=;
+	s=korg; t=1769614458;
+	bh=8xTecCyNw9NfiV2wW9ACDcEt5n8T3UjJXMtfFTq7dLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuXrTxWfxRkd1OCQ2UjG8SpxLL3Pl3qqyYiqbZa2o4MAIdmyn2rmXa4IdQpDfHlEe
-	 upCRlEzWsly4xi2WC1fknie/S38IA18ww5pPq5GQwmh00FDj7T6BhZvSRV4LAXr33E
-	 GYx84yqNuxyiOJA30SMuwg6xibtVl3+PYyrXWB6s=
+	b=tHthGLHsKjIuhTiaMOg/fLg9EfTSYi9bzFS9UyGtg8mEAjGvHZXBENWHlJKy4fXJZ
+	 MVSOSWcZOPRdp3TSTzNqSwywBbQ3DDqpEFRYWiYSfH+5n4nVrzOdhrFTr7HbSQLWDE
+	 ATBsjJGH6pnrzGQeu2bpfG2ZvHYQKW/TVWXsJHSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahesh Bandewar <maheshb@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Wolf <wolf@yoxt.cc>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 003/169] selftest/ptp: update ptp selftest to exercise the gettimex options
-Date: Wed, 28 Jan 2026 16:21:26 +0100
-Message-ID: <20260128145334.135816003@linuxfoundation.org>
+Subject: [PATCH 6.6 111/254] ata: libata: Add cpr_log to ata_dev_print_features() early return
+Date: Wed, 28 Jan 2026 16:21:27 +0100
+Message-ID: <20260128145348.818546454@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,172 +70,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-212244-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212119-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 17738A474F
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yoxt.cc:email]
+X-Rspamd-Queue-Id: 2D83EA4356
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahesh Bandewar <maheshb@google.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 3d07b691ee707c00afaf365440975e81bb96cd9b ]
+[ Upstream commit a6bee5e5243ad02cae575becc4c83df66fc29573 ]
 
-With the inclusion of commit c259acab839e ("ptp/ioctl: support
-MONOTONIC{,_RAW} timestamps for PTP_SYS_OFFSET_EXTENDED") clock_gettime()
-now allows retrieval of pre/post timestamps for CLOCK_MONOTONIC and
-CLOCK_MONOTONIC_RAW timebases along with the previously supported
-CLOCK_REALTIME.
+ata_dev_print_features() is supposed to return early and not print anything
+if there are no features supported.
 
-This patch adds a command line option 'y' to the testptp program to
-choose one of the allowed timebases [realtime aka system, monotonic,
-and monotonic-raw).
+However, commit fe22e1c2f705 ("libata: support concurrent positioning
+ranges log") added another feature to ata_dev_print_features() without
+updating the early return conditional.
 
-Signed-off-by: Mahesh Bandewar <maheshb@google.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://patch.msgid.link/20241003101506.769418-1-maheshb@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
+Add the missing feature to the early return conditional.
+
+Fixes: fe22e1c2f705 ("libata: support concurrent positioning ranges log")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Tested-by: Wolf <wolf@yoxt.cc>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 62 ++++++++++++++++++++++++---
- 1 file changed, 57 insertions(+), 5 deletions(-)
+ drivers/ata/libata-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index 011252fe238c8..58064151f2c89 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -146,6 +146,7 @@ static void usage(char *progname)
- 		" -T val     set the ptp clock time to 'val' seconds\n"
- 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
- 		" -X         get a ptp clock cross timestamp\n"
-+		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
- 		" -z         test combinations of rising/falling external time stamp flags\n",
- 		progname, PTP_MAX_SAMPLES);
- }
-@@ -189,6 +190,7 @@ int main(int argc, char *argv[])
- 	int seconds = 0;
- 	int settime = 0;
- 	int channel = -1;
-+	clockid_t ext_clockid = CLOCK_REALTIME;
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index f627753519b97..f332835156dbc 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -2782,7 +2782,7 @@ static void ata_dev_config_cpr(struct ata_device *dev)
  
- 	int64_t t1, t2, tp;
- 	int64_t interval, offset;
-@@ -198,7 +200,7 @@ int main(int argc, char *argv[])
+ static void ata_dev_print_features(struct ata_device *dev)
+ {
+-	if (!(dev->flags & ATA_DFLAG_FEATURES_MASK))
++	if (!(dev->flags & ATA_DFLAG_FEATURES_MASK) && !dev->cpr_log)
+ 		return;
  
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xy:z"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -278,6 +280,21 @@ int main(int argc, char *argv[])
- 		case 'X':
- 			getcross = 1;
- 			break;
-+		case 'y':
-+			if (!strcasecmp(optarg, "realtime"))
-+				ext_clockid = CLOCK_REALTIME;
-+			else if (!strcasecmp(optarg, "monotonic"))
-+				ext_clockid = CLOCK_MONOTONIC;
-+			else if (!strcasecmp(optarg, "monotonic-raw"))
-+				ext_clockid = CLOCK_MONOTONIC_RAW;
-+			else {
-+				fprintf(stderr,
-+					"type needs to be realtime, monotonic or monotonic-raw; was given %s\n",
-+					optarg);
-+				return -1;
-+			}
-+			break;
-+
- 		case 'z':
- 			flagtest = 1;
- 			break;
-@@ -566,6 +583,7 @@ int main(int argc, char *argv[])
- 		}
- 
- 		soe->n_samples = getextended;
-+		soe->clockid = ext_clockid;
- 
- 		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
- 			perror("PTP_SYS_OFFSET_EXTENDED");
-@@ -574,12 +592,46 @@ int main(int argc, char *argv[])
- 			       getextended);
- 
- 			for (i = 0; i < getextended; i++) {
--				printf("sample #%2d: system time before: %lld.%09u\n",
--				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
-+				switch (ext_clockid) {
-+				case CLOCK_REALTIME:
-+					printf("sample #%2d: real time before: %lld.%09u\n",
-+					       i, soe->ts[i][0].sec,
-+					       soe->ts[i][0].nsec);
-+					break;
-+				case CLOCK_MONOTONIC:
-+					printf("sample #%2d: monotonic time before: %lld.%09u\n",
-+					       i, soe->ts[i][0].sec,
-+					       soe->ts[i][0].nsec);
-+					break;
-+				case CLOCK_MONOTONIC_RAW:
-+					printf("sample #%2d: monotonic-raw time before: %lld.%09u\n",
-+					       i, soe->ts[i][0].sec,
-+					       soe->ts[i][0].nsec);
-+					break;
-+				default:
-+					break;
-+				}
- 				printf("            phc time: %lld.%09u\n",
- 				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
--				printf("            system time after: %lld.%09u\n",
--				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
-+				switch (ext_clockid) {
-+				case CLOCK_REALTIME:
-+					printf("            real time after: %lld.%09u\n",
-+					       soe->ts[i][2].sec,
-+					       soe->ts[i][2].nsec);
-+					break;
-+				case CLOCK_MONOTONIC:
-+					printf("            monotonic time after: %lld.%09u\n",
-+					       soe->ts[i][2].sec,
-+					       soe->ts[i][2].nsec);
-+					break;
-+				case CLOCK_MONOTONIC_RAW:
-+					printf("            monotonic-raw time after: %lld.%09u\n",
-+					       soe->ts[i][2].sec,
-+					       soe->ts[i][2].nsec);
-+					break;
-+				default:
-+					break;
-+				}
- 			}
- 		}
- 
+ 	ata_dev_info(dev,
 -- 
 2.51.0
 
