@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFyuL2wvemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:52 +0100
+	id sCANNoMzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60374A463F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4D1A5038
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28DA1311B688
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63AA131B5570
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53142586FE;
-	Wed, 28 Jan 2026 15:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBBB3112C2;
+	Wed, 28 Jan 2026 15:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Be+iDrUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gCW4l+zU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693AA10A1E;
-	Wed, 28 Jan 2026 15:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E643033F4;
+	Wed, 28 Jan 2026 15:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614461; cv=none; b=muHV9HK47ieu8s7y5BjzIjnQG9/LxTT6rX9Kt5NCGsb2u9vmkAw41vhCvHMPtV6SS9I1WyjZO/8k4qPhphwLyqqJUAjgZg+T7tFM51gy8TG4STRqKej1xy5m54kiJDgj4s15uxrkGbhguINV7Bb1dUYP0cTnCRwIibaSSSt6ecQ=
+	t=1769615551; cv=none; b=b4cvhpQobatXqeUYUgjZlcHvJOlJcrPpewYV+YemldsDCfqpvzmr8vq/OIVLOjEKs8YEEuKBaL0vKLDx02wA/9xFtx+Ojr4KyidqS3YuELLfYHmk6dRnME/R5WwT/uy1Npuc8aKvs6xFdDeNSfAskodd+BOG3f4LZO+WByj1KVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614461; c=relaxed/simple;
-	bh=wCtur0ox20ecDJx5QUowtsjN4fqZjcbZLpk6f0l9zqU=;
+	s=arc-20240116; t=1769615551; c=relaxed/simple;
+	bh=aH2rtQnQIy0NS04oQqbUpVmvK4dKRCdUqmzMDm+CK+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iIUaJPGX1rHEyRYPn2jPC3IXey3w+Z4qZmP5hzRINZZnXdAUSFGT03oNYmcXVIfKnJdS2m3zXtBz27oav1sMn46Ts20xeeXsyrMz7Sx3pcpvfLTSBJIHSQZnum+dvprkAcR6MKMfachRNSpMgI+Ynv/HGvsQ8meVfL28mmg58U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Be+iDrUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98FFC4CEF1;
-	Wed, 28 Jan 2026 15:34:20 +0000 (UTC)
+	 MIME-Version; b=Yd2IFgW2kOaOA/s/KGWnWBUK903sKp7Sobt78ldqSQpO2o95z/7urIQ8JcrZE2s6P3Z2+jJvifktCsC5LqcAS5qUFuAimoVcbhEiNZ+bSGFoyd2IU7JSVAz0KMCNVBfPylO29mr6dV1nNX7Y72WuNZaDt3pEIQJtJQOLy2FyCr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gCW4l+zU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD1AC4CEF1;
+	Wed, 28 Jan 2026 15:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614461;
-	bh=wCtur0ox20ecDJx5QUowtsjN4fqZjcbZLpk6f0l9zqU=;
+	s=korg; t=1769615551;
+	bh=aH2rtQnQIy0NS04oQqbUpVmvK4dKRCdUqmzMDm+CK+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Be+iDrUk908Dq4gYeeVrYk9796xpUxwMMWtgNNP0mKCuhTUxirR39dJ5nJIwpcloL
-	 9eHmsp95lvy+gbhXbADzFCmYSnt42eoz+o9t6o8jTZKMeolcAC5XGvqVDPBAREpmqb
-	 UkGV1e1SksMC12MPFRFGq5zIdDKYIav5n85QbeCQ=
+	b=gCW4l+zUBdNhcDVfJkZ0Yh2ivBQLXufBfYKQsfM6ay63yBs35v4y1B4FD4g2Zxaxi
+	 P+0ntgZA1bQu7tncY5ExxjoRSzgXmRLTDCgtTpLGmnIi9Htwve2h1Km+XglkYr7o2w
+	 rZGesUUFJRSy1leMk7UfblGhtiYXmp3mIkK6uRno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
+	Dmitry Skorodumov <skorodumov.dmitry@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/254] ata: libata-core: Introduce ata_dev_config_lpm()
+Subject: [PATCH 6.18 043/227] ipvlan: Make the addrs_lock be per port
 Date: Wed, 28 Jan 2026 16:21:28 +0100
-Message-ID: <20260128145348.854141808@linuxfoundation.org>
+Message-ID: <20260128145345.893437216@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212120-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212447-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,90 +87,303 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
-X-Rspamd-Queue-Id: 60374A463F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: 1D4D1A5038
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Dmitry Skorodumov <dskr99@gmail.com>
 
-[ Upstream commit d360121832d8a36871249271df5b9ff05f835f62 ]
+[ Upstream commit d3ba32162488283c0a4c5bedd8817aec91748802 ]
 
-If the port of a device does not support Device Initiated Power
-Management (DIPM), that is, the port is flagged with ATA_FLAG_NO_DIPM,
-the DIPM feature of a device should not be used. Though DIPM is disabled
-by default on a device, the "Software Settings Preservation feature"
-may keep DIPM enabled or DIPM may have been enabled by the system
-firmware.
+Make the addrs_lock be per port, not per ipvlan dev.
 
-Introduce the function ata_dev_config_lpm() to always disable DIPM on a
-device that supports this feature if the port of the device is flagged
-with ATA_FLAG_NO_DIPM. ata_dev_config_lpm() is called from
-ata_dev_configure(), ensuring that a device DIPM feature is disabled
-when it cannot be used.
+Initial code seems to be written in the assumption,
+that any address change must occur under RTNL.
+But it is not so for the case of IPv6. So
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20250701125321.69496-2-dlemoal@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Stable-dep-of: c8c6fb886f57 ("ata: libata: Print features also for ATAPI devices")
+1) Introduce per-port addrs_lock.
+
+2) It was needed to fix places where it was forgotten
+to take lock (ipvlan_open/ipvlan_close)
+
+This appears to be a very minor problem though.
+Since it's highly unlikely that ipvlan_add_addr() will
+be called on 2 CPU simultaneously. But nevertheless,
+this could cause:
+
+1) False-negative of ipvlan_addr_busy(): one interface
+iterated through all port->ipvlans + ipvlan->addrs
+under some ipvlan spinlock, and another added IP
+under its own lock. Though this is only possible
+for IPv6, since looks like only ipvlan_addr6_event() can be
+called without rtnl_lock.
+
+2) Race since ipvlan_ht_addr_add(port) is called under
+different ipvlan->addrs_lock locks
+
+This should not affect performance, since add/remove IP
+is a rare situation and spinlock is not taken on fast
+paths.
+
+Fixes: 8230819494b3 ("ipvlan: use per device spinlock to protect addrs list updates")
+Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+Reviewed-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20260112142417.4039566-2-skorodumov.dmitry@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/net/ipvlan/ipvlan.h      |  2 +-
+ drivers/net/ipvlan/ipvlan_core.c | 16 +++++------
+ drivers/net/ipvlan/ipvlan_main.c | 49 +++++++++++++++++++-------------
+ 3 files changed, 37 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index f332835156dbc..b748c8ead39de 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -2780,6 +2780,30 @@ static void ata_dev_config_cpr(struct ata_device *dev)
- 	kfree(buf);
+diff --git a/drivers/net/ipvlan/ipvlan.h b/drivers/net/ipvlan/ipvlan.h
+index 50de3ee204dbc..80f84fc87008b 100644
+--- a/drivers/net/ipvlan/ipvlan.h
++++ b/drivers/net/ipvlan/ipvlan.h
+@@ -69,7 +69,6 @@ struct ipvl_dev {
+ 	DECLARE_BITMAP(mac_filters, IPVLAN_MAC_FILTER_SIZE);
+ 	netdev_features_t	sfeatures;
+ 	u32			msg_enable;
+-	spinlock_t		addrs_lock;
+ };
+ 
+ struct ipvl_addr {
+@@ -90,6 +89,7 @@ struct ipvl_port {
+ 	struct net_device	*dev;
+ 	possible_net_t		pnet;
+ 	struct hlist_head	hlhead[IPVLAN_HASH_SIZE];
++	spinlock_t		addrs_lock; /* guards hash-table and addrs */
+ 	struct list_head	ipvlans;
+ 	u16			mode;
+ 	u16			flags;
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index baf2ef3bcd54b..6c6677ded82ef 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -107,17 +107,15 @@ void ipvlan_ht_addr_del(struct ipvl_addr *addr)
+ struct ipvl_addr *ipvlan_find_addr(const struct ipvl_dev *ipvlan,
+ 				   const void *iaddr, bool is_v6)
+ {
+-	struct ipvl_addr *addr, *ret = NULL;
++	struct ipvl_addr *addr;
+ 
+-	rcu_read_lock();
+-	list_for_each_entry_rcu(addr, &ipvlan->addrs, anode) {
+-		if (addr_equal(is_v6, addr, iaddr)) {
+-			ret = addr;
+-			break;
+-		}
++	assert_spin_locked(&ipvlan->port->addrs_lock);
++
++	list_for_each_entry(addr, &ipvlan->addrs, anode) {
++		if (addr_equal(is_v6, addr, iaddr))
++			return addr;
+ 	}
+-	rcu_read_unlock();
+-	return ret;
++	return NULL;
  }
  
-+/*
-+ * Configure features related to link power management.
-+ */
-+static void ata_dev_config_lpm(struct ata_device *dev)
-+{
-+	struct ata_port *ap = dev->link->ap;
-+	unsigned int err_mask;
-+
-+	/*
-+	 * Device Initiated Power Management (DIPM) is normally disabled by
-+	 * default on a device. However, DIPM may have been enabled and that
-+	 * setting kept even after COMRESET because of the Software Settings
-+	 * Preservation feature. So if the port does not support DIPM and the
-+	 * device does, disable DIPM on the device.
-+	 */
-+	if (ap->flags & ATA_FLAG_NO_DIPM && ata_id_has_dipm(dev->id)) {
-+		err_mask = ata_dev_set_feature(dev,
-+					SETFEATURES_SATA_DISABLE, SATA_DIPM);
-+		if (err_mask && err_mask != AC_ERR_DEV)
-+			ata_dev_err(dev, "Disable DIPM failed, Emask 0x%x\n",
-+				    err_mask);
-+	}
-+}
-+
- static void ata_dev_print_features(struct ata_device *dev)
- {
- 	if (!(dev->flags & ATA_DFLAG_FEATURES_MASK) && !dev->cpr_log)
-@@ -2949,6 +2973,7 @@ int ata_dev_configure(struct ata_device *dev)
- 			ata_dev_config_chs(dev);
- 		}
+ bool ipvlan_addr_busy(struct ipvl_port *port, void *iaddr, bool is_v6)
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index 660f3db117664..baccdad695fda 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -75,6 +75,7 @@ static int ipvlan_port_create(struct net_device *dev)
+ 	for (idx = 0; idx < IPVLAN_HASH_SIZE; idx++)
+ 		INIT_HLIST_HEAD(&port->hlhead[idx]);
  
-+		ata_dev_config_lpm(dev);
- 		ata_dev_config_fua(dev);
- 		ata_dev_config_devslp(dev);
- 		ata_dev_config_sense_reporting(dev);
++	spin_lock_init(&port->addrs_lock);
+ 	skb_queue_head_init(&port->backlog);
+ 	INIT_WORK(&port->wq, ipvlan_process_multicast);
+ 	ida_init(&port->ida);
+@@ -181,6 +182,7 @@ static void ipvlan_uninit(struct net_device *dev)
+ static int ipvlan_open(struct net_device *dev)
+ {
+ 	struct ipvl_dev *ipvlan = netdev_priv(dev);
++	struct ipvl_port *port = ipvlan->port;
+ 	struct ipvl_addr *addr;
+ 
+ 	if (ipvlan->port->mode == IPVLAN_MODE_L3 ||
+@@ -189,10 +191,10 @@ static int ipvlan_open(struct net_device *dev)
+ 	else
+ 		dev->flags &= ~IFF_NOARP;
+ 
+-	rcu_read_lock();
+-	list_for_each_entry_rcu(addr, &ipvlan->addrs, anode)
++	spin_lock_bh(&port->addrs_lock);
++	list_for_each_entry(addr, &ipvlan->addrs, anode)
+ 		ipvlan_ht_addr_add(ipvlan, addr);
+-	rcu_read_unlock();
++	spin_unlock_bh(&port->addrs_lock);
+ 
+ 	return 0;
+ }
+@@ -206,10 +208,10 @@ static int ipvlan_stop(struct net_device *dev)
+ 	dev_uc_unsync(phy_dev, dev);
+ 	dev_mc_unsync(phy_dev, dev);
+ 
+-	rcu_read_lock();
+-	list_for_each_entry_rcu(addr, &ipvlan->addrs, anode)
++	spin_lock_bh(&ipvlan->port->addrs_lock);
++	list_for_each_entry(addr, &ipvlan->addrs, anode)
+ 		ipvlan_ht_addr_del(addr);
+-	rcu_read_unlock();
++	spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 
+ 	return 0;
+ }
+@@ -579,7 +581,6 @@ int ipvlan_link_new(struct net_device *dev, struct rtnl_newlink_params *params,
+ 	if (!tb[IFLA_MTU])
+ 		ipvlan_adjust_mtu(ipvlan, phy_dev);
+ 	INIT_LIST_HEAD(&ipvlan->addrs);
+-	spin_lock_init(&ipvlan->addrs_lock);
+ 
+ 	/* TODO Probably put random address here to be presented to the
+ 	 * world but keep using the physical-dev address for the outgoing
+@@ -657,13 +658,13 @@ void ipvlan_link_delete(struct net_device *dev, struct list_head *head)
+ 	struct ipvl_dev *ipvlan = netdev_priv(dev);
+ 	struct ipvl_addr *addr, *next;
+ 
+-	spin_lock_bh(&ipvlan->addrs_lock);
++	spin_lock_bh(&ipvlan->port->addrs_lock);
+ 	list_for_each_entry_safe(addr, next, &ipvlan->addrs, anode) {
+ 		ipvlan_ht_addr_del(addr);
+ 		list_del_rcu(&addr->anode);
+ 		kfree_rcu(addr, rcu);
+ 	}
+-	spin_unlock_bh(&ipvlan->addrs_lock);
++	spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 
+ 	ida_free(&ipvlan->port->ida, dev->dev_id);
+ 	list_del_rcu(&ipvlan->pnode);
+@@ -817,6 +818,8 @@ static int ipvlan_add_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6)
+ {
+ 	struct ipvl_addr *addr;
+ 
++	assert_spin_locked(&ipvlan->port->addrs_lock);
++
+ 	addr = kzalloc(sizeof(struct ipvl_addr), GFP_ATOMIC);
+ 	if (!addr)
+ 		return -ENOMEM;
+@@ -847,16 +850,16 @@ static void ipvlan_del_addr(struct ipvl_dev *ipvlan, void *iaddr, bool is_v6)
+ {
+ 	struct ipvl_addr *addr;
+ 
+-	spin_lock_bh(&ipvlan->addrs_lock);
++	spin_lock_bh(&ipvlan->port->addrs_lock);
+ 	addr = ipvlan_find_addr(ipvlan, iaddr, is_v6);
+ 	if (!addr) {
+-		spin_unlock_bh(&ipvlan->addrs_lock);
++		spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 		return;
+ 	}
+ 
+ 	ipvlan_ht_addr_del(addr);
+ 	list_del_rcu(&addr->anode);
+-	spin_unlock_bh(&ipvlan->addrs_lock);
++	spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 	kfree_rcu(addr, rcu);
+ }
+ 
+@@ -878,14 +881,14 @@ static int ipvlan_add_addr6(struct ipvl_dev *ipvlan, struct in6_addr *ip6_addr)
+ {
+ 	int ret = -EINVAL;
+ 
+-	spin_lock_bh(&ipvlan->addrs_lock);
++	spin_lock_bh(&ipvlan->port->addrs_lock);
+ 	if (ipvlan_addr_busy(ipvlan->port, ip6_addr, true))
+ 		netif_err(ipvlan, ifup, ipvlan->dev,
+ 			  "Failed to add IPv6=%pI6c addr for %s intf\n",
+ 			  ip6_addr, ipvlan->dev->name);
+ 	else
+ 		ret = ipvlan_add_addr(ipvlan, ip6_addr, true);
+-	spin_unlock_bh(&ipvlan->addrs_lock);
++	spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 	return ret;
+ }
+ 
+@@ -924,21 +927,24 @@ static int ipvlan_addr6_validator_event(struct notifier_block *unused,
+ 	struct in6_validator_info *i6vi = (struct in6_validator_info *)ptr;
+ 	struct net_device *dev = (struct net_device *)i6vi->i6vi_dev->dev;
+ 	struct ipvl_dev *ipvlan = netdev_priv(dev);
++	int ret = NOTIFY_OK;
+ 
+ 	if (!ipvlan_is_valid_dev(dev))
+ 		return NOTIFY_DONE;
+ 
+ 	switch (event) {
+ 	case NETDEV_UP:
++		spin_lock_bh(&ipvlan->port->addrs_lock);
+ 		if (ipvlan_addr_busy(ipvlan->port, &i6vi->i6vi_addr, true)) {
+ 			NL_SET_ERR_MSG(i6vi->extack,
+ 				       "Address already assigned to an ipvlan device");
+-			return notifier_from_errno(-EADDRINUSE);
++			ret = notifier_from_errno(-EADDRINUSE);
+ 		}
++		spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 		break;
+ 	}
+ 
+-	return NOTIFY_OK;
++	return ret;
+ }
+ #endif
+ 
+@@ -946,14 +952,14 @@ static int ipvlan_add_addr4(struct ipvl_dev *ipvlan, struct in_addr *ip4_addr)
+ {
+ 	int ret = -EINVAL;
+ 
+-	spin_lock_bh(&ipvlan->addrs_lock);
++	spin_lock_bh(&ipvlan->port->addrs_lock);
+ 	if (ipvlan_addr_busy(ipvlan->port, ip4_addr, false))
+ 		netif_err(ipvlan, ifup, ipvlan->dev,
+ 			  "Failed to add IPv4=%pI4 on %s intf.\n",
+ 			  ip4_addr, ipvlan->dev->name);
+ 	else
+ 		ret = ipvlan_add_addr(ipvlan, ip4_addr, false);
+-	spin_unlock_bh(&ipvlan->addrs_lock);
++	spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 	return ret;
+ }
+ 
+@@ -995,21 +1001,24 @@ static int ipvlan_addr4_validator_event(struct notifier_block *unused,
+ 	struct in_validator_info *ivi = (struct in_validator_info *)ptr;
+ 	struct net_device *dev = (struct net_device *)ivi->ivi_dev->dev;
+ 	struct ipvl_dev *ipvlan = netdev_priv(dev);
++	int ret = NOTIFY_OK;
+ 
+ 	if (!ipvlan_is_valid_dev(dev))
+ 		return NOTIFY_DONE;
+ 
+ 	switch (event) {
+ 	case NETDEV_UP:
++		spin_lock_bh(&ipvlan->port->addrs_lock);
+ 		if (ipvlan_addr_busy(ipvlan->port, &ivi->ivi_addr, false)) {
+ 			NL_SET_ERR_MSG(ivi->extack,
+ 				       "Address already assigned to an ipvlan device");
+-			return notifier_from_errno(-EADDRINUSE);
++			ret = notifier_from_errno(-EADDRINUSE);
+ 		}
++		spin_unlock_bh(&ipvlan->port->addrs_lock);
+ 		break;
+ 	}
+ 
+-	return NOTIFY_OK;
++	return ret;
+ }
+ 
+ static struct notifier_block ipvlan_addr4_notifier_block __read_mostly = {
 -- 
 2.51.0
 
