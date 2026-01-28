@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212149-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id G1wZD6Axemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212299-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:16 +0100
+	id yEbLKnMvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212149-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEF70A4BFF
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E02A464D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D669D3073793
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DE0A3053670
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F532FA0D3;
-	Wed, 28 Jan 2026 15:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D962D6400;
+	Wed, 28 Jan 2026 15:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YT1UTiV3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNbToHw7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475402E2DF4;
-	Wed, 28 Jan 2026 15:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8E62D0C62;
+	Wed, 28 Jan 2026 15:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615053; cv=none; b=duJWZkK2Yy6PaiCdSvLvAC9H2VQWVO3UWpJHqXnd0U2TSmAPvw0DGlxzukoPVbVD7+ZXSejoLT8DBPCIHvhYocC9i8d7h3BtW4sUEs5jO1xUhM5LCEGLpXobau0YSoHS8HXWZhU6VZnEdPMjXvcMpDzUo2Ktk7070h9A0zhwPAo=
+	t=1769614556; cv=none; b=HK5ivfh5PlCoUb+tOZB11CJZjJ9hYElsdyrHpdVkDvgfnt8JIPuJCLMPk4tMLXItS9ujBkBEyS2uXAK7ldvpqBHOv4smjd7kYEbnYGrJ4CopqxyEQlJCwgtXyohZWpwqb7husH9ywhKT8nj2QQN9GEk7M+EzbTMrT6j8lVaXP8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615053; c=relaxed/simple;
-	bh=KJRQaxYVsXypOBJP7Mq6xMwLZ8O6Pnl2YpLZnYGCC9Q=;
+	s=arc-20240116; t=1769614556; c=relaxed/simple;
+	bh=jLK4cBd2G0swFuzUr0la9jXhgvlDjKRXvozuY23vdi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WXTU3JTpzlE1ybBpkvAgbo34a0VmPrnJnnhopjMirpWXzrAAFVpJlWbKp8uYo8qOjNeTXb6tlrWH02EJ7YVrxosfBTzbFVMPwasZEZnCPrauLXpwaE6tMIVjWoHJn/dmAo8Ux9203j3pta+A8fIcFhS9hDfGTHBNkUoxCkrfo2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YT1UTiV3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC4FC4CEF1;
-	Wed, 28 Jan 2026 15:44:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TN7jx/jjbZwSiMG77slUC18hzLBXUG+g5z1HI/8Dxp/EsZoHv1m8aiB3lTdSKzarzs5KfSbu08bRH3e5pIouigHT65x8nPvQxSCrYl821sb0zIV2cGDXcXIWF+mowXvg7GJENuZC0DHomgDMi6cocF6PR/9AFcqPdIdlR2DbkVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNbToHw7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F75DC4CEF1;
+	Wed, 28 Jan 2026 15:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615053;
-	bh=KJRQaxYVsXypOBJP7Mq6xMwLZ8O6Pnl2YpLZnYGCC9Q=;
+	s=korg; t=1769614555;
+	bh=jLK4cBd2G0swFuzUr0la9jXhgvlDjKRXvozuY23vdi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YT1UTiV3yfAq1Rb6JWnOUQGoh28tpdJuWgdpZi8Se1F2m3i62Ls8scLG/VVBvBVEa
-	 1rec4g/NKhF0whPxQcwZv+gScNJkwm3LutcbetA0xxMcdIF34pbZoY4h5fSurC6M8u
-	 ibazZE3sL3nkTKoml3bh8COBR+PyyapTuqryl0IA=
+	b=DNbToHw7AFNMZzpzDHk+kvSoMhIPjO6IY2rRSFVFo6PDbTLQ6DhYSQPXw4Hofk6vD
+	 Q7F2zYgSLblHBnkjpidjU6Yr+BMO9nFk94a8SRWzGZzwUk/0/RDgF1T3QgsK7hgszB
+	 in/h7tpnOESBMWdo41yrbHTz2WtCNJggy69nxlxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng-Yu Lee <cylee12@realtek.com>,
-	Yu-Chun Lin <eleanor.lin@realtek.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/169] regmap: Fix race condition in hwspinlock irqsave routine
+Subject: [PATCH 6.6 171/254] drm/amd/pm: Dont clear SI SMC table when setting power limit
 Date: Wed, 28 Jan 2026 16:22:27 +0100
-Message-ID: <20260128145336.314387163@linuxfoundation.org>
+Message-ID: <20260128145350.959751384@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +63,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212149-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212299-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CEF70A4BFF
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 13E02A464D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng-Yu Lee <cylee12@realtek.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 4b58aac989c1e3fafb1c68a733811859df388250 ]
+[ Upstream commit d5077426e1a76d269e518e048bde2e9fc49b32ad ]
 
-Previously, the address of the shared member '&map->spinlock_flags' was
-passed directly to 'hwspin_lock_timeout_irqsave'. This creates a race
-condition where multiple contexts contending for the lock could overwrite
-the shared flags variable, potentially corrupting the state for the
-current lock owner.
+There is no reason to clear the SMC table.
+We also don't need to recalculate the power limit then.
 
-Fix this by using a local stack variable 'flags' to store the IRQ state
-temporarily.
-
-Fixes: 8698b9364710 ("regmap: Add hardware spinlock support")
-Signed-off-by: Cheng-Yu Lee <cylee12@realtek.com>
-Co-developed-by: Yu-Chun Lin <eleanor.lin@realtek.com>
-Signed-off-by: Yu-Chun Lin <eleanor.lin@realtek.com>
-Link: https://patch.msgid.link/20260109032633.8732-1-eleanor.lin@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e214d626253f5b180db10dedab161b7caa41f5e9)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 66b3840bd96e3..70cde1bd04000 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -408,9 +408,11 @@ static void regmap_lock_hwlock_irq(void *__map)
- static void regmap_lock_hwlock_irqsave(void *__map)
- {
- 	struct regmap *map = __map;
-+	unsigned long flags = 0;
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index e5f68b2b8def3..e8ca74fc089b7 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -2257,8 +2257,6 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
+ 		if (scaling_factor == 0)
+ 			return -EINVAL;
  
- 	hwspin_lock_timeout_irqsave(map->hwlock, UINT_MAX,
--				    &map->spinlock_flags);
-+				    &flags);
-+	map->spinlock_flags = flags;
- }
+-		memset(smc_table, 0, sizeof(SISLANDS_SMC_STATETABLE));
+-
+ 		ret = si_calculate_adjusted_tdp_limits(adev,
+ 						       false, /* ??? */
+ 						       adev->pm.dpm.tdp_adjustment,
+@@ -2312,16 +2310,8 @@ static int si_populate_smc_tdp_limits_2(struct amdgpu_device *adev,
  
- static void regmap_unlock_hwlock(void *__map)
+ 	if (ni_pi->enable_power_containment) {
+ 		SISLANDS_SMC_STATETABLE *smc_table = &si_pi->smc_statetable;
+-		u32 scaling_factor = si_get_smc_power_scaling_factor(adev);
+ 		int ret;
+ 
+-		memset(smc_table, 0, sizeof(SISLANDS_SMC_STATETABLE));
+-
+-		smc_table->dpm2Params.NearTDPLimit =
+-			cpu_to_be32(si_scale_power_for_smc(adev->pm.dpm.near_tdp_limit_adjusted, scaling_factor) * 1000);
+-		smc_table->dpm2Params.SafePowerLimit =
+-			cpu_to_be32(si_scale_power_for_smc((adev->pm.dpm.near_tdp_limit_adjusted * SISLANDS_DPM2_TDP_SAFE_LIMIT_PERCENT) / 100, scaling_factor) * 1000);
+-
+ 		ret = amdgpu_si_copy_bytes_to_smc(adev,
+ 						  (si_pi->state_table_start +
+ 						   offsetof(SISLANDS_SMC_STATETABLE, dpm2Params) +
 -- 
 2.51.0
 
