@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-212075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJRYG7UuemmO3wEAu9opvQ
-	(envelope-from <stable+bounces-212075-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:49 +0100
+	id oGzlNXkzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582DFA44FF
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3179EA5013
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC24A30CCE91
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 57BD3309B6C5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD8923EAB7;
-	Wed, 28 Jan 2026 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F6C83033F4;
+	Wed, 28 Jan 2026 15:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTSo64Zl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtGt+pMB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FEA13B7A3;
-	Wed, 28 Jan 2026 15:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226802F745C;
+	Wed, 28 Jan 2026 15:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614317; cv=none; b=DYXRnG7X+yJHMXfgRILEpLS8oZJ8SCQblBF/YSkNz8K0yMyH32K9OMxo466SNEi6rhSoLUeibZur4hQ2A1shLsft//x0zocZFI0TQsSWAK0+M+w6LC3LNUIiQRLiFiQxWbyV/IigOaTUklKocZ7Z3lzYboXvsESRUdwpTw3QhTw=
+	t=1769615601; cv=none; b=EtoLdFjSneU7vVuaEu0H7wUpIfWu1nxsGY1WLx+R7pHVYHRRgEEv0kFxI9MixBVc2ig5mIgQR2zsrhbpoMy+803Mt4ANjk5q/ffJVil5rfRcqCPCEdwchjarE4k69rgqeKfleE8KxDy5uzAo4dejyr8YM07LpFwnrgUAk2jflqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614317; c=relaxed/simple;
-	bh=1LOBiWFDwRwo9LJSbc2sqQNKgeRe6i9QPbonu9uat2s=;
+	s=arc-20240116; t=1769615601; c=relaxed/simple;
+	bh=WWTzsgZgygdwWGdl/ku/Ds2QQu4SdZErTnNUmwWOO7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUttate7Bfd0W16smglCcFdnc/RAK3Xb+s6wZ1qHGyv1Cgz/l8eJHcbHnEkch/xyobANQSD7Fm4hJBiV3cXs5QGwMGCWC/6BrimHsdKhK9S8UHxdSS/+6z7ejnJ0i6pMHykl9agV/5V8MNrpm1KWcAleUI9th09bWHzWOPz6sqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTSo64Zl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A804C4CEF1;
-	Wed, 28 Jan 2026 15:31:56 +0000 (UTC)
+	 MIME-Version; b=UU49wrmydcaHw9KnmvVEqjoelWp/lz0qLsqSLe0sW2TS8V25L37VEEnAkZkayaFVZFgZtVtq4f0wY3UkBvxeSX6NTIRxwfyha2J+MxSdPRubshdcnoWNhechfUhU/nHdW10LCCmEu+ujmuKnhR8K13ENWlx1SaW+OKiVZwHz4d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtGt+pMB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884A9C4CEF1;
+	Wed, 28 Jan 2026 15:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614316;
-	bh=1LOBiWFDwRwo9LJSbc2sqQNKgeRe6i9QPbonu9uat2s=;
+	s=korg; t=1769615601;
+	bh=WWTzsgZgygdwWGdl/ku/Ds2QQu4SdZErTnNUmwWOO7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTSo64ZlhP+19cEsMzs3qumzhxBwFa2TJ01kQVD2zcDyeOmyuyDMxDxnFf9mfBK6U
-	 d4Bbi16j1t77Z2nm8ofkEt2jlGUe/UF3+aWhMmua5COq6omLs2yZALXbpU0clB6V7Q
-	 A3G9nFqStnumAzi5KjuVaP+Mjfgg9EotAJKwzcQE=
+	b=HtGt+pMBhZYjwbj8vSqmz/ZNG7Xq5WJtY4Kcdsfj5zRrhIO1Kgr0UIcp/wEgy9XdV
+	 9Upv0iLFjX/Z2gX7Rv9zS3ERNbjpSfVQUZocMx+7Z55EFaUh6coRtWgGlEUzG2GJqi
+	 yxmKKWM8hoL4thxtZPTjsRmqclLx9kLZmrYcExJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	syzbot+2c42ea4485b29beb0643@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/254] arm64: dts: qcom: sc8280xp: Add missing VDD_MXC links
-Date: Wed, 28 Jan 2026 16:21:14 +0100
-Message-ID: <20260128145348.353230160@linuxfoundation.org>
+Subject: [PATCH 6.18 030/227] l2tp: Fix memleak in l2tp_udp_encap_recv().
+Date: Wed, 28 Jan 2026 16:21:15 +0100
+Message-ID: <20260128145345.429256844@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +67,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212462-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212075-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_PROHIBIT(0.00)[1.69.3.32:email];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1b300000:email]
-X-Rspamd-Queue-Id: 582DFA44FF
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,2c42ea4485b29beb0643];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: 3179EA5013
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 868b979c5328b867c95a6d5a93ba13ad0d3cd2f1 ]
+[ Upstream commit 4d10edfd1475b69dbd4c47f34b61a3772ece83ca ]
 
-To make sure that power rail is voted for, wire it up to its consumers.
+syzbot reported memleak of struct l2tp_session, l2tp_tunnel,
+sock, etc. [0]
 
-Fixes: 152d1faf1e2f ("arm64: dts: qcom: add SC8280XP platform")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20251202-topic-8280_mxc-v2-3-46cdf47a829e@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The cited commit moved down the validation of the protocol
+version in l2tp_udp_encap_recv().
+
+The new place requires an extra error handling to avoid the
+memleak.
+
+Let's call l2tp_session_put() there.
+
+[0]:
+BUG: memory leak
+unreferenced object 0xffff88810a290200 (size 512):
+  comm "syz.0.17", pid 6086, jiffies 4294944299
+  hex dump (first 32 bytes):
+    7d eb 04 0c 00 00 00 00 01 00 00 00 00 00 00 00  }...............
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc babb6a4f):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    __do_kmalloc_node mm/slub.c:5656 [inline]
+    __kmalloc_noprof+0x3e0/0x660 mm/slub.c:5669
+    kmalloc_noprof include/linux/slab.h:961 [inline]
+    kzalloc_noprof include/linux/slab.h:1094 [inline]
+    l2tp_session_create+0x3a/0x3b0 net/l2tp/l2tp_core.c:1778
+    pppol2tp_connect+0x48b/0x920 net/l2tp/l2tp_ppp.c:755
+    __sys_connect_file+0x7a/0xb0 net/socket.c:2089
+    __sys_connect+0xde/0x110 net/socket.c:2108
+    __do_sys_connect net/socket.c:2114 [inline]
+    __se_sys_connect net/socket.c:2111 [inline]
+    __x64_sys_connect+0x1c/0x30 net/socket.c:2111
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 364798056f518 ("l2tp: Support different protocol versions with same IP/port quadruple")
+Reported-by: syzbot+2c42ea4485b29beb0643@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/696693f2.a70a0220.245e30.0001.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Link: https://patch.msgid.link/20260113185446.2533333-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ net/l2tp/l2tp_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-index 3e70e79ce24b0..8472e00bde5ab 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
-@@ -4412,8 +4412,12 @@ remoteproc_nsp0: remoteproc@1b300000 {
- 			clocks = <&rpmhcc RPMH_CXO_CLK>;
- 			clock-names = "xo";
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 0710281dd95aa..d6f4bef0236dc 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -1086,8 +1086,10 @@ int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 	tunnel = session->tunnel;
  
--			power-domains = <&rpmhpd SC8280XP_NSP>;
--			power-domain-names = "nsp";
-+			power-domains = <&rpmhpd SC8280XP_NSP>,
-+					<&rpmhpd SC8280XP_CX>,
-+					<&rpmhpd SC8280XP_MXC>;
-+			power-domain-names = "nsp",
-+					     "cx",
-+					     "mxc";
+ 	/* Check protocol version */
+-	if (version != tunnel->version)
++	if (version != tunnel->version) {
++		l2tp_session_put(session);
+ 		goto invalid;
++	}
  
- 			memory-region = <&pil_nsp0_mem>;
- 
-@@ -4543,8 +4547,12 @@ remoteproc_nsp1: remoteproc@21300000 {
- 			clocks = <&rpmhcc RPMH_CXO_CLK>;
- 			clock-names = "xo";
- 
--			power-domains = <&rpmhpd SC8280XP_NSP>;
--			power-domain-names = "nsp";
-+			power-domains = <&rpmhpd SC8280XP_NSP>,
-+					<&rpmhpd SC8280XP_CX>,
-+					<&rpmhpd SC8280XP_MXC>;
-+			power-domain-names = "nsp",
-+					     "cx",
-+					     "mxc";
- 
- 			memory-region = <&pil_nsp1_mem>;
- 
+ 	if (version == L2TP_HDR_VER_3 &&
+ 	    l2tp_v3_ensure_opt_in_linear(session, skb, &ptr, &optr)) {
 -- 
 2.51.0
 
