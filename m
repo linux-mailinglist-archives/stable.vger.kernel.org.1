@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-212118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +N8qL4csemkD3wEAu9opvQ
-	(envelope-from <stable+bounces-212118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:34:31 +0100
+	id EM9sE9Ivemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BEF1A3FEC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:34:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17738A474F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F7BC301A2B1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4253A30B9FAA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A6B2741C9;
-	Wed, 28 Jan 2026 15:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F612E6CA0;
+	Wed, 28 Jan 2026 15:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQMYwJQ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuXrTxWf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BE91885A5;
-	Wed, 28 Jan 2026 15:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213A92DB79A;
+	Wed, 28 Jan 2026 15:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614455; cv=none; b=nGkmVflglkhX48hAU5pCyFY/D5dBT2vnT7wQXyqHaT+cD8MrXt4dXtwVp5aJ8Zkf7l1+ge6+CkUyqpzxk0lFfGdv9Ei/R1rT2l9ZhDl6C9U2Rt3IMi+Sf0/KaD0m77tsinMtOs2OFglpnMDOuYP6T5gJ4UsA7YP9hmf28KBlDYs=
+	t=1769614867; cv=none; b=Hr1DsgNeuDbJMVIaR20h9GmYgZ1rLasbZmpJmapzbX51oOnd6FDjeANdJXhFkVFbLzLrf0FY98MOQ3lUzAWY56hOOUUgemOrpYFv5OnZnJkqMsKzmsdmVHyucrEmyrAXctvx8GQ+umoZaXcTGTL2j0pizUx90YyvphejhuZ3U7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614455; c=relaxed/simple;
-	bh=xi0X9MhWtg0iQ7vQ5fbFzUpwyCsYcYaRCTkfgTLakY0=;
+	s=arc-20240116; t=1769614867; c=relaxed/simple;
+	bh=RaJePkBCBtcXkJl7pOzuknOiEDlOcuvODprQYbVyNuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXa3EFTQ0UUte/7dZgb5Grue9/TMHTJCxlvzO2w7KhtzgvlK3+Me4zY+KIwly3ghxYOMAf5o+f61RW5Vtzv9u3haGfFBpOvPjH4btHBEYjp5krFlwELT4GPGE08zCNRyrxj9kQsW7VrYtCl85rWg6XojKzs06qkbX5iXp1EXkwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQMYwJQ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76842C4CEF1;
-	Wed, 28 Jan 2026 15:34:14 +0000 (UTC)
+	 MIME-Version; b=mDxYVH2mLrHhYiOoWuinqIn7RbGoHU3a/aQ+x09hwR8Hb3bxJnEJIUo9MI7V8dMdCK+Dx6hFzfzBHg+YDOx6+tl1klMmRujaHxHROaW9W0728z/LxEKJQoZqUEnjxbUWhwNNUm5B78KNc9wcVqZzTwZwAqKkBhcZBzS5MnJ1Xj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuXrTxWf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567BAC4CEF1;
+	Wed, 28 Jan 2026 15:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614454;
-	bh=xi0X9MhWtg0iQ7vQ5fbFzUpwyCsYcYaRCTkfgTLakY0=;
+	s=korg; t=1769614866;
+	bh=RaJePkBCBtcXkJl7pOzuknOiEDlOcuvODprQYbVyNuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQMYwJQ39UkjzoSOcg8lxfjybgYuyOylbNuLP9gJA2z0EqhmdDFBcnAjfz2n/eWiS
-	 /3+Ot4tiOT56zTwEqMny+bHX+9zN71kaSr943yPEbySE1nKbIKQa2H9xcOTNxQ9WPQ
-	 cO+jcaXPc+1j4fVQnrwGyi+zC92kEJFSfHgr+tK4=
+	b=PuXrTxWfxRkd1OCQ2UjG8SpxLL3Pl3qqyYiqbZa2o4MAIdmyn2rmXa4IdQpDfHlEe
+	 upCRlEzWsly4xi2WC1fknie/S38IA18ww5pPq5GQwmh00FDj7T6BhZvSRV4LAXr33E
+	 GYx84yqNuxyiOJA30SMuwg6xibtVl3+PYyrXWB6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Mahesh Bandewar <maheshb@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/254] pmdomain: qcom: rpmhpd: Add MXC to SC8280XP
+Subject: [PATCH 6.12 003/169] selftest/ptp: update ptp selftest to exercise the gettimex options
 Date: Wed, 28 Jan 2026 16:21:26 +0100
-Message-ID: <20260128145348.783044291@linuxfoundation.org>
+Message-ID: <20260128145334.135816003@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,77 +71,172 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-212244-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212118-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.987];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,qualcomm.com:email]
-X-Rspamd-Queue-Id: 2BEF1A3FEC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 17738A474F
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Mahesh Bandewar <maheshb@google.com>
 
-[ Upstream commit 5bc3e720e725cd5fa34875fa1e5434d565858067 ]
+[ Upstream commit 3d07b691ee707c00afaf365440975e81bb96cd9b ]
 
-This was apparently accounted for in dt-bindings, but never made its
-way into the driver.
+With the inclusion of commit c259acab839e ("ptp/ioctl: support
+MONOTONIC{,_RAW} timestamps for PTP_SYS_OFFSET_EXTENDED") clock_gettime()
+now allows retrieval of pre/post timestamps for CLOCK_MONOTONIC and
+CLOCK_MONOTONIC_RAW timebases along with the previously supported
+CLOCK_REALTIME.
 
-Fix it for SC8280XP and its VDD_GFX-less cousin, SA8540P.
+This patch adds a command line option 'y' to the testptp program to
+choose one of the allowed timebases [realtime aka system, monotonic,
+and monotonic-raw).
 
-Fixes: f68f1cb3437d ("soc: qcom: rpmhpd: add sc8280xp & sa8540p rpmh power-domains")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20251202-topic-8280_mxc-v2-2-46cdf47a829e@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Mahesh Bandewar <maheshb@google.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://patch.msgid.link/20241003101506.769418-1-maheshb@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/qcom/rpmhpd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/ptp/testptp.c | 62 ++++++++++++++++++++++++---
+ 1 file changed, 57 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pmdomain/qcom/rpmhpd.c b/drivers/pmdomain/qcom/rpmhpd.c
-index 1bb9f70ab04c8..823604952b5ec 100644
---- a/drivers/pmdomain/qcom/rpmhpd.c
-+++ b/drivers/pmdomain/qcom/rpmhpd.c
-@@ -217,6 +217,8 @@ static struct rpmhpd *sa8540p_rpmhpds[] = {
- 	[SC8280XP_MMCX_AO] = &mmcx_ao,
- 	[SC8280XP_MX] = &mx,
- 	[SC8280XP_MX_AO] = &mx_ao,
-+	[SC8280XP_MXC] = &mxc,
-+	[SC8280XP_MXC_AO] = &mxc_ao,
- 	[SC8280XP_NSP] = &nsp,
- };
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index 011252fe238c8..58064151f2c89 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -146,6 +146,7 @@ static void usage(char *progname)
+ 		" -T val     set the ptp clock time to 'val' seconds\n"
+ 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
+ 		" -X         get a ptp clock cross timestamp\n"
++		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
+ 		" -z         test combinations of rising/falling external time stamp flags\n",
+ 		progname, PTP_MAX_SAMPLES);
+ }
+@@ -189,6 +190,7 @@ int main(int argc, char *argv[])
+ 	int seconds = 0;
+ 	int settime = 0;
+ 	int channel = -1;
++	clockid_t ext_clockid = CLOCK_REALTIME;
  
-@@ -541,6 +543,8 @@ static struct rpmhpd *sc8280xp_rpmhpds[] = {
- 	[SC8280XP_MMCX_AO] = &mmcx_ao,
- 	[SC8280XP_MX] = &mx,
- 	[SC8280XP_MX_AO] = &mx_ao,
-+	[SC8280XP_MXC] = &mxc,
-+	[SC8280XP_MXC_AO] = &mxc_ao,
- 	[SC8280XP_NSP] = &nsp,
- 	[SC8280XP_QPHY] = &qphy,
- };
+ 	int64_t t1, t2, tp;
+ 	int64_t interval, offset;
+@@ -198,7 +200,7 @@ int main(int argc, char *argv[])
+ 
+ 	progname = strrchr(argv[0], '/');
+ 	progname = progname ? 1+progname : argv[0];
+-	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
++	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xy:z"))) {
+ 		switch (c) {
+ 		case 'c':
+ 			capabilities = 1;
+@@ -278,6 +280,21 @@ int main(int argc, char *argv[])
+ 		case 'X':
+ 			getcross = 1;
+ 			break;
++		case 'y':
++			if (!strcasecmp(optarg, "realtime"))
++				ext_clockid = CLOCK_REALTIME;
++			else if (!strcasecmp(optarg, "monotonic"))
++				ext_clockid = CLOCK_MONOTONIC;
++			else if (!strcasecmp(optarg, "monotonic-raw"))
++				ext_clockid = CLOCK_MONOTONIC_RAW;
++			else {
++				fprintf(stderr,
++					"type needs to be realtime, monotonic or monotonic-raw; was given %s\n",
++					optarg);
++				return -1;
++			}
++			break;
++
+ 		case 'z':
+ 			flagtest = 1;
+ 			break;
+@@ -566,6 +583,7 @@ int main(int argc, char *argv[])
+ 		}
+ 
+ 		soe->n_samples = getextended;
++		soe->clockid = ext_clockid;
+ 
+ 		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
+ 			perror("PTP_SYS_OFFSET_EXTENDED");
+@@ -574,12 +592,46 @@ int main(int argc, char *argv[])
+ 			       getextended);
+ 
+ 			for (i = 0; i < getextended; i++) {
+-				printf("sample #%2d: system time before: %lld.%09u\n",
+-				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
++				switch (ext_clockid) {
++				case CLOCK_REALTIME:
++					printf("sample #%2d: real time before: %lld.%09u\n",
++					       i, soe->ts[i][0].sec,
++					       soe->ts[i][0].nsec);
++					break;
++				case CLOCK_MONOTONIC:
++					printf("sample #%2d: monotonic time before: %lld.%09u\n",
++					       i, soe->ts[i][0].sec,
++					       soe->ts[i][0].nsec);
++					break;
++				case CLOCK_MONOTONIC_RAW:
++					printf("sample #%2d: monotonic-raw time before: %lld.%09u\n",
++					       i, soe->ts[i][0].sec,
++					       soe->ts[i][0].nsec);
++					break;
++				default:
++					break;
++				}
+ 				printf("            phc time: %lld.%09u\n",
+ 				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
+-				printf("            system time after: %lld.%09u\n",
+-				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
++				switch (ext_clockid) {
++				case CLOCK_REALTIME:
++					printf("            real time after: %lld.%09u\n",
++					       soe->ts[i][2].sec,
++					       soe->ts[i][2].nsec);
++					break;
++				case CLOCK_MONOTONIC:
++					printf("            monotonic time after: %lld.%09u\n",
++					       soe->ts[i][2].sec,
++					       soe->ts[i][2].nsec);
++					break;
++				case CLOCK_MONOTONIC_RAW:
++					printf("            monotonic-raw time after: %lld.%09u\n",
++					       soe->ts[i][2].sec,
++					       soe->ts[i][2].nsec);
++					break;
++				default:
++					break;
++				}
+ 			}
+ 		}
+ 
 -- 
 2.51.0
 
