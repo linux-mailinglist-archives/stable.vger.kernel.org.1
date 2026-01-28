@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-212170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GABuM3Ytemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:30 +0100
+	id SOq4Gfoyeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:02:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE21A41BF
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45510A4F3E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CB51F3027037
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B29713008989
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529F52D9796;
-	Wed, 28 Jan 2026 15:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723A03093C3;
+	Wed, 28 Jan 2026 15:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BmgC1Cqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G68/mu22"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1554C2D6E63;
-	Wed, 28 Jan 2026 15:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEC92857CD;
+	Wed, 28 Jan 2026 15:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614622; cv=none; b=qWX4T9Hxy8VlsuVdx8xLqlqp6SxP4suOAfgoHepge+8rGIY1ieMYmICi/hAjbS/8Q8e+47VSMAFOAZE9OOp6Unx9G031SVcH03yUW3sFzU7vBbh9DW+Q2FSgCTe1+jL39u1wod6VVQOIKV6XSOZaWZjImLYBaGUSGRPIlO4CG1o=
+	t=1769615821; cv=none; b=poBAuA78YCkPfO+/aY8cjPzvtK6fv61pIQPhuLq6giq6TJJzbnq2eZQVSyoSrnRtxM/e3TQjRDIHr11RyHr+EtL0tLrSfMTaku9Tm8d++HKePgfjKK5pMscaeU5ngncTH6pHDGrbetPI9KdjmKSxJpDX07DLmJahIsxYiGXHH58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614622; c=relaxed/simple;
-	bh=4itAfcKe7aVQWIgA2CaoUYjmnseGxyc9yLKab413vvk=;
+	s=arc-20240116; t=1769615821; c=relaxed/simple;
+	bh=dV0sB9IRBK2jnS6D7m9A2tqND8LvOazw2Db/RyEmKEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKlEYN7ce3NM2xCMF4upK4/Z3Xp6weuq4i54n/WV9eH2nVQcePUluVw/UKqZG/VzW1G4er+KY7fQfTD0BtDh6DdRsetj49L72NeTl6MhuCT64wpKbI1ZpSdwsi7szLvcPRrpEedFkq4M2j1xvY1/GcO/bF8x5UBPeoU/pySxPoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BmgC1Cqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A41EC4CEF1;
-	Wed, 28 Jan 2026 15:37:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qZ/+veWfFaY0XAlhj/6DDFW4VhgWxhzlk2pf3CWlzf6QouN3e2DC1WS8yqdvwe4iq3jixyJlzcQt3s8vb8xmv/ySwfv2h+wkq3Ho/CA9KuGsUIZOwHKj4jEw+rHF+nzLnYSbXGpvwYXxcc7C8vVkP7EqK9caxQTc1FzoApk5Btw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G68/mu22; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF97C4CEF1;
+	Wed, 28 Jan 2026 15:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614622;
-	bh=4itAfcKe7aVQWIgA2CaoUYjmnseGxyc9yLKab413vvk=;
+	s=korg; t=1769615820;
+	bh=dV0sB9IRBK2jnS6D7m9A2tqND8LvOazw2Db/RyEmKEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BmgC1CqzcKhJjcSAmlprtPzJumJEFPlwczXmisnzt5tNi6266uZ1n4th7vsPQxze+
-	 vCQax+sOMUwazHhm3rE0bs1xxFjhkY234hVIHb7CXDz8xnRS5NzWzhABmhFFNqjWXC
-	 SRUJjAZQSP+s7bfjqDZ87zL9IFoLpyzgusTGq5IU=
+	b=G68/mu221hKMQmx10G6IyTNMRQP2ejIwhJbeW+HboFrMX5mWKz9u6gMpuc1qLr25J
+	 h8TAlGhU7OrIbq2u3V5qPfhfCzw5EOY/a8OxiLPukcmW1vF2PMkRNyfcftIVnjB2Wo
+	 LlO31YhYvekzVHB6RQWsB6BPlxoUpanoqpVsCLlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Karsten Hohmeier <linux@hohmatik.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 192/254] ALSA: ctxfi: Fix potential OOB access in audio mixer handling
+	Seamus Connor <sconnor@purestorage.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 123/227] ublk: fix ublksrv pid handling for pid namespaces
 Date: Wed, 28 Jan 2026 16:22:48 +0100
-Message-ID: <20260128145351.708049563@linuxfoundation.org>
+Message-ID: <20260128145348.890561976@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +65,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.7.a.0.0.1.0.0.e.9.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212170-lists,stable=lfdr.de];
+	RSPAMD_URIBL_FAIL(0.00)[linuxfoundation.org:query timed out,kernel.dk:query timed out];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212528-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 4CE21A41BF
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_EMAILBL_FAIL(0.00)[ming.lei.redhat.com:query timed out,sconnor.purestorage.com:query timed out,csander.purestorage.com:query timed out,axboe.kernel.dk:query timed out,sashal.kernel.org:query timed out];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 45510A4F3E
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Seamus Connor <sconnor@purestorage.com>
 
-commit 61006c540cbdedea83b05577dc7fb7fa18fe1276 upstream.
+[ Upstream commit 47bdf1d29caec7207b7f112230055db36602dfc0 ]
 
-In the audio mixer handling code of ctxfi driver, the conf field is
-used as a kind of loop index, and it's referred in the index callbacks
-(amixer_index() and sum_index()).
+When ublksrv runs inside a pid namespace, START/END_RECOVERY compared
+the stored init-ns tgid against the userspace pid (getpid vnr), so the
+check failed and control ops could not proceed. Compare against the
+caller’s init-ns tgid and store that value, then translate it back to
+the caller’s pid namespace when reporting GET_DEV_INFO so ublk list
+shows a sensible pid.
 
-As spotted recently by fuzzers, the current code causes OOB access at
-those functions.
-| UBSAN: array-index-out-of-bounds in /build/reproducible-path/linux-6.17.8/sound/pci/ctxfi/ctamixer.c:347:48
-| index 8 is out of range for type 'unsigned char [8]'
+Testing: start/recover in a pid namespace; `ublk list` shows
+reasonable pid values in init, child, and sibling namespaces.
 
-After the analysis, the cause was found to be the lack of the proper
-(re-)initialization of conj field.
-
-This patch addresses those OOB accesses by adding the proper
-initializations of the loop indices.
-
-Reported-by: Salvatore Bonaccorso <carnil@debian.org>
-Tested-by: Karsten Hohmeier <linux@hohmatik.de>
-Closes: https://bugs.debian.org/1121535
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/all/aSk8KJI35H7gFru6@eldamar.lan/
-Link: https://patch.msgid.link/20260119133212.189129-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c2c8089f325e ("ublk: validate ublk server pid")
+Signed-off-by: Seamus Connor <sconnor@purestorage.com>
+Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/ctxfi/ctamixer.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/ublk_drv.c | 39 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
---- a/sound/pci/ctxfi/ctamixer.c
-+++ b/sound/pci/ctxfi/ctamixer.c
-@@ -205,6 +205,7 @@ static int amixer_rsc_init(struct amixer
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index e09c1b5999b75..4b6d7b785d7b3 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -2954,6 +2954,15 @@ static struct ublk_device *ublk_get_device_from_id(int idx)
+ 	return ub;
+ }
  
- 	/* Set amixer specific operations */
- 	amixer->rsc.ops = &amixer_basic_rsc_ops;
-+	amixer->rsc.conj = 0;
- 	amixer->ops = &amixer_ops;
- 	amixer->input = NULL;
- 	amixer->sum = NULL;
-@@ -369,6 +370,7 @@ static int sum_rsc_init(struct sum *sum,
- 		return err;
++static bool ublk_validate_user_pid(struct ublk_device *ub, pid_t ublksrv_pid)
++{
++	rcu_read_lock();
++	ublksrv_pid = pid_nr(find_vpid(ublksrv_pid));
++	rcu_read_unlock();
++
++	return ub->ublksrv_tgid == ublksrv_pid;
++}
++
+ static int ublk_ctrl_start_dev(struct ublk_device *ub,
+ 		const struct ublksrv_ctrl_cmd *header)
+ {
+@@ -3022,7 +3031,7 @@ static int ublk_ctrl_start_dev(struct ublk_device *ub,
+ 	if (wait_for_completion_interruptible(&ub->completion) != 0)
+ 		return -EINTR;
  
- 	sum->rsc.ops = &sum_basic_rsc_ops;
-+	sum->rsc.conj = 0;
+-	if (ub->ublksrv_tgid != ublksrv_pid)
++	if (!ublk_validate_user_pid(ub, ublksrv_pid))
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&ub->mutex);
+@@ -3041,7 +3050,7 @@ static int ublk_ctrl_start_dev(struct ublk_device *ub,
+ 	disk->fops = &ub_fops;
+ 	disk->private_data = ub;
+ 
+-	ub->dev_info.ublksrv_pid = ublksrv_pid;
++	ub->dev_info.ublksrv_pid = ub->ublksrv_tgid;
+ 	ub->ub_disk = disk;
+ 
+ 	ublk_apply_params(ub);
+@@ -3389,12 +3398,32 @@ static int ublk_ctrl_stop_dev(struct ublk_device *ub)
+ static int ublk_ctrl_get_dev_info(struct ublk_device *ub,
+ 		const struct ublksrv_ctrl_cmd *header)
+ {
++	struct task_struct *p;
++	struct pid *pid;
++	struct ublksrv_ctrl_dev_info dev_info;
++	pid_t init_ublksrv_tgid = ub->dev_info.ublksrv_pid;
+ 	void __user *argp = (void __user *)(unsigned long)header->addr;
+ 
+ 	if (header->len < sizeof(struct ublksrv_ctrl_dev_info) || !header->addr)
+ 		return -EINVAL;
+ 
+-	if (copy_to_user(argp, &ub->dev_info, sizeof(ub->dev_info)))
++	memcpy(&dev_info, &ub->dev_info, sizeof(dev_info));
++	dev_info.ublksrv_pid = -1;
++
++	if (init_ublksrv_tgid > 0) {
++		rcu_read_lock();
++		pid = find_pid_ns(init_ublksrv_tgid, &init_pid_ns);
++		p = pid_task(pid, PIDTYPE_TGID);
++		if (p) {
++			int vnr = task_tgid_vnr(p);
++
++			if (vnr)
++				dev_info.ublksrv_pid = vnr;
++		}
++		rcu_read_unlock();
++	}
++
++	if (copy_to_user(argp, &dev_info, sizeof(dev_info)))
+ 		return -EFAULT;
  
  	return 0;
- }
+@@ -3539,7 +3568,7 @@ static int ublk_ctrl_end_recovery(struct ublk_device *ub,
+ 	pr_devel("%s: All FETCH_REQs received, dev id %d\n", __func__,
+ 		 header->dev_id);
+ 
+-	if (ub->ublksrv_tgid != ublksrv_pid)
++	if (!ublk_validate_user_pid(ub, ublksrv_pid))
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&ub->mutex);
+@@ -3550,7 +3579,7 @@ static int ublk_ctrl_end_recovery(struct ublk_device *ub,
+ 		ret = -EBUSY;
+ 		goto out_unlock;
+ 	}
+-	ub->dev_info.ublksrv_pid = ublksrv_pid;
++	ub->dev_info.ublksrv_pid = ub->ublksrv_tgid;
+ 	ub->dev_info.state = UBLK_S_DEV_LIVE;
+ 	pr_devel("%s: new ublksrv_pid %d, dev id %d\n",
+ 			__func__, ublksrv_pid, header->dev_id);
+-- 
+2.51.0
+
 
 
 
