@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-212303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLr9FoYxemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212303-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:50 +0100
+	id AL/RBQM2eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:14:59 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5E0A4BD1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8AEA5504
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:14:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81FE331E8153
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E06CD30EC05B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88AD22F1FFA;
-	Wed, 28 Jan 2026 15:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26542D9780;
+	Wed, 28 Jan 2026 15:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elWwCdTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKQ8dewS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8F6290D81;
-	Wed, 28 Jan 2026 15:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A370A2D8760;
+	Wed, 28 Jan 2026 15:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615066; cv=none; b=Dxs2d/MKO2u2EMU6i2oGpNW8Q20kNtP5l/jjXrbLixUP+Z6fPCk6Q/Csud4D1ER1oxii1x9a4iDkojMP6TlMnNt9os8djrtYaJOK8OtfbN5KzqYHQrQFMucUNHN5kqhEKPTXKR2U3MYKnRto18vkwO51cWEJTMhGd2eGyNdj6fc=
+	t=1769614656; cv=none; b=b3uUgXGRsAHZPoR6g5WKCGpwCHAL32agCqlS4FtulRPVJO8dxH0QB/jryxvH4JUz9b30sUQShtkAavc7kjBtVaz42vrNNcdqEQ2mmhtob27v6joieLFfCFFGrJne/AqTKPDJT6sUBP26S3/SVZZ1XUhBHKgZJxUdfC2Xzysdvxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615066; c=relaxed/simple;
-	bh=c2FvGUC+qtNzwMbR/1NP8cWiKeppB+NsZoTKDK3pJoI=;
+	s=arc-20240116; t=1769614656; c=relaxed/simple;
+	bh=nOt1KlxLmnDvHNZHTNrEzMIEsX/t/35eA33x6ygPUwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LviqJ8m3q+tScKA7JJrnFZ5CEUkKiXU6MNGAli6EllKXeBts+dQXB3E17yAnPmhuW9o9ZY0hj86x83JOyD+Q2m/WRWVWxbHUBO6uXXO23boHgwnLmSOjWPa/QtLW/CFNWeTIWThg4Z9Wmct/e4ANBqtZXWfTMIFNVKrCRrLuRI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elWwCdTL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73D3C4CEF1;
-	Wed, 28 Jan 2026 15:44:25 +0000 (UTC)
+	 MIME-Version; b=bz4Bp3m2Qrrj4neGDCTQ6SYVF4mRHgatjk1PIidj9065wePSW5kKjngeVTkWTo0ho56EDupVz6lnk7uSXq6XUu1ow3QoOpyDjBUJM3zTxG1w29FqKRALLHC9B7ODGOq9Fss9XaqC5TW6QS5yUVPi6lJV7l7Y83pkwN9jq83vINI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKQ8dewS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98ACC2BCB0;
+	Wed, 28 Jan 2026 15:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615066;
-	bh=c2FvGUC+qtNzwMbR/1NP8cWiKeppB+NsZoTKDK3pJoI=;
+	s=korg; t=1769614656;
+	bh=nOt1KlxLmnDvHNZHTNrEzMIEsX/t/35eA33x6ygPUwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=elWwCdTL0GTG4cV8QlUFHv+ZvfqYCBaYx1khB7LVJPRjs0g1Z9mdofuqGUDbLSFpn
-	 gDLiWpN3/K3JeZFz+FZ7T2S9SCTZCrTGwgS1zB/3mC2vThz2jf5kSwkM3HfQV/qRX2
-	 9gkHQ2T9JGXnsxdjUyrDz4l9Pw7TPMPD8/WcgN7c=
+	b=SKQ8dewSoyD5NiHnihZA2CkYi2GH7oNP0OdjQ+AD/7aV0OOWtznPuRN+375aSW2o+
+	 ciZT9bm6kaW7UYzqX3GBUvntz/xsD7sA22ZpbRudykQ3GJMRxiqfcb30SJlJBPwIdE
+	 ZoqlVy1SYBwAktYgcckM6KDyAEpkmzw5ATAA0x+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jeffery <djeffery@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzbot+c46409299c70a221415e@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Matteo Croce <mcroce@redhat.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/169] scsi: core: Wake up the error handler when final completions race against each other
+Subject: [PATCH 6.6 175/254] bonding: provide a net pointer to __skb_flow_dissect()
 Date: Wed, 28 Jan 2026 16:22:31 +0100
-Message-ID: <20260128145336.455287337@linuxfoundation.org>
+Message-ID: <20260128145351.102509605@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +68,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212303-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212180-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9C5E0A4BD1
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,c46409299c70a221415e];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,appspotmail.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7A8AEA5504
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Jeffery <djeffery@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit fe2f8ad6f0999db3b318359a01ee0108c703a8c3 ]
+[ Upstream commit 5f9b329096596b7e53e07d041d7fca4cbe1be752 ]
 
-The fragile ordering between marking commands completed or failed so
-that the error handler only wakes when the last running command
-completes or times out has race conditions. These race conditions can
-cause the SCSI layer to fail to wake the error handler, leaving I/O
-through the SCSI host stuck as the error state cannot advance.
+After 3cbf4ffba5ee ("net: plumb network namespace into __skb_flow_dissect")
+we have to provide a net pointer to __skb_flow_dissect(),
+either via skb->dev, skb->sk, or a user provided pointer.
 
-First, there is an memory ordering issue within scsi_dec_host_busy().
-The write which clears SCMD_STATE_INFLIGHT may be reordered with reads
-counting in scsi_host_busy(). While the local CPU will see its own
-write, reordering can allow other CPUs in scsi_dec_host_busy() or
-scsi_eh_inc_host_failed() to see a raised busy count, causing no CPU to
-see a host busy equal to the host_failed count.
+In the following case, syzbot was able to cook a bare skb.
 
-This race condition can be prevented with a memory barrier on the error
-path to force the write to be visible before counting host busy
-commands.
+WARNING: net/core/flow_dissector.c:1131 at __skb_flow_dissect+0xb57/0x68b0 net/core/flow_dissector.c:1131, CPU#1: syz.2.1418/11053
+Call Trace:
+ <TASK>
+  bond_flow_dissect drivers/net/bonding/bond_main.c:4093 [inline]
+  __bond_xmit_hash+0x2d7/0xba0 drivers/net/bonding/bond_main.c:4157
+  bond_xmit_hash_xdp drivers/net/bonding/bond_main.c:4208 [inline]
+  bond_xdp_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5139 [inline]
+  bond_xdp_get_xmit_slave+0x1fd/0x710 drivers/net/bonding/bond_main.c:5515
+  xdp_master_redirect+0x13f/0x2c0 net/core/filter.c:4388
+  bpf_prog_run_xdp include/net/xdp.h:700 [inline]
+  bpf_test_run+0x6b2/0x7d0 net/bpf/test_run.c:421
+  bpf_prog_test_run_xdp+0x795/0x10e0 net/bpf/test_run.c:1390
+  bpf_prog_test_run+0x2c7/0x340 kernel/bpf/syscall.c:4703
+  __sys_bpf+0x562/0x860 kernel/bpf/syscall.c:6182
+  __do_sys_bpf kernel/bpf/syscall.c:6274 [inline]
+  __se_sys_bpf kernel/bpf/syscall.c:6272 [inline]
+  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:6272
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xec/0xf80 arch/x86/entry/syscall_64.c:94
 
-Second, there is a general ordering issue with scsi_eh_inc_host_failed(). By
-counting busy commands before incrementing host_failed, it can race with a
-final command in scsi_dec_host_busy(), such that scsi_dec_host_busy() does
-not see host_failed incremented but scsi_eh_inc_host_failed() counts busy
-commands before SCMD_STATE_INFLIGHT is cleared by scsi_dec_host_busy(),
-resulting in neither waking the error handler task.
-
-This needs the call to scsi_host_busy() to be moved after host_failed is
-incremented to close the race condition.
-
-Fixes: 6eb045e092ef ("scsi: core: avoid host-wide host_busy counter for scsi_mq")
-Signed-off-by: David Jeffery <djeffery@redhat.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260113161036.6730-1-djeffery@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 58deb77cc52d ("bonding: balance ICMP echoes in layer3+4 mode")
+Reported-by: syzbot+c46409299c70a221415e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/696faa23.050a0220.4cb9c.001f.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Matteo Croce <mcroce@redhat.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20260120161744.1893263-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_error.c | 11 ++++++++++-
- drivers/scsi/scsi_lib.c   |  8 ++++++++
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index 35b841515d1d6..9a89a94784cd0 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -282,11 +282,20 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
- {
- 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
- 	struct Scsi_Host *shost = scmd->device->host;
--	unsigned int busy = scsi_host_busy(shost);
-+	unsigned int busy;
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(shost->host_lock, flags);
- 	shost->host_failed++;
-+	spin_unlock_irqrestore(shost->host_lock, flags);
-+	/*
-+	 * The counting of busy requests needs to occur after adding to
-+	 * host_failed or after the lock acquire for adding to host_failed
-+	 * to prevent a race with host unbusy and missing an eh wakeup.
-+	 */
-+	busy = scsi_host_busy(shost);
-+
-+	spin_lock_irqsave(shost->host_lock, flags);
- 	scsi_eh_wakeup(shost, busy);
- 	spin_unlock_irqrestore(shost->host_lock, flags);
- }
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index a4cafc688c2a1..55717fd3234be 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -373,6 +373,14 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
- 	rcu_read_lock();
- 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
- 	if (unlikely(scsi_host_in_recovery(shost))) {
-+		/*
-+		 * Ensure the clear of SCMD_STATE_INFLIGHT is visible to
-+		 * other CPUs before counting busy requests. Otherwise,
-+		 * reordering can cause CPUs to race and miss an eh wakeup
-+		 * when no CPU sees all busy requests as done or timed out.
-+		 */
-+		smp_mb();
-+
- 		unsigned int busy = scsi_host_busy(shost);
- 
- 		spin_lock_irqsave(shost->host_lock, flags);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 9dfbbf4cd71f0..9385c3ac0c83c 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -4186,8 +4186,9 @@ static bool bond_flow_dissect(struct bonding *bond, struct sk_buff *skb, const v
+ 	case BOND_XMIT_POLICY_ENCAP23:
+ 	case BOND_XMIT_POLICY_ENCAP34:
+ 		memset(fk, 0, sizeof(*fk));
+-		return __skb_flow_dissect(NULL, skb, &flow_keys_bonding,
+-					  fk, data, l2_proto, nhoff, hlen, 0);
++		return __skb_flow_dissect(dev_net(bond->dev), skb,
++					  &flow_keys_bonding, fk, data,
++					  l2_proto, nhoff, hlen, 0);
+ 	default:
+ 		break;
+ 	}
 -- 
 2.51.0
 
