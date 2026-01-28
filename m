@@ -1,74 +1,60 @@
-Return-Path: <stable+bounces-212197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDrTF00uemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212197-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:05 +0100
+	id qJ4gNFI7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:37:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2449CA4396
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E693A5E6B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:37:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6EDCB302B2F3
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B28A4316E103
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0FF2E0400;
-	Wed, 28 Jan 2026 15:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9FB8146D53;
+	Wed, 28 Jan 2026 15:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtO/anf1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elDEHUeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4B62D9796;
-	Wed, 28 Jan 2026 15:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4002874FE;
+	Wed, 28 Jan 2026 15:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614714; cv=none; b=qNegE0gEgKB8pXP9Cmj1sV9eIwVXqcCeBvZULENStN2Bb5SaN4+BjcrhGbOJ87VZTMpSvYnCic4IwfK8iXrFotEegMi407e+DXfglwSeY6Z4xbG0ynxDTrvJV7226wXcKsdz9J7oVWfQ6xr+TvChnAkOnmWKxi2qQGS0AUa1YBo=
+	t=1769615911; cv=none; b=HcbOo6gB2Q5vxEPWm45Ybk6qtNVpjaKYJ2iyAE2yN6LijZRl2E7Z4RnPhcR9keJYzzR6QYezxbaiaWogTLtJnKC4ml5s7rttQsLPEdHAofd8Mrtt5xpoCpXgsUirtHk7PxlIMyd2EEXyaaxu7xcQY/0Q3fs+6ByQXeB4gZTPOGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614714; c=relaxed/simple;
-	bh=BLh/1Waz4wKNekqIFJyRAF8Jp0ekL9vjx71Nex08/RA=;
+	s=arc-20240116; t=1769615911; c=relaxed/simple;
+	bh=CyD1s/6VZT5hvLcIyrFZ+XuvitoUCXjc3eTeJ9EEDl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxPfbKmj5jgthGKhD6Rz2/Gc1EtJhcQvGS6wihmP6TkEccPl/KbQ87Vr4tZo4W2wVth1Zh+dtPeBXGrREHc/Lx5HEvEC4gwSc/yqtgjwcuAp2RQYDk7MAOfoxEE8Xc+duBJRc39M9ShONwG7+N2mRISActPu1uYpWFOYQOP17oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtO/anf1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918F1C4CEF1;
-	Wed, 28 Jan 2026 15:38:32 +0000 (UTC)
+	 MIME-Version; b=JKni1FnhMndb69wH/d+xwU9lqf3ekno8IWHKE+asbmg6YeKkt9YOUzvRwTBXc+G9l6KftEy78/yhRWt+rtRPwVxGguo9RY1kdWtQcZoQLGx2eNrzxB6GuNZEKJ3N1ULfZ4oBTAhxsB93vu/Kof/4BrXMAIayShlw6g/pejykul0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elDEHUeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2474CC4CEF1;
+	Wed, 28 Jan 2026 15:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614713;
-	bh=BLh/1Waz4wKNekqIFJyRAF8Jp0ekL9vjx71Nex08/RA=;
+	s=korg; t=1769615911;
+	bh=CyD1s/6VZT5hvLcIyrFZ+XuvitoUCXjc3eTeJ9EEDl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HtO/anf1cJKtke8IRWPnqg/Nuqj3z4t/R6UTC1dXOgWmM55lObLxSwaP0pxJfYFzH
-	 A60w1KtLY9FE2Pl+jqDokHROSFu47Qely+0ZWy5gyC3Zh6UXII8FPMFZgszE2E+K+4
-	 /dv8olXtn+ayGlBLALlYC1hNHxJh+CFQNT2a57zE=
+	b=elDEHUeEwOZsQtCEQhkDq92ZW6DGVBgige0k117WeYhuWb4F7gVt2q3r+88OmdBbQ
+	 fWc35uFfhfg3Y9yBqhCLW1OyGrCuHsYW05Fc/JTkcji5CkiS7jLUOoNjebxXf6rHGT
+	 ijXkVlnarDS7M82+Z5iGgs6fxibwl8XI2uKFUBwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Jann Horn <jannh@google.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 6.6 220/254] migrate: correct lock ordering for hugetlb file folios
+	Srish Srinivasan <ssrish@linux.ibm.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 151/227] keys/trusted_keys: fix handle passed to tpm_buf_append_name during unseal
 Date: Wed, 28 Jan 2026 16:23:16 +0100
-Message-ID: <20260128145352.703397864@linuxfoundation.org>
+Message-ID: <20260128145349.889116181@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,143 +66,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-212197-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,infradead.org,syzkaller.appspotmail.com,kernel.org,nvidia.com,sk.com,gourry.net,google.com,gmail.com,oracle.com,intel.com,surriel.com,suse.cz,linux.alibaba.com,linux-foundation.org,linux.dev];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212555-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.992];
-	TAGGED_RCPT(0.00)[stable,2d9c96466c978346b55f];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,linux.dev:email,infradead.org:email,nvidia.com:email,oracle.com:email,linux-foundation.org:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alibaba.com:email,gourry.net:email,surriel.com:email]
-X-Rspamd-Queue-Id: 2449CA4396
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	HAS_WP_URI(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,trustedcomputinggroup.org:url]
+X-Rspamd-Queue-Id: 2E693A5E6B
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Srish Srinivasan <ssrish@linux.ibm.com>
 
-commit b7880cb166ab62c2409046b2347261abf701530e upstream.
+[ Upstream commit 6342969dafbc63597cfc221aa13c3b123c2800c5 ]
 
-Syzbot has found a deadlock (analyzed by Lance Yang):
+TPM2_Unseal[1] expects the handle of a loaded data object, and not the
+handle of the parent key. But the tpm2_unseal_cmd provides the parent
+keyhandle instead of blob_handle for the session HMAC calculation. This
+causes unseal to fail.
 
-1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
-2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
-folio_lock.
+Fix this by passing blob_handle to tpm_buf_append_name().
 
-migrate_pages()
-  -> migrate_hugetlbs()
-    -> unmap_and_move_huge_page()     <- Takes folio_lock!
-      -> remove_migration_ptes()
-        -> __rmap_walk_file()
-          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
+References:
 
-hugetlbfs_fallocate()
-  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
-    -> hugetlbfs_zero_partial_page()
-     -> filemap_lock_hugetlb_folio()
-      -> filemap_lock_folio()
-        -> __filemap_get_folio        <- Waits for folio_lock!
+[1] trustedcomputinggroup.org/wp-content/uploads/
+    Trusted-Platform-Module-2.0-Library-Part-3-Version-184_pub.pdf
 
-The migration path is the one taking locks in the wrong order according to
-the documentation at the top of mm/rmap.c.  So expand the scope of the
-existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
-
-This is (mostly) how it used to be after commit c0d0381ade79.  That was
-removed by 336bf30eb765 for both file & anon hugetlb pages when it should
-only have been removed for anon hugetlb pages.
-
-Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
-Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
-Debugged-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Jann Horn <jannh@google.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Ying Huang <ying.huang@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6e9722e9a7bf ("tpm2-sessions: Fix out of range indexing in name_size")
+Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ security/keys/trusted-keys/trusted_tpm2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1369,6 +1369,7 @@ static int unmap_and_move_huge_page(new_
- 	int page_was_mapped = 0;
- 	struct anon_vma *anon_vma = NULL;
- 	struct address_space *mapping = NULL;
-+	enum ttu_flags ttu = 0;
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index 7187768716b78..74cea80ed9be5 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -489,7 +489,7 @@ static int tpm2_load_cmd(struct tpm_chip *chip,
+ }
  
- 	if (folio_ref_count(src) == 1) {
- 		/* page was freed from under us. So we are done. */
-@@ -1410,8 +1411,6 @@ static int unmap_and_move_huge_page(new_
- 		goto put_anon;
- 
- 	if (folio_mapped(src)) {
--		enum ttu_flags ttu = 0;
--
- 		if (!folio_test_anon(src)) {
- 			/*
- 			 * In shared mappings, try_to_unmap could potentially
-@@ -1428,9 +1427,6 @@ static int unmap_and_move_huge_page(new_
- 
- 		try_to_migrate(src, ttu);
- 		page_was_mapped = 1;
--
--		if (ttu & TTU_RMAP_LOCKED)
--			i_mmap_unlock_write(mapping);
+ /**
+- * tpm2_unseal_cmd() - execute a TPM2_Unload command
++ * tpm2_unseal_cmd() - execute a TPM2_Unseal command
+  *
+  * @chip: TPM chip to use
+  * @payload: the key data in clear and encrypted form
+@@ -520,7 +520,7 @@ static int tpm2_unseal_cmd(struct tpm_chip *chip,
+ 		return rc;
  	}
  
- 	if (!folio_mapped(src))
-@@ -1438,7 +1434,11 @@ static int unmap_and_move_huge_page(new_
+-	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
++	rc = tpm_buf_append_name(chip, &buf, blob_handle, NULL);
+ 	if (rc)
+ 		goto out;
  
- 	if (page_was_mapped)
- 		remove_migration_ptes(src,
--			rc == MIGRATEPAGE_SUCCESS ? dst : src, false);
-+			rc == MIGRATEPAGE_SUCCESS ? dst : src,
-+				ttu ? true : false);
-+
-+	if (ttu & TTU_RMAP_LOCKED)
-+		i_mmap_unlock_write(mapping);
- 
- unlock_put_anon:
- 	folio_unlock(dst);
+-- 
+2.51.0
+
 
 
 
