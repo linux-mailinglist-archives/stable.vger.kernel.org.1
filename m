@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-212021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MPqxBSwtemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:37:16 +0100
+	id eG42JLIremnz3gEAu9opvQ
+	(envelope-from <stable+bounces-212022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:30:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C84EA4145
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:37:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72472A3E24
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:30:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9F5B8304FB77
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C69283017245
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB0D036CE16;
-	Wed, 28 Jan 2026 15:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E0E36C0B9;
+	Wed, 28 Jan 2026 15:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6UQNl+d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o70vQZh3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C25D369981;
-	Wed, 28 Jan 2026 15:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E410218592;
+	Wed, 28 Jan 2026 15:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614134; cv=none; b=LxSO6XhNmhpnLvruSZB6m+ALje19znbrVs+3id6F1/g3JnojAROLkxypADWhKN6sgkeLwBKPW4Tfi8nZ54ZGKNT3IVzQ0Ziw6n8xWUKy2v/EW7zE9CWWN1uE/aJQLqF+fuesSCd8wDkkhgLPRsP4AVZHFUiPYXp+rZO1+QJei3g=
+	t=1769614138; cv=none; b=Vgyo419YOT8HRZU9o1ekTDmOFj9Lp4SmQZ59rvb/qfKrkWTa2OyKlaQpgSXy1O7IkO07WDsjE+qG9JWckYkVcEuJa8Y2x700DbD0YcXbKj9otBjvQcK015JM34aJSt6Hiveh8NWILWpMnCh4sWdbXI5qeka8FOT6JXVtk64wOQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614134; c=relaxed/simple;
-	bh=4G29JoS+WC8uyH5GNGtFh7Q2oNbwHsXidowyml8TXHw=;
+	s=arc-20240116; t=1769614138; c=relaxed/simple;
+	bh=czq14PS591YnJZC6piXbIPoeJp6ZSD2aDOTi30Lk5CQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NwKtKIIM5/b79IrCMyXop8Sxrvhf74t7rMJTj244JnigmHSpNBNPKtWhfqJBK/nwv5I4MHX9JHTis567At5CtRMSWlRtARek1Futjf6y58rqLY89Tm0zW9IfVdufuOPLt64CrIWafExhzhabSdExDWQ7EpAmzf6bznUpfYxwBoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6UQNl+d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E173C4CEF7;
-	Wed, 28 Jan 2026 15:28:53 +0000 (UTC)
+	 MIME-Version; b=s+I7Vo7F3zKk4xo88xoBRNjywRoQRhwWOjuTl39KsUEC/+5s1xgx7yPSGu7ZzoAiwADNZqW31ANPRPKZMweHQ2SRCbU5Sj3J3Km2xPodFTQxBWDFsKf9EsvNiucl9np4C2W8JPvF6uN9bGdQMJ09uEjGCh+koSNpnkGEKU96x1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o70vQZh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC84C16AAE;
+	Wed, 28 Jan 2026 15:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614133;
-	bh=4G29JoS+WC8uyH5GNGtFh7Q2oNbwHsXidowyml8TXHw=;
+	s=korg; t=1769614137;
+	bh=czq14PS591YnJZC6piXbIPoeJp6ZSD2aDOTi30Lk5CQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6UQNl+dccY1ujkcJytYTUWHr3U2p/GX/rFVO0s8iQCX/2lWBadQD+jPlo00Rwxfg
-	 vIXBnJZnPiF79FP0rqfZ1Zm7Xp8MrgQyWY654FtmpZaMGk04D/Pd65fflrOrpIsG+r
-	 au/Rbhn5jM/oeXmoXyLF4eejjwxYoe1Q8WsaC2Dk=
+	b=o70vQZh3Zd23RDR87IPjPkr7qA5jPjA7hQ7cLLRYWVioku2+4vUfYObCEKz3WuSYJ
+	 JUC2steeIh56/2aLdECaL2pU4ux7bcYtt4IBsrVs85Lrlo/SbUvgmfLEyML5PD7vCj
+	 DD3tgCuKfkRVTscRrytHK9RuJP0QSyfmLv+ODvDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 046/254] ALSA: pcm: Improve the fix for race of buffer access at PCM OSS layer
-Date: Wed, 28 Jan 2026 16:20:22 +0100
-Message-ID: <20260128145346.359051501@linuxfoundation.org>
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 047/254] null_blk: fix kmemleak by releasing references to fault configfs items
+Date: Wed, 28 Jan 2026 16:20:23 +0100
+Message-ID: <20260128145346.395220249@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -66,105 +67,119 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212021-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_URIBL_FAIL(0.00)[kernel.dk:query timed out];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.7.a.0.0.1.0.0.e.9.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
+	TAGGED_FROM(0.00)[bounces-212022-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[kch.nvidia.com:server fail,axboe.kernel.dk:server fail];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,perex.cz:email,suse.de:email]
-X-Rspamd-Queue-Id: 2C84EA4145
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email,kernel.dk:email]
+X-Rspamd-Queue-Id: 72472A3E24
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Nilay Shroff <nilay@linux.ibm.com>
 
-commit 47c27c9c9c720bc93fdc69605d0ecd9382e99047 upstream.
+commit 40b94ec7edbbb867c4e26a1a43d2b898f04b93c5 upstream.
 
-Handle the error code from snd_pcm_buffer_access_lock() in
-snd_pcm_runtime_buffer_set_silence() function.
+When CONFIG_BLK_DEV_NULL_BLK_FAULT_INJECTION is enabled, the null-blk
+driver sets up fault injection support by creating the timeout_inject,
+requeue_inject, and init_hctx_fault_inject configfs items as children
+of the top-level nullbX configfs group.
 
-Found by Alexandros Panagiotou <apanagio@redhat.com>
+However, when the nullbX device is removed, the references taken to
+these fault-config configfs items are not released. As a result,
+kmemleak reports a memory leak, for example:
 
-Fixes: 93a81ca06577 ("ALSA: pcm: Fix race of buffer access at PCM OSS layer")
-Cc: stable@vger.kernel.org # 6.15
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://patch.msgid.link/20260107213642.332954-1-perex@perex.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+unreferenced object 0xc00000021ff25c40 (size 32):
+  comm "mkdir", pid 10665, jiffies 4322121578
+  hex dump (first 32 bytes):
+    69 6e 69 74 5f 68 63 74 78 5f 66 61 75 6c 74 5f  init_hctx_fault_
+    69 6e 6a 65 63 74 00 88 00 00 00 00 00 00 00 00  inject..........
+  backtrace (crc 1a018c86):
+    __kmalloc_node_track_caller_noprof+0x494/0xbd8
+    kvasprintf+0x74/0xf4
+    config_item_set_name+0xf0/0x104
+    config_group_init_type_name+0x48/0xfc
+    fault_config_init+0x48/0xf0
+    0xc0080000180559e4
+    configfs_mkdir+0x304/0x814
+    vfs_mkdir+0x49c/0x604
+    do_mkdirat+0x314/0x3d0
+    sys_mkdir+0xa0/0xd8
+    system_call_exception+0x1b0/0x4f0
+    system_call_vectored_common+0x15c/0x2ec
+
+Fix this by explicitly releasing the references to the fault-config
+configfs items when dropping the reference to the top-level nullbX
+configfs group.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Fixes: bb4c19e030f4 ("block: null_blk: make fault-injection dynamically configurable per device")
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/sound/pcm.h      |    2 +-
- sound/core/oss/pcm_oss.c |    4 +++-
- sound/core/pcm_native.c  |    9 +++++++--
- 3 files changed, 11 insertions(+), 4 deletions(-)
+ drivers/block/null_blk/main.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/include/sound/pcm.h
-+++ b/include/sound/pcm.h
-@@ -1427,7 +1427,7 @@ int snd_pcm_lib_mmap_iomem(struct snd_pc
- #define snd_pcm_lib_mmap_iomem	NULL
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -622,12 +622,22 @@ static void nullb_add_fault_config(struc
+ 	configfs_add_default_group(&dev->init_hctx_fault_config.group, &dev->group);
+ }
+ 
++static void nullb_del_fault_config(struct nullb_device *dev)
++{
++	config_item_put(&dev->init_hctx_fault_config.group.cg_item);
++	config_item_put(&dev->requeue_config.group.cg_item);
++	config_item_put(&dev->timeout_config.group.cg_item);
++}
++
+ #else
+ 
+ static void nullb_add_fault_config(struct nullb_device *dev)
+ {
+ }
+ 
++static void nullb_del_fault_config(struct nullb_device *dev)
++{
++}
  #endif
  
--void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
-+int snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime);
- 
- /**
-  * snd_pcm_limit_isa_dma_size - Get the max size fitting with ISA DMA transfer
---- a/sound/core/oss/pcm_oss.c
-+++ b/sound/core/oss/pcm_oss.c
-@@ -1085,7 +1085,9 @@ static int snd_pcm_oss_change_params_loc
- 	runtime->oss.params = 0;
- 	runtime->oss.prepare = 1;
- 	runtime->oss.buffer_used = 0;
--	snd_pcm_runtime_buffer_set_silence(runtime);
-+	err = snd_pcm_runtime_buffer_set_silence(runtime);
-+	if (err < 0)
-+		goto failure;
- 
- 	runtime->oss.period_frames = snd_pcm_alsa_frames(substream, oss_period_size);
- 
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -705,13 +705,18 @@ static void snd_pcm_buffer_access_unlock
+ static struct
+@@ -659,7 +669,7 @@ nullb_group_drop_item(struct config_grou
+ 		null_del_dev(dev->nullb);
+ 		mutex_unlock(&lock);
+ 	}
+-
++	nullb_del_fault_config(dev);
+ 	config_item_put(item);
  }
- 
- /* fill the PCM buffer with the current silence format; called from pcm_oss.c */
--void snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
-+int snd_pcm_runtime_buffer_set_silence(struct snd_pcm_runtime *runtime)
- {
--	snd_pcm_buffer_access_lock(runtime);
-+	int err;
-+
-+	err = snd_pcm_buffer_access_lock(runtime);
-+	if (err < 0)
-+		return err;
- 	if (runtime->dma_area)
- 		snd_pcm_format_set_silence(runtime->format, runtime->dma_area,
- 					   bytes_to_samples(runtime, runtime->dma_bytes));
- 	snd_pcm_buffer_access_unlock(runtime);
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(snd_pcm_runtime_buffer_set_silence);
  
 
 
