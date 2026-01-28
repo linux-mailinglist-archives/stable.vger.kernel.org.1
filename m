@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-212225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLdcFuk2eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:18:49 +0100
+	id +MwxHak0eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC815A5661
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:18:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A3DA527C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 373293162975
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB81432F24EA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC502F6935;
-	Wed, 28 Jan 2026 15:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9502874FE;
+	Wed, 28 Jan 2026 15:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qPlgjlpt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFBbT2AP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9AE2DB784;
-	Wed, 28 Jan 2026 15:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1039F1D6AA;
+	Wed, 28 Jan 2026 15:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614803; cv=none; b=e/UeJjYz7q//uCLS27ki8IGZ/GjBhh6JB5wMvtnthgMpkI3QyHk10BH75DQtkq0NiYRvoFUSLQ5aM3ks3e2mEL2JP+n4pDtjkateTuP5ptQoHoo80wg+1djuGoPWDToGEeUxzqfw8UsS5PoH5y//VMbsI1t8EiLCa8c+auWp6OU=
+	t=1769615892; cv=none; b=n3NcEpYtYUJ9+79N24OQKvW5+nJDOlydIij6hRz2bu8hYbdQbaf+SH1S1CN5la3DSIkoDBiDHCOfsO8Kce1SizgM8qZ6dgOuonXVYnF0uDZa9JezS8YL6e78BaH+SvaZQVnRhHl0Shz+72TgCu6hKWZGB1H0lRRzU1k1Xc8CFE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614803; c=relaxed/simple;
-	bh=TbnwPANni0ZrAtRdRyhOmSNBtQuH9TZV89PANfb1MkQ=;
+	s=arc-20240116; t=1769615892; c=relaxed/simple;
+	bh=dL/Y4vy6CSkeuYDh6isk5AAu3I5gZR1CIojgeeqfIyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iot2On1LqagW4n9Sas9IhjGgq27SUMD11fJAx/fz8Fn6SkE2/flCg22NLfNeZ9J238Vtnu21ZccfLPr/NLk5GH3Bg4g+I5HEXV21vNZHd1RbfKmcaRXi0sQ3MlXR3aCtrJclpgNgC3+trUGKl76/Y+/sWe6Pq6vUnhmnhmXTfuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qPlgjlpt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB58C2BC86;
-	Wed, 28 Jan 2026 15:40:02 +0000 (UTC)
+	 MIME-Version; b=WP5FDmN7eIQ7yEFqPUJtCox/r64lvEvYQSyEDfYQ151wowSTW5Tl23RMShKmffSQVJRV4zUgmywGFUhJywXaPYnFhQiasOxhbcZOMeSTqVpqjUdB/RkRAcA6MF7fEJK1SOHt7OVuBEUCRgabI/StgSlkZMBvrLB5v5CoF9db/Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFBbT2AP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767ADC4CEF1;
+	Wed, 28 Jan 2026 15:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614803;
-	bh=TbnwPANni0ZrAtRdRyhOmSNBtQuH9TZV89PANfb1MkQ=;
+	s=korg; t=1769615891;
+	bh=dL/Y4vy6CSkeuYDh6isk5AAu3I5gZR1CIojgeeqfIyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qPlgjlptqDgGXDuGhjk2G6Ib6jz51OdhBGHsYNvbin+FdUr96DEVfNd/nRuAJjeyZ
-	 nSz7V4ALjqs1gSMx31ScJIUWnGxfllEzhApoeymYoh6zFjIdMRbwEyoeqc948XLqgT
-	 PaptY91BXIjFRHcDznm4C4aq/zFfayX65JXh3DE4=
+	b=bFBbT2APTF7W14TJlP4tJFJ0ZUdJHyiMR8Oidk7JtFNXplFlsImJYvEcGEJLwPzoc
+	 pZUzJsHz/oZsq+DXoAQ1Kk8jWWQAPJFwRqFWfgCy5FmPiBokpQZGzq8+X5irBlRDzL
+	 YSqVpaJobJcKmvnw1rqJSn/FaV1v8ijRE8DO8AjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?Jan=20H . =20Sch=C3=B6nherr?=" <jschoenh@amazon.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Fernand Sieber <sieberf@amazon.com>
-Subject: [PATCH 6.6 214/254] perf/x86/intel: Do not enable BTS for guests
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Melbin K Mathew <mlbnkm1@gmail.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 145/227] vsock/virtio: cap TX credit to local buffer size
 Date: Wed, 28 Jan 2026 16:23:10 +0100
-Message-ID: <20260128145352.491809664@linuxfoundation.org>
+Message-ID: <20260128145349.676299117@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +66,166 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212225-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212549-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amazon.de:email,infradead.org:email]
-X-Rspamd-Queue-Id: AC815A5661
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 13A3DA527C
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernand Sieber <sieberf@amazon.com>
+From: Melbin K Mathew <mlbnkm1@gmail.com>
 
-commit 91dcfae0ff2b9b9ab03c1ec95babaceefbffb9f4 upstream.
+[ Upstream commit 8ee784fdf006cbe8739cfa093f54d326cbf54037 ]
 
-By default when users program perf to sample branch instructions
-(PERF_COUNT_HW_BRANCH_INSTRUCTIONS) with a sample period of 1, perf
-interprets this as a special case and enables BTS (Branch Trace Store)
-as an optimization to avoid taking an interrupt on every branch.
+The virtio transports derives its TX credit directly from peer_buf_alloc,
+which is set from the remote endpoint's SO_VM_SOCKETS_BUFFER_SIZE value.
 
-Since BTS doesn't virtualize, this optimization doesn't make sense when
-the request originates from a guest. Add an additional check that
-prevents this optimization for virtualized events (exclude_host).
+On the host side this means that the amount of data we are willing to
+queue for a connection is scaled by a guest-chosen buffer size, rather
+than the host's own vsock configuration. A malicious guest can advertise
+a large buffer and read slowly, causing the host to allocate a
+correspondingly large amount of sk_buff memory.
+The same thing would happen in the guest with a malicious host, since
+virtio transports share the same code base.
 
-Reported-by: Jan H. Schönherr <jschoenh@amazon.de>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Fernand Sieber <sieberf@amazon.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251211183604.868641-1-sieberf@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Introduce a small helper, virtio_transport_tx_buf_size(), that
+returns min(peer_buf_alloc, buf_alloc), and use it wherever we consume
+peer_buf_alloc.
+
+This ensures the effective TX window is bounded by both the peer's
+advertised buffer and our own buf_alloc (already clamped to
+buffer_max_size via SO_VM_SOCKETS_BUFFER_MAX_SIZE), so a remote peer
+cannot force the other to queue more data than allowed by its own
+vsock settings.
+
+On an unpatched Ubuntu 22.04 host (~64 GiB RAM), running a PoC with
+32 guest vsock connections advertising 2 GiB each and reading slowly
+drove Slab/SUnreclaim from ~0.5 GiB to ~57 GiB; the system only
+recovered after killing the QEMU process. That said, if QEMU memory is
+limited with cgroups, the maximum memory used will be limited.
+
+With this patch applied:
+
+  Before:
+    MemFree:        ~61.6 GiB
+    Slab:           ~142 MiB
+    SUnreclaim:     ~117 MiB
+
+  After 32 high-credit connections:
+    MemFree:        ~61.5 GiB
+    Slab:           ~178 MiB
+    SUnreclaim:     ~152 MiB
+
+Only ~35 MiB increase in Slab/SUnreclaim, no host OOM, and the guest
+remains responsive.
+
+Compatibility with non-virtio transports:
+
+  - VMCI uses the AF_VSOCK buffer knobs to size its queue pairs per
+    socket based on the local vsk->buffer_* values; the remote side
+    cannot enlarge those queues beyond what the local endpoint
+    configured.
+
+  - Hyper-V's vsock transport uses fixed-size VMBus ring buffers and
+    an MTU bound; there is no peer-controlled credit field comparable
+    to peer_buf_alloc, and the remote endpoint cannot drive in-flight
+    kernel memory above those ring sizes.
+
+  - The loopback path reuses virtio_transport_common.c, so it
+    naturally follows the same semantics as the virtio transport.
+
+This change is limited to virtio_transport_common.c and thus affects
+virtio-vsock, vhost-vsock, and loopback, bringing them in line with the
+"remote window intersected with local policy" behaviour that VMCI and
+Hyper-V already effectively have.
+
+Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
+[Stefano: small adjustments after changing the previous patch]
+[Stefano: tweak the commit message]
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Link: https://patch.msgid.link/20260121093628.9941-4-sgarzare@redhat.com
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/perf_event.h |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1423,13 +1423,22 @@ static inline bool intel_pmu_has_bts_per
- 	struct hw_perf_event *hwc = &event->hw;
- 	unsigned int hw_event, bts_event;
- 
--	if (event->attr.freq)
-+	/*
-+	 * Only use BTS for fixed rate period==1 events.
-+	 */
-+	if (event->attr.freq || period != 1)
-+		return false;
-+
-+	/*
-+	 * BTS doesn't virtualize.
-+	 */
-+	if (event->attr.exclude_host)
- 		return false;
- 
- 	hw_event = hwc->config & INTEL_ARCH_EVENT_MASK;
- 	bts_event = x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
- 
--	return hw_event == bts_event && period == 1;
-+	return hw_event == bts_event;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 6175124d63d34..d3e26025ef589 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -821,6 +821,15 @@ virtio_transport_seqpacket_dequeue(struct vsock_sock *vsk,
  }
+ EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_dequeue);
  
- static inline bool intel_pmu_has_bts(struct perf_event *event)
++static u32 virtio_transport_tx_buf_size(struct virtio_vsock_sock *vvs)
++{
++	/* The peer advertises its receive buffer via peer_buf_alloc, but we
++	 * cap it to our local buf_alloc so a remote peer cannot force us to
++	 * queue more data than our own buffer configuration allows.
++	 */
++	return min(vvs->peer_buf_alloc, vvs->buf_alloc);
++}
++
+ int
+ virtio_transport_seqpacket_enqueue(struct vsock_sock *vsk,
+ 				   struct msghdr *msg,
+@@ -830,7 +839,7 @@ virtio_transport_seqpacket_enqueue(struct vsock_sock *vsk,
+ 
+ 	spin_lock_bh(&vvs->tx_lock);
+ 
+-	if (len > vvs->peer_buf_alloc) {
++	if (len > virtio_transport_tx_buf_size(vvs)) {
+ 		spin_unlock_bh(&vvs->tx_lock);
+ 		return -EMSGSIZE;
+ 	}
+@@ -884,7 +893,8 @@ static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
+ 	 * we have bytes in flight (tx_cnt - peer_fwd_cnt), the subtraction
+ 	 * does not underflow.
+ 	 */
+-	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
++	bytes = (s64)virtio_transport_tx_buf_size(vvs) -
++		(vvs->tx_cnt - vvs->peer_fwd_cnt);
+ 	if (bytes < 0)
+ 		bytes = 0;
+ 
+-- 
+2.51.0
+
 
 
 
