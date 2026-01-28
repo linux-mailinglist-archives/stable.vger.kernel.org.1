@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-212237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212378-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDBJGQI3eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212237-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:14 +0100
+	id eF9VAHoxemlT4gEAu9opvQ
+	(envelope-from <stable+bounces-212378-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E967A569B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A256A4BAD
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 98550318A1BB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72EE730BE5F7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B952DC76D;
-	Wed, 28 Jan 2026 15:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FD0307AF2;
+	Wed, 28 Jan 2026 15:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cc6dtUvB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIPfUFcs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311D72F260C;
-	Wed, 28 Jan 2026 15:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9D21E1DFC;
+	Wed, 28 Jan 2026 15:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614844; cv=none; b=pxlNJqNzNItp6t2Sp8Y4T63uFNVpGdirGSR+FM5gsl1QPM81rbgwFBB3PhzJfrFgKYNsA3B//b03z/n0vSf16i7ZYa1QsDtW04yMDfgXleswToCVTZ0R0Crj0nRUdVJcyXT19oGPumwM5EE2wFfl0YEE0HyK2hB5ITHdv+iKKOg=
+	t=1769615319; cv=none; b=nsWXYHSE5/tvyuJSsEbJ/7DY027Pmw74C7CzOCMQVZr7A2gpTf1T6qx4n7AA/T1xaSa33BwohQc8R5iiy695UhasFz/4dXH7CujXR+NrDlRDQ7QSshqbeeGbmKMDzvQqWOV/cdZm+2PhmtwLZ28yxj607typkF4hqkWcor0SyDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614844; c=relaxed/simple;
-	bh=jdieLHJ88Vsoed3qLOBRvxmH/hkpbxELnZPmMOdEZ70=;
+	s=arc-20240116; t=1769615319; c=relaxed/simple;
+	bh=G5big1uJiM0ACa7xRW9fbVxpJbmjoUQJGoeYNoWnluk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OtL1E0kyi/+dIKtopM1yzx81MwwwMSDUi2c9n0XG4QPMpBBVNfTTW6Ks1s5Yg6n4hIE2BsweDROqLP/c6ZslK7fzOPf6bkKJOs2dIXmduC51thRdeU7o8/82BS8CAPn/N5A00hNiomUAIGc8yVQ11cC72IzEQ5X4Sz+CIBnGTUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cc6dtUvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A155C4CEF1;
-	Wed, 28 Jan 2026 15:40:42 +0000 (UTC)
+	 MIME-Version; b=IrkvQovRMr/hwIfFUoXjtWU5H89o4H4Y6GRuW0UwrVMvg4Q+muvt51utHJp1fWgoie2Zue+vBmLN5jwsk6S4F+z8u0kt5dEeFUGQ6vPN5UHeMAgHanhA1DxAKNjaCChzU5Rp+KuzCJ4IvROF3wlCcWtA40k8xMeD3sw/Y8ncrnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIPfUFcs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B2EC116C6;
+	Wed, 28 Jan 2026 15:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614843;
-	bh=jdieLHJ88Vsoed3qLOBRvxmH/hkpbxELnZPmMOdEZ70=;
+	s=korg; t=1769615319;
+	bh=G5big1uJiM0ACa7xRW9fbVxpJbmjoUQJGoeYNoWnluk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cc6dtUvBVFU1e9HvwfEczJtiIC+xA0YfezRJXNvne+g4mzSX5tqUgiHTimDrD/zNg
-	 42cMln1nOqRarwGfngkM87PTyiou6RMkVwyFS3SbJLtti80xAMWhWygWOBR8MBkcfB
-	 raLgaz9K26c09rgfNdSuxcmlnjXIaZGn46dOLtw0=
+	b=hIPfUFcsQmlDGu+RUHzQ7g9o+6u8lVsiO3Efp1LN6UEXyfxWxe/bKE1AdUIcPbxSL
+	 vuZHzDIhOsBT70yYz9sEv176zQeKm2Y2hD1m0Zqk4MQh87h3N4EPPvkWJ551kdb3BK
+	 mcB3wNox9Wxyb19mUtMWKb+muEVaQXuVJo6Tt/NI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.6 249/254] drm/amdgpu: csa unmap use uninterruptible lock
-Date: Wed, 28 Jan 2026 16:23:45 +0100
-Message-ID: <20260128145353.759186047@linuxfoundation.org>
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 143/169] can: usb_8dev: usb_8dev_read_bulk_callback(): fix URB memory leak
+Date: Wed, 28 Jan 2026 16:23:46 +0100
+Message-ID: <20260128145339.152140009@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +61,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212237-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212378-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,139.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0E967A569B
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5A256A4BAD
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit a0fa7873f2f869087b1e7793f7fac3713a1e3afe ]
+commit f7a980b3b8f80fe367f679da376cf76e800f9480 upstream.
 
-After process exit to unmap csa and free GPU vm, if signal is accepted
-and then waiting to take vm lock is interrupted and return, it causes
-memory leaking and below warning backtrace.
+Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
+gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-Change to use uninterruptible wait lock fix the issue.
+In usb_8dev_open() -> usb_8dev_start(), the URBs for USB-in transfers are
+allocated, added to the priv->rx_submitted anchor and submitted. In the
+complete callback usb_8dev_read_bulk_callback(), the URBs are processed and
+resubmitted. In usb_8dev_close() -> unlink_all_urbs() the URBs are freed by
+calling usb_kill_anchored_urbs(&priv->rx_submitted).
 
-WARNING: CPU: 69 PID: 167800 at amd/amdgpu/amdgpu_kms.c:1525
- amdgpu_driver_postclose_kms+0x294/0x2a0 [amdgpu]
- Call Trace:
-  <TASK>
-  drm_file_free.part.0+0x1da/0x230 [drm]
-  drm_close_helper.isra.0+0x65/0x70 [drm]
-  drm_release+0x6a/0x120 [drm]
-  amdgpu_drm_release+0x51/0x60 [amdgpu]
-  __fput+0x9f/0x280
-  ____fput+0xe/0x20
-  task_work_run+0x67/0xa0
-  do_exit+0x217/0x3c0
-  do_group_exit+0x3b/0xb0
-  get_signal+0x14a/0x8d0
-  arch_do_signal_or_restart+0xde/0x100
-  exit_to_user_mode_loop+0xc1/0x1a0
-  exit_to_user_mode_prepare+0xf4/0x100
-  syscall_exit_to_user_mode+0x17/0x40
-  do_syscall_64+0x69/0xc0
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in usb_kill_anchored_urbs().
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7dbbfb3c171a6f63b01165958629c9c26abf38ab)
+Fix the memory leak by anchoring the URB in the
+usb_8dev_read_bulk_callback() to the priv->rx_submitted anchor.
+
+Fixes: 0024d8ad1639 ("can: usb_8dev: Add support for USB2CAN interface from 8 devices")
 Cc: stable@vger.kernel.org
-[The third parameter of drm_exec_init() was introduced by commit
- 05d249352f1a ("drm/exec: Pass in initial # of objects") after Linux 6.8.
- This code targets linux 6.6, so the current implementation is used
- and the third parameter is not needed.]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-5-4b8cb2915571@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/usb_8dev.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
-@@ -110,7 +110,7 @@ int amdgpu_unmap_static_csa(struct amdgp
- 	struct drm_exec exec;
- 	int r;
+--- a/drivers/net/can/usb/usb_8dev.c
++++ b/drivers/net/can/usb/usb_8dev.c
+@@ -541,11 +541,17 @@ resubmit_urb:
+ 			  urb->transfer_buffer, RX_BUFFER_SIZE,
+ 			  usb_8dev_read_bulk_callback, priv);
  
--	drm_exec_init(&exec, DRM_EXEC_INTERRUPTIBLE_WAIT);
-+	drm_exec_init(&exec, 0);
- 	drm_exec_until_all_locked(&exec) {
- 		r = amdgpu_vm_lock_pd(vm, &exec, 0);
- 		if (likely(!r))
++	usb_anchor_urb(urb, &priv->rx_submitted);
++
+ 	retval = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!retval)
++		return;
++
++	usb_unanchor_urb(urb);
+ 
+ 	if (retval == -ENODEV)
+ 		netif_device_detach(netdev);
+-	else if (retval)
++	else
+ 		netdev_err(netdev,
+ 			"failed resubmitting read bulk urb: %d\n", retval);
+ }
 
 
 
