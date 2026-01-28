@@ -1,160 +1,148 @@
-Return-Path: <stable+bounces-211904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOTSJaJQeWnYwQEAu9opvQ
-	(envelope-from <stable+bounces-211904-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 00:56:18 +0100
+	id 0kLMFdJeeWkXwwEAu9opvQ
+	(envelope-from <stable+bounces-211905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 01:56:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3941F9B89A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 00:56:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98FD19BC86
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 01:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA3C030160D4
-	for <lists+stable@lfdr.de>; Tue, 27 Jan 2026 23:56:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4F81F3013A54
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 00:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6B02F90D8;
-	Tue, 27 Jan 2026 23:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91AC31B3B19;
+	Wed, 28 Jan 2026 00:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OhvuNjPR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTT93C3h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f74.google.com (mail-dl1-f74.google.com [74.125.82.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0D22F690D
-	for <stable@vger.kernel.org>; Tue, 27 Jan 2026 23:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B521A2545
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 00:56:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769558161; cv=none; b=HUI4C2C7w7nLf5RRz6+1YIk+FEKCmp/bnYx8PPsGDp948uLDs5IuvCIj2HNSbtD+LpNcjaJ7EPOW6a+hUaPVSsDsd9XQae/hfr1XaxrviBFZlgGLp0qZYsh8b8e3D4Mgabh8AmEqa4v+fpDI3uKLVU8ED7eoLiyrjX0Qx/7Qo+c=
+	t=1769561805; cv=none; b=mJGuhrv+Y4F9Ah4F+ijuiMTo9nDbEI9n8dX/Y3zMR/Se7nnrURY81bKnyr4CgVb/GPc8HF8oCEIjezhcLIEX4Yu5IoPv77to0s04gsdPL8bVEBwV1mSRgVI79iTJWreDmSwdAzp10g9LS4FGNU+VRMNxsQ1Bww0+Uxp01+32wpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769558161; c=relaxed/simple;
-	bh=/wdPWngeWyqtaO3ZuYpGrqfLIHmKv4UBTmrmnHj8DMg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JYFmUpW/KQLwRezetxgF1hYhiJKbWT1TqeTumdGCn1FWvO+G0d7gXyeBYzeCaKnMgmVnCBfgwBCI/3ktlDwpmXlOrb2gB2woQ6Mhp0+Zt7LlEQaV4BdYrUPj3kmTW/g1PNJIUcXA+D7Vl4R2cGxg+cIBFHYl5Hfl2L3RdjKEbtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OhvuNjPR; arc=none smtp.client-ip=74.125.82.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
-Received: by mail-dl1-f74.google.com with SMTP id a92af1059eb24-123349958b2so20227269c88.0
-        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 15:55:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769558159; x=1770162959; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ec41m/3W2IRBvp4aICfoAibwYrvXDMhUzyetw+v5spU=;
-        b=OhvuNjPRSehNnhfp1dL5KA/vXoPNyaCD3LBzbIcLg6DYybSZdnqm0Qsyj0WJ0QTxp8
-         zDJNkQXXp7isxl38xUkvsYYkm3eTsxfcaMl9zcT7hsd574SlaWzod/NEq7DQR8UCPOBa
-         CIGxUJRV3jxGW/fqSCRPmr+yR6BfWRVICBy0SsQ5wHYAFdaBzApFCYIcYCa7pJZLqpgC
-         D76b5i4hsg5BTvuxz9riA4OBXYCgJf+9wiu8eTwcJl4GU4ykeVNK9lKG41M02ZfxwtRI
-         urSdCHjCQ+7doCpoZCwMJj7NTJ2UCEcdlm9cu29POJDKYjtia5z9x4KPn0SrLFN97F39
-         yCHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769558159; x=1770162959;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ec41m/3W2IRBvp4aICfoAibwYrvXDMhUzyetw+v5spU=;
-        b=xHpYNx4iK3102hDh9Lv7gB11/04hj76QIKnISjSRUPdpRmA0Vz9MAsTtUAd4Du2SLj
-         YB5Tu0AWNyFgNeRwA/gGgtNNMsBLXE2c31HCHQNOTAx/S79cRAuLnsxYlPfGyE2tZUU1
-         WTrxSgd/5BaGWhGRXAwF6k5Fep/wXxqsgsz34FCM9ARurk7pef3gUzQZw3qmKHrqCu92
-         gBtfRV/o2cSi+qfs3zJDYojK0WutZkmIzBIZFgsR9H9Jx7Coc13RrOATfn0YAkT7x7Db
-         OPr7xoaTXOeX6x9NcAsFZYb5yur9xVWioI19BXGr6kqKk8xotQIlfcSYaY7KUXFZ2G1x
-         jB3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVi6IcEgBBLxokMi3eK+sEGy1sRNhEjQ8gMyjDB+fwWprlfn5oNu5QKrtQzabDALkIiIiMSWak=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/JNtNnn339dsSO4ogQddMqy4j+Jf1hVUS5GdGe8Uc1XZ+Fqvk
-	ItT7ZzFGsUfm9P9fyXL5gTrmfx4IXQ86LsJqQnTzNoxA+GRtT6tLE3E/FWz7WZdQR9dyS8BiBUQ
-	C+UW/qdTKw2sohQ==
-X-Received: from dlbdt16.prod.google.com ([2002:a05:7022:2590:b0:123:2738:ba99])
- (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7022:218:b0:119:e56b:958c with SMTP id a92af1059eb24-124a006a51bmr1779660c88.17.1769558158889;
- Tue, 27 Jan 2026 15:55:58 -0800 (PST)
-Date: Tue, 27 Jan 2026 23:55:11 +0000
-In-Reply-To: <20260127235545.2307876-1-cmllamas@google.com>
+	s=arc-20240116; t=1769561805; c=relaxed/simple;
+	bh=uOZ9m7ZgmNY2wQvHTB+OroELYROsiskuxkMDB6vi90U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IQbBOcXO9OnnJG3p+TIzNJMK9i0pbo+TkHCJu9IZAQwxj0Y9Wtn88GRWQdUbh3vz3X+fKqr464ksEbgEKrBmbJdyCKtk9BxoKvXoTDrr+YKrqwhYSxjDShchhw06rCxh4YpOI4dtjs7JhraECN/n3OSL7eLsjsSFBY1fVm0I4kI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTT93C3h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59ABAC116C6;
+	Wed, 28 Jan 2026 00:56:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769561804;
+	bh=uOZ9m7ZgmNY2wQvHTB+OroELYROsiskuxkMDB6vi90U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YTT93C3h5v9A6Zi23TylnFB+4pLCF5kgOpVOt7DeeVb1/wmExax6Lo+Yap6LVrm+r
+	 0z6/r9u9eKrVRvD4zjGITbVUAsJMAlregGXETbwLJ2xlB3rzU2qfkVwtZ6ZbZ8hbLu
+	 3FMVu/uQsVn0DVHpAuUIPD44Rvpie4+w8iQ5Pqp9cNkOCFQRguR3jxRn/gjttwo0Va
+	 uAjfS3aYlmsRkK9K+QBG4U/BORuLwtG7Z/lX9L9HWeWZe17HNlHeclWbBshSLMsUjB
+	 5FQ2BmLHTzVDSzphmCgfdX1T+t6WI7zQwckFSOKRtkEcbAbsYkmXJlKtkT0JkXvGfD
+	 foaXLZXWFKVGQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] ALSA: scarlett2: Fix buffer overflow in config retrieval
+Date: Tue, 27 Jan 2026 19:56:42 -0500
+Message-ID: <20260128005642.2300891-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012703-refresh-segment-c671@gregkh>
+References: <2026012703-refresh-segment-c671@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260127235545.2307876-1-cmllamas@google.com>
-X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
-Message-ID: <20260127235545.2307876-2-cmllamas@google.com>
-Subject: [PATCH 2/2] binderfs: fix ida_alloc_max() upper bound
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Alice Ryhl <aliceryhl@google.com>
-Cc: kernel-team@android.com, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Todd Kjos <tkjos@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211904-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-211905-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cmllamas@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3941F9B89A
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 98FD19BC86
 X-Rspamd-Action: no action
 
-The 'max' argument of ida_alloc_max() takes the maximum valid ID and not
-the "count". Using an ID of BINDERFS_MAX_MINOR (1 << 20) for dev->minor
-would exceed the limits of minor numbers (20-bits). Fix this off-by-one
-error by subtracting 1 from the 'max'.
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
+[ Upstream commit 6f5c69f72e50d51be3a8c028ae7eda42c82902cb ]
+
+The scarlett2_usb_get_config() function has a logic error in the
+endianness conversion code that can cause buffer overflows when
+count > 1.
+
+The code checks `if (size == 2)` where `size` is the total buffer size in
+bytes, then loops `count` times treating each element as u16 (2 bytes).
+This causes the loop to access `count * 2` bytes when the buffer only
+has `size` bytes allocated.
+
+Fix by checking the element size (config_item->size) instead of the
+total buffer size. This ensures the endianness conversion matches the
+actual element type.
+
+Fixes: ac34df733d2d ("ALSA: usb-audio: scarlett2: Update get_config to do endian conversion")
 Cc: stable@vger.kernel.org
-Fixes: 3ad20fe393b3 ("binder: implement binderfs")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Link: https://patch.msgid.link/20260117012706.1715574-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ add 32-bit handling block ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binderfs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/usb/mixer_scarlett2.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/android/binderfs.c b/drivers/android/binderfs.c
-index b46bcb91072d..9f8a18c88d66 100644
---- a/drivers/android/binderfs.c
-+++ b/drivers/android/binderfs.c
-@@ -132,8 +132,8 @@ static int binderfs_binder_device_create(struct inode *ref_inode,
- 	mutex_lock(&binderfs_minors_mutex);
- 	if (++info->device_count <= info->mount_opts.max)
- 		minor = ida_alloc_max(&binderfs_minors,
--				      use_reserve ? BINDERFS_MAX_MINOR :
--						    BINDERFS_MAX_MINOR_CAPPED,
-+				      use_reserve ? BINDERFS_MAX_MINOR - 1 :
-+						    BINDERFS_MAX_MINOR_CAPPED - 1,
- 				      GFP_KERNEL);
- 	else
- 		minor = -ENOSPC;
-@@ -408,8 +408,8 @@ static int binderfs_binder_ctl_create(struct super_block *sb)
- 	/* Reserve a new minor number for the new device. */
- 	mutex_lock(&binderfs_minors_mutex);
- 	minor = ida_alloc_max(&binderfs_minors,
--			      use_reserve ? BINDERFS_MAX_MINOR :
--					    BINDERFS_MAX_MINOR_CAPPED,
-+			      use_reserve ? BINDERFS_MAX_MINOR - 1 :
-+					    BINDERFS_MAX_MINOR_CAPPED - 1,
- 			      GFP_KERNEL);
- 	mutex_unlock(&binderfs_minors_mutex);
- 	if (minor < 0) {
+diff --git a/sound/usb/mixer_scarlett2.c b/sound/usb/mixer_scarlett2.c
+index fa2bfa102ab56..ddb8f8d625841 100644
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -1408,11 +1408,16 @@ static int scarlett2_usb_get_config(
+ 		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
+ 		if (err < 0)
+ 			return err;
+-		if (size == 2) {
++		if (config_item->size == 16) {
+ 			u16 *buf_16 = buf;
+ 
+ 			for (i = 0; i < count; i++, buf_16++)
+ 				*buf_16 = le16_to_cpu(*(__le16 *)buf_16);
++		} else if (config_item->size == 32) {
++			u32 *buf_32 = (u32 *)buf;
++
++			for (i = 0; i < count; i++, buf_32++)
++				*buf_32 = le32_to_cpu(*(__le32 *)buf_32);
+ 		}
+ 		return 0;
+ 	}
 -- 
-2.52.0.457.g6b5491de43-goog
+2.51.0
 
 
