@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-212457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LCxBO45emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:31:42 +0100
+	id MMixN1csemkD3wEAu9opvQ
+	(envelope-from <stable+bounces-212096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:33:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3B0A5C12
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:31:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF73A3F97
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:33:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F0773216BC6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CD74E3013DB6
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CC130E84B;
-	Wed, 28 Jan 2026 15:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866B82512FF;
+	Wed, 28 Jan 2026 15:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYUZ/TL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMkQ/3Lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4D8302741;
-	Wed, 28 Jan 2026 15:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474151E9B1A;
+	Wed, 28 Jan 2026 15:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615584; cv=none; b=cHc63kzwhdzDS5Ja7ousKOfT+OtanMqBZezel8n9q8xC/9EQ/OXcAVO4XOg+zL9SoOQ5NQWWaXuYuk3CZ2uYX4X0g5qKL5yL5kr6TmL+wm25LRErmNaDCt5ZxQAQ0BaKkxpYRSsvVfeN5fxCr/n2SHWZtIzcs/f44ZYbNrUboNA=
+	t=1769614387; cv=none; b=Tc1lSeGRkjHLdkDYp1SUCSNZLWkH3IXsu6akM4gYXbIIcndFqRc7aT1kRlehEB18lphN4YWHx679eclJgXrzE1KJv7/Vos+VaB7UhRSYuKrvGu0XpH7aR1HdaaFcYfqViuog6cQKjbcR4byvS19Bqej/Kbflk2aYpW3HkvtvT5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615584; c=relaxed/simple;
-	bh=PvAGVUrCcChmoyQ7eCuiDBCsT9FyUrdywGcBxhsnT8E=;
+	s=arc-20240116; t=1769614387; c=relaxed/simple;
+	bh=NdOXqBlxlyBbgYCnzwizihka61PnV6PRKNobQDA3cyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wq/rzjby/kArKRiRPS2SCa59kz4I7uYjk+eBAtGWksF8zY3lMRRth8ix5w9AAqEh5MzekmsuxIBRXQ0UkW/KM61UE7sAJx6fQfGp7gYuzpW/lBEcyqUBh526+oAgsDnwUYVkhSB0eC7Gi2p0QdzwbSHBx0A+/xmx7cHufcJUnTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYUZ/TL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7B7C4CEF1;
-	Wed, 28 Jan 2026 15:53:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Jfzjni3QBcWzSH4cqC0AYITQEMFSvtrGQWjXSnzonSxN/20g+aK7cxAG4xF1SzKAj83k1J04T2tfcLtdbe2m1H3jdslRLiCUQY1kYsBlkC/pQR/9m4utR0IdHgYNF1q7yu+gvbvga4qF4dHK95sMGmaUK49m6acefLZtpQkQsek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMkQ/3Lc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA071C4CEF7;
+	Wed, 28 Jan 2026 15:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615584;
-	bh=PvAGVUrCcChmoyQ7eCuiDBCsT9FyUrdywGcBxhsnT8E=;
+	s=korg; t=1769614387;
+	bh=NdOXqBlxlyBbgYCnzwizihka61PnV6PRKNobQDA3cyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYUZ/TL5QxCdiWJqad07JjpNgfn776PAENpjYfTraNlc7gvmPE43mB2vJqJrn6mTl
-	 Vt3W+y7XNfOr2AxmLZbllz2vxrXl4SRCW7B5V/rNhwNkg3jdteyq2hkfxgxa2Byc/D
-	 lFnS+j4XK2DmL8z4M5DPjbSIlgCmTtbSzNZdenT8=
+	b=dMkQ/3LcC1NfC9DEydB5/32CR1/U16Al4bfAdfo0M5m7Ryv4nalYShyOFxuuMGVbe
+	 QqcDdru+ddJEd4CKBd3gxBpelZgbODcodaq4oUFTdm7MX32HJeS4q6+Znu2eS3+FYM
+	 T7w67J6awWcRZRGE7LXxfoBNx2ZL4rt9FRN/CQig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 6.18 052/227] w1: therm: Fix off-by-one buffer overflow in alarms_store
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 121/254] selftests: net: fib-onlink-tests: Convert to use namespaces by default
 Date: Wed, 28 Jan 2026 16:21:37 +0100
-Message-ID: <20260128145346.214582950@linuxfoundation.org>
+Message-ID: <20260128145349.177602137@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,169 +65,218 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212096-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212457-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.7.a.0.0.1.0.0.e.9.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 6B3B0A5C12
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,suse.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,nvidia.com:email]
+X-Rspamd-Queue-Id: 8CF73A3F97
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-commit 761fcf46a1bd797bd32d23f3ea0141ffd437668a upstream.
+[ Upstream commit 4f5f148dd7c0459229d2ab9a769b2e820f9ee6a2 ]
 
-The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
-bytes and a NUL terminator is appended. However, the 'size' argument
-does not account for this extra byte. The original code then allocated
-'size' bytes and used strcpy() to copy 'buf', which always writes one
-byte past the allocated buffer since strcpy() copies until the NUL
-terminator at index 'size'.
+Currently, the test breaks if the SUT already has a default route
+configured for IPv6. Fix by avoiding the use of the default namespace.
 
-Fix this by parsing the 'buf' parameter directly using simple_strtoll()
-without allocating any intermediate memory or string copying. This
-removes the overflow while simplifying the code.
-
-Cc: stable@vger.kernel.org
-Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20251216145007.44328-2-thorsten.blum@linux.dev
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4ed591c8ab44 ("net/ipv6: Allow onlink routes to have a device mismatch if it is the default route")
+Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Link: https://patch.msgid.link/20260113-selftests-net-fib-onlink-v2-1-89de2b931389@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/w1/slaves/w1_therm.c |   60 +++++++++++++------------------------------
- 1 file changed, 19 insertions(+), 41 deletions(-)
+ .../testing/selftests/net/fib-onlink-tests.sh | 71 ++++++++-----------
+ 1 file changed, 30 insertions(+), 41 deletions(-)
 
---- a/drivers/w1/slaves/w1_therm.c
-+++ b/drivers/w1/slaves/w1_therm.c
-@@ -1836,53 +1836,35 @@ static ssize_t alarms_store(struct devic
- 	struct w1_slave *sl = dev_to_w1_slave(device);
- 	struct therm_info info;
- 	u8 new_config_register[3];	/* array of data to be written */
--	int temp, ret;
--	char *token = NULL;
-+	long long temp;
-+	int ret = 0;
- 	s8 tl, th;	/* 1 byte per value + temp ring order */
--	char *p_args, *orig;
-+	const char *p = buf;
-+	char *endp;
+diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
+index ec2d6ceb1f08d..c01be076b210d 100755
+--- a/tools/testing/selftests/net/fib-onlink-tests.sh
++++ b/tools/testing/selftests/net/fib-onlink-tests.sh
+@@ -120,7 +120,7 @@ log_subsection()
  
--	p_args = orig = kmalloc(size, GFP_KERNEL);
--	/* Safe string copys as buf is const */
--	if (!p_args) {
--		dev_warn(device,
--			"%s: error unable to allocate memory %d\n",
--			__func__, -ENOMEM);
--		return size;
--	}
--	strcpy(p_args, buf);
--
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--
--	/* Convert 1st entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp || *endp != ' ')
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
- 	}
+ run_cmd()
+ {
+-	local cmd="$*"
++	local cmd="$1"
+ 	local out
+ 	local rc
  
- 	tl = int_to_short(temp);
+@@ -145,7 +145,7 @@ get_linklocal()
+ 	local pfx
+ 	local addr
  
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--	/* Convert 2nd entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	p = endp + 1;
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp)
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
- 	}
+-	addr=$(${pfx} ip -6 -br addr show dev ${dev} | \
++	addr=$(${pfx} ${IP} -6 -br addr show dev ${dev} | \
+ 	awk '{
+ 		for (i = 3; i <= NF; ++i) {
+ 			if ($i ~ /^fe80/)
+@@ -173,58 +173,48 @@ setup()
  
- 	/* Prepare to cast to short by eliminating out of range values */
-@@ -1905,7 +1887,7 @@ static ssize_t alarms_store(struct devic
- 		dev_info(device,
- 			"%s: error reading from the slave device %d\n",
- 			__func__, ret);
--		goto free_m;
-+		return size;
- 	}
+ 	set -e
  
- 	/* Write data in the device RAM */
-@@ -1913,7 +1895,7 @@ static ssize_t alarms_store(struct devic
- 		dev_info(device,
- 			"%s: Device not supported by the driver %d\n",
- 			__func__, -ENODEV);
--		goto free_m;
-+		return size;
- 	}
+-	# create namespace
+-	setup_ns PEER_NS
++	# create namespaces
++	setup_ns ns1
++	IP="ip -netns $ns1"
++	setup_ns ns2
  
- 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
-@@ -1922,10 +1904,6 @@ static ssize_t alarms_store(struct devic
- 			"%s: error writing to the slave device %d\n",
- 			__func__, ret);
+ 	# add vrf table
+-	ip li add ${VRF} type vrf table ${VRF_TABLE}
+-	ip li set ${VRF} up
+-	ip ro add table ${VRF_TABLE} unreachable default metric 8192
+-	ip -6 ro add table ${VRF_TABLE} unreachable default metric 8192
++	${IP} li add ${VRF} type vrf table ${VRF_TABLE}
++	${IP} li set ${VRF} up
++	${IP} ro add table ${VRF_TABLE} unreachable default metric 8192
++	${IP} -6 ro add table ${VRF_TABLE} unreachable default metric 8192
  
--free_m:
--	/* free allocated memory */
--	kfree(orig);
--
- 	return size;
+ 	# create test interfaces
+-	ip li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
+-	ip li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
+-	ip li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
+-	ip li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
++	${IP} li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
++	${IP} li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
++	${IP} li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
++	${IP} li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
+ 
+ 	# enslave vrf interfaces
+ 	for n in 5 7; do
+-		ip li set ${NETIFS[p${n}]} vrf ${VRF}
++		${IP} li set ${NETIFS[p${n}]} vrf ${VRF}
+ 	done
+ 
+ 	# add addresses
+ 	for n in 1 3 5 7; do
+-		ip li set ${NETIFS[p${n}]} up
+-		ip addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
+-		ip addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
++		${IP} li set ${NETIFS[p${n}]} up
++		${IP} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
++		${IP} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
+ 	done
+ 
+ 	# move peer interfaces to namespace and add addresses
+ 	for n in 2 4 6 8; do
+-		ip li set ${NETIFS[p${n}]} netns ${PEER_NS} up
+-		ip -netns ${PEER_NS} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
+-		ip -netns ${PEER_NS} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
++		${IP} li set ${NETIFS[p${n}]} netns ${ns2} up
++		ip -netns $ns2 addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
++		ip -netns $ns2 addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
+ 	done
+ 
+-	ip -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
+-	ip -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
++	${IP} -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
++	${IP} -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
+ 
+ 	set +e
  }
  
+-cleanup()
+-{
+-	# make sure we start from a clean slate
+-	cleanup_ns ${PEER_NS} 2>/dev/null
+-	for n in 1 3 5 7; do
+-		ip link del ${NETIFS[p${n}]} 2>/dev/null
+-	done
+-	ip link del ${VRF} 2>/dev/null
+-	ip ro flush table ${VRF_TABLE}
+-	ip -6 ro flush table ${VRF_TABLE}
+-}
+-
+ ################################################################################
+ # IPv4 tests
+ #
+@@ -241,7 +231,7 @@ run_ip()
+ 	# dev arg may be empty
+ 	[ -n "${dev}" ] && dev="dev ${dev}"
+ 
+-	run_cmd ip ro add table "${table}" "${prefix}"/32 via "${gw}" "${dev}" onlink
++	run_cmd "${IP} ro add table ${table} ${prefix}/32 via ${gw} ${dev} onlink"
+ 	log_test $? ${exp_rc} "${desc}"
+ }
+ 
+@@ -257,8 +247,8 @@ run_ip_mpath()
+ 	# dev arg may be empty
+ 	[ -n "${dev}" ] && dev="dev ${dev}"
+ 
+-	run_cmd ip ro add table "${table}" "${prefix}"/32 \
+-		nexthop via ${nh1} nexthop via ${nh2}
++	run_cmd "${IP} ro add table ${table} ${prefix}/32 \
++		nexthop via ${nh1} nexthop via ${nh2}"
+ 	log_test $? ${exp_rc} "${desc}"
+ }
+ 
+@@ -339,7 +329,7 @@ run_ip6()
+ 	# dev arg may be empty
+ 	[ -n "${dev}" ] && dev="dev ${dev}"
+ 
+-	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 via "${gw}" "${dev}" onlink
++	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 via ${gw} ${dev} onlink"
+ 	log_test $? ${exp_rc} "${desc}"
+ }
+ 
+@@ -353,8 +343,8 @@ run_ip6_mpath()
+ 	local exp_rc="$6"
+ 	local desc="$7"
+ 
+-	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 "${opts}" \
+-		nexthop via ${nh1} nexthop via ${nh2}
++	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 ${opts} \
++		nexthop via ${nh1} nexthop via ${nh2}"
+ 	log_test $? ${exp_rc} "${desc}"
+ }
+ 
+@@ -491,10 +481,9 @@ do
+ 	esac
+ done
+ 
+-cleanup
+ setup
+ run_onlink_tests
+-cleanup
++cleanup_ns ${ns1} ${ns2}
+ 
+ if [ "$TESTS" != "none" ]; then
+ 	printf "\nTests passed: %3d\n" ${nsuccess}
+-- 
+2.51.0
+
 
 
 
