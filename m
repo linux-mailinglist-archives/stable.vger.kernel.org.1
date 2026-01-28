@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212530-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCD/Lnotemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:34 +0100
+	id cNTtMXw0eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212530-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:08:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B447A41CE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296A7A523C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7E4B13028781
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68B5B30C6F0E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11F32D77FE;
-	Wed, 28 Jan 2026 15:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5860330BF4F;
+	Wed, 28 Jan 2026 15:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbKJDIhC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5KbMAUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39EF286D57;
-	Wed, 28 Jan 2026 15:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD653033F4;
+	Wed, 28 Jan 2026 15:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614628; cv=none; b=C9Xay5+UhsQZ2xl10hwn/EVrW9AwUITTuY/zK1v2oTMA+HDGcKXgC0iVrt5KpLTpsqmsckQ4KJj1y3cogWTRJknixNy5GpamQaWx0T+i5se96xyWndSVl6Nt7cK6a2k36bfOQmAVuQqjmPnIQKNpEfwn6e7Fgjih7IUiJf+6U20=
+	t=1769615828; cv=none; b=P+oEUgGGPOZAMNGuOZnejSfdUaEW8JFywWHvappw5jTHpDaKQPMQz66zyZ7R2kLOifqxvBBW3ozyLVJi90gYvW6Cn/yIPHRAxz1PS07eBnXkaij900laLTXJKyjSz0nC0QF4v0ES40JktNzLEkeisg85TDP5otwxkJAkGGO+CDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614628; c=relaxed/simple;
-	bh=zy5GJVsTOad7f/1P60JvZKoP6MiFmQ8FbQgmBsyzs94=;
+	s=arc-20240116; t=1769615828; c=relaxed/simple;
+	bh=LiEn9A6x/zoY2nIP+7zjDVXCYMW8Qr++mNRUBGunfOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PySCzv2yGxtwwB51U/frSmUF86gW22IlUGTGZwu1REO80qFbT6keEurrh4xX/1xpWCVfu1VyUgN6sFws7oVyUug82UUbVDlNBd9KpXpg/kHjFsRcM6EdRcluby34dE7D500TZUTk1HrnM22HlSV2K3p8XBz/fvQ3oMsIc8ofI40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbKJDIhC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5F9C16AAE;
-	Wed, 28 Jan 2026 15:37:08 +0000 (UTC)
+	 MIME-Version; b=lF/yCuWpaIqsoC6BGccd+hLNjQbQamsTwx4lGMVHvvvqA5Mkok+cJdk7lOVnrZTqw44J+ulrJvmLil4YL4sdNHSpXp88pRagzmNtO8GBe2f5XxaPInSOQNZcdRPIkviuY8Dx62r9Vp3P7aANIzcwPG74tnSKW/7uu/d6dV7DGV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5KbMAUB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE89C4CEF1;
+	Wed, 28 Jan 2026 15:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614628;
-	bh=zy5GJVsTOad7f/1P60JvZKoP6MiFmQ8FbQgmBsyzs94=;
+	s=korg; t=1769615827;
+	bh=LiEn9A6x/zoY2nIP+7zjDVXCYMW8Qr++mNRUBGunfOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XbKJDIhCh+6expq97+nlHL4sAAjWcyX3t9o0c/EU8KA70g65lfDQsW734jDwb/W81
-	 x6JOw2pu/5EZlID8KTtumOZeGhtSQYV0ffzLsPOqScSsa1bsdf1cYMz0QTmY5B5eYZ
-	 6NPQKw9A7RoNUBkZec4N0kxTrsAqmJZIZS3CZdgM=
+	b=T5KbMAUBPFfgiwfjflesdo3UilfSXqvkGnYI5MsZvS4M0nRCLTqgtyATVjE4+RKyr
+	 mjjAG1KGXJeT1cpZ27IXklP3MxhTwPejdhmYOQN7/vdpxTspTrqsiYI1kueqYCtYCn
+	 it5y70D1iQgt1Lf+2DGYgVtcmmXgAcIUzB1gSTos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Ricky WU <ricky_wu@realtek.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 194/254] mmc: rtsx_pci_sdmmc: implement sdmmc_card_busy function
+	Ming Lei <ming.lei@redhat.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 125/227] selftests/ublk: fix error handling for starting device
 Date: Wed, 28 Jan 2026 16:22:50 +0100
-Message-ID: <20260128145351.778906771@linuxfoundation.org>
+Message-ID: <20260128145348.961706113@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,115 +70,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.7.a.0.0.1.0.0.e.9.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212172-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212530-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6B447A41CE
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,purestorage.com:email,kernel.dk:email]
+X-Rspamd-Queue-Id: 296A7A523C
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 122610220134b32c742cc056eaf64f7017ac8cd9 upstream.
+[ Upstream commit 23e62cf75518825aac12e9a22bdc40f062428898 ]
 
-rtsx_pci_sdmmc does not have an sdmmc_card_busy function, so any voltage
-switches cause a kernel warning, "mmc0: cannot verify signal voltage
-switch."
+Fix error handling in ublk_start_daemon() when start_dev fails:
 
-Copy the sdmmc_card_busy function from rtsx_pci_usb to rtsx_pci_sdmmc to
-fix this.
+1. Call ublk_ctrl_stop_dev() to cancel inflight uring_cmd before
+   cleanup. Without this, the device deletion may hang waiting for
+   I/O completion that will never happen.
 
-Fixes: ff984e57d36e ("mmc: Add realtek pcie sdmmc host driver")
-Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Tested-by: Ricky WU <ricky_wu@realtek.com>
-Reviewed-by: Ricky WU <ricky_wu@realtek.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+2. Add fail_start label so that pthread_join() is called on the
+   error path. This ensures proper thread cleanup when startup fails.
+
+Fixes: 6aecda00b7d1 ("selftests: ublk: add kernel selftests for ublk")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/rtsx_pci_sdmmc.c |   41 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ tools/testing/selftests/ublk/kublk.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-@@ -1307,6 +1307,46 @@ out:
- 	return err;
- }
+diff --git a/tools/testing/selftests/ublk/kublk.c b/tools/testing/selftests/ublk/kublk.c
+index 0e863d13eaee4..9c05f046ad5ee 100644
+--- a/tools/testing/selftests/ublk/kublk.c
++++ b/tools/testing/selftests/ublk/kublk.c
+@@ -1002,7 +1002,9 @@ static int ublk_start_daemon(const struct dev_ctx *ctx, struct ublk_dev *dev)
+ 	}
+ 	if (ret < 0) {
+ 		ublk_err("%s: ublk_ctrl_start_dev failed: %d\n", __func__, ret);
+-		goto fail;
++		/* stop device so that inflight uring_cmd can be cancelled */
++		ublk_ctrl_stop_dev(dev);
++		goto fail_start;
+ 	}
  
-+static int sdmmc_card_busy(struct mmc_host *mmc)
-+{
-+	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
-+	struct rtsx_pcr *pcr = host->pcr;
-+	int err;
-+	u8 stat;
-+	u8 mask = SD_DAT3_STATUS | SD_DAT2_STATUS | SD_DAT1_STATUS
-+	| SD_DAT0_STATUS;
-+
-+	mutex_lock(&pcr->pcr_mutex);
-+
-+	rtsx_pci_start_run(pcr);
-+
-+	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
-+				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP,
-+			       SD_CLK_TOGGLE_EN);
-+	if (err)
-+		goto out;
-+
-+	mdelay(1);
-+
-+	err = rtsx_pci_read_register(pcr, SD_BUS_STAT, &stat);
-+	if (err)
-+		goto out;
-+
-+	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
-+				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP, 0);
-+out:
-+	mutex_unlock(&pcr->pcr_mutex);
-+
-+	if (err)
-+		return err;
-+
-+	/* check if any pin between dat[0:3] is low */
-+	if ((stat & mask) != mask)
-+		return 1;
-+	else
-+		return 0;
-+}
-+
- static int sdmmc_execute_tuning(struct mmc_host *mmc, u32 opcode)
- {
- 	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
-@@ -1405,6 +1445,7 @@ static const struct mmc_host_ops realtek
- 	.get_ro = sdmmc_get_ro,
- 	.get_cd = sdmmc_get_cd,
- 	.start_signal_voltage_switch = sdmmc_switch_voltage,
-+	.card_busy = sdmmc_card_busy,
- 	.execute_tuning = sdmmc_execute_tuning,
- 	.init_sd_express = sdmmc_init_sd_express,
- };
+ 	ublk_ctrl_get_info(dev);
+@@ -1010,7 +1012,7 @@ static int ublk_start_daemon(const struct dev_ctx *ctx, struct ublk_dev *dev)
+ 		ublk_ctrl_dump(dev);
+ 	else
+ 		ublk_send_dev_event(ctx, dev, dev->dev_info.dev_id);
+-
++fail_start:
+ 	/* wait until we are terminated */
+ 	for (i = 0; i < dev->nthreads; i++)
+ 		pthread_join(dev->threads[i].thread, &thread_ret);
+-- 
+2.51.0
+
 
 
 
