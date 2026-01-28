@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-212028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGRvLaktemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:21 +0100
+	id aH5JB9ssemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF37A421F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BC22A407B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 895BC31CF782
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 058E8307C740
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4648836BCEA;
-	Wed, 28 Jan 2026 15:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6414135A93C;
+	Wed, 28 Jan 2026 15:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqKL2f0H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pz0AGR9F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0840A367F36;
-	Wed, 28 Jan 2026 15:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266612517AC;
+	Wed, 28 Jan 2026 15:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614157; cv=none; b=A7yjGzeiLD9YvS6fOp5xFyvwPgNsDUmk7M1s6VbtiXWoRhnOJUPrEZBU2WmMlvhRrSHFVN7tHfsfisI5qGJTeSBuaMp2NPP8NtzKSSfVYJyrC3VwVZhxZFdJYxVBDSKuDr1kcx+yiVE/UFJ9esAU4rmlwbad3U6BJMzMboU+onw=
+	t=1769614164; cv=none; b=l2GKcPXcwBHXFvjfMrg5PvmIhZInUDY+GkPQ0SrjM2GaMAieBwrymmy83ZAQVqlDp5seYiGxQFXHhVVIHGQoH/sqN6LWh2ra3Cf8hv/kea8HOB2jsl+otMw09N31IFftGFdTEm3NeaMcrnhjQ1iCMfnc7MvuFRBJD0f158uvqwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614157; c=relaxed/simple;
-	bh=RrWsvwSfN//Yn4RB7k4H8hTMAkOBCfaIl9UyF/WS3xo=;
+	s=arc-20240116; t=1769614164; c=relaxed/simple;
+	bh=dNqUnNAZkK3eZj+6X3Bja14T3Vu2RbrLT87VU/32O7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSVGHaOcCysiKmod9VR4jjfhQyqhJFMDtaCEavzKJ7J1s2NPu107JTrFfvAtI9asyZq6cticxoaQMQZR8+OqAB+7Px4Gb4EXAvak+t64ZPdwVIO/MY9VWmRxMrycnZ97poBJREcKVtmTigzI9JbW5Zw+uIKtupAHMF9uLfQnbe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqKL2f0H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77060C4CEF1;
-	Wed, 28 Jan 2026 15:29:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aUz8f68jojtNeuUHCNRUEfufZWhWsXIbnZaGGShRKnI8a8e3AGwNY5cntrDxbLuuJ9etoy4ydvDUlh6y/7grdhYqttoCdeOnwL5ByAGUewYioAwK2Exb8Ov/0vQ7dQb+qcm1PSMTaYqH4LZd2qPBQsxglCTTRkBQ5tjEeyh1eBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pz0AGR9F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC57C4CEF1;
+	Wed, 28 Jan 2026 15:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614156;
-	bh=RrWsvwSfN//Yn4RB7k4H8hTMAkOBCfaIl9UyF/WS3xo=;
+	s=korg; t=1769614163;
+	bh=dNqUnNAZkK3eZj+6X3Bja14T3Vu2RbrLT87VU/32O7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kqKL2f0HTj3P7dHB5rG+JPEFwJXzM01gfRTVnCCC5IOYkID+ubkuS9SPJUqksjfEI
-	 hb4JzPZvBNca+rHuNgUjhP/BTGP0mvmAWjnFY29n8Pothz8+P85r08zBZ1t7GNUgnx
-	 kPLnaeUa8lm/mLFamkn/+YQRuzK2PKPzo1ioKEds=
+	b=Pz0AGR9F5w7gx+q6yIg2ym9WhvirC9l4N0Sbgos5UDqxchLbjUSOMyS1eljclGwZ7
+	 ewwuZxh1YzBrsw55qfZ1bWRiEgGPabK5U2O//5RmaO/41dt09adTQ6i+KeRDWRj6OI
+	 wdIKjVmRUKv8W2wcZdADBwxzu3XG8mW1AIPh0xQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Beims <rafael.beims@toradex.com>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 053/254] phy: freescale: imx8m-pcie: assert phy reset during power on
-Date: Wed, 28 Jan 2026 16:20:29 +0100
-Message-ID: <20260128145346.609142037@linuxfoundation.org>
+Subject: [PATCH 6.6 054/254] phy: rockchip: inno-usb2: fix disconnection in gadget mode
+Date: Wed, 28 Jan 2026 16:20:30 +0100
+Message-ID: <20260128145346.644384672@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -62,83 +64,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212030-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212028-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nxp.com:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,toradex.com:email]
-X-Rspamd-Queue-Id: 1BF37A421F
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,bootlin.com:email]
+X-Rspamd-Queue-Id: 7BC22A407B
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Beims <rafael.beims@toradex.com>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
 
-commit f2ec4723defbc66a50e0abafa830ae9f8bceb0d7 upstream.
+commit 028e8ca7b20fb7324f3e5db34ba8bd366d9d3acc upstream.
 
-After U-Boot initializes PCIe with "pcie enum", Linux fails to detect
-an NVMe disk on some boot cycles with:
+When the OTG USB port is used to power the SoC, configured as peripheral
+and used in gadget mode, there is a disconnection about 6 seconds after the
+gadget is configured and enumerated.
 
-  phy phy-32f00000.pcie-phy.0: phy poweron failed --> -110
+The problem was observed on a Radxa Rock Pi S board, which can only be
+powered by the only USB-C connector. That connector is the only one usable
+in gadget mode. This implies the USB cable is connected from before boot
+and never disconnects while the kernel runs.
 
-Discussion with NXP identified that the iMX8MP PCIe PHY PLL may fail to
-lock when re-initialized without a reset cycle [1].
+The problem happens because of the PHY driver code flow, summarized as:
 
-The issue reproduces on 7% of tested hardware platforms, with a 30-40%
-failure rate per affected device across boot cycles.
+ * UDC start code (triggered via configfs at any time after boot)
+   -> phy_init
+       -> rockchip_usb2phy_init
+           -> schedule_delayed_work(otg_sm_work [A], 6 sec)
+   -> phy_power_on
+       -> rockchip_usb2phy_power_on
+           -> enable clock
+           -> rockchip_usb2phy_reset
 
-Insert a reset cycle in the power-on routine to ensure the PHY is
-initialized from a known state.
+ * Now the gadget interface is up and running.
 
-[1] https://community.nxp.com/t5/i-MX-Processors/iMX8MP-PCIe-initialization-in-U-Boot/m-p/2248437#M242401
+ * 6 seconds later otg_sm_work starts [A]
+   -> rockchip_usb2phy_otg_sm_work():
+       if (B_IDLE state && VBUS present && ...):
+           schedule_delayed_work(&rport->chg_work [B], 0);
 
-Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
+ * immediately the chg_detect_work starts [B]
+   -> rockchip_chg_detect_work():
+       if chg_state is UNDEFINED:
+           if (!rport->suspended):
+               rockchip_usb2phy_power_off() <--- [X]
+
+At [X], the PHY is powered off, causing a disconnection. This quickly
+triggers a new connection and following re-enumeration, but any connection
+that had been established during the 6 seconds is broken.
+
+The code already checks for !rport->suspended (which, somewhat
+counter-intuitively, means the PHY is powered on), so add a guard for VBUS
+as well to avoid a disconnection when a cable is connected.
+
+Fixes: 98898f3bc83c ("phy: rockchip-inno-usb2: support otg-port for rk3399")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251223150254.1075221-1-rafael@beims.me
+Closes: https://lore.kernel.org/lkml/20250414185458.7767aabc@booty/
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Co-developed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://patch.msgid.link/20251127-rk3308-fix-usb-gadget-phy-disconnect-v2-1-dac8a02cd2ca@bootlin.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -89,7 +89,8 @@ static int imx8_pcie_phy_power_on(struct
- 			writel(imx8_phy->tx_deemph_gen2,
- 			       imx8_phy->base + PCIE_PHY_TRSV_REG6);
- 		break;
--	case IMX8MP: /* Do nothing. */
-+	case IMX8MP:
-+		reset_control_assert(imx8_phy->reset);
- 		break;
- 	}
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -789,14 +789,16 @@ static void rockchip_chg_detect_work(str
+ 		container_of(work, struct rockchip_usb2phy_port, chg_work.work);
+ 	struct rockchip_usb2phy *rphy = dev_get_drvdata(rport->phy->dev.parent);
+ 	struct regmap *base = get_reg_base(rphy);
+-	bool is_dcd, tmout, vout;
++	bool is_dcd, tmout, vout, vbus_attach;
+ 	unsigned long delay;
  
++	vbus_attach = property_enabled(rphy->grf, &rport->port_cfg->utmi_bvalid);
++
+ 	dev_dbg(&rport->phy->dev, "chg detection work state = %d\n",
+ 		rphy->chg_state);
+ 	switch (rphy->chg_state) {
+ 	case USB_CHG_STATE_UNDEFINED:
+-		if (!rport->suspended)
++		if (!rport->suspended && !vbus_attach)
+ 			rockchip_usb2phy_power_off(rport->phy);
+ 		/* put the controller in non-driving mode */
+ 		if (!vbus_attach)
 
 
 
