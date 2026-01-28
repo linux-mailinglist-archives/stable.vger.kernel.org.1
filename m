@@ -1,208 +1,292 @@
-Return-Path: <stable+bounces-212645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212646-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKmsFQJHemkp5AEAu9opvQ
-	(envelope-from <stable+bounces-212645-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:27:30 +0100
+	id yFRvMhRFemn34wEAu9opvQ
+	(envelope-from <stable+bounces-212646-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:19:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABBE1A6E23
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:27:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49161A6B6E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 283C430F6E94
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:18:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 003A3300AEDE
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E7833EAE7;
-	Wed, 28 Jan 2026 17:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DDC32E733;
+	Wed, 28 Jan 2026 17:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QCIYXqIX"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="emgAG8BD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5F3330B01
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 17:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769620680; cv=none; b=S7r4PFBMTqstQqyuT/f6RSc1x8Uom1EtdwoseZCQkU/4w90PACsAORG5ZGtL9pqWGy5LK/rpDpycj5cMkz4FcDFI2SmsOUvxNaVMZiJmWCmWUGaAlb8MEGH40f9wtkk+x28X4o6BtJXSeDoxdri7S9xv+ypzJDnXEUPRtexORiQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769620680; c=relaxed/simple;
-	bh=BGqnVmp1eJvMacXoI673ldZKkJTfLCVUC3t8ZxfuCwY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=skY05bdls1rQ3O70zqjgXaEONtPkadtin1RDVzEzzxpmITjz2gIxQ3ZX+8f67MMjOvT/zVNToRQfblWmIUQQNqzvY39gSpmleMwFBkAsHNlN8duEeGf0WmAJvR6/dv3DcB2YYRoMy6pJYWPPB2mFgWiQikn8eWcLG2mbkhWXCwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QCIYXqIX; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-435903c4040so90612f8f.3
-        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 09:17:58 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80BA225390
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 17:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769620753; cv=pass; b=I4rNMrgO0+qwEWHEgZDKRUpMcMDUB2GHVT21uz2KUOo+mRcPdUTrr40GUlC6MVn8ttWKaMsaJAdbLErNh/0am2Z0QWoWewNjr1H9m627S6Ds2uDpFSza/OzOkfDjFR2dA+FFvdlU8QOGwnUCMWmmE+cE5748VEPcyHzoWKfPDH4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769620753; c=relaxed/simple;
+	bh=HU+2qV9g/s9S77R3j/OFeZGFjqpC0FxcFKPAXfJCMbE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XW2yq+uskJeF91bexEyRAv92+JPLC7WerZvkkQ3EYTWcQ9/SsrDcDYkEUhDcUva2/oM3OYplrqE1Ck0zum2BDjMRlrrjbyWG/legyeH61vmSo8PVlfeT5SbOb1ZiM6OtYkFLmU+qe0J3fUuvxD68WH1z+dmf1HXzBIjx/ZryXJ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=emgAG8BD; arc=pass smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b883787268fso12669366b.3
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 09:19:11 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769620750; cv=none;
+        d=google.com; s=arc-20240605;
+        b=bSc8GH1BwmUdVZcMezyrDME6iGaYkdvZOz5HbPK7HfYhb6RvN2xOZLzCr/elz4+E2S
+         UWHwTwC1klCZLBo3t7RJyyMNahPi+elhS8g9c1SWt/IHUC4xmu4AyWUecIGKYdUpIVfs
+         tI1qKsxuEYCB4pg+CpRTIDNDK65Axx/saWIrOtGw3opb6IM5xsHdTR6EjlQbPqqDCr+Z
+         stPJSjxUSXGXFShC/PQC+W6G4dkRLa9LsyIt8EYjoTdpJFWDFJVJrlU4FMUNm/2OlASk
+         JrUktqhJum7LTvjresWlcqKanGOg2ZSFS2rwSwtX5OwhsAcJn8AoX8mabEcp25WOve8s
+         lynw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=c6U2T5XiBkgtqqoIWwFJ9MeumwoEccaKOI8Bpx3K3Oc=;
+        fh=r8WhPeDhMJJ4CopUPEABrtLM4SFu2zupmcLHMAFzrGs=;
+        b=hXLZia+I4utYK6POKNcsfKeLZzJVTFqPVSv6SHWdqGxgj2ZAs4FF4PEsm7uVEewLcs
+         Fep0XBFFjHyEf3UqEAj5Q5SxIH9rgvARc2/8ug/UiYvP/TewaE5ss6Ownq6cWkR1AYP/
+         3tgrUlslprYEPw90HBfEh77ewxRYZQGtI9fBoSqiWDbIXKy9ZjTZIpNt7EGt+GhCu0zp
+         ZzBd/X2RsCqOouZDxxSk2fiCb4fz90LIhHm/E8QwD7/db3dcDP5ato6539jhyTJPg14d
+         KdyO+TRntjcmhhJKcIBQIwXJleY7mizEECGwCJhmmRo8xShWPPKlTXMosBuPYZ7HaaeA
+         OzcA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769620677; x=1770225477; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6AJCBY/tn9iOXEaPRhRwwP52ntozIkhH10hpJi9Uxfw=;
-        b=QCIYXqIX4S1leR4PqjDNaKfuzvj8PYyES41JLnLA4lgg/zA+XQ5FiEagKlSznLW15B
-         4H1ymrd6jf8WGQxX0JYtJHEr5oHTtcyUVDcs9X45aLledpLSfNbWUzWI4v9ZPKaMHiIy
-         aiTsi929c9RFpk5B49MB8MoTJvUOT8hpBMMHXXJx7iA634yJny8Jy0ET3sIu4VPkDhZ+
-         o0LFAMpPh+XRs81FfCuDsKVonGrHoYNgOpK20PlKO3XZ6GEG1kk44zdNdNxB5pgnv+WT
-         PgtGCTehQUDJ1fiqIOoQOAoVAUsBfK0rMZKVMYgCt69Vs6yQVwftVI+KqKGLKQAaVMyv
-         GTGQ==
+        d=linaro.org; s=google; t=1769620750; x=1770225550; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=c6U2T5XiBkgtqqoIWwFJ9MeumwoEccaKOI8Bpx3K3Oc=;
+        b=emgAG8BDJNaaUSG6V2gc6gDgLN24ig8B6gi29iRk1HErKeMq7bNUz6wF+HwKH8vOUy
+         S7yhjYSIlvLC/i5YXF7GXCGH59a500vVt9q6rkDXmhbhLHCPpkg3mJRqYerOMeIdeteW
+         vfaerpeK6WOWqnQGR4+4g/0LH4WTkYAVCmLVcE7+rk0aVY8HDeK8IFW68cHpaAJuN8ZY
+         IH7d481Q9bPFQosJF75J3SWi9bw8U7S1xyfT7/VH5SaPJWg3EvbmFuQJvh/LmhtRmI09
+         LQV68BkwZ9PpUzGNZvOiPhjjBjMbfIy5CWUvXweorWlGLo6MNSlbBX7cMg7tYpDgz+5Q
+         f05w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769620677; x=1770225477;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6AJCBY/tn9iOXEaPRhRwwP52ntozIkhH10hpJi9Uxfw=;
-        b=glksflmTdNmcrjAbTqoC64WiVshterB6TuAawqNfLg35qc0fLVrCeruvpSWPjWT/16
-         /dU0V82uwjFc7Hb02gbMfZaFh3sOE7RwYTLRH5Lb75ypF3y26TZUkbjb/ofVpt1tOj3P
-         SyNXdSrE/o5tdXQaycGCZyw18cuXqhALllHaS5DFegfllqjQSmNNVR9jOHSqUPoe+i7h
-         i5c5Z9ZGvQ8BCoNBWouEJSJtMxdAllvANs0oof+wuW9jDJZWwrysY6+/EjSVZtd3mLKe
-         lS/cWgs0eTYdjEg3prB0+/NwQjACyhTRRtRFLILkRixKMhBmv4rWk9jCCZlLq80Jv5/8
-         z6ow==
-X-Forwarded-Encrypted: i=1; AJvYcCWl/55B1dQQyuTudAt1Q1hRK3dMdXYxt0zX/ymQSWrfgbTvKw74FSMNTNUUbUcc/O9jFmBD5Yc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHaUYX/ZWFpM39xj9tifeWMXQpRK3pwGQmVZm5FN/umnRe4oL7
-	WVtLFiSlwM54p6IAHQvFBoKfEXT8zRB0vRHaBIkWX7/f/mPY363vw/FWVR35n2ymfkE=
-X-Gm-Gg: AZuq6aKiPnk5FmBNIhmaj28WEZ15UeESdyCyP/5wA8PguMKYrRNgYLNkvdjjXhxIR+2
-	VgWjntTV47yHlz4tFitt469R9x0DTToBVpvXko16K6vOi8I9aCBgKeQJT66uatqywGEprlcn3wf
-	tj+bF1JgyN+6kOFrHsqOvucloGoylmfwr4UHPMTMsYzXYSd1W+zacUeY3IGNhCr00iPxqReaD2S
-	z2kTZCp/L2E3NaYkLgTLKOib2NG9ZjXT1Dy174Cq/vOR8j8K00uQrJxkD7eyfrVlN6vOUskXFFD
-	+1E2W8ej8pi9OJjwU7vriL6ZS7OxYCCBw99Gh9tpAEOaQsnOUxAdXu1lQHyxInSsM9/TAKyoD3e
-	BvBbqC5d/FPL6i71TnJhGkcDvDJIT7S0RiIgjUx1ajAry34SoQgRe6fpRic71ze0bhDHIKoRhwU
-	qYMb9PDJ76gzq2gsomswU=
-X-Received: by 2002:a05:6000:178e:b0:430:fd60:940f with SMTP id ffacd0b85a97d-435dd04c33amr8035567f8f.14.1769620677507;
-        Wed, 28 Jan 2026 09:17:57 -0800 (PST)
-Received: from precision ([2804:7f0:6401:4338:fe12:6a4e:72af:4ca4])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a16cf8f2sm3841611eec.7.2026.01.28.09.17.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 09:17:57 -0800 (PST)
-Date: Wed, 28 Jan 2026 14:17:51 -0300
-From: Henrique Carvalho <henrique.carvalho@suse.com>
-To: Shyam Prasad N <nspmangalore@gmail.com>
-Cc: sfrench@samba.org, pc@manguebit.org, ronniesahlberg@gmail.com, 
-	sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com, ematsumiya@suse.de, 
-	linux-cifs@vger.kernel.org, stable@vger.kernel.org, Steve French <stfrench@microsoft.com>
-Subject: Re: [PATCH v2] smb: client: split cached_fid bitfields to avoid
- shared-byte RMW races
-Message-ID: <pkihyoewqokamtfcawpoe7mpqqu4rf7zwtfnymd5dxxb75cg64@efxg7to7rzqk>
-References: <20260127160128.243441-1-henrique.carvalho@suse.com>
- <CANT5p=q8trAvAMwVOczAuet2qFV_m0w9a9PJdJEtPhAsf5DGsQ@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1769620750; x=1770225550;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c6U2T5XiBkgtqqoIWwFJ9MeumwoEccaKOI8Bpx3K3Oc=;
+        b=RDkdtBjXA19W6GNr1i+rdaN4MOoG6qJ7t5OEjPQF2uwEIo0vke39KD2GG8YDPJ/VHL
+         3LUlgzVY3tTkHQAB9T0L/McqYLnfJ4CfE7IWEpxD+fOyYKv8KBncBAQSfIiR/Fds1a18
+         5P7vlHfX7ki3BCQqto5nKZk0wG1oTG7LNmo4i3RVKh7xU2HooQlM+hVzobq8J7w2w8Pp
+         wKelplowAwx5wmQbUgiVPXUZTno2xE3wRSsEvO7t3OpPwkAlyG3wI0sm0m7pJvkgvXO7
+         mgHOTz0E4vC4pcV+tABEKtxU3pqjMEyzJzlzYZ91WYmRWj2C6DFG49+2lwbQBAn4LNE0
+         GJ9A==
+X-Forwarded-Encrypted: i=1; AJvYcCWpa7Wzgza87KJ5x0ACIYjLyadKXykuq0kH6cIvixdvmpEulha26VKcw8upke+VrgMmjhQI2R8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGnxJlleHCYaeGkXSqxnQHDH0/jo2qhDaKfzebGrzAcMOUlNIw
+	/kxdKKrJkAuVCQGIQeul+HA4Amr9gs9W6IqgjbGCcj+zuahrRTRjcAT6cdlJ+f1X+2h2MksxGCT
+	FL/CAKt0XDpnWE+FXS8AHLkqQ6lqOQOwC8OFb4zzhag==
+X-Gm-Gg: AZuq6aJ9Dno5BMObh3Mx/rvb0L//owNzsMCdzNhmdf6zGh7p8zNyx3StZNmVm3lm5sK
+	hzfacSwJs+dgyKIh5Uzbqa/UzlRPYI27fpLlZBfLZVRRKfWuv9CBHWrsuipADDbYlwXEYu4qywO
+	gzNAhHCg1xwtPumB88iMaC9RM1DpS9ue0TOieb5ENZ5h7E3YxqNhTERlAcP1uwVq69k5nzF7aU0
+	5G3jTOFDURAtPHMzt56XHE5DpNpA42aY1SRXkSi2LrX+ccFI3RxPg56HzFFBr62hDdK1uCQ6LtN
+	u06hGStKhWAzllv7m8gP2hzhgTBd1w==
+X-Received: by 2002:a17:907:9620:b0:b6d:73f8:3168 with SMTP id
+ a640c23a62f3a-b8dab15be8bmr411653466b.3.1769620750053; Wed, 28 Jan 2026
+ 09:19:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANT5p=q8trAvAMwVOczAuet2qFV_m0w9a9PJdJEtPhAsf5DGsQ@mail.gmail.com>
+References: <20260127-imx-rproc-fix-v2-1-7288fcf74385@nxp.com>
+ <CANLsYkznMVh240wMUZGayJHRzsUV-NNTiU+ezpLt3rjcwSn5Wg@mail.gmail.com> <PAXPR04MB845923F8485ABF7DAEA390CB8891A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+In-Reply-To: <PAXPR04MB845923F8485ABF7DAEA390CB8891A@PAXPR04MB8459.eurprd04.prod.outlook.com>
+From: Mathieu Poirier <mathieu.poirier@linaro.org>
+Date: Wed, 28 Jan 2026 10:18:58 -0700
+X-Gm-Features: AZwV_Qi18JCueG1u3J70NR_1Vvtj-phyG744RAEAtU4_AnPA_NPI-ZDjNCfkuhc
+Message-ID: <CANLsYkyrz+A1iEabGZ6rFybFo4=mM+TPVDRSckFB2YUS_7aKow@mail.gmail.com>
+Subject: Re: [PATCH v2] remoteproc: imx_rproc: Not report loaded resource
+ table when none
+To: Peng Fan <peng.fan@nxp.com>
+Cc: Daniel Baluta <daniel.baluta@nxp.com>, Iuliana Prodan <iuliana.prodan@nxp.com>, 
+	Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
+	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212645-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[samba.org,manguebit.org,gmail.com,microsoft.com,talpey.com,suse.de,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212646-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[nxp.com,kernel.org,pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[henrique.carvalho@suse.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mathieu.poirier@linaro.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ABBE1A6E23
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:url]
+X-Rspamd-Queue-Id: 49161A6B6E
 X-Rspamd-Action: no action
 
-On Wed, Jan 28, 2026 at 05:03:03PM +0530, Shyam Prasad N wrote:
-> On Tue, Jan 27, 2026 at 9:39 PM Henrique Carvalho
-> <henrique.carvalho@suse.com> wrote:
+On Tue, 27 Jan 2026 at 20:22, Peng Fan <peng.fan@nxp.com> wrote:
+>
+> > Subject: Re: [PATCH v2] remoteproc: imx_rproc: Not report loaded
+> > resource table when none
 > >
-> > is_open, has_lease and on_list are stored in the same bitfield byte in
-> > struct cached_fid but are updated in different code paths that may run
-> > concurrently. Bitfield assignments generate byte read–modify–write
-> > operations (e.g. `orb $mask, addr` on x86_64), so updating one flag can
-> > restore stale values of the others.
+> > On Mon, 26 Jan 2026 at 23:51, Peng Fan (OSS)
+> > <peng.fan@oss.nxp.com> wrote:
+> > >
+> > > From: Peng Fan <peng.fan@nxp.com>
+> > >
+> > > priv->rsc_table is not NULL if the DT has a "rsc-table" entry,
+> > > priv->indicating
+> > > that _if_ there is a resource table in memory, that's where it should
+> > be.
+> > > Function imx_rproc_elf_find_loaded_rsc_table() is buggy so the
+> > > narrative about a previously running FW with a valid resource table
+> > can be dropped.
+> > >
 > >
-> > A possible interleaving is:
-> >     CPU1: load old byte (has_lease=1, on_list=1)
-> >     CPU2: clear both flags (store 0)
-> >     CPU1: RMW store (old | IS_OPEN) -> reintroduces cleared bits
+> > (sigh)
 > >
-> > To avoid this class of races, convert these flags to separate bool
-> > fields.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: ebe98f1447bbc ("cifs: enable caching of directories for which a lease is held")
-> > Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-> > Signed-off-by: Steve French <stfrench@microsoft.com>
-> > ---
-> > v1 -> v2: Add Fixes: and Cc: stable tags
-> >
-> >  fs/smb/client/cached_dir.h | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/fs/smb/client/cached_dir.h b/fs/smb/client/cached_dir.h
-> > index 1e383db7c3374..5091bf45345e8 100644
-> > --- a/fs/smb/client/cached_dir.h
-> > +++ b/fs/smb/client/cached_dir.h
-> > @@ -36,10 +36,10 @@ struct cached_fid {
-> >         struct list_head entry;
-> >         struct cached_fids *cfids;
-> >         const char *path;
-> > -       bool has_lease:1;
-> > -       bool is_open:1;
-> > -       bool on_list:1;
-> > -       bool file_all_info_is_valid:1;
-> > +       bool has_lease;
-> > +       bool is_open;
-> > +       bool on_list;
-> > +       bool file_all_info_is_valid;
-> >         unsigned long time; /* jiffies of when lease was taken */
-> >         unsigned long last_access_time; /* jiffies of when last accessed */
-> >         struct kref refcount;
-> > --
-> > 2.52.0
-> >
-> >
-> 
-> Does making them as separate bool fields ensure that compiler does not
-> optimize them into bitfields anyway?
+> > You apparently did not understand my last comment.
+>
+> Sorry about this. Does this looks good?
+>
+> Daniel, Iuliana, would you please help review?
+>
+> remoteproc: imx: Fix invalid loaded resource table detection
+>
+> imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
+> resource table even when the current firmware does not provide one.
+>
+> When the device tree contains a "rsc-table" entry, priv->rsc_table is
+> non-NULL and denotes where a resource table would be located if one is
+> present in memory. However, when the current firmware has no resource table,
+> rproc->table_ptr is NULL. The function still returns priv->rsc_table, and the
+> remoteproc core interprets this as a valid loaded resource table.
+> .
+> Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
+> there is no resource table for the current firmware (i.e. when
+> rproc->table_ptr is NULL). This aligns the function's semantics with the
+> remoteproc core: a loaded resource table is only reported when a valid
+> table_ptr exists.
+>
+> With this change, starting firmware without a resource table no longer
+> triggers a crash.
+>
 
-Fair question, I hadn't thought about it.
+Yes, this will be fine.
 
-However, according to C11 standard, that is not allowed:
-
-        2 Except for bit-fields, objects are composed of contiguous sequences of
-        one or more bytes, the number, order, and encoding of which are either
-        explicitly specified or implementation-defined. (6.2.6.1)
-
-        15 Within a structure object, the non-bit-field members and the
-        units in which bit-fields reside have addresses that increase in
-        the order in which they are declared. [...]
-
-> Ideally, we want to protect these fields with a mutex / spinlock,
-> which doesn't leave us suspect to such issues.
-
-So having them as separate bool fields should be enough.
-
--- 
-Henrique
-SUSE Labs
+> Thanks,
+> Peng.
+>
+> >
+> > > In this case rproc->table_ptr is NULL because the current firmware
+> > > does not contain a resource table, but the remoteproc core still
+> > > interprets the non-NULL return value as a loaded resource table and
+> > > attempts to memcpy() from rproc->cached_table, leading to a NULL
+> > > pointer dereference and kernel panic.
+> > >
+> > > Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table()
+> > > when there is no cached resource table for the current firmware. This
+> > > ensures that a loaded resource table is only reported when a valid
+> > > table_ptr exists, which matches the remoteproc core expectations.
+> > >
+> > > This issue can be reproduced by:
+> > >   1) start a firmware with a resource table
+> > >   2) stop the remote processor
+> > >   3) start a firmware without a resource table
+> > >
+> >
+> > Another sign you did not understand my last comment.
+> >
+> > I had hopes of merging this patch but the changelog is too garbled to
+> > be salvageable.  I suggest you ask Daniel or Iuliana for help.
+> >
+> > > With this change, starting a firmware without a resource table no
+> > > longer causes kernel dump.
+> > >
+> > > Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook
+> > for
+> > > find_loaded_rsc_table")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > > ---
+> > > Changes in v2:
+> > > - Per Mathieu, Check rproc->table_ptr, update commit log
+> > > - Include R-b from Frank
+> > > - Link to v1:
+> > >
+> > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2F
+> > lore
+> > > .kernel.org%2Fr%2F20260122-imx-rproc-fix-v1-1-
+> > 36cc64369a40%40nxp.com&d
+> > >
+> > ata=05%7C02%7Cpeng.fan%40nxp.com%7C781fb4227e024211e71c08
+> > de5dbb609e%7C
+> > >
+> > 686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C639051256532
+> > 530786%7CUnknow
+> > >
+> > n%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAw
+> > MCIsIlAiOiJXaW
+> > >
+> > 4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=0
+> > 3sG8la72ysD
+> > > ivP9SMmA9Ry2YaiMvCjsHWAWaGFOVQw%3D&reserved=0
+> > > ---
+> > >  drivers/remoteproc/imx_rproc.c | 4 ++++
+> > >  1 file changed, 4 insertions(+)
+> > >
+> > > diff --git a/drivers/remoteproc/imx_rproc.c
+> > > b/drivers/remoteproc/imx_rproc.c index
+> > >
+> > 375de79168a1c8d11b87ac1bd63774a3feac106d..f5f916d679051936
+> > 0f446f063e09
+> > > d018c5654953 100644
+> > > --- a/drivers/remoteproc/imx_rproc.c
+> > > +++ b/drivers/remoteproc/imx_rproc.c
+> > > @@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct
+> > rproc
+> > > *rproc, const struct firmware *  {
+> > >         struct imx_rproc *priv = rproc->priv;
+> > >
+> > > +       /* No resource table in the firmware */
+> > > +       if (!rproc->table_ptr)
+> > > +               return NULL;
+> > > +
+> > >         if (priv->rsc_table)
+> > >                 return (struct resource_table *)priv->rsc_table;
+> > >
+> > >
+> > > ---
+> > > base-commit: e3b32dcb9f23e3c3927ef3eec6a5842a988fb574
+> > > change-id: 20260122-imx-rproc-fix-e206f8e6e477
+> > >
+> > > Best regards,
+> > > --
+> > > Peng Fan <peng.fan@nxp.com>
+> > >
 
