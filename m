@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-212187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212305-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wBwxCxMwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:39 +0100
+	id 8AncFaAxemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212305-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A91A47DA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B05D4A4C02
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C5AF53057FD5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3751E310515A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9EC2D73BD;
-	Wed, 28 Jan 2026 15:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E09B30E834;
+	Wed, 28 Jan 2026 15:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I73KALv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ed0P4bMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C902D0C62;
-	Wed, 28 Jan 2026 15:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22FC30DD1E;
+	Wed, 28 Jan 2026 15:44:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614679; cv=none; b=FDXVnwr4VQiCv31ItS/Eeob30v073GpiZUMRvGpx8SMOYwrynPZVT9lzTYdCiq3YoRdNswl9jI9Y1/CACjk66l2QhccDR8O3E5W4SgXYJtcIcQpY7iAQKhbS3U+Y+S58rDFYP3ipz2fT4a1GGnpG0J26WFhTiDnOozYi+oCs0P0=
+	t=1769615072; cv=none; b=uWPDVr88TD9D0Fv3YZZhkijyqszIvcZdNfJEsODxSo+cntMghsWir1DPIbjorV5Pg/dkYbEb+X0yPvvjKRuD4n+/4R/+6qIv/7h3wrDx78aNt/5fUH2GFft7wm5Rg/2yCgb2/613qnzpn0V1cjVnlCVsD/0Y8QJ3cCEiD46IPy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614679; c=relaxed/simple;
-	bh=QU0ObblmPn0g5UTEaUGtDIihxFnTNqAN+94Cnc2jz50=;
+	s=arc-20240116; t=1769615072; c=relaxed/simple;
+	bh=O7+LTkgBRLG5/nCsHlB624BvfUEr3zDYsZTDSAO4eRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c0fC5FziSfPR7cDRFYO28LJ1VdRfHKvzWO9p5eFx9TAn8wyi08ySOPMYZcocXYFJYj1/a2fst2rLU86jwll0siGNWsG0Qk1FjAHyxb1paZDh5vltaTo0vzXH0OLn/l1/EpFkeAYUPU9/snW5O30v/T14wwz5qFA7CvrC9PqqpLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I73KALv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A179C4CEF1;
-	Wed, 28 Jan 2026 15:37:58 +0000 (UTC)
+	 MIME-Version; b=jxBlLPT8XURui3G2yqUvuV0jnYr3/9RXQBS/88qSFdA6ubGG9fxAS9T4sslOFu4tgtLwL5dWJXPmiu4MDUQeOggk0cwcxSMxjxxHMCAww9imic9sNPb51CdexofWxulz6/Z/9Ddpyh2VEzme58+C4DBsbbFLv3ULP42dtEvdQU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ed0P4bMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AEFC4CEF1;
+	Wed, 28 Jan 2026 15:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614679;
-	bh=QU0ObblmPn0g5UTEaUGtDIihxFnTNqAN+94Cnc2jz50=;
+	s=korg; t=1769615072;
+	bh=O7+LTkgBRLG5/nCsHlB624BvfUEr3zDYsZTDSAO4eRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I73KALv5fUE2DeoY5eRaF/iIwOYrNCR5An1gb8FyKBMe70H4uqGOWM8SFIPKbquWl
-	 mEgYk50ictKwe379cmWYBTCzGcrLWc3u/BHffGPh1gh9o/ctElIVgAKAk4FV60kIrE
-	 otpHmRVHaK1KnWcdnvQ8psEPJXFXFXJnDaRb5LSI=
+	b=Ed0P4bMy8bgcgMQNRfAYnvVusrcj6TRPYP+G8nXYDw3uoDDL4V5mc/WFr1ld0/HnP
+	 zBITpqcmkrs7E3eUDCm4eniUQ+flBFpdvqzTKKjLK/jHfMOIgbb+y9ZVKgGJGJtaSL
+	 z/EjyQ+DQPIDUOmfk4Lkl4CJcwruZtRQtP7k7vLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org,
+	Arun Raghavan <arunr@valvesoftware.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/254] net: dsa: fix off-by-one in maximum bridge ID determination
-Date: Wed, 28 Jan 2026 16:22:32 +0100
-Message-ID: <20260128145351.139153601@linuxfoundation.org>
+Subject: [PATCH 6.12 070/169] ALSA: usb: Increase volume range that triggers a warning
+Date: Wed, 28 Jan 2026 16:22:33 +0100
+Message-ID: <20260128145336.526246805@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,79 +72,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212305-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212187-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 17A91A47DA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B05D4A4C02
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Arun Raghavan <arunr@valvesoftware.com>
 
-[ Upstream commit dfca045cd4d0ea07ff4198ba392be3e718acaddc ]
+[ Upstream commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62 ]
 
-Prior to the blamed commit, the bridge_num range was from
-0 to ds->max_num_bridges - 1. After the commit, it is from
-1 to ds->max_num_bridges.
+On at least the HyperX Cloud III, the range is 18944 (-18944 -> 0 in
+steps of 1), so the original check for 255 steps is definitely obsolete.
+Let's give ourselves a little more headroom before we emit a warning.
 
-So this check:
-	if (bridge_num >= max)
-		return 0;
-must be updated to:
-	if (bridge_num > max)
-		return 0;
-
-in order to allow the last bridge_num value (==max) to be used.
-
-This is easiest visible when a driver sets ds->max_num_bridges=1.
-The observed behaviour is that even the first created bridge triggers
-the netlink extack "Range of offloadable bridges exceeded" warning, and
-is handled in software rather than being offloaded.
-
-Fixes: 3f9bb0301d50 ("net: dsa: make dp->bridge_num one-based")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20260120211039.3228999-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 80acefff3bc7 ("ALSA: usb-audio - Add volume range check and warn if it too big")
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: linux-sound@vger.kernel.org
+Signed-off-by: Arun Raghavan <arunr@valvesoftware.com>
+Link: https://patch.msgid.link/20260116225804.3845935-1-arunr@valvesoftware.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/dsa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-index c9bf1a9a6c99b..ea30827409367 100644
---- a/net/dsa/dsa.c
-+++ b/net/dsa/dsa.c
-@@ -158,7 +158,7 @@ unsigned int dsa_bridge_num_get(const struct net_device *bridge_dev, int max)
- 		bridge_num = find_next_zero_bit(&dsa_fwd_offloading_bridges,
- 						DSA_MAX_NUM_OFFLOADING_BRIDGES,
- 						1);
--		if (bridge_num >= max)
-+		if (bridge_num > max)
- 			return 0;
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 7307e29c60b75..577f9121971e8 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1807,11 +1807,10 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
  
- 		set_bit(bridge_num, &dsa_fwd_offloading_bridges);
+ 	range = (cval->max - cval->min) / cval->res;
+ 	/*
+-	 * Are there devices with volume range more than 255? I use a bit more
+-	 * to be sure. 384 is a resolution magic number found on Logitech
+-	 * devices. It will definitively catch all buggy Logitech devices.
++	 * There are definitely devices with a range of ~20,000, so let's be
++	 * conservative and allow for a bit more.
+ 	 */
+-	if (range > 384) {
++	if (range > 65535) {
+ 		usb_audio_warn(mixer->chip,
+ 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
+ 			       range);
 -- 
 2.51.0
 
