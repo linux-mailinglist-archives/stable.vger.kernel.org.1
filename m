@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212523-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLp3BwUwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:25 +0100
+	id WGXrOIE5eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212523-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:29:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C81A47BC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C35A5B74
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:29:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9EEFB3064912
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4BB053012D49
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D94932570E;
-	Wed, 28 Jan 2026 15:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487CE308F2E;
+	Wed, 28 Jan 2026 15:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJnbSqRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sn3+jFp2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617A33254A2;
-	Wed, 28 Jan 2026 15:45:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA7D18027;
+	Wed, 28 Jan 2026 15:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615130; cv=none; b=A9quOoG2PE2fOKtvxEBKGmtK/F1D1iwtDIKzParRaWNiuCNi3jB68hh8UnSIcKTHtwd3rD/l8JQlIc2tQnrpb3dedEOAeD0F62DgHvWeO9cjXPH82y3OGz1LY5s3nN8m9l/4IxDbb6hyqPcBVAgad/V+kzp0L9pVdDlUOt9uQyQ=
+	t=1769615804; cv=none; b=SWC4UerrjcMF8qnmJFJYwdjhrl9hqwjeYoeslM0L1s2xtbWlqsaRcB0LtaprbFwht/1EiJwBkeH46S2NnO2BNchFBBIAJxsEGf/LZBr1Te33DP3/o3bl2+uFLALjlUIgggvCJClGp2VfKaR4L6IzeOUildnDvp5JsTwDrAdTnIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615130; c=relaxed/simple;
-	bh=5vS2YFKBBeizu+CjEJ3uBCR4aFjryFcVFxET9W5f7ns=;
+	s=arc-20240116; t=1769615804; c=relaxed/simple;
+	bh=XIQk1qxuKoFlcTgGnS5h6Qb0lgMnGW6ABTGMxpM4S9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJU2qBwv1vwJKinpYHuUem5GETC70kSI+z0UNQkgA+Fq6LPrmgmGhB+0byGIfif473yxxfWdPv2rn7EsfcQ/lAUmscIsLu+pkb5RpegLrwcIduknXMBVKY9ZBJCP2Lzd/vkQCWphE8Zmi49sfHFRdihDGIFBiVxT+BOzHIjnR5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJnbSqRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA98FC4CEF1;
-	Wed, 28 Jan 2026 15:45:29 +0000 (UTC)
+	 MIME-Version; b=fF5kJ1PBegejAp3yJDNTo2+oK/kZHdW/6jxNan6oawS1haYdYFjNj7ml6X2F5V4J8XnO+fz5h13pHp1zwHODtfe6QhHsBM/aknijWLmsI5AW0EY+WODQqWLBULfGn6OGWvH2DZWl2fyejAMlAnM7wgq3WSrXuvtAAYMQLREkPv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sn3+jFp2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656DBC4CEF1;
+	Wed, 28 Jan 2026 15:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615130;
-	bh=5vS2YFKBBeizu+CjEJ3uBCR4aFjryFcVFxET9W5f7ns=;
+	s=korg; t=1769615803;
+	bh=XIQk1qxuKoFlcTgGnS5h6Qb0lgMnGW6ABTGMxpM4S9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJnbSqRjimCnx7suVTbYYAS7/01lLfqtYaMiuixOWFal1dn93zRccn0Ta5pUg9O/N
-	 M2AFPDsWyvmzj1pMpDaTkzgJxzUusrpiRELfKpZI9YWCq2lDalf8qMlVJIfmkueoqc
-	 g6sb/74jwqOUfC99JuAihTJG4+KBUVbE/DLmr9r0=
+	b=Sn3+jFp2XBlaFg/AhLjfAD88StPBezwCFZqVFoefmElHVRS3kyxS6EWWL+CkB3+Af
+	 oQnM1OqWruK5luNViF371Hwg9geWAlc5MwMCJoICn3F9dPbWTghQ6zUQ0OjJ0xRZqE
+	 5CSKvHvn+YVDJdQpPgRaBhMWY1vmpiiCsQOkcmcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Vivier <lvivier@redhat.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel J Blueman <daniel@quora.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/169] usbnet: limit max_mtu based on devices hard_mtu
+Subject: [PATCH 6.18 118/227] clocksource: Reduce watchdog readout delay limit to prevent false positives
 Date: Wed, 28 Jan 2026 16:22:43 +0100
-Message-ID: <20260128145336.885415400@linuxfoundation.org>
+Message-ID: <20260128145348.710301824@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,78 +78,117 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212322-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212523-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,gitlab.com:url]
-X-Rspamd-Queue-Id: 89C81A47BC
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,quora.org:email]
+X-Rspamd-Queue-Id: F1C35A5B74
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Vivier <lvivier@redhat.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit c7159e960f1472a5493ac99aff0086ab1d683594 ]
+[ Upstream commit c06343be0b4e03fe319910dd7a5d5b9929e1c0cb ]
 
-The usbnet driver initializes net->max_mtu to ETH_MAX_MTU before calling
-the device's bind() callback. When the bind() callback sets
-dev->hard_mtu based the device's actual capability (from CDC Ethernet's
-wMaxSegmentSize descriptor), max_mtu is never updated to reflect this
-hardware limitation).
+The "valid" readout delay between the two reads of the watchdog is larger
+than the valid delta between the resulting watchdog and clocksource
+intervals, which results in false positive watchdog results.
 
-This allows userspace (DHCP or IPv6 RA) to configure MTU larger than the
-device can handle, leading to silent packet drops when the backend sends
-packet exceeding the device's buffer size.
+Assume TSC is the clocksource and HPET is the watchdog and both have a
+uncertainty margin of 250us (default). The watchdog readout does:
 
-Fix this by limiting net->max_mtu to the device's hard_mtu after the
-bind callback returns.
+  1) wdnow = read(HPET);
+  2) csnow = read(TSC);
+  3) wdend = read(HPET);
 
-See https://gitlab.com/qemu-project/qemu/-/issues/3268 and
-    https://bugs.passt.top/attachment.cgi?bugid=189
+The valid window for the delta between #1 and #3 is calculated by the
+uncertainty margins of the watchdog and the clocksource:
 
-Fixes: f77f0aee4da4 ("net: use core MTU range checking in USB NIC drivers")
-Signed-off-by: Laurent Vivier <lvivier@redhat.com>
-Link: https://bugs.passt.top/show_bug.cgi?id=189
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Link: https://patch.msgid.link/20260119075518.2774373-1-lvivier@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+   m = 2 * watchdog.uncertainty_margin + cs.uncertainty margin;
+
+which results in 750us for the TSC/HPET case.
+
+The actual interval comparison uses a smaller margin:
+
+   m = watchdog.uncertainty_margin + cs.uncertainty margin;
+
+which results in 500us for the TSC/HPET case.
+
+That means the following scenario will trigger the watchdog:
+
+ Watchdog cycle N:
+
+ 1)       wdnow[N] = read(HPET);
+ 2)       csnow[N] = read(TSC);
+ 3)       wdend[N] = read(HPET);
+
+Assume the delay between #1 and #2 is 100us and the delay between #1 and
+
+ Watchdog cycle N + 1:
+
+ 4)       wdnow[N + 1] = read(HPET);
+ 5)       csnow[N + 1] = read(TSC);
+ 6)       wdend[N + 1] = read(HPET);
+
+If the delay between #4 and #6 is within the 750us margin then any delay
+between #4 and #5 which is larger than 600us will fail the interval check
+and mark the TSC unstable because the intervals are calculated against the
+previous value:
+
+    wd_int = wdnow[N + 1] - wdnow[N];
+    cs_int = csnow[N + 1] - csnow[N];
+
+Putting the above delays in place this results in:
+
+    cs_int = (wdnow[N + 1] + 610us) - (wdnow[N] + 100us);
+ -> cs_int = wd_int + 510us;
+
+which is obviously larger than the allowed 500us margin and results in
+marking TSC unstable.
+
+Fix this by using the same margin as the interval comparison. If the delay
+between two watchdog reads is larger than that, then the readout was either
+disturbed by interconnect congestion, NMIs or SMIs.
+
+Fixes: 4ac1dd3245b9 ("clocksource: Set cs_watchdog_read() checks based on .uncertainty_margin")
+Reported-by: Daniel J Blueman <daniel@quora.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/lkml/20250602223251.496591-1-daniel@quora.org/
+Link: https://patch.msgid.link/87bjjxc9dq.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/usbnet.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ kernel/time/clocksource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index f1f61d85d9498..f4a05737abf7a 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1797,9 +1797,12 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
- 			net->flags |= IFF_NOARP;
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index a1890a073196b..df71949616584 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -252,7 +252,7 @@ enum wd_read_status {
  
--		/* maybe the remote can't receive an Ethernet MTU */
--		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
--			net->mtu = dev->hard_mtu - net->hard_header_len;
-+		if (net->max_mtu > (dev->hard_mtu - net->hard_header_len))
-+			net->max_mtu = dev->hard_mtu - net->hard_header_len;
-+
-+		if (net->mtu > net->max_mtu)
-+			net->mtu = net->max_mtu;
-+
- 	} else if (!info->in || !info->out)
- 		status = usbnet_get_endpoints (dev, udev);
- 	else {
+ static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow, u64 *wdnow)
+ {
+-	int64_t md = 2 * watchdog->uncertainty_margin;
++	int64_t md = watchdog->uncertainty_margin;
+ 	unsigned int nretries, max_retries;
+ 	int64_t wd_delay, wd_seq_delay;
+ 	u64 wd_end, wd_end2;
 -- 
 2.51.0
 
