@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212407-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJFAEOU7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:05 +0100
+	id WEr0GAo5eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212407-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B183EA5F84
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B54ACA5A7F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7A723147D1B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 866CF3155678
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686BB2DF138;
-	Wed, 28 Jan 2026 16:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C984227BF79;
+	Wed, 28 Jan 2026 15:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZSlAPYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCDtFaQn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B99025783A;
-	Wed, 28 Jan 2026 16:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABC0288C22;
+	Wed, 28 Jan 2026 15:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616049; cv=none; b=c3pDm04WP9O1Rb7auNhr4VJ0bjdVL8ZgMqY8TdbMWO4XfXT1lFYqYMQHSLrFTqh3m4A9ODCHkBpu87C1nVvlZFHo7907o/bG6vihTm+kWQ2Rt5XnFSRMP2XW+h4BLVbdSp8gFdCXg4qKC+2Q5OF4fN1+w8UmQJ/UJNaHk2p+tKk=
+	t=1769615414; cv=none; b=awVh4ZxG8RDY/6xFWyUvdhpNI1HsO4SKKMHK8pKlTZ46IpeBNZVBMi6fWHtn7qjw0XwjP+2wkQXAeN2KkuH+cYcD3yUOBXP9jpNeWMkr6AHz4Q9Lz7+bfJmCjBtxuNS20UEKb8wUfh34aA90oS9sRQypbXp/GkGGMq9UOjfp3OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616049; c=relaxed/simple;
-	bh=uk2kq3JCcr9+t5mJRXx3PsRczl9ZTA7/cXmYb2KzBGA=;
+	s=arc-20240116; t=1769615414; c=relaxed/simple;
+	bh=FS6H52q/AClE2NIoiREK1rbyGc9rHD/rG72BR2zVb9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jqmt+fIjrAniEaIleDQcsZVDVc33nUpq6wldQAKp6o5RgrwSmVMgFoRwT5k2LsJEsM1qWxK6adEEP8cvhny2qJm2wQ6hPORGBAdRfMX8wGP6Xwp8nB55K2fzDHjYUt8r5aSOJgjJ1B0XtoXXx+ZZW/N6YwWxt+3N2nZDmjySo60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZSlAPYE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC7BC116C6;
-	Wed, 28 Jan 2026 16:00:48 +0000 (UTC)
+	 MIME-Version; b=FRa2QzceAjuVk7TiMtdB2u44aarNUdcM1XXn8OXaeRZs6sb6quG5wCEMpcyINUal2eTrbQJoHhjEyUssmEeqqtHqzAwflAUTvMTxPxJDSiprOBAS4j3p/cD20yKnXkPJKDAZtQpjob6wRPKb87DpVtzyScS6NWo4xe7wcL890MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCDtFaQn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01485C4CEF1;
+	Wed, 28 Jan 2026 15:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616049;
-	bh=uk2kq3JCcr9+t5mJRXx3PsRczl9ZTA7/cXmYb2KzBGA=;
+	s=korg; t=1769615414;
+	bh=FS6H52q/AClE2NIoiREK1rbyGc9rHD/rG72BR2zVb9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZSlAPYEm/yjudJVyxP8A7qOh8R4szl+1yw2pqxXpQBGwhxHkoaUTrzLT39KGHkxY
-	 WsXxe9EEkgm76Rv9bCFaarnW2r+MHVWfaiZSQjiSxs8mejiaiKoxVuV3NTSzJQvAiQ
-	 w9WaodxukxgveATIBfqCP7wPf7SqDUSpDZ47ThxI=
+	b=UCDtFaQn6FnarPxyDh2E41chsIxb6vwpQqqTHpS3hexS47RntOhmow3JXSLcIb1kk
+	 2hrR/gKNjlqJFAs7rxeCOeSDz0w3I2rxKnmvnxJUo0432BcoVsysvg1d8Cw0ikPcRf
+	 F9A/CKnvY+buN11fs6HuVbH/8Ln5/iV1MMeMqbpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenkai Lin <linwenkai6@hisilicon.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 6.18 191/227] uacce: fix cdev handling in the cleanup path
-Date: Wed, 28 Jan 2026 16:23:56 +0100
-Message-ID: <20260128145351.319459532@linuxfoundation.org>
+	Rasmus Villemoes <ravi@prevas.dk>,
+	Peter Rosin <peda@axentia.se>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 154/169] iio: core: add separate lockdep class for info_exist_lock
+Date: Wed, 28 Jan 2026 16:23:57 +0100
+Message-ID: <20260128145339.551456129@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,81 +70,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212407-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212596-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B183EA5F84
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iio_dev.info:url,axentia.se:email,prevas.dk:email]
+X-Rspamd-Queue-Id: B54ACA5A7F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenkai Lin <linwenkai6@hisilicon.com>
+From: Rasmus Villemoes <ravi@prevas.dk>
 
-commit a3bece3678f6c88db1f44c602b2a63e84b4040ac upstream.
+[ Upstream commit 9910159f06590c17df4fbddedaabb4c0201cc4cb ]
 
-When cdev_device_add fails, it internally releases the cdev memory,
-and if cdev_device_del is then executed, it will cause a hang error.
-To fix it, we check the return value of cdev_device_add() and clear
-uacce->cdev to avoid calling cdev_device_del in the uacce_remove.
+When one iio device is a consumer of another, it is possible that
+the ->info_exist_lock of both ends up being taken when reading the
+value of the consumer device.
 
-Fixes: 015d239ac014 ("uacce: add uacce driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-2-huangchenghai2@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since they currently belong to the same lockdep class (being
+initialized in a single location with mutex_init()), that results in a
+lockdep warning
+
+         CPU0
+         ----
+    lock(&iio_dev_opaque->info_exist_lock);
+    lock(&iio_dev_opaque->info_exist_lock);
+
+   *** DEADLOCK ***
+
+   May be due to missing lock nesting notation
+
+  4 locks held by sensors/414:
+   #0: c31fd6dc (&p->lock){+.+.}-{3:3}, at: seq_read_iter+0x44/0x4e4
+   #1: c4f5a1c4 (&of->mutex){+.+.}-{3:3}, at: kernfs_seq_start+0x1c/0xac
+   #2: c2827548 (kn->active#34){.+.+}-{0:0}, at: kernfs_seq_start+0x30/0xac
+   #3: c1dd2b68 (&iio_dev_opaque->info_exist_lock){+.+.}-{3:3}, at: iio_read_channel_processed_scale+0x24/0xd8
+
+  stack backtrace:
+  CPU: 0 UID: 0 PID: 414 Comm: sensors Not tainted 6.17.11 #5 NONE
+  Hardware name: Generic AM33XX (Flattened Device Tree)
+  Call trace:
+   unwind_backtrace from show_stack+0x10/0x14
+   show_stack from dump_stack_lvl+0x44/0x60
+   dump_stack_lvl from print_deadlock_bug+0x2b8/0x334
+   print_deadlock_bug from __lock_acquire+0x13a4/0x2ab0
+   __lock_acquire from lock_acquire+0xd0/0x2c0
+   lock_acquire from __mutex_lock+0xa0/0xe8c
+   __mutex_lock from mutex_lock_nested+0x1c/0x24
+   mutex_lock_nested from iio_read_channel_raw+0x20/0x6c
+   iio_read_channel_raw from rescale_read_raw+0x128/0x1c4
+   rescale_read_raw from iio_channel_read+0xe4/0xf4
+   iio_channel_read from iio_read_channel_processed_scale+0x6c/0xd8
+   iio_read_channel_processed_scale from iio_hwmon_read_val+0x68/0xbc
+   iio_hwmon_read_val from dev_attr_show+0x18/0x48
+   dev_attr_show from sysfs_kf_seq_show+0x80/0x110
+   sysfs_kf_seq_show from seq_read_iter+0xdc/0x4e4
+   seq_read_iter from vfs_read+0x238/0x2e4
+   vfs_read from ksys_read+0x6c/0xec
+   ksys_read from ret_fast_syscall+0x0/0x1c
+
+Just as the mlock_key already has its own lockdep class, add a
+lock_class_key for the info_exist mutex.
+
+Note that this has in theory been a problem since before IIO first
+left staging, but it only occurs when a chain of consumers is in use
+and that is not often done.
+
+Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
+Signed-off-by: Rasmus Villemoes <ravi@prevas.dk>
+Reviewed-by: Peter Rosin <peda@axentia.se>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/uacce/uacce.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/iio/industrialio-core.c |    4 +++-
+ include/linux/iio/iio-opaque.h  |    2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -519,6 +519,8 @@ EXPORT_SYMBOL_GPL(uacce_alloc);
-  */
- int uacce_register(struct uacce_device *uacce)
- {
-+	int ret;
-+
- 	if (!uacce)
- 		return -ENODEV;
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1631,6 +1631,7 @@ static void iio_dev_release(struct devic
+ 	mutex_destroy(&iio_dev_opaque->info_exist_lock);
+ 	mutex_destroy(&iio_dev_opaque->mlock);
  
-@@ -529,7 +531,11 @@ int uacce_register(struct uacce_device *
- 	uacce->cdev->ops = &uacce_fops;
- 	uacce->cdev->owner = THIS_MODULE;
++	lockdep_unregister_key(&iio_dev_opaque->info_exist_key);
+ 	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
  
--	return cdev_device_add(uacce->cdev, &uacce->dev);
-+	ret = cdev_device_add(uacce->cdev, &uacce->dev);
-+	if (ret)
-+		uacce->cdev = NULL;
-+
-+	return ret;
+ 	ida_free(&iio_ida, iio_dev_opaque->id);
+@@ -1696,9 +1697,10 @@ struct iio_dev *iio_device_alloc(struct
+ 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
+ 
+ 	lockdep_register_key(&iio_dev_opaque->mlock_key);
++	lockdep_register_key(&iio_dev_opaque->info_exist_key);
+ 
+ 	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
+-	mutex_init(&iio_dev_opaque->info_exist_lock);
++	mutex_init_with_key(&iio_dev_opaque->info_exist_lock, &iio_dev_opaque->info_exist_key);
+ 
+ 	return indio_dev;
  }
- EXPORT_SYMBOL_GPL(uacce_register);
- 
+--- a/include/linux/iio/iio-opaque.h
++++ b/include/linux/iio/iio-opaque.h
+@@ -14,6 +14,7 @@
+  * @mlock:			lock used to prevent simultaneous device state changes
+  * @mlock_key:			lockdep class for iio_dev lock
+  * @info_exist_lock:		lock to prevent use during removal
++ * @info_exist_key:		lockdep class for info_exist lock
+  * @trig_readonly:		mark the current trigger immutable
+  * @event_interface:		event chrdevs associated with interrupt lines
+  * @attached_buffers:		array of buffers statically attached by the driver
+@@ -47,6 +48,7 @@ struct iio_dev_opaque {
+ 	struct mutex			mlock;
+ 	struct lock_class_key		mlock_key;
+ 	struct mutex			info_exist_lock;
++	struct lock_class_key		info_exist_key;
+ 	bool				trig_readonly;
+ 	struct iio_event_interface	*event_interface;
+ 	struct iio_buffer		**attached_buffers;
 
 
 
