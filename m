@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212173-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +A3pFWk4emkd4wEAu9opvQ
-	(envelope-from <stable+bounces-212355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:13 +0100
+	id CDUpNWkvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212173-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B09F5A5956
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0084FA4630
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D3C731DBD4A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 73BCD30501ED
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1235630FC05;
-	Wed, 28 Jan 2026 15:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A660E2D7DFE;
+	Wed, 28 Jan 2026 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wP8TvAuw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnAycEBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C837E2C11FD;
-	Wed, 28 Jan 2026 15:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699E72D6E63;
+	Wed, 28 Jan 2026 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615241; cv=none; b=EI836WVjoVJUTcL9uBqUUtAieiQ0+wle5ZWGi41Ohwe2/Pls0UvV/TpGFiwnb1vQRlVmvza8t/DRGeFo+/s9dbH6douVUVYjLXLP+FFsFPVU1ALWGmfcRKs19Fbn35pbG0knoq9+3/sp9ZsJtqK/8aT8Z7wb9dV6ldbHlpg9XUs=
+	t=1769614632; cv=none; b=ErP3luq7PguEjNAHzFUOK1YPT5dCms9V/loYDZkklvc/he9gm60ZYos2x1p7N7UBPpztmHe3HzQU0jvlDnUO7v1UpTLZ/PSiG0TTfYOOnxd0GVUSHDHnIeC2xW8ELVjUTz7G7Ic1/RRzSLUpVo6pCjU5sV/TCoHvCfdkbiiVHko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615241; c=relaxed/simple;
-	bh=ulMXj80pwiQnlgdlStH/A1sIJlSE/xxQvFHrQaoxGDA=;
+	s=arc-20240116; t=1769614632; c=relaxed/simple;
+	bh=9hz7TB5XRHtIdJsDPosMmTwjJeimxfLq6j2YqRu0HKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mv8fqiUmA3zqrRCHrOtFWQDKPZR2n5UUlwfvr2cMarATJHldn357ikc2ftw+nNuxdisIhQSmNCFi2d18DnGj84gTp5TZuGDznzpViJ0meWRH0oTsnwai1+OESZw/NzPpjgEMt4Uo4cm5tf+tTluxZcV/7TDVbe4HbJYtZ9EHUuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wP8TvAuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD78C4CEF1;
-	Wed, 28 Jan 2026 15:47:21 +0000 (UTC)
+	 MIME-Version; b=QHkyYTH7J/J1MhUMm+oA4UKjAixFXBaEQAIv8QFWw/LME+XSv5pySCNwlO81Gal+LRNdinAhf7SJyS9wYwLdikiuhdWKKDFEOK6wXYEg77nLYcOAUAQXbz6mYwpTnZ/dks+R+xXSf+dIhEPNHUdl7eh7H75mp9gAA6h53BBFYgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnAycEBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9CFC4CEF1;
+	Wed, 28 Jan 2026 15:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615241;
-	bh=ulMXj80pwiQnlgdlStH/A1sIJlSE/xxQvFHrQaoxGDA=;
+	s=korg; t=1769614632;
+	bh=9hz7TB5XRHtIdJsDPosMmTwjJeimxfLq6j2YqRu0HKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wP8TvAuwNBXriFWG1pEkzqzo+9xmciFswv1D4wPGOqSbMaiCjDAgJ7+fkHAMXI9YT
-	 nQG1ZAe+XDlEI/9zbMoQOBlLaZ0TLjI3DNTII7A68nmlbePAUhPAHbjlRWyE4YRvMx
-	 o7XkzgR+HeDoZC9q0iAQXcJwutJcHoxPQ28WcLqE=
+	b=cnAycEBRsaV/unoyeOAKkD4Kuyn/KO0f4f2xRc0jjC4yc0ZEETm7HNJD7v14F6TrA
+	 T3VfZyGvAvl9mv6rXNIzYHxr7MyjUZ8W53jmuEAh5SHaEQqnC+Gz3+4/4+xQP87wdm
+	 s59x9ZA8o9n7URbZC24rkx8BLOfk/VGuQR6dA/gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/169] selftests: net: amt: wait longer for connection before sending packets
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Yifeng Zhao <yifeng.zhao@rock-chips.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 195/254] mmc: sdhci-of-dwcmshc: Prevent illegal clock reduction in HS200/HS400 mode
 Date: Wed, 28 Jan 2026 16:22:51 +0100
-Message-ID: <20260128145337.174418042@linuxfoundation.org>
+Message-ID: <20260128145351.815107250@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,96 +68,89 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212355-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212173-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.977];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B09F5A5956
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,debian:email]
+X-Rspamd-Queue-Id: 0084FA4630
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-[ Upstream commit 04708606fd7bdc34b69089a4ff848ff36d7088f9 ]
+commit 3009738a855cf938bbfc9078bec725031ae623a4 upstream.
 
-Both send_mcast4() and send_mcast6() use sleep 2 to wait for the tunnel
-connection between the gateway and the relay, and for the listener
-socket to be created in the LISTENER namespace.
+When operating in HS200 or HS400 timing modes, reducing the clock frequency
+below 52MHz will lead to link broken as the Rockchip DWC MSHC controller
+requires maintaining a minimum clock of 52MHz in these modes.
 
-However, tests sometimes fail because packets are sent before the
-connection is fully established.
+Add a check to prevent illegal clock reduction through debugfs:
 
-Increase the waiting time to make the tests more reliable, and use
-wait_local_port_listen() to explicitly wait for the listener socket.
+root@debian:/# echo 50000000 > /sys/kernel/debug/mmc0/clock
+root@debian:/# [   30.090146] mmc0: running CQE recovery
+mmc0: cqhci: Failed to halt
+mmc0: cqhci: spurious TCN for tag 0
+WARNING: drivers/mmc/host/cqhci-core.c:797 at cqhci_irq+0x254/0x818, CPU#1: kworker/1:0H/24
+Modules linked in:
+CPU: 1 UID: 0 PID: 24 Comm: kworker/1:0H Not tainted 6.19.0-rc1-00001-g09db0998649d-dirty #204 PREEMPT
+Hardware name: Rockchip RK3588 EVB1 V10 Board (DT)
+Workqueue: kblockd blk_mq_run_work_fn
+pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : cqhci_irq+0x254/0x818
+lr : cqhci_irq+0x254/0x818
+...
 
-Fixes: c08e8baea78e ("selftests: add amt interface selftest script")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Link: https://patch.msgid.link/20260120133930.863845-1-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c6f361cba51c ("mmc: sdhci-of-dwcmshc: add support for rk3588")
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: Yifeng Zhao <yifeng.zhao@rock-chips.com>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/amt.sh | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-of-dwcmshc.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/testing/selftests/net/amt.sh b/tools/testing/selftests/net/amt.sh
-index d458b45c775b4..42957561c414a 100755
---- a/tools/testing/selftests/net/amt.sh
-+++ b/tools/testing/selftests/net/amt.sh
-@@ -73,6 +73,8 @@
- #       +------------------------+
- #==============================================================================
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -244,6 +244,13 @@ static void dwcmshc_rk3568_set_clock(str
+ 	sdhci_writel(host, extra, reg);
  
-+source lib.sh
+ 	if (clock <= 52000000) {
++		if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
++		    host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
++			dev_err(mmc_dev(host->mmc),
++				"Can't reduce the clock below 52MHz in HS200/HS400 mode");
++			return;
++		}
 +
- readonly LISTENER=$(mktemp -u listener-XXXXXXXX)
- readonly GATEWAY=$(mktemp -u gateway-XXXXXXXX)
- readonly RELAY=$(mktemp -u relay-XXXXXXXX)
-@@ -240,14 +242,15 @@ test_ipv6_forward()
- 
- send_mcast4()
- {
--	sleep 2
-+	sleep 5
-+	wait_local_port_listen ${LISTENER} 4000 udp
- 	ip netns exec "${SOURCE}" bash -c \
- 		'printf "%s %128s" 172.17.0.2 | nc -w 1 -u 239.0.0.1 4000' &
- }
- 
- send_mcast6()
- {
--	sleep 2
-+	wait_local_port_listen ${LISTENER} 6000 udp
- 	ip netns exec "${SOURCE}" bash -c \
- 		'printf "%s %128s" 2001:db8:3::2 | nc -w 1 -u ff0e::5:6 6000' &
- }
--- 
-2.51.0
-
+ 		/*
+ 		 * Disable DLL and reset both of sample and drive clock.
+ 		 * The bypass bit and start bit need to be set if DLL is not locked.
 
 
 
