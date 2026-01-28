@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-212615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sA2LJQM0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212615-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:27 +0100
+	id 2JfQKL4yeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:01:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5175EA5157
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 486D8A4ECC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF14B3044C9F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:02:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9F763147E88
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A1F30F7F1;
-	Wed, 28 Jan 2026 16:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3892F6183;
+	Wed, 28 Jan 2026 15:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZjTDCci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSxXbn4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B5F309F1F;
-	Wed, 28 Jan 2026 16:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2EA2E2DF4;
+	Wed, 28 Jan 2026 15:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616114; cv=none; b=lnTpc1R8CSNm9dVezUnOnr92+Se2ujQJXMq/QzsuJ/a9mrFdFcxFrjOOuT/cOEgmSX1nRPZUp4M2xn1OVRpUCy5s6t9IJXe7cNONooeCwA3Al+K7222Z3LViHTJ2HMuQzTEToC3e958O9JxJRjTdfNvTkCR5Ao3VucM30w8/5Mg=
+	t=1769615387; cv=none; b=AE/knwm1Z4ajyHhOnPC8gLduWHQ0CrbMZdQTULzH4T1vI05tB1pTY4Zkx0TWKPb1uxtHJg9sDNPdtYMIz4j/4de7dNIFDiXHrSPD2tXCYxFk7Wx2g/mXMz9p/yKZBc5jve62WJvUYPF5gdbIZVF2EFhquaJKaw7Xo/wpu7DERTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616114; c=relaxed/simple;
-	bh=S1YtUIadwpAAD7eeqt7bJ/f5ZsM2OnRn6bjhgJ58/kQ=;
+	s=arc-20240116; t=1769615387; c=relaxed/simple;
+	bh=nRxiH1KHX2rVne2eu3eqt42nboHcfVsp7Qk5O+67pok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NukqCmwmKJG853fKljS3Vbq5fuLKGcq+kAzfYgHgDe4hP0kWSdgD7875YdJ/wMaK8KAID+CsOs/Z58z0y0hiD72Cc/O+DesfqPB4tCVAhRIC946mcots6Z8nxKeHH9qcOApWyvfEI7H9FMBtwGya+O/neswM5Syxvh95SltksOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZjTDCci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793A5C4CEF7;
-	Wed, 28 Jan 2026 16:01:53 +0000 (UTC)
+	 MIME-Version; b=H8javzfZFp6ujM8SsGTQ1tLBzv6o4KRWJ4OllUaw7dBV3T3gVf9ihrs+87JYwqaH5ku0elbRG8+1V59eGiV5Tog2VuoFa7hHiRHnY1DiD1qad3vfb36k6j4mHv+7EQhZZLys9sjsCUws9sdc3Nf7tVBfGhl5t5X/7I52J7riC5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSxXbn4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E943FC4CEF1;
+	Wed, 28 Jan 2026 15:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616114;
-	bh=S1YtUIadwpAAD7eeqt7bJ/f5ZsM2OnRn6bjhgJ58/kQ=;
+	s=korg; t=1769615387;
+	bh=nRxiH1KHX2rVne2eu3eqt42nboHcfVsp7Qk5O+67pok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZjTDCcidHc1xIcepwSDdPFR+L0dNSpC5mXMpY00c1ALlvPQUdLonQjb7+Z5N1J4q
-	 VkKpu5vJoo0SKX9dg+JDIODNEqfOS9oxvt7RqIKbz0CKiY3YR4ZDSnaBnVB5ffxf43
-	 JM/Byz0FYvQ0C+1fXc1itthOFQXDl3hMvuH5ckaQ=
+	b=eSxXbn4QR5EGBA2MOY9QdJOCnL7fHsv85eq3zzRmbpfFk5yCJNoILMm3vsOxH5f0H
+	 x3ZCmRcQF3dpuWNtJUvUvEn35GivTVsfs0qTTb1kObI5BRw6b0jdmouLmHJBNRqQlw
+	 blfafsQ0IQHgyzH/uoRQqF6dW/UtJgCSWQwHn3UM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.18 203/227] irqchip/gic-v3-its: Avoid truncating memory addresses
+	"kernel-dev@igalia.com, Heitor Alves de Siqueira" <halves@igalia.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Heitor Alves de Siqueira <halves@igalia.com>
+Subject: [PATCH 6.12 165/169] vsock/virtio: Rename virtio_vsock_skb_rx_put()
 Date: Wed, 28 Jan 2026 16:24:08 +0100
-Message-ID: <20260128145351.744724659@linuxfoundation.org>
+Message-ID: <20260128145339.963422213@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,105 +71,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212615-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212399-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[20250717090116.11987-9-will.kernel.org:query timed out];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5175EA5157
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 486D8A4ECC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Will Deacon <will@kernel.org>
 
-commit 8d76a7d89c12d08382b66e2f21f20d0627d14859 upstream.
+[Upstream commit 8ca76151d2c8219edea82f1925a2a25907ff6a9d]
 
-On 32-bit machines with CONFIG_ARM_LPAE, it is possible for lowmem
-allocations to be backed by addresses physical memory above the 32-bit
-address limit, as found while experimenting with larger VMSPLIT
-configurations.
+In preparation for using virtio_vsock_skb_rx_put() when populating SKBs
+on the vsock TX path, rename virtio_vsock_skb_rx_put() to
+virtio_vsock_skb_put().
 
-This caused the qemu virt model to crash in the GICv3 driver, which
-allocates the 'itt' object using GFP_KERNEL. Since all memory below
-the 4GB physical address limit is in ZONE_DMA in this configuration,
-kmalloc() defaults to higher addresses for ZONE_NORMAL, and the
-ITS driver stores the physical address in a 32-bit 'unsigned long'
-variable.
+No functional change.
 
-Change the itt_addr variable to the correct phys_addr_t type instead,
-along with all other variables in this driver that hold a physical
-address.
-
-The gicv5 driver correctly uses u64 variables, while all other irqchip
-drivers don't call virt_to_phys or similar interfaces. It's expected that
-other device drivers have similar issues, but fixing this one is
-sufficient for booting a virtio based guest.
-
-Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260119201603.2713066-1-arnd@kernel.org
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Message-Id: <20250717090116.11987-9-will@kernel.org>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/vhost/vsock.c            |    2 +-
+ include/linux/virtio_vsock.h     |    2 +-
+ net/vmw_vsock/virtio_transport.c |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -709,7 +709,7 @@ static struct its_collection *its_build_
- 						 struct its_cmd_block *cmd,
- 						 struct its_cmd_desc *desc)
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -377,7 +377,7 @@ vhost_vsock_alloc_skb(struct vhost_virtq
+ 		return NULL;
+ 	}
+ 
+-	virtio_vsock_skb_rx_put(skb, payload_len);
++	virtio_vsock_skb_put(skb, payload_len);
+ 
+ 	nbytes = copy_from_iter(skb->data, payload_len, &iov_iter);
+ 	if (nbytes != payload_len) {
+--- a/include/linux/virtio_vsock.h
++++ b/include/linux/virtio_vsock.h
+@@ -47,7 +47,7 @@ static inline void virtio_vsock_skb_clea
+ 	VIRTIO_VSOCK_SKB_CB(skb)->tap_delivered = false;
+ }
+ 
+-static inline void virtio_vsock_skb_rx_put(struct sk_buff *skb, u32 len)
++static inline void virtio_vsock_skb_put(struct sk_buff *skb, u32 len)
  {
--	unsigned long itt_addr;
-+	phys_addr_t itt_addr;
- 	u8 size = ilog2(desc->its_mapd_cmd.dev->nr_ites);
+ 	skb_put(skb, len);
+ }
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -657,7 +657,7 @@ static void virtio_transport_rx_work(str
+ 			}
  
- 	itt_addr = virt_to_phys(desc->its_mapd_cmd.dev->itt);
-@@ -879,7 +879,7 @@ static struct its_vpe *its_build_vmapp_c
- 					   struct its_cmd_desc *desc)
- {
- 	struct its_vpe *vpe = valid_vpe(its, desc->its_vmapp_cmd.vpe);
--	unsigned long vpt_addr, vconf_addr;
-+	phys_addr_t vpt_addr, vconf_addr;
- 	u64 target;
- 	bool alloc;
+ 			if (payload_len)
+-				virtio_vsock_skb_rx_put(skb, payload_len);
++				virtio_vsock_skb_put(skb, payload_len);
  
-@@ -2477,10 +2477,10 @@ retry_baser:
- 	baser->psz = psz;
- 	tmp = indirect ? GITS_LVL1_ENTRY_SIZE : esz;
- 
--	pr_info("ITS@%pa: allocated %d %s @%lx (%s, esz %d, psz %dK, shr %d)\n",
-+	pr_info("ITS@%pa: allocated %d %s @%llx (%s, esz %d, psz %dK, shr %d)\n",
- 		&its->phys_base, (int)(PAGE_ORDER_TO_SIZE(order) / (int)tmp),
- 		its_base_type_string[type],
--		(unsigned long)virt_to_phys(base),
-+		(u64)virt_to_phys(base),
- 		indirect ? "indirect" : "flat", (int)esz,
- 		psz / SZ_1K, (int)shr >> GITS_BASER_SHAREABILITY_SHIFT);
- 
+ 			virtio_transport_deliver_tap_pkt(skb);
+ 			virtio_transport_recv_pkt(&virtio_transport, skb);
 
 
 
