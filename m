@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-212112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFWBF04vemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212112-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:22 +0100
+	id mHUEFjA3eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:20:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA3EA45F6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D91F1A56FA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D92A306B0A8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2447430A2952
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276BB26ED48;
-	Wed, 28 Jan 2026 15:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A017F2DF138;
+	Wed, 28 Jan 2026 15:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OU9RwfPu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKOH4EYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5942586FE;
-	Wed, 28 Jan 2026 15:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6310F239570;
+	Wed, 28 Jan 2026 15:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614435; cv=none; b=FIx83pvu1T/saBeGSxHdc2blnb1bs1e190DGwJqAk7B9MrIRvbd6cbwx7A4fN138pbw9WR+0zS+PuJc/GTU6a5nM+f4obRJTaswe/YfRhHkho9/pzPaqYYQFEPiEVdM1XZdF59EN+kz58IUnpL1KuduRoanOhar842DRViiI6hU=
+	t=1769614921; cv=none; b=oFoPXcw6xr/wm2HrQf8xUU/ObYplYbgUbZGcVVJtWHu99TfJI8gKKTJgXBsjXVp/Bf40FSNMHpKwWKePjbUxdDZfgWKaj9X8eQsfVxiN0r0v5q3yevP43F4110Zfx0ESY4fYi4IZyBJDCYeDITRI2XAFDxPgnK65IZr7fLH50y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614435; c=relaxed/simple;
-	bh=r5ana6WeZMtTgQ0raDHFmP7PGprR7Ad5XkG8aXi3qzA=;
+	s=arc-20240116; t=1769614921; c=relaxed/simple;
+	bh=5CBuzF2TwGpjzJX6FwLNttS7Nv7SqwTpM5BLDKnEqps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxzvFId3DG8DYUebCvo3FhlV2UruH9+z8LedAFNOxYoDGg/V9TmN8HnhDnr//kZ7GZ9hgCSvugRUn6hxyRquW9jjo5NJrIhgV2CkkAN5IsJDZZRSwnXAZYk1zo6pWSiNXHA26UvZhyKBOe+qLOoHejUJCEGMx5YEE68/DkQGuoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OU9RwfPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63605C4CEF1;
-	Wed, 28 Jan 2026 15:33:55 +0000 (UTC)
+	 MIME-Version; b=PiHAOjE0zDSXVgJeZvvvtAzSMLG7zVOkG9Q6bT8ZfIn0Icoi5RZzohpbLCkQ8OoHUbEC+GhtKXfG0/8kDToNMtFfwSzCQPaHmGu7KUQtD+ZAcve5rf/HdrfwSJ0EaOH5/aWw3jg0c3fAlM0knJ+bq8nxf418L4XiOTNm+KjimeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKOH4EYc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76B7C4CEF1;
+	Wed, 28 Jan 2026 15:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614435;
-	bh=r5ana6WeZMtTgQ0raDHFmP7PGprR7Ad5XkG8aXi3qzA=;
+	s=korg; t=1769614921;
+	bh=5CBuzF2TwGpjzJX6FwLNttS7Nv7SqwTpM5BLDKnEqps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OU9RwfPu5Hl2NwmKr/dF02xjkg3/EdG0zZ9OxdtydZUWLEridt72Z3K6sfwgFr7fw
-	 L6cDqedWECOdwu9V1dnFkDK37Lpyi++cFNTGGxRJQwkk45dnUKg8goZJnnfO3Sh9A9
-	 FalXhoPfMorFYjpzXXtpKlwMcf86GxVnZMpgs9GE=
+	b=YKOH4EYcvEnBNJBepE7fMaT16P5vvQfolYlCiefU3GYoEr0G02ISVOSupR14qbX4I
+	 7m00OuSK9PFtwo4c486+R6ywyamCesuzyZM7d4kbApqjmL3+JAOTimQGxh9VGbGHTO
+	 UP41xmjT7f5BGRVNfNILtOcLEJN9WPhlIHdCcbRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taeyang Lee <0wn@theori.io>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+2c42ea4485b29beb0643@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/254] crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec
+Subject: [PATCH 6.12 027/169] l2tp: Fix memleak in l2tp_udp_encap_recv().
 Date: Wed, 28 Jan 2026 16:21:50 +0100
-Message-ID: <20260128145349.641459151@linuxfoundation.org>
+Message-ID: <20260128145335.000161807@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +67,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212112-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212260-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[theori.io:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,apana.org.au:email]
-X-Rspamd-Queue-Id: ABA3EA45F6
+	TAGGED_RCPT(0.00)[stable,2c42ea4485b29beb0643];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: D91F1A56FA
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taeyang Lee <0wn@theori.io>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 2397e9264676be7794f8f7f1e9763d90bd3c7335 ]
+[ Upstream commit 4d10edfd1475b69dbd4c47f34b61a3772ece83ca ]
 
-authencesn assumes an ESP/ESN-formatted AAD. When assoclen is shorter than
-the minimum expected length, crypto_authenc_esn_decrypt() can advance past
-the end of the destination scatterlist and trigger a NULL pointer dereference
-in scatterwalk_map_and_copy(), leading to a kernel panic (DoS).
+syzbot reported memleak of struct l2tp_session, l2tp_tunnel,
+sock, etc. [0]
 
-Add a minimum AAD length check to fail fast on invalid inputs.
+The cited commit moved down the validation of the protocol
+version in l2tp_udp_encap_recv().
 
-Fixes: 104880a6b470 ("crypto: authencesn - Convert to new AEAD interface")
-Reported-By: Taeyang Lee <0wn@theori.io>
-Signed-off-by: Taeyang Lee <0wn@theori.io>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+The new place requires an extra error handling to avoid the
+memleak.
+
+Let's call l2tp_session_put() there.
+
+[0]:
+BUG: memory leak
+unreferenced object 0xffff88810a290200 (size 512):
+  comm "syz.0.17", pid 6086, jiffies 4294944299
+  hex dump (first 32 bytes):
+    7d eb 04 0c 00 00 00 00 01 00 00 00 00 00 00 00  }...............
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc babb6a4f):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    __do_kmalloc_node mm/slub.c:5656 [inline]
+    __kmalloc_noprof+0x3e0/0x660 mm/slub.c:5669
+    kmalloc_noprof include/linux/slab.h:961 [inline]
+    kzalloc_noprof include/linux/slab.h:1094 [inline]
+    l2tp_session_create+0x3a/0x3b0 net/l2tp/l2tp_core.c:1778
+    pppol2tp_connect+0x48b/0x920 net/l2tp/l2tp_ppp.c:755
+    __sys_connect_file+0x7a/0xb0 net/socket.c:2089
+    __sys_connect+0xde/0x110 net/socket.c:2108
+    __do_sys_connect net/socket.c:2114 [inline]
+    __se_sys_connect net/socket.c:2111 [inline]
+    __x64_sys_connect+0x1c/0x30 net/socket.c:2111
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 364798056f518 ("l2tp: Support different protocol versions with same IP/port quadruple")
+Reported-by: syzbot+2c42ea4485b29beb0643@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/696693f2.a70a0220.245e30.0001.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Link: https://patch.msgid.link/20260113185446.2533333-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/authencesn.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/l2tp/l2tp_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/authencesn.c b/crypto/authencesn.c
-index 91424e791d5c7..29ff3a0e86c09 100644
---- a/crypto/authencesn.c
-+++ b/crypto/authencesn.c
-@@ -189,6 +189,9 @@ static int crypto_authenc_esn_encrypt(struct aead_request *req)
- 	struct scatterlist *src, *dst;
- 	int err;
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 369a2f2e459cd..61fe27d71c230 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -1086,8 +1086,10 @@ int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 	tunnel = session->tunnel;
  
-+	if (assoclen < 8)
-+		return -EINVAL;
-+
- 	sg_init_table(areq_ctx->src, 2);
- 	src = scatterwalk_ffwd(areq_ctx->src, req->src, assoclen);
- 	dst = src;
-@@ -281,6 +284,9 @@ static int crypto_authenc_esn_decrypt(struct aead_request *req)
- 	u32 tmp[2];
- 	int err;
+ 	/* Check protocol version */
+-	if (version != tunnel->version)
++	if (version != tunnel->version) {
++		l2tp_session_put(session);
+ 		goto invalid;
++	}
  
-+	if (assoclen < 8)
-+		return -EINVAL;
-+
- 	cryptlen -= authsize;
- 
- 	if (req->src != dst) {
+ 	if (version == L2TP_HDR_VER_3 &&
+ 	    l2tp_v3_ensure_opt_in_linear(session, skb, &ptr, &optr)) {
 -- 
 2.51.0
 
