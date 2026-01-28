@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212366-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBxRFPI7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:18 +0100
+	id aHWDCHQ4eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212366-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:24 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF857A5F93
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F774A5977
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ECF62323327E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:01:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FD7E31B9EA4
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DBB302779;
-	Wed, 28 Jan 2026 16:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75196302779;
+	Wed, 28 Jan 2026 15:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpKR/oAg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbdeeHJk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8E52836A6;
-	Wed, 28 Jan 2026 16:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BBE2F745C;
+	Wed, 28 Jan 2026 15:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616069; cv=none; b=n8icMO7HWaAKgBW9VREjaKAHCeyYAUL2vhtW7e2x2qPXxDGcpHOTpNyBiouX8uZD58vmuBkhSWgUp2s6oTeKGPE4UbHWX+e1si5TQrF+1KSOVEjAx3lGo0iNBBjOehWVpZF9QUtd4mppW5aXk2R8ZGdUGbNYZ2UMlqXJnXx9QOc=
+	t=1769615279; cv=none; b=N+J3LN7i9d7IT4KZoMovDAdHI7MgaiUrcQM/YD3bGC9JknjQ+g8Rl90hH3skctM0LP/PJQxU4nYBJMT6eFTapWKqxg52VeaXh6MfHV6x0uW4PS1b5KqCRePwtEffveBkFQVwIkJ12clN/EMK8lxvjKLNFI5Kkv6TbG3thDLjoU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616069; c=relaxed/simple;
-	bh=iOhyQtNz4Jj9EOfjw4puMCEyj7Ys3GkrGLP+FUYHyKE=;
+	s=arc-20240116; t=1769615279; c=relaxed/simple;
+	bh=nz2t1RId91i+raWi4cdJ8CMmms5xM9IN2VU9XTHqjdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XpCBzaqv3ihh508rEPBW93WxgIWWu3VcyGEXEMVfBGxPRgzQoBvNO/cRPfAcBbJKLQCnJxgJjNSB0HGd+16XjecqnN3m44aM1xAp+Pi/ApNgy8ZLPZxxo6793T1YDbKECfw87ijBSD/VNtcVzrDWMD6H/egu9MQI6KXlgwW6pvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpKR/oAg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF712C116C6;
-	Wed, 28 Jan 2026 16:01:08 +0000 (UTC)
+	 MIME-Version; b=RYEmk6IhEgqBrvU1BqWfrlCvkfzV37UlmHYg5YG+SfddOR2DWGCZNhHohAIrCVJuRurVgxWmSuJP0qeXZTi4L6GV6d7YVScKaiuwgEgtyrssnh2DJCdoHKf28HuRqYMQQlEp+IAmjkm+Q4ANTkHnVyli+NOkHsSLg+rMakoenGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbdeeHJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9355FC4CEF1;
+	Wed, 28 Jan 2026 15:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616069;
-	bh=iOhyQtNz4Jj9EOfjw4puMCEyj7Ys3GkrGLP+FUYHyKE=;
+	s=korg; t=1769615279;
+	bh=nz2t1RId91i+raWi4cdJ8CMmms5xM9IN2VU9XTHqjdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GpKR/oAgb9wpTKfbJAl8D8W6pcwvbWx4C+3TM2szDvKwYXsIIHxbhdD6fGde5qPIv
-	 MMENGwJwfwNWb+XGFsrb/OsRXgsoItfMI+d0s4gVOHA9KsPTs/HlYuNHmmjMxo9Gna
-	 ej96SO/ZoEPojI7X46Pk+lpysIR/kZPGI3yYkKd0=
+	b=jbdeeHJkHDyXOdRUpE8fDsSMg12ePcDTWHa7Ylx4I2pACsYLOfHHkQ7JPsSaf2cvT
+	 yXMUnnplQKoRExGdcpySzJEyUm9bcAnL8gWAqWVH2ZCsxXENDZQVAYRIo4IiM6z6+w
+	 L0mN/8tlba1a2qyu0BCEi6f+umSMeowN/+t0KNgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Ricky WU <ricky_wu@realtek.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.18 170/227] mmc: rtsx_pci_sdmmc: implement sdmmc_card_busy function
+	Yang Shen <shenyang39@huawei.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: [PATCH 6.12 132/169] uacce: implement mremap in uacce_vm_ops to return -EPERM
 Date: Wed, 28 Jan 2026 16:23:35 +0100
-Message-ID: <20260128145350.568400691@linuxfoundation.org>
+Message-ID: <20260128145338.758575394@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212602-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212366-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,93 +91,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,linux.dev:email]
-X-Rspamd-Queue-Id: AF857A5F93
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linaro.org:email,huawei.com:email]
+X-Rspamd-Queue-Id: 9F774A5977
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
+From: Yang Shen <shenyang39@huawei.com>
 
-commit 122610220134b32c742cc056eaf64f7017ac8cd9 upstream.
+commit 02695347be532b628f22488300d40c4eba48b9b7 upstream.
 
-rtsx_pci_sdmmc does not have an sdmmc_card_busy function, so any voltage
-switches cause a kernel warning, "mmc0: cannot verify signal voltage
-switch."
+The current uacce_vm_ops does not support the mremap operation of
+vm_operations_struct. Implement .mremap to return -EPERM to remind
+users.
 
-Copy the sdmmc_card_busy function from rtsx_pci_usb to rtsx_pci_sdmmc to
-fix this.
+The reason we need to explicitly disable mremap is that when the
+driver does not implement .mremap, it uses the default mremap
+method. This could lead to a risk scenario:
 
-Fixes: ff984e57d36e ("mmc: Add realtek pcie sdmmc host driver")
-Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Tested-by: Ricky WU <ricky_wu@realtek.com>
-Reviewed-by: Ricky WU <ricky_wu@realtek.com>
+An application might first mmap address p1, then mremap to p2,
+followed by munmap(p1), and finally munmap(p2). Since the default
+mremap copies the original vma's vm_private_data (i.e., q) to the
+new vma, both munmap operations would trigger vma_close, causing
+q->qfr to be freed twice(qfr will be set to null here, so repeated
+release is ok).
+
+Fixes: 015d239ac014 ("uacce: add uacce driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Yang Shen <shenyang39@huawei.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Link: https://patch.msgid.link/20251202061256.4158641-4-huangchenghai2@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/rtsx_pci_sdmmc.c |   41 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ drivers/misc/uacce/uacce.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/mmc/host/rtsx_pci_sdmmc.c
-+++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
-@@ -1306,6 +1306,46 @@ out:
- 	return err;
+--- a/drivers/misc/uacce/uacce.c
++++ b/drivers/misc/uacce/uacce.c
+@@ -214,8 +214,14 @@ static void uacce_vma_close(struct vm_ar
+ 	}
  }
  
-+static int sdmmc_card_busy(struct mmc_host *mmc)
++static int uacce_vma_mremap(struct vm_area_struct *area)
 +{
-+	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
-+	struct rtsx_pcr *pcr = host->pcr;
-+	int err;
-+	u8 stat;
-+	u8 mask = SD_DAT3_STATUS | SD_DAT2_STATUS | SD_DAT1_STATUS
-+	| SD_DAT0_STATUS;
-+
-+	mutex_lock(&pcr->pcr_mutex);
-+
-+	rtsx_pci_start_run(pcr);
-+
-+	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
-+				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP,
-+			       SD_CLK_TOGGLE_EN);
-+	if (err)
-+		goto out;
-+
-+	mdelay(1);
-+
-+	err = rtsx_pci_read_register(pcr, SD_BUS_STAT, &stat);
-+	if (err)
-+		goto out;
-+
-+	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
-+				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP, 0);
-+out:
-+	mutex_unlock(&pcr->pcr_mutex);
-+
-+	if (err)
-+		return err;
-+
-+	/* check if any pin between dat[0:3] is low */
-+	if ((stat & mask) != mask)
-+		return 1;
-+	else
-+		return 0;
++	return -EPERM;
 +}
 +
- static int sdmmc_execute_tuning(struct mmc_host *mmc, u32 opcode)
- {
- 	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
-@@ -1418,6 +1458,7 @@ static const struct mmc_host_ops realtek
- 	.get_ro = sdmmc_get_ro,
- 	.get_cd = sdmmc_get_cd,
- 	.start_signal_voltage_switch = sdmmc_switch_voltage,
-+	.card_busy = sdmmc_card_busy,
- 	.execute_tuning = sdmmc_execute_tuning,
- 	.init_sd_express = sdmmc_init_sd_express,
+ static const struct vm_operations_struct uacce_vm_ops = {
+ 	.close = uacce_vma_close,
++	.mremap = uacce_vma_mremap,
  };
+ 
+ static int uacce_fops_mmap(struct file *filep, struct vm_area_struct *vma)
 
 
 
