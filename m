@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGx9Cs0temnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:57 +0100
+	id ODo9Gaczeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AD7A4285
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0368A5081
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 002AA3004C80
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2BB8830A221B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0382525332E;
-	Wed, 28 Jan 2026 15:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378DC30E834;
+	Wed, 28 Jan 2026 15:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RA/oAdRF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEoZIIsZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6337248881;
-	Wed, 28 Jan 2026 15:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3012F25EF;
+	Wed, 28 Jan 2026 15:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614330; cv=none; b=rpcuVLIUzGfIzXwLUQlEXwAFlXmAXqvWZNpbKEbnVq48cW5NG6pK0dQbawCzvpM7dlD/Ukpvn1vibw4GoPStwhXj2zhgw5j0KdbRftvKl060M4T6aS+iby2TpNuHQkh9RIBdAlZPAV0uK+G6U2VqJRYl7RcDbUoxcsKguRFdYQ4=
+	t=1769615628; cv=none; b=PSoHQIrMGYRJVebjsAE4FNE4Bu0jLHeB8si2imjLy0Svoyix2YE4AlPR++pLuPhl3KzeUXCrWO7Iv/wOS9wkwZ53Sj7hE2JB4iqNodqHlThwsolVkgT/tkr9LUVrLckRqyRNdSeQUKDsmcxEI8l2x5KNeluRwb/oiX9ZZT3WaRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614330; c=relaxed/simple;
-	bh=5XmjHCHhT9NfxF4JUoLGSPk4qsziD1Z3V/797iBXH6o=;
+	s=arc-20240116; t=1769615628; c=relaxed/simple;
+	bh=9KYV42BCiGA9uYUvd9Pz+SbDyk2NCwlr+7VpJe+nIJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aSygNC+iUE6JyxbQ0m9b89+oqA/+a/sQ/EbRWb/d3hwdSpZ8/G/ZC0q6Xr2JUAI2j19uZ1+80TEzuVCLtes6lJO/nQsRGLQUg/5M662MitJq06z/RLvzU8DgDWhVmUZPTV5m4KeqJCU7a9+m6GUn6ihh8ZsAoQ+CrACKhuuEIpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RA/oAdRF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA44FC4CEF1;
-	Wed, 28 Jan 2026 15:32:09 +0000 (UTC)
+	 MIME-Version; b=haKUW2QKwiS7Y+aW5RPK1sG8ZXDVuiRFArLuFbZ9VQQAQTU5kD9T/r8W4FrLHKSlyZsrmBasEjDjQjf/zxai4ZzBO4/tCwTlzTTRNdmOP3Ur3LHpOl3n29EJIHh0N0lLqxIudse1IHEYOyAoBxLcrOTLcRbDQmtIpW3lanMtfHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uEoZIIsZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7494DC4CEF1;
+	Wed, 28 Jan 2026 15:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614330;
-	bh=5XmjHCHhT9NfxF4JUoLGSPk4qsziD1Z3V/797iBXH6o=;
+	s=korg; t=1769615627;
+	bh=9KYV42BCiGA9uYUvd9Pz+SbDyk2NCwlr+7VpJe+nIJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RA/oAdRF48dqNgwlAe71QvMgBUNvRZChNK5VljgywhN9eu0942kB819vj3yRz8gsZ
-	 OgriKcP+MmVdRNBncJdn22i4bVYBPR1htq+dpVYvUz5EtaFPfYh9uOd4xdeXa/H+1H
-	 LzKrildV+0I6khjDvV30zuKiAlvHJV7yPYXfEZHc=
+	b=uEoZIIsZNrUzjycl4Gc0NHvEYP/5gg9BfWvDegflnMQaRIDkvSRmsHeLsgRptjdCf
+	 PnArHjpOJgGK7MpVyBiXdhffZv8+KBr0aqNh32z9A7QEEAX4ONOEa9Ak39VWYWSu6+
+	 9FaQVOH0vvx07hK3J56G7yLkDMuWDfSGPUXLj7p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danila Tikhonov <danila@jiaxyga.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/254] dt-bindings: power: qcom,rpmpd: Add SM7150
+Subject: [PATCH 6.18 033/227] can: gs_usb: gs_usb_receive_bulk_callback(): unanchor URL on usb_submit_urb() error
 Date: Wed, 28 Jan 2026 16:21:18 +0100
-Message-ID: <20260128145348.494703808@linuxfoundation.org>
+Message-ID: <20260128145345.536281652@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,64 +69,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212079-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212470-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 07AD7A4285
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:email]
+X-Rspamd-Queue-Id: D0368A5081
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danila Tikhonov <danila@jiaxyga.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 0cd3f86ad558d3f585634e211c6fccbe786cbc28 ]
+[ Upstream commit 79a6d1bfe1148bc921b8d7f3371a7fbce44e30f7 ]
 
-Add a compatible for SM7150 platforms.
+In commit 7352e1d5932a ("can: gs_usb: gs_usb_receive_bulk_callback(): fix
+URB memory leak"), the URB was re-anchored before usb_submit_urb() in
+gs_usb_receive_bulk_callback() to prevent a leak of this URB during
+cleanup.
 
-Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230916175952.178611-2-danila@jiaxyga.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 45e1be5ddec9 ("dt-bindings: power: qcom,rpmpd: Add SC8280XP_MXC_AO")
+However, this patch did not take into account that usb_submit_urb() could
+fail. The URB remains anchored and
+usb_kill_anchored_urbs(&parent->rx_submitted) in gs_can_close() loops
+infinitely since the anchor list never becomes empty.
+
+To fix the bug, unanchor the URB when an usb_submit_urb() error occurs,
+also print an info message.
+
+Fixes: 7352e1d5932a ("can: gs_usb: gs_usb_receive_bulk_callback(): fix URB memory leak")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/all/20260110223836.3890248-1-kuba@kernel.org/
+Link: https://patch.msgid.link/20260116-can_usb-fix-reanchor-v1-1-9d74e7289225@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/power/qcom,rpmpd.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/usb/gs_usb.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-index 9b03c41d3604e..53886f02d98a9 100644
---- a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-+++ b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-@@ -46,6 +46,7 @@ properties:
-       - qcom,sm6125-rpmpd
-       - qcom,sm6350-rpmhpd
-       - qcom,sm6375-rpmpd
-+      - qcom,sm7150-rpmhpd
-       - qcom,sm8150-rpmhpd
-       - qcom,sm8250-rpmhpd
-       - qcom,sm8350-rpmhpd
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index b14b132ad8e6a..fd7fb21b10989 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -754,6 +754,10 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	usb_anchor_urb(urb, &parent->rx_submitted);
+ 
+ 	rc = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!rc)
++		return;
++
++	usb_unanchor_urb(urb);
+ 
+ 	/* USB failure take down all interfaces */
+ 	if (rc == -ENODEV) {
+@@ -762,6 +766,9 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 			if (parent->canch[rc])
+ 				netif_device_detach(parent->canch[rc]->netdev);
+ 		}
++	} else if (rc != -ESHUTDOWN && net_ratelimit()) {
++		netdev_info(netdev, "failed to re-submit IN URB: %pe\n",
++			    ERR_PTR(urb->status));
+ 	}
+ }
+ 
 -- 
 2.51.0
 
