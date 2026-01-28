@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJ7iHYUwemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:33 +0100
+	id IFyuL2wvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF4CA490C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60374A463F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 537C13106238
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28DA1311B688
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC85F2F5A2D;
-	Wed, 28 Jan 2026 15:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53142586FE;
+	Wed, 28 Jan 2026 15:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWb8LJaR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Be+iDrUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B045A2D9EDB;
-	Wed, 28 Jan 2026 15:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693AA10A1E;
+	Wed, 28 Jan 2026 15:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614873; cv=none; b=X7GPnrSLKcRvy3isMBbUpZnVAa2UNswof9SJb9JgJ6YjoNqiUR5J6QjQLMdkM3jIcjAbEMWRXMq1SK0NKwYMkSfkwzukO+0nKSC+hR2sVFXdLYy1BUsyRnsWz+mBssgN7lG6q1HtMrdZ/Q7kLNciNubV70sdh9z0+LqrEzPochc=
+	t=1769614461; cv=none; b=muHV9HK47ieu8s7y5BjzIjnQG9/LxTT6rX9Kt5NCGsb2u9vmkAw41vhCvHMPtV6SS9I1WyjZO/8k4qPhphwLyqqJUAjgZg+T7tFM51gy8TG4STRqKej1xy5m54kiJDgj4s15uxrkGbhguINV7Bb1dUYP0cTnCRwIibaSSSt6ecQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614873; c=relaxed/simple;
-	bh=BGPrXTYJ2kk2MHtgj6v/2HiCg8vikPmT2PWi4S03Dt4=;
+	s=arc-20240116; t=1769614461; c=relaxed/simple;
+	bh=wCtur0ox20ecDJx5QUowtsjN4fqZjcbZLpk6f0l9zqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TvmCzmgPLFDpc2Hbh9a5zpPy8UQ7ZqFFZq5m1LdFnLqZM1mTliMHyOoagrCtefhcEXVdnPepSJ7PY9zzpOv+brpEOlfGN9Pi4Ay34RO9phNdMfBhgbzvNmhRYESOlHLuzzpgUotv2bskXR59DU1xTIvhyHNeeVyEGE9nEELjulE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWb8LJaR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB2FC4CEF1;
-	Wed, 28 Jan 2026 15:41:12 +0000 (UTC)
+	 MIME-Version; b=iIUaJPGX1rHEyRYPn2jPC3IXey3w+Z4qZmP5hzRINZZnXdAUSFGT03oNYmcXVIfKnJdS2m3zXtBz27oav1sMn46Ts20xeeXsyrMz7Sx3pcpvfLTSBJIHSQZnum+dvprkAcR6MKMfachRNSpMgI+Ynv/HGvsQ8meVfL28mmg58U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Be+iDrUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98FFC4CEF1;
+	Wed, 28 Jan 2026 15:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614873;
-	bh=BGPrXTYJ2kk2MHtgj6v/2HiCg8vikPmT2PWi4S03Dt4=;
+	s=korg; t=1769614461;
+	bh=wCtur0ox20ecDJx5QUowtsjN4fqZjcbZLpk6f0l9zqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWb8LJaR+XQoo95CjcNKZy++2HWVGmNVkR6E6+FBedXzBTQLaQgAkkTj9ew9aILe6
-	 ffX5GEeQmRWlYe70hZM3KTh2iNIMhJPIj6ofYWY/RGH1G1HynsELccDhBptcI6edEc
-	 XjFE1uHZlqvjvJZEG6DoD/NfNAiM6zB+4rCA4AKw=
+	b=Be+iDrUk908Dq4gYeeVrYk9796xpUxwMMWtgNNP0mKCuhTUxirR39dJ5nJIwpcloL
+	 9eHmsp95lvy+gbhXbADzFCmYSnt42eoz+o9t6o8jTZKMeolcAC5XGvqVDPBAREpmqb
+	 UkGV1e1SksMC12MPFRFGq5zIdDKYIav5n85QbeCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Jishnu Prakash <quic_jprakash@quicinc.com>,
-	Melody Olvera <quic_molvera@quicinc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 005/169] dt-bindings: power: qcom,rpmpd: document the SM8750 RPMh Power Domains
+Subject: [PATCH 6.6 112/254] ata: libata-core: Introduce ata_dev_config_lpm()
 Date: Wed, 28 Jan 2026 16:21:28 +0100
-Message-ID: <20260128145334.206644122@linuxfoundation.org>
+Message-ID: <20260128145348.854141808@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212246-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212120-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,69 +87,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,quicinc.com:email]
-X-Rspamd-Queue-Id: CAF4CA490C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.de:email]
+X-Rspamd-Queue-Id: 60374A463F
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 134e9d035d830aabd1121bcda89f7ee9a476d3a3 ]
+[ Upstream commit d360121832d8a36871249271df5b9ff05f835f62 ]
 
-Document the RPMh Power Domains on the SM8750 Platform.
+If the port of a device does not support Device Initiated Power
+Management (DIPM), that is, the port is flagged with ATA_FLAG_NO_DIPM,
+the DIPM feature of a device should not be used. Though DIPM is disabled
+by default on a device, the "Software Settings Preservation feature"
+may keep DIPM enabled or DIPM may have been enabled by the system
+firmware.
 
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
-Signed-off-by: Melody Olvera <quic_molvera@quicinc.com>
-Message-ID: <20241112002444.2802092-2-quic_molvera@quicinc.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 5bc3e720e725 ("pmdomain: qcom: rpmhpd: Add MXC to SC8280XP")
+Introduce the function ata_dev_config_lpm() to always disable DIPM on a
+device that supports this feature if the port of the device is flagged
+with ATA_FLAG_NO_DIPM. ata_dev_config_lpm() is called from
+ata_dev_configure(), ensuring that a device DIPM feature is disabled
+when it cannot be used.
+
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20250701125321.69496-2-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Stable-dep-of: c8c6fb886f57 ("ata: libata: Print features also for ATAPI devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/power/qcom,rpmpd.yaml | 1 +
- include/dt-bindings/power/qcom-rpmpd.h                  | 2 ++
- 2 files changed, 3 insertions(+)
+ drivers/ata/libata-core.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-index 929b7ef9c1bcd..d55758a759717 100644
---- a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-+++ b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-@@ -58,6 +58,7 @@ properties:
-           - qcom,sm8450-rpmhpd
-           - qcom,sm8550-rpmhpd
-           - qcom,sm8650-rpmhpd
-+          - qcom,sm8750-rpmhpd
-           - qcom,x1e80100-rpmhpd
-       - items:
-           - enum:
-diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
-index 608087fb9a3d9..df599bf462207 100644
---- a/include/dt-bindings/power/qcom-rpmpd.h
-+++ b/include/dt-bindings/power/qcom-rpmpd.h
-@@ -218,6 +218,7 @@
- /* SDM845 Power Domain performance levels */
- #define RPMH_REGULATOR_LEVEL_RETENTION		16
- #define RPMH_REGULATOR_LEVEL_MIN_SVS		48
-+#define RPMH_REGULATOR_LEVEL_LOW_SVS_D3		50
- #define RPMH_REGULATOR_LEVEL_LOW_SVS_D2		52
- #define RPMH_REGULATOR_LEVEL_LOW_SVS_D1		56
- #define RPMH_REGULATOR_LEVEL_LOW_SVS_D0		60
-@@ -238,6 +239,7 @@
- #define RPMH_REGULATOR_LEVEL_TURBO_L1		416
- #define RPMH_REGULATOR_LEVEL_TURBO_L2		432
- #define RPMH_REGULATOR_LEVEL_TURBO_L3		448
-+#define RPMH_REGULATOR_LEVEL_TURBO_L4		452
- #define RPMH_REGULATOR_LEVEL_SUPER_TURBO 	464
- #define RPMH_REGULATOR_LEVEL_SUPER_TURBO_NO_CPR	480
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index f332835156dbc..b748c8ead39de 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -2780,6 +2780,30 @@ static void ata_dev_config_cpr(struct ata_device *dev)
+ 	kfree(buf);
+ }
  
++/*
++ * Configure features related to link power management.
++ */
++static void ata_dev_config_lpm(struct ata_device *dev)
++{
++	struct ata_port *ap = dev->link->ap;
++	unsigned int err_mask;
++
++	/*
++	 * Device Initiated Power Management (DIPM) is normally disabled by
++	 * default on a device. However, DIPM may have been enabled and that
++	 * setting kept even after COMRESET because of the Software Settings
++	 * Preservation feature. So if the port does not support DIPM and the
++	 * device does, disable DIPM on the device.
++	 */
++	if (ap->flags & ATA_FLAG_NO_DIPM && ata_id_has_dipm(dev->id)) {
++		err_mask = ata_dev_set_feature(dev,
++					SETFEATURES_SATA_DISABLE, SATA_DIPM);
++		if (err_mask && err_mask != AC_ERR_DEV)
++			ata_dev_err(dev, "Disable DIPM failed, Emask 0x%x\n",
++				    err_mask);
++	}
++}
++
+ static void ata_dev_print_features(struct ata_device *dev)
+ {
+ 	if (!(dev->flags & ATA_DFLAG_FEATURES_MASK) && !dev->cpr_log)
+@@ -2949,6 +2973,7 @@ int ata_dev_configure(struct ata_device *dev)
+ 			ata_dev_config_chs(dev);
+ 		}
+ 
++		ata_dev_config_lpm(dev);
+ 		ata_dev_config_fua(dev);
+ 		ata_dev_config_devslp(dev);
+ 		ata_dev_config_sense_reporting(dev);
 -- 
 2.51.0
 
