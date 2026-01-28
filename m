@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-212453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LN0FnMyeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212453-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:47 +0100
+	id GLsLJgIuemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9520A4E31
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DDAA42E6
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A19153105D20
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9382431148B1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159BE2FE044;
-	Wed, 28 Jan 2026 15:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81188274FE3;
+	Wed, 28 Jan 2026 15:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSXm3QAF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvOhenNw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE91C2EA172;
-	Wed, 28 Jan 2026 15:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448D326E6F9;
+	Wed, 28 Jan 2026 15:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615571; cv=none; b=CrC7kZAUMit2won5AFvK4gFiiW2t29R0Gfk2hVgL8sHVh7HB0wADD43VFLDBrGP0yxQOxfivFBd4NSxhiZCt3gkBsNYiF+Cbnojo4FcnLy18VsAxofKvGPo04SPWTqX9tYPrDwJj+h/u42QXtGwA1jvKJpto6EWkMwG1/WPrDiI=
+	t=1769614374; cv=none; b=rpLwNolbC9VHAMm9byO/t7oeh15yLbjNAaWvLYUhPdm5X/23tpS9lamqI1Z0XXLLjW5qMA5qqkzD5S+RUMnG+5FVk74lngVc/pKF2Aq/dfsA8j7DNbtnetOc2zMY0IDrXlvVwLx5RY42mSqZWHtHMjuQYh2ZpgVY1xDzrqlQnQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615571; c=relaxed/simple;
-	bh=q5ClAZscUaSSsPvG3vmKuWJXgGrsE2rzXgRD/anrOAU=;
+	s=arc-20240116; t=1769614374; c=relaxed/simple;
+	bh=qbRmh0BPLcfCCFUJBHTKAtrie46sDZ5+Pk+84FVTngk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVJN6v9UxjHIfXiN8AiqDeKjYdjrR+JEJDUdyvUVoFO520WhY4FwRRfUiM8XfjE4cWFR5W3srU3giQM3uBFL17pb1LTJv9Yhxh+aK4518kUendo3yFJoW8JpRMv3cs4HJ42h9TqqEsFbKbpVH15QPGLrvpQvp6H0LLOxaWV9tH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSXm3QAF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110CCC4CEF1;
-	Wed, 28 Jan 2026 15:52:50 +0000 (UTC)
+	 MIME-Version; b=H1+Mx6SaPqcEmWzzFPH0kmfq4wlJYcrVMuYyk0HVWiy4CyB5K7w15Sci/F2gC7YbBW1Z8/a7ZxJ/Rgr/3s9IKxtOGlY2KatYRon8o48BMvmVPTcDlo1rjwqSpPQMSAnMoYBo8+rQkB57u4rCcoryI09wdSY6V7KKlnx7JP2xf7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvOhenNw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B863C116C6;
+	Wed, 28 Jan 2026 15:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615571;
-	bh=q5ClAZscUaSSsPvG3vmKuWJXgGrsE2rzXgRD/anrOAU=;
+	s=korg; t=1769614373;
+	bh=qbRmh0BPLcfCCFUJBHTKAtrie46sDZ5+Pk+84FVTngk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KSXm3QAF8MFjfydmL1Yr3+QHc5H0KlUkmUF0mpJ/zUq2yPjEsQ8egyHD//IH5djuQ
-	 PvAkvC252ngrGX8liLL14vlyYeRpkk7NGYOQsTBiihVxUP9e1WufYgjzS7z1BwdT6V
-	 mC7kVk5Cdejxpq94xtuQOvG+V15dZ66or0zfw0bk=
+	b=FvOhenNwW0edPBaxBS1zMalDlG8GJwIxIvpiqpA6UsjCmJWaBoHMlT6+aJTxhzl8I
+	 js1+u6xcnOQEMcwJXCculX3N6Atgm/EUfApSskfSZG67qHGaG72imm+tbI7rFyYin7
+	 bpOvaEMQFNNtINDuRG2wA78ygK2ufORpUkmUCeiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Avi Shalev <avi.shalev@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Song Yoong Siang <yoong.siang.song@intel.com>,
+	Chwee-Lin Choong <chwee.lin.choong@intel.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 048/227] wifi: mac80211: dont perform DA check on S1G beacon
+Subject: [PATCH 6.6 117/254] igc: fix race condition in TX timestamp read for register 0
 Date: Wed, 28 Jan 2026 16:21:33 +0100
-Message-ID: <20260128145346.073034883@linuxfoundation.org>
+Message-ID: <20260128145349.034992836@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +71,155 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212453-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212092-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D9520A4E31
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
+X-Rspamd-Queue-Id: D8DDAA42E6
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
 
-[ Upstream commit 5dc6975566f5d142ec53eb7e97af688c45dd314d ]
+[ Upstream commit 6990dc392a9ab10e52af37e0bee8c7b753756dc4 ]
 
-S1G beacons don't contain the DA field as per IEEE80211-2024 9.3.4.3,
-so the DA broadcast check reads the SA address of the S1G beacon which
-will subsequently lead to the beacon being dropped. As a result, passive
-scanning is not possible. Fix this by only performing the check on
-non-S1G beacons to allow S1G long beacons to be processed during a
-passive scan.
+The current HW bug workaround checks the TXTT_0 ready bit first,
+then reads TXSTMPL_0 twice (before and after reading TXSTMPH_0)
+to detect whether a new timestamp was captured by timestamp
+register 0 during the workaround.
 
-Fixes: ddf82e752f8a ("wifi: mac80211: Allow beacons to update BSS table regardless of scan")
-Signed-off-by: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-Link: https://patch.msgid.link/20260120031122.309942-1-lachlan.hodges@morsemicro.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This sequence has a race: if a new timestamp is captured after
+checking the TXTT_0 bit but before the first TXSTMPL_0 read, the
+detection fails because both the "old" and "new" values come from
+the same timestamp.
+
+Fix by reading TXSTMPL_0 first to establish a baseline, then
+checking the TXTT_0 bit. This ensures any timestamp captured
+during the race window will be detected.
+
+Old sequence:
+  1. Check TXTT_0 ready bit
+  2. Read TXSTMPL_0 (baseline)
+  3. Read TXSTMPH_0 (interrupt workaround)
+  4. Read TXSTMPL_0 (detect changes vs baseline)
+
+New sequence:
+  1. Read TXSTMPL_0 (baseline)
+  2. Check TXTT_0 ready bit
+  3. Read TXSTMPH_0 (interrupt workaround)
+  4. Read TXSTMPL_0 (detect changes vs baseline)
+
+Fixes: c789ad7cbebc ("igc: Work around HW bug causing missing timestamps")
+Suggested-by: Avi Shalev <avi.shalev@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Co-developed-by: Song Yoong Siang <yoong.siang.song@intel.com>
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/scan.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 43 ++++++++++++++----------
+ 1 file changed, 25 insertions(+), 18 deletions(-)
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index bb9563f50e7b4..1e06a465b49e3 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -343,8 +343,13 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
- 						 mgmt->da))
- 			return;
- 	} else {
--		/* Beacons are expected only with broadcast address */
--		if (!is_broadcast_ether_addr(mgmt->da))
-+		/*
-+		 * Non-S1G beacons are expected only with broadcast address.
-+		 * S1G beacons only carry the SA so no DA check is required
-+		 * nor possible.
-+		 */
-+		if (!ieee80211_is_s1g_beacon(mgmt->frame_control) &&
-+		    !is_broadcast_ether_addr(mgmt->da))
- 			return;
- 	}
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index a82af96e6bd12..4c07c1e4aa997 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -758,36 +758,43 @@ static void igc_ptp_tx_reg_to_stamp(struct igc_adapter *adapter,
+ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
+ {
+ 	struct igc_hw *hw = &adapter->hw;
++	u32 txstmpl_old;
+ 	u64 regval;
+ 	u32 mask;
+ 	int i;
  
++	/* Establish baseline of TXSTMPL_0 before checking TXTT_0.
++	 * This baseline is used to detect if a new timestamp arrives in
++	 * register 0 during the hardware bug workaround below.
++	 */
++	txstmpl_old = rd32(IGC_TXSTMPL);
++
+ 	mask = rd32(IGC_TSYNCTXCTL) & IGC_TSYNCTXCTL_TXTT_ANY;
+ 	if (mask & IGC_TSYNCTXCTL_TXTT_0) {
+ 		regval = rd32(IGC_TXSTMPL);
+ 		regval |= (u64)rd32(IGC_TXSTMPH) << 32;
+ 	} else {
+-		/* There's a bug in the hardware that could cause
+-		 * missing interrupts for TX timestamping. The issue
+-		 * is that for new interrupts to be triggered, the
+-		 * IGC_TXSTMPH_0 register must be read.
++		/* TXTT_0 not set - register 0 has no new timestamp initially.
++		 *
++		 * Hardware bug: Future timestamp interrupts won't fire unless
++		 * TXSTMPH_0 is read, even if the timestamp was captured in
++		 * registers 1-3.
+ 		 *
+-		 * To avoid discarding a valid timestamp that just
+-		 * happened at the "wrong" time, we need to confirm
+-		 * that there was no timestamp captured, we do that by
+-		 * assuming that no two timestamps in sequence have
+-		 * the same nanosecond value.
++		 * Workaround: Read TXSTMPH_0 here to enable future interrupts.
++		 * However, this read clears TXTT_0. If a timestamp arrives in
++		 * register 0 after checking TXTT_0 but before this read, it
++		 * would be lost.
+ 		 *
+-		 * So, we read the "low" register, read the "high"
+-		 * register (to latch a new timestamp) and read the
+-		 * "low" register again, if "old" and "new" versions
+-		 * of the "low" register are different, a valid
+-		 * timestamp was captured, we can read the "high"
+-		 * register again.
++		 * To detect this race: We saved a baseline read of TXSTMPL_0
++		 * before TXTT_0 check. After performing the workaround read of
++		 * TXSTMPH_0, we read TXSTMPL_0 again. Since consecutive
++		 * timestamps never share the same nanosecond value, a change
++		 * between the baseline and new TXSTMPL_0 indicates a timestamp
++		 * arrived during the race window. If so, read the complete
++		 * timestamp.
+ 		 */
+-		u32 txstmpl_old, txstmpl_new;
++		u32 txstmpl_new;
+ 
+-		txstmpl_old = rd32(IGC_TXSTMPL);
+ 		rd32(IGC_TXSTMPH);
+ 		txstmpl_new = rd32(IGC_TXSTMPL);
+ 
+@@ -802,7 +809,7 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
+ 
+ done:
+ 	/* Now that the problematic first register was handled, we can
+-	 * use retrieve the timestamps from the other registers
++	 * retrieve the timestamps from the other registers
+ 	 * (starting from '1') with less complications.
+ 	 */
+ 	for (i = 1; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
 -- 
 2.51.0
 
