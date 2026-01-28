@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-212062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DepOHwuemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:52 +0100
+	id 6OAjNj45eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:28:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48612A443D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47837A5AEB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE26630B9982
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F0DD31F4FAB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598BD155757;
-	Wed, 28 Jan 2026 15:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746EC2F745C;
+	Wed, 28 Jan 2026 15:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2w/h1sz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bx0t2mmo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C30D1E9B1A;
-	Wed, 28 Jan 2026 15:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374E5288C22;
+	Wed, 28 Jan 2026 15:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614273; cv=none; b=t6HAi1cVBw8GdKT9MMf0nhhGYosbTWtv+zHXV6nUzDk5amussyVSslyb4PCHNWfNV4ZhDzG87W+EYRadvCGR4Pe1b6O8qul37LDuk8x0rx4AupMA3mKrXhWTB/QiLTSABLW2aEEHQ15hUF3x5eoRZJgoynsJciU2G+BJ9wMIrvc=
+	t=1769615465; cv=none; b=oxMHHK4chjO3BQLZ205WKv7gibyA88/H7m6zxJJesCyxVVA8fLYO0TLKCU5l2IGaJTlvpdHA2yYdpoHkmzJOqeQYxO+xnaBDwvfqBwmwpWnZxsLYLZE0uCnnW/g0YDtOubcZbvGjwtZelmvn7RQVk8QUrGwhv+zEiXHxogjQzD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614273; c=relaxed/simple;
-	bh=Na1P1pc2z35moVmDl8P0qWo+ppUsfNYrYCltDehtBq4=;
+	s=arc-20240116; t=1769615465; c=relaxed/simple;
+	bh=jm9u7lL26mOUQW1GOTOcCYI8pEKpBfJsNySVLUM954g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WoYH8rouA4kusn4Dv0JBqlAtzisCGLvTjeucD7FWQmEfJci+YRWxbIRpwCodqabXkHLmXeBPHlVpQnCzkj+7KYbrPqkk2YV19bJGnCy7n4TOMLOZR0/lRCV4nHpFKPZC2xjPpSE04h5dZRxZt59Iqcmij7ZYCwAgHzCQULOnB1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2w/h1sz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC11C4CEF1;
-	Wed, 28 Jan 2026 15:31:12 +0000 (UTC)
+	 MIME-Version; b=UR5cQ0JYijQICFgdWCUGx0nvGRcuWlYWVMJsbYFJpgfY4TW2/naOGbqjG6IhBO3o2mVrAc6V2iQLxKblrD8m1Jo49TUW35YooLvpM5Xrm/CZGkwh5SHwE8ChWmaymH4H6sjUc2zq/WEe8lBZ7g2Ai1ViFGCU3j4iznZXkzHBh3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bx0t2mmo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7A4C116C6;
+	Wed, 28 Jan 2026 15:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614272;
-	bh=Na1P1pc2z35moVmDl8P0qWo+ppUsfNYrYCltDehtBq4=;
+	s=korg; t=1769615464;
+	bh=jm9u7lL26mOUQW1GOTOcCYI8pEKpBfJsNySVLUM954g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2w/h1sz8PMgWNiyJ9526a6Mq0dp4PR4Dyk8YtOUXiCxr2OwZHNI2oKCrPmTfeKa+
-	 sVUy177ozRn6DNZZNzOr7P/DnZSjc9TyI48cSafgqN7A3mmWfOwgdlLMrZnk2LNpjC
-	 R7lgr8mxJqgjiP8kK6HAd/tD4/GkaHj1pbUAexSc=
+	b=Bx0t2mmo8cmdbcguv6rJ0xEIu3nAkXfbhxV22+MsTBg4yb7fB2NyvMVMffECcp8HK
+	 z8nbls1jpd7J7AffcG+OnTEM/5oCrTe0KHwOUmaHKcj3qYqOyxXBG/AFikFpaNuPFK
+	 APtpf1wBvuElCvI9XvjKyx9d7O6ZWZm1acZIDEGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@ti.com>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 087/254] dmaengine: ti: dma-crossbar: fix device leak on am335x route allocation
+	Yingying Tang <yingying.tang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 018/227] wifi: ath12k: Fix scan state stuck in ABORTING after cancel_remain_on_channel
 Date: Wed, 28 Jan 2026 16:21:03 +0100
-Message-ID: <20260128145347.831316981@linuxfoundation.org>
+Message-ID: <20260128145344.999610151@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,108 +71,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212422-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212062-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ti.com:email]
-X-Rspamd-Queue-Id: 48612A443D
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 47837A5AEB
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Yingying Tang <yingying.tang@oss.qualcomm.com>
 
-commit 4fc17b1c6d2e04ad13fd6c21cfbac68043ec03f9 upstream.
+[ Upstream commit 8b8d6ee53dfdee61b0beff66afe3f712456e707a ]
 
-Make sure to drop the reference taken when looking up the crossbar
-platform device during am335x route allocation.
+Scan finish workqueue was introduced in __ath12k_mac_scan_finish() by [1].
 
-Fixes: 42dbdcc6bf96 ("dmaengine: ti-dma-crossbar: Add support for crossbar on AM33xx/AM43xx")
-Cc: stable@vger.kernel.org	# 4.4
-Cc: Peter Ujfalusi <peter.ujfalusi@ti.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251117161258.10679-15-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+During ath12k_mac_op_cancel_remain_on_channel(), scan state is set to
+ABORTING and should be reset to IDLE in the queued work. However,
+wiphy_work_cancel() is called before exiting
+ath12k_mac_op_cancel_remain_on_channel(), which prevents the work
+from running and leaves the state in ABORTING. This blocks all
+subsequent scan requests.
+
+Replace wiphy_work_cancel() with wiphy_work_flush() to ensure the
+queued work runs and scan state is reset to IDLE.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+
+Fixes: 3863f014ad23 ("wifi: ath12k: symmetrize scan vdev creation and deletion during HW scan") # [1]
+Signed-off-by: Yingying Tang <yingying.tang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260112115516.2144219-1-yingying.tang@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/dma-crossbar.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/ti/dma-crossbar.c
-+++ b/drivers/dma/ti/dma-crossbar.c
-@@ -79,34 +79,35 @@ static void *ti_am335x_xbar_route_alloca
- {
- 	struct platform_device *pdev = of_find_device_by_node(ofdma->of_node);
- 	struct ti_am335x_xbar_data *xbar = platform_get_drvdata(pdev);
--	struct ti_am335x_xbar_map *map;
-+	struct ti_am335x_xbar_map *map = ERR_PTR(-EINVAL);
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index ffeb667734358..00b3bf4d882a5 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -12833,7 +12833,7 @@ static int ath12k_mac_op_cancel_remain_on_channel(struct ieee80211_hw *hw,
+ 	ath12k_scan_abort(ar);
  
- 	if (dma_spec->args_count != 3)
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
+ 	cancel_delayed_work_sync(&ar->scan.timeout);
+-	wiphy_work_cancel(hw->wiphy, &ar->scan.vdev_clean_wk);
++	wiphy_work_flush(hw->wiphy, &ar->scan.vdev_clean_wk);
  
- 	if (dma_spec->args[2] >= xbar->xbar_events) {
- 		dev_err(&pdev->dev, "Invalid XBAR event number: %d\n",
- 			dma_spec->args[2]);
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
- 	}
- 
- 	if (dma_spec->args[0] >= xbar->dma_requests) {
- 		dev_err(&pdev->dev, "Invalid DMA request line number: %d\n",
- 			dma_spec->args[0]);
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
- 	}
- 
- 	/* The of_node_put() will be done in the core for the node */
- 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
- 	if (!dma_spec->np) {
- 		dev_err(&pdev->dev, "Can't get DMA master\n");
--		return ERR_PTR(-EINVAL);
-+		goto out_put_pdev;
- 	}
- 
- 	map = kzalloc(sizeof(*map), GFP_KERNEL);
- 	if (!map) {
- 		of_node_put(dma_spec->np);
--		return ERR_PTR(-ENOMEM);
-+		map = ERR_PTR(-ENOMEM);
-+		goto out_put_pdev;
- 	}
- 
- 	map->dma_line = (u16)dma_spec->args[0];
-@@ -120,6 +121,9 @@ static void *ti_am335x_xbar_route_alloca
- 
- 	ti_am335x_xbar_write(xbar->iomem, map->dma_line, map->mux_val);
- 
-+out_put_pdev:
-+	put_device(&pdev->dev);
-+
- 	return map;
+ 	return 0;
  }
- 
+-- 
+2.51.0
+
 
 
 
