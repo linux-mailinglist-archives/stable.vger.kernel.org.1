@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABt5NCE4eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212532-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:24:01 +0100
+	id UEtOIPA3eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000A4A58D5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:24:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A82EA583D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3ED27302778E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCEB831E5988
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0D930F52F;
-	Wed, 28 Jan 2026 15:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD5330AADB;
+	Wed, 28 Jan 2026 15:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Km1jxJWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYzK5lwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CE930FC17;
-	Wed, 28 Jan 2026 15:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDE3306B3E;
+	Wed, 28 Jan 2026 15:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615834; cv=none; b=Nz0gunUVVHUahWNo97Fal8ABxg6ATzFjO5QWWfkvy+WnejMUXe2NYRtgz+shGd7dH5L3cqAFxNQecgHmIHsz1F0gUg65JKncUjJYviU0uVepaJpWvTtWkSRwNIjfrKHZEjR3j3p+5wTwTsYkr8mE+IRY2UBXl1LjThd+stSGXg8=
+	t=1769615043; cv=none; b=SU6thoDQpvCz6M6RFgUM4WfDE/QNCkLwQBiwtKx2CuERek6k+IDSjkmgTJmujyYUYj1GYtQDmEu5Vg/zufsGrnxkQTvE31Xo8kipURqcrbGBIDIpGazZBUYX3R+qWz9bA1+fQhlaqZy0LdMaMwnzzYzryBhVj6tfdFDJZwwTh5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615834; c=relaxed/simple;
-	bh=CSNp1zTmgK8V/4Y6uq4sOal7b0eCMdtin9+yjEc8sCA=;
+	s=arc-20240116; t=1769615043; c=relaxed/simple;
+	bh=GlDycr+SejXvsdJTkM5cB+ALeFDi4dxbfmzoj+qhups=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rp9T0cMpnOF83DQDW3JGwBgzFdsUF/ooOWi3673FSIVbirwu5fBbrbbyHPgQr0WxU9Iu1iiYGpeozUgJ2CasDZMnnKvDkZe+/ZbQbkXa+mZG+Do4msFKLjPOVJ6NRBIylBnKyhYIllLkvUspMHV3zAV6DBK91RsKlrBG/+SThwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Km1jxJWG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D44C4CEF1;
-	Wed, 28 Jan 2026 15:57:13 +0000 (UTC)
+	 MIME-Version; b=gjkx+Twfdrn0I/VV18An+iA/MgwvfrSQw6jkHpQfVkxPsdOrPVDbfOJ23JevBwQyEWudnTLgK6rymO2V7WRJc7/TA68FgWibCp4riCZ3RTVZvFM6DcEt6MvEH6dlEMoA6QAvZev/aRZnxQZ/9+Oe+t54L//pdHSZF2tN85uj4P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYzK5lwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B18C4CEF1;
+	Wed, 28 Jan 2026 15:44:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615834;
-	bh=CSNp1zTmgK8V/4Y6uq4sOal7b0eCMdtin9+yjEc8sCA=;
+	s=korg; t=1769615043;
+	bh=GlDycr+SejXvsdJTkM5cB+ALeFDi4dxbfmzoj+qhups=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Km1jxJWGCoYlzbQmpcrdmjoeH5JC7kdkZs961N51vNns45+Ebm3kTpt22SQHyApk8
-	 VENqHxlRhsC/AFFoBB7W1MJGAi4D+wjw1/g/igzdfklmE8ZEpGCPKPM76nQ5+16oHI
-	 X0A5ET6oNGh0AznFm7REIJNQoNenp541c9Ff3e0c=
+	b=lYzK5lwVJzdjFmkZ7PKjhc/u7rWhL/Fn72a/wib7MdXH1K7OLQKGiMuzaMX7OGFK7
+	 5sOlPu+Ef7oEFo9q+37IpDs0xkfqYqoRO4mCK1FqySmZUB8CSCn9Fay7aKMF3lGNbX
+	 ne95y51Bd2cFx+i+AyRnaahi746u8e3/yMYcvnIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Georgi Djakov <djakov@kernel.org>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 100/227] drm/mediatek: dpi: Find next bridge during probe
+Subject: [PATCH 6.12 062/169] interconnect: debugfs: initialize src_node and dst_node to empty strings
 Date: Wed, 28 Jan 2026 16:22:25 +0100
-Message-ID: <20260128145348.064441840@linuxfoundation.org>
+Message-ID: <20260128145336.243200807@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,143 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212296-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212532-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_PROHIBIT(0.00)[0.213.218.24:email];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.987];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,mediatek.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,chromium.org:email]
-X-Rspamd-Queue-Id: 000A4A58D5
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1A82EA583D
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Georgi Djakov <djakov@kernel.org>
 
-[ Upstream commit 21465e73400dc69a5f732ae7bcc2a58bad673cd1 ]
+[ Upstream commit 8cc27f5c6dd17dd090f3a696683f04336c162ff5 ]
 
-Trying to find the next bridge and deferring probe in the bridge attach
-callback is much too late. At this point the driver has already finished
-probing and is now running the component bind code path. What's even
-worse is that in the specific case of the DSI host being the last
-component to be added as part of the dsi_host_attach callback, the code
-path that this is in:
+The debugfs_create_str() API assumes that the string pointer is either NULL
+or points to valid kmalloc() memory. Leaving the pointer uninitialized can
+cause problems.
 
- -> devm_drm_of_get_bridge()
-    mtk_dpi_bridge_attach()
-    drm_bridge_attach()
-    mtk_dpi_bind()
-    ...
-    component_add()
-    mtk_dsi_host_attach()
-    anx7625_attach_dsi()
-    anx7625_link_bridge()
-	- done_probing callback for of_dp_aux_populate_bus()
-    of_dp_aux_populate_bus()
-    anx7625_i2c_probe()
+Initialize src_node and dst_node to empty strings before creating the
+debugfs entries to guarantee that reads and writes are safe.
 
-_cannot_ return probe defer:
-
-    anx7625 4-0058: [drm:anx7625_bridge_attach] drm attach
-    mediatek-drm mediatek-drm.15.auto: bound 14014000.dsi
-	(ops mtk_dsi_component_ops)
-    mediatek-drm mediatek-drm.15.auto: error -EPROBE_DEFER:
-	failed to attach bridge /soc/dpi@14015000 to encoder TMDS-37
-    [drm:mtk_dsi_host_attach] *ERROR* failed to add dsi_host
-	component: -517
-    anx7625 4-0058: [drm:anx7625_link_bridge] *ERROR* fail to attach dsi
-	to host.
-    panel-simple-dp-aux aux-4-0058: DP AUX done_probing() can't defer
-    panel-simple-dp-aux aux-4-0058: probe with driver panel-simple-dp-aux
-	failed with error -22
-    anx7625 4-0058: [drm:anx7625_i2c_probe] probe done
-
-This results in the whole display driver failing to probe.
-
-Perhaps this was an attempt to mirror the structure in the DSI driver;
-but in the DSI driver the next bridge is retrieved in the DSI attach
-callback, not the bridge attach callback.
-
-Move the code finding the next bridge back to the probe function so that
-deferred probing works correctly. Also rework the fallback to the old OF
-graph endpoint numbering scheme so that deferred probing logs in both
-cases.
-
-This issue was found on an MT8183 Jacuzzi device with an extra patch
-enabling the DPI-based external display pipeline. Also tested on an
-MT8192 Hayato device with both DSI and DPI display pipelines enabled.
-
-Fixes: 4c932840db1d ("drm/mediatek: Implement OF graphs support for display paths")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20260114092243.3914836-1-wenst@chromium.org/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 770c69f037c1 ("interconnect: Add debugfs test client")
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Tested-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://lore.kernel.org/r/20260109122523.125843-1-djakov@kernel.org
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ drivers/interconnect/debugfs-client.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index 61cab32e213af..53360b5d12ba5 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -836,20 +836,6 @@ static int mtk_dpi_bridge_attach(struct drm_bridge *bridge,
- 				 enum drm_bridge_attach_flags flags)
- {
- 	struct mtk_dpi *dpi = bridge_to_dpi(bridge);
--	int ret;
--
--	dpi->next_bridge = devm_drm_of_get_bridge(dpi->dev, dpi->dev->of_node, 1, -1);
--	if (IS_ERR(dpi->next_bridge)) {
--		ret = PTR_ERR(dpi->next_bridge);
--		if (ret == -EPROBE_DEFER)
--			return ret;
--
--		/* Old devicetree has only one endpoint */
--		dpi->next_bridge = devm_drm_of_get_bridge(dpi->dev, dpi->dev->of_node, 0, 0);
--		if (IS_ERR(dpi->next_bridge))
--			return dev_err_probe(dpi->dev, PTR_ERR(dpi->next_bridge),
--					     "Failed to get bridge\n");
--	}
+diff --git a/drivers/interconnect/debugfs-client.c b/drivers/interconnect/debugfs-client.c
+index 778deeb4a7e8a..24d7b5a577945 100644
+--- a/drivers/interconnect/debugfs-client.c
++++ b/drivers/interconnect/debugfs-client.c
+@@ -150,6 +150,11 @@ int icc_debugfs_client_init(struct dentry *icc_dir)
+ 		return ret;
+ 	}
  
- 	return drm_bridge_attach(encoder, dpi->next_bridge,
- 				 &dpi->bridge, flags);
-@@ -1319,6 +1305,15 @@ static int mtk_dpi_probe(struct platform_device *pdev)
- 	if (dpi->irq < 0)
- 		return dpi->irq;
- 
-+	dpi->next_bridge = devm_drm_of_get_bridge(dpi->dev, dpi->dev->of_node, 1, -1);
-+	if (IS_ERR(dpi->next_bridge) && PTR_ERR(dpi->next_bridge) == -ENODEV) {
-+		/* Old devicetree has only one endpoint */
-+		dpi->next_bridge = devm_drm_of_get_bridge(dpi->dev, dpi->dev->of_node, 0, 0);
-+	}
-+	if (IS_ERR(dpi->next_bridge))
-+		return dev_err_probe(dpi->dev, PTR_ERR(dpi->next_bridge),
-+				     "Failed to get bridge\n");
++	src_node = devm_kstrdup(&pdev->dev, "", GFP_KERNEL);
++	dst_node = devm_kstrdup(&pdev->dev, "", GFP_KERNEL);
++	if (!src_node || !dst_node)
++		return -ENOMEM;
 +
- 	platform_set_drvdata(pdev, dpi);
+ 	client_dir = debugfs_create_dir("test_client", icc_dir);
  
- 	dpi->bridge.of_node = dev->of_node;
+ 	debugfs_create_str("src_node", 0600, client_dir, &src_node);
 -- 
 2.51.0
 
