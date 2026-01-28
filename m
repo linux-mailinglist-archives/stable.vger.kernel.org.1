@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHgOHwY7emlN4wEAu9opvQ
-	(envelope-from <stable+bounces-212527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:36:22 +0100
+	id GAlaArkwemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680F4A5DFB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:36:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B058A49AC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0550D32019B6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 69304304CB6F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B700830E834;
-	Wed, 28 Jan 2026 15:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0261306B06;
+	Wed, 28 Jan 2026 15:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="up53kUZr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYMAUeT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD8630BBA5;
-	Wed, 28 Jan 2026 15:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BEC2FDC5D;
+	Wed, 28 Jan 2026 15:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615817; cv=none; b=o6vtmd1XBdklfpgQKuPfJee9JT7T+tQReImOzqp9DrnvjcC1QLvgbPUlfONz02NWxk8GqVTU8e1JcbvcRtv/na9oZqwz2SXS1OQm4eBL5Hz7ndVPjhuUoxIqVS08/Mt3ChS/t1TtBDOMu/6IQ1tc/coWK8K8v0ifyt3m1IhFvwQ=
+	t=1769615231; cv=none; b=omrt8Wm0lwyW4+oRBxcxqpZwRuwQyuCn/E1AvKGpaCNC4tdYd1yPAa4Z2hBUpaHjtM3Dn4CrtPoDjNkNlQgBoVerblmc2E8cstPeJ82UbG3Z8XmZPL7i/HS4Fm+55VtzS2svKUyF6lEdNkRDdKKDiQKZvIGjUMnd96bNL6uvyEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615817; c=relaxed/simple;
-	bh=74KOMKX8jyGrZ+B2ISIABuDpb0q9H2tuJk6hB4QSHNw=;
+	s=arc-20240116; t=1769615231; c=relaxed/simple;
+	bh=w4JRScl6aevuPHU3l1Rokb0KgBwM3EnMjtoxElsW/JE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=omiPrBtf/MwUMo3wo70KHf80sdilrFtajHP26u8bkCtO7oKcpSpkthsfhAr6m9SuQbw7aCLZG5patV7hlTSSaWH99J76RbAnQfVwSdUBQNemFe3E+J6MYfARnIgRrezeFhSYsGDturhbog1FypmNFicL5zGcfdaKLs3RdKMXuaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=up53kUZr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D0DC4CEF1;
-	Wed, 28 Jan 2026 15:56:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nCfr8vygjh8yKlE0usV5IbHCkYyksxWnXcMt6FCzuVOOnNKnrovBuRF4i7iBispIa3Gi/VdfdEOOpZsufse7ZgOOV0ldeJP58TM91N/LpVcIF93L3aFUf0eqEUmqosTiSXXe0/gItbmg8On5y9xYjUFxYuWZRSHrHElByCjW6Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYMAUeT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008E2C4CEF1;
+	Wed, 28 Jan 2026 15:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615817;
-	bh=74KOMKX8jyGrZ+B2ISIABuDpb0q9H2tuJk6hB4QSHNw=;
+	s=korg; t=1769615231;
+	bh=w4JRScl6aevuPHU3l1Rokb0KgBwM3EnMjtoxElsW/JE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=up53kUZrBPeWiODowAi9d6Fr7uNeex4OAjCTgBLCcATZBvx9PHe5ZuwCE96HqmWDr
-	 KydUb0lkxIzJ6OJb9Pf6wmnEY9okA8D8dffYVPqwqyzobtAjUD9DInayGopBzAt8Ne
-	 wMsnbukn5RcGSiravLZcuoIjl2Xy5r8c50thnjEM=
+	b=JYMAUeT8vvb/G6t8SNuxcez9WY+1f1qM1dGEJrZPu5Le9xH83507v0MXd8RJaA0B3
+	 yVo5fhgq3bKRETMHNHXq96OIO9mR7ilPvemG0vf1aGdV0fhWT82Kqjs12xtPvRig0U
+	 6cMeWv9QTag/jzkqahljeHN72QYrQOSipZSfQRD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Laguna <lukasz.laguna@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	=?UTF-8?q?Alex=20Ram=C3=ADrez?= <lxrmrz732@rocketmail.com>,
+	Lyude Paul <lyude@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 122/227] drm/xe: Update wedged.mode only after successful reset policy change
-Date: Wed, 28 Jan 2026 16:22:47 +0100
-Message-ID: <20260128145348.854929283@linuxfoundation.org>
+Subject: [PATCH 6.12 085/169] drm/nouveau: add missing DCB connector types
+Date: Wed, 28 Jan 2026 16:22:48 +0100
+Message-ID: <20260128145337.066608908@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,275 +69,167 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212527-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212352-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,rocketmail.com,redhat.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 680F4A5DFB
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,rocketmail.com:email]
+X-Rspamd-Queue-Id: 7B058A49AC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Laguna <lukasz.laguna@intel.com>
+From: Alex Ramírez <lxrmrz732@rocketmail.com>
 
-[ Upstream commit f262015b9797effdec15e8a81c81b2158ede9578 ]
+[ Upstream commit 3036b4ce4b209af690fa776e4616925892caba4c ]
 
-Previously, the driver's internal wedged.mode state was updated without
-verifying whether the corresponding engine reset policy update in GuC
-succeeded. This could leave the driver reporting a wedged.mode state
-that doesn't match the actual reset behavior programmed in GuC.
+* Add missing DCB connectors in conn.h as per the NVIDIA DCB specification.
 
-With this change, the reset policy is updated first, and the driver's
-wedged.mode state is modified only if the policy update succeeds on all
-available GTs.
+A lot of connector logic was rewritten for Linux v6.5; some display connector types
+went unaccounted-for which caused kernel warnings on devices with the now-unsupported
+DCB connectors. This patch adds all of the DCB connectors as defined by NVIDIA to the
+dcb_connector_type enum to bring back support for these connectors to the new logic.
 
-This patch also introduces two functional improvements:
-
- - The policy is sent to GuC only when a change is required. An update
-   is needed only when entering or leaving XE_WEDGED_MODE_UPON_ANY_HANG,
-   because only in that case the reset policy changes. For example,
-   switching between XE_WEDGED_MODE_UPON_CRITICAL_ERROR and
-   XE_WEDGED_MODE_NEVER doesn't affect the reset policy, so there is no
-   need to send the same value to GuC.
-
- - An inconsistent_reset flag is added to track cases where reset policy
-   update succeeds only on a subset of GTs. If such inconsistency is
-   detected, future wedged mode configuration will force a retry of the
-   reset policy update to restore a consistent state across all GTs.
-
-Fixes: 6b8ef44cc0a9 ("drm/xe: Introduce the wedged_mode debugfs")
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-Link: https://patch.msgid.link/20260107174741.29163-3-lukasz.laguna@intel.com
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 0f13dead4e0385859f5c9c3625a19df116b389d3)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 8b7d92cad953 ("drm/nouveau/kms/nv50-: create connectors based on nvkm info")
+Link: https://download.nvidia.com/open-gpu-doc/DCB/1/DCB-4.0-Specification.html#_connector_table_entry
+Signed-off-by: Alex Ramírez <lxrmrz732@rocketmail.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+[Lyude: Clarify DCB_CONNECTOR_HDMI_0 weirdness in comments]
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patch.msgid.link/20251213005327.9495-2-lxrmrz732@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_debugfs.c      | 72 ++++++++++++++++++++++------
- drivers/gpu/drm/xe/xe_device_types.h | 18 +++++++
- drivers/gpu/drm/xe/xe_guc_ads.c      | 14 +++---
- drivers/gpu/drm/xe/xe_guc_ads.h      |  5 +-
- 4 files changed, 87 insertions(+), 22 deletions(-)
+ .../nouveau/include/nvkm/subdev/bios/conn.h   | 95 +++++++++++++++----
+ 1 file changed, 74 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_debugfs.c b/drivers/gpu/drm/xe/xe_debugfs.c
-index cd977dbd1ef63..7b48bf90cab8f 100644
---- a/drivers/gpu/drm/xe/xe_debugfs.c
-+++ b/drivers/gpu/drm/xe/xe_debugfs.c
-@@ -255,14 +255,64 @@ static ssize_t wedged_mode_show(struct file *f, char __user *ubuf,
- 	return simple_read_from_buffer(ubuf, size, pos, buf, len);
- }
- 
-+static int __wedged_mode_set_reset_policy(struct xe_gt *gt, enum xe_wedged_mode mode)
-+{
-+	bool enable_engine_reset;
-+	int ret;
+diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/conn.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/conn.h
+index d1beaad0c82b6..834ed6587aa52 100644
+--- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/conn.h
++++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/conn.h
+@@ -1,28 +1,81 @@
+ /* SPDX-License-Identifier: MIT */
+ #ifndef __NVBIOS_CONN_H__
+ #define __NVBIOS_CONN_H__
 +
-+	enable_engine_reset = (mode != XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET);
-+	ret = xe_guc_ads_scheduler_policy_toggle_reset(&gt->uc.guc.ads,
-+						       enable_engine_reset);
-+	if (ret)
-+		xe_gt_err(gt, "Failed to update GuC ADS scheduler policy (%pe)\n", ERR_PTR(ret));
-+
-+	return ret;
-+}
-+
-+static int wedged_mode_set_reset_policy(struct xe_device *xe, enum xe_wedged_mode mode)
-+{
-+	struct xe_gt *gt;
-+	int ret;
-+	u8 id;
-+
-+	guard(xe_pm_runtime)(xe);
-+	for_each_gt(gt, xe, id) {
-+		ret = __wedged_mode_set_reset_policy(gt, mode);
-+		if (ret) {
-+			if (id > 0) {
-+				xe->wedged.inconsistent_reset = true;
-+				drm_err(&xe->drm, "Inconsistent reset policy state between GTs\n");
-+			}
-+			return ret;
-+		}
-+	}
-+
-+	xe->wedged.inconsistent_reset = false;
-+
-+	return 0;
-+}
-+
-+static bool wedged_mode_needs_policy_update(struct xe_device *xe, enum xe_wedged_mode mode)
-+{
-+	if (xe->wedged.inconsistent_reset)
-+		return true;
-+
-+	if (xe->wedged.mode == mode)
-+		return false;
-+
-+	if (xe->wedged.mode == XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET ||
-+	    mode == XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET)
-+		return true;
-+
-+	return false;
-+}
-+
- static ssize_t wedged_mode_set(struct file *f, const char __user *ubuf,
- 			       size_t size, loff_t *pos)
- {
- 	struct xe_device *xe = file_inode(f)->i_private;
--	struct xe_gt *gt;
- 	u32 wedged_mode;
- 	ssize_t ret;
--	u8 id;
- 
- 	ret = kstrtouint_from_user(ubuf, size, 0, &wedged_mode);
- 	if (ret)
-@@ -271,22 +321,14 @@ static ssize_t wedged_mode_set(struct file *f, const char __user *ubuf,
- 	if (wedged_mode > 2)
- 		return -EINVAL;
- 
--	if (xe->wedged.mode == wedged_mode)
--		return size;
-+	if (wedged_mode_needs_policy_update(xe, wedged_mode)) {
-+		ret = wedged_mode_set_reset_policy(xe, wedged_mode);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	xe->wedged.mode = wedged_mode;
- 
--	xe_pm_runtime_get(xe);
--	for_each_gt(gt, xe, id) {
--		ret = xe_guc_ads_scheduler_policy_toggle_reset(&gt->uc.guc.ads);
--		if (ret) {
--			xe_gt_err(gt, "Failed to update GuC ADS scheduler policy. GuC may still cause engine reset even with wedged_mode=2\n");
--			xe_pm_runtime_put(xe);
--			return -EIO;
--		}
--	}
--	xe_pm_runtime_put(xe);
--
- 	return size;
- }
- 
-diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
-index 74d7af830b85d..0e80f2940c996 100644
---- a/drivers/gpu/drm/xe/xe_device_types.h
-+++ b/drivers/gpu/drm/xe/xe_device_types.h
-@@ -42,6 +42,22 @@ struct xe_pat_ops;
- struct xe_pxp;
- struct xe_vram_region;
- 
-+/**
-+ * enum xe_wedged_mode - possible wedged modes
-+ * @XE_WEDGED_MODE_NEVER: Device will never be declared wedged.
-+ * @XE_WEDGED_MODE_UPON_CRITICAL_ERROR: Device will be declared wedged only
-+ *	when critical error occurs like GT reset failure or firmware failure.
-+ *	This is the default mode.
-+ * @XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET: Device will be declared wedged on
-+ *	any hang. In this mode, engine resets are disabled to avoid automatic
-+ *	recovery attempts. This mode is primarily intended for debugging hangs.
++/*
++ * An enumerator representing all of the possible VBIOS connector types defined
++ * by Nvidia at
++ * https://nvidia.github.io/open-gpu-doc/DCB/DCB-4.x-Specification.html.
++ *
++ * [1] Nvidia's documentation actually claims DCB_CONNECTOR_HDMI_0 is a "3-Pin
++ *     DIN Stereo Connector". This seems very likely to be a documentation typo
++ *     or some sort of funny historical baggage, because we've treated this
++ *     connector type as HDMI for years without issue.
++ *     TODO: Check with Nvidia what's actually happening here.
 + */
-+enum xe_wedged_mode {
-+	XE_WEDGED_MODE_NEVER = 0,
-+	XE_WEDGED_MODE_UPON_CRITICAL_ERROR = 1,
-+	XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET = 2,
-+};
+ enum dcb_connector_type {
+-	DCB_CONNECTOR_VGA = 0x00,
+-	DCB_CONNECTOR_TV_0 = 0x10,
+-	DCB_CONNECTOR_TV_1 = 0x11,
+-	DCB_CONNECTOR_TV_3 = 0x13,
+-	DCB_CONNECTOR_DVI_I = 0x30,
+-	DCB_CONNECTOR_DVI_D = 0x31,
+-	DCB_CONNECTOR_DMS59_0 = 0x38,
+-	DCB_CONNECTOR_DMS59_1 = 0x39,
+-	DCB_CONNECTOR_LVDS = 0x40,
+-	DCB_CONNECTOR_LVDS_SPWG = 0x41,
+-	DCB_CONNECTOR_DP = 0x46,
+-	DCB_CONNECTOR_eDP = 0x47,
+-	DCB_CONNECTOR_mDP = 0x48,
+-	DCB_CONNECTOR_HDMI_0 = 0x60,
+-	DCB_CONNECTOR_HDMI_1 = 0x61,
+-	DCB_CONNECTOR_HDMI_C = 0x63,
+-	DCB_CONNECTOR_DMS59_DP0 = 0x64,
+-	DCB_CONNECTOR_DMS59_DP1 = 0x65,
+-	DCB_CONNECTOR_WFD	= 0x70,
+-	DCB_CONNECTOR_USB_C = 0x71,
+-	DCB_CONNECTOR_NONE = 0xff
++	/* Analog outputs */
++	DCB_CONNECTOR_VGA = 0x00,		// VGA 15-pin connector
++	DCB_CONNECTOR_DVI_A = 0x01,		// DVI-A
++	DCB_CONNECTOR_POD_VGA = 0x02,		// Pod - VGA 15-pin connector
++	DCB_CONNECTOR_TV_0 = 0x10,		// TV - Composite Out
++	DCB_CONNECTOR_TV_1 = 0x11,		// TV - S-Video Out
++	DCB_CONNECTOR_TV_2 = 0x12,		// TV - S-Video Breakout - Composite
++	DCB_CONNECTOR_TV_3 = 0x13,		// HDTV Component - YPrPb
++	DCB_CONNECTOR_TV_SCART = 0x14,		// TV - SCART Connector
++	DCB_CONNECTOR_TV_SCART_D = 0x16,	// TV - Composite SCART over D-connector
++	DCB_CONNECTOR_TV_DTERM = 0x17,		// HDTV - D-connector (EIAJ4120)
++	DCB_CONNECTOR_POD_TV_3 = 0x18,		// Pod - HDTV - YPrPb
++	DCB_CONNECTOR_POD_TV_1 = 0x19,		// Pod - S-Video
++	DCB_CONNECTOR_POD_TV_0 = 0x1a,		// Pod - Composite
 +
- #define XE_BO_INVALID_OFFSET	LONG_MAX
- 
- #define GRAPHICS_VER(xe) ((xe)->info.graphics_verx100 / 100)
-@@ -556,6 +572,8 @@ struct xe_device {
- 		int mode;
- 		/** @wedged.method: Recovery method to be sent in the drm device wedged uevent */
- 		unsigned long method;
-+		/** @wedged.inconsistent_reset: Inconsistent reset policy state between GTs */
-+		bool inconsistent_reset;
- 	} wedged;
- 
- 	/** @bo_device: Struct to control async free of BOs */
-diff --git a/drivers/gpu/drm/xe/xe_guc_ads.c b/drivers/gpu/drm/xe/xe_guc_ads.c
-index 58e0b0294a5bc..0e2bece1d8b83 100644
---- a/drivers/gpu/drm/xe/xe_guc_ads.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ads.c
-@@ -979,16 +979,17 @@ static int guc_ads_action_update_policies(struct xe_guc_ads *ads, u32 policy_off
- /**
-  * xe_guc_ads_scheduler_policy_toggle_reset - Toggle reset policy
-  * @ads: Additional data structures object
-+ * @enable_engine_reset: true to enable engine resets, false otherwise
-  *
-- * This function update the GuC's engine reset policy based on wedged.mode.
-+ * This function update the GuC's engine reset policy.
-  *
-  * Return: 0 on success, and negative error code otherwise.
-  */
--int xe_guc_ads_scheduler_policy_toggle_reset(struct xe_guc_ads *ads)
-+int xe_guc_ads_scheduler_policy_toggle_reset(struct xe_guc_ads *ads,
-+					     bool enable_engine_reset)
- {
- 	struct guc_policies *policies;
- 	struct xe_guc *guc = ads_to_guc(ads);
--	struct xe_device *xe = ads_to_xe(ads);
- 	CLASS(xe_guc_buf, buf)(&guc->buf, sizeof(*policies));
- 
- 	if (!xe_guc_buf_is_valid(buf))
-@@ -1000,10 +1001,11 @@ int xe_guc_ads_scheduler_policy_toggle_reset(struct xe_guc_ads *ads)
- 	policies->dpc_promote_time = ads_blob_read(ads, policies.dpc_promote_time);
- 	policies->max_num_work_items = ads_blob_read(ads, policies.max_num_work_items);
- 	policies->is_valid = 1;
--	if (xe->wedged.mode == 2)
--		policies->global_flags |= GLOBAL_POLICY_DISABLE_ENGINE_RESET;
--	else
++	/* DVI digital outputs */
++	DCB_CONNECTOR_DVI_I_TV_1 = 0x20,	// DVI-I-TV-S-Video
++	DCB_CONNECTOR_DVI_I_TV_0 = 0x21,	// DVI-I-TV-Composite
++	DCB_CONNECTOR_DVI_I_TV_2 = 0x22,	// DVI-I-TV-S-Video Breakout-Composite
++	DCB_CONNECTOR_DVI_I = 0x30,		// DVI-I
++	DCB_CONNECTOR_DVI_D = 0x31,		// DVI-D
++	DCB_CONNECTOR_DVI_ADC = 0x32,		// Apple Display Connector (ADC)
++	DCB_CONNECTOR_DMS59_0 = 0x38,		// LFH-DVI-I-1
++	DCB_CONNECTOR_DMS59_1 = 0x39,		// LFH-DVI-I-2
++	DCB_CONNECTOR_BNC = 0x3c,		// BNC Connector [for SDI?]
 +
-+	if (enable_engine_reset)
- 		policies->global_flags &= ~GLOBAL_POLICY_DISABLE_ENGINE_RESET;
-+	else
-+		policies->global_flags |= GLOBAL_POLICY_DISABLE_ENGINE_RESET;
- 
- 	return guc_ads_action_update_policies(ads, xe_guc_buf_flush(buf));
- }
-diff --git a/drivers/gpu/drm/xe/xe_guc_ads.h b/drivers/gpu/drm/xe/xe_guc_ads.h
-index 2e6674c760ff9..7a39f361cb17d 100644
---- a/drivers/gpu/drm/xe/xe_guc_ads.h
-+++ b/drivers/gpu/drm/xe/xe_guc_ads.h
-@@ -6,6 +6,8 @@
- #ifndef _XE_GUC_ADS_H_
- #define _XE_GUC_ADS_H_
- 
-+#include <linux/types.h>
++	/* LVDS / TMDS digital outputs */
++	DCB_CONNECTOR_LVDS = 0x40,		// LVDS-SPWG-Attached [is this name correct?]
++	DCB_CONNECTOR_LVDS_SPWG = 0x41,		// LVDS-OEM-Attached (non-removable)
++	DCB_CONNECTOR_LVDS_REM = 0x42,		// LVDS-SPWG-Detached [following naming above]
++	DCB_CONNECTOR_LVDS_SPWG_REM = 0x43,	// LVDS-OEM-Detached (removable)
++	DCB_CONNECTOR_TMDS = 0x45,		// TMDS-OEM-Attached (non-removable)
 +
- struct xe_guc_ads;
++	/* DP digital outputs */
++	DCB_CONNECTOR_DP = 0x46,		// DisplayPort External Connector
++	DCB_CONNECTOR_eDP = 0x47,		// DisplayPort Internal Connector
++	DCB_CONNECTOR_mDP = 0x48,		// DisplayPort (Mini) External Connector
++
++	/* Dock outputs (not used) */
++	DCB_CONNECTOR_DOCK_VGA_0 = 0x50,	// VGA 15-pin if not docked
++	DCB_CONNECTOR_DOCK_VGA_1 = 0x51,	// VGA 15-pin if docked
++	DCB_CONNECTOR_DOCK_DVI_I_0 = 0x52,	// DVI-I if not docked
++	DCB_CONNECTOR_DOCK_DVI_I_1 = 0x53,	// DVI-I if docked
++	DCB_CONNECTOR_DOCK_DVI_D_0 = 0x54,	// DVI-D if not docked
++	DCB_CONNECTOR_DOCK_DVI_D_1 = 0x55,	// DVI-D if docked
++	DCB_CONNECTOR_DOCK_DP_0 = 0x56,		// DisplayPort if not docked
++	DCB_CONNECTOR_DOCK_DP_1 = 0x57,		// DisplayPort if docked
++	DCB_CONNECTOR_DOCK_mDP_0 = 0x58,	// DisplayPort (Mini) if not docked
++	DCB_CONNECTOR_DOCK_mDP_1 = 0x59,	// DisplayPort (Mini) if docked
++
++	/* HDMI? digital outputs */
++	DCB_CONNECTOR_HDMI_0 = 0x60,		// HDMI? See [1] in top-level enum comment above
++	DCB_CONNECTOR_HDMI_1 = 0x61,		// HDMI-A connector
++	DCB_CONNECTOR_SPDIF = 0x62,		// Audio S/PDIF connector
++	DCB_CONNECTOR_HDMI_C = 0x63,		// HDMI-C (Mini) connector
++
++	/* Misc. digital outputs */
++	DCB_CONNECTOR_DMS59_DP0 = 0x64,		// LFH-DP-1
++	DCB_CONNECTOR_DMS59_DP1 = 0x65,		// LFH-DP-2
++	DCB_CONNECTOR_WFD = 0x70,		// Virtual connector for Wifi Display (WFD)
++	DCB_CONNECTOR_USB_C = 0x71,		// [DP over USB-C; not present in docs]
++	DCB_CONNECTOR_NONE = 0xff		// Skip Entry
+ };
  
- int xe_guc_ads_init(struct xe_guc_ads *ads);
-@@ -13,6 +15,7 @@ int xe_guc_ads_init_post_hwconfig(struct xe_guc_ads *ads);
- void xe_guc_ads_populate(struct xe_guc_ads *ads);
- void xe_guc_ads_populate_minimal(struct xe_guc_ads *ads);
- void xe_guc_ads_populate_post_load(struct xe_guc_ads *ads);
--int xe_guc_ads_scheduler_policy_toggle_reset(struct xe_guc_ads *ads);
-+int xe_guc_ads_scheduler_policy_toggle_reset(struct xe_guc_ads *ads,
-+					     bool enable_engine_reset);
- 
- #endif
+ struct nvbios_connT {
 -- 
 2.51.0
 
