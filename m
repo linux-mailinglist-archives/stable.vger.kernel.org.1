@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-212558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Fq3Nnszeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:11 +0100
+	id mHDjLPUvemkc4gEAu9opvQ
+	(envelope-from <stable+bounces-212201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC7FA5021
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53351A4793
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 008193027002
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7453B31797E3
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB232874FE;
-	Wed, 28 Jan 2026 15:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32E62F7AB0;
+	Wed, 28 Jan 2026 15:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9iDn6vq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycaBMHRl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F573033C4;
-	Wed, 28 Jan 2026 15:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9061C2F6562;
+	Wed, 28 Jan 2026 15:38:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615921; cv=none; b=TPhtvWPtkLBmfBoEpr+N8vyTqd2lPX+AOzfuFHLBodOI6S3bhtFpLX2QJa1YfeNG19tth9bTBB1M4YWcZyZJwNGKf2iWiDZSPxmxkfFEhvWk6VonKQ5aBFGdeNJ1Pm+T4paCmTMTnTAXskQBCXr1wWXBrz+954DiINQhKNX0L70=
+	t=1769614724; cv=none; b=AgYtbga9qo+aHyVrBaJQREi6knh6IWEaYa0IOySGJy5LT1XiP9pvXDTrqX9amESjp7rECgNpyCBj2+GFvEGH8ST6bD/2kC7LrBGWXp/OPnV4aqH6ONKFDCKAvpn1xWNZwaCi/ZhwlZTD9pthXrErkqeSojgAXpiveSi1QC4y3pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615921; c=relaxed/simple;
-	bh=fOK+cxiqC3Av4hc68UkY8n7KK8GSTtaC3ntasj9lUK0=;
+	s=arc-20240116; t=1769614724; c=relaxed/simple;
+	bh=nMyeHEmUnsR1Kv+LmuuSzb2P3Xl0AMISe1aErUiYsSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYmrfGVyloHlrmns9vsrAlgqg9e4UumILNh7sIsb2cmlqsP1CHdEvUEWL4JIRcTwxx985yOuhFJa09R6849+FT0WuHBjy8UiIMwWYe1blcwF/5sATviywNSJMXPV8+Hft1duXRqRcokyMI4cOPzjvtByyGk2B2DWrighH7FOsKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9iDn6vq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8473C4CEF1;
-	Wed, 28 Jan 2026 15:58:40 +0000 (UTC)
+	 MIME-Version; b=PygSxqFwXcoERlaawJ+vU9Wp21GqRAgJIzgiVif4qcnUU/pi8TcMri41UCUcZBg7jA/uphBU/R9Own8dgWZDVKmSHq7941ONyKG/+AWCZpe/o2q1VQgqCcKiBdQCRn0xU/iB39HAhyBGQevFWLUxDTmW83a26HXfkMWQYJWeSgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycaBMHRl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFEAC116C6;
+	Wed, 28 Jan 2026 15:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615921;
-	bh=fOK+cxiqC3Av4hc68UkY8n7KK8GSTtaC3ntasj9lUK0=;
+	s=korg; t=1769614723;
+	bh=nMyeHEmUnsR1Kv+LmuuSzb2P3Xl0AMISe1aErUiYsSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9iDn6vqC2LJtvUEiH23WsuXKiHfgBW8ItQAnRGBA06ISp4Tv5Ls/kVKD1l3OZBxP
-	 ZGmQkzH1NlkrGzXqR5axHLQym30LOUTmZsY5Y4hyGuChcH84dUiSqWnQW+jBkSYoIF
-	 g/e+MumyrLBCgHiyByH/UXSDl5F3u0YIFWyGzPw0=
+	b=ycaBMHRlNd9+DEZQ/mbr89Mz+4ZTvxy31L7DFEQevN8ucX8lrRtO7o7Oflf48IweG
+	 HUVL3KCDHi5I3oBGz0gGB+wx3xbUkFBAIzw8PsbKe7++mKebu2LZJuwU0poUvT7a8r
+	 2vtxa4M5MkzB41rbChTscmF6oRdmv0wImpYmW5qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Nimrod Oren <noren@nvidia.com>,
-	Feng Tang <feng.tang@linux.alibaba.com>,
-	Joel Granados <joel.granados@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 153/227] panic: only warn about deprecated panic_print on write access
-Date: Wed, 28 Jan 2026 16:23:18 +0100
-Message-ID: <20260128145349.960034539@linuxfoundation.org>
+	syzbot+7bfa4b72c6a5da128d32@syzkaller.appspotmail.com,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 223/254] bridge: mcast: Fix use-after-free during router port configuration
+Date: Wed, 28 Jan 2026 16:23:19 +0100
+Message-ID: <20260128145352.810571701@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +66,214 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212558-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212201-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,nvidia.com:email,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: 7CC7FA5021
+	TAGGED_RCPT(0.00)[stable,7bfa4b72c6a5da128d32];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 53351A4793
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 90f3c123247e9564f2ecf861946ec41ceaf5e198 upstream.
+commit 7544f3f5b0b58c396f374d060898b5939da31709 upstream.
 
-The panic_print_deprecated() warning is being triggered on both read and
-write operations to the panic_print parameter.
+The bridge maintains a global list of ports behind which a multicast
+router resides. The list is consulted during forwarding to ensure
+multicast packets are forwarded to these ports even if the ports are not
+member in the matching MDB entry.
 
-This causes spurious warnings when users run 'sysctl -a' to list all
-sysctl values, since that command reads /proc/sys/kernel/panic_print and
-triggers the deprecation notice.
+When per-VLAN multicast snooping is enabled, the per-port multicast
+context is disabled on each port and the port is removed from the global
+router port list:
 
-Modify the handlers to only emit the deprecation warning when the
-parameter is actually being set:
+ # ip link add name br1 up type bridge vlan_filtering 1 mcast_snooping 1
+ # ip link add name dummy1 up master br1 type dummy
+ # ip link set dev dummy1 type bridge_slave mcast_router 2
+ $ bridge -d mdb show | grep router
+ router ports on br1: dummy1
+ # ip link set dev br1 type bridge mcast_vlan_snooping 1
+ $ bridge -d mdb show | grep router
 
- - sysctl_panic_print_handler(): check 'write' flag before warning.
- - panic_print_get(): remove the deprecation call entirely.
+However, the port can be re-added to the global list even when per-VLAN
+multicast snooping is enabled:
 
-This way, users are only warned when they actively try to use the
-deprecated parameter, not when passively querying system state.
+ # ip link set dev dummy1 type bridge_slave mcast_router 0
+ # ip link set dev dummy1 type bridge_slave mcast_router 2
+ $ bridge -d mdb show | grep router
+ router ports on br1: dummy1
 
-Link: https://lkml.kernel.org/r/20260106163321.83586-1-gal@nvidia.com
-Fixes: ee13240cd78b ("panic: add note that panic_print sysctl interface is deprecated")
-Fixes: 2683df6539cb ("panic: add note that 'panic_print' parameter is deprecated")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Cc: Feng Tang <feng.tang@linux.alibaba.com>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Since commit 4b30ae9adb04 ("net: bridge: mcast: re-implement
+br_multicast_{enable, disable}_port functions"), when per-VLAN multicast
+snooping is enabled, multicast disablement on a port will disable the
+per-{port, VLAN} multicast contexts and not the per-port one. As a
+result, a port will remain in the global router port list even after it
+is deleted. This will lead to a use-after-free [1] when the list is
+traversed (when adding a new port to the list, for example):
+
+ # ip link del dev dummy1
+ # ip link add name dummy2 up master br1 type dummy
+ # ip link set dev dummy2 type bridge_slave mcast_router 2
+
+Similarly, stale entries can also be found in the per-VLAN router port
+list. When per-VLAN multicast snooping is disabled, the per-{port, VLAN}
+contexts are disabled on each port and the port is removed from the
+per-VLAN router port list:
+
+ # ip link add name br1 up type bridge vlan_filtering 1 mcast_snooping 1 mcast_vlan_snooping 1
+ # ip link add name dummy1 up master br1 type dummy
+ # bridge vlan add vid 2 dev dummy1
+ # bridge vlan global set vid 2 dev br1 mcast_snooping 1
+ # bridge vlan set vid 2 dev dummy1 mcast_router 2
+ $ bridge vlan global show dev br1 vid 2 | grep router
+       router ports: dummy1
+ # ip link set dev br1 type bridge mcast_vlan_snooping 0
+ $ bridge vlan global show dev br1 vid 2 | grep router
+
+However, the port can be re-added to the per-VLAN list even when
+per-VLAN multicast snooping is disabled:
+
+ # bridge vlan set vid 2 dev dummy1 mcast_router 0
+ # bridge vlan set vid 2 dev dummy1 mcast_router 2
+ $ bridge vlan global show dev br1 vid 2 | grep router
+       router ports: dummy1
+
+When the VLAN is deleted from the port, the per-{port, VLAN} multicast
+context will not be disabled since multicast snooping is not enabled
+on the VLAN. As a result, the port will remain in the per-VLAN router
+port list even after it is no longer member in the VLAN. This will lead
+to a use-after-free [2] when the list is traversed (when adding a new
+port to the list, for example):
+
+ # ip link add name dummy2 up master br1 type dummy
+ # bridge vlan add vid 2 dev dummy2
+ # bridge vlan del vid 2 dev dummy1
+ # bridge vlan set vid 2 dev dummy2 mcast_router 2
+
+Fix these issues by removing the port from the relevant (global or
+per-VLAN) router port list in br_multicast_port_ctx_deinit(). The
+function is invoked during port deletion with the per-port multicast
+context and during VLAN deletion with the per-{port, VLAN} multicast
+context.
+
+Note that deleting the multicast router timer is not enough as it only
+takes care of the temporary multicast router states (1 or 3) and not the
+permanent one (2).
+
+[1]
+BUG: KASAN: slab-out-of-bounds in br_multicast_add_router.part.0+0x3f1/0x560
+Write of size 8 at addr ffff888004a67328 by task ip/384
+[...]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x6f/0xa0
+ print_address_description.constprop.0+0x6f/0x350
+ print_report+0x108/0x205
+ kasan_report+0xdf/0x110
+ br_multicast_add_router.part.0+0x3f1/0x560
+ br_multicast_set_port_router+0x74e/0xac0
+ br_setport+0xa55/0x1870
+ br_port_slave_changelink+0x95/0x120
+ __rtnl_newlink+0x5e8/0xa40
+ rtnl_newlink+0x627/0xb00
+ rtnetlink_rcv_msg+0x6fb/0xb70
+ netlink_rcv_skb+0x11f/0x350
+ netlink_unicast+0x426/0x710
+ netlink_sendmsg+0x75a/0xc20
+ __sock_sendmsg+0xc1/0x150
+ ____sys_sendmsg+0x5aa/0x7b0
+ ___sys_sendmsg+0xfc/0x180
+ __sys_sendmsg+0x124/0x1c0
+ do_syscall_64+0xbb/0x360
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+[2]
+BUG: KASAN: slab-use-after-free in br_multicast_add_router.part.0+0x378/0x560
+Read of size 8 at addr ffff888009f00840 by task bridge/391
+[...]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x6f/0xa0
+ print_address_description.constprop.0+0x6f/0x350
+ print_report+0x108/0x205
+ kasan_report+0xdf/0x110
+ br_multicast_add_router.part.0+0x378/0x560
+ br_multicast_set_port_router+0x6f9/0xac0
+ br_vlan_process_options+0x8b6/0x1430
+ br_vlan_rtm_process_one+0x605/0xa30
+ br_vlan_rtm_process+0x396/0x4c0
+ rtnetlink_rcv_msg+0x2f7/0xb70
+ netlink_rcv_skb+0x11f/0x350
+ netlink_unicast+0x426/0x710
+ netlink_sendmsg+0x75a/0xc20
+ __sock_sendmsg+0xc1/0x150
+ ____sys_sendmsg+0x5aa/0x7b0
+ ___sys_sendmsg+0xfc/0x180
+ __sys_sendmsg+0x124/0x1c0
+ do_syscall_64+0xbb/0x360
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: 2796d846d74a ("net: bridge: vlan: convert mcast router global option to per-vlan entry")
+Fixes: 4b30ae9adb04 ("net: bridge: mcast: re-implement br_multicast_{enable, disable}_port functions")
+Reported-by: syzbot+7bfa4b72c6a5da128d32@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/684c18bd.a00a0220.279073.000b.GAE@google.com/T/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250619182228.1656906-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/panic.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bridge/br_multicast.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -131,7 +131,8 @@ static int proc_taint(const struct ctl_t
- static int sysctl_panic_print_handler(const struct ctl_table *table, int write,
- 			   void *buffer, size_t *lenp, loff_t *ppos)
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -2013,10 +2013,19 @@ void br_multicast_port_ctx_init(struct n
+ 
+ void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pmctx)
  {
--	panic_print_deprecated();
-+	if (write)
-+		panic_print_deprecated();
- 	return proc_doulongvec_minmax(table, write, buffer, lenp, ppos);
++	struct net_bridge *br = pmctx->port->br;
++	bool del = false;
++
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	del_timer_sync(&pmctx->ip6_mc_router_timer);
+ #endif
+ 	del_timer_sync(&pmctx->ip4_mc_router_timer);
++
++	spin_lock_bh(&br->multicast_lock);
++	del |= br_ip6_multicast_rport_del(pmctx);
++	del |= br_ip4_multicast_rport_del(pmctx);
++	br_multicast_rport_del_notify(pmctx, del);
++	spin_unlock_bh(&br->multicast_lock);
  }
  
-@@ -1010,7 +1011,6 @@ static int panic_print_set(const char *v
- 
- static int panic_print_get(char *val, const struct kernel_param *kp)
- {
--	panic_print_deprecated();
- 	return  param_get_ulong(val, kp);
- }
- 
+ int br_multicast_add_port(struct net_bridge_port *port)
 
 
 
