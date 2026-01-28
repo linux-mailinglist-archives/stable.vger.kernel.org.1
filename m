@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-212233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NYUK70vemkc4gEAu9opvQ
-	(envelope-from <stable+bounces-212233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:13 +0100
+	id iPOjKykxemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7280CA4706
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27924A4AF2
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B22C330A763A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B67F330A503F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F252EAD1C;
-	Wed, 28 Jan 2026 15:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE9E3043B2;
+	Wed, 28 Jan 2026 15:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIIiquaq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/V2mORu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93772DE1E4;
-	Wed, 28 Jan 2026 15:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537FB2D3EC7;
+	Wed, 28 Jan 2026 15:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614830; cv=none; b=tm5rgfl5rTKZgXFYZuuiOQhLsGlfGqieLT51mANl1jWCakXwpekGTH8EPy/9KhmFnhjBtvYCgX4PxYNQ7tY8aSFZWLg6rbXHWSKKRu4Ctm+lRszKIcRFkURqdS31LH33H/QK7Fydv2/5AwMLXVFHEbBwE+2oAnAPLlB2SIl9QBs=
+	t=1769615303; cv=none; b=ONYKp9gRY+9I0oyk3CYProvtNfm119lzQH4IzgP8CVq+RR67QoGOLewIFczsyKyG803Jwl84FOtT71Pp6pLDDO5eY3gmqAAHB8QRKH5fTRlQfkFa94evaTQGdQBCoVPafdKOkYshhMUqvRJyqJb4NYiiOhij0KzKzWlsROKG/f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614830; c=relaxed/simple;
-	bh=VLkF1DT22M3OglWVrwgqvQn6sU7xIfodaDKnaKu2778=;
+	s=arc-20240116; t=1769615303; c=relaxed/simple;
+	bh=fIB15zlxWCgCPPqLsoOanGBHCubi1WpykaCckCDTtnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/XFte26uIc5akUGIY3cfoqeV/W+3eoFrUshYNUv4oOPMiw2YizPgVdn7YIIZkMlVGxlP0BwburKhHQR64h6pmVb710OTTnYZmWJ0gi9UAOKwGXEoPwkLjOen6WDA1RrsiRZWJSpv9OLcbcDXujmk8Gm27soYOhPWYOzyNLNAhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIIiquaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73A5C4CEF1;
-	Wed, 28 Jan 2026 15:40:29 +0000 (UTC)
+	 MIME-Version; b=N6uXSGW9fo30bgDiX5sWJtLvtDPtTKcGjIKzru8Y4sBNbGYkh1y62ONEvsrwWxx0LigMdOlybjq0hxxUAUcjPZKyUHfN6nL6XBfpqlo/dJV9RXbzq5zy0D4RzjSG6OY5UpfdmihYj+tWNzEGcQvvCinXux+pWnU6aTV4/SdLQ2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/V2mORu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74046C116C6;
+	Wed, 28 Jan 2026 15:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614830;
-	bh=VLkF1DT22M3OglWVrwgqvQn6sU7xIfodaDKnaKu2778=;
+	s=korg; t=1769615302;
+	bh=fIB15zlxWCgCPPqLsoOanGBHCubi1WpykaCckCDTtnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rIIiquaqIUXwQp2ut9NwayerFzgAsSlJwnlhzwylKKEKBP+zqZPx4mjTC2ut2RxIB
-	 C6kkMyy29T+hjkoJatEZ8BP980SVlOtZiAjehJRNBv3uWT+g2mG5WUYwi6s5aGVlN/
-	 oZMgTsNdK/G9bhGvCd/d1fljYCDl+UVfN+Q/TKw0=
+	b=u/V2mORuFZuxTRUGoHP7Vy1wRXOwAhLcdgdQSRx4hEt8l7LTZQnMcucNCdQ5sHY8o
+	 /oUn+w4CvfS7dl5DrwaSgeZe7HwHQy2tV+y0l0EGB0T89zs9xKgkIta65NCW0h3bYw
+	 5xoGD3POuSk4GVCuiik4ePInx1cs/WZtY+LPxriA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubham Rana <s9.rana@samsung.com>,
-	Maninder Singh <maninder1.s@samsung.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.6 245/254] NFSD: fix race between nfsd registration and exports_proc
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.12 138/169] irqchip/gic-v3-its: Avoid truncating memory addresses
 Date: Wed, 28 Jan 2026 16:23:41 +0100
-Message-ID: <20260128145353.613826173@linuxfoundation.org>
+Message-ID: <20260128145338.973266378@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,200 +67,106 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,samsung.com,kernel.org,oracle.com,163.com];
-	TAGGED_FROM(0.00)[bounces-212233-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212373-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.960];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,samsung.com:email]
-X-Rspamd-Queue-Id: 7280CA4706
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 27924A4AF2
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maninder Singh <maninder1.s@samsung.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f7fb730cac9aafda8b9813b55d04e28a9664d17c ]
+commit 8d76a7d89c12d08382b66e2f21f20d0627d14859 upstream.
 
-As of now nfsd calls create_proc_exports_entry() at start of init_nfsd
-and cleanup by remove_proc_entry() at last of exit_nfsd.
+On 32-bit machines with CONFIG_ARM_LPAE, it is possible for lowmem
+allocations to be backed by addresses physical memory above the 32-bit
+address limit, as found while experimenting with larger VMSPLIT
+configurations.
 
-Which causes kernel OOPs if there is race between below 2 operations:
-(i) exportfs -r
-(ii) mount -t nfsd none /proc/fs/nfsd
+This caused the qemu virt model to crash in the GICv3 driver, which
+allocates the 'itt' object using GFP_KERNEL. Since all memory below
+the 4GB physical address limit is in ZONE_DMA in this configuration,
+kmalloc() defaults to higher addresses for ZONE_NORMAL, and the
+ITS driver stores the physical address in a 32-bit 'unsigned long'
+variable.
 
-for 5.4 kernel ARM64:
+Change the itt_addr variable to the correct phys_addr_t type instead,
+along with all other variables in this driver that hold a physical
+address.
 
-CPU 1:
-el1_irq+0xbc/0x180
-arch_counter_get_cntvct+0x14/0x18
-running_clock+0xc/0x18
-preempt_count_add+0x88/0x110
-prep_new_page+0xb0/0x220
-get_page_from_freelist+0x2d8/0x1778
-__alloc_pages_nodemask+0x15c/0xef0
-__vmalloc_node_range+0x28c/0x478
-__vmalloc_node_flags_caller+0x8c/0xb0
-kvmalloc_node+0x88/0xe0
-nfsd_init_net+0x6c/0x108 [nfsd]
-ops_init+0x44/0x170
-register_pernet_operations+0x114/0x270
-register_pernet_subsys+0x34/0x50
-init_nfsd+0xa8/0x718 [nfsd]
-do_one_initcall+0x54/0x2e0
+The gicv5 driver correctly uses u64 variables, while all other irqchip
+drivers don't call virt_to_phys or similar interfaces. It's expected that
+other device drivers have similar issues, but fixing this one is
+sufficient for booting a virtio based guest.
 
-CPU 2 :
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-
-PC is at : exports_net_open+0x50/0x68 [nfsd]
-
-Call trace:
-exports_net_open+0x50/0x68 [nfsd]
-exports_proc_open+0x2c/0x38 [nfsd]
-proc_reg_open+0xb8/0x198
-do_dentry_open+0x1c4/0x418
-vfs_open+0x38/0x48
-path_openat+0x28c/0xf18
-do_filp_open+0x70/0xe8
-do_sys_open+0x154/0x248
-
-Sometimes it crashes at exports_net_open() and sometimes cache_seq_next_rcu().
-
-and same is happening on latest 6.14 kernel as well:
-
-[    0.000000] Linux version 6.14.0-rc5-next-20250304-dirty
-...
-[  285.455918] Unable to handle kernel paging request at virtual address 00001f4800001f48
-...
-[  285.464902] pc : cache_seq_next_rcu+0x78/0xa4
-...
-[  285.469695] Call trace:
-[  285.470083]  cache_seq_next_rcu+0x78/0xa4 (P)
-[  285.470488]  seq_read+0xe0/0x11c
-[  285.470675]  proc_reg_read+0x9c/0xf0
-[  285.470874]  vfs_read+0xc4/0x2fc
-[  285.471057]  ksys_read+0x6c/0xf4
-[  285.471231]  __arm64_sys_read+0x1c/0x28
-[  285.471428]  invoke_syscall+0x44/0x100
-[  285.471633]  el0_svc_common.constprop.0+0x40/0xe0
-[  285.471870]  do_el0_svc_compat+0x1c/0x34
-[  285.472073]  el0_svc_compat+0x2c/0x80
-[  285.472265]  el0t_32_sync_handler+0x90/0x140
-[  285.472473]  el0t_32_sync+0x19c/0x1a0
-[  285.472887] Code: f9400885 93407c23 937d7c27 11000421 (f86378a3)
-[  285.473422] ---[ end trace 0000000000000000 ]---
-
-It reproduced simply with below script:
-while [ 1 ]
-do
-/exportfs -r
-done &
-
-while [ 1 ]
-do
-insmod /nfsd.ko
-mount -t nfsd none /proc/fs/nfsd
-umount /proc/fs/nfsd
-rmmod nfsd
-done &
-
-So exporting interfaces to user space shall be done at last and
-cleanup at first place.
-
-With change there is no Kernel OOPs.
-
-Co-developed-by: Shubham Rana <s9.rana@samsung.com>
-Signed-off-by: Shubham Rana <s9.rana@samsung.com>
-Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ The context change is due to the commit bd9d6a3efa97
-("NFSD: add rpc_status netlink support")
-and the proper adoption is done. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Link: https://patch.msgid.link/20260119201603.2713066-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsctl.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1582,12 +1582,9 @@ static int __init init_nfsd(void)
- 	if (retval)
- 		goto out_free_pnfs;
- 	nfsd_lockd_init();	/* lockd->nfsd callbacks */
--	retval = create_proc_exports_entry();
--	if (retval)
--		goto out_free_lockd;
- 	retval = register_pernet_subsys(&nfsd_net_ops);
- 	if (retval < 0)
--		goto out_free_exports;
-+		goto out_free_lockd;
- 	retval = register_cld_notifier();
- 	if (retval)
- 		goto out_free_subsys;
-@@ -1596,17 +1593,19 @@ static int __init init_nfsd(void)
- 		goto out_free_cld;
- 	retval = register_filesystem(&nfsd_fs_type);
- 	if (retval)
-+		goto out_free_nfsd4;
-+	retval = create_proc_exports_entry();
-+	if (retval)
- 		goto out_free_all;
- 	return 0;
- out_free_all:
-+	unregister_filesystem(&nfsd_fs_type);
-+out_free_nfsd4:
- 	nfsd4_destroy_laundry_wq();
- out_free_cld:
- 	unregister_cld_notifier();
- out_free_subsys:
- 	unregister_pernet_subsys(&nfsd_net_ops);
--out_free_exports:
--	remove_proc_entry("fs/nfs/exports", NULL);
--	remove_proc_entry("fs/nfs", NULL);
- out_free_lockd:
- 	nfsd_lockd_shutdown();
- 	nfsd_drc_slab_free();
-@@ -1619,13 +1618,13 @@ out_free_slabs:
- 
- static void __exit exit_nfsd(void)
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -619,7 +619,7 @@ static struct its_collection *its_build_
+ 						 struct its_cmd_block *cmd,
+ 						 struct its_cmd_desc *desc)
  {
-+	remove_proc_entry("fs/nfs/exports", NULL);
-+	remove_proc_entry("fs/nfs", NULL);
- 	unregister_filesystem(&nfsd_fs_type);
- 	nfsd4_destroy_laundry_wq();
- 	unregister_cld_notifier();
- 	unregister_pernet_subsys(&nfsd_net_ops);
- 	nfsd_drc_slab_free();
--	remove_proc_entry("fs/nfs/exports", NULL);
--	remove_proc_entry("fs/nfs", NULL);
- 	nfsd_lockd_shutdown();
- 	nfsd4_free_slabs();
- 	nfsd4_exit_pnfs();
+-	unsigned long itt_addr;
++	phys_addr_t itt_addr;
+ 	u8 size = ilog2(desc->its_mapd_cmd.dev->nr_ites);
+ 
+ 	itt_addr = virt_to_phys(desc->its_mapd_cmd.dev->itt);
+@@ -790,7 +790,7 @@ static struct its_vpe *its_build_vmapp_c
+ 					   struct its_cmd_desc *desc)
+ {
+ 	struct its_vpe *vpe = valid_vpe(its, desc->its_vmapp_cmd.vpe);
+-	unsigned long vpt_addr, vconf_addr;
++	phys_addr_t vpt_addr, vconf_addr;
+ 	u64 target;
+ 	bool alloc;
+ 
+@@ -2395,10 +2395,10 @@ retry_baser:
+ 	baser->psz = psz;
+ 	tmp = indirect ? GITS_LVL1_ENTRY_SIZE : esz;
+ 
+-	pr_info("ITS@%pa: allocated %d %s @%lx (%s, esz %d, psz %dK, shr %d)\n",
++	pr_info("ITS@%pa: allocated %d %s @%llx (%s, esz %d, psz %dK, shr %d)\n",
+ 		&its->phys_base, (int)(PAGE_ORDER_TO_SIZE(order) / (int)tmp),
+ 		its_base_type_string[type],
+-		(unsigned long)virt_to_phys(base),
++		(u64)virt_to_phys(base),
+ 		indirect ? "indirect" : "flat", (int)esz,
+ 		psz / SZ_1K, (int)shr >> GITS_BASER_SHAREABILITY_SHIFT);
+ 
 
 
 
