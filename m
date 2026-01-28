@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8I5oNo0xemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:57 +0100
+	id AH5QBGcwemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA270A4BE7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AB27A48C6
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4775430D1E9F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2DA1D3076528
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C232E62A8;
-	Wed, 28 Jan 2026 15:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA8830BBBC;
+	Wed, 28 Jan 2026 15:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wO7IaTHZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcovvTXg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555A323EA92;
-	Wed, 28 Jan 2026 15:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF562301465;
+	Wed, 28 Jan 2026 15:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614797; cv=none; b=PVaWtUEzTgRdf7/6fo1+bjuEMNNCO0GqmE5X8KvDwz46ix3q/Nj7SjsVDeYLVLdurr2ABddxWjj4WeNhvlB60GyGP7Wg6Tj/v3sEK8YvHzlLaMeMrc2Xep2lYqALBc5eISjOAhiSTm7E4jQrUWmpDggKr5t7W6aIdu+GrQVDpbc=
+	t=1769615190; cv=none; b=R/CvV2qBdGHNN+ycv9bQ/U21Mw5WB9YJSOMNYVDEYt1YGENhoTS3HEb1hpYBWwZfIKTg6T6zuRQWbwec2IS2GoKXJ7kn552YuhWRPSy0Dm2TsWJyraPpLUWq6qI+3u6NvIaylcqdrlphrhWRtc88UYNSHedgAuxSOrN6SmG2QXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614797; c=relaxed/simple;
-	bh=XbexPGJBLGsjGJbUhiHSo14NMuAatsYtNko8vEKUuGE=;
+	s=arc-20240116; t=1769615190; c=relaxed/simple;
+	bh=J+suWZdfrLZI8+hvGqgdXAm4n3+XUryg8+LGLBVJTR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R9wPriD2hyf1+ZwbLSu3HUf2c8VflngPfalzcevtb+YvR9CDIcPjt/+k330fRh/IgYFrqZPymkwVEdq0AgyqQHh0GqALNy4alQzum5VXMcvF5IJr+BQbkPa4Y0I9fbxr2Q6Of8maq7FfE2AoOktEZ2lFVNqN/DSQCVuEzpSHwQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wO7IaTHZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81132C4CEF1;
-	Wed, 28 Jan 2026 15:39:56 +0000 (UTC)
+	 MIME-Version; b=Rv9yw9IwR2gktC5j9DhmvgViMNEGv6TKjLVeZ53JGY/cubgGRkNdI6UK2hbm9UBz0HuzM3R0i72mjT0noNXUu/l+i54XfmFCdkO4Ci7+RJFTBRtwRgQtgeCnhGFdh5bGLCERTmrnFlA1EOfeXlybIsVCn6ixJdH8ea4SvmFcdAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcovvTXg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003B2C4CEF7;
+	Wed, 28 Jan 2026 15:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614797;
-	bh=XbexPGJBLGsjGJbUhiHSo14NMuAatsYtNko8vEKUuGE=;
+	s=korg; t=1769615190;
+	bh=J+suWZdfrLZI8+hvGqgdXAm4n3+XUryg8+LGLBVJTR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wO7IaTHZJ+BN6QRU0g+CUZy49vUcph49lg782j99qEil8Y27jazaFEYwyV8IgOrJg
-	 w3HHQAVNHt9gVHL5ADShp5lD1cMcVlVnw9ASJ+AKWdH4h/usMP5EcC2MrVNtElN5HF
-	 T6mTGhXF0WLMm+y6UsSK5OFRhVAWHgt0Tgffr1Xo=
+	b=TcovvTXgFcby5Ht5ETaXovcTcNLFsp4B++jOtgPu1biJjwtoQ9o5x4ohh+QnJwoO2
+	 xb3evBuI9caNQj+PIH+5UBJRNkTcbtIcmJKNspp4G7gPy1CQG+yR/2SNFJtK9/K2HO
+	 Ihxg/s69iFdUC0TCGgacYxj8xQOX+o+SnVRGSSgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 212/254] platform/x86: hp-bioscfg: Fix automatic module loading
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Markus Koeniger <markus.koeniger@liebherr.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 105/169] iio: accel: iis328dq: fix gain values
 Date: Wed, 28 Jan 2026 16:23:08 +0100
-Message-ID: <20260128145352.421085955@linuxfoundation.org>
+Message-ID: <20260128145337.787092575@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +64,155 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-212340-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212223-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+]
-X-Rspamd-Queue-Id: DA270A4BE7
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[st.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,liebherr.com:email]
+X-Rspamd-Queue-Id: 9AB27A48C6
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Markus Koeniger <markus.koeniger@liebherr.com>
 
-commit 467d4afc6caa64b84a6db1634f8091e931f4a7cb upstream.
+commit b8f15d1df2e73322e2112de21a4a7f3553c7fb60 upstream.
 
-hp-bioscfg has a MODULE_DEVICE_TABLE with a GUID in it that looks
-plausible, but the module doesn't automatically load on applicable
-systems.
+The sensors IIS328DQ and H3LIS331DL share one configuration but
+H3LIS331DL has different gain parameters, configs therefore
+need to be split up.
+The gain parameters for the IIS328DQ are 0.98, 1.95 and 3.91,
+depending on the selected measurement range.
 
-This is because the GUID has some lower case characters and so it
-doesn't match the modalias during boot. Update the GUIDs to be all
-uppercase.
+See sensor manuals, chapter 2.1 "mechanical characteristics",
+parameter "Sensitivity".
 
-Cc: stable@vger.kernel.org
-Fixes: 5f94f181ca25 ("platform/x86: hp-bioscfg: bioscfg-h")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20260115203725.828434-4-mario.limonciello@amd.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Datasheet: https://www.st.com/resource/en/datasheet/iis328dq.pdf
+Datasheet: https://www.st.com/resource/en/datasheet/h3lis331dl.pdf
+Fixes: 46e33707fe95 ("iio: accel: add support for IIS328DQ variant")
+Reviewed-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Signed-off-by: Markus Koeniger <markus.koeniger@liebherr.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/bioscfg.h |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/accel/st_accel_core.c |   72 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 71 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.h
-+++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.h
-@@ -57,14 +57,14 @@ enum mechanism_values {
- 
- #define PASSWD_MECHANISM_TYPES "password"
- 
--#define HP_WMI_BIOS_GUID		"5FB7F034-2C63-45e9-BE91-3D44E2C707E4"
-+#define HP_WMI_BIOS_GUID		"5FB7F034-2C63-45E9-BE91-3D44E2C707E4"
- 
--#define HP_WMI_BIOS_STRING_GUID		"988D08E3-68F4-4c35-AF3E-6A1B8106F83C"
-+#define HP_WMI_BIOS_STRING_GUID		"988D08E3-68F4-4C35-AF3E-6A1B8106F83C"
- #define HP_WMI_BIOS_INTEGER_GUID	"8232DE3D-663D-4327-A8F4-E293ADB9BF05"
- #define HP_WMI_BIOS_ENUMERATION_GUID	"2D114B49-2DFB-4130-B8FE-4A3C09E75133"
- #define HP_WMI_BIOS_ORDERED_LIST_GUID	"14EA9746-CE1F-4098-A0E0-7045CB4DA745"
- #define HP_WMI_BIOS_PASSWORD_GUID	"322F2028-0F84-4901-988E-015176049E2D"
--#define HP_WMI_SET_BIOS_SETTING_GUID	"1F4C91EB-DC5C-460b-951D-C7CB9B4B8D5E"
-+#define HP_WMI_SET_BIOS_SETTING_GUID	"1F4C91EB-DC5C-460B-951D-C7CB9B4B8D5E"
- 
- enum hp_wmi_spm_commandtype {
- 	HPWMI_SECUREPLATFORM_GET_STATE  = 0x10,
+--- a/drivers/iio/accel/st_accel_core.c
++++ b/drivers/iio/accel/st_accel_core.c
+@@ -517,7 +517,6 @@ static const struct st_sensor_settings s
+ 		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
+ 		.sensors_supported = {
+ 			[0] = H3LIS331DL_ACCEL_DEV_NAME,
+-			[1] = IIS328DQ_ACCEL_DEV_NAME,
+ 		},
+ 		.ch = (struct iio_chan_spec *)st_accel_12bit_channels,
+ 		.odr = {
+@@ -561,6 +560,77 @@ static const struct st_sensor_settings s
+ 				},
+ 			},
+ 		},
++		.bdu = {
++			.addr = 0x23,
++			.mask = 0x80,
++		},
++		.drdy_irq = {
++			.int1 = {
++				.addr = 0x22,
++				.mask = 0x02,
++			},
++			.int2 = {
++				.addr = 0x22,
++				.mask = 0x10,
++			},
++			.addr_ihl = 0x22,
++			.mask_ihl = 0x80,
++		},
++		.sim = {
++			.addr = 0x23,
++			.value = BIT(0),
++		},
++		.multi_read_bit = true,
++		.bootime = 2,
++	},
++	{
++		.wai = 0x32,
++		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
++		.sensors_supported = {
++			[0] = IIS328DQ_ACCEL_DEV_NAME,
++		},
++		.ch = (struct iio_chan_spec *)st_accel_12bit_channels,
++		.odr = {
++			.addr = 0x20,
++			.mask = 0x18,
++			.odr_avl = {
++				{ .hz = 50, .value = 0x00, },
++				{ .hz = 100, .value = 0x01, },
++				{ .hz = 400, .value = 0x02, },
++				{ .hz = 1000, .value = 0x03, },
++			},
++		},
++		.pw = {
++			.addr = 0x20,
++			.mask = 0x20,
++			.value_on = ST_SENSORS_DEFAULT_POWER_ON_VALUE,
++			.value_off = ST_SENSORS_DEFAULT_POWER_OFF_VALUE,
++		},
++		.enable_axis = {
++			.addr = ST_SENSORS_DEFAULT_AXIS_ADDR,
++			.mask = ST_SENSORS_DEFAULT_AXIS_MASK,
++		},
++		.fs = {
++			.addr = 0x23,
++			.mask = 0x30,
++			.fs_avl = {
++				[0] = {
++					.num = ST_ACCEL_FS_AVL_100G,
++					.value = 0x00,
++					.gain = IIO_G_TO_M_S_2(980),
++				},
++				[1] = {
++					.num = ST_ACCEL_FS_AVL_200G,
++					.value = 0x01,
++					.gain = IIO_G_TO_M_S_2(1950),
++				},
++				[2] = {
++					.num = ST_ACCEL_FS_AVL_400G,
++					.value = 0x03,
++					.gain = IIO_G_TO_M_S_2(3910),
++				},
++			},
++		},
+ 		.bdu = {
+ 			.addr = 0x23,
+ 			.mask = 0x80,
 
 
 
