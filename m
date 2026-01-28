@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-212588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBpuGMw7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212588-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:40 +0100
+	id 0CzBBa4vemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF356A5F51
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A62A4A46DC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A0551313B3E4
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B031030A5976
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA6F286D4B;
-	Wed, 28 Jan 2026 16:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8300A2EA172;
+	Wed, 28 Jan 2026 15:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjBjqWlO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SW42jWSp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F0D308F05;
-	Wed, 28 Jan 2026 16:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101D72E2299;
+	Wed, 28 Jan 2026 15:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616022; cv=none; b=U6Y4Z2NYKKU1I/E4Ed3ALQCOApelmaAoPFv3gUe6ltpX5lX5WORr5xD3MkbTrAX/I2/DVcfHn9gipDMr2nePo/iEs4OJ7Ytve1GgkY70n8BUUL++j+S/GmG+ExFcPNFsfR0OO2wrjH+GuNeGtz/pmOYwkF7k5T0Kdr7Ep1XGIyo=
+	t=1769614828; cv=none; b=VEE96yrF2xT68sL4FvIgHGVGEa2/fuVwG7sx6V3aaHAodBdhWkZOvzpWKi5LUtU/eBhgZ/rWoF0GHKWnv9mdTU6NfvZf4uFdS7hwbbHskLFhRGRR4YgRjRfwx0BcZc65jyUEMWISW8J9ni645L9k9/oXMTYC17jaK0pg68aotsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616022; c=relaxed/simple;
-	bh=+cyi7o2aQ2NDt45hRnvA9NcZQ/TSfaeEMi0ZH6rItoo=;
+	s=arc-20240116; t=1769614828; c=relaxed/simple;
+	bh=xRgGuSE53cqGx8RSeO9sdv8zRLAhUaQ/pvL0ljeqGzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+C/+5YqMhFSDg1baf0nK205w9Uu3z8f5QxKPbRlp/l8bmoQA9n8SUoJPlJwMNSQpIUM6DGEodg/YvtVXhyvwK9J68Gk8AW7XhUeuq6XKgvy/xjKqvIy/EySqX2fBqivzvZrRfCo+QbsyLOV2YdxdJidxSGnz3RUiciayDsthZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjBjqWlO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E002C4CEF1;
-	Wed, 28 Jan 2026 16:00:21 +0000 (UTC)
+	 MIME-Version; b=XtdNO8y2mCXSIRvbAD0+6qNI4nPzXVE5uDiSTHBqqgEqovE1+PCjwq7qDupGipLWgi5whw+JmkRie0FciYdDod+uglYsb1SVXd7IY5hPnAL39OwzRg/TO3kcp5MNBjQ9oAh5beDmcodFrgpnaFNfjLp98Nm4+9Ov2nRjsCjkZwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SW42jWSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2FDC4CEF7;
+	Wed, 28 Jan 2026 15:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616021;
-	bh=+cyi7o2aQ2NDt45hRnvA9NcZQ/TSfaeEMi0ZH6rItoo=;
+	s=korg; t=1769614827;
+	bh=xRgGuSE53cqGx8RSeO9sdv8zRLAhUaQ/pvL0ljeqGzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjBjqWlOrsiSLVrf5tS1eR2Hw0l58oiS2sKMqkmjEqUQTrHKg2PboA/5uEfxAIfH2
-	 DoLAKfL9CB8HQHq4QYsEFUspTE6tASAlsPkcUZ5OUNE2A0kOfM4WZWQ8/tFxw8yDqE
-	 bVhZdMTVhJddgrQDRMSMr/O9qe1nrAUlZP+wfbio=
+	b=SW42jWSpXlQ7fNSFZkWDD1Y5M1ih8yfbgMq3cggPFGbOmS+L+wTURM0ljVAy7KHFJ
+	 6fDuGHmjnbJnSIcEeunB1ZQ42V/tYwojaTQCfmB3j1lMH18O55URqECtU3y/pUHIND
+	 2hSktrkv+7GGI5PpS6tsxCTktyCQjKQjohTrHYW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.18 184/227] slimbus: core: fix runtime PM imbalance on report present
-Date: Wed, 28 Jan 2026 16:23:49 +0100
-Message-ID: <20260128145351.066463014@linuxfoundation.org>
+	Xu Yang <xu.yang_2@nxp.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.6 254/254] net: phy: fix phy_uses_state_machine()
+Date: Wed, 28 Jan 2026 16:23:50 +0100
+Message-ID: <20260128145353.940562420@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +67,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212588-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212232-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,armlinux.org.uk,kernel.org,139.com];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.988];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,kernel];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: AF356A5F51
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,nxp.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,armlinux.org.uk:email]
+X-Rspamd-Queue-Id: A62A4A46DC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 
-commit 0eb4ff6596114aabba1070a66afa2c2f5593739f upstream.
+[ Upstream commit e0d1c55501d377163eb57feed863777ed1c973ad ]
 
-Make sure to balance the runtime PM usage count in case slimbus device
-or address allocation fails on report present, which would otherwise
-prevent the controller from suspending.
+The blamed commit changed the conditions which phylib uses to stop
+and start the state machine in the suspend and resume paths, and
+while improving it, has caused two issues.
 
-Fixes: 4b14e62ad3c9 ("slimbus: Add support for 'clock-pause' feature")
-Cc: stable@vger.kernel.org	# 4.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251126145329.5022-3-johan@kernel.org
+The original code used this test:
+
+	phydev->attached_dev && phydev->adjust_link
+
+and if true, the paths would handle the PHY state machine. This test
+evaluates true for normal drivers that are using phylib directly
+while the PHY is attached to the network device, but false in all
+other cases, which include the following cases:
+
+- when the PHY has never been attached to a network device.
+- when the PHY has been detached from a network device (as phy_detach()
+   sets phydev->attached_dev to NULL, phy_disconnect() calls
+   phy_detach() and additionally sets phydev->adjust_link NULL.)
+- when phylink is using the driver (as phydev->adjust_link is NULL.)
+
+Only the third case was incorrect, and the blamed commit attempted to
+fix this by changing this test to (simplified for brevity, see
+phy_uses_state_machine()):
+
+	phydev->phy_link_change == phy_link_change ?
+		phydev->attached_dev && phydev->adjust_link : true
+
+However, this also incorrectly evaluates true in the first two cases.
+
+Fix the first case by ensuring that phy_uses_state_machine() returns
+false when phydev->phy_link_change is NULL.
+
+Fix the second case by ensuring that phydev->phy_link_change is set to
+NULL when phy_detach() is called.
+
+Reported-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20250806082931.3289134-1-xu.yang_2@nxp.com
+Fixes: fc75ea20ffb4 ("net: phy: allow MDIO bus PM ops to start/stop state machine for phylink-controlled PHY")
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/E1uvMEz-00000003Aoe-3qWe@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/core.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/phy/phy_device.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/slimbus/core.c
-+++ b/drivers/slimbus/core.c
-@@ -489,21 +489,23 @@ int slim_device_report_present(struct sl
- 	if (ctrl->sched.clk_state != SLIM_CLK_ACTIVE) {
- 		dev_err(ctrl->dev, "slim ctrl not active,state:%d, ret:%d\n",
- 				    ctrl->sched.clk_state, ret);
--		goto slimbus_not_active;
-+		goto out_put_rpm;
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -304,8 +304,7 @@ static bool phy_uses_state_machine(struc
+ 	if (phydev->phy_link_change == phy_link_change)
+ 		return phydev->attached_dev && phydev->adjust_link;
+ 
+-	/* phydev->phy_link_change is implicitly phylink_phy_change() */
+-	return true;
++	return !!phydev->phy_link_change;
+ }
+ 
+ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
+@@ -1853,6 +1852,8 @@ void phy_detach(struct phy_device *phyde
+ 		phydev->attached_dev->phydev = NULL;
+ 		phydev->attached_dev = NULL;
  	}
++
++	phydev->phy_link_change = NULL;
+ 	phydev->phylink = NULL;
  
- 	sbdev = slim_get_device(ctrl, e_addr);
--	if (IS_ERR(sbdev))
--		return -ENODEV;
-+	if (IS_ERR(sbdev)) {
-+		ret = -ENODEV;
-+		goto out_put_rpm;
-+	}
- 
- 	if (sbdev->is_laddr_valid) {
- 		*laddr = sbdev->laddr;
--		return 0;
-+		ret = 0;
-+	} else {
-+		ret = slim_device_alloc_laddr(sbdev, true);
- 	}
- 
--	ret = slim_device_alloc_laddr(sbdev, true);
--
--slimbus_not_active:
-+out_put_rpm:
- 	pm_runtime_mark_last_busy(ctrl->dev);
- 	pm_runtime_put_autosuspend(ctrl->dev);
- 	return ret;
+ 	if (!phydev->is_on_sfp_module)
 
 
 
