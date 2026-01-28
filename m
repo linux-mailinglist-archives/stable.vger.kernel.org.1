@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-212240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212587-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLVKLn8wemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:27 +0100
+	id aAfpATc6emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212587-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8922A48FB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C23A5CC0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8DBF31876D8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0D5C9303AFD0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773612FF164;
-	Wed, 28 Jan 2026 15:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B8B81AA8;
+	Wed, 28 Jan 2026 16:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQWVmVqF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcoxZjuD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC932F361A;
-	Wed, 28 Jan 2026 15:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6869F302779;
+	Wed, 28 Jan 2026 16:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614853; cv=none; b=jRmlzpx1AxqmczbRs5o+0k+k/Ksp2e8nM7FwTyhkO86TGb6ZHdGB9diDzJnCQOGs6h5uSiUtlmG43CYRV5RHTBpW15Kb7o3jI7baOt9a97dyT9eor+hr8rUqD8G1U8ydW8AczRvsoIkzSrqz4AFZvB3KKq88VqYELnaLiX42a6g=
+	t=1769616018; cv=none; b=Cf93cJjD7f5InO9791TPUUHlPfHKnpzW0uY6XIARE16es3XoUdkcS4L+cTikTioAGezE/0zP4Uo3Hdtd7Ck8AO2gxe0qRT0cFl8X4LpODq8pT90gm8TsCmz70clZHdBCL3hcqUZvSMBKpD68IqWFVLBMeWJt4xaDz0dBxaYg/pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614853; c=relaxed/simple;
-	bh=Ar47heN5uPIP8FNc/0yBfLd8d7B0Zwf4ojEFjbrHR9E=;
+	s=arc-20240116; t=1769616018; c=relaxed/simple;
+	bh=9+v2YWqaQZ2zZ8XhwyFVcMoE+q+HHKtQX8v++ZXhiBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hCum1E9IqtTDXcwA1ef57LQD1YZ9uCCSZU4DHfI6XseN4eSC35aTcuXqTQJnhVP4uFVpDlufEwNBQ6fnp3aoiBLTr9g6ig+QPWzYWkDF3J33NZvdK+HemRnXbz5sOBvwvEr5fIn82SKH2MksX+KV8J4N8XMc562AouGHmeXB98E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQWVmVqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9997CC4CEF1;
-	Wed, 28 Jan 2026 15:40:52 +0000 (UTC)
+	 MIME-Version; b=l30M//e0+Ai9JRXOKXRthPGcCsH7DqBCJPgAkMo7RgJk+0owieR+yyGYSyhdbDCb4oAQBiV7srWRTaPLVw+vMw5eTJsVxjrCPWZvlS6SVwEFacCMC/PTMwuDiDAo6tTyM9Ipg+//Hh6YEWw3NHcRMUMNFoA7bOHeQMxM9A+B7wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CcoxZjuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD423C4CEF1;
+	Wed, 28 Jan 2026 16:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614853;
-	bh=Ar47heN5uPIP8FNc/0yBfLd8d7B0Zwf4ojEFjbrHR9E=;
+	s=korg; t=1769616018;
+	bh=9+v2YWqaQZ2zZ8XhwyFVcMoE+q+HHKtQX8v++ZXhiBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQWVmVqFmGVhCt1OZi4xT/GNxNsRHEuD4aW12M/4CUvvwzC51424RVVZ8iTS216BZ
-	 eogL7UE8WxmXBXjcNMal6x+35Xi91Ej/8bzBSYd7uN18ZVSlqlznyoCTFO22T0b5Zm
-	 KYGJVvdZbmKztSIfdUdGVU9GqKIs+HD9Op1o46ZE=
+	b=CcoxZjuDuqDNgAbzJVFy1aqn4mq+9yu1IS1EzsxfarzVB3o4N5SUx7eIESgEy/x2e
+	 2ZgZdkggekokqrCo7jUu+BEQBP8WhwHDoyyPuJgBgRjCmlWjBKPI6sKdDG7qFadt5f
+	 4krBOxztZtR5FVjWEMkKR0BpKB5rUiWbTHEvquzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rajani Kantha <681739313@139.com>
-Subject: [PATCH 6.6 252/254] net: phy: move phy_link_change() prior to mdio_bus_phy_may_suspend()
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 183/227] octeontx2: Fix otx2_dma_map_page() error return code
 Date: Wed, 28 Jan 2026 16:23:48 +0100
-Message-ID: <20260128145353.866904730@linuxfoundation.org>
+Message-ID: <20260128145351.030836362@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,108 +67,80 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212240-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,armlinux.org.uk,kernel.org,139.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212587-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D8922A48FB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 11C23A5CC0
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit f40a673d6b4a128fe95dd9b8c3ed02da50a6a862 ]
+commit d998b0e5afffa90d0f03770bad31083767079858 upstream.
 
-In an upcoming change, mdio_bus_phy_may_suspend() will need to
-distinguish a phylib-based PHY client from a phylink PHY client.
-For that, it will need to compare the phydev->phy_link_change() function
-pointer with the eponymous phy_link_change() provided by phylib.
+0 is a valid DMA address [1] so using it as the error value can lead to
+errors.  The error value of dma_map_XXX() functions is DMA_MAPPING_ERROR
+which is ~0.  The callers of otx2_dma_map_page() use dma_mapping_error()
+to test the return value of otx2_dma_map_page(). This means that they
+would not detect an error in otx2_dma_map_page().
 
-To avoid forward function declarations, the default PHY link state
-change method should be moved upwards. There is no functional change
-associated with this patch, it is only to reduce the noise from a real
-bug fix.
+Make otx2_dma_map_page() return the raw value of dma_map_page_attrs().
 
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20250407093900.2155112-1-vladimir.oltean@nxp.com
+[1] https://lore.kernel.org/all/f977f68b-cec5-4ab7-b4bd-2cf6aca46267@intel.com
+
+Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20260114123107.42387-2-fourier.thomas@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Minor context change fixed ]
-Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/net/phy/phy_device.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h |    7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -268,6 +268,19 @@ static struct phy_driver genphy_driver;
- static LIST_HEAD(phy_fixup_list);
- static DEFINE_MUTEX(phy_fixup_lock);
- 
-+static void phy_link_change(struct phy_device *phydev, bool up)
-+{
-+	struct net_device *netdev = phydev->attached_dev;
-+
-+	if (up)
-+		netif_carrier_on(netdev);
-+	else
-+		netif_carrier_off(netdev);
-+	phydev->adjust_link(netdev);
-+	if (phydev->mii_ts && phydev->mii_ts->link_state)
-+		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
-+}
-+
- static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -934,13 +934,8 @@ static inline dma_addr_t otx2_dma_map_pa
+ 					   size_t offset, size_t size,
+ 					   enum dma_data_direction dir)
  {
- 	struct device_driver *drv = phydev->mdio.dev.driver;
-@@ -1069,19 +1082,6 @@ struct phy_device *phy_find_first(struct
+-	dma_addr_t iova;
+-
+-	iova = dma_map_page_attrs(pfvf->dev, page,
++	return dma_map_page_attrs(pfvf->dev, page,
+ 				  offset, size, dir, DMA_ATTR_SKIP_CPU_SYNC);
+-	if (unlikely(dma_mapping_error(pfvf->dev, iova)))
+-		return (dma_addr_t)NULL;
+-	return iova;
  }
- EXPORT_SYMBOL(phy_find_first);
  
--static void phy_link_change(struct phy_device *phydev, bool up)
--{
--	struct net_device *netdev = phydev->attached_dev;
--
--	if (up)
--		netif_carrier_on(netdev);
--	else
--		netif_carrier_off(netdev);
--	phydev->adjust_link(netdev);
--	if (phydev->mii_ts && phydev->mii_ts->link_state)
--		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
--}
--
- /**
-  * phy_prepare_link - prepares the PHY layer to monitor link status
-  * @phydev: target phy_device struct
+ static inline void otx2_dma_unmap_page(struct otx2_nic *pfvf,
 
 
 
