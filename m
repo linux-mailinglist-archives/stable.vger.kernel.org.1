@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212058-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sPVYLu8yeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212418-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:01:51 +0100
+	id gB6SLmkuemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212058-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4E5A4F20
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:01:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAD2A43DC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2007317BF83
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9676430C6011
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFAF2F25EF;
-	Wed, 28 Jan 2026 15:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60973242D86;
+	Wed, 28 Jan 2026 15:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEQKt3HF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVJQ2vv8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AC93043B2;
-	Wed, 28 Jan 2026 15:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F7A13B7A3;
+	Wed, 28 Jan 2026 15:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615451; cv=none; b=VJk28Rh2fSVishC5BvARcBEgXo9vXOskwVaEFp5ScNYzArtWg8sMZvGVz0vbP0BsZoVCEHUKhgUJQAEh+1R2sVRdvw6V5RRo0RCr8gaGlC4H0eAacUlLzzp5vyjVodBi8pCkIKihSPw7iI+Kpu0b/kE8BJJ9VX528bIE1YLE8wA=
+	t=1769614260; cv=none; b=lk3N9a2NL5Cbj8WJsiKVE/0UQ6zOD9eLF8FBW8IJEyLONql3NsKUTxCZHsPjgfqfutFQNRCUg2J2C8X7mrBElxEPAFJ/DUnKUcXm3ns2FnaRac64nMT7Af3fcoXrWYFsx6DIKfYJEwgYMIH38wl4anhG6XE7VYcmyBrsNJkCCEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615451; c=relaxed/simple;
-	bh=GOD7g6JJilfpmTacC5mR1JJLK53pBl0ZRJZSBQlNPFI=;
+	s=arc-20240116; t=1769614260; c=relaxed/simple;
+	bh=a8sdcO5QiFgtxZF6TohMgxn7N6IlClObtbe/lkmlbhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQDdzYpusfA/yDHd0o1GLdneezQ7DKroUfw7wjnGHJUaRomuCVVOpCd+XqWBAhw03JblohqaaFWe1Qkig8D4RE08z+5VIHeCAVEMTCl/J5UC2ZHJoc/qtFSRqOI2yVGfd5ljv4wBB1a3SbBVE3onXW2UuzCzoz98qnuEQuX+cgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEQKt3HF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F6CC4CEF1;
-	Wed, 28 Jan 2026 15:50:50 +0000 (UTC)
+	 MIME-Version; b=nE/3QgsNbhNZcaqzqOFOeGpY+RFrvEQsnkqZ8goyYOHLJUXlK+x2xcz9cwEny7kAj5Raai9IrQrJhX2zx6hTlWq149dPUDNgd4OxUrCBmr5HvTyRJ67wT7GB81/2+9GYZPLzYPh7Tsfal1dfzTl/k2c6VQECkSjxe0sDsSTw92Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVJQ2vv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BC1C4CEF1;
+	Wed, 28 Jan 2026 15:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615451;
-	bh=GOD7g6JJilfpmTacC5mR1JJLK53pBl0ZRJZSBQlNPFI=;
+	s=korg; t=1769614259;
+	bh=a8sdcO5QiFgtxZF6TohMgxn7N6IlClObtbe/lkmlbhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEQKt3HFbN8oDkb/cwGZOQgcQfYf/ad0yizDXQyqVyJeJ5lMurderBjsdnO5B78dj
-	 d4ORjMHWY206+zqglt0GhtNAA7NmVeB4GTo5ZnFojnaU87aKBrqQh7yaumPs+x99cy
-	 AR3vvylarW9GjzjRJscabCoPSe19aRaWRbnEUHo4=
+	b=TVJQ2vv8nElr10g3NeuFnt8iDnDoMzSCjhXGjjMr6IjXZzNZgzXv9TUDgFIjF+ONg
+	 1myzcZwfdzP3z9RWE5Lc67V58dcBinEaPbbvQgOyoXoK9IILA7jSJqcQuEEK71zs7K
+	 Il0zTjnx66wbo3RXLVsDb9aC/hYnf8jD7oRZQNqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Wolf <wolf@yoxt.cc>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 014/227] ata: libata: Add cpr_log to ata_dev_print_features() early return
+	Johan Hovold <johan@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 083/254] dmaengine: lpc18xx-dmamux: fix device leak on route allocation
 Date: Wed, 28 Jan 2026 16:20:59 +0100
-Message-ID: <20260128145344.856392953@linuxfoundation.org>
+Message-ID: <20260128145347.683485011@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +69,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212418-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[yoxt.cc:server fail];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212058-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RSPAMD_EMAILBL_FAIL(0.00)[cassel.kernel.org:query timed out,dlemoal.kernel.org:query timed out,wolf.yoxt.cc:query timed out];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6B4E5A4F20
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 1CAD2A43DC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit a6bee5e5243ad02cae575becc4c83df66fc29573 ]
+commit d4d63059dee7e7cae0c4d9a532ed558bc90efb55 upstream.
 
-ata_dev_print_features() is supposed to return early and not print anything
-if there are no features supported.
+Make sure to drop the reference taken when looking up the DMA mux
+platform device during route allocation.
 
-However, commit fe22e1c2f705 ("libata: support concurrent positioning
-ranges log") added another feature to ata_dev_print_features() without
-updating the early return conditional.
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-Add the missing feature to the early return conditional.
-
-Fixes: fe22e1c2f705 ("libata: support concurrent positioning ranges log")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Tested-by: Wolf <wolf@yoxt.cc>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e5f4ae84be74 ("dmaengine: add driver for lpc18xx dmamux")
+Cc: stable@vger.kernel.org	# 4.3
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Link: https://patch.msgid.link/20251117161258.10679-8-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/lpc18xx-dmamux.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 0a21804b133a4..490cc0d628d3b 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -2872,7 +2872,7 @@ static void ata_dev_config_lpm(struct ata_device *dev)
+--- a/drivers/dma/lpc18xx-dmamux.c
++++ b/drivers/dma/lpc18xx-dmamux.c
+@@ -57,30 +57,31 @@ static void *lpc18xx_dmamux_reserve(stru
+ 	struct lpc18xx_dmamux_data *dmamux = platform_get_drvdata(pdev);
+ 	unsigned long flags;
+ 	unsigned mux;
++	int ret = -EINVAL;
  
- static void ata_dev_print_features(struct ata_device *dev)
- {
--	if (!(dev->flags & ATA_DFLAG_FEATURES_MASK))
-+	if (!(dev->flags & ATA_DFLAG_FEATURES_MASK) && !dev->cpr_log)
- 		return;
+ 	if (dma_spec->args_count != 3) {
+ 		dev_err(&pdev->dev, "invalid number of dma mux args\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
  
- 	ata_dev_info(dev,
--- 
-2.51.0
-
+ 	mux = dma_spec->args[0];
+ 	if (mux >= dmamux->dma_master_requests) {
+ 		dev_err(&pdev->dev, "invalid mux number: %d\n",
+ 			dma_spec->args[0]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	if (dma_spec->args[1] > LPC18XX_DMAMUX_MAX_VAL) {
+ 		dev_err(&pdev->dev, "invalid dma mux value: %d\n",
+ 			dma_spec->args[1]);
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	/* The of_node_put() will be done in the core for the node */
+ 	dma_spec->np = of_parse_phandle(ofdma->of_node, "dma-masters", 0);
+ 	if (!dma_spec->np) {
+ 		dev_err(&pdev->dev, "can't get dma master\n");
+-		return ERR_PTR(-EINVAL);
++		goto err_put_pdev;
+ 	}
+ 
+ 	spin_lock_irqsave(&dmamux->lock, flags);
+@@ -89,7 +90,8 @@ static void *lpc18xx_dmamux_reserve(stru
+ 		dev_err(&pdev->dev, "dma request %u busy with %u.%u\n",
+ 			mux, mux, dmamux->muxes[mux].value);
+ 		of_node_put(dma_spec->np);
+-		return ERR_PTR(-EBUSY);
++		ret = -EBUSY;
++		goto err_put_pdev;
+ 	}
+ 
+ 	dmamux->muxes[mux].busy = true;
+@@ -106,7 +108,14 @@ static void *lpc18xx_dmamux_reserve(stru
+ 	dev_dbg(&pdev->dev, "mapping dmamux %u.%u to dma request %u\n", mux,
+ 		dmamux->muxes[mux].value, mux);
+ 
++	put_device(&pdev->dev);
++
+ 	return &dmamux->muxes[mux];
++
++err_put_pdev:
++	put_device(&pdev->dev);
++
++	return ERR_PTR(ret);
+ }
+ 
+ static int lpc18xx_dmamux_probe(struct platform_device *pdev)
 
 
 
