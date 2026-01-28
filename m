@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJoiL8k5eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:31:05 +0100
+	id 6CG9M1Uvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:29 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7F2A5BE7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59BAFA4605
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A72473270DCD
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB580310A229
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F0C30FC3D;
-	Wed, 28 Jan 2026 15:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE962586FE;
+	Wed, 28 Jan 2026 15:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIKXcGoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEWv3C31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DBE30FC1B;
-	Wed, 28 Jan 2026 15:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CEF10A1E;
+	Wed, 28 Jan 2026 15:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615530; cv=none; b=igFeBwYGpD0b16iQIf0VF59Ulf45s1ojw3CnnSEitQ3MAIRr5zhL1mEFnvT16jCnUoASr9cYh+CgCKaVbKnuPrUUUGnCKBQOsei6GuQEju5UxHr+I0mqGmpB+fPITr0Qn4tRd/0HdqjdXxM5zfG19Yy2OIwZf+oDovkSNEvRmqM=
+	t=1769614445; cv=none; b=fVmTTgplv5O8YxF2Wz9Q8PTMOEtn84i51vCpZViHMQKiTAYt3wrC6nRlZsVxOHmOzXPlooRTNBuz947zWvXE2sFg32dsvUgUzGKg2W7tAdKH1ik1fOowxnEZNie/WzJmxu4WBTZmb56c6t/Px4E4guW+GfA1NW2ZzwkPSKbMPLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615530; c=relaxed/simple;
-	bh=bbfWmYYTsnx3NeT7oC2Fa7HU9lfxHSXrHQSIbH5KeLc=;
+	s=arc-20240116; t=1769614445; c=relaxed/simple;
+	bh=1trv7aExHzW1zhCiuAw2l6sVjeOkSUPkm33CneWEWAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDrCbYlWQGZwtGDDISnUm3fz0qyn/tqY5TP83XB8pcFyk6UKLRKywqoaKz/2+2qvbgKg5pyko4RspU+PGYAE4pdCP3G4ZMzOIIwhS+5zHw0BWMbU55rPsN8/w8rV2fe+FJQyYOZ9QRMJI3qPfBFHxf34on/x7qN8dGu55WEmEoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIKXcGoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B10BC4CEF7;
-	Wed, 28 Jan 2026 15:52:10 +0000 (UTC)
+	 MIME-Version; b=Iw4igylO+ll3d/Rl7lTbbvpmwpSGEm+QR2kzQKlrVFORM6GqXw0EtF+SRxGhQ/OfxzewQBCjAyaqvNumMy2bCQXf2C1hco4+gEHxzOj0doGbimCWDXmVnnYjMKsuiOfwZ+0UhOW7rzvZL8S+DYuFKkQ8ybLr0/ymtDvlFxiteXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEWv3C31; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA074C4CEF1;
+	Wed, 28 Jan 2026 15:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615530;
-	bh=bbfWmYYTsnx3NeT7oC2Fa7HU9lfxHSXrHQSIbH5KeLc=;
+	s=korg; t=1769614445;
+	bh=1trv7aExHzW1zhCiuAw2l6sVjeOkSUPkm33CneWEWAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIKXcGoebpgY4UoB7/sI+xrGt/ReT1BniTuxUUN6h2uhIah5/UchvmEJFoaZxvkLl
-	 X66WxR3hmwV/KI5l02r+uAiukbZFZPspLppFe47y4+n5FA5qv+mqqbLui7qus9UiuQ
-	 YSIlXNOHLBDfVUezSqnGY99RrQRdOxkA1nrTn/V4=
+	b=EEWv3C313x1R7FhOVA9IB/5cqRCAt+YjfBYqno8fEJwOvOZJMyJ5lKag/028W/+x9
+	 SI0d4paD72d2J4bcX2l57KnFGboEBEVvYUQU9KPktZ4EZhjXTorEJW7ha0mK2LThTg
+	 n08/KFzpRTmOSvpcrFbhBlWVcmzSN19juRfywAUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 037/227] tools: ynl: Specify --no-line-number in ynl-regen.sh.
-Date: Wed, 28 Jan 2026 16:21:22 +0100
-Message-ID: <20260128145345.678884443@linuxfoundation.org>
+Subject: [PATCH 6.6 107/254] dt-bindings: power: qcom,rpmpd: add Turbo L5 corner
+Date: Wed, 28 Jan 2026 16:21:23 +0100
+Message-ID: <20260128145348.675885994@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212441-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212115-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,56 +92,42 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[p:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1F7F2A5BE7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 59BAFA4605
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 68578370f9b3a2aba5964b273312d51c581b6aad ]
+[ Upstream commit 1c402295c10891988fb2a6fc658e6e95d4852a20 ]
 
-If grep.lineNumber is enabled in .gitconfig,
+Update the RPMH level definitions to include TURBO_L5 corner.
 
-  [grep]
-  lineNumber = true
-
-ynl-regen.sh fails with the following error:
-
-  $ ./tools/net/ynl/ynl-regen.sh -f
-  ...
-  ynl_gen_c.py: error: argument --mode: invalid choice: '4:' (choose from user, kernel, uapi)
-  	GEN 4:	net/ipv4/fou_nl.c
-
-Let's specify --no-line-number explicitly.
-
-Fixes: be5bea1cc0bf ("net: add basic C code generators for Netlink")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260115172533.693652-3-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/661840/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Stable-dep-of: 45e1be5ddec9 ("dt-bindings: power: qcom,rpmpd: Add SC8280XP_MXC_AO")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/ynl-regen.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/dt-bindings/power/qcom-rpmpd.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/net/ynl/ynl-regen.sh b/tools/net/ynl/ynl-regen.sh
-index 81b4ecd891006..d9809276db982 100755
---- a/tools/net/ynl/ynl-regen.sh
-+++ b/tools/net/ynl/ynl-regen.sh
-@@ -21,7 +21,7 @@ files=$(git grep --files-with-matches '^/\* YNL-GEN \(kernel\|uapi\|user\)')
- for f in $files; do
-     # params:     0       1      2     3
-     #         $YAML YNL-GEN kernel $mode
--    params=( $(git grep -B1 -h '/\* YNL-GEN' $f | sed 's@/\*\(.*\)\*/@\1@') )
-+    params=( $(git grep --no-line-number -B1 -h '/\* YNL-GEN' $f | sed 's@/\*\(.*\)\*/@\1@') )
-     args=$(sed -n 's@/\* YNL-ARG \(.*\) \*/@\1@p' $f)
+diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
+index ced784a8afc12..73b3655155ec0 100644
+--- a/include/dt-bindings/power/qcom-rpmpd.h
++++ b/include/dt-bindings/power/qcom-rpmpd.h
+@@ -240,6 +240,7 @@
+ #define RPMH_REGULATOR_LEVEL_TURBO_L2		432
+ #define RPMH_REGULATOR_LEVEL_TURBO_L3		448
+ #define RPMH_REGULATOR_LEVEL_TURBO_L4		452
++#define RPMH_REGULATOR_LEVEL_TURBO_L5		456
+ #define RPMH_REGULATOR_LEVEL_SUPER_TURBO 	464
+ #define RPMH_REGULATOR_LEVEL_SUPER_TURBO_NO_CPR	480
  
-     if [ $f -nt ${params[0]} -a -z "$force" ]; then
 -- 
 2.51.0
 
