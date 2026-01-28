@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kBJqAiwwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:04 +0100
+	id mHnUD4Mtemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622ECA481D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01368A41E3
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 745CD306CF7C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CF081302AD99
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1F631281D;
-	Wed, 28 Jan 2026 15:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A202D7D2E;
+	Wed, 28 Jan 2026 15:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjZH1W4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNr3Wdhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A5632B9A3;
-	Wed, 28 Jan 2026 15:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C36B2D5408;
+	Wed, 28 Jan 2026 15:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615140; cv=none; b=r1zhNk+ta45PPBb+6CbxD+vEpaU/OyBqC3Xr7NwB0Qe1Bje8KsM7pE3O19jAMxibd7bN0db9qFI5ifZF/+EaOPaB6Ipevuvs0lP8KZC8TPOH0jTNvqxrpULw459TXBryvTG7Bvg8arVFo4j63mEiuXRjKIF6j7isY8MXpt0AgQ4=
+	t=1769614642; cv=none; b=lmClrket2jmd1LZ/7z3zYeI5M2wJ78D9ml47gmVV30YhH9KfrrvhwTBA9QjdVUvymENHIqGIXWZDZLJVpJakjPZzwgFeaVhfDhWUe/4LFsllJ9tFJ0xQSKkS+BBc9aoZ3kUqIgaZm7Hb7vNeXJgC9vx/w77xZ/EDw9zoKQ1/q08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615140; c=relaxed/simple;
-	bh=mEo7oOsfk7YbOnageiNP0qtUxhWP57ToDlWzC2Bk3hY=;
+	s=arc-20240116; t=1769614642; c=relaxed/simple;
+	bh=r3Fycf1cLe30nU09bLkTw1irrT1NK/FPld6zleRiuW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skEdAzhvxWSAxQkPUjqTxpt2qlOtTKxlbgdtJVbBhmeRCTzkiKH+c4JX/2THknMawnk+rmEixOG0jKW0FEgy8v+abAa+q8KgmATK5VQQlqdjQK13buVR2oviNtkhcmf+M+H0kU9NbtmFYZUhPRv4pdXb2G5JyYMecTu3+rMbSoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjZH1W4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA464C4CEF1;
-	Wed, 28 Jan 2026 15:45:39 +0000 (UTC)
+	 MIME-Version; b=mm15+iPpnoeiBgxTK77JujxE6mf2vvOM1IyE9uN2D3m8Mjm+9eTTRqjShuFbxUG7nifDbJr1UbCuh5nZkI2fe0rZQxi0As2SsNEFBjHyuU7kE5vvz7VT8c4wW32skQOL6UtzcC2wH4QEzVezSGTuKnVFcCGBwrZTcB6NJ3T69Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNr3Wdhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F336DC4CEF1;
+	Wed, 28 Jan 2026 15:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615140;
-	bh=mEo7oOsfk7YbOnageiNP0qtUxhWP57ToDlWzC2Bk3hY=;
+	s=korg; t=1769614642;
+	bh=r3Fycf1cLe30nU09bLkTw1irrT1NK/FPld6zleRiuW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UjZH1W4NaC/H+ea6IRu1tRgOuK2WOxQ6bDv61+xInoqfucyLXcu9a22B40ZmNVvyP
-	 vK3AO+Jetl2pAxwyg1zrtSnfTGbXQKhsYZXc07Mg96rNiejCK06sUeWiilQXb8LUh7
-	 xQUftWRkOZSP0prgjsg/TZLQWCUfzCDxfHfj0UoQ=
+	b=rNr3WdhuJunIH8m+lLiXa9OASaVPU8QYuQ3tXPOyOftHnz0UtMmos5gFrEk/BtEGd
+	 bd5n19MFIGAToVbhxYP26TXEzXgb6VoilRww1g4LsrR60a3ORmbnDAfQjLpqEUEiYN
+	 RtPlwnFvNLsDU2qeqlGbXvmHOnULT4vHtSXR6/GY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/169] octeontx2-af: Fix error handling
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jeff Chen <jeff.chen_1@nxp.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 198/254] wifi: mwifiex: Fix a loop in mwifiex_update_ampdu_rxwinsize()
 Date: Wed, 28 Jan 2026 16:22:54 +0100
-Message-ID: <20260128145337.281563310@linuxfoundation.org>
+Message-ID: <20260128145351.921535272@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212325-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212176-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,197 +90,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 622ECA481D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 01368A41E3
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 19e4175e997a5b85eab97d522f00cc99abd1873c ]
+commit 2120f3a3738a65730c81bf10447b1ff776078915 upstream.
 
-This commit adds error handling and rollback logic to
-rvu_mbox_handler_attach_resources() to properly clean up partially
-attached resources when rvu_attach_block() fails.
+The "i" iterator variable is used to count two different things but
+unfortunately we can't store two different numbers in the same variable.
+Use "i" for the outside loop and "j" for the inside loop.
 
-Fixes: 746ea74241fa0 ("octeontx2-af: Add RVU block LF provisioning support")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Link: https://patch.msgid.link/20260121033934.1900761-1-rkannoth@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d219b7eb3792 ("mwifiex: handle BT coex event to adjust Rx BA window size")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Jeff Chen <jeff.chen_1@nxp.com>
+Link: https://patch.msgid.link/aWAM2MGUWRP0zWUd@stanley.mountain
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/rvu.c   | 86 ++++++++++++++-----
- 1 file changed, 64 insertions(+), 22 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 6575c422635b7..74201e0210bbf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -1546,8 +1546,8 @@ static int rvu_get_attach_blkaddr(struct rvu *rvu, int blktype,
- 	return -ENODEV;
- }
- 
--static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
--			     int num_lfs, struct rsrc_attach *attach)
-+static int rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
-+			    int num_lfs, struct rsrc_attach *attach)
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -827,7 +827,7 @@ void mwifiex_update_rxreor_flags(struct
+ static void mwifiex_update_ampdu_rxwinsize(struct mwifiex_adapter *adapter,
+ 					   bool coex_flag)
  {
- 	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
- 	struct rvu_hwinfo *hw = rvu->hw;
-@@ -1557,21 +1557,21 @@ static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
- 	u64 cfg;
+-	u8 i;
++	u8 i, j;
+ 	u32 rx_win_size;
+ 	struct mwifiex_private *priv;
  
- 	if (!num_lfs)
--		return;
-+		return -EINVAL;
- 
- 	blkaddr = rvu_get_attach_blkaddr(rvu, blktype, pcifunc, attach);
- 	if (blkaddr < 0)
--		return;
-+		return -EFAULT;
- 
- 	block = &hw->block[blkaddr];
- 	if (!block->lf.bmap)
--		return;
-+		return -ESRCH;
- 
- 	for (slot = 0; slot < num_lfs; slot++) {
- 		/* Allocate the resource */
- 		lf = rvu_alloc_rsrc(&block->lf);
- 		if (lf < 0)
--			return;
-+			return -EFAULT;
- 
- 		cfg = (1ULL << 63) | (pcifunc << 8) | slot;
- 		rvu_write64(rvu, blkaddr, block->lfcfg_reg |
-@@ -1582,6 +1582,8 @@ static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
- 		/* Set start MSIX vector for this LF within this PF/VF */
- 		rvu_set_msix_offset(rvu, pfvf, block, lf);
+@@ -867,8 +867,8 @@ static void mwifiex_update_ampdu_rxwinsi
+ 		if (rx_win_size != priv->add_ba_param.rx_win_size) {
+ 			if (!priv->media_connected)
+ 				continue;
+-			for (i = 0; i < MAX_NUM_TID; i++)
+-				mwifiex_11n_delba(priv, i);
++			for (j = 0; j < MAX_NUM_TID; j++)
++				mwifiex_11n_delba(priv, j);
+ 		}
  	}
-+
-+	return 0;
  }
- 
- static int rvu_check_rsrc_availability(struct rvu *rvu,
-@@ -1719,22 +1721,31 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
- 	int err;
- 
- 	/* If first request, detach all existing attached resources */
--	if (!attach->modify)
--		rvu_detach_rsrcs(rvu, NULL, pcifunc);
-+	if (!attach->modify) {
-+		err = rvu_detach_rsrcs(rvu, NULL, pcifunc);
-+		if (err)
-+			return err;
-+	}
- 
- 	mutex_lock(&rvu->rsrc_lock);
- 
- 	/* Check if the request can be accommodated */
- 	err = rvu_check_rsrc_availability(rvu, attach, pcifunc);
- 	if (err)
--		goto exit;
-+		goto fail1;
- 
- 	/* Now attach the requested resources */
--	if (attach->npalf)
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_NPA, 1, attach);
-+	if (attach->npalf) {
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NPA, 1, attach);
-+		if (err)
-+			goto fail1;
-+	}
- 
--	if (attach->nixlf)
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
-+	if (attach->nixlf) {
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
-+		if (err)
-+			goto fail2;
-+	}
- 
- 	if (attach->sso) {
- 		/* RVU func doesn't know which exact LF or slot is attached
-@@ -1744,33 +1755,64 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
- 		 */
- 		if (attach->modify)
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
--				 attach->sso, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
-+				       attach->sso, attach);
-+		if (err)
-+			goto fail3;
- 	}
- 
- 	if (attach->ssow) {
- 		if (attach->modify)
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
--				 attach->ssow, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
-+				       attach->ssow, attach);
-+		if (err)
-+			goto fail4;
- 	}
- 
- 	if (attach->timlfs) {
- 		if (attach->modify)
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
--				 attach->timlfs, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
-+				       attach->timlfs, attach);
-+		if (err)
-+			goto fail5;
- 	}
- 
- 	if (attach->cptlfs) {
- 		if (attach->modify &&
- 		    rvu_attach_from_same_block(rvu, BLKTYPE_CPT, attach))
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_CPT);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
--				 attach->cptlfs, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
-+				       attach->cptlfs, attach);
-+		if (err)
-+			goto fail6;
- 	}
- 
--exit:
-+	mutex_unlock(&rvu->rsrc_lock);
-+	return 0;
-+
-+fail6:
-+	if (attach->timlfs)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
-+
-+fail5:
-+	if (attach->ssow)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
-+
-+fail4:
-+	if (attach->sso)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
-+
-+fail3:
-+	if (attach->nixlf)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_NIX);
-+
-+fail2:
-+	if (attach->npalf)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_NPA);
-+
-+fail1:
- 	mutex_unlock(&rvu->rsrc_lock);
- 	return err;
- }
--- 
-2.51.0
-
 
 
 
