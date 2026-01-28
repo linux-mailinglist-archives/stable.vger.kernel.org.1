@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-212059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212060-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGHGN/Qremnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212059-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:04 +0100
+	id MDUJI/wremnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212060-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE82A3E85
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4705FA3E8C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E9B93014431
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 39422301106E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6F5244667;
-	Wed, 28 Jan 2026 15:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8575244667;
+	Wed, 28 Jan 2026 15:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nc+5v+RT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atrb/xH7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AEC10A1E;
-	Wed, 28 Jan 2026 15:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC3F23E358;
+	Wed, 28 Jan 2026 15:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614263; cv=none; b=KJYI1hugwPmEH9IU0FdlYjmZNM2NdK8IFjGjBWbYBGBxFXKBaKRsP9cmv6Ij8y4c6nOd62Rl28oj/XNDenusJop1UUamu9bMEHPpmnSBc1yvL7DciyPU/ZWn8qGueDjLPaHUi5WqkEUdJybAn/l27bPXJFcoEBhhLs6hnZnpsZM=
+	t=1769614266; cv=none; b=LtQo58w0jKwHOBJzImmukRUZAbppwuhDohwTqD963PeSeMynPynFqX7pffvi2+sep5txCWIRq8U0zVOp/YeW8t/5CKQedkEYkLbkc+qf4haxcTMyNqb6yuHC9kaPoJBIciUWBBlqKHhRNufI5DLw+Y1GGmqVVDRZwRsN6lYFpak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614263; c=relaxed/simple;
-	bh=nzM+RL/vd/t0Mzmc/2SQBT/vwAjJznwmgX3D11L2nio=;
+	s=arc-20240116; t=1769614266; c=relaxed/simple;
+	bh=R8dh3Wn7Mp1gVBx528GV0eiwt/jrqaEp6r1o7rEJpT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYAI8wmo00t1ChIJ2ESQv1Z0CoXOrtMT5Pjg3whD9YSbkkN5jABlpyl9kADZhOHenu5P5vW3v9OYwY2x4FpdiYzBwOg7w3ZU1BvQQlqIO5NIvj5LSsRNnh+456vk9KQXQjxi23QwemTXtTcu6cLe6QwNUGnfHQ4rHzuTU6UM1dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nc+5v+RT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2AAC4CEF1;
-	Wed, 28 Jan 2026 15:31:02 +0000 (UTC)
+	 MIME-Version; b=hAACkw/tSiNY5gzsk3qqLn84sbtM+XU8sONKqc+TVkTHU4+kAKHBG9l1MWgvjqsGfDGmiKxBBoQu/9DCcBOMv8UfgXRj7zW7HeCtAct9+nL0Eb4olAyZCNpugQzHpZpwN6wmudS4UaKK+YCzJ1tL4FCuQ7uZKY5D/MhJP9IQwcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atrb/xH7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A35C4CEF1;
+	Wed, 28 Jan 2026 15:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614262;
-	bh=nzM+RL/vd/t0Mzmc/2SQBT/vwAjJznwmgX3D11L2nio=;
+	s=korg; t=1769614266;
+	bh=R8dh3Wn7Mp1gVBx528GV0eiwt/jrqaEp6r1o7rEJpT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nc+5v+RTuH8ZfvKwAJMUBHZ9OiQ3ON4wQNNcsozkNZ7ZAMSbfzE2aQx8Zx6PsYpth
-	 p+HcSwT3rnbnlQ6z6bW8g4s8eK12FV7ABBZs0xDs/u2hcstYAiHlwXKiZXf3MOp8KC
-	 3DLlfs6xLfMg0TTPzK/4iRlmuBzBadZgGkSpGD8I=
+	b=atrb/xH7lrxzDMUfnOPhLzV9u5arEpKwZghFS32GbOYK/cr599dzGdv4KZ9Yqnc1V
+	 MZ8UURZT0JLsJOOf4lIS3lk7kDRkzQ4y5XqckZrUVfR+zCyImiUPb/qKA21ySe/q9C
+	 pz/RDrWqihhpm5T6tMEcV1Z4nFFC7V3Z+4f612L8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	stable@kernel.org,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 084/254] dmaengine: qcom: gpi: Fix memory leak in gpi_peripheral_config()
-Date: Wed, 28 Jan 2026 16:21:00 +0100
-Message-ID: <20260128145347.722691043@linuxfoundation.org>
+Subject: [PATCH 6.6 085/254] dmaengine: sh: rz-dmac: Fix rz_dmac_terminate_all()
+Date: Wed, 28 Jan 2026 16:21:01 +0100
+Message-ID: <20260128145347.758272696@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -65,91 +67,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212060-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212059-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7BE82A3E85
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MSBL_EBL_FAIL(0.00)[stable@kernel.org:query timed out];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,renesas.com:email]
+X-Rspamd-Queue-Id: 4705FA3E8C
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 3f747004bbd641131d9396d87b5d2d3d1e182728 upstream.
+commit 747213b08a1ab6a76e3e3b3e7a209cc1d402b5d0 upstream.
 
-Fix a memory leak in gpi_peripheral_config() where the original memory
-pointed to by gchan->config could be lost if krealloc() fails.
+After audio full duplex testing, playing the recorded file contains a few
+playback frames from the previous time. The rz_dmac_terminate_all() does
+not reset all the hardware descriptors queued previously, leading to the
+wrong descriptor being picked up during the next DMA transfer. Fix the
+above issue by resetting all the descriptor headers for a channel in
+rz_dmac_terminate_all() as rz_dmac_lmdesc_recycle() points to the proper
+descriptor header filled by the rz_dmac_prepare_descs_for_slave_sg().
 
-The issue occurs when:
-1. gchan->config points to previously allocated memory
-2. krealloc() fails and returns NULL
-3. The function directly assigns NULL to gchan->config, losing the
-   reference to the original memory
-4. The original memory becomes unreachable and cannot be freed
-
-Fix this by using a temporary variable to hold the krealloc() result
-and only updating gchan->config when the allocation succeeds.
-
-Found via static analysis and code review.
-
-Fixes: 5d0c3533a19f ("dmaengine: qcom: Add GPI dma driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://patch.msgid.link/20251029123421.91973-1-linmq006@gmail.com
+Cc: stable@kernel.org
+Fixes: 5000d37042a6 ("dmaengine: sh: Add DMAC driver for RZ/G2L SoC")
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Tested-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20251113195052.564338-1-biju.das.jz@bp.renesas.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/qcom/gpi.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/dma/sh/rz-dmac.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/dma/qcom/gpi.c
-+++ b/drivers/dma/qcom/gpi.c
-@@ -1621,14 +1621,16 @@ static int
- gpi_peripheral_config(struct dma_chan *chan, struct dma_slave_config *config)
+--- a/drivers/dma/sh/rz-dmac.c
++++ b/drivers/dma/sh/rz-dmac.c
+@@ -533,11 +533,16 @@ rz_dmac_prep_slave_sg(struct dma_chan *c
+ static int rz_dmac_terminate_all(struct dma_chan *chan)
  {
- 	struct gchan *gchan = to_gchan(chan);
-+	void *new_config;
+ 	struct rz_dmac_chan *channel = to_rz_dmac_chan(chan);
++	struct rz_lmdesc *lmdesc = channel->lmdesc.base;
+ 	unsigned long flags;
++	unsigned int i;
+ 	LIST_HEAD(head);
  
- 	if (!config->peripheral_config)
- 		return -EINVAL;
- 
--	gchan->config = krealloc(gchan->config, config->peripheral_size, GFP_NOWAIT);
--	if (!gchan->config)
-+	new_config = krealloc(gchan->config, config->peripheral_size, GFP_NOWAIT);
-+	if (!new_config)
- 		return -ENOMEM;
- 
-+	gchan->config = new_config;
- 	memcpy(gchan->config, config->peripheral_config, config->peripheral_size);
- 
- 	return 0;
+ 	rz_dmac_disable_hw(channel);
+ 	spin_lock_irqsave(&channel->vc.lock, flags);
++	for (i = 0; i < DMAC_NR_LMDESC; i++)
++		lmdesc[i].header = 0;
++
+ 	list_splice_tail_init(&channel->ld_active, &channel->ld_free);
+ 	list_splice_tail_init(&channel->ld_queue, &channel->ld_free);
+ 	spin_unlock_irqrestore(&channel->vc.lock, flags);
 
 
 
