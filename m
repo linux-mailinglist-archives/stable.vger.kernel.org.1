@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-212260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212497-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mHUEFjA3eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:20:00 +0100
+	id EK3uIXw6emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212497-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:34:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D91F1A56FA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A1AA5D21
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:34:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2447430A2952
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:42:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87C0531D8B45
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A017F2DF138;
-	Wed, 28 Jan 2026 15:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452DA2E2DF4;
+	Wed, 28 Jan 2026 15:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKOH4EYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wvkyfDK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6310F239570;
-	Wed, 28 Jan 2026 15:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0947518027;
+	Wed, 28 Jan 2026 15:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614921; cv=none; b=oFoPXcw6xr/wm2HrQf8xUU/ObYplYbgUbZGcVVJtWHu99TfJI8gKKTJgXBsjXVp/Bf40FSNMHpKwWKePjbUxdDZfgWKaj9X8eQsfVxiN0r0v5q3yevP43F4110Zfx0ESY4fYi4IZyBJDCYeDITRI2XAFDxPgnK65IZr7fLH50y0=
+	t=1769615715; cv=none; b=GrBwzRFJtpvmTYLXfGaKu3v7x6HCDVX5pWs+uCVsDvh1sNC8LuuZsCuBkXBNXjMO729pdZ0k1T9hCg6gun8voOdp2yV6ASPguxPjshU4to7U6NORa1KO0Hd1/rCVjXoDHSsI6kVJanrb3EjXeDyjNhHUCeBX6TrxwWCX4Ac3vK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614921; c=relaxed/simple;
-	bh=5CBuzF2TwGpjzJX6FwLNttS7Nv7SqwTpM5BLDKnEqps=;
+	s=arc-20240116; t=1769615715; c=relaxed/simple;
+	bh=r0WcAE345m3HmM05i24TbMaLcKMPt/bJ/39YW9oSMJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PiHAOjE0zDSXVgJeZvvvtAzSMLG7zVOkG9Q6bT8ZfIn0Icoi5RZzohpbLCkQ8OoHUbEC+GhtKXfG0/8kDToNMtFfwSzCQPaHmGu7KUQtD+ZAcve5rf/HdrfwSJ0EaOH5/aWw3jg0c3fAlM0knJ+bq8nxf418L4XiOTNm+KjimeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKOH4EYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76B7C4CEF1;
-	Wed, 28 Jan 2026 15:42:00 +0000 (UTC)
+	 MIME-Version; b=K23N8FKpvpq9rC1qMGdSEL899cZCAGxmOdipmjkvENTUVxoRdkQEFhksEjKhBhasNq0+a0TqdnJXbo5Nq4bxWhHzWPg6MTfU6IBxdqJsCgZT4Wk/BIgUf7ZiMTksHQD2xQLOzud81k/V0WNjndHEVbtRddILApda15SM5TTphsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wvkyfDK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFD0C4CEF1;
+	Wed, 28 Jan 2026 15:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614921;
-	bh=5CBuzF2TwGpjzJX6FwLNttS7Nv7SqwTpM5BLDKnEqps=;
+	s=korg; t=1769615714;
+	bh=r0WcAE345m3HmM05i24TbMaLcKMPt/bJ/39YW9oSMJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YKOH4EYcvEnBNJBepE7fMaT16P5vvQfolYlCiefU3GYoEr0G02ISVOSupR14qbX4I
-	 7m00OuSK9PFtwo4c486+R6ywyamCesuzyZM7d4kbApqjmL3+JAOTimQGxh9VGbGHTO
-	 UP41xmjT7f5BGRVNfNILtOcLEJN9WPhlIHdCcbRY=
+	b=1wvkyfDKz1kv3HvGWT6i/QmVw1VJk4AdVnfG+kgz29VWsHsWOicwsjuLMHTvZcqpB
+	 4VHCDeagW5Pnxjob0Aan8GMNDR6pPa2ppv5pptEojQFzed7INod2Kyx4tD+6oD18SK
+	 nvbW/OappAJHS/Bm3yQkbA6lBuny26DVk8TXueNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2c42ea4485b29beb0643@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/169] l2tp: Fix memleak in l2tp_udp_encap_recv().
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.18 065/227] arm64: dts: rockchip: fix unit-address for RK3588 NPUs core1 and core2s IOMMU
 Date: Wed, 28 Jan 2026 16:21:50 +0100
-Message-ID: <20260128145335.000161807@linuxfoundation.org>
+Message-ID: <20260128145346.680220784@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,112 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212260-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-212497-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,2c42ea4485b29beb0643];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: D91F1A56FA
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sntech.de:email,cherry.de:email,fdac0000:email,unit-address:email,fdad9000:email,fdada000:email]
+X-Rspamd-Queue-Id: 04A1AA5D21
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-[ Upstream commit 4d10edfd1475b69dbd4c47f34b61a3772ece83ca ]
+commit cd8967ea3105d30adb878a9fea0e34a9378df610 upstream.
 
-syzbot reported memleak of struct l2tp_session, l2tp_tunnel,
-sock, etc. [0]
+The Device Tree specification specifies[1] that
 
-The cited commit moved down the validation of the protocol
-version in l2tp_udp_encap_recv().
+"""
+Each node in the devicetree is named according to the following
+convention:
+	node-name@unit-address
+[...]
+The unit-address must match the first address specified in the reg
+property of the node.
+"""
 
-The new place requires an extra error handling to avoid the
-memleak.
+The first address in the reg property is fdaXa000 and not fdaX9000. This
+is likely a copy-paste error as the IOMMU for core0 has two entries in
+the reg property, the first one being fdab9000 and the second fdaba000.
 
-Let's call l2tp_session_put() there.
+Let's fix this oversight to match what the spec is expecting.
 
-[0]:
-BUG: memory leak
-unreferenced object 0xffff88810a290200 (size 512):
-  comm "syz.0.17", pid 6086, jiffies 4294944299
-  hex dump (first 32 bytes):
-    7d eb 04 0c 00 00 00 00 01 00 00 00 00 00 00 00  }...............
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc babb6a4f):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4958 [inline]
-    slab_alloc_node mm/slub.c:5263 [inline]
-    __do_kmalloc_node mm/slub.c:5656 [inline]
-    __kmalloc_noprof+0x3e0/0x660 mm/slub.c:5669
-    kmalloc_noprof include/linux/slab.h:961 [inline]
-    kzalloc_noprof include/linux/slab.h:1094 [inline]
-    l2tp_session_create+0x3a/0x3b0 net/l2tp/l2tp_core.c:1778
-    pppol2tp_connect+0x48b/0x920 net/l2tp/l2tp_ppp.c:755
-    __sys_connect_file+0x7a/0xb0 net/socket.c:2089
-    __sys_connect+0xde/0x110 net/socket.c:2108
-    __do_sys_connect net/socket.c:2114 [inline]
-    __se_sys_connect net/socket.c:2111 [inline]
-    __x64_sys_connect+0x1c/0x30 net/socket.c:2111
-    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[1] https://github.com/devicetree-org/devicetree-specification/releases/download/v0.4/devicetree-specification-v0.4.pdf 2.2.1 Node Names
 
-Fixes: 364798056f518 ("l2tp: Support different protocol versions with same IP/port quadruple")
-Reported-by: syzbot+2c42ea4485b29beb0643@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/696693f2.a70a0220.245e30.0001.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20260113185446.2533333-1-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a31dfc060a74 ("arm64: dts: rockchip: Add nodes for NPU and its MMU to rk3588-base")
+Cc: stable@vger.kernel.org
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Link: https://patch.msgid.link/20251215-npu-dt-node-address-v1-1-840093e8a2bf@cherry.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3588-base.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index 369a2f2e459cd..61fe27d71c230 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1086,8 +1086,10 @@ int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 	tunnel = session->tunnel;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+index 2a7921793020..7ab12d1054a7 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
+@@ -1200,7 +1200,7 @@ rknn_core_1: npu@fdac0000 {
+ 		status = "disabled";
+ 	};
  
- 	/* Check protocol version */
--	if (version != tunnel->version)
-+	if (version != tunnel->version) {
-+		l2tp_session_put(session);
- 		goto invalid;
-+	}
+-	rknn_mmu_1: iommu@fdac9000 {
++	rknn_mmu_1: iommu@fdaca000 {
+ 		compatible = "rockchip,rk3588-iommu", "rockchip,rk3568-iommu";
+ 		reg = <0x0 0xfdaca000 0x0 0x100>;
+ 		interrupts = <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH 0>;
+@@ -1230,7 +1230,7 @@ rknn_core_2: npu@fdad0000 {
+ 		status = "disabled";
+ 	};
  
- 	if (version == L2TP_HDR_VER_3 &&
- 	    l2tp_v3_ensure_opt_in_linear(session, skb, &ptr, &optr)) {
+-	rknn_mmu_2: iommu@fdad9000 {
++	rknn_mmu_2: iommu@fdada000 {
+ 		compatible = "rockchip,rk3588-iommu", "rockchip,rk3568-iommu";
+ 		reg = <0x0 0xfdada000 0x0 0x100>;
+ 		interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH 0>;
 -- 
-2.51.0
+2.52.0
 
 
 
