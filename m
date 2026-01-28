@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-212229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HM2GbMxemlp4gEAu9opvQ
-	(envelope-from <stable+bounces-212229-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:35 +0100
+	id 4CSbHlU1eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:05 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B61A4C5C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A76AFA5437
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 305DD30DD7F3
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D6D75306AE6D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF332E5D17;
-	Wed, 28 Jan 2026 15:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54F62F25EF;
+	Wed, 28 Jan 2026 15:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+WO8zBa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUsLupdn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290F12FBDF5;
-	Wed, 28 Jan 2026 15:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ACF2F747F;
+	Wed, 28 Jan 2026 15:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614817; cv=none; b=nnjNY1WrGgN4OJyKWR6eHlJg/GZHuq+RL83bdTURs9FT/0JVQe0jiTxUMDKH98MR++aGMC+DUV1Cm2FLI+AFS/vAvhJhK/55roFWpfoDpeOKWZI//kUFJc3UsPIakRrCzva4M8xgxJvQGj8zRQGDGIgrvkstPJsmVeJ7WoF9N/o=
+	t=1769615177; cv=none; b=BWzFeMhy5nmpN1wIt4D2P+yjo+P0OMYbwu8dKlr2J9wN27eZMhkf73WPMCY6PlyMLtCgYKwe65czYNlsWTSQBeGq1cCMi6WwPaZJtkwX3UZJvBAjOgABxpr177+5C9miFxQYH0JXsLnXUxmzNFOQRv+CIR0hzNQmgKWKE+Dd1yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614817; c=relaxed/simple;
-	bh=1m0pxd9+He69BvGpdL5Lt3M78VxCPmE70gqfDFPOEY0=;
+	s=arc-20240116; t=1769615177; c=relaxed/simple;
+	bh=vOaFtXwu+lLFjXhhaY7+X7v/a/ENvboOoQdeNlqPFJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2SS3CHnafBMkreG882QuQziD/gd7g3XHMnGcJg1eCXSkBQKXUPAs/lrh2msc0S6DtuW7VrAH+dI2KjGo3792QiKK94evdhPzjqq9ntuSgSeRm60fneMvXibfcnbLT4zimZfbbWA3PbUMJCOkHgKPU+VXyJuMm8KcGVhjinCNxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+WO8zBa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A56AC4CEF7;
-	Wed, 28 Jan 2026 15:40:16 +0000 (UTC)
+	 MIME-Version; b=bVhtUUA3rFrJYFEtdfglzW1GsLwE9zXXvVoDyiiOq/T03fGMuIaMx49nHMAERWo3e+47MZ/dX25Dc4oU0zpLHaHlT/Ai4ZLiKihqgh35HkIpM5UAwGCh+wYBAoz7SoFLawuMKBFwC79Jul5HqZke8OIVd2qBrD6CUYJsue6/bbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUsLupdn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8262EC4CEF1;
+	Wed, 28 Jan 2026 15:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614816;
-	bh=1m0pxd9+He69BvGpdL5Lt3M78VxCPmE70gqfDFPOEY0=;
+	s=korg; t=1769615177;
+	bh=vOaFtXwu+lLFjXhhaY7+X7v/a/ENvboOoQdeNlqPFJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p+WO8zBaQPsakjCx8dvouQJXwihYqFdWqL1rdsv/vLZiiOtf9lDIlb98Mthf39FCz
-	 CO/CGbp97Zwqmk/FgUT4ql5dXsQLLW+Trdg7zqcbI0OroFiuQFS0t81dnxckLiDPQz
-	 mLH1vCfJVEvhToANwlbqwBl1itmTwRYi2FaAKW1E=
+	b=BUsLupdntFOLh9v3/xkXqCVSKdgsVMr6vdJBHGTQQ8AY3Wyte/Zw4F7ca669dqDex
+	 fxUsRXfG3tnKe6S7r06T6XU3LtWSWzI1Fd9zi8DATVq1DagUQx/x5fN0oxOp9y0AGC
+	 yJ7++DMKo6WcJCANte/ssly2auKGYNOFXW+KNVqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 6.6 208/254] uacce: fix isolate sysfs check condition
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Sebastian Reichel <sre@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.12 101/169] leds: led-class: Only Add LED to leds_list when it is fully ready
 Date: Wed, 28 Jan 2026 16:23:04 +0100
-Message-ID: <20260128145352.279623228@linuxfoundation.org>
+Message-ID: <20260128145337.643110611@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +67,113 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212229-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212336-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 79B61A4C5C
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A76AFA5437
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-commit 98eec349259b1fd876f350b1c600403bcef8f85d upstream.
+commit d1883cefd31752f0504b94c3bcfa1f6d511d6e87 upstream.
 
-uacce supports the device isolation feature. If the driver
-implements the isolate_err_threshold_read and
-isolate_err_threshold_write callback functions, uacce will create
-sysfs files now. Users can read and configure the isolation policy
-through sysfs. Currently, sysfs files are created as long as either
-isolate_err_threshold_read or isolate_err_threshold_write callback
-functions are present.
+Before this change the LED was added to leds_list before led_init_core()
+gets called adding it the list before led_classdev.set_brightness_work gets
+initialized.
 
-However, accessing a non-existent callback function may cause the
-system to crash. Therefore, intercept the creation of sysfs if
-neither read nor write exists; create sysfs if either is supported,
-but intercept unsupported operations at the call site.
+This leaves a window where led_trigger_register() of a LED's default
+trigger will call led_trigger_set() which calls led_set_brightness()
+which in turn will end up queueing the *uninitialized*
+led_classdev.set_brightness_work.
 
-Fixes: e3e289fbc0b5 ("uacce: supports device isolation feature")
+This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
+2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
+succession. The first led_classdev_register() causes an async modprobe of
+snd_ctl_led to run and that async modprobe manages to exactly hit
+the window where the second LED is on the leds_list without led_init_core()
+being called for it, resulting in:
+
+ ------------[ cut here ]------------
+ WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
+ Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
+ ...
+ Call trace:
+  __flush_work+0x344/0x390 (P)
+  flush_work+0x2c/0x50
+  led_trigger_set+0x1c8/0x340
+  led_trigger_register+0x17c/0x1c0
+  led_trigger_register_simple+0x84/0xe8
+  snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
+  do_one_initcall+0x5c/0x318
+  do_init_module+0x9c/0x2b8
+  load_module+0x7e0/0x998
+
+Close the race window by moving the adding of the LED to leds_list to
+after the led_init_core() call.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-3-huangchenghai2@huawei.com
+Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
+Link: https://patch.msgid.link/20251211163727.366441-1-johannes.goede@oss.qualcomm.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/uacce/uacce.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/leds/led-class.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -379,6 +379,9 @@ static ssize_t isolate_strategy_show(str
- 	struct uacce_device *uacce = to_uacce_device(dev);
- 	u32 val;
+--- a/drivers/leds/led-class.c
++++ b/drivers/leds/led-class.c
+@@ -547,11 +547,6 @@ int led_classdev_register_ext(struct dev
+ #ifdef CONFIG_LEDS_BRIGHTNESS_HW_CHANGED
+ 	led_cdev->brightness_hw_changed = -1;
+ #endif
+-	/* add to the list of leds */
+-	down_write(&leds_list_lock);
+-	list_add_tail(&led_cdev->node, &leds_list);
+-	up_write(&leds_list_lock);
+-
+ 	if (!led_cdev->max_brightness)
+ 		led_cdev->max_brightness = LED_FULL;
  
-+	if (!uacce->ops->isolate_err_threshold_read)
-+		return -ENOENT;
+@@ -559,6 +554,11 @@ int led_classdev_register_ext(struct dev
+ 
+ 	led_init_core(led_cdev);
+ 
++	/* add to the list of leds */
++	down_write(&leds_list_lock);
++	list_add_tail(&led_cdev->node, &leds_list);
++	up_write(&leds_list_lock);
 +
- 	val = uacce->ops->isolate_err_threshold_read(uacce);
- 
- 	return sysfs_emit(buf, "%u\n", val);
-@@ -391,6 +394,9 @@ static ssize_t isolate_strategy_store(st
- 	unsigned long val;
- 	int ret;
- 
-+	if (!uacce->ops->isolate_err_threshold_write)
-+		return -ENOENT;
-+
- 	if (kstrtoul(buf, 0, &val) < 0)
- 		return -EINVAL;
- 
+ #ifdef CONFIG_LEDS_TRIGGERS
+ 	led_trigger_set_default(led_cdev);
+ #endif
 
 
 
