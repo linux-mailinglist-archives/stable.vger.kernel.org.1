@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CSbHlU1eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212336-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:05 +0100
+	id iGI8Gqk7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76AFA5437
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC172A5F2D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D6D75306AE6D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8A303226F35
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54F62F25EF;
-	Wed, 28 Jan 2026 15:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA9C302779;
+	Wed, 28 Jan 2026 15:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUsLupdn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBVeZlI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ACF2F747F;
-	Wed, 28 Jan 2026 15:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F17E2E2DF4;
+	Wed, 28 Jan 2026 15:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615177; cv=none; b=BWzFeMhy5nmpN1wIt4D2P+yjo+P0OMYbwu8dKlr2J9wN27eZMhkf73WPMCY6PlyMLtCgYKwe65czYNlsWTSQBeGq1cCMi6WwPaZJtkwX3UZJvBAjOgABxpr177+5C9miFxQYH0JXsLnXUxmzNFOQRv+CIR0hzNQmgKWKE+Dd1yk=
+	t=1769615984; cv=none; b=muj4R/QkGm4GlY+rTQciRYr3Q+QRsk4YsevyHrqna/BHHYHeedM6DjzY2IxE3+FnSyqc3vjOhaIpxw8bzWR/gy/5z5KnqK5gNDWOCREpVuonpBfW0TS7jBtNr/atBlbF6oQwjqZpkCJ+Kv3sL8S2B2qLlxnPVY63Ty9O6uAcJHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615177; c=relaxed/simple;
-	bh=vOaFtXwu+lLFjXhhaY7+X7v/a/ENvboOoQdeNlqPFJw=;
+	s=arc-20240116; t=1769615984; c=relaxed/simple;
+	bh=c7p+zTBO7YnQTke28NpFtFiZOMNV7xCnddtJtLxpCQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bVhtUUA3rFrJYFEtdfglzW1GsLwE9zXXvVoDyiiOq/T03fGMuIaMx49nHMAERWo3e+47MZ/dX25Dc4oU0zpLHaHlT/Ai4ZLiKihqgh35HkIpM5UAwGCh+wYBAoz7SoFLawuMKBFwC79Jul5HqZke8OIVd2qBrD6CUYJsue6/bbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUsLupdn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8262EC4CEF1;
-	Wed, 28 Jan 2026 15:46:16 +0000 (UTC)
+	 MIME-Version; b=YvBkAuY/Hx2D8Ll7zzlRjpVyZ99iwX0yS74GSqFCjkwf64gnpn4lquuYGKSsCbjIGXUkiGwsauzYhc1BazgbRE8DkywYMFOfg0meEPumi1tjOctLDUPK96tSUhw9nNbHRWPgFJO0ytRXP14wAtI1phUdpt4tPtLLxXyO2BdRECU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBVeZlI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECFDC4CEF1;
+	Wed, 28 Jan 2026 15:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615177;
-	bh=vOaFtXwu+lLFjXhhaY7+X7v/a/ENvboOoQdeNlqPFJw=;
+	s=korg; t=1769615984;
+	bh=c7p+zTBO7YnQTke28NpFtFiZOMNV7xCnddtJtLxpCQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUsLupdntFOLh9v3/xkXqCVSKdgsVMr6vdJBHGTQQ8AY3Wyte/Zw4F7ca669dqDex
-	 fxUsRXfG3tnKe6S7r06T6XU3LtWSWzI1Fd9zi8DATVq1DagUQx/x5fN0oxOp9y0AGC
-	 yJ7++DMKo6WcJCANte/ssly2auKGYNOFXW+KNVqw=
+	b=LBVeZlI7lGHP+sOAU0OgnpX+WViIM1XHuo//0LcunyAAi0H4EMhMfaluL7gTubfF1
+	 ohCAsdbjdavxglx579ZHJ4KvFeUZMg/bkSMuX9lcFZjLqPt0nLZtW685Y+Qg3mN2mf
+	 UKJYPq1eUSPXwsMh5F7fc5oYQeFru5JIT5sUpxYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Sebastian Reichel <sre@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.12 101/169] leds: led-class: Only Add LED to leds_list when it is fully ready
-Date: Wed, 28 Jan 2026 16:23:04 +0100
-Message-ID: <20260128145337.643110611@linuxfoundation.org>
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 140/227] net: pcs: pcs-mtk-lynxi: report in-band capability for 2500Base-X
+Date: Wed, 28 Jan 2026 16:23:05 +0100
+Message-ID: <20260128145349.497854726@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212336-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212577-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,90 +90,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A76AFA5437
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,makrotopia.org:email]
+X-Rspamd-Queue-Id: CC172A5F2D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-commit d1883cefd31752f0504b94c3bcfa1f6d511d6e87 upstream.
+[ Upstream commit e8ca461f7d19464b47c64fe4cf2f83162421bcc0 ]
 
-Before this change the LED was added to leds_list before led_init_core()
-gets called adding it the list before led_classdev.set_brightness_work gets
-initialized.
+It turns out that 2500Base-X actually works fine with in-band status on
+MediaTek's LynxI PCS -- I wrongly concluded it didn't because it is
+broken in all the copper SFP modules and GPON sticks I used for testing.
 
-This leaves a window where led_trigger_register() of a LED's default
-trigger will call led_trigger_set() which calls led_set_brightness()
-which in turn will end up queueing the *uninitialized*
-led_classdev.set_brightness_work.
+Hence report LINK_INBAND_ENABLE also for 2500Base-X mode.
 
-This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
-2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
-succession. The first led_classdev_register() causes an async modprobe of
-snd_ctl_led to run and that async modprobe manages to exactly hit
-the window where the second LED is on the leds_list without led_init_core()
-being called for it, resulting in:
+This reverts most of commit a003c38d9bbb ("net: pcs: pcs-mtk-lynxi:
+correctly report in-band status capabilities").
 
- ------------[ cut here ]------------
- WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
- Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
- ...
- Call trace:
-  __flush_work+0x344/0x390 (P)
-  flush_work+0x2c/0x50
-  led_trigger_set+0x1c8/0x340
-  led_trigger_register+0x17c/0x1c0
-  led_trigger_register_simple+0x84/0xe8
-  snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
-  do_one_initcall+0x5c/0x318
-  do_init_module+0x9c/0x2b8
-  load_module+0x7e0/0x998
+The removal of the QSGMII interface mode was correct and is left
+untouched.
 
-Close the race window by moving the adding of the LED to leds_list to
-after the led_init_core() call.
-
-Cc: stable@vger.kernel.org
-Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Reviewed-by: Sebastian Reichel <sre@kernel.org>
-Link: https://patch.msgid.link/20251211163727.366441-1-johannes.goede@oss.qualcomm.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/openwrt/openwrt/issues/21436
+Fixes: a003c38d9bbb ("net: pcs: pcs-mtk-lynxi: correctly report in-band status capabilities")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/b1cf26157b63fee838be09ae810497fb22fd8104.1768961746.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-class.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/pcs/pcs-mtk-lynxi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/leds/led-class.c
-+++ b/drivers/leds/led-class.c
-@@ -547,11 +547,6 @@ int led_classdev_register_ext(struct dev
- #ifdef CONFIG_LEDS_BRIGHTNESS_HW_CHANGED
- 	led_cdev->brightness_hw_changed = -1;
- #endif
--	/* add to the list of leds */
--	down_write(&leds_list_lock);
--	list_add_tail(&led_cdev->node, &leds_list);
--	up_write(&leds_list_lock);
+diff --git a/drivers/net/pcs/pcs-mtk-lynxi.c b/drivers/net/pcs/pcs-mtk-lynxi.c
+index 149ddf51d7856..87df3a9dfc9bc 100644
+--- a/drivers/net/pcs/pcs-mtk-lynxi.c
++++ b/drivers/net/pcs/pcs-mtk-lynxi.c
+@@ -93,12 +93,10 @@ static unsigned int mtk_pcs_lynxi_inband_caps(struct phylink_pcs *pcs,
+ {
+ 	switch (interface) {
+ 	case PHY_INTERFACE_MODE_1000BASEX:
++	case PHY_INTERFACE_MODE_2500BASEX:
+ 	case PHY_INTERFACE_MODE_SGMII:
+ 		return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
+ 
+-	case PHY_INTERFACE_MODE_2500BASEX:
+-		return LINK_INBAND_DISABLE;
 -
- 	if (!led_cdev->max_brightness)
- 		led_cdev->max_brightness = LED_FULL;
- 
-@@ -559,6 +554,11 @@ int led_classdev_register_ext(struct dev
- 
- 	led_init_core(led_cdev);
- 
-+	/* add to the list of leds */
-+	down_write(&leds_list_lock);
-+	list_add_tail(&led_cdev->node, &leds_list);
-+	up_write(&leds_list_lock);
-+
- #ifdef CONFIG_LEDS_TRIGGERS
- 	led_trigger_set_default(led_cdev);
- #endif
+ 	default:
+ 		return 0;
+ 	}
+-- 
+2.51.0
+
 
 
 
