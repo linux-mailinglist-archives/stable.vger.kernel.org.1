@@ -1,136 +1,194 @@
-Return-Path: <stable+bounces-212166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211981-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CL9QAU4temnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:37:50 +0100
+	id SIElKtAmemlk3QEAu9opvQ
+	(envelope-from <stable+bounces-211981-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:10:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2343A418B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:37:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A357A38D8
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC19630206B0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F3407301913F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BF22DC76D;
-	Wed, 28 Jan 2026 15:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE592369232;
+	Wed, 28 Jan 2026 15:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="wAcvOkty"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c8LNOMBJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp105.ord1d.emailsrvr.com (smtp105.ord1d.emailsrvr.com [184.106.54.105])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38F62D77FE
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 15:36:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=184.106.54.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267373644DF
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 15:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614609; cv=none; b=CGwAl/iprQwmdCMRiJVLZKmdC05MeX74J5ZtnDFMabwzRRo3DD7apdAtQN+LUbZhzKlRUVfT5qAVbZ6Ty/9s9BG6hTAqtHv4uU4wRSfm6QUHzxKbqqZZBaNBeYEc/Y7hSd5J5mZ3C8gAGQEet3g3TUKCwYqoZVbbZoDog2k/iHc=
+	t=1769612663; cv=none; b=g8Ma+armp6a9ha0dnmc9JScGxSlpfO9XTjBZqYwFZU2YjGJXQ7/xP2ilu8rS89in1wjGvWQhpXQUR6OLN+b7btRxXDZoaLxelUGrHhVpDFHzsj5HmLBZ+ZABCgozBENsumK++EiSJoaqMG1AsFf1euzWf7xiyiIiZlsZldjofG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614609; c=relaxed/simple;
-	bh=FNu9qt9RcJv8/efnOO0fintMAsmMWSblnG6gPk5YQoE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nS3H9yG1U08/IWOYFumadcvZ7Q2WUUGMLLDdChcY2HOyZplIw9IIqE3DQ5W6oY24AW5ikdIDotl6qVcVm53GPleIgXSiPWcFvrii5rLs6xiAqcDUCxrX3M1B7ux0sNjc1kHumkePDeJYo8P5Mwaplr0kjlzf7ZQbP6BSIpc8EKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=wAcvOkty; arc=none smtp.client-ip=184.106.54.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1769612424;
-	bh=FNu9qt9RcJv8/efnOO0fintMAsmMWSblnG6gPk5YQoE=;
-	h=From:To:Subject:Date:From;
-	b=wAcvOktyogDbUaCA3h+P2qVCb4bIF1+rkP3flHg6kMZ9bGrvIa8ThaaZmEchzg/8d
-	 AtlQ6lYrj934jmgLX4xs1Uh+II2m0awA6gPXJbc8dpuBcbGc2yrCbO31QtBHq0V3t/
-	 GUQKOmgUguicYXMtIQBBB3C4/+0FhZ3jgvXh4nyw=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp14.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 2EF414026C;
-	Wed, 28 Jan 2026 10:00:23 -0500 (EST)
-From: Ian Abbott <abbotti@mev.co.uk>
-To: linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] comedi: ni_atmio16d: Fix invalid clean-up after failed attach
-Date: Wed, 28 Jan 2026 15:00:10 +0000
-Message-ID: <20260128150011.5006-1-abbotti@mev.co.uk>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1769612663; c=relaxed/simple;
+	bh=9p9sY8GurF6O2zwvllKDDT1l+KKObwzM+skkBydhYaU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LWR8yk19l+9Clt5QZMubiNgxiF4WmEFE5fsDbvGs7OmaUQzj6vrnBW3PJ0lTtgobwW7+N8Y4+lVQomiHqhwhkSzvCSpmbhDtBNaYOQdJRthhxUygE0Bn7z5JCgOl9gEiq1v/lQ6jJS4EwGbPmk95fRQXmHAMtX7ql9N7h91xgwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c8LNOMBJ; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82323cc7594so2315132b3a.2
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 07:04:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769612657; x=1770217457; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ySrwH5OmJgiZgYr7ivDWu26JHCODpKL/+VCc6ZHqtQc=;
+        b=c8LNOMBJqjFrDq3czsZdUZx99leTsHBkzdY0mT8bxmwUxWnh5k8EATrsxbcDib3R+b
+         UK3WGq0lMkLcK7Ywlt/sgscz4brMo0Vgz7BLcWpc1q9x93EocSJS39P6JEyXKP2hp6Vz
+         hFuongmHHTcpnT1e2GKa5ovOUHmvTwhdjP3Ja5jUwEwA7WRJtoAIv3Mm5hGiyOBpE3DY
+         ZE8s5kt7u4kq0jjlLKm8jwOOGVn6cLIxQMbORSQ1qwIpNArtdPWVF7AthInSnSk/rC0p
+         SveGXBLvKSBeNFnd9XR+ieqO53SpM0yO79p/5xOsyZg3evy7JsuCELRwIOICqL9+a75h
+         DxMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769612657; x=1770217457;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ySrwH5OmJgiZgYr7ivDWu26JHCODpKL/+VCc6ZHqtQc=;
+        b=kB79pFCYWNlInONdZBc7QbmgIIpt2L0uNCpAnseN8S/o8eF5h72CXu2EBEB/9Txuff
+         ttteFkj/rk0NXvSjTHhChfHZlh3m8t9B+ZHWihOq+YW3nc8eDax4j26ZOfxjVIIr6YS5
+         i1cUn04MTAz6j3OjoTI4+IzM1TpsDc6oieqGE9ZhOb4yrS/PoWOeBh40TCDdExU22Y2R
+         29a9jMi89iaRCbVPLnFca/WiY1vUWFFhKqoq9GiQQXwy1aSyGiLnB2MngtLn0gl7AavK
+         uY+VOEE50qYRUp7jfubcgGvoxxtORUF59j9t3y9H6BRJnLsZUISqBpNeRrd3/e10j74x
+         Q2bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXaj/DnAioBE9zLdOOpixvIDNA1Q0gwnE00409bM4GwxHOPQaFxbJEnczWoNG/IpJaWcLlWRQg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywg6pkGeaBBCqFrGrIrS5qY2NrsemSDU41pxQs4uEkM84nn+TBR
+	oWr+nt+PUDNHXC3Hrb9VzpWKtK67GeMOwrtmkAosTCn+suUa0QtL91Arwx/b7XFqZme4wiXtxb4
+	DClDq7g==
+X-Received: from pghx8.prod.google.com ([2002:a63:f708:0:b0:bac:a20:5f1b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1709:b0:38e:5535:bb4e
+ with SMTP id adf61e73a8af0-38ec6581350mr5832803637.76.1769612656719; Wed, 28
+ Jan 2026 07:04:16 -0800 (PST)
+Date: Wed, 28 Jan 2026 07:04:15 -0800
+In-Reply-To: <DBAD995F-C9E1-46C8-A49A-9D774D6D4612@nutanix.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Classification-ID: e92fc87b-daa5-4a29-ac36-dbe57e86035b-1-1
+Mime-Version: 1.0
+References: <20260123125657.3384063-1-khushit.shah@nutanix.com>
+ <feb11efd6bfbc5e7d5f6f430f40d4df5544f1d39.camel@infradead.org>
+ <aXkyz3IbBOphjNEi@google.com> <ea294969d05fc9c37e72053d7343e11fa9ffdded.camel@infradead.org>
+ <699708d7f3da2e2a41e3282c1a87e6f4d69a4e89.camel@intel.com>
+ <c7eab673dd567936761a8cc6e091a432b38d08da.camel@infradead.org>
+ <SA2PR02MB756478359EE9185285ACE6158891A@SA2PR02MB7564.namprd02.prod.outlook.com>
+ <DBAD995F-C9E1-46C8-A49A-9D774D6D4612@nutanix.com>
+Message-ID: <aXolb--54UNUJqU9@google.com>
+Subject: Re: [PATCH v6] KVM: x86: Add x2APIC "features" to control EOI
+ broadcast suppression
+From: Sean Christopherson <seanjc@google.com>
+To: Khushit Shah <khushit.shah@nutanix.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Kai Huang <kai.huang@intel.com>, 
+	Shaju Abraham <shaju.abraham@nutanix.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"bp@alien8.de" <bp@alien8.de>, "stable@vger.kernel.org" <stable@vger.kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, Jon Kohler <jon@nutanix.com>, 
+	"tglx@linutronix.de" <tglx@linutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mev.co.uk,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[mev.co.uk:s=20221208-6x11dpa4];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212166-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.7.a.0.0.1.0.0.e.9.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211981-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[abbotti@mev.co.uk,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[mev.co.uk:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B2343A418B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nutanix.com:email,infradead.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1A357A38D8
 X-Rspamd-Action: no action
 
-If the driver's COMEDI "attach" handler function (`atmio16d_attach()`)
-returns an error, the COMEDI core will call the driver's "detach"
-handler function (`atmio16d_detach()`) to clean up.  This calls
-`reset_atmio16d()` unconditionally, but depending on where the error
-occurred in the attach handler, the device may not have been
-sufficiently initialized to call `reset_atmio16d()`.  It uses
-`dev->iobase` as the I/O port base address and `dev->private` as the
-pointer to the COMEDI device's private data structure.  `dev->iobase`
-may still be set to its initial value of 0, which would result in
-undesired writes to low I/O port addresses.  `dev->private` may still be
-`NULL`, which would result in null pointer dereferences.
+On Wed, Jan 28, 2026, Khushit Shah wrote:
+>=20
+> > On 28 Jan 2026, at 9:27=E2=80=AFAM, Khushit Shah <khushit.shah@nutanix.=
+com> wrote:
+> >=20
+> >=20
+> > On 28/01/26, 9:19=E2=80=AFAM, "David Woodhouse" <dwmw2@infradead.org> w=
+rote:
+> >=20
+> > On Wed, 2026-01-28 at 02:22 +0000, Huang, Kai wrote:
+> > > =20
+> > > > Ah, so userspace which checks all the kernel's capabilities *first*
+> > > > will not see KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST advertised,
+> > > > because it needs to enable KVM_CAP_SPLIT_IRQCHIP first?
+> > > > > > I guess that's tolerable=C2=B9 but the documentation could make=
+ it clearer,
+> > > > perhaps? I can see VMMs silently failing to detect the feature beca=
+use
+> > > > they just don't set split-irqchip before checking for it? > > > > >=
+ > =C2=B9 although I still kind of hate it and would have preferred to have=
+ the
+> > > >    I/O APIC patch; userspace still has to intentionally *enable* th=
+at
+> > > >    combination. But OK, I've reluctantly conceded that.
+> > > > To make it even more robust, perhaps we can grab kvm->lock mutex in
+> > > kvm_vm_ioctl_enable_cap() for KVM_CAP_X2APIC_API, so that it won't ra=
+ce with
+> > > KVM_CREATE_IRQCHIP (which already grabs kvm->lock) and
+> > > KVM_CAP_SPLIT_IRQCHIP?
+> > > > Even more, we can add additional check in KVM_CREATE_IRQCHIP to ret=
+urn -
+> > > EINVAL when it sees kvm->arch.suppress_eoi_broadcast_mode is
+> > > KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST?
+> >=20
+> > If we do that, then the query for KVM_CAP_X2APIC_API could advertise
+> > the KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST for a freshly created KVM,
+> > even before userspace has enabled *either* KVM_CREATE_IRQCHIP nor
+> > KVM_CAP_SPLIT_IRQCHIP?
+> >=20
+> > That would be slightly better than the existing proposed awfulness
+> > where the kernel doesn't *admit* to having the _ENABLE_ capability
+> > until userspace first enables the KVM_CAP_SPLIT_IRQCHIP.
 
-Fix `atmio16d_detach()` by checking that `dev->private` is valid
-(non-null) before calling `reset_atmio16d()`.  This implies that
-`dev->iobase` was set correctly since that is set up before
-`dev->private`.
+No.  If userspace wants to see if *KVM* supports the feature, then userspac=
+e can
+do KVM_CHECK_EXTENSION on /dev/kvm.  If userspace does KVM_CHECK_EXTENSION =
+on a
+VM fd, then KVM absolutely must report exactly what that VM supports.
 
-Fixes: 2323b276308a ("Staging: comedi: add ni_at_atmio16d driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
----
- drivers/comedi/drivers/ni_atmio16d.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> How about we make an explicit _ENABLE_ bit for split IRQCHIP?
+> When/if in-kernel IRQCHIP starts supporting I/O APIC 0x20, we
+> can add a separate bit for that in the CAP.=20
 
-diff --git a/drivers/comedi/drivers/ni_atmio16d.c b/drivers/comedi/drivers/ni_atmio16d.c
-index e5e7cc423c87..b057b3b3582e 100644
---- a/drivers/comedi/drivers/ni_atmio16d.c
-+++ b/drivers/comedi/drivers/ni_atmio16d.c
-@@ -698,7 +698,8 @@ static int atmio16d_attach(struct comedi_device *dev,
- 
- static void atmio16d_detach(struct comedi_device *dev)
- {
--	reset_atmio16d(dev);
-+	if (dev->private)
-+		reset_atmio16d(dev);
- 	comedi_legacy_detach(dev);
- }
- 
--- 
-2.51.0
+NAK.  Conditionally enumerating support for a feature based on the configur=
+ation
+of the VM has been KVM's documented behavior since KVM_CHECK_EXTENSION was =
+added
+by commit 92b591a4c46b ("KVM: Allow KVM_CHECK_EXTENSION on the vm fd").
 
+I don't see any reason why KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST needs t=
+o do
+something different.
 
