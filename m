@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJvdNvIzeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:10 +0100
+	id SKUZK2cuemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F79BA5125
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB608A43BC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A0357329392C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 79282302ACB6
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A6A304968;
-	Wed, 28 Jan 2026 15:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B25A2C15A0;
+	Wed, 28 Jan 2026 15:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwfrJMEV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTlVLANK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E053064B3;
-	Wed, 28 Jan 2026 15:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A60C29B8C7;
+	Wed, 28 Jan 2026 15:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615685; cv=none; b=anhT0ZRuBoOPssE0DzDelyvG+2vwH8/QrArGH6zX4Ta054LD+Yr7ihMGbf0I6+ONIPrpoT9Q+APamiuR4SoDTq2LqSEjJ/T65JLlrZI6PduqfO9vmZJB6a8zlU7W47/IIxBp+ZfyvcPJ5SdbqDBhOeoo522Fx7Emn8L9U8cIRSo=
+	t=1769614487; cv=none; b=c4S3Y+Yp53pJ73EXmWf4qYJNw1LMwrtdwuHmDpkSGvNHaWU7L56hCXejO1NsmzL+MYcfmLBcvomYCbokB08yWR0YOm0puFdENqyE3kJz0LPR43S/ILWxpJ4JCfOO4WBvqXh7jTGD1hT+qFnkFOqhMtG80btgdw/3a+sjC8kpQ60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615685; c=relaxed/simple;
-	bh=Bi8UooIjpO4O/7ykGq9wly7n40m4N3M+VmWklMoszSc=;
+	s=arc-20240116; t=1769614487; c=relaxed/simple;
+	bh=2xu2eNUsEE5dBIfysc6PoApvdjjyRVfn5VmAcUBTTXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jKsUJYBrT+YJtZG+Kpu3gWDks8+s+7ulGRCzYNvfLv8ne9jTHpbpLCJLI71BLX/anO1H+Urx3c0xhaYa03Z7p79eKETR6kcjuznE6Y2HlUwLkCzQGt+AklPvd/gpYfdQRtZlI8pruhciR/SswjzTtcHw5N5TBTfQ7bS5RgtuNeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HwfrJMEV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E50BC4CEF1;
-	Wed, 28 Jan 2026 15:54:44 +0000 (UTC)
+	 MIME-Version; b=MlQobHV0qncM0ODsUSvoCbo12/2qvil3o0fY6nHe9McFsiyVWIAqyUc+xsc4tgNKdmEq+ZJTyfSL0w/oqZOU/F3/rfZLf+08Ujh9QOUAHwNHJxwiITgE7a8ZKP3YV3mcwIc+BbWktHkKC6Hc+hFXA0xeNOvIqa8pfkpIhtf2x8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTlVLANK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DC9C4CEF1;
+	Wed, 28 Jan 2026 15:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615685;
-	bh=Bi8UooIjpO4O/7ykGq9wly7n40m4N3M+VmWklMoszSc=;
+	s=korg; t=1769614486;
+	bh=2xu2eNUsEE5dBIfysc6PoApvdjjyRVfn5VmAcUBTTXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwfrJMEVWHDhOfVi7rMuA+lNFb3O4cXqIoN87RyHeeLTzzF2zc4q+jox3nbvkMeW4
-	 Bg0GpDNqY4EJiczz5SkmOx5bpF0STzbbIv1WORH8AIbXmUdJlUkUAXUwXMJTwycUEj
-	 Vzok6g+BQlJe445FGVc60zyjRsRPXlN2SdjZ6MfY=
+	b=cTlVLANKTupSvJa04qhcGLe2smI8lZDHIt+5PxKs1UeUrP1LikFipV81yHAXvTly1
+	 VHufJt99kd88WDZBxM5QDhjnglL/CSj23IijAFDRCRIpt/6B0MdU8j4cYO+NFhDV7K
+	 6S/OeJDdyhdTz81ZLYNBxhJCAgsWhN4itQhzQD/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Andy Shevchenko <andy@kernel.org>,
+	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 083/227] iio: adc: ad7606: Fix incorrect type for error return variable
+Subject: [PATCH 6.6 152/254] iio: adc: ad7280a: handle spi_setup() errors in probe()
 Date: Wed, 28 Jan 2026 16:22:08 +0100
-Message-ID: <20260128145347.327690898@linuxfoundation.org>
+Message-ID: <20260128145350.280811243@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212488-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212128-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,51 +87,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 3F79BA5125
+	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,kaspersky.com:email]
+X-Rspamd-Queue-Id: BB608A43BC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
 
-[ Upstream commit c5512e016817a150fd6de97fbb3e74aa799ea3c1 ]
+[ Upstream commit 6b39824ac4c15783787e6434449772bfb2e31214 ]
 
-The variable ret is declared as unsigned int but is used to store return
-values from functions returning int, which may be negative error codes.
+The probe() function ignored the return value of spi_setup(), leaving SPI
+configuration failures undetected. If spi_setup() fails, the driver should
+stop initialization and propagate the error to the caller.
 
-Change ret from unsigned int to int.
+Add proper error handling: check the return value of spi_setup() and return
+it on failure.
 
-Fixes: 849cebf8dc67 ("iio: adc: ad7606: Add iio-backend support")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 2051f25d2a26 ("iio: adc: New driver for AD7280A Lithium Ion Battery Monitoring System")
+Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606_par.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad7280a.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
-index 634852c4bbd2c..b81e707ab40c5 100644
---- a/drivers/iio/adc/ad7606_par.c
-+++ b/drivers/iio/adc/ad7606_par.c
-@@ -43,7 +43,8 @@ static int ad7606_par_bus_setup_iio_backend(struct device *dev,
- 					    struct iio_dev *indio_dev)
- {
- 	struct ad7606_state *st = iio_priv(indio_dev);
--	unsigned int ret, c;
-+	unsigned int c;
-+	int ret;
- 	struct iio_backend_data_fmt data = {
- 		.sign_extend = true,
- 		.enable = true,
+diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
+index 9080c795dcb7e..10cc623bf62a3 100644
+--- a/drivers/iio/adc/ad7280a.c
++++ b/drivers/iio/adc/ad7280a.c
+@@ -1028,7 +1028,9 @@ static int ad7280_probe(struct spi_device *spi)
+ 
+ 	st->spi->max_speed_hz = AD7280A_MAX_SPI_CLK_HZ;
+ 	st->spi->mode = SPI_MODE_1;
+-	spi_setup(st->spi);
++	ret = spi_setup(st->spi);
++	if (ret < 0)
++		return ret;
+ 
+ 	st->ctrl_lb = FIELD_PREP(AD7280A_CTRL_LB_ACQ_TIME_MSK, st->acquisition_time) |
+ 		FIELD_PREP(AD7280A_CTRL_LB_THERMISTOR_MSK, st->thermistor_term_en);
 -- 
 2.51.0
 
