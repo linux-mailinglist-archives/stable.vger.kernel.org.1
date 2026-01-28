@@ -1,169 +1,146 @@
-Return-Path: <stable+bounces-212707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WLOMHJSWemku8QEAu9opvQ
-	(envelope-from <stable+bounces-212707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 00:07:00 +0100
+	id mN+wJ/SYemm58QEAu9opvQ
+	(envelope-from <stable+bounces-212708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 00:17:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E83A9D5C
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 00:06:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2845BA9E3B
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 00:17:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06C563014122
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:06:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7C8C300C5BC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172B52FFDD8;
-	Wed, 28 Jan 2026 23:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535A7314A8E;
+	Wed, 28 Jan 2026 23:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="aCpZZ719";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="RWmNXUQa"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pev0HXCK"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACAA2BEFE5;
-	Wed, 28 Jan 2026 23:06:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC992264A8
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 23:16:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769641616; cv=none; b=ufn/uYU2SyOygKfV7jQ4cFJ2RaG3WnZpe8YZIl1lD/aaXd6tuWg/kMs03vpEY/eo28+b9b+KPIjB06yQKYSDzgHv0qaNL1dN37xzwcL/gCPTKrlCdIDcx3IIDECXY23R2hSxF3lmGTH7IkMDxJ8DzG2K9b32WD1BCxS4ndCkuWU=
+	t=1769642198; cv=none; b=hguT38h67Zeem0tFAWpz1wPI8gXrcKkVvx4uCmobbGyBOlKrqAETtKGE9m7ZkR6Mi/zxyb5F84p05wAMPDvzYmjCdwY6H/c4iy6Qso0TmudroyjgbE3YQTy47/ew4a3fD5Oc2JlKv5YN1LXgOOVwRCvOU0+URsHighBFKVv7r/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769641616; c=relaxed/simple;
-	bh=c4LnXvur3QyML02H0Sb9jnPh9hQ/XeaeU48cHfoLIJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ahbsSqHXoDHKabr80sImvGuiUapQERJLslIBJ85P4svdIbbLAQhMnRLahrJ43jcjKmaUhM41FdQwHJIlHfoQ+rcqROlXW/COztE117oMXsNO1AnJA0EcS9F3o+aqULmG3NqxXq68dout7vyDySPuBDc9ceRPMiSkz1WwFUyiSqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=aCpZZ719; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=RWmNXUQa; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfout.stl.internal (Postfix) with ESMTP id 5C2991D0008F;
-	Wed, 28 Jan 2026 18:06:53 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 28 Jan 2026 18:06:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1769641613; x=
-	1769728013; bh=BARlwKtVzPK1d9frwpszb3CDTNlJmznk2d23dUtnIeM=; b=a
-	CpZZ719txoBnwDm0ihtcQR/jJQ/T4PF2TIVvuL9ozth6YLaJhbYYjq2P+dZWt6Ko
-	mvYOcDlj0HCSGkN4lLNmDMqGlObAvjx0/uTc3EkuR4szDTGF6u+h8lG9KV2J9A5/
-	S+VkAbkHoMyFpBsmPvU8OlyzkGuWzGiQS8cQgP27dHNeVz//Y5bABidTKWUpKEeF
-	hoKZy++BLDI2TwBhb8BbXpczzXVdvn+wa3BLlf0bbCbRIQoPLYU9gfBEaA7vwyrB
-	8iGsFWc24FPGM+N3TrETE/eld1fuVP3N7ySj/nDrLPPwZJ0TxndKzGwSVY4hFDqp
-	AMD43O4FsCUEViWnCiSpA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1769641613; x=1769728013; bh=BARlwKtVzPK1d9frwpszb3CDTNlJmznk2d2
-	3dUtnIeM=; b=RWmNXUQaIaTZeG0JHI1SeyPMfeETquCI4GuAhc93jpglGMQ9sMt
-	TvSqrvn1BWFy4/LF10HeASWLFB+JMJY09Kkb3jOqSDBxMKxAr+/0SvEgs0lsIOEY
-	IzqLa78r3wAlHbP9ciRNBdpkJbfnJ3JcueOqB/pway3DzIB0ciSsLrIKcG1QUo42
-	peD/tm+fLWeohiCRIwElTT3/3ETVpepHTqfytFkPJjLP339jrDil79hTI3fNdN0l
-	YkZrQhBcbBt5WhJpZ1RjEUExGVtdhm96KvkML1Kq2t9IjXDqMcDicjcoWZ9nth0W
-	PUjCIOpT7v3KL6ExUbvi6P/NzL2thVNAVqQ==
-X-ME-Sender: <xms:jJZ6aVzhKS2wPq3LC2iP_8mJjqASf6HpGP1GzMpSshAX7qE_KRxNuA>
-    <xme:jJZ6aQvqs7J4TtOawlha76lQvEx_VX9qMqfNZSCIo5I7kJaIf0mWlAYWeuMbeJbgs
-    dvOnHYEPdE6SBdZvaPLL1rmAiTIixgPbgfkL6FAk1ICeMpQH8OrmQ>
-X-ME-Received: <xmr:jJZ6aS2c746RrKIUHv764KN9pq_LGxHxcH_kg6WFaBvkeyPLq1Bko0EF0teYu4KnNCqg9cpuOJNM7Cv-OIHqpDMm35dnx7mMkL8a>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieegheelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepvfgrkhgrshhh
-    ihcuufgrkhgrmhhothhouceoohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjph
-    eqnecuggftrfgrthhtvghrnhepudehgeeuveetuedvkeekvdfgffelieeivdelhfettedt
-    veettefgffegjeefleeknecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhush
-    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehoqdhtrghkrghshhhi
-    sehsrghkrghmohgttghhihdrjhhppdhnsggprhgtphhtthhopeegpdhmohguvgepshhmth
-    hpohhuthdprhgtphhtthhopehlihhnuhigudefleegqdguvghvvghlsehlihhsthhsrdhs
-    ohhurhgtvghfohhrghgvrdhnvghtpdhrtghpthhtoheprghnughrvggrshhpheeisehouh
-    htlhhoohhkrdgtohhmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdr
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvg
-    hlrdhorhhg
-X-ME-Proxy: <xmx:jJZ6ab_T_jxrh2i-7uxWoak46ZsrcEC4PVQxsOjzAVGgU86QeYpEkw>
-    <xmx:jJZ6aTNV5GPJ9epF9Q8zOyg_JB6QxoQjpHOK2cftFvNbhKwZ3GxOYQ>
-    <xmx:jJZ6afdCaffGtU6gW-dlzJ62f-Jn6ioR8p6yDVOLQ-QyYi8k0_z0LQ>
-    <xmx:jJZ6aSUqxQwQyO0crPi1ruiBzMRtpBES4QapaLrmxCL_kVGlR_I8Vg>
-    <xmx:jZZ6aevJjcKUNKTtCQ3rQSnCQJOujnkw23gbrtTGx6CfgrOTYhFYqhM->
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Jan 2026 18:06:51 -0500 (EST)
-Date: Thu, 29 Jan 2026 08:06:49 +0900
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: linux1394-devel@lists.sourceforge.net
-Cc: Andreas Persson <andreasp56@outlook.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] firewire: core: fix race condition against transaction
- list
-Message-ID: <20260128230649.GA68719@workstation.local>
-Mail-Followup-To: linux1394-devel@lists.sourceforge.net,
-	Andreas Persson <andreasp56@outlook.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260127223413.22265-1-o-takashi@sakamocchi.jp>
+	s=arc-20240116; t=1769642198; c=relaxed/simple;
+	bh=5g7eNrockMgk0yivVHjBlRycQ6V13a9tjJgfB5sdCxI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Dj2S055aivjTO/4NbXzMTIc8mKdFCTpc8++SFKZbSlGkWGycN7PBLC2a+P0yJVD2KA4T+e+qibNQXcDq10mIY8fwrd9f9r5Tf1L9VJgXCEpDF0iJ5BfqZ3Eid5GQT2p0dGTlMEnnHMGrzKGqnyDRWwuz17KWFHqP1/IJHvt9gtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pev0HXCK; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769642196; x=1801178196;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=5g7eNrockMgk0yivVHjBlRycQ6V13a9tjJgfB5sdCxI=;
+  b=Pev0HXCKeLd88gSlA6Qe16RbkuHcLEH2NYHOuzzUrPx4bMV0b+v6/F4N
+   emu8KPS4s72/qgftQTWFyo/OpBan9WIy5tlhdkK0RZhxy6d1xcIwKD7q+
+   mLfjz9mIb3GleVWL/Xd9mJ3Od8GSZeX2fvg3Bab2hbyI/7tVoTn49opAR
+   LPsF4QCyUc4i9oD8jkXjDJdzlLBH3JdamMbWaOTAurGDfhbIn/CGzxkLL
+   Z3Gm0qAIuDiOl9tAYyqo0KBIEUi4HAwMy59xl8elB1GQ5wD0jLe0qBqmn
+   DOh/5/pH+WXiRwLgzVA8VOaaPs9eemrQUoETKoiIC49MqB8WDW/slapjw
+   g==;
+X-CSE-ConnectionGUID: Rm+dtqPiSGehri7liMprAg==
+X-CSE-MsgGUID: xQxoi9dRSvecaRKmObKrqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="73462216"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="73462216"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:16:36 -0800
+X-CSE-ConnectionGUID: 75HHaZAQTTeeqRMYqE6vgQ==
+X-CSE-MsgGUID: WS/uZoy8St6Mqwz17DDxbw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="213266639"
+Received: from guc-pnp-dev-box-1.fm.intel.com ([10.1.39.24])
+  by fmviesa004.fm.intel.com with ESMTP; 28 Jan 2026 15:16:35 -0800
+From: Zhanjun Dong <zhanjun.dong@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org,
+	Zhanjun Dong <zhanjun.dong@intel.com>,
+	Stuart Summers <stuart.summers@intel.com>
+Subject: [PATCH v5 1/6] drm/xe: Always kill exec queues in xe_guc_submit_pause_abort
+Date: Wed, 28 Jan 2026 18:16:29 -0500
+Message-Id: <20260128231634.982494-2-zhanjun.dong@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260128231634.982494-1-zhanjun.dong@intel.com>
+References: <20260128231634.982494-1-zhanjun.dong@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260127223413.22265-1-o-takashi@sakamocchi.jp>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sakamocchi.jp,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[sakamocchi.jp:s=fm3,messagingengine.com:s=fm3];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[outlook.com,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212707-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[sakamocchi.jp:+,messagingengine.com:+];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212708-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[zhanjun.dong@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[o-takashi@sakamocchi.jp,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: B7E83A9D5C
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2845BA9E3B
 X-Rspamd-Action: no action
 
-On Wed, Jan 28, 2026 at 07:34:13AM +0900, Takashi Sakamoto wrote:
-> The list of transaction is enumerated without acquiring card lock when
-> processing AR response event. This causes a race condition bug when
-> processing AT request completion event concurrently.
-> 
-> This commit fixes the bug by put timer start for split transaction
-> expiration into the scope of lock. The value of jiffies in card structure
-> is referred before acquiring the lock.
-> 
-> Cc: stable@vger.kernel.org # v6.18
-> Fixes: b5725cfa4120 ("firewire: core: use spin lock specific to timer for split transaction")
-> Reported-by: Andreas Persson <andreasp56@outlook.com>
-> Closes: https://github.com/alsa-project/snd-firewire-ctl-services/issues/209
-> Tested-by: Andreas Persson <andreasp56@outlook.com>
-> Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-> ---
->  drivers/firewire/core-transaction.c | 19 ++++++++++---------
->  1 file changed, 10 insertions(+), 9 deletions(-)
+From: Matthew Brost <matthew.brost@intel.com>
 
-Applied to for-linus branch. I'll send it to mainline in this weekend in
-time for v6.19-rc8 release.
+xe_guc_submit_pause_abort is intended to be called after something
+disastrous occurs (e.g., VF migration fails, device wedging, or driver
+unload) and should immediately trigger the teardown of remaining
+submission state. With that, kill any remaining queues in this function.
 
+Fixes: 7c4b7e34c83b ("drm/xe/vf: Abort VF post migration recovery on failure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Stuart Summers <stuart.summers@intel.com>
+---
+ drivers/gpu/drm/xe/xe_guc_submit.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Regards
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index 456f549c16f6..d61bd0094e0b 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -2774,8 +2774,7 @@ void xe_guc_submit_pause_abort(struct xe_guc *guc)
+ 			continue;
+ 
+ 		xe_sched_submission_start(sched);
+-		if (exec_queue_killed_or_banned_or_wedged(q))
+-			xe_guc_exec_queue_trigger_cleanup(q);
++		guc_exec_queue_kill(q);
+ 	}
+ 	mutex_unlock(&guc->submission_state.lock);
+ }
+-- 
+2.34.1
 
-Takashi Sakamoto
 
