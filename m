@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-212037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212038-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCNoL7Itemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212037-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:30 +0100
+	id mCesEbQtemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212038-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:32 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261E3A4244
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A022FA424B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CB31308F070
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6799B321BF2E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C950191F98;
-	Wed, 28 Jan 2026 15:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6751D367F3B;
+	Wed, 28 Jan 2026 15:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4N3zvng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROVnQ6yc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9BA2D9780;
-	Wed, 28 Jan 2026 15:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292BF356A37;
+	Wed, 28 Jan 2026 15:29:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614188; cv=none; b=RFhKvcz2IKpmMxOy8KPGFe9QLuhrvFnWTEWqMv7P9X0LGgM4rgDLSyesiPW6DLoaFjkFijhMNYpTBy6BUiM8MF+Wx1R1QhA9WAQ00sl3rTe+S6Po1wsDi92rvFfj9/6utSkkwPlKU+mKAYH2vb5W+CLXFn6Qk3kvaN0u8jZw9Qw=
+	t=1769614191; cv=none; b=ce9XJ7TghxKNHYYJNwpg7H/d51EHX9qgjXgDal1JN1MtFMrjjo50p5MXg5zGOUo0jPoRzeUJF7qrgl+GM2J/vp3c41+/uSe+G3D+mWrtu09IknyXM03q8oWKCrZK7neD10e2rvQ7tTSsWk+qNtzIjlMFyU9itoMh8coyoz75vtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614188; c=relaxed/simple;
-	bh=sn89mo6AwrIS1B4xl9npuxgSmYnS+jQPjjJMfkH2B/U=;
+	s=arc-20240116; t=1769614191; c=relaxed/simple;
+	bh=SViMBG0rL85SURIlplZSb96BatWYzBQIeBiZfWbKnjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbixq4jiL/Coa0MA73YfUu/LKdoczjTaDBjEK2rsSGeRUz6hdjWhVmM0J5hUpnir/1xC0UbEaw9JDtwfW4pyqhKsUVFL5ytKeDpoTCnWvQ496NsSUZNgOJyncrFU7PvCg6Y6d0CZBJC8kUbgRoU8I6sZxGJr+A/Con8BrT5pIMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4N3zvng; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33867C116C6;
-	Wed, 28 Jan 2026 15:29:47 +0000 (UTC)
+	 MIME-Version; b=GQo+TPxi4K+prk0qi4ZpCpwDeZU5Xj3VxndPmw5B1SffByuCRjGJxXPmKSDZerfDTmcDT/3mnVrKVPzK7XcSHr6XhNuUTChrJ4SYs5E20yeAm9lZ0pZNwyXsW5dXv/XZwfOy0MZvtEOIlOZfbCTyylOSI2wXZMvI7LHUmi9VYVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROVnQ6yc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932ACC116C6;
+	Wed, 28 Jan 2026 15:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614187;
-	bh=sn89mo6AwrIS1B4xl9npuxgSmYnS+jQPjjJMfkH2B/U=;
+	s=korg; t=1769614191;
+	bh=SViMBG0rL85SURIlplZSb96BatWYzBQIeBiZfWbKnjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4N3zvnghipeHNdl8O+tmewDpLH307xmXBoH+Q+pmGEsDalLn30E9fwzgNiARFGGA
-	 r9s9vp7nFZcSNZjMF4/zS+7IsHPEn6zjHsgC1d0v4NtPLQflwxtFhyoldz0C2k1V5/
-	 hYBOTj51rCHoLyn9AxwO3HSGFSBmjj5gFr15dbq4=
+	b=ROVnQ6ycIu4XeJxvdkMECv8hCWXolz1c4wHK7fydk9R0WIkNsTE71tTJu7UFXLHNX
+	 NUsQKcLefZBOdrvob4AglOdN7AeRDo3/vcNbXCa90uTMcxPkGSst8mRPR7yUkHNZLt
+	 qR180rhe4JlDKFBFVSPXv5D2q+n2/TChjifqahvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wu Haotian <rigoligo03@gmail.com>,
-	Ilikara Zheng <ilikara@aosc.io>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.6 061/254] nvme-pci: disable secondary temp for Wodposit WPBSNM8
-Date: Wed, 28 Jan 2026 16:20:37 +0100
-Message-ID: <20260128145346.896697695@linuxfoundation.org>
+	Yang Erkun <yangerkun@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 062/254] ext4: fix iloc.bh leak in ext4_xattr_inode_update_ref
+Date: Wed, 28 Jan 2026 16:20:38 +0100
+Message-ID: <20260128145346.932319028@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -67,74 +69,67 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212037-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,aosc.io,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212038-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.971];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 261E3A4244
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iloc.bh:url]
+X-Rspamd-Queue-Id: A022FA424B
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilikara Zheng <ilikara@aosc.io>
+From: Yang Erkun <yangerkun@huawei.com>
 
-commit 340f4fc5508c2905a1f30de229e2a4b299d55735 upstream.
+commit d250bdf531d9cd4096fedbb9f172bb2ca660c868 upstream.
 
-Secondary temperature thresholds (temp2_{min,max}) were not reported
-properly on this NVMe SSD. This resulted in an error while attempting to
-read these values with sensors(1):
+The error branch for ext4_xattr_inode_update_ref forget to release the
+refcount for iloc.bh. Find this when review code.
 
-  ERROR: Can't get value of subfeature temp2_min: I/O error
-  ERROR: Can't get value of subfeature temp2_max: I/O error
-
-Add the device to the nvme_id_table with the
-NVME_QUIRK_NO_SECONDARY_TEMP_THRESH flag to suppress access to all non-
-composite temperature thresholds.
-
-Cc: stable@vger.kernel.org
-Tested-by: Wu Haotian <rigoligo03@gmail.com>
-Signed-off-by: Ilikara Zheng <ilikara@aosc.io>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 57295e835408 ("ext4: guard against EA inode refcount underflow in xattr update")
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20251213055706.3417529-1-yangerkun@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/xattr.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3563,6 +3563,8 @@ static const struct pci_device_id nvme_i
- 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
- 	{ PCI_DEVICE(0x1e49, 0x0041),   /* ZHITAI TiPro7000 NVMe SSD */
- 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
-+	{ PCI_DEVICE(0x1fa0, 0x2283),   /* Wodposit WPBSNM8-256GTP */
-+		.driver_data = NVME_QUIRK_NO_SECONDARY_TEMP_THRESH, },
- 	{ PCI_DEVICE(0x025e, 0xf1ac),   /* SOLIDIGM  P44 pro SSDPFKKW020X7  */
- 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS, },
- 	{ PCI_DEVICE(0xc0a9, 0x540a),   /* Crucial P2 */
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1037,6 +1037,7 @@ static int ext4_xattr_inode_update_ref(h
+ 		ext4_error_inode(ea_inode, __func__, __LINE__, 0,
+ 			"EA inode %lu ref wraparound: ref_count=%lld ref_change=%d",
+ 			ea_inode->i_ino, ref_count, ref_change);
++		brelse(iloc.bh);
+ 		ret = -EFSCORRUPTED;
+ 		goto out;
+ 	}
 
 
 
