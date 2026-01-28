@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212436-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4KVTHCAsemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212084-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:48 +0100
+	id 0CELNeg2eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212436-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:18:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87CCA3EDD
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9A49A5660
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:18:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 434EE300A8D3
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8FCC930C894C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CB723E358;
-	Wed, 28 Jan 2026 15:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B24308F2E;
+	Wed, 28 Jan 2026 15:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UabX/oWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oR2s4RLA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5959A13B7A3;
-	Wed, 28 Jan 2026 15:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E6D2F25EF;
+	Wed, 28 Jan 2026 15:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614347; cv=none; b=FhRWUXggwgLr/HfAD2Wx4I7tymOPjcoGZCSQiQLKJztA1SKnD4IaW6XpWjViQiXF8WKQ0p23tylEwcdFl4J2GYk1RFCBDEQCwP2Q4U/cHbWc882kUOjzHSvnVKP9MEyfEO3RHSmLw7OHa4d9dmW7y3NzfelGvB22vve3eLRpmVU=
+	t=1769615513; cv=none; b=LteRG120dZK1GY6oRSNxINKEmSp71JqUWAG8X9PwLDwKmRhniuu3/Qaj9TwFHc7ldHivDAVIQdeT3VwTiF8f6f8HKosVwLgzV5bRXsDQEi5c86WBgtF7kePvnh6qg28VJZzgbyhAcDuuUse0ugF8lf8Uoyxt5YdSXvnLLVGWhd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614347; c=relaxed/simple;
-	bh=VaANdmv9aP/kZ5FD2IZt8vOysilM/yKPjMGib7xYW1k=;
+	s=arc-20240116; t=1769615513; c=relaxed/simple;
+	bh=9/HJalGuBTvqeRAYdHpIOTg0BquDeKMrU3qaI4BbGYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KsE/jEz9/av0wv3BcDiIOfjv2dHQE/yeZZi7dMEAKNA02u3eT8ZCJbw1AgY18cXK83jjkWvtUm4usf9IH88I+nK02xKOGbpxaOqiy9yx1gEWOR8OkMa8dtmNStllb+6PglnUINYAwIvI/IcW1PP5+4ZRXrloA/UeiTjLb7Wcytg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UabX/oWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77FDC116C6;
-	Wed, 28 Jan 2026 15:32:26 +0000 (UTC)
+	 MIME-Version; b=EUmzqJ+h3JRvIGupBddW2Fg/Wpksck5QYNTWyH51PCn1HwU42579NaJ7LtWbOlR5dKVEbL5k3SCteLTKm5q/DO52Gid1AV12Fn+Ej4ZjaMy/iM5Pf6CWih0jV+pJJg6XgZdPmaBgII3Pr9CJORsDuoW1LK/rxrL8G57g9SUMJNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oR2s4RLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7300FC4CEF1;
+	Wed, 28 Jan 2026 15:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614347;
-	bh=VaANdmv9aP/kZ5FD2IZt8vOysilM/yKPjMGib7xYW1k=;
+	s=korg; t=1769615513;
+	bh=9/HJalGuBTvqeRAYdHpIOTg0BquDeKMrU3qaI4BbGYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UabX/oWn7wGafDwLG+yteDlctcMLh/e7TYkf5SSQys5GQcpuVpmTCAx1JFxiIyxyJ
-	 5v/pqmnHnDppoga02kfHB+xClxJh1iCYKIvdukUJI3kbAdZqZvcyLPZY0JnjdYXL4T
-	 iaYfwrM7qGefzDfufjViULDjl6ICpC2J+oHtdnbo=
+	b=oR2s4RLAih8fBzUw/WUlPZGdcEWc/jwZH8XCb+uA8pEEMJhsYnxW73uUP2I+q8yI6
+	 4DP7GC/h2VwUY4b6ZPS1BnEd0qssRjMf0hRZykqWBVQstvqdnnmEaqxhOvuiJs3zwS
+	 /YX/G/pWK1hqOVsnzkT/2Z6VAY5tLTBMCfSh3kAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@nabladev.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.6 076/254] drm/panel-simple: fix connector type for DataImage SCF0700C48GGU18 panel
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <mark@harmstone.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 007/227] btrfs: fix missing fields in superblock backup with BLOCK_GROUP_TREE
 Date: Wed, 28 Jan 2026 16:20:52 +0100
-Message-ID: <20260128145347.430068215@linuxfoundation.org>
+Message-ID: <20260128145344.603465743@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,72 +70,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212436-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212084-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,linaro.org:email]
-X-Rspamd-Queue-Id: E87CCA3EDD
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[harmstone.com:email,suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D9A49A5660
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@nabladev.com>
+From: Mark Harmstone <mark@harmstone.com>
 
-commit 6ab3d4353bf75005eaa375677c9fed31148154d6 upstream.
+[ Upstream commit 1d8f69f453c2e8a2d99b158e58e02ed65031fa6d ]
 
-The connector type for the DataImage SCF0700C48GGU18 panel is missing and
-devm_drm_panel_bridge_add() requires connector type to be set. This leads
-to a warning and a backtrace in the kernel log and panel does not work:
-"
-WARNING: CPU: 3 PID: 38 at drivers/gpu/drm/bridge/panel.c:379 devm_drm_of_get_bridge+0xac/0xb8
-"
-The warning is triggered by a check for valid connector type in
-devm_drm_panel_bridge_add(). If there is no valid connector type
-set for a panel, the warning is printed and panel is not added.
-Fill in the missing connector type to fix the warning and make
-the panel operational once again.
+When the BLOCK_GROUP_TREE compat_ro flag is set, the extent root and
+csum root fields are getting missed.
 
-Cc: stable@vger.kernel.org
-Fixes: 97ceb1fb08b6 ("drm/panel: simple: Add support for DataImage SCF0700C48GGU18")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20260110152750.73848-1-marex@nabladev.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is because EXTENT_TREE_V2 treated these differently, and when
+they were split off this special-casing was mistakenly assigned to
+BGT rather than the rump EXTENT_TREE_V2. There's no reason why the
+existence of the block group tree should mean that we don't record the
+details of the last commit's extent root and csum root.
+
+Fix the code in backup_super_roots() so that the correct check gets
+made.
+
+Fixes: 1c56ab991903 ("btrfs: separate BLOCK_GROUP_TREE compat RO flag from EXTENT_TREE_V2")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <mark@harmstone.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/disk-io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1607,6 +1607,7 @@ static const struct panel_desc dataimage
- 	},
- 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
- 	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE,
-+	.connector_type = DRM_MODE_CONNECTOR_DPI,
- };
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 0aa7e5d1b05f6..a5336f530c8ed 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1666,7 +1666,7 @@ static void backup_super_roots(struct btrfs_fs_info *info)
+ 	btrfs_set_backup_chunk_root_level(root_backup,
+ 			       btrfs_header_level(info->chunk_root->node));
  
- static const struct display_timing dlc_dlc0700yzg_1_timing = {
+-	if (!btrfs_fs_compat_ro(info, BLOCK_GROUP_TREE)) {
++	if (!btrfs_fs_incompat(info, EXTENT_TREE_V2)) {
+ 		struct btrfs_root *extent_root = btrfs_extent_root(info, 0);
+ 		struct btrfs_root *csum_root = btrfs_csum_root(info, 0);
+ 
+-- 
+2.51.0
+
 
 
 
