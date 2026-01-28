@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-212249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNY4DtQvemkc4gEAu9opvQ
-	(envelope-from <stable+bounces-212249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:36 +0100
+	id qDP1EFQxemlT4gEAu9opvQ
+	(envelope-from <stable+bounces-212286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFBCA4756
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB99FA4B71
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EBEC53044342
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4B5BE313FCFF
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21802E7160;
-	Wed, 28 Jan 2026 15:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2C230F94E;
+	Wed, 28 Jan 2026 15:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHjGObKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfpfMtyo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A3223EA92;
-	Wed, 28 Jan 2026 15:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6777130F805;
+	Wed, 28 Jan 2026 15:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614884; cv=none; b=V2vtrqDKTW9/tq66qS8gpjpVMGmYgjUf5NVc0LSF6WhnkEQ3oVKzrLCvDJ58zCxa1s8ETH1bmmUDfhH6UGKoymJ4TZF4JP5hLCUw8wOaYGAi2/hZf2valbCd1BSTYyFtA1AwYnK9ZcnbpUkEhl1IsaF1EriVyVPrgxeYMSL7F1U=
+	t=1769615010; cv=none; b=Vl51sy/zIp/zF7EvPi/ULlVmXtfi3Dme3jHydy73pfYvKb78u0kuiqWhd6BAPOZ8bDKMLNI2WbQaaBddCxPa8aKX55pJI3lROJdtqUBZSScdeRP+iHG0m0scJJV7bRF9nbZmqtb8Lk8ZMEf19Jk74O3hO4Lz+ZjD1MKHu39Zahc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614884; c=relaxed/simple;
-	bh=m+F6vlEhJ4BAyYs8n8Rz/GrGAAuyfnBumLg/bBlDIwk=;
+	s=arc-20240116; t=1769615010; c=relaxed/simple;
+	bh=DG5Hwg6EhzcB0bTOGtR2CNFMI3Tp9siBqxDZMtbylvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWz8udiEfUGwrVu9mnCSYtu8pkX3LGUPkFaE++4vNwgQo2VZ3vJ8d6NyXZC3QmabVJBJmvBIlp0TFXdymtLqqENxS/UWyF5FS6+7/1/Z3unYvmeauEn1dX5cnn4yukYXX24+l88o+BxOWEk0oBMkb3tpJoJp/XtDrj4IVDVmmtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHjGObKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1CFC4CEF1;
-	Wed, 28 Jan 2026 15:41:23 +0000 (UTC)
+	 MIME-Version; b=nYN4FYqsALE7dOMwvifAk0mcXUuo3weUKVIAuhjKa3s2Fqr8ptdR8Nsmuy6Y9VCLZrQk45yw4N5SsUOw2bSv35YPaLxXs80ldB+V2LW+kRnYRu25vNH3ehHUJ6MMv0a0H/yPYNGh+cZe9OtEsaGlaLtyXkK4To5l0K7HcaLjLNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfpfMtyo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A62C4CEF7;
+	Wed, 28 Jan 2026 15:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614884;
-	bh=m+F6vlEhJ4BAyYs8n8Rz/GrGAAuyfnBumLg/bBlDIwk=;
+	s=korg; t=1769615010;
+	bh=DG5Hwg6EhzcB0bTOGtR2CNFMI3Tp9siBqxDZMtbylvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHjGObKQWibivkutfTQ4mqRNWlGiIgsJ25wvo3npDoBupCE3H1JllREOf4gXHFoc7
-	 1zDfiJLPvqJAA9iI7vxEC0ySZjnCYKMyp1QahlzAN5S6MALmdLNS1sCCZgnGVaS/DO
-	 REEuCUsvYjywvMxoWAg4YpZRpLvVwbOGcfp+NoQU=
+	b=rfpfMtyoiNvG3AixmzagfG0zD/ivhNgt0jmOfP6U1tjHbheiLNjRUZge/PKcnYlrJ
+	 52sEDDA30MHBVVkXTlnlGdWyZBhSzGm1X1oJ87sj3NU9iV5/YQ3H3+kGDVxY0KYdoc
+	 3ErqPiLCc1YoEzV6s0klZaZ4vqPQsi2aKTbLVZnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 008/169] dt-bindings: power: qcom,rpmpd: Add SC8280XP_MXC_AO
-Date: Wed, 28 Jan 2026 16:21:31 +0100
-Message-ID: <20260128145334.314444847@linuxfoundation.org>
+Subject: [PATCH 6.12 009/169] pmdomain: qcom: rpmhpd: Add MXC to SC8280XP
+Date: Wed, 28 Jan 2026 16:21:32 +0100
+Message-ID: <20260128145334.350413848@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
 References: <20260128145334.006287341@linuxfoundation.org>
@@ -71,30 +71,29 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212286-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212249-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BFFBCA4756
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DB99FA4B71
 X-Rspamd-Action: no action
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
@@ -103,35 +102,46 @@ X-Rspamd-Action: no action
 
 From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit 45e1be5ddec98db71e7481fa7a3005673200d85c ]
+[ Upstream commit 5bc3e720e725cd5fa34875fa1e5434d565858067 ]
 
-Not sure how useful it's gonna be in practice, but the definition is
-missing (unlike the previously-unused SC8280XP_MXC-non-_AO), so add it
-to allow the driver to create the corresponding pmdomain.
+This was apparently accounted for in dt-bindings, but never made its
+way into the driver.
 
-Fixes: dbfb5f94e084 ("dt-bindings: power: rpmpd: Add sc8280xp RPMh power-domains")
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Fix it for SC8280XP and its VDD_GFX-less cousin, SA8540P.
+
+Fixes: f68f1cb3437d ("soc: qcom: rpmhpd: add sc8280xp & sa8540p rpmh power-domains")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20251202-topic-8280_mxc-v2-1-46cdf47a829e@oss.qualcomm.com
+Link: https://lore.kernel.org/r/20251202-topic-8280_mxc-v2-2-46cdf47a829e@oss.qualcomm.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 5bc3e720e725 ("pmdomain: qcom: rpmhpd: Add MXC to SC8280XP")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/power/qcom,rpmhpd.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pmdomain/qcom/rpmhpd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/dt-bindings/power/qcom,rpmhpd.h b/include/dt-bindings/power/qcom,rpmhpd.h
-index 73cceb88953f7..269b73ff866a8 100644
---- a/include/dt-bindings/power/qcom,rpmhpd.h
-+++ b/include/dt-bindings/power/qcom,rpmhpd.h
-@@ -261,5 +261,6 @@
- #define SC8280XP_NSP		13
- #define SC8280XP_QPHY		14
- #define SC8280XP_XO		15
-+#define SC8280XP_MXC_AO		16
+diff --git a/drivers/pmdomain/qcom/rpmhpd.c b/drivers/pmdomain/qcom/rpmhpd.c
+index 65505e1e22198..88cb836e6f67a 100644
+--- a/drivers/pmdomain/qcom/rpmhpd.c
++++ b/drivers/pmdomain/qcom/rpmhpd.c
+@@ -228,6 +228,8 @@ static struct rpmhpd *sa8540p_rpmhpds[] = {
+ 	[SC8280XP_MMCX_AO] = &mmcx_ao,
+ 	[SC8280XP_MX] = &mx,
+ 	[SC8280XP_MX_AO] = &mx_ao,
++	[SC8280XP_MXC] = &mxc,
++	[SC8280XP_MXC_AO] = &mxc_ao,
+ 	[SC8280XP_NSP] = &nsp,
+ };
  
- #endif
+@@ -593,6 +595,8 @@ static struct rpmhpd *sc8280xp_rpmhpds[] = {
+ 	[SC8280XP_MMCX_AO] = &mmcx_ao,
+ 	[SC8280XP_MX] = &mx,
+ 	[SC8280XP_MX_AO] = &mx_ao,
++	[SC8280XP_MXC] = &mxc,
++	[SC8280XP_MXC_AO] = &mxc_ao,
+ 	[SC8280XP_NSP] = &nsp,
+ 	[SC8280XP_QPHY] = &qphy,
+ };
 -- 
 2.51.0
 
