@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212537-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDcNIP01eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212178-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:14:53 +0100
+	id yITYNDgzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212537-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D960DA54EC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:14:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B704FA4FA4
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DE79315BBA4
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AFBBE306D298
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8956A2D9797;
-	Wed, 28 Jan 2026 15:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8843081BA;
+	Wed, 28 Jan 2026 15:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeKbEN5N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKa7Ex/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC512D8DA6;
-	Wed, 28 Jan 2026 15:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B339F302779;
+	Wed, 28 Jan 2026 15:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614649; cv=none; b=tcFNsV6FzXvcIoyyltiPagXlpnvqrj9E0Ng/LEO/kCkFBKluOU+q3M3rmEIPMfQ3zRXWQaNIcP6ASyn8+hL1OMxZNn7ywlpKwgyMzeymWMpdUonCARZxlBdgrkQmzSsNIa3TbYHnMgFwagg+AJsl2jqHjJHyiOfSCy8/uVg+6J4=
+	t=1769615851; cv=none; b=fiMw5ov0m4HSwDZWyunyyR+YH6j6ziBKw7Wc4G4Ot9j3yc9f7xIZffx9qyi6ge+eYblIplDRmyiD/p17mxTb/9cZ4EmKcvJut4nUTowDRxqWETyofX8dr+riuEqVcx3ocgB05SUWR7AYeU8zUEhx4LZi7eGXg+JUTp1ztTEWNSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614649; c=relaxed/simple;
-	bh=tzcOM8GxsqSAK2WLV4EPTyQC05TlnAjepjzHKjlvaCk=;
+	s=arc-20240116; t=1769615851; c=relaxed/simple;
+	bh=uslLRsxhBpHs8Z0mXsZiAGABmX6kcDn/VLv11ST2Bfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z96aDJUn48BkXHStRwkeR13CpTEs7Vn/bo9E4i+BRNbdROnwyRI+Uutsu987J2u15CvHfQCJRa/nFdUwUm42v62S5aIQfweJ3Zc9amHr/PN1dlMJtjUzwNL2xEn908QLEhMen0H8TZBu9wsDchAbxg13so4RCKYs65Mhq0E4HmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeKbEN5N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6298C116C6;
-	Wed, 28 Jan 2026 15:37:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B1VZ3Wx8KRKNyYz6CKeV99Cz9uwhLV73UamM9jxsYYA6Njd2QHBZYFj2MDqHIxXJ3VIfsEvXFtMbJjlgCUo8/uUUixdq8HK44IKnh4EJ0mzUYO6M7w1cfAKwI90lSvgOQWq0XNYxg+jzw9pWSCSMkAWmpCRJAveBKYDOfCYP5C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKa7Ex/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4087C4CEF1;
+	Wed, 28 Jan 2026 15:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614649;
-	bh=tzcOM8GxsqSAK2WLV4EPTyQC05TlnAjepjzHKjlvaCk=;
+	s=korg; t=1769615851;
+	bh=uslLRsxhBpHs8Z0mXsZiAGABmX6kcDn/VLv11ST2Bfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CeKbEN5NLhNdxhqeghxoRmjDUgzVNCPXAXFoQZGAHZM5M2UfqqUXofo9UcYtt4VXd
-	 UGQrehThGpxzzXIdKV9Zzvr8tJkG1u5L/62BpE6qa7CO8+wDoDMYFM/OBekRXwFCF9
-	 nJ7S8YE8Rcas2nWfaYqxP1xjiapldyQVHmgAzBbg=
+	b=SKa7Ex/yL6eT84FCHEMAnW+uEiUsBPQ4IMSQLxPLlBL1HYmAoWQByupQYO7B7yTVM
+	 cBey33s1aXJMyDh8PJPfFfvgxJjSXXtCy82L+sbya2cOiCgz5VjKI5fCPbIU5mPTTl
+	 XJmvAK3DJ69JbQq8Gb/E1D+znOGAeZJmfrMj25y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 200/254] arm64/fpsimd: signal: Allocate SSVE storage when restoring ZA
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 131/227] drm/amd/pm: Workaround SI powertune issue on Radeon 430 (v2)
 Date: Wed, 28 Jan 2026 16:22:56 +0100
-Message-ID: <20260128145351.992318520@linuxfoundation.org>
+Message-ID: <20260128145349.174903574@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,135 +63,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212178-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212537-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_URIBL_FAIL(0.00)[amd.com:query timed out];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D960DA54EC
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: B704FA4FA4
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-commit ea8ccfddbce0bee6310da4f3fc560ad520f5e6b4 upstream.
+[ Upstream commit 764a90eb02268a23b1bb98be5f4a13671346804a ]
 
-The code to restore a ZA context doesn't attempt to allocate the task's
-sve_state before setting TIF_SME. Consequently, restoring a ZA context
-can place a task into an invalid state where TIF_SME is set but the
-task's sve_state is NULL.
+Radeon 430 and 520 are OEM GPUs from 2016~2017
+They have the same device id: 0x6611 and revision: 0x87
 
-In legitimate but uncommon cases where the ZA signal context was NOT
-created by the kernel in the context of the same task (e.g. if the task
-is saved/restored with something like CRIU), we have no guarantee that
-sve_state had been allocated previously. In these cases, userspace can
-enter streaming mode without trapping while sve_state is NULL, causing a
-later NULL pointer dereference when the kernel attempts to store the
-register state:
+On the Radeon 430, powertune is buggy and throttles the GPU,
+never allowing it to reach its maximum SCLK. Work around this
+bug by raising the TDP limits we program to the SMC from
+24W (specified by the VBIOS on Radeon 430) to 32W.
 
-| # ./sigreturn-za
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-| Mem abort info:
-|   ESR = 0x0000000096000046
-|   EC = 0x25: DABT (current EL), IL = 32 bits
-|   SET = 0, FnV = 0
-|   EA = 0, S1PTW = 0
-|   FSC = 0x06: level 2 translation fault
-| Data abort info:
-|   ISV = 0, ISS = 0x00000046, ISS2 = 0x00000000
-|   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-|   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-| user pgtable: 4k pages, 52-bit VAs, pgdp=0000000101f47c00
-| [0000000000000000] pgd=08000001021d8403, p4d=0800000102274403, pud=0800000102275403, pmd=0000000000000000
-| Internal error: Oops: 0000000096000046 [#1]  SMP
-| Modules linked in:
-| CPU: 0 UID: 0 PID: 153 Comm: sigreturn-za Not tainted 6.19.0-rc1 #1 PREEMPT
-| Hardware name: linux,dummy-virt (DT)
-| pstate: 214000c9 (nzCv daIF +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-| pc : sve_save_state+0x4/0xf0
-| lr : fpsimd_save_user_state+0xb0/0x1c0
-| sp : ffff80008070bcc0
-| x29: ffff80008070bcc0 x28: fff00000c1ca4c40 x27: 63cfa172fb5cf658
-| x26: fff00000c1ca5228 x25: 0000000000000000 x24: 0000000000000000
-| x23: 0000000000000000 x22: fff00000c1ca4c40 x21: fff00000c1ca4c40
-| x20: 0000000000000020 x19: fff00000ff6900f0 x18: 0000000000000000
-| x17: fff05e8e0311f000 x16: 0000000000000000 x15: 028fca8f3bdaf21c
-| x14: 0000000000000212 x13: fff00000c0209f10 x12: 0000000000000020
-| x11: 0000000000200b20 x10: 0000000000000000 x9 : fff00000ff69dcc0
-| x8 : 00000000000003f2 x7 : 0000000000000001 x6 : fff00000c1ca5b48
-| x5 : fff05e8e0311f000 x4 : 0000000008000000 x3 : 0000000000000000
-| x2 : 0000000000000001 x1 : fff00000c1ca5970 x0 : 0000000000000440
-| Call trace:
-|  sve_save_state+0x4/0xf0 (P)
-|  fpsimd_thread_switch+0x48/0x198
-|  __switch_to+0x20/0x1c0
-|  __schedule+0x36c/0xce0
-|  schedule+0x34/0x11c
-|  exit_to_user_mode_loop+0x124/0x188
-|  el0_interrupt+0xc8/0xd8
-|  __el0_irq_handler_common+0x18/0x24
-|  el0t_64_irq_handler+0x10/0x1c
-|  el0t_64_irq+0x198/0x19c
-| Code: 54000040 d51b4408 d65f03c0 d503245f (e5bb5800)
-| ---[ end trace 0000000000000000 ]---
+Disabling powertune entirely is	not a viable workaround,
+because	it causes the Radeon 520 to heat up above 100 C,
+which I prefer to avoid.
 
-Fix this by having restore_za_context() ensure that the task's sve_state
-is allocated, matching what we do when taking an SME trap. Any live
-SVE/SSVE state (which is restored earlier from a separate signal
-context) must be preserved, and hence this is not zeroed.
+Additionally, revise the maximum SCLK limit. Considering the
+above issue, these GPUs never reached a high SCLK on Linux,
+and the workarounds were added before the GPUs were released,
+so the workaround likely didn't target these specifically.
+Use 780 MHz (the maximum SCLK according to the VBIOS on the
+Radeon 430). Note that the Radeon 520 VBIOS has a higher
+maximum SCLK: 905 MHz, but in practice it doesn't seem to
+perform better with the higher clock, only heats up more.
 
-Fixes: 39782210eb7e ("arm64/sme: Implement ZA signal handling")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: <stable@vger.kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v2:
+Move the workaround to si_populate_smc_tdp_limits.
+
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 966d70f1e160bdfdecaf7ff2b3f22ad088516e9f)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/signal.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -475,6 +475,10 @@ static int restore_za_context(struct use
- 	fpsimd_flush_task_state(current);
- 	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index 08ffa79154111..a1da3e5812ce3 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -2281,6 +2281,12 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
+ 		if (ret)
+ 			return ret;
  
-+	sve_alloc(current, false);
-+	if (!current->thread.sve_state)
-+		return -ENOMEM;
++		if (adev->pdev->device == 0x6611 && adev->pdev->revision == 0x87) {
++			/* Workaround buggy powertune on Radeon 430 and 520. */
++			tdp_limit = 32;
++			near_tdp_limit = 28;
++		}
 +
- 	sme_alloc(current, true);
- 	if (!current->thread.sme_state) {
- 		current->thread.svcr &= ~SVCR_ZA_MASK;
+ 		smc_table->dpm2Params.TDPLimit =
+ 			cpu_to_be32(si_scale_power_for_smc(tdp_limit, scaling_factor) * 1000);
+ 		smc_table->dpm2Params.NearTDPLimit =
+@@ -3468,10 +3474,15 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ 		    (adev->pdev->revision == 0x80) ||
+ 		    (adev->pdev->revision == 0x81) ||
+ 		    (adev->pdev->revision == 0x83) ||
+-		    (adev->pdev->revision == 0x87) ||
++		    (adev->pdev->revision == 0x87 &&
++				adev->pdev->device != 0x6611) ||
+ 		    (adev->pdev->device == 0x6604) ||
+ 		    (adev->pdev->device == 0x6605)) {
+ 			max_sclk = 75000;
++		} else if (adev->pdev->revision == 0x87 &&
++				adev->pdev->device == 0x6611) {
++			/* Radeon 430 and 520 */
++			max_sclk = 78000;
+ 		}
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
