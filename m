@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-212435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGNfKBs0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:51 +0100
+	id aLvbKOIuemmO3wEAu9opvQ
+	(envelope-from <stable+bounces-212083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCB7A5192
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DA3EA4556
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 64AA030C0F0B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DC3D30D1BB0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EE1308F05;
-	Wed, 28 Jan 2026 15:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A60510A1E;
+	Wed, 28 Jan 2026 15:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTI+otmb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRLuUba8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13D42F261C;
-	Wed, 28 Jan 2026 15:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2781123EAB7;
+	Wed, 28 Jan 2026 15:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615509; cv=none; b=ogaZXgGVoZJv2NT8l/PLWeA7BHvtBntsMwqRwlF78c8lQbIiukF/cAnagixkE2hmo/HZHeC14hzJN7oUB7VFhXd2d0/m1YjgFRR8ui+KbAkZNCFb4jv4KQloV4OsAI2j0hs3svCLDMzO92GPTBvYVllv2nHeFnm05RYsOQf62xo=
+	t=1769614344; cv=none; b=GvofukJmBcuI5n5osyEWmpLoEIyXnwkSZX1AdNoCvTT96IyJpOVLdiceC8Z7VXDBWvsdRcyc6SCg4Es7+zj0Pqo9we7BlfuWBiPyL2khMiFFyjPFRQG46JtPRJoXAwuz7DwDTeVSsuz7wWc99Y5dSV46oPvNagafGqxTSCZbSPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615509; c=relaxed/simple;
-	bh=q16z+j2KwHdG7oVg/VUImNR4wEF9j8UmfT4NS9bNK2s=;
+	s=arc-20240116; t=1769614344; c=relaxed/simple;
+	bh=9Ez/h71LEe96NfXZ7bW24MqxK+WD1Yxvb3hwn+LyaR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYKaRSdJTzTzNp8P9RbLoWKD2Cpw7924nR/X+GU1Lv4sX2Z2t55qJYScu08khfWIB6bO/M/e0FPnsL7eVzJyoXfdgXL65FO5vsQ9vmPdR2KXSZay/n8ndRmSggFYYPNwc7BlopcwbAyCxIschNj2DRjabfLDAQin/PUl2FpcfMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTI+otmb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF88C4CEF1;
-	Wed, 28 Jan 2026 15:51:49 +0000 (UTC)
+	 MIME-Version; b=sxq45Y5sh66Owy8SCYy45nFhHhkuC9K9uX61ii/eGSUsRzyIjmhLIho0YIL94Lf2gGAfJvboUvB8dnBlOiFQk3kOtd681jfZQk79YJp2wAhDtOPuYKrEuBrGDDTG7O/jPM5Zvbx7uW74jT208XiCSp4k4qEpsW9iY0iZtnk9nlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRLuUba8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC08C4CEF1;
+	Wed, 28 Jan 2026 15:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615509;
-	bh=q16z+j2KwHdG7oVg/VUImNR4wEF9j8UmfT4NS9bNK2s=;
+	s=korg; t=1769614344;
+	bh=9Ez/h71LEe96NfXZ7bW24MqxK+WD1Yxvb3hwn+LyaR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTI+otmbIVaKqZXySZuWEtcvNMBsgfi1J4RYkv5tKePKpzlbB0Rh6J9t1bUp+YiP9
-	 G7/jq+3cUisaQBby6xR2nFSbb4cvlSSctprR7iEqWG+flsAVxSssPbJGCNilFwBFhN
-	 h3qjZtglfj/djFfEiSlmvvjc4TNXEO9D3PdprOg0=
+	b=vRLuUba8OF2aA02hXHVvZgdiop4CSZCrK1qRFygW/0vRelQ7j2g3V7H0DIuTk5cJC
+	 M4Rhj/sQwiFPuuUEbeV5WgwgeL0OCZqi2eGyxNTViA4kFR1w+KRwZyt51w3sCIr9xb
+	 YdjxQWUZWpseYTm6UWBrVGgGM7IdFmMZnF8pV2JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Roman Kisel <vdso@mailbox.org>,
-	Wei Liu <wei.liu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 006/227] Drivers: hv: Always do Hyper-V panic notification in hv_kmsg_dump()
+	Dave Airlie <airlied@redhat.com>,
+	Lyude Paul <lyude@redhat.com>
+Subject: [PATCH 6.6 075/254] drm/nouveau/disp/nv50-: Set lock_core in curs507a_prepare
 Date: Wed, 28 Jan 2026 16:20:51 +0100
-Message-ID: <20260128145344.568009889@linuxfoundation.org>
+Message-ID: <20260128145347.393192520@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,102 +68,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,linaro.org,outlook.com,mailbox.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212435-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-212083-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,mailbox.org:email]
-X-Rspamd-Queue-Id: 8DCB7A5192
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0DA3EA4556
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Lyude Paul <lyude@redhat.com>
 
-[ Upstream commit 49f49d47af67f8a7b221db1d758fc634242dc91a ]
+commit 9e9bc6be0fa0b6b6b73f4f831f3b77716d0a8d9e upstream.
 
-hv_kmsg_dump() currently skips the panic notification entirely if it
-doesn't get any message bytes to pass to Hyper-V due to an error from
-kmsg_dump_get_buffer(). Skipping the notification is undesirable because
-it leaves the Hyper-V host uncertain about the state of a panic'ed guest.
+For a while, I've been seeing a strange issue where some (usually not all)
+of the display DMA channels will suddenly hang, particularly when there is
+a visible cursor on the screen that is being frequently updated, and
+especially when said cursor happens to go between two screens. While this
+brings back lovely memories of fixing Intel Skylake bugs, I would quite
+like to fix it :).
 
-Fix this by always doing the panic notification, even if bytes_written
-is zero. Also ensure that bytes_written is initialized, which fixes a
-kernel test robot warning. The warning is actually bogus because
-kmsg_dump_get_buffer() happens to set bytes_written even if it fails, and
-in the kernel test robot's CONFIG_PRINTK not set case, hv_kmsg_dump() is
-never called. But do the initialization for robustness and to quiet the
-static checker.
+It turns out the problem that's happening here is that we're managing to
+reach nv50_head_flush_set() in our atomic commit path without actually
+holding nv50_disp->mutex. This means that cursor updates happening in
+parallel (along with any other atomic updates that need to use the core
+channel) will race with eachother, which eventually causes us to corrupt
+the pushbuffer - leading to a plethora of various GSP errors, usually:
 
-Fixes: 9c318a1d9b50 ("Drivers: hv: move panic report code from vmbus to hv early init code")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/202512172103.OcUspn1Z-lkp@intel.com/
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Roman Kisel <vdso@mailbox.org>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000218 00102680 00000004 00800003
+  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 0000021c 00040509 00000004 00000001
+  nouveau 0000:c1:00.0: gsp: Xid:56 CMDre 00000000 00000000 00000000 00000001 00000001
+
+The reason this is happening is because generally we check whether we need
+to set nv50_atom->lock_core at the end of nv50_head_atomic_check().
+However, curs507a_prepare is called from the fb_prepare callback, which
+happens after the atomic check phase. As a result, this can lead to commits
+that both touch the core channel but also don't grab nv50_disp->mutex.
+
+So, fix this by making sure that we set nv50_atom->lock_core in
+cus507a_prepare().
+
+Reviewed-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Fixes: 1590700d94ac ("drm/nouveau/kms/nv50-: split each resource type into their own source files")
+Cc: <stable@vger.kernel.org> # v4.18+
+Link: https://patch.msgid.link/20251219215344.170852-2-lyude@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/hv_common.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/nouveau/dispnv50/curs507a.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-index e109a620c83fc..71fd3ea4fa8bd 100644
---- a/drivers/hv/hv_common.c
-+++ b/drivers/hv/hv_common.c
-@@ -195,13 +195,15 @@ static void hv_kmsg_dump(struct kmsg_dumper *dumper,
+--- a/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/curs507a.c
+@@ -84,6 +84,7 @@ curs507a_prepare(struct nv50_wndw *wndw,
+ 		asyh->curs.handle = handle;
+ 		asyh->curs.offset = offset;
+ 		asyh->set.curs = asyh->curs.visible;
++		nv50_atom(asyh->state.state)->lock_core = true;
+ 	}
+ }
  
- 	/*
- 	 * Write dump contents to the page. No need to synchronize; panic should
--	 * be single-threaded.
-+	 * be single-threaded. Ignore failures from kmsg_dump_get_buffer() since
-+	 * panic notification should be done even if there is no message data.
-+	 * Don't assume bytes_written is set in case of failure, so initialize it.
- 	 */
- 	kmsg_dump_rewind(&iter);
--	kmsg_dump_get_buffer(&iter, false, hv_panic_page, HV_HYP_PAGE_SIZE,
-+	bytes_written = 0;
-+	(void)kmsg_dump_get_buffer(&iter, false, hv_panic_page, HV_HYP_PAGE_SIZE,
- 			     &bytes_written);
--	if (!bytes_written)
--		return;
-+
- 	/*
- 	 * P3 to contain the physical address of the panic page & P4 to
- 	 * contain the size of the panic data in that page. Rest of the
-@@ -210,7 +212,7 @@ static void hv_kmsg_dump(struct kmsg_dumper *dumper,
- 	hv_set_msr(HV_MSR_CRASH_P0, 0);
- 	hv_set_msr(HV_MSR_CRASH_P1, 0);
- 	hv_set_msr(HV_MSR_CRASH_P2, 0);
--	hv_set_msr(HV_MSR_CRASH_P3, virt_to_phys(hv_panic_page));
-+	hv_set_msr(HV_MSR_CRASH_P3, bytes_written ? virt_to_phys(hv_panic_page) : 0);
- 	hv_set_msr(HV_MSR_CRASH_P4, bytes_written);
- 
- 	/*
--- 
-2.51.0
-
 
 
 
