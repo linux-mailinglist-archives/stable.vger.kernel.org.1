@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-212323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212533-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8K5vLewxemlp4gEAu9opvQ
-	(envelope-from <stable+bounces-212323-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:32 +0100
+	id wBDrFio4emkd4wEAu9opvQ
+	(envelope-from <stable+bounces-212533-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:24:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA10A4CDA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6F9A58F3
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47EC8320678C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EE9E33029233
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE6F328638;
-	Wed, 28 Jan 2026 15:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5CA3043B2;
+	Wed, 28 Jan 2026 15:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHeEIdp8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FldKKH0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B1E32720C;
-	Wed, 28 Jan 2026 15:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8E03064B3;
+	Wed, 28 Jan 2026 15:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615134; cv=none; b=pX5YaVfXNAxFFnYIr1xHP+QRdNHdmm5elyiuMDwbn6WXeNGHaEEh2aTvuMguF+ET1t4hE/pWvOpIikuhHN524I7AbxJdrzCHCnjVUBhHyyjOmZNnzgOJi1O/4v0Gri5jIbccHfQjMnMoqASkc6QziRh1PnVJbA08psDhV1GWJ1w=
+	t=1769615838; cv=none; b=V0DB3EO5SOGrg3ViqH1idIDgQuO9KEJtLj7MkZKlG5KY2Wz+ogXG4eROWW3CiPt7OMkdIrJtRv4saZGIzQ3CX9kbOkqHm9Br7JstO8LJ0Zcd/RCd0m5GiqnbXQ94PrnDnAtBqIGkYF5NmiFAfXbnTfgU03lzrwSUGXQC/jp1h9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615134; c=relaxed/simple;
-	bh=qHvcV7aNR+GXCi2AHDfkV/h9J29bsUYCWmpliZyW4KU=;
+	s=arc-20240116; t=1769615838; c=relaxed/simple;
+	bh=W9lnycjaqNXGfMrVZuob9f7beMmUjTCvGREnxhcJbrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KguVrBJ24JIFPmCfZ/rIGaWYThiAGi6iaX98k9YTfMuOJTIGD/be2tKNaS2rXYoWC3zfcbuyx/PUx6h5IyTTGLaGlEvYnUMvBBaEYv6p1q8WHV3h3vDgaRc0CutACWSMIrNgDeNqH7LziPdRzZ894mrvSn4TBUMuZWdiWmjMI9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHeEIdp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD91C4CEF1;
-	Wed, 28 Jan 2026 15:45:33 +0000 (UTC)
+	 MIME-Version; b=TfKOPXQtfyuAIrNVYhWj7WUtkkKXRm2kcHi8OHq9VTKWKMpUayWdC2fd34FBTKRqq4XOnrlSRNtHfasU6mjKIVlU3r2IC8IVkv21EcBb5d/DjWCiFmjNZb94ixTRcyebXPHwmDxvyLs8M2dMYQV2Uu/hoT+94fercevqWXZ3XtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FldKKH0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699D6C4CEF1;
+	Wed, 28 Jan 2026 15:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615133;
-	bh=qHvcV7aNR+GXCi2AHDfkV/h9J29bsUYCWmpliZyW4KU=;
+	s=korg; t=1769615837;
+	bh=W9lnycjaqNXGfMrVZuob9f7beMmUjTCvGREnxhcJbrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHeEIdp8taryBzy5abFfIruYCoPCZl3RzhAVkOOiOBw5uusW2fMFjCFhUdGK/4OQY
-	 YBWpvPugXLo+9fVgocbo7Lzt2Vj6eWa23Z7VB8kqD46Yh6JkK1VzVx2CsTzS1PuqAC
-	 FJ3FS9cjynGRBPImmeOjgygeBWmLEFTitUf6wbKs=
+	b=FldKKH0evaw/a8M6BGUGHukw608Bk9FQsNnLvNC0rpqHEdKuzLUwKjPmaTSwi6c8o
+	 AKupBywpGGdsIA7v+r6NO36kUUTg1JKfwAgoQoFLB8SRNpLcOFesoqvO29pzvv9XCD
+	 9YYndzAB5zBEgkrYXYojJCSJ5GpEDZAPtqCuHOTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c46409299c70a221415e@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Matteo Croce <mcroce@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Will Rosenberg <whrosenb@asu.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/169] bonding: provide a net pointer to __skb_flow_dissect()
+Subject: [PATCH 6.18 127/227] perf: Fix refcount warning on event->mmap_count increment
 Date: Wed, 28 Jan 2026 16:22:52 +0100
-Message-ID: <20260128145337.209571039@linuxfoundation.org>
+Message-ID: <20260128145349.033202057@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,99 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212323-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212533-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,c46409299c70a221415e];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2AA10A4CDA
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,infradead.org:email,asu.edu:email]
+X-Rspamd-Queue-Id: BF6F9A58F3
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Will Rosenberg <whrosenb@asu.edu>
 
-[ Upstream commit 5f9b329096596b7e53e07d041d7fca4cbe1be752 ]
+[ Upstream commit d06bf78e55d5159c1b00072e606ab924ffbbad35 ]
 
-After 3cbf4ffba5ee ("net: plumb network namespace into __skb_flow_dissect")
-we have to provide a net pointer to __skb_flow_dissect(),
-either via skb->dev, skb->sk, or a user provided pointer.
+When calling refcount_inc(&event->mmap_count) inside perf_mmap_rb(), the
+following warning is triggered:
 
-In the following case, syzbot was able to cook a bare skb.
+        refcount_t: addition on 0; use-after-free.
+        WARNING: lib/refcount.c:25
 
-WARNING: net/core/flow_dissector.c:1131 at __skb_flow_dissect+0xb57/0x68b0 net/core/flow_dissector.c:1131, CPU#1: syz.2.1418/11053
-Call Trace:
- <TASK>
-  bond_flow_dissect drivers/net/bonding/bond_main.c:4093 [inline]
-  __bond_xmit_hash+0x2d7/0xba0 drivers/net/bonding/bond_main.c:4157
-  bond_xmit_hash_xdp drivers/net/bonding/bond_main.c:4208 [inline]
-  bond_xdp_xmit_3ad_xor_slave_get drivers/net/bonding/bond_main.c:5139 [inline]
-  bond_xdp_get_xmit_slave+0x1fd/0x710 drivers/net/bonding/bond_main.c:5515
-  xdp_master_redirect+0x13f/0x2c0 net/core/filter.c:4388
-  bpf_prog_run_xdp include/net/xdp.h:700 [inline]
-  bpf_test_run+0x6b2/0x7d0 net/bpf/test_run.c:421
-  bpf_prog_test_run_xdp+0x795/0x10e0 net/bpf/test_run.c:1390
-  bpf_prog_test_run+0x2c7/0x340 kernel/bpf/syscall.c:4703
-  __sys_bpf+0x562/0x860 kernel/bpf/syscall.c:6182
-  __do_sys_bpf kernel/bpf/syscall.c:6274 [inline]
-  __se_sys_bpf kernel/bpf/syscall.c:6272 [inline]
-  __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:6272
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xec/0xf80 arch/x86/entry/syscall_64.c:94
+PoC:
 
-Fixes: 58deb77cc52d ("bonding: balance ICMP echoes in layer3+4 mode")
-Reported-by: syzbot+c46409299c70a221415e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/696faa23.050a0220.4cb9c.001f.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Matteo Croce <mcroce@redhat.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://patch.msgid.link/20260120161744.1893263-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    struct perf_event_attr attr = {0};
+    int fd = syscall(__NR_perf_event_open, &attr, 0, -1, -1, 0);
+    mmap(NULL, 0x3000, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    int victim = syscall(__NR_perf_event_open, &attr, 0, -1, fd,
+                         PERF_FLAG_FD_OUTPUT);
+    mmap(NULL, 0x3000, PROT_READ | PROT_WRITE, MAP_SHARED, victim, 0);
+
+This occurs when creating a group member event with the flag
+PERF_FLAG_FD_OUTPUT. The group leader should be mmap-ed and then mmap-ing
+the event triggers the warning.
+
+Since the event has copied the output_event in perf_event_set_output(),
+event->rb is set. As a result, perf_mmap_rb() calls
+refcount_inc(&event->mmap_count) when event->mmap_count = 0.
+
+Disallow the case when event->mmap_count = 0. This also prevents two
+events from updating the same user_page.
+
+Fixes: 448f97fba901 ("perf: Convert mmap() refcounts to refcount_t")
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260119184956.801238-1-whrosenb@asu.edu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/events/core.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 6f87d7e29e19b..b52f5f64e3abb 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -4263,8 +4263,9 @@ static bool bond_flow_dissect(struct bonding *bond, struct sk_buff *skb, const v
- 	case BOND_XMIT_POLICY_ENCAP23:
- 	case BOND_XMIT_POLICY_ENCAP34:
- 		memset(fk, 0, sizeof(*fk));
--		return __skb_flow_dissect(NULL, skb, &flow_keys_bonding,
--					  fk, data, l2_proto, nhoff, hlen, 0);
-+		return __skb_flow_dissect(dev_net(bond->dev), skb,
-+					  &flow_keys_bonding, fk, data,
-+					  l2_proto, nhoff, hlen, 0);
- 	default:
- 		break;
- 	}
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index d95f9dce018f4..df0717f4592a9 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6996,6 +6996,15 @@ static int perf_mmap_rb(struct vm_area_struct *vma, struct perf_event *event,
+ 		if (data_page_nr(event->rb) != nr_pages)
+ 			return -EINVAL;
+ 
++		/*
++		 * If this event doesn't have mmap_count, we're attempting to
++		 * create an alias of another event's mmap(); this would mean
++		 * both events will end up scribbling the same user_page;
++		 * which makes no sense.
++		 */
++		if (!refcount_read(&event->mmap_count))
++			return -EBUSY;
++
+ 		if (refcount_inc_not_zero(&event->rb->mmap_count)) {
+ 			/*
+ 			 * Success -- managed to mmap() the same buffer
 -- 
 2.51.0
 
