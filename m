@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-212133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212144-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Pp1HKosemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:06 +0100
+	id wGDFKOksemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212144-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:36:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B588A4021
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28800A40CA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 850E63001465
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B8323302E0C9
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2644D29ACDD;
-	Wed, 28 Jan 2026 15:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6D42D5940;
+	Wed, 28 Jan 2026 15:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3nM7oKu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbuwETpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C822D239B;
-	Wed, 28 Jan 2026 15:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223252C237E;
+	Wed, 28 Jan 2026 15:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614502; cv=none; b=oSJcjc9qLBOuPcEdpw+QlqgEZM4MR1Fv+DtNaLRhekyrnlhrSGRZRQmneGm9hwZ0HrKqm2YNsxGMOBWGp/ZG3gK4+We+BSCYcyxuub6jtf9J2wSFcSEHNuZgU1RSGbEM3tQzeYPup7CQmn7YOn/LFFb6NOfzJuzq0fjpw/pIdXw=
+	t=1769614539; cv=none; b=OfNbghkNS6BvSjDv7cYa6qaFkOTeF+ciDPyquKWbJd3NSuspwKIGXjmvf/KzlQdt9JhhiwrLXGm3buMerww0IgzjZ5lVIkxIamQIfW6w+4RISo9fpHkdIy2OqfSRAM2aS9uizt9pRjR3PlvxupXEim2SCkCRDU6g411qS5hDEWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614502; c=relaxed/simple;
-	bh=TGyIofuGB1YoTI+BTVialEZeJHRnQz9KWYm8q6AkP1k=;
+	s=arc-20240116; t=1769614539; c=relaxed/simple;
+	bh=mywVjv45IOp68QdK00Z6ptSw4HaOR6QijjbVmZpdK2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mBlAwqgFZ6Idxc7jGz4txN6F+0aaVxJfirIkskLJh0reM9/DJE7voonRb3BOdasjCIX4BuJRKcj8Y0L5lShzIySBGGnLpOgwHazuaxdCcbF+CB8/M86Xv61e1MKa1pk6cW9zGw3X0g7MYzM9N/HlmZxAXj+3NWTOzritXDrRuaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3nM7oKu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F3AC4CEF1;
-	Wed, 28 Jan 2026 15:35:01 +0000 (UTC)
+	 MIME-Version; b=dQ9rRhKx+Nch4xn4iyqn5TU6btjEpdZOwIsDVvtSDxtLReTNwNJxRhxz8xv24MGMOPYlcJW4n1Y1bETxLginBUPPfZXyWE3yxjVD5fL9fY+49YPYUeRbZC5GIh7imfvIEFetDKpaBYwsAZjJaVPneOjNbQoJ/i95IEPbgDuXW6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbuwETpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F6CC4CEF1;
+	Wed, 28 Jan 2026 15:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614502;
-	bh=TGyIofuGB1YoTI+BTVialEZeJHRnQz9KWYm8q6AkP1k=;
+	s=korg; t=1769614538;
+	bh=mywVjv45IOp68QdK00Z6ptSw4HaOR6QijjbVmZpdK2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3nM7oKufCqOvKnWyrhJslDKvdpN5hxSHW5lHrfrWh8TuOIuExegQifunbBWya0w2
-	 60E1TGA+aFm/N470p7aH0pamR9NkgdlLWNrdhukbuYLJi0FaIeKRBEXUV6iS1Yx0/f
-	 nmLb+k268FXG5G/VRJhryLEkyelFM5V9aSobr3sc=
+	b=LbuwETpX3F0ofcfMN0DJHkxd8fBXwLlzPfHVNQEY5WSawnJ6NM4TNTsSA2Td8r3Sm
+	 HiFjxr9OISuEFTWQCBL7+cShlXp/85mIXMZnBW7DI8ttbIvmlHAUzqSWEiV3hCrGsd
+	 BA0vU0ahlfh6jRPQ6YfJKqH1m4dYGb0y4rk1Hf4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 139/254] Revert "nfc/nci: Add the inconsistency check between the input data length and count"
-Date: Wed, 28 Jan 2026 16:21:55 +0100
-Message-ID: <20260128145349.819199427@linuxfoundation.org>
+	gongqi <550230171hxy@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 140/254] Input: i8042 - add quirks for MECHREVO Wujie 15X Pro
+Date: Wed, 28 Jan 2026 16:21:56 +0100
+Message-ID: <20260128145349.854315803@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -64,80 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212133-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212144-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1B588A4021
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 28800A40CA
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: gongqi <550230171hxy@gmail.com>
 
-commit f40ddcc0c0ca1a0122a7f4440b429f97d5832bdf upstream.
+commit 19a5d9ba6208e9006a2a9d5962aea4d6e427d8ab upstream.
 
-This reverts commit 068648aab72c9ba7b0597354ef4d81ffaac7b979.
+The MECHREVO Wujie 15X Pro requires several i8042 quirks to function
+correctly. Specifically, NOMUX, RESET_ALWAYS, NOLOOP, and NOPNP are
+needed to ensure the keyboard and touchpad work reliably.
 
-NFC packets may have NUL-bytes. Checking for string length is not a correct
-assumption here. As long as there is a check for the length copied from
-copy_from_user, all should be fine.
-
-The fix only prevented the syzbot reproducer from triggering the bug
-because the packet is not enqueued anymore and the code that triggers the
-bug is not exercised.
-
-The fix even broke
-testing/selftests/nci/nci_dev, making all tests there fail. After the
-revert, 6 out of 8 tests pass.
-
-Fixes: 068648aab72c ("nfc/nci: Add the inconsistency check between the input data length and count")
+Signed-off-by: gongqi <550230171hxy@gmail.com>
+Link: https://patch.msgid.link/20260122155501.376199-3-550230171hxy@gmail.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Link: https://patch.msgid.link/20260113202458.449455-1-cascardo@igalia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/virtual_ncidev.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/nfc/virtual_ncidev.c
-+++ b/drivers/nfc/virtual_ncidev.c
-@@ -125,10 +125,6 @@ static ssize_t virtual_ncidev_write(stru
- 		kfree_skb(skb);
- 		return -EFAULT;
- 	}
--	if (strnlen(skb->data, count) != count) {
--		kfree_skb(skb);
--		return -EINVAL;
--	}
- 
- 	nci_recv_frame(vdev->ndev, skb);
- 	return count;
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1176,6 +1176,13 @@ static const struct dmi_system_id i8042_
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "WUJIE Series-X5SP4NAG"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
+ 	/*
+ 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
+ 	 * after suspend fixable with the forcenorestore quirk.
 
 
 
