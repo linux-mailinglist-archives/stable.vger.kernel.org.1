@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212199-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBI1ErAwemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:16 +0100
+	id cLq8LGguemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212199-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD682A498E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69ABDA43D1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9908230869D7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 844C8301DBB3
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A90230F548;
-	Wed, 28 Jan 2026 15:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EC72E5D17;
+	Wed, 28 Jan 2026 15:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9orosq6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ry1hHE5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB2730EF7B;
-	Wed, 28 Jan 2026 15:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5312D6E63;
+	Wed, 28 Jan 2026 15:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615221; cv=none; b=hMdCBSA7EErO2tEqI2DP1KVYqx8MSzWKmgQyQyWn3gSf4TovTOb+lUFRL2jehB4wQAmcYNs1uBi3WLBhZfaOOjTRktxl/SVwK/ZyQ+C2LgEj7peU/6EVPvewobL6u6r17cjfaApt/Qx4pKh7QE87CttuGrYZalXZ842AilIF3As=
+	t=1769614717; cv=none; b=Ve3jhKX94R39sUubsku867M+b+NS91PmcGmhAWckVF9xl5a22Invq01J76262GXJbEH/GKfJsCKk+HoKdiXUljcH2McfAROwYIqqtf3lnbNMXE+lhiZxzfIa1nk4SZNZUlwlKWZc7c1vS0L+UFPbp7SstW+6BwJ6V2GXOQdsTFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615221; c=relaxed/simple;
-	bh=66ZxnkoWseBrGRa573T/B8f5Zt+M8GO7yrjwJtS3Y4w=;
+	s=arc-20240116; t=1769614717; c=relaxed/simple;
+	bh=TN73Z+vUolQIibn6Oa4B2+sTFD2adKZaMty5aMxI0IQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qH+x4/dLO9LcHHbDfzqk7MR9upPFZ0xxnaLBt3jtACCw50xH5jrtM86Qz3wi6kRBVOQUj8KEUfvAu1PAaOCctATGAp1WPSQ6hLGxfimqT8mJ+VicDG35dse6b7fI7XRvRn3vHYMM4X/h2FyvK8UCu7zMOjENR4goraDzgLxcDlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9orosq6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD227C16AAE;
-	Wed, 28 Jan 2026 15:47:00 +0000 (UTC)
+	 MIME-Version; b=Hw9gj6y4p3UVVfLxWgF78h4zUvh2socP9P/NYOEEm28WyBaGLy6ck6uAgEtB7raqToHFwokuQZuXVIh7PYCedjx4Am6fQqtdkBg7YZBlpBlcBLmBtONs/t0aIC3+RvlB88qb6zh3SLybnPjPzqGZxTOHjdI6dHmjh8Omak9Slv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ry1hHE5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F95BC4AF09;
+	Wed, 28 Jan 2026 15:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615221;
-	bh=66ZxnkoWseBrGRa573T/B8f5Zt+M8GO7yrjwJtS3Y4w=;
+	s=korg; t=1769614716;
+	bh=TN73Z+vUolQIibn6Oa4B2+sTFD2adKZaMty5aMxI0IQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9orosq6YKFUhjKU9Cci6lAM8EQ3/AC5UnhEqj4VyzUWuWsZ0Eq9cwP4QTXJjDwA/
-	 9KiT3rJIRce0Hzx/+5BBiTyrlGI+eoygef+c+Ord09okvhWGkN1hqu9ou/gz5Yzq1j
-	 LC8XgUNPyAkatZQhHvL4SzYmmeoz8pcH2VQmi/14=
+	b=Ry1hHE5i+vsx3rRzjObgyodwcIFzgvB+pwJyoX/24nr0VYcMts81XEGrEp4rTLnpC
+	 iyrX0s4BlvLUIkwE86oTqcNj83UpZFNe/BsUxCft/3+CTExZU7kAH4gsyXFLiMa5r7
+	 63UkCxs8WK+jL5vuLK0twGYUBaGg04sH74i9z2x8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 113/169] ALSA: usb-audio: Fix use-after-free in snd_usb_mixer_free()
-Date: Wed, 28 Jan 2026 16:23:16 +0100
-Message-ID: <20260128145338.072039811@linuxfoundation.org>
+	Ihor Solodrai <ihor.solodrai@pm.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.6 221/254] selftests/bpf: Check for timeout in perf_link test
+Date: Wed, 28 Jan 2026 16:23:17 +0100
+Message-ID: <20260128145352.739990201@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,86 +79,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212349-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212199-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
-	FROM_HAS_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: CD682A498E
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email,pm.me:email]
+X-Rspamd-Queue-Id: 69ABDA43D1
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: Ihor Solodrai <ihor.solodrai@pm.me>
 
-commit 930e69757b74c3ae083b0c3c7419bfe7f0edc7b2 upstream.
+commit e6c209da7e0e9aaf955a7b59e91ed78c2b6c96fb upstream.
 
-When snd_usb_create_mixer() fails, snd_usb_mixer_free() frees
-mixer->id_elems but the controls already added to the card still
-reference the freed memory. Later when snd_card_register() runs,
-the OSS mixer layer calls their callbacks and hits a use-after-free read.
+Recently perf_link test started unreliably failing on libbpf CI:
+  * https://github.com/libbpf/libbpf/actions/runs/11260672407/job/31312405473
+  * https://github.com/libbpf/libbpf/actions/runs/11260992334/job/31315514626
+  * https://github.com/libbpf/libbpf/actions/runs/11263162459/job/31320458251
 
-Call trace:
-  get_ctl_value+0x63f/0x820 sound/usb/mixer.c:411
-  get_min_max_with_quirks.isra.0+0x240/0x1f40 sound/usb/mixer.c:1241
-  mixer_ctl_feature_info+0x26b/0x490 sound/usb/mixer.c:1381
-  snd_mixer_oss_build_test+0x174/0x3a0 sound/core/oss/mixer_oss.c:887
-  ...
-  snd_card_register+0x4ed/0x6d0 sound/core/init.c:923
-  usb_audio_probe+0x5ef/0x2a90 sound/usb/card.c:1025
+Part of the test is running a dummy loop for a while and then checking
+for a counter incremented by the test program.
 
-Fix by calling snd_ctl_remove() for all mixer controls before freeing
-id_elems. We save the next pointer first because snd_ctl_remove()
-frees the current element.
+Instead of waiting for an arbitrary number of loop iterations once,
+check for the test counter in a loop and use get_time_ns() helper to
+enforce a 100ms timeout.
 
-Fixes: 6639b6c2367f ("[ALSA] usb-audio - add mixer control notifications")
-Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260120102855.7300-1-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+v1: https://lore.kernel.org/bpf/zuRd072x9tumn2iN4wDNs5av0nu5nekMNV4PkR-YwCT10eFFTrUtZBRkLWFbrcCe7guvLStGQlhibo8qWojCO7i2-NGajes5GYIyynexD-w=@pm.me/
+
+Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20241011153104.249800-1-ihor.solodrai@pm.me
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/perf_link.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -2938,10 +2938,23 @@ static int parse_audio_unit(struct mixer
+--- a/tools/testing/selftests/bpf/prog_tests/perf_link.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_link.c
+@@ -4,8 +4,12 @@
+ #include <pthread.h>
+ #include <sched.h>
+ #include <test_progs.h>
++#include "testing_helpers.h"
+ #include "test_perf_link.skel.h"
  
- static void snd_usb_mixer_free(struct usb_mixer_interface *mixer)
- {
-+	struct usb_mixer_elem_list *list, *next;
-+	int id;
++#define BURN_TIMEOUT_MS 100
++#define BURN_TIMEOUT_NS BURN_TIMEOUT_MS * 1000000
 +
- 	/* kill pending URBs */
- 	snd_usb_mixer_disconnect(mixer);
+ static void burn_cpu(void)
+ {
+ 	volatile int j = 0;
+@@ -32,6 +36,7 @@ void serial_test_perf_link(void)
+ 	int run_cnt_before, run_cnt_after;
+ 	struct bpf_link_info info;
+ 	__u32 info_len = sizeof(info);
++	__u64 timeout_time_ns;
  
--	kfree(mixer->id_elems);
-+	/* Unregister controls first, snd_ctl_remove() frees the element */
-+	if (mixer->id_elems) {
-+		for (id = 0; id < MAX_ID_ELEMS; id++) {
-+			for (list = mixer->id_elems[id]; list; list = next) {
-+				next = list->next_id_elem;
-+				if (list->kctl)
-+					snd_ctl_remove(mixer->chip->card, list->kctl);
-+			}
-+		}
-+		kfree(mixer->id_elems);
+ 	/* create perf event */
+ 	memset(&attr, 0, sizeof(attr));
+@@ -63,8 +68,14 @@ void serial_test_perf_link(void)
+ 	ASSERT_GT(info.prog_id, 0, "link_prog_id");
+ 
+ 	/* ensure we get at least one perf_event prog execution */
+-	burn_cpu();
+-	ASSERT_GT(skel->bss->run_cnt, 0, "run_cnt");
++	timeout_time_ns = get_time_ns() + BURN_TIMEOUT_NS;
++	while (true) {
++		burn_cpu();
++		if (skel->bss->run_cnt > 0)
++			break;
++	        if (!ASSERT_LT(get_time_ns(), timeout_time_ns, "run_cnt_timeout"))
++			break;
 +	}
- 	if (mixer->urb) {
- 		kfree(mixer->urb->transfer_buffer);
- 		usb_free_urb(mixer->urb);
+ 
+ 	/* perf_event is still active, but we close link and BPF program
+ 	 * shouldn't be executed anymore
 
 
 
