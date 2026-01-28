@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-212554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +D9vIUw7emlN4wEAu9opvQ
-	(envelope-from <stable+bounces-212554-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:37:32 +0100
+	id eGFAO0A2emnn4gEAu9opvQ
+	(envelope-from <stable+bounces-212196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:16:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0107FA5E5C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:37:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 459C8A55A2
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:16:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91A90320BA58
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C92263011876
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5EB3033C3;
-	Wed, 28 Jan 2026 15:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D592E6CA0;
+	Wed, 28 Jan 2026 15:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGYdq6FU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUlEj0B1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAE42FF178;
-	Wed, 28 Jan 2026 15:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5412D6E6A;
+	Wed, 28 Jan 2026 15:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615908; cv=none; b=QHu7P/7T3Ru4ChT/3beIldj7C2EEDYaaBFnP2OMim9OeBJjsiBGhuBli0z8yZg2U0wdAU1Mcv9IYbb2B3lQXv+CIQ0sBsaAWC8990iCT7MXHuP1Pn64L5+82tPqXryaOxtcePReNfN1/Krt+YTU/qfRRUwUwUCEGUG5OMDfgFgs=
+	t=1769614711; cv=none; b=CAK9l7Ddvs2F45s5irI48lVdFfyfDkRWXdXSU4jRD7LVYKSy6OczyB+IYAUkrt8LJVE9REiXA/Ke3RFJuNQRcIJ8EoqxiVyG6+45/4+dLDuoXTv+2FeuVwc8NjYjPZm4ZqzWzXeVyc9mbQKU2GnCohNxcv1H3mxqBRWZbuwwU6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615908; c=relaxed/simple;
-	bh=wgjwVbS8ePusXgxicjjtBzO7MqseixBg2NnW1CiK9F4=;
+	s=arc-20240116; t=1769614711; c=relaxed/simple;
+	bh=Ne8q+MnuhHEA/5nWIzTKSQsMGwc+aaePBv5QOP1ieG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IC7iIk6xCbTxEmPEbQeogaoMn2QMEyXsfIjVt6qi1zGcUXfUESH4Swm/Zhag7TKDpaKLpmlvbW+X5uHRz9CvoHeBXRUqaWhGhBR6W1WRIwWWCj1HCrD5ghoCXb9ISApiyGjNHoxf3dWsmuey58mDon6gKexmPzQHdmHuGLSURjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGYdq6FU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8778C4CEF7;
-	Wed, 28 Jan 2026 15:58:27 +0000 (UTC)
+	 MIME-Version; b=cdIkkwXkNJE5XO3+juowwbNQX5M7BOxVMyfZgT3WMW6vBTNiE3hjFN9g+A6YRrJKykGGmLKI3k9dRTf5WiXsoYoLL1GGa5SglFu8HEUFePKc0DUzOeMrdI2ayXtkUJiIjcDtMawPm+3Tz0KmbLTXdicKv4cO/VMoYo3JgpBcO10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUlEj0B1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7D7C4CEF7;
+	Wed, 28 Jan 2026 15:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615908;
-	bh=wgjwVbS8ePusXgxicjjtBzO7MqseixBg2NnW1CiK9F4=;
+	s=korg; t=1769614710;
+	bh=Ne8q+MnuhHEA/5nWIzTKSQsMGwc+aaePBv5QOP1ieG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QGYdq6FUI6z9dNdr7KPI6K3uYjDGx2SvaUm9TkKmxLpIPJKzGNLz0rGkvrzEwRSpT
-	 9tT6t/AGjW0ZVRqYZoNuf968sQCLoLim800ptDouwnolOOq5q3/ZEjj65MGOnlHMes
-	 W1KwjXmhd5Invixgdt8rNmUSJ3efVmeUAHQKV9+w=
+	b=eUlEj0B1yF1n6Ab4sR/FgjPmiznnGomAvWel4aELz2efhQblLQPVorUZ/cPPDjFZN
+	 0Oz3MwSKYt4mkN3+/UVuwGhvK4HR/47MmtbTnIYBjbZGJu6kRuU0r2/3b0iSFkawhG
+	 0gyVsC9SxFz9x/ZEy75ee3hVvyNQEnQ2TFiZUveo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cedric Xing <cedric.xing@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 150/227] x86: make page fault handling disable interrupts properly
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.6 219/254] can: usb_8dev: usb_8dev_read_bulk_callback(): fix URB memory leak
 Date: Wed, 28 Jan 2026 16:23:15 +0100
-Message-ID: <20260128145349.853665327@linuxfoundation.org>
+Message-ID: <20260128145352.668615896@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,122 +72,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212554-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212196-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0107FA5E5C
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 459C8A55A2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cedric Xing <cedric.xing@intel.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 614da1d3d4cdbd6e41aea06bc97ec15aacff6daf ]
+commit f7a980b3b8f80fe367f679da376cf76e800f9480 upstream.
 
-There's a big comment in the x86 do_page_fault() about our interrupt
-disabling code:
+Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
+gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-    * User address page fault handling might have reenabled
-    * interrupts. Fixing up all potential exit points of
-    * do_user_addr_fault() and its leaf functions is just not
-    * doable w/o creating an unholy mess or turning the code
-    * upside down.
+In usb_8dev_open() -> usb_8dev_start(), the URBs for USB-in transfers are
+allocated, added to the priv->rx_submitted anchor and submitted. In the
+complete callback usb_8dev_read_bulk_callback(), the URBs are processed and
+resubmitted. In usb_8dev_close() -> unlink_all_urbs() the URBs are freed by
+calling usb_kill_anchored_urbs(&priv->rx_submitted).
 
-but it turns out that comment is subtly wrong, and the code as a result
-is also wrong.
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in usb_kill_anchored_urbs().
 
-Because it's certainly true that we may have re-enabled interrupts when
-handling user page faults.  And it's most certainly true that we don't
-want to bother fixing up all the cases.
+Fix the memory leak by anchoring the URB in the
+usb_8dev_read_bulk_callback() to the priv->rx_submitted anchor.
 
-But what isn't true is that it's limited to user address page faults.
-
-The confusion stems from the fact that we have logic here that depends
-on the address range of the access, but other code then depends on the
-_context_ the access was done in.  The two are not related, even though
-both of them are about user-vs-kernel.
-
-In other words, both user and kernel addresses can cause interrupts to
-have been enabled (eg when __bad_area_nosemaphore() gets called for user
-accesses to kernel addresses).  As a result we should make sure to
-disable interrupts again regardless of the address range before
-returning to the low-level fault handling code.
-
-The __bad_area_nosemaphore() code actually did disable interrupts again
-after enabling them, just not consistently.  Ironically, as noted in the
-original comment, fixing up all the cases is just not worth it, when the
-simple solution is to just do it unconditionally in one single place.
-
-So remove the incomplete case that unsuccessfully tried to do what the
-comment said was "not doable" in commit ca4c6a9858c2 ("x86/traps: Make
-interrupt enable/disable symmetric in C code"), and just make it do the
-simple and straightforward thing.
-
-Signed-off-by: Cedric Xing <cedric.xing@intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Fixes: ca4c6a9858c2 ("x86/traps: Make interrupt enable/disable symmetric in C code")
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0024d8ad1639 ("can: usb_8dev: Add support for USB2CAN interface from 8 devices")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-5-4b8cb2915571@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/fault.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ drivers/net/can/usb/usb_8dev.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
-index 998bd807fc7ba..b83a06739b511 100644
---- a/arch/x86/mm/fault.c
-+++ b/arch/x86/mm/fault.c
-@@ -821,8 +821,6 @@ __bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
- 		force_sig_pkuerr((void __user *)address, pkey);
- 	else
- 		force_sig_fault(SIGSEGV, si_code, (void __user *)address);
--
--	local_irq_disable();
- }
+--- a/drivers/net/can/usb/usb_8dev.c
++++ b/drivers/net/can/usb/usb_8dev.c
+@@ -541,11 +541,17 @@ resubmit_urb:
+ 			  urb->transfer_buffer, RX_BUFFER_SIZE,
+ 			  usb_8dev_read_bulk_callback, priv);
  
- static noinline void
-@@ -1474,15 +1472,12 @@ handle_page_fault(struct pt_regs *regs, unsigned long error_code,
- 		do_kern_addr_fault(regs, error_code, address);
- 	} else {
- 		do_user_addr_fault(regs, error_code, address);
--		/*
--		 * User address page fault handling might have reenabled
--		 * interrupts. Fixing up all potential exit points of
--		 * do_user_addr_fault() and its leaf functions is just not
--		 * doable w/o creating an unholy mess or turning the code
--		 * upside down.
--		 */
--		local_irq_disable();
- 	}
-+	/*
-+	 * page fault handling might have reenabled interrupts,
-+	 * make sure to disable them again.
-+	 */
-+	local_irq_disable();
- }
++	usb_anchor_urb(urb, &priv->rx_submitted);
++
+ 	retval = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!retval)
++		return;
++
++	usb_unanchor_urb(urb);
  
- DEFINE_IDTENTRY_RAW_ERRORCODE(exc_page_fault)
--- 
-2.51.0
-
+ 	if (retval == -ENODEV)
+ 		netif_device_detach(netdev);
+-	else if (retval)
++	else
+ 		netdev_err(netdev,
+ 			"failed resubmitting read bulk urb: %d\n", retval);
+ }
 
 
 
