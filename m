@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-212256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPKhESw3eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:56 +0100
+	id sEDgCww6eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7915A56EC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 742AEA5C30
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59500328954F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:42:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E368930CDFBB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F052D8760;
-	Wed, 28 Jan 2026 15:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF6E303A15;
+	Wed, 28 Jan 2026 15:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPJWrLMw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yod+IxFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95F92DF138;
-	Wed, 28 Jan 2026 15:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A13302163;
+	Wed, 28 Jan 2026 15:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614907; cv=none; b=jB1Rowm/pl11VHIsxdDrb7/1aoT8aErEqDYOBhCF1ZxFqUVIKpSbTT2QIQ8/AQACAo1pQIaXqJyZ+jfxAFhM7Odnb3ReMCXUmrnZGG74YtnM6Sx8BlAWd/QqFAtE1pe8ep9KJZko70dKasl7V2Fd4S/0ltbP73fBEF/mg16tBMA=
+	t=1769615618; cv=none; b=Emicr9nuEI0kbvesYV2txRFO/PICAbLHnQZKDvysJvsQyPA8OYoqyPh8bLBXwtAoJ6z61UxNURoAlhCbIDev5eMd37mhKV1w/nOGUcOAjAwpA3r0qamHE8dwrBaac2NaiLqYCh0n7ECURqStoCRLPVTOMSxLhLosdWC4x7H6vrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614907; c=relaxed/simple;
-	bh=CkIgRs36VVcdl6Cs+6dMSUF6RKCQNLb6+Hkafp6jSEU=;
+	s=arc-20240116; t=1769615618; c=relaxed/simple;
+	bh=rg4cJ0T50QnJrWyS1odKGehib9RIziJHO5Db0zFCAJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UH+x4XOh/wrM16vHPsZbQIP6CtG583QEz1qsl/tvMP9+Fynfi8/0q5X880jEU3l/3kdi0kov625Bfhtq/4gdXpeRUlRkN7yunePzO6ssfdN5wrGhQD9wwh1NtGwh74/UjPCQpUr2JoD83493AqGwY20RgZbDhLgVqNwOWoAUknY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPJWrLMw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B536C4CEF1;
-	Wed, 28 Jan 2026 15:41:47 +0000 (UTC)
+	 MIME-Version; b=g35+Mpn35Sw1un5hE3Sas8NzgvdgdFwcnUo5FcVYIwYdNv5C3Io2JjD7aRDUYTNZ/q88rv324kmcgRyAo0Ou9rCDw5l/WX/6zkz4Aks3tl7AqrEBWbi0iX75K+pOitxpL507hUkyVIn0QvvtOpFkLJuz4C9yaOmAug8DQUJJwhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yod+IxFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C07C4CEF1;
+	Wed, 28 Jan 2026 15:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614907;
-	bh=CkIgRs36VVcdl6Cs+6dMSUF6RKCQNLb6+Hkafp6jSEU=;
+	s=korg; t=1769615618;
+	bh=rg4cJ0T50QnJrWyS1odKGehib9RIziJHO5Db0zFCAJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPJWrLMwkScGn0ii325oQYcoFs5wUpPOeEOK6dWGWuruORsdDrW6cnpJohgK001oE
-	 q06dR7+tZanx+TE1tW9oTomksMy+QGP2vg1E//edIkszW56S5GByqGyNQg/IZvDVuv
-	 gbbqqXBy3KIGJvVEFwACIab4kQGQQVMXv1N7ctng=
+	b=Yod+IxFbn30ZsP+C1pgYgTGW5UkgihuKg4d79Q3zLc54fbR6u5sOC//Gjg8gIJXas
+	 LERfmMMhmqra0RjCbSytCNAN2eEb/Wnn0K3/ScUmB2V9ZlvOWldHRKaJ4MrPyWbvXK
+	 9JjSC/Su3miI/WgZo/aPW0RyEKB+s6dVuDyP+X/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avi Shalev <avi.shalev@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Song Yoong Siang <yoong.siang.song@intel.com>,
-	Chwee-Lin Choong <chwee.lin.choong@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 023/169] igc: fix race condition in TX timestamp read for register 0
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Subject: [PATCH 6.18 061/227] ARM: dts: microchip: sama7d65: fix size-cells property for i2c3
 Date: Wed, 28 Jan 2026 16:21:46 +0100
-Message-ID: <20260128145334.857092377@linuxfoundation.org>
+Message-ID: <20260128145346.537316585@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,150 +73,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212467-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212256-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_PROHIBIT(0.00)[0.0.2.88:email];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D7915A56EC
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,microchip.com:email]
+X-Rspamd-Queue-Id: 742AEA5C30
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-[ Upstream commit 6990dc392a9ab10e52af37e0bee8c7b753756dc4 ]
+commit 94ad504e67cd3be94fa1b2fed0cb87da0d8f9396 upstream.
 
-The current HW bug workaround checks the TXTT_0 ready bit first,
-then reads TXSTMPL_0 twice (before and after reading TXSTMPH_0)
-to detect whether a new timestamp was captured by timestamp
-register 0 during the workaround.
+Fix the #size-cells property for i2c3 node and remove the dtbs_check
+error telling that "#size-cells: 0 was expected" from schema
+atmel,at91sam-i2c.yaml and i2c-controller.yaml.
 
-This sequence has a race: if a new timestamp is captured after
-checking the TXTT_0 bit but before the first TXSTMPL_0 read, the
-detection fails because both the "old" and "new" values come from
-the same timestamp.
-
-Fix by reading TXSTMPL_0 first to establish a baseline, then
-checking the TXTT_0 bit. This ensures any timestamp captured
-during the race window will be detected.
-
-Old sequence:
-  1. Check TXTT_0 ready bit
-  2. Read TXSTMPL_0 (baseline)
-  3. Read TXSTMPH_0 (interrupt workaround)
-  4. Read TXSTMPL_0 (detect changes vs baseline)
-
-New sequence:
-  1. Read TXSTMPL_0 (baseline)
-  2. Check TXTT_0 ready bit
-  3. Read TXSTMPH_0 (interrupt workaround)
-  4. Read TXSTMPL_0 (detect changes vs baseline)
-
-Fixes: c789ad7cbebc ("igc: Work around HW bug causing missing timestamps")
-Suggested-by: Avi Shalev <avi.shalev@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Co-developed-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b51e4aea3ecf ("ARM: dts: microchip: sama7d65: Add FLEXCOMs to sama7d65 SoC")
+Cc: stable@vger.kernel.org # 6.16+
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20260102170135.70717-3-nicolas.ferre@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ptp.c | 43 ++++++++++++++----------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+ arch/arm/boot/dts/microchip/sama7d65.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index efc7b30e42113..a272d1a29eadb 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -785,36 +785,43 @@ static void igc_ptp_tx_reg_to_stamp(struct igc_adapter *adapter,
- static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
- {
- 	struct igc_hw *hw = &adapter->hw;
-+	u32 txstmpl_old;
- 	u64 regval;
- 	u32 mask;
- 	int i;
- 
-+	/* Establish baseline of TXSTMPL_0 before checking TXTT_0.
-+	 * This baseline is used to detect if a new timestamp arrives in
-+	 * register 0 during the hardware bug workaround below.
-+	 */
-+	txstmpl_old = rd32(IGC_TXSTMPL);
-+
- 	mask = rd32(IGC_TSYNCTXCTL) & IGC_TSYNCTXCTL_TXTT_ANY;
- 	if (mask & IGC_TSYNCTXCTL_TXTT_0) {
- 		regval = rd32(IGC_TXSTMPL);
- 		regval |= (u64)rd32(IGC_TXSTMPH) << 32;
- 	} else {
--		/* There's a bug in the hardware that could cause
--		 * missing interrupts for TX timestamping. The issue
--		 * is that for new interrupts to be triggered, the
--		 * IGC_TXSTMPH_0 register must be read.
-+		/* TXTT_0 not set - register 0 has no new timestamp initially.
-+		 *
-+		 * Hardware bug: Future timestamp interrupts won't fire unless
-+		 * TXSTMPH_0 is read, even if the timestamp was captured in
-+		 * registers 1-3.
- 		 *
--		 * To avoid discarding a valid timestamp that just
--		 * happened at the "wrong" time, we need to confirm
--		 * that there was no timestamp captured, we do that by
--		 * assuming that no two timestamps in sequence have
--		 * the same nanosecond value.
-+		 * Workaround: Read TXSTMPH_0 here to enable future interrupts.
-+		 * However, this read clears TXTT_0. If a timestamp arrives in
-+		 * register 0 after checking TXTT_0 but before this read, it
-+		 * would be lost.
- 		 *
--		 * So, we read the "low" register, read the "high"
--		 * register (to latch a new timestamp) and read the
--		 * "low" register again, if "old" and "new" versions
--		 * of the "low" register are different, a valid
--		 * timestamp was captured, we can read the "high"
--		 * register again.
-+		 * To detect this race: We saved a baseline read of TXSTMPL_0
-+		 * before TXTT_0 check. After performing the workaround read of
-+		 * TXSTMPH_0, we read TXSTMPL_0 again. Since consecutive
-+		 * timestamps never share the same nanosecond value, a change
-+		 * between the baseline and new TXSTMPL_0 indicates a timestamp
-+		 * arrived during the race window. If so, read the complete
-+		 * timestamp.
- 		 */
--		u32 txstmpl_old, txstmpl_new;
-+		u32 txstmpl_new;
- 
--		txstmpl_old = rd32(IGC_TXSTMPL);
- 		rd32(IGC_TXSTMPH);
- 		txstmpl_new = rd32(IGC_TXSTMPL);
- 
-@@ -829,7 +836,7 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
- 
- done:
- 	/* Now that the problematic first register was handled, we can
--	 * use retrieve the timestamps from the other registers
-+	 * retrieve the timestamps from the other registers
- 	 * (starting from '1') with less complications.
- 	 */
- 	for (i = 1; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
+diff --git a/arch/arm/boot/dts/microchip/sama7d65.dtsi b/arch/arm/boot/dts/microchip/sama7d65.dtsi
+index 5f3a7b178aa7..868045c650a7 100644
+--- a/arch/arm/boot/dts/microchip/sama7d65.dtsi
++++ b/arch/arm/boot/dts/microchip/sama7d65.dtsi
+@@ -527,7 +527,7 @@ i2c3: i2c@600 {
+ 				interrupts = <GIC_SPI 37 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&pmc PMC_TYPE_PERIPHERAL 37>;
+ 				#address-cells = <1>;
+-				#size-cells = <1>;
++				#size-cells = <0>;
+ 				dmas = <&dma0 AT91_XDMAC_DT_PERID(12)>,
+ 				       <&dma0 AT91_XDMAC_DT_PERID(11)>;
+ 				dma-names = "tx", "rx";
 -- 
-2.51.0
+2.52.0
 
 
 
