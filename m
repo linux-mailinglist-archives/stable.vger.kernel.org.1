@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-212310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212192-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEVDGawxemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:28 +0100
+	id nWoFKhsuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212192-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F00A4C4B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F56A4312
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F3E131F9CEE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:46:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 35F56303D4E0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6911B2FF178;
-	Wed, 28 Jan 2026 15:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0462D9796;
+	Wed, 28 Jan 2026 15:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Zhm2TEt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XiHfjnXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291D22DEA6B;
-	Wed, 28 Jan 2026 15:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C52F2D9494;
+	Wed, 28 Jan 2026 15:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615089; cv=none; b=MW0qx/8n47AE1g+yvCm/xudszZHdzJ+xGdcPc4XhzDKOl1TLXUizkXQejPoisdlKssbOIGzozP1aE6GSc7mmnQN8yKX1ATYtsmZo8birA1DNfT/lqa1agwcl8Vaqu+XUQ6eC7bntVHJe/D6l7yjUQ4KaEnHtoqJ4CuGAsAD22Ck=
+	t=1769614697; cv=none; b=VXXJe/TxrTbuf+PEWCGvtBxdMHTLW95v9nv7u8Pd17P9wCC1ba/GV4odErbbdYZ0ePySbsd55t8hVJIMqLJU0MA9Rwb86/2jXrOkQvv5B/haI0QWmjdqyBXOOhdMGJ1RP0NGwtZ6cJNjt0PsJw1mqOtasNOTD029ojThAlcedQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615089; c=relaxed/simple;
-	bh=1y0/brp4D0Mp+zqv/J38JfzEpGmsvO3JylfdLF3KyZg=;
+	s=arc-20240116; t=1769614697; c=relaxed/simple;
+	bh=VAyt3DjCuHeWWYn509+GW9lh/CaD1AoFzbVKq2qecR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jVJxxInXKYoqSzi7xfIeOmuphsN9hRQ+k/4ncD1qdmpF8fyn6coE+Nfuf6pRMT7D1TeuUZnm+exA7x2i+bOCpcMsPxX6WirGsrSmRh2F//3Fg/hJzFBoyDIp/gWpjoz3zU0SHpuidr+Eu4GWsM5RFjNKQu6Q0ca9mcLp8NS0/uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Zhm2TEt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2393C4CEF7;
-	Wed, 28 Jan 2026 15:44:48 +0000 (UTC)
+	 MIME-Version; b=rfuQLE19LcSzrKiXqcS9F8dwHVMLXXjUGnCoE7jjvsKQQZaIMIg+idrBm+l69Al7WDQ5SBbYCXPQ2NpUvE0RS30AvR+k8iYo1tIFrrGr1NviEvoLFtssZrAr0VuKsKdH6pJb0QWkfhKHpRJwJ0C5ub2APFThZhM+5iXzvLBZJbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XiHfjnXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADA1C4CEF1;
+	Wed, 28 Jan 2026 15:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615089;
-	bh=1y0/brp4D0Mp+zqv/J38JfzEpGmsvO3JylfdLF3KyZg=;
+	s=korg; t=1769614696;
+	bh=VAyt3DjCuHeWWYn509+GW9lh/CaD1AoFzbVKq2qecR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Zhm2TEtrTldt35GzQjZQ1QD8UcaPAgRVMWG0B50t4sdWs9jUqkutvKiA2JIftDSj
-	 sR8ql/bqVvPe4HMcDsbm5kDTPJIhuDGWOm4lxLo7XthdmL8+zZFd04uzigkIH2ByyV
-	 h21unwlEUAOsrX6m1MH3uBhzvCcMD+FypDf61Tsw=
+	b=XiHfjnXV3Y0ajtXKeYSvMs0LxXddyvJ2ze9LweilzpeRn7Bjl2UMwte+Z3IhBLLz0
+	 hdUYQCDB/IFydtO946wV7f7nbk12rWnBv6g7jtYt8a4M5ZuD2i/s+K6dyvTdqaYNmi
+	 W5b6POWfzmHQMyJkrKwmJoclpOdrQfgMlJSdlGYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Yang <mmyangfl@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Melbin K Mathew <mlbnkm1@gmail.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/169] net: hns3: fix data race in hns3_fetch_stats
+Subject: [PATCH 6.6 181/254] vsock/virtio: cap TX credit to local buffer size
 Date: Wed, 28 Jan 2026 16:22:37 +0100
-Message-ID: <20260128145336.671442271@linuxfoundation.org>
+Message-ID: <20260128145351.317657113@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,142 +70,159 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212310-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212192-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C4F00A4C4B
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 82F56A4312
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Yang <mmyangfl@gmail.com>
+From: Melbin K Mathew <mlbnkm1@gmail.com>
 
-[ Upstream commit 748a81c8ceda1fdbdcd0af595947422e810442aa ]
+[ Upstream commit 8ee784fdf006cbe8739cfa093f54d326cbf54037 ]
 
-In hns3_fetch_stats(), ring statistics, protected by u64_stats_sync, are
-read and accumulated in ignorance of possible u64_stats_fetch_retry()
-events. These statistics are already accumulated by
-hns3_ring_stats_update(). Fix this by reading them into a temporary
-buffer first.
+The virtio transports derives its TX credit directly from peer_buf_alloc,
+which is set from the remote endpoint's SO_VM_SOCKETS_BUFFER_SIZE value.
 
-Fixes: b20d7fe51e0d ("net: hns3: add some statitics info to tx process")
-Signed-off-by: David Yang <mmyangfl@gmail.com>
-Link: https://patch.msgid.link/20260119160759.1455950-1-mmyangfl@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On the host side this means that the amount of data we are willing to
+queue for a connection is scaled by a guest-chosen buffer size, rather
+than the host's own vsock configuration. A malicious guest can advertise
+a large buffer and read slowly, causing the host to allocate a
+correspondingly large amount of sk_buff memory.
+The same thing would happen in the guest with a malicious host, since
+virtio transports share the same code base.
+
+Introduce a small helper, virtio_transport_tx_buf_size(), that
+returns min(peer_buf_alloc, buf_alloc), and use it wherever we consume
+peer_buf_alloc.
+
+This ensures the effective TX window is bounded by both the peer's
+advertised buffer and our own buf_alloc (already clamped to
+buffer_max_size via SO_VM_SOCKETS_BUFFER_MAX_SIZE), so a remote peer
+cannot force the other to queue more data than allowed by its own
+vsock settings.
+
+On an unpatched Ubuntu 22.04 host (~64 GiB RAM), running a PoC with
+32 guest vsock connections advertising 2 GiB each and reading slowly
+drove Slab/SUnreclaim from ~0.5 GiB to ~57 GiB; the system only
+recovered after killing the QEMU process. That said, if QEMU memory is
+limited with cgroups, the maximum memory used will be limited.
+
+With this patch applied:
+
+  Before:
+    MemFree:        ~61.6 GiB
+    Slab:           ~142 MiB
+    SUnreclaim:     ~117 MiB
+
+  After 32 high-credit connections:
+    MemFree:        ~61.5 GiB
+    Slab:           ~178 MiB
+    SUnreclaim:     ~152 MiB
+
+Only ~35 MiB increase in Slab/SUnreclaim, no host OOM, and the guest
+remains responsive.
+
+Compatibility with non-virtio transports:
+
+  - VMCI uses the AF_VSOCK buffer knobs to size its queue pairs per
+    socket based on the local vsk->buffer_* values; the remote side
+    cannot enlarge those queues beyond what the local endpoint
+    configured.
+
+  - Hyper-V's vsock transport uses fixed-size VMBus ring buffers and
+    an MTU bound; there is no peer-controlled credit field comparable
+    to peer_buf_alloc, and the remote endpoint cannot drive in-flight
+    kernel memory above those ring sizes.
+
+  - The loopback path reuses virtio_transport_common.c, so it
+    naturally follows the same semantics as the virtio transport.
+
+This change is limited to virtio_transport_common.c and thus affects
+virtio-vsock, vhost-vsock, and loopback, bringing them in line with the
+"remote window intersected with local policy" behaviour that VMCI and
+Hyper-V already effectively have.
+
+Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
+[Stefano: small adjustments after changing the previous patch]
+[Stefano: tweak the commit message]
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Link: https://patch.msgid.link/20260121093628.9941-4-sgarzare@redhat.com
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 69 ++++++++++---------
- 1 file changed, 36 insertions(+), 33 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 94432e237640d..b477bd286ed72 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -2500,44 +2500,47 @@ static netdev_features_t hns3_features_check(struct sk_buff *skb,
- static void hns3_fetch_stats(struct rtnl_link_stats64 *stats,
- 			     struct hns3_enet_ring *ring, bool is_tx)
- {
-+	struct ring_stats ring_stats;
- 	unsigned int start;
- 
- 	do {
- 		start = u64_stats_fetch_begin(&ring->syncp);
--		if (is_tx) {
--			stats->tx_bytes += ring->stats.tx_bytes;
--			stats->tx_packets += ring->stats.tx_pkts;
--			stats->tx_dropped += ring->stats.sw_err_cnt;
--			stats->tx_dropped += ring->stats.tx_vlan_err;
--			stats->tx_dropped += ring->stats.tx_l4_proto_err;
--			stats->tx_dropped += ring->stats.tx_l2l3l4_err;
--			stats->tx_dropped += ring->stats.tx_tso_err;
--			stats->tx_dropped += ring->stats.over_max_recursion;
--			stats->tx_dropped += ring->stats.hw_limitation;
--			stats->tx_dropped += ring->stats.copy_bits_err;
--			stats->tx_dropped += ring->stats.skb2sgl_err;
--			stats->tx_dropped += ring->stats.map_sg_err;
--			stats->tx_errors += ring->stats.sw_err_cnt;
--			stats->tx_errors += ring->stats.tx_vlan_err;
--			stats->tx_errors += ring->stats.tx_l4_proto_err;
--			stats->tx_errors += ring->stats.tx_l2l3l4_err;
--			stats->tx_errors += ring->stats.tx_tso_err;
--			stats->tx_errors += ring->stats.over_max_recursion;
--			stats->tx_errors += ring->stats.hw_limitation;
--			stats->tx_errors += ring->stats.copy_bits_err;
--			stats->tx_errors += ring->stats.skb2sgl_err;
--			stats->tx_errors += ring->stats.map_sg_err;
--		} else {
--			stats->rx_bytes += ring->stats.rx_bytes;
--			stats->rx_packets += ring->stats.rx_pkts;
--			stats->rx_dropped += ring->stats.l2_err;
--			stats->rx_errors += ring->stats.l2_err;
--			stats->rx_errors += ring->stats.l3l4_csum_err;
--			stats->rx_crc_errors += ring->stats.l2_err;
--			stats->multicast += ring->stats.rx_multicast;
--			stats->rx_length_errors += ring->stats.err_pkt_len;
--		}
-+		ring_stats = ring->stats;
- 	} while (u64_stats_fetch_retry(&ring->syncp, start));
-+
-+	if (is_tx) {
-+		stats->tx_bytes += ring_stats.tx_bytes;
-+		stats->tx_packets += ring_stats.tx_pkts;
-+		stats->tx_dropped += ring_stats.sw_err_cnt;
-+		stats->tx_dropped += ring_stats.tx_vlan_err;
-+		stats->tx_dropped += ring_stats.tx_l4_proto_err;
-+		stats->tx_dropped += ring_stats.tx_l2l3l4_err;
-+		stats->tx_dropped += ring_stats.tx_tso_err;
-+		stats->tx_dropped += ring_stats.over_max_recursion;
-+		stats->tx_dropped += ring_stats.hw_limitation;
-+		stats->tx_dropped += ring_stats.copy_bits_err;
-+		stats->tx_dropped += ring_stats.skb2sgl_err;
-+		stats->tx_dropped += ring_stats.map_sg_err;
-+		stats->tx_errors += ring_stats.sw_err_cnt;
-+		stats->tx_errors += ring_stats.tx_vlan_err;
-+		stats->tx_errors += ring_stats.tx_l4_proto_err;
-+		stats->tx_errors += ring_stats.tx_l2l3l4_err;
-+		stats->tx_errors += ring_stats.tx_tso_err;
-+		stats->tx_errors += ring_stats.over_max_recursion;
-+		stats->tx_errors += ring_stats.hw_limitation;
-+		stats->tx_errors += ring_stats.copy_bits_err;
-+		stats->tx_errors += ring_stats.skb2sgl_err;
-+		stats->tx_errors += ring_stats.map_sg_err;
-+	} else {
-+		stats->rx_bytes += ring_stats.rx_bytes;
-+		stats->rx_packets += ring_stats.rx_pkts;
-+		stats->rx_dropped += ring_stats.l2_err;
-+		stats->rx_errors += ring_stats.l2_err;
-+		stats->rx_errors += ring_stats.l3l4_csum_err;
-+		stats->rx_crc_errors += ring_stats.l2_err;
-+		stats->multicast += ring_stats.rx_multicast;
-+		stats->rx_length_errors += ring_stats.err_pkt_len;
-+	}
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 1401177e26222..4c374c36c29d1 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -628,6 +628,15 @@ virtio_transport_seqpacket_dequeue(struct vsock_sock *vsk,
  }
+ EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_dequeue);
  
- static void hns3_nic_get_stats64(struct net_device *netdev,
++static u32 virtio_transport_tx_buf_size(struct virtio_vsock_sock *vvs)
++{
++	/* The peer advertises its receive buffer via peer_buf_alloc, but we
++	 * cap it to our local buf_alloc so a remote peer cannot force us to
++	 * queue more data than our own buffer configuration allows.
++	 */
++	return min(vvs->peer_buf_alloc, vvs->buf_alloc);
++}
++
+ int
+ virtio_transport_seqpacket_enqueue(struct vsock_sock *vsk,
+ 				   struct msghdr *msg,
+@@ -637,7 +646,7 @@ virtio_transport_seqpacket_enqueue(struct vsock_sock *vsk,
+ 
+ 	spin_lock_bh(&vvs->tx_lock);
+ 
+-	if (len > vvs->peer_buf_alloc) {
++	if (len > virtio_transport_tx_buf_size(vvs)) {
+ 		spin_unlock_bh(&vvs->tx_lock);
+ 		return -EMSGSIZE;
+ 	}
+@@ -691,7 +700,8 @@ static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
+ 	 * we have bytes in flight (tx_cnt - peer_fwd_cnt), the subtraction
+ 	 * does not underflow.
+ 	 */
+-	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
++	bytes = (s64)virtio_transport_tx_buf_size(vvs) -
++		(vvs->tx_cnt - vvs->peer_fwd_cnt);
+ 	if (bytes < 0)
+ 		bytes = 0;
+ 
 -- 
 2.51.0
 
