@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-212709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFoAG9qYemms8QEAu9opvQ
-	(envelope-from <stable+bounces-212709-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 00:16:42 +0100
+	id uD88OtuYemms8QEAu9opvQ
+	(envelope-from <stable+bounces-212711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 00:16:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E47C0A9E29
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 00:16:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADEBAA9E33
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 00:16:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CDE863016256
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:16:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A19383014772
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D49A33123C;
-	Wed, 28 Jan 2026 23:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F2629D265;
+	Wed, 28 Jan 2026 23:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dHGiSKrg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Cfmr4kG+"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F7D2264A8
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 23:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297602DEA6E
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 23:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769642200; cv=none; b=dgqFzknh5Bl9z4zm9eKRuWWvtB/q9IAdZlkMRZABTKcQG4EiXlrBc4mlaBI+IZGSafSb7s45oBmzn9yFmcm8sijyJjJZ9W6DkoVWhDXbINShlvqdpnDF4cXx+YNnWpFP/WoHmpHA54IfQzN/zDYeJnJO8LIL9pOFoxJvv13Gj6c=
+	t=1769642202; cv=none; b=XY96eHSU8GcPSAXsjRtHhRfCxfMMabFWLePWQ0TU6Y8tEhAkuse6kbxmggoWJ4HLto8svQc5eKbaKlKh8Oldl3c+WVl6tW75Hu4iMMsRveVVDI1H/dIXByniRqtIO2bF56tbfcAoLoUz22cAAW2zOU/4GZihrmlp9whsOhx1Us4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769642200; c=relaxed/simple;
-	bh=b4g/sRgvIZ8pMR4zw+kEXTJPFw16baaA0W+pIdXPmgw=;
+	s=arc-20240116; t=1769642202; c=relaxed/simple;
+	bh=6piSAGUydFEVLrWUa1H6WrRq9PKT544OvcATww2IUdc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TPYc4kSfARUdAGn1HKsimXFWRiuULb6T5k9M4lQkVYauqlw0VNJZQzSZmImNtUryLIeqc1WwM4IPO7hrtPk0+/1OedHcVSGqWPKCeL7KOZzNI+zlK8hiXQ1O1mgEBWgkkp6JhAkYk+u+/CwlnHZ2kjkPAI8kpZXCobyO/qMUrsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dHGiSKrg; arc=none smtp.client-ip=192.198.163.13
+	 MIME-Version; b=KiMVBHrxoMenNtjLkhO7jl6Dzp65ez3QYhXerntc4Kqw1lW13W9Z2iBk+MT/81KB0NfWbwNROrgfGDunAE1Tzzzy06pD8Au5pjS+X+kJK95BjlQzSzRhDCdgmFYwFvz3SYzYL7kzN8LTgNNNLxMzf59b0oFgXv4p9IN8xyi64ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Cfmr4kG+; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769642199; x=1801178199;
+  t=1769642200; x=1801178200;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=b4g/sRgvIZ8pMR4zw+kEXTJPFw16baaA0W+pIdXPmgw=;
-  b=dHGiSKrgcI5RYcXVrP0OryOQbxPu0+JpfZdnBK1Z4rCghzooYPpoe0Zk
-   J6JT2VSgnMt9zsBhLGUtgLQUDxMYEhC7/6+PPYOlXbSkl7DdhQrkaMtRk
-   3FcjxiENgj1J88q+sUTkLDG0IZnbp7zc4R2vvMQsiD8UHRJeQ0WjU5h9X
-   bZxE8zjG8SX8t/iEhVltWP65D21vYulcZ/ChKl74YWtsj0ql8+uoXMSrm
-   c6tqJm0IagxC9g0Y5jN50TGt6OAX4b2/ricg60Vtj3TTL3pOVHkh8zNlh
-   WSMhaE2S87V5IPrJZxeg6oUtr9+N0j8dtf8NmIQMgoA+GzkT69J1ek9sj
-   Q==;
-X-CSE-ConnectionGUID: hDfnA4a9QLWejtswGSCG0Q==
-X-CSE-MsgGUID: E6ZfMsdRSLG7uIeaQrYG0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="73462219"
+  bh=6piSAGUydFEVLrWUa1H6WrRq9PKT544OvcATww2IUdc=;
+  b=Cfmr4kG+QDYir6Ce5CjLmakhm3wwjSkXf3l1+uQ9Wj/TOJa31dhvRXKX
+   AH2JVJyK/2WLZFIo2sbf7GsoHOsqpU6cQpLpst16MWOKzZ7Q3rdcBxLr2
+   09NNRQLDe4PNr7ZoODmhN2sQNZStzdH2JoYP9R/GNUYvW8Qt1n6/wuDXU
+   W8I6Dp3FLicv00sev+0sx7ZeCCTfgZQvK9B5xs2st577q4+w/KAc9315P
+   HhKxlARgTQpq/Ar+OQomLBVW86N+rqbZzT3sQFGYmHCuObdr5Lemsa9v8
+   NcyF/ASdAKSkXaqKhbtj1q7oEhCqcpChLEzwnjzgwT8u2dQmF7MqNV+2T
+   A==;
+X-CSE-ConnectionGUID: rpZk/E5tTmqoA79eBni92Q==
+X-CSE-MsgGUID: hiBH/SUzRgu+khVrh5gubg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="73462222"
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="73462219"
+   d="scan'208";a="73462222"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
   by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 15:16:36 -0800
-X-CSE-ConnectionGUID: SsGEddwgSfmcTB8+QeRBlA==
-X-CSE-MsgGUID: EIy/yEMrSPKALCItQ2Msfg==
+X-CSE-ConnectionGUID: tHrcOhpdRe61V8+mKKCRFA==
+X-CSE-MsgGUID: sdPp+btKTdmkNxNDh5N51Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="213266645"
+   d="scan'208";a="213266651"
 Received: from guc-pnp-dev-box-1.fm.intel.com ([10.1.39.24])
   by fmviesa004.fm.intel.com with ESMTP; 28 Jan 2026 15:16:36 -0800
 From: Zhanjun Dong <zhanjun.dong@intel.com>
@@ -66,9 +66,9 @@ To: intel-xe@lists.freedesktop.org
 Cc: Zhanjun Dong <zhanjun.dong@intel.com>,
 	stable@vger.kernel.org,
 	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH v5 3/6] drm/xe: Trigger queue cleanup if not in wedged mode 2
-Date: Wed, 28 Jan 2026 18:16:31 -0500
-Message-Id: <20260128231634.982494-4-zhanjun.dong@intel.com>
+Subject: [PATCH v5 5/6] drm/xe/guc: Ensure CT state transitions via STOP before DISABLED
+Date: Wed, 28 Jan 2026 18:16:33 -0500
+Message-Id: <20260128231634.982494-6-zhanjun.dong@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260128231634.982494-1-zhanjun.dong@intel.com>
 References: <20260128231634.982494-1-zhanjun.dong@intel.com>
@@ -90,12 +90,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212709-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[intel.com:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212711-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[zhanjun.dong@intel.com,stable@vger.kernel.org];
@@ -106,73 +106,33 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E47C0A9E29
+X-Rspamd-Queue-Id: ADEBAA9E33
 X-Rspamd-Action: no action
 
-The intent of wedging a device is to allow queues to continue running
-only in wedged mode 2. In other modes, queues should initiate cleanup
-and signal all remaining fences. Fix xe_guc_submit_wedge to correctly
-clean up queues when wedge mode != 2.
+The GuC CT state transition requires moving to the STOP state before
+entering the DISABLED state. Update the driver teardown sequence to make
+the proper state machine transitions.
 
-Fixes: 7dbe8af13c18 ("drm/xe: Wedge the entire device")
+Fixes: ee4b32220a6b ("drm/xe/guc: Add devm release action to safely tear down CT")
 Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c | 32 ++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_ct.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index 92ea32423838..612ded5878fd 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1326,6 +1326,7 @@ static void disable_scheduling_deregister(struct xe_guc *guc,
-  */
- void xe_guc_submit_wedge(struct xe_guc *guc)
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+index dfbf76037b04..6a658f085e0f 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -345,6 +345,7 @@ static void guc_action_disable_ct(void *arg)
  {
-+	struct xe_device *xe = guc_to_xe(guc);
- 	struct xe_gt *gt = guc_to_gt(guc);
- 	struct xe_exec_queue *q;
- 	unsigned long index;
-@@ -1340,20 +1341,25 @@ void xe_guc_submit_wedge(struct xe_guc *guc)
- 	if (!guc->submission_state.initialized)
- 		return;
+ 	struct xe_guc_ct *ct = arg;
  
--	err = devm_add_action_or_reset(guc_to_xe(guc)->drm.dev,
--				       guc_submit_wedged_fini, guc);
--	if (err) {
--		xe_gt_err(gt, "Failed to register clean-up in wedged.mode=%s; "
--			  "Although device is wedged.\n",
--			  xe_wedged_mode_to_string(XE_WEDGED_MODE_UPON_ANY_HANG_NO_RESET));
--		return;
--	}
-+	if (xe->wedged.mode == 2) {
-+		err = devm_add_action_or_reset(guc_to_xe(guc)->drm.dev,
-+					       guc_submit_wedged_fini, guc);
-+		if (err) {
-+			xe_gt_err(gt, "Failed to register clean-up on wedged.mode=2; "
-+				  "Although device is wedged.\n");
-+			return;
-+		}
- 
--	mutex_lock(&guc->submission_state.lock);
--	xa_for_each(&guc->submission_state.exec_queue_lookup, index, q)
--		if (xe_exec_queue_get_unless_zero(q))
--			set_exec_queue_wedged(q);
--	mutex_unlock(&guc->submission_state.lock);
-+		mutex_lock(&guc->submission_state.lock);
-+		xa_for_each(&guc->submission_state.exec_queue_lookup, index, q)
-+			if (xe_exec_queue_get_unless_zero(q))
-+				set_exec_queue_wedged(q);
-+		mutex_unlock(&guc->submission_state.lock);
-+	} else {
-+		/* Forcefully kill any remaining exec queues, signal fences */
-+		xe_guc_submit_stop(guc);
-+		xe_guc_submit_pause_abort(guc);
-+	}
++	xe_guc_ct_stop(ct);
+ 	guc_ct_change_state(ct, XE_GUC_CT_STATE_DISABLED);
  }
  
- static bool guc_submit_hint_wedged(struct xe_guc *guc)
 -- 
 2.34.1
 
