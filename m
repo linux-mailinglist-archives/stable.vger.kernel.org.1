@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212095-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OOBKLiMxemlT4gEAu9opvQ
-	(envelope-from <stable+bounces-212274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:11 +0100
+	id 6CURGBIvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212095-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67366A4AE2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE7DA458A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A47C5312B77A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4401321D0FE
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6371B2DE1E4;
-	Wed, 28 Jan 2026 15:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40323248F72;
+	Wed, 28 Jan 2026 15:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhCggK1i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voTJQkEu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E882F5A2D;
-	Wed, 28 Jan 2026 15:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040D22512FF;
+	Wed, 28 Jan 2026 15:33:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614968; cv=none; b=n/ZZAgHawFSqdR9EQcv1BKN6rYzWNh/x0dvhe/Y2ARiq8lL5lhhNle5zRoglQuVaoVJZ1eB3FuCdkBKrS29i3bxhAiZsWFjQvFsLbeBywvBe/rhAN1WIGO9jq8wBpvRdX/pHgrfRs3mpjW1tV3v4/guj4Q6zOZ67h39I1KJDGKo=
+	t=1769614384; cv=none; b=DRrlGJUggF5O9NHkh/gXkQtMUzbxkobACnFnw8GJeRWH9KpDruMmBm+jpMhDIWrHcR0m1CgyKJyU9ydpW/nxvQglb18r0KSG8fmxCKQtYXBRK7bzYHXmUdfVdg5i40PioF1BoCsb5toTTBw0cG48i91shodOZkLG2Ffv1r2pqzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614968; c=relaxed/simple;
-	bh=UI25O4yvcvzJoekYTroFUwjYIjkhhS9QsXdMpG4xuV8=;
+	s=arc-20240116; t=1769614384; c=relaxed/simple;
+	bh=iA19AhpldGnvCs3+y9ay4UAE/Ga0PsiZkqTNqRnSqg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxgpRIhvrMv2APSAo4ZxqZcIFcTTDw8//6supMaGnPXOoSKxEk0mhuV1Ov6mV0AnaxJmINqUs9GdcBL2fsOg9lwY/gzV/K9hNcOX54sly9tNhpN9GpmD+g0bzJDUYWSlfZHUuBxMypXErjMw1YDhOASxjg0SSEoGP4LBOKuC5os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhCggK1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA17FC4CEF7;
-	Wed, 28 Jan 2026 15:42:47 +0000 (UTC)
+	 MIME-Version; b=QKdYEOo7J2nzdIHeDMM0x7c4mYFmwHPJlNvm76dlvwl6sivBgj7gShiqTdUF9YP9lCYPdxDcSj3DAl1kgtX+3zKasqdiv99uPCCKRja0ZCpjYANM8Xwd2RTJIXw96GFwGN6YFjOElnKvXA2JClrC8+xeae+MZXQ0Zb/uuCkYeBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voTJQkEu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FD1C4CEF1;
+	Wed, 28 Jan 2026 15:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614968;
-	bh=UI25O4yvcvzJoekYTroFUwjYIjkhhS9QsXdMpG4xuV8=;
+	s=korg; t=1769614383;
+	bh=iA19AhpldGnvCs3+y9ay4UAE/Ga0PsiZkqTNqRnSqg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IhCggK1iWkYuZQsO3+ch/OKJPVPCB2wKz8bb8Ag3Y2lpaATGaQrL10kWLGDjpP01k
-	 xVJA9bjjeK7ppgdBXHtx5ILklWl1wR7cq7M3OEWh8XbePmZ9hbuICz2NlZgAQr8W10
-	 s480EcEwVvn9R/FpQXM9hyOrEZqEqSztZjb8JmI0=
+	b=voTJQkEunGdOrOm90H3G2lzi3xcoTRYMFqGLEX98QLeiMFpcvcZCH68o0rNQIh9l7
+	 7iIuQu4BH3W39IzfiHw0TuqHRLQmpz8y/Hpg2zMk2A1hfupew/hCNDPwsotX67+63b
+	 ngeaco3tnWS+CgKTZRQocHlWjJrIMjqmderMYwWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Mark Harmstone <mark@harmstone.com>,
-	David Sterba <dsterba@suse.com>,
+	David Ahern <dsahern@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 012/169] btrfs: fix missing fields in superblock backup with BLOCK_GROUP_TREE
-Date: Wed, 28 Jan 2026 16:21:35 +0100
-Message-ID: <20260128145334.458102893@linuxfoundation.org>
+Subject: [PATCH 6.6 120/254] selftests/net: convert fib-onlink-tests.sh to run it in unique namespace
+Date: Wed, 28 Jan 2026 16:21:36 +0100
+Message-ID: <20260128145349.141352657@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,74 +70,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212274-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-212095-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.984];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 67366A4AE2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lib.sh:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8DE7DA458A
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Harmstone <mark@harmstone.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 1d8f69f453c2e8a2d99b158e58e02ed65031fa6d ]
+[ Upstream commit 3a06833b2adc0a902f2469ad4ce41ccd64f1f3ab ]
 
-When the BLOCK_GROUP_TREE compat_ro flag is set, the extent root and
-csum root fields are getting missed.
+Remove PEER_CMD, which is not used in this test
 
-This is because EXTENT_TREE_V2 treated these differently, and when
-they were split off this special-casing was mistakenly assigned to
-BGT rather than the rump EXTENT_TREE_V2. There's no reason why the
-existence of the block group tree should mean that we don't record the
-details of the last commit's extent root and csum root.
+Here is the test result after conversion.
 
-Fix the code in backup_super_roots() so that the correct check gets
-made.
+ ]# ./fib-onlink-tests.sh
+ Error: ipv4: FIB table does not exist.
+ Flush terminated
+ Error: ipv6: FIB table does not exist.
+ Flush terminated
 
-Fixes: 1c56ab991903 ("btrfs: separate BLOCK_GROUP_TREE compat RO flag from EXTENT_TREE_V2")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Mark Harmstone <mark@harmstone.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+ ########################################
+ Configuring interfaces
+
+   ...
+
+     TEST: Gateway resolves to wrong nexthop device - VRF      [ OK ]
+
+ Tests passed:  38
+ Tests failed:   0
+
+Acked-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20231213060856.4030084-11-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 4f5f148dd7c0 ("selftests: net: fib-onlink-tests: Convert to use namespaces by default")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/fib-onlink-tests.sh | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 39fe4385ed361..93300c3fe0cab 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1676,7 +1676,7 @@ static void backup_super_roots(struct btrfs_fs_info *info)
- 	btrfs_set_backup_chunk_root_level(root_backup,
- 			       btrfs_header_level(info->chunk_root->node));
+diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
+index c287b90b8af80..ec2d6ceb1f08d 100755
+--- a/tools/testing/selftests/net/fib-onlink-tests.sh
++++ b/tools/testing/selftests/net/fib-onlink-tests.sh
+@@ -3,6 +3,7 @@
  
--	if (!btrfs_fs_compat_ro(info, BLOCK_GROUP_TREE)) {
-+	if (!btrfs_fs_incompat(info, EXTENT_TREE_V2)) {
- 		struct btrfs_root *extent_root = btrfs_extent_root(info, 0);
- 		struct btrfs_root *csum_root = btrfs_csum_root(info, 0);
+ # IPv4 and IPv6 onlink tests
  
++source lib.sh
+ PAUSE_ON_FAIL=${PAUSE_ON_FAIL:=no}
+ VERBOSE=0
+ 
+@@ -74,9 +75,6 @@ TEST_NET4IN6[2]=10.2.1.254
+ # mcast address
+ MCAST6=ff02::1
+ 
+-
+-PEER_NS=bart
+-PEER_CMD="ip netns exec ${PEER_NS}"
+ VRF=lisa
+ VRF_TABLE=1101
+ PBR_TABLE=101
+@@ -176,8 +174,7 @@ setup()
+ 	set -e
+ 
+ 	# create namespace
+-	ip netns add ${PEER_NS}
+-	ip -netns ${PEER_NS} li set lo up
++	setup_ns PEER_NS
+ 
+ 	# add vrf table
+ 	ip li add ${VRF} type vrf table ${VRF_TABLE}
+@@ -219,7 +216,7 @@ setup()
+ cleanup()
+ {
+ 	# make sure we start from a clean slate
+-	ip netns del ${PEER_NS} 2>/dev/null
++	cleanup_ns ${PEER_NS} 2>/dev/null
+ 	for n in 1 3 5 7; do
+ 		ip link del ${NETIFS[p${n}]} 2>/dev/null
+ 	done
 -- 
 2.51.0
 
