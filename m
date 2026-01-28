@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-212637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MH7EKCQ0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:00 +0100
+	id SD3dKd86emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:35:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81683A51AE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75324A5DB5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A9771300D0F6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:03:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E11C7319D09B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C652D1F7B;
-	Wed, 28 Jan 2026 16:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACE73093C3;
+	Wed, 28 Jan 2026 16:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6e5Uoq7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4d7ugtj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5743726ED40;
-	Wed, 28 Jan 2026 16:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28683033E4;
+	Wed, 28 Jan 2026 16:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616190; cv=none; b=TTr4VJ/TmzO9OB3TgTrZ6dJJMZ/VVTbbApTgX2hvhxqnixjBROOO/WlQibjnId6euPZXaizeKNFfy9ChSyy4uhyHG64SIeLs5PkrbEI0KnaB12KhzbxjU+dbE9njk60TgLV/5LX5BkEFfR5OUEOxwH3/MKc7mjDMV12KqWSykDU=
+	t=1769616194; cv=none; b=k0Menr67wMCXMAcasBAvBYiAAPk6dp6xEKE3Y8OQadtCRK92U0SLco11sl1FK8v9Tu78IZ8VIX04lVtJ5pSpArB6fvyI2f7OVF/qAd3LoEU6/J87u9PAwBLjqBmKErjE7gNDfQidM5UXYbo9W4T1CjaPvHfQc5jDmr2bb1/oNcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616190; c=relaxed/simple;
-	bh=a3CfPTCUPEi6gPHR3b2GSEIFPXOaC9mqi+GcklNJmOA=;
+	s=arc-20240116; t=1769616194; c=relaxed/simple;
+	bh=9+itl2qFMu7VFkzrGaZdnlJlMlb1mZR/irnHM0t8wEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JqU8QE3nErHTFv9pAjwb9+tNm23feRMRb9Oxg5ISH9FLa2bJjDHkw2FfBkMKlLAlJdQOY3r2jNzGEEpWD60xH8ZvHb/SFA245nIaKfEEZ6OpGlr9+rfp2q9TfvC+KP+Q4a1A5wsPw/hrebg8k7RVgSvlDnSdULvbmCkO0ypl6sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6e5Uoq7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D85C4CEF1;
-	Wed, 28 Jan 2026 16:03:09 +0000 (UTC)
+	 MIME-Version; b=Wlmoz17mMHjXldpXOZPJr3Eo7HcJOVB8QX3oGM6yXWBFhULLzDx2mBOVT0zpSmJo3+PD9CCUft32AnrJrxWeR+d3ZnjWEYLkcyMsdAK3G2V/rcGE7sqdK6QTEp8crSFz7WOU1Pma/QxBP8CvYs5hUuKfC3rZ5GIqBi6PVDVGM1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4d7ugtj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D38C4CEF1;
+	Wed, 28 Jan 2026 16:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616190;
-	bh=a3CfPTCUPEi6gPHR3b2GSEIFPXOaC9mqi+GcklNJmOA=;
+	s=korg; t=1769616193;
+	bh=9+itl2qFMu7VFkzrGaZdnlJlMlb1mZR/irnHM0t8wEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6e5Uoq7AjbZBg3Y5ACW8sNaRchxOCN7FGntJzwbms1vO82FpENuGgoUJrEzvbkHi
-	 fAO5WU/ghXH4vB1S29yTmka8v9QxsjTsz3guBO/kSQ4fBlafqgY4cP2g+q0vbVAdjZ
-	 PV4RMCFW2Aa1QG+oSOPe5tPzPAon7sPxBUyYykHc=
+	b=T4d7ugtjRIKF+WxYPGuJVgpJk1CvoLP88eZqevGoss7yDhXG/NVu/tjoB7o1ki6Up
+	 oqJg62eaqHtK1tGyKCo4ZawNASu03rP1d7lSokFHX7EzCzEJqsjnUUZKPlZL2ubJqd
+	 LQcRe+fu34B/cIWIoHEvZ3rKEmWuENQOY0NqtfZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.18 209/227] can: kvaser_usb: kvaser_usb_read_bulk_callback(): fix URB memory leak
-Date: Wed, 28 Jan 2026 16:24:14 +0100
-Message-ID: <20260128145351.956688857@linuxfoundation.org>
+Subject: [PATCH 6.18 210/227] can: mcba_usb: mcba_usb_read_bulk_callback(): fix URB memory leak
+Date: Wed, 28 Jan 2026 16:24:15 +0100
+Message-ID: <20260128145351.991779993@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
 References: <20260128145344.331957407@linuxfoundation.org>
@@ -67,13 +67,13 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212637-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212638-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -88,9 +88,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,pengutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 81683A51AE
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,pengutronix.de:email]
+X-Rspamd-Queue-Id: 75324A5DB5
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
@@ -99,17 +99,16 @@ X-Rspamd-Action: no action
 
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 248e8e1a125fa875158df521b30f2cc7e27eeeaa upstream.
+commit 710a7529fb13c5a470258ff5508ed3c498d54729 upstream.
 
 Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
 gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-In kvaser_usb_set_{,data_}bittiming() -> kvaser_usb_setup_rx_urbs(), the
-URBs for USB-in transfers are allocated, added to the dev->rx_submitted
-anchor and submitted. In the complete callback
-kvaser_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
-kvaser_usb_remove_interfaces() the URBs are freed by calling
-usb_kill_anchored_urbs(&dev->rx_submitted).
+In mcba_usb_probe() -> mcba_usb_start(), the URBs for USB-in transfers are
+allocated, added to the priv->rx_submitted anchor and submitted. In the
+complete callback mcba_usb_read_bulk_callback(), the URBs are processed and
+resubmitted. In mcba_usb_close() -> mcba_urb_unlink() the URBs are freed by
+calling usb_kill_anchored_urbs(&priv->rx_submitted).
 
 However, this does not take into account that the USB framework unanchors
 the URB before the complete function is called. This means that once an
@@ -117,43 +116,38 @@ in-URB has been completed, it is no longer anchored and is ultimately not
 released in usb_kill_anchored_urbs().
 
 Fix the memory leak by anchoring the URB in the
-kvaser_usb_read_bulk_callback() to the dev->rx_submitted anchor.
+mcba_usb_read_bulk_callback()to the priv->rx_submitted anchor.
 
-Fixes: 080f40a6fa28 ("can: kvaser_usb: Add support for Kvaser CAN/USB devices")
+Fixes: 51f3baad7de9 ("can: mcba_usb: Add support for Microchip CAN BUS Analyzer")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-3-4b8cb2915571@pengutronix.de
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-4-4b8cb2915571@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/mcba_usb.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -361,7 +361,14 @@ resubmit_urb:
- 			  urb->transfer_buffer, KVASER_USB_RX_BUFFER_SIZE,
- 			  kvaser_usb_read_bulk_callback, dev);
+--- a/drivers/net/can/usb/mcba_usb.c
++++ b/drivers/net/can/usb/mcba_usb.c
+@@ -608,11 +608,17 @@ resubmit_urb:
+ 			  urb->transfer_buffer, MCBA_USB_RX_BUFF_SIZE,
+ 			  mcba_usb_read_bulk_callback, priv);
  
-+	usb_anchor_urb(urb, &dev->rx_submitted);
++	usb_anchor_urb(urb, &priv->rx_submitted);
 +
- 	err = usb_submit_urb(urb, GFP_ATOMIC);
-+	if (!err)
+ 	retval = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!retval)
 +		return;
 +
 +	usb_unanchor_urb(urb);
-+
- 	if (err == -ENODEV) {
- 		for (i = 0; i < dev->nchannels; i++) {
- 			struct kvaser_usb_net_priv *priv;
-@@ -372,7 +379,7 @@ resubmit_urb:
  
- 			netif_device_detach(priv->netdev);
- 		}
--	} else if (err) {
-+	} else {
- 		dev_err(&dev->intf->dev,
- 			"Failed resubmitting read bulk urb: %d\n", err);
- 	}
+ 	if (retval == -ENODEV)
+ 		netif_device_detach(netdev);
+-	else if (retval)
++	else
+ 		netdev_err(netdev, "failed resubmitting read bulk urb: %d\n",
+ 			   retval);
+ }
 
 
 
