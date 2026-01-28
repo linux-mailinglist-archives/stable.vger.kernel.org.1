@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-212452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UF1pGx83eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212452-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:43 +0100
+	id MBs+Df8uemmO3wEAu9opvQ
+	(envelope-from <stable+bounces-212091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E7BA56CE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC06A4572
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 95F2530D1A15
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDD4431285AB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833102F261C;
-	Wed, 28 Jan 2026 15:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE68026ED4F;
+	Wed, 28 Jan 2026 15:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gA5qwUQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUxnxbtY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CFE270ED7;
-	Wed, 28 Jan 2026 15:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F87B25332E;
+	Wed, 28 Jan 2026 15:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615568; cv=none; b=kUsAhZ8hrzioltQDxFKvVfCXuryJeXrvh6uzy6424v6cqlWENECbU7fEiAG95X4bnnb9iUBbziTs9D/3ywQIbyNNdZmGujCiFr0Fpn9HzWrWtAlUHRirvXvhE5l8YSW+0UeqX3JJuqv3/Q+H0AC0lKqAlmrCg9DLctwNnoF8uqg=
+	t=1769614370; cv=none; b=MD5O2EBc0gos0hca4r7fjLlNwiGGWloKWum5Dayo74hzg73WK8z8u+qQ3Jdn2wmrV8N7rfvcckeLP+d6nM6wrSx1XWQbw8KNnF74u8Q8gID7FuaZ9znPh4v7KiZ5RX9aDQHwSW9KpKtJQwXDnLI0KPT04dwieNF5M3VGqGCIKyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615568; c=relaxed/simple;
-	bh=03iYZY3TMTZPVudXVpXNpUUnApEiMZjZFFdBGcqyU20=;
+	s=arc-20240116; t=1769614370; c=relaxed/simple;
+	bh=nQuxAamTAIQF85vrglY6EIXOw3BlTZMeMEvaxjT+Ftk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAVDwVREN8NdDqEqXL8eMGHYzDfxfhBwd7zbjnhn7DGecaxCZOV1myU/+lPYPJ2gQMnnehevn0QNNaTJOjJ3iAFEEYGzevdCmaNXASIz6CeQRhd8S43KXga61/gzwfrXPQkVnsLxpeiz6qPbAo5YDNMbaSEGNMFd/CHGZnB4rhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gA5qwUQm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CC0C4CEF1;
-	Wed, 28 Jan 2026 15:52:47 +0000 (UTC)
+	 MIME-Version; b=abQr4rIhgxBgcu+W/lwpW3Z+LoChRz/ngS5mXB2loeD+wVel1FY0uysUuY/vWw1tMCJOQsnyZ3T8UaKqW9fR089orHN1Laq8Vq6WunJNoz4s1MNzuu62Rwv5iBjtKNyVM0aXh1b0U0wIHscWoiYN1dkYWWqzpWZJGJSRpZHe1x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUxnxbtY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C1CC4CEF7;
+	Wed, 28 Jan 2026 15:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615568;
-	bh=03iYZY3TMTZPVudXVpXNpUUnApEiMZjZFFdBGcqyU20=;
+	s=korg; t=1769614370;
+	bh=nQuxAamTAIQF85vrglY6EIXOw3BlTZMeMEvaxjT+Ftk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gA5qwUQmJlGRZDsf8+lk6A6BH4xhpQe6CocRg6AytwMbetbAOFKXXrFPguP2dK68Y
-	 jTQF4wxhInIpJ0ksfTML+P9rSodHPkckcxgY+zAMoCsYt5bgDEWUprKpkaGxmKIrFj
-	 Di1WOY6quPQAE68lQkw418f4SCFeGrukPzunMqCE=
+	b=XUxnxbtY/ATDS2YG7k4Vv5Vs+2J2YnB/xSjTJcXtPn+g1adGQ/ewfoMvRgovl/8wp
+	 NlCPaZQSJcXtHv/6Ntb0P5/xpwZJUTx0at+lEJmsya8nouOCiTYjCLiYpS9VKPxGJQ
+	 7E3/DoSd+J9FbI8+p40Z6w5Aep7Ubczo3RKzlrJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taeyang Lee <0wn@theori.io>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 047/227] crypto: authencesn - reject too-short AAD (assoclen<8) to match ESP/ESN spec
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.6 116/254] ice: Avoid detrimental cleanup for bond during interface stop
 Date: Wed, 28 Jan 2026 16:21:32 +0100
-Message-ID: <20260128145346.036884243@linuxfoundation.org>
+Message-ID: <20260128145348.998357459@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,80 +72,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212091-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212452-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,theori.io:email]
-X-Rspamd-Queue-Id: 72E7BA56CE
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8AC06A4572
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taeyang Lee <0wn@theori.io>
+From: Dave Ertman <david.m.ertman@intel.com>
 
-[ Upstream commit 2397e9264676be7794f8f7f1e9763d90bd3c7335 ]
+[ Upstream commit a9d45c22ed120cdd15ff56d0a6e4700c46451901 ]
 
-authencesn assumes an ESP/ESN-formatted AAD. When assoclen is shorter than
-the minimum expected length, crypto_authenc_esn_decrypt() can advance past
-the end of the destination scatterlist and trigger a NULL pointer dereference
-in scatterwalk_map_and_copy(), leading to a kernel panic (DoS).
+When the user issues an administrative down to an interface that is the
+primary for an aggregate bond, the prune lists are being purged. This
+breaks communication to the secondary interface, which shares a prune
+list on the main switch block while bonded together.
 
-Add a minimum AAD length check to fail fast on invalid inputs.
+For the primary interface of an aggregate, avoid deleting these prune
+lists during stop, and since they are hardcoded to specific values for
+the default vlan and QinQ vlans, the attempt to re-add them during the
+up phase will quietly fail without any additional problem.
 
-Fixes: 104880a6b470 ("crypto: authencesn - Convert to new AEAD interface")
-Reported-By: Taeyang Lee <0wn@theori.io>
-Signed-off-by: Taeyang Lee <0wn@theori.io>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 1e0f9881ef79 ("ice: Flesh out implementation of support for SRIOV on bonded interface")
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/authencesn.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_lib.c | 25 ++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/crypto/authencesn.c b/crypto/authencesn.c
-index d1bf0fda3f2ef..542a978663b9e 100644
---- a/crypto/authencesn.c
-+++ b/crypto/authencesn.c
-@@ -169,6 +169,9 @@ static int crypto_authenc_esn_encrypt(struct aead_request *req)
- 	struct scatterlist *src, *dst;
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 972c515d8789f..7aef40b50b898 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -3897,22 +3897,31 @@ int ice_vsi_add_vlan_zero(struct ice_vsi *vsi)
+ int ice_vsi_del_vlan_zero(struct ice_vsi *vsi)
+ {
+ 	struct ice_vsi_vlan_ops *vlan_ops = ice_get_compat_vsi_vlan_ops(vsi);
++	struct ice_pf *pf = vsi->back;
+ 	struct ice_vlan vlan;
  	int err;
  
-+	if (assoclen < 8)
-+		return -EINVAL;
-+
- 	sg_init_table(areq_ctx->src, 2);
- 	src = scatterwalk_ffwd(areq_ctx->src, req->src, assoclen);
- 	dst = src;
-@@ -256,6 +259,9 @@ static int crypto_authenc_esn_decrypt(struct aead_request *req)
- 	u32 tmp[2];
- 	int err;
+-	vlan = ICE_VLAN(0, 0, 0);
+-	err = vlan_ops->del_vlan(vsi, &vlan);
+-	if (err && err != -EEXIST)
+-		return err;
++	if (pf->lag && pf->lag->primary) {
++		dev_dbg(ice_pf_to_dev(pf), "Interface is primary in aggregate - not deleting prune list\n");
++	} else {
++		vlan = ICE_VLAN(0, 0, 0);
++		err = vlan_ops->del_vlan(vsi, &vlan);
++		if (err && err != -EEXIST)
++			return err;
++	}
  
-+	if (assoclen < 8)
-+		return -EINVAL;
-+
- 	cryptlen -= authsize;
+ 	/* in SVM both VLAN 0 filters are identical */
+ 	if (!ice_is_dvm_ena(&vsi->back->hw))
+ 		return 0;
  
- 	if (req->src != dst)
+-	vlan = ICE_VLAN(ETH_P_8021Q, 0, 0);
+-	err = vlan_ops->del_vlan(vsi, &vlan);
+-	if (err && err != -EEXIST)
+-		return err;
++	if (pf->lag && pf->lag->primary) {
++		dev_dbg(ice_pf_to_dev(pf), "Interface is primary in aggregate - not deleting QinQ prune list\n");
++	} else {
++		vlan = ICE_VLAN(ETH_P_8021Q, 0, 0);
++		err = vlan_ops->del_vlan(vsi, &vlan);
++		if (err && err != -EEXIST)
++			return err;
++	}
+ 
+ 	/* when deleting the last VLAN filter, make sure to disable the VLAN
+ 	 * promisc mode so the filter isn't left by accident
 -- 
 2.51.0
 
