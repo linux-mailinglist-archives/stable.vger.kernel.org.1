@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-212266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ML5CLn8wemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212266-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:27 +0100
+	id SOc/Dncvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80BB2A48FC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E319A465C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 27FA930515DD
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:43:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E87131259EE
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787283033E4;
-	Wed, 28 Jan 2026 15:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2901B2586FE;
+	Wed, 28 Jan 2026 15:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xa6gcOjs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLFaNMc1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600923033C3;
-	Wed, 28 Jan 2026 15:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11651885A5;
+	Wed, 28 Jan 2026 15:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614941; cv=none; b=tXeB1/VXnQGWr4Dym801USweq2u38Fuq0trrnpOOZVfcy2KbCtMcLIotC1//JpaIMgzOMu3mlUB65cB39nzJOVYSOhJTCpfw9OZvcH9Fz1WA8ofWnA6UJ0P6BgsCosJGwyofzYFqPhRzLOftJBbb4Devs13M3sR0R/Ztyp/CMno=
+	t=1769614468; cv=none; b=rNovRVCq/K7+CJDuXyYojzNfMSdFLC95hd+GrkxefRnMniIwYcFs+3cnlURcn91IAIY7bekAZxBOLDE2r6rnsV91xkEbqwla4o5B6Nq/dy9lpbkKej2ZOv23+U0+kpNidRUtzt5fO4IB5W+7QTq8l2mGI1hFEGMBBlX4qeYNFlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614941; c=relaxed/simple;
-	bh=w7m5ql6wFXlk/OxAsuTayhdk+1vA/UIBSuBxVwnnD2s=;
+	s=arc-20240116; t=1769614468; c=relaxed/simple;
+	bh=Lqpt9qH7Y/i9gKNKn9OjCd1v610iIhBLw68Doir5DEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WItlvYX16UYbFvcxijAGDoTUaM5tl7zNWKN/do/oUXXltfPaant9iRaz4jbx0vgMSL1+IkHn5DD1YqbkVztxvdcs0vUIrh8dS+oc80/Nf6tBIEQKPvDRx1rv0PX0tiNXtZ4ej2n5g0/6d1Av1iTjWCum6HLip51KHihUngpcevc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xa6gcOjs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4867AC4CEF7;
-	Wed, 28 Jan 2026 15:42:20 +0000 (UTC)
+	 MIME-Version; b=IQQluq6d3f1ATh+CtjXjQzpo3hLH580j/pB9g+860NEuPBaDYFXGMwqwW0cgjf6oGcemNyUILxSclP6Vm3B0MaAYbmfqhbk0nGlIEOjkdP9lupj0nK4d0vYPkzeaGimXCiu0DCmhNsrT0FjPeWVWuv87+QhnjmitsbrJk66a0+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLFaNMc1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2E6C4CEF1;
+	Wed, 28 Jan 2026 15:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614940;
-	bh=w7m5ql6wFXlk/OxAsuTayhdk+1vA/UIBSuBxVwnnD2s=;
+	s=korg; t=1769614467;
+	bh=Lqpt9qH7Y/i9gKNKn9OjCd1v610iIhBLw68Doir5DEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xa6gcOjsAK88ROgDKVQzTdUWWLGbfegA0DG5dtd4XWmTLO0TvCUlW/5QX1V6dTiW7
-	 OXMBi5w1Xlu0z1Sjt2Ibo+npOlDiaw1tZ4X17TGsmHn4RQCXniNG9GKljf+Q8FFZWP
-	 43z2NL0kz0Y7bgwKQ9Y6aQbqHz75huS9RVFIjY18=
+	b=uLFaNMc1OjbRJn0SJHO2kjDtxIrOJiPD+s1WkdUd21o/dPtVjhHLAzWJGNlY6POJq
+	 TXSl6QWMxcHpmfASi1MNrTw4OsjQvDsKSVLUn4Hb0sovQqaTILWBISD5wLSwcgEUlX
+	 AbSi60FDXcGc0n1AGcwjwqUIgd2k/lCHKoUe/d9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/169] amd-xgbe: avoid misleading per-packet error log
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 6.6 138/254] w1: fix redundant counter decrement in w1_attach_slave_device()
 Date: Wed, 28 Jan 2026 16:21:54 +0100
-Message-ID: <20260128145335.142324373@linuxfoundation.org>
+Message-ID: <20260128145349.783682033@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212266-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212122-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,61 +87,48 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,amd.com:email]
-X-Rspamd-Queue-Id: 80BB2A48FC
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,iscas.ac.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9E319A465C
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit c158f985cf6c2c36c99c4f67af2ff3f5ebe09f8f ]
+commit cc8f92e41eb76f450f05234fef2054afc3633100 upstream.
 
-On the receive path, packet can be damaged because of buffer
-overflow in Rx FIFO. Avoid misleading per-packet error log when
-packet->errors is set, this can flood the log. Instead, rely on the
-standard rtnl_link_stats64 stats.
+In w1_attach_slave_device(), if __w1_attach_slave_device() fails,
+put_device() -> w1_slave_release() is called to do the cleanup job.
+In w1_slave_release(), sl->family->refcnt and sl->master->slave_count
+have already been decremented. There is no need to decrement twice
+in w1_attach_slave_device().
 
-Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260114163037.2062606-1-Raju.Rangoju@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c927c0c73fd ("w1: Fix slave count on 1-Wire bus (resend)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20251218111414.564403-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/w1/w1.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 32a6d52614242..e6a2492360227 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -2105,7 +2105,7 @@ static void xgbe_get_stats64(struct net_device *netdev,
- 	s->multicast = pstats->rxmulticastframes_g;
- 	s->rx_length_errors = pstats->rxlengtherror;
- 	s->rx_crc_errors = pstats->rxcrcerror;
--	s->rx_fifo_errors = pstats->rxfifooverflow;
-+	s->rx_over_errors = pstats->rxfifooverflow;
- 
- 	s->tx_packets = pstats->txframecount_gb;
- 	s->tx_bytes = pstats->txoctetcount_gb;
-@@ -2559,9 +2559,6 @@ static int xgbe_rx_poll(struct xgbe_channel *channel, int budget)
- 			goto read_again;
- 
- 		if (error || packet->errors) {
--			if (packet->errors)
--				netif_err(pdata, rx_err, netdev,
--					  "error in received packet\n");
- 			dev_kfree_skb(skb);
- 			goto next_packet;
- 		}
--- 
-2.51.0
-
+--- a/drivers/w1/w1.c
++++ b/drivers/w1/w1.c
+@@ -758,8 +758,6 @@ int w1_attach_slave_device(struct w1_mas
+ 	if (err < 0) {
+ 		dev_err(&dev->dev, "%s: Attaching %s failed.\n", __func__,
+ 			 sl->name);
+-		dev->slave_count--;
+-		w1_family_put(sl->family);
+ 		atomic_dec(&sl->master->refcnt);
+ 		kfree(sl);
+ 		return err;
 
 
 
