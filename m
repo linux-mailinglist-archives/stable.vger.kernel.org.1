@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-212576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKfnOaQ7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212576-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:00 +0100
+	id 2HM2GbMxemlp4gEAu9opvQ
+	(envelope-from <stable+bounces-212229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F419A5F1F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B61A4C5C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A894A3222D44
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 305DD30DD7F3
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478643033C3;
-	Wed, 28 Jan 2026 15:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF332E5D17;
+	Wed, 28 Jan 2026 15:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxiYOLfa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+WO8zBa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C712FF178;
-	Wed, 28 Jan 2026 15:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290F12FBDF5;
+	Wed, 28 Jan 2026 15:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615981; cv=none; b=jvJJ3vgHBHUwuUQ6MbQPFd1ejm2nx1RGuKr9hIpSD6h0x7RzH5v6rosjhRsKd0HwsDSMqqYzXylGjyFF3ptxcSpN/dJJ1N9BUftSnK7J7jI/4U+RBDJLGZRBw6D4rSQJRzDFhoTizrGPClYDvrloleWo4QAO+T+3KvIDWmbn/7I=
+	t=1769614817; cv=none; b=nnjNY1WrGgN4OJyKWR6eHlJg/GZHuq+RL83bdTURs9FT/0JVQe0jiTxUMDKH98MR++aGMC+DUV1Cm2FLI+AFS/vAvhJhK/55roFWpfoDpeOKWZI//kUFJc3UsPIakRrCzva4M8xgxJvQGj8zRQGDGIgrvkstPJsmVeJ7WoF9N/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615981; c=relaxed/simple;
-	bh=n7opsP60JZMctz6oZAlAbuOYyp3BcPLUttV0d7Rez2A=;
+	s=arc-20240116; t=1769614817; c=relaxed/simple;
+	bh=1m0pxd9+He69BvGpdL5Lt3M78VxCPmE70gqfDFPOEY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dE1cGD5AUqJHfTnYTJjRZEr8c2GuqqztIkT7+OeYAdCPC871z92d3D1xH57CA2MDgHqoLm2+njgYfBFn2ywiKYsy0yYPbybRtPBC8HJ4RFRqKaGrqXTjain7L+lxVp6Snb0akxoD3K4FpgueS8nqrtHUo3Bh4Ekni7avSkq/Yzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wxiYOLfa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E2BC4CEF1;
-	Wed, 28 Jan 2026 15:59:40 +0000 (UTC)
+	 MIME-Version; b=C2SS3CHnafBMkreG882QuQziD/gd7g3XHMnGcJg1eCXSkBQKXUPAs/lrh2msc0S6DtuW7VrAH+dI2KjGo3792QiKK94evdhPzjqq9ntuSgSeRm60fneMvXibfcnbLT4zimZfbbWA3PbUMJCOkHgKPU+VXyJuMm8KcGVhjinCNxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+WO8zBa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A56AC4CEF7;
+	Wed, 28 Jan 2026 15:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615980;
-	bh=n7opsP60JZMctz6oZAlAbuOYyp3BcPLUttV0d7Rez2A=;
+	s=korg; t=1769614816;
+	bh=1m0pxd9+He69BvGpdL5Lt3M78VxCPmE70gqfDFPOEY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wxiYOLfaVrWz5TessUVgdEWzqdrBo7Z12edsrD+/R9V9GjYo5VUwCh/bxQS31Hiaq
-	 gHQ/mv+uMHCHhLXlW8eNCm/2Dcjxw7bPkanYvjjTOEcNODDh1GTRutW6C/W3LfNZah
-	 ewEuZGCYgDdAoz/xz9Mv/TpI54Jgpr+9VpVwunTE=
+	b=p+WO8zBaQPsakjCx8dvouQJXwihYqFdWqL1rdsv/vLZiiOtf9lDIlb98Mthf39FCz
+	 CO/CGbp97Zwqmk/FgUT4ql5dXsQLLW+Trdg7zqcbI0OroFiuQFS0t81dnxckLiDPQz
+	 mLH1vCfJVEvhToANwlbqwBl1itmTwRYi2FaAKW1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 139/227] net: dsa: fix off-by-one in maximum bridge ID determination
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: [PATCH 6.6 208/254] uacce: fix isolate sysfs check condition
 Date: Wed, 28 Jan 2026 16:23:04 +0100
-Message-ID: <20260128145349.461565587@linuxfoundation.org>
+Message-ID: <20260128145352.279623228@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +66,86 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212229-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212576-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,nxp.com:email]
-X-Rspamd-Queue-Id: 1F419A5F1F
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 79B61A4C5C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit dfca045cd4d0ea07ff4198ba392be3e718acaddc ]
+commit 98eec349259b1fd876f350b1c600403bcef8f85d upstream.
 
-Prior to the blamed commit, the bridge_num range was from
-0 to ds->max_num_bridges - 1. After the commit, it is from
-1 to ds->max_num_bridges.
+uacce supports the device isolation feature. If the driver
+implements the isolate_err_threshold_read and
+isolate_err_threshold_write callback functions, uacce will create
+sysfs files now. Users can read and configure the isolation policy
+through sysfs. Currently, sysfs files are created as long as either
+isolate_err_threshold_read or isolate_err_threshold_write callback
+functions are present.
 
-So this check:
-	if (bridge_num >= max)
-		return 0;
-must be updated to:
-	if (bridge_num > max)
-		return 0;
+However, accessing a non-existent callback function may cause the
+system to crash. Therefore, intercept the creation of sysfs if
+neither read nor write exists; create sysfs if either is supported,
+but intercept unsupported operations at the call site.
 
-in order to allow the last bridge_num value (==max) to be used.
-
-This is easiest visible when a driver sets ds->max_num_bridges=1.
-The observed behaviour is that even the first created bridge triggers
-the netlink extack "Range of offloadable bridges exceeded" warning, and
-is handled in software rather than being offloaded.
-
-Fixes: 3f9bb0301d50 ("net: dsa: make dp->bridge_num one-based")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20260120211039.3228999-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e3e289fbc0b5 ("uacce: supports device isolation feature")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Link: https://patch.msgid.link/20251202061256.4158641-3-huangchenghai2@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/dsa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/uacce/uacce.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-index ded9a291e6204..0505e90033f23 100644
---- a/net/dsa/dsa.c
-+++ b/net/dsa/dsa.c
-@@ -157,7 +157,7 @@ unsigned int dsa_bridge_num_get(const struct net_device *bridge_dev, int max)
- 		bridge_num = find_next_zero_bit(&dsa_fwd_offloading_bridges,
- 						DSA_MAX_NUM_OFFLOADING_BRIDGES,
- 						1);
--		if (bridge_num >= max)
-+		if (bridge_num > max)
- 			return 0;
+--- a/drivers/misc/uacce/uacce.c
++++ b/drivers/misc/uacce/uacce.c
+@@ -379,6 +379,9 @@ static ssize_t isolate_strategy_show(str
+ 	struct uacce_device *uacce = to_uacce_device(dev);
+ 	u32 val;
  
- 		set_bit(bridge_num, &dsa_fwd_offloading_bridges);
--- 
-2.51.0
-
++	if (!uacce->ops->isolate_err_threshold_read)
++		return -ENOENT;
++
+ 	val = uacce->ops->isolate_err_threshold_read(uacce);
+ 
+ 	return sysfs_emit(buf, "%u\n", val);
+@@ -391,6 +394,9 @@ static ssize_t isolate_strategy_store(st
+ 	unsigned long val;
+ 	int ret;
+ 
++	if (!uacce->ops->isolate_err_threshold_write)
++		return -ENOENT;
++
+ 	if (kstrtoul(buf, 0, &val) < 0)
+ 		return -EINVAL;
+ 
 
 
 
