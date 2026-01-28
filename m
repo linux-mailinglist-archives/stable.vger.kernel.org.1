@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212521-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNHVCu43eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:10 +0100
+	id UDHJKFs0eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212521-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB09A5835
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C724A5216
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D43A31E4A68
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F208B31FE903
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64731313267;
-	Wed, 28 Jan 2026 15:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B2630CDBE;
+	Wed, 28 Jan 2026 15:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANjLXOmc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="US8KuVJb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2898F313272;
-	Wed, 28 Jan 2026 15:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18962874FE;
+	Wed, 28 Jan 2026 15:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615040; cv=none; b=nLU4xFaAT510UY2OikogsLi5yUel7p/CA7DWx7BCg68b2WvpMsdV281HAgPGpgszSblefGGqc40TOfCtI9hnrHyek1cqBqHt9Y4SA1ArC1CyMbgw/OQFpVWzVY1WW2FsJUwlocmbRszu37XDnlgdm+dbDmljB4p3IgrjdrjHXk8=
+	t=1769615796; cv=none; b=A4WicPATVNTDQobgz8NiDymOzoeqrXsqEHgAU1KbdQWXa634OJG5i20LuoaHry+4/qtP5DCksvPJz2dKWtmNJdFngMF93L7oBy7BUi9NSLsOrM7NRHQjCdlyqs7NbpZb1tGJ9PZZMO89RhezkZ8LhyWk5E3hnSwLCKlDVjAtUhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615040; c=relaxed/simple;
-	bh=RmaeVAdfQDJZDQCtwTRQ+mGHB9ir0AaIu5tpIXZF3Ws=;
+	s=arc-20240116; t=1769615796; c=relaxed/simple;
+	bh=ds59UJqtC1tRaznlPt4icHJkG4uCXyM4XPUO7ZckUZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJlkocryeY4hSfJOL4mvob0JNv1iPjxyjFkeE50LdBsgbuC0WDk/yoD48nVML/SbUMr0GaqyvnYU9BWjzN5tIlirYNv/h3TD3cK19pMa69gW3ea6Va7a0oU4OyyH3UkSkVZ66OUcjKcRh0bsHrM5FJxUKTjvob2t/Z1i3lnsGmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANjLXOmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC39FC4CEF1;
-	Wed, 28 Jan 2026 15:43:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RZOZq634lWktQvvI/EU6PN+2zPUlrmlKmaz8Bk7qduEczW6QgIqPG2c8eLRwkID8adxAkQLmK76qspeE7qFLUJN5YzjTTAnkVHwSOeLpYM/q+7cKpkpU2A8+or/QsM3zAaGZ3xbznNR7l63Z1pI38f5AMLklFOG5zTw96WrLGqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=US8KuVJb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F8FC4CEF1;
+	Wed, 28 Jan 2026 15:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615040;
-	bh=RmaeVAdfQDJZDQCtwTRQ+mGHB9ir0AaIu5tpIXZF3Ws=;
+	s=korg; t=1769615796;
+	bh=ds59UJqtC1tRaznlPt4icHJkG4uCXyM4XPUO7ZckUZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ANjLXOmcy4HaspmCjdQ7pposV0dipH22UVIrLDA8EQWWFP2vRhUXJzZCslaupMoCA
-	 n42bQsgWmxWNL53MJroFpqhMdas4vOXqXAkq8xlxvAm19ybu3Cu+0WkNvpYpPqarpC
-	 xlVsf8pAwvBbQIcNxSWSm/myNRND1LBoa6I2AQs0=
+	b=US8KuVJbUSGS6WYx+Q3wdU4PpPlpHRctWqeXzmXMRdFtaCcpPUpxr16rw8nw4IXEw
+	 Cxr3WoIKY/KcRFiUI1fJhTiJ0pSZeg8up5luv0Ct2CYm7E4gsGvDBOp9x8ms18vFwU
+	 AIN/OULby5Fnp9c1gSuBQvp4vOBoS26qCXQDwfDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/169] iio: adc: ad7280a: handle spi_setup() errors in probe()
+Subject: [PATCH 6.18 099/227] drm/xe: Disable timestamp WA on VFs
 Date: Wed, 28 Jan 2026 16:22:24 +0100
-Message-ID: <20260128145336.208137769@linuxfoundation.org>
+Message-ID: <20260128145348.028961226@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +64,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212295-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212521-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kaspersky.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,analog.com:email,linuxtesting.org:url]
-X-Rspamd-Queue-Id: 8FB09A5835
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 0C724A5216
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit 6b39824ac4c15783787e6434449772bfb2e31214 ]
+[ Upstream commit b886aa65eafe3098bbd691f0ca4a9abce03f9d03 ]
 
-The probe() function ignored the return value of spi_setup(), leaving SPI
-configuration failures undetected. If spi_setup() fails, the driver should
-stop initialization and propagate the error to the caller.
+The timestamp WA does not work on a VF because it requires reading MMIO
+registers, which are inaccessible on a VF. This timestamp WA confuses
+LRC sampling on a VF during TDR, as the LRC timestamp would always read
+as 1 for any active context. Disable the timestamp WA on VFs to avoid
+this confusion.
 
-Add proper error handling: check the return value of spi_setup() and return
-it on failure.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 2051f25d2a26 ("iio: adc: New driver for AD7280A Lithium Ion Battery Monitoring System")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Fixes: 617d824c5323 ("drm/xe: Add WA BB to capture active context utilization")
+Link: https://patch.msgid.link/20260110012739.2888434-7-matthew.brost@intel.com
+(cherry picked from commit efffd56e4bd894e0935eea00e437f233b6cebc0d)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7280a.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_lrc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
-index 37522dca2c7c8..01d5719aa3eac 100644
---- a/drivers/iio/adc/ad7280a.c
-+++ b/drivers/iio/adc/ad7280a.c
-@@ -1026,7 +1026,9 @@ static int ad7280_probe(struct spi_device *spi)
+diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
+index 47e9df7750725..d77ef556e994e 100644
+--- a/drivers/gpu/drm/xe/xe_lrc.c
++++ b/drivers/gpu/drm/xe/xe_lrc.c
+@@ -1050,6 +1050,9 @@ static ssize_t setup_utilization_wa(struct xe_lrc *lrc,
+ {
+ 	u32 *cmd = batch;
  
- 	st->spi->max_speed_hz = AD7280A_MAX_SPI_CLK_HZ;
- 	st->spi->mode = SPI_MODE_1;
--	spi_setup(st->spi);
-+	ret = spi_setup(st->spi);
-+	if (ret < 0)
-+		return ret;
++	if (IS_SRIOV_VF(gt_to_xe(lrc->gt)))
++		return 0;
++
+ 	if (xe_gt_WARN_ON(lrc->gt, max_len < 12))
+ 		return -ENOSPC;
  
- 	st->ctrl_lb = FIELD_PREP(AD7280A_CTRL_LB_ACQ_TIME_MSK, st->acquisition_time) |
- 		FIELD_PREP(AD7280A_CTRL_LB_THERMISTOR_MSK, st->thermistor_term_en);
 -- 
 2.51.0
 
