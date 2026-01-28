@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212160-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKMJNawvemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:56 +0100
+	id yLfgEswuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212160-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757FBA46CF
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E1FA4531
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1F550304BC02
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D23BD303C108
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A3D31A07C;
-	Wed, 28 Jan 2026 15:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5E72D7394;
+	Wed, 28 Jan 2026 15:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7bjujSi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCK4g3eb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B33C318EE0;
-	Wed, 28 Jan 2026 15:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3003C2D660E;
+	Wed, 28 Jan 2026 15:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615099; cv=none; b=Kq4ISTUGnPF4UkxS9ou3LlBzrdFck1IXz7zyo06vNG4JQMvdpfPUNssH3ggxvU5sM4cENjD1flkuAuP4YjmHpoyaoeAt1ngMYcHf1ikzox6zzDhmBSl+ME1o+vcNOSGO6dlNrjKjhqCqfGJxSvadqDrTyGj2zN3sECuCOClGnMY=
+	t=1769614592; cv=none; b=kFazwtU0u3SMy/dE9bmgwl2f+nBBEBu9RZqPkW9KnbGAswa8ZpfYJhM3+sU8qiXfJlnvim2JxGxtKuoWh7tLVEi8aunwLIhF/58x99j+Vy5Kvx4mnDlP6xGXf0WUxnWS+WvYHsCF6mFTcemFtb71NzbwO210dqewxIkDvhLOKzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615099; c=relaxed/simple;
-	bh=vv4N/9pDwPTdyPN9erEJ5IjfACnTscmZZhdUL8sELVc=;
+	s=arc-20240116; t=1769614592; c=relaxed/simple;
+	bh=1vO8J71t8Cxi1hlKVIiZB/YTbfzN2fsd1WR4lbqgiV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FobXkwN1eMRM9Uji5wqiQYYRIavoOnufk5QK+3cTcAaD5kNcnyopalJCjOQz7/xKOg3hmMEchedRCpOFzJBCVSvavVGFayUqSnTh4T8vsy4d0tfvPbVewY6/RNSYn/BFYkzdff+wMGYFyRgkFn59xnqjs5dUNdIpEI4oAZ+2SbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7bjujSi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F3EC16AAE;
-	Wed, 28 Jan 2026 15:44:58 +0000 (UTC)
+	 MIME-Version; b=UKi3/Rj/YXJiBhgans1xsZPieM2tGQZbu/cHPU3IBqkHtQwSrikA7hZHPUnqvXUqy7DPt1gyTi+UWkB20eXS11B2mgbUR/RWrZPbzXcPy0DSmFIRkwrWX1mN3oXRDwi+pxsjq7YStvO2xEZAv9OqF4oycq4w16UaGgjRsbxIR1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCK4g3eb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619A6C4CEF1;
+	Wed, 28 Jan 2026 15:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615099;
-	bh=vv4N/9pDwPTdyPN9erEJ5IjfACnTscmZZhdUL8sELVc=;
+	s=korg; t=1769614591;
+	bh=1vO8J71t8Cxi1hlKVIiZB/YTbfzN2fsd1WR4lbqgiV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7bjujSiEkjrzlF1DPJmmVKxSvlv82f/A9lnmnUm2hvMRMyzKLkQ8e1b1RInOtltd
-	 2RHOHj2/3uzRmgw4Q+jZtVG55wPHuRR2JB1w0wCMzmw+CApoJ8MrV1DE+dNVmYbjzg
-	 LF6uXbzdWDIYmwAX0ZrT6fn4bbCUgwsGuyCgf3XQ=
+	b=mCK4g3eb6jeOH4vBTiAkBQNjBqQetqc930UQ2TwS1P84GTg4C3g1KzPlshFaQmsRf
+	 njJBE4GxastwXxZcP4GVVycMDSTZsvxGufQOyjml0emb9f3B3UpDUBKWBXje9ET6EN
+	 FPF6Rz4I4TcTTlnLpLi0mu0py32LD1QCxMFH8QRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/169] net: hns3: fix the HCLGE_FD_AD_NXT_KEY error setting issue
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Sebastian Reichel <sre@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 184/254] leds: led-class: Only Add LED to leds_list when it is fully ready
 Date: Wed, 28 Jan 2026 16:22:40 +0100
-Message-ID: <20260128145336.778876018@linuxfoundation.org>
+Message-ID: <20260128145351.424389092@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212313-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212160-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,46 +90,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 757FBA46CF
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 64E1FA4531
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-[ Upstream commit f87e034d16e43af984380a95c32c25201b7759a7 ]
+commit d1883cefd31752f0504b94c3bcfa1f6d511d6e87 upstream.
 
-Use next_input_key instead of counter_id to set HCLGE_FD_AD_NXT_KEY.
+Before this change the LED was added to leds_list before led_init_core()
+gets called adding it the list before led_classdev.set_brightness_work gets
+initialized.
 
-Fixes: 117328680288 ("net: hns3: Add input key and action config support for flow director")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20260119132840.410513-3-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leaves a window where led_trigger_register() of a LED's default
+trigger will call led_trigger_set() which calls led_set_brightness()
+which in turn will end up queueing the *uninitialized*
+led_classdev.set_brightness_work.
+
+This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
+2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
+succession. The first led_classdev_register() causes an async modprobe of
+snd_ctl_led to run and that async modprobe manages to exactly hit
+the window where the second LED is on the leds_list without led_init_core()
+being called for it, resulting in:
+
+ ------------[ cut here ]------------
+ WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
+ Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
+ ...
+ Call trace:
+  __flush_work+0x344/0x390 (P)
+  flush_work+0x2c/0x50
+  led_trigger_set+0x1c8/0x340
+  led_trigger_register+0x17c/0x1c0
+  led_trigger_register_simple+0x84/0xe8
+  snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
+  do_one_initcall+0x5c/0x318
+  do_init_module+0x9c/0x2b8
+  load_module+0x7e0/0x998
+
+Close the race window by moving the adding of the LED to leds_list to
+after the led_init_core() call.
+
+Cc: stable@vger.kernel.org
+Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
+Link: https://patch.msgid.link/20251211163727.366441-1-johannes.goede@oss.qualcomm.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/led-class.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 8dd970ef02ac6..7468e03051ea4 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -5700,7 +5700,7 @@ static int hclge_fd_ad_config(struct hclge_dev *hdev, u8 stage, int loc,
- 			HCLGE_FD_AD_COUNTER_NUM_S, action->counter_id);
- 	hnae3_set_bit(ad_data, HCLGE_FD_AD_NXT_STEP_B, action->use_next_stage);
- 	hnae3_set_field(ad_data, HCLGE_FD_AD_NXT_KEY_M, HCLGE_FD_AD_NXT_KEY_S,
--			action->counter_id);
-+			action->next_input_key);
+--- a/drivers/leds/led-class.c
++++ b/drivers/leds/led-class.c
+@@ -546,11 +546,6 @@ int led_classdev_register_ext(struct dev
+ #ifdef CONFIG_LEDS_BRIGHTNESS_HW_CHANGED
+ 	led_cdev->brightness_hw_changed = -1;
+ #endif
+-	/* add to the list of leds */
+-	down_write(&leds_list_lock);
+-	list_add_tail(&led_cdev->node, &leds_list);
+-	up_write(&leds_list_lock);
+-
+ 	if (!led_cdev->max_brightness)
+ 		led_cdev->max_brightness = LED_FULL;
  
- 	req->ad_data = cpu_to_le64(ad_data);
- 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
--- 
-2.51.0
-
+@@ -558,6 +553,11 @@ int led_classdev_register_ext(struct dev
+ 
+ 	led_init_core(led_cdev);
+ 
++	/* add to the list of leds */
++	down_write(&leds_list_lock);
++	list_add_tail(&led_cdev->node, &leds_list);
++	up_write(&leds_list_lock);
++
+ #ifdef CONFIG_LEDS_TRIGGERS
+ 	led_trigger_set_default(led_cdev);
+ #endif
 
 
 
