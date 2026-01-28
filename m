@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-212536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNwWFiM7emlN4wEAu9opvQ
-	(envelope-from <stable+bounces-212536-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:36:51 +0100
+	id qIkoFDQwemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B531EA5E27
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:36:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE95FA4833
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AE9053208BC8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B388306EA5D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0194730BB82;
-	Wed, 28 Jan 2026 15:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22394350D44;
+	Wed, 28 Jan 2026 15:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYHJjh3V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NALZlrnk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45611D5141;
-	Wed, 28 Jan 2026 15:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB37C3587C3;
+	Wed, 28 Jan 2026 15:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615848; cv=none; b=U0p9Mk97u4Vuutq1iaNLGV51A3gVezRYFdbUOIHS9OEaSTHBKLtqJ/xn80MlcaXjtaRksExX0d4omwPaLzXlMao/nySYc6Gn+zem1MpvoO7+gbI58xgqF0d8f7s45BcTMH83EdZkWWNXWYoeK9HvNMTFzhnP2Kp/eadNPDM3fDc=
+	t=1769615143; cv=none; b=OlsxydUcGPyxRF2fVZYFwsbK0GdC0Uc4ZWU+W2lbWQ7E7jamJ4RQy+ZLoc9Nn7GjT/UWxWrCLttm0POI1+7NbXasjMgJn4n/f2lZB5hc9e/dO9Df2aMZOil7B8ZVB/NxeAiK+PLOZ0qtScpk/3EEMISGximCsxv28y6zcU2IgFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615848; c=relaxed/simple;
-	bh=/cVoWftE+QggKx5KDIQOutNreJujt+ZF11d80CeZUWE=;
+	s=arc-20240116; t=1769615143; c=relaxed/simple;
+	bh=gBC+5HJq3u6yM/PIzjC1mpkDALLZPAVpgDoP+oTwsgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NOB1+9RoNTE/d9Kw9Hg246/Pe7UkMrY6+d9ep6B+dKI+NzHaThGLWdhY7/dl1SWKcUpdR66LA9avZkOWmGgqkhmR5TzuoyEeVy0hh4xjCtcd3PTkMPh+sf/rZKrsuFxI+RLQpyohmf1wg46MUt9fcEYKvw/JXbX3CLqUK5bckwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYHJjh3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B0FC4CEF1;
-	Wed, 28 Jan 2026 15:57:27 +0000 (UTC)
+	 MIME-Version; b=ODHcpgXu2IKbnHGVvltY7NTYfLsqxYLgXkUWL6a5dP68x8uT90pkfMOXPGd6mE1PqFSb5JLvtcGFZ7LSgA98UonX7ZrWq4jeACDoXnzNIzhaCLxdRaiccMWugmxSQOro0mOGTdzsJ3PuR/373IoZPc9LJcNWndXJjr9MVKaCkNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NALZlrnk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52837C4CEF1;
+	Wed, 28 Jan 2026 15:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615848;
-	bh=/cVoWftE+QggKx5KDIQOutNreJujt+ZF11d80CeZUWE=;
+	s=korg; t=1769615143;
+	bh=gBC+5HJq3u6yM/PIzjC1mpkDALLZPAVpgDoP+oTwsgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYHJjh3VrHwsxKdmzsiH7jKTHHQahs5xk56cnSZS+OCsfoccOqHRfNvNPpp7jMQ7r
-	 fXxqX8EC1mSzHY2URHjJl5h2xSD6JTJb2pmYAYwI2IQRoEmhBEaQ4ZeuUc8bIUo8c3
-	 VbJgGYKOmBgi/RLnDkJCKKhTfCJ1IGTvGG4lVehY=
+	b=NALZlrnk0ZUesyZTwbWZhgYtrE/VTywRyx+HbXwLm3M0vqdCeivj9jUwwIoVMLzoO
+	 7/bvuS5OVllDFlJHOjpq/44U4R4/1ei4AORRntlO0l2YjMKzzJTlBLVPBTE6wRyH9K
+	 EYSOTHtR5W/SQuLR8UacO94vKDL1wgQGlIliQaNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	David Yang <mmyangfl@gmail.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 130/227] drm/amd/pm: Dont clear SI SMC table when setting power limit
+Subject: [PATCH 6.12 092/169] net: openvswitch: fix data race in ovs_vport_get_upcall_stats
 Date: Wed, 28 Jan 2026 16:22:55 +0100
-Message-ID: <20260128145349.139432869@linuxfoundation.org>
+Message-ID: <20260128145337.317847030@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +66,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212536-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ovn.org,google.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212326-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: B531EA5E27
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BE95FA4833
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: David Yang <mmyangfl@gmail.com>
 
-[ Upstream commit d5077426e1a76d269e518e048bde2e9fc49b32ad ]
+[ Upstream commit cc4816bdb08639e5cd9acb295a02d6f0f09736b4 ]
 
-There is no reason to clear the SMC table.
-We also don't need to recalculate the power limit then.
+In ovs_vport_get_upcall_stats(), some statistics protected by
+u64_stats_sync, are read and accumulated in ignorance of possible
+u64_stats_fetch_retry() events. These statistics are already accumulated
+by u64_stats_inc(). Fix this by reading them into temporary variables
+first.
 
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e214d626253f5b180db10dedab161b7caa41f5e9)
+Fixes: 1933ea365aa7 ("net: openvswitch: Add support to count upcall packets")
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+Acked-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20260121072932.2360971-1-mmyangfl@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ net/openvswitch/vport.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index 70499bf50ad47..08ffa79154111 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -2273,8 +2273,6 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
- 		if (scaling_factor == 0)
- 			return -EINVAL;
+diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
+index 8732f6e51ae5a..2a996858a9145 100644
+--- a/net/openvswitch/vport.c
++++ b/net/openvswitch/vport.c
+@@ -310,22 +310,23 @@ void ovs_vport_get_stats(struct vport *vport, struct ovs_vport_stats *stats)
+  */
+ int ovs_vport_get_upcall_stats(struct vport *vport, struct sk_buff *skb)
+ {
++	u64 tx_success = 0, tx_fail = 0;
+ 	struct nlattr *nla;
+ 	int i;
  
--		memset(smc_table, 0, sizeof(SISLANDS_SMC_STATETABLE));
+-	__u64 tx_success = 0;
+-	__u64 tx_fail = 0;
 -
- 		ret = si_calculate_adjusted_tdp_limits(adev,
- 						       false, /* ??? */
- 						       adev->pm.dpm.tdp_adjustment,
-@@ -2328,16 +2326,8 @@ static int si_populate_smc_tdp_limits_2(struct amdgpu_device *adev,
+ 	for_each_possible_cpu(i) {
+ 		const struct vport_upcall_stats_percpu *stats;
++		u64 n_success, n_fail;
+ 		unsigned int start;
  
- 	if (ni_pi->enable_power_containment) {
- 		SISLANDS_SMC_STATETABLE *smc_table = &si_pi->smc_statetable;
--		u32 scaling_factor = si_get_smc_power_scaling_factor(adev);
- 		int ret;
+ 		stats = per_cpu_ptr(vport->upcall_stats, i);
+ 		do {
+ 			start = u64_stats_fetch_begin(&stats->syncp);
+-			tx_success += u64_stats_read(&stats->n_success);
+-			tx_fail += u64_stats_read(&stats->n_fail);
++			n_success = u64_stats_read(&stats->n_success);
++			n_fail = u64_stats_read(&stats->n_fail);
+ 		} while (u64_stats_fetch_retry(&stats->syncp, start));
++		tx_success += n_success;
++		tx_fail += n_fail;
+ 	}
  
--		memset(smc_table, 0, sizeof(SISLANDS_SMC_STATETABLE));
--
--		smc_table->dpm2Params.NearTDPLimit =
--			cpu_to_be32(si_scale_power_for_smc(adev->pm.dpm.near_tdp_limit_adjusted, scaling_factor) * 1000);
--		smc_table->dpm2Params.SafePowerLimit =
--			cpu_to_be32(si_scale_power_for_smc((adev->pm.dpm.near_tdp_limit_adjusted * SISLANDS_DPM2_TDP_SAFE_LIMIT_PERCENT) / 100, scaling_factor) * 1000);
--
- 		ret = amdgpu_si_copy_bytes_to_smc(adev,
- 						  (si_pi->state_table_start +
- 						   offsetof(SISLANDS_SMC_STATETABLE, dpm2Params) +
+ 	nla = nla_nest_start_noflag(skb, OVS_VPORT_ATTR_UPCALL_STATS);
 -- 
 2.51.0
 
