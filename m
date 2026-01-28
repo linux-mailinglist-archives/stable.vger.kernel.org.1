@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-212241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CkmINwxemlr4gEAu9opvQ
-	(envelope-from <stable+bounces-212241-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:16 +0100
+	id mF1hHHs4emkd4wEAu9opvQ
+	(envelope-from <stable+bounces-212371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A43A4C9E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F32FFA5994
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AF2C83022906
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60399320C0A0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EF92FE07D;
-	Wed, 28 Jan 2026 15:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608302FF178;
+	Wed, 28 Jan 2026 15:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="csr/MPQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKPLIueg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF12E2F5479;
-	Wed, 28 Jan 2026 15:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242D52C2346;
+	Wed, 28 Jan 2026 15:48:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614856; cv=none; b=sbi9qOkR/XYdEZREKArWof8oPmhmCpmzXL6z4q9h7gPok32yFLAIh4WVNYo8qFHBdQOUqrKqDiwYivy3nryXwpGTWX2NVGgkyBx48WWqvowlZLkxWMBYlmSUePvPlIDyyFqygb/2pVPMQFXPlg1qqFsYAgZRG8z+2mDBFAFU5uM=
+	t=1769615296; cv=none; b=pLxxNzWcD0Kbs6AYE6Edvpit7OXl74IAbLoxGTylQKpM4VvpfnVH2p+mcrbKRzpMyFb4m6V/MTBbTIAXMjUAjLwGuCIvJwlZqfBODJxeiRFwHa4YeNGj+bEzwzdBo+r0jxJj3Q45Mes+SqfT4bOvPcGkeDvGA+sqy2JpvBIuYa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614856; c=relaxed/simple;
-	bh=Isd0tM3ZH4npfgHNmaPQaEMKY1G+qFT5nvtaerXxCYI=;
+	s=arc-20240116; t=1769615296; c=relaxed/simple;
+	bh=Vr0qH1lHiJz+HwXptejmDoaxyIA+KgCnx3vYIrcAKZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eEq5OaWmS4czXU9reuE0ToEZriCOp1oCqFrnViqL9Oc2UXEiJ2vI6EEi370vGbENDV9iBmoQ1nu7+FzX4HRBYt3K8U3oUyTzgK1iZuc0tVCIP8mqGZSBFnJc2LE7nuiKj4oTE++wRg1iRdQ5dk6KEuGYdFSChv9H00T9ntCf3C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=csr/MPQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2244C4CEF1;
-	Wed, 28 Jan 2026 15:40:55 +0000 (UTC)
+	 MIME-Version; b=s3puUgtUmqKDajxGp9KPEfk/jpsop+sSr66MUjol3vPfHPbeW5p06yzsUTPB4hGiuqeRM9EcR6zs9GrmZKwuk5udIJJ2S+lVLUZrFEMoZi4yfTSRVIRM9oqER6WDimixrNZbmhwtLO7pUI0c9BbSOvjyb/cirEytRHRcQmu0EH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKPLIueg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68349C4AF0B;
+	Wed, 28 Jan 2026 15:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614856;
-	bh=Isd0tM3ZH4npfgHNmaPQaEMKY1G+qFT5nvtaerXxCYI=;
+	s=korg; t=1769615296;
+	bh=Vr0qH1lHiJz+HwXptejmDoaxyIA+KgCnx3vYIrcAKZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=csr/MPQ5YVehHPYMNOQK03K468T0KoSw5Iy7KRhrmNSJL+KYt/snfFA7dsodeKXyV
-	 jzfQ6sj/zKwFU7JrZKXIOAj7gpJRBgxo76bh/mDWx0FWga3jgKIj/VFYfaCU3e1+PE
-	 5EoN1dhsg/R5gGf7wSFGUYyPhwPAn1LmCVyhJtnA=
+	b=PKPLIueg8p0gklq6HsSpDpJYTQBEvqcJdBI/ujgvg+vFQKnkIIql6eKGZTQWvW5Lc
+	 2bQPPpNX3eazYdpjXmY2AQjDv2M0aTF/8+AwbP/GQ7GXT7EpTLqTWtnC1DquWSQUfP
+	 wNqUcS4cZ1h38ZQr3q0I0pxqHg/5RT/Naa77lx3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 243/254] nvme-pci: do not directly handle subsys reset fallout
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 136/169] pmdomain: imx8m-blk-ctrl: Remove separate rst and clk mask for 8mq vpu
 Date: Wed, 28 Jan 2026 16:23:39 +0100
-Message-ID: <20260128145353.540639879@linuxfoundation.org>
+Message-ID: <20260128145338.902027321@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,232 +71,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212241-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212371-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 95A43A4C9E
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,nxp.com:email,collabora.com:email]
+X-Rspamd-Queue-Id: F32FFA5994
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-[ Upstream commit 210b1f6576e8b367907e7ff51ef425062e1468e4 ]
+commit 3de49966499634454fd59e0e6fecd50baab7febd upstream.
 
-Scheduling reset_work after a nvme subsystem reset is expected to fail
-on pcie, but this also prevents potential handling the platform's pcie
-services may provide that might successfully recovering the link without
-re-enumeration. Such examples include AER, DPC, and power's EEH.
+For i.MX8MQ platform, the ADB in the VPUMIX domain has no separate reset
+and clock enable bits, but is ungated and reset together with the VPUs.
+So we can't reset G1 or G2 separately, it may led to the system hang.
+Remove rst_mask and clk_mask of imx8mq_vpu_blk_ctl_domain_data.
+Let imx8mq_vpu_power_notifier() do really vpu reset.
 
-Provide a pci specific operation that safely initiates a subsystem
-reset, and instead of scheduling reset work, read back the status
-register to trigger a pcie read error.
-
-Since this only affects pci, the other fabrics drivers subscribe to a
-generic nvmf subsystem reset that is exactly the same as before. The
-loop fabric doesn't use it because nvmet doesn't support setting that
-property anyway.
-
-And since we're using the magic NSSR value in two places now, provide a
-symbolic define for it.
-
-Reported-by: Nilay Shroff <nilay@linux.ibm.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Stable-dep-of: 0edb475ac0a7 ("nvme: fix PCIe subsystem reset controller state transition")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 608d7c325e85 ("soc: imx: imx8m-blk-ctrl: add i.MX8MQ VPU blk-ctrl")
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/fabrics.c |   15 +++++++++++++++
- drivers/nvme/host/fabrics.h |    1 +
- drivers/nvme/host/fc.c      |    1 +
- drivers/nvme/host/nvme.h    |   14 +++-----------
- drivers/nvme/host/pci.c     |   36 ++++++++++++++++++++++++++++++++++++
- drivers/nvme/host/rdma.c    |    1 +
- drivers/nvme/host/tcp.c     |    1 +
- include/linux/nvme.h        |    3 +++
- 8 files changed, 61 insertions(+), 11 deletions(-)
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/nvme/host/fabrics.c
-+++ b/drivers/nvme/host/fabrics.c
-@@ -279,6 +279,21 @@ int nvmf_reg_write32(struct nvme_ctrl *c
- }
- EXPORT_SYMBOL_GPL(nvmf_reg_write32);
- 
-+int nvmf_subsystem_reset(struct nvme_ctrl *ctrl)
-+{
-+	int ret;
-+
-+	if (!nvme_wait_reset(ctrl))
-+		return -EBUSY;
-+
-+	ret = ctrl->ops->reg_write32(ctrl, NVME_REG_NSSR, NVME_SUBSYS_RESET);
-+	if (ret)
-+		return ret;
-+
-+	return nvme_try_sched_reset(ctrl);
-+}
-+EXPORT_SYMBOL_GPL(nvmf_subsystem_reset);
-+
- /**
-  * nvmf_log_connect_error() - Error-parsing-diagnostic print out function for
-  * 				connect() errors.
---- a/drivers/nvme/host/fabrics.h
-+++ b/drivers/nvme/host/fabrics.h
-@@ -206,6 +206,7 @@ static inline unsigned int nvmf_nr_io_qu
- int nvmf_reg_read32(struct nvme_ctrl *ctrl, u32 off, u32 *val);
- int nvmf_reg_read64(struct nvme_ctrl *ctrl, u32 off, u64 *val);
- int nvmf_reg_write32(struct nvme_ctrl *ctrl, u32 off, u32 val);
-+int nvmf_subsystem_reset(struct nvme_ctrl *ctrl);
- int nvmf_connect_admin_queue(struct nvme_ctrl *ctrl);
- int nvmf_connect_io_queue(struct nvme_ctrl *ctrl, u16 qid);
- int nvmf_register_transport(struct nvmf_transport_ops *ops);
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -3349,6 +3349,7 @@ static const struct nvme_ctrl_ops nvme_f
- 	.reg_read32		= nvmf_reg_read32,
- 	.reg_read64		= nvmf_reg_read64,
- 	.reg_write32		= nvmf_reg_write32,
-+	.subsystem_reset	= nvmf_subsystem_reset,
- 	.free_ctrl		= nvme_fc_free_ctrl,
- 	.submit_async_event	= nvme_fc_submit_async_event,
- 	.delete_ctrl		= nvme_fc_delete_ctrl,
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -562,6 +562,7 @@ struct nvme_ctrl_ops {
- 	int (*reg_read64)(struct nvme_ctrl *ctrl, u32 off, u64 *val);
- 	void (*free_ctrl)(struct nvme_ctrl *ctrl);
- 	void (*submit_async_event)(struct nvme_ctrl *ctrl);
-+	int (*subsystem_reset)(struct nvme_ctrl *ctrl);
- 	void (*delete_ctrl)(struct nvme_ctrl *ctrl);
- 	void (*stop_ctrl)(struct nvme_ctrl *ctrl);
- 	int (*get_address)(struct nvme_ctrl *ctrl, char *buf, int size);
-@@ -660,18 +661,9 @@ int nvme_try_sched_reset(struct nvme_ctr
- 
- static inline int nvme_reset_subsystem(struct nvme_ctrl *ctrl)
- {
--	int ret;
--
--	if (!ctrl->subsystem)
-+	if (!ctrl->subsystem || !ctrl->ops->subsystem_reset)
- 		return -ENOTTY;
--	if (!nvme_wait_reset(ctrl))
--		return -EBUSY;
--
--	ret = ctrl->ops->reg_write32(ctrl, NVME_REG_NSSR, 0x4E564D65);
--	if (ret)
--		return ret;
--
--	return nvme_try_sched_reset(ctrl);
-+	return ctrl->ops->subsystem_reset(ctrl);
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -846,22 +846,25 @@ static int imx8mq_vpu_power_notifier(str
+ 	return NOTIFY_OK;
  }
  
- /*
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1143,6 +1143,41 @@ static void nvme_pci_submit_async_event(
- 	spin_unlock(&nvmeq->sq_lock);
- }
++/*
++ * For i.MX8MQ, the ADB in the VPUMIX domain has no separate reset and clock
++ * enable bits, but is ungated and reset together with the VPUs.
++ * Resetting G1 or G2 separately may led to system hang.
++ * Remove the rst_mask and clk_mask from the domain data of G1 and G2,
++ * Let imx8mq_vpu_power_notifier() do really vpu reset.
++ */
+ static const struct imx8m_blk_ctrl_domain_data imx8mq_vpu_blk_ctl_domain_data[] = {
+ 	[IMX8MQ_VPUBLK_PD_G1] = {
+ 		.name = "vpublk-g1",
+ 		.clk_names = (const char *[]){ "g1", },
+ 		.num_clks = 1,
+ 		.gpc_name = "g1",
+-		.rst_mask = BIT(1),
+-		.clk_mask = BIT(1),
+ 	},
+ 	[IMX8MQ_VPUBLK_PD_G2] = {
+ 		.name = "vpublk-g2",
+ 		.clk_names = (const char *[]){ "g2", },
+ 		.num_clks = 1,
+ 		.gpc_name = "g2",
+-		.rst_mask = BIT(0),
+-		.clk_mask = BIT(0),
+ 	},
+ };
  
-+static int nvme_pci_subsystem_reset(struct nvme_ctrl *ctrl)
-+{
-+	struct nvme_dev *dev = to_nvme_dev(ctrl);
-+	int ret = 0;
-+
-+	/*
-+	 * Taking the shutdown_lock ensures the BAR mapping is not being
-+	 * altered by reset_work. Holding this lock before the RESETTING state
-+	 * change, if successful, also ensures nvme_remove won't be able to
-+	 * proceed to iounmap until we're done.
-+	 */
-+	mutex_lock(&dev->shutdown_lock);
-+	if (!dev->bar_mapped_size) {
-+		ret = -ENODEV;
-+		goto unlock;
-+	}
-+
-+	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_RESETTING)) {
-+		ret = -EBUSY;
-+		goto unlock;
-+	}
-+
-+	writel(NVME_SUBSYS_RESET, dev->bar + NVME_REG_NSSR);
-+	nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE);
-+
-+	/*
-+	 * Read controller status to flush the previous write and trigger a
-+	 * pcie read error.
-+	 */
-+	readl(dev->bar + NVME_REG_CSTS);
-+unlock:
-+	mutex_unlock(&dev->shutdown_lock);
-+	return ret;
-+}
-+
- static int adapter_delete_queue(struct nvme_dev *dev, u8 opcode, u16 id)
- {
- 	struct nvme_command c = { };
-@@ -2910,6 +2945,7 @@ static const struct nvme_ctrl_ops nvme_p
- 	.reg_read64		= nvme_pci_reg_read64,
- 	.free_ctrl		= nvme_pci_free_ctrl,
- 	.submit_async_event	= nvme_pci_submit_async_event,
-+	.subsystem_reset	= nvme_pci_subsystem_reset,
- 	.get_address		= nvme_pci_get_address,
- 	.print_device_info	= nvme_pci_print_device_info,
- 	.supports_pci_p2pdma	= nvme_pci_supports_pci_p2pdma,
---- a/drivers/nvme/host/rdma.c
-+++ b/drivers/nvme/host/rdma.c
-@@ -2174,6 +2174,7 @@ static const struct nvme_ctrl_ops nvme_r
- 	.reg_read32		= nvmf_reg_read32,
- 	.reg_read64		= nvmf_reg_read64,
- 	.reg_write32		= nvmf_reg_write32,
-+	.subsystem_reset	= nvmf_subsystem_reset,
- 	.free_ctrl		= nvme_rdma_free_ctrl,
- 	.submit_async_event	= nvme_rdma_submit_async_event,
- 	.delete_ctrl		= nvme_rdma_delete_ctrl,
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -2561,6 +2561,7 @@ static const struct nvme_ctrl_ops nvme_t
- 	.reg_read32		= nvmf_reg_read32,
- 	.reg_read64		= nvmf_reg_read64,
- 	.reg_write32		= nvmf_reg_write32,
-+	.subsystem_reset	= nvmf_subsystem_reset,
- 	.free_ctrl		= nvme_tcp_free_ctrl,
- 	.submit_async_event	= nvme_tcp_submit_async_event,
- 	.delete_ctrl		= nvme_tcp_delete_ctrl,
---- a/include/linux/nvme.h
-+++ b/include/linux/nvme.h
-@@ -28,6 +28,9 @@
- 
- #define NVME_NSID_ALL		0xffffffff
- 
-+/* Special NSSR value, 'NVMe' */
-+#define NVME_SUBSYS_RESET	0x4E564D65
-+
- enum nvme_subsys_type {
- 	/* Referral to another discovery type target subsystem */
- 	NVME_NQN_DISC	= 1,
 
 
 
