@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-212424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212074-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IBwgAwQzeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:02:12 +0100
+	id OMhcArYuemmO3wEAu9opvQ
+	(envelope-from <stable+bounces-212074-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D685A4F5C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:02:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F45DA4500
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11B8B32458AE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:51:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E8AC30CA76E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D2B304968;
-	Wed, 28 Jan 2026 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C90248881;
+	Wed, 28 Jan 2026 15:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4/XFkD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqoOPNXE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D863043B2;
-	Wed, 28 Jan 2026 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB547242D7F;
+	Wed, 28 Jan 2026 15:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615472; cv=none; b=bPTv5Hy972afnOf92uUmt9/Yf7B75E+zECoOfFDq+VlfE2MbY+M6Y/FwBamN8uVZzob8Tt19uniE75cmmzkzYQm/Jku9qXu+dykio49KDiDWlrl9cQ5qWn1PxFZVKb98ewHm+A8ygCJWFqQTX3gD5kbowY+ULYADKeN0jcMzirc=
+	t=1769614313; cv=none; b=TIWdXBJrQIrJQFLF5Ozg5OcvttRn4DhfXgNibGRWHGqulaQ2XIBI9HHOqX6UdllA+0lxXnMLQpfFZ4JzDAIfRUv6JGEA3JWBDxfxUfcz1ioYdK5aD/tezUgr5unXX6k1AyUoMP8ZatZcdVxn+zaNEhCz16ZvZSDGDvezmxZi3Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615472; c=relaxed/simple;
-	bh=KfDapkdmXOemZPdIkN057Tl/bKsDqTELtIaF3U9Dwfg=;
+	s=arc-20240116; t=1769614313; c=relaxed/simple;
+	bh=a2vm5U6ayVuFelazPCOHMLYIq0LJecDjEfVMqOhPgtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5Xpt45xy4trlsW+2X1au6l5tHYz488Hp5kCN5KPRJEhrp6oRwiDiO/B3tOUKy2dPz7tIVL2qdmpJ4gWEoonCufO5UW+vlyW84w36ZXWX1yJh1H2o4YmTLYR5oji9X/8LmCw+NSORiJuzMjjSmj5kIZrmLMelJooY4ipd2OTGdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4/XFkD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04088C2BC86;
-	Wed, 28 Jan 2026 15:51:10 +0000 (UTC)
+	 MIME-Version; b=JiUMqtKTJ42ZfQ26bT+2A9YO/XiEwXLOqBdZKZI08rYhhqqcDndyYd8WKWMcyRnDuf1QhOZWKvvtGlS6DaqkKfQox2C4XrqjZNN9PWhizG7PWkbU0G7bZ+dlPKDWk5CblLpeUAaR/iYWA98xJuqIwCDU+9uV3+z5m/ijc6EAObE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqoOPNXE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10264C4CEF1;
+	Wed, 28 Jan 2026 15:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615472;
-	bh=KfDapkdmXOemZPdIkN057Tl/bKsDqTELtIaF3U9Dwfg=;
+	s=korg; t=1769614313;
+	bh=a2vm5U6ayVuFelazPCOHMLYIq0LJecDjEfVMqOhPgtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4/XFkD4v6F9FFhu6pp7mANNT1ipG0WBPxB2QH1CmExrRpYjWtK6MglsLU3hXPMDz
-	 /2oDs2mCUvlCj2y1Y5ifiFgMssRdsd9+mxHgqDxihxVNBPqpetKF9UPjb70IxH/sQo
-	 AfceqzfdbxTSykZ3FjQVgGZgA/IaARJlvK6k1Y0s=
+	b=EqoOPNXE779PehbrUDF+QGIh1lHbn8IoH0+/TpUbM6oTpQrHQNCxRBl+71reoo+QP
+	 yXNcbOF2hoMXA7gmWGvxMdA7plm4iNdB2RqaixkVt9QsEPfhbd2okpyJdJXHi7J30T
+	 r4koEBtQvGd4zegxE36ipBdTEVhG6UAvh5GDvUzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 002/227] arm64: dts: qcom: sm8550: Fix compile warnings in USB controller node
+	Lisa Robinson <lisa@bytefly.space>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 071/254] LoongArch: Fix PMU counter allocation for mixed-type event groups
 Date: Wed, 28 Jan 2026 16:20:47 +0100
-Message-ID: <20260128145344.424953610@linuxfoundation.org>
+Message-ID: <20260128145347.252316409@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,74 +68,155 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212424-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[0.0.0.0:query timed out,a600000:query timed out,qualcomm.com:query timed out];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212074-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RSPAMD_EMAILBL_FAIL(0.00)[soc.0.0.0.0:query timed out,krishna.kurapati.oss.qualcomm.com:query timed out];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9D685A4F5C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,loongson.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytefly.space:email]
+X-Rspamd-Queue-Id: 5F45DA4500
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+From: Lisa Robinson <lisa@bytefly.space>
 
-[ Upstream commit 9dbc9bed01837717b8ab755cf5067a6f8d35b00f ]
+commit a91f86e27087f250a5d9c89bb4a427b9c30fd815 upstream.
 
-With W=1, the following error comes up:
+When validating a perf event group, validate_group() unconditionally
+attempts to allocate hardware PMU counters for the leader, sibling
+events and the new event being added.
 
-Warning (avoid_unnecessary_addr_size): /soc@0/usb@a600000: unnecessary #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" or "ranges" property
+This is incorrect for mixed-type groups. If a PERF_TYPE_SOFTWARE event
+is part of the group, the current code still tries to allocate a hardware
+PMU counter for it, which can wrongly consume hardware PMU resources and
+cause spurious allocation failures.
 
-This is because the child node being removed during flattening and moving
-to latest bindings.
+Fix this by only allocating PMU counters for hardware events during group
+validation, and skipping software events.
 
-Fixes: 33450878adfc ("arm64: dts: qcom: sm8550: Flatten the USB nodes")
-Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20251203144856.2711440-2-krishna.kurapati@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A trimmed down reproducer is as simple as this:
+
+  #include <stdio.h>
+  #include <assert.h>
+  #include <unistd.h>
+  #include <string.h>
+  #include <sys/syscall.h>
+  #include <linux/perf_event.h>
+
+  int main (int argc, char *argv[])
+  {
+  	struct perf_event_attr attr = { 0 };
+  	int fds[5];
+
+  	attr.disabled = 1;
+  	attr.exclude_kernel = 1;
+  	attr.exclude_hv = 1;
+  	attr.read_format = PERF_FORMAT_TOTAL_TIME_ENABLED |
+  		PERF_FORMAT_TOTAL_TIME_RUNNING | PERF_FORMAT_ID | PERF_FORMAT_GROUP;
+  	attr.size = sizeof (attr);
+
+  	attr.type = PERF_TYPE_SOFTWARE;
+  	attr.config = PERF_COUNT_SW_DUMMY;
+  	fds[0] = syscall (SYS_perf_event_open, &attr, 0, -1, -1, 0);
+  	assert (fds[0] >= 0);
+
+  	attr.type = PERF_TYPE_HARDWARE;
+  	attr.config = PERF_COUNT_HW_CPU_CYCLES;
+  	fds[1] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
+  	assert (fds[1] >= 0);
+
+  	attr.type = PERF_TYPE_HARDWARE;
+  	attr.config = PERF_COUNT_HW_INSTRUCTIONS;
+  	fds[2] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
+  	assert (fds[2] >= 0);
+
+  	attr.type = PERF_TYPE_HARDWARE;
+  	attr.config = PERF_COUNT_HW_BRANCH_MISSES;
+  	fds[3] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
+  	assert (fds[3] >= 0);
+
+  	attr.type = PERF_TYPE_HARDWARE;
+  	attr.config = PERF_COUNT_HW_CACHE_REFERENCES;
+  	fds[4] = syscall (SYS_perf_event_open, &attr, 0, -1, fds[0], 0);
+  	assert (fds[4] >= 0);
+
+  	printf ("PASSED\n");
+
+  	return 0;
+  }
+
+Cc: stable@vger.kernel.org
+Fixes: b37042b2bb7c ("LoongArch: Add perf events support")
+Signed-off-by: Lisa Robinson <lisa@bytefly.space>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ arch/loongarch/kernel/perf_event.c |   21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index 7724dba75db79..e294dc9c68c9a 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -4097,8 +4097,6 @@ usb_dp_qmpphy_dp_in: endpoint {
- 		usb_1: usb@a600000 {
- 			compatible = "qcom,sm8550-dwc3", "qcom,snps-dwc3";
- 			reg = <0x0 0x0a600000 0x0 0xfc100>;
--			#address-cells = <1>;
--			#size-cells = <0>;
+--- a/arch/loongarch/kernel/perf_event.c
++++ b/arch/loongarch/kernel/perf_event.c
+@@ -637,6 +637,18 @@ static const struct loongarch_perf_event
+ 	return pev;
+ }
  
- 			clocks = <&gcc GCC_CFG_NOC_USB3_PRIM_AXI_CLK>,
- 				 <&gcc GCC_USB30_PRIM_MASTER_CLK>,
--- 
-2.51.0
-
++static inline bool loongarch_pmu_event_requires_counter(const struct perf_event *event)
++{
++	switch (event->attr.type) {
++	case PERF_TYPE_HARDWARE:
++	case PERF_TYPE_HW_CACHE:
++	case PERF_TYPE_RAW:
++		return true;
++	default:
++		return false;
++	}
++}
++
+ static int validate_group(struct perf_event *event)
+ {
+ 	struct cpu_hw_events fake_cpuc;
+@@ -644,15 +656,18 @@ static int validate_group(struct perf_ev
+ 
+ 	memset(&fake_cpuc, 0, sizeof(fake_cpuc));
+ 
+-	if (loongarch_pmu_alloc_counter(&fake_cpuc, &leader->hw) < 0)
++	if (loongarch_pmu_event_requires_counter(leader) &&
++	    loongarch_pmu_alloc_counter(&fake_cpuc, &leader->hw) < 0)
+ 		return -EINVAL;
+ 
+ 	for_each_sibling_event(sibling, leader) {
+-		if (loongarch_pmu_alloc_counter(&fake_cpuc, &sibling->hw) < 0)
++		if (loongarch_pmu_event_requires_counter(sibling) &&
++		    loongarch_pmu_alloc_counter(&fake_cpuc, &sibling->hw) < 0)
+ 			return -EINVAL;
+ 	}
+ 
+-	if (loongarch_pmu_alloc_counter(&fake_cpuc, &event->hw) < 0)
++	if (loongarch_pmu_event_requires_counter(event) &&
++	    loongarch_pmu_alloc_counter(&fake_cpuc, &event->hw) < 0)
+ 		return -EINVAL;
+ 
+ 	return 0;
 
 
 
