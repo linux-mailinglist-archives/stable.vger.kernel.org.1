@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-212425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOQ+NGE5eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212425-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:29:21 +0100
+	id mBOjGosuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F7DA5B4E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:29:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CF7A4479
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0E1E30A194D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:51:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C04631B414C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD09F308F2E;
-	Wed, 28 Jan 2026 15:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A80242D7F;
+	Wed, 28 Jan 2026 15:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNhUGAeT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okNQtb0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945CB3064B3;
-	Wed, 28 Jan 2026 15:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AC213B7A3;
+	Wed, 28 Jan 2026 15:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615475; cv=none; b=jddrkKsnVBo55tWhAx+hHOM+KukEQfHCn6ddetisLcK7wZjMB2UivkGMNiv89cnczdkdgdgOiNN+NjCqYHkdCaCwG1Pb2MOES+eo0hjwKB7/xxviyrTHAQyEdYr709CZhVbZi+c/eAMVXCjZbr4BcN1p4MVlshTtVlaYdBdjgos=
+	t=1769614286; cv=none; b=oTwfnrjYj/2DlQN9iVlQhQugGb/T4z1Dfhly79SadcDhPNGe7a8pKD0l9poDgV+gYNZj8e46dD4ExJ8URLtQHlpG6AwfAvboxZDNIF3NgSfnNq8SOSTfTmJydr5X729Q8IKTAp0wQCQQgHW2JVVYy4ipxZyOETTROpH4197gtgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615475; c=relaxed/simple;
-	bh=P9cT+ob1BKJYN7qrEVW9vUVBN/C7HG47qynnVheZugc=;
+	s=arc-20240116; t=1769614286; c=relaxed/simple;
+	bh=RSFgrDwGq8SiGLkrbj6qifFmkcwlZBzF1cCPYaFhcOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGTdMug+/R8McDEHpoAeUGQ5Q4BmzjZT1VJQtpfwHSmLbeNvD9CCCyiVEHZ+UVwCyqlAIJ4dc2s1Z0H80P3uf7cZJkg7XZSiDFBuIZF4oL3pymiTNNZ3CtVCDd1qQvLjxTr6sOFU6y4+D1ifkfbmCrwl6fSYC6x45XIdI04NsSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNhUGAeT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083A2C4CEF1;
-	Wed, 28 Jan 2026 15:51:14 +0000 (UTC)
+	 MIME-Version; b=jg6c8RvdtnsfcablZ50F9ZFwRh6vYlbXF+mmz52816fkbNJ3gX2Xa0HZW+OPz0quu3P8Ux65Xlbr+1LYVJ6aREtPylM0oixq8QvFp8CP56TRZSd4NptRNOOWbshoMj1uqR4C9f+xP8wWZe7dlXBTeIVM85bbXvJC9UP5bPhuNuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okNQtb0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3518C4CEF1;
+	Wed, 28 Jan 2026 15:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615475;
-	bh=P9cT+ob1BKJYN7qrEVW9vUVBN/C7HG47qynnVheZugc=;
+	s=korg; t=1769614286;
+	bh=RSFgrDwGq8SiGLkrbj6qifFmkcwlZBzF1cCPYaFhcOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNhUGAeT2CAbShMwQ4oRMFXyZURiHbuHV90oFpOeWqMbr2r1qi4BdkyoBG7u5SZvy
-	 jQXBHV7vSWZySsMU+yLi+P/KYdSLPcwz6mAI9fr12Dx0XiKHWKIvKL73eNrRpE++sc
-	 ETETikVJn1rvl9se9neNyXzvw3rG5aVkMusnSKAc=
+	b=okNQtb0AJU+Nt6CoeGcnfssbdeo2Relhb2NwlTc+WMK652b0+A0Tn7QXQIFH9jsUk
+	 xW9M5yS4kMnNZYzc1vMeJH08b5mg5E6lBtxsiWdjLRR4W8eoBXU7hxL+VUTEkldt/A
+	 4GIXJRmvpw2Pum3TnqNwfnoFQr+iKOyl3Raoopes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yingying Tang <yingying.tang@oss.qualcomm.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	linux-next@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 020/227] wifi: ath12k: Fix wrong P2P device link id issue
-Date: Wed, 28 Jan 2026 16:21:05 +0100
-Message-ID: <20260128145345.069879352@linuxfoundation.org>
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 090/254] io_uring: move local task_work in exit cancel loop
+Date: Wed, 28 Jan 2026 16:21:06 +0100
+Message-ID: <20260128145348.067899369@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,104 +73,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212425-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212066-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 72F7DA5B4E
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C3CF7A4479
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yingying Tang <yingying.tang@oss.qualcomm.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 31707572108da55a005e7fed32cc3869c16b7c16 ]
+commit da579f05ef0faada3559e7faddf761c75cdf85e1 upstream.
 
-Wrong P2P device link id value of 0 was introduced in ath12k_mac_op_tx() by [1].
+With IORING_SETUP_DEFER_TASKRUN, task work is queued to ctx->work_llist
+(local work) rather than the fallback list. During io_ring_exit_work(),
+io_move_task_work_from_local() was called once before the cancel loop,
+moving work from work_llist to fallback_llist.
 
-During the P2P negotiation process, there is only one scan vdev with link ID 15.
-Currently, the device link ID is incorrectly set to 0 in ath12k_mac_op_tx()
-during the P2P negotiation process, which leads to TX failures.
+However, task work can be added to work_llist during the cancel loop
+itself. There are two cases:
 
-Set the correct P2P device link ID to 15 to fix the TX failure issue.
+1) io_kill_timeouts() is called from io_uring_try_cancel_requests() to
+cancel pending timeouts, and it adds task work via io_req_queue_tw_complete()
+for each cancelled timeout:
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+2) URING_CMD requests like ublk can be completed via
+io_uring_cmd_complete_in_task() from ublk_queue_rq() during canceling,
+given ublk request queue is only quiesced when canceling the 1st uring_cmd.
 
-Fixes: 648a121bafa3 ("wifi: ath12k: ath12k_mac_op_tx(): MLO support") # [1]
-Signed-off-by: Yingying Tang <yingying.tang@oss.qualcomm.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Cc: linux-next@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Link: https://patch.msgid.link/20260113054636.2620035-1-yingying.tang@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Since io_allowed_defer_tw_run() returns false in io_ring_exit_work()
+(kworker != submitter_task), io_run_local_work() is never invoked,
+and the work_llist entries are never processed. This causes
+io_uring_try_cancel_requests() to loop indefinitely, resulting in
+100% CPU usage in kworker threads.
 
+Fix this by moving io_move_task_work_from_local() inside the cancel
+loop, ensuring any work on work_llist is moved to fallback before
+each cancel attempt.
+
+Cc: stable@vger.kernel.org
+Fixes: c0e0d6ba25f1 ("io_uring: add IORING_SETUP_DEFER_TASKRUN")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
+ io_uring/io_uring.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Note to linux-next and netdev maintainers:
-
-This patch going through the "current" tree conflicts with
-the following going through the "next" tree:
-commit 631ee338f04d ("Merge branch 'ath12k-ng' into ath-next")
-
-The conflict resolution is to leave the following file unmodified:
-drivers/net/wireless/ath/ath12k/mac.
-
-And to apply the following patch to ath12k_wifi7_mac_op_tx()
-in the file drivers/net/wireless/ath/ath12k/wifi7/hw.c -705,7 +705,10
-
- 			return;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3191,11 +3191,11 @@ static __cold void io_ring_exit_work(str
+ 			mutex_unlock(&ctx->uring_lock);
  		}
- 	} else {
--		link_id = 0;
-+		if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
-+			link_id = ATH12K_FIRST_SCAN_LINK;
-+		else
-+			link_id = 0;
- 	}
-
- 	arvif = rcu_dereference(ahvif->link[link_id]);
-
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/ath/ath12k/mac.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index d6a44c19e2245..256ffae4d7f7d 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -8840,7 +8840,10 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
- 			return;
- 		}
- 	} else {
--		link_id = 0;
-+		if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
-+			link_id = ATH12K_FIRST_SCAN_LINK;
-+		else
-+			link_id = 0;
- 	}
  
- 	arvif = rcu_dereference(ahvif->link[link_id]);
--- 
-2.51.0
-
+-		if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
+-			io_move_task_work_from_local(ctx);
+-
+-		while (io_uring_try_cancel_requests(ctx, NULL, true))
++		do {
++			if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
++				io_move_task_work_from_local(ctx);
+ 			cond_resched();
++		} while (io_uring_try_cancel_requests(ctx, NULL, true));
+ 
+ 		if (ctx->sq_data) {
+ 			struct io_sq_data *sqd = ctx->sq_data;
 
 
 
