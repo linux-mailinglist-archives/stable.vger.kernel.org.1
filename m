@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-212282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212458-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iIW3CD8xemlT4gEAu9opvQ
-	(envelope-from <stable+bounces-212282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:39 +0100
+	id sPJoIYIyemlo4gEAu9opvQ
+	(envelope-from <stable+bounces-212458-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B0FA4B33
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13BCA4E56
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C99433137E9C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 832C330960BD
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FCC3033E4;
-	Wed, 28 Jan 2026 15:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBC230E827;
+	Wed, 28 Jan 2026 15:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5ccmWcv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1o5mm95y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0731E1DFC;
-	Wed, 28 Jan 2026 15:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4829302741;
+	Wed, 28 Jan 2026 15:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614996; cv=none; b=YOG8HnKg5P8up3VvSnVzyx1TwzF66djHoWlwUeng9kEcuSP93BkKNnl/u5tF9vGHes2laSMVxV8TlCBDoB0qPJhbYb8C0YyN5kDvaaO74aO6Lk/Mwj0qVxk4izzpICWn+p5iZYLlJ3uET9sBkrep8nKjQ2sZviHMxM0NSjQBto0=
+	t=1769615588; cv=none; b=eZKZwOeSXiDe2YdLoz0jZZFWn7LWq+j+W2w2L9ENsiaCOnAx9IKlWyWYXtONcqU+fW4cZ3kbEs8Wk+7RFnrEtse5tHHYQEJitzr4Dee9KvpgYeBW/S1AFO58+/fsDtG+pOQr38ePiUF5E/yBis8CxqvsEl2lRT4wCWCEU14Tztg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614996; c=relaxed/simple;
-	bh=bUK1aUaXyKCWxJ/CWwgGPcSOmXnHFbXS1wUKJNrHQnw=;
+	s=arc-20240116; t=1769615588; c=relaxed/simple;
+	bh=TFlwmTgvevkR+A2u4tdtt/orywV7zWnRJtB6DG5uj70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuP2jMPmfa/1PSEgIw8npzdYLHvVQCU5av+PeDTZrX6b+jXl+AilTsPT2v4981vpWvzwAGlRlclmvgVoc3wOAqr5vGjFMlRLxJazF5RKJDndXRLdARnyinwh44Bms1ht6UuYG2C2SIMlmajHbA4BwopqAdgDwfmgVawUAHxhjYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5ccmWcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E5AC16AAE;
-	Wed, 28 Jan 2026 15:43:15 +0000 (UTC)
+	 MIME-Version; b=l6/zgKrWSERCZyQpuIqFq4/t6T7WYdtmvpcI5XUs5GBMnEkk5yd1SPbokwj/onz0KhGkZqBZGI0XsSc4k7oSE3Saxg9xIpCi5DhkCnHpHAwLQYJ4LEdZXufqRJ8DTBNhSDKQZkJJhlLnwvnriGWLzZYvZeE2q7urP/rarAf105k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1o5mm95y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0C8C116C6;
+	Wed, 28 Jan 2026 15:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614996;
-	bh=bUK1aUaXyKCWxJ/CWwgGPcSOmXnHFbXS1wUKJNrHQnw=;
+	s=korg; t=1769615587;
+	bh=TFlwmTgvevkR+A2u4tdtt/orywV7zWnRJtB6DG5uj70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N5ccmWcveB7kdZ6O/E8JiCQe4A9aNc0Ww6lwacUt64/wHsKm5qDOQodWlb5YIwxHZ
-	 352yXoV2P+OnEYrI37qgJHmpOyo9ZO74xZ85s/ky9WGCWNk99TClC5IwpRBALM3Adu
-	 RNjhG1lyK6cXml8P+7NPz9bC+wmS5MQV628IisO4=
+	b=1o5mm95yTomB4zrY84HaAwDUnWfBOTK1oyyV7swdqviLbq9awshnCUcvP4w3YJkbM
+	 0SYNqXL80w11ylzI05dDlY+dAA+WCDcJIecKiAhFloxwu1kyNG2gqCTmBNBXz5tTfx
+	 ycW/31UUnrLPmBZ6K7oKV9R5iGBF3Cge33pzq/6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Wolf <wolf@yoxt.cc>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/169] ata: libata: Add cpr_log to ata_dev_print_features() early return
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 6.18 053/227] w1: fix redundant counter decrement in w1_attach_slave_device()
 Date: Wed, 28 Jan 2026 16:21:38 +0100
-Message-ID: <20260128145334.564777055@linuxfoundation.org>
+Message-ID: <20260128145346.250660600@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,75 +66,68 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212282-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212458-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B8B0FA4B33
+X-Rspamd-Queue-Id: F13BCA4E56
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit a6bee5e5243ad02cae575becc4c83df66fc29573 ]
+commit cc8f92e41eb76f450f05234fef2054afc3633100 upstream.
 
-ata_dev_print_features() is supposed to return early and not print anything
-if there are no features supported.
+In w1_attach_slave_device(), if __w1_attach_slave_device() fails,
+put_device() -> w1_slave_release() is called to do the cleanup job.
+In w1_slave_release(), sl->family->refcnt and sl->master->slave_count
+have already been decremented. There is no need to decrement twice
+in w1_attach_slave_device().
 
-However, commit fe22e1c2f705 ("libata: support concurrent positioning
-ranges log") added another feature to ata_dev_print_features() without
-updating the early return conditional.
-
-Add the missing feature to the early return conditional.
-
-Fixes: fe22e1c2f705 ("libata: support concurrent positioning ranges log")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Tested-by: Wolf <wolf@yoxt.cc>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c927c0c73fd ("w1: Fix slave count on 1-Wire bus (resend)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20251218111414.564403-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/w1/w1.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 802967eabc344..864248ff1faf9 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -2803,7 +2803,7 @@ static void ata_dev_config_cpr(struct ata_device *dev)
- 
- static void ata_dev_print_features(struct ata_device *dev)
- {
--	if (!(dev->flags & ATA_DFLAG_FEATURES_MASK))
-+	if (!(dev->flags & ATA_DFLAG_FEATURES_MASK) && !dev->cpr_log)
- 		return;
- 
- 	ata_dev_info(dev,
--- 
-2.51.0
-
+--- a/drivers/w1/w1.c
++++ b/drivers/w1/w1.c
+@@ -758,8 +758,6 @@ int w1_attach_slave_device(struct w1_mas
+ 	if (err < 0) {
+ 		dev_err(&dev->dev, "%s: Attaching %s failed.\n", __func__,
+ 			 sl->name);
+-		dev->slave_count--;
+-		w1_family_put(sl->family);
+ 		atomic_dec(&sl->master->refcnt);
+ 		kfree(sl);
+ 		return err;
 
 
 
