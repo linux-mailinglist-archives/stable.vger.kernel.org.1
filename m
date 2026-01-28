@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-212287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212129-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iCYjC10xemlT4gEAu9opvQ
-	(envelope-from <stable+bounces-212287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:09 +0100
+	id iOXuEWkuemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212129-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13A5A4B87
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCEDA43D2
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B18E306542A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EBC95302ADAC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACD530F543;
-	Wed, 28 Jan 2026 15:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C054F2C1586;
+	Wed, 28 Jan 2026 15:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H9vQ2duU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ofc6PEUK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2168C30FC21;
-	Wed, 28 Jan 2026 15:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6282BE04C;
+	Wed, 28 Jan 2026 15:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615014; cv=none; b=txo61LHTI8jETJl0tQke24CYe68M6mJYG25i77tGv45S8flgGvzgW9lvzg65OL2UqrzY10U2KXWw/wM604zwngaPr/aTWPQ+7Vc2Vqq75N6SB8+2nMKPP7bOjLCYd5G8Mnu+2Riw6g4DU43gt79Ia4jYGA0FkEvtAEEJIwPYY+4=
+	t=1769614490; cv=none; b=dvmZ9dT32kaSLu/FSc35Vf2H9JcrIJzUgQyPJigZoQxZg+dJWIpN+xfGPBXYsI7o2WSBb7kfPhw9oAocTbcEbhcwDI3jbjcFTlCL3sdSsdrUf7JLQ7NZ+7b9f6dsA1nSfV/rrhzFL7ImihndFbe5dFXU6th4KJwB9Gth9V+bngc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615014; c=relaxed/simple;
-	bh=O4vc7yIErZhPD9+yfmHahpOk9E825nF6QhHLuzrLTyk=;
+	s=arc-20240116; t=1769614490; c=relaxed/simple;
+	bh=9XfhUg/dW/MC04Q5np7zNZh7qgI/UzUiwv+XbopQJd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGy5K9OrA2HQahgVXLkwWqslKIbRsH8cmjRtQomNRELVQifbH3oigrDp2riJcmiHEBIVcF5bQik8gzysnwC9thgPb+cXvO+zZgV1JUpETyWPiUtUunhYNPtqHQ4Xg40A/DgcM/Yg3m+CXpyTuC+AMMpb1ObsXCS9pea+Fmsbb94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H9vQ2duU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4882CC4CEF7;
-	Wed, 28 Jan 2026 15:43:33 +0000 (UTC)
+	 MIME-Version; b=Hxx5Undr3gUzTw2E3SrVbXP0j3rpZTFf73D1kzQtOG+jvUcyuRVVTNFaTjCggllyTqtXBHS4Oqub9FVyukZi09HP0w7QO9y4gPUZ+IAPp6f47PPUgY0PgqtoH9jXks4dLPxBe0uYmRu85BPLI3tNoB1X4EvKkkPzPx5MNUaTa9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ofc6PEUK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE6CC4CEF7;
+	Wed, 28 Jan 2026 15:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615013;
-	bh=O4vc7yIErZhPD9+yfmHahpOk9E825nF6QhHLuzrLTyk=;
+	s=korg; t=1769614489;
+	bh=9XfhUg/dW/MC04Q5np7zNZh7qgI/UzUiwv+XbopQJd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H9vQ2duUsMUsJOAucMAD5aAQMP236NFfbgbLBDUCWUQTBfkD93jYm55gNuj7BoPrc
-	 fs4UG2RWWQpkkAJlBvZ7GFXphKxyyfMEMM/Cn0WyLen/XtSIW7ZGb9EQRHTn8bxj8Q
-	 /AD3UJPqHuiGx2WlDOlsEt972pJ1KhFRtSKEnaWA=
+	b=Ofc6PEUKC16U743bpawNk6PHg35YsVS9ItsMkyhGQoVBg6E9tMGk7c/j5QpWy7Y6/
+	 JrviFqCwyo+IArNg/+jeQ6zvbsREhbEAMN+lNOw/DO4i2cke1JfHvkJAyrLUMI+grI
+	 yI3nZ37QCUGrUllRc1ZPVXWZA34nApJ2aq0cvVSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 6.12 045/169] w1: therm: Fix off-by-one buffer overflow in alarms_store
-Date: Wed, 28 Jan 2026 16:22:08 +0100
-Message-ID: <20260128145335.640185404@linuxfoundation.org>
+	Georgi Djakov <djakov@kernel.org>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 153/254] interconnect: debugfs: initialize src_node and dst_node to empty strings
+Date: Wed, 28 Jan 2026 16:22:09 +0100
+Message-ID: <20260128145350.317019193@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,161 +70,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212287-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212129-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.995];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C13A5A4B87
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ACCEDA43D2
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Georgi Djakov <djakov@kernel.org>
 
-commit 761fcf46a1bd797bd32d23f3ea0141ffd437668a upstream.
+[ Upstream commit 8cc27f5c6dd17dd090f3a696683f04336c162ff5 ]
 
-The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
-bytes and a NUL terminator is appended. However, the 'size' argument
-does not account for this extra byte. The original code then allocated
-'size' bytes and used strcpy() to copy 'buf', which always writes one
-byte past the allocated buffer since strcpy() copies until the NUL
-terminator at index 'size'.
+The debugfs_create_str() API assumes that the string pointer is either NULL
+or points to valid kmalloc() memory. Leaving the pointer uninitialized can
+cause problems.
 
-Fix this by parsing the 'buf' parameter directly using simple_strtoll()
-without allocating any intermediate memory or string copying. This
-removes the overflow while simplifying the code.
+Initialize src_node and dst_node to empty strings before creating the
+debugfs entries to guarantee that reads and writes are safe.
 
-Cc: stable@vger.kernel.org
-Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20251216145007.44328-2-thorsten.blum@linux.dev
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 770c69f037c1 ("interconnect: Add debugfs test client")
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Tested-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://lore.kernel.org/r/20260109122523.125843-1-djakov@kernel.org
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/w1/slaves/w1_therm.c |   60 +++++++++++++------------------------------
- 1 file changed, 19 insertions(+), 41 deletions(-)
+ drivers/interconnect/debugfs-client.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/w1/slaves/w1_therm.c
-+++ b/drivers/w1/slaves/w1_therm.c
-@@ -1846,53 +1846,35 @@ static ssize_t alarms_store(struct devic
- 	struct w1_slave *sl = dev_to_w1_slave(device);
- 	struct therm_info info;
- 	u8 new_config_register[3];	/* array of data to be written */
--	int temp, ret;
--	char *token = NULL;
-+	long long temp;
-+	int ret = 0;
- 	s8 tl, th;	/* 1 byte per value + temp ring order */
--	char *p_args, *orig;
-+	const char *p = buf;
-+	char *endp;
- 
--	p_args = orig = kmalloc(size, GFP_KERNEL);
--	/* Safe string copys as buf is const */
--	if (!p_args) {
--		dev_warn(device,
--			"%s: error unable to allocate memory %d\n",
--			__func__, -ENOMEM);
--		return size;
--	}
--	strcpy(p_args, buf);
--
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--
--	/* Convert 1st entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp || *endp != ' ')
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
+diff --git a/drivers/interconnect/debugfs-client.c b/drivers/interconnect/debugfs-client.c
+index 778deeb4a7e8a..24d7b5a577945 100644
+--- a/drivers/interconnect/debugfs-client.c
++++ b/drivers/interconnect/debugfs-client.c
+@@ -150,6 +150,11 @@ int icc_debugfs_client_init(struct dentry *icc_dir)
+ 		return ret;
  	}
  
- 	tl = int_to_short(temp);
++	src_node = devm_kstrdup(&pdev->dev, "", GFP_KERNEL);
++	dst_node = devm_kstrdup(&pdev->dev, "", GFP_KERNEL);
++	if (!src_node || !dst_node)
++		return -ENOMEM;
++
+ 	client_dir = debugfs_create_dir("test_client", icc_dir);
  
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--	/* Convert 2nd entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	p = endp + 1;
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp)
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	/* Prepare to cast to short by eliminating out of range values */
-@@ -1915,7 +1897,7 @@ static ssize_t alarms_store(struct devic
- 		dev_info(device,
- 			"%s: error reading from the slave device %d\n",
- 			__func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	/* Write data in the device RAM */
-@@ -1923,7 +1905,7 @@ static ssize_t alarms_store(struct devic
- 		dev_info(device,
- 			"%s: Device not supported by the driver %d\n",
- 			__func__, -ENODEV);
--		goto free_m;
-+		return size;
- 	}
- 
- 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
-@@ -1932,10 +1914,6 @@ static ssize_t alarms_store(struct devic
- 			"%s: error writing to the slave device %d\n",
- 			__func__, ret);
- 
--free_m:
--	/* free allocated memory */
--	kfree(orig);
--
- 	return size;
- }
- 
+ 	debugfs_create_str("src_node", 0600, client_dir, &src_node);
+-- 
+2.51.0
+
 
 
 
