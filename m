@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-212429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAAHCpc5eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212429-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:30:15 +0100
+	id WMlBGpsuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E430A5B9C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:30:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE795A44A6
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A679B32585C5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54F3D30D5D17
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A14A314A8E;
-	Wed, 28 Jan 2026 15:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FA113B7A3;
+	Wed, 28 Jan 2026 15:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayjBBoYo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gW5eDavs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5E43148D4;
-	Wed, 28 Jan 2026 15:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0C723EAB7;
+	Wed, 28 Jan 2026 15:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615490; cv=none; b=nloUcr0E6TeZLIi+DDU04mSGqEZqqo6zThB8thBR5Cr23prL3tk33o8KRN9xAJe3tFCQOkSw2WeJ66pMMVW1YhIdssIij+U2pv57sCvrtuVOxX8rcQjxSpMCX18wkGFNPNRBrg1Bo6flmf1tW8hS2yG5WjPCc5AREn9MZNBNyCg=
+	t=1769614296; cv=none; b=D+0ldyhGiVBFSMUc1AA27skz0TRc1eu9dzzzoFuwLoQXXOpeWue22+3N17DXK5TYrYEYUxDaOStgNXGgbFPaw+g6wZgO9GWRgNYCui+tQN8qGyo3RM6TmRhm8XiCKpfBmCyhWqP7iM69tIVZR2Bzuw0dly/FlhlynDf9MqKeyRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615490; c=relaxed/simple;
-	bh=hEabTCPBKjViL7xMprR7W5kfWLNTj3xk+cst+CL9xPU=;
+	s=arc-20240116; t=1769614296; c=relaxed/simple;
+	bh=amKYw3QpffiPMJ5mdy8dtv6E91vLuHRVn7X7PtNuCbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VzUypzwbiZdd9/xiiKbhEPEm+JVEFBKY0nRMUeUft4v82L2JWIMcx0Ytuin5FlsVtY8TiohRUa3LLmSGjdjtecFcp6T/jvtV8/AdJNtZwtWOKcke1IGHP6qRKrq/A7t0efbAAVrYQLjkjmiJxJ7jYbaR0is3EdsQn2f3OaV0Dac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayjBBoYo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0E9C4CEF1;
-	Wed, 28 Jan 2026 15:51:28 +0000 (UTC)
+	 MIME-Version; b=C1QJsgdKtbwalC0tE1jXv63tgxMvW82IgCrS2HD2N+lGRBlzAQs2xNzokoTh07wGJ4qRK7hfqfJTBGJS2SIptxqhv92r9tlnEbLqtBUhNx6H7AJJH7OryRVCKKGKEPSLDYoKWEo8Unermv05TcFv827vp0j4KfNKxSjy1a8p5+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gW5eDavs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E6FC4CEF1;
+	Wed, 28 Jan 2026 15:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615489;
-	bh=hEabTCPBKjViL7xMprR7W5kfWLNTj3xk+cst+CL9xPU=;
+	s=korg; t=1769614296;
+	bh=amKYw3QpffiPMJ5mdy8dtv6E91vLuHRVn7X7PtNuCbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ayjBBoYoxE3JvGtVmqs2CoSBvGI1+KWpB868TE04xLwQZKt1xXj9tMXY/BS+dxQ6g
-	 He/JDHx6t4syo4wt9IVw98M0Ajw7t4ha3NzqdzU8AGGsRokCVCAhP9pl2rpC/2Twpg
-	 xfzYKoE/YyKBPm7eSxsszS20Tn9ykDKK49Wr+2B8=
+	b=gW5eDavsDgPgU14T+LCHbgIRiVi133oW5YCOs3278gOBmo4fpd2KRprxgjMLxo/4U
+	 obtkFF0vLMqEbQFS4/xtx1ioEw3GgnqTpVnVtvBceB2ijTBjWQzcIAxfJFdIAMRNSK
+	 knr/aegyirANFwFdUENykfu9dgRfoEqzsS6edsn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Wojtek Wasko <wwasko@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 024/227] igc: Restore default Qbv schedule when changing channels
+Subject: [PATCH 6.6 093/254] posix-clock: Store file pointer in struct posix_clock_context
 Date: Wed, 28 Jan 2026 16:21:09 +0100
-Message-ID: <20260128145345.216395640@linuxfoundation.org>
+Message-ID: <20260128145348.174456760@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,111 +77,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,linutronix.de,nvidia.com,davemloft.net,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212069-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212429-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.3:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,0.0.0.1:email,0.0.0.2:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,0.0.0.0:email,intel.com:email,linutronix.de:email]
-X-Rspamd-Queue-Id: 7E430A5B9C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BE795A44A6
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Kanzenbach <kurt@linutronix.de>
+From: Wojtek Wasko <wwasko@nvidia.com>
 
-[ Upstream commit 41a9a6826f20a524242a6c984845c4855f629841 ]
+[ Upstream commit e859d375d1694488015e6804bfeea527a0b25b9f ]
 
-The Multi-queue Priority (MQPRIO) and Earliest TxTime First (ETF) offloads
-utilize the Time Sensitive Networking (TSN) Tx mode. This mode is always
-coupled to IEEE 802.1Qbv time aware shaper (Qbv). Therefore, the driver
-sets a default Qbv schedule of all gates opened and a cycle time of
-1s. This schedule is set during probe.
+File descriptor based pc_clock_*() operations of dynamic posix clocks
+have access to the file pointer and implement permission checks in the
+generic code before invoking the relevant dynamic clock callback.
 
-However, the following sequence of events lead to Tx issues:
+Character device operations (open, read, poll, ioctl) do not implement a
+generic permission control and the dynamic clock callbacks have no
+access to the file pointer to implement them.
 
- - Boot a dual core system
-   igc_probe():
-     igc_tsn_clear_schedule():
-       -> Default Schedule is set
-       Note: At this point the driver has allocated two Tx/Rx queues, because
-       there are only two CPUs.
+Extend struct posix_clock_context with a struct file pointer and
+initialize it in posix_clock_open(), so that all dynamic clock callbacks
+can access it.
 
- - ethtool -L enp3s0 combined 4
-   igc_ethtool_set_channels():
-     igc_reinit_queues()
-       -> Default schedule is gone, per Tx ring start and end time are zero
-
-  - tc qdisc replace dev enp3s0 handle 100 parent root mqprio \
-      num_tc 4 map 3 3 2 2 0 1 1 1 3 3 3 3 3 3 3 3 \
-      queues 1@0 1@1 1@2 1@3 hw 1
-    igc_tsn_offload_apply():
-      igc_tsn_enable_offload():
-        -> Writes zeros to IGC_STQT(i) and IGC_ENDQT(i), causing Tx to stall/fail
-
-Therefore, restore the default Qbv schedule after changing the number of
-channels.
-
-Furthermore, add a restriction to not allow queue reconfiguration when
-TSN/Qbv is enabled, because it may lead to inconsistent states.
-
-Fixes: c814a2d2d48f ("igc: Use default cycle 'start' and 'end' values for queues")
-Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ethtool.c | 4 ++--
- drivers/net/ethernet/intel/igc/igc_main.c    | 5 +++++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ include/linux/posix-clock.h | 6 +++++-
+ kernel/time/posix-clock.c   | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-index bb783042d1af9..4b39329e9e32b 100644
---- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-@@ -1561,8 +1561,8 @@ static int igc_ethtool_set_channels(struct net_device *netdev,
- 	if (ch->other_count != NON_Q_VECTORS)
- 		return -EINVAL;
+diff --git a/include/linux/posix-clock.h b/include/linux/posix-clock.h
+index ef8619f489203..a500d3160fe8c 100644
+--- a/include/linux/posix-clock.h
++++ b/include/linux/posix-clock.h
+@@ -95,10 +95,13 @@ struct posix_clock {
+  * struct posix_clock_context - represents clock file operations context
+  *
+  * @clk:              Pointer to the clock
++ * @fp:               Pointer to the file used to open the clock
+  * @private_clkdata:  Pointer to user data
+  *
+  * Drivers should use struct posix_clock_context during specific character
+- * device file operation methods to access the posix clock.
++ * device file operation methods to access the posix clock. In particular,
++ * the file pointer can be used to verify correct access mode for ioctl()
++ * calls.
+  *
+  * Drivers can store a private data structure during the open operation
+  * if they have specific information that is required in other file
+@@ -106,6 +109,7 @@ struct posix_clock {
+  */
+ struct posix_clock_context {
+ 	struct posix_clock *clk;
++	struct file *fp;
+ 	void *private_clkdata;
+ };
  
--	/* Do not allow channel reconfiguration when mqprio is enabled */
--	if (adapter->strict_priority_enable)
-+	/* Do not allow channel reconfiguration when any TSN qdisc is enabled */
-+	if (adapter->flags & IGC_FLAG_TSN_ANY_ENABLED)
- 		return -EINVAL;
- 
- 	/* Verify the number of channels doesn't exceed hw limits */
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 728d7ca5338bf..21e67e7534562 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -7761,6 +7761,11 @@ int igc_reinit_queues(struct igc_adapter *adapter)
- 	if (netif_running(netdev))
- 		err = igc_open(netdev);
- 
-+	if (!err) {
-+		/* Restore default IEEE 802.1Qbv schedule after queue reinit */
-+		igc_tsn_clear_schedule(adapter);
-+	}
-+
- 	return err;
- }
- 
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index a6487a9d60853..b130bb56cc4e0 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -129,6 +129,7 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+ 		goto out;
+ 	}
+ 	pccontext->clk = clk;
++	pccontext->fp = fp;
+ 	if (clk->ops.open) {
+ 		err = clk->ops.open(pccontext, fp->f_mode);
+ 		if (err) {
 -- 
 2.51.0
 
