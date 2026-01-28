@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-212704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212705-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oP6YIgSRemmz7wEAu9opvQ
-	(envelope-from <stable+bounces-212704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:43:16 +0100
+	id iOtvJgeRemmz7wEAu9opvQ
+	(envelope-from <stable+bounces-212705-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:43:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE00BA9B4F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:43:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E972DA9B56
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:43:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C36533017275
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:40:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 906DD301CF8A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F210834253C;
-	Wed, 28 Jan 2026 22:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9A634253C;
+	Wed, 28 Jan 2026 22:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rM9EU8jL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y4Zohv1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A507D3191C9
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 22:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45EF313520
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 22:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769640021; cv=none; b=faFOYwUhjlO/Z9eVNWTUuLmNJKxWRn76nHYX2hRyZmeCMMQdOQSf+BuKsxZS9hx+z0rHvybotRn/CiUyhxGszc8y9WwjLEHfeoiWYrraixozKsaG3THlIJVR/9Sd+zgECBBbm//P/C9A8BhQpP5Av2VedBX/tLGpnV10TUqEsRo=
+	t=1769640024; cv=none; b=H0VoHPT1cW2j7GLhgPm1DBLns+nSc1WEhsn11aTEOc/SlpEMVfTHM4+bm6xBcWVU//6F+mzmXP21//1R8azzLHgjTS2tmNGGCZUTx6TiQc4ip/gLkLjgOr58VmEGEYG+vl7r3Vzs2/VttDS4CnXxti0dlMCr1/hQ/NrvBdGKwQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769640021; c=relaxed/simple;
-	bh=f9SD+LKm8hXxX434r1CNxoBHcRwO42bKv4C+Q6zLDhU=;
+	s=arc-20240116; t=1769640024; c=relaxed/simple;
+	bh=+8mSpQTgO+bsDyq5YYgfUWxUlbF9bdp+flCuUhtwYZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7jBETrSgOFMPPi88pMcV6yHFFLmieyqBvmj/enByujBpdt7yNrj5G8yBJVESYFCgs0Wj8KjeAkpM4lUnDhRoxW7UWYcrcumSALsgAytUadxpCSbHkpRyoCaxGg7e3DATb/b4NYj7LvUAAm9HyiMjZSDHf72vmHwmxGJkcQ1S4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rM9EU8jL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6489C4CEF1;
-	Wed, 28 Jan 2026 22:40:20 +0000 (UTC)
+	 MIME-Version; b=btYw8GKohLhXS0M6SoFncqO1Idn0D/4Z+JAzk9acXoRxyDPZupWOtUt9wZRRhMp3kvCJ0pbFlULluljweerHxnK9VQFF5SQHq4tLM0rWphisAf5rtikpHbrsI7dd86+8jnWxneLay3Vl1u5p0h3kv8lqPiXBKiX2gu6nIQSM+M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y4Zohv1s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6094C4CEF1;
+	Wed, 28 Jan 2026 22:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769640021;
-	bh=f9SD+LKm8hXxX434r1CNxoBHcRwO42bKv4C+Q6zLDhU=;
+	s=k20201202; t=1769640024;
+	bh=+8mSpQTgO+bsDyq5YYgfUWxUlbF9bdp+flCuUhtwYZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rM9EU8jLtxoLhdkrDq1b1rav4F2JBKScnkWEayH/KoSYyTFt7939MKhvCFDcFcMkz
-	 q8KGIluWqbBWFSBUrnSlrLR3kU6yrJBQowclQHt06qi7iIPKZCpFz2FQfuGQmg7xST
-	 zMJNpyRoRcBklNggekidCxGZGplT4nw17fziAdgCh5aETz9GQ1TC1u881VCRDcHRns
-	 UI2dSHwnNM2E36o/AvYjlSJxmqJVy4E7RshOPpdQLze9eGW4GJuf3ZzTkHTUuX8Pmv
-	 nAnN6rczi+/U7lcM8TZR+ql71bfd+VR09EzR+ZqVCpgYEOAiuvEX4LkKci5JzIj3k3
-	 fI5sB8ZNxjj1w==
+	b=Y4Zohv1s2FgLXaifNaLuQgvZlYDf080jHSh0TBc2JCA6XzIARvKxqyIrgyk1o69aP
+	 E0rbHeTEjK1ZL0vZo/JIUPvBsdgvMGt7aq+53+qQrZk1ShE2PBJ93fdf80D9W1MifZ
+	 H5wAC8E5khXy6bRtXq7Lq4FCqvwn/bIuPUkbtZKWkw2xbF63dtmqblBNvH7VTBlM/W
+	 gXU5cgwezRIJx4a+pRlGb9rVkmDdTouaNVpfCFPPHa/P84Mg8e25O04sgF4IDP+dRP
+	 MbfNY2BOOECjjEwisk2Xn8QONIxbEeTy++071jPni2QSzCaHt4GkbwGrXIGKxMIewR
+	 Rz7QDM3zj14tQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] mei: trace: treat reg parameter as string
-Date: Wed, 28 Jan 2026 17:40:18 -0500
-Message-ID: <20260128224019.2809980-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] ksmbd: smbd: fix dma_unmap_sg() nents
+Date: Wed, 28 Jan 2026 17:40:22 -0500
+Message-ID: <20260128224022.2810098-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012709-cleft-animosity-5c8d@gregkh>
-References: <2026012709-cleft-animosity-5c8d@gregkh>
+In-Reply-To: <2026012757-wrench-plated-2f22@gregkh>
+References: <2026012757-wrench-plated-2f22@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,132 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212704-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212705-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,microsoft.com];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DE00BA9B4F
+X-Rspamd-Queue-Id: E972DA9B56
 X-Rspamd-Action: no action
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 06d5a7afe1d0b47102936d8fba568572c2b4b941 ]
+[ Upstream commit 98e3e2b561bc88f4dd218d1c05890672874692f6 ]
 
-The commit
-afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
-forbids to emit event with a plain char* without a wrapper.
+The dma_unmap_sg() functions should be called with the same nents as the
+dma_map_sg(), not the value the map function returned.
 
-The reg parameter always passed as static string and wrapper
-is not strictly required, contrary to dev parameter.
-Use the string wrapper anyway to check sanity of the reg parameters,
-store it value independently and prevent internal kernel data leaks.
-
-Since some code refactoring has taken place, explicit backporting may
-be needed for kernels older than 6.10.
-
-Cc: stable@vger.kernel.org  # v6.11+
-Fixes: a0a927d06d79 ("mei: me: add io register tracing")
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://patch.msgid.link/20260111145125.1754912-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ adapted __assign_str() calls to use two arguments ]
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/mei-trace.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/ksmbd/transport_rdma.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/misc/mei/mei-trace.h b/drivers/misc/mei/mei-trace.h
-index fe46ff2b9d69f..770e7897b88cc 100644
---- a/drivers/misc/mei/mei-trace.h
-+++ b/drivers/misc/mei/mei-trace.h
-@@ -21,18 +21,18 @@ TRACE_EVENT(mei_reg_read,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg  = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] read %s:[%#x] = %#x",
--		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
- );
+diff --git a/fs/ksmbd/transport_rdma.c b/fs/ksmbd/transport_rdma.c
+index 4b79df7c8caf3..6ea73fe6de6c5 100644
+--- a/fs/ksmbd/transport_rdma.c
++++ b/fs/ksmbd/transport_rdma.c
+@@ -1086,14 +1086,12 @@ static int get_sg_list(void *buf, int size, struct scatterlist *sg_list, int nen
  
- TRACE_EVENT(mei_reg_write,
-@@ -40,18 +40,18 @@ TRACE_EVENT(mei_reg_write,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] write %s[%#x] = %#x",
--		  __get_str(dev), __entry->reg,  __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg),  __entry->offs, __entry->val)
- );
+ static int get_mapped_sg_list(struct ib_device *device, void *buf, int size,
+ 			      struct scatterlist *sg_list, int nentries,
+-			      enum dma_data_direction dir)
++			      enum dma_data_direction dir, int *npages)
+ {
+-	int npages;
+-
+-	npages = get_sg_list(buf, size, sg_list, nentries);
+-	if (npages < 0)
++	*npages = get_sg_list(buf, size, sg_list, nentries);
++	if (*npages < 0)
+ 		return -EINVAL;
+-	return ib_dma_map_sg(device, sg_list, npages, dir);
++	return ib_dma_map_sg(device, sg_list, *npages, dir);
+ }
  
- TRACE_EVENT(mei_pci_cfg_read,
-@@ -59,18 +59,18 @@ TRACE_EVENT(mei_pci_cfg_read,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev, dev_name(dev));
--		__entry->reg  = reg;
-+		__assign_str(reg, reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] pci cfg read %s:[%#x] = %#x",
--		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
- );
+ static int post_sendmsg(struct smb_direct_transport *t,
+@@ -1162,12 +1160,13 @@ static int smb_direct_post_send_data(struct smb_direct_transport *t,
+ 	for (i = 0; i < niov; i++) {
+ 		struct ib_sge *sge;
+ 		int sg_cnt;
++		int npages;
  
- #endif /* _MEI_TRACE_H_ */
+ 		sg_init_table(sg, SMB_DIRECT_MAX_SEND_SGES - 1);
+ 		sg_cnt = get_mapped_sg_list(t->cm_id->device,
+ 					    iov[i].iov_base, iov[i].iov_len,
+ 					    sg, SMB_DIRECT_MAX_SEND_SGES - 1,
+-					    DMA_TO_DEVICE);
++					    DMA_TO_DEVICE, &npages);
+ 		if (sg_cnt <= 0) {
+ 			pr_err("failed to map buffer\n");
+ 			ret = -ENOMEM;
+@@ -1175,7 +1174,7 @@ static int smb_direct_post_send_data(struct smb_direct_transport *t,
+ 		} else if (sg_cnt + msg->num_sge > SMB_DIRECT_MAX_SEND_SGES) {
+ 			pr_err("buffer not fitted into sges\n");
+ 			ret = -E2BIG;
+-			ib_dma_unmap_sg(t->cm_id->device, sg, sg_cnt,
++			ib_dma_unmap_sg(t->cm_id->device, sg, npages,
+ 					DMA_TO_DEVICE);
+ 			goto err;
+ 		}
 -- 
 2.51.0
 
