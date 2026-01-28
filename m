@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-212468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBdCFQ46eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:14 +0100
+	id EMt/CcIuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D16E5A5C3E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A236AA451B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C1B3631BDB3F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2719630CD539
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E8830CD9E;
-	Wed, 28 Jan 2026 15:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A2B13B7A3;
+	Wed, 28 Jan 2026 15:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WI0DVg6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fz73m+qn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC53C2F0C70;
-	Wed, 28 Jan 2026 15:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18E5A244667;
+	Wed, 28 Jan 2026 15:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615621; cv=none; b=T6g1XImzb/dChhnKGAkfUN73hB9hVmcVMUdakViDVXJz9JHg4z943FmAlwCLOZpwwaV8X9dVCHNcN9XYdxr6Z6bH4bSor7byZ5NRBluMX7f03MqmIWw58UpS1qy1fPUk7kFnIgMxG4tvso1fnLggAOV4lGjNIzfcQ+YvdftxxyU=
+	t=1769614324; cv=none; b=QurdzOFeSHOGZ2066EoGoDuiuLfou55y9qANi+AkTOD5uAkpV8Mldq1vG6+rhSZgeSlj+wIfjD5SFLDqhQ95f+ea4i92m3IujAnxhxbzRfEMGL7ZInLxObhrUofMC8iJ2NjRj7OL1quKyFafkfMqIjIYMSfZCNmbAFZznWg1210=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615621; c=relaxed/simple;
-	bh=xZPoNIkVcoc3K+4UWZFKCrXcoQRYw6hX3dBjW7vv3g4=;
+	s=arc-20240116; t=1769614324; c=relaxed/simple;
+	bh=U+HDZ2LuE+09qyTymIKln0clKzeUhQaYSZeW6JdHOM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KBKMXkuLfQUCYqu5cu07t1wAxHTSHQYVLaQldB+Dsve7atzw50kyh/dlRsqsDOaKBMqAp5IXWrdZnCbYgOOyRob+CI81XrxCKboAmTQe9rf+YGpH5fJTwyA2gY2wjZtgtpKFi1VgVa1u04vAxuy92TpJmDmeFUMXSbYKiclXFn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WI0DVg6U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16850C4CEF1;
-	Wed, 28 Jan 2026 15:53:40 +0000 (UTC)
+	 MIME-Version; b=EWW2HyhusOVLh/q46apgdX6irKva51PnOSgSqT2ntzcL9IAuYi4KoLl1ot8fwlxIO7rFpyIutc/AjEDPOyxERmorq58y0cxHf1t7WDRovllig+exjw3TgddPZFR5dJNYlvE7DDv98bFQ32pvQAJbbswQUXruzcMIvn9qke4hG6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fz73m+qn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6640EC4CEF7;
+	Wed, 28 Jan 2026 15:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615621;
-	bh=xZPoNIkVcoc3K+4UWZFKCrXcoQRYw6hX3dBjW7vv3g4=;
+	s=korg; t=1769614324;
+	bh=U+HDZ2LuE+09qyTymIKln0clKzeUhQaYSZeW6JdHOM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WI0DVg6UtGaltn6KYNvrzDplzBtwIyEfSJTof2F7//rwnLr+X+43S1u4oLSUh/Lhx
-	 n7f18YbYps/27bcaBwN4fjL7NOAcXNm5t0uk/IlJFXZvlYpSa9JffGolOTecoLY7MS
-	 7EqK0a82m26zeMJNhXivHZylciHMIMd4iSn5gKqA=
+	b=fz73m+qnTJINOhNrZ28q7742xLfNbJtB10yxNRYSBllDiYEoHh/vJESTMvwZjM1N3
+	 GLeA9XzVwvHOYzRB0N5ivOX8iP+YLcaP3Jc1Uo1KhsEGDzEcRcJuWSc2KIehkDaI+n
+	 EBcNEUEH64EiMRJvzFm8hkcIMJWE2PnEolI6odQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Roman Kisel <vdso@mailbox.org>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 031/227] selftests: net: fib-onlink-tests: Convert to use namespaces by default
+Subject: [PATCH 6.6 100/254] Drivers: hv: Always do Hyper-V panic notification in hv_kmsg_dump()
 Date: Wed, 28 Jan 2026 16:21:16 +0100
-Message-ID: <20260128145345.464977586@linuxfoundation.org>
+Message-ID: <20260128145348.424151658@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,215 +66,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212468-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,linaro.org,outlook.com,mailbox.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212077-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
-X-Rspamd-Queue-Id: D16E5A5C3E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,mailbox.org:email,linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A236AA451B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo B. Marlière <rbm@suse.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 4f5f148dd7c0459229d2ab9a769b2e820f9ee6a2 ]
+[ Upstream commit 49f49d47af67f8a7b221db1d758fc634242dc91a ]
 
-Currently, the test breaks if the SUT already has a default route
-configured for IPv6. Fix by avoiding the use of the default namespace.
+hv_kmsg_dump() currently skips the panic notification entirely if it
+doesn't get any message bytes to pass to Hyper-V due to an error from
+kmsg_dump_get_buffer(). Skipping the notification is undesirable because
+it leaves the Hyper-V host uncertain about the state of a panic'ed guest.
 
-Fixes: 4ed591c8ab44 ("net/ipv6: Allow onlink routes to have a device mismatch if it is the default route")
-Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Link: https://patch.msgid.link/20260113-selftests-net-fib-onlink-v2-1-89de2b931389@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by always doing the panic notification, even if bytes_written
+is zero. Also ensure that bytes_written is initialized, which fixes a
+kernel test robot warning. The warning is actually bogus because
+kmsg_dump_get_buffer() happens to set bytes_written even if it fails, and
+in the kernel test robot's CONFIG_PRINTK not set case, hv_kmsg_dump() is
+never called. But do the initialization for robustness and to quiet the
+static checker.
+
+Fixes: 9c318a1d9b50 ("Drivers: hv: move panic report code from vmbus to hv early init code")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/202512172103.OcUspn1Z-lkp@intel.com/
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Roman Kisel <vdso@mailbox.org>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/net/fib-onlink-tests.sh | 71 ++++++++-----------
- 1 file changed, 30 insertions(+), 41 deletions(-)
+ drivers/hv/hv_common.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/fib-onlink-tests.sh b/tools/testing/selftests/net/fib-onlink-tests.sh
-index ec2d6ceb1f08d..c01be076b210d 100755
---- a/tools/testing/selftests/net/fib-onlink-tests.sh
-+++ b/tools/testing/selftests/net/fib-onlink-tests.sh
-@@ -120,7 +120,7 @@ log_subsection()
+diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+index 65c0740484cb9..5512861dd8d2d 100644
+--- a/drivers/hv/hv_common.c
++++ b/drivers/hv/hv_common.c
+@@ -216,13 +216,15 @@ static void hv_kmsg_dump(struct kmsg_dumper *dumper,
  
- run_cmd()
- {
--	local cmd="$*"
-+	local cmd="$1"
- 	local out
- 	local rc
+ 	/*
+ 	 * Write dump contents to the page. No need to synchronize; panic should
+-	 * be single-threaded.
++	 * be single-threaded. Ignore failures from kmsg_dump_get_buffer() since
++	 * panic notification should be done even if there is no message data.
++	 * Don't assume bytes_written is set in case of failure, so initialize it.
+ 	 */
+ 	kmsg_dump_rewind(&iter);
+-	kmsg_dump_get_buffer(&iter, false, hv_panic_page, HV_HYP_PAGE_SIZE,
++	bytes_written = 0;
++	(void)kmsg_dump_get_buffer(&iter, false, hv_panic_page, HV_HYP_PAGE_SIZE,
+ 			     &bytes_written);
+-	if (!bytes_written)
+-		return;
++
+ 	/*
+ 	 * P3 to contain the physical address of the panic page & P4 to
+ 	 * contain the size of the panic data in that page. Rest of the
+@@ -231,7 +233,7 @@ static void hv_kmsg_dump(struct kmsg_dumper *dumper,
+ 	hv_set_msr(HV_MSR_CRASH_P0, 0);
+ 	hv_set_msr(HV_MSR_CRASH_P1, 0);
+ 	hv_set_msr(HV_MSR_CRASH_P2, 0);
+-	hv_set_msr(HV_MSR_CRASH_P3, virt_to_phys(hv_panic_page));
++	hv_set_msr(HV_MSR_CRASH_P3, bytes_written ? virt_to_phys(hv_panic_page) : 0);
+ 	hv_set_msr(HV_MSR_CRASH_P4, bytes_written);
  
-@@ -145,7 +145,7 @@ get_linklocal()
- 	local pfx
- 	local addr
- 
--	addr=$(${pfx} ip -6 -br addr show dev ${dev} | \
-+	addr=$(${pfx} ${IP} -6 -br addr show dev ${dev} | \
- 	awk '{
- 		for (i = 3; i <= NF; ++i) {
- 			if ($i ~ /^fe80/)
-@@ -173,58 +173,48 @@ setup()
- 
- 	set -e
- 
--	# create namespace
--	setup_ns PEER_NS
-+	# create namespaces
-+	setup_ns ns1
-+	IP="ip -netns $ns1"
-+	setup_ns ns2
- 
- 	# add vrf table
--	ip li add ${VRF} type vrf table ${VRF_TABLE}
--	ip li set ${VRF} up
--	ip ro add table ${VRF_TABLE} unreachable default metric 8192
--	ip -6 ro add table ${VRF_TABLE} unreachable default metric 8192
-+	${IP} li add ${VRF} type vrf table ${VRF_TABLE}
-+	${IP} li set ${VRF} up
-+	${IP} ro add table ${VRF_TABLE} unreachable default metric 8192
-+	${IP} -6 ro add table ${VRF_TABLE} unreachable default metric 8192
- 
- 	# create test interfaces
--	ip li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
--	ip li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
--	ip li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
--	ip li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
-+	${IP} li add ${NETIFS[p1]} type veth peer name ${NETIFS[p2]}
-+	${IP} li add ${NETIFS[p3]} type veth peer name ${NETIFS[p4]}
-+	${IP} li add ${NETIFS[p5]} type veth peer name ${NETIFS[p6]}
-+	${IP} li add ${NETIFS[p7]} type veth peer name ${NETIFS[p8]}
- 
- 	# enslave vrf interfaces
- 	for n in 5 7; do
--		ip li set ${NETIFS[p${n}]} vrf ${VRF}
-+		${IP} li set ${NETIFS[p${n}]} vrf ${VRF}
- 	done
- 
- 	# add addresses
- 	for n in 1 3 5 7; do
--		ip li set ${NETIFS[p${n}]} up
--		ip addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
--		ip addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
-+		${IP} li set ${NETIFS[p${n}]} up
-+		${IP} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
-+		${IP} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
- 	done
- 
- 	# move peer interfaces to namespace and add addresses
- 	for n in 2 4 6 8; do
--		ip li set ${NETIFS[p${n}]} netns ${PEER_NS} up
--		ip -netns ${PEER_NS} addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
--		ip -netns ${PEER_NS} addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
-+		${IP} li set ${NETIFS[p${n}]} netns ${ns2} up
-+		ip -netns $ns2 addr add ${V4ADDRS[p${n}]}/24 dev ${NETIFS[p${n}]}
-+		ip -netns $ns2 addr add ${V6ADDRS[p${n}]}/64 dev ${NETIFS[p${n}]} nodad
- 	done
- 
--	ip -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
--	ip -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
-+	${IP} -6 ro add default via ${V6ADDRS[p3]/::[0-9]/::64}
-+	${IP} -6 ro add table ${VRF_TABLE} default via ${V6ADDRS[p7]/::[0-9]/::64}
- 
- 	set +e
- }
- 
--cleanup()
--{
--	# make sure we start from a clean slate
--	cleanup_ns ${PEER_NS} 2>/dev/null
--	for n in 1 3 5 7; do
--		ip link del ${NETIFS[p${n}]} 2>/dev/null
--	done
--	ip link del ${VRF} 2>/dev/null
--	ip ro flush table ${VRF_TABLE}
--	ip -6 ro flush table ${VRF_TABLE}
--}
--
- ################################################################################
- # IPv4 tests
- #
-@@ -241,7 +231,7 @@ run_ip()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip ro add table "${table}" "${prefix}"/32 via "${gw}" "${dev}" onlink
-+	run_cmd "${IP} ro add table ${table} ${prefix}/32 via ${gw} ${dev} onlink"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -257,8 +247,8 @@ run_ip_mpath()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip ro add table "${table}" "${prefix}"/32 \
--		nexthop via ${nh1} nexthop via ${nh2}
-+	run_cmd "${IP} ro add table ${table} ${prefix}/32 \
-+		nexthop via ${nh1} nexthop via ${nh2}"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -339,7 +329,7 @@ run_ip6()
- 	# dev arg may be empty
- 	[ -n "${dev}" ] && dev="dev ${dev}"
- 
--	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 via "${gw}" "${dev}" onlink
-+	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 via ${gw} ${dev} onlink"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -353,8 +343,8 @@ run_ip6_mpath()
- 	local exp_rc="$6"
- 	local desc="$7"
- 
--	run_cmd ip -6 ro add table "${table}" "${prefix}"/128 "${opts}" \
--		nexthop via ${nh1} nexthop via ${nh2}
-+	run_cmd "${IP} -6 ro add table ${table} ${prefix}/128 ${opts} \
-+		nexthop via ${nh1} nexthop via ${nh2}"
- 	log_test $? ${exp_rc} "${desc}"
- }
- 
-@@ -491,10 +481,9 @@ do
- 	esac
- done
- 
--cleanup
- setup
- run_onlink_tests
--cleanup
-+cleanup_ns ${ns1} ${ns2}
- 
- if [ "$TESTS" != "none" ]; then
- 	printf "\nTests passed: %3d\n" ${nsuccess}
+ 	/*
 -- 
 2.51.0
 
