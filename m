@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212410-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHcyKN40eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:10:06 +0100
+	id cEQSG9oxemlr4gEAu9opvQ
+	(envelope-from <stable+bounces-212410-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F0AFA5316
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:10:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB01A4C97
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D6A330C1B58
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:01:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EEC0030445B3
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35303033E0;
-	Wed, 28 Jan 2026 16:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16FB2F25EF;
+	Wed, 28 Jan 2026 15:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AWoFJRK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWdBBx23"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FD72DB791;
-	Wed, 28 Jan 2026 16:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3ACF288C22;
+	Wed, 28 Jan 2026 15:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616059; cv=none; b=YseEir3IsTQ5bKDVX0gzAu7jc6iUKPdKVy2yrgRSJSQ8SUmkFGOrNzMcN1V0QTTYUprJddCCkjY6Uy5k87Ltsw17essRxhydKUvqhicjUe2gUPYNRn1Eq+oaKyQngwm0WpG9ZQNJ5OD5JguRk0FGi61hNq3M1A3kMUvnmL+jT5I=
+	t=1769615424; cv=none; b=dDLdm1VbiW6REWXqI2pEpDOgDOGImN4QuAIXu63im3N9jrR9Kt6/1nA5Sx4fD+OaYPGrnG9LKmpY+spMlA8kcpiOQAr6oJv97wA03d6ztfeLo3EkGbEfoTjLd8bltbIFPCcuNqx7/Q9dOf6eTJEjUpaqVaXro8byrIsVMwi47s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616059; c=relaxed/simple;
-	bh=yYffhX3I2oeHHt6tUTU58/YRziHVT3x0wVpnmTmz89g=;
+	s=arc-20240116; t=1769615424; c=relaxed/simple;
+	bh=OA8TuQYIQ7XBj8Ad3PQFjcSol22+Ko0ATrdPLDJZNwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toBJ4Fe6WA4jlMMthaEEjDvZcyUNtHCbALMDrmKvnAJtFIpO9v14sSU6q3Ny+9gJRz+bNYkXKpoeK3U8m08Jf+F7Fgxep9DvJ/JlwEIKdNakHgBK+8H4YOcmncL/p5II/8XN9wky5E0oMDw7+V3+OVRivm7Vt5W/6nNubeW3yhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AWoFJRK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015A3C4CEF1;
-	Wed, 28 Jan 2026 16:00:58 +0000 (UTC)
+	 MIME-Version; b=g2hTMDJOIHOYeMiU6FK34pGdNM8Q4UxhenfHsvEbicYYFheg7rwF6vTlLHjJe9hHKMsnR61gQD5Lugrp9mLwUQpFtVQJ8/qiV7mP3tM+ZjUj4XmPWuzAS8fHJXT+HwuyHu0YqoP+SX2xksuuTieamYyhbPy7MqyiUIJQAulwjQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VWdBBx23; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BE7C4CEF1;
+	Wed, 28 Jan 2026 15:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616059;
-	bh=yYffhX3I2oeHHt6tUTU58/YRziHVT3x0wVpnmTmz89g=;
+	s=korg; t=1769615424;
+	bh=OA8TuQYIQ7XBj8Ad3PQFjcSol22+Ko0ATrdPLDJZNwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0AWoFJRKFLaH5/2qMEVLjroIpobVSkJx8Qmk3Tq3jRA8qLpcj7RC1WijgGQA9WOBC
-	 edv3EYuL/NitfXFXZ2pYtCKyDLyuTGksoG9kq5Zc0xeQUBY4vS47Llv6uJdEkBAxaz
-	 Py6Pi1rCvdMdrNaokkuzRIXswhigaS/u2YukYkzI=
+	b=VWdBBx23dH2ivjgUbte9dhC8FpimQEU/2jVPgE5CESunVZ2XS7G8XIvedVdV8ERdp
+	 o5rvlIvt90NkEsbJg4noOuJvFKfS5IXEIh0L3AiSdeySw20OWgjVkJZHySIKwBj+PW
+	 W1fSTuGSeTZw3j5Ergt//5DKQE3DoAKUub5Cq55w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Yang Shen <shenyang39@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 6.18 194/227] uacce: ensure safe queue release with state management
-Date: Wed, 28 Jan 2026 16:23:59 +0100
-Message-ID: <20260128145351.426980967@linuxfoundation.org>
+	Zqiang <qiang.zhang@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
+	Chen Yu <xnguchen@sina.cn>
+Subject: [PATCH 6.12 157/169] sched_ext: Fix possible deadlock in the deferred_irq_workfn()
+Date: Wed, 28 Jan 2026 16:24:00 +0100
+Message-ID: <20260128145339.663065960@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,122 +67,74 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212599-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212410-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.dev,kernel.org,sina.cn];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,huawei.com:email,linaro.org:email]
-X-Rspamd-Queue-Id: 3F0AFA5316
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CCB01A4C97
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Zqiang <qiang.zhang@linux.dev>
 
-commit 26c08dabe5475d99a13f353d8dd70e518de45663 upstream.
+[ Upstream commit a257e974210320ede524f340ffe16bf4bf0dda1e ]
 
-Directly calling `put_queue` carries risks since it cannot
-guarantee that resources of `uacce_queue` have been fully released
-beforehand. So adding a `stop_queue` operation for the
-UACCE_CMD_PUT_Q command and leaving the `put_queue` operation to
-the final resource release ensures safety.
+For PREEMPT_RT=y kernels, the deferred_irq_workfn() is executed in
+the per-cpu irq_work/* task context and not disable-irq, if the rq
+returned by container_of() is current CPU's rq, the following scenarios
+may occur:
 
-Queue states are defined as follows:
-- UACCE_Q_ZOMBIE: Initial state
-- UACCE_Q_INIT: After opening `uacce`
-- UACCE_Q_STARTED: After `start` is issued via `ioctl`
+lock(&rq->__lock);
+<Interrupt>
+  lock(&rq->__lock);
 
-When executing `poweroff -f` in virt while accelerator are still
-working, `uacce_fops_release` and `uacce_remove` may execute
-concurrently. This can cause `uacce_put_queue` within
-`uacce_fops_release` to access a NULL `ops` pointer. Therefore, add
-state checks to prevent accessing freed pointers.
+This commit use IRQ_WORK_INIT_HARD() to replace init_irq_work() to
+initialize rq->scx.deferred_irq_work, make the deferred_irq_workfn()
+is always invoked in hard-irq context.
 
-Fixes: 015d239ac014 ("uacce: add uacce driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Yang Shen <shenyang39@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-5-huangchenghai2@huawei.com
+Signed-off-by: Zqiang <qiang.zhang@linux.dev>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Chen Yu <xnguchen@sina.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/uacce/uacce.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ kernel/sched/ext.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -40,20 +40,34 @@ static int uacce_start_queue(struct uacc
- 	return 0;
- }
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -6044,7 +6044,7 @@ void __init init_sched_ext_class(void)
+ 		BUG_ON(!zalloc_cpumask_var(&rq->scx.cpus_to_kick_if_idle, GFP_KERNEL));
+ 		BUG_ON(!zalloc_cpumask_var(&rq->scx.cpus_to_preempt, GFP_KERNEL));
+ 		BUG_ON(!zalloc_cpumask_var(&rq->scx.cpus_to_wait, GFP_KERNEL));
+-		init_irq_work(&rq->scx.deferred_irq_work, deferred_irq_workfn);
++		rq->scx.deferred_irq_work = IRQ_WORK_INIT_HARD(deferred_irq_workfn);
+ 		init_irq_work(&rq->scx.kick_cpus_irq_work, kick_cpus_irq_workfn);
  
--static int uacce_put_queue(struct uacce_queue *q)
-+static int uacce_stop_queue(struct uacce_queue *q)
- {
- 	struct uacce_device *uacce = q->uacce;
- 
--	if ((q->state == UACCE_Q_STARTED) && uacce->ops->stop_queue)
-+	if (q->state != UACCE_Q_STARTED)
-+		return 0;
-+
-+	if (uacce->ops->stop_queue)
- 		uacce->ops->stop_queue(q);
- 
--	if ((q->state == UACCE_Q_INIT || q->state == UACCE_Q_STARTED) &&
--	     uacce->ops->put_queue)
-+	q->state = UACCE_Q_INIT;
-+
-+	return 0;
-+}
-+
-+static void uacce_put_queue(struct uacce_queue *q)
-+{
-+	struct uacce_device *uacce = q->uacce;
-+
-+	uacce_stop_queue(q);
-+
-+	if (q->state != UACCE_Q_INIT)
-+		return;
-+
-+	if (uacce->ops->put_queue)
- 		uacce->ops->put_queue(q);
- 
- 	q->state = UACCE_Q_ZOMBIE;
--
--	return 0;
- }
- 
- static long uacce_fops_unl_ioctl(struct file *filep,
-@@ -80,7 +94,7 @@ static long uacce_fops_unl_ioctl(struct
- 		ret = uacce_start_queue(q);
- 		break;
- 	case UACCE_CMD_PUT_Q:
--		ret = uacce_put_queue(q);
-+		ret = uacce_stop_queue(q);
- 		break;
- 	default:
- 		if (uacce->ops->ioctl)
+ 		if (cpu_online(cpu))
 
 
 
