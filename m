@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-212567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212331-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eA3pNkM0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:31 +0100
+	id iLyvLvYxemlo4gEAu9opvQ
+	(envelope-from <stable+bounces-212331-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7E9A51EA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E516BA4CE8
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A197B3046D89
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38E0630075F2
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38804301465;
-	Wed, 28 Jan 2026 15:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445D236D4EA;
+	Wed, 28 Jan 2026 15:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErRC4R5D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWuUDapq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE5A2874FE;
-	Wed, 28 Jan 2026 15:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0797336CDFB;
+	Wed, 28 Jan 2026 15:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615951; cv=none; b=ZAv3Du/gKQV/6ih5kqUGMU+z2bK960k9L530Cwg8qPAy2pGJ6+W4CN2yL2dAiAYtXvoCo/hbayCHlkvC1mbA1B2YNyJRQIpvuAofV7BffCyI/6rTMD5pDae4os2cLyARApuM8qGSm3gExYKqbV3vfwKF+6rBON91MJ52apwIfoY=
+	t=1769615160; cv=none; b=jUxN5oDErZ0u83BpPQz1eEjcR+J6BlhCvVAsu2/b3Yg9ZPjukxPcwG7CIuXuj/bHCo+/zb2gKFd/jmDMHSlI6b2ivrbuygmK7ce+UuS9JWPphwpmzVm3pYzhr1bxSv//0zPmKHUFMa7zcgkG7iX0phARQWoInIckpD9TR8XEhBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615951; c=relaxed/simple;
-	bh=8LGKA22CaBmaZWrK/F7Zaw8DV4Yuo7+2DE+xqkN4Nk0=;
+	s=arc-20240116; t=1769615160; c=relaxed/simple;
+	bh=V4F+91RzA96Sf77keS1VgW5lbDKKbaPJPWLl6BQceZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VV1fxULdw2OWRGodanO+3TgxfpJKudTYk6gBzFrMLwxTWaCXMJQTitF0RKiNqHJYmUlJW+oRHJPRpc7Xx3bIgH59/s1DE0DAr6dwki5DU5t36Cgef3m18GoKjTbxzu/vZflojEUP6Qe/IZGzKVOCv5c8Qg9VdYypmR+7tcLvnbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErRC4R5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772EDC4CEF1;
-	Wed, 28 Jan 2026 15:59:10 +0000 (UTC)
+	 MIME-Version; b=pk7dAK9a71Pt30+ANe0pvfdrRCwt1p0mD7NF6L4I/saQzUatDMlXfIKJetbKE+LUz11lG+wPFK9jdEZo5A3zpQs8KGqtrMV5IVsAtjre6UEtSpBVGLfpXHea6S1oxK+2+SDLU13WY3FE1jf43u4v78VbeZyWsy65yg1V8IWWjlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWuUDapq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644EDC4CEF1;
+	Wed, 28 Jan 2026 15:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615950;
-	bh=8LGKA22CaBmaZWrK/F7Zaw8DV4Yuo7+2DE+xqkN4Nk0=;
+	s=korg; t=1769615159;
+	bh=V4F+91RzA96Sf77keS1VgW5lbDKKbaPJPWLl6BQceZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ErRC4R5DDkO7hbwEzrn73JiYf2GwB4Qg62vICI7mEzBx3ZDwwtCIWEuWi+EqdkhzB
-	 499nmBrh86odaZnU1jvszo/KakR2qu4SubhKYGOAzr3/tckxvClcnJBW23dAVHO3is
-	 /DWvkuJyfZm36HdLBlw+HjnxpmCtNVAjksrTMNo4=
+	b=vWuUDapqGAf/oZrz6Bo7od4L8JNOyvtu/99MVMzB1O8W+1s9DrTb1B1rbGXkiNpT9
+	 fxD3TaCWO15vK1yJ09RfhduFZCCiCdGcz5lTBeOknFvGkCdIA/c+Ktvw28O7sb3VjT
+	 jta+pzlbmHY7NcCeWfBqYOgvoVBMcENqan5O9N9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 135/227] be2net: Fix NULL pointer dereference in be_cmd_get_mac_from_list
+Subject: [PATCH 6.12 097/169] dpll: Prevent duplicate registrations
 Date: Wed, 28 Jan 2026 16:23:00 +0100
-Message-ID: <20260128145349.318503798@linuxfoundation.org>
+Message-ID: <20260128145337.498904778@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,82 +71,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212331-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212567-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,crpt.ru:email]
-X-Rspamd-Queue-Id: 4D7E9A51EA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E516BA4CE8
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit 8215794403d264739cc676668087512950b2ff31 ]
+[ Upstream commit f3ddbaaaaf4d0633b40482f471753f9c71294a4a ]
 
-When the parameter pmac_id_valid argument of be_cmd_get_mac_from_list() is
-set to false, the driver may request the PMAC_ID from the firmware of the
-network card, and this function will store that PMAC_ID at the provided
-address pmac_id. This is the contract of this function.
+Modify the internal registration helpers dpll_xa_ref_{dpll,pin}_add()
+to reject duplicate registration attempts.
 
-However, there is a location within the driver where both
-pmac_id_valid == false and pmac_id == NULL are being passed. This could
-result in dereferencing a NULL pointer.
+Previously, if a caller attempted to register the same pin multiple
+times (with the same ops, priv, and cookie) on the same device, the core
+silently increments the reference count and return success. This behavior
+is incorrect because if the caller makes these duplicate registrations
+then for the first one dpll_pin_registration is allocated and for others
+the associated dpll_pin_ref.refcount is incremented. During the first
+unregistration the associated dpll_pin_registration is freed and for
+others WARN is fired.
 
-To resolve this issue, it is necessary to pass the address of a stub
-variable to the function.
+Fix this by updating the logic to return `-EEXIST` if a matching
+registration is found to enforce a strict "register once" policy.
 
-Fixes: 95046b927a54 ("be2net: refactor MAC-addr setup code")
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://patch.msgid.link/20260120113734.20193-1-a.vatoropin@crpt.ru
+Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20260121130012.112606-1-ivecera@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/emulex/benet/be_cmds.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/dpll/dpll_core.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
-index bb5d2fa157365..8ed45bceb5379 100644
---- a/drivers/net/ethernet/emulex/benet/be_cmds.c
-+++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
-@@ -3801,6 +3801,7 @@ int be_cmd_get_perm_mac(struct be_adapter *adapter, u8 *mac)
- {
- 	int status;
- 	bool pmac_valid = false;
-+	u32 pmac_id;
- 
- 	eth_zero_addr(mac);
- 
-@@ -3813,7 +3814,7 @@ int be_cmd_get_perm_mac(struct be_adapter *adapter, u8 *mac)
- 						       adapter->if_handle, 0);
- 	} else {
- 		status = be_cmd_get_mac_from_list(adapter, mac, &pmac_valid,
--						  NULL, adapter->if_handle, 0);
-+						  &pmac_id, adapter->if_handle, 0);
+diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
+index 20bdc52f63a50..cafb8832219d0 100644
+--- a/drivers/dpll/dpll_core.c
++++ b/drivers/dpll/dpll_core.c
+@@ -83,10 +83,8 @@ dpll_xa_ref_pin_add(struct xarray *xa_pins, struct dpll_pin *pin,
+ 		if (ref->pin != pin)
+ 			continue;
+ 		reg = dpll_pin_registration_find(ref, ops, priv, cookie);
+-		if (reg) {
+-			refcount_inc(&ref->refcount);
+-			return 0;
+-		}
++		if (reg)
++			return -EEXIST;
+ 		ref_exists = true;
+ 		break;
  	}
- 
- 	return status;
+@@ -164,10 +162,8 @@ dpll_xa_ref_dpll_add(struct xarray *xa_dplls, struct dpll_device *dpll,
+ 		if (ref->dpll != dpll)
+ 			continue;
+ 		reg = dpll_pin_registration_find(ref, ops, priv, cookie);
+-		if (reg) {
+-			refcount_inc(&ref->refcount);
+-			return 0;
+-		}
++		if (reg)
++			return -EEXIST;
+ 		ref_exists = true;
+ 		break;
+ 	}
 -- 
 2.51.0
 
