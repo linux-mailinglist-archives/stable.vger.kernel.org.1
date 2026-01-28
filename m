@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-212519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212313-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKdrElY0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212519-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:50 +0100
+	id AKMJNawvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212313-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA155A520F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757FBA46CF
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 458A731FE30C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:56:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1F550304BC02
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430D0308F05;
-	Wed, 28 Jan 2026 15:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A3D31A07C;
+	Wed, 28 Jan 2026 15:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nfacPv2j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7bjujSi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CB22874FE;
-	Wed, 28 Jan 2026 15:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B33C318EE0;
+	Wed, 28 Jan 2026 15:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615790; cv=none; b=saqtrdQ7U50SWXaEpIyBZ44/f4ZFsfw5ARy1BwsIMRI4Ubc1PmedA++6fqZhcn+FkvOaLQ8J0l5lThUHj5XUIrQdFwGxHPsiD86P74Hb8k+SZ2EcVmSjJ3QAx+fO1H2sDlfnnJX0c31fqqhEUaz4c7Mep0O0RZINj2kjpnZvIkw=
+	t=1769615099; cv=none; b=Kq4ISTUGnPF4UkxS9ou3LlBzrdFck1IXz7zyo06vNG4JQMvdpfPUNssH3ggxvU5sM4cENjD1flkuAuP4YjmHpoyaoeAt1ngMYcHf1ikzox6zzDhmBSl+ME1o+vcNOSGO6dlNrjKjhqCqfGJxSvadqDrTyGj2zN3sECuCOClGnMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615790; c=relaxed/simple;
-	bh=xU+Y+sxGETLnZYg99/koE0L7Onr7frATdjv3FG3G3pg=;
+	s=arc-20240116; t=1769615099; c=relaxed/simple;
+	bh=vv4N/9pDwPTdyPN9erEJ5IjfACnTscmZZhdUL8sELVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NldveVEMpdiW9Disaoey3xRO+aqI1B8RnCFaxbnHpDGd+FArRvdTSjkNj8ZBS3/YbplDDbgckk2wRm6xwn8fHBFaB1InUwH9EYEBS7i+GBvU+YZOfv46T9jAzu0fFd4+V6LHSr9IcTs1WwIizt8jVqRynl+nM55zoQKPnrfONMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nfacPv2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17496C4CEF1;
-	Wed, 28 Jan 2026 15:56:28 +0000 (UTC)
+	 MIME-Version; b=FobXkwN1eMRM9Uji5wqiQYYRIavoOnufk5QK+3cTcAaD5kNcnyopalJCjOQz7/xKOg3hmMEchedRCpOFzJBCVSvavVGFayUqSnTh4T8vsy4d0tfvPbVewY6/RNSYn/BFYkzdff+wMGYFyRgkFn59xnqjs5dUNdIpEI4oAZ+2SbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7bjujSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F3EC16AAE;
+	Wed, 28 Jan 2026 15:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615789;
-	bh=xU+Y+sxGETLnZYg99/koE0L7Onr7frATdjv3FG3G3pg=;
+	s=korg; t=1769615099;
+	bh=vv4N/9pDwPTdyPN9erEJ5IjfACnTscmZZhdUL8sELVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nfacPv2jLsWFWpjN6OIXWVgtfmKmSwQEw5ZiHF/CvgRsu+LdX8D61OIx19bxeZnXK
-	 AUmt1i2AV3lpwPg2MtK1J3zx6Xo5DtSqAVG51n5EsyUcNoHpWFl6s6mL5CnohgbyVP
-	 +tn2X6zT5q0RP5kfSHfmMtYcrfv9EvQMp/H/21mg=
+	b=j7bjujSiEkjrzlF1DPJmmVKxSvlv82f/A9lnmnUm2hvMRMyzKLkQ8e1b1RInOtltd
+	 2RHOHj2/3uzRmgw4Q+jZtVG55wPHuRR2JB1w0wCMzmw+CApoJ8MrV1DE+dNVmYbjzg
+	 LF6uXbzdWDIYmwAX0ZrT6fn4bbCUgwsGuyCgf3XQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Rocco Yue <rocco.yue@mediatek.com>,
+	Jijie Shao <shaojijie@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 115/227] ipv6: annotate data-race in ndisc_router_discovery()
+Subject: [PATCH 6.12 077/169] net: hns3: fix the HCLGE_FD_AD_NXT_KEY error setting issue
 Date: Wed, 28 Jan 2026 16:22:40 +0100
-Message-ID: <20260128145348.603307607@linuxfoundation.org>
+Message-ID: <20260128145336.778876018@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,107 +69,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212519-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212313-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: BA155A520F
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 757FBA46CF
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 9a063f96d87efc3a6cc667f8de096a3d38d74bb5 ]
+[ Upstream commit f87e034d16e43af984380a95c32c25201b7759a7 ]
 
-syzbot found that ndisc_router_discovery() could read and write
-in6_dev->ra_mtu without holding a lock [1]
+Use next_input_key instead of counter_id to set HCLGE_FD_AD_NXT_KEY.
 
-This looks fine, IFLA_INET6_RA_MTU is best effort.
-
-Add READ_ONCE()/WRITE_ONCE() to document the race.
-
-Note that we might also reject illegal MTU values
-(mtu < IPV6_MIN_MTU || mtu > skb->dev->mtu) in a future patch.
-
-[1]
-BUG: KCSAN: data-race in ndisc_router_discovery / ndisc_router_discovery
-
-read to 0xffff888119809c20 of 4 bytes by task 25817 on cpu 1:
-  ndisc_router_discovery+0x151d/0x1c90 net/ipv6/ndisc.c:1558
-  ndisc_rcv+0x2ad/0x3d0 net/ipv6/ndisc.c:1841
-  icmpv6_rcv+0xe5a/0x12f0 net/ipv6/icmp.c:989
-  ip6_protocol_deliver_rcu+0xb2a/0x10d0 net/ipv6/ip6_input.c:438
-  ip6_input_finish+0xf0/0x1d0 net/ipv6/ip6_input.c:489
-  NF_HOOK include/linux/netfilter.h:318 [inline]
-  ip6_input+0x5e/0x140 net/ipv6/ip6_input.c:500
-  ip6_mc_input+0x27c/0x470 net/ipv6/ip6_input.c:590
-  dst_input include/net/dst.h:474 [inline]
-  ip6_rcv_finish+0x336/0x340 net/ipv6/ip6_input.c:79
-...
-
-write to 0xffff888119809c20 of 4 bytes by task 25816 on cpu 0:
-  ndisc_router_discovery+0x155a/0x1c90 net/ipv6/ndisc.c:1559
-  ndisc_rcv+0x2ad/0x3d0 net/ipv6/ndisc.c:1841
-  icmpv6_rcv+0xe5a/0x12f0 net/ipv6/icmp.c:989
-  ip6_protocol_deliver_rcu+0xb2a/0x10d0 net/ipv6/ip6_input.c:438
-  ip6_input_finish+0xf0/0x1d0 net/ipv6/ip6_input.c:489
-  NF_HOOK include/linux/netfilter.h:318 [inline]
-  ip6_input+0x5e/0x140 net/ipv6/ip6_input.c:500
-  ip6_mc_input+0x27c/0x470 net/ipv6/ip6_input.c:590
-  dst_input include/net/dst.h:474 [inline]
-  ip6_rcv_finish+0x336/0x340 net/ipv6/ip6_input.c:79
-...
-
-value changed: 0x00000000 -> 0xe5400659
-
-Fixes: 49b99da2c9ce ("ipv6: add IFLA_INET6_RA_MTU to expose mtu value")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Rocco Yue <rocco.yue@mediatek.com>
-Link: https://patch.msgid.link/20260118152941.2563857-1-edumazet@google.com
+Fixes: 117328680288 ("net: hns3: Add input key and action config support for flow director")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Link: https://patch.msgid.link/20260119132840.410513-3-shaojijie@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ndisc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index f427e41e9c49b..0fd3f53dbb52e 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -1555,8 +1555,8 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 		memcpy(&n, ((u8 *)(ndopts.nd_opts_mtu+1))+2, sizeof(mtu));
- 		mtu = ntohl(n);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 8dd970ef02ac6..7468e03051ea4 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -5700,7 +5700,7 @@ static int hclge_fd_ad_config(struct hclge_dev *hdev, u8 stage, int loc,
+ 			HCLGE_FD_AD_COUNTER_NUM_S, action->counter_id);
+ 	hnae3_set_bit(ad_data, HCLGE_FD_AD_NXT_STEP_B, action->use_next_stage);
+ 	hnae3_set_field(ad_data, HCLGE_FD_AD_NXT_KEY_M, HCLGE_FD_AD_NXT_KEY_S,
+-			action->counter_id);
++			action->next_input_key);
  
--		if (in6_dev->ra_mtu != mtu) {
--			in6_dev->ra_mtu = mtu;
-+		if (READ_ONCE(in6_dev->ra_mtu) != mtu) {
-+			WRITE_ONCE(in6_dev->ra_mtu, mtu);
- 			send_ifinfo_notify = true;
- 		}
- 
+ 	req->ad_data = cpu_to_le64(ad_data);
+ 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
 -- 
 2.51.0
 
