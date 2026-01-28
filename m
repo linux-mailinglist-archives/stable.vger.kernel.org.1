@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-212487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212321-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KP/zAuszeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:03 +0100
+	id oD4eEgMwemkc4gEAu9opvQ
+	(envelope-from <stable+bounces-212321-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A63A511E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF77CA47B5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DDB0E30AAF05
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3505830642D7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55AEE30274D;
-	Wed, 28 Jan 2026 15:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC62310771;
+	Wed, 28 Jan 2026 15:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3MDl79n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H90ve3Ky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092973033F4;
-	Wed, 28 Jan 2026 15:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059B326ED3A;
+	Wed, 28 Jan 2026 15:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615682; cv=none; b=CpeeFu646oniwsvZgXS9Gqm0/L1JZPjdbalKAh4No3uiHX5vLSTzEisJVWupzztl1iZvN99RMN2yH2fTKqMDdwvyJetcnhYWznsdsMjRBbgJYrxQLYzrBBE4pVxZqyTLcVLGXPGQJ+wAxdNfIsdrTQpfS0yqnX6Sec2Fa+LwOx0=
+	t=1769615127; cv=none; b=WtIi9DhgcfGG0XJ+lbR1r/ZYMVRAIZznBzZVxXTrR/dqk7Rx3RsnmXzSc6CVBGX9LOJeMISb9MCnkss75b9RIocSKhEZMmPOPB9TCEbQrd75PW2Ti/Sz6YMupiJvGx69C4E8YRg/y5U4heBudwtuCeQ7PVHOBImOyrx0RJtIG10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615682; c=relaxed/simple;
-	bh=C8K3LrlWfrtqKvkD144qdJ/+O0gyk1Qs/C2xJY3npiQ=;
+	s=arc-20240116; t=1769615127; c=relaxed/simple;
+	bh=Sircu57g6VZmdoAoHNImHMmbGX1G2IDlnI64FVVp7iE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XlDS4m7e7ObT2C++ZNhaMrRXvQhm80KzcR17l+EpxjWeDBBTFXOoyrry3s9EBXHESto4cO3XvrcWZJiG395nzCDTdh2+Bffn8k4fwWucg2pSjrrIvEQbGGZGsudLbGazM8sm9bN1Mo6EesGYgioLGCczc53eA2ICSFz1YbIQw2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K3MDl79n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3DCC4CEF1;
-	Wed, 28 Jan 2026 15:54:41 +0000 (UTC)
+	 MIME-Version; b=Xjp0X7O3AhkPmqLLiYbWs+U8gKSv1kQo7wYfsjuCLUrxEWS561htD1z7v+8VAEEy1a7g7vHF6BT59sn4meHJuyzvevunEkxb01Yt42gUh2T92oNUU70LNYcvmilWld7KZPuKDxdBLPt+l57kQGrAyqYjn9vqXIkctIAM4A1GzzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H90ve3Ky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D1BC4CEF1;
+	Wed, 28 Jan 2026 15:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615681;
-	bh=C8K3LrlWfrtqKvkD144qdJ/+O0gyk1Qs/C2xJY3npiQ=;
+	s=korg; t=1769615126;
+	bh=Sircu57g6VZmdoAoHNImHMmbGX1G2IDlnI64FVVp7iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K3MDl79nsnmZnK/b0ePjTnbQ6uVl0T4tQHyQa4zUpzrvPL3N7FDblsT2dXvTCsj+B
-	 JVEKTvknQ3Htvuga7ARGzq5esI+2aXg73KwV03uETcw+L3DkUGcngdWIMIgHf6c9uj
-	 86cmrbFupcJnbNMNavvhZd8LXYES0jHqgx2s6kCQ=
+	b=H90ve3KyX/p9Fbc6lNjLBLqb1PRX07tZYJtlrjZRX1LNlaNuiP93j8qD49yVT/1UG
+	 LBxItVs4mnQg7xJ/XRngC3HnmrFfLWHJLy2klmGPyt1qJwGe5zRNVSmqUUV7Ch7i5a
+	 3sgMvaRKaQRnvgxl/MzMLVTeATCli85irlTe+00I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 082/227] iio: adc: ad7280a: handle spi_setup() errors in probe()
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.12 044/169] comedi: dmm32at: serialize use of paged registers
 Date: Wed, 28 Jan 2026 16:22:07 +0100
-Message-ID: <20260128145347.293258379@linuxfoundation.org>
+Message-ID: <20260128145335.604738960@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,76 +67,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212321-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212487-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,analog.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kaspersky.com:email]
-X-Rspamd-Queue-Id: 66A63A511E
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,mev.co.uk:email]
+X-Rspamd-Queue-Id: BF77CA47B5
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 6b39824ac4c15783787e6434449772bfb2e31214 ]
+commit e03b29b55f2b7c345a919a6ee36633b06bf3fb56 upstream.
 
-The probe() function ignored the return value of spi_setup(), leaving SPI
-configuration failures undetected. If spi_setup() fails, the driver should
-stop initialization and propagate the error to the caller.
+Some of the hardware registers of the DMM-32-AT board are multiplexed,
+using the least significant two bits of the Miscellaneous Control
+register to select the function of registers at offsets 12 to 15:
 
-Add proper error handling: check the return value of spi_setup() and return
-it on failure.
+ 00 => 8254 timer/counter registers are accessible
+ 01 => 8255 digital I/O registers are accessible
+ 10 => Reserved
+ 11 => Calibration registers are accessible
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The interrupt service routine (`dmm32at_isr()`) clobbers the bottom two
+bits of the register with value 00, which would interfere with access to
+the 8255 registers by the `dm32at_8255_io()` function (used for Comedi
+instruction handling on the digital I/O subdevice).
 
-Fixes: 2051f25d2a26 ("iio: adc: New driver for AD7280A Lithium Ion Battery Monitoring System")
-Signed-off-by: Pavel Zhigulin <Pavel.Zhigulin@kaspersky.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make use of the generic Comedi device spin-lock `dev->spinlock` (which
+is otherwise unused by this driver) to serialize access to the
+miscellaneous control register and paged registers.
+
+Fixes: 3c501880ac44 ("Staging: comedi: add dmm32at driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20260112162835.91688-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7280a.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/comedi/drivers/dmm32at.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7280a.c b/drivers/iio/adc/ad7280a.c
-index 50a6ff7c8b1c7..ba12a3796e2b1 100644
---- a/drivers/iio/adc/ad7280a.c
-+++ b/drivers/iio/adc/ad7280a.c
-@@ -1024,7 +1024,9 @@ static int ad7280_probe(struct spi_device *spi)
+--- a/drivers/comedi/drivers/dmm32at.c
++++ b/drivers/comedi/drivers/dmm32at.c
+@@ -330,6 +330,7 @@ static int dmm32at_ai_cmdtest(struct com
  
- 	st->spi->max_speed_hz = AD7280A_MAX_SPI_CLK_HZ;
- 	st->spi->mode = SPI_MODE_1;
--	spi_setup(st->spi);
-+	ret = spi_setup(st->spi);
-+	if (ret < 0)
-+		return ret;
+ static void dmm32at_setaitimer(struct comedi_device *dev, unsigned int nansec)
+ {
++	unsigned long irq_flags;
+ 	unsigned char lo1, lo2, hi2;
+ 	unsigned short both2;
  
- 	st->ctrl_lb = FIELD_PREP(AD7280A_CTRL_LB_ACQ_TIME_MSK, st->acquisition_time) |
- 		FIELD_PREP(AD7280A_CTRL_LB_THERMISTOR_MSK, st->thermistor_term_en);
--- 
-2.51.0
-
+@@ -342,6 +343,9 @@ static void dmm32at_setaitimer(struct co
+ 	/* set counter clocks to 10MHz, disable all aux dio */
+ 	outb(0, dev->iobase + DMM32AT_CTRDIO_CFG_REG);
+ 
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* get access to the clock regs */
+ 	outb(DMM32AT_CTRL_PAGE_8254, dev->iobase + DMM32AT_CTRL_REG);
+ 
+@@ -354,6 +358,8 @@ static void dmm32at_setaitimer(struct co
+ 	outb(lo2, dev->iobase + DMM32AT_CLK2);
+ 	outb(hi2, dev->iobase + DMM32AT_CLK2);
+ 
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
+ 	/* enable the ai conversion interrupt and the clock to start scans */
+ 	outb(DMM32AT_INTCLK_ADINT |
+ 	     DMM32AT_INTCLK_CLKEN | DMM32AT_INTCLK_CLKSEL,
+@@ -363,13 +369,19 @@ static void dmm32at_setaitimer(struct co
+ static int dmm32at_ai_cmd(struct comedi_device *dev, struct comedi_subdevice *s)
+ {
+ 	struct comedi_cmd *cmd = &s->async->cmd;
++	unsigned long irq_flags;
+ 	int ret;
+ 
+ 	dmm32at_ai_set_chanspec(dev, s, cmd->chanlist[0], cmd->chanlist_len);
+ 
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* reset the interrupt just in case */
+ 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
+ 
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
+ 	/*
+ 	 * wait for circuit to settle
+ 	 * we don't have the 'insn' here but it's not needed
+@@ -429,8 +441,13 @@ static irqreturn_t dmm32at_isr(int irq,
+ 		comedi_handle_events(dev, s);
+ 	}
+ 
++	/* serialize access to control register and paged registers */
++	spin_lock(&dev->spinlock);
++
+ 	/* reset the interrupt */
+ 	outb(DMM32AT_CTRL_INTRST, dev->iobase + DMM32AT_CTRL_REG);
++
++	spin_unlock(&dev->spinlock);
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -481,14 +498,25 @@ static int dmm32at_ao_insn_write(struct
+ static int dmm32at_8255_io(struct comedi_device *dev,
+ 			   int dir, int port, int data, unsigned long regbase)
+ {
++	unsigned long irq_flags;
++	int ret;
++
++	/* serialize access to control register and paged registers */
++	spin_lock_irqsave(&dev->spinlock, irq_flags);
++
+ 	/* get access to the DIO regs */
+ 	outb(DMM32AT_CTRL_PAGE_8255, dev->iobase + DMM32AT_CTRL_REG);
+ 
+ 	if (dir) {
+ 		outb(data, dev->iobase + regbase + port);
+-		return 0;
++		ret = 0;
++	} else {
++		ret = inb(dev->iobase + regbase + port);
+ 	}
+-	return inb(dev->iobase + regbase + port);
++
++	spin_unlock_irqrestore(&dev->spinlock, irq_flags);
++
++	return ret;
+ }
+ 
+ /* Make sure the board is there and put it to a known state */
 
 
 
