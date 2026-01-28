@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDmdIbEyeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:49 +0100
+	id OCw5IYQuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3C7A4EAA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D820A4469
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03C7530488E1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:51:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1AD4A30BB5FB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCEC52FE044;
-	Wed, 28 Jan 2026 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB514242D7F;
+	Wed, 28 Jan 2026 15:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELPf0fU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNlgpEOV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808FD2EA172;
-	Wed, 28 Jan 2026 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E3B7155757;
+	Wed, 28 Jan 2026 15:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615468; cv=none; b=gkG9osjtL0HaC1a7zaANHpDMOLfrP968MGOspc5iZ0cwQp+nkBbnWbnXB+um9ZNGtjn59SSTg//nMTqxWxBedKJ18DJG1BrmZnFfLO4vNmtEyCOtO8e7ryhdy+1ZqcX9UJ4EYXb4MA9KYo3LfSFn9jXzDA6CSoZSSOvw2xYfSUU=
+	t=1769614279; cv=none; b=qU1Yte/dgEVD3qrzPSzMwC18I7Xh1KaRVGIwyKhWhdRyutMwWXKPMlfjo/ZismDse+dRNAr7L5/QmA4r7VJMCY3F1WHAvc3rzjpQ/CiOuhO8ILu+yMBO8oAxyFo8hnyhwa/QidOUD/3MSNeF2PooWHfpVZuy7WXqkDZszGBeZ6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615468; c=relaxed/simple;
-	bh=3OC3THbesKVUpQ7sug9N8aT/6V+T/w+9CE6NWsbLKR8=;
+	s=arc-20240116; t=1769614279; c=relaxed/simple;
+	bh=7wvo+/J3viy1JyyZ6tB1a19BduzTy+Ywyeu2m1k3FUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lp5i8mETr37+TbFJeYQOHhyfN6sbFFLWIvuoUL9fGq8XH6HsWIsJwDtzh9V+sQW1nb//YdvhBqvfPUNWRMyN7yFHw7apfhmtcLnCpZ6jtnmK79OdSZU4rGayyTVZ9yOVfcbUCoc4ZlknrxMFBaKfzeEvamC0UrilAqhFaeD/xjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELPf0fU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABEFC4CEF1;
-	Wed, 28 Jan 2026 15:51:07 +0000 (UTC)
+	 MIME-Version; b=re8tPs6dfpRWVqW9yg23Y0P6v1IthuCVGK0WyEpjx7wVa9rkF8eH0RlxCVjlD53V3AeXQPStnpb5LBLFg56xP8buiMXsi7S3JGI/hA4Mre8Qc7CXSYXBcDqZrpMKbDLa/9rEemaHDf5uaUNOZwdkoSiP+DkiRxR/39xXQyPmKCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNlgpEOV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D702DC4CEF1;
+	Wed, 28 Jan 2026 15:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615468;
-	bh=3OC3THbesKVUpQ7sug9N8aT/6V+T/w+9CE6NWsbLKR8=;
+	s=korg; t=1769614279;
+	bh=7wvo+/J3viy1JyyZ6tB1a19BduzTy+Ywyeu2m1k3FUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ELPf0fU5w2x7Ou/uypGV1V6JhHYYfuLdh7pVy3ZZCNKuW8gPMNgtCAGH88/ZyIwc6
-	 6yESuXB5fTG/I8wbIwyghzsLf1zwyyPeI5gyk7peRoKkW8lpiOHu8QpMrqJZznLLlx
-	 XLl89vI1UnwCXHywN8RXkB6NKGqq//15L1Zj1xWs=
+	b=hNlgpEOVnlf2D2KWQR2fvcRSyQu71dMHuYpT7ELcOx7IqnDgtztWzIgjnazntuuc6
+	 Z+MmzlymqZtaSLhBvkjbKPDJ9zGykJuKosTB+hfAFzSqusibDthxzGRYom1+0J+3e9
+	 LxihT6W2ma8S+Hrk5lG2gb/roC/o7GwgNYpbsaQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 019/227] wifi: ath12k: fix dead lock while flushing management frames
+	Grygorii Strashko <grygorii.strashko@ti.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Johan Hovold <johan@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 088/254] dmaengine: ti: k3-udma: fix device leak on udma lookup
 Date: Wed, 28 Jan 2026 16:21:04 +0100
-Message-ID: <20260128145345.034993666@linuxfoundation.org>
+Message-ID: <20260128145347.993953090@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,114 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212064-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212423-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[baochen.qiang.oss.qualcomm.com:query timed out,stuartahayhurst.gmail.com:query timed out,jeff.johnson.oss.qualcomm.com:query timed out];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4B3C7A4EAA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,ti.com:email]
+X-Rspamd-Queue-Id: 0D820A4469
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit f88e9fc30a261d63946ddc6cc6a33405e6aa27c3 ]
+commit 430f7803b69cd5e5694e5dfc884c6628870af36e upstream.
 
-Commit [1] converted the management transmission work item into a
-wiphy work. Since a wiphy work can only run under wiphy lock
-protection, a race condition happens in below scenario:
+Make sure to drop the reference taken when looking up the UDMA platform
+device.
 
-1. a management frame is queued for transmission.
-2. ath12k_mac_op_flush() gets called to flush pending frames associated
-   with the hardware (i.e, vif being NULL). Then in ath12k_mac_flush()
-   the process waits for the transmission done.
-3. Since wiphy lock has been taken by the flush process, the transmission
-   work item has no chance to run, hence the dead lock.
+Note that holding a reference to a platform device does not prevent its
+driver data from going away so there is no point in keeping the
+reference after the lookup helper returns.
 
->From user view, this dead lock results in below issue:
-
- wlp8s0: authenticate with xxxxxx (local address=xxxxxx)
- wlp8s0: send auth to xxxxxx (try 1/3)
- wlp8s0: authenticate with xxxxxx (local address=xxxxxx)
- wlp8s0: send auth to xxxxxx (try 1/3)
- wlp8s0: authenticated
- wlp8s0: associate with xxxxxx (try 1/3)
- wlp8s0: aborting association with xxxxxx by local choice (Reason: 3=DEAUTH_LEAVING)
- ath12k_pci 0000:08:00.0: failed to flush mgmt transmit queue, mgmt pkts pending 1
-
-The dead lock can be avoided by invoking wiphy_work_flush() to proactively
-run the queued work item. Note actually it is already present in
-ath12k_mac_op_flush(), however it does not protect the case where vif
-being NULL. Hence move it ahead to cover this case as well.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
-
-Fixes: 56dcbf0b5207 ("wifi: ath12k: convert struct ath12k::wmi_mgmt_tx_work to struct wiphy_work") # [1]
-Reported-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220959
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260113-ath12k-fix-dead-lock-while-flushing-v1-1-9713621f3a0f@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d70241913413 ("dmaengine: ti: k3-udma: Add glue layer for non DMAengine users")
+Fixes: 1438cde8fe9c ("dmaengine: ti: k3-udma: add missing put_device() call in of_xudma_dev_get()")
+Cc: stable@vger.kernel.org	# 5.6: 1438cde8fe9c
+Cc: Grygorii Strashko <grygorii.strashko@ti.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251117161258.10679-17-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/dma/ti/k3-udma-private.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 00b3bf4d882a5..d6a44c19e2245 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -11798,6 +11798,9 @@ static void ath12k_mac_op_flush(struct ieee80211_hw *hw, struct ieee80211_vif *v
- 	if (drop)
- 		return;
- 
-+	for_each_ar(ah, ar, i)
-+		wiphy_work_flush(hw->wiphy, &ar->wmi_mgmt_tx_work);
-+
- 	/* vif can be NULL when flush() is considered for hw */
- 	if (!vif) {
- 		for_each_ar(ah, ar, i)
-@@ -11805,9 +11808,6 @@ static void ath12k_mac_op_flush(struct ieee80211_hw *hw, struct ieee80211_vif *v
- 		return;
+--- a/drivers/dma/ti/k3-udma-private.c
++++ b/drivers/dma/ti/k3-udma-private.c
+@@ -42,9 +42,9 @@ struct udma_dev *of_xudma_dev_get(struct
  	}
  
--	for_each_ar(ah, ar, i)
--		wiphy_work_flush(hw->wiphy, &ar->wmi_mgmt_tx_work);
--
- 	ahvif = ath12k_vif_to_ahvif(vif);
- 	links = ahvif->links_map;
- 	for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
--- 
-2.51.0
-
+ 	ud = platform_get_drvdata(pdev);
++	put_device(&pdev->dev);
+ 	if (!ud) {
+ 		pr_debug("UDMA has not been probed\n");
+-		put_device(&pdev->dev);
+ 		return ERR_PTR(-EPROBE_DEFER);
+ 	}
+ 
 
 
 
