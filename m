@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-212625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EC5DBjQ8emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:41:24 +0100
+	id SLiuI000eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E72A5FD0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:41:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD9CA5201
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB56C322B286
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:02:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 08493301C915
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84309286D4B;
-	Wed, 28 Jan 2026 16:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679B5146D53;
+	Wed, 28 Jan 2026 16:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKlctt7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osKwGYm6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA723033C4;
-	Wed, 28 Jan 2026 16:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ACA028D8DB;
+	Wed, 28 Jan 2026 16:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616149; cv=none; b=HVqByRxpchotf4Xs7Eh3lKej0Y23mCuVv+oZz9Q0dy9fmencsm5cr1dKW25wJDlsUUMzJNKgJHHa640z4FEdU4XAN1dmgdGsBcZxxF5L3MyUz5SiF1ozmm0NLw5xTTsYpZKlA6lUVkD3sYMzr7s1KjJDss7ee6MniV1iP+G3LGU=
+	t=1769616156; cv=none; b=cAhyupJMARySSoNJB8XtC2HcPmbMYGu2KCcxJd0W0+aTzEupRXrqA0sWjg0/nVQWWOPy14KFixH3p81MpAcMyE/UIPRXbZsUlhc5ybiRV6403kR6DegaI9b1022JgybNbR1VUsK1AjfrTbw3OqOLVM0l4+8H8IR9pjgI9nrtTGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616149; c=relaxed/simple;
-	bh=lkp4jlBGEN8fF1HyL0Gqgi78lqCFBfm3fsegFdPNbnI=;
+	s=arc-20240116; t=1769616156; c=relaxed/simple;
+	bh=sEfuu5oGBO7SHBixBmEzj15A4nT/Femq/xOcjrs8Quw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=By63hy/YpOGCw4wrpUE+0Rg9Hb2SqF6xyKvysEyEJrHTsRsngYydBLuGc55xWfThJX0w3aUNqiEakBb1ihGjwwcYM5NIIryNCmJGI6lP1uD1aamlVxn8/LBkehQtkXuP2tvzNcC2VrFO830YwMdP+r3Iey8qDKwedUrffp+Ogrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKlctt7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B44C4CEF1;
-	Wed, 28 Jan 2026 16:02:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ElgcMzNrjAWtucs906ctS3L0P2MJjriGxQTpg7t5mqMsEqDuYpncpQ2O2byq+u8BJuciS9rxxOctZXtWwrtZJ5+CIN4Z9r4iEq+ccLmjvWReMgWLOJrNPliHKdgCGkWLZqhs9UV+wxBiQMbn4I+xzvnp9/EU3FIi73MK7l7i+dA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osKwGYm6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF6FC4CEF7;
+	Wed, 28 Jan 2026 16:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616149;
-	bh=lkp4jlBGEN8fF1HyL0Gqgi78lqCFBfm3fsegFdPNbnI=;
+	s=korg; t=1769616156;
+	bh=sEfuu5oGBO7SHBixBmEzj15A4nT/Femq/xOcjrs8Quw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKlctt7kgkB/cmYNXvlSSI9z1SPs/xITXWixH+lT7dwD3n+E4lDx0ckFQaCD4DugV
-	 s9hmMtR8PAoXts1Jn69UKA/0V9/pN1wJXPzpv1OTC2pGopjH/6/9mQfaK/CPbYBmfD
-	 7qZzgqIYwrZ7fQUhHGnb6r3h32t0UyJr6Biv9kf4=
+	b=osKwGYm6+XIaKJwg8QQmMUCMHdTatyxrLl5RY2k8YMXNDTVmRJTnM1ZfG+PkYOg4O
+	 fzFiIoRK1kkp15y+KP/mcl65O8TOQMtVVUwgmR9c5pGSKDh/ynO5RbSAkUhvAzHQ3x
+	 Zgc0QFdgHzJCGGA5PgkMALTGwlx27sL4voH4ET0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	"Uschakow, Stanislav" <suschako@amazon.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 221/227] mm/hugetlb: fix two comments related to huge_pmd_unshare()
-Date: Wed, 28 Jan 2026 16:24:26 +0100
-Message-ID: <20260128145352.385701841@linuxfoundation.org>
+Subject: [PATCH 6.18 222/227] iio: core: Replace lockdep_set_class() + mutex_init() by combined call
+Date: Wed, 28 Jan 2026 16:24:27 +0100
+Message-ID: <20260128145352.422467257@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
 References: <20260128145344.331957407@linuxfoundation.org>
@@ -71,124 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212627-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212625-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,surriel.com:email,huawei.com:email,amazon.de:email,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 32E72A5FD0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0AD9CA5201
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 3937027caecb4f8251e82dd857ba1d749bb5a428 ]
+[ Upstream commit c76ba4b2644424b8dbacee80bb40991eac29d39e ]
 
-Ever since we stopped using the page count to detect shared PMD page
-tables, these comments are outdated.
+Replace lockdep_set_class() + mutex_init() by combined call
+mutex_init_with_key().
 
-The only reason we have to flush the TLB early is because once we drop the
-i_mmap_rwsem, the previously shared page table could get freed (to then
-get reallocated and used for other purpose).  So we really have to flush
-the TLB before that could happen.
-
-So let's simplify the comments a bit.
-
-The "If we unshared PMDs, the TLB flush was not recorded in mmu_gather."
-part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
-correctly after huge_pmd_unshare") was confusing: sure it is recorded in
-the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do anything.
-So let's drop that comment while at it as well.
-
-We'll centralize these comments in a single helper as we rework the code
-next.
-
-Link: https://lkml.kernel.org/r/20251223214037.580860-3-david@kernel.org
-Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: "Uschakow, Stanislav" <suschako@amazon.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 9910159f0659 ("iio: core: add separate lockdep class for info_exist_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |   24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ drivers/iio/industrialio-core.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6005,17 +6005,10 @@ void __unmap_hugepage_range(struct mmu_g
- 	tlb_end_vma(tlb, vma);
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1717,9 +1717,8 @@ struct iio_dev *iio_device_alloc(struct
+ 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
  
- 	/*
--	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
--	 * could defer the flush until now, since by holding i_mmap_rwsem we
--	 * guaranteed that the last reference would not be dropped. But we must
--	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
--	 * dropped and the last reference to the shared PMDs page might be
--	 * dropped as well.
--	 *
--	 * In theory we could defer the freeing of the PMD pages as well, but
--	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
--	 * detect sharing, so we cannot defer the release of the page either.
--	 * Instead, do flush now.
-+	 * There is nothing protecting a previously-shared page table that we
-+	 * unshared through huge_pmd_unshare() from getting freed after we
-+	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-+	 * succeeded, flush the range corresponding to the pud.
- 	 */
- 	if (force_flush)
- 		tlb_flush_mmu_tlbonly(tlb);
-@@ -7226,11 +7219,10 @@ long hugetlb_change_protection(struct vm
- 		cond_resched();
- 	}
- 	/*
--	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
--	 * may have cleared our pud entry and done put_page on the page table:
--	 * once we release i_mmap_rwsem, another task can do the final put_page
--	 * and that page table be reused and filled with junk.  If we actually
--	 * did unshare a page of pmds, flush the range corresponding to the pud.
-+	 * There is nothing protecting a previously-shared page table that we
-+	 * unshared through huge_pmd_unshare() from getting freed after we
-+	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-+	 * succeeded, flush the range corresponding to the pud.
- 	 */
- 	if (shared_pmd)
- 		flush_hugetlb_tlb_range(vma, range.start, range.end);
+ 	lockdep_register_key(&iio_dev_opaque->mlock_key);
+-	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
+ 
+-	mutex_init(&iio_dev_opaque->mlock);
++	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
+ 	mutex_init(&iio_dev_opaque->info_exist_lock);
+ 
+ 	indio_dev->dev.parent = parent;
 
 
 
