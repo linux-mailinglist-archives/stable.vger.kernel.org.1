@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212170-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAlaArkwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212352-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:25 +0100
+	id GABuM3Ytemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212170-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B058A49AC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE21A41BF
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 69304304CB6F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CB51F3027037
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0261306B06;
-	Wed, 28 Jan 2026 15:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529F52D9796;
+	Wed, 28 Jan 2026 15:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYMAUeT8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BmgC1Cqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BEC2FDC5D;
-	Wed, 28 Jan 2026 15:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1554C2D6E63;
+	Wed, 28 Jan 2026 15:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615231; cv=none; b=omrt8Wm0lwyW4+oRBxcxqpZwRuwQyuCn/E1AvKGpaCNC4tdYd1yPAa4Z2hBUpaHjtM3Dn4CrtPoDjNkNlQgBoVerblmc2E8cstPeJ82UbG3Z8XmZPL7i/HS4Fm+55VtzS2svKUyF6lEdNkRDdKKDiQKZvIGjUMnd96bNL6uvyEY=
+	t=1769614622; cv=none; b=qWX4T9Hxy8VlsuVdx8xLqlqp6SxP4suOAfgoHepge+8rGIY1ieMYmICi/hAjbS/8Q8e+47VSMAFOAZE9OOp6Unx9G031SVcH03yUW3sFzU7vBbh9DW+Q2FSgCTe1+jL39u1wod6VVQOIKV6XSOZaWZjImLYBaGUSGRPIlO4CG1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615231; c=relaxed/simple;
-	bh=w4JRScl6aevuPHU3l1Rokb0KgBwM3EnMjtoxElsW/JE=;
+	s=arc-20240116; t=1769614622; c=relaxed/simple;
+	bh=4itAfcKe7aVQWIgA2CaoUYjmnseGxyc9yLKab413vvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nCfr8vygjh8yKlE0usV5IbHCkYyksxWnXcMt6FCzuVOOnNKnrovBuRF4i7iBispIa3Gi/VdfdEOOpZsufse7ZgOOV0ldeJP58TM91N/LpVcIF93L3aFUf0eqEUmqosTiSXXe0/gItbmg8On5y9xYjUFxYuWZRSHrHElByCjW6Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYMAUeT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008E2C4CEF1;
-	Wed, 28 Jan 2026 15:47:10 +0000 (UTC)
+	 MIME-Version; b=SKlEYN7ce3NM2xCMF4upK4/Z3Xp6weuq4i54n/WV9eH2nVQcePUluVw/UKqZG/VzW1G4er+KY7fQfTD0BtDh6DdRsetj49L72NeTl6MhuCT64wpKbI1ZpSdwsi7szLvcPRrpEedFkq4M2j1xvY1/GcO/bF8x5UBPeoU/pySxPoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BmgC1Cqz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A41EC4CEF1;
+	Wed, 28 Jan 2026 15:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615231;
-	bh=w4JRScl6aevuPHU3l1Rokb0KgBwM3EnMjtoxElsW/JE=;
+	s=korg; t=1769614622;
+	bh=4itAfcKe7aVQWIgA2CaoUYjmnseGxyc9yLKab413vvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYMAUeT8vvb/G6t8SNuxcez9WY+1f1qM1dGEJrZPu5Le9xH83507v0MXd8RJaA0B3
-	 yVo5fhgq3bKRETMHNHXq96OIO9mR7ilPvemG0vf1aGdV0fhWT82Kqjs12xtPvRig0U
-	 6cMeWv9QTag/jzkqahljeHN72QYrQOSipZSfQRD4=
+	b=BmgC1CqzcKhJjcSAmlprtPzJumJEFPlwczXmisnzt5tNi6266uZ1n4th7vsPQxze+
+	 vCQax+sOMUwazHhm3rE0bs1xxFjhkY234hVIHb7CXDz8xnRS5NzWzhABmhFFNqjWXC
+	 SRUJjAZQSP+s7bfjqDZ87zL9IFoLpyzgusTGq5IU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alex=20Ram=C3=ADrez?= <lxrmrz732@rocketmail.com>,
-	Lyude Paul <lyude@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/169] drm/nouveau: add missing DCB connector types
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Karsten Hohmeier <linux@hohmatik.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 192/254] ALSA: ctxfi: Fix potential OOB access in audio mixer handling
 Date: Wed, 28 Jan 2026 16:22:48 +0100
-Message-ID: <20260128145337.066608908@linuxfoundation.org>
+Message-ID: <20260128145351.708049563@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,176 +63,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212352-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,rocketmail.com,redhat.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
+	RCVD_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.7.a.0.0.1.0.0.e.9.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212170-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,rocketmail.com:email]
-X-Rspamd-Queue-Id: 7B058A49AC
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 4CE21A41BF
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Ramírez <lxrmrz732@rocketmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 3036b4ce4b209af690fa776e4616925892caba4c ]
+commit 61006c540cbdedea83b05577dc7fb7fa18fe1276 upstream.
 
-* Add missing DCB connectors in conn.h as per the NVIDIA DCB specification.
+In the audio mixer handling code of ctxfi driver, the conf field is
+used as a kind of loop index, and it's referred in the index callbacks
+(amixer_index() and sum_index()).
 
-A lot of connector logic was rewritten for Linux v6.5; some display connector types
-went unaccounted-for which caused kernel warnings on devices with the now-unsupported
-DCB connectors. This patch adds all of the DCB connectors as defined by NVIDIA to the
-dcb_connector_type enum to bring back support for these connectors to the new logic.
+As spotted recently by fuzzers, the current code causes OOB access at
+those functions.
+| UBSAN: array-index-out-of-bounds in /build/reproducible-path/linux-6.17.8/sound/pci/ctxfi/ctamixer.c:347:48
+| index 8 is out of range for type 'unsigned char [8]'
 
-Fixes: 8b7d92cad953 ("drm/nouveau/kms/nv50-: create connectors based on nvkm info")
-Link: https://download.nvidia.com/open-gpu-doc/DCB/1/DCB-4.0-Specification.html#_connector_table_entry
-Signed-off-by: Alex Ramírez <lxrmrz732@rocketmail.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-[Lyude: Clarify DCB_CONNECTOR_HDMI_0 weirdness in comments]
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patch.msgid.link/20251213005327.9495-2-lxrmrz732@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After the analysis, the cause was found to be the lack of the proper
+(re-)initialization of conj field.
+
+This patch addresses those OOB accesses by adding the proper
+initializations of the loop indices.
+
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Tested-by: Karsten Hohmeier <linux@hohmatik.de>
+Closes: https://bugs.debian.org/1121535
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/all/aSk8KJI35H7gFru6@eldamar.lan/
+Link: https://patch.msgid.link/20260119133212.189129-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../nouveau/include/nvkm/subdev/bios/conn.h   | 95 +++++++++++++++----
- 1 file changed, 74 insertions(+), 21 deletions(-)
+ sound/pci/ctxfi/ctamixer.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/conn.h b/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/conn.h
-index d1beaad0c82b6..834ed6587aa52 100644
---- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/conn.h
-+++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/bios/conn.h
-@@ -1,28 +1,81 @@
- /* SPDX-License-Identifier: MIT */
- #ifndef __NVBIOS_CONN_H__
- #define __NVBIOS_CONN_H__
-+
-+/*
-+ * An enumerator representing all of the possible VBIOS connector types defined
-+ * by Nvidia at
-+ * https://nvidia.github.io/open-gpu-doc/DCB/DCB-4.x-Specification.html.
-+ *
-+ * [1] Nvidia's documentation actually claims DCB_CONNECTOR_HDMI_0 is a "3-Pin
-+ *     DIN Stereo Connector". This seems very likely to be a documentation typo
-+ *     or some sort of funny historical baggage, because we've treated this
-+ *     connector type as HDMI for years without issue.
-+ *     TODO: Check with Nvidia what's actually happening here.
-+ */
- enum dcb_connector_type {
--	DCB_CONNECTOR_VGA = 0x00,
--	DCB_CONNECTOR_TV_0 = 0x10,
--	DCB_CONNECTOR_TV_1 = 0x11,
--	DCB_CONNECTOR_TV_3 = 0x13,
--	DCB_CONNECTOR_DVI_I = 0x30,
--	DCB_CONNECTOR_DVI_D = 0x31,
--	DCB_CONNECTOR_DMS59_0 = 0x38,
--	DCB_CONNECTOR_DMS59_1 = 0x39,
--	DCB_CONNECTOR_LVDS = 0x40,
--	DCB_CONNECTOR_LVDS_SPWG = 0x41,
--	DCB_CONNECTOR_DP = 0x46,
--	DCB_CONNECTOR_eDP = 0x47,
--	DCB_CONNECTOR_mDP = 0x48,
--	DCB_CONNECTOR_HDMI_0 = 0x60,
--	DCB_CONNECTOR_HDMI_1 = 0x61,
--	DCB_CONNECTOR_HDMI_C = 0x63,
--	DCB_CONNECTOR_DMS59_DP0 = 0x64,
--	DCB_CONNECTOR_DMS59_DP1 = 0x65,
--	DCB_CONNECTOR_WFD	= 0x70,
--	DCB_CONNECTOR_USB_C = 0x71,
--	DCB_CONNECTOR_NONE = 0xff
-+	/* Analog outputs */
-+	DCB_CONNECTOR_VGA = 0x00,		// VGA 15-pin connector
-+	DCB_CONNECTOR_DVI_A = 0x01,		// DVI-A
-+	DCB_CONNECTOR_POD_VGA = 0x02,		// Pod - VGA 15-pin connector
-+	DCB_CONNECTOR_TV_0 = 0x10,		// TV - Composite Out
-+	DCB_CONNECTOR_TV_1 = 0x11,		// TV - S-Video Out
-+	DCB_CONNECTOR_TV_2 = 0x12,		// TV - S-Video Breakout - Composite
-+	DCB_CONNECTOR_TV_3 = 0x13,		// HDTV Component - YPrPb
-+	DCB_CONNECTOR_TV_SCART = 0x14,		// TV - SCART Connector
-+	DCB_CONNECTOR_TV_SCART_D = 0x16,	// TV - Composite SCART over D-connector
-+	DCB_CONNECTOR_TV_DTERM = 0x17,		// HDTV - D-connector (EIAJ4120)
-+	DCB_CONNECTOR_POD_TV_3 = 0x18,		// Pod - HDTV - YPrPb
-+	DCB_CONNECTOR_POD_TV_1 = 0x19,		// Pod - S-Video
-+	DCB_CONNECTOR_POD_TV_0 = 0x1a,		// Pod - Composite
-+
-+	/* DVI digital outputs */
-+	DCB_CONNECTOR_DVI_I_TV_1 = 0x20,	// DVI-I-TV-S-Video
-+	DCB_CONNECTOR_DVI_I_TV_0 = 0x21,	// DVI-I-TV-Composite
-+	DCB_CONNECTOR_DVI_I_TV_2 = 0x22,	// DVI-I-TV-S-Video Breakout-Composite
-+	DCB_CONNECTOR_DVI_I = 0x30,		// DVI-I
-+	DCB_CONNECTOR_DVI_D = 0x31,		// DVI-D
-+	DCB_CONNECTOR_DVI_ADC = 0x32,		// Apple Display Connector (ADC)
-+	DCB_CONNECTOR_DMS59_0 = 0x38,		// LFH-DVI-I-1
-+	DCB_CONNECTOR_DMS59_1 = 0x39,		// LFH-DVI-I-2
-+	DCB_CONNECTOR_BNC = 0x3c,		// BNC Connector [for SDI?]
-+
-+	/* LVDS / TMDS digital outputs */
-+	DCB_CONNECTOR_LVDS = 0x40,		// LVDS-SPWG-Attached [is this name correct?]
-+	DCB_CONNECTOR_LVDS_SPWG = 0x41,		// LVDS-OEM-Attached (non-removable)
-+	DCB_CONNECTOR_LVDS_REM = 0x42,		// LVDS-SPWG-Detached [following naming above]
-+	DCB_CONNECTOR_LVDS_SPWG_REM = 0x43,	// LVDS-OEM-Detached (removable)
-+	DCB_CONNECTOR_TMDS = 0x45,		// TMDS-OEM-Attached (non-removable)
-+
-+	/* DP digital outputs */
-+	DCB_CONNECTOR_DP = 0x46,		// DisplayPort External Connector
-+	DCB_CONNECTOR_eDP = 0x47,		// DisplayPort Internal Connector
-+	DCB_CONNECTOR_mDP = 0x48,		// DisplayPort (Mini) External Connector
-+
-+	/* Dock outputs (not used) */
-+	DCB_CONNECTOR_DOCK_VGA_0 = 0x50,	// VGA 15-pin if not docked
-+	DCB_CONNECTOR_DOCK_VGA_1 = 0x51,	// VGA 15-pin if docked
-+	DCB_CONNECTOR_DOCK_DVI_I_0 = 0x52,	// DVI-I if not docked
-+	DCB_CONNECTOR_DOCK_DVI_I_1 = 0x53,	// DVI-I if docked
-+	DCB_CONNECTOR_DOCK_DVI_D_0 = 0x54,	// DVI-D if not docked
-+	DCB_CONNECTOR_DOCK_DVI_D_1 = 0x55,	// DVI-D if docked
-+	DCB_CONNECTOR_DOCK_DP_0 = 0x56,		// DisplayPort if not docked
-+	DCB_CONNECTOR_DOCK_DP_1 = 0x57,		// DisplayPort if docked
-+	DCB_CONNECTOR_DOCK_mDP_0 = 0x58,	// DisplayPort (Mini) if not docked
-+	DCB_CONNECTOR_DOCK_mDP_1 = 0x59,	// DisplayPort (Mini) if docked
-+
-+	/* HDMI? digital outputs */
-+	DCB_CONNECTOR_HDMI_0 = 0x60,		// HDMI? See [1] in top-level enum comment above
-+	DCB_CONNECTOR_HDMI_1 = 0x61,		// HDMI-A connector
-+	DCB_CONNECTOR_SPDIF = 0x62,		// Audio S/PDIF connector
-+	DCB_CONNECTOR_HDMI_C = 0x63,		// HDMI-C (Mini) connector
-+
-+	/* Misc. digital outputs */
-+	DCB_CONNECTOR_DMS59_DP0 = 0x64,		// LFH-DP-1
-+	DCB_CONNECTOR_DMS59_DP1 = 0x65,		// LFH-DP-2
-+	DCB_CONNECTOR_WFD = 0x70,		// Virtual connector for Wifi Display (WFD)
-+	DCB_CONNECTOR_USB_C = 0x71,		// [DP over USB-C; not present in docs]
-+	DCB_CONNECTOR_NONE = 0xff		// Skip Entry
- };
+--- a/sound/pci/ctxfi/ctamixer.c
++++ b/sound/pci/ctxfi/ctamixer.c
+@@ -205,6 +205,7 @@ static int amixer_rsc_init(struct amixer
  
- struct nvbios_connT {
--- 
-2.51.0
-
+ 	/* Set amixer specific operations */
+ 	amixer->rsc.ops = &amixer_basic_rsc_ops;
++	amixer->rsc.conj = 0;
+ 	amixer->ops = &amixer_ops;
+ 	amixer->input = NULL;
+ 	amixer->sum = NULL;
+@@ -369,6 +370,7 @@ static int sum_rsc_init(struct sum *sum,
+ 		return err;
+ 
+ 	sum->rsc.ops = &sum_basic_rsc_ops;
++	sum->rsc.conj = 0;
+ 
+ 	return 0;
+ }
 
 
 
