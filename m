@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AqFILc2eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:17:59 +0100
+	id eEPQD3A7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20A0A563C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:17:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F56A5EAB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5C9830AB286
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F20D318A3F4
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 240C52E0405;
-	Wed, 28 Jan 2026 15:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE48302779;
+	Wed, 28 Jan 2026 15:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpVg7nuk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8cUOEH5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBDB22D8379;
-	Wed, 28 Jan 2026 15:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A60146D53;
+	Wed, 28 Jan 2026 15:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614737; cv=none; b=l7YO+5jU1gR/hloGY/Ied+K+bASoETj8VnU3EWQE+/+o0ACDxcxsOupkYVpr8YQqXrIpkei1l2B1RrqKbY4oU7VUkWsOUuGR1LOSaXYkC7ztuBVosVJku1PbmLsh+k+uNYtHiT0WwMDgFcD7MiooPENJ5PCOSJRWDRMsOFr/0rI=
+	t=1769615938; cv=none; b=rjP7V3uB1auyMKeDIr+UXYwsanASqctltXfgz6irhU7fWixuTK79gVSbkyVmCVzhaTtj2W8VGgYwwYqSG+7bqlm9taMOHlh3fzr0tNEqv2WzQU+dz+yUt0FoADkn6lfLTAnioDBzd/fkB3S0ZZx5Jk6q2ejTNSFDN0f8xkqHgZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614737; c=relaxed/simple;
-	bh=v+2CqRmAWaf3ZfTqjBoxrv5Ltbs8BJnoNCKEqXi+Dos=;
+	s=arc-20240116; t=1769615938; c=relaxed/simple;
+	bh=PdVTuEyI2tzIsgGQ7UVAguBlD0g9xC5ChVcMlsTZW18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hUbKxxY4x/H3SEHtjrkRUQPGmMr0j2AZbFwgLJhXhuiimbUrvSYmXyPGaxOXp4cAcxx/25yGnn93g3XKYxwl6qJ6n6dJUHVSIJPmghtKpMubAyrMC1sp7barosPWPObny7Q9rVRDR19wKr2elt57fhSlDJuMI1bhx1q+r/6sRSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpVg7nuk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C692C4CEF1;
-	Wed, 28 Jan 2026 15:38:56 +0000 (UTC)
+	 MIME-Version; b=Dpl2gg8FNF4a5cX/z7Xi4YGa0VOqyD1ezD6zpEJ2XUy/g2Pl2eA5cyGdLr4NrOo6Pqpn5PJgL0dDCkRLUjXtN+nlJE8pmjjv9WX2JhGO02u8ngO1P6PRgnUZed75baKDAeqCQItQyk9Sfb+R1OVopEKRIk/47oRPezVvTE87eto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8cUOEH5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E157C4CEF1;
+	Wed, 28 Jan 2026 15:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614737;
-	bh=v+2CqRmAWaf3ZfTqjBoxrv5Ltbs8BJnoNCKEqXi+Dos=;
+	s=korg; t=1769615938;
+	bh=PdVTuEyI2tzIsgGQ7UVAguBlD0g9xC5ChVcMlsTZW18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpVg7nukRNkRgBPVvCr9vtEnqFhm9qY6l3lO5L4HZ8mTZGyMmPtDExwOx/HgUdmav
-	 i79L4gUl4BU/7VHPOAADJJuIrzllbSxnlIYUZDDPyqYfe19fuI1aX/uoXyqbpVWPfD
-	 j5yWHincxrnwYhL9qFiToPVDfhE9Xl6EsgonWgfc=
+	b=C8cUOEH50VrcbFV0627CRFfhGC+hiF6JWXLWT/+uGvErzpM332U0fuZesf5emcz1n
+	 SrU8m7P8zJRNMbI1MRADb3RTCrSo4F0DotuonW2QlWZcYDyHkn5o7MC69btiaCCLSG
+	 e+p9GZlsw1b9LoblyJkTgkKQM3ViJIyIFu1tfyT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/254] iio: core: add missing mutex_destroy in iio_dev_release()
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Markus Koeniger <markus.koeniger@liebherr.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 158/227] iio: accel: iis328dq: fix gain values
 Date: Wed, 28 Jan 2026 16:23:23 +0100
-Message-ID: <20260128145352.954560583@linuxfoundation.org>
+Message-ID: <20260128145350.138624820@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +64,155 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212205-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212563-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iio_dev.info:url]
-X-Rspamd-Queue-Id: E20A0A563C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,st.com:url]
+X-Rspamd-Queue-Id: A0F56A5EAB
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Markus Koeniger <markus.koeniger@liebherr.com>
 
-[ Upstream commit f5d203467a31798191365efeb16cd619d2c8f23a ]
+commit b8f15d1df2e73322e2112de21a4a7f3553c7fb60 upstream.
 
-Add missing mutex_destroy() call in iio_dev_release() to properly
-clean up the mutex initialized in iio_device_alloc(). Ensure proper
-resource cleanup and follows kernel practices.
+The sensors IIS328DQ and H3LIS331DL share one configuration but
+H3LIS331DL has different gain parameters, configs therefore
+need to be split up.
+The gain parameters for the IIS328DQ are 0.98, 1.95 and 3.91,
+depending on the selected measurement range.
 
-Found by code review.
+See sensor manuals, chapter 2.1 "mechanical characteristics",
+parameter "Sensitivity".
 
-While at it, create a lockdep key before mutex initialisation.
-This will help with converting it to the better API in the future.
-
-Fixes: 847ec80bbaa7 ("Staging: IIO: core support for device registration and management")
-Fixes: ac917a81117c ("staging:iio:core set the iio_dev.info pointer to null on unregister under lock.")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Datasheet: https://www.st.com/resource/en/datasheet/iis328dq.pdf
+Datasheet: https://www.st.com/resource/en/datasheet/h3lis331dl.pdf
+Fixes: 46e33707fe95 ("iio: accel: add support for IIS328DQ variant")
+Reviewed-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+Signed-off-by: Markus Koeniger <markus.koeniger@liebherr.com>
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 9910159f0659 ("iio: core: add separate lockdep class for info_exist_lock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/industrialio-core.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/iio/accel/st_accel_core.c |   72 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 71 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -1618,6 +1618,9 @@ static void iio_dev_release(struct devic
- 
- 	iio_device_detach_buffers(indio_dev);
- 
-+	mutex_destroy(&iio_dev_opaque->info_exist_lock);
-+	mutex_destroy(&iio_dev_opaque->mlock);
-+
- 	lockdep_unregister_key(&iio_dev_opaque->mlock_key);
- 
- 	ida_free(&iio_ida, iio_dev_opaque->id);
-@@ -1663,8 +1666,7 @@ struct iio_dev *iio_device_alloc(struct
- 	indio_dev->dev.type = &iio_device_type;
- 	indio_dev->dev.bus = &iio_bus_type;
- 	device_initialize(&indio_dev->dev);
--	mutex_init(&iio_dev_opaque->mlock);
--	mutex_init(&iio_dev_opaque->info_exist_lock);
-+
- 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
- 
- 	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
-@@ -1687,6 +1689,9 @@ struct iio_dev *iio_device_alloc(struct
- 	lockdep_register_key(&iio_dev_opaque->mlock_key);
- 	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
- 
-+	mutex_init(&iio_dev_opaque->mlock);
-+	mutex_init(&iio_dev_opaque->info_exist_lock);
-+
- 	return indio_dev;
- }
- EXPORT_SYMBOL(iio_device_alloc);
+--- a/drivers/iio/accel/st_accel_core.c
++++ b/drivers/iio/accel/st_accel_core.c
+@@ -517,7 +517,6 @@ static const struct st_sensor_settings s
+ 		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
+ 		.sensors_supported = {
+ 			[0] = H3LIS331DL_ACCEL_DEV_NAME,
+-			[1] = IIS328DQ_ACCEL_DEV_NAME,
+ 		},
+ 		.ch = (struct iio_chan_spec *)st_accel_12bit_channels,
+ 		.odr = {
+@@ -561,6 +560,77 @@ static const struct st_sensor_settings s
+ 				},
+ 			},
+ 		},
++		.bdu = {
++			.addr = 0x23,
++			.mask = 0x80,
++		},
++		.drdy_irq = {
++			.int1 = {
++				.addr = 0x22,
++				.mask = 0x02,
++			},
++			.int2 = {
++				.addr = 0x22,
++				.mask = 0x10,
++			},
++			.addr_ihl = 0x22,
++			.mask_ihl = 0x80,
++		},
++		.sim = {
++			.addr = 0x23,
++			.value = BIT(0),
++		},
++		.multi_read_bit = true,
++		.bootime = 2,
++	},
++	{
++		.wai = 0x32,
++		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
++		.sensors_supported = {
++			[0] = IIS328DQ_ACCEL_DEV_NAME,
++		},
++		.ch = (struct iio_chan_spec *)st_accel_12bit_channels,
++		.odr = {
++			.addr = 0x20,
++			.mask = 0x18,
++			.odr_avl = {
++				{ .hz = 50, .value = 0x00, },
++				{ .hz = 100, .value = 0x01, },
++				{ .hz = 400, .value = 0x02, },
++				{ .hz = 1000, .value = 0x03, },
++			},
++		},
++		.pw = {
++			.addr = 0x20,
++			.mask = 0x20,
++			.value_on = ST_SENSORS_DEFAULT_POWER_ON_VALUE,
++			.value_off = ST_SENSORS_DEFAULT_POWER_OFF_VALUE,
++		},
++		.enable_axis = {
++			.addr = ST_SENSORS_DEFAULT_AXIS_ADDR,
++			.mask = ST_SENSORS_DEFAULT_AXIS_MASK,
++		},
++		.fs = {
++			.addr = 0x23,
++			.mask = 0x30,
++			.fs_avl = {
++				[0] = {
++					.num = ST_ACCEL_FS_AVL_100G,
++					.value = 0x00,
++					.gain = IIO_G_TO_M_S_2(980),
++				},
++				[1] = {
++					.num = ST_ACCEL_FS_AVL_200G,
++					.value = 0x01,
++					.gain = IIO_G_TO_M_S_2(1950),
++				},
++				[2] = {
++					.num = ST_ACCEL_FS_AVL_400G,
++					.value = 0x03,
++					.gain = IIO_G_TO_M_S_2(3910),
++				},
++			},
++		},
+ 		.bdu = {
+ 			.addr = 0x23,
+ 			.mask = 0x80,
 
 
 
