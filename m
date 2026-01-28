@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212274-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDOSOlUzeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212455-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:33 +0100
+	id OOBKLiMxemlT4gEAu9opvQ
+	(envelope-from <stable+bounces-212274-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCAEA4FE0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67366A4AE2
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB503309189F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A47C5312B77A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752F430BF7D;
-	Wed, 28 Jan 2026 15:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6371B2DE1E4;
+	Wed, 28 Jan 2026 15:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bb/0ua3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhCggK1i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3893C30BBA5;
-	Wed, 28 Jan 2026 15:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E882F5A2D;
+	Wed, 28 Jan 2026 15:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615578; cv=none; b=Z0BJ+4tz4r091osq46vVMHi9SEiJkdSKX81tLXWDMoJ0hry+05jLw25S9tRjHQG/nfPGiDKb7EU/sqoRMFPJWea4NkssBEezeUV+rIDHOBJAOdik1VZ7YY1brNygWRWlJkO3cA0+bo5mzaa0jBmmy5mZWJVubdL/ggEEiTLkYb8=
+	t=1769614968; cv=none; b=n/ZZAgHawFSqdR9EQcv1BKN6rYzWNh/x0dvhe/Y2ARiq8lL5lhhNle5zRoglQuVaoVJZ1eB3FuCdkBKrS29i3bxhAiZsWFjQvFsLbeBywvBe/rhAN1WIGO9jq8wBpvRdX/pHgrfRs3mpjW1tV3v4/guj4Q6zOZ67h39I1KJDGKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615578; c=relaxed/simple;
-	bh=y1F3T6ZHbZm7HAKTCnws6YrmZOgvTQoL05FxKJwv164=;
+	s=arc-20240116; t=1769614968; c=relaxed/simple;
+	bh=UI25O4yvcvzJoekYTroFUwjYIjkhhS9QsXdMpG4xuV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sH+Wjt14rvzYlVzZ5TdrTqcNQVFfGd3UfxD5PpgwsGWO4u4cfI2IQm+VIPmrFSvk1vCj8nqAoVnTR11ce/Yx+jGBcbbivRP4g/D6Kj4Lh1YqJGHbBOoQCIRYbiGOf0zBAYjLDv8xkkn4rYRlVejylw6TOLSt+zy2k56ah5nLxRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bb/0ua3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A112AC116C6;
-	Wed, 28 Jan 2026 15:52:57 +0000 (UTC)
+	 MIME-Version; b=cxgpRIhvrMv2APSAo4ZxqZcIFcTTDw8//6supMaGnPXOoSKxEk0mhuV1Ov6mV0AnaxJmINqUs9GdcBL2fsOg9lwY/gzV/K9hNcOX54sly9tNhpN9GpmD+g0bzJDUYWSlfZHUuBxMypXErjMw1YDhOASxjg0SSEoGP4LBOKuC5os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhCggK1i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA17FC4CEF7;
+	Wed, 28 Jan 2026 15:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615578;
-	bh=y1F3T6ZHbZm7HAKTCnws6YrmZOgvTQoL05FxKJwv164=;
+	s=korg; t=1769614968;
+	bh=UI25O4yvcvzJoekYTroFUwjYIjkhhS9QsXdMpG4xuV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bb/0ua3iqwWzZrHfowecSqKWm7JULxkafwE+LegwL2JCWX48fU092ydfZTLaRFdsF
-	 vzxiWU+uzJ0Jq3Kol7U4gAUPP6fM6isgj0ZfN9VRUMyyQT4T4tzBgQwPHTfA5u5CFn
-	 U4KaosJ9vso80FZWjamaHk3L95Oscyz1UPlAdB/U=
+	b=IhCggK1iWkYuZQsO3+ch/OKJPVPCB2wKz8bb8Ag3Y2lpaATGaQrL10kWLGDjpP01k
+	 xVJA9bjjeK7ppgdBXHtx5ILklWl1wR7cq7M3OEWh8XbePmZ9hbuICz2NlZgAQr8W10
+	 s480EcEwVvn9R/FpQXM9hyOrEZqEqSztZjb8JmI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Jiri Slaby <jirislaby@kernel.org>
-Subject: [PATCH 6.18 050/227] serial: Fix not set tty->port race condition
+	Qu Wenruo <wqu@suse.com>,
+	Mark Harmstone <mark@harmstone.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 012/169] btrfs: fix missing fields in superblock backup with BLOCK_GROUP_TREE
 Date: Wed, 28 Jan 2026 16:21:35 +0100
-Message-ID: <20260128145346.143774672@linuxfoundation.org>
+Message-ID: <20260128145334.458102893@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +68,79 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212455-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212274-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8BCAEA4FE0
+X-Rspamd-Queue-Id: 67366A4AE2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Mark Harmstone <mark@harmstone.com>
 
-commit 32f37e57583f869140cff445feedeea8a5fea986 upstream.
+[ Upstream commit 1d8f69f453c2e8a2d99b158e58e02ed65031fa6d ]
 
-Revert commit bfc467db60b7 ("serial: remove redundant
-tty_port_link_device()") because the tty_port_link_device() is not
-redundant: the tty->port has to be confured before we call
-uart_configure_port(), otherwise user-space can open console without TTY
-linked to the driver.
+When the BLOCK_GROUP_TREE compat_ro flag is set, the extent root and
+csum root fields are getting missed.
 
-This tty_port_link_device() was added explicitly to avoid this exact
-issue in commit fb2b90014d78 ("tty: link tty and port before configuring
-it as console"), so offending commit basically reverted the fix saying
-it is redundant without addressing the actual race condition presented
-there.
+This is because EXTENT_TREE_V2 treated these differently, and when
+they were split off this special-casing was mistakenly assigned to
+BGT rather than the rump EXTENT_TREE_V2. There's no reason why the
+existence of the block group tree should mean that we don't record the
+details of the last commit's extent root and csum root.
 
-Reproducible always as tty->port warning on Qualcomm SoC with most of
-devices disabled, so with very fast boot, and one serial device being
-the console:
+Fix the code in backup_super_roots() so that the correct check gets
+made.
 
-  printk: legacy console [ttyMSM0] enabled
-  printk: legacy console [ttyMSM0] enabled
-  printk: legacy bootconsole [qcom_geni0] disabled
-  printk: legacy bootconsole [qcom_geni0] disabled
-  ------------[ cut here ]------------
-  tty_init_dev: ttyMSM driver does not set tty->port. This would crash the kernel. Fix the driver!
-  WARNING: drivers/tty/tty_io.c:1414 at tty_init_dev.part.0+0x228/0x25c, CPU#2: systemd/1
-  Modules linked in: socinfo tcsrcc_eliza gcc_eliza sm3_ce fuse ipv6
-  CPU: 2 UID: 0 PID: 1 Comm: systemd Tainted: G S                  6.19.0-rc4-next-20260108-00024-g2202f4d30aa8 #73 PREEMPT
-  Tainted: [S]=CPU_OUT_OF_SPEC
-  Hardware name: Qualcomm Technologies, Inc. Eliza (DT)
-  ...
-  tty_init_dev.part.0 (drivers/tty/tty_io.c:1414 (discriminator 11)) (P)
-  tty_open (arch/arm64/include/asm/atomic_ll_sc.h:95 (discriminator 3) drivers/tty/tty_io.c:2073 (discriminator 3) drivers/tty/tty_io.c:2120 (discriminator 3))
-  chrdev_open (fs/char_dev.c:411)
-  do_dentry_open (fs/open.c:962)
-  vfs_open (fs/open.c:1094)
-  do_open (fs/namei.c:4634)
-  path_openat (fs/namei.c:4793)
-  do_filp_open (fs/namei.c:4820)
-  do_sys_openat2 (fs/open.c:1391 (discriminator 3))
-  ...
-  Starting Network Name Resolution...
-
-Apparently the flow with this small Yocto-based ramdisk user-space is:
-
-driver (qcom_geni_serial.c):                  user-space:
-============================                  ===========
-qcom_geni_serial_probe()
- uart_add_one_port()
-  serial_core_register_port()
-   serial_core_add_one_port()
-    uart_configure_port()
-     register_console()
-    |
-    |                                         open console
-    |                                          ...
-    |                                          tty_init_dev()
-    |                                           driver->ports[idx] is NULL
-    |
-    tty_port_register_device_attr_serdev()
-     tty_port_link_device() <- set driver->ports[idx]
-
-Fixes: bfc467db60b7 ("serial: remove redundant tty_port_link_device()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://patch.msgid.link/20260123072139.53293-2-krzysztof.kozlowski@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1c56ab991903 ("btrfs: separate BLOCK_GROUP_TREE compat RO flag from EXTENT_TREE_V2")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Mark Harmstone <mark@harmstone.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/btrfs/disk-io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -3102,6 +3102,12 @@ static int serial_core_add_one_port(stru
- 	if (uport->cons && uport->dev)
- 		of_console_check(uport->dev->of_node, uport->cons->name, uport->line);
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 39fe4385ed361..93300c3fe0cab 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -1676,7 +1676,7 @@ static void backup_super_roots(struct btrfs_fs_info *info)
+ 	btrfs_set_backup_chunk_root_level(root_backup,
+ 			       btrfs_header_level(info->chunk_root->node));
  
-+	/*
-+	 * TTY port has to be linked with the driver before register_console()
-+	 * in uart_configure_port(), because user-space could open the console
-+	 * immediately after.
-+	 */
-+	tty_port_link_device(port, drv->tty_driver, uport->line);
- 	uart_configure_port(drv, state, uport);
+-	if (!btrfs_fs_compat_ro(info, BLOCK_GROUP_TREE)) {
++	if (!btrfs_fs_incompat(info, EXTENT_TREE_V2)) {
+ 		struct btrfs_root *extent_root = btrfs_extent_root(info, 0);
+ 		struct btrfs_root *csum_root = btrfs_csum_root(info, 0);
  
- 	port->console = uart_console(uport);
+-- 
+2.51.0
+
 
 
 
