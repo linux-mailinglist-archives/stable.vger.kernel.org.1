@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-212165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGE9K1Q1eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:04 +0100
+	id SDKDINoyeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212525-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:01:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07F0DA5436
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61ED0A4F00
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:01:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 181E931A9270
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 74AE7305726F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050D42DB789;
-	Wed, 28 Jan 2026 15:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9877305E2E;
+	Wed, 28 Jan 2026 15:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2J7eIPOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCJMWloL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AF72DA765;
-	Wed, 28 Jan 2026 15:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D02E1D6AA;
+	Wed, 28 Jan 2026 15:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614608; cv=none; b=liKiYYfOC1hv/iU76YwDk93QBk2OcEWmTDmOj1LybShG1XZ8V01CNksvMGMF0bdl1+LVK48hY8D4TDPxsqknKwg7m7anNfpT6h5t/K6A8jJHDxfKupJZf/gmVYDFsd5l9dR0J4Noc0ZmiNNJKGmlaDsayFKp287SlSxt4KLPBQ0=
+	t=1769615810; cv=none; b=qJf5qgdSR6s4cyBeSMCpUQCDmepWpdBTh7ZgK12ygJBW0SQ6x6m+SQ/gdCG+KAgFzrfd0YW3V64eTPvRPDcbB/A2GEP7tUlS68ZCifMatBYWl6HMvCHTOfxDTDrTBV6UBm6T4HV9i5B/AqBLJkGfjE1mvIkW4gFffKgy49HjqY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614608; c=relaxed/simple;
-	bh=WZF7otD+xN72WQs9ine46MrwsKr2dqKVIdTdCqOkuHY=;
+	s=arc-20240116; t=1769615810; c=relaxed/simple;
+	bh=1Z+eu5/7i8GWl0j7etOlFWtju8tPzofWSXInaUtkRZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPGhtpfkO4O1Iz5twi7ShDW0SscvLF/JKeHW69BXUMnF6eep5iGN4fsigCMWRfESbO0NqD4UTc6KH9aK2LedKUilEeVdsT1AsPDJc2Fey9ELNeHvmz8ecyLLL4TDWPk+Ydidp/wnjU1EoRUKcjhinnC8Gh+em6zriAO1jheSflA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2J7eIPOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B8BC4CEF7;
-	Wed, 28 Jan 2026 15:36:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bLAAMkNFNqGWCl/D1JDOrsVNxXwu0EPs9MPLJlWMKpQxoB0p6ldF3yXMp5TUydPekjie6vXI6PnsOxHTWPo7KMkLZSwwATX8JF3sJPMb8tvPVm2UTEbDN3OEzIdmcli0BdFqs+zwZmwc3TdoPFdgmkwUsdwwrnEGrr2seSrEPy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCJMWloL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CC8C4CEF1;
+	Wed, 28 Jan 2026 15:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614608;
-	bh=WZF7otD+xN72WQs9ine46MrwsKr2dqKVIdTdCqOkuHY=;
+	s=korg; t=1769615810;
+	bh=1Z+eu5/7i8GWl0j7etOlFWtju8tPzofWSXInaUtkRZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2J7eIPOKB9R44T1hTFWN4IvsktWdzJ+L6mB9e1bxxlaVIFbxU395npGnME0xzcyPq
-	 YnJUKojAFJJCn+YpArFLGMDCbeo41noPKsFMA7WIgwzLc0HwQzncM4x4NctZo+Lilb
-	 WOjahdSiRitageZrO3B+b7OU7eiU0nWySHO9xDf4=
+	b=wCJMWloLNfa5q0wOu07omC8hR8UPIKs5eqtYoLNKJlJKeYcARIi9hBjgpT1EG+oAd
+	 4eSoppiJkt26PiklM43TT7ueLCAHP414suzPrBzlV9lz56/dEH5xY8lKQ0t7NpM4/x
+	 5h0P67hvYEdIztpGBwX39kvyBrxdjLXWI4RxdG4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 189/254] iio: adc: at91-sama5d2_adc: Fix potential use-after-free in sama5d2_adc driver
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Arvind Yadav <arvind.yadav@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 120/227] drm/xe/migrate: fix job lock assert
 Date: Wed, 28 Jan 2026 16:22:45 +0100
-Message-ID: <20260128145351.601653151@linuxfoundation.org>
+Message-ID: <20260128145348.783090301@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +65,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212165-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RSPAMD_URIBL_FAIL(0.00)[msgid.link:server fail,intel.com:query timed out];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-212525-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_EMAILBL_FAIL(0.00)[sashal.kernel.org:query timed out,thomas.hellstrom.linux.intel.com:query timed out,arvind.yadav.intel.com:query timed out,matthew.auld.intel.com:query timed out];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 07F0DA5436
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 61ED0A4F00
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit dbdb442218cd9d613adeab31a88ac973f22c4873 upstream.
+[ Upstream commit 772157f626d0e1a7c6d49dffb0bbe4b2343a1d44 ]
 
-at91_adc_interrupt can call at91_adc_touch_data_handler function
-to start the work by schedule_work(&st->touch_st.workq).
+We are meant to be checking the user vm for the bind queue, but actually
+we are checking the migrate vm. For various reasons this is not
+currently firing but this will likely change in the future.
 
-If we remove the module which will call at91_adc_remove to
-make cleanup, it will free indio_dev through iio_device_unregister but
-quite a bit later. While the work mentioned above will be used. The
-sequence of operations that may lead to a UAF bug is as follows:
+Now that we have the user_vm attached to the bind queue, we can fix this
+by directly checking that here.
 
-CPU0                                      CPU1
-
-                                     | at91_adc_workq_handler
-at91_adc_remove                      |
-iio_device_unregister(indio_dev)     |
-//free indio_dev a bit later         |
-                                     | iio_push_to_buffers(indio_dev)
-                                     | //use indio_dev
-
-Fix it by ensuring that the work is canceled before proceeding with
-the cleanup in at91_adc_remove.
-
-Fixes: 23ec2774f1cc ("iio: adc: at91-sama5d2_adc: add support for position and pressure channels")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dba89840a920 ("drm/xe: Add GT TLB invalidation jobs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Arvind Yadav <arvind.yadav@intel.com>
+Link: https://patch.msgid.link/20260120110609.77958-4-matthew.auld@intel.com
+(cherry picked from commit 9dd1048bca4fe2aa67c7a286bafb3947537adedb)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/at91-sama5d2_adc.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/xe_migrate.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -2504,6 +2504,7 @@ static int at91_adc_remove(struct platfo
- 	struct at91_adc_state *st = iio_priv(indio_dev);
+diff --git a/drivers/gpu/drm/xe/xe_migrate.c b/drivers/gpu/drm/xe/xe_migrate.c
+index 3acdcbf41887f..b6905f35d6c81 100644
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -2182,7 +2182,7 @@ void xe_migrate_job_lock(struct xe_migrate *m, struct xe_exec_queue *q)
+ 	if (is_migrate)
+ 		mutex_lock(&m->job_mutex);
+ 	else
+-		xe_vm_assert_held(q->vm);	/* User queues VM's should be locked */
++		xe_vm_assert_held(q->user_vm);	/* User queues VM's should be locked */
+ }
  
- 	iio_device_unregister(indio_dev);
-+	cancel_work_sync(&st->touch_st.workq);
+ /**
+@@ -2200,7 +2200,7 @@ void xe_migrate_job_unlock(struct xe_migrate *m, struct xe_exec_queue *q)
+ 	if (is_migrate)
+ 		mutex_unlock(&m->job_mutex);
+ 	else
+-		xe_vm_assert_held(q->vm);	/* User queues VM's should be locked */
++		xe_vm_assert_held(q->user_vm);	/* User queues VM's should be locked */
+ }
  
- 	at91_adc_dma_disable(st);
- 
+ #if IS_ENABLED(CONFIG_DRM_XE_KUNIT_TEST)
+-- 
+2.51.0
+
 
 
 
