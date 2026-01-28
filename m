@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-212544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212293-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMb5Fr85eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:30:55 +0100
+	id CO+bCGwxemlT4gEAu9opvQ
+	(envelope-from <stable+bounces-212293-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1B4A5BD0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:30:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BC5A4B97
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 157BB30FB081
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BA6330E7A57
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E591D6AA;
-	Wed, 28 Jan 2026 15:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964E63074B1;
+	Wed, 28 Jan 2026 15:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zbdbqy8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8Jfp8Dc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BA0242D7F;
-	Wed, 28 Jan 2026 15:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AD2280327;
+	Wed, 28 Jan 2026 15:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615875; cv=none; b=q8EA5Ep0qjdFnzCEZmoc1et9UakVfE08O9jpPKDRYCCHeVMhBIxN5/iMPWoQKvTqzj0GcBmh9RbTAW+OfxDCqW5pe9mbuuI52mTAOkJPCuq2VmARk4hBkxrcmmn6DXq+sle+hR9eLZj10WmO3DOQuBds6vx32QCGrjwfZm/z7o4=
+	t=1769615034; cv=none; b=LU9DH7tM+DD6tYboqpo0WiRpkUUWKsghweqHCYVlz8ikpzM5DvZuxvZcbIKSBx8EmWgm0MZJgxirKteMVPFDjwAuni7QdnQHw/WkxfcCMFsEsbs5omFYHPkM8L4sVKVQBWkmt1dvZC+GLBBvplocC1mS3NTku7+zy6agMADFnI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615875; c=relaxed/simple;
-	bh=oau5qT/aNIX29ByH0wN8C8CD9aR7n6llJHjpBcu7sr8=;
+	s=arc-20240116; t=1769615034; c=relaxed/simple;
+	bh=0h+sBSb4YnXf76GSR6XWTeA3xju9ItAMPsrjIBc4RA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gdA4hfbDfAxmF1kJ2yQQX383eFYdidQ/jJAmDauHp3yc5xeh1ilepmJg7TaFpvuQ1lpbMQ7ivTFWlw6VhGrv1mjGQ3d2i4phKUpP5A8XCX0mzLTOxR9ozcu4Qfis568FkCApAyEHAiBMAbAw7AhcHt9m8WgVsky0TSOEmaWjrpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zbdbqy8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40996C4CEF1;
-	Wed, 28 Jan 2026 15:57:54 +0000 (UTC)
+	 MIME-Version; b=EF3ZaV5cDPRsCyaHw55HzS7hM/652hMRBRZm3IeoKT9LHkiCSlwAm6lsDsnaUH03vJdd47iId4tuoS0Ndnh1SXR9/RPsWF6g6b0H2bRNIbwb3MqN2jMXcgwf2n5l+zzp8cB6lqKkGxDfBTDPPcqoDM/hpREnQmPai3y+DAky1MU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8Jfp8Dc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7FF3C16AAE;
+	Wed, 28 Jan 2026 15:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615874;
-	bh=oau5qT/aNIX29ByH0wN8C8CD9aR7n6llJHjpBcu7sr8=;
+	s=korg; t=1769615034;
+	bh=0h+sBSb4YnXf76GSR6XWTeA3xju9ItAMPsrjIBc4RA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zbdbqy8sg+jeq33VI0gXKlr5/F+lr8SLtLA48/dP1i6knSQ2xMwvWwyShbsg29YV2
-	 NTH0ahh1F+AsAV5q570+DojSJ7RaZ4P8EJ0taObs+GNnFj60bM13VnerIi+wwXfbZ8
-	 g3bdJn3sH19obxbvJUQK1JyhCQclSJ04S+33sBXg=
+	b=J8Jfp8Dc3h4mX45uWJXn4aBuAyuBJ8vsikqmsuUGb+9S5q2+L5sqxHihcZ+7ZYSCI
+	 S+bmR/5wjEzLGFHnpeGDPGnXRkRqwEbWSqIrTxTNW4Ooo/TEnhUhcdx2RAxitwuZUT
+	 +qKuSohcxZR5JglX5yzmB2y3lcj7dW12sujHNVog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 097/227] drm/xe/xe_late_bind_fw: fix enum xe_late_bind_fw_id kernel-doc
+	syzbot+4eb282331cab6d5b6588@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 059/169] io_uring/io-wq: check IO_WQ_BIT_EXIT inside work run loop
 Date: Wed, 28 Jan 2026 16:22:22 +0100
-Message-ID: <20260128145347.822316166@linuxfoundation.org>
+Message-ID: <20260128145336.136898494@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +62,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212544-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212293-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,4eb282331cab6d5b6588];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 9E1B4A5BD0
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 46BC5A4B97
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit dc1d0ffee09740088eb190af84a2c470d279bad9 ]
+commit 10dc959398175736e495f71c771f8641e1ca1907 upstream.
 
-Fix kernel-doc warnings on enum xe_late_bind_fw_id:
+Currently this is checked before running the pending work. Normally this
+is quite fine, as work items either end up blocking (which will create a
+new worker for other items), or they complete fairly quickly. But syzbot
+reports an issue where io-wq takes seemingly forever to exit, and with a
+bit of debugging, this turns out to be because it queues a bunch of big
+(2GB - 4096b) reads with a /dev/msr* file. Since this file type doesn't
+support ->read_iter(), loop_rw_iter() ends up handling them. Each read
+returns 16MB of data read, which takes 20 (!!) seconds. With a bunch of
+these pending, processing the whole chain can take a long time. Easily
+longer than the syzbot uninterruptible sleep timeout of 140 seconds.
+This then triggers a complaint off the io-wq exit path:
 
-Warning: ../drivers/gpu/drm/xe/xe_late_bind_fw_types.h:19 cannot
-  understand function prototype: 'enum xe_late_bind_fw_id'
+INFO: task syz.4.135:6326 blocked for more than 143 seconds.
+      Not tainted syzkaller #0
+      Blocked by coredump.
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz.4.135       state:D stack:26824 pid:6326  tgid:6324  ppid:5957   task_flags:0x400548 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5256 [inline]
+ __schedule+0x1139/0x6150 kernel/sched/core.c:6863
+ __schedule_loop kernel/sched/core.c:6945 [inline]
+ schedule+0xe7/0x3a0 kernel/sched/core.c:6960
+ schedule_timeout+0x257/0x290 kernel/time/sleep_timeout.c:75
+ do_wait_for_common kernel/sched/completion.c:100 [inline]
+ __wait_for_common+0x2fc/0x4e0 kernel/sched/completion.c:121
+ io_wq_exit_workers io_uring/io-wq.c:1328 [inline]
+ io_wq_put_and_exit+0x271/0x8a0 io_uring/io-wq.c:1356
+ io_uring_clean_tctx+0x10d/0x190 io_uring/tctx.c:203
+ io_uring_cancel_generic+0x69c/0x9a0 io_uring/cancel.c:651
+ io_uring_files_cancel include/linux/io_uring.h:19 [inline]
+ do_exit+0x2ce/0x2bd0 kernel/exit.c:911
+ do_group_exit+0xd3/0x2a0 kernel/exit.c:1112
+ get_signal+0x2671/0x26d0 kernel/signal.c:3034
+ arch_do_signal_or_restart+0x8f/0x7e0 arch/x86/kernel/signal.c:337
+ __exit_to_user_mode_loop kernel/entry/common.c:41 [inline]
+ exit_to_user_mode_loop+0x8c/0x540 kernel/entry/common.c:75
+ __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+ syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+ syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
+ syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
+ do_syscall_64+0x4ee/0xf80 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa02738f749
+RSP: 002b:00007fa0281ae0e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffe00 RBX: 00007fa0275e6098 RCX: 00007fa02738f749
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007fa0275e6098
+RBP: 00007fa0275e6090 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa0275e6128 R14: 00007fff14e4fcb0 R15: 00007fff14e4fd98
 
-Fixes: 45832bf9c10f ("drm/xe/xe_late_bind_fw: Initialize late binding firmware")
-Cc: Badal Nilawar <badal.nilawar@intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
-Link: https://patch.msgid.link/20260107155401.2379127-3-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit a857e6102970c7bd8f2db967fe02d76741179d14)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There's really nothing wrong here, outside of processing these reads
+will take a LONG time. However, we can speed up the exit by checking the
+IO_WQ_BIT_EXIT inside the io_worker_handle_work() loop, as syzbot will
+exit the ring after queueing up all of these reads. Then once the first
+item is processed, io-wq will simply cancel the rest. That should avoid
+syzbot running into this complaint again.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/68a2decc.050a0220.e29e5.0099.GAE@google.com/
+Reported-by: syzbot+4eb282331cab6d5b6588@syzkaller.appspotmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_late_bind_fw_types.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ io_uring/io-wq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_late_bind_fw_types.h b/drivers/gpu/drm/xe/xe_late_bind_fw_types.h
-index 0f5da89ce98b8..2a8a985c37e71 100644
---- a/drivers/gpu/drm/xe/xe_late_bind_fw_types.h
-+++ b/drivers/gpu/drm/xe/xe_late_bind_fw_types.h
-@@ -15,10 +15,12 @@
- #define XE_LB_MAX_PAYLOAD_SIZE SZ_4K
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -552,9 +552,9 @@ static void io_worker_handle_work(struct
+ 	__releases(&acct->lock)
+ {
+ 	struct io_wq *wq = worker->wq;
+-	bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
  
- /**
-- * xe_late_bind_fw_id - enum to determine late binding fw index
-+ * enum xe_late_bind_fw_id - enum to determine late binding fw index
-  */
- enum xe_late_bind_fw_id {
-+	/** @XE_LB_FW_FAN_CONTROL: Fan control */
- 	XE_LB_FW_FAN_CONTROL = 0,
-+	/** @XE_LB_FW_MAX_ID: Number of IDs */
- 	XE_LB_FW_MAX_ID
- };
+ 	do {
++		bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
+ 		struct io_wq_work *work;
  
--- 
-2.51.0
-
+ 		/*
 
 
 
