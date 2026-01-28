@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212240-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wP/BBYAxemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:44 +0100
+	id QLVKLn8wemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212240-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7110EA4BBC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8922A48FB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CC3A030BFDF6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8DBF31876D8
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B932E2F745C;
-	Wed, 28 Jan 2026 15:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 773612FF164;
+	Wed, 28 Jan 2026 15:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kk+aemPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQWVmVqF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C7842C2346;
-	Wed, 28 Jan 2026 15:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC932F361A;
+	Wed, 28 Jan 2026 15:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615326; cv=none; b=N1GhpgxKqtcj4CRM8Y52IUe7dc47d7losW0clOZDbiuA2FMVfE83evVOEMi0qwyrftrY/sJyd71W03mARIgqK8vnQUiW41RWkyhrO5yGdxaun21FJfrJ3v3+Xstm2/+nI6Yo1DHYTcPW103iTHl9Ve0ABY+8DjoxVzUM8H8W940=
+	t=1769614853; cv=none; b=jRmlzpx1AxqmczbRs5o+0k+k/Ksp2e8nM7FwTyhkO86TGb6ZHdGB9diDzJnCQOGs6h5uSiUtlmG43CYRV5RHTBpW15Kb7o3jI7baOt9a97dyT9eor+hr8rUqD8G1U8ydW8AczRvsoIkzSrqz4AFZvB3KKq88VqYELnaLiX42a6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615326; c=relaxed/simple;
-	bh=oVqPr1YDXF2LPC15bgKtZR91erQ0evolbt4sCxH0ky0=;
+	s=arc-20240116; t=1769614853; c=relaxed/simple;
+	bh=Ar47heN5uPIP8FNc/0yBfLd8d7B0Zwf4ojEFjbrHR9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GBz8Ff/EI8Lgnw8U9jy0g81VUdN7QhHWnf3E05dno43uhCMTiPQCL51fdtidOGoSwSWz6xTidbgkeyhQUv4XezYN1MeoeOk3hok7nVLooMFpBLdyyP6VrP9vIQqw90CZX+8Uy5ZP9XwLg0R8ZVPk4sYSOtlPciix4bQG+7Qekzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kk+aemPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B80C4CEF1;
-	Wed, 28 Jan 2026 15:48:45 +0000 (UTC)
+	 MIME-Version; b=hCum1E9IqtTDXcwA1ef57LQD1YZ9uCCSZU4DHfI6XseN4eSC35aTcuXqTQJnhVP4uFVpDlufEwNBQ6fnp3aoiBLTr9g6ig+QPWzYWkDF3J33NZvdK+HemRnXbz5sOBvwvEr5fIn82SKH2MksX+KV8J4N8XMc562AouGHmeXB98E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQWVmVqF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9997CC4CEF1;
+	Wed, 28 Jan 2026 15:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615326;
-	bh=oVqPr1YDXF2LPC15bgKtZR91erQ0evolbt4sCxH0ky0=;
+	s=korg; t=1769614853;
+	bh=Ar47heN5uPIP8FNc/0yBfLd8d7B0Zwf4ojEFjbrHR9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kk+aemPo3WZet5Ads++i6iTgznV8OK4r+1aWpjOANYBbYyj2GdCyTPXf8ShZvsmkT
-	 v6cN1DANYnvNA8cIeg1EGjdDyf72wgISe1KJgSY1EudoXwgQT2F9ZoAQtk1LTApYgl
-	 ili45WOXjHt5nuSkOYpMlf9RvZEclbY75Wm5Se9k=
+	b=XQWVmVqFmGVhCt1OZi4xT/GNxNsRHEuD4aW12M/4CUvvwzC51424RVVZ8iTS216BZ
+	 eogL7UE8WxmXBXjcNMal6x+35Xi91Ej/8bzBSYd7uN18ZVSlqlznyoCTFO22T0b5Zm
+	 KYGJVvdZbmKztSIfdUdGVU9GqKIs+HD9Op1o46ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Likun Gao <Likun.Gao@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 144/169] drm/amdgpu: remove frame cntl for gfx v12
-Date: Wed, 28 Jan 2026 16:23:47 +0100
-Message-ID: <20260128145339.187988820@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.6 252/254] net: phy: move phy_link_change() prior to mdio_bus_phy_may_suspend()
+Date: Wed, 28 Jan 2026 16:23:48 +0100
+Message-ID: <20260128145353.866904730@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +66,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212240-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,armlinux.org.uk,kernel.org,139.com];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212380-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7110EA4BBC
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D8922A48FB
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Likun Gao <Likun.Gao@amd.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 10343253328e0dbdb465bff709a2619a08fe01ad upstream.
+[ Upstream commit f40a673d6b4a128fe95dd9b8c3ed02da50a6a862 ]
 
-Remove emit_frame_cntl function for gfx v12, which is not support.
+In an upcoming change, mdio_bus_phy_may_suspend() will need to
+distinguish a phylib-based PHY client from a phylink PHY client.
+For that, it will need to compare the phydev->phy_link_change() function
+pointer with the eponymous phy_link_change() provided by phylib.
 
-Signed-off-by: Likun Gao <Likun.Gao@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5aaa5058dec5bfdcb24c42fe17ad91565a3037ca)
-Cc: stable@vger.kernel.org
+To avoid forward function declarations, the default PHY link state
+change method should be moved upwards. There is no functional change
+associated with this patch, it is only to reduce the noise from a real
+bug fix.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/20250407093900.2155112-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Minor context change fixed ]
+Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c |   12 ------------
- 1 file changed, 12 deletions(-)
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/net/phy/phy_device.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v12_0.c
-@@ -248,7 +248,6 @@ static void gfx_v12_0_select_se_sh(struc
- 				   u32 sh_num, u32 instance, int xcc_id);
- static u32 gfx_v12_0_get_wgp_active_bitmap_per_sh(struct amdgpu_device *adev);
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -268,6 +268,19 @@ static struct phy_driver genphy_driver;
+ static LIST_HEAD(phy_fixup_list);
+ static DEFINE_MUTEX(phy_fixup_lock);
  
--static void gfx_v12_0_ring_emit_frame_cntl(struct amdgpu_ring *ring, bool start, bool secure);
- static void gfx_v12_0_ring_emit_wreg(struct amdgpu_ring *ring, uint32_t reg,
- 				     uint32_t val);
- static int gfx_v12_0_wait_for_rlc_autoload_complete(struct amdgpu_device *adev);
-@@ -4556,16 +4555,6 @@ static int gfx_v12_0_ring_preempt_ib(str
- 	return r;
++static void phy_link_change(struct phy_device *phydev, bool up)
++{
++	struct net_device *netdev = phydev->attached_dev;
++
++	if (up)
++		netif_carrier_on(netdev);
++	else
++		netif_carrier_off(netdev);
++	phydev->adjust_link(netdev);
++	if (phydev->mii_ts && phydev->mii_ts->link_state)
++		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
++}
++
+ static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
+ {
+ 	struct device_driver *drv = phydev->mdio.dev.driver;
+@@ -1069,19 +1082,6 @@ struct phy_device *phy_find_first(struct
  }
+ EXPORT_SYMBOL(phy_find_first);
  
--static void gfx_v12_0_ring_emit_frame_cntl(struct amdgpu_ring *ring,
--					   bool start,
--					   bool secure)
+-static void phy_link_change(struct phy_device *phydev, bool up)
 -{
--	uint32_t v = secure ? FRAME_TMZ : 0;
+-	struct net_device *netdev = phydev->attached_dev;
 -
--	amdgpu_ring_write(ring, PACKET3(PACKET3_FRAME_CONTROL, 0));
--	amdgpu_ring_write(ring, v | FRAME_CMD(start ? 0 : 1));
+-	if (up)
+-		netif_carrier_on(netdev);
+-	else
+-		netif_carrier_off(netdev);
+-	phydev->adjust_link(netdev);
+-	if (phydev->mii_ts && phydev->mii_ts->link_state)
+-		phydev->mii_ts->link_state(phydev->mii_ts, phydev);
 -}
 -
- static void gfx_v12_0_ring_emit_rreg(struct amdgpu_ring *ring, uint32_t reg,
- 				     uint32_t reg_val_offs)
- {
-@@ -5316,7 +5305,6 @@ static const struct amdgpu_ring_funcs gf
- 	.emit_cntxcntl = gfx_v12_0_ring_emit_cntxcntl,
- 	.init_cond_exec = gfx_v12_0_ring_emit_init_cond_exec,
- 	.preempt_ib = gfx_v12_0_ring_preempt_ib,
--	.emit_frame_cntl = gfx_v12_0_ring_emit_frame_cntl,
- 	.emit_wreg = gfx_v12_0_ring_emit_wreg,
- 	.emit_reg_wait = gfx_v12_0_ring_emit_reg_wait,
- 	.emit_reg_write_reg_wait = gfx_v12_0_ring_emit_reg_write_reg_wait,
+ /**
+  * phy_prepare_link - prepares the PHY layer to monitor link status
+  * @phydev: target phy_device struct
 
 
 
