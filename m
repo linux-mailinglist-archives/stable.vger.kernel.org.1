@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJzdJwoxemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:46 +0100
+	id KI1qHBsxemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25EF0A4A82
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B8BA4ABB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 41BE33006804
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E0CC830A1403
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012472FBE0A;
-	Wed, 28 Jan 2026 15:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D1E2FDC5D;
+	Wed, 28 Jan 2026 15:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u05ArCcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTF/MSee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0082EB872;
-	Wed, 28 Jan 2026 15:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E84308F1D;
+	Wed, 28 Jan 2026 15:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614821; cv=none; b=PIsEbeyJyWJgXBNU9ok45MpphBjVmW5OlVKQ+wzVICD7FWmZahXMhw1PllenI4NihhlhusFsFlOF725HKtNM01Z8QVSyIqe8Yt1qYUcgYvWodcXkmbj7cWzdeoEDIo6PMm/lGvZ1yltET25nMen7UUBJhYs7lM35DLHXVXIXYMQ=
+	t=1769615299; cv=none; b=sjBG50TZY4tXwiVZeE7+IhRkFFZ/tuH7s4sfOycSU3zYzc0Ropo61qvS3U0f8hu0j3pb/q77qiXsudAZk/zzXsmAno1W7RL0m6JpfaTy+Rbay7o6BWb6pxIPUV8/3XXa58vijP/kfttlfcCX2wwCsoKQQkY74aIFffGQcFQhgDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614821; c=relaxed/simple;
-	bh=+Op8iSMNzpwFdM0ezndRGGOtTZsr9RyZtF6fiFPqnlc=;
+	s=arc-20240116; t=1769615299; c=relaxed/simple;
+	bh=1sEumzKNBDl9k/ek/iePFiALEqIKtp0rAwkcDKllBEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=noT5lCBiRmCIDPXtoBq2eSZav2qgYqa19RhoWfJ9g4aT9yViuySuVpa7etSCImlLOQseIF6xfmbJG/Wu6CXx9K/tQ76+shd/P+vmCL9J1pknbUGFlp6Vf7A7IH33CLt7XFRpFQJjXbrMFdTb4DbligxAwlw6k69CFZZ+qKJvGB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u05ArCcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02692C4CEF1;
-	Wed, 28 Jan 2026 15:40:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KhlVwIct/nTUygBTKtRMJMazFeTU2LlqMi38s+b1KfRvuUJx0c13HMOqHWY+pxUtO3dWr4HLEw012rhHOxAUIgIzn/3The6FTaG4/m5kIL04UKBRFj7zcRUNoGY8Pe+BBCvYh876cjApTcm0Kh2uXkFrA8ebzQWmxHnHFJ1lS2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTF/MSee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179CAC4CEF1;
+	Wed, 28 Jan 2026 15:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614820;
-	bh=+Op8iSMNzpwFdM0ezndRGGOtTZsr9RyZtF6fiFPqnlc=;
+	s=korg; t=1769615299;
+	bh=1sEumzKNBDl9k/ek/iePFiALEqIKtp0rAwkcDKllBEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u05ArCcsDaamt0R85qcrBBW0Y5hVaDBAbBGNWIgQoqXKJpIH1D07AbUhKVjqCST8w
-	 f+quGnIVm2J87Z81Y02pGT56LndotE6YpcwTH1O7Lj1XO8atMyy2DTj2ABLh5jPA6S
-	 zLKGIL4YFQnwNvNpGyzPhsoCQW79chJfKs45x0Qo=
+	b=JTF/MSeeZ0mFAbGqwgYr29fTeRiWtznpjskLyin+XWZ4dcRVSd1PHsUSP9x4Izu7x
+	 ozlP/DCaPCb7h6FX/jSt/i5xtBlKJH89qrbSzbN0axhD6hZ3aUzbDVRadsOxAI2Z5r
+	 XlcNy+QXICr7OY+unPWfqRTked3Pbxz9iqi/1Vlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <dwagner@suse.de>,
-	Nilay Shroff <nilay@linux.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 244/254] nvme: fix PCIe subsystem reset controller state transition
+	"=?UTF-8?q?Jan=20H . =20Sch=C3=B6nherr?=" <jschoenh@amazon.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Fernand Sieber <sieberf@amazon.com>
+Subject: [PATCH 6.12 137/169] perf/x86/intel: Do not enable BTS for guests
 Date: Wed, 28 Jan 2026 16:23:40 +0100
-Message-ID: <20260128145353.577439475@linuxfoundation.org>
+Message-ID: <20260128145338.938017302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,85 +69,85 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-212230-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 25EF0A4A82
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212372-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+]
+X-Rspamd-Queue-Id: C3B8BA4ABB
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nilay Shroff <nilay@linux.ibm.com>
+From: Fernand Sieber <sieberf@amazon.com>
 
-[ Upstream commit 0edb475ac0a7d153318a24d4dca175a270a5cc4f ]
+commit 91dcfae0ff2b9b9ab03c1ec95babaceefbffb9f4 upstream.
 
-The commit d2fe192348f9 (“nvme: only allow entering LIVE from CONNECTING
-state”) disallows controller state transitions directly from RESETTING
-to LIVE. However, the NVMe PCIe subsystem reset path relies on this
-transition to recover the controller on PowerPC (PPC) systems.
+By default when users program perf to sample branch instructions
+(PERF_COUNT_HW_BRANCH_INSTRUCTIONS) with a sample period of 1, perf
+interprets this as a special case and enables BTS (Branch Trace Store)
+as an optimization to avoid taking an interrupt on every branch.
 
-On PPC systems, issuing a subsystem reset causes a temporary loss of
-communication with the NVMe adapter. A subsequent PCIe MMIO read then
-triggers EEH recovery, which restores the PCIe link and brings the
-controller back online. For EEH recovery to proceed correctly, the
-controller must transition back to the LIVE state.
+Since BTS doesn't virtualize, this optimization doesn't make sense when
+the request originates from a guest. Add an additional check that
+prevents this optimization for virtualized events (exclude_host).
 
-Due to the changes introduced by commit d2fe192348f9 (“nvme: only allow
-entering LIVE from CONNECTING state”), the controller can no longer
-transition directly from RESETTING to LIVE. As a result, EEH recovery
-exits prematurely, leaving the controller stuck in the RESETTING state.
-
-Fix this by explicitly transitioning the controller state from RESETTING
-to CONNECTING and then to LIVE. This satisfies the updated state
-transition rules and allows the controller to be successfully recovered
-on PPC systems following a PCIe subsystem reset.
-
-Cc: stable@vger.kernel.org
-Fixes: d2fe192348f9 ("nvme: only allow entering LIVE from CONNECTING state")
-Reviewed-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Jan H. Schönherr <jschoenh@amazon.de>
+Suggested-by: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Fernand Sieber <sieberf@amazon.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20251211183604.868641-1-sieberf@amazon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/events/perf_event.h |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1166,7 +1166,10 @@ static int nvme_pci_subsystem_reset(stru
- 	}
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -1513,13 +1513,22 @@ static inline bool intel_pmu_has_bts_per
+ 	struct hw_perf_event *hwc = &event->hw;
+ 	unsigned int hw_event, bts_event;
  
- 	writel(NVME_SUBSYS_RESET, dev->bar + NVME_REG_NSSR);
--	nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE);
+-	if (event->attr.freq)
++	/*
++	 * Only use BTS for fixed rate period==1 events.
++	 */
++	if (event->attr.freq || period != 1)
++		return false;
 +
-+	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_CONNECTING) ||
-+	    !nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
-+		goto unlock;
++	/*
++	 * BTS doesn't virtualize.
++	 */
++	if (event->attr.exclude_host)
+ 		return false;
  
- 	/*
- 	 * Read controller status to flush the previous write and trigger a
+ 	hw_event = hwc->config & INTEL_ARCH_EVENT_MASK;
+ 	bts_event = x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
+ 
+-	return hw_event == bts_event && period == 1;
++	return hw_event == bts_event;
+ }
+ 
+ static inline bool intel_pmu_has_bts(struct perf_event *event)
 
 
 
