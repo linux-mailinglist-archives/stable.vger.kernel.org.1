@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-212066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBOjGosuemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212066-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:07 +0100
+	id oPqgBYE2eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:17:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3CF7A4479
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD8AA5610
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C04631B414C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C2D4F305C81F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A80242D7F;
-	Wed, 28 Jan 2026 15:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECBA30274D;
+	Wed, 28 Jan 2026 15:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okNQtb0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmsvJwoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AC213B7A3;
-	Wed, 28 Jan 2026 15:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120B42F745C;
+	Wed, 28 Jan 2026 15:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614286; cv=none; b=oTwfnrjYj/2DlQN9iVlQhQugGb/T4z1Dfhly79SadcDhPNGe7a8pKD0l9poDgV+gYNZj8e46dD4ExJ8URLtQHlpG6AwfAvboxZDNIF3NgSfnNq8SOSTfTmJydr5X729Q8IKTAp0wQCQQgHW2JVVYy4ipxZyOETTROpH4197gtgU=
+	t=1769615479; cv=none; b=pjuNSAWRjOKfMfGwzDVrpIMmr2O+i85CdRFuJ4tEmIjIzkNnsRabOViT8pieEpgXQ966ajXazYYOIIWdQ7LmZWh8dFagBDHS3Js6t3d1upoefBCReayB+IzMziBuxMUEu3vENmLg3u6zjof6zI1J9KuUDBzV7SaVSome5JpbRlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614286; c=relaxed/simple;
-	bh=RSFgrDwGq8SiGLkrbj6qifFmkcwlZBzF1cCPYaFhcOg=;
+	s=arc-20240116; t=1769615479; c=relaxed/simple;
+	bh=wozlRA2EAFJzsPGoj9y+sgQf//51T0ETdrvnbN2M5Y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jg6c8RvdtnsfcablZ50F9ZFwRh6vYlbXF+mmz52816fkbNJ3gX2Xa0HZW+OPz0quu3P8Ux65Xlbr+1LYVJ6aREtPylM0oixq8QvFp8CP56TRZSd4NptRNOOWbshoMj1uqR4C9f+xP8wWZe7dlXBTeIVM85bbXvJC9UP5bPhuNuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okNQtb0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3518C4CEF1;
-	Wed, 28 Jan 2026 15:31:25 +0000 (UTC)
+	 MIME-Version; b=sM8mQ+pswfn3NlX2yKSXdx5JTXSabDWPW9caDGL+8zD3hhiJR3pmlmLB26gVztJOWprS//MNN9pbKZutYZml8ZYbV8RE7L4Kl6grh/4mGE3gjc/7umh10Z1MVT6T1wTp+eCoYfqw5IZBb5wSKG3z0/G1Vd1jsHKEyZOASSqK44g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmsvJwoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7FCC116C6;
+	Wed, 28 Jan 2026 15:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614286;
-	bh=RSFgrDwGq8SiGLkrbj6qifFmkcwlZBzF1cCPYaFhcOg=;
+	s=korg; t=1769615479;
+	bh=wozlRA2EAFJzsPGoj9y+sgQf//51T0ETdrvnbN2M5Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okNQtb0AJU+Nt6CoeGcnfssbdeo2Relhb2NwlTc+WMK652b0+A0Tn7QXQIFH9jsUk
-	 xW9M5yS4kMnNZYzc1vMeJH08b5mg5E6lBtxsiWdjLRR4W8eoBXU7hxL+VUTEkldt/A
-	 4GIXJRmvpw2Pum3TnqNwfnoFQr+iKOyl3Raoopes=
+	b=qmsvJwoJtPGNwoSz+Nw/8Y+om4RfRRXvJK9iKhsMmxZvWIF1IDxKYOdqWrG2fvXZY
+	 EekzVrikQo4ptQZq4JJyNbvkuOKFGit/ui4Q9WXxJnRsl7oIzPBW4PABNeDCdi8dwK
+	 FJUqnvXwWCQyzSosjhyL7Kb6f0WkNIQXXmLa1N1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 090/254] io_uring: move local task_work in exit cancel loop
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.18 021/227] ice: initialize ring_stats->syncp
 Date: Wed, 28 Jan 2026 16:21:06 +0100
-Message-ID: <20260128145348.067899369@linuxfoundation.org>
+Message-ID: <20260128145345.105545245@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,93 +72,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212426-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212066-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C3CF7A4479
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 1CD8AA5610
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit da579f05ef0faada3559e7faddf761c75cdf85e1 upstream.
+[ Upstream commit 8439016c3b8b5ab687c2420317b1691585106611 ]
 
-With IORING_SETUP_DEFER_TASKRUN, task work is queued to ctx->work_llist
-(local work) rather than the fallback list. During io_ring_exit_work(),
-io_move_task_work_from_local() was called once before the cancel loop,
-moving work from work_llist to fallback_llist.
+The u64_stats_sync structure is empty on 64-bit systems. However, on 32-bit
+systems it contains a seqcount_t which needs to be initialized. While the
+memory is zero-initialized, a lack of u64_stats_init means that lockdep
+won't get initialized properly. Fix this by adding u64_stats_init() calls
+to the rings just after allocation.
 
-However, task work can be added to work_llist during the cancel loop
-itself. There are two cases:
-
-1) io_kill_timeouts() is called from io_uring_try_cancel_requests() to
-cancel pending timeouts, and it adds task work via io_req_queue_tw_complete()
-for each cancelled timeout:
-
-2) URING_CMD requests like ublk can be completed via
-io_uring_cmd_complete_in_task() from ublk_queue_rq() during canceling,
-given ublk request queue is only quiesced when canceling the 1st uring_cmd.
-
-Since io_allowed_defer_tw_run() returns false in io_ring_exit_work()
-(kworker != submitter_task), io_run_local_work() is never invoked,
-and the work_llist entries are never processed. This causes
-io_uring_try_cancel_requests() to loop indefinitely, resulting in
-100% CPU usage in kworker threads.
-
-Fix this by moving io_move_task_work_from_local() inside the cancel
-loop, ensuring any work on work_llist is moved to fallback before
-each cancel attempt.
-
-Cc: stable@vger.kernel.org
-Fixes: c0e0d6ba25f1 ("io_uring: add IORING_SETUP_DEFER_TASKRUN")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2b245cb29421 ("ice: Implement transmit and NAPI support")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_lib.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3191,11 +3191,11 @@ static __cold void io_ring_exit_work(str
- 			mutex_unlock(&ctx->uring_lock);
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 4479c824561e9..c0d221d4b4f47 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -398,6 +398,8 @@ static int ice_vsi_alloc_ring_stats(struct ice_vsi *vsi)
+ 			if (!ring_stats)
+ 				goto err_out;
+ 
++			u64_stats_init(&ring_stats->syncp);
++
+ 			WRITE_ONCE(tx_ring_stats[i], ring_stats);
  		}
  
--		if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
--			io_move_task_work_from_local(ctx);
--
--		while (io_uring_try_cancel_requests(ctx, NULL, true))
-+		do {
-+			if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
-+				io_move_task_work_from_local(ctx);
- 			cond_resched();
-+		} while (io_uring_try_cancel_requests(ctx, NULL, true));
+@@ -417,6 +419,8 @@ static int ice_vsi_alloc_ring_stats(struct ice_vsi *vsi)
+ 			if (!ring_stats)
+ 				goto err_out;
  
- 		if (ctx->sq_data) {
- 			struct io_sq_data *sqd = ctx->sq_data;
++			u64_stats_init(&ring_stats->syncp);
++
+ 			WRITE_ONCE(rx_ring_stats[i], ring_stats);
+ 		}
+ 
+-- 
+2.51.0
+
 
 
 
