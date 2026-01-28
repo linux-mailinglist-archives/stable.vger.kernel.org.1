@@ -1,200 +1,149 @@
-Return-Path: <stable+bounces-212647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aF6EBUFGemkp5AEAu9opvQ
-	(envelope-from <stable+bounces-212647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:24:17 +0100
+	id KBbzBYJKemkp5AEAu9opvQ
+	(envelope-from <stable+bounces-212648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:42:26 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0367A6CBC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:24:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D43EA70F0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:42:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 425EF301BA75
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:24:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8971D300D71F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E858333434;
-	Wed, 28 Jan 2026 17:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5AB28CF6F;
+	Wed, 28 Jan 2026 17:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RLRINZ9Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rBzvs2rI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF2B31ED62
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 17:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769621041; cv=pass; b=JqsM+jVv7Ero7Pbpes1iqAbTOfXMAZu15wXBrsHn2ZoFu0EqLHNUXa6v3erl4/SpIFG2W2hGOcbGHyZ5e0jmLNMV0hbpsoEcIuSI1FXvqomX9nMyKIFXRZJzQ7D1elkWnVHXDxm0Uk9gIEz3dOlO3CR6HWHsJXcvaalwFUgEVrA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769621041; c=relaxed/simple;
-	bh=kizkZuvdxw6uKJdz5CGeib2vOGGoPb1DUKZR/ygQBzE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qjtRoFeVKih9ROy5RJq4xPTBsx4AXhT4SjgY5TzoiK1k3Yt0TVow6ey1jo8zMJI/IHuaPEkbPtTDua0byVSZkv5/uabs5ZpWRc3xIRmtY+UuS0IHJlD9SD7hwL0TOn+p4rGNtRwVGW1rrTiUQB26zZaHyZhENp8xcAC48qSmdu0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RLRINZ9Z; arc=pass smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a871daa98fso146135ad.1
-        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 09:23:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769621039; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AbUiX7JEBfQgNEsBAOO3tICKL8lXxqZOgOAdwo0mPAOQe1dSgzwvKPLGzhAW92N2/r
-         l0GTadB3qUc4tVDwVdvwEX9faqBtCSIc6/63frE+2r8DDfjpC+d1cRMrmu3bnPCHsSsV
-         eXUV25+q40gjgMrxFwb7h5PinNCIY9Gpi/Rd39hsvpflTc0qck/9kM+GSj+KANkTDQ3x
-         WbqbJ4BYbr2zxRul2Kenco8bU3S6G9iso8rj+hJNzuGGwEi3U3PKfSG7MVNdh4RWfrw3
-         6KpBcWgbNtNPCUXJx8glyVd81DjjwRr1kWAAeNjW6U2PNWESCPb/UecvIPEo6Fw2TM//
-         gulQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HyWyPzTGB/cOBYn0NBzbfLp7xlXZid+2WFTQZJ9u/mY=;
-        fh=WYqoKWVviQEGFY5A5/tO67blDFyTMkrwboot/AezZn8=;
-        b=JnBR9qiMVwydOnz9kx6b8Z0+iaXtYbOo4xkDtG0UfGd9jo/2dKBuCf6cPgzfZS4q9k
-         N0uEN2Bg3cGyFI2/KO5z8OvzHVXcfhmXqHYAe+psYFJtO6PhIZz9XzjzRQszopZDdx8H
-         MB/BQo8ZMQ/bete3RUY4duVUhehjcHdqeHSDJGvXgoFxc0FYS39ylZ7p9PtGG9Iatb3G
-         rlao6xF2TEsStBTfSGMpTmUJZg7H7hYmJUH6tV38mV/AhAp0DrBA9+TQ0cTHUIvlvyIG
-         xcWeZtWZPqXchK7dqZfa3JTzNF64AhKgyyXiDdCgUzjcruRhiiwvg1/ppDyW8Idx7Yh5
-         41iQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769621039; x=1770225839; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HyWyPzTGB/cOBYn0NBzbfLp7xlXZid+2WFTQZJ9u/mY=;
-        b=RLRINZ9Z2mdC15RRQfK11I3dIYlKrJQt++jxEjPb5IUjwEYbqGwXI9TdsrC7Os1JLi
-         zee3W3QMflyxCOu4sX4hcppUhInbgwXpQRjqbQy/QbsBTKJ1+oEAA6IldwpwN6qXZNfM
-         aqPsoyMOTzd2LCGriFaZukmwgRRBLOlLWbtK5Uk4aWuxaipK9C7HTTGM1O6jLEcVzu2P
-         a5UsxiFeCNBSVvYP5GkFcYIGQIFuGBKMsF+i4JBi/abCd9ZCRYmTODfFHUZ3Cq9SSMk+
-         Y976E+Zzcp74NphQd/ssDhWrhz/IRAWOR78SwW0a7A6fvm+2jX8gFInJ+0rmCPkv5q3+
-         RRwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769621039; x=1770225839;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HyWyPzTGB/cOBYn0NBzbfLp7xlXZid+2WFTQZJ9u/mY=;
-        b=EiuV/FEyJ9ETqKYFxtYeFsRbyLqObzWb7fRWRljso8/6NO6697fsYxBHUxwfPafXEl
-         PzFgz5x0tkYcavt3kfzG25sT0MiYtHefj2t7EDXxBtN8MaL60/jW80ejoPZxjMDqBftQ
-         CPVEHLmBIXJhbBhhzJ5eu+f7EfPHmZvDJVz+Us5PAmVkX520pkcUC2sSPSlSm0bfHWAi
-         +dPOqj6OgIWKO2DAl4cW3C2OY/otbqfL0hbI7xeyloT9ZJWcF3zyzq7PwvlexD3FCOGv
-         1YVVu8p+RioiLDUHNjv4scmm2AP5746OAVfCkDErM+vJHVWqsiOjWFiFHEkmG8905f/U
-         tsYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3eiarEBgI69hwXGOGU1AiM1W8Uf3vJSoGY33fA6buP+WcA/Lbe4x0aO1dYiADH40FeDm8Vsc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykwM4v6szI1pQnNq45OG3Gic7oRhvVxPBzbouTkv10UE6tfnzL
-	mljXteIFCzi8Y+t5iaDlmBWk6LhOOXenm+vsFnhBb+ftfB4h0oVziIWeKnHlQ8NifjqHXCzrmNX
-	x3kJ1157BqjqUZgE6eIL0EXYozEa3SVA=
-X-Gm-Gg: AZuq6aLIpI5KOvD8e1EYPlG8fv29jxQlYuE9M8/zjg7oWYeJ92sfsOHGp9elu9q0Y+Y
-	FGfqHn4WVIfObu7CCBSZc6ugol+63moiLc36WxF67YCi7Hz8lGadTHmpJTVkbdJFSO4Gm9lGQml
-	o37mkpu30ktyuNRZKrfb+jGrlQPmDtM38m7ZeLXN/1hjX3VE1zn1zjZq7H1vRxaH3zd6RtxIg1Y
-	RYJpFVUkke8EjHMSUWGVfBP7AZolQKgQmeALrUHvb10XNkX80aB1EEXNTFi3k3RzZRKuHfBwGLU
-	XHwkjtvprcs=
-X-Received: by 2002:a17:902:e5c9:b0:2a0:d6d5:b342 with SMTP id
- d9443c01a7336-2a870dcbe7amr57082335ad.37.1769621038802; Wed, 28 Jan 2026
- 09:23:58 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3849F36AB62
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 17:42:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769622143; cv=none; b=sYxbScJ5/g50NZpHxuWRtNDTa2mhHRsCLoW6Nh7Ni1JbeCOJ76LnI2I4knKbLpXHcVXDwUQlRKfMLdUh8Xf2XCTos+NZ/2Veb2FMpUI+ZlzkxeS5pIOpdqA5YQC8BF9U7LcRy4g0YEbpjAcf9fiDz/kf4JKtYWzclXmaV7KuCF8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769622143; c=relaxed/simple;
+	bh=LhLCnvqqN14Xr7O02GANRON5QpHzmFGF5vjxe8PdhjI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Z7kIYuaBoyVXx2vjwfBKy049Ff6rhUVXw62LSe1au2Z7j2XvDmwc8AWf14zHO89gqypfkWjntMSJzyLngCrsWaHkha99ucjSTcuuDharj2+fX3IAg/4tdZrZ1DhIUKF3dVwTBJIreQy494k7F+DpTGfmi9OXxFHmiUy7NIn3FaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rBzvs2rI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537A1C4CEF1;
+	Wed, 28 Jan 2026 17:42:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769622142;
+	bh=LhLCnvqqN14Xr7O02GANRON5QpHzmFGF5vjxe8PdhjI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rBzvs2rIlj0XQg8lOBN8s95Hgvg2Nr0J9UFL+g5beKCfRt+nA5xBBgSsOTdQlfAcx
+	 UkTh+4iSYUXBlTNZm6+7tB3WjVhljcYWRC4WQXVAUCYLZxZvoZV/FSNfTN3GIaxbcL
+	 bGEkQ3/rRyZss2J1qz+kZ/Wk1xV13y/XxDvgcLdPPk/Q9eDU6KN7HWj5DIqsEgk+Ci
+	 2uD/5QgzyUa5TmOzXplxN22Q6+/+Ya8vGS4zoPITz5T10sjwrrcrasVn4Wdreb0qKp
+	 O/rHYAAS5LqYc+WDXQ5qhDMFmkPKYqW1K6nF9EfgmN9024yLjxikGMiIRD1Xud/BmJ
+	 wVI0wwJqSpY3g==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] ALSA: scarlett2: Fix buffer overflow in config retrieval
+Date: Wed, 28 Jan 2026 12:42:20 -0500
+Message-ID: <20260128174220.2597086-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012703-wrecking-unpicked-b43c@gregkh>
+References: <2026012703-wrecking-unpicked-b43c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260128-uprobe_rcu-v1-1-d41316763799@debian.org> <aXoUOEhDfncEkC-f@redhat.com>
-In-Reply-To: <aXoUOEhDfncEkC-f@redhat.com>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Wed, 28 Jan 2026 09:23:45 -0800
-X-Gm-Features: AZwV_Qj6rb3WoP_Y9fiHuFQxMtZyQOzI2dFswDQeqWIoSEtuJcdiEz7owWd2EyE
-Message-ID: <CAEf4BzYJJiUdQTjDgr_uVSQ+uBhYWKki0vjS5VffTzbST1uS2g@mail.gmail.com>
-Subject: Re: [PATCH] uprobes: fix incorrect lockdep condition in filter_chain()
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Breno Leitao <leitao@debian.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, Andrii Nakryiko <andrii@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	kernel-team@meta.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212647-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriinakryiko@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212648-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: C0367A6CBC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email,suse.de:email]
+X-Rspamd-Queue-Id: 9D43EA70F0
 X-Rspamd-Action: no action
 
-On Wed, Jan 28, 2026 at 5:51=E2=80=AFAM Oleg Nesterov <oleg@redhat.com> wro=
-te:
->
-> On 01/28, Breno Leitao wrote:
-> >
-> > The list_for_each_entry_rcu() in filter_chain() uses
-> > rcu_read_lock_trace_held() as the lockdep condition, but the function
-> > holds consumer_rwsem, not the RCU trace lock.
-> >
-> > This gives me the following output when running with some locking debug
-> > option enabled:
-> >
-> >   kernel/events/uprobes.c:1141 RCU-list traversed in non-reader section=
-!!
-> >     filter_chain
-> >     register_for_each_vma
-> >     uprobe_unregister_nosync
-> >     __probe_event_disable
-> >
-> > Remove the incorrect lockdep condition since the rwsem provides
-> > sufficient protection for the list traversal.
->
-> I hope Andrii will recheck, but looks obviously correct to me.
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-yeah, I did, and it also looks obviously correct to me, I didn't need
-to use rcu flavor there in the first place, I think.
+[ Upstream commit 6f5c69f72e50d51be3a8c028ae7eda42c82902cb ]
 
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
+The scarlett2_usb_get_config() function has a logic error in the
+endianness conversion code that can cause buffer overflows when
+count > 1.
 
->
-> > Fixes: 87195a1ee332a ("uprobes: switch to RCU Tasks Trace flavor for be=
-tter performance")
->
-> This commit just change the __list_check_rcu() condition...
->
-> Perhaps
-> Fixes: cc01bd044e6a ("uprobes: travers uprobe's consumer list locklessly =
-under SRCU protection")
->
+The code checks `if (size == 2)` where `size` is the total buffer size in
+bytes, then loops `count` times treating each element as u16 (2 bytes).
+This causes the loop to access `count * 2` bytes when the buffer only
+has `size` bytes allocated.
 
-yep, this one is the earliest change adding unnecessary rcu flavor of
-list_for_each_entry
+Fix by checking the element size (config_item->size) instead of the
+total buffer size. This ensures the endianness conversion matches the
+actual element type.
 
+Fixes: ac34df733d2d ("ALSA: usb-audio: scarlett2: Update get_config to do endian conversion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Link: https://patch.msgid.link/20260117012706.1715574-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ add 32-bit handling block ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ sound/usb/mixer_scarlett_gen2.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-> makes more sense?
->
-> Acked-by: Oleg Nesterov <oleg@redhat.com>
->
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index 0aa5957cd9f93..87421f92c2761 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -1194,11 +1194,16 @@ static int scarlett2_usb_get_config(
+ 		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
+ 		if (err < 0)
+ 			return err;
+-		if (size == 2) {
++		if (config_item->size == 16) {
+ 			u16 *buf_16 = buf;
+ 
+ 			for (i = 0; i < count; i++, buf_16++)
+ 				*buf_16 = le16_to_cpu(*(__le16 *)buf_16);
++		} else if (config_item->size == 32) {
++			u32 *buf_32 = (u32 *)buf;
++
++			for (i = 0; i < count; i++, buf_32++)
++				*buf_32 = le32_to_cpu(*(__le32 *)buf_32);
+ 		}
+ 		return 0;
+ 	}
+-- 
+2.51.0
+
 
