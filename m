@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJ5NIRM6emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212575-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:19 +0100
+	id uPVKAg8wemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F0EA5C4D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C9DA47CB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 90ECA3030A71
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F3605307EA8C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF38F302779;
-	Wed, 28 Jan 2026 15:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C972D9EE4;
+	Wed, 28 Jan 2026 15:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGya4acY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiCOZ/rF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735D81D6AA;
-	Wed, 28 Jan 2026 15:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AC42D5408;
+	Wed, 28 Jan 2026 15:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615977; cv=none; b=aJVfL3oQJB0lc4TT5L1O1VDIcdJ+o7WsK95snDmb7uHv1T7IwPHPBbg4X95f3hog2pc/3RYDFDBQ0xH4VCNxlu0qLMuMJ41Vs+ys7Wr5mTSgNdFef7d+MPTUhH/rg0fuKjDMM/7STHMzTNAxS4lt2oOoJvF7Smk7/aGpNQFUllk=
+	t=1769614676; cv=none; b=frJxOGYwWdlRldTfa6sgR2LBd7m2onvjpUoOFLPhq/ApQWMH7lQqXrilWn6PfPSzi73kyGC5uDsn5TjoDSvlcwfxrpiHkMnw6TrjotyOYX84+uXxCyvMyBj5AGew4gENR7vNo/IVJWlz3HgR4zrVTu8eZva402Cx9d624HBypnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615977; c=relaxed/simple;
-	bh=OrO/oi9moCvGKULwd0ZNt8emGAT+kkFpeMUS4rrm+4E=;
+	s=arc-20240116; t=1769614676; c=relaxed/simple;
+	bh=Pn4V0EUwDaZ7lo3Zmp1UjDM+lfB2yVMxNeD4eDUVvjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbmic6deJuaVSrRd6k/DKayCQMHdo/wA6zm0GHwK7Sgv2YLanfnnv5ljJ8DMwOfJOoJOspYDMoFHhJjtWQy2byD96ZG60vWfvJqvPlGeTMIm9iw+/eiGVD/YEfqO/ZObJ0WEccZ0EwIwCOouFzvOIsxuNyffuxHHWZY+MAOvtJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGya4acY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DD2C4CEF1;
-	Wed, 28 Jan 2026 15:59:36 +0000 (UTC)
+	 MIME-Version; b=Es6sA2O9ncMYeG6KSVsGEkLxrdMnXTFGy5B3oCFD7a/mVfXXNbefSHuF+yUrpVijo+ius+SxTOBQwZ7S2MLKuDUG3fUNrXYEFc6ZdnBVDLpsZzXNV+pUOorKLOuKih1YlaHnbbp3IGwU9+EWcjQzhBwbGvFC2oLsG5xciYejuZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiCOZ/rF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09C5C4CEF1;
+	Wed, 28 Jan 2026 15:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615977;
-	bh=OrO/oi9moCvGKULwd0ZNt8emGAT+kkFpeMUS4rrm+4E=;
+	s=korg; t=1769614676;
+	bh=Pn4V0EUwDaZ7lo3Zmp1UjDM+lfB2yVMxNeD4eDUVvjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGya4acY1yxWFiumMB0pmBHl2SaZVTDJnWj0z5kHeyx3joA8S5cfpO3dat2g55+MD
-	 x785TmAaZXbrIdcGvfeX8AH4qN1zQmMtJQweE2z2Zq13KVABjdQO3VS9YT5FR+SvhM
-	 QgfXlnogj6cp/N/lf/qSD8E9bU4FjYbyNUZtbPTw=
+	b=tiCOZ/rFEWMT0KEHY1YsyjS2dAvL0xDN9mYfpaygJR0jtA55cWctJCR1SWH0pemOd
+	 vKIpMM23JVz/D1jD3MG750JfyfQWb5f1j0SwIRlSeBpz7MrJAzI5ld5n6bIEjkfgaX
+	 2tuFIub9apo1g+M/V8rjFg98SkfDOIMFyEx7Xsg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 138/227] net: bcmasp: Fix network filter wake for asp-3.0
+	Wenkai Lin <linwenkai6@hisilicon.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Zhangfei Gao <zhangfei.gao@linaro.org>
+Subject: [PATCH 6.6 207/254] uacce: fix cdev handling in the cleanup path
 Date: Wed, 28 Jan 2026 16:23:03 +0100
-Message-ID: <20260128145349.426167182@linuxfoundation.org>
+Message-ID: <20260128145352.244410563@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,99 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212575-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212186-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,broadcom.com:email]
-X-Rspamd-Queue-Id: B3F0EA5C4D
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,msgid.link:url,linaro.org:email]
+X-Rspamd-Queue-Id: 09C9DA47CB
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Wenkai Lin <linwenkai6@hisilicon.com>
 
-[ Upstream commit bbb11b8d758d17a4ce34b8ed0b49de150568265b ]
+commit a3bece3678f6c88db1f44c602b2a63e84b4040ac upstream.
 
-We need to apply the tx_chan_offset to the netfilter cfg channel or the
-output channel will be incorrect for asp-3.0 and newer.
+When cdev_device_add fails, it internally releases the cdev memory,
+and if cdev_device_del is then executed, it will cause a hang error.
+To fix it, we check the return value of cdev_device_add() and clear
+uacce->cdev to avoid calling cdev_device_del in the uacce_remove.
 
-Fixes: e9f31435ee7d ("net: bcmasp: Add support for asp-v3.0")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260120192339.2031648-1-justin.chen@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 015d239ac014 ("uacce: add uacce driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
+Link: https://patch.msgid.link/20251202061256.4158641-2-huangchenghai2@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp.c | 5 +++--
- drivers/net/ethernet/broadcom/asp2/bcmasp.h | 1 +
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/misc/uacce/uacce.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-index fd35f4b4dc50b..014340f33345a 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-@@ -156,7 +156,7 @@ static void bcmasp_netfilt_hw_en_wake(struct bcmasp_priv *priv,
- 			  ASP_RX_FILTER_NET_OFFSET_L4(32),
- 			  ASP_RX_FILTER_NET_OFFSET(nfilt->hw_index + 1));
+--- a/drivers/misc/uacce/uacce.c
++++ b/drivers/misc/uacce/uacce.c
+@@ -553,6 +553,8 @@ EXPORT_SYMBOL_GPL(uacce_alloc);
+  */
+ int uacce_register(struct uacce_device *uacce)
+ {
++	int ret;
++
+ 	if (!uacce)
+ 		return -ENODEV;
  
--	rx_filter_core_wl(priv, ASP_RX_FILTER_NET_CFG_CH(nfilt->port + 8) |
-+	rx_filter_core_wl(priv, ASP_RX_FILTER_NET_CFG_CH(nfilt->ch) |
- 			  ASP_RX_FILTER_NET_CFG_EN |
- 			  ASP_RX_FILTER_NET_CFG_L2_EN |
- 			  ASP_RX_FILTER_NET_CFG_L3_EN |
-@@ -166,7 +166,7 @@ static void bcmasp_netfilt_hw_en_wake(struct bcmasp_priv *priv,
- 			  ASP_RX_FILTER_NET_CFG_UMC(nfilt->port),
- 			  ASP_RX_FILTER_NET_CFG(nfilt->hw_index));
+@@ -563,7 +565,11 @@ int uacce_register(struct uacce_device *
+ 	uacce->cdev->ops = &uacce_fops;
+ 	uacce->cdev->owner = THIS_MODULE;
  
--	rx_filter_core_wl(priv, ASP_RX_FILTER_NET_CFG_CH(nfilt->port + 8) |
-+	rx_filter_core_wl(priv, ASP_RX_FILTER_NET_CFG_CH(nfilt->ch) |
- 			  ASP_RX_FILTER_NET_CFG_EN |
- 			  ASP_RX_FILTER_NET_CFG_L2_EN |
- 			  ASP_RX_FILTER_NET_CFG_L3_EN |
-@@ -714,6 +714,7 @@ struct bcmasp_net_filter *bcmasp_netfilt_get_init(struct bcmasp_intf *intf,
- 		nfilter = &priv->net_filters[open_index];
- 		nfilter->claimed = true;
- 		nfilter->port = intf->port;
-+		nfilter->ch = intf->channel + priv->tx_chan_offset;
- 		nfilter->hw_index = open_index;
- 	}
+-	return cdev_device_add(uacce->cdev, &uacce->dev);
++	ret = cdev_device_add(uacce->cdev, &uacce->dev);
++	if (ret)
++		uacce->cdev = NULL;
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(uacce_register);
  
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.h b/drivers/net/ethernet/broadcom/asp2/bcmasp.h
-index 74adfdb50e11d..e238507be40af 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp.h
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.h
-@@ -348,6 +348,7 @@ struct bcmasp_net_filter {
- 	bool				wake_filter;
- 
- 	int				port;
-+	int				ch;
- 	unsigned int			hw_index;
- };
- 
--- 
-2.51.0
-
 
 
 
