@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPvUF5suemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212153-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:23 +0100
+	id cEg7Gxkxemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FCCA44A5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE815A4AA8
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 86D333031909
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:36:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E039A30CDF9E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEEB2D6400;
-	Wed, 28 Jan 2026 15:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2D02F747D;
+	Wed, 28 Jan 2026 15:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKPGjjQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNtYnuRJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7722D5408;
-	Wed, 28 Jan 2026 15:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AA830BF62;
+	Wed, 28 Jan 2026 15:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614568; cv=none; b=J0aB6BN76bBnZKk1F0MWAQZ96gC0nQ/DRc5dUoWoAi3C/s5coRNPdTqRP+xwuS3MbxKS28yX8Dk6w3WkBc04xmkfU5d/8MDFUTRzBiLFgsPS1Ad5WhOnW1Kr44+wiqVj5nBUFH1Dk/7RhXNCIEWTBE6AWu4Lr1CCXOHnj70afSM=
+	t=1769614965; cv=none; b=SZh6s4IsZTxY4doE11JW0E3PUZmTUZaa3R8E9HwcC4CcinftYKet6IiFJoemgSDIHj7kRWFQ1m8vEdBNYOu/+6S6IKVge3rUV6uH3hsL5RkW16rfSY3NCjPWAz6bywSY5d7VfzBSPuOh5AJbBVs5iWpf+g35iFYxyeKEI/dMsAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614568; c=relaxed/simple;
-	bh=xQOaN3km35MXAgeRRMpHSg9T5fh0Urj16K9bnknSOiw=;
+	s=arc-20240116; t=1769614965; c=relaxed/simple;
+	bh=dAi5j5OTFDou/6ej4B2w6n3UuDbA93WcoKkaz/eab9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tMslprQYBxrEL7xKcYwUL5w+UNkLqAMi1DEvngq3y0EkMe2Kadcj0uXMpX6VNSxHrzmYc/LkX0hadjk/BXDFiyKF+L+QCs5f34+EMAZniWsB8qNBOAl6zjnLZl99dDr5hC+/O7ees2/Ac4CKTw+mmSCfRoRUwzehUh4a8L2dUe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKPGjjQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D18C4CEF1;
-	Wed, 28 Jan 2026 15:36:08 +0000 (UTC)
+	 MIME-Version; b=rTQgYd2SFUzBmfLGH5gr5KmjCsYs7v+DRVufRPKrA1tpXwZOfz5n5LPtWrHYSuJezsB8TcFp8Is+YQ68ss647kUyYW7IEXh4jZ8QhdbeoncL5qHcuMbthRWx3j1EhF+BaTGJru4O525vPLkMOjy5ouS8An6SCvvXbUWKYzZiWoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNtYnuRJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF94C4CEF7;
+	Wed, 28 Jan 2026 15:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614568;
-	bh=xQOaN3km35MXAgeRRMpHSg9T5fh0Urj16K9bnknSOiw=;
+	s=korg; t=1769614964;
+	bh=dAi5j5OTFDou/6ej4B2w6n3UuDbA93WcoKkaz/eab9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AKPGjjQnwKe4748UNJxcdGE+Tg29RyuuSL1YUmcGtUk0/Bftx+J8PZRNCQxWABYuj
-	 OPqvTUsmkO4TlLwIIlw1LI1gBCsnJHfgtoMC/pEkZXdptwT+fg9Xl37RF25Cjhpwwn
-	 MsoppP8inba7t5sz0/tBw1YhAIZ9M8iEP6B8jIGI=
+	b=XNtYnuRJa71ohHNYPq2WDJ0ZgN0+LKdF/TZb/rz3wRU1X9aqIoCgI+aWkXbaqJoyv
+	 +mjaC/4MhEYP6fego4T61PIRgVX6NPVf1WWUFYOHb1z54Plp2DqaooiydS46Yqzk2o
+	 axYbGjLGe9Q6vJp8tRfCGfbFGqLXCt1f5W53sE2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Geraldo Nascimento <geraldogabriel@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.6 144/254] arm64: dts: rockchip: remove dangerous max-link-speed from helios64
-Date: Wed, 28 Jan 2026 16:22:00 +0100
-Message-ID: <20260128145349.996954674@linuxfoundation.org>
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 038/169] octeontx2: cn10k: fix RX flowid TCAM mask handling
+Date: Wed, 28 Jan 2026 16:22:01 +0100
+Message-ID: <20260128145335.393427085@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,71 +70,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,rock-chips.com,manjaro.org,gmail.com,sntech.de];
-	TAGGED_FROM(0.00)[bounces-212153-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212273-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[manjaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sntech.de:email]
-X-Rspamd-Queue-Id: 36FCCA44A5
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BE815A4AA8
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geraldo Nascimento <geraldogabriel@gmail.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 0368e4afcf20f377c81fa77b1c7d0dee4a625a44 upstream.
+[ Upstream commit ab9b218a1521133a4410722907fa7189566be9bc ]
 
-Shawn Lin from Rockchip strongly discourages attempts to use their
-RK3399 PCIe core at 5.0 GT/s speed, citing concerns about catastrophic
-failures that may happen. Even if the odds are low, drop from last user
-of this non-default property for the RK3399 platform, helios64 board
-dts.
+The RX flowid programming initializes the TCAM mask to all ones, but
+then overwrites it when clearing the MAC DA mask bits. This results
+in losing the intended initialization and may affect other match fields.
 
-Fixes: 755fff528b1b ("arm64: dts: rockchip: add variables for pcie completion to helios64")
-Link: https://lore.kernel.org/all/e8524bf8-a90c-423f-8a58-9ef05a3db1dd@rock-chips.com/
-Cc: stable@vger.kernel.org
-Reported-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/43bb639c120f599106fca2deee6c6599b2692c5c.1763415706.git.geraldogabriel@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Update the code to clear the MAC DA bits using an AND operation, making
+the handling of mask[0] consistent with mask[1], where the field-specific
+bits are cleared after initializing the mask to ~0ULL.
+
+Fixes: 57d00d4364f3 ("octeontx2-pf: mcs: Match macsec ethertype along with DMAC")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Link: https://patch.msgid.link/20260116164724.2733511-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
-@@ -427,7 +427,6 @@
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+index 74953f67a2bf9..3af58bc9f533c 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+@@ -330,7 +330,7 @@ static int cn10k_mcs_write_rx_flowid(struct otx2_nic *pfvf,
  
- &pcie0 {
- 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
--	max-link-speed = <2>;
- 	num-lanes = <2>;
- 	pinctrl-names = "default";
- 	status = "okay";
+ 	req->data[0] = FIELD_PREP(MCS_TCAM0_MAC_DA_MASK, mac_da);
+ 	req->mask[0] = ~0ULL;
+-	req->mask[0] = ~MCS_TCAM0_MAC_DA_MASK;
++	req->mask[0] &= ~MCS_TCAM0_MAC_DA_MASK;
+ 
+ 	req->data[1] = FIELD_PREP(MCS_TCAM1_ETYPE_MASK, ETH_P_MACSEC);
+ 	req->mask[1] = ~0ULL;
+-- 
+2.51.0
+
 
 
 
