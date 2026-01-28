@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-212092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLsLJgIuemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:50 +0100
+	id 6LmYLk8zeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DDAA42E6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A27A4FC4
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9382431148B1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E95C0310641F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81188274FE3;
-	Wed, 28 Jan 2026 15:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9B93081A4;
+	Wed, 28 Jan 2026 15:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvOhenNw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acV55vwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448D326E6F9;
-	Wed, 28 Jan 2026 15:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E942EA172;
+	Wed, 28 Jan 2026 15:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614374; cv=none; b=rpLwNolbC9VHAMm9byO/t7oeh15yLbjNAaWvLYUhPdm5X/23tpS9lamqI1Z0XXLLjW5qMA5qqkzD5S+RUMnG+5FVk74lngVc/pKF2Aq/dfsA8j7DNbtnetOc2zMY0IDrXlvVwLx5RY42mSqZWHtHMjuQYh2ZpgVY1xDzrqlQnQQ=
+	t=1769615575; cv=none; b=rewac1hScs7Zkc9K3lgOkdEEDCKk2wv1bW5UAVjXypQi3cKH44pDaVBBY4DJ+4ibGvIOgiRVoKf3bccQV/yQAwFkTQUWqrRY/SbrL9vB/WHS34NbfEndwkdF/LAKV44TRUntuFazUV39a8aj5Z9iCewakdEzTGWBWnETInZgNvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614374; c=relaxed/simple;
-	bh=qbRmh0BPLcfCCFUJBHTKAtrie46sDZ5+Pk+84FVTngk=;
+	s=arc-20240116; t=1769615575; c=relaxed/simple;
+	bh=3REClZC+PjP5nmPY/im+NoFYL/x6rEWPIDxHvI2l9ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1+Mx6SaPqcEmWzzFPH0kmfq4wlJYcrVMuYyk0HVWiy4CyB5K7w15Sci/F2gC7YbBW1Z8/a7ZxJ/Rgr/3s9IKxtOGlY2KatYRon8o48BMvmVPTcDlo1rjwqSpPQMSAnMoYBo8+rQkB57u4rCcoryI09wdSY6V7KKlnx7JP2xf7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvOhenNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B863C116C6;
-	Wed, 28 Jan 2026 15:32:53 +0000 (UTC)
+	 MIME-Version; b=g3j/5H1EkBJQQGwK18GgC67elgOXxQ0cPtMCnWvpo2jEwSdS6mbq9Pl+IDsI9q8huWtnGCd5zck71LXMNM/GqN2RY0vMU+UL1Jqz2Q+8nyy114Q2mtJYVrm4rEBBa+3GgRZce/ctptHm7A88uinCvI4vUwA5eWcPzmgfLAPRvwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acV55vwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C4FC4CEF7;
+	Wed, 28 Jan 2026 15:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614373;
-	bh=qbRmh0BPLcfCCFUJBHTKAtrie46sDZ5+Pk+84FVTngk=;
+	s=korg; t=1769615574;
+	bh=3REClZC+PjP5nmPY/im+NoFYL/x6rEWPIDxHvI2l9ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvOhenNwW0edPBaxBS1zMalDlG8GJwIxIvpiqpA6UsjCmJWaBoHMlT6+aJTxhzl8I
-	 js1+u6xcnOQEMcwJXCculX3N6Atgm/EUfApSskfSZG67qHGaG72imm+tbI7rFyYin7
-	 bpOvaEMQFNNtINDuRG2wA78ygK2ufORpUkmUCeiY=
+	b=acV55vwgm1GHeweWXETWonzlylqUmIdYScNutTTDoU+9rAUwdeGln5VtOwvf/agnb
+	 FhNlW0xs6UuvYlt/JZrqc0Q/kEv+/2gM1CtAskCy9Sn2e6d5L239+F7zR8c5ZVMJX8
+	 fHYV3Fsa+e+bWMlRhEYzGxKb/GFeelDUvPPTzbcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avi Shalev <avi.shalev@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Song Yoong Siang <yoong.siang.song@intel.com>,
-	Chwee-Lin Choong <chwee.lin.choong@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/254] igc: fix race condition in TX timestamp read for register 0
-Date: Wed, 28 Jan 2026 16:21:33 +0100
-Message-ID: <20260128145349.034992836@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Marnix Rijnart <marnix.rijnart@iwell.eu>
+Subject: [PATCH 6.18 049/227] serial: 8250_pci: Fix broken RS485 for F81504/508/512
+Date: Wed, 28 Jan 2026 16:21:34 +0100
+Message-ID: <20260128145346.108775235@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,158 +66,72 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212092-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212454-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email]
-X-Rspamd-Queue-Id: D8DDAA42E6
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 00A27A4FC4
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chwee-Lin Choong <chwee.lin.choong@intel.com>
+From: Marnix Rijnart <marnix.rijnart@iwell.eu>
 
-[ Upstream commit 6990dc392a9ab10e52af37e0bee8c7b753756dc4 ]
+commit 27aff0a56b3c77ea1a73641c9b3c4172a8f7238f upstream.
 
-The current HW bug workaround checks the TXTT_0 ready bit first,
-then reads TXSTMPL_0 twice (before and after reading TXSTMPH_0)
-to detect whether a new timestamp was captured by timestamp
-register 0 during the workaround.
+Fintek F81504/508/512 can support both RTS_ON_SEND and RTS_AFTER_SEND,
+but pci_fintek_rs485_supported only announces the former.
 
-This sequence has a race: if a new timestamp is captured after
-checking the TXTT_0 bit but before the first TXSTMPL_0 read, the
-detection fails because both the "old" and "new" values come from
-the same timestamp.
+This makes it impossible to unset SER_RS485_RTS_ON_SEND from
+userspace because of uart_sanitize_serial_rs485(). Some devices
+with these chips need RTS low on TX, so they are effectively broken.
 
-Fix by reading TXSTMPL_0 first to establish a baseline, then
-checking the TXTT_0 bit. This ensures any timestamp captured
-during the race window will be detected.
+Fix this by announcing the support for SER_RS485_RTS_AFTER_SEND,
+similar to commit 068d35a7be65 ("serial: sc16is7xx: announce support
+for SER_RS485_RTS_ON_SEND").
 
-Old sequence:
-  1. Check TXTT_0 ready bit
-  2. Read TXSTMPL_0 (baseline)
-  3. Read TXSTMPH_0 (interrupt workaround)
-  4. Read TXSTMPL_0 (detect changes vs baseline)
-
-New sequence:
-  1. Read TXSTMPL_0 (baseline)
-  2. Check TXTT_0 ready bit
-  3. Read TXSTMPH_0 (interrupt workaround)
-  4. Read TXSTMPL_0 (detect changes vs baseline)
-
-Fixes: c789ad7cbebc ("igc: Work around HW bug causing missing timestamps")
-Suggested-by: Avi Shalev <avi.shalev@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Co-developed-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Signed-off-by: Chwee-Lin Choong <chwee.lin.choong@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4afeced55baa ("serial: core: fix sanitizing check for RTS settings")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Marnix Rijnart <marnix.rijnart@iwell.eu>
+Link: https://patch.msgid.link/20260112000931.61703-1-marnix.rijnart@iwell.eu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ptp.c | 43 ++++++++++++++----------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+ drivers/tty/serial/8250/8250_pci.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index a82af96e6bd12..4c07c1e4aa997 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -758,36 +758,43 @@ static void igc_ptp_tx_reg_to_stamp(struct igc_adapter *adapter,
- static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
- {
- 	struct igc_hw *hw = &adapter->hw;
-+	u32 txstmpl_old;
- 	u64 regval;
- 	u32 mask;
- 	int i;
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -1650,7 +1650,7 @@ static int pci_fintek_rs485_config(struc
+ }
  
-+	/* Establish baseline of TXSTMPL_0 before checking TXTT_0.
-+	 * This baseline is used to detect if a new timestamp arrives in
-+	 * register 0 during the hardware bug workaround below.
-+	 */
-+	txstmpl_old = rd32(IGC_TXSTMPL);
-+
- 	mask = rd32(IGC_TSYNCTXCTL) & IGC_TSYNCTXCTL_TXTT_ANY;
- 	if (mask & IGC_TSYNCTXCTL_TXTT_0) {
- 		regval = rd32(IGC_TXSTMPL);
- 		regval |= (u64)rd32(IGC_TXSTMPH) << 32;
- 	} else {
--		/* There's a bug in the hardware that could cause
--		 * missing interrupts for TX timestamping. The issue
--		 * is that for new interrupts to be triggered, the
--		 * IGC_TXSTMPH_0 register must be read.
-+		/* TXTT_0 not set - register 0 has no new timestamp initially.
-+		 *
-+		 * Hardware bug: Future timestamp interrupts won't fire unless
-+		 * TXSTMPH_0 is read, even if the timestamp was captured in
-+		 * registers 1-3.
- 		 *
--		 * To avoid discarding a valid timestamp that just
--		 * happened at the "wrong" time, we need to confirm
--		 * that there was no timestamp captured, we do that by
--		 * assuming that no two timestamps in sequence have
--		 * the same nanosecond value.
-+		 * Workaround: Read TXSTMPH_0 here to enable future interrupts.
-+		 * However, this read clears TXTT_0. If a timestamp arrives in
-+		 * register 0 after checking TXTT_0 but before this read, it
-+		 * would be lost.
- 		 *
--		 * So, we read the "low" register, read the "high"
--		 * register (to latch a new timestamp) and read the
--		 * "low" register again, if "old" and "new" versions
--		 * of the "low" register are different, a valid
--		 * timestamp was captured, we can read the "high"
--		 * register again.
-+		 * To detect this race: We saved a baseline read of TXSTMPL_0
-+		 * before TXTT_0 check. After performing the workaround read of
-+		 * TXSTMPH_0, we read TXSTMPL_0 again. Since consecutive
-+		 * timestamps never share the same nanosecond value, a change
-+		 * between the baseline and new TXSTMPL_0 indicates a timestamp
-+		 * arrived during the race window. If so, read the complete
-+		 * timestamp.
- 		 */
--		u32 txstmpl_old, txstmpl_new;
-+		u32 txstmpl_new;
+ static const struct serial_rs485 pci_fintek_rs485_supported = {
+-	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND,
++	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND,
+ 	/* F81504/508/512 does not support RTS delay before or after send */
+ };
  
--		txstmpl_old = rd32(IGC_TXSTMPL);
- 		rd32(IGC_TXSTMPH);
- 		txstmpl_new = rd32(IGC_TXSTMPL);
- 
-@@ -802,7 +809,7 @@ static void igc_ptp_tx_hwtstamp(struct igc_adapter *adapter)
- 
- done:
- 	/* Now that the problematic first register was handled, we can
--	 * use retrieve the timestamps from the other registers
-+	 * retrieve the timestamps from the other registers
- 	 * (starting from '1') with less complications.
- 	 */
- 	for (i = 1; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
--- 
-2.51.0
-
 
 
 
