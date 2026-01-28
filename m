@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJWWHbAuemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:44 +0100
+	id UAniHvY2eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFEAEA44E9
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD07A5686
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF8C630C8858
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 00470300B9FA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805FB2586FE;
-	Wed, 28 Jan 2026 15:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA7630E0E9;
+	Wed, 28 Jan 2026 15:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1WHokcQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgdAmQoQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D8D242D86;
-	Wed, 28 Jan 2026 15:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2E430C635;
+	Wed, 28 Jan 2026 15:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614307; cv=none; b=J7IAhlbrybrA6tZODWzptfzL1YkLDw6EjYV6ICaeQ9FPNbA+SZem/nXuMm/5yEWw7M/fq44aY91gWeEBotuyHF9aqHU8a1pfUHTug03HaKUoyuPhfAUeHGh7jlq29RkO9T5uIlUjMzlLzL5lrEVTU07ZvHpG2cDd0ezYv8WD3Dw=
+	t=1769615527; cv=none; b=iE8hQkjdBfHDCVcwKpo4zHb+hSokwe2DR7SGw2PYWtZwW2OOkNp/z0t4hOK8ldHEUA7Yp9iGDz8r4+3eM6ZD7Qq0TEcnwQXuQS43LSPn+Xi7GnYdC0SSxBCH7BeylETntxyHxaD5MCAAVeylEj4yjvXS+bo09VGL0ond6fpSqk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614307; c=relaxed/simple;
-	bh=gSZTf4K7ti0IOcjNqU3w+QQVrgbhHPB+q2FrYnnlHK0=;
+	s=arc-20240116; t=1769615527; c=relaxed/simple;
+	bh=KODLhUv/oWf3c8XVsVLV4ela3dsNpbj2RcqNclMoi9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOBdPBjYIAdLDUX9S9M5rZUXytiKEx0363P6m3xT8g1NP9R8U4YcFIV3qSXwGRxj4sSBdqe6OoT2RFyvMLx9xxUnNB3Uv5bPvoaJtz+3jUTCXPb22gKlIaIqL5UJx9flwyWoyH5BykuAUSUX2oD7hwNUfhxckbzmY8gi06NzugU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1WHokcQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97153C4CEF1;
-	Wed, 28 Jan 2026 15:31:46 +0000 (UTC)
+	 MIME-Version; b=gZrSzUvoklE9McRl7OlQ3MvH/2BlXMAG1tX37dwpbdstxXDqp49vUY3i/wwixuh6lDV+YT9nNPyAGQKbMJVReHz8n6uGc6zfekOWtIFMFSNNzs9AR9ue5bDP/WwR1qtPFvq6yyzWZQuIQLwjhrKMzoIIzYJEFY4fkaN0UXIGTW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgdAmQoQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A079C116C6;
+	Wed, 28 Jan 2026 15:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614307;
-	bh=gSZTf4K7ti0IOcjNqU3w+QQVrgbhHPB+q2FrYnnlHK0=;
+	s=korg; t=1769615527;
+	bh=KODLhUv/oWf3c8XVsVLV4ela3dsNpbj2RcqNclMoi9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B1WHokcQ4C0xSNdEtS+O4kYi3G9Xf8+cEz9/dDUcHQOBOwILk1nxzffRvFNl00hDK
-	 nYwK5EM95/9L0z7NR4NEK/shcPvA4QwxVjeqXR8ZQ9pIKgqNOL98oMASSmccLngxDu
-	 mpfofQtuOLvnyGu1l/tE65tLxgFVz1PTteia32HU=
+	b=ZgdAmQoQv+Aj2+pUzf1EBlsNxLI2/jbJ5emJGoAUIK6JvtY5N8A2tSBXWw/bBoJgM
+	 chqu4FmkrSE7yzniFpunaQD8g5As+Fxi7HpnMXgE9heewtHLHr6BofSsRZvC4coK2j
+	 0StglzTHl2O6RqdaJ9zdicinZ5m0hq2DkoQeicDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahesh Bandewar <maheshb@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Peter Korsgaard <peter@korsgaard.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/254] selftest/ptp: update ptp selftest to exercise the gettimex options
-Date: Wed, 28 Jan 2026 16:21:12 +0100
-Message-ID: <20260128145348.282190843@linuxfoundation.org>
+Subject: [PATCH 6.18 028/227] net: usb: dm9601: remove broken SR9700 support
+Date: Wed, 28 Jan 2026 16:21:13 +0100
+Message-ID: <20260128145345.358062577@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,172 +70,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-212072-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,korsgaard.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212440-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.988];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: CFEAEA44E9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DCD07A5686
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahesh Bandewar <maheshb@google.com>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
-[ Upstream commit 3d07b691ee707c00afaf365440975e81bb96cd9b ]
+[ Upstream commit 7d7dbafefbe74f5a25efc4807af093b857a7612e ]
 
-With the inclusion of commit c259acab839e ("ptp/ioctl: support
-MONOTONIC{,_RAW} timestamps for PTP_SYS_OFFSET_EXTENDED") clock_gettime()
-now allows retrieval of pre/post timestamps for CLOCK_MONOTONIC and
-CLOCK_MONOTONIC_RAW timebases along with the previously supported
-CLOCK_REALTIME.
+The SR9700 chip sends more than one packet in a USB transaction,
+like the DM962x chips can optionally do, but the dm9601 driver does not
+support this mode, and the hardware does not have the DM962x
+MODE_CTL register to disable it, so this driver drops packets on SR9700
+devices. The sr9700 driver correctly handles receiving more than one
+packet per transaction.
 
-This patch adds a command line option 'y' to the testptp program to
-choose one of the allowed timebases [realtime aka system, monotonic,
-and monotonic-raw).
+While the dm9601 driver could be improved to handle this, the easiest
+way to fix this issue in the short term is to remove the SR9700 device
+ID from the dm9601 driver so the sr9700 driver is always used. This
+device ID should not have been in more than one driver to begin with.
 
-Signed-off-by: Mahesh Bandewar <maheshb@google.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://patch.msgid.link/20241003101506.769418-1-maheshb@google.com
+The "Fixes" commit was chosen so that the patch is automatically
+included in all kernels that have the sr9700 driver, even though the
+issue affects dm9601.
+
+Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://patch.msgid.link/20260113063924.74464-1-enelsonmoore@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 76868642e427 ("testptp: Add option to open PHC in readonly mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 62 ++++++++++++++++++++++++---
- 1 file changed, 57 insertions(+), 5 deletions(-)
+ drivers/net/usb/dm9601.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index 011252fe238c8..58064151f2c89 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -146,6 +146,7 @@ static void usage(char *progname)
- 		" -T val     set the ptp clock time to 'val' seconds\n"
- 		" -x val     get an extended ptp clock time with the desired number of samples (up to %d)\n"
- 		" -X         get a ptp clock cross timestamp\n"
-+		" -y val     pre/post tstamp timebase to use {realtime|monotonic|monotonic-raw}\n"
- 		" -z         test combinations of rising/falling external time stamp flags\n",
- 		progname, PTP_MAX_SAMPLES);
- }
-@@ -189,6 +190,7 @@ int main(int argc, char *argv[])
- 	int seconds = 0;
- 	int settime = 0;
- 	int channel = -1;
-+	clockid_t ext_clockid = CLOCK_REALTIME;
- 
- 	int64_t t1, t2, tp;
- 	int64_t interval, offset;
-@@ -198,7 +200,7 @@ int main(int argc, char *argv[])
- 
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xz"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xy:z"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -278,6 +280,21 @@ int main(int argc, char *argv[])
- 		case 'X':
- 			getcross = 1;
- 			break;
-+		case 'y':
-+			if (!strcasecmp(optarg, "realtime"))
-+				ext_clockid = CLOCK_REALTIME;
-+			else if (!strcasecmp(optarg, "monotonic"))
-+				ext_clockid = CLOCK_MONOTONIC;
-+			else if (!strcasecmp(optarg, "monotonic-raw"))
-+				ext_clockid = CLOCK_MONOTONIC_RAW;
-+			else {
-+				fprintf(stderr,
-+					"type needs to be realtime, monotonic or monotonic-raw; was given %s\n",
-+					optarg);
-+				return -1;
-+			}
-+			break;
-+
- 		case 'z':
- 			flagtest = 1;
- 			break;
-@@ -566,6 +583,7 @@ int main(int argc, char *argv[])
- 		}
- 
- 		soe->n_samples = getextended;
-+		soe->clockid = ext_clockid;
- 
- 		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, soe)) {
- 			perror("PTP_SYS_OFFSET_EXTENDED");
-@@ -574,12 +592,46 @@ int main(int argc, char *argv[])
- 			       getextended);
- 
- 			for (i = 0; i < getextended; i++) {
--				printf("sample #%2d: system time before: %lld.%09u\n",
--				       i, soe->ts[i][0].sec, soe->ts[i][0].nsec);
-+				switch (ext_clockid) {
-+				case CLOCK_REALTIME:
-+					printf("sample #%2d: real time before: %lld.%09u\n",
-+					       i, soe->ts[i][0].sec,
-+					       soe->ts[i][0].nsec);
-+					break;
-+				case CLOCK_MONOTONIC:
-+					printf("sample #%2d: monotonic time before: %lld.%09u\n",
-+					       i, soe->ts[i][0].sec,
-+					       soe->ts[i][0].nsec);
-+					break;
-+				case CLOCK_MONOTONIC_RAW:
-+					printf("sample #%2d: monotonic-raw time before: %lld.%09u\n",
-+					       i, soe->ts[i][0].sec,
-+					       soe->ts[i][0].nsec);
-+					break;
-+				default:
-+					break;
-+				}
- 				printf("            phc time: %lld.%09u\n",
- 				       soe->ts[i][1].sec, soe->ts[i][1].nsec);
--				printf("            system time after: %lld.%09u\n",
--				       soe->ts[i][2].sec, soe->ts[i][2].nsec);
-+				switch (ext_clockid) {
-+				case CLOCK_REALTIME:
-+					printf("            real time after: %lld.%09u\n",
-+					       soe->ts[i][2].sec,
-+					       soe->ts[i][2].nsec);
-+					break;
-+				case CLOCK_MONOTONIC:
-+					printf("            monotonic time after: %lld.%09u\n",
-+					       soe->ts[i][2].sec,
-+					       soe->ts[i][2].nsec);
-+					break;
-+				case CLOCK_MONOTONIC_RAW:
-+					printf("            monotonic-raw time after: %lld.%09u\n",
-+					       soe->ts[i][2].sec,
-+					       soe->ts[i][2].nsec);
-+					break;
-+				default:
-+					break;
-+				}
- 			}
- 		}
- 
+diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
+index 8b6d6a1b3c2ec..2b4716ccf0c5b 100644
+--- a/drivers/net/usb/dm9601.c
++++ b/drivers/net/usb/dm9601.c
+@@ -603,10 +603,6 @@ static const struct usb_device_id products[] = {
+ 	USB_DEVICE(0x0fe6, 0x8101),	/* DM9601 USB to Fast Ethernet Adapter */
+ 	.driver_info = (unsigned long)&dm9601_info,
+ 	 },
+-	{
+-	 USB_DEVICE(0x0fe6, 0x9700),	/* DM9601 USB to Fast Ethernet Adapter */
+-	 .driver_info = (unsigned long)&dm9601_info,
+-	 },
+ 	{
+ 	 USB_DEVICE(0x0a46, 0x9000),	/* DM9000E */
+ 	 .driver_info = (unsigned long)&dm9601_info,
 -- 
 2.51.0
 
