@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OL5uIpc0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:08:55 +0100
+	id QIF+C/Y3eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:18 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F296CA5260
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:08:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81EBBA584B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 435BB3209995
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4198730F2D95
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF043090C2;
-	Wed, 28 Jan 2026 15:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55CB2F90E0;
+	Wed, 28 Jan 2026 15:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLup3ESy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3JpP7ZL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF87308F02;
-	Wed, 28 Jan 2026 15:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89AF32E2DF4;
+	Wed, 28 Jan 2026 15:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615858; cv=none; b=Tmrid21wZJrTUncq3xo573hQ5XkUuf5fWKtwRWHKSF2lXTqLDnefsSDmUE/99mgPoQtwnzs2r8yqeRD8ZaWHabdHF+IoBRFXNjSxfXf61usyBN7OkkDLh8HFYJWnOxGiYKkMqZaC8Guo4iHveW4z4xziE80zLZVGTlHeSg+IZS8=
+	t=1769615056; cv=none; b=VQoezr+ti534fkw45kdCesXLtb9GMg6BWDbfqYTR5DuE0wzwRyEWd43w5OJAlhag36STPmuwgu4JJjxJf0ru3C+otBTel1zEIcM6z08Wcqin/D/sfR3+FITzA5+OvQNWKbOKEfQJEmhTh0LJicPJ8t9hocZql+UAa3V06TZ+GGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615858; c=relaxed/simple;
-	bh=Up21kJxAlHD+BIAQcIG+07rFpxGHksSZZ6a9Cwd++98=;
+	s=arc-20240116; t=1769615056; c=relaxed/simple;
+	bh=OJttEeTfSmak6YzR1jRn1qIsjDnoBlBVdcGB2JactXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u437u27MrODbIYbu8qEYmp1x/2V7O2AMHlM6vilcgi5eDyFn32/zWCynPWbSbqWuOIsdBUeOpIJHDzYYYHRjyo54O03I3818wVkAGiRQn4JUaozZ6Ch9zGdlVQqo5n+zs5zm802UhDVcL97DmqI/eXSd8LvEgvaZIXHPwmumnSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLup3ESy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754EDC4CEF7;
-	Wed, 28 Jan 2026 15:57:37 +0000 (UTC)
+	 MIME-Version; b=I+8gfZLhKsipawRTctbv6Ls3QVlw4NrE1+yUT+vZ+GNqdf6vSO8ENwEZ2FOfuxthUsQAnH9nrouOB7TjCEOqoSeXuqoEnG7STBKcsXgSLrPCG09id1KfC4zr1ZPPEwOGScsPS78oDJ0pfeM1+Fc6lZcW2hXx5gSY9vpxAsNMQbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3JpP7ZL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02B9C4CEF1;
+	Wed, 28 Jan 2026 15:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615857;
-	bh=Up21kJxAlHD+BIAQcIG+07rFpxGHksSZZ6a9Cwd++98=;
+	s=korg; t=1769615056;
+	bh=OJttEeTfSmak6YzR1jRn1qIsjDnoBlBVdcGB2JactXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iLup3ESyikLsiyXIv6vPQKyyLz7hY0ivg+bSyyPPFA1sC4fD9kWe83qkruaTKQ5i2
-	 k3EJ+ZVnM4B4pLlDc1ug7D2EChvcSDd9b3LnHpVZqhyyodAFwmEyAzRVxw7RTbJP4V
-	 qyLXNChXAJmsKPvoaiUq/3dlLRv50syfQjKf41RA=
+	b=a3JpP7ZL0OZ8W5DPIreUNHDKxfS89/XNFtLUs3PP/uQpRJOB9LzF+dtw2nBeY/62A
+	 5/1r/mqEb3onAZt1hijBcwwYr3KvCWhszZfee3pKlkq7ZY8rDwUk4QckSf9fDKBwnT
+	 sObdctLRicVQi9CBR9nT2cYrRa4y0/2ZZzcTEADE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Arusekk <floss@arusekk.pl>,
+	Nicolas Schier <nsc@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 102/227] vsock/test: Do not filter kallsyms by symbol type
-Date: Wed, 28 Jan 2026 16:22:27 +0100
-Message-ID: <20260128145348.135190559@linuxfoundation.org>
+Subject: [PATCH 6.12 065/169] kconfig: fix static linking of nconf
+Date: Wed, 28 Jan 2026 16:22:28 +0100
+Message-ID: <20260128145336.349773859@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,77 +74,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212539-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212300-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: F296CA5260
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
+X-Rspamd-Queue-Id: 81EBBA584B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Arkadiusz Kozdra <floss@arusekk.pl>
 
-[ Upstream commit 5d54aa40c7b7e9dee5746cca99e9ddbcca13e895 ]
+[ Upstream commit baaecfcac559bcac73206df447eb5c385fa22f2a ]
 
-Blamed commit implemented logic to discover available vsock transports by
-grepping /proc/kallsyms for known symbols. It incorrectly filtered entries
-by type 'd'.
+When running make nconfig with a static linking host toolchain,
+the libraries are linked in an incorrect order,
+resulting in errors similar to the following:
 
-For some kernel configs having
+$ MAKEFLAGS='HOSTCC=cc\ -static' make nconfig
+/usr/bin/ld: /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/libpanel.a(p_new.o): in function `new_panel':
+(.text+0x13): undefined reference to `_nc_panelhook_sp'
+/usr/bin/ld: (.text+0x6c): undefined reference to `_nc_panelhook_sp'
 
-    CONFIG_VIRTIO_VSOCKETS=m
-    CONFIG_VSOCKETS_LOOPBACK=y
-
-kallsyms reports
-
-    0000000000000000 d virtio_transport	[vmw_vsock_virtio_transport]
-    0000000000000000 t loopback_transport
-
-Overzealous filtering might have affected vsock test suit, resulting in
-insufficient/misleading testing.
-
-Do not filter symbols by type. It never helped much.
-
-Fixes: 3070c05b7afd ("vsock/test: Introduce get_transports()")
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://patch.msgid.link/20260116-vsock_test-kallsyms-grep-v1-1-3320bc3346f2@rbox.co
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1c5af5cf9308 ("kconfig: refactor ncurses package checks for building mconf and nconf")
+Signed-off-by: Arusekk <floss@arusekk.pl>
+Link: https://patch.msgid.link/20260110114808.22595-1-floss@arusekk.pl
+[nsc: Added comment about library order]
+Signed-off-by: Nicolas Schier <nsc@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/vsock/util.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/nconf-cfg.sh | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/vsock/util.h b/tools/testing/vsock/util.h
-index 142c02a6834ac..bf633cde82b07 100644
---- a/tools/testing/vsock/util.h
-+++ b/tools/testing/vsock/util.h
-@@ -25,7 +25,7 @@ enum transport {
- };
+diff --git a/scripts/kconfig/nconf-cfg.sh b/scripts/kconfig/nconf-cfg.sh
+index a20290b1a37d8..4d08453f9bdb7 100755
+--- a/scripts/kconfig/nconf-cfg.sh
++++ b/scripts/kconfig/nconf-cfg.sh
+@@ -6,8 +6,9 @@ set -eu
+ cflags=$1
+ libs=$2
  
- static const char * const transport_ksyms[] = {
--	#define x(name, symbol) "d " symbol "_transport",
-+	#define x(name, symbol) " " symbol "_transport",
- 	KNOWN_TRANSPORTS(x)
- 	#undef x
- };
+-PKG="ncursesw menuw panelw"
+-PKG2="ncurses menu panel"
++# Keep library order for static linking (HOSTCC='cc -static')
++PKG="menuw panelw ncursesw"
++PKG2="menu panel ncurses"
+ 
+ if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
+ 	if ${HOSTPKG_CONFIG} --exists $PKG; then
+@@ -28,19 +29,19 @@ fi
+ # find ncurses by pkg-config.)
+ if [ -f /usr/include/ncursesw/ncurses.h ]; then
+ 	echo -D_GNU_SOURCE -I/usr/include/ncursesw > ${cflags}
+-	echo -lncursesw -lmenuw -lpanelw > ${libs}
++	echo -lmenuw -lpanelw -lncursesw > ${libs}
+ 	exit 0
+ fi
+ 
+ if [ -f /usr/include/ncurses/ncurses.h ]; then
+ 	echo -D_GNU_SOURCE -I/usr/include/ncurses > ${cflags}
+-	echo -lncurses -lmenu -lpanel > ${libs}
++	echo -lmenu -lpanel -lncurses > ${libs}
+ 	exit 0
+ fi
+ 
+ if [ -f /usr/include/ncurses.h ]; then
+ 	echo -D_GNU_SOURCE > ${cflags}
+-	echo -lncurses -lmenu -lpanel > ${libs}
++	echo -lmenu -lpanel -lncurses > ${libs}
+ 	exit 0
+ fi
+ 
 -- 
 2.51.0
 
