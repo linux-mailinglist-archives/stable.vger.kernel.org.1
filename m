@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLfgEswuemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212160-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:12 +0100
+	id 2IQNDt8xemlr4gEAu9opvQ
+	(envelope-from <stable+bounces-212314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E1FA4531
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F809A4CA5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D23BD303C108
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:36:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C5043130245
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5E72D7394;
-	Wed, 28 Jan 2026 15:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B20731076A;
+	Wed, 28 Jan 2026 15:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCK4g3eb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GM6zj5GX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3003C2D660E;
-	Wed, 28 Jan 2026 15:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25F532143F;
+	Wed, 28 Jan 2026 15:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614592; cv=none; b=kFazwtU0u3SMy/dE9bmgwl2f+nBBEBu9RZqPkW9KnbGAswa8ZpfYJhM3+sU8qiXfJlnvim2JxGxtKuoWh7tLVEi8aunwLIhF/58x99j+Vy5Kvx4mnDlP6xGXf0WUxnWS+WvYHsCF6mFTcemFtb71NzbwO210dqewxIkDvhLOKzw=
+	t=1769615102; cv=none; b=FTzddqGaecKu3LBKuQuxRu9Sl6GfdGWe6+OTNPhqt3qZMpHN43UFrHELnMDkHmi8YQ62aK1HLtdELyii5Q2ttZjOxXRllpXJEMPrErLBx5dCew0OBTUpSixqHnfwb6CHBKj5gYfb2zRTsJQttiyqZvxXhCEeRNcdOZSd37+KgCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614592; c=relaxed/simple;
-	bh=1vO8J71t8Cxi1hlKVIiZB/YTbfzN2fsd1WR4lbqgiV8=;
+	s=arc-20240116; t=1769615102; c=relaxed/simple;
+	bh=wet5orXTQmBD8LV6oWwLucmeZNMJFcQ7yyEMUN4yxV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKi3/Rj/YXJiBhgans1xsZPieM2tGQZbu/cHPU3IBqkHtQwSrikA7hZHPUnqvXUqy7DPt1gyTi+UWkB20eXS11B2mgbUR/RWrZPbzXcPy0DSmFIRkwrWX1mN3oXRDwi+pxsjq7YStvO2xEZAv9OqF4oycq4w16UaGgjRsbxIR1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCK4g3eb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619A6C4CEF1;
-	Wed, 28 Jan 2026 15:36:31 +0000 (UTC)
+	 MIME-Version; b=KTbW9oW7iGUXIhqlF0JdEC7KJp+xjslCVP0sKQV64xN0J2ISeYDxLsvbp4tOAfcXoGnHhgFqHIsnz/njJfB9xoxlXmfyg7/AZ36y+x0SU9iSJ29fy2nMS4KCUMCVAiGu6Yygt+xw3L4Md1arqkhep2EYvZGu7EadFgeAZG6Rhjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GM6zj5GX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42101C4CEF1;
+	Wed, 28 Jan 2026 15:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614591;
-	bh=1vO8J71t8Cxi1hlKVIiZB/YTbfzN2fsd1WR4lbqgiV8=;
+	s=korg; t=1769615102;
+	bh=wet5orXTQmBD8LV6oWwLucmeZNMJFcQ7yyEMUN4yxV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCK4g3eb6jeOH4vBTiAkBQNjBqQetqc930UQ2TwS1P84GTg4C3g1KzPlshFaQmsRf
-	 njJBE4GxastwXxZcP4GVVycMDSTZsvxGufQOyjml0emb9f3B3UpDUBKWBXje9ET6EN
-	 FPF6Rz4I4TcTTlnLpLi0mu0py32LD1QCxMFH8QRY=
+	b=GM6zj5GXXrasmRX75ZJ9Fed4PM4pzdgtWJlReW9xYNS4jn0Ay8v3+IJyQ5dXXoWPR
+	 zqf1wbbCHLbLLpmDxCui7P0NG6uzlqgzX16TZb2M7XElFMVKXZJ9o/U3T1m+/mrk5S
+	 xSAqB3johPlh8dlFfQ91DetMA90HDnJYpz3mJAuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Sebastian Reichel <sre@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 184/254] leds: led-class: Only Add LED to leds_list when it is fully ready
-Date: Wed, 28 Jan 2026 16:22:40 +0100
-Message-ID: <20260128145351.424389092@linuxfoundation.org>
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 078/169] mISDN: annotate data-race around dev->work
+Date: Wed, 28 Jan 2026 16:22:41 +0100
+Message-ID: <20260128145336.815209877@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,111 +70,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212314-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212160-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 64E1FA4531
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8F809A4CA5
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit d1883cefd31752f0504b94c3bcfa1f6d511d6e87 upstream.
+[ Upstream commit 8175dbf174d487afab81e936a862a8d9b8a1ccb6 ]
 
-Before this change the LED was added to leds_list before led_init_core()
-gets called adding it the list before led_classdev.set_brightness_work gets
-initialized.
+dev->work can re read locklessly in mISDN_read()
+and mISDN_poll(). Add READ_ONCE()/WRITE_ONCE() annotations.
 
-This leaves a window where led_trigger_register() of a LED's default
-trigger will call led_trigger_set() which calls led_set_brightness()
-which in turn will end up queueing the *uninitialized*
-led_classdev.set_brightness_work.
+BUG: KCSAN: data-race in mISDN_ioctl / mISDN_read
 
-This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
-2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
-succession. The first led_classdev_register() causes an async modprobe of
-snd_ctl_led to run and that async modprobe manages to exactly hit
-the window where the second LED is on the leds_list without led_init_core()
-being called for it, resulting in:
+write to 0xffff88812d848280 of 4 bytes by task 10864 on cpu 1:
+  misdn_add_timer drivers/isdn/mISDN/timerdev.c:175 [inline]
+  mISDN_ioctl+0x2fb/0x550 drivers/isdn/mISDN/timerdev.c:233
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:597 [inline]
+  __se_sys_ioctl+0xce/0x140 fs/ioctl.c:583
+  __x64_sys_ioctl+0x43/0x50 fs/ioctl.c:583
+  x64_sys_call+0x14b0/0x3000 arch/x86/include/generated/asm/syscalls_64.h:17
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd8/0x2c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
- ------------[ cut here ]------------
- WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
- Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
- ...
- Call trace:
-  __flush_work+0x344/0x390 (P)
-  flush_work+0x2c/0x50
-  led_trigger_set+0x1c8/0x340
-  led_trigger_register+0x17c/0x1c0
-  led_trigger_register_simple+0x84/0xe8
-  snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
-  do_one_initcall+0x5c/0x318
-  do_init_module+0x9c/0x2b8
-  load_module+0x7e0/0x998
+read to 0xffff88812d848280 of 4 bytes by task 10857 on cpu 0:
+  mISDN_read+0x1f2/0x470 drivers/isdn/mISDN/timerdev.c:112
+  do_loop_readv_writev fs/read_write.c:847 [inline]
+  vfs_readv+0x3fb/0x690 fs/read_write.c:1020
+  do_readv+0xe7/0x210 fs/read_write.c:1080
+  __do_sys_readv fs/read_write.c:1165 [inline]
+  __se_sys_readv fs/read_write.c:1162 [inline]
+  __x64_sys_readv+0x45/0x50 fs/read_write.c:1162
+  x64_sys_call+0x2831/0x3000 arch/x86/include/generated/asm/syscalls_64.h:20
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd8/0x2c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Close the race window by moving the adding of the LED to leds_list to
-after the led_init_core() call.
+value changed: 0x00000000 -> 0x00000001
 
-Cc: stable@vger.kernel.org
-Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Reviewed-by: Sebastian Reichel <sre@kernel.org>
-Link: https://patch.msgid.link/20251211163727.366441-1-johannes.goede@oss.qualcomm.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b2b03f8e514 ("Add mISDN core files")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260118132528.2349573-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-class.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/isdn/mISDN/timerdev.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/leds/led-class.c
-+++ b/drivers/leds/led-class.c
-@@ -546,11 +546,6 @@ int led_classdev_register_ext(struct dev
- #ifdef CONFIG_LEDS_BRIGHTNESS_HW_CHANGED
- 	led_cdev->brightness_hw_changed = -1;
- #endif
--	/* add to the list of leds */
--	down_write(&leds_list_lock);
--	list_add_tail(&led_cdev->node, &leds_list);
--	up_write(&leds_list_lock);
--
- 	if (!led_cdev->max_brightness)
- 		led_cdev->max_brightness = LED_FULL;
- 
-@@ -558,6 +553,11 @@ int led_classdev_register_ext(struct dev
- 
- 	led_init_core(led_cdev);
- 
-+	/* add to the list of leds */
-+	down_write(&leds_list_lock);
-+	list_add_tail(&led_cdev->node, &leds_list);
-+	up_write(&leds_list_lock);
+diff --git a/drivers/isdn/mISDN/timerdev.c b/drivers/isdn/mISDN/timerdev.c
+index 7cfa8c61dba0a..b2df23234ed3c 100644
+--- a/drivers/isdn/mISDN/timerdev.c
++++ b/drivers/isdn/mISDN/timerdev.c
+@@ -109,14 +109,14 @@ mISDN_read(struct file *filep, char __user *buf, size_t count, loff_t *off)
+ 		spin_unlock_irq(&dev->lock);
+ 		if (filep->f_flags & O_NONBLOCK)
+ 			return -EAGAIN;
+-		wait_event_interruptible(dev->wait, (dev->work ||
++		wait_event_interruptible(dev->wait, (READ_ONCE(dev->work) ||
+ 						     !list_empty(list)));
+ 		if (signal_pending(current))
+ 			return -ERESTARTSYS;
+ 		spin_lock_irq(&dev->lock);
+ 	}
+ 	if (dev->work)
+-		dev->work = 0;
++		WRITE_ONCE(dev->work, 0);
+ 	if (!list_empty(list)) {
+ 		timer = list_first_entry(list, struct mISDNtimer, list);
+ 		list_del(&timer->list);
+@@ -141,13 +141,16 @@ mISDN_poll(struct file *filep, poll_table *wait)
+ 	if (*debug & DEBUG_TIMER)
+ 		printk(KERN_DEBUG "%s(%p, %p)\n", __func__, filep, wait);
+ 	if (dev) {
++		u32 work;
 +
- #ifdef CONFIG_LEDS_TRIGGERS
- 	led_trigger_set_default(led_cdev);
- #endif
+ 		poll_wait(filep, &dev->wait, wait);
+ 		mask = 0;
+-		if (dev->work || !list_empty(&dev->expired))
++		work = READ_ONCE(dev->work);
++		if (work || !list_empty(&dev->expired))
+ 			mask |= (EPOLLIN | EPOLLRDNORM);
+ 		if (*debug & DEBUG_TIMER)
+ 			printk(KERN_DEBUG "%s work(%d) empty(%d)\n", __func__,
+-			       dev->work, list_empty(&dev->expired));
++			       work, list_empty(&dev->expired));
+ 	}
+ 	return mask;
+ }
+@@ -172,7 +175,7 @@ misdn_add_timer(struct mISDNtimerdev *dev, int timeout)
+ 	struct mISDNtimer	*timer;
+ 
+ 	if (!timeout) {
+-		dev->work = 1;
++		WRITE_ONCE(dev->work, 1);
+ 		wake_up_interruptible(&dev->wait);
+ 		id = 0;
+ 	} else {
+-- 
+2.51.0
+
 
 
 
