@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-212563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEPQD3A7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212563-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:08 +0100
+	id OHpDMnsyeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F56A5EAB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DFBA4E40
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F20D318A3F4
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00E9E319F6C1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE48302779;
-	Wed, 28 Jan 2026 15:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5361306B06;
+	Wed, 28 Jan 2026 15:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8cUOEH5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOsnetFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A60146D53;
-	Wed, 28 Jan 2026 15:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ECF3043B2;
+	Wed, 28 Jan 2026 15:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615938; cv=none; b=rjP7V3uB1auyMKeDIr+UXYwsanASqctltXfgz6irhU7fWixuTK79gVSbkyVmCVzhaTtj2W8VGgYwwYqSG+7bqlm9taMOHlh3fzr0tNEqv2WzQU+dz+yUt0FoADkn6lfLTAnioDBzd/fkB3S0ZZx5Jk6q2ejTNSFDN0f8xkqHgZQ=
+	t=1769615349; cv=none; b=OyXcMBwQnVNckw9xP6sg7AMcYLDJwBl84fbbAPt4p3/pv35d6C43HGNpPyc81PaHqh0Gbc1/vFEX8L9Rg/6aUw2T90SA1ew0bzF0uX1wik+rEpzLvOYKWSjEqMWdDkl03+G7GFbetR66/792BY4bbZpkz9NF4LdKdGIYYd6/XHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615938; c=relaxed/simple;
-	bh=PdVTuEyI2tzIsgGQ7UVAguBlD0g9xC5ChVcMlsTZW18=;
+	s=arc-20240116; t=1769615349; c=relaxed/simple;
+	bh=KjwKhvZgTXP0Jfq8uS8qjtmzxVpdh1JYzCkQSxNkKcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dpl2gg8FNF4a5cX/z7Xi4YGa0VOqyD1ezD6zpEJ2XUy/g2Pl2eA5cyGdLr4NrOo6Pqpn5PJgL0dDCkRLUjXtN+nlJE8pmjjv9WX2JhGO02u8ngO1P6PRgnUZed75baKDAeqCQItQyk9Sfb+R1OVopEKRIk/47oRPezVvTE87eto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8cUOEH5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E157C4CEF1;
-	Wed, 28 Jan 2026 15:58:57 +0000 (UTC)
+	 MIME-Version; b=UB6QV11Qo8ZYULHFpAyB7xYiVV8twabHqJ6qt/ab3zNel+duXnhQ2sWZma4dpd0d/PdKUSKVw4wD0adWGPmhYmyVSY/6p7Rhm9LiI8ec3rj5DbmhZYEaHz7JC9qYgkEJgtVWHF+aeR89vFwRkWEzrr28YKobVqstuP7wn0UC0+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOsnetFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F93C4CEF1;
+	Wed, 28 Jan 2026 15:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615938;
-	bh=PdVTuEyI2tzIsgGQ7UVAguBlD0g9xC5ChVcMlsTZW18=;
+	s=korg; t=1769615349;
+	bh=KjwKhvZgTXP0Jfq8uS8qjtmzxVpdh1JYzCkQSxNkKcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C8cUOEH50VrcbFV0627CRFfhGC+hiF6JWXLWT/+uGvErzpM332U0fuZesf5emcz1n
-	 SrU8m7P8zJRNMbI1MRADb3RTCrSo4F0DotuonW2QlWZcYDyHkn5o7MC69btiaCCLSG
-	 e+p9GZlsw1b9LoblyJkTgkKQM3ViJIyIFu1tfyT4=
+	b=rOsnetFdx0ZeDxP4WaXsQc+yeDSMoE/5WjQinbhQV/hE0DPwGxiKuRwQJi88Psett
+	 SqI0WF/VJOv8ZVZpljQgaZ167QVNtF472R1KQGMOpe6ImBOgyvjzL/Nqmkp+rlDpFV
+	 ya2N7mAFnicfu+5GAmtF7CynGNZ5uuHWJDI4QG5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Markus Koeniger <markus.koeniger@liebherr.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 158/227] iio: accel: iis328dq: fix gain values
+	Marek Vasut <marex@nabladev.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 120/169] wifi: rsi: Fix memory corruption due to not set vif driver data size
 Date: Wed, 28 Jan 2026 16:23:23 +0100
-Message-ID: <20260128145350.138624820@linuxfoundation.org>
+Message-ID: <20260128145338.322849355@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,151 +66,89 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212563-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212387-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,st.com:url]
-X-Rspamd-Queue-Id: A0F56A5EAB
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 30DFBA4E40
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Koeniger <markus.koeniger@liebherr.com>
+From: Marek Vasut <marex@nabladev.com>
 
-commit b8f15d1df2e73322e2112de21a4a7f3553c7fb60 upstream.
+commit 4f431d88ea8093afc7ba55edf4652978c5a68f33 upstream.
 
-The sensors IIS328DQ and H3LIS331DL share one configuration but
-H3LIS331DL has different gain parameters, configs therefore
-need to be split up.
-The gain parameters for the IIS328DQ are 0.98, 1.95 and 3.91,
-depending on the selected measurement range.
+The struct ieee80211_vif contains trailing space for vif driver data,
+when struct ieee80211_vif is allocated, the total memory size that is
+allocated is sizeof(struct ieee80211_vif) + size of vif driver data.
+The size of vif driver data is set by each WiFi driver as needed.
 
-See sensor manuals, chapter 2.1 "mechanical characteristics",
-parameter "Sensitivity".
+The RSI911x driver does not set vif driver data size, no trailing space
+for vif driver data is therefore allocated past struct ieee80211_vif .
+The RSI911x driver does however use the vif driver data to store its
+vif driver data structure "struct vif_priv". An access to vif->drv_priv
+leads to access out of struct ieee80211_vif bounds and corruption of
+some memory.
 
-Datasheet: https://www.st.com/resource/en/datasheet/iis328dq.pdf
-Datasheet: https://www.st.com/resource/en/datasheet/h3lis331dl.pdf
-Fixes: 46e33707fe95 ("iio: accel: add support for IIS328DQ variant")
-Reviewed-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Signed-off-by: Markus Koeniger <markus.koeniger@liebherr.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+In case of the failure observed locally, rsi_mac80211_add_interface()
+would write struct vif_priv *vif_info = (struct vif_priv *)vif->drv_priv;
+vif_info->vap_id = vap_idx. This write corrupts struct fq_tin member
+struct list_head new_flows . The flow = list_first_entry(head, struct
+fq_flow, flowchain); in fq_tin_reset() then reports non-NULL bogus
+address, which when accessed causes a crash.
+
+The trigger is very simple, boot the machine with init=/bin/sh , mount
+devtmpfs, sysfs, procfs, and then do "ip link set wlan0 up", "sleep 1",
+"ip link set wlan0 down" and the crash occurs.
+
+Fix this by setting the correct size of vif driver data, which is the
+size of "struct vif_priv", so that memory is allocated and the driver
+can store its driver data in it, instead of corrupting memory around
+it.
+
+Cc: stable@vger.kernel.org
+Fixes: dad0d04fa7ba ("rsi: Add RS9113 wireless driver")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+Link: https://patch.msgid.link/20260109235817.150330-1-marex@nabladev.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/st_accel_core.c |   72 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 71 insertions(+), 1 deletion(-)
+ drivers/net/wireless/rsi/rsi_91x_mac80211.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -517,7 +517,6 @@ static const struct st_sensor_settings s
- 		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
- 		.sensors_supported = {
- 			[0] = H3LIS331DL_ACCEL_DEV_NAME,
--			[1] = IIS328DQ_ACCEL_DEV_NAME,
- 		},
- 		.ch = (struct iio_chan_spec *)st_accel_12bit_channels,
- 		.odr = {
-@@ -561,6 +560,77 @@ static const struct st_sensor_settings s
- 				},
- 			},
- 		},
-+		.bdu = {
-+			.addr = 0x23,
-+			.mask = 0x80,
-+		},
-+		.drdy_irq = {
-+			.int1 = {
-+				.addr = 0x22,
-+				.mask = 0x02,
-+			},
-+			.int2 = {
-+				.addr = 0x22,
-+				.mask = 0x10,
-+			},
-+			.addr_ihl = 0x22,
-+			.mask_ihl = 0x80,
-+		},
-+		.sim = {
-+			.addr = 0x23,
-+			.value = BIT(0),
-+		},
-+		.multi_read_bit = true,
-+		.bootime = 2,
-+	},
-+	{
-+		.wai = 0x32,
-+		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
-+		.sensors_supported = {
-+			[0] = IIS328DQ_ACCEL_DEV_NAME,
-+		},
-+		.ch = (struct iio_chan_spec *)st_accel_12bit_channels,
-+		.odr = {
-+			.addr = 0x20,
-+			.mask = 0x18,
-+			.odr_avl = {
-+				{ .hz = 50, .value = 0x00, },
-+				{ .hz = 100, .value = 0x01, },
-+				{ .hz = 400, .value = 0x02, },
-+				{ .hz = 1000, .value = 0x03, },
-+			},
-+		},
-+		.pw = {
-+			.addr = 0x20,
-+			.mask = 0x20,
-+			.value_on = ST_SENSORS_DEFAULT_POWER_ON_VALUE,
-+			.value_off = ST_SENSORS_DEFAULT_POWER_OFF_VALUE,
-+		},
-+		.enable_axis = {
-+			.addr = ST_SENSORS_DEFAULT_AXIS_ADDR,
-+			.mask = ST_SENSORS_DEFAULT_AXIS_MASK,
-+		},
-+		.fs = {
-+			.addr = 0x23,
-+			.mask = 0x30,
-+			.fs_avl = {
-+				[0] = {
-+					.num = ST_ACCEL_FS_AVL_100G,
-+					.value = 0x00,
-+					.gain = IIO_G_TO_M_S_2(980),
-+				},
-+				[1] = {
-+					.num = ST_ACCEL_FS_AVL_200G,
-+					.value = 0x01,
-+					.gain = IIO_G_TO_M_S_2(1950),
-+				},
-+				[2] = {
-+					.num = ST_ACCEL_FS_AVL_400G,
-+					.value = 0x03,
-+					.gain = IIO_G_TO_M_S_2(3910),
-+				},
-+			},
-+		},
- 		.bdu = {
- 			.addr = 0x23,
- 			.mask = 0x80,
+--- a/drivers/net/wireless/rsi/rsi_91x_mac80211.c
++++ b/drivers/net/wireless/rsi/rsi_91x_mac80211.c
+@@ -2028,6 +2028,7 @@ int rsi_mac80211_attach(struct rsi_commo
+ 
+ 	hw->queues = MAX_HW_QUEUES;
+ 	hw->extra_tx_headroom = RSI_NEEDED_HEADROOM;
++	hw->vif_data_size = sizeof(struct vif_priv);
+ 
+ 	hw->max_rates = 1;
+ 	hw->max_rate_tries = MAX_RETRIES;
 
 
 
