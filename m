@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-212497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EK3uIXw6emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:34:04 +0100
+	id yEFAKUcvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A1AA5D21
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:34:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F9DA45EF
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87C0531D8B45
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:55:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 855E63105309
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452DA2E2DF4;
-	Wed, 28 Jan 2026 15:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAE426E6F9;
+	Wed, 28 Jan 2026 15:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wvkyfDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUesSpx7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0947518027;
-	Wed, 28 Jan 2026 15:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DF0242D86;
+	Wed, 28 Jan 2026 15:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615715; cv=none; b=GrBwzRFJtpvmTYLXfGaKu3v7x6HCDVX5pWs+uCVsDvh1sNC8LuuZsCuBkXBNXjMO729pdZ0k1T9hCg6gun8voOdp2yV6ASPguxPjshU4to7U6NORa1KO0Hd1/rCVjXoDHSsI6kVJanrb3EjXeDyjNhHUCeBX6TrxwWCX4Ac3vK4=
+	t=1769614438; cv=none; b=KFu6gKJ0qmzMPHdUAT7Bg3NhrJ2tJZnv6v1AGtGXO029Jcev65cf15vvp5HbBZeW/yljMJxkJz8rqSRWKMA8O1aYjRgPvfRmmDgwnCxQEwPslpyAxtXthKb05hsxp6bf8/l5nJonUmAbuxo0xzIa5XD1FjrH6NVSFsq1dfK3xLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615715; c=relaxed/simple;
-	bh=r0WcAE345m3HmM05i24TbMaLcKMPt/bJ/39YW9oSMJU=;
+	s=arc-20240116; t=1769614438; c=relaxed/simple;
+	bh=+uw8L3/YAuJrIaGSNkNW8PRmsL5hwDrkREROGYMTQyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K23N8FKpvpq9rC1qMGdSEL899cZCAGxmOdipmjkvENTUVxoRdkQEFhksEjKhBhasNq0+a0TqdnJXbo5Nq4bxWhHzWPg6MTfU6IBxdqJsCgZT4Wk/BIgUf7ZiMTksHQD2xQLOzud81k/V0WNjndHEVbtRddILApda15SM5TTphsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wvkyfDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFD0C4CEF1;
-	Wed, 28 Jan 2026 15:55:14 +0000 (UTC)
+	 MIME-Version; b=hq6NXgwfnMJMMRGvTnPrGFEVuXFPLZ7kdKDu1PU3fl6/SGtlaSXtQcQsGk6jE1rJnqMdK4cKvE6YxnC76QXEDWWhgtJxiCU9RYFua5jslxJxlRTWXN5j3SyL62bfMetqdcfOS6KedqS7aDFoLRh82/OeiNPX2TNC3Qo8L3a0o+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUesSpx7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623DBC4CEF1;
+	Wed, 28 Jan 2026 15:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615714;
-	bh=r0WcAE345m3HmM05i24TbMaLcKMPt/bJ/39YW9oSMJU=;
+	s=korg; t=1769614438;
+	bh=+uw8L3/YAuJrIaGSNkNW8PRmsL5hwDrkREROGYMTQyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1wvkyfDKz1kv3HvGWT6i/QmVw1VJk4AdVnfG+kgz29VWsHsWOicwsjuLMHTvZcqpB
-	 4VHCDeagW5Pnxjob0Aan8GMNDR6pPa2ppv5pptEojQFzed7INod2Kyx4tD+6oD18SK
-	 nvbW/OappAJHS/Bm3yQkbA6lBuny26DVk8TXueNE=
+	b=gUesSpx7gyJpP7YWqnrOy0fjWs8kJK7Ngwi+H5xfkDiuhGzBZIXtKeEKME46s/4fh
+	 0X1pIo0HozoilzkfpmgqOhVSTZxHCtsCjwLHWoEnwWRu3VgY0UwR2sOLPsJ5+04MM1
+	 TfNf0rc1wx4X1brlve6g0S1gScFGZXfXjASwqI6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.18 065/227] arm64: dts: rockchip: fix unit-address for RK3588 NPUs core1 and core2s IOMMU
-Date: Wed, 28 Jan 2026 16:21:50 +0100
-Message-ID: <20260128145346.680220784@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Marnix Rijnart <marnix.rijnart@iwell.eu>
+Subject: [PATCH 6.6 135/254] serial: 8250_pci: Fix broken RS485 for F81504/508/512
+Date: Wed, 28 Jan 2026 16:21:51 +0100
+Message-ID: <20260128145349.676749065@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212497-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212113-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,73 +89,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sntech.de:email,cherry.de:email,fdac0000:email,unit-address:email,fdad9000:email,fdada000:email]
-X-Rspamd-Queue-Id: 04A1AA5D21
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 29F9DA45EF
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Marnix Rijnart <marnix.rijnart@iwell.eu>
 
-commit cd8967ea3105d30adb878a9fea0e34a9378df610 upstream.
+commit 27aff0a56b3c77ea1a73641c9b3c4172a8f7238f upstream.
 
-The Device Tree specification specifies[1] that
+Fintek F81504/508/512 can support both RTS_ON_SEND and RTS_AFTER_SEND,
+but pci_fintek_rs485_supported only announces the former.
 
-"""
-Each node in the devicetree is named according to the following
-convention:
-	node-name@unit-address
-[...]
-The unit-address must match the first address specified in the reg
-property of the node.
-"""
+This makes it impossible to unset SER_RS485_RTS_ON_SEND from
+userspace because of uart_sanitize_serial_rs485(). Some devices
+with these chips need RTS low on TX, so they are effectively broken.
 
-The first address in the reg property is fdaXa000 and not fdaX9000. This
-is likely a copy-paste error as the IOMMU for core0 has two entries in
-the reg property, the first one being fdab9000 and the second fdaba000.
+Fix this by announcing the support for SER_RS485_RTS_AFTER_SEND,
+similar to commit 068d35a7be65 ("serial: sc16is7xx: announce support
+for SER_RS485_RTS_ON_SEND").
 
-Let's fix this oversight to match what the spec is expecting.
-
-[1] https://github.com/devicetree-org/devicetree-specification/releases/download/v0.4/devicetree-specification-v0.4.pdf 2.2.1 Node Names
-
-Fixes: a31dfc060a74 ("arm64: dts: rockchip: Add nodes for NPU and its MMU to rk3588-base")
-Cc: stable@vger.kernel.org
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Link: https://patch.msgid.link/20251215-npu-dt-node-address-v1-1-840093e8a2bf@cherry.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 4afeced55baa ("serial: core: fix sanitizing check for RTS settings")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Marnix Rijnart <marnix.rijnart@iwell.eu>
+Link: https://patch.msgid.link/20260112000931.61703-1-marnix.rijnart@iwell.eu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3588-base.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/8250/8250_pci.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-index 2a7921793020..7ab12d1054a7 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-base.dtsi
-@@ -1200,7 +1200,7 @@ rknn_core_1: npu@fdac0000 {
- 		status = "disabled";
- 	};
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -1563,7 +1563,7 @@ static int pci_fintek_rs485_config(struc
+ }
  
--	rknn_mmu_1: iommu@fdac9000 {
-+	rknn_mmu_1: iommu@fdaca000 {
- 		compatible = "rockchip,rk3588-iommu", "rockchip,rk3568-iommu";
- 		reg = <0x0 0xfdaca000 0x0 0x100>;
- 		interrupts = <GIC_SPI 111 IRQ_TYPE_LEVEL_HIGH 0>;
-@@ -1230,7 +1230,7 @@ rknn_core_2: npu@fdad0000 {
- 		status = "disabled";
- 	};
+ static const struct serial_rs485 pci_fintek_rs485_supported = {
+-	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND,
++	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND,
+ 	/* F81504/508/512 does not support RTS delay before or after send */
+ };
  
--	rknn_mmu_2: iommu@fdad9000 {
-+	rknn_mmu_2: iommu@fdada000 {
- 		compatible = "rockchip,rk3588-iommu", "rockchip,rk3568-iommu";
- 		reg = <0x0 0xfdada000 0x0 0x100>;
- 		interrupts = <GIC_SPI 112 IRQ_TYPE_LEVEL_HIGH 0>;
--- 
-2.52.0
-
 
 
 
