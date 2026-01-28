@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-212100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGKDLBwvemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212100-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:32 +0100
+	id 2L08D3gzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA02A4598
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EDDBA500C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9767E303B7E0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54319304EEB9
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B076B2512FF;
-	Wed, 28 Jan 2026 15:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11047238159;
+	Wed, 28 Jan 2026 15:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbn0GawU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaPTbEWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DE81885A5;
-	Wed, 28 Jan 2026 15:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1D13033C4;
+	Wed, 28 Jan 2026 15:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614400; cv=none; b=ede8lHGBjfx+O/hZL9D5ydXkHGGjQENKMfYHNg0tGs1W1XKMV/4nWxGUV5sU2OGrpvx2B7S8H2foRIJLoMBLyq4ZEU/UVW3vGJ+nwKJJamIN1cxM9yMBfWkeINdPhT7SfIb32hev65ZQr5T+JJyztI6rZrxLcleuZAWtQbUJjXc=
+	t=1769615597; cv=none; b=AOoPvIueVSnSZrUsf6CZlzeNeByE45+elY3Z7cNXpS0cpBTZDFIuWqZdG8urLXXuuuDVaWKE704kErYKSkPT1jbPTZ6YRV3qrTX58kMg+z3peP9Pw3lcRbY5BuHDqUAGXSxGNaqDbzv/kEbdyjkprD+xou/BSb7awB8+a/ilPb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614400; c=relaxed/simple;
-	bh=3sNZ9/iJupjCCmHdu2XZXHe0swurwEijbTQWSaz6Rmk=;
+	s=arc-20240116; t=1769615597; c=relaxed/simple;
+	bh=NuVUMhzwOazzLJIrQomvGYzzUN9fE/ixREc6b5R3jhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXgI9JwaIJrtgQvBloOmcZvx6hdv/sF4QTchNot8R72T0k/6tAgXdG8pRrsQUR99MqduDNq0ioE0Tk9dcJgCVisPzlB38rRJgO53PppYGwgk17Ri56AhuSAESBhHfS8RwHsW1M/IdTeooesx8iL8xg8PNrkLrNq1elgrqcz/dQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbn0GawU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0022DC4CEF1;
-	Wed, 28 Jan 2026 15:33:19 +0000 (UTC)
+	 MIME-Version; b=YugRIXtvjmtW/vIAw+ud9O076v3DAFbqSQQ8yMVntJx80ZL4BSmiKEhjmAYy+mNSn6ZWQ4Ui1Y8zUNNBzEEvHPWZ3uBwoTOxb0HLSGp5Iit8Lf74F+8gO5gmKESJGOQG8gCegpa+vph8x3ImI0wnfpX44B+qGMNJaRJExI+B8TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaPTbEWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4E0C4CEF1;
+	Wed, 28 Jan 2026 15:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614400;
-	bh=3sNZ9/iJupjCCmHdu2XZXHe0swurwEijbTQWSaz6Rmk=;
+	s=korg; t=1769615597;
+	bh=NuVUMhzwOazzLJIrQomvGYzzUN9fE/ixREc6b5R3jhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bbn0GawUg+7zFFKO4F0VBERBdDOP4kOKcG5NyjHSfHFGOy1SY8MT8zPpK+dH+Sour
-	 ecRIzC1ZwOWMjCKG5TbPMWqtiisTM5C1SRA/A5bx7n8ZHJlOpUFDU10HQWgkL/ADpW
-	 k7MSzndBUkJ7iHV+bnaD+Ndcxe4wazkfCnxrj/wQ=
+	b=RaPTbEWuM9QfHLGU+bnz1+88nb4xdOez9r/rCGZLywo7lLm84WIG6EAq1ML9uZfdx
+	 OE/SxkzYBltIMJBFEGAlvwIfYJQ0lrw3l/fi7GtMJlF2UWAj89kY2WJAw5WjXRxyJT
+	 b66uGt2qojJuH8bp9iv6ZDuE8Qn+f1CZETR7LNLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/254] amd-xgbe: avoid misleading per-packet error log
-Date: Wed, 28 Jan 2026 16:21:40 +0100
-Message-ID: <20260128145349.283635450@linuxfoundation.org>
+	feng <alec.jiang@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.18 056/227] Input: i8042 - add quirk for ASUS Zenbook UX425QA_UM425QA
+Date: Wed, 28 Jan 2026 16:21:41 +0100
+Message-ID: <20260128145346.357295772@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212100-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212461-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.991];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,amd.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 3DA02A4598
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9EDDBA500C
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: feng <alec.jiang@gmail.com>
 
-[ Upstream commit c158f985cf6c2c36c99c4f67af2ff3f5ebe09f8f ]
+commit 2934325f56150ad8dab8ab92cbe2997242831396 upstream.
 
-On the receive path, packet can be damaged because of buffer
-overflow in Rx FIFO. Avoid misleading per-packet error log when
-packet->errors is set, this can flood the log. Instead, rely on the
-standard rtnl_link_stats64 stats.
+The ASUS Zenbook UX425QA_UM425QA fails to initialize the keyboard after
+a cold boot.
 
-Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260114163037.2062606-1-Raju.Rangoju@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A quirk already exists for "ZenBook UX425", but some Zenbooks report
+"Zenbook" with a lowercase 'b'. Since DMI matching is case-sensitive,
+the existing quirk is not applied to these "extra special" Zenbooks.
+
+Testing confirms that this model needs the same quirks as the ZenBook
+UX425 variants.
+
+Signed-off-by: feng <alec.jiang@gmail.com>
+Link: https://patch.msgid.link/20260122013957.11184-1-alec.jiang@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index b4d57da71de2a..3d6f8f3a83366 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -2105,7 +2105,7 @@ static void xgbe_get_stats64(struct net_device *netdev,
- 	s->multicast = pstats->rxmulticastframes_g;
- 	s->rx_length_errors = pstats->rxlengtherror;
- 	s->rx_crc_errors = pstats->rxcrcerror;
--	s->rx_fifo_errors = pstats->rxfifooverflow;
-+	s->rx_over_errors = pstats->rxfifooverflow;
- 
- 	s->tx_packets = pstats->txframecount_gb;
- 	s->tx_bytes = pstats->txoctetcount_gb;
-@@ -2559,9 +2559,6 @@ static int xgbe_rx_poll(struct xgbe_channel *channel, int budget)
- 			goto read_again;
- 
- 		if (error || packet->errors) {
--			if (packet->errors)
--				netif_err(pdata, rx_err, netdev,
--					  "error in received packet\n");
- 			dev_kfree_skb(skb);
- 			goto next_packet;
- 		}
--- 
-2.51.0
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -116,6 +116,17 @@ static const struct dmi_system_id i8042_
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_NEVER)
+ 	},
+ 	{
++		/*
++		 * ASUS Zenbook UX425QA_UM425QA
++		 * Some Zenbooks report "Zenbook" with a lowercase b.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Zenbook UX425QA_UM425QA"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_PROBE_DEFER | SERIO_QUIRK_RESET_NEVER)
++	},
++	{
+ 		/* ASUS ZenBook UX425UA/QA */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
