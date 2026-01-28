@@ -1,54 +1,71 @@
-Return-Path: <stable+bounces-212508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212476-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OMPKFk8yemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:11 +0100
+	id EOVPMxw6emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212476-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7AAA4DF7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C838A5C55
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BC45330301C8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:56:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB2A830D1490
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566393033C4;
-	Wed, 28 Jan 2026 15:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DE93054D8;
+	Wed, 28 Jan 2026 15:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pw6hituY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfkDsbkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1843C18027;
-	Wed, 28 Jan 2026 15:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53597302163;
+	Wed, 28 Jan 2026 15:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615753; cv=none; b=OW0ZiLj/ojLlQNUWkBV22JfWMf0yqZdFDv+wLzrlpFsgjuwevRAKGk5MkqG1Lowpcgif6KFIMl72Rg3M6eRKzWW8tRDPjjDCvLKRJMI9FnYfeUJWvRHVOEHdD2Z4XJ/Pw8J5GD4SEitB7qxBOaTD2BtvPegpMl+jDntit7UphR8=
+	t=1769615647; cv=none; b=uQmeE+nTODfSLmjyT3FsyV3562R4MLWEogXPNtQFF/PzX61S5uZLy15PwnvhrkF5E+AkxML/lnTVzku9HI1GY17IEhZsC1L8/Qcb27UD8V6hxsJw6ffc6GKKDKEtfI1iw7z8h1eqULASRTCut+7yXjThaFWm6gSNHehS07VguCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615753; c=relaxed/simple;
-	bh=724AemoFTuMlnVtsoprc5Y3YKWRnGh6XVEzIH6s+KiM=;
+	s=arc-20240116; t=1769615647; c=relaxed/simple;
+	bh=0ZaQCZ/lMyc45zbeCxW29TdNfzjKGWObhbrTdSFwVQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQlC/vDAz2QlVJLk7PhXfQRzi3Ez0rhclHtdbjXxYjGPmQWV5FKgnYZkwcRLDzdq2funPuBFDbyEOeN5LQWg1PVHyTMtuxFxikqlu7VTF028Yfo7Mw9qs71++nVbzJN5eU0OY7jaP5a9ia6Ix++fFEOEgTqwZYsG5QfAEP4ML00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pw6hituY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F37C4CEF1;
-	Wed, 28 Jan 2026 15:55:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IpVp7MN9nwwnUKUEkXcmh+uCdwpecLIykmAH0QPrGkTaf5beq/i0+OzSe4sZeEvixf0NqHSpO7iwEZubLUoeGCMveSQQ0GW2ufFjENoqUH1SV9FEIaCupJqkgC4QoL4RIMDwvvZBCuv7gM/lIWi7CY5M0KOWXaHZn5T/piqwjN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfkDsbkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1BEC4CEF1;
+	Wed, 28 Jan 2026 15:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615753;
-	bh=724AemoFTuMlnVtsoprc5Y3YKWRnGh6XVEzIH6s+KiM=;
+	s=korg; t=1769615647;
+	bh=0ZaQCZ/lMyc45zbeCxW29TdNfzjKGWObhbrTdSFwVQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pw6hituYOH6p3n0u79Z7TaeAMiHaXm3fGwc0phv6pTBD4GWHU5dTETIhzKPdHajm5
-	 TaDOm2mOeirwKHWE3c+AXW2fqc6Lac5ACjdl/T8K5T3Avqx3nNTa9oDnib9rwGa93E
-	 zAOgivYhFQMTSHlCVeZ5DspeIfJxrYpL8gyMCjgE=
+	b=vfkDsbkLCUjV3Dk/M3xWAj3ayKGse/+F/1qaC9s21bd5HzKDtpD+Vy0lkVqVktLBL
+	 06IiXncCEH48ebzsU07frNpoQgTzG38Llo6yrmSHC0A0tODwsYRi804+/Lk8wf0jAc
+	 yozfoGLk1ULZSER0pncu8l9itXAoeJp4XYOyoNdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 6.18 071/227] comedi: Fix getting range information for subdevices 16 to 255
-Date: Wed, 28 Jan 2026 16:21:56 +0100
-Message-ID: <20260128145346.897068023@linuxfoundation.org>
+	Joanne Koong <joannelkoong@gmail.com>,
+	Athul Krishna <athul.krishna.kr@protonmail.com>,
+	"=?UTF-8?q?J . =20Neusch=C3=A4fer?=" <j.neuschaefer@gmx.net>,
+	Bernd Schubert <bschubert@ddn.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Bonaccorso Salvatore <carnil@debian.org>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 072/227] fs/writeback: skip AS_NO_DATA_INTEGRITY mappings in wait_sb_inodes()
+Date: Wed, 28 Jan 2026 16:21:57 +0100
+Message-ID: <20260128145346.933707599@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
 References: <20260128145344.331957407@linuxfoundation.org>
@@ -61,137 +78,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212476-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212508-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,protonmail.com,gmx.net,ddn.com,zeniv.linux.org.uk,debian.org,kernel.org,suse.cz,oracle.com,infradead.org,suse.com,szeredi.hu,google.com,linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EB7AAA4DF7
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[protonmail.com:email,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.cz:email,linux-foundation.org:email,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,linux.org.uk:email,szeredi.hu:email]
+X-Rspamd-Queue-Id: 4C838A5C55
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-commit 10d28cffb3f6ec7ad67f0a4cd32c2afa92909452 upstream.
+commit f9a49aa302a05e91ca01f69031cb79a0ea33031f upstream.
 
-The `COMEDI_RANGEINFO` ioctl does not work properly for subdevice
-indices above 15.  Currently, the only in-tree COMEDI drivers that
-support more than 16 subdevices are the "8255" driver and the
-"comedi_bond" driver.  Making the ioctl work for subdevice indices up to
-255 is achievable.  It needs minor changes to the handling of the
-`COMEDI_RANGEINFO` and `COMEDI_CHANINFO` ioctls that should be mostly
-harmless to user-space, apart from making them less broken.  Details
-follow...
+Above the while() loop in wait_sb_inodes(), we document that we must wait
+for all pages under writeback for data integrity.  Consequently, if a
+mapping, like fuse, traditionally does not have data integrity semantics,
+there is no need to wait at all; we can simply skip these inodes.
 
-The `COMEDI_RANGEINFO` ioctl command gets the list of supported ranges
-(usually with units of volts or milliamps) for a COMEDI subdevice or
-channel.  (Only some subdevices have per-channel range tables, indicated
-by the `SDF_RANGETYPE` flag in the subdevice information.)  It uses a
-`range_type` value and a user-space pointer, both supplied by
-user-space, but the `range_type` value should match what was obtained
-using the `COMEDI_CHANINFO` ioctl (if the subdevice has per-channel
-range tables)  or `COMEDI_SUBDINFO` ioctl (if the subdevice uses a
-single range table for all channels).  Bits 15 to 0 of the `range_type`
-value contain the length of the range table, which is the only part that
-user-space should care about (so it can use a suitably sized buffer to
-fetch the range table).  Bits 23 to 16 store the channel index, which is
-assumed to be no more than 255 if the subdevice has per-channel range
-tables, and is set to 0 if the subdevice has a single range table.  For
-`range_type` values produced by the `COMEDI_SUBDINFO` ioctl, bits 31 to
-24 contain the subdevice index, which is assumed to be no more than 255.
-But for `range_type` values produced by the `COMEDI_CHANINFO` ioctl,
-bits 27 to 24 contain the subdevice index, which is assumed to be no
-more than 15, and bits 31 to 28 contain the COMEDI device's minor device
-number for some unknown reason lost in the mists of time.  The
-`COMEDI_RANGEINFO` ioctl extract the length from bits 15 to 0 of the
-user-supplied `range_type` value, extracts the channel index from bits
-23 to 16 (only used if the subdevice has per-channel range tables),
-extracts the subdevice index from bits 27 to 24, and ignores bits 31 to
-28.  So for subdevice indices 16 to 255, the `COMEDI_SUBDINFO` or
-`COMEDI_CHANINFO` ioctl will report a `range_type` value that doesn't
-work with the `COMEDI_RANGEINFO` ioctl.  It will either get the range
-table for the subdevice index modulo 16, or will fail with `-EINVAL`.
+This restores fuse back to prior behavior where syncs are no-ops.  This
+fixes a user regression where if a system is running a faulty fuse server
+that does not reply to issued write requests, this causes wait_sb_inodes()
+to wait forever.
 
-To fix this, always use bits 31 to 24 of the `range_type` value to hold
-the subdevice index (assumed to be no more than 255).  This affects the
-`COMEDI_CHANINFO` and `COMEDI_RANGEINFO` ioctls.  There should not be
-anything in user-space that depends on the old, broken usage, although
-it may now see different values in bits 31 to 28 of the `range_type`
-values reported by the `COMEDI_CHANINFO` ioctl for subdevices that have
-per-channel subdevices.  User-space should not be trying to decode bits
-31 to 16 of the `range_type` values anyway.
-
-Fixes: ed9eccbe8970 ("Staging: add comedi core")
-Cc: stable@vger.kernel.org #5.17+
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20251203162438.176841-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20260105211737.4105620-2-joannelkoong@gmail.com
+Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and internal rb tree")
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+Reported-by: J. Neuschäfer <j.neuschaefer@gmx.net>
+Reviewed-by: Bernd Schubert <bschubert@ddn.com>
+Tested-by: J. Neuschäfer <j.neuschaefer@gmx.net>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Bernd Schubert <bschubert@ddn.com>
+Cc: Bonaccorso Salvatore <carnil@debian.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/comedi_fops.c |    2 +-
- drivers/comedi/range.c       |    2 +-
- include/uapi/linux/comedi.h  |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ fs/fs-writeback.c       |    7 ++++++-
+ fs/fuse/file.c          |    4 +++-
+ include/linux/pagemap.h |   11 +++++++++++
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -1099,7 +1099,7 @@ static int do_chaninfo_ioctl(struct come
- 		for (i = 0; i < s->n_chan; i++) {
- 			int x;
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2729,8 +2729,13 @@ static void wait_sb_inodes(struct super_
+ 		 * The mapping can appear untagged while still on-list since we
+ 		 * do not have the mapping lock. Skip it here, wb completion
+ 		 * will remove it.
++		 *
++		 * If the mapping does not have data integrity semantics,
++		 * there's no need to wait for the writeout to complete, as the
++		 * mapping cannot guarantee that data is persistently stored.
+ 		 */
+-		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK))
++		if (!mapping_tagged(mapping, PAGECACHE_TAG_WRITEBACK) ||
++		    mapping_no_data_integrity(mapping))
+ 			continue;
  
--			x = (dev->minor << 28) | (it->subdev << 24) | (i << 16) |
-+			x = (it->subdev << 24) | (i << 16) |
- 			    (s->range_table_list[i]->length);
- 			if (put_user(x, it->rangelist + i))
- 				return -EFAULT;
---- a/drivers/comedi/range.c
-+++ b/drivers/comedi/range.c
-@@ -52,7 +52,7 @@ int do_rangeinfo_ioctl(struct comedi_dev
- 	const struct comedi_lrange *lr;
- 	struct comedi_subdevice *s;
+ 		spin_unlock_irq(&sb->s_inode_wblist_lock);
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -3146,8 +3146,10 @@ void fuse_init_file_inode(struct inode *
  
--	subd = (it->range_type >> 24) & 0xf;
-+	subd = (it->range_type >> 24) & 0xff;
- 	chan = (it->range_type >> 16) & 0xff;
+ 	inode->i_fop = &fuse_file_operations;
+ 	inode->i_data.a_ops = &fuse_file_aops;
+-	if (fc->writeback_cache)
++	if (fc->writeback_cache) {
+ 		mapping_set_writeback_may_deadlock_on_reclaim(&inode->i_data);
++		mapping_set_no_data_integrity(&inode->i_data);
++	}
  
- 	if (!dev->attached)
---- a/include/uapi/linux/comedi.h
-+++ b/include/uapi/linux/comedi.h
-@@ -640,7 +640,7 @@ struct comedi_chaninfo {
+ 	INIT_LIST_HEAD(&fi->write_files);
+ 	INIT_LIST_HEAD(&fi->queued_writes);
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -213,6 +213,7 @@ enum mapping_flags {
+ 	AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM = 9,
+ 	AS_KERNEL_FILE = 10,	/* mapping for a fake kernel file that shouldn't
+ 				   account usage to user cgroups */
++	AS_NO_DATA_INTEGRITY = 11, /* no data integrity guarantees */
+ 	/* Bits 16-25 are used for FOLIO_ORDER */
+ 	AS_FOLIO_ORDER_BITS = 5,
+ 	AS_FOLIO_ORDER_MIN = 16,
+@@ -348,6 +349,16 @@ static inline bool mapping_writeback_may
+ 	return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->flags);
+ }
  
- /**
-  * struct comedi_rangeinfo - used to retrieve the range table for a channel
-- * @range_type:		Encodes subdevice index (bits 27:24), channel index
-+ * @range_type:		Encodes subdevice index (bits 31:24), channel index
-  *			(bits 23:16) and range table length (bits 15:0).
-  * @range_ptr:		Pointer to array of @struct comedi_krange to be filled
-  *			in with the range table for the channel or subdevice.
++static inline void mapping_set_no_data_integrity(struct address_space *mapping)
++{
++	set_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
++}
++
++static inline bool mapping_no_data_integrity(const struct address_space *mapping)
++{
++	return test_bit(AS_NO_DATA_INTEGRITY, &mapping->flags);
++}
++
+ static inline gfp_t mapping_gfp_mask(const struct address_space *mapping)
+ {
+ 	return mapping->gfp_mask;
 
 
 
