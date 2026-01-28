@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212495-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QIwBI3kuemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:49 +0100
+	id kJ1aJw05eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212495-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F47A4426
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B53A5A86
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A3AB5302CCD0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A156D3031932
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FF3293C4E;
-	Wed, 28 Jan 2026 15:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E5D30274D;
+	Wed, 28 Jan 2026 15:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDWufUXo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pS2PCDbJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466582D0C95;
-	Wed, 28 Jan 2026 15:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F6C2F6183;
+	Wed, 28 Jan 2026 15:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614512; cv=none; b=I7D8EajXciFEh/mJwPk+IOYLBD1F0RAjqSbDsZamOmqpG0JStqseEFEqZ/Y1m/VXGa2yqHfAFVmtobzw4cuxEp25B2+RwfTnccIFn0BBlBy5Ujja3BRuuh7WkPiXYnP4/N4Lpt2Gl9Bnx57KumqNkHRKf4aK9e+7LOFFgGGRWRA=
+	t=1769615708; cv=none; b=qQ6z8eJZYw/KDbid54oRnMJUsk3vBntQ+4+ucK0e1/bOtzKQDIgpdH8Gx/xW7bWBtquWL/Vb/UFk4DG5889AHrUI0+sqzF8ylbiipzi2pqVB2YcPYJhpAtIz3jeSOFKPemZsXDTyFWSy6p38zvGS7YVtJ+DORKJMkjAt26ukfg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614512; c=relaxed/simple;
-	bh=k2vfBgITx85jUOHqMxRJLB2JG+7Lih7xrzdu+q/1dT4=;
+	s=arc-20240116; t=1769615708; c=relaxed/simple;
+	bh=6v6FCpZsmfjzGMIaqJQti9/l6UuFmWl8rn5gSNsHikQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSwbcx5P0UgIBQeErOBdJ32xEhxR+kKendGXeFXBdUFPiHAo7U+GVxcyqkK0Re3939k5ajvdxMvmqYWx0n2TLFb8NIc42c9IgkJophyCoQDFk7HWyZtHU92B5B8tdsGxMZBdpgoLbBt+3Qk1xqcbZWLwnM3tK+tE5dYXfKd4Gj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDWufUXo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E64BC4CEF1;
-	Wed, 28 Jan 2026 15:35:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X8CHQAr2lszyQuedabmMHuh4/jJOSe0jIZAK/WXjmEKkGEHOz1ejOi9WmRsh9rI4XkJZX89w8e429DOYnixuiGTPZWT8szZtsqjPAnmENTKwo44E10Ai/0u2n2ool2jf394T61VKlXhGMtUf8ciw4r7GHecm+nGpgnupuuRnvaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pS2PCDbJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2631C4CEF1;
+	Wed, 28 Jan 2026 15:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614511;
-	bh=k2vfBgITx85jUOHqMxRJLB2JG+7Lih7xrzdu+q/1dT4=;
+	s=korg; t=1769615708;
+	bh=6v6FCpZsmfjzGMIaqJQti9/l6UuFmWl8rn5gSNsHikQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BDWufUXohy8xw4kn8kaKM99jJNCf/v81j9FIUCwBMJfceVqCchb/czkzDZ0knABNA
-	 6BTdNqiLeTtOA7XQfSK8luvK5fcoVRZ05VjtKgfrDiMjJiXTRwwf1FW0ryy0RvkWdl
-	 S2qz5hfG0y6ARXU9UUCiSdgheBWUfzZBA0IQTomU=
+	b=pS2PCDbJBw3Zjc+XTwPwvAwKuIxHfhtYYzSumJzkB17A4TbzaOaDiT5tzBeExijQX
+	 KUAkUsbNDFGWa0ZCcC1ZLA9cDuPYNjNtWTeiawbs3OdUGc4ncPlwClN/+7DzItoO5K
+	 Htabawkrr5Pn3OGYkBFWenfKp+Cbgwb2WCkdsH0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiko Shimizu <naohiko.shimizu@gmail.com>,
-	Anup Patel <anup@brainfault.org>,
-	Paul Walmsley <pjw@kernel.org>,
+	Oleksandr Shamray <oleksandrs@nvidia.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/254] riscv: clocksource: Fix stimecmp update hazard on RV32
+Subject: [PATCH 6.18 090/227] platform/mellanox: Fix SN5640/SN5610 LED platform data
 Date: Wed, 28 Jan 2026 16:22:15 +0100
-Message-ID: <20260128145350.532888947@linuxfoundation.org>
+Message-ID: <20260128145347.574185257@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +64,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212136-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212495-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,brainfault.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,brainfault.org:email]
-X-Rspamd-Queue-Id: C4F47A4426
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nvidia.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: C0B53A5A86
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiko Shimizu <naohiko.shimizu@gmail.com>
+From: Oleksandr Shamray <oleksandrs@nvidia.com>
 
-[ Upstream commit eaa9bb1d39d59e7c17b06cec12622b7c586ab629 ]
+[ Upstream commit 3113bcf4ccf06c938f0bc0c34cf6efe03278badc ]
 
-On RV32, updating the 64-bit stimecmp (or vstimecmp) CSR requires two
-separate 32-bit writes. A race condition exists if the timer triggers
-during these two writes.
+In SN5640/SN5610 platforms should be used XDR style LED data with
+predefined slot index per led_fan.
 
-The RISC-V Privileged Specification (e.g., Section 3.2.1 for mtimecmp)
-recommends a specific 3-step sequence to avoid spurious interrupts
-when updating 64-bit comparison registers on 32-bit systems:
+Fixes: 317bbe169c46 ("platform: mellanox: mlx-platform: Add support for new Nvidia system")
 
-1. Set the low-order bits (stimecmp) to all ones (ULONG_MAX).
-2. Set the high-order bits (stimecmph) to the desired value.
-3. Set the low-order bits (stimecmp) to the desired value.
-
-Current implementation writes the LSB first without ensuring a future
-value, which may lead to a transient state where the 64-bit comparison
-is incorrectly evaluated as "expired" by the hardware. This results in
-spurious timer interrupts.
-
-This patch adopts the spec-recommended 3-step sequence to ensure the
-intermediate 64-bit state is never smaller than the current time.
-
-Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
-Signed-off-by: Naohiko Shimizu <naohiko.shimizu@gmail.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://patch.msgid.link/20260104135938.524-2-naohiko.shimizu@gmail.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Oleksandr Shamray <oleksandrs@nvidia.com>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://patch.msgid.link/20260107142548.916556-1-oleksandrs@nvidia.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-riscv.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/mellanox/mlx-platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
-index da3071b387eb5..3d542d0f76034 100644
---- a/drivers/clocksource/timer-riscv.c
-+++ b/drivers/clocksource/timer-riscv.c
-@@ -39,8 +39,9 @@ static int riscv_clock_next_event(unsigned long delta,
- 	csr_set(CSR_IE, IE_TIE);
- 	if (static_branch_likely(&riscv_sstc_available)) {
- #if defined(CONFIG_32BIT)
--		csr_write(CSR_STIMECMP, next_tval & 0xFFFFFFFF);
-+		csr_write(CSR_STIMECMP, ULONG_MAX);
- 		csr_write(CSR_STIMECMPH, next_tval >> 32);
-+		csr_write(CSR_STIMECMP, next_tval & 0xFFFFFFFF);
- #else
- 		csr_write(CSR_STIMECMP, next_tval);
- #endif
+diff --git a/drivers/platform/mellanox/mlx-platform.c b/drivers/platform/mellanox/mlx-platform.c
+index d0df18be93c76..efd0c074ad937 100644
+--- a/drivers/platform/mellanox/mlx-platform.c
++++ b/drivers/platform/mellanox/mlx-platform.c
+@@ -7381,7 +7381,7 @@ static int __init mlxplat_dmi_ng400_hi171_matched(const struct dmi_system_id *dm
+ 	mlxplat_hotplug = &mlxplat_mlxcpld_ng800_hi171_data;
+ 	mlxplat_hotplug->deferred_nr =
+ 		mlxplat_msn21xx_channels[MLXPLAT_CPLD_GRP_CHNL_NUM - 1];
+-	mlxplat_led = &mlxplat_default_ng_led_data;
++	mlxplat_led = &mlxplat_xdr_led_data;
+ 	mlxplat_regs_io = &mlxplat_default_ng_regs_io_data;
+ 	mlxplat_fan = &mlxplat_xdr_fan_data;
+ 
 -- 
 2.51.0
 
