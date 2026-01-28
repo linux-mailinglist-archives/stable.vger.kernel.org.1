@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-212540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDA5DqM0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:07 +0100
+	id ELSXF8Evemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94136A5268
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D462EA4728
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:48:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE2D331872AC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC19831196B1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A8830C631;
-	Wed, 28 Jan 2026 15:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077542D8760;
+	Wed, 28 Jan 2026 15:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qU9BF06"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBRsY2pY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFB02874FE;
-	Wed, 28 Jan 2026 15:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE3A2DEA6B;
+	Wed, 28 Jan 2026 15:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615861; cv=none; b=YgG02ha/gv598BOS9hWCCl/SLH3MlIx9slz1u0fyAASv4OtmIgTHfv1mLGz430EKlL+k/ZmjaTfxnBM4pgAIls3h02AI8EZtpNP1UMULoQ/XnO4JmaDSMZPW8pipD4XMXeqN6LoUq092vAoawsRFkVUh2FDgG8WCt7QdqVCBU9w=
+	t=1769614700; cv=none; b=TYdkeZei0eOVbgkPT/xLu1mBiOZYsWv98Nwfl/NuS/onC03sUCAAB8bxG28ECZOcxfGJ6q7RzafLl3fwRoa82jCZaqIUyi/SgQRgK4fC5vBYvn7RPazA4QVxcRpisFJWyVVxtJrPX1rCkW4FNgrWd/Yv6dDk555gvwxysMa74h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615861; c=relaxed/simple;
-	bh=fRcHcJb4GbXckbTqtOWBUxS1FcjIW+agcSMiparvNEQ=;
+	s=arc-20240116; t=1769614700; c=relaxed/simple;
+	bh=gXAs7AB66Gq8S+cndFWLGlC8A99ghCMChqieRLLtCic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j0sOOpB5HJOb+57mmofG79kt+qXxxEyOeE7azGfHZsWIyiyo9Mwnq71OHU39SYsZi71Nm8LvoJraupVwcGzl88pJNCl9CHNz0Hv/utvfPr5Rj/mpHE8gQdMwIBk9nTmEZLDVH0ohqaoXY3r6SnTxsJ5ZfurT1wD3sxz3PtUWAUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qU9BF06; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20A0C4CEF7;
-	Wed, 28 Jan 2026 15:57:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hTKilnNSbDYhfw2Yad1cagnwUdODiZOLUjrKnTCC3m0hmb/KOgzzoWloiPkIMtMyo4Tco/ukFh+K77C8XS640n3o7b/OwJHC9l17HvZJDPz4YzmFTsdveLdLdEXRDqKRfhaCzI1LUGv6ZiwBp5aG/tcfPW8ADmguMDfrnjxtt6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBRsY2pY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC477C4CEF1;
+	Wed, 28 Jan 2026 15:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615861;
-	bh=fRcHcJb4GbXckbTqtOWBUxS1FcjIW+agcSMiparvNEQ=;
+	s=korg; t=1769614700;
+	bh=gXAs7AB66Gq8S+cndFWLGlC8A99ghCMChqieRLLtCic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2qU9BF06Qj/AsLL1eZEkiom07Z/4ZarMKiXAgltQAbJjW/thS+DraIy/NlxWwP5Kc
-	 ZyAU9p1Q2yya2TEaFw1CY7CsbkpLrExF/CGOFCRmjUnO0XVlvGk3r72L2S7efMgxN5
-	 WIX+QvqXOS7h6woCqERSsFAKhVKYG9lQH7Ev5O8k=
+	b=GBRsY2pYVXaWD77shlnTZl1fO53sJ7dQlovOnDJSeQNMRfFOUJWwE6yihZVDQVgyU
+	 OXDr+arfGNftwC2Xq7EYNG8qbjD6A3nI+SS/jc5xZMAyjAJoJpyQpbuqo4MWgrYMuJ
+	 PRy4k8pIr2vcSUezEB3Y8V+vPee37zXIq9/frHvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Yun Lu <luyun@kylinos.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 103/227] netdevsim: fix a race issue related to the operation on bpf_bound_progs list
+Subject: [PATCH 6.6 172/254] drm/amd/pm: Workaround SI powertune issue on Radeon 430 (v2)
 Date: Wed, 28 Jan 2026 16:22:28 +0100
-Message-ID: <20260128145348.170615414@linuxfoundation.org>
+Message-ID: <20260128145350.995337318@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,164 +63,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212540-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212193-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hust.edu.cn:email]
-X-Rspamd-Queue-Id: 94136A5268
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: D462EA4728
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit b97d5eedf4976cc94321243be83b39efe81a0e15 ]
+[ Upstream commit 764a90eb02268a23b1bb98be5f4a13671346804a ]
 
-The netdevsim driver lacks a protection mechanism for operations on the
-bpf_bound_progs list. When the nsim_bpf_create_prog() performs
-list_add_tail, it is possible that nsim_bpf_destroy_prog() is
-simultaneously performs list_del. Concurrent operations on the list may
-lead to list corruption and trigger a kernel crash as follows:
+Radeon 430 and 520 are OEM GPUs from 2016~2017
+They have the same device id: 0x6611 and revision: 0x87
 
-[  417.290971] kernel BUG at lib/list_debug.c:62!
-[  417.290983] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[  417.290992] CPU: 10 PID: 168 Comm: kworker/10:1 Kdump: loaded Not tainted 6.19.0-rc5 #1
-[  417.291003] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[  417.291007] Workqueue: events bpf_prog_free_deferred
-[  417.291021] RIP: 0010:__list_del_entry_valid_or_report+0xa7/0xc0
-[  417.291034] Code: a8 ff 0f 0b 48 89 fe 48 89 ca 48 c7 c7 48 a1 eb ae e8 ed fb a8 ff 0f 0b 48 89 fe 48 89 c2 48 c7 c7 80 a1 eb ae e8 d9 fb a8 ff <0f> 0b 48 89 d1 48 c7 c7 d0 a1 eb ae 48 89 f2 48 89 c6 e8 c2 fb a8
-[  417.291040] RSP: 0018:ffffb16a40807df8 EFLAGS: 00010246
-[  417.291046] RAX: 000000000000006d RBX: ffff8e589866f500 RCX: 0000000000000000
-[  417.291051] RDX: 0000000000000000 RSI: ffff8e59f7b23180 RDI: ffff8e59f7b23180
-[  417.291055] RBP: ffffb16a412c9000 R08: 0000000000000000 R09: 0000000000000003
-[  417.291059] R10: ffffb16a40807c80 R11: ffffffffaf9edce8 R12: ffff8e594427ac20
-[  417.291063] R13: ffff8e59f7b44780 R14: ffff8e58800b7a05 R15: 0000000000000000
-[  417.291074] FS:  0000000000000000(0000) GS:ffff8e59f7b00000(0000) knlGS:0000000000000000
-[  417.291079] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  417.291083] CR2: 00007fc4083efe08 CR3: 00000001c3626006 CR4: 0000000000770ee0
-[  417.291088] PKRU: 55555554
-[  417.291091] Call Trace:
-[  417.291096]  <TASK>
-[  417.291103]  nsim_bpf_destroy_prog+0x31/0x80 [netdevsim]
-[  417.291154]  __bpf_prog_offload_destroy+0x2a/0x80
-[  417.291163]  bpf_prog_dev_bound_destroy+0x6f/0xb0
-[  417.291171]  bpf_prog_free_deferred+0x18e/0x1a0
-[  417.291178]  process_one_work+0x18a/0x3a0
-[  417.291188]  worker_thread+0x27b/0x3a0
-[  417.291197]  ? __pfx_worker_thread+0x10/0x10
-[  417.291207]  kthread+0xe5/0x120
-[  417.291214]  ? __pfx_kthread+0x10/0x10
-[  417.291221]  ret_from_fork+0x31/0x50
-[  417.291230]  ? __pfx_kthread+0x10/0x10
-[  417.291236]  ret_from_fork_asm+0x1a/0x30
-[  417.291246]  </TASK>
+On the Radeon 430, powertune is buggy and throttles the GPU,
+never allowing it to reach its maximum SCLK. Work around this
+bug by raising the TDP limits we program to the SMC from
+24W (specified by the VBIOS on Radeon 430) to 32W.
 
-Add a mutex lock, to prevent simultaneous addition and deletion operations
-on the list.
+Disabling powertune entirely is	not a viable workaround,
+because	it causes the Radeon 520 to heat up above 100 C,
+which I prefer to avoid.
 
-Fixes: 31d3ad832948 ("netdevsim: add bpf offload support")
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Link: https://patch.msgid.link/20260116095308.11441-1-luyun_611@163.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Additionally, revise the maximum SCLK limit. Considering the
+above issue, these GPUs never reached a high SCLK on Linux,
+and the workarounds were added before the GPUs were released,
+so the workaround likely didn't target these specifically.
+Use 780 MHz (the maximum SCLK according to the VBIOS on the
+Radeon 430). Note that the Radeon 520 VBIOS has a higher
+maximum SCLK: 905 MHz, but in practice it doesn't seem to
+perform better with the higher clock, only heats up more.
+
+v2:
+Move the workaround to si_populate_smc_tdp_limits.
+
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 966d70f1e160bdfdecaf7ff2b3f22ad088516e9f)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/bpf.c       | 6 ++++++
- drivers/net/netdevsim/dev.c       | 2 ++
- drivers/net/netdevsim/netdevsim.h | 1 +
- 3 files changed, 9 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/netdevsim/bpf.c b/drivers/net/netdevsim/bpf.c
-index 49537d3c41205..5f17f68f3c083 100644
---- a/drivers/net/netdevsim/bpf.c
-+++ b/drivers/net/netdevsim/bpf.c
-@@ -244,7 +244,9 @@ static int nsim_bpf_create_prog(struct nsim_dev *nsim_dev,
- 			    &state->state, &nsim_bpf_string_fops);
- 	debugfs_create_bool("loaded", 0400, state->ddir, &state->is_loaded);
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index e8ca74fc089b7..caf590caaf2c7 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -2265,6 +2265,12 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
+ 		if (ret)
+ 			return ret;
  
-+	mutex_lock(&nsim_dev->progs_list_lock);
- 	list_add_tail(&state->l, &nsim_dev->bpf_bound_progs);
-+	mutex_unlock(&nsim_dev->progs_list_lock);
++		if (adev->pdev->device == 0x6611 && adev->pdev->revision == 0x87) {
++			/* Workaround buggy powertune on Radeon 430 and 520. */
++			tdp_limit = 32;
++			near_tdp_limit = 28;
++		}
++
+ 		smc_table->dpm2Params.TDPLimit =
+ 			cpu_to_be32(si_scale_power_for_smc(tdp_limit, scaling_factor) * 1000);
+ 		smc_table->dpm2Params.NearTDPLimit =
+@@ -3448,10 +3454,15 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
+ 		    (adev->pdev->revision == 0x80) ||
+ 		    (adev->pdev->revision == 0x81) ||
+ 		    (adev->pdev->revision == 0x83) ||
+-		    (adev->pdev->revision == 0x87) ||
++		    (adev->pdev->revision == 0x87 &&
++				adev->pdev->device != 0x6611) ||
+ 		    (adev->pdev->device == 0x6604) ||
+ 		    (adev->pdev->device == 0x6605)) {
+ 			max_sclk = 75000;
++		} else if (adev->pdev->revision == 0x87 &&
++				adev->pdev->device == 0x6611) {
++			/* Radeon 430 and 520 */
++			max_sclk = 78000;
+ 		}
+ 	}
  
- 	prog->aux->offload->dev_priv = state;
- 
-@@ -273,12 +275,16 @@ static int nsim_bpf_translate(struct bpf_prog *prog)
- static void nsim_bpf_destroy_prog(struct bpf_prog *prog)
- {
- 	struct nsim_bpf_bound_prog *state;
-+	struct nsim_dev *nsim_dev;
- 
- 	state = prog->aux->offload->dev_priv;
-+	nsim_dev = state->nsim_dev;
- 	WARN(state->is_loaded,
- 	     "offload state destroyed while program still bound");
- 	debugfs_remove_recursive(state->ddir);
-+	mutex_lock(&nsim_dev->progs_list_lock);
- 	list_del(&state->l);
-+	mutex_unlock(&nsim_dev->progs_list_lock);
- 	kfree(state);
- }
- 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index 95f66c1f59db8..56a47c060f2e1 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -1591,6 +1591,7 @@ int nsim_drv_probe(struct nsim_bus_dev *nsim_bus_dev)
- 	nsim_dev->max_macs = NSIM_DEV_MAX_MACS_DEFAULT;
- 	nsim_dev->test1 = NSIM_DEV_TEST1_DEFAULT;
- 	spin_lock_init(&nsim_dev->fa_cookie_lock);
-+	mutex_init(&nsim_dev->progs_list_lock);
- 
- 	dev_set_drvdata(&nsim_bus_dev->dev, nsim_dev);
- 
-@@ -1729,6 +1730,7 @@ void nsim_drv_remove(struct nsim_bus_dev *nsim_bus_dev)
- 	devl_unregister(devlink);
- 	kfree(nsim_dev->vfconfigs);
- 	kfree(nsim_dev->fa_cookie);
-+	mutex_destroy(&nsim_dev->progs_list_lock);
- 	devl_unlock(devlink);
- 	devlink_free(devlink);
- 	dev_set_drvdata(&nsim_bus_dev->dev, NULL);
-diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
-index 02c1c97b70080..d91c0899e536e 100644
---- a/drivers/net/netdevsim/netdevsim.h
-+++ b/drivers/net/netdevsim/netdevsim.h
-@@ -319,6 +319,7 @@ struct nsim_dev {
- 	u32 prog_id_gen;
- 	struct list_head bpf_bound_progs;
- 	struct list_head bpf_bound_maps;
-+	struct mutex progs_list_lock;
- 	struct netdev_phys_item_id switch_id;
- 	struct list_head port_list;
- 	bool fw_update_status;
 -- 
 2.51.0
 
