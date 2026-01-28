@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-212549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +MwxHak0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:13 +0100
+	id 0AtYDZQvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A3DA527C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7112A46A8
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB81432F24EA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0D60E301A618
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9502874FE;
-	Wed, 28 Jan 2026 15:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983CF2F747D;
+	Wed, 28 Jan 2026 15:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFBbT2AP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCuU0xxu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1039F1D6AA;
-	Wed, 28 Jan 2026 15:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6202D9EDB;
+	Wed, 28 Jan 2026 15:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615892; cv=none; b=n3NcEpYtYUJ9+79N24OQKvW5+nJDOlydIij6hRz2bu8hYbdQbaf+SH1S1CN5la3DSIkoDBiDHCOfsO8Kce1SizgM8qZ6dgOuonXVYnF0uDZa9JezS8YL6e78BaH+SvaZQVnRhHl0Shz+72TgCu6hKWZGB1H0lRRzU1k1Xc8CFE0=
+	t=1769614807; cv=none; b=uSekViVzFvuNw05cyJfPljeK7wKcn0fXPIqDSSQu2cwS06fIklrBZNDDtouMVzuvgb4ci5o+oCRomx4+jjjuFevGlV5QNpjxbeZtgPPhTZsed6ldzzed1XWVFBlYpqdGh92zrtcw92tHkXnPG8k7VVGhs+yVIfzOukNl3FqGouY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615892; c=relaxed/simple;
-	bh=dL/Y4vy6CSkeuYDh6isk5AAu3I5gZR1CIojgeeqfIyg=;
+	s=arc-20240116; t=1769614807; c=relaxed/simple;
+	bh=ayNWvU2cCfMQmdD0xBLtSBeJ8CS9dcTPbrAgn9gbFyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WP5FDmN7eIQ7yEFqPUJtCox/r64lvEvYQSyEDfYQ151wowSTW5Tl23RMShKmffSQVJRV4zUgmywGFUhJywXaPYnFhQiasOxhbcZOMeSTqVpqjUdB/RkRAcA6MF7fEJK1SOHt7OVuBEUCRgabI/StgSlkZMBvrLB5v5CoF9db/Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFBbT2AP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767ADC4CEF1;
-	Wed, 28 Jan 2026 15:58:11 +0000 (UTC)
+	 MIME-Version; b=e85SWNxRmcjmNjg9IleNmd1YVUZ/aaTCl6OlbvYL94YCn4aBFzYZoW4jZr+7Qp4a+Th8eaBoLN+rXfbLqSUOgSOrTbL+7TXLf+fVgZ/XjRZk8BiSe2iTnDpIU08lso4Tv3mwWI3NeLUmfyLWGv4ACf1D6utoT9QGTBufJHNUvsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCuU0xxu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C468C4CEF1;
+	Wed, 28 Jan 2026 15:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615891;
-	bh=dL/Y4vy6CSkeuYDh6isk5AAu3I5gZR1CIojgeeqfIyg=;
+	s=korg; t=1769614806;
+	bh=ayNWvU2cCfMQmdD0xBLtSBeJ8CS9dcTPbrAgn9gbFyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFBbT2APTF7W14TJlP4tJFJ0ZUdJHyiMR8Oidk7JtFNXplFlsImJYvEcGEJLwPzoc
-	 pZUzJsHz/oZsq+DXoAQ1Kk8jWWQAPJFwRqFWfgCy5FmPiBokpQZGzq8+X5irBlRDzL
-	 YSqVpaJobJcKmvnw1rqJSn/FaV1v8ijRE8DO8AjA=
+	b=UCuU0xxuVMfJKRdRp/re4vHeDv8qlVdmhEA26fKBNhFOM1RGg9gp1GlYpV0faE1u6
+	 2ikxymbo3/54k3l6WKjkWTuTKFcZi8JtobOQAO64EVpzq2Yjv5AErtFSzBAmKHdf00
+	 Lj2v4RUc5kr6SBfFtE9QwsVEL9dDS455F8izHatM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Melbin K Mathew <mlbnkm1@gmail.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 145/227] vsock/virtio: cap TX credit to local buffer size
-Date: Wed, 28 Jan 2026 16:23:10 +0100
-Message-ID: <20260128145349.676299117@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 215/254] irqchip/gic-v3-its: Avoid truncating memory addresses
+Date: Wed, 28 Jan 2026 16:23:11 +0100
+Message-ID: <20260128145352.527451897@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,160 +69,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212549-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-212226-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: 13A3DA527C
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C7112A46A8
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melbin K Mathew <mlbnkm1@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 8ee784fdf006cbe8739cfa093f54d326cbf54037 ]
+commit 8d76a7d89c12d08382b66e2f21f20d0627d14859 upstream.
 
-The virtio transports derives its TX credit directly from peer_buf_alloc,
-which is set from the remote endpoint's SO_VM_SOCKETS_BUFFER_SIZE value.
+On 32-bit machines with CONFIG_ARM_LPAE, it is possible for lowmem
+allocations to be backed by addresses physical memory above the 32-bit
+address limit, as found while experimenting with larger VMSPLIT
+configurations.
 
-On the host side this means that the amount of data we are willing to
-queue for a connection is scaled by a guest-chosen buffer size, rather
-than the host's own vsock configuration. A malicious guest can advertise
-a large buffer and read slowly, causing the host to allocate a
-correspondingly large amount of sk_buff memory.
-The same thing would happen in the guest with a malicious host, since
-virtio transports share the same code base.
+This caused the qemu virt model to crash in the GICv3 driver, which
+allocates the 'itt' object using GFP_KERNEL. Since all memory below
+the 4GB physical address limit is in ZONE_DMA in this configuration,
+kmalloc() defaults to higher addresses for ZONE_NORMAL, and the
+ITS driver stores the physical address in a 32-bit 'unsigned long'
+variable.
 
-Introduce a small helper, virtio_transport_tx_buf_size(), that
-returns min(peer_buf_alloc, buf_alloc), and use it wherever we consume
-peer_buf_alloc.
+Change the itt_addr variable to the correct phys_addr_t type instead,
+along with all other variables in this driver that hold a physical
+address.
 
-This ensures the effective TX window is bounded by both the peer's
-advertised buffer and our own buf_alloc (already clamped to
-buffer_max_size via SO_VM_SOCKETS_BUFFER_MAX_SIZE), so a remote peer
-cannot force the other to queue more data than allowed by its own
-vsock settings.
+The gicv5 driver correctly uses u64 variables, while all other irqchip
+drivers don't call virt_to_phys or similar interfaces. It's expected that
+other device drivers have similar issues, but fixing this one is
+sufficient for booting a virtio based guest.
 
-On an unpatched Ubuntu 22.04 host (~64 GiB RAM), running a PoC with
-32 guest vsock connections advertising 2 GiB each and reading slowly
-drove Slab/SUnreclaim from ~0.5 GiB to ~57 GiB; the system only
-recovered after killing the QEMU process. That said, if QEMU memory is
-limited with cgroups, the maximum memory used will be limited.
-
-With this patch applied:
-
-  Before:
-    MemFree:        ~61.6 GiB
-    Slab:           ~142 MiB
-    SUnreclaim:     ~117 MiB
-
-  After 32 high-credit connections:
-    MemFree:        ~61.5 GiB
-    Slab:           ~178 MiB
-    SUnreclaim:     ~152 MiB
-
-Only ~35 MiB increase in Slab/SUnreclaim, no host OOM, and the guest
-remains responsive.
-
-Compatibility with non-virtio transports:
-
-  - VMCI uses the AF_VSOCK buffer knobs to size its queue pairs per
-    socket based on the local vsk->buffer_* values; the remote side
-    cannot enlarge those queues beyond what the local endpoint
-    configured.
-
-  - Hyper-V's vsock transport uses fixed-size VMBus ring buffers and
-    an MTU bound; there is no peer-controlled credit field comparable
-    to peer_buf_alloc, and the remote endpoint cannot drive in-flight
-    kernel memory above those ring sizes.
-
-  - The loopback path reuses virtio_transport_common.c, so it
-    naturally follows the same semantics as the virtio transport.
-
-This change is limited to virtio_transport_common.c and thus affects
-virtio-vsock, vhost-vsock, and loopback, bringing them in line with the
-"remote window intersected with local policy" behaviour that VMCI and
-Hyper-V already effectively have.
-
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
-[Stefano: small adjustments after changing the previous patch]
-[Stefano: tweak the commit message]
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Link: https://patch.msgid.link/20260121093628.9941-4-sgarzare@redhat.com
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260119201603.2713066-1-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 6175124d63d34..d3e26025ef589 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -821,6 +821,15 @@ virtio_transport_seqpacket_dequeue(struct vsock_sock *vsk,
- }
- EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_dequeue);
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -616,7 +616,7 @@ static struct its_collection *its_build_
+ 						 struct its_cmd_block *cmd,
+ 						 struct its_cmd_desc *desc)
+ {
+-	unsigned long itt_addr;
++	phys_addr_t itt_addr;
+ 	u8 size = ilog2(desc->its_mapd_cmd.dev->nr_ites);
  
-+static u32 virtio_transport_tx_buf_size(struct virtio_vsock_sock *vvs)
-+{
-+	/* The peer advertises its receive buffer via peer_buf_alloc, but we
-+	 * cap it to our local buf_alloc so a remote peer cannot force us to
-+	 * queue more data than our own buffer configuration allows.
-+	 */
-+	return min(vvs->peer_buf_alloc, vvs->buf_alloc);
-+}
-+
- int
- virtio_transport_seqpacket_enqueue(struct vsock_sock *vsk,
- 				   struct msghdr *msg,
-@@ -830,7 +839,7 @@ virtio_transport_seqpacket_enqueue(struct vsock_sock *vsk,
+ 	itt_addr = virt_to_phys(desc->its_mapd_cmd.dev->itt);
+@@ -787,7 +787,7 @@ static struct its_vpe *its_build_vmapp_c
+ 					   struct its_cmd_desc *desc)
+ {
+ 	struct its_vpe *vpe = valid_vpe(its, desc->its_vmapp_cmd.vpe);
+-	unsigned long vpt_addr, vconf_addr;
++	phys_addr_t vpt_addr, vconf_addr;
+ 	u64 target;
+ 	bool alloc;
  
- 	spin_lock_bh(&vvs->tx_lock);
+@@ -2404,10 +2404,10 @@ retry_baser:
+ 	baser->psz = psz;
+ 	tmp = indirect ? GITS_LVL1_ENTRY_SIZE : esz;
  
--	if (len > vvs->peer_buf_alloc) {
-+	if (len > virtio_transport_tx_buf_size(vvs)) {
- 		spin_unlock_bh(&vvs->tx_lock);
- 		return -EMSGSIZE;
- 	}
-@@ -884,7 +893,8 @@ static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
- 	 * we have bytes in flight (tx_cnt - peer_fwd_cnt), the subtraction
- 	 * does not underflow.
- 	 */
--	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
-+	bytes = (s64)virtio_transport_tx_buf_size(vvs) -
-+		(vvs->tx_cnt - vvs->peer_fwd_cnt);
- 	if (bytes < 0)
- 		bytes = 0;
+-	pr_info("ITS@%pa: allocated %d %s @%lx (%s, esz %d, psz %dK, shr %d)\n",
++	pr_info("ITS@%pa: allocated %d %s @%llx (%s, esz %d, psz %dK, shr %d)\n",
+ 		&its->phys_base, (int)(PAGE_ORDER_TO_SIZE(order) / (int)tmp),
+ 		its_base_type_string[type],
+-		(unsigned long)virt_to_phys(base),
++		(u64)virt_to_phys(base),
+ 		indirect ? "indirect" : "flat", (int)esz,
+ 		psz / SZ_1K, (int)shr >> GITS_BASER_SHAREABILITY_SHIFT);
  
--- 
-2.51.0
-
 
 
 
