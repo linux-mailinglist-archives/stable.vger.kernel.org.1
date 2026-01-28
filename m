@@ -1,170 +1,331 @@
-Return-Path: <stable+bounces-211982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211983-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNhUERkoemlk3QEAu9opvQ
-	(envelope-from <stable+bounces-211982-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:15:37 +0100
+	id ALO5M50oemlk3QEAu9opvQ
+	(envelope-from <stable+bounces-211983-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:17:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6879A39D0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:15:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 809D8A3A16
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:17:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FDA93079EF9
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:07:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70E71302C91C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C87121423C;
-	Wed, 28 Jan 2026 15:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E7D3596E4;
+	Wed, 28 Jan 2026 15:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MHe0BDkj"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="TDZ1jHXa"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013019.outbound.protection.outlook.com [40.107.162.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3E333FE0A;
-	Wed, 28 Jan 2026 15:07:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769612864; cv=none; b=TB95/PJKSBtOSg8v5hLj9qnzHoKpCq5YorY4sJQsyEwQaGC3gpAWmOUan6hL8QaTv53eDP7RVSNON9E1luWPudcdPeGy0PiFj3j7MTiCXPWP4ZFnqvBer1I6T9LVD7gVIGUKX9cGXOW7hBCPLOPk/N9ke37CizC2TxldYndGJmI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769612864; c=relaxed/simple;
-	bh=42xJqEppx6uere65jFemS9UG62b/cEvdAtAStThdFP0=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=YqZgbGGi3bh3IzMxYqcWK6uh3H3ALLBKiskzbadAleD6frWZT/gAIetue0W0r5N1/Muoh2CZ9/3ZwHnxwtGJ1S26PmWCBCMY8AAa4/Y8Zw4bf6ehfOR0F0J2S5xlVLvwmWO4rqdAKcKeEZlfzUyeitdaO4v8++AjeP4yjxhCHvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MHe0BDkj; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769612863; x=1801148863;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=42xJqEppx6uere65jFemS9UG62b/cEvdAtAStThdFP0=;
-  b=MHe0BDkjWaionmKEE88ju4tI0v44hLD0cx6v/6GcQIpVgkSux4Mhlv+M
-   SkwoyPDqOxweUPGpTSk53L/NKZS1d0aqLCGYDxny1KOVV/vAcsYvnlWEu
-   pgKHfcJTuc7bOOSC2tC4DrJ7ZbC6RtvcVTFQu2OvWrOJ/eszLPYJxdsRv
-   EmO97A27zlY9coVtznHAw/trHknjoOkJ3JQwIn5ZKL/ZXDF2j8QlfqJeX
-   gl6SG93hS4MWhsX9Z+BlMjZ6mSFu503b+ZQmXxtFqfby3ZbTeIkZqr6D7
-   pGUoLeCH5A/tduCKOF3U+O9chHZNkMFAsz3AjWIpt4vDoK3ff0vHC8ESn
-   A==;
-X-CSE-ConnectionGUID: GgGuAJDsQ3eEpVL+L3hLFA==
-X-CSE-MsgGUID: AavM88rdTg6pbEOqD3ikEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="70993196"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="70993196"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 07:07:41 -0800
-X-CSE-ConnectionGUID: Ng84lqKFTcm10fyFboFo2w==
-X-CSE-MsgGUID: wwXtok1KRsK9fx08QVO0sg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="208666219"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.14])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 07:07:37 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Wed, 28 Jan 2026 17:07:33 +0200 (EET)
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Jiri Slaby <jirislaby@kernel.org>, 
-    linux-serial <linux-serial@vger.kernel.org>, 
-    qianfan Zhao <qianfanguijin@163.com>, Adriana Nicolae <adriana@arista.com>, 
-    Jamie Iles <jamie@jamieiles.com>, LKML <linux-kernel@vger.kernel.org>, 
-    "Bandal, Shankar" <shankar.bandal@intel.com>, 
-    "Murthy, Shanth" <shanth.murthy@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 6/7] serial: 8250: Add late synchronize_irq() to
- shutdown to handle DW UART BUSY
-In-Reply-To: <aXodg7E6dkqS2e37@smile.fi.intel.com>
-Message-ID: <7d6747b0-5cdc-6936-d52f-414edb063d3e@linux.intel.com>
-References: <20260128105301.1869-1-ilpo.jarvinen@linux.intel.com> <20260128105301.1869-7-ilpo.jarvinen@linux.intel.com> <aXodg7E6dkqS2e37@smile.fi.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F16261B6D;
+	Wed, 28 Jan 2026 15:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769613114; cv=fail; b=ui4rtBn0zzNz+vCv1Fu3W2VP9cfIoyWbII0Jk3CKo19u4Q6Ik/DXnhPN1DjPw5tTe6qj3Tl0poLqkHZKYbEIeSWB8yRYy9mCVMGoNLO0SFhP72fyO4ZmBtcHmLT5zjiJjBNOquHf0Z7kO2rS0hLP/3B9TJ4kyM9C/RISRMQYZCc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769613114; c=relaxed/simple;
+	bh=3Az1Um+s/RutZCfZdtRTT8YoI5na2kEgMd+sF9YZzyE=;
+	h=From:Date:Subject:Content-Type:Message-Id:To:Cc:MIME-Version; b=VuqBxVFPdrKBoGypBZcjmoep3ibjR93IGpURmiia+QzyhJUOUjakyksTMgOz8Bbtfd3/7JDcwm51QRWL01GhC50AfWKlxUqVX4wq0hPeSnhLf5aoE+dakqiALb50JA4YZYIKfvFK3cOK2F0x3mUvPc+GFQs+lIgIuW4kjhPpbI0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=TDZ1jHXa; arc=fail smtp.client-ip=40.107.162.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ipie6DFDJwDubsyfoOJPR6m1zSR5Hq094blqKDvV0J2PWdjNtLa3OKA9tpMDrysNPAFMIOTRf1e7DkyIfrAOZzar8DTXEOyzmJM8r1YCYf+QD63LuznObwf6UFu+a+uVOmRGkJdIvwt3NNEPrgkN0fLHe72UTVqy1eLHF6tWB1HaNbvIzyBRzUwD2uwTYfq//kiqTYDw6iakYyLN2B4OApwhlQ6fLbmTd09o114uOhiqxgVDkEq81tgl97aFJh/0QFTYKRt7YAm4J8MpsaiiyvG72wX2/pmZ6eaDsZ+jvlEDtLN/Cz7k5Xs+8q4Tf8+c8q3DFzIcvPgA1J8ox+QbDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ALFCnKNIjU92vIOqARFDumsZNiNub2RwVFsfXGZgRqA=;
+ b=XqhCWAoWMXXb6+ufHgjTAyu6hKrJjG8pWNp+5KDAF9yPbiXTBBP9yZLHDbD4f8vukkhjUp9bEoi70+rly1CTAiGln3J7xTnXzs/Xm7p4sciyVXbZhrN+lmcMOyPK7fM6kh209oUBjAWt5mJVuRsaNle6vBjKySXVCimMQHBkvhCUSULszR+IVLijCtSQa9URBfJPYsqLigEWqWU3an7Hyh73UfkTK9TSdE75q+Tk5zDbGIAMOkgz5Te8VP9CUvsZzaJFDOHl4GX8AjYGSWxXSEh16hBeVeZpPENi3BVb3Z6WCqfR/sYmZcc8/XnkB1/uafnyzbdX5GXyt1SDh7Sp0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ALFCnKNIjU92vIOqARFDumsZNiNub2RwVFsfXGZgRqA=;
+ b=TDZ1jHXaYUOqYJWjg6lOurXl0xgQqAbiJOl53GGycy9uaZZrBbxyJWyJ1leeKZTsBJKsBbb1yUro5mHsDn+pbTFK+2PsbT4F8dS3sF6VBiaBcKesQuSAl8w4ybr/ZMtQYRBgxYyNkGx4iwLTQcjdmn6Rd4DyzH3maHxKA3FoX9DQNdatedf4qNetSJipp/CHpyRo5zraTUnwZMvgKbtyF+ZGFr31OIDFwnHN0/bqRqGCVVOR/+cddqp/jmM4wibTR+qfwlRTq+8ze7TVRqeqHs2psqS6Mojc7HUzbkEXSc/Wfoyii6S4SLPN35uAut5bwPzJXH11VmN39v8fMHOchw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS8PR04MB8450.eurprd04.prod.outlook.com (2603:10a6:20b:346::5)
+ by AM9PR04MB8100.eurprd04.prod.outlook.com (2603:10a6:20b:3e3::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.8; Wed, 28 Jan
+ 2026 15:11:49 +0000
+Received: from AS8PR04MB8450.eurprd04.prod.outlook.com
+ ([fe80::d3ed:eac:1f17:e9bd]) by AS8PR04MB8450.eurprd04.prod.outlook.com
+ ([fe80::d3ed:eac:1f17:e9bd%6]) with mapi id 15.20.9564.006; Wed, 28 Jan 2026
+ 15:11:48 +0000
+From: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>
+Date: Wed, 28 Jan 2026 23:11:25 +0800
+Subject: [PATCH] pmdomain: imx: Fix i.MX8MP VPU_H1 power up sequence
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260128-imx8mp-vc8000e-pm-v1-1-6c171451c732@nxp.com>
+X-B4-Tracking: v=1; b=H4sIABwnemkC/x3MPQqAMAxA4atIZgOx1Bq8ijj4EzVDtbQggvTuF
+ sdveO+FJFElQV+9EOXWpNdZ0NQVLMd07oK6FoMh46gxjOof9gHvhYlIMHi0pmNxq+W5tVC6EGX
+ T538OY84fMGksAWMAAAA=
+X-Change-ID: 20260128-imx8mp-vc8000e-pm-4278e6d48b54
+To: Ulf Hansson <ulf.hansson@linaro.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Lucas Stach <l.stach@pengutronix.de>, 
+ Jacky Bai <ping.bai@nxp.com>, Frank Li <frank.li@nxp.com>
+Cc: linux-pm@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Peng Fan <peng.fan@nxp.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: SI2PR01CA0034.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::9) To AS8PR04MB8450.eurprd04.prod.outlook.com
+ (2603:10a6:20b:346::5)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-159550698-1769612853=:1017"
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8450:EE_|AM9PR04MB8100:EE_
+X-MS-Office365-Filtering-Correlation-Id: 661d7c0f-a954-4806-b961-08de5e7f8e90
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|19092799006|376014|1800799024|52116014|7416014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RjkzcFg3c3FxNjFjYXdYNDFCN25sd1Q5ZHJseDVlMndpaHo4Qjcwa0thL3dJ?=
+ =?utf-8?B?MGd4dmNqanByWDBpYUJOb0dnN2xpUUVWS2NMc2Q0V2lqcER0SElWbEVkVVc3?=
+ =?utf-8?B?TlNoNGR3OUE1ZDZvYVBQNGZQbE1rTGVzWStTTFVqNFZ4T1lDL1QyUStBOWlB?=
+ =?utf-8?B?NW5yLzNsVmNpVmRueDFxVWMwUXkxL2NCNlMvR1o2SWdVTnptT1FZRmJYZGhT?=
+ =?utf-8?B?ZXdHcXdSR3VyN0JDNFRYSlpib3hOZjF1Z3lWaGgyc0J0NTJ0aE9PZ0JoNlps?=
+ =?utf-8?B?TE1xbGVqbnFydzIzb1NoTGlWQTdNMzdMR21Ed29EUENhbVVuSVFwemtyMTBK?=
+ =?utf-8?B?Rjl3TG8ycFRpaEVVRFY4bkxUSnRoM1BVdzVaV3NxSmdyMjYybVVTTHNvVE9s?=
+ =?utf-8?B?bGhZS0hwNHd6aU9QKy8rVGZENnpLV0tSRzF3UThJWTRMNm5QRTVZQkgyRmFT?=
+ =?utf-8?B?VHcyV3FzQlNhT2IwcmFQQXlnb0dwUTQ5ajRsVy9tL0grRWUraC9RNENTOVkx?=
+ =?utf-8?B?aXh1UlF0dndGK2RFTnNpbjdxNVVzRFp4QzBUQWNLTjJGSlNmb0xyci9wMGI4?=
+ =?utf-8?B?TmRzR1JlamtvYUJLNjF4MnF2bEdmdU5hMzh6enl6b3BUbnpqczVpdmduampN?=
+ =?utf-8?B?Vko4ZmM0Ym1kOVl0Y0tWVTRXQXMzWjFBdG5sc0hPc0ZmaXNXaEF1SWw4OWow?=
+ =?utf-8?B?am5sekNmc3VSdDR1bEtLZlVXaFRYakFseW84Vko0c3M5anhoK3NMNUo1STZP?=
+ =?utf-8?B?eERLUjVTdEwycjIrSXdLTHlTdTRMVmdrbDRxVGMzWXdVbW9jTjdlcVRLZk9F?=
+ =?utf-8?B?OGV0Sm5Xa2NZZkxvbmVBeFNDM0dKMU5yOHk0cXc5RkpqaFZiSE80dG1UUkV1?=
+ =?utf-8?B?UUQxS2pCSVE5RTZRMmdCSTArYXdHQ0tva1RNempJZ0l3b2hpSXYvREt4RVdR?=
+ =?utf-8?B?eXVkUlM0bWJQM0ROWHlHRlNCMTIvM0JscW13NDN1SWcwNXViRFJzUHRVREZI?=
+ =?utf-8?B?d3dDZHdXTTZvQjNWQ05uTHhzVWR1ZGJoemR1M2VaaTdlV3p0Z1VQVGVSRVg0?=
+ =?utf-8?B?MWdtdm4xOW0ySXM0ZDVLUjl4SUFLVWRUeG9WL1M2TWt2V0xra2R4aUVEQnRq?=
+ =?utf-8?B?RjZyeTZ0cVRXdjJmUkg2ay9FaURJcEVmRytmOUFRU0tjRkpsY1UxeUxaWHl1?=
+ =?utf-8?B?a3NQR05TaFVqeTNLWmdYbENhTWN1cDJnY1BwdzArZmJpazRUN0xoQ3VWR1Ra?=
+ =?utf-8?B?bERkVXJWTmNKMkU2N0VrU3k3UjJMd1h0UExwbXF0VjdFMjcrRktERExENGJx?=
+ =?utf-8?B?eEZKUUtzSE9HTnRKa2E5SnYzcWM3MVBsV1FMbW0wSDZGYU1yd3pNS0Y4cnpW?=
+ =?utf-8?B?K3JkeXFaR2tnSFV1OUp6QTZxUGFwdHBRaDhwTDZreHNJTmp0cVJNc0hQSUZR?=
+ =?utf-8?B?SzBtTUUyUU9rMXFWaVE3REZJV0kreDFJRTFhTmQvU2d4WXVRNmM1cWU4UGoz?=
+ =?utf-8?B?TVBNOTNFODFCcHZEQ2JBRElyb2tLeFFEMGFSejZHVEprd2ZaUEc2VEZCVWRx?=
+ =?utf-8?B?WStQaVNxUjF0bXhuTXJiWHFuYnpxTG5WNnBQS0FWZVBrVEM4Q3hXNnZ1QjFX?=
+ =?utf-8?B?T1VmaG0wakdVSE45ZCtRMm55UUtkZm53YW91M1RsczlQNmpZckRSSFVXOWJz?=
+ =?utf-8?B?VmZGNTlmYmdLSFp1WlpScDA3bnNDbVVTNmJ2OFh5WUpCVUV6am43ejBmc090?=
+ =?utf-8?B?SmxHTkNvdldVRXh1d1p1US9DS1ErS0Y1bDdJd29WV1pndWlMZDNlWE1yQmgz?=
+ =?utf-8?B?ZXc3cjZTRUZ6T2lRby9kanlQdkNNVkpTaFdIbG04QTJXa3o2UVIxYWYyWGVF?=
+ =?utf-8?B?SENtTjdNbllBTnZVQ2M3M29SVFFxVDNkZjJIUWtpRDJHRTh0V2xwa3YydWlC?=
+ =?utf-8?B?anlITS9kQjJDakNNSDZHSFFWZllIdFpCMFpsUUc3TFBSejBXNkhpL2ZpWGVO?=
+ =?utf-8?B?akhjUkM1eVRURE5tM2Y5b0VWMU5ORDRSSHVOU2o3WEFjVUordmQ0U2ZhWWNs?=
+ =?utf-8?B?eFBJNjlQYWpYRlRWMlNycjVKTlAxeEhvSHgybVd5ejhqMHorYWNXaFZaK0do?=
+ =?utf-8?B?cEZ2OWFTTDIzZnUzZXNzdlpxZjVtVlp5aDJURUZ4SWY0dlhpY2M0aHpHUFFv?=
+ =?utf-8?Q?kM2pFXbqUCNZMeJ7tta/2IA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8450.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(1800799024)(52116014)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?RC85Wm1uWHYxWU96bTBIbWV0eER4b3E3OVFTMFV1WXFZZTJsN0o3SENrME1p?=
+ =?utf-8?B?VGQ4RVVJOVBSdU0za1N5clJBSER1WjByekkvTHRHdFF2QjVabEppbHFMRmFw?=
+ =?utf-8?B?NUh1b2hVN1RENlFFUzFMZE9yNTBuQ2ZqUFVNR3c0S09Yc0FFVzRpQWpyWndr?=
+ =?utf-8?B?TzN4VE1taVZoRklndUkwTHUrZ2J4Nm03Z1NubGx2bVFDK2d6MlZSUTc4VE9S?=
+ =?utf-8?B?eGJzTy9VQnlJME0waXpBY3B0TVJqZExMUTVQN2JKckVjTmVXTTFJckhQbFRr?=
+ =?utf-8?B?QUJINTNxMGttZUdEbEZHditUV2JtY0dsUW9XSWVwUFZQUVpIbndwVERHdndH?=
+ =?utf-8?B?WFg2VFBJZ21GSkR1MnF2NDVqQWw3OEc2ZlNhV1BubHA4eVp4c2ErTHNPaGxy?=
+ =?utf-8?B?T0VrSGxSeHcwTEwveWp5MlQ2aEFlYTlDN2xVSTBmMXd5dzZGTDAvWXdVZFpS?=
+ =?utf-8?B?Wk5ub2UrR3pYTXVuTXQwaGVTSDl3U0JMZVFIaEdBQSszdTB1ZGFQckF5L1ND?=
+ =?utf-8?B?cCtWbVdEMTZ3cWVURGE0TkJzS0lleGNCMGsvWlR6ZG4zN2lXdDM3S0tSdjZu?=
+ =?utf-8?B?S1J0L1h5UjVYYjg2VmcxSXI3VnB0MXp0ZUt4TjBseGFYanE0MzFQVjd5Szln?=
+ =?utf-8?B?dE4yU0NKVUwwelJSMXcvdXRmdG43aVJpOFRWWXlSbVBoV1lmbWExTTRwbmsx?=
+ =?utf-8?B?QVdVaXRmU1FrVUw5T2wxOVdMcE5yd3FkRFJEMVJHeGEyUlQ0V0pHN21kR0Nv?=
+ =?utf-8?B?S2pBMzJBdGR3YndkZ2xONnNCb1R5dEdNNmZFdkZOUW1iMmxZU3VMQTBMYnhs?=
+ =?utf-8?B?U3BQWSs3Y2JTY21GLzBhRWsvVmtvME9CVlpQdkRuUDJMeGo5ekpnWU9BaGQ2?=
+ =?utf-8?B?eW5kSjQweFlvby9aNGZzNkJCSXVEMWNVUjZkaWR3ZDRHOHZ1Z1J3c0dzbElw?=
+ =?utf-8?B?anRHM0tlWXNUbHlINVZkVlJKWUZQKy9rbjBuN2lyYXdpRnpsU3o4a2NnUTNN?=
+ =?utf-8?B?eTdDYUZGa3ZGdU9pdHVhM3MrejFYSGtiS2VadmFweFhXUy9OektaT1NQVHAr?=
+ =?utf-8?B?MVNCcVRMRHM3VFA3Sk1GZ1hObEJlTk1WNVpLWjBpOUM5OHVnZThkSDRyL2Ji?=
+ =?utf-8?B?aEhoUTNNbzZobko4SmYzbUlYL0s0dnZNeThOMzBOaE4yUis3SE1DVWJyZlFj?=
+ =?utf-8?B?Qjc4TlI5YW1KMS9makI4UmNhQUVWMXYvdEpVT0RORWRvNW15cWFMZjJYSXNG?=
+ =?utf-8?B?aGhkaCtzSzM5NzhrSXZFRlFIN3FZbFkvck81RVc5Qzd6UTdHRGpKREJHS0RZ?=
+ =?utf-8?B?SmsxbmZSUnhiMm5jeC9CeERkaGlmc3VTaFNsaS8yaUpOY0xXY3pRTDNaVXVy?=
+ =?utf-8?B?bHBQQlpvaDBzQXBUcFluYUNiVEVtejk2TGpvc1VOaVRNVjhLTVBkblNUUDl5?=
+ =?utf-8?B?STdCZi9xNTNTZytDdXljSy9UbUxUWFgxYldXVFgrbmM5MEJsRWJGRjdqbVJL?=
+ =?utf-8?B?NzRxVTVMYVJoZXExN3RzZklaUjJZc2tHSjNldEdHYlAzZUN4eWUwVHpvOWdL?=
+ =?utf-8?B?eGtJWVVML2s0SjFGbE9MWU1yemZQbW9qcmgwUnpEV1RkaTEzU3QrZlRTQnQx?=
+ =?utf-8?B?NE5xMm1MekNrdEo3RjVoSkFrOG9HV1E5ZDhUMjFQeTdxMytuM0JiRllncUcy?=
+ =?utf-8?B?MzViU3dIWkJkSHpDdHhMcGVUdHEwSkh0cXNmekFqNkJDV1BXMmhQMm1LZGRl?=
+ =?utf-8?B?UDlOOVl4Tko4enl4RE9RZjYzN3lzTGVJaEpnYWw4S2pZYW8xbmw1VVVLQjJy?=
+ =?utf-8?B?MTdnZjlqdkE5ZEZ6RVNxM0V0SEdhb0lZVGFacHNydmVmdDNkaHFtZ1B2Z1lU?=
+ =?utf-8?B?NERYdTd1SkNTMmxhLzh0TUFpNEFNQmNmbmFhTWJ0OWVMRlpkN2NwU1VFclZ2?=
+ =?utf-8?B?OXpYV29zdnJrUVIrNUpTU21EVzhxa3NOVWFTNzh3WVAwK2ZHL2dIQWJaL0pT?=
+ =?utf-8?B?eHdqeUhtNUk3ODM4S0d4YVpzZklQTTVZRE45QURjSnhnc29LTXMycXgvQjZE?=
+ =?utf-8?B?dG9qZFZ3SGpBdGVvK0lmc2YvYjR6Q0Q4Sm1hZXc3WGF2ZytSK0NSZzNQUWdE?=
+ =?utf-8?B?bElFZzlGRDMwSkV5QnZFeG91c2JMejJ5YXJESm5BVkFzaTFMNlBqRHV6V2Jz?=
+ =?utf-8?B?UXpldmRZeE0zTDFyTHE2U1dPdzUra0FHekFqelJwQ01uYjkvVFhHbklBRS9Z?=
+ =?utf-8?B?cG01YnpiNTBTdFZTb3UyT24zUzlrbDgycC83eVgyMEY0N1g5SXhQUEtSWEZX?=
+ =?utf-8?B?WGZ3Y2EwYXNMY0s2N01QME82Tnk0eVVCeTltY2d4RzJEcWY5Slkzdz09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 661d7c0f-a954-4806-b961-08de5e7f8e90
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8450.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 15:11:48.1136
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HkpGSFAcg6bQv9r3e6XbJ0hZToE84MO/WhcYzLnmrChzgal+/qnj8X7oek+WgJ89GDS5DQEFSZIazNEOFAWhcw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8100
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	CTYPE_MIXED_BOGUS(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+X-Spamd-Result: default: False [0.44 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,163.com,arista.com,jamieiles.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-211982-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN_FAIL(0.00)[10.253.234.172.asn.rspamd.com:server fail];
-	MIME_TRACE(0.00)[0:+,1:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[linaro.org,kernel.org,pengutronix.de,gmail.com,nxp.com];
+	RSPAMD_URIBL_FAIL(0.00)[NXP1.onmicrosoft.com:query timed out];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211983-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[peng.fan@oss.nxp.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,linux.intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B6879A39D0
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[stable.vger.kernel.org:server fail];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[NXP1.onmicrosoft.com:dkim,nxp.com:mid,nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 809D8A3A16
 X-Rspamd-Action: no action
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Peng Fan <peng.fan@nxp.com>
 
---8323328-159550698-1769612853=:1017
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Per errata:
+ERR050531: VPU_NOC power down handshake may hang during VC8000E/VPUMIX
+power up/down cycling.
+Description: VC8000E reset de-assertion edge and AXI clock may have a
+timing issue.
+Workaround: Set bit2 (vc8000e_clk_en) of BLK_CLK_EN_CSR to 0 to gate off
+both AXI clock and VC8000E clock sent to VC8000E and AXI clock sent to
+VPU_NOC m_v_2 interface during VC8000E power up(VC8000E reset is
+de-asserted by HW)
 
-On Wed, 28 Jan 2026, Andy Shevchenko wrote:
+Add a bool variable is_errata_err050531 in
+'struct imx8m_blk_ctrl_domain_data' to represent whether the workaround
+is needed. If is_errata_err050531 is true, first clear the clk before
+powering up gpc, then enable the clk after powering up gpc.
 
-> On Wed, Jan 28, 2026 at 12:53:00PM +0200, Ilpo J=E4rvinen wrote:
-> > When DW UART is !uart_16550_compatible, it can indicate BUSY at any
-> > point (when under constant Rx pressure) unless a complex sequence of
-> > steps is performed. Any LCR write can run a foul with the condition
-> > that prevents writing LCR while the UART is BUSY, which triggers
-> > BUSY_DETECT interrupt that seems unmaskable using IER bits.
-> >=20
-> > Normal flow is that dw8250_handle_irq() handles BUSY_DETECT condition
-> > by reading USR register. This BUSY feature, however, breaks the
-> > assumptions made in serial8250_do_shutdown(), which runs
-> > synchronize_irq() after clearing IER and assumes no interrupts can
-> > occur after that point but then proceeds to update LCR, which on DW
-> > UART can trigger an interrupt.
-> >=20
-> > If serial8250_do_shutdown() releases the interrupt handler before the
-> > handler has run and processed the BUSY_DETECT condition by read the USR
-> > register, the IRQ is not deasserted resulting in interrupt storm that
-> > triggers "irq x: nobody cared" warning leading to disabling the IRQ.
-> >=20
-> > Add late synchronize_irq() into serial8250_do_shutdown() to ensure
-> > BUSY_DETECT from DW UART is handled before port's interrupt handler is
-> > released. Alternative would be to add DW UART specific shutdown
-> > function but it would mostly duplicate the generic code and the extra
-> > synchronize_irq() seems pretty harmless in serial8250_do_shutdown().
->=20
-> Dunno if the triggered interrupt may lead to a new DMA transfers (since
-> this is generic 8520 code...) in some cases.
+While at here, using imx8mm_vpu_power_notifier() is wrong, as it ungates
+the VPU clocks to provide the ADB clock, which is necessary on i.MX8MM,
+but on i.MX8MP there is a separate gate (bit 3) for the NoC. So add
+imx8mp_vpu_power_notifier() for i.MX8MP.
 
-If BUSY_DETECT interrupt fires (like I'd expect), the handler won't start=
-=20
-anything but exits early from dw8250_handle_irq().
+Fixes: a1a5f15f7f6cb ("soc: imx: imx8m-blk-ctrl: add i.MX8MP VPU blk ctrl")
+Cc: stable@vger.kernel.org
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+---
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c | 37 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
 
-> Anyway I've just sent a patch
-> that is Cc'ed to you to prevent that from happening. Not sure if it needs
-> to be incorporated into your series or should have a Fixes tag.
->=20
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+diff --git a/drivers/pmdomain/imx/imx8m-blk-ctrl.c b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+index 74bf4936991d7c36346797d8b646dad40085fc2d..5b26b7c2c43172817d5e407a7d85eb6c5400d5a8 100644
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -54,6 +54,7 @@ struct imx8m_blk_ctrl_domain_data {
+ 	 * register.
+ 	 */
+ 	u32 mipi_phy_rst_mask;
++	bool is_errata_err050531;
+ };
+ 
+ #define DOMAIN_MAX_CLKS 4
+@@ -108,7 +109,11 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+ 		dev_err(bc->dev, "failed to enable clocks\n");
+ 		goto bus_put;
+ 	}
+-	regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
++
++	if (data->is_errata_err050531)
++		regmap_clear_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
++	else
++		regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
+ 
+ 	/* power up upstream GPC domain */
+ 	ret = pm_runtime_get_sync(domain->power_dev);
+@@ -117,6 +122,9 @@ static int imx8m_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+ 		goto clk_disable;
+ 	}
+ 
++	if (data->is_errata_err050531)
++		regmap_set_bits(bc->regmap, BLK_CLK_EN, data->clk_mask);
++
+ 	/* wait for reset to propagate */
+ 	udelay(5);
+ 
+@@ -514,9 +522,34 @@ static const struct imx8m_blk_ctrl_domain_data imx8mp_vpu_blk_ctl_domain_data[]
+ 	},
+ };
+ 
++static int imx8mp_vpu_power_notifier(struct notifier_block *nb,
++				     unsigned long action, void *data)
++{
++	struct imx8m_blk_ctrl *bc = container_of(nb, struct imx8m_blk_ctrl,
++						 power_nb);
++
++	if (action == GENPD_NOTIFY_ON) {
++		/*
++		 * On power up we have no software backchannel to the GPC to
++		 * wait for the ADB handshake to happen, so we just delay for a
++		 * bit. On power down the GPC driver waits for the handshake.
++		 */
++
++		udelay(5);
++
++		/* set "fuse" bits to enable the VPUs */
++		regmap_set_bits(bc->regmap, 0x8, 0xffffffff);
++		regmap_set_bits(bc->regmap, 0xc, 0xffffffff);
++		regmap_set_bits(bc->regmap, 0x10, 0xffffffff);
++		regmap_set_bits(bc->regmap, 0x14, 0xffffffff);
++	}
++
++	return NOTIFY_OK;
++}
++
+ static const struct imx8m_blk_ctrl_data imx8mp_vpu_blk_ctl_dev_data = {
+ 	.max_reg = 0x18,
+-	.power_notifier_fn = imx8mm_vpu_power_notifier,
++	.power_notifier_fn = imx8mp_vpu_power_notifier,
+ 	.domains = imx8mp_vpu_blk_ctl_domain_data,
+ 	.num_domains = ARRAY_SIZE(imx8mp_vpu_blk_ctl_domain_data),
+ };
 
+---
+base-commit: 4f938c7d3b25d87b356af4106c2682caf8c835a2
+change-id: 20260128-imx8mp-vc8000e-pm-4278e6d48b54
 
---=20
- i.
+Best regards,
+-- 
+Peng Fan <peng.fan@nxp.com>
 
---8323328-159550698-1769612853=:1017--
 
