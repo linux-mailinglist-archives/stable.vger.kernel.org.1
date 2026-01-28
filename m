@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCKxIms6emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:33:47 +0100
+	id IPZJBHYuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13193A5CFB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:33:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FC6A4411
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 946DD31BB3C1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:55:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1680B302C5CF
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC4B2F6183;
-	Wed, 28 Jan 2026 15:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656DA2D660E;
+	Wed, 28 Jan 2026 15:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq5ouieN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeBNM1aW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D400D18027;
-	Wed, 28 Jan 2026 15:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8472BE04C;
+	Wed, 28 Jan 2026 15:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615704; cv=none; b=cANwTsYp1lvQhGoNNfjPuE/Bsb+Zr7zEWaJPHQZY20kTEYmC/8ic21ebl5bkieYD3fMlwnzLs0/+c+XFk/pcje26Ddywhr25nA6sxzS2672cgW7xcBrlqKu88drhQ7+8tsgckidoFpzyEFwS/uN4Wv45tFLO4qDMHEBP0uHZUQM=
+	t=1769614509; cv=none; b=twqC8GmK8WaquqPdooBjAfK9AsmuIxXSYaPUGJKWic4JAUke+tuh5/EW6gnNaRa/cXEq4Cwo1cIT/pVJ1CG6fFIT3JU7kVf3POZBB81l6tFeoc9Po+ojs0dQCNlvdduFxKl8Pdxsw2rETacbkU+clLfuvBTyB2y8v7O09WyGzyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615704; c=relaxed/simple;
-	bh=RG34Kk6jPkdhij+C2bUhgvUZmN391S/6UB77eCY4WZc=;
+	s=arc-20240116; t=1769614509; c=relaxed/simple;
+	bh=WLB4OXty3M4oTdU4J48NT1CLqCP11F2cH6oyodKeEQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OpgZnoKiQ1kRtq39yHuPObd5wFCpKCgQTCDc/9Cxbs/3/WfSkbXDKes4F6sQd6G+Id8vUoF7kSvVFRawXWxYTEGseHArS2G7/qXrzvp9sJz18BitcXsgwnyJOc4JbPyDBxfQNXI6dgKl1N3vHHVW50prgUaWkjmIE3+qARyXR7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq5ouieN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49249C4CEF1;
-	Wed, 28 Jan 2026 15:55:04 +0000 (UTC)
+	 MIME-Version; b=p7f/ey58h1ozUT64iN12R4cyWBkx8RcaUaDLm2KouIOEOJi+rjhEhIvBpy7KK4m4YRyjxBoE7FOhWTKf8h7xP9ijF6hnNzxCI3LUGuQsilXDaUE3CHmquQK5i8JBlnqgw9uadEnYzn49qV6UJh7oCwXr42jgzQqwC4cB3ugZOgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeBNM1aW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5433AC4CEF1;
+	Wed, 28 Jan 2026 15:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615704;
-	bh=RG34Kk6jPkdhij+C2bUhgvUZmN391S/6UB77eCY4WZc=;
+	s=korg; t=1769614508;
+	bh=WLB4OXty3M4oTdU4J48NT1CLqCP11F2cH6oyodKeEQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tq5ouieN+Sz7WV/BEcP5WrGE9HxWqzkgw0Lm/OWD/esbJ5lN0wewYV5XjYjQkbMCy
-	 dF1YVIDMN2PwhRdqIcBggA1BEhBo+UiwlKKsmMMSwuvL4CgY7cxk6QUz0GWFpwStq2
-	 CBvpyL3yO8Jn3nDg1KjNuyvDJ86zmXDCgieAcKcE=
+	b=TeBNM1aWiMQtHWue1i/6ldHGlvjJw3RNuFJonJwAmaDDTpCwySqyVvDA37Jq6s9Pc
+	 5cTW3CK1+n/TUmnnXpkaEIH+HS1BxOV2GAmwfkj+HVRPcaLGKTui5Mn/0BHbKbM9jC
+	 TDzwQuVc4UKOgTXGM9tz2BVYPODUExjtYkqbiVTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiko Shimizu <naohiko.shimizu@gmail.com>,
-	Anup Patel <anup@brainfault.org>,
-	Paul Walmsley <pjw@kernel.org>,
+	Arusekk <floss@arusekk.pl>,
+	Nicolas Schier <nsc@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 089/227] riscv: suspend: Fix stimecmp update hazard on RV32
+Subject: [PATCH 6.6 158/254] kconfig: fix static linking of nconf
 Date: Wed, 28 Jan 2026 16:22:14 +0100
-Message-ID: <20260128145347.538954552@linuxfoundation.org>
+Message-ID: <20260128145350.497242303@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +65,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212494-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,brainfault.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212135-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 13193A5CFB
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,arusekk.pl:email]
+X-Rspamd-Queue-Id: 53FC6A4411
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiko Shimizu <naohiko.shimizu@gmail.com>
+From: Arkadiusz Kozdra <floss@arusekk.pl>
 
-[ Upstream commit 344c5281f43851b22c7cc223fd0250c143fcbc79 ]
+[ Upstream commit baaecfcac559bcac73206df447eb5c385fa22f2a ]
 
-On RV32, updating the 64-bit stimecmp (or vstimecmp) CSR requires two
-separate 32-bit writes. A race condition exists if the timer triggers
-during these two writes.
+When running make nconfig with a static linking host toolchain,
+the libraries are linked in an incorrect order,
+resulting in errors similar to the following:
 
-The RISC-V Privileged Specification (e.g., Section 3.2.1 for mtimecmp)
-recommends a specific 3-step sequence to avoid spurious interrupts
-when updating 64-bit comparison registers on 32-bit systems:
+$ MAKEFLAGS='HOSTCC=cc\ -static' make nconfig
+/usr/bin/ld: /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/libpanel.a(p_new.o): in function `new_panel':
+(.text+0x13): undefined reference to `_nc_panelhook_sp'
+/usr/bin/ld: (.text+0x6c): undefined reference to `_nc_panelhook_sp'
 
-1. Set the low-order bits (stimecmp) to all ones (ULONG_MAX).
-2. Set the high-order bits (stimecmph) to the desired value.
-3. Set the low-order bits (stimecmp) to the desired value.
-
-Current implementation writes the LSB first without ensuring a future
-value, which may lead to a transient state where the 64-bit comparison
-is incorrectly evaluated as "expired" by the hardware. This results in
-spurious timer interrupts.
-
-This patch adopts the spec-recommended 3-step sequence to ensure the
-intermediate 64-bit state is never smaller than the current time.
-
-Fixes: ffef54ad4110 ("riscv: Add stimecmp save and restore")
-Signed-off-by: Naohiko Shimizu <naohiko.shimizu@gmail.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://patch.msgid.link/20260104135938.524-4-naohiko.shimizu@gmail.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Fixes: 1c5af5cf9308 ("kconfig: refactor ncurses package checks for building mconf and nconf")
+Signed-off-by: Arusekk <floss@arusekk.pl>
+Link: https://patch.msgid.link/20260110114808.22595-1-floss@arusekk.pl
+[nsc: Added comment about library order]
+Signed-off-by: Nicolas Schier <nsc@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/suspend.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/kconfig/nconf-cfg.sh | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/riscv/kernel/suspend.c b/arch/riscv/kernel/suspend.c
-index 24b3f57d467f8..aff93090c4efc 100644
---- a/arch/riscv/kernel/suspend.c
-+++ b/arch/riscv/kernel/suspend.c
-@@ -51,10 +51,11 @@ void suspend_restore_csrs(struct suspend_context *context)
+diff --git a/scripts/kconfig/nconf-cfg.sh b/scripts/kconfig/nconf-cfg.sh
+index f871a2160e363..59814eb3616c6 100755
+--- a/scripts/kconfig/nconf-cfg.sh
++++ b/scripts/kconfig/nconf-cfg.sh
+@@ -4,8 +4,9 @@
+ cflags=$1
+ libs=$2
  
- #ifdef CONFIG_MMU
- 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SSTC)) {
--		csr_write(CSR_STIMECMP, context->stimecmp);
- #if __riscv_xlen < 64
-+		csr_write(CSR_STIMECMP, ULONG_MAX);
- 		csr_write(CSR_STIMECMPH, context->stimecmph);
- #endif
-+		csr_write(CSR_STIMECMP, context->stimecmp);
- 	}
+-PKG="ncursesw menuw panelw"
+-PKG2="ncurses menu panel"
++# Keep library order for static linking (HOSTCC='cc -static')
++PKG="menuw panelw ncursesw"
++PKG2="menu panel ncurses"
  
- 	csr_write(CSR_SATP, context->satp);
+ if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
+ 	if ${HOSTPKG_CONFIG} --exists $PKG; then
+@@ -26,19 +27,19 @@ fi
+ # find ncurses by pkg-config.)
+ if [ -f /usr/include/ncursesw/ncurses.h ]; then
+ 	echo -D_GNU_SOURCE -I/usr/include/ncursesw > ${cflags}
+-	echo -lncursesw -lmenuw -lpanelw > ${libs}
++	echo -lmenuw -lpanelw -lncursesw > ${libs}
+ 	exit 0
+ fi
+ 
+ if [ -f /usr/include/ncurses/ncurses.h ]; then
+ 	echo -D_GNU_SOURCE -I/usr/include/ncurses > ${cflags}
+-	echo -lncurses -lmenu -lpanel > ${libs}
++	echo -lmenu -lpanel -lncurses > ${libs}
+ 	exit 0
+ fi
+ 
+ if [ -f /usr/include/ncurses.h ]; then
+ 	echo -D_GNU_SOURCE > ${cflags}
+-	echo -lncurses -lmenu -lpanel > ${libs}
++	echo -lmenu -lpanel -lncurses > ${libs}
+ 	exit 0
+ fi
+ 
 -- 
 2.51.0
 
