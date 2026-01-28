@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-212444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLKMJhM3eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:31 +0100
+	id kDNgInssemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:34:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6B7A56B2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E725AA3FDD
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:34:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 843B330398E8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8E3730154B2
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C6930F543;
-	Wed, 28 Jan 2026 15:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123B82741DF;
+	Wed, 28 Jan 2026 15:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olYOyq6k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3rKfGqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88EE308F3B;
-	Wed, 28 Jan 2026 15:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA63B273D6D;
+	Wed, 28 Jan 2026 15:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615540; cv=none; b=lzW1I1e7eAO82+2NEKyT/jVDll8wp3qCK4yUM5sMOVqV4vDlhhUyB2Pwwp0lUcSXql/bR+DusdrL+HpeM+mV1UnOsnEj631NdFq+xHzrT+heFv9JzYPum3eM+nY0reONwNkmjKHAOf2RBJ6xT+x2vLh6LbuzCFZ8tnvWAX9VNuc=
+	t=1769614451; cv=none; b=DKpz89GDP1XFCoUIfofdmQzm7vqC97hU2PCJKUekpnpcWBmGl8xo2LfNtYToBkl9wU9tHWN+c7hpt8Ulooh2NwL/tTsNqh41vkGymfhvsGHghHZ1xxw0eS3rXnGRt7lNE2umyM8I/h+B3BPi2VT6v8dOyg/32sN1H6BeoDseBNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615540; c=relaxed/simple;
-	bh=6jXQdvS4rOltFuTDh5KwlMPwoeWEH363Hra+YgyFG0Q=;
+	s=arc-20240116; t=1769614451; c=relaxed/simple;
+	bh=vV+xjQBQc8rRRHqmLm/klwp3VcHgxeVb295sGn1YzLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nrALTVt6UXmg324TJnrRUeUZoG97bLBroVAG6255RJuWPoe7dhV440PQPll82HdhzDPAuYjrkTgyPYer/J0Ds77e3fEw2jiji6epKg/qpraoNE2tmNDUVQK7Sv7iPuLyaelV43B0gg7miyEdi+xYO6d6dhk/PVeN9z+G9db4vLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olYOyq6k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7CCC4CEF1;
-	Wed, 28 Jan 2026 15:52:20 +0000 (UTC)
+	 MIME-Version; b=iThT3ckeM/nWyvgwvhuRETZfkc+tF+10Y/540MfFo04rTBrkfiXRHGmrs03DmR2ggHuk6xBkLYb+t7quciAAWo36DC6fS/22D3zuI4tVvmYQwv1UjTcH8d19/7z8AakWBvi4yJsN9Rgnte+5wVw8bAIFDCayn9yPaeH/s4zGDgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3rKfGqu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39647C4AF09;
+	Wed, 28 Jan 2026 15:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615540;
-	bh=6jXQdvS4rOltFuTDh5KwlMPwoeWEH363Hra+YgyFG0Q=;
+	s=korg; t=1769614451;
+	bh=vV+xjQBQc8rRRHqmLm/klwp3VcHgxeVb295sGn1YzLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olYOyq6kb9sG6OORCBfDGvTnhmFJgj6T3PtwtZiDeGBKHijLqhVHPbfd/BS0H62he
-	 ABw+5rzBdPROKmDqYOR6y92v3R/BSwITLs5D305PnD48vbkbnW0RBbaok5RNSycPj5
-	 pDlmMySG2Y/Q+OxHghCZqvPj/4LPp5xxVs6x2UIA=
+	b=p3rKfGqu3CzDSQglOKLw7oyEeNHKX9r+TXvUYy1epZ7+YESe2eHB2Nv3npLim5ds+
+	 kF1j3H1KPa8aSffZKwgQe8+MVdo1QPvlU8VU9e66NNSXIdNu3T/9FEz08SC0VKgIU6
+	 a+K/gGjUU9k1nWctYZfaZ2DHgJfkjjXeghiibn2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 040/227] pwm: Ensure ioctl() returns a negative errno on error
+Subject: [PATCH 6.6 109/254] dt-bindings: power: qcom,rpmpd: Add SC8280XP_MXC_AO
 Date: Wed, 28 Jan 2026 16:21:25 +0100
-Message-ID: <20260128145345.785798692@linuxfoundation.org>
+Message-ID: <20260128145348.747208589@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +65,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212444-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212117-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 0E6B7A56B2
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
+X-Rspamd-Queue-Id: E725AA3FDD
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit c198b7773ca5bc3bdfb15b85e414fb9a99a5e5ba ]
+[ Upstream commit 45e1be5ddec98db71e7481fa7a3005673200d85c ]
 
-copy_to_user() returns the number of bytes not copied, thus if there is
-a problem a positive number. However the ioctl callback is supposed to
-return a negative error code on error.
+Not sure how useful it's gonna be in practice, but the definition is
+missing (unlike the previously-unused SC8280XP_MXC-non-_AO), so add it
+to allow the driver to create the corresponding pmdomain.
 
-This error is a unfortunate as strictly speaking it became ABI with the
-introduction of pwm character devices. However I never saw the issue in
-real life -- I found this by code inspection -- and it only affects an
-error case where readonly memory is passed to the ioctls or the address
-mapping changes while the ioctl is active. Also there are already error
-cases returning negative values, so the calling code must be prepared to
-see such values already.
-
-Fixes: 9c06f26ba5f5 ("pwm: Add support for pwmchip devices for faster and easier userspace access")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://patch.msgid.link/20260119151325.571857-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: dbfb5f94e084 ("dt-bindings: power: rpmpd: Add sc8280xp RPMh power-domains")
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20251202-topic-8280_mxc-v2-1-46cdf47a829e@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/core.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/dt-bindings/power/qcom,rpmhpd.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-index 7dd1cf2ba4025..462c91a034c8e 100644
---- a/drivers/pwm/core.c
-+++ b/drivers/pwm/core.c
-@@ -2294,8 +2294,9 @@ static long pwm_cdev_ioctl(struct file *file, unsigned int cmd, unsigned long ar
- 				.duty_offset_ns = wf.duty_offset_ns,
- 			};
+diff --git a/include/dt-bindings/power/qcom,rpmhpd.h b/include/dt-bindings/power/qcom,rpmhpd.h
+index 758c3487bd662..0abd1c4c53143 100644
+--- a/include/dt-bindings/power/qcom,rpmhpd.h
++++ b/include/dt-bindings/power/qcom,rpmhpd.h
+@@ -260,5 +260,6 @@
+ #define SC8280XP_NSP		13
+ #define SC8280XP_QPHY		14
+ #define SC8280XP_XO		15
++#define SC8280XP_MXC_AO		16
  
--			return copy_to_user((struct pwmchip_waveform __user *)arg,
--					    &cwf, sizeof(cwf));
-+			ret = copy_to_user((struct pwmchip_waveform __user *)arg,
-+					   &cwf, sizeof(cwf));
-+			return ret ? -EFAULT : 0;
- 		}
- 
- 	case PWM_IOCTL_GETWF:
-@@ -2328,8 +2329,9 @@ static long pwm_cdev_ioctl(struct file *file, unsigned int cmd, unsigned long ar
- 				.duty_offset_ns = wf.duty_offset_ns,
- 			};
- 
--			return copy_to_user((struct pwmchip_waveform __user *)arg,
--					    &cwf, sizeof(cwf));
-+			ret = copy_to_user((struct pwmchip_waveform __user *)arg,
-+					   &cwf, sizeof(cwf));
-+			return ret ? -EFAULT : 0;
- 		}
- 
- 	case PWM_IOCTL_SETROUNDEDWF:
+ #endif
 -- 
 2.51.0
 
