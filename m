@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Ki1CPYvemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:10 +0100
+	id UCKxIms6emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:33:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C6DA479A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13193A5CFB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:33:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E5273061589
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 946DD31BB3C1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229B33090CF;
-	Wed, 28 Jan 2026 15:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC4B2F6183;
+	Wed, 28 Jan 2026 15:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/2zHQyp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq5ouieN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB838311960;
-	Wed, 28 Jan 2026 15:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D400D18027;
+	Wed, 28 Jan 2026 15:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615112; cv=none; b=b3k1jm+52zTpMhLEAkEacado1ZBvAWgHFfwqu4+/Hb9GBJLYCNJl/Me31AcXxfbj9jd/aAlr/6Rd2ZhwEEsW7IMyhLkOG+a1ZeIvtDKnjvqCdfr6HS9/gZBxinuDmpuiV9iPsJw8HiEYFa8AD9cjnaIi+a2opRG8NvRerV6ou7w=
+	t=1769615704; cv=none; b=cANwTsYp1lvQhGoNNfjPuE/Bsb+Zr7zEWaJPHQZY20kTEYmC/8ic21ebl5bkieYD3fMlwnzLs0/+c+XFk/pcje26Ddywhr25nA6sxzS2672cgW7xcBrlqKu88drhQ7+8tsgckidoFpzyEFwS/uN4Wv45tFLO4qDMHEBP0uHZUQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615112; c=relaxed/simple;
-	bh=h18qjHTCnIVyb5PWzxb0lz9SY+M6uH71DwAqS95kaOE=;
+	s=arc-20240116; t=1769615704; c=relaxed/simple;
+	bh=RG34Kk6jPkdhij+C2bUhgvUZmN391S/6UB77eCY4WZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldG7vHr3RdWmZHQxsD//ZQrhX/3bVym5MCBkjFA8qi1CwMyP6F8WRq5ZaIk/BjUvb8kUG2Z2QffUtXQiQSKk0R8LPf/qRdZQ3vy4x++hLZFdU74o+ZI17NOekfEJUqOIZdgAn86WXAnrbWYc4wvltEYr3uNS7Ghhb4Z84zPz/Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/2zHQyp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B50C4CEF1;
-	Wed, 28 Jan 2026 15:45:11 +0000 (UTC)
+	 MIME-Version; b=OpgZnoKiQ1kRtq39yHuPObd5wFCpKCgQTCDc/9Cxbs/3/WfSkbXDKes4F6sQd6G+Id8vUoF7kSvVFRawXWxYTEGseHArS2G7/qXrzvp9sJz18BitcXsgwnyJOc4JbPyDBxfQNXI6dgKl1N3vHHVW50prgUaWkjmIE3+qARyXR7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq5ouieN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49249C4CEF1;
+	Wed, 28 Jan 2026 15:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615112;
-	bh=h18qjHTCnIVyb5PWzxb0lz9SY+M6uH71DwAqS95kaOE=;
+	s=korg; t=1769615704;
+	bh=RG34Kk6jPkdhij+C2bUhgvUZmN391S/6UB77eCY4WZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/2zHQypxBz17V/Bsi70Jhh6LnpFNAWAGiQDRJySD2Zxr2ZqG1i0OFPWzLjEp1cYI
-	 Cb8i7I4vrBAJtFDBSI36UCCUlBUgH/hCzrPQz0SrbwW/N93ZDnCzzfVqZtmONwEBTN
-	 R25jTZxA0046vPIpfUa+qOz3IU/FR2jjIS/IYYPc=
+	b=Tq5ouieN+Sz7WV/BEcP5WrGE9HxWqzkgw0Lm/OWD/esbJ5lN0wewYV5XjYjQkbMCy
+	 dF1YVIDMN2PwhRdqIcBggA1BEhBo+UiwlKKsmMMSwuvL4CgY7cxk6QUz0GWFpwStq2
+	 CBvpyL3yO8Jn3nDg1KjNuyvDJ86zmXDCgieAcKcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 050/169] scsi: storvsc: Process unsupported MODE_SENSE_10
-Date: Wed, 28 Jan 2026 16:22:13 +0100
-Message-ID: <20260128145335.817310338@linuxfoundation.org>
+	Naohiko Shimizu <naohiko.shimizu@gmail.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 089/227] riscv: suspend: Fix stimecmp update hazard on RV32
+Date: Wed, 28 Jan 2026 16:22:14 +0100
+Message-ID: <20260128145347.538954552@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +66,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,outlook.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-212317-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-212494-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,brainfault.org,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.985];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 89C6DA479A
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 13193A5CFB
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Naohiko Shimizu <naohiko.shimizu@gmail.com>
 
-commit 9eacec5d18f98f89be520eeeef4b377acee3e4b8 upstream.
+[ Upstream commit 344c5281f43851b22c7cc223fd0250c143fcbc79 ]
 
-The Hyper-V host does not support MODE_SENSE_10 and MODE_SENSE.  The
-driver handles MODE_SENSE as unsupported command, but not for
-MODE_SENSE_10. Add MODE_SENSE_10 to the same handling logic and return
-correct code to SCSI layer.
+On RV32, updating the 64-bit stimecmp (or vstimecmp) CSR requires two
+separate 32-bit writes. A race condition exists if the timer triggers
+during these two writes.
 
-Fixes: 89ae7d709357 ("Staging: hv: storvsc: Move the storage driver out of the staging area")
-Cc: stable@kernel.org
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20260117010302.294068-1-longli@linux.microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The RISC-V Privileged Specification (e.g., Section 3.2.1 for mtimecmp)
+recommends a specific 3-step sequence to avoid spurious interrupts
+when updating 64-bit comparison registers on 32-bit systems:
+
+1. Set the low-order bits (stimecmp) to all ones (ULONG_MAX).
+2. Set the high-order bits (stimecmph) to the desired value.
+3. Set the low-order bits (stimecmp) to the desired value.
+
+Current implementation writes the LSB first without ensuring a future
+value, which may lead to a transient state where the 64-bit comparison
+is incorrectly evaluated as "expired" by the hardware. This results in
+spurious timer interrupts.
+
+This patch adopts the spec-recommended 3-step sequence to ensure the
+intermediate 64-bit state is never smaller than the current time.
+
+Fixes: ffef54ad4110 ("riscv: Add stimecmp save and restore")
+Signed-off-by: Naohiko Shimizu <naohiko.shimizu@gmail.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Link: https://patch.msgid.link/20260104135938.524-4-naohiko.shimizu@gmail.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c |    3 ++-
+ arch/riscv/kernel/suspend.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1145,7 +1145,7 @@ static void storvsc_on_io_completion(str
- 	 * The current SCSI handling on the host side does
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
--	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MODE_SENSE and MODE_SENSE_10 command with cmd[2] == 0x1c
- 	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
-@@ -1155,6 +1155,7 @@ static void storvsc_on_io_completion(str
+diff --git a/arch/riscv/kernel/suspend.c b/arch/riscv/kernel/suspend.c
+index 24b3f57d467f8..aff93090c4efc 100644
+--- a/arch/riscv/kernel/suspend.c
++++ b/arch/riscv/kernel/suspend.c
+@@ -51,10 +51,11 @@ void suspend_restore_csrs(struct suspend_context *context)
  
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE_10) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
- 	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
+ #ifdef CONFIG_MMU
+ 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SSTC)) {
+-		csr_write(CSR_STIMECMP, context->stimecmp);
+ #if __riscv_xlen < 64
++		csr_write(CSR_STIMECMP, ULONG_MAX);
+ 		csr_write(CSR_STIMECMPH, context->stimecmph);
+ #endif
++		csr_write(CSR_STIMECMP, context->stimecmp);
+ 	}
+ 
+ 	csr_write(CSR_SATP, context->satp);
+-- 
+2.51.0
+
 
 
 
