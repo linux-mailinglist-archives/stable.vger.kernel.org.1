@@ -1,197 +1,300 @@
-Return-Path: <stable+bounces-212643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PWeMMo7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:38 +0100
+	id eF2DKbpFemn34wEAu9opvQ
+	(envelope-from <stable+bounces-212644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:22:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E02A5F4A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2689AA6C18
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:22:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99B9C30431CE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:32:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7802F3026A95
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B673043CE;
-	Wed, 28 Jan 2026 16:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1059350A0F;
+	Wed, 28 Jan 2026 16:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="HnG9cqSE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JuFsJGTe"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79186313534;
-	Wed, 28 Jan 2026 16:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263472FF164
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 16:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769617963; cv=none; b=r+ZIAHp7PcGf2To5Vgwa9Sj360r8UDQZWTmdgciLn/i9QIbkmO5r8LF2mc8GWkUW1WnFnPLciqmtjg7taFMI5jIQ1NOngvwiDZ5lfDniKwsM924jlUbCy17KX+WmFGhHKLfhjja9kmYqpuL2aYTnjaCwstgY9pfGFofFMlbGlbM=
+	t=1769619187; cv=none; b=nCGT2ZPSewDMIN8LJ4+pdD1m+P/xQx3QiHKwbgvROJBuk4PgTydR/4gLiicM68ZA82DXhhMlK205/wh2B1REnRpCj+ZyXHdonTdzU0A/+A1TUSV+fq82wmPVdCJBBjjMpKzFQMvry0xJ8YSgRvmwXcbLxqPbJz9UvBt5UeSF8bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769617963; c=relaxed/simple;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=twGzfUaguBHkVBbkUfRE8SfaP8I0rmopu+gHkVHgO91A9VQEAkrLTrcbTTl7P1YvDvjlTYyfvBrgSd1/9sQW4ddtZd3Fgn14IgxMdkdLNbGhRduJ70fD2I2AMobC50muMyfx2tZXdGPCzbbpssLNPf8ypGumgCNPepKfdbx66dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=HnG9cqSE; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1769617920; x=1770222720; i=rwarsow@gmx.de;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=HnG9cqSE2vlOTUl04CEyvwm6gGSzHFiUkp3iJMGhPQzvpTLLnS3cqtCWi9up+1JL
-	 h4kqQ9eWQGcdf57+uc/bPjvEnqZNdFXVi2ci7GtbJnXYWosdPYjXCGq2EAvujwJ4g
-	 tsI1cz8ktJrXO8Se+pprpmAzLGe5GkA7ov8efrpIHOWgcW7AB2qg52cv0g1qTDGJD
-	 BAI2x8WZvI9aOqvN668bdGzcYx8YUIoiqJxF1/pb7E3nZDXgF3PbJTmMxZUXz8sOy
-	 1RVhbkmZCdEGx/eRi5ljKINMezUxkqsyu2cX8pudfmKJHFt1ua2Wl7khYN2ACRqwI
-	 dIJi0aKRRpOEmk3/+Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.35.73]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1M7Jza-1vfc9k0Sdw-004S4f; Wed, 28
- Jan 2026 17:32:00 +0100
-Message-ID: <200da7e6-a4a2-4eeb-9638-4c292fe40a56@gmx.de>
-Date: Wed, 28 Jan 2026 17:31:58 +0100
+	s=arc-20240116; t=1769619187; c=relaxed/simple;
+	bh=rckFLLAm1SSfIECkf+mbm0qJyh8hohIZ16wsToU/d7g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GS/qDx61q0APKyEB0ry8niA3Kf1IwzMqGNdPDwjML3JIpH1bwJs1r2CS8TqPM+KkCJpN7C9jXDrqdP4I8S5sNSQbv/fqgsxBFzase64ZtmIXCrAjbrP0/VoYXAlguF7UPy9x8YX1DD5d7swv3qEufEB37CcgtdGRPKx/NFUUo+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JuFsJGTe; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-81df6a302b1so12176b3a.2
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 08:53:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769619185; x=1770223985; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+VIwZPYuTL84mdN01DfXHCnboBlP6LUsRJWXcsio5Wo=;
+        b=JuFsJGTeaChw/ojU/qXfwiaQGeN5Su2beOCONeCc+s2KyA5UDFRwSoHgVjEcQk1UKp
+         MvAc8wFHKkRcBThzUV3tz/n+vtd5lt/Qm0sXUAMEhXsBYF+gElJvbgk4wJbrwQ6ghQ4f
+         3bX7dwQQP9LyszqTZ6KBulk6pi++mkuvHlhIbJE6Fsuc1c6msn4moL15uS72rASpFihx
+         4TgC6yQ+6cDHihUIEgY5eYIwIxZVZ9hsFq+iXpayCbTFkcjjOYJmeRN2XFCETQjOIM1N
+         SKC3lGpFuW7zKl7cNpyu6tUJHRPdE4fTyvj1GogZCWx3W1CzHEAIFG06F97p8zr+CEfH
+         sdqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769619185; x=1770223985;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+VIwZPYuTL84mdN01DfXHCnboBlP6LUsRJWXcsio5Wo=;
+        b=Yw34a/jswOqDNTGUh/wukTRJ47MXD6GygrfmzBWmN6mN4bPxT+nQqvP8kwhPhUQS0v
+         qvU54R8N+5pcZ9c8LNnoWcCAe25jBSjj/sZXphQH0lVESgLQUcACNBJU/Kln1oXtLNrP
+         CcIEQbkPkqi3BZa+DG++wJpR4MUbEdbO7JWkRFfEqfDljiY8Arv5zKiTXj6Iq+/FJ+bX
+         4SjAQySlWXf1KkOhxLXo1BqpF06LW/0V22V5tkoIEpdF64DnzTPkGFGYQonMB2fivmUL
+         kBMypOMXAnLpC7ezQGMT+F0qo5QELamtCLqkwdR0M8OSvY7VvZuF4oUFJjG+8wfpEOHT
+         bwAw==
+X-Forwarded-Encrypted: i=1; AJvYcCXvvfQv8NIkVYe87L0wtFkt1csV4InE8MII7vhIUcWUGIlPVThOw141/6xIicp1hfWfSXkJaRE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpkeCnw/IqgwR2YEOKsvVkph6WYG3CZ6CmvDHD2Xc1IBcSJAT1
+	35MTAOkmvQlR2vYqcKtkDOJ7zGcLbToRrovxqUOFmV/IcpsfK6v8tOhc
+X-Gm-Gg: AZuq6aIurUowkPDpeu9tf2eg74lF1dpiUX38r443dQsMMf6tIDjU5YPIHVMyeAouLgy
+	ZL/nckiwbUIBazYbBgbbFkRJy/IXLuKf/CfJmBw8Zc+0AtINgkDATDmRRqPlXhCKHfxPdahXlmu
+	6DX0LEgnFq6RZFPPbZdULz/CNqWd//MpM85p4c3NPEI8bkdC/vGoGfFsmsv2YdSeMK6gIF+aPaC
+	suEJ/bs/kYFCT+g5AaaLcC7Cbi9KBBuxzKEW2lWTo8FN2kbi5QtMtaijvevoWMbbBZW6N5lBCK5
+	urFDXGt+GRbbTjACrvSl6eVrmNPmnT/KQFehIdddH4fs5VVT9CNysVIsCLUHJOh6Hh6yj/ZOAjI
+	KA/JsG/RItdCJg8pT9PLEIqCbki5KA8sWB9UzLIZJXDtDCNx+t3zkROLpWkIh7Qc+Xj7+xFxs+U
+	WSHrYmWC1RTlRKOJIL1Fe8BeJJ3or2T1rGDmx8LciTfwyraE0=
+X-Received: by 2002:a05:6a00:4fcc:b0:7aa:4f1d:c458 with SMTP id d2e1a72fcca58-823691849afmr5864355b3a.19.1769619185349;
+        Wed, 28 Jan 2026 08:53:05 -0800 (PST)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b1f188sm3546757b3a.13.2026.01.28.08.53.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 08:53:04 -0800 (PST)
+Date: Thu, 29 Jan 2026 00:52:59 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Chris Mason <clm@meta.com>, linux-mm@kvack.org, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm/shmem, swap: fix race of truncate and swap entry
+ split
+Message-ID: <aXo6ltB5iqAKJzY8@KASONG-MC4>
+References: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
+ <20260128130336.727049-1-clm@meta.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/227] 6.18.8-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260128145344.331957407@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:RLbLq43jAfoj6hLrHnc8XR1aTgibJN046YLNR267LmPTcNuETzu
- qGWi8HK603eHfY1khBGfQn09xuSLUP4wRr5BUiofd5YitwhqlyXjPdbmqnXj1pYRyHoIKZs
- JdccDHUYPrWsA0umPl4lvSrxf2PQZZ3BN5g+nCusjUSZvAv1bHPPxJDzYB4SbFqveMV180z
- UWnACNAcr9XYjrQKeYWqQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:6v5DzwKyp54=;UlEcmky1qE0zxqPNZVtJwQsGCyQ
- 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
- GBvailkhdbCM/GI34=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260128130336.727049-1-clm@meta.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212643-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212644-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[kvack.org,google.com,linux.alibaba.com,linux-foundation.org,huaweicloud.com,gmail.com,kernel.org,redhat.com,vger.kernel.org,tencent.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ryncsn@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,gmx.de:dkim,gmx.de:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 38E02A5F4A
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tencent.com:email,meta.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2689AA6C18
 X-Rspamd-Action: no action
 
-Hi
+On Wed, Jan 28, 2026 at 05:02:34AM +0800, Chris Mason wrote:
+> 
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> 
+> [ ... ]
+> 
+> > @@ -1191,12 +1203,23 @@
+> >  		folio = fbatch.folios[i];
+> >
+> >  		if (xa_is_value(folio)) {
+> > +			int order;
+> >  			long swaps_freed;
+> >
+> >  			if (unfalloc)
+> >  				continue;
+> > -			swaps_freed = shmem_free_swap(mapping, indices[i], folio);
+> > +			swaps_freed = shmem_free_swap(mapping, indices[i],
+> > +						      end - 1, folio);
+> >  			if (!swaps_freed) {
+> > +				/*
+> > +				 * If found a large swap entry cross the end border,
+> > +				 * skip it as the truncate_inode_partial_folio above
+> > +				 * should have at least zerod its content once.
+> > +				 */
+> > +				order = shmem_confirm_swap(mapping, indices[i],
+> > +							   radix_to_swp_entry(folio));
+> > +				if (order > 0 && indices[i] + (1 << order) > end)
+> > +					continue;
+> >  				/* Swap was replaced by page: retry */
+> >  				index = indices[i];
+> >  				break;
+> 
+> Could this code infinite loop if a large swap entry crosses the START
+> boundary instead of the END boundary?
 
-no regressions here on x86_64 (Intel 11th Gen. CPU)
+Thanks for the review! It's really helpful :)
 
-Thanks
+> When shmem_free_swap() returns 0, it could be either because:
+> (a) The entry was replaced by a page, or
+> (b) The entry failed the boundary check (base < index ||
+>     base + nr_pages - 1 > end)
+> 
+> The boundary check here only handles case (b) for entries crossing the
+> END boundary:
+> 
+>     if (order > 0 && indices[i] + (1 << order) > end)
+>         continue;
+> 
+> But what happens if the entry crosses the START boundary? If
+> find_get_entries() returns a large swap entry at indices[i] where
+> the entry's base (calculated as indices[i] & ~((1 << order) - 1)) is
+> less than the truncation start point, then shmem_free_swap() will
+> return 0 due to the "base < index" check. The code will then call
+> shmem_confirm_swap(), get the order, check if it crosses the END
+> boundary (which it doesn't), and retry with the same index:
+> 
+>     index = indices[i];
+>     break;
+> 
+> The next iteration will find the same entry again at the same index,
+> leading to an infinite loop. For example:
+> 
+> - Truncating range [18, 30]
+> - Large swap entry at [16, 23] (order 3, 8 pages)
+> - indices[i] = 18
+> - shmem_free_swap() sees base=16 < index=18, returns 0
+> - Check: 18 + 8 > 30 is false (26 <= 30)
+> - Retries with index=18
+> - Loop repeats indefinitely
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+I think this is a valid issue. And it's worse than that, during the `while (index < end)` loop a new large entry can land anywhere in the range, if one interaction's starting `index` points to the middle of any large entry, an infinite loop will occur: indices[0] are always equal to the `index` iteration value of that moments, shmem_free_swap will fail because the swap entry's index doesn't match indices[0], and so the `index = indices[i]; break;` keep it loop forever.
+
+The chance seems very low though.
+
+> Should the boundary check also handle the START case, perhaps:
+> 
+>     if (order > 0) {
+>         pgoff_t base = indices[i] & ~((1UL << order) - 1);
+>         if (base + (1 << order) - 1 > end || base < start)
+>             continue;
+>     }
+
+This still doesn't cover the case when a new large entry somehow lands in the range during the loop.
+
+> where 'start' is preserved from before the loop?
+
+How about following patch:
+
+From 863f38c757ee0898b6b7f0f8c695f551a1380ce8 Mon Sep 17 00:00:00 2001
+From: Kairui Song <kasong@tencent.com>
+Date: Thu, 29 Jan 2026 00:19:23 +0800
+Subject: [PATCH] mm, shmem: prevent infinite loop on truncate race
+
+When truncating a large swap entry, shmem_free_swap() returns 0 when the
+entry's index doesn't match the given index due to lookup alignment. The
+failure fallback path checks if the entry crosses the end border and
+aborts when it happens, so truncate won't erase an unexpected entry or
+range. But one scenario was ignored.
+
+When `index` points to the middle of a large swap entry, and the large
+swap entry doesn't go across the end border, find_get_entries() will
+return that large swap entry as the first item in the batch with
+`indices[0]` equal to `index`. The entry's base index will be smaller
+than `indices[0]`, so shmem_free_swap() will fail and return 0 due to
+the "base < index" check. The code will then call shmem_confirm_swap(),
+get the order, check if it crosses the END boundary (which it doesn't),
+and retry with the same index.
+
+The next iteration will find the same entry again at the same index with
+same indices, leading to an infinite loop.
+
+Fix this by retrying with a round-down index, and abort if the index is
+smaller than the truncate range.
+
+Reported-by: Chris Mason <clm@meta.com>
+Closes: https://lore.kernel.org/linux-mm/20260128130336.727049-1-clm@meta.com/
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Fixes: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry split")
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+ mm/shmem.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b9ddd38621a0..fe3719eb5a3c 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1211,17 +1211,22 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 				swaps_freed = shmem_free_swap(mapping, indices[i],
+ 							      end - 1, folio);
+ 				if (!swaps_freed) {
+-					/*
+-					 * If found a large swap entry cross the end border,
+-					 * skip it as the truncate_inode_partial_folio above
+-					 * should have at least zerod its content once.
+-					 */
++					pgoff_t base = indices[i];
++
+ 					order = shmem_confirm_swap(mapping, indices[i],
+ 								   radix_to_swp_entry(folio));
+-					if (order > 0 && indices[i] + (1 << order) > end)
+-						continue;
+-					/* Swap was replaced by page: retry */
+-					index = indices[i];
++					/*
++					 * If found a large swap entry cross the end or start
++					 * border, skip it as the truncate_inode_partial_folio
++					 * above should have at least zerod its content once.
++					 */
++					if (order > 0) {
++						base = round_down(base, 1 << order);
++						if (base < start || base + (1 << order) > end)
++							continue;
++					}
++					/* Swap was replaced by page or extended, retry */
++					index = base;
+ 					break;
+ 				}
+ 				nr_swaps_freed += swaps_freed;
+-- 
+2.52.0
+
+And I think we really should simplify the whole truncate loop.
 
