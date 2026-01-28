@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-212091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBs+Df8uemmO3wEAu9opvQ
-	(envelope-from <stable+bounces-212091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:03 +0100
+	id MBiyGZIwemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC06A4572
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B53AA4921
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDD4431285AB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9AAC9319901D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE68026ED4F;
-	Wed, 28 Jan 2026 15:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E79AE2F745B;
+	Wed, 28 Jan 2026 15:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUxnxbtY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s5wlX8WL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F87B25332E;
-	Wed, 28 Jan 2026 15:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB30C2F6904;
+	Wed, 28 Jan 2026 15:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614370; cv=none; b=MD5O2EBc0gos0hca4r7fjLlNwiGGWloKWum5Dayo74hzg73WK8z8u+qQ3Jdn2wmrV8N7rfvcckeLP+d6nM6wrSx1XWQbw8KNnF74u8Q8gID7FuaZ9znPh4v7KiZ5RX9aDQHwSW9KpKtJQwXDnLI0KPT04dwieNF5M3VGqGCIKyc=
+	t=1769614891; cv=none; b=cZcYviy6b8/6SCDw1prVuzZO3a67GonviC2lA9PhBMZSrsbbZsujc12cbQj4sW3r7gtarudUC+NLzkTFhvO9THGsAWud2bO5/cRk33IfLQctzAXblk1Vj5Jcca0HN8kn3f535An0QlQUHwU8vy3BsKDGOh5Qtuixuj20JdmvnwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614370; c=relaxed/simple;
-	bh=nQuxAamTAIQF85vrglY6EIXOw3BlTZMeMEvaxjT+Ftk=;
+	s=arc-20240116; t=1769614891; c=relaxed/simple;
+	bh=1N7XyPJSOBSRGXWolUt7KusafATVjpFqxdlJWycXJvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=abQr4rIhgxBgcu+W/lwpW3Z+LoChRz/ngS5mXB2loeD+wVel1FY0uysUuY/vWw1tMCJOQsnyZ3T8UaKqW9fR089orHN1Laq8Vq6WunJNoz4s1MNzuu62Rwv5iBjtKNyVM0aXh1b0U0wIHscWoiYN1dkYWWqzpWZJGJSRpZHe1x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUxnxbtY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C1CC4CEF7;
-	Wed, 28 Jan 2026 15:32:49 +0000 (UTC)
+	 MIME-Version; b=TjMWYO9fXX9IHtplj0pLoTF4swCcgHT2W/4hw3SoIJJpsY9cpbhD3PXPHsmu4v8KE9lXgeg/y22JfwuL9PxDtsUKH0o2zMpVJJUwUJl+fs6I1Np8FyTlzuxXFx5KPsaUX1t+WULCsIq0Yjp03ys3TuRSBp1+3o+MpdlUAjeS5ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s5wlX8WL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8948C4CEF1;
+	Wed, 28 Jan 2026 15:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614370;
-	bh=nQuxAamTAIQF85vrglY6EIXOw3BlTZMeMEvaxjT+Ftk=;
+	s=korg; t=1769614891;
+	bh=1N7XyPJSOBSRGXWolUt7KusafATVjpFqxdlJWycXJvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUxnxbtY/ATDS2YG7k4Vv5Vs+2J2YnB/xSjTJcXtPn+g1adGQ/ewfoMvRgovl/8wp
-	 NlCPaZQSJcXtHv/6Ntb0P5/xpwZJUTx0at+lEJmsya8nouOCiTYjCLiYpS9VKPxGJQ
-	 7E3/DoSd+J9FbI8+p40Z6w5Aep7Ubczo3RKzlrJ0=
+	b=s5wlX8WL+smTpCyxOnpr61n6soT3hWb9TtPEbvW0Qu+eHYsV/Phslh1DKnQI7gF6Y
+	 hU+NGJwSCOINbE65P7Lp8L+ARZUZQv6DTDwjiSzFSgiBg8pSKvO6MY6jg9kMmpkbKS
+	 +Pj+S9OufLXC5gMxMeMMk8zwqTttjPtzYdSmELrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.6 116/254] ice: Avoid detrimental cleanup for bond during interface stop
-Date: Wed, 28 Jan 2026 16:21:32 +0100
-Message-ID: <20260128145348.998357459@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 010/169] arm64: dts: qcom: sc8280xp: Add missing VDD_MXC links
+Date: Wed, 28 Jan 2026 16:21:33 +0100
+Message-ID: <20260128145334.386238680@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,97 +78,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212091-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212251-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8AC06A4572
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,qualcomm.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1.69.3.32:email]
+X-Rspamd-Queue-Id: 7B53AA4921
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Ertman <david.m.ertman@intel.com>
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-[ Upstream commit a9d45c22ed120cdd15ff56d0a6e4700c46451901 ]
+[ Upstream commit 868b979c5328b867c95a6d5a93ba13ad0d3cd2f1 ]
 
-When the user issues an administrative down to an interface that is the
-primary for an aggregate bond, the prune lists are being purged. This
-breaks communication to the secondary interface, which shares a prune
-list on the main switch block while bonded together.
+To make sure that power rail is voted for, wire it up to its consumers.
 
-For the primary interface of an aggregate, avoid deleting these prune
-lists during stop, and since they are hardcoded to specific values for
-the default vlan and QinQ vlans, the attempt to re-add them during the
-up phase will quietly fail without any additional problem.
-
-Fixes: 1e0f9881ef79 ("ice: Flesh out implementation of support for SRIOV on bonded interface")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 152d1faf1e2f ("arm64: dts: qcom: add SC8280XP platform")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20251202-topic-8280_mxc-v2-3-46cdf47a829e@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c | 25 ++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 972c515d8789f..7aef40b50b898 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3897,22 +3897,31 @@ int ice_vsi_add_vlan_zero(struct ice_vsi *vsi)
- int ice_vsi_del_vlan_zero(struct ice_vsi *vsi)
- {
- 	struct ice_vsi_vlan_ops *vlan_ops = ice_get_compat_vsi_vlan_ops(vsi);
-+	struct ice_pf *pf = vsi->back;
- 	struct ice_vlan vlan;
- 	int err;
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+index b1e0e51a55829..c10ee18cb611a 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -5218,8 +5218,12 @@ remoteproc_nsp0: remoteproc@1b300000 {
+ 			clocks = <&rpmhcc RPMH_CXO_CLK>;
+ 			clock-names = "xo";
  
--	vlan = ICE_VLAN(0, 0, 0);
--	err = vlan_ops->del_vlan(vsi, &vlan);
--	if (err && err != -EEXIST)
--		return err;
-+	if (pf->lag && pf->lag->primary) {
-+		dev_dbg(ice_pf_to_dev(pf), "Interface is primary in aggregate - not deleting prune list\n");
-+	} else {
-+		vlan = ICE_VLAN(0, 0, 0);
-+		err = vlan_ops->del_vlan(vsi, &vlan);
-+		if (err && err != -EEXIST)
-+			return err;
-+	}
+-			power-domains = <&rpmhpd SC8280XP_NSP>;
+-			power-domain-names = "nsp";
++			power-domains = <&rpmhpd SC8280XP_NSP>,
++					<&rpmhpd SC8280XP_CX>,
++					<&rpmhpd SC8280XP_MXC>;
++			power-domain-names = "nsp",
++					     "cx",
++					     "mxc";
  
- 	/* in SVM both VLAN 0 filters are identical */
- 	if (!ice_is_dvm_ena(&vsi->back->hw))
- 		return 0;
+ 			memory-region = <&pil_nsp0_mem>;
  
--	vlan = ICE_VLAN(ETH_P_8021Q, 0, 0);
--	err = vlan_ops->del_vlan(vsi, &vlan);
--	if (err && err != -EEXIST)
--		return err;
-+	if (pf->lag && pf->lag->primary) {
-+		dev_dbg(ice_pf_to_dev(pf), "Interface is primary in aggregate - not deleting QinQ prune list\n");
-+	} else {
-+		vlan = ICE_VLAN(ETH_P_8021Q, 0, 0);
-+		err = vlan_ops->del_vlan(vsi, &vlan);
-+		if (err && err != -EEXIST)
-+			return err;
-+	}
+@@ -5349,8 +5353,12 @@ remoteproc_nsp1: remoteproc@21300000 {
+ 			clocks = <&rpmhcc RPMH_CXO_CLK>;
+ 			clock-names = "xo";
  
- 	/* when deleting the last VLAN filter, make sure to disable the VLAN
- 	 * promisc mode so the filter isn't left by accident
+-			power-domains = <&rpmhpd SC8280XP_NSP>;
+-			power-domain-names = "nsp";
++			power-domains = <&rpmhpd SC8280XP_NSP>,
++					<&rpmhpd SC8280XP_CX>,
++					<&rpmhpd SC8280XP_MXC>;
++			power-domain-names = "nsp",
++					     "cx",
++					     "mxc";
+ 
+ 			memory-region = <&pil_nsp1_mem>;
+ 
 -- 
 2.51.0
 
