@@ -1,103 +1,53 @@
-Return-Path: <stable+bounces-211912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211913-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULXYDaN2eWkSxQEAu9opvQ
-	(envelope-from <stable+bounces-211912-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 03:38:27 +0100
+	id qDyKLG55eWkSxQEAu9opvQ
+	(envelope-from <stable+bounces-211913-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 03:50:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A45C19C563
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 03:38:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CAFF9C6B0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 03:50:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5E77C3031AE1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 02:38:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3E2B300CC19
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 02:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63272C159E;
-	Wed, 28 Jan 2026 02:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4D82BEFFB;
+	Wed, 28 Jan 2026 02:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RRVaoeKu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfD381Ia"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3082C0F95
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 02:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DED03B28D;
+	Wed, 28 Jan 2026 02:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769567885; cv=none; b=E8Zos6Jkq0AHIATN1hdoUdXcxsvOnnn0VcQrOIQQp+rdFgXb2moAngcy70wxJAy2mpNTyHeio8zl5LPcY1dE8jofVEXzCkki2FkItpqfvL+qqDYqg9o2iEgeECiwIXbiviecguzt80nQMl1JSRSdsGtP+ln5pPdJPkRQ40ZX8B0=
+	t=1769568615; cv=none; b=i7xAYJ3+pEtjEFeaVAhJIBDJKVMGLqQcfkDUI/gYxS6tOtBW7rE1vMxiUyv+ej4OdbE84duFul11AHfPH6tznqg1cIuN2Jrk15JewUz8ZMqoMwXmsH8t4h4bCTfRu3SimGcXuQTFJYnP8grJCX3P181ZiJyo+SfL00h504T/RE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769567885; c=relaxed/simple;
-	bh=TwSoeihKpQAs0Xculcg+xL4TrpYrf6SpB9Q3RJkipQg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJRVXvh8hCzxVWYsoXP2OpDRYStRd2sR7+tiss+dM5XHnAwsKLYkQQYeD7dcE5ddZUd0eGp2zLI110eenLD7UxjaVX69e+MA1aRgYqKipeVmAhg0L8BkXnleZP3lwV/yFAT9cmL/DHKfew5p6frlmxvI68PbVxsc1n3MNuAcUoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RRVaoeKu; arc=none smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1233b953bebso2407563c88.1
-        for <stable@vger.kernel.org>; Tue, 27 Jan 2026 18:38:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769567883; x=1770172683; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r6cfmUDBf1+qLRNX7vc1byRXhiT1ATCL/TBU1o+0kLY=;
-        b=RRVaoeKu9NC5OoiU9WiyZ0cGih/jVa0ZZkrQ3nIFrhVB2RD4c8UZ3Ggy35CYqksb7y
-         6evDHYXQlVHI9wwhM5c0WG3go/ShPWJSAlajY4CIBSY31Y5uFuh8iZTV60JY6j5ZpCOS
-         JvPMSDTPJygx7b9J4NsR1C3tE8/VVcd+GcGNloJhxTgwVhX22/qcDuSzXyVYmeDqgewi
-         yAqu7mMsgBxVc12Le2ccw3rhrnY7ea4tdsl7tZy8f1Jm8AkGcJ+rZXZw/t39j3/so5bT
-         wfhmJObVSmG8EZSICJStdIZJpJnuGVBnOCYNOtNi7S9lOQF7bZfqnLCRgTAmBpnLC1qD
-         GkpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769567883; x=1770172683;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=r6cfmUDBf1+qLRNX7vc1byRXhiT1ATCL/TBU1o+0kLY=;
-        b=pd6GL+/HFrGGEiiG6W2AJz74arVvvmZDwySNfzPQaa4v4gD8CG47H7/45MeZ4lBqzm
-         CPmqwG3lY27wMBXc1WwNDuZDm2T7h1ELGmE2X2U9XcqgJ3zR1XMRnzaU1yPZVHorGrHh
-         AiWJxnm2K7VSTPuds1aywPH/osja3NOsV7m+DD8sRF+7PxKuyyLX1xalj+22hutvuxhq
-         08BHBSNh/fqHVzmHqGUTjG5iNd9Tr2RC5Y8UK6CMVgnG+/vFRf8DvpYvCHGGB7nnSroS
-         zCKfEqgeVa5hVlW0bdnqDYMmZQSLSEdQf29ENkvO1kFE6d1VhfQMIRWcvqa4L5ZWisfY
-         SGVA==
-X-Forwarded-Encrypted: i=1; AJvYcCWlWWIbfwgMXpw001M72ttafryAgjbF+Sd3jwx11nwjie/Wse+zNik0XFBc7kKuJTwh5qI5lNU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLF9/TJvbwfpQaXxJP3NKixjdcK2WK9H7uiFGxcle1Xx0Xx0l+
-	+8ssler3JjYEfme4cFhWtfDGic6T+/S/IyL6VNHLJyfTk6cb1C+iMn/Ru6wgsfCZ21Y=
-X-Gm-Gg: AZuq6aKjq+xHpLb9HRQOTBRPRngBtokDllor2ohEAThuEQfHBVeVX0B7vq3k5qnWSMG
-	X0pn5ZZlJb9u68YxLj7GqlV3210yUV7skp5wwzXfmyTwPnsGRQnuU6DhhVIuUymjRhGcNgDkgYW
-	3fgdDnmjZnT/IBbpBYk7fMO7uoXhdc/nYbD356LmXvekwW6Zz8orkCXJxX7tYGmD0Na6RX0Gpda
-	leSGk0U2yTXloWCUNREL955xhzt/h4Mwb2kaIN6IsmCzdeRW+RI8BlpIU+iZN06hlj0LH+w7KHt
-	13g5Bem7OX6JTAjdqDbfPESpSF71HRwXsBcWZLHF0uOCDxkcV4rdnEp2dXgxfjLU28Oix/tUEVC
-	n1QtguQHocp57lFsiobt/dVAEtw0PBinaDM4wOKCbUfCXjxFNd2hwcBJlvMYmHa/MYQCY5L3Mez
-	7M214=
-X-Received: by 2002:a05:7022:f96:b0:119:e56b:c75c with SMTP id a92af1059eb24-124a00deeb4mr2362361c88.33.1769567882811;
-        Tue, 27 Jan 2026 18:38:02 -0800 (PST)
-Received: from debian ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9de948esm781862c88.9.2026.01.27.18.37.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 18:38:02 -0800 (PST)
-From: Qiliang Yuan <realwujing@gmail.com>
-To: dianders@chromium.org
-Cc: akpm@linux-foundation.org,
-	lihuafei1@huawei.com,
-	linux-kernel@vger.kernel.org,
-	mingo@kernel.org,
-	mm-commits@vger.kernel.org,
-	realwujing@gmail.com,
-	song@kernel.org,
-	stable@vger.kernel.org,
-	sunshx@chinatelecom.cn,
-	thorsten.blum@linux.dev,
-	wangjinchao600@gmail.com,
-	yangyicong@hisilicon.com,
-	yuanql9@chinatelecom.cn,
-	zhangjn11@chinatelecom.cn
-Subject: Re: [PATCH v4] watchdog/hardlockup: Fix UAF in perf event cleanup due to migration race
-Date: Tue, 27 Jan 2026 21:37:52 -0500
-Message-ID: <20260128023757.1693269-1-realwujing@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <CAD=FV=U6sM71UuPbYZRWV87=p1ZO8-gpv3yzK8eMEv3dRNVgdA@mail.gmail.com>
-References: <CAD=FV=U6sM71UuPbYZRWV87=p1ZO8-gpv3yzK8eMEv3dRNVgdA@mail.gmail.com>
+	s=arc-20240116; t=1769568615; c=relaxed/simple;
+	bh=/lJBRbUw2FgOeu9CUWj5XDqNlE5oJrvnM3fCy6xORvU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=tCC7KcADTfHaBey4h1YbGGa9jgg3upwDGSplmA7QIeNAbf6mKzbv89oDasDJaAwtom+3Vpx06gOqcY2KQfyaW2k3SQY7I53dqkgyOW6tQAjSRPTejzpWuCSKS3+DHcsceFxYHisA492KB0d0MlBHS8OhaOuvzLsLWCCjt9Xz1w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfD381Ia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2947DC116C6;
+	Wed, 28 Jan 2026 02:50:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769568615;
+	bh=/lJBRbUw2FgOeu9CUWj5XDqNlE5oJrvnM3fCy6xORvU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=OfD381IaIQUZjrCMbXeaxVJ+CRcD6Z9F7HmYQSjZ+B8ltOaPVcrI5axo42cl1bEQq
+	 7pnaoDpBa6AKgfzmP6kuISS35Hlp8qhc9FOeslp48ZC+6o/RaOrSuRmglqDN9g9CYK
+	 MQcVhcw1+Hhx6/LZQbD31bJBJrAdbyhyChWvk6oIn/d3fZGLUKxNPywg5OEfuzTD61
+	 ZAWqX75NyJa8fAuIVyo4SJ0p1udb/LnSqOp7om+Ou9AJ817SVCe0dF2KUagB1PoQSx
+	 m0LYDfT0LE5SmDLzP0jPSi6XRZ6Pz65ujyi7ROl3lS7ittstt/e6/8m59z7f6pgCEO
+	 Oey6xKHcjp1ag==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 119E43809A15;
+	Wed, 28 Jan 2026 02:50:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -105,84 +55,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] gve: fix probe failure if clock read fails
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176956860860.1489558.7327500062965937708.git-patchwork-notify@kernel.org>
+Date: Wed, 28 Jan 2026 02:50:08 +0000
+References: <20260127010210.969823-1-hramamurthy@google.com>
+In-Reply-To: <20260127010210.969823-1-hramamurthy@google.com>
+To: Harshitha Ramamurthy <hramamurthy@google.com>
+Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ richardcochran@gmail.com, willemb@google.com, pkaligineedi@google.com,
+ ziweixiao@google.com, jordanrhee@google.com, nktgrg@google.com,
+ thostet@google.com, horms@kernel.org, yyd@google.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, shacharr@google.com
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211912-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linux-foundation.org,huawei.com,vger.kernel.org,kernel.org,gmail.com,chinatelecom.cn,linux.dev,hisilicon.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-211913-lists,stable=lfdr.de,netdevbpf];
+	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,lunn.ch,davemloft.net,kernel.org,redhat.com,gmail.com];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FROM_NEQ_ENVFROM(0.00)[realwujing@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A45C19C563
+	TAGGED_RCPT(0.00)[stable,netdev];
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5CAFF9C6B0
 X-Rspamd-Action: no action
 
-Hi Doug,
+Hello:
 
-Thanks for your detailed feedback and for the patient explanation regarding the 
-mainline workqueue behavior.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 27 Jan 2026 13:37:28 Doug Anderson <dianders@chromium.org> wrote:
-> Really, it matters what schedule_work() does on anyone who happens to have
-> commit 930d8f8dbab9 ("watchdog/perf: adapt the watchdog_perf interface
-> for async model")... we have to focus on supporting the mainline kernel here.
+On Tue, 27 Jan 2026 01:02:10 +0000 you wrote:
+> From: Jordan Rhee <jordanrhee@google.com>
+> 
+> If timestamping is supported, GVE reads the clock during probe,
+> which can fail for various reasons. Previously, this failure would
+> abort the driver probe, rendering the device unusable. This behavior
+> has been observed on production GCP VMs, causing driver initialization
+> to fail completely.
+> 
+> [...]
 
-I completely agree that the focus must be on the mainline kernel. I've since
-checked and confirmed that in mainline, schedule_work() is redirected to
-system_percpu_wq (via include/linux/workqueue.h), which provides the
-necessary CPU affinity.
+Here is the summary with links:
+  - [net] gve: fix probe failure if clock read fails
+    https://git.kernel.org/netdev/net/c/a040afa3bca4
 
-> To ask directly: have you seen this WARN_ON in mainline, or is this
-> all speculative?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-To be direct: no, I haven't seen this WARN_ON on a pure mainline kernel. As
-you suspected, the issue was identified in a downstream 4.19-based kernel
-with different initialization timings and workqueue behavior. My assumption
-that it would also affect mainline was indeed speculative and based on an
-incomplete understanding of include/linux/sched.h's is_percpu_thread()
-implementation on modern kernels.
 
-> I'm still not convinced that there was ever a UAF in mainline nor that
-> this actually "Fixes" anything in mainline. I do agree that the code
-> is better by not having it write the per-cpu variable at probe time
-
-Since the risk is not currently manifested in mainline, I have refactored
-the patch as a "cleanup and robustness improvement" as you suggested. This
-removes the fragile implicit dependency on the caller's context and makes
-the probe stateless.
-
-I have sent v6 with these changes. Please ignore v5 and review v6 instead.
-
-v6 changes:
-- Renamed the title to "simplify perf event probe and remove per-cpu dependency".
-- Removed the "Fixes:" tag and "Cc: stable".
-- Rewrote the commit record in the imperative mood.
-- Updated the description to clarify that it addresses code brittleness
-  rather than a confirmed mainline bug.
-
-v6 link: https://lore.kernel.org/all/20260127025814.1200345-1-realwujing@gmail.com/
-
-Best regards,
-Qiliang
 
