@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EByYIiU6emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:37 +0100
+	id uDBJGQI3eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A464AA5C7B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E967A569B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3895B3037F51
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 98550318A1BB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC32030BBBC;
-	Wed, 28 Jan 2026 16:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B952DC76D;
+	Wed, 28 Jan 2026 15:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGpsFurA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cc6dtUvB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F23D3093A8;
-	Wed, 28 Jan 2026 16:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311D72F260C;
+	Wed, 28 Jan 2026 15:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616008; cv=none; b=QKgibAljppODNML90TnJPpB57nez08qiAhVGag7WWDmQm6HJD07uvpMpxQgv6hZve/newg6ogJBpBzbhRGAK2j1x25WAUsDiJqyTS57q5FQBfWLWD5/FYjuqy8yDUAB1PHTyxoqGK6+KxXjj/qMiz2R2h6pCpHOjLsnjnKItsK0=
+	t=1769614844; cv=none; b=pxlNJqNzNItp6t2Sp8Y4T63uFNVpGdirGSR+FM5gsl1QPM81rbgwFBB3PhzJfrFgKYNsA3B//b03z/n0vSf16i7ZYa1QsDtW04yMDfgXleswToCVTZ0R0Crj0nRUdVJcyXT19oGPumwM5EE2wFfl0YEE0HyK2hB5ITHdv+iKKOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616008; c=relaxed/simple;
-	bh=rprHAku0AAvzzm5u/28k78rVU4bs0Ba5jP/3QOog8hU=;
+	s=arc-20240116; t=1769614844; c=relaxed/simple;
+	bh=jdieLHJ88Vsoed3qLOBRvxmH/hkpbxELnZPmMOdEZ70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iosl7sxjpzLO8/mIMmEu5mylnqDn1tuoYK60/oAG9LvmL4/RLb/F1vg351xs+NY021pElCJXQM218MvguHA4LK2yioZSFw63FRpIe4iUpbddcfSz34AEIszQH91un+vB4lB6s2pKLdf5EYxc4VIJdsocp97PYUAyRgfnsLv7w8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGpsFurA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988F7C4CEF1;
-	Wed, 28 Jan 2026 16:00:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OtL1E0kyi/+dIKtopM1yzx81MwwwMSDUi2c9n0XG4QPMpBBVNfTTW6Ks1s5Yg6n4hIE2BsweDROqLP/c6ZslK7fzOPf6bkKJOs2dIXmduC51thRdeU7o8/82BS8CAPn/N5A00hNiomUAIGc8yVQ11cC72IzEQ5X4Sz+CIBnGTUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cc6dtUvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A155C4CEF1;
+	Wed, 28 Jan 2026 15:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616008;
-	bh=rprHAku0AAvzzm5u/28k78rVU4bs0Ba5jP/3QOog8hU=;
+	s=korg; t=1769614843;
+	bh=jdieLHJ88Vsoed3qLOBRvxmH/hkpbxELnZPmMOdEZ70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YGpsFurAlhK0pjZXImQBX/MKoEyagHskZMYfQCnQl6hGFlSk8iUVGAGfkFKiHVrcJ
-	 BPLx40Dd06mEMOfS4T0zQmi2wz07/gB94UrgK7jmzMymJ6YmUqP4M4lVX9hGlho7DL
-	 aGNY9WiaGavfc5IH79xH6wLgEQ9o2ZfBWPTzh59A=
+	b=Cc6dtUvBVFU1e9HvwfEczJtiIC+xA0YfezRJXNvne+g4mzSX5tqUgiHTimDrD/zNg
+	 42cMln1nOqRarwGfngkM87PTyiou6RMkVwyFS3SbJLtti80xAMWhWygWOBR8MBkcfB
+	 raLgaz9K26c09rgfNdSuxcmlnjXIaZGn46dOLtw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.18 180/227] arm64/fpsimd: signal: Fix restoration of SVE context
+	Philip Yang <Philip.Yang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.6 249/254] drm/amdgpu: csa unmap use uninterruptible lock
 Date: Wed, 28 Jan 2026 16:23:45 +0100
-Message-ID: <20260128145350.925207006@linuxfoundation.org>
+Message-ID: <20260128145353.759186047@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,168 +64,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212584-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212237-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A464AA5C7B
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,139.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0E967A569B
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-commit d2907cbe9ea0a54cbe078076f9d089240ee1e2d9 upstream.
+[ Upstream commit a0fa7873f2f869087b1e7793f7fac3713a1e3afe ]
 
-When SME is supported, Restoring SVE signal context can go wrong in a
-few ways, including placing the task into an invalid state where the
-kernel may read from out-of-bounds memory (and may potentially take a
-fatal fault) and/or may kill the task with a SIGKILL.
+After process exit to unmap csa and free GPU vm, if signal is accepted
+and then waiting to take vm lock is interrupted and return, it causes
+memory leaking and below warning backtrace.
 
-(1) Restoring a context with SVE_SIG_FLAG_SM set can place the task into
-    an invalid state where SVCR.SM is set (and sve_state is non-NULL)
-    but TIF_SME is clear, consequently resuting in out-of-bounds memory
-    reads and/or killing the task with SIGKILL.
+Change to use uninterruptible wait lock fix the issue.
 
-    This can only occur in unusual (but legitimate) cases where the SVE
-    signal context has either been modified by userspace or was saved in
-    the context of another task (e.g. as with CRIU), as otherwise the
-    presence of an SVE signal context with SVE_SIG_FLAG_SM implies that
-    TIF_SME is already set.
+WARNING: CPU: 69 PID: 167800 at amd/amdgpu/amdgpu_kms.c:1525
+ amdgpu_driver_postclose_kms+0x294/0x2a0 [amdgpu]
+ Call Trace:
+  <TASK>
+  drm_file_free.part.0+0x1da/0x230 [drm]
+  drm_close_helper.isra.0+0x65/0x70 [drm]
+  drm_release+0x6a/0x120 [drm]
+  amdgpu_drm_release+0x51/0x60 [amdgpu]
+  __fput+0x9f/0x280
+  ____fput+0xe/0x20
+  task_work_run+0x67/0xa0
+  do_exit+0x217/0x3c0
+  do_group_exit+0x3b/0xb0
+  get_signal+0x14a/0x8d0
+  arch_do_signal_or_restart+0xde/0x100
+  exit_to_user_mode_loop+0xc1/0x1a0
+  exit_to_user_mode_prepare+0xf4/0x100
+  syscall_exit_to_user_mode+0x17/0x40
+  do_syscall_64+0x69/0xc0
 
-    While in this state, task_fpsimd_load() will NOT configure SMCR_ELx
-    (leaving some arbitrary value configured in hardware) before
-    restoring SVCR and attempting to restore the streaming mode SVE
-    registers from memory via sve_load_state(). As the value of
-    SMCR_ELx.LEN may be larger than the task's streaming SVE vector
-    length, this may read memory outside of the task's allocated
-    sve_state, reading unrelated data and/or triggering a fault.
-
-    While this can result in secrets being loaded into streaming SVE
-    registers, these values are never exposed. As TIF_SME is clear,
-    fpsimd_bind_task_to_cpu() will configure CPACR_ELx.SMEN to trap EL0
-    accesses to streaming mode SVE registers, so these cannot be
-    accessed directly at EL0. As fpsimd_save_user_state() verifies the
-    live vector length before saving (S)SVE state to memory, no secret
-    values can be saved back to memory (and hence cannot be observed via
-    ptrace, signals, etc).
-
-    When the live vector length doesn't match the expected vector length
-    for the task, fpsimd_save_user_state() will send a fatal SIGKILL
-    signal to the task. Hence the task may be killed after executing
-    userspace for some period of time.
-
-(2) Restoring a context with SVE_SIG_FLAG_SM clear does not clear the
-    task's SVCR.SM. If SVCR.SM was set prior to restoring the context,
-    then the task will be left in streaming mode unexpectedly, and some
-    register state will be combined inconsistently, though the task will
-    be left in legitimate state from the kernel's PoV.
-
-    This can only occur in unusual (but legitimate) cases where ptrace
-    has been used to set SVCR.SM after entry to the sigreturn syscall,
-    as syscall entry clears SVCR.SM.
-
-    In these cases, the the provided SVE register data will be loaded
-    into the task's sve_state using the non-streaming SVE vector length
-    and the FPSIMD registers will be merged into this using the
-    streaming SVE vector length.
-
-Fix (1) by setting TIF_SME when setting SVCR.SM. This also requires
-ensuring that the task's sme_state has been allocated, but as this could
-contain live ZA state, it should not be zeroed. Fix (2) by clearing
-SVCR.SM when restoring a SVE signal context with SVE_SIG_FLAG_SM clear.
-
-For consistency, I've pulled the manipulation of SVCR, TIF_SVE, TIF_SME,
-and fp_type earlier, immediately after the allocation of
-sve_state/sme_state, before the restore of the actual register state.
-This makes it easier to ensure that these are always modified
-consistently, even if a fault is taken while reading the register data
-from the signal context. I do not expect any software to depend on the
-exact state restored when a fault is taken while reading the context.
-
-Fixes: 85ed24dad290 ("arm64/sme: Implement streaming SVE signal handling")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: <stable@vger.kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7dbbfb3c171a6f63b01165958629c9c26abf38ab)
+Cc: stable@vger.kernel.org
+[The third parameter of drm_exec_init() was introduced by commit
+ 05d249352f1a ("drm/exec: Pass in initial # of objects") after Linux 6.8.
+ This code targets linux 6.6, so the current implementation is used
+ and the third parameter is not needed.]
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/signal.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -449,12 +449,28 @@ static int restore_sve_fpsimd_context(st
- 	if (user->sve_size < SVE_SIG_CONTEXT_SIZE(vq))
- 		return -EINVAL;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_csa.c
+@@ -110,7 +110,7 @@ int amdgpu_unmap_static_csa(struct amdgp
+ 	struct drm_exec exec;
+ 	int r;
  
-+	if (sm) {
-+		sme_alloc(current, false);
-+		if (!current->thread.sme_state)
-+			return -ENOMEM;
-+	}
-+
- 	sve_alloc(current, true);
- 	if (!current->thread.sve_state) {
- 		clear_thread_flag(TIF_SVE);
- 		return -ENOMEM;
- 	}
- 
-+	if (sm) {
-+		current->thread.svcr |= SVCR_SM_MASK;
-+		set_thread_flag(TIF_SME);
-+	} else {
-+		current->thread.svcr &= ~SVCR_SM_MASK;
-+		set_thread_flag(TIF_SVE);
-+	}
-+
-+	current->thread.fp_type = FP_STATE_SVE;
-+
- 	err = __copy_from_user(current->thread.sve_state,
- 			       (char __user const *)user->sve +
- 					SVE_SIG_REGS_OFFSET,
-@@ -462,12 +478,6 @@ static int restore_sve_fpsimd_context(st
- 	if (err)
- 		return -EFAULT;
- 
--	if (flags & SVE_SIG_FLAG_SM)
--		current->thread.svcr |= SVCR_SM_MASK;
--	else
--		set_thread_flag(TIF_SVE);
--	current->thread.fp_type = FP_STATE_SVE;
--
- 	err = read_fpsimd_context(&fpsimd, user);
- 	if (err)
- 		return err;
+-	drm_exec_init(&exec, DRM_EXEC_INTERRUPTIBLE_WAIT);
++	drm_exec_init(&exec, 0);
+ 	drm_exec_until_all_locked(&exec) {
+ 		r = amdgpu_vm_lock_pd(vm, &exec, 0);
+ 		if (likely(!r))
 
 
 
