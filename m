@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIEIGpgyemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212463-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:24 +0100
+	id MPlUGCsuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0E0A4E75
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 640A4A434F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9FBB9309D1B8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 86E56301F2DD
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC919309DD2;
-	Wed, 28 Jan 2026 15:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DA9248F72;
+	Wed, 28 Jan 2026 15:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsSdX8q6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0f+jbpo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4F6308F2E;
-	Wed, 28 Jan 2026 15:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EEA23E358;
+	Wed, 28 Jan 2026 15:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615604; cv=none; b=gVERzE0HcfEIZRGzlc/vOi15+XCk1XrGxa/b6wEf4qwToo3Ablh0s+oHV1dd4TBfGsD5veqgC8JFoKuffZgtz0uZ4yHDNXt66QO6HfzQHgBvqD/kILFZlfuZz8bdjETgJPiBft9e2bA5hxYbnpdIhbnNyFwSCZI4+LbUZ0UCOJs=
+	t=1769614407; cv=none; b=EVccb+fpdKJfQzzZBOYFLEA9Ie/2dlSSY3SY90E0e12dD5IddDql15cZk3W1eJknOq5UU8llZ4rl9G6cU/sT8vkmNLLwsfjMo3ySMPwqdqZ7jEoWc7Ef2/k5WimJ2mV2lGFk+P7wtrAiKGcgf/j7uSnJ7yjfWF4QSibZJiLdy84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615604; c=relaxed/simple;
-	bh=7rcotOEHzt7N0Cz5kp9g5foJj8LQkliMrZwT0U3fSUk=;
+	s=arc-20240116; t=1769614407; c=relaxed/simple;
+	bh=jvkhm7Vafs2GaFoib6AnszyUmdT3IyVQPF6coQlqR6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IjnLtPQzPk2CJIZT23LNXqG0mcCVwiRTBYofQPs7crRLT+XG8dGC0zdydaxVtdMl4t1ZDk/VZ9SSzaoFsrh7Pr4NSKGuogBTzvgMjQbp7kELPFST/pSe2jSmaMwwYzulGEkMFxzUNrC1BvGgjWUuZyY0XwNZ22oQOtSn7btoEn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsSdX8q6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D02C4CEF1;
-	Wed, 28 Jan 2026 15:53:23 +0000 (UTC)
+	 MIME-Version; b=npn3aSMIFhiXB4HAOxiM/rRCX1gykDqS1aYx1FV6ccOxx/aOxPxbGbqRtR28DRZzx5OkGLC90DGxgTNw4r2Qexu5BQeVyNy+EQfTKJpY391A1IdSZnx6RlieRMTiomVO1mnmGihdboniPgX0dKnnojsnAzBeken3ZfwwqhB3wt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0f+jbpo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A152CC4CEF1;
+	Wed, 28 Jan 2026 15:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615604;
-	bh=7rcotOEHzt7N0Cz5kp9g5foJj8LQkliMrZwT0U3fSUk=;
+	s=korg; t=1769614407;
+	bh=jvkhm7Vafs2GaFoib6AnszyUmdT3IyVQPF6coQlqR6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jsSdX8q6hxgkJU34IOhm4r9L7T5YY6Vp182Sbc5Y0mmERr1FMpdmSdo5N/zTWL9xm
-	 cbugdR0c+4AROHW8OPchUg8mqutzyiVHMROMnvE7WcrdzyPIK+lxjDEynDN4SD0PJo
-	 6sBL42qa9DlPC8jzypYnkIdLtMoRFpljFnlxKtY0=
+	b=Y0f+jbpoPU3DwQU5coUE+DZtRvlUdh5G2U86AJChYPOA0z0Zc3UcLLyKD0W0i5W9a
+	 ZTYigR3phEGewf96Cyr2thtN3rlMrCWvRypRN8o7QVjOJN65DX85gpTVWDslbEN053
+	 6MkKEp1bJqEWBm7s9F1DKDKre7qAezjEetWQwCSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.18 057/227] scsi: storvsc: Process unsupported MODE_SENSE_10
+	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 126/254] tools: ynl: Specify --no-line-number in ynl-regen.sh.
 Date: Wed, 28 Jan 2026 16:21:42 +0100
-Message-ID: <20260128145346.392853284@linuxfoundation.org>
+Message-ID: <20260128145349.354917397@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +70,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212463-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,outlook.com,oracle.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212102-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.987];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4C0E0A4E75
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,ynl-regen.sh:url]
+X-Rspamd-Queue-Id: 640A4A434F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 9eacec5d18f98f89be520eeeef4b377acee3e4b8 upstream.
+[ Upstream commit 68578370f9b3a2aba5964b273312d51c581b6aad ]
 
-The Hyper-V host does not support MODE_SENSE_10 and MODE_SENSE.  The
-driver handles MODE_SENSE as unsupported command, but not for
-MODE_SENSE_10. Add MODE_SENSE_10 to the same handling logic and return
-correct code to SCSI layer.
+If grep.lineNumber is enabled in .gitconfig,
 
-Fixes: 89ae7d709357 ("Staging: hv: storvsc: Move the storage driver out of the staging area")
-Cc: stable@kernel.org
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20260117010302.294068-1-longli@linux.microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  [grep]
+  lineNumber = true
+
+ynl-regen.sh fails with the following error:
+
+  $ ./tools/net/ynl/ynl-regen.sh -f
+  ...
+  ynl_gen_c.py: error: argument --mode: invalid choice: '4:' (choose from user, kernel, uapi)
+  	GEN 4:	net/ipv4/fou_nl.c
+
+Let's specify --no-line-number explicitly.
+
+Fixes: be5bea1cc0bf ("net: add basic C code generators for Netlink")
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260115172533.693652-3-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/net/ynl/ynl-regen.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1144,7 +1144,7 @@ static void storvsc_on_io_completion(str
- 	 * The current SCSI handling on the host side does
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
--	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MODE_SENSE and MODE_SENSE_10 command with cmd[2] == 0x1c
- 	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
-@@ -1154,6 +1154,7 @@ static void storvsc_on_io_completion(str
+diff --git a/tools/net/ynl/ynl-regen.sh b/tools/net/ynl/ynl-regen.sh
+index bdba24066cf10..88bd42496cac5 100755
+--- a/tools/net/ynl/ynl-regen.sh
++++ b/tools/net/ynl/ynl-regen.sh
+@@ -21,7 +21,7 @@ files=$(git grep --files-with-matches '^/\* YNL-GEN \(kernel\|uapi\|user\)')
+ for f in $files; do
+     # params:     0       1      2     3
+     #         $YAML YNL-GEN kernel $mode
+-    params=( $(git grep -B1 -h '/\* YNL-GEN' $f | sed 's@/\*\(.*\)\*/@\1@') )
++    params=( $(git grep --no-line-number -B1 -h '/\* YNL-GEN' $f | sed 's@/\*\(.*\)\*/@\1@') )
+     args=$(sed -n 's@/\* YNL-ARG \(.*\) \*/@\1@p' $f)
  
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE_10) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
- 	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
+     if [ $f -nt ${params[0]} -a -z "$force" ]; then
+-- 
+2.51.0
+
 
 
 
