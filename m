@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEMiOtA5eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:31:12 +0100
+	id EE3PFKIwemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05989A5BEE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:31:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AB0A4953
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2D59F302CCDA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72F26304B831
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643992FF178;
-	Wed, 28 Jan 2026 15:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC53530E849;
+	Wed, 28 Jan 2026 15:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYXdf2mh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8IeRPUq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E991D6AA;
-	Wed, 28 Jan 2026 15:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90292238159;
+	Wed, 28 Jan 2026 15:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615905; cv=none; b=HuKOHljdrzdQ3JXNRhzZJ+cubtK8PDyi0K1JUf7Y1pXQ/wUks3qV0KA/K8aNvxKxUEWWAw3aKoxDD/gsh/Q19Ihk2WDZNv/LcBdjXEmKnYXcL/I80w9HzD+ZlYnleS8z0eshKGfAZ0TiB2PtPCFvJ1Qcp4aseiS2WIhFhIZILwc=
+	t=1769615214; cv=none; b=QUnQoJlT9jnQSMva27lhrMMmX3Y2NfAakPDODPPMwICssxgA93JwmV2CiVLM/fD83efi9gq5CDSLjGUa+C6OVIDf+EPATgxZqhLx6crcjRQIlAGq5VpJAKVthP09VATGBKLaOreP8GyVOJdiMZ8QqjNI1MrMA0Eyy2aqh5p+7MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615905; c=relaxed/simple;
-	bh=Q54mKjHlPI0vixhlczRww4sBvGlKDqJx0bhK/LbXU40=;
+	s=arc-20240116; t=1769615214; c=relaxed/simple;
+	bh=dBEqMXN7NMttSbWCF7s9Sxd60awTLr5XVcbSducqdx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c31vUtgRZnM39/t47DCxRe/B9FVcCmtZUfcbVO0CrRqtPUgWuuYyAfksVWuKOHsH/o9vemwtJIfsxxGw5XiiSF4uUPFrEYoXXYkakKxkVahyKi0CViJtfegPK08mIrNYJUwwYfCxDdf1matnbMYjm/9SGJdVqFINqS8whQuzmDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYXdf2mh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F01BC4CEF1;
-	Wed, 28 Jan 2026 15:58:24 +0000 (UTC)
+	 MIME-Version; b=o+wSjwmINl4mMTHHZ5T+FUiFBre2MdvuSqJwbU+A6YEspA0XxRwP+PYRcFYQzeHI5bdZLuEv6/QJ9M/1NiVf6rrxIFC1LT35jNMpbBCDU8U+gST3jRsEhrrVgIFuuOFC7Em+vU6gF0M1Ow/EUtyuIbHa81bhtNdwbyIz2ctszgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8IeRPUq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A0DC4CEF1;
+	Wed, 28 Jan 2026 15:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615905;
-	bh=Q54mKjHlPI0vixhlczRww4sBvGlKDqJx0bhK/LbXU40=;
+	s=korg; t=1769615214;
+	bh=dBEqMXN7NMttSbWCF7s9Sxd60awTLr5XVcbSducqdx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYXdf2mhur0M33UCaPwehKjIKQ7Fq4JQ5P2aRgZwoVZxUY5qpDHHtZyOX1Cjt9yRi
-	 7kQAjtqYM9t4kHewW3G61nDhAm0sXsywGR/Ryw95UqSNHkdJvquohnRRB68SuYi+21
-	 7N4Vg8IeIvsipcqeq2JSEf8CGLD/z3WiVmq4RKkM=
+	b=z8IeRPUqn0KwhfPBMBuszCYJcFID8V/Fea5so7UPpkwEJArLo2C8xLo32WKp8YUEs
+	 Q+vSxITk2yIp77cZU3MUpHFo2TkQ3Lnpc2NyIMA2aZ3rgBzUg6Q9rJJvFx9RBq+PSo
+	 Ixa37Zb1CHhMIWcNX4nELgNoTl7T60QS5xnzIL9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 149/227] Octeontx2-af: Add proper checks for fwdata
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Karsten Hohmeier <linux@hohmatik.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 111/169] ALSA: ctxfi: Fix potential OOB access in audio mixer handling
 Date: Wed, 28 Jan 2026 16:23:14 +0100
-Message-ID: <20260128145349.818216903@linuxfoundation.org>
+Message-ID: <20260128145338.000857364@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212553-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212347-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,76 +90,63 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[marvell.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 05989A5BEE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: 96AB0A4953
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 4a3dba48188208e4f66822800e042686784d29d1 ]
+commit 61006c540cbdedea83b05577dc7fb7fa18fe1276 upstream.
 
-firmware populates MAC address, link modes (supported, advertised)
-and EEPROM data in shared firmware structure which kernel access
-via MAC block(CGX/RPM).
+In the audio mixer handling code of ctxfi driver, the conf field is
+used as a kind of loop index, and it's referred in the index callbacks
+(amixer_index() and sum_index()).
 
-Accessing fwdata, on boards booted with out MAC block leading to
-kernel panics.
+As spotted recently by fuzzers, the current code causes OOB access at
+those functions.
+| UBSAN: array-index-out-of-bounds in /build/reproducible-path/linux-6.17.8/sound/pci/ctxfi/ctamixer.c:347:48
+| index 8 is out of range for type 'unsigned char [8]'
 
-Internal error: Oops: 0000000096000005 [#1]  SMP
-[   10.460721] Modules linked in:
-[   10.463779] CPU: 0 UID: 0 PID: 174 Comm: kworker/0:3 Not tainted 6.19.0-rc5-00154-g76ec646abdf7-dirty #3 PREEMPT
-[   10.474045] Hardware name: Marvell OcteonTX CN98XX board (DT)
-[   10.479793] Workqueue: events work_for_cpu_fn
-[   10.484159] pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   10.491124] pc : rvu_sdp_init+0x18/0x114
-[   10.495051] lr : rvu_probe+0xe58/0x1d18
+After the analysis, the cause was found to be the lack of the proper
+(re-)initialization of conj field.
 
-Fixes: 997814491cee ("Octeontx2-af: Fetch MAC channel info from firmware")
-Fixes: 5f21226b79fd ("Octeontx2-pf: ethtool: support multi advertise mode")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Link: https://patch.msgid.link/20260121094819.2566786-1-hkelam@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch addresses those OOB accesses by adding the proper
+initializations of the loop indices.
+
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Tested-by: Karsten Hohmeier <linux@hohmatik.de>
+Closes: https://bugs.debian.org/1121535
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/all/aSk8KJI35H7gFru6@eldamar.lan/
+Link: https://patch.msgid.link/20260119133212.189129-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c | 3 +++
- drivers/net/ethernet/marvell/octeontx2/af/rvu_sdp.c | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ sound/pci/ctxfi/ctamixer.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-index 3abd750a4bd74..3d91a34f8b57b 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
-@@ -1222,6 +1222,9 @@ int rvu_mbox_handler_cgx_set_link_mode(struct rvu *rvu,
- 	u8 cgx_idx, lmac;
- 	void *cgxd;
+--- a/sound/pci/ctxfi/ctamixer.c
++++ b/sound/pci/ctxfi/ctamixer.c
+@@ -205,6 +205,7 @@ static int amixer_rsc_init(struct amixer
  
-+	if (!rvu->fwdata)
-+		return LMAC_AF_ERR_FIRMWARE_DATA_NOT_MAPPED;
-+
- 	if (!is_cgx_config_permitted(rvu, req->hdr.pcifunc))
- 		return -EPERM;
+ 	/* Set amixer specific operations */
+ 	amixer->rsc.ops = &amixer_basic_rsc_ops;
++	amixer->rsc.conj = 0;
+ 	amixer->ops = &amixer_ops;
+ 	amixer->input = NULL;
+ 	amixer->sum = NULL;
+@@ -370,6 +371,7 @@ static int sum_rsc_init(struct sum *sum,
+ 		return err;
  
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_sdp.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_sdp.c
-index e4a5f9fa6fd46..bbfd8231aed5c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_sdp.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_sdp.c
-@@ -56,7 +56,7 @@ int rvu_sdp_init(struct rvu *rvu)
- 	struct rvu_pfvf *pfvf;
- 	u32 i = 0;
+ 	sum->rsc.ops = &sum_basic_rsc_ops;
++	sum->rsc.conj = 0;
  
--	if (rvu->fwdata->channel_data.valid) {
-+	if (rvu->fwdata && rvu->fwdata->channel_data.valid) {
- 		sdp_pf_num[0] = 0;
- 		pfvf = &rvu->pf[sdp_pf_num[0]];
- 		pfvf->sdp_info = &rvu->fwdata->channel_data.info;
--- 
-2.51.0
-
+ 	return 0;
+ }
 
 
 
