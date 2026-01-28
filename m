@@ -1,292 +1,200 @@
-Return-Path: <stable+bounces-212646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFRvMhRFemn34wEAu9opvQ
-	(envelope-from <stable+bounces-212646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:19:16 +0100
+	id aF6EBUFGemkp5AEAu9opvQ
+	(envelope-from <stable+bounces-212647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:24:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49161A6B6E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:19:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0367A6CBC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 003A3300AEDE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 425EF301BA75
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DDC32E733;
-	Wed, 28 Jan 2026 17:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E858333434;
+	Wed, 28 Jan 2026 17:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="emgAG8BD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RLRINZ9Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80BA225390
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 17:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF2B31ED62
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 17:23:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769620753; cv=pass; b=I4rNMrgO0+qwEWHEgZDKRUpMcMDUB2GHVT21uz2KUOo+mRcPdUTrr40GUlC6MVn8ttWKaMsaJAdbLErNh/0am2Z0QWoWewNjr1H9m627S6Ds2uDpFSza/OzOkfDjFR2dA+FFvdlU8QOGwnUCMWmmE+cE5748VEPcyHzoWKfPDH4=
+	t=1769621041; cv=pass; b=JqsM+jVv7Ero7Pbpes1iqAbTOfXMAZu15wXBrsHn2ZoFu0EqLHNUXa6v3erl4/SpIFG2W2hGOcbGHyZ5e0jmLNMV0hbpsoEcIuSI1FXvqomX9nMyKIFXRZJzQ7D1elkWnVHXDxm0Uk9gIEz3dOlO3CR6HWHsJXcvaalwFUgEVrA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769620753; c=relaxed/simple;
-	bh=HU+2qV9g/s9S77R3j/OFeZGFjqpC0FxcFKPAXfJCMbE=;
+	s=arc-20240116; t=1769621041; c=relaxed/simple;
+	bh=kizkZuvdxw6uKJdz5CGeib2vOGGoPb1DUKZR/ygQBzE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XW2yq+uskJeF91bexEyRAv92+JPLC7WerZvkkQ3EYTWcQ9/SsrDcDYkEUhDcUva2/oM3OYplrqE1Ck0zum2BDjMRlrrjbyWG/legyeH61vmSo8PVlfeT5SbOb1ZiM6OtYkFLmU+qe0J3fUuvxD68WH1z+dmf1HXzBIjx/ZryXJ4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=emgAG8BD; arc=pass smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b883787268fso12669366b.3
-        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 09:19:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769620750; cv=none;
+	 To:Cc:Content-Type; b=qjtRoFeVKih9ROy5RJq4xPTBsx4AXhT4SjgY5TzoiK1k3Yt0TVow6ey1jo8zMJI/IHuaPEkbPtTDua0byVSZkv5/uabs5ZpWRc3xIRmtY+UuS0IHJlD9SD7hwL0TOn+p4rGNtRwVGW1rrTiUQB26zZaHyZhENp8xcAC48qSmdu0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RLRINZ9Z; arc=pass smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a871daa98fso146135ad.1
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 09:23:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769621039; cv=none;
         d=google.com; s=arc-20240605;
-        b=bSc8GH1BwmUdVZcMezyrDME6iGaYkdvZOz5HbPK7HfYhb6RvN2xOZLzCr/elz4+E2S
-         UWHwTwC1klCZLBo3t7RJyyMNahPi+elhS8g9c1SWt/IHUC4xmu4AyWUecIGKYdUpIVfs
-         tI1qKsxuEYCB4pg+CpRTIDNDK65Axx/saWIrOtGw3opb6IM5xsHdTR6EjlQbPqqDCr+Z
-         stPJSjxUSXGXFShC/PQC+W6G4dkRLa9LsyIt8EYjoTdpJFWDFJVJrlU4FMUNm/2OlASk
-         JrUktqhJum7LTvjresWlcqKanGOg2ZSFS2rwSwtX5OwhsAcJn8AoX8mabEcp25WOve8s
-         lynw==
+        b=AbUiX7JEBfQgNEsBAOO3tICKL8lXxqZOgOAdwo0mPAOQe1dSgzwvKPLGzhAW92N2/r
+         l0GTadB3qUc4tVDwVdvwEX9faqBtCSIc6/63frE+2r8DDfjpC+d1cRMrmu3bnPCHsSsV
+         eXUV25+q40gjgMrxFwb7h5PinNCIY9Gpi/Rd39hsvpflTc0qck/9kM+GSj+KANkTDQ3x
+         WbqbJ4BYbr2zxRul2Kenco8bU3S6G9iso8rj+hJNzuGGwEi3U3PKfSG7MVNdh4RWfrw3
+         6KpBcWgbNtNPCUXJx8glyVd81DjjwRr1kWAAeNjW6U2PNWESCPb/UecvIPEo6Fw2TM//
+         gulQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=c6U2T5XiBkgtqqoIWwFJ9MeumwoEccaKOI8Bpx3K3Oc=;
-        fh=r8WhPeDhMJJ4CopUPEABrtLM4SFu2zupmcLHMAFzrGs=;
-        b=hXLZia+I4utYK6POKNcsfKeLZzJVTFqPVSv6SHWdqGxgj2ZAs4FF4PEsm7uVEewLcs
-         Fep0XBFFjHyEf3UqEAj5Q5SxIH9rgvARc2/8ug/UiYvP/TewaE5ss6Ownq6cWkR1AYP/
-         3tgrUlslprYEPw90HBfEh77ewxRYZQGtI9fBoSqiWDbIXKy9ZjTZIpNt7EGt+GhCu0zp
-         ZzBd/X2RsCqOouZDxxSk2fiCb4fz90LIhHm/E8QwD7/db3dcDP5ato6539jhyTJPg14d
-         KdyO+TRntjcmhhJKcIBQIwXJleY7mizEECGwCJhmmRo8xShWPPKlTXMosBuPYZ7HaaeA
-         OzcA==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HyWyPzTGB/cOBYn0NBzbfLp7xlXZid+2WFTQZJ9u/mY=;
+        fh=WYqoKWVviQEGFY5A5/tO67blDFyTMkrwboot/AezZn8=;
+        b=JnBR9qiMVwydOnz9kx6b8Z0+iaXtYbOo4xkDtG0UfGd9jo/2dKBuCf6cPgzfZS4q9k
+         N0uEN2Bg3cGyFI2/KO5z8OvzHVXcfhmXqHYAe+psYFJtO6PhIZz9XzjzRQszopZDdx8H
+         MB/BQo8ZMQ/bete3RUY4duVUhehjcHdqeHSDJGvXgoFxc0FYS39ylZ7p9PtGG9Iatb3G
+         rlao6xF2TEsStBTfSGMpTmUJZg7H7hYmJUH6tV38mV/AhAp0DrBA9+TQ0cTHUIvlvyIG
+         xcWeZtWZPqXchK7dqZfa3JTzNF64AhKgyyXiDdCgUzjcruRhiiwvg1/ppDyW8Idx7Yh5
+         41iQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1769620750; x=1770225550; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=c6U2T5XiBkgtqqoIWwFJ9MeumwoEccaKOI8Bpx3K3Oc=;
-        b=emgAG8BDJNaaUSG6V2gc6gDgLN24ig8B6gi29iRk1HErKeMq7bNUz6wF+HwKH8vOUy
-         S7yhjYSIlvLC/i5YXF7GXCGH59a500vVt9q6rkDXmhbhLHCPpkg3mJRqYerOMeIdeteW
-         vfaerpeK6WOWqnQGR4+4g/0LH4WTkYAVCmLVcE7+rk0aVY8HDeK8IFW68cHpaAJuN8ZY
-         IH7d481Q9bPFQosJF75J3SWi9bw8U7S1xyfT7/VH5SaPJWg3EvbmFuQJvh/LmhtRmI09
-         LQV68BkwZ9PpUzGNZvOiPhjjBjMbfIy5CWUvXweorWlGLo6MNSlbBX7cMg7tYpDgz+5Q
-         f05w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769620750; x=1770225550;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769621039; x=1770225839; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=c6U2T5XiBkgtqqoIWwFJ9MeumwoEccaKOI8Bpx3K3Oc=;
-        b=RDkdtBjXA19W6GNr1i+rdaN4MOoG6qJ7t5OEjPQF2uwEIo0vke39KD2GG8YDPJ/VHL
-         3LUlgzVY3tTkHQAB9T0L/McqYLnfJ4CfE7IWEpxD+fOyYKv8KBncBAQSfIiR/Fds1a18
-         5P7vlHfX7ki3BCQqto5nKZk0wG1oTG7LNmo4i3RVKh7xU2HooQlM+hVzobq8J7w2w8Pp
-         wKelplowAwx5wmQbUgiVPXUZTno2xE3wRSsEvO7t3OpPwkAlyG3wI0sm0m7pJvkgvXO7
-         mgHOTz0E4vC4pcV+tABEKtxU3pqjMEyzJzlzYZ91WYmRWj2C6DFG49+2lwbQBAn4LNE0
-         GJ9A==
-X-Forwarded-Encrypted: i=1; AJvYcCWpa7Wzgza87KJ5x0ACIYjLyadKXykuq0kH6cIvixdvmpEulha26VKcw8upke+VrgMmjhQI2R8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGnxJlleHCYaeGkXSqxnQHDH0/jo2qhDaKfzebGrzAcMOUlNIw
-	/kxdKKrJkAuVCQGIQeul+HA4Amr9gs9W6IqgjbGCcj+zuahrRTRjcAT6cdlJ+f1X+2h2MksxGCT
-	FL/CAKt0XDpnWE+FXS8AHLkqQ6lqOQOwC8OFb4zzhag==
-X-Gm-Gg: AZuq6aJ9Dno5BMObh3Mx/rvb0L//owNzsMCdzNhmdf6zGh7p8zNyx3StZNmVm3lm5sK
-	hzfacSwJs+dgyKIh5Uzbqa/UzlRPYI27fpLlZBfLZVRRKfWuv9CBHWrsuipADDbYlwXEYu4qywO
-	gzNAhHCg1xwtPumB88iMaC9RM1DpS9ue0TOieb5ENZ5h7E3YxqNhTERlAcP1uwVq69k5nzF7aU0
-	5G3jTOFDURAtPHMzt56XHE5DpNpA42aY1SRXkSi2LrX+ccFI3RxPg56HzFFBr62hDdK1uCQ6LtN
-	u06hGStKhWAzllv7m8gP2hzhgTBd1w==
-X-Received: by 2002:a17:907:9620:b0:b6d:73f8:3168 with SMTP id
- a640c23a62f3a-b8dab15be8bmr411653466b.3.1769620750053; Wed, 28 Jan 2026
- 09:19:10 -0800 (PST)
+        bh=HyWyPzTGB/cOBYn0NBzbfLp7xlXZid+2WFTQZJ9u/mY=;
+        b=RLRINZ9Z2mdC15RRQfK11I3dIYlKrJQt++jxEjPb5IUjwEYbqGwXI9TdsrC7Os1JLi
+         zee3W3QMflyxCOu4sX4hcppUhInbgwXpQRjqbQy/QbsBTKJ1+oEAA6IldwpwN6qXZNfM
+         aqPsoyMOTzd2LCGriFaZukmwgRRBLOlLWbtK5Uk4aWuxaipK9C7HTTGM1O6jLEcVzu2P
+         a5UsxiFeCNBSVvYP5GkFcYIGQIFuGBKMsF+i4JBi/abCd9ZCRYmTODfFHUZ3Cq9SSMk+
+         Y976E+Zzcp74NphQd/ssDhWrhz/IRAWOR78SwW0a7A6fvm+2jX8gFInJ+0rmCPkv5q3+
+         RRwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769621039; x=1770225839;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HyWyPzTGB/cOBYn0NBzbfLp7xlXZid+2WFTQZJ9u/mY=;
+        b=EiuV/FEyJ9ETqKYFxtYeFsRbyLqObzWb7fRWRljso8/6NO6697fsYxBHUxwfPafXEl
+         PzFgz5x0tkYcavt3kfzG25sT0MiYtHefj2t7EDXxBtN8MaL60/jW80ejoPZxjMDqBftQ
+         CPVEHLmBIXJhbBhhzJ5eu+f7EfPHmZvDJVz+Us5PAmVkX520pkcUC2sSPSlSm0bfHWAi
+         +dPOqj6OgIWKO2DAl4cW3C2OY/otbqfL0hbI7xeyloT9ZJWcF3zyzq7PwvlexD3FCOGv
+         1YVVu8p+RioiLDUHNjv4scmm2AP5746OAVfCkDErM+vJHVWqsiOjWFiFHEkmG8905f/U
+         tsYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3eiarEBgI69hwXGOGU1AiM1W8Uf3vJSoGY33fA6buP+WcA/Lbe4x0aO1dYiADH40FeDm8Vsc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykwM4v6szI1pQnNq45OG3Gic7oRhvVxPBzbouTkv10UE6tfnzL
+	mljXteIFCzi8Y+t5iaDlmBWk6LhOOXenm+vsFnhBb+ftfB4h0oVziIWeKnHlQ8NifjqHXCzrmNX
+	x3kJ1157BqjqUZgE6eIL0EXYozEa3SVA=
+X-Gm-Gg: AZuq6aLIpI5KOvD8e1EYPlG8fv29jxQlYuE9M8/zjg7oWYeJ92sfsOHGp9elu9q0Y+Y
+	FGfqHn4WVIfObu7CCBSZc6ugol+63moiLc36WxF67YCi7Hz8lGadTHmpJTVkbdJFSO4Gm9lGQml
+	o37mkpu30ktyuNRZKrfb+jGrlQPmDtM38m7ZeLXN/1hjX3VE1zn1zjZq7H1vRxaH3zd6RtxIg1Y
+	RYJpFVUkke8EjHMSUWGVfBP7AZolQKgQmeALrUHvb10XNkX80aB1EEXNTFi3k3RzZRKuHfBwGLU
+	XHwkjtvprcs=
+X-Received: by 2002:a17:902:e5c9:b0:2a0:d6d5:b342 with SMTP id
+ d9443c01a7336-2a870dcbe7amr57082335ad.37.1769621038802; Wed, 28 Jan 2026
+ 09:23:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260127-imx-rproc-fix-v2-1-7288fcf74385@nxp.com>
- <CANLsYkznMVh240wMUZGayJHRzsUV-NNTiU+ezpLt3rjcwSn5Wg@mail.gmail.com> <PAXPR04MB845923F8485ABF7DAEA390CB8891A@PAXPR04MB8459.eurprd04.prod.outlook.com>
-In-Reply-To: <PAXPR04MB845923F8485ABF7DAEA390CB8891A@PAXPR04MB8459.eurprd04.prod.outlook.com>
-From: Mathieu Poirier <mathieu.poirier@linaro.org>
-Date: Wed, 28 Jan 2026 10:18:58 -0700
-X-Gm-Features: AZwV_Qi18JCueG1u3J70NR_1Vvtj-phyG744RAEAtU4_AnPA_NPI-ZDjNCfkuhc
-Message-ID: <CANLsYkyrz+A1iEabGZ6rFybFo4=mM+TPVDRSckFB2YUS_7aKow@mail.gmail.com>
-Subject: Re: [PATCH v2] remoteproc: imx_rproc: Not report loaded resource
- table when none
-To: Peng Fan <peng.fan@nxp.com>
-Cc: Daniel Baluta <daniel.baluta@nxp.com>, Iuliana Prodan <iuliana.prodan@nxp.com>, 
-	Bjorn Andersson <andersson@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Frank Li <frank.li@nxp.com>, 
-	"linux-remoteproc@vger.kernel.org" <linux-remoteproc@vger.kernel.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20260128-uprobe_rcu-v1-1-d41316763799@debian.org> <aXoUOEhDfncEkC-f@redhat.com>
+In-Reply-To: <aXoUOEhDfncEkC-f@redhat.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Wed, 28 Jan 2026 09:23:45 -0800
+X-Gm-Features: AZwV_Qj6rb3WoP_Y9fiHuFQxMtZyQOzI2dFswDQeqWIoSEtuJcdiEz7owWd2EyE
+Message-ID: <CAEf4BzYJJiUdQTjDgr_uVSQ+uBhYWKki0vjS5VffTzbST1uS2g@mail.gmail.com>
+Subject: Re: [PATCH] uprobes: fix incorrect lockdep condition in filter_chain()
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Breno Leitao <leitao@debian.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Andrii Nakryiko <andrii@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	kernel-team@meta.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212646-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[nxp.com,kernel.org,pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212647-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mathieu.poirier@linaro.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriinakryiko@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:url]
-X-Rspamd-Queue-Id: 49161A6B6E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: C0367A6CBC
 X-Rspamd-Action: no action
 
-On Tue, 27 Jan 2026 at 20:22, Peng Fan <peng.fan@nxp.com> wrote:
+On Wed, Jan 28, 2026 at 5:51=E2=80=AFAM Oleg Nesterov <oleg@redhat.com> wro=
+te:
 >
-> > Subject: Re: [PATCH v2] remoteproc: imx_rproc: Not report loaded
-> > resource table when none
+> On 01/28, Breno Leitao wrote:
 > >
-> > On Mon, 26 Jan 2026 at 23:51, Peng Fan (OSS)
-> > <peng.fan@oss.nxp.com> wrote:
-> > >
-> > > From: Peng Fan <peng.fan@nxp.com>
-> > >
-> > > priv->rsc_table is not NULL if the DT has a "rsc-table" entry,
-> > > priv->indicating
-> > > that _if_ there is a resource table in memory, that's where it should
-> > be.
-> > > Function imx_rproc_elf_find_loaded_rsc_table() is buggy so the
-> > > narrative about a previously running FW with a valid resource table
-> > can be dropped.
-> > >
+> > The list_for_each_entry_rcu() in filter_chain() uses
+> > rcu_read_lock_trace_held() as the lockdep condition, but the function
+> > holds consumer_rwsem, not the RCU trace lock.
 > >
-> > (sigh)
+> > This gives me the following output when running with some locking debug
+> > option enabled:
 > >
-> > You apparently did not understand my last comment.
+> >   kernel/events/uprobes.c:1141 RCU-list traversed in non-reader section=
+!!
+> >     filter_chain
+> >     register_for_each_vma
+> >     uprobe_unregister_nosync
+> >     __probe_event_disable
+> >
+> > Remove the incorrect lockdep condition since the rwsem provides
+> > sufficient protection for the list traversal.
 >
-> Sorry about this. Does this looks good?
+> I hope Andrii will recheck, but looks obviously correct to me.
+
+yeah, I did, and it also looks obviously correct to me, I didn't need
+to use rcu flavor there in the first place, I think.
+
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+
 >
-> Daniel, Iuliana, would you please help review?
+> > Fixes: 87195a1ee332a ("uprobes: switch to RCU Tasks Trace flavor for be=
+tter performance")
 >
-> remoteproc: imx: Fix invalid loaded resource table detection
+> This commit just change the __list_check_rcu() condition...
 >
-> imx_rproc_elf_find_loaded_rsc_table() may incorrectly report a loaded
-> resource table even when the current firmware does not provide one.
->
-> When the device tree contains a "rsc-table" entry, priv->rsc_table is
-> non-NULL and denotes where a resource table would be located if one is
-> present in memory. However, when the current firmware has no resource table,
-> rproc->table_ptr is NULL. The function still returns priv->rsc_table, and the
-> remoteproc core interprets this as a valid loaded resource table.
-> .
-> Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table() when
-> there is no resource table for the current firmware (i.e. when
-> rproc->table_ptr is NULL). This aligns the function's semantics with the
-> remoteproc core: a loaded resource table is only reported when a valid
-> table_ptr exists.
->
-> With this change, starting firmware without a resource table no longer
-> triggers a crash.
+> Perhaps
+> Fixes: cc01bd044e6a ("uprobes: travers uprobe's consumer list locklessly =
+under SRCU protection")
 >
 
-Yes, this will be fine.
+yep, this one is the earliest change adding unnecessary rcu flavor of
+list_for_each_entry
 
-> Thanks,
-> Peng.
+
+> makes more sense?
 >
-> >
-> > > In this case rproc->table_ptr is NULL because the current firmware
-> > > does not contain a resource table, but the remoteproc core still
-> > > interprets the non-NULL return value as a loaded resource table and
-> > > attempts to memcpy() from rproc->cached_table, leading to a NULL
-> > > pointer dereference and kernel panic.
-> > >
-> > > Fix this by returning NULL from imx_rproc_elf_find_loaded_rsc_table()
-> > > when there is no cached resource table for the current firmware. This
-> > > ensures that a loaded resource table is only reported when a valid
-> > > table_ptr exists, which matches the remoteproc core expectations.
-> > >
-> > > This issue can be reproduced by:
-> > >   1) start a firmware with a resource table
-> > >   2) stop the remote processor
-> > >   3) start a firmware without a resource table
-> > >
-> >
-> > Another sign you did not understand my last comment.
-> >
-> > I had hopes of merging this patch but the changelog is too garbled to
-> > be salvageable.  I suggest you ask Daniel or Iuliana for help.
-> >
-> > > With this change, starting a firmware without a resource table no
-> > > longer causes kernel dump.
-> > >
-> > > Fixes: e954a1bd1610 ("remoteproc: imx_rproc: Use imx specific hook
-> > for
-> > > find_loaded_rsc_table")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > > ---
-> > > Changes in v2:
-> > > - Per Mathieu, Check rproc->table_ptr, update commit log
-> > > - Include R-b from Frank
-> > > - Link to v1:
-> > >
-> > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2F
-> > lore
-> > > .kernel.org%2Fr%2F20260122-imx-rproc-fix-v1-1-
-> > 36cc64369a40%40nxp.com&d
-> > >
-> > ata=05%7C02%7Cpeng.fan%40nxp.com%7C781fb4227e024211e71c08
-> > de5dbb609e%7C
-> > >
-> > 686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C639051256532
-> > 530786%7CUnknow
-> > >
-> > n%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAw
-> > MCIsIlAiOiJXaW
-> > >
-> > 4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=0
-> > 3sG8la72ysD
-> > > ivP9SMmA9Ry2YaiMvCjsHWAWaGFOVQw%3D&reserved=0
-> > > ---
-> > >  drivers/remoteproc/imx_rproc.c | 4 ++++
-> > >  1 file changed, 4 insertions(+)
-> > >
-> > > diff --git a/drivers/remoteproc/imx_rproc.c
-> > > b/drivers/remoteproc/imx_rproc.c index
-> > >
-> > 375de79168a1c8d11b87ac1bd63774a3feac106d..f5f916d679051936
-> > 0f446f063e09
-> > > d018c5654953 100644
-> > > --- a/drivers/remoteproc/imx_rproc.c
-> > > +++ b/drivers/remoteproc/imx_rproc.c
-> > > @@ -729,6 +729,10 @@ imx_rproc_elf_find_loaded_rsc_table(struct
-> > rproc
-> > > *rproc, const struct firmware *  {
-> > >         struct imx_rproc *priv = rproc->priv;
-> > >
-> > > +       /* No resource table in the firmware */
-> > > +       if (!rproc->table_ptr)
-> > > +               return NULL;
-> > > +
-> > >         if (priv->rsc_table)
-> > >                 return (struct resource_table *)priv->rsc_table;
-> > >
-> > >
-> > > ---
-> > > base-commit: e3b32dcb9f23e3c3927ef3eec6a5842a988fb574
-> > > change-id: 20260122-imx-rproc-fix-e206f8e6e477
-> > >
-> > > Best regards,
-> > > --
-> > > Peng Fan <peng.fan@nxp.com>
-> > >
+> Acked-by: Oleg Nesterov <oleg@redhat.com>
+>
 
