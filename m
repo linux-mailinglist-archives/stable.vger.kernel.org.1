@@ -1,159 +1,184 @@
-Return-Path: <stable+bounces-211978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIcoAK8gemmv2wEAu9opvQ
-	(envelope-from <stable+bounces-211978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:43:59 +0100
+	id gDhsA78gemmv2wEAu9opvQ
+	(envelope-from <stable+bounces-211979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B605A3066
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:43:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F79CA307D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D5333025294
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 14:37:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EFF1A3006164
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 14:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B257C35FF67;
-	Wed, 28 Jan 2026 14:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544663612FC;
+	Wed, 28 Jan 2026 14:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gpmn7TkD"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fkw3jZG/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3BB280327;
-	Wed, 28 Jan 2026 14:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C790223D2A3
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 14:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769611058; cv=none; b=gv4jJsETEq3w784Ft508nriVrVX7H2TvbwtW3FbCuO5EmfbOgysIeRKvDjiEgTGyKpb342G6jqAPhgpY6v8z01aEZClB7NjSbJJzbamdTuhdBUGNX7bZfbxmHv8CllEv04+nlVzcZ98jO4t3NyLkDP0SZQ9tRSqc+r9jsK/zu8E=
+	t=1769611450; cv=none; b=BSST5HFkKFmkDvzwIqzArCGiZAS0z2qHI6ctQErI/S/X0FeN7qi5Oq41Ziq8tlw0q0YOl70sm0i3p6J29i2k0EqFOVKlXRDyeXJ10YbpC7H9CztS+gGeSAWaXpoibPWKBcF9lLQBUaBTE7EV8RKkc5XbNrpJE5c/JNzIq0RguLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769611058; c=relaxed/simple;
-	bh=xIMimHCjlq0F2QtbChhd5VKFQKGNtpQMk5hJqptOr1k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lr8WRCqch828wta+5TZXEJKJf6AEFh8siSxMyp6PHOYq+OgHZ3mTd/sBmNcRfj4bgr47Vo0QQxl8kt/riEXHJDKSLT3xIM/HYyrMCbtk0XfbYTqACgpiLoG6XO6izFZTLZTPbImlyeTiMSa+9casdYPNJCWmx6UxVIrU0uIk0B4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gpmn7TkD; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769611057; x=1801147057;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=xIMimHCjlq0F2QtbChhd5VKFQKGNtpQMk5hJqptOr1k=;
-  b=Gpmn7TkDY5eT6KadsqKPo251A6NPib5e91NfWyMvkjOzo4327iqzWWA7
-   dodn0bl4nZx71qS5PGHvrjHz2SLzpy8oBUB1FGi974sW+ZXcjZh6XP1py
-   XepC5DnyGoA5LCRLDKzk38d7r+3kZLHNYJ9sv0bwXXFawCbAPeDsJW+JP
-   8hODPqXbrPiw7BEGzZPvIKmukTgQv3Xx8a62zOHUZe37yP+6y4Giklng6
-   w+kcd+QegWI2AWPi56IOjvfupbdKKoGp/A0xyt200GFDlN3OeOy0a1j9o
-   YHisYZE2bdDaLT2cR/2393PHt+RQokq/uWrZXrBatJvBxYBjwbBGtpbar
-   A==;
-X-CSE-ConnectionGUID: jLBs8sOxSpeIFSPQg3aGUQ==
-X-CSE-MsgGUID: sBYU77bAS8qN/er3gaLPcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="81139548"
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="81139548"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 06:37:36 -0800
-X-CSE-ConnectionGUID: R9ccK9IGTBatJCBjT5CwHA==
-X-CSE-MsgGUID: jFuagXk9R6ip6QJOH2OVUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="208659051"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.57])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 06:37:33 -0800
-Date: Wed, 28 Jan 2026 16:37:31 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>, linux-serial@vger.kernel.org,
-	qianfan Zhao <qianfanguijin@163.com>,
-	Adriana Nicolae <adriana@arista.com>,
-	Jamie Iles <jamie@jamieiles.com>, linux-kernel@vger.kernel.org,
-	"Bandal, Shankar" <shankar.bandal@intel.com>,
-	"Murthy, Shanth" <shanth.murthy@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 6/7] serial: 8250: Add late synchronize_irq() to
- shutdown to handle DW UART BUSY
-Message-ID: <aXodg7E6dkqS2e37@smile.fi.intel.com>
-References: <20260128105301.1869-1-ilpo.jarvinen@linux.intel.com>
- <20260128105301.1869-7-ilpo.jarvinen@linux.intel.com>
+	s=arc-20240116; t=1769611450; c=relaxed/simple;
+	bh=Eifm+5IJG2WQcz8KqADEZNqgSy4azlf0NZp9PbMUSwE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=oCoHZ6XQmoSpj9CDiIY5Rqw2xDXuNQbz5E9/oieYMZUkkGtfHuGy2BhmHY/pCn0MhqxC73cDNAWAas72//3jlp+OnRvMR7rvPgZTCicnMDcmEDxTxvfSYwgBZfUxmeCObF+/SHB2P3NiRqXfr8Ygz+fG28Bq9oP+8xtCdOIr0nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fkw3jZG/; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2a7a98ba326so13745355ad.1
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 06:44:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769611448; x=1770216248; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cvJo/tir+J2/AtqQsUlOrgU1ueJuDktH3Ssw+42VW2E=;
+        b=fkw3jZG/5wB85wEo1RZZ3fYxv7dBYcsfBtHVq3y3+WalADv3UMVIHozQRLFyN1pCUl
+         QhFh1fWiSeFxq0zWdZRj+2x5amcGP+tLBgrFfg83PBsADUm4xzjQj8CrPFFJuDeSoPmA
+         7wBF0tANtae6xUBuu0xrDMWvjTmh8yJQzgUn3Cz7UXOxH36UWIa33P1zk5iwHPfxWMec
+         U3IKotg2cvAEWWqhpimJQfzTq5t1C8L+yoLyf85kinm7T19ufWegMBYXqYBdxa5lU6MB
+         9iylyLvKsh5X7wSmppgqkdUZo1Mm4SLlh8hN627HXdTuJGBhInme6MFS4YppnyPG3kiT
+         UC9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769611448; x=1770216248;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cvJo/tir+J2/AtqQsUlOrgU1ueJuDktH3Ssw+42VW2E=;
+        b=BhnOMgL/OLcAsZ/zlYKIDz//Aq6h2oLDOklVzm8PA3qnSbxmawd8P8DXOLjRrztjNj
+         ur8aFhDMGKvQkI1qO6/W4LodlcBr1zJJXoWDqCRO0y8CAnrXuEAsLi/g5JeosMVUgZ3R
+         F3y25DMuvKq96CiC+b8/EGO2bWpJn8Aj4/CEOxz476bdrpNbTwU2Q+AnEGwC5WHdNhGa
+         /58Io5eBiYldwmFKK6VvD+1XvuHeNHPy8Dnr7T/CWKtpVIVSSZjgR7uTOOxlcM6LJDhQ
+         khIazeN60IXQVrJyadINJ71UQBs/zh70wGKDOmNmvTsc7Hfamk9PsgVdrrmaPKpg+fEq
+         XQpA==
+X-Forwarded-Encrypted: i=1; AJvYcCVkyL6Tnk2mmoJxJq8bFTTxIVnMjuocAv3dblBvAax68I5meNSN6T3ezloTbg75IjqohkHoCdg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywd5oUqdXBbi9eaUfdzU8Dk7uWbo701yp1YUvI7ejMhoE9rqxgq
+	w6JFneEaCNHnTX9IuOblZ/1Y5aHdG9DKbOvO3L6hGBSC514eylt2F+7VRNquyAyO2ZnMyZ9BEwz
+	PEhNilQ==
+X-Received: from plbmj14.prod.google.com ([2002:a17:903:2b8e:b0:2a0:de6a:ac6c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2348:b0:2a0:eaf5:5cd8
+ with SMTP id d9443c01a7336-2a871267ae6mr39141105ad.9.1769611448055; Wed, 28
+ Jan 2026 06:44:08 -0800 (PST)
+Date: Wed, 28 Jan 2026 06:44:06 -0800
+In-Reply-To: <ea294969d05fc9c37e72053d7343e11fa9ffdded.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260128105301.1869-7-ilpo.jarvinen@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
+Mime-Version: 1.0
+References: <20260123125657.3384063-1-khushit.shah@nutanix.com>
+ <feb11efd6bfbc5e7d5f6f430f40d4df5544f1d39.camel@infradead.org>
+ <aXkyz3IbBOphjNEi@google.com> <ea294969d05fc9c37e72053d7343e11fa9ffdded.camel@infradead.org>
+Message-ID: <aXogtqrZMehORg2L@google.com>
+Subject: Re: [PATCH v6] KVM: x86: Add x2APIC "features" to control EOI
+ broadcast suppression
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Khushit Shah <khushit.shah@nutanix.com>, pbonzini@redhat.com, kai.huang@intel.com, 
+	mingo@redhat.com, x86@kernel.org, bp@alien8.de, hpa@zytor.com, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	dave.hansen@linux.intel.com, tglx@linutronix.de, jon@nutanix.com, 
+	shaju.abraham@nutanix.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,163.com,arista.com,jamieiles.com,intel.com];
-	TAGGED_FROM(0.00)[bounces-211978-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-211979-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[seanjc@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smile.fi.intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
-X-Rspamd-Queue-Id: 5B605A3066
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8F79CA307D
 X-Rspamd-Action: no action
 
-On Wed, Jan 28, 2026 at 12:53:00PM +0200, Ilpo Järvinen wrote:
-> When DW UART is !uart_16550_compatible, it can indicate BUSY at any
-> point (when under constant Rx pressure) unless a complex sequence of
-> steps is performed. Any LCR write can run a foul with the condition
-> that prevents writing LCR while the UART is BUSY, which triggers
-> BUSY_DETECT interrupt that seems unmaskable using IER bits.
-> 
-> Normal flow is that dw8250_handle_irq() handles BUSY_DETECT condition
-> by reading USR register. This BUSY feature, however, breaks the
-> assumptions made in serial8250_do_shutdown(), which runs
-> synchronize_irq() after clearing IER and assumes no interrupts can
-> occur after that point but then proceeds to update LCR, which on DW
-> UART can trigger an interrupt.
-> 
-> If serial8250_do_shutdown() releases the interrupt handler before the
-> handler has run and processed the BUSY_DETECT condition by read the USR
-> register, the IRQ is not deasserted resulting in interrupt storm that
-> triggers "irq x: nobody cared" warning leading to disabling the IRQ.
-> 
-> Add late synchronize_irq() into serial8250_do_shutdown() to ensure
-> BUSY_DETECT from DW UART is handled before port's interrupt handler is
-> released. Alternative would be to add DW UART specific shutdown
-> function but it would mostly duplicate the generic code and the extra
-> synchronize_irq() seems pretty harmless in serial8250_do_shutdown().
+On Tue, Jan 27, 2026, David Woodhouse wrote:
+> On Tue, 2026-01-27 at 13:49 -0800, Sean Christopherson wrote:
+> >=20
+> > Nope, we should be good on that front, kvm->arch.irqchip_mode can't be =
+changed
+> > once its set.=C2=A0 I.e. the irqchip_split() check could get a false ne=
+gative if it's
+> > racing with KVM_CREATE_IRQCHIP, but it can't get a false positive and t=
+hus
+> > incorrectly allow KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST.
+>=20
+> Ah, so userspace which checks all the kernel's capabilities *first*
+> will not see KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST advertised,
+> because it needs to enable KVM_CAP_SPLIT_IRQCHIP first?
 
-Dunno if the triggered interrupt may lead to a new DMA transfers (since
-this is generic 8520 code...) in some cases. Anyway I've just sent a patch
-that is Cc'ed to you to prevent that from happening. Not sure if it needs
-to be incorporated into your series or should have a Fixes tag.
+Only if userspace creates a VM and uses that to check capabilities, in whic=
+h case
+KVM is 100% right to say that KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST isn'=
+t
+supported.  If userspace checks the system-scoped ioctl, i.e. with @kvm=3DN=
+ULL, it
+will see KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> I guess that's tolerable=C2=B9 but the documentation could make it cleare=
+r,
+> perhaps? I can see VMMs silently failing to detect the feature because
+> they just don't set split-irqchip before checking for it?=20
 
--- 
-With Best Regards,
-Andy Shevchenko
+Hmm, if we want to improve that particular documentation, then we should do=
+ so
+in the description of KVM_CHECK_EXTENSION itself, which currently says:=20
 
+  Based on their initialization different VMs may have different capabiliti=
+es.
+  It is thus encouraged to use the vm ioctl to query for capabilities (avai=
+lable
+  with KVM_CAP_CHECK_EXTENSION_VM on the vm fd)
 
+Because there multiple capabilities that are conditionally supported based =
+on
+the VM type/configuration, i.e. this behavior isn't novel.
+
+> =C2=B9 although I still kind of hate it and would have preferred to have =
+the
+>   I/O APIC patch; userspace still has to intentionally *enable* that
+>   combination. But OK, I've reluctantly conceded that.
+
+Eh, VM really should be returning '0' for the check for all KVM_CAP_X2APIC_=
+API,
+and disallowing the capability, if the VM doesn't have an in-kernel local A=
+PIC.
+Because enabling any of the KVM_X2APIC_API_* options without a local APIC d=
+oesn't
+actually do anything.
+
+I say that because I'd be very tempted to "fix" that by restricting new fla=
+gs to
+VMs with irqchip_in_kernel(), at which point userspace needs to get the ord=
+ering
+right anyways.
 
