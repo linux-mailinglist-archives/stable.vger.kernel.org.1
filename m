@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-212507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCzBHaU3eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212507-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:21:57 +0100
+	id 8Pp1HKosemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2AEA5799
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:21:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B588A4021
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 153E5319FCA1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:56:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 850E63001465
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432C83043B2;
-	Wed, 28 Jan 2026 15:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2644D29ACDD;
+	Wed, 28 Jan 2026 15:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZQuedNk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3nM7oKu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AF73064B3;
-	Wed, 28 Jan 2026 15:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C822D239B;
+	Wed, 28 Jan 2026 15:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615750; cv=none; b=pk1d+d0qwIvBBrl6L9sUrq/Lpa3CQw+vS97mqnExjpbZVKG6sETPDs75KjUswXp/OCGX7Rj9WjbU1yJB1q89ern8Bh5FjErf4Bg4lqgayT8z5lFoLL0GROYa/zdddR5LsDRjpaveW5qOVsR9FRItu3EncsBsvVmj4ntrrbj7Ews=
+	t=1769614502; cv=none; b=oSJcjc9qLBOuPcEdpw+QlqgEZM4MR1Fv+DtNaLRhekyrnlhrSGRZRQmneGm9hwZ0HrKqm2YNsxGMOBWGp/ZG3gK4+We+BSCYcyxuub6jtf9J2wSFcSEHNuZgU1RSGbEM3tQzeYPup7CQmn7YOn/LFFb6NOfzJuzq0fjpw/pIdXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615750; c=relaxed/simple;
-	bh=z35OiH+TcereLhkh40fVMkKqikiBeL+cNBOZfEK59LM=;
+	s=arc-20240116; t=1769614502; c=relaxed/simple;
+	bh=TGyIofuGB1YoTI+BTVialEZeJHRnQz9KWYm8q6AkP1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1hScUuE5prtqcU0UxVweuVtEfCwMsy/zANn9tekSfj5OZ8lQCa0AKDpJsghn7O0xRVYzaOTV4MLcPG2OuR0iMIo03k5jSGx3+Dg0odBmVCBUccbM7FPErlHXKcv0VVqz1sMm6K48oThNMdAot6KPgfyBaKAThYloQl1nD5nZFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZQuedNk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55386C4CEF1;
-	Wed, 28 Jan 2026 15:55:49 +0000 (UTC)
+	 MIME-Version; b=mBlAwqgFZ6Idxc7jGz4txN6F+0aaVxJfirIkskLJh0reM9/DJE7voonRb3BOdasjCIX4BuJRKcj8Y0L5lShzIySBGGnLpOgwHazuaxdCcbF+CB8/M86Xv61e1MKa1pk6cW9zGw3X0g7MYzM9N/HlmZxAXj+3NWTOzritXDrRuaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3nM7oKu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F3AC4CEF1;
+	Wed, 28 Jan 2026 15:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615749;
-	bh=z35OiH+TcereLhkh40fVMkKqikiBeL+cNBOZfEK59LM=;
+	s=korg; t=1769614502;
+	bh=TGyIofuGB1YoTI+BTVialEZeJHRnQz9KWYm8q6AkP1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZQuedNkAWHP4b7Hcl6iQPj/KxE743DGgFRv3c5xB/7HNNoVAlvfCI3Z2rMbAjqai
-	 CdYQYoIN7Ao2SYyzHDMCYqQnLH223gKgMppDqB9gHBk4vyG2XOs/ljkZUFD6O4ZEaH
-	 Gb2tuCFD6z1XWmYpIGK5B6ZivzUu+MCiesHDxrLg=
+	b=e3nM7oKufCqOvKnWyrhJslDKvdpN5hxSHW5lHrfrWh8TuOIuExegQifunbBWya0w2
+	 60E1TGA+aFm/N470p7aH0pamR9NkgdlLWNrdhukbuYLJi0FaIeKRBEXUV6iS1Yx0/f
+	 nmLb+k268FXG5G/VRJhryLEkyelFM5V9aSobr3sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Marco Elver <elver@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Jann Horn <jannh@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 070/227] x86/kfence: avoid writing L1TF-vulnerable PTEs
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 139/254] Revert "nfc/nci: Add the inconsistency check between the input data length and count"
 Date: Wed, 28 Jan 2026 16:21:55 +0100
-Message-ID: <20260128145346.859513792@linuxfoundation.org>
+Message-ID: <20260128145349.819199427@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -87,8 +78,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212507-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-212133-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -96,126 +87,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[zytor.com:email,intel.com:email,alien8.de:email,linutronix.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,citrix.com:email]
-X-Rspamd-Queue-Id: 9F2AEA5799
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1B588A4021
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Cooper <andrew.cooper3@citrix.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit b505f1944535f83d369ae68813e7634d11b990d3 upstream.
+commit f40ddcc0c0ca1a0122a7f4440b429f97d5832bdf upstream.
 
-For native, the choice of PTE is fine.  There's real memory backing the
-non-present PTE.  However, for XenPV, Xen complains:
+This reverts commit 068648aab72c9ba7b0597354ef4d81ffaac7b979.
 
-  (XEN) d1 L1TF-vulnerable L1e 8010000018200066 - Shadowing
+NFC packets may have NUL-bytes. Checking for string length is not a correct
+assumption here. As long as there is a check for the length copied from
+copy_from_user, all should be fine.
 
-To explain, some background on XenPV pagetables:
+The fix only prevented the syzbot reproducer from triggering the bug
+because the packet is not enqueued anymore and the code that triggers the
+bug is not exercised.
 
-  Xen PV guests are control their own pagetables; they choose the new
-  PTE value, and use hypercalls to make changes so Xen can audit for
-  safety.
+The fix even broke
+testing/selftests/nci/nci_dev, making all tests there fail. After the
+revert, 6 out of 8 tests pass.
 
-  In addition to a regular reference count, Xen also maintains a type
-  reference count.  e.g.  SegDesc (referenced by vGDT/vLDT), Writable
-  (referenced with _PAGE_RW) or L{1..4} (referenced by vCR3 or a lower
-  pagetable level).  This is in order to prevent e.g.  a page being
-  inserted into the pagetables for which the guest has a writable mapping.
-
-  For non-present mappings, all other bits become software accessible,
-  and typically contain metadata rather a real frame address.  There is
-  nothing that a reference count could sensibly be tied to.  As such, even
-  if Xen could recognise the address as currently safe, nothing would
-  prevent that frame from changing owner to another VM in the future.
-
-  When Xen detects a PV guest writing a L1TF-PTE, it responds by
-  activating shadow paging.  This is normally only used for the live phase
-  of migration, and comes with a reasonable overhead.
-
-KFENCE only cares about getting #PF to catch wild accesses; it doesn't
-care about the value for non-present mappings.  Use a fully inverted PTE,
-to avoid hitting the slow path when running under Xen.
-
-While adjusting the logic, take the opportunity to skip all actions if the
-PTE is already in the right state, half the number PVOps callouts, and
-skip TLB maintenance on a !P -> P transition which benefits non-Xen cases
-too.
-
-Link: https://lkml.kernel.org/r/20260106180426.710013-1-andrew.cooper3@citrix.com
-Fixes: 1dc0da6e9ec0 ("x86, kfence: enable KFENCE for x86")
-Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Tested-by: Marco Elver <elver@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 068648aab72c ("nfc/nci: Add the inconsistency check between the input data length and count")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Link: https://patch.msgid.link/20260113202458.449455-1-cascardo@igalia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kfence.h |   29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ drivers/nfc/virtual_ncidev.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/arch/x86/include/asm/kfence.h
-+++ b/arch/x86/include/asm/kfence.h
-@@ -42,10 +42,34 @@ static inline bool kfence_protect_page(u
- {
- 	unsigned int level;
- 	pte_t *pte = lookup_address(addr, &level);
-+	pteval_t val;
+--- a/drivers/nfc/virtual_ncidev.c
++++ b/drivers/nfc/virtual_ncidev.c
+@@ -125,10 +125,6 @@ static ssize_t virtual_ncidev_write(stru
+ 		kfree_skb(skb);
+ 		return -EFAULT;
+ 	}
+-	if (strnlen(skb->data, count) != count) {
+-		kfree_skb(skb);
+-		return -EINVAL;
+-	}
  
- 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
- 		return false;
- 
-+	val = pte_val(*pte);
-+
-+	/*
-+	 * protect requires making the page not-present.  If the PTE is
-+	 * already in the right state, there's nothing to do.
-+	 */
-+	if (protect != !!(val & _PAGE_PRESENT))
-+		return true;
-+
-+	/*
-+	 * Otherwise, invert the entire PTE.  This avoids writing out an
-+	 * L1TF-vulnerable PTE (not present, without the high address bits
-+	 * set).
-+	 */
-+	set_pte(pte, __pte(~val));
-+
-+	/*
-+	 * If the page was protected (non-present) and we're making it
-+	 * present, there is no need to flush the TLB at all.
-+	 */
-+	if (!protect)
-+		return true;
-+
- 	/*
- 	 * We need to avoid IPIs, as we may get KFENCE allocations or faults
- 	 * with interrupts disabled. Therefore, the below is best-effort, and
-@@ -53,11 +77,6 @@ static inline bool kfence_protect_page(u
- 	 * lazy fault handling takes care of faults after the page is PRESENT.
- 	 */
- 
--	if (protect)
--		set_pte(pte, __pte(pte_val(*pte) & ~_PAGE_PRESENT));
--	else
--		set_pte(pte, __pte(pte_val(*pte) | _PAGE_PRESENT));
--
- 	/*
- 	 * Flush this CPU's TLB, assuming whoever did the allocation/free is
- 	 * likely to continue running on this CPU.
+ 	nci_recv_frame(vdev->ndev, skb);
+ 	return count;
 
 
 
