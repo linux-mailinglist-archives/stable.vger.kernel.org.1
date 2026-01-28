@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-212151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212477-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFzcJ4Y1eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212151-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:54 +0100
+	id UHfnKM44emku4wEAu9opvQ
+	(envelope-from <stable+bounces-212477-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:26:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BA0A5477
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B59B4A5A20
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 379343076EC1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:36:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1406731AF25A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F642D5940;
-	Wed, 28 Jan 2026 15:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE3D2F25EF;
+	Wed, 28 Jan 2026 15:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOLOVDQ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpfRv2kS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D52C2C237E;
-	Wed, 28 Jan 2026 15:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624AE2F261C;
+	Wed, 28 Jan 2026 15:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614562; cv=none; b=B/xhjDI6rUzLld6+hyt2p9suFsdE+4vHYzW5Xx/RF4vlp0TlCv0rYtTOO5ZXkaFD4Pu/1gGYujSnFtNNrkPuBAClUWpAOhLuXHVVLjIvlFzuliEv8q50gmax9UCX+fGJln8jA6VoRVqF1xKBW7OakdKt4hMm9elCUdpUtw1n0TU=
+	t=1769615650; cv=none; b=ZhaqWQ5E/NyqvmEI9YV7VsM6CuV/nixMnD+QpuTAKtHAxB1j1yH8OmW+99oyhKKKljmgnOyor78YgrLY4GMIkuJbv/VJF1ZcyVCwzqf5PIp4ZpoOpjc51dhZZGTZrMCUvLf/QH6oywfTEt30TZXnZCI1KZIn4Q1kj3oPlEw+xho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614562; c=relaxed/simple;
-	bh=5u0WtFgUtnPxN1RuVLEcVXQfN1xV2SMwrSMyXZDg11s=;
+	s=arc-20240116; t=1769615650; c=relaxed/simple;
+	bh=1pe81fLvU9qKpDSCb4Dl4EyA1UsvI1qVEPQ7U3/y3lY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYdAVtSKYrFXy+zBSkcoereqmilj+nZObtca3U3Klvzm5HuFsgM68AoCGLVZCcEiMbe4a0OjfdVc6/3gwWi6z1dBCamyOwui8I0gWrkk7RN9d7QcW6INL+od05xg3OgmdM1+4sx465M15aLqVJGGfBtPwpKp8yvfGKbmhXV227w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tOLOVDQ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFEAC4CEF1;
-	Wed, 28 Jan 2026 15:36:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oIR7baVdTCVFgQWOKE9lFptj5amSTlrb60+FN6fa3PTTWlq8khk+dd566vIsfQvqmyfXIf1w+UU79GfWegRaD3XB7N90h8dvk9CyNq4K3dsDut+nhVH99eSVySsAk6uPGyfhNKMeHXH6SicxqYPk4gfuRptGYO1riyA/Rmu4J48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpfRv2kS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C602EC4CEF1;
+	Wed, 28 Jan 2026 15:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614562;
-	bh=5u0WtFgUtnPxN1RuVLEcVXQfN1xV2SMwrSMyXZDg11s=;
+	s=korg; t=1769615650;
+	bh=1pe81fLvU9qKpDSCb4Dl4EyA1UsvI1qVEPQ7U3/y3lY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOLOVDQ+oje5n/P9waK+Zn0XflE5/aUfYOfpdyEUin4ktNwHi/U8TeFYMFqWpMg2K
-	 JvvFKp/9hM5N+BvSwkVZ6AfRHoodVdGfLrqbwlfS5qbGRSJXKNTlONBCj86ah7mbnF
-	 Wjv4eBuyVSqzX18Unu4YWbBvLG3butyTHRZo9kog=
+	b=XpfRv2kS+m0ynsv4LAZOeS+Gjq+z4b0gkd4l/AkM3XZKQ4O2iIycgthuTgr/xR9Oz
+	 iEWtKxj5m57fPgUFZUZl0ZVUX4iKoOmpmCVzWU2AQ0D0+9fNLrZcMUsw1NI6euf+Xl
+	 A6Q4B/tL/hmcg9+/2ZGstDRjkD+RCZABnBTSnnVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 142/254] scsi: storvsc: Process unsupported MODE_SENSE_10
+	Matthew Auld <matthew.auld@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	dri-devel@lists.freedesktop.org,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Subject: [PATCH 6.18 073/227] drm, drm/xe: Fix xe userptr in the absence of CONFIG_DEVICE_PRIVATE
 Date: Wed, 28 Jan 2026 16:21:58 +0100
-Message-ID: <20260128145349.926700181@linuxfoundation.org>
+Message-ID: <20260128145346.969913989@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +67,167 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212477-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,microsoft.com,outlook.com,oracle.com];
-	TAGGED_FROM(0.00)[bounces-212151-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email]
-X-Rspamd-Queue-Id: F3BA0A5477
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B59B4A5A20
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-commit 9eacec5d18f98f89be520eeeef4b377acee3e4b8 upstream.
+commit bdcdf968be314b6fc8835b99fb4519e7619671e6 upstream.
 
-The Hyper-V host does not support MODE_SENSE_10 and MODE_SENSE.  The
-driver handles MODE_SENSE as unsupported command, but not for
-MODE_SENSE_10. Add MODE_SENSE_10 to the same handling logic and return
-correct code to SCSI layer.
+CONFIG_DEVICE_PRIVATE is not selected by default by some distros,
+for example Fedora, and that leads to a regression in the xe driver
+since userptr support gets compiled out.
 
-Fixes: 89ae7d709357 ("Staging: hv: storvsc: Move the storage driver out of the staging area")
-Cc: stable@kernel.org
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20260117010302.294068-1-longli@linux.microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+It turns out that DRM_GPUSVM, which is needed for xe userptr support
+compiles also without CONFIG_DEVICE_PRIVATE, but doesn't compile
+without CONFIG_ZONE_DEVICE.
+Exclude the drm_pagemap files from compilation with !CONFIG_ZONE_DEVICE,
+and remove the CONFIG_DEVICE_PRIVATE dependency from CONFIG_DRM_GPUSVM and
+the xe driver's selection of it, re-enabling xe userptr for those configs.
+
+v2:
+- Don't compile the drm_pagemap files unless CONFIG_ZONE_DEVICE is set.
+- Adjust the drm_pagemap.h header accordingly.
+
+Fixes: 9e9787414882 ("drm/xe/userptr: replace xe_hmm with gpusvm")
+Cc: Matthew Auld <matthew.auld@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.18+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Acked-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Link: https://patch.msgid.link/20260121091048.41371-2-thomas.hellstrom@linux.intel.com
+(cherry picked from commit 1e372b246199ca7a35f930177fea91b557dac16e)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/storvsc_drv.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/Kconfig    |    2 +-
+ drivers/gpu/drm/Makefile   |    4 +++-
+ drivers/gpu/drm/xe/Kconfig |    2 +-
+ include/drm/drm_pagemap.h  |   19 +++++++++++++++++--
+ 4 files changed, 22 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1145,7 +1145,7 @@ static void storvsc_on_io_completion(str
- 	 * The current SCSI handling on the host side does
- 	 * not correctly handle:
- 	 * INQUIRY command with page code parameter set to 0x80
--	 * MODE_SENSE command with cmd[2] == 0x1c
-+	 * MODE_SENSE and MODE_SENSE_10 command with cmd[2] == 0x1c
- 	 * MAINTENANCE_IN is not supported by HyperV FC passthrough
- 	 *
- 	 * Setup srb and scsi status so this won't be fatal.
-@@ -1155,6 +1155,7 @@ static void storvsc_on_io_completion(str
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -210,7 +210,7 @@ config DRM_GPUVM
  
- 	if ((stor_pkt->vm_srb.cdb[0] == INQUIRY) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE) ||
-+	   (stor_pkt->vm_srb.cdb[0] == MODE_SENSE_10) ||
- 	   (stor_pkt->vm_srb.cdb[0] == MAINTENANCE_IN &&
- 	   hv_dev_is_fc(device))) {
- 		vstor_packet->vm_srb.scsi_status = 0;
+ config DRM_GPUSVM
+ 	tristate
+-	depends on DRM && DEVICE_PRIVATE
++	depends on DRM
+ 	select HMM_MIRROR
+ 	select MMU_NOTIFIER
+ 	help
+--- a/drivers/gpu/drm/Makefile
++++ b/drivers/gpu/drm/Makefile
+@@ -106,8 +106,10 @@ obj-$(CONFIG_DRM_EXEC) += drm_exec.o
+ obj-$(CONFIG_DRM_GPUVM) += drm_gpuvm.o
+ 
+ drm_gpusvm_helper-y := \
+-	drm_gpusvm.o\
++	drm_gpusvm.o
++drm_gpusvm_helper-$(CONFIG_ZONE_DEVICE) += \
+ 	drm_pagemap.o
++
+ obj-$(CONFIG_DRM_GPUSVM) += drm_gpusvm_helper.o
+ 
+ obj-$(CONFIG_DRM_BUDDY) += drm_buddy.o
+--- a/drivers/gpu/drm/xe/Kconfig
++++ b/drivers/gpu/drm/xe/Kconfig
+@@ -39,7 +39,7 @@ config DRM_XE
+ 	select DRM_TTM
+ 	select DRM_TTM_HELPER
+ 	select DRM_EXEC
+-	select DRM_GPUSVM if !UML && DEVICE_PRIVATE
++	select DRM_GPUSVM if !UML
+ 	select DRM_GPUVM
+ 	select DRM_SCHED
+ 	select MMU_NOTIFIER
+--- a/include/drm/drm_pagemap.h
++++ b/include/drm/drm_pagemap.h
+@@ -209,6 +209,19 @@ struct drm_pagemap_devmem_ops {
+ 			   struct dma_fence *pre_migrate_fence);
+ };
+ 
++#if IS_ENABLED(CONFIG_ZONE_DEVICE)
++
++struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
++
++#else
++
++static inline struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page)
++{
++	return NULL;
++}
++
++#endif /* IS_ENABLED(CONFIG_ZONE_DEVICE) */
++
+ /**
+  * struct drm_pagemap_devmem - Structure representing a GPU SVM device memory allocation
+  *
+@@ -233,6 +246,8 @@ struct drm_pagemap_devmem {
+ 	struct dma_fence *pre_migrate_fence;
+ };
+ 
++#if IS_ENABLED(CONFIG_ZONE_DEVICE)
++
+ int drm_pagemap_migrate_to_devmem(struct drm_pagemap_devmem *devmem_allocation,
+ 				  struct mm_struct *mm,
+ 				  unsigned long start, unsigned long end,
+@@ -243,8 +258,6 @@ int drm_pagemap_evict_to_ram(struct drm_
+ 
+ const struct dev_pagemap_ops *drm_pagemap_pagemap_ops_get(void);
+ 
+-struct drm_pagemap *drm_pagemap_page_to_dpagemap(struct page *page);
+-
+ void drm_pagemap_devmem_init(struct drm_pagemap_devmem *devmem_allocation,
+ 			     struct device *dev, struct mm_struct *mm,
+ 			     const struct drm_pagemap_devmem_ops *ops,
+@@ -256,4 +269,6 @@ int drm_pagemap_populate_mm(struct drm_p
+ 			    struct mm_struct *mm,
+ 			    unsigned long timeslice_ms);
+ 
++#endif /* IS_ENABLED(CONFIG_ZONE_DEVICE) */
++
+ #endif
 
 
 
