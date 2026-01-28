@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CITN4wvemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:24 +0100
+	id MJU6Ldkzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C251A4692
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 384F7A50F9
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 802583134126
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71B703035D6C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24F4288530;
-	Wed, 28 Jan 2026 15:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3232330274D;
+	Wed, 28 Jan 2026 15:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etr9Kelw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmVWzKZY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69664274FE3;
-	Wed, 28 Jan 2026 15:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F6A308F05;
+	Wed, 28 Jan 2026 15:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614481; cv=none; b=o6ssZRrLkzFkZ/7YWvsqF4o2ZHTMGqulFwqXTLSsBpdfGOi8kpwMx3Sws/s783N5r9Hz7RpfvGnewG2n3WDZ8EOeC3zzMQFevI01cO9kKjsc3t1eNvNFf80Oe39xWMu6JLX+E6TOKBpX8qWUFgxyZeVeRBzqLNz9MYafwQW60LQ=
+	t=1769615675; cv=none; b=eoy/LPZKar+PME4rOPzm4B//pk5vnqWz52wWOt+pYlVTKYGIxNZkjelYOOGEPGQHifpslIsOfHRAuS/ca8li6oemBISNMOJ2/VXYk4S0/mX6uUeEuhshjb6zB/EGlbzinKnWDaZBJAciqHk9BKF0qkBQNpjmOt1/B10CBqkzybg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614481; c=relaxed/simple;
-	bh=8cu4racVZMjn1zt3ORWeh1P908Hoy6wCQi3tQ8bUDu4=;
+	s=arc-20240116; t=1769615675; c=relaxed/simple;
+	bh=dH5NnyYW8wR4yjR0ukefFXNu4eyT0IwQ9ugWLGoBqX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kO4EoX37hbsmBUa+e/CWh7lRgmePkVfGkjGwRsniJHZc7dxDgY+DBtZBubxEV7BQIitXM0tYAEQmVhvvjNQamXGD3oyrYunvmOgmFRCWGq+3MsRMp2MfDckO+OK4L/bGXhk7OUeJnY0/kTTOEtgOAv2acAnjjv2CfoTlrathOSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=etr9Kelw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482EEC2BC86;
-	Wed, 28 Jan 2026 15:34:40 +0000 (UTC)
+	 MIME-Version; b=Cp47o9pCQC98sZuLn0fX1nPppNXs/UN8WiCjT0uo5sX+TUrc6g2IACQFQtkOk7ouszM2xX8Bo+7yH4CfBjayEhDSD0ddLkyQAfsZj3I6A+gwro8zGAfHg4EUOHm3zqGT1ompEIkVAjFr72Rdf1Hnqew2mKCsyi8DcSxfdAJPdtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmVWzKZY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D804C4CEF1;
+	Wed, 28 Jan 2026 15:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614480;
-	bh=8cu4racVZMjn1zt3ORWeh1P908Hoy6wCQi3tQ8bUDu4=;
+	s=korg; t=1769615675;
+	bh=dH5NnyYW8wR4yjR0ukefFXNu4eyT0IwQ9ugWLGoBqX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=etr9KelwD7HfnPgUn1suH4QrnFRYpt1tfomeWaUaCMfavFb1rrBg9PV8TupxCca/P
-	 XqMkVgnK8YpIDgJkuJFPzIm/sOsSD5j1fuI95FcpBmbBn7cwLMEvFwaRWxBOqRLg/D
-	 6DY3s16KqLKAfA+uPykoqNpO9+tQEqum/ofoAO30=
+	b=HmVWzKZYIfayLdn9cPQpKL5AinOLX7e+xa4YCR7pX1eqV5n8uvG6/oWpGS/jyGkaC
+	 Bh+8qpoavcgBg5MSj/BiQIo/Tmrr4b2oCuTh2HQ9FevjjVqtNVZXylX8WDOpaI0k0B
+	 F9xEDnT0MKNL91XqAawGmdgGePhQCK9/LMLgouPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4eb282331cab6d5b6588@syzkaller.appspotmail.com,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 150/254] io_uring/io-wq: check IO_WQ_BIT_EXIT inside work run loop
+	Francesco Lavra <flavra@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 081/227] iio: imu: st_lsm6dsx: fix iio_chan_spec for sensors without event detection
 Date: Wed, 28 Jan 2026 16:22:06 +0100
-Message-ID: <20260128145350.209913026@linuxfoundation.org>
+Message-ID: <20260128145347.257610336@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +66,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212126-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212485-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,4eb282331cab6d5b6588];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: 4C251A4692
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,huawei.com:email,baylibre.com:email]
+X-Rspamd-Queue-Id: 384F7A50F9
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Francesco Lavra <flavra@baylibre.com>
 
-commit 10dc959398175736e495f71c771f8641e1ca1907 upstream.
+commit c34e2e2d67b3bb8d5a6d09b0d6dac845cdd13fb3 upstream.
 
-Currently this is checked before running the pending work. Normally this
-is quite fine, as work items either end up blocking (which will create a
-new worker for other items), or they complete fairly quickly. But syzbot
-reports an issue where io-wq takes seemingly forever to exit, and with a
-bit of debugging, this turns out to be because it queues a bunch of big
-(2GB - 4096b) reads with a /dev/msr* file. Since this file type doesn't
-support ->read_iter(), loop_rw_iter() ends up handling them. Each read
-returns 16MB of data read, which takes 20 (!!) seconds. With a bunch of
-these pending, processing the whole chain can take a long time. Easily
-longer than the syzbot uninterruptible sleep timeout of 140 seconds.
-This then triggers a complaint off the io-wq exit path:
+The st_lsm6dsx_acc_channels array of struct iio_chan_spec has a non-NULL
+event_spec field, indicating support for IIO events. However, event
+detection is not supported for all sensors, and if userspace tries to
+configure accelerometer wakeup events on a sensor device that does not
+support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences a NULL
+pointer when trying to write to the wakeup register.
+Define an additional struct iio_chan_spec array whose members have a NULL
+event_spec field, and use this array instead of st_lsm6dsx_acc_channels for
+sensors without event detection capability.
 
-INFO: task syz.4.135:6326 blocked for more than 143 seconds.
-      Not tainted syzkaller #0
-      Blocked by coredump.
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz.4.135       state:D stack:26824 pid:6326  tgid:6324  ppid:5957   task_flags:0x400548 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5256 [inline]
- __schedule+0x1139/0x6150 kernel/sched/core.c:6863
- __schedule_loop kernel/sched/core.c:6945 [inline]
- schedule+0xe7/0x3a0 kernel/sched/core.c:6960
- schedule_timeout+0x257/0x290 kernel/time/sleep_timeout.c:75
- do_wait_for_common kernel/sched/completion.c:100 [inline]
- __wait_for_common+0x2fc/0x4e0 kernel/sched/completion.c:121
- io_wq_exit_workers io_uring/io-wq.c:1328 [inline]
- io_wq_put_and_exit+0x271/0x8a0 io_uring/io-wq.c:1356
- io_uring_clean_tctx+0x10d/0x190 io_uring/tctx.c:203
- io_uring_cancel_generic+0x69c/0x9a0 io_uring/cancel.c:651
- io_uring_files_cancel include/linux/io_uring.h:19 [inline]
- do_exit+0x2ce/0x2bd0 kernel/exit.c:911
- do_group_exit+0xd3/0x2a0 kernel/exit.c:1112
- get_signal+0x2671/0x26d0 kernel/signal.c:3034
- arch_do_signal_or_restart+0x8f/0x7e0 arch/x86/kernel/signal.c:337
- __exit_to_user_mode_loop kernel/entry/common.c:41 [inline]
- exit_to_user_mode_loop+0x8c/0x540 kernel/entry/common.c:75
- __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
- syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
- syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
- syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
- do_syscall_64+0x4ee/0xf80 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fa02738f749
-RSP: 002b:00007fa0281ae0e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-RAX: fffffffffffffe00 RBX: 00007fa0275e6098 RCX: 00007fa02738f749
-RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007fa0275e6098
-RBP: 00007fa0275e6090 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fa0275e6128 R14: 00007fff14e4fcb0 R15: 00007fff14e4fd98
-
-There's really nothing wrong here, outside of processing these reads
-will take a LONG time. However, we can speed up the exit by checking the
-IO_WQ_BIT_EXIT inside the io_worker_handle_work() loop, as syzbot will
-exit the ring after queueing up all of these reads. Then once the first
-item is processed, io-wq will simply cancel the rest. That should avoid
-syzbot running into this complaint again.
-
+Fixes: b5969abfa8b8 ("iio: imu: st_lsm6dsx: add motion events")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/68a2decc.050a0220.e29e5.0099.GAE@google.com/
-Reported-by: syzbot+4eb282331cab6d5b6588@syzkaller.appspotmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io-wq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -554,9 +554,9 @@ static void io_worker_handle_work(struct
- 	__releases(&acct->lock)
- {
- 	struct io_wq *wq = worker->wq;
--	bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -101,6 +101,13 @@ static const struct iio_chan_spec st_lsm
+ 	IIO_CHAN_SOFT_TIMESTAMP(3),
+ };
  
- 	do {
-+		bool do_kill = test_bit(IO_WQ_BIT_EXIT, &wq->state);
- 		struct io_wq_work *work;
- 
- 		/*
++static const struct iio_chan_spec st_lsm6ds0_acc_channels[] = {
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2c, IIO_MOD_Z, 2),
++	IIO_CHAN_SOFT_TIMESTAMP(3),
++};
++
+ static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
+ 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
+ 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
+@@ -142,8 +149,8 @@ static const struct st_lsm6dsx_settings
+ 		},
+ 		.channels = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+-				.chan = st_lsm6dsx_acc_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
++				.chan = st_lsm6ds0_acc_channels,
++				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.chan = st_lsm6ds0_gyro_channels,
+@@ -1449,8 +1456,8 @@ static const struct st_lsm6dsx_settings
+ 		},
+ 		.channels = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+-				.chan = st_lsm6dsx_acc_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
++				.chan = st_lsm6ds0_acc_channels,
++				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.chan = st_lsm6dsx_gyro_channels,
 
 
 
