@@ -1,154 +1,145 @@
-Return-Path: <stable+bounces-212650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJVgD7dMemkp5AEAu9opvQ
-	(envelope-from <stable+bounces-212650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:51:51 +0100
+	id 8IYoM61Pemnk5AEAu9opvQ
+	(envelope-from <stable+bounces-212651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:04:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6D6A73C7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:51:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B706A76FA
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:04:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4ABAB30066AE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:51:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2CAE3029243
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D1936EAA7;
-	Wed, 28 Jan 2026 17:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA93325495;
+	Wed, 28 Jan 2026 18:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="MxKeGCaa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sN7KUR8p"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27EA2236E0;
-	Wed, 28 Jan 2026 17:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26FE2BEC2E
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 18:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769622708; cv=none; b=DyivKoKRrhxSnOI/1feGyF7Au8UCSdWoV9/kZzZvaURlAkZd5JiJ7WkV0nX62g/Cio/rCHRXq2CmyoL0x1Tam0DFm+6dLmbpX6459WdzyR6HAuVULn7GYEjlBJq0LtVpv8CnxR7o+AMicOFkY/OWGZsCGjM0YmxvvBskDHC24w4=
+	t=1769623365; cv=none; b=LXhuPtkGyjg59SmeicGntZJpoI5XMIyCwOo3/L6dvWR1ZbCsyzC1LkJ6QBfYh1JkjlcvbZv7IPP42un1Jy6FqnC6UEE0nybtzw/SLgLEvHoh1S2+ZrPh8iHBKeNUCCh6PAKGMXhjT+59TeRoFmjjr73+0RQDb9rf7vpeiD/cpZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769622708; c=relaxed/simple;
-	bh=+rYuf6Lay3x+qEaQsOQJ9d/USniOnx4rlOR2MYCt/VI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EyHXw5vzyJT1gHjhsqVs71rsC9lx5LzgBwE70enOB4Y5EGyYUbmQzpr7SBltgA/zotgA7g0CI6BPqQGx26+Z2HbUXsUvOBQmgWxUB6mD2L4sd0dCCB4Bmgj63Floj1R/rFODtkLGvHvCrAoqCVR/UDrm3iTkOM58PmMxlYUn6ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=MxKeGCaa; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=eysL419MsOX4yxh3/KQkr+tqqB1Z0JyydTzYujMR0AE=; b=MxKeGCaaqzeZ5hVRojbBat+tG2
-	3eT9qwlTd1BoGUbbAHaH8hG++McYPoF16V2kZc0DldsKeEOYjSZ2QONTcskMGtpHrCxHb52x6b0My
-	7VE/XeiJmzJCM0ogPdxqBeLwq7XrMl3DFRwjXVxLtesHQFMQfQiwoDCiUod5OtymxFHLiVr3gr4m8
-	mZpEPwyagPwfSFwzWYCxUrcLQdSCUaN0KTeqjCJzI5/dbI/kfpt2Lak5LRRd9d2JAL9I0vvzgoO42
-	lmCk9dZiHG1Kw8nH/KgdUnzGA4t19qoDO2JYo/WlZym+j2m3ucysGm8YnTMJOF3NlvEJv278vbblf
-	hLWbCNxQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vl9hP-000L4H-6G; Wed, 28 Jan 2026 17:51:27 +0000
-Date: Wed, 28 Jan 2026 09:51:20 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Oleg Nesterov <oleg@redhat.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH] uprobes: fix incorrect lockdep condition in
- filter_chain()
-Message-ID: <aXpMhBIc6qBd5poV@gmail.com>
-References: <20260128-uprobe_rcu-v1-1-d41316763799@debian.org>
- <aXoUOEhDfncEkC-f@redhat.com>
- <CAEf4BzYJJiUdQTjDgr_uVSQ+uBhYWKki0vjS5VffTzbST1uS2g@mail.gmail.com>
+	s=arc-20240116; t=1769623365; c=relaxed/simple;
+	bh=uzTz49XE1Hx2csddmUgMnlS4lyasEN/R0ed2DF1alq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tmLvxXJC9RTkvTIy4yGNn9r/VwXzi1zJjlfaZb0rkYZ35WM5ufstVdOnMxqokOXZjFr1pE6O1mfaxo179sjBANwd5Xx+1AQzEpjD9VZzjKCLv6wLiKR1s8Ht7ydBILwdjJHmg7VM4VER5/9eu8U5UnX0zBFKHUyzlmmyqzJAF/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sN7KUR8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DD3C4CEF1;
+	Wed, 28 Jan 2026 18:02:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769623365;
+	bh=uzTz49XE1Hx2csddmUgMnlS4lyasEN/R0ed2DF1alq0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sN7KUR8pdsOcVGAkw7UCqGas3wE6MtIeGDftXCSaRXoEsu2Vv4TxEvKpgVq/HbhJH
+	 Suvv3SL/ZJ9fOFpM/saSi1U/UUHaBjoEHhhapX8eBdhDAT7HdooPJ0Mua9yHsSaXgL
+	 /+7d2M9gXrslOHd8rfwqed2tkTCGmBsymi6BN2xWr1Yz6fZXKSChujz1APSt+7xCrf
+	 xRsGBwOHG942dvGa6ftDKO4shty8rEfPCplVAGuOBpgu/7BgLmzk3uyUJhUmYxi7X0
+	 qk3/pgW8KS2ha1H96oC+Uurl0SGLROyw2lPVcB3gnsOwohiCnmCtnLMvDgJ5pP9MnM
+	 52K4/K353GtCQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Yang Guang <yang.guang5@zte.com.cn>,
+	Zeal Robot <zealci@zte.com.cn>,
+	David Yang <davidcomponentone@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/2] w1: w1_therm: use swap() to make code cleaner
+Date: Wed, 28 Jan 2026 13:02:42 -0500
+Message-ID: <20260128180243.2612857-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012736-shaping-sixfold-2889@gregkh>
+References: <2026012736-shaping-sixfold-2889@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEf4BzYJJiUdQTjDgr_uVSQ+uBhYWKki0vjS5VffTzbST1uS2g@mail.gmail.com>
-X-Debian-User: leitao
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_MATCH_TO(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212650-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[zte.com.cn,gmail.com,linuxfoundation.org,kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212651-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[debian.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: DE6D6A73C7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zte.com.cn:email]
+X-Rspamd-Queue-Id: 2B706A76FA
 X-Rspamd-Action: no action
 
-On Wed, Jan 28, 2026 at 09:23:45AM -0800, Andrii Nakryiko wrote:
-> On Wed, Jan 28, 2026 at 5:51 AM Oleg Nesterov <oleg@redhat.com> wrote:
-> >
-> > On 01/28, Breno Leitao wrote:
-> > >
-> > > The list_for_each_entry_rcu() in filter_chain() uses
-> > > rcu_read_lock_trace_held() as the lockdep condition, but the function
-> > > holds consumer_rwsem, not the RCU trace lock.
-> > >
-> > > This gives me the following output when running with some locking debug
-> > > option enabled:
-> > >
-> > >   kernel/events/uprobes.c:1141 RCU-list traversed in non-reader section!!
-> > >     filter_chain
-> > >     register_for_each_vma
-> > >     uprobe_unregister_nosync
-> > >     __probe_event_disable
-> > >
-> > > Remove the incorrect lockdep condition since the rwsem provides
-> > > sufficient protection for the list traversal.
-> >
-> > I hope Andrii will recheck, but looks obviously correct to me.
-> 
-> yeah, I did, and it also looks obviously correct to me, I didn't need
-> to use rcu flavor there in the first place, I think.
-> 
-> Acked-by: Andrii Nakryiko <andrii@kernel.org>
-> 
-> >
-> > > Fixes: 87195a1ee332a ("uprobes: switch to RCU Tasks Trace flavor for better performance")
-> >
-> > This commit just change the __list_check_rcu() condition...
-> >
-> > Perhaps
-> > Fixes: cc01bd044e6a ("uprobes: travers uprobe's consumer list locklessly under SRCU protection")
-> >
-> 
-> yep, this one is the earliest change adding unnecessary rcu flavor of
-> list_for_each_entry
+From: Yang Guang <yang.guang5@zte.com.cn>
 
-Ack. I will respin with the correct "fixes" tag.
+[ Upstream commit e233897b1f7a859092bd20b10bfd412013381a10 ]
 
---breno
+Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
+opencoding it.
+
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: David Yang <davidcomponentone@gmail.com>
+Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
+Link: https://lore.kernel.org/r/cb14f9e6e86cf8494ed2ddce6eec8ebd988908d9.1640077704.git.yang.guang5@zte.com.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 761fcf46a1bd ("w1: therm: Fix off-by-one buffer overflow in alarms_store")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/w1/slaves/w1_therm.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/w1/slaves/w1_therm.c b/drivers/w1/slaves/w1_therm.c
+index 67d1cfbbb5f7f..b745070e8c4ae 100644
+--- a/drivers/w1/slaves/w1_therm.c
++++ b/drivers/w1/slaves/w1_therm.c
+@@ -1782,7 +1782,7 @@ static ssize_t alarms_store(struct device *device,
+ 	u8 new_config_register[3];	/* array of data to be written */
+ 	int temp, ret;
+ 	char *token = NULL;
+-	s8 tl, th, tt;	/* 1 byte per value + temp ring order */
++	s8 tl, th;	/* 1 byte per value + temp ring order */
+ 	char *p_args, *orig;
+ 
+ 	p_args = orig = kmalloc(size, GFP_KERNEL);
+@@ -1833,9 +1833,8 @@ static ssize_t alarms_store(struct device *device,
+ 	th = int_to_short(temp);
+ 
+ 	/* Reorder if required th and tl */
+-	if (tl > th) {
+-		tt = tl; tl = th; th = tt;
+-	}
++	if (tl > th)
++		swap(tl, th);
+ 
+ 	/*
+ 	 * Read the scratchpad to change only the required bits
+-- 
+2.51.0
+
 
