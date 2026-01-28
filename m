@@ -1,59 +1,74 @@
-Return-Path: <stable+bounces-212385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212561-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PwxM7s4emku4wEAu9opvQ
-	(envelope-from <stable+bounces-212385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:26:35 +0100
+	id yMzSM2g7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212561-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A374A59FD
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:26:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 817D8A5E96
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D512322AC5E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3118632151A1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56C71E1DFC;
-	Wed, 28 Jan 2026 15:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64FD2FF178;
+	Wed, 28 Jan 2026 15:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkqXEMIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHnuWexQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A982DF138;
-	Wed, 28 Jan 2026 15:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA63146D53;
+	Wed, 28 Jan 2026 15:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615342; cv=none; b=hZtIlYx0SX4SpcJdNwE3hyYMBaCOxzShk/8/750RBNd7o7EMq0NES5sOY6anq77NJjrMdspCHHf+JPMWkE/eM8wdy3Ppw0Q/sdYqU+tSKf7Z8Wtm1ezEvKdqmM0k/y0y/PWyNFzqo5gZH2LlZDX+epPig9Hctt/+7ZgXQcD00XM=
+	t=1769615931; cv=none; b=DVlcZfm3wqF/+D2R+MCorvkp8UBaZ6cC5fInjfPQPON2qudzfbicNEaKnN/NgB+DOW439M/GfeNSHaHWeZEBXW3zjv3TPa2whvR2bya61F9FziYY/svEd4Dq6WQyQy3O1LfBAtP55jGnDtuar2jzeAhaa7vAl/kSjoKd3fEvOhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615342; c=relaxed/simple;
-	bh=SSX6pP0bwPMS++pmG4Gz2yavVjC1XkaX3A5gxUpe28M=;
+	s=arc-20240116; t=1769615931; c=relaxed/simple;
+	bh=FHjPgjWB4rtkBGNtuAIHjZdKnT69EzI0u+N+H9TdNxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ot5fSAPFIONETC3fZA8zaBACFnah3xEu3vNUNOIiFK7PqHCBz5i3c5RFNUZaibsuPKUKI1p0FZ0zVcUaJDbfV4aD19iefCx4TYyOJzpU52cNlhnro4RwUV5wEo56M8IvlNPXh1NRzDN09kwOdML1n1VV/XyZxVAZE11KKFHdLlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkqXEMIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EFFC4CEF1;
-	Wed, 28 Jan 2026 15:49:01 +0000 (UTC)
+	 MIME-Version; b=VVAy3zN0Kj+0f5TIcFMDaHtBDL0kPpY1fpBTgtgFic1aFlmF0hJXP9gGwjd6KaWQJu5H5Z6GrU8l5gEx3D8YeKUwU3KrGPWKyu50yWdNCYl4ItWK91yOYAKk+Gp/K/nnN6kJlgAZ/MNm1smLPAJ2oQ7PqO1R3z8SwWoZ2+9aD6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHnuWexQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD21C4CEF1;
+	Wed, 28 Jan 2026 15:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615342;
-	bh=SSX6pP0bwPMS++pmG4Gz2yavVjC1XkaX3A5gxUpe28M=;
+	s=korg; t=1769615931;
+	bh=FHjPgjWB4rtkBGNtuAIHjZdKnT69EzI0u+N+H9TdNxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkqXEMIxMMJIFm6/pr7jXtyECmZdDKj1818rwY05XKBO/sXhkTFfFFiA2dKx9t7/4
-	 f6tc+mALU2NryulK5OioJgA3tMAUSaTvkjHRpqIqTyf0zyBH0fHoEZr53kRYzhijh6
-	 W5p2kj+49utNN6FEGPiwI+YBBo/WVgNdTq0zAn2E=
+	b=fHnuWexQjUcza4ZJTohYNtt+GgElxy1bV1GMk1PTSglFJmmnvgq/ND+L8ZQ0AvA+A
+	 W+vVhunrcu0stsrNWFrRrOXQ5MxRKpVskLDtPhjnDXgjnOATiSAguK+ladpe+i+6zQ
+	 tmO7v/Iw8U0JxTsSrvOZ4cGT6YOKCMVuaBssIxHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.12 118/169] wifi: ath12k: fix dma_free_coherent() pointer
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Jann Horn <jannh@google.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Rik van Riel <riel@surriel.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH 6.18 156/227] migrate: correct lock ordering for hugetlb file folios
 Date: Wed, 28 Jan 2026 16:23:21 +0100
-Message-ID: <20260128145338.250585875@linuxfoundation.org>
+Message-ID: <20260128145350.067006727@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,91 +85,137 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212385-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-212561-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,infradead.org,syzkaller.appspotmail.com,kernel.org,nvidia.com,sk.com,gourry.net,google.com,gmail.com,oracle.com,intel.com,surriel.com,suse.cz,linux.alibaba.com,linux-foundation.org,linux.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable,2d9c96466c978346b55f];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email]
-X-Rspamd-Queue-Id: 4A374A59FD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,appspotmail.com:email,nvidia.com:email,intel.com:email,suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alibaba.com:email,infradead.org:email,oracle.com:email,linux.dev:email,surriel.com:email,gourry.net:email]
+X-Rspamd-Queue-Id: 817D8A5E96
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit bb97131fbf9b708dd9616ac2bdc793ad102b5c48 upstream.
+commit b7880cb166ab62c2409046b2347261abf701530e upstream.
 
-dma_alloc_coherent() allocates a DMA mapped buffer and stores the
-addresses in XXX_unaligned fields.  Those should be reused when freeing
-the buffer rather than the aligned addresses.
+Syzbot has found a deadlock (analyzed by Lance Yang):
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260106084905.18622-2-fourier.thomas@gmail.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+1) Task (5749): Holds folio_lock, then tries to acquire i_mmap_rwsem(read lock).
+2) Task (5754): Holds i_mmap_rwsem(write lock), then tries to acquire
+folio_lock.
+
+migrate_pages()
+  -> migrate_hugetlbs()
+    -> unmap_and_move_huge_page()     <- Takes folio_lock!
+      -> remove_migration_ptes()
+        -> __rmap_walk_file()
+          -> i_mmap_lock_read()       <- Waits for i_mmap_rwsem(read lock)!
+
+hugetlbfs_fallocate()
+  -> hugetlbfs_punch_hole()           <- Takes i_mmap_rwsem(write lock)!
+    -> hugetlbfs_zero_partial_page()
+     -> filemap_lock_hugetlb_folio()
+      -> filemap_lock_folio()
+        -> __filemap_get_folio        <- Waits for folio_lock!
+
+The migration path is the one taking locks in the wrong order according to
+the documentation at the top of mm/rmap.c.  So expand the scope of the
+existing i_mmap_lock to cover the calls to remove_migration_ptes() too.
+
+This is (mostly) how it used to be after commit c0d0381ade79.  That was
+removed by 336bf30eb765 for both file & anon hugetlb pages when it should
+only have been removed for anon hugetlb pages.
+
+Link: https://lkml.kernel.org/r/20260109041345.3863089-2-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 336bf30eb765 ("hugetlbfs: fix anon huge page migration race")
+Reported-by: syzbot+2d9c96466c978346b55f@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/68e9715a.050a0220.1186a4.000d.GAE@google.com
+Debugged-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Gregory Price <gourry@gourry.net>
+Cc: Jann Horn <jannh@google.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rakie Kim <rakie.kim@sk.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Ying Huang <ying.huang@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/ce.c |   12 ++++++------
+ mm/migrate.c |   12 ++++++------
  1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/ce.c
-+++ b/drivers/net/wireless/ath/ath12k/ce.c
-@@ -893,8 +893,8 @@ void ath12k_ce_free_pipes(struct ath12k_
- 			dma_free_coherent(ab->dev,
- 					  pipe->src_ring->nentries * desc_sz +
- 					  CE_DESC_RING_ALIGN,
--					  pipe->src_ring->base_addr_owner_space,
--					  pipe->src_ring->base_addr_ce_space);
-+					  pipe->src_ring->base_addr_owner_space_unaligned,
-+					  pipe->src_ring->base_addr_ce_space_unaligned);
- 			kfree(pipe->src_ring);
- 			pipe->src_ring = NULL;
- 		}
-@@ -904,8 +904,8 @@ void ath12k_ce_free_pipes(struct ath12k_
- 			dma_free_coherent(ab->dev,
- 					  pipe->dest_ring->nentries * desc_sz +
- 					  CE_DESC_RING_ALIGN,
--					  pipe->dest_ring->base_addr_owner_space,
--					  pipe->dest_ring->base_addr_ce_space);
-+					  pipe->dest_ring->base_addr_owner_space_unaligned,
-+					  pipe->dest_ring->base_addr_ce_space_unaligned);
- 			kfree(pipe->dest_ring);
- 			pipe->dest_ring = NULL;
- 		}
-@@ -916,8 +916,8 @@ void ath12k_ce_free_pipes(struct ath12k_
- 			dma_free_coherent(ab->dev,
- 					  pipe->status_ring->nentries * desc_sz +
- 					  CE_DESC_RING_ALIGN,
--					  pipe->status_ring->base_addr_owner_space,
--					  pipe->status_ring->base_addr_ce_space);
-+					  pipe->status_ring->base_addr_owner_space_unaligned,
-+					  pipe->status_ring->base_addr_ce_space_unaligned);
- 			kfree(pipe->status_ring);
- 			pipe->status_ring = NULL;
- 		}
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1450,6 +1450,7 @@ static int unmap_and_move_huge_page(new_
+ 	int page_was_mapped = 0;
+ 	struct anon_vma *anon_vma = NULL;
+ 	struct address_space *mapping = NULL;
++	enum ttu_flags ttu = 0;
+ 
+ 	if (folio_ref_count(src) == 1) {
+ 		/* page was freed from under us. So we are done. */
+@@ -1490,8 +1491,6 @@ static int unmap_and_move_huge_page(new_
+ 		goto put_anon;
+ 
+ 	if (folio_mapped(src)) {
+-		enum ttu_flags ttu = 0;
+-
+ 		if (!folio_test_anon(src)) {
+ 			/*
+ 			 * In shared mappings, try_to_unmap could potentially
+@@ -1508,16 +1507,17 @@ static int unmap_and_move_huge_page(new_
+ 
+ 		try_to_migrate(src, ttu);
+ 		page_was_mapped = 1;
+-
+-		if (ttu & TTU_RMAP_LOCKED)
+-			i_mmap_unlock_write(mapping);
+ 	}
+ 
+ 	if (!folio_mapped(src))
+ 		rc = move_to_new_folio(dst, src, mode);
+ 
+ 	if (page_was_mapped)
+-		remove_migration_ptes(src, !rc ? dst : src, 0);
++		remove_migration_ptes(src, !rc ? dst : src,
++				ttu ? RMP_LOCKED : 0);
++
++	if (ttu & TTU_RMAP_LOCKED)
++		i_mmap_unlock_write(mapping);
+ 
+ unlock_put_anon:
+ 	folio_unlock(dst);
 
 
 
