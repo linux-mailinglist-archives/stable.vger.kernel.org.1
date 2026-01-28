@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-212082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCqjG90uemmO3wEAu9opvQ
-	(envelope-from <stable+bounces-212082-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:29 +0100
+	id YGNfKBs0eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081CBA454F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:44:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DCB7A5192
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F52230D14BB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 64AA030C0F0B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34C3155757;
-	Wed, 28 Jan 2026 15:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EE1308F05;
+	Wed, 28 Jan 2026 15:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLIb0FUT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTI+otmb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A437923EAB7;
-	Wed, 28 Jan 2026 15:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13D42F261C;
+	Wed, 28 Jan 2026 15:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614340; cv=none; b=LicR3aCIvFpqMSzDsjAYCO7f/pGsSYUQ97QoGo6Gi3DoBZ3GFRQXTcHBUEfflY6IwpQguO8kfHyXIE5UY1w+L4G9r+echSihFOnWCC7wKWtMTf7fUN3HHhFkBrVU7nikminbjgpPn8DyxM7BUcBf/dMMzbe7u9vdU8Afsr9y034=
+	t=1769615509; cv=none; b=ogaZXgGVoZJv2NT8l/PLWeA7BHvtBntsMwqRwlF78c8lQbIiukF/cAnagixkE2hmo/HZHeC14hzJN7oUB7VFhXd2d0/m1YjgFRR8ui+KbAkZNCFb4jv4KQloV4OsAI2j0hs3svCLDMzO92GPTBvYVllv2nHeFnm05RYsOQf62xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614340; c=relaxed/simple;
-	bh=/RGzKA2etX539CJGIWkEfiNGua5FjJ/9HulmGSa49aU=;
+	s=arc-20240116; t=1769615509; c=relaxed/simple;
+	bh=q16z+j2KwHdG7oVg/VUImNR4wEF9j8UmfT4NS9bNK2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lw79lx8sW3UXp/gUFdJZfEwDJg8vWbJCVEoHXXCFDyhGDlQPgQVZou1K+DQ7OtMlkKlnMg9tA7ruKqTA6CpeKc15k+8QgD6T5Du4N9vb1De6EAmVmww+9O+6SLf5i9lqiIy5fgBoI0amDIbL98I6rXoiD2C87TLdLqBW+szZofA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLIb0FUT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA44C4CEF1;
-	Wed, 28 Jan 2026 15:32:20 +0000 (UTC)
+	 MIME-Version; b=RYKaRSdJTzTzNp8P9RbLoWKD2Cpw7924nR/X+GU1Lv4sX2Z2t55qJYScu08khfWIB6bO/M/e0FPnsL7eVzJyoXfdgXL65FO5vsQ9vmPdR2KXSZay/n8ndRmSggFYYPNwc7BlopcwbAyCxIschNj2DRjabfLDAQin/PUl2FpcfMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTI+otmb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF88C4CEF1;
+	Wed, 28 Jan 2026 15:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614340;
-	bh=/RGzKA2etX539CJGIWkEfiNGua5FjJ/9HulmGSa49aU=;
+	s=korg; t=1769615509;
+	bh=q16z+j2KwHdG7oVg/VUImNR4wEF9j8UmfT4NS9bNK2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wLIb0FUTX86YplcVt2ZTtH5QL6hrxhPH2cYgGqVvZVpUJS8oDp8m98MEsXjZNnMp4
-	 vVGK8S/GqkqF4HVUIuKmhYYy6kmdBddyVdEhGGMzvAJojCVXHSRXtBItMfSzH9+W0A
-	 I7y30U6TkjAWtLR6qZtzFYKU8f8GPgXbG+tREWdY=
+	b=eTI+otmbIVaKqZXySZuWEtcvNMBsgfi1J4RYkv5tKePKpzlbB0Rh6J9t1bUp+YiP9
+	 G7/jq+3cUisaQBby6xR2nFSbb4cvlSSctprR7iEqWG+flsAVxSssPbJGCNilFwBFhN
+	 h3qjZtglfj/djFfEiSlmvvjc4TNXEO9D3PdprOg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Oak Zeng <Oak.Zeng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 074/254] drm/amdkfd: fix a memory leak in device_queue_manager_init()
-Date: Wed, 28 Jan 2026 16:20:50 +0100
-Message-ID: <20260128145347.357963434@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Roman Kisel <vdso@mailbox.org>,
+	Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 006/227] Drivers: hv: Always do Hyper-V panic notification in hv_kmsg_dump()
+Date: Wed, 28 Jan 2026 16:20:51 +0100
+Message-ID: <20260128145344.568009889@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,98 +72,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,linaro.org,outlook.com,mailbox.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212435-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212082-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.987];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 081CBA454F
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,mailbox.org:email]
+X-Rspamd-Queue-Id: 8DCB7A5192
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit 80614c509810fc051312d1a7ccac8d0012d6b8d0 upstream.
+[ Upstream commit 49f49d47af67f8a7b221db1d758fc634242dc91a ]
 
-If dqm->ops.initialize() fails, add deallocate_hiq_sdma_mqd()
-to release the memory allocated by allocate_hiq_sdma_mqd().
-Move deallocate_hiq_sdma_mqd() up to ensure proper function
-visibility at the point of use.
+hv_kmsg_dump() currently skips the panic notification entirely if it
+doesn't get any message bytes to pass to Hyper-V due to an error from
+kmsg_dump_get_buffer(). Skipping the notification is undesirable because
+it leaves the Hyper-V host uncertain about the state of a panic'ed guest.
 
-Fixes: 11614c36bc8f ("drm/amdkfd: Allocate MQD trunk for HIQ and SDMA")
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
-Reviewed-by: Oak Zeng <Oak.Zeng@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b7cccc8286bb9919a0952c812872da1dcfe9d390)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by always doing the panic notification, even if bytes_written
+is zero. Also ensure that bytes_written is initialized, which fixes a
+kernel test robot warning. The warning is actually bogus because
+kmsg_dump_get_buffer() happens to set bytes_written even if it fails, and
+in the kernel test robot's CONFIG_PRINTK not set case, hv_kmsg_dump() is
+never called. But do the initialization for robustness and to quiet the
+static checker.
+
+Fixes: 9c318a1d9b50 ("Drivers: hv: move panic report code from vmbus to hv early init code")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/202512172103.OcUspn1Z-lkp@intel.com/
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Roman Kisel <vdso@mailbox.org>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c |   19 ++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/hv/hv_common.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_device_queue_manager.c
-@@ -2446,6 +2446,14 @@ static int allocate_hiq_sdma_mqd(struct
- 	return retval;
- }
+diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+index e109a620c83fc..71fd3ea4fa8bd 100644
+--- a/drivers/hv/hv_common.c
++++ b/drivers/hv/hv_common.c
+@@ -195,13 +195,15 @@ static void hv_kmsg_dump(struct kmsg_dumper *dumper,
  
-+static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
-+				    struct kfd_mem_obj *mqd)
-+{
-+	WARN(!mqd, "No hiq sdma mqd trunk to free");
+ 	/*
+ 	 * Write dump contents to the page. No need to synchronize; panic should
+-	 * be single-threaded.
++	 * be single-threaded. Ignore failures from kmsg_dump_get_buffer() since
++	 * panic notification should be done even if there is no message data.
++	 * Don't assume bytes_written is set in case of failure, so initialize it.
+ 	 */
+ 	kmsg_dump_rewind(&iter);
+-	kmsg_dump_get_buffer(&iter, false, hv_panic_page, HV_HYP_PAGE_SIZE,
++	bytes_written = 0;
++	(void)kmsg_dump_get_buffer(&iter, false, hv_panic_page, HV_HYP_PAGE_SIZE,
+ 			     &bytes_written);
+-	if (!bytes_written)
+-		return;
 +
-+	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
-+}
-+
- struct device_queue_manager *device_queue_manager_init(struct kfd_node *dev)
- {
- 	struct device_queue_manager *dqm;
-@@ -2567,19 +2575,14 @@ struct device_queue_manager *device_queu
- 		return dqm;
- 	}
+ 	/*
+ 	 * P3 to contain the physical address of the panic page & P4 to
+ 	 * contain the size of the panic data in that page. Rest of the
+@@ -210,7 +212,7 @@ static void hv_kmsg_dump(struct kmsg_dumper *dumper,
+ 	hv_set_msr(HV_MSR_CRASH_P0, 0);
+ 	hv_set_msr(HV_MSR_CRASH_P1, 0);
+ 	hv_set_msr(HV_MSR_CRASH_P2, 0);
+-	hv_set_msr(HV_MSR_CRASH_P3, virt_to_phys(hv_panic_page));
++	hv_set_msr(HV_MSR_CRASH_P3, bytes_written ? virt_to_phys(hv_panic_page) : 0);
+ 	hv_set_msr(HV_MSR_CRASH_P4, bytes_written);
  
-+	if (!dev->kfd->shared_resources.enable_mes)
-+		deallocate_hiq_sdma_mqd(dev, &dqm->hiq_sdma_mqd);
-+
- out_free:
- 	kfree(dqm);
- 	return NULL;
- }
- 
--static void deallocate_hiq_sdma_mqd(struct kfd_node *dev,
--				    struct kfd_mem_obj *mqd)
--{
--	WARN(!mqd, "No hiq sdma mqd trunk to free");
--
--	amdgpu_amdkfd_free_gtt_mem(dev->adev, &mqd->gtt_mem);
--}
--
- void device_queue_manager_uninit(struct device_queue_manager *dqm)
- {
- 	dqm->ops.stop(dqm);
+ 	/*
+-- 
+2.51.0
+
 
 
 
