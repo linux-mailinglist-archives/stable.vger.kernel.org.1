@@ -1,231 +1,307 @@
-Return-Path: <stable+bounces-212674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJlbN7Zyemme6gEAu9opvQ
-	(envelope-from <stable+bounces-212674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:33:58 +0100
+	id WCroDQl1emmE6wEAu9opvQ
+	(envelope-from <stable+bounces-212675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:43:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA8AA89DF
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:33:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A28C2A8C1D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A195B3008D41
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 20:33:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E142300794B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 20:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB573374726;
-	Wed, 28 Jan 2026 20:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965B8374191;
+	Wed, 28 Jan 2026 20:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="utBmU1vA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VDBBleUP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9422D73A1
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 20:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12ED27510B;
+	Wed, 28 Jan 2026 20:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769632434; cv=none; b=DII6CHEf6Ln7oC8QsbgI8THVtJ/YuD7FS2IqazUXSo7+e9/0hAYBPpbB+7NuuOKV/SNHkjI9DhQf2xn6g2d9/T6sv3MwV7qKt0myhI/vx/ZMhUIA7dkETbybR9xQqVL7JYGoAW2wy6liHY+NtJXGewzinexUlZH9HJJD6v0MC2M=
+	t=1769633028; cv=none; b=c6cz1DvyD/SiUu9SW2Tj5n5rQB2QCB7TupffFbcF0/tcqWubSoRwryntnaU7Nki1xuNbpozX6YNdSNrKfrwHc1YCUn7bTgU7cwNhSSun5AlB/xzFYFbIR8QXiZUzPRFMVan8tej3xfBgPGEi5MLKS5ARdB3JibRV43Err8GAUjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769632434; c=relaxed/simple;
-	bh=78+JLmZNMjqsAusgdxPAGHra+7DFQrpbMSqc22oxm8I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p1lrdHB8yP0anSQNVcVUXjNWoeNHjAq79NDy46UUR5FgXl/FDok9zAhStjpLa88QrZ6NFU7u59cX41iK8JqlQlbS96vr6EObGfM/J4xKUt1wu25E35jco7CwyWB0InXatKdpPP2fumGgY0QIn5k9TIhD1ZmyDfKnw17fjMrRA+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=utBmU1vA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96995C4CEF1;
-	Wed, 28 Jan 2026 20:33:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769632434;
-	bh=78+JLmZNMjqsAusgdxPAGHra+7DFQrpbMSqc22oxm8I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utBmU1vAP97IoqMY30tGeHVETM+Wv0KZyTTA4+YZnI3kULuDWKjiUXRgtHs4KsHSP
-	 Rqrvmek2+y0EuPrwAYbB+wc0oDDRgBEnrZq83qnWEW6L2m8V5G80QYwK5sRkX0bOo3
-	 0K7M0L+tMs31RyFpij1gj9ca2/iVjlehImmqQ+Z9fGSP36HHI4ZycfohcZqOP02s+k
-	 i173WH3jazo+ZqLLcgHh5OkUIlMWr6LcrAM0PIno0DZWGiwMYUyS23ctEo7VxUkscB
-	 6Gmgp6aD59TEAM9ALAS389qT+eDuMazanlF1LUhNP3fEEJ0yZVATSUGIaAywkuQxMd
-	 g+sck5nvm9w7Q==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] arm64/fpsimd: signal: Fix restoration of SVE context
-Date: Wed, 28 Jan 2026 15:33:50 -0500
-Message-ID: <20260128203350.2720303-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260128203350.2720303-1-sashal@kernel.org>
-References: <2026012703-skintight-tricycle-0f20@gregkh>
- <20260128203350.2720303-1-sashal@kernel.org>
+	s=arc-20240116; t=1769633028; c=relaxed/simple;
+	bh=0HFSJLD3DmydJ6eojx9Gl+2ZASNcQ0OUSNmFOnheJcs=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZqMXvbQHfRc+AdxA+gkGWqB58EBOsGS6hzCohfOtbz2SwtsMATL4NbrGQgn+rOHLryjRUZ6cLRkhigWLw1Jjd4vQQERhlbAEiyiGWDFrSL6rlKCyi22PPmTCHp5MdjLxboF4V2t01eCc77W/Goy/RfO+17gRq0snNLEduiL0YBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VDBBleUP; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769633027; x=1801169027;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:to:cc;
+  bh=0HFSJLD3DmydJ6eojx9Gl+2ZASNcQ0OUSNmFOnheJcs=;
+  b=VDBBleUPOz7F+aDKbCeKPDTNBoONienYDfavM7GgwQRN9tYk0Zcd6KxH
+   iInKi7mMSnlk6erMcDqqKq+Xbmz9MaeMvk2ByuQa4N7ac9JHMrUAMN5+K
+   6IHv4nH1z/Vy1h3OwSTYEXFRalcffiexguNRO23jaM4BHSZqzxldDyRLg
+   qfrd2PYlKBzwMpf7tk3ga6uoJsT0rxKQ0mPibQmHcuEjfdub3xNADz+P2
+   tAyD3ruR2/xUNR40KIwCgNBKkVwNemjv3G5qwL+gIsiGXUO987RSXeoZR
+   u63W+Cyli6eTpJkusToeW7AfVtp5urYM72jk6XFCUlmYNWP/IfNrEmxjj
+   A==;
+X-CSE-ConnectionGUID: k04nvJvpSLGARkmxYOutRA==
+X-CSE-MsgGUID: jkP1Z3k3RYWdLls6nCByFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="81972472"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="81972472"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 12:43:43 -0800
+X-CSE-ConnectionGUID: 9AtC1YS7QSmCD9OhJ6eVMw==
+X-CSE-MsgGUID: frHkT0xGRJuqlmSv1fIECg==
+X-ExtLoop1: 1
+Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 12:43:41 -0800
+From: Jacob Keller <jacob.e.keller@intel.com>
+Date: Wed, 28 Jan 2026 12:41:35 -0800
+Subject: [PATCH] drm/mgag200: sleep instead of busy wait for BMC
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260128-jk-mgag200-fix-bad-udelay-v1-1-db02e04c343d@intel.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQrCMBAAv1L27MImkQb9inhYzZpu1bQkWCohf
+ zd4HJiZCkWySoHzUCHLpkWX1MEcBrhPnKKghs5gyY5krMf5ie/I0RLhQ3e8ccBPkBd/8Ugn45z
+ 3XhxD79cs3fi/L9fWfhLf/tNrAAAA
+X-Change-ID: 20260127-jk-mgag200-fix-bad-udelay-409133777e3a
+To: Dave Airlie <airlied@redhat.com>, Jocelyn Falempe <jfalempe@redhat.com>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>
+Cc: Pasi Vaananen <pvaanane@redhat.com>, dri-devel@lists.freedesktop.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Jacob Keller <jacob.e.keller@intel.com>
+X-Mailer: b4 0.15-dev-f4b34
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7622;
+ i=jacob.e.keller@intel.com; h=from:subject:message-id;
+ bh=0HFSJLD3DmydJ6eojx9Gl+2ZASNcQ0OUSNmFOnheJcs=;
+ b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyqkr8aZq1l6dkqWo+1c1jfmM55Oafk7gH5ezO/XeSPf
+ MC5f8OsjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACaicYXhn33dtR+PN07iLHRS
+ 4ElQaJ2VYMrsvUDv+j2Ppdo9S9WS7jD8U/SYoN/3r5X7ddXTKUnfPfxnMufe/8hz4vG3APtoZ6k
+ //AA=
+X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
+ fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212674-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212675-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arm.com:email,svcr.sm:url]
-X-Rspamd-Queue-Id: ADA8AA89DF
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacob.e.keller@intel.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid]
+X-Rspamd-Queue-Id: A28C2A8C1D
 X-Rspamd-Action: no action
 
-From: Mark Rutland <mark.rutland@arm.com>
+The mgag200_bmc_stop_scanout() function is called by the .atomic_disable()
+handler for the MGA G200 VGA BMC encoder. This function performs a few
+register writes to inform the BMC of an upcoming mode change, and then
+polls to wait until the BMC actually stops.
 
-[ Upstream commit d2907cbe9ea0a54cbe078076f9d089240ee1e2d9 ]
+The polling is implemented using a busy loop with udelay() and an iteration
+timeout of 300, resulting in the function blocking for 300 milliseconds.
 
-When SME is supported, Restoring SVE signal context can go wrong in a
-few ways, including placing the task into an invalid state where the
-kernel may read from out-of-bounds memory (and may potentially take a
-fatal fault) and/or may kill the task with a SIGKILL.
+The function gets called ultimately by the output_poll_execute work thread
+for the DRM output change polling thread of the mgag200 driver:
 
-(1) Restoring a context with SVE_SIG_FLAG_SM set can place the task into
-    an invalid state where SVCR.SM is set (and sve_state is non-NULL)
-    but TIF_SME is clear, consequently resuting in out-of-bounds memory
-    reads and/or killing the task with SIGKILL.
+kworker/0:0-mm_    3528 [000]  4555.315364:
+        ffffffffaa0e25b3 delay_halt.part.0+0x33
+        ffffffffc03f6188 mgag200_bmc_stop_scanout+0x178
+        ffffffffc087ae7a disable_outputs+0x12a
+        ffffffffc087c12a drm_atomic_helper_commit_tail+0x1a
+        ffffffffc03fa7b6 mgag200_mode_config_helper_atomic_commit_tail+0x26
+        ffffffffc087c9c1 commit_tail+0x91
+        ffffffffc087d51b drm_atomic_helper_commit+0x11b
+        ffffffffc0509694 drm_atomic_commit+0xa4
+        ffffffffc05105e8 drm_client_modeset_commit_atomic+0x1e8
+        ffffffffc0510ce6 drm_client_modeset_commit_locked+0x56
+        ffffffffc0510e24 drm_client_modeset_commit+0x24
+        ffffffffc088a743 __drm_fb_helper_restore_fbdev_mode_unlocked+0x93
+        ffffffffc088a683 drm_fb_helper_hotplug_event+0xe3
+        ffffffffc050f8aa drm_client_dev_hotplug+0x9a
+        ffffffffc088555a output_poll_execute+0x29a
+        ffffffffa9b35924 process_one_work+0x194
+        ffffffffa9b364ee worker_thread+0x2fe
+        ffffffffa9b3ecad kthread+0xdd
+        ffffffffa9a08549 ret_from_fork+0x29
 
-    This can only occur in unusual (but legitimate) cases where the SVE
-    signal context has either been modified by userspace or was saved in
-    the context of another task (e.g. as with CRIU), as otherwise the
-    presence of an SVE signal context with SVE_SIG_FLAG_SM implies that
-    TIF_SME is already set.
+On a server running ptp4l with the mgag200 driver loaded, we found that
+ptp4l would sometimes get blocked from execution because of this busy
+waiting loop.
 
-    While in this state, task_fpsimd_load() will NOT configure SMCR_ELx
-    (leaving some arbitrary value configured in hardware) before
-    restoring SVCR and attempting to restore the streaming mode SVE
-    registers from memory via sve_load_state(). As the value of
-    SMCR_ELx.LEN may be larger than the task's streaming SVE vector
-    length, this may read memory outside of the task's allocated
-    sve_state, reading unrelated data and/or triggering a fault.
+Every so often, approximately once every 20 minutes though with large
+variance, the output_poll_execute() thread would detect some sort of change
+that required performing a hotplug event which results in attempting to
+stop the BMC scanout, resulting in a 300msec delay on one CPU.
 
-    While this can result in secrets being loaded into streaming SVE
-    registers, these values are never exposed. As TIF_SME is clear,
-    fpsimd_bind_task_to_cpu() will configure CPACR_ELx.SMEN to trap EL0
-    accesses to streaming mode SVE registers, so these cannot be
-    accessed directly at EL0. As fpsimd_save_user_state() verifies the
-    live vector length before saving (S)SVE state to memory, no secret
-    values can be saved back to memory (and hence cannot be observed via
-    ptrace, signals, etc).
+On this system, ptp4l was pinned to a single CPU. When the
+output_poll_execute() thread ran on that CPU, it blocked ptp4l from
+executing for its 300millisecond duration.
 
-    When the live vector length doesn't match the expected vector length
-    for the task, fpsimd_save_user_state() will send a fatal SIGKILL
-    signal to the task. Hence the task may be killed after executing
-    userspace for some period of time.
+This resulted in PTP service disruptions such as failure to send a SYNC
+message on time, failure to handle ANNOUNCE messages on time, and clock
+check warnings from the application. All of this despite the application
+being configured with FIFO_RT and a higher priority than the background
+workqueue tasks. (However, note that the kernel did not use
+CONFIG_PREEMPT...)
 
-(2) Restoring a context with SVE_SIG_FLAG_SM clear does not clear the
-    task's SVCR.SM. If SVCR.SM was set prior to restoring the context,
-    then the task will be left in streaming mode unexpectedly, and some
-    register state will be combined inconsistently, though the task will
-    be left in legitimate state from the kernel's PoV.
+It is unclear if the event is due to a faulty VGA connection, another bug,
+or actual events causing a change in the connection. At least on the system
+under test it is not a one-time event and consistently causes disruption to
+the time sensitive applications.
 
-    This can only occur in unusual (but legitimate) cases where ptrace
-    has been used to set SVCR.SM after entry to the sigreturn syscall,
-    as syscall entry clears SVCR.SM.
+Reading through other DRM driver implementations, it does not appear that
+the .atomic_enable or .atomic_disable handlers need to delay instead of
+sleep. For example, the ast_astdp_encoder_helper_atomic_disable() function
+calls ast_dp_set_phy_sleep() which uses msleep(). The "atomic" in the name
+is referring to the atomic modesetting support, which is the support to
+enable atomic configuration from userspace, and not to the "atomic context"
+of the kernel.
 
-    In these cases, the the provided SVE register data will be loaded
-    into the task's sve_state using the non-streaming SVE vector length
-    and the FPSIMD registers will be merged into this using the
-    streaming SVE vector length.
+Replace the busy wait with a sleeping loop based on read_poll_timeout().
+This ensures that other time sensitive operations are not blocked from
+executing while the work thread is waiting for the BMC hardware.
 
-Fix (1) by setting TIF_SME when setting SVCR.SM. This also requires
-ensuring that the task's sme_state has been allocated, but as this could
-contain live ZA state, it should not be zeroed. Fix (2) by clearing
-SVCR.SM when restoring a SVE signal context with SVE_SIG_FLAG_SM clear.
+Note the RREG_DAC is implemented using a statement expression to allow
+working properly with the read_poll_timeout family of functions. The other
+RREG_<TYPE> macros ought to be cleaned up to have better semantics, and
+several places in the mgag200 driver could make use of RREG_DAC or similar
+RREG_* macros should likely be cleaned up for better semantics as well, but
+that task has been left as a future cleanup for a non-bugfix.
 
-For consistency, I've pulled the manipulation of SVCR, TIF_SVE, TIF_SME,
-and fp_type earlier, immediately after the allocation of
-sve_state/sme_state, before the restore of the actual register state.
-This makes it easier to ensure that these are always modified
-consistently, even if a fault is taken while reading the register data
-from the signal context. I do not expect any software to depend on the
-exact state restored when a fault is taken while reading the context.
-
-Fixes: 85ed24dad290 ("arm64/sme: Implement streaming SVE signal handling")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: <stable@vger.kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ preserved fpsimd_flush_task_state() call before new SME allocation logic ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 ---
- arch/arm64/kernel/signal.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+We still do not know if the reconfiguration is caused by a different
+bug or by a faulty VGA connector or something else. However, there is no
+reason that this function should be spinning instead of sleeping while
+waiting for the BMC scan to stop.
 
-diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
-index b615ed8fb318a..6dfba3f94362c 100644
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -344,12 +344,28 @@ static int restore_sve_fpsimd_context(struct user_ctxs *user)
- 	fpsimd_flush_task_state(current);
- 	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
+It is known that removing the mgag200 module avoids the issue. It is also
+likely that use of CONFIG_PREEMPT (or CONFIG_PREEMPT_RT) could allow the
+high priority process to preempt the kernel thread even while it is
+delaying. However, it is better to let the process sleep() so that other
+tasks can execute even if these steps are not taken.
+
+There are multiple other udelay() which likely could safely be converted to
+usleep_range(). However they are all short, and I felt that the smallest
+targeted fix made the most sense. They could perhaps be cleaned up in a
+non-fix commit or series along with other improvements like fixing the
+other RREG_* macros.
+---
+ drivers/gpu/drm/mgag200/mgag200_drv.h |  6 ++++++
+ drivers/gpu/drm/mgag200/mgag200_bmc.c | 27 ++++++++++-----------------
+ 2 files changed, 16 insertions(+), 17 deletions(-)
+
+diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
+index f4bf40cd7c88..a875c4bf8cbe 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_drv.h
++++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
+@@ -111,6 +111,12 @@
+ #define DAC_INDEX 0x3c00
+ #define DAC_DATA 0x3c0a
  
-+	if (sm) {
-+		sme_alloc(current, false);
-+		if (!current->thread.sme_state)
-+			return -ENOMEM;
-+	}
++#define RREG_DAC(reg)						\
++	({							\
++		WREG8(DAC_INDEX, reg);				\
++		RREG8(DAC_DATA);				\
++	})							\
 +
- 	sve_alloc(current, true);
- 	if (!current->thread.sve_state) {
- 		clear_thread_flag(TIF_SVE);
- 		return -ENOMEM;
- 	}
+ #define WREG_DAC(reg, v)					\
+ 	do {							\
+ 		WREG8(DAC_INDEX, reg);				\
+diff --git a/drivers/gpu/drm/mgag200/mgag200_bmc.c b/drivers/gpu/drm/mgag200/mgag200_bmc.c
+index a689c71ff165..599b710bab9b 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_bmc.c
++++ b/drivers/gpu/drm/mgag200/mgag200_bmc.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
-+	if (sm) {
-+		current->thread.svcr |= SVCR_SM_MASK;
-+		set_thread_flag(TIF_SME);
-+	} else {
-+		current->thread.svcr &= ~SVCR_SM_MASK;
-+		set_thread_flag(TIF_SVE);
-+	}
-+
-+	current->thread.fp_type = FP_STATE_SVE;
-+
- 	err = __copy_from_user(current->thread.sve_state,
- 			       (char __user const *)user->sve +
- 					SVE_SIG_REGS_OFFSET,
-@@ -357,12 +373,6 @@ static int restore_sve_fpsimd_context(struct user_ctxs *user)
- 	if (err)
- 		return -EFAULT;
+ #include <linux/delay.h>
++#include <linux/iopoll.h>
  
--	if (flags & SVE_SIG_FLAG_SM)
--		current->thread.svcr |= SVCR_SM_MASK;
--	else
--		set_thread_flag(TIF_SVE);
--	current->thread.fp_type = FP_STATE_SVE;
--
- 	err = read_fpsimd_context(&fpsimd, user);
- 	if (err)
- 		return err;
--- 
-2.51.0
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_edid.h>
+@@ -12,7 +13,7 @@
+ void mgag200_bmc_stop_scanout(struct mga_device *mdev)
+ {
+ 	u8 tmp;
+-	int iter_max;
++	int ret;
+ 
+ 	/*
+ 	 * 1 - The first step is to inform the BMC of an upcoming mode
+@@ -44,28 +45,20 @@ void mgag200_bmc_stop_scanout(struct mga_device *mdev)
+ 	 * 3a- The third step is to verify if there is an active scan.
+ 	 * We are waiting for a 0 on remhsyncsts <XSPAREREG<0>).
+ 	 */
+-	iter_max = 300;
+-	while (!(tmp & 0x1) && iter_max) {
+-		WREG8(DAC_INDEX, MGA1064_SPAREREG);
+-		tmp = RREG8(DAC_DATA);
+-		udelay(1000);
+-		iter_max--;
+-	}
++	ret = read_poll_timeout(RREG_DAC, tmp, !(tmp & 0x1),
++				1000, 300000, false,
++				MGA1064_SPAREREG);
++	if (ret == -ETIMEDOUT)
++		return;
+ 
+ 	/*
+ 	 * 3b- This step occurs only if the remove is actually
+ 	 * scanning. We are waiting for the end of the frame which is
+ 	 * a 1 on remvsyncsts (XSPAREREG<1>)
+ 	 */
+-	if (iter_max) {
+-		iter_max = 300;
+-		while ((tmp & 0x2) && iter_max) {
+-			WREG8(DAC_INDEX, MGA1064_SPAREREG);
+-			tmp = RREG8(DAC_DATA);
+-			udelay(1000);
+-			iter_max--;
+-		}
+-	}
++	(void)read_poll_timeout(RREG_DAC, tmp, (tmp & 0x2),
++				1000, 300000, false,
++				MGA1064_SPAREREG);
+ }
+ 
+ void mgag200_bmc_start_scanout(struct mga_device *mdev)
+
+---
+base-commit: e535c23513c63f02f67e3e09e0787907029efeaf
+change-id: 20260127-jk-mgag200-fix-bad-udelay-409133777e3a
+
+Best regards,
+--  
+Jacob Keller <jacob.e.keller@intel.com>
 
 
