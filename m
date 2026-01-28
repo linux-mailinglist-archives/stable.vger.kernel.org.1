@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-212290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EK3FE9c3eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:22:47 +0100
+	id UKqPFgkyemlo4gEAu9opvQ
+	(envelope-from <stable+bounces-212500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:58:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA5ACA5802
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:22:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD74A4D1D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1154531D83DE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4EFA4301A63C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7778C307AD6;
-	Wed, 28 Jan 2026 15:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EA43033C4;
+	Wed, 28 Jan 2026 15:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iERfp6tJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vy04dQfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7BB3064A2;
-	Wed, 28 Jan 2026 15:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC0D18027;
+	Wed, 28 Jan 2026 15:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615024; cv=none; b=WRKupbTjEM3aipsHrrlQ3wXlqcXYxnIX7CzWV4KkJP9/VgjytduDPKFEzwbhvuXh+xQpFYYB8QrZxgV2RTq7XFONiBjPGiBM+5SWVyFPfeLdcbyEvVA9FtncpWkMVN+yMaFgOQU30+CC3alk+1ILIXKdTSbRtqpe98cin/+GBtY=
+	t=1769615725; cv=none; b=LOyydilSMVtLBPcau1mFAw7hLOZYmUE9RPw4sz+3Dv8Dq7a5g1+bLAQPSFHrW1GncBFbAb1kdkEPiH7VIlFPZAVpqRNurBR/Ryuq+lbwj//W1re/m4tYS7OwQK6iFCXlXWRoRJ3+xT5IYnYPXLvUdqAaIqssL/pJjPAgCmgDWWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615024; c=relaxed/simple;
-	bh=XCqyg2+5nuqb/lrV0uJ1harZvl1rI8p3PyLKbaiZp+M=;
+	s=arc-20240116; t=1769615725; c=relaxed/simple;
+	bh=CW5XAGuyNaTriiS7ewU/iwEJftRKMCW4eis1iSon0CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cqI8y0BwdXl2pu2Ddc/TqdBGFoUVQBZwLnKgQawYAlChYe/UPJR9kQmpt37yiXWCpAoRVlmG1Obn0i0SaL9uMj+01nEO5RCOGkNxptrLjgOCv3a2lqRc4F9cQTXNq8IXdw97dgHCIBOR03uRd6XXlERDyYNLY/3xwDtxtJbMyfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iERfp6tJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A206C4CEF1;
-	Wed, 28 Jan 2026 15:43:43 +0000 (UTC)
+	 MIME-Version; b=DjtF03UDpbc8f9ChZN5rTk3rxkKvUxs7uupLcWu9SqNAIzxXiL8+KaL9dysdYF23VNoYoPjwZggMm/6reEZBth1LafRaqq0KuD4WoTXO5/C9xKYpfPyh8MZsCBmuliWSmCPnYGxBVj+0ZB2OzE9arzC/UqQX7yiGj2VIqS2UOL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vy04dQfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BCAC116C6;
+	Wed, 28 Jan 2026 15:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615024;
-	bh=XCqyg2+5nuqb/lrV0uJ1harZvl1rI8p3PyLKbaiZp+M=;
+	s=korg; t=1769615725;
+	bh=CW5XAGuyNaTriiS7ewU/iwEJftRKMCW4eis1iSon0CI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iERfp6tJwnh06ROJ0VB3UQIbbNH0CrHCalUXkoOpibmCZ24NNZC1b4C+E5H7QkQg/
-	 zX+G40tS0bbLCIoFf24K8tzIWxtlYatQM+ZNmBNb8ckNIBXp4Tg4xl8oUYwBr/m/Td
-	 B3wrRhWvtH3trRGtFmcackIWDxTVkJheQkR2Znq8=
+	b=Vy04dQfCRVwPFs9kd8bPm8n1TjtI0oiMObDDVl7XzgAACJQ/t6xrsTw+RlT8/yeih
+	 80+rcWOkbCqj+4Q98166owlRlNsIp4aCntBDTzsJ56HVfZ6iqRJlGLOhmE1bvQDsoq
+	 piA4T6d2hh6fJtzSNBZnAvi0CTG+0LBsT/k7XQ5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 056/169] platform/x86: hp-bioscfg: Fix kobject warnings for empty attribute names
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org,
+	Arun Raghavan <arunr@valvesoftware.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 094/227] ALSA: usb: Increase volume range that triggers a warning
 Date: Wed, 28 Jan 2026 16:22:19 +0100
-Message-ID: <20260128145336.029561576@linuxfoundation.org>
+Message-ID: <20260128145347.716376141@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +66,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212290-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212500-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BA5ACA5802
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DDD74A4D1D
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Arun Raghavan <arunr@valvesoftware.com>
 
-commit fdee1b09721605f532352628d0a24623e7062efb upstream.
+[ Upstream commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62 ]
 
-The hp-bioscfg driver attempts to register kobjects with empty names when
-the HP BIOS returns attributes with empty name strings. This causes
-multiple kernel warnings:
+On at least the HyperX Cloud III, the range is 18944 (-18944 -> 0 in
+steps of 1), so the original check for 255 steps is definitely obsolete.
+Let's give ourselves a little more headroom before we emit a warning.
 
-  kobject: (00000000135fb5e6): attempted to be registered with empty name!
-  WARNING: CPU: 14 PID: 3336 at lib/kobject.c:219 kobject_add_internal+0x2eb/0x310
-
-Add validation in hp_init_bios_buffer_attribute() to check if the
-attribute name is empty after parsing it from the WMI buffer. If empty,
-log a debug message and skip registration of that attribute, allowing the
-module to continue processing other valid attributes.
-
-Cc: stable@vger.kernel.org
-Fixes: a34fc329b189 ("platform/x86: hp-bioscfg: bioscfg")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20260115203725.828434-2-mario.limonciello@amd.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 80acefff3bc7 ("ALSA: usb-audio - Add volume range check and warn if it too big")
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: linux-sound@vger.kernel.org
+Signed-off-by: Arun Raghavan <arunr@valvesoftware.com>
+Link: https://patch.msgid.link/20260116225804.3845935-1-arunr@valvesoftware.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/bioscfg.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/usb/mixer.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-@@ -10,6 +10,8 @@
- #include <linux/fs.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
-+#include <linux/printk.h>
-+#include <linux/string.h>
- #include <linux/wmi.h>
- #include "bioscfg.h"
- #include "../../firmware_attributes_class.h"
-@@ -784,6 +786,12 @@ static int hp_init_bios_buffer_attribute
- 	if (ret < 0)
- 		goto buff_attr_exit;
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 3af71d42b9b9a..90917c6ea871b 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1813,11 +1813,10 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
  
-+	if (strlen(str) == 0) {
-+		pr_debug("Ignoring attribute with empty name\n");
-+		ret = 0;
-+		goto buff_attr_exit;
-+	}
-+
- 	if (attr_type == HPWMI_PASSWORD_TYPE ||
- 	    attr_type == HPWMI_SECURE_PLATFORM_TYPE)
- 		temp_kset = bioscfg_drv.authentication_dir_kset;
+ 	range = (cval->max - cval->min) / cval->res;
+ 	/*
+-	 * Are there devices with volume range more than 255? I use a bit more
+-	 * to be sure. 384 is a resolution magic number found on Logitech
+-	 * devices. It will definitively catch all buggy Logitech devices.
++	 * There are definitely devices with a range of ~20,000, so let's be
++	 * conservative and allow for a bit more.
+ 	 */
+-	if (range > 384) {
++	if (range > 65535) {
+ 		usb_audio_warn(mixer->chip,
+ 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
+ 			       range);
+-- 
+2.51.0
+
 
 
 
