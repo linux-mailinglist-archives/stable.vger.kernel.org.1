@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHZdEu4temnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212057-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:30 +0100
+	id oBx8Jk02eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:16:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3CCA42CA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A608BA55C0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:16:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 063EB30B43E8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 23108308B32C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DEBE244667;
-	Wed, 28 Jan 2026 15:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFC22FE044;
+	Wed, 28 Jan 2026 15:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJit6et6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AEZvw6pY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6163F13B7A3;
-	Wed, 28 Jan 2026 15:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9D02F25EF;
+	Wed, 28 Jan 2026 15:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614256; cv=none; b=OIKXnPiqqLF5zTy8c527WDr+K5DKdbDxVJFmTcZ/lPb8LvhQ81WlhNdaBrAZLdqEiqfyEKQxeqCiTKry7UfAN/vtnAzchlRCzffT/8Xw57NQ16Jyx/qlfk1XrmqgqBhPLVBTTQiRr4rk1wv4o1MQgsN5T7QsTmZlD2FT4aUCW/I=
+	t=1769615448; cv=none; b=FVa5gdQSmrDQVs3s578G1Ui0hepVJHq6vJtBkJmtBxiBM7Ncqjm8c/DGjeidbLB6xP1gsJE9R4h0C2to5/XMGUnujHnGVu2NNauG/BopdgfKwQ9+BvqViG7NJs3Vu0SY0CY7myIgMu4kI0ahhWghR5gV/mdt7hBHcMAvM4ra2B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614256; c=relaxed/simple;
-	bh=L4YNzQKWIsPyjbmwqN6RJ6kpKOYdwk97TIHFLLs7kTg=;
+	s=arc-20240116; t=1769615448; c=relaxed/simple;
+	bh=NPOB0+UHxq2JTEip4Zya0iNl3UrxwL70h6z2RScXxhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GxtZYFmj1vqOvjko8jqZADfc5hUit16U0y/5RmZ/4M1dOqQyzM0INQFxghjoMgE8gka3o0UtssvLilMNAzHP44uEZqNElhij+M6d4EcA3lBu7wr81713llRlwnmfnEr2kSYA+t+XxPL14a/oYPOb8y/OOLquZbpUmXIurqkWsZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJit6et6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB7DC4CEF1;
-	Wed, 28 Jan 2026 15:30:55 +0000 (UTC)
+	 MIME-Version; b=n0rqZkGnjUCgjkOGuQe0gOUvmPeV8jzA8sPBPVBxxM3CeKMYb/eGJkPRxRIPbrAtQAZSYXCe2ce5ljsWRmBqFuYEUqXXo44cNt+/2D67aOtJXvQDQptUOrOMHhn2e0RQYVo9bb2i6QFfTwTDi0/EPC58mTekvTboFZjCqswy/a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AEZvw6pY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D48D7C4CEF7;
+	Wed, 28 Jan 2026 15:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614256;
-	bh=L4YNzQKWIsPyjbmwqN6RJ6kpKOYdwk97TIHFLLs7kTg=;
+	s=korg; t=1769615448;
+	bh=NPOB0+UHxq2JTEip4Zya0iNl3UrxwL70h6z2RScXxhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJit6et6UNW1l/3ZR88jn6KmMKGIi+0Gq6gSCGv0O8jJZS7AIjrdLQsU2fa15JvEO
-	 ZUYxeSQ1KdrVn5/fsdT3hGaiSRQb9NeCxlkE8WYF5hI8dC4donsQRcS1Fbfo5hZYwN
-	 bc1JwryzQboR3cAo4e8qL3qm8GZkewuAZO/yjoy8=
+	b=AEZvw6pYRExNCGXKOU4liEWFSnZ1U2UVNAnOj7okbPpuiQwaBddNDJFZOw4Fn0yqL
+	 uKanW4X48AqAsjXO/NHH/fQc8lCfSw0diVZJgtcc/Qb4j7wM1GHF/l8Gg6g3aPM4X2
+	 Rm5mtrTqXiJ8bvEOlbgD6Txc8kewXYPD264Bip4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Johan Hovold <johan@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 082/254] dmaengine: idxd: fix device leaks on compat bind and unbind
+	Niklas Cassel <cassel@kernel.org>,
+	Wolf <wolf@yoxt.cc>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 013/227] ata: libata-sata: Improve link_power_management_supported sysfs attribute
 Date: Wed, 28 Jan 2026 16:20:58 +0100
-Message-ID: <20260128145347.646244928@linuxfoundation.org>
+Message-ID: <20260128145344.819260909@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,111 +70,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212417-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212057-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: CF3CCA42CA
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,yoxt.cc:email]
+X-Rspamd-Queue-Id: A608BA55C0
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 799900f01792cf8b525a44764f065f83fcafd468 upstream.
+[ Upstream commit ce83767ea323baf8509a75eb0c783cd203e14789 ]
 
-Make sure to drop the reference taken when looking up the idxd device as
-part of the compat bind and unbind sysfs interface.
+The link_power_management_supported sysfs attribute is currently set as
+true even for ata ports that lack a .set_lpm() callback, e.g. dummy ports.
 
-Fixes: 6e7f3ee97bbe ("dmaengine: idxd: move dsa_drv support to compatible mode")
-Cc: stable@vger.kernel.org	# 5.15
-Cc: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251117161258.10679-7-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is a bit silly, because while writing to the
+link_power_management_policy sysfs attribute will make ata_scsi_lpm_store()
+update ap->target_lpm_policy (thus sysfs will reflect the new value) and
+call ata_port_schedule_eh() for the port, it is essentially a no-op.
+
+This is because for a port without a .set_lpm() callback, once EH gets to
+run, the ata_eh_link_set_lpm() will simply return, since the port does not
+provide a .set_lpm() callback.
+
+Thus, make sure that the link_power_management_supported sysfs attribute
+is set to false for ports that lack a .set_lpm() callback. This way the
+link_power_management_policy sysfs attribute will no longer be writable,
+so we will no longer be misleading users to think that their sysfs write
+actually does something.
+
+Fixes: 0060beec0bfa ("ata: libata-sata: Add link_power_management_supported sysfs attribute")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Tested-by: Wolf <wolf@yoxt.cc>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/compat.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/ata/libata-sata.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/idxd/compat.c
-+++ b/drivers/dma/idxd/compat.c
-@@ -21,11 +21,16 @@ static ssize_t unbind_store(struct devic
- 	int rc = -ENODEV;
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index b2817a2995d6b..04e1e774645e2 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -909,7 +909,7 @@ static bool ata_scsi_lpm_supported(struct ata_port *ap)
+ 	struct ata_link *link;
+ 	struct ata_device *dev;
  
- 	dev = bus_find_device_by_name(bus, NULL, buf);
--	if (dev && dev->driver) {
-+	if (!dev)
-+		return -ENODEV;
-+
-+	if (dev->driver) {
- 		device_driver_detach(dev);
- 		rc = count;
- 	}
+-	if (ap->flags & ATA_FLAG_NO_LPM)
++	if ((ap->flags & ATA_FLAG_NO_LPM) || !ap->ops->set_lpm)
+ 		return false;
  
-+	put_device(dev);
-+
- 	return rc;
- }
- static DRIVER_ATTR_IGNORE_LOCKDEP(unbind, 0200, NULL, unbind_store);
-@@ -39,9 +44,12 @@ static ssize_t bind_store(struct device_
- 	struct idxd_dev *idxd_dev;
- 
- 	dev = bus_find_device_by_name(bus, NULL, buf);
--	if (!dev || dev->driver || drv != &dsa_drv.drv)
-+	if (!dev)
- 		return -ENODEV;
- 
-+	if (dev->driver || drv != &dsa_drv.drv)
-+		goto err_put_dev;
-+
- 	idxd_dev = confdev_to_idxd_dev(dev);
- 	if (is_idxd_dev(idxd_dev)) {
- 		alt_drv = driver_find("idxd", bus);
-@@ -54,13 +62,20 @@ static ssize_t bind_store(struct device_
- 			alt_drv = driver_find("user", bus);
- 	}
- 	if (!alt_drv)
--		return -ENODEV;
-+		goto err_put_dev;
- 
- 	rc = device_driver_attach(alt_drv, dev);
- 	if (rc < 0)
--		return rc;
-+		goto err_put_dev;
-+
-+	put_device(dev);
- 
- 	return count;
-+
-+err_put_dev:
-+	put_device(dev);
-+
-+	return rc;
- }
- static DRIVER_ATTR_IGNORE_LOCKDEP(bind, 0200, NULL, bind_store);
- 
+ 	ata_for_each_link(link, ap, EDGE) {
+-- 
+2.51.0
+
 
 
 
