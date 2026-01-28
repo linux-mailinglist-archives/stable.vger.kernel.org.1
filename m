@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-212238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGJMM80xemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:01 +0100
+	id YL29ATE6emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9338DA4C88
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBBFA5CA0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5094530E2938
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 377DC3037F6D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537E22DF138;
-	Wed, 28 Jan 2026 15:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BAEE3033E4;
+	Wed, 28 Jan 2026 16:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukTLUZOX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiT6ptwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5862F28EB;
-	Wed, 28 Jan 2026 15:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1152308F05;
+	Wed, 28 Jan 2026 16:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614847; cv=none; b=ugL8M5JQQh1QzlXshaPXIx5wNM3hs1BGZ4ETtuleriYyz7Yq/zr6oGn8a/+NCj8dRTCx+R5nStVWvz/vE3EXCHPhIw6TnC/Y3kMcbRQklHLjoOuYANJEtlsSYVB51qjEpU+0muHyL4PkZHRn1e0LgroqCLq+gAG4okPwUWRqG3E=
+	t=1769616011; cv=none; b=qNHJZ80sAxULD49hTEeUmMshDOJw8s3g63I87mwF8/x3YJg6dZCT2RnlpWPSalZdGlp/Tfy8qBqIl7COvWSJtdTAsXo/gSBARqa6rcH8hzE1C68Cjs7qWW3UptKYxsfETBECuduMdH/MpaSS/tpyhpjMwGNq0HKrd6RsMnTRmaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614847; c=relaxed/simple;
-	bh=elVjgy5utIzdeDb3iLKAyAu6xHMnxZRlOjWYbvl+7s0=;
+	s=arc-20240116; t=1769616011; c=relaxed/simple;
+	bh=OWdA2IwOs1W6siq1z11DImUN+WJ6iMSdFVhBKNGjRwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s4gejApoHabxSP5rARFo+jd/AkK9yNCaoI84P9EznVCXRprcLOugou9dS3wQEzK0S0FezTO9EuZ7NIopYeaQRzZ3GUFvf2oLwe8MMxha84lI5dAd//MG4lYbacJc2s7MWR2oOV0a8OZwfhEVBbFvwRXagcXnh0K4J8IwMszZWe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukTLUZOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4344FC2BC86;
-	Wed, 28 Jan 2026 15:40:46 +0000 (UTC)
+	 MIME-Version; b=gNFcGHsm8KfhyRcnw0hU86Q0AG/T3DgN9SWvWn3LxgpXkPT1iKx7AwM3ru7l6Up0KMsxA2edwVRZraZ5ja0gHu5HUa3vh9G6Tf4GeAip5PX2yXHwUoC1CPuTXVcQ8aFg9H87s/OWsnBePRQx06LVSYPrFiHSbwHr4/lgBKuls6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiT6ptwH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230BFC4CEF1;
+	Wed, 28 Jan 2026 16:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614846;
-	bh=elVjgy5utIzdeDb3iLKAyAu6xHMnxZRlOjWYbvl+7s0=;
+	s=korg; t=1769616011;
+	bh=OWdA2IwOs1W6siq1z11DImUN+WJ6iMSdFVhBKNGjRwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukTLUZOXuN8+ypnTXvUTiB+C58PHTOLv3k08KuSfQi9hK9sa0suzFsHSli3m0kBlf
-	 Ue/Z2gMVswjef7Ala7x6NsYgzrTIzqTtw0ucSPvKXUIrZ7jc4gsFwDkEnfUKG5wYMN
-	 cTh5ww338etQ5zcdLb17l1I08BSTQXTNQ+bfnjqs=
+	b=IiT6ptwHSX9vk0hYPabXXaedqNFppWQ7z80Puw/J9EhDDlrxHhBHbgxDgawkvpHSC
+	 Q6FEYkSGzxVIx9vFdQGELxLAr94wwpvsaPjwXtULOI71bNMGglAsE5v4I5xy7Fo7gD
+	 ZAh42vBWdIwCMaQ73ceU3Vu+CblU6IveVtXxKV0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Kang Yang <quic_kangyang@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.6 250/254] wifi: ath11k: fix RCU stall while reaping monitor destination ring
+	Jeson Gao <jeson.gao@unisoc.com>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.18 181/227] arm64: Set __nocfi on swsusp_arch_resume()
 Date: Wed, 28 Jan 2026 16:23:46 +0100
-Message-ID: <20260128145353.794992508@linuxfoundation.org>
+Message-ID: <20260128145350.960323391@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,97 +67,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,quicinc.com,kernel.org,oss.qualcomm.com,139.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212585-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212238-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9338DA4C88
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,unisoc.com:email,arm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3CBBFA5CA0
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-[ Upstream commit 16c6c35c03ea73054a1f6d3302a4ce4a331b427d ]
+commit e2f8216ca2d8e61a23cb6ec355616339667e0ba6 upstream.
 
-While processing the monitor destination ring, MSDUs are reaped from the
-link descriptor based on the corresponding buf_id.
+A DABT is reported[1] on an android based system when resume from hiberate.
+This happens because swsusp_arch_suspend_exit() is marked with SYM_CODE_*()
+and does not have a CFI hash, but swsusp_arch_resume() will attempt to
+verify the CFI hash when calling a copy of swsusp_arch_suspend_exit().
 
-However, sometimes the driver cannot obtain a valid buffer corresponding
-to the buf_id received from the hardware. This causes an infinite loop
-in the destination processing, resulting in a kernel crash.
+Given that there's an existing requirement that the entrypoint to
+swsusp_arch_suspend_exit() is the first byte of the .hibernate_exit.text
+section, we cannot fix this by marking swsusp_arch_suspend_exit() with
+SYM_FUNC_*(). The simplest fix for now is to disable the CFI check in
+swsusp_arch_resume().
 
-kernel log:
-ath11k_pci 0000:58:00.0: data msdu_pop: invalid buf_id 309
-ath11k_pci 0000:58:00.0: data dp_rx_monitor_link_desc_return failed
-ath11k_pci 0000:58:00.0: data msdu_pop: invalid buf_id 309
-ath11k_pci 0000:58:00.0: data dp_rx_monitor_link_desc_return failed
+Mark swsusp_arch_resume() as __nocfi to disable the CFI check.
 
-Fix this by skipping the problematic buf_id and reaping the next entry,
-replacing the break with the next MSDU processing.
+[1]
+[   22.991934][    T1] Unable to handle kernel paging request at virtual address 0000000109170ffc
+[   22.991934][    T1] Mem abort info:
+[   22.991934][    T1]   ESR = 0x0000000096000007
+[   22.991934][    T1]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   22.991934][    T1]   SET = 0, FnV = 0
+[   22.991934][    T1]   EA = 0, S1PTW = 0
+[   22.991934][    T1]   FSC = 0x07: level 3 translation fault
+[   22.991934][    T1] Data abort info:
+[   22.991934][    T1]   ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+[   22.991934][    T1]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   22.991934][    T1]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   22.991934][    T1] [0000000109170ffc] user address but active_mm is swapper
+[   22.991934][    T1] Internal error: Oops: 0000000096000007 [#1] PREEMPT SMP
+[   22.991934][    T1] Dumping ftrace buffer:
+[   22.991934][    T1]    (ftrace buffer empty)
+[   22.991934][    T1] Modules linked in:
+[   22.991934][    T1] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.98-android15-8-g0b1d2aee7fc3-dirty-4k #1 688c7060a825a3ac418fe53881730b355915a419
+[   22.991934][    T1] Hardware name: Unisoc UMS9360-base Board (DT)
+[   22.991934][    T1] pstate: 804000c5 (Nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   22.991934][    T1] pc : swsusp_arch_resume+0x2ac/0x344
+[   22.991934][    T1] lr : swsusp_arch_resume+0x294/0x344
+[   22.991934][    T1] sp : ffffffc08006b960
+[   22.991934][    T1] x29: ffffffc08006b9c0 x28: 0000000000000000 x27: 0000000000000000
+[   22.991934][    T1] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000820
+[   22.991934][    T1] x23: ffffffd0817e3000 x22: ffffffd0817e3000 x21: 0000000000000000
+[   22.991934][    T1] x20: ffffff8089171000 x19: ffffffd08252c8c8 x18: ffffffc080061058
+[   22.991934][    T1] x17: 00000000529c6ef0 x16: 00000000529c6ef0 x15: 0000000000000004
+[   22.991934][    T1] x14: ffffff8178c88000 x13: 0000000000000006 x12: 0000000000000000
+[   22.991934][    T1] x11: 0000000000000015 x10: 0000000000000001 x9 : ffffffd082533000
+[   22.991934][    T1] x8 : 0000000109171000 x7 : 205b5d3433393139 x6 : 392e32322020205b
+[   22.991934][    T1] x5 : 000000010916f000 x4 : 000000008164b000 x3 : ffffff808a4e0530
+[   22.991934][    T1] x2 : ffffffd08058e784 x1 : 0000000082326000 x0 : 000000010a283000
+[   22.991934][    T1] Call trace:
+[   22.991934][    T1]  swsusp_arch_resume+0x2ac/0x344
+[   22.991934][    T1]  hibernation_restore+0x158/0x18c
+[   22.991934][    T1]  load_image_and_restore+0xb0/0xec
+[   22.991934][    T1]  software_resume+0xf4/0x19c
+[   22.991934][    T1]  software_resume_initcall+0x34/0x78
+[   22.991934][    T1]  do_one_initcall+0xe8/0x370
+[   22.991934][    T1]  do_initcall_level+0xc8/0x19c
+[   22.991934][    T1]  do_initcalls+0x70/0xc0
+[   22.991934][    T1]  do_basic_setup+0x1c/0x28
+[   22.991934][    T1]  kernel_init_freeable+0xe0/0x148
+[   22.991934][    T1]  kernel_init+0x20/0x1a8
+[   22.991934][    T1]  ret_from_fork+0x10/0x20
+[   22.991934][    T1] Code: a9400a61 f94013e0 f9438923 f9400a64 (b85fc110)
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Link: https://patch.msgid.link/20241219110531.2096-2-quic_kangyang@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Co-developed-by: Jeson Gao <jeson.gao@unisoc.com>
+Signed-off-by: Jeson Gao <jeson.gao@unisoc.com>
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Acked-by: Will Deacon <will@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Cc: <stable@vger.kernel.org>
+[catalin.marinas@arm.com: commit log updated by Mark Rutland]
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/hibernate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -4728,7 +4728,7 @@ ath11k_dp_rx_mon_mpdu_pop(struct ath11k
- 			if (!msdu) {
- 				ath11k_dbg(ar->ab, ATH11K_DBG_DATA,
- 					   "msdu_pop: invalid buf_id %d\n", buf_id);
--				break;
-+				goto next_msdu;
- 			}
- 			rxcb = ATH11K_SKB_RXCB(msdu);
- 			if (!rxcb->unmapped) {
-@@ -5362,7 +5362,7 @@ ath11k_dp_rx_full_mon_mpdu_pop(struct at
- 					   "full mon msdu_pop: invalid buf_id %d\n",
- 					    buf_id);
- 				spin_unlock_bh(&rx_ring->idr_lock);
--				break;
-+				goto next_msdu;
- 			}
- 			idr_remove(&rx_ring->bufs_idr, buf_id);
- 			spin_unlock_bh(&rx_ring->idr_lock);
+--- a/arch/arm64/kernel/hibernate.c
++++ b/arch/arm64/kernel/hibernate.c
+@@ -402,7 +402,7 @@ int swsusp_arch_suspend(void)
+  * Memory allocated by get_safe_page() will be dealt with by the hibernate code,
+  * we don't need to free it here.
+  */
+-int swsusp_arch_resume(void)
++int __nocfi swsusp_arch_resume(void)
+ {
+ 	int rc;
+ 	void *zero_page;
 
 
 
