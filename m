@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DrENxY4eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:50 +0100
+	id YFFzOv4zeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02AAA58B1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 620ECA513A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C5B03009F93
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:46:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5CFE33058B9E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1442DF155;
-	Wed, 28 Jan 2026 15:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25012FF178;
+	Wed, 28 Jan 2026 15:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tfjq8Cp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rozsuadg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09841E1DFC;
-	Wed, 28 Jan 2026 15:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BCF288C22;
+	Wed, 28 Jan 2026 15:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615085; cv=none; b=qzCVK8E5Qc190S0lUN+4191arB1H5B8OLVq2iexRwIS1nFFc9yZxB6mppvrvqleHiMhU2B6hyUIe57xj29lsmWONCXpMKJ50mIKj37GbPtz30k4tcqtdHDzjnL9G5NFqiMcDTTnxaqq5E8hCDtC97xo3NvCG1h6iE0cOahS5gSk=
+	t=1769615691; cv=none; b=QFQs2cF06s4m006exL4Y5Oyhu3HUPQhXFIWSRlN3pV2mz6N5fD4KNgMhpdzUkvAJeMStNSNv6GoKatljvGV15xrBqGcTVq6A59jJsDgSGifqdNSl1k8IhriqFV5M+VumBvWyj1kbg7mXD5qW+rUlr3dj3aivo8wYBaPAsPHxUOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615085; c=relaxed/simple;
-	bh=CzMoGqclZOeEPrNBRWJ2c4pU0rxhc45XRk7AMDDgPvU=;
+	s=arc-20240116; t=1769615691; c=relaxed/simple;
+	bh=qDMwj5EjWfoyfS6ZgjS6uMCLsscC6ZX/OYaGn6A9dMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDQwpMDKb7dqOJ6RiZf4F/egKMyn/2MxiyNVCCV11oDKK6eYfZOKZ2I8+dI/bifwQ29lrWodOHWlp5tFlyjWJaBhiSRHLr+9YgJaU3s2mnc6omRMlQymjKNM7DZpKmLYYq2ZK1t1MDPl9YDh1B530i+5GsEwj5HAjigzziSSJEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tfjq8Cp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A47C4CEF1;
-	Wed, 28 Jan 2026 15:44:45 +0000 (UTC)
+	 MIME-Version; b=ryRjfTssQ2sZHVxwbIIDCq9OsxpuxsH/1kBBDBm1ZoPp5DZqZisr9Zu1upo1C0cnWlLVzXvyE6gGlugqSR2ctfUpL91+GRzukU7uPOHlg1/Xnx6VpTu0b50zi+DqevynQynyBZM5MKPAolizA25yZUPNnyzRi7tWVA7Y4gj8Fvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rozsuadg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188F4C4CEF1;
+	Wed, 28 Jan 2026 15:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615085;
-	bh=CzMoGqclZOeEPrNBRWJ2c4pU0rxhc45XRk7AMDDgPvU=;
+	s=korg; t=1769615691;
+	bh=qDMwj5EjWfoyfS6ZgjS6uMCLsscC6ZX/OYaGn6A9dMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tfjq8Cp31YpCeBA+0vYt2cTW/f4VwCN+cF5SfzKbOndF5cgCCpnJGl1XV7NSdxWoP
-	 G2pi0LzHK5lFcu8VP3HkpM3zTmmpjnJ8EZgofEWBaZkitl7XJ8xU4g6mB6dTTvM+gY
-	 4m9AccXOLz+gwQTlEYnOvMzIVdsmWkmcHvFDOMgs=
+	b=rozsuadgrhc9mxQrNv1wjHKfQ9wr7tlUSaDIOahOCoYyYjNXA/QDVjXnSG8iIU8oU
+	 uAWcMvKfDFe/glbVWKpfqMbu3gJCZ5X3SfNh9s30X0dvZ0pnDD3p6LkUaz2pMRahYQ
+	 Q9ISRgF2jkFjJADjojV4bG1cLY5hyk/jcMHDW/4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 047/169] Revert "nfc/nci: Add the inconsistency check between the input data length and count"
+	Felix Gu <gu_0233@qq.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 085/227] spi: spi-sprd-adi: Fix double free in probe error path
 Date: Wed, 28 Jan 2026 16:22:10 +0100
-Message-ID: <20260128145335.710801455@linuxfoundation.org>
+Message-ID: <20260128145347.398209360@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +70,145 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linux.alibaba.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212490-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212309-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.993];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: F02AAA58B1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,alibaba.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 620ECA513A
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Felix Gu <gu_0233@qq.com>
 
-commit f40ddcc0c0ca1a0122a7f4440b429f97d5832bdf upstream.
+[ Upstream commit 383d4f5cffcc8df930d95b06518a9d25a6d74aac ]
 
-This reverts commit 068648aab72c9ba7b0597354ef4d81ffaac7b979.
+The driver currently uses spi_alloc_host() to allocate the controller
+but registers it using devm_spi_register_controller().
 
-NFC packets may have NUL-bytes. Checking for string length is not a correct
-assumption here. As long as there is a check for the length copied from
-copy_from_user, all should be fine.
+If devm_register_restart_handler() fails, the code jumps to the
+put_ctlr label and calls spi_controller_put(). However, since the
+controller was registered via a devm function, the device core will
+automatically call spi_controller_put() again when the probe fails.
+This results in a double-free of the spi_controller structure.
 
-The fix only prevented the syzbot reproducer from triggering the bug
-because the packet is not enqueued anymore and the code that triggers the
-bug is not exercised.
+Fix this by switching to devm_spi_alloc_host() and removing the
+manual spi_controller_put() call.
 
-The fix even broke
-testing/selftests/nci/nci_dev, making all tests there fail. After the
-revert, 6 out of 8 tests pass.
-
-Fixes: 068648aab72c ("nfc/nci: Add the inconsistency check between the input data length and count")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Link: https://patch.msgid.link/20260113202458.449455-1-cascardo@igalia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ac17750 ("spi: sprd: Add the support of restarting the system")
+Signed-off-by: Felix Gu <gu_0233@qq.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Link: https://patch.msgid.link/tencent_AC7D389CE7E24318445E226F7CDCCC2F0D07@qq.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/virtual_ncidev.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/spi/spi-sprd-adi.c | 33 ++++++++++-----------------------
+ 1 file changed, 10 insertions(+), 23 deletions(-)
 
---- a/drivers/nfc/virtual_ncidev.c
-+++ b/drivers/nfc/virtual_ncidev.c
-@@ -125,10 +125,6 @@ static ssize_t virtual_ncidev_write(stru
- 		kfree_skb(skb);
- 		return -EFAULT;
- 	}
--	if (strnlen(skb->data, count) != count) {
--		kfree_skb(skb);
--		return -EINVAL;
--	}
+diff --git a/drivers/spi/spi-sprd-adi.c b/drivers/spi/spi-sprd-adi.c
+index 262c11d977ea3..f25b34a91756f 100644
+--- a/drivers/spi/spi-sprd-adi.c
++++ b/drivers/spi/spi-sprd-adi.c
+@@ -528,7 +528,7 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	pdev->id = of_alias_get_id(np, "spi");
+ 	num_chipselect = of_get_child_count(np);
  
- 	nci_recv_frame(vdev->ndev, skb);
- 	return count;
+-	ctlr = spi_alloc_host(&pdev->dev, sizeof(struct sprd_adi));
++	ctlr = devm_spi_alloc_host(&pdev->dev, sizeof(struct sprd_adi));
+ 	if (!ctlr)
+ 		return -ENOMEM;
+ 
+@@ -536,10 +536,8 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	sadi = spi_controller_get_devdata(ctlr);
+ 
+ 	sadi->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+-	if (IS_ERR(sadi->base)) {
+-		ret = PTR_ERR(sadi->base);
+-		goto put_ctlr;
+-	}
++	if (IS_ERR(sadi->base))
++		return PTR_ERR(sadi->base);
+ 
+ 	sadi->slave_vbase = (unsigned long)sadi->base +
+ 			    data->slave_offset;
+@@ -551,18 +549,15 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	if (ret > 0 || (IS_ENABLED(CONFIG_HWSPINLOCK) && ret == 0)) {
+ 		sadi->hwlock =
+ 			devm_hwspin_lock_request_specific(&pdev->dev, ret);
+-		if (!sadi->hwlock) {
+-			ret = -ENXIO;
+-			goto put_ctlr;
+-		}
++		if (!sadi->hwlock)
++			return -ENXIO;
+ 	} else {
+ 		switch (ret) {
+ 		case -ENOENT:
+ 			dev_info(&pdev->dev, "no hardware spinlock supplied\n");
+ 			break;
+ 		default:
+-			dev_err_probe(&pdev->dev, ret, "failed to find hwlock id\n");
+-			goto put_ctlr;
++			return dev_err_probe(&pdev->dev, ret, "failed to find hwlock id\n");
+ 		}
+ 	}
+ 
+@@ -579,26 +574,18 @@ static int sprd_adi_probe(struct platform_device *pdev)
+ 	ctlr->transfer_one = sprd_adi_transfer_one;
+ 
+ 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
+-	if (ret) {
+-		dev_err(&pdev->dev, "failed to register SPI controller\n");
+-		goto put_ctlr;
+-	}
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "failed to register SPI controller\n");
+ 
+ 	if (sadi->data->restart) {
+ 		ret = devm_register_restart_handler(&pdev->dev,
+ 						    sadi->data->restart,
+ 						    sadi);
+-		if (ret) {
+-			dev_err(&pdev->dev, "can not register restart handler\n");
+-			goto put_ctlr;
+-		}
++		if (ret)
++			return dev_err_probe(&pdev->dev, ret, "can not register restart handler\n");
+ 	}
+ 
+ 	return 0;
+-
+-put_ctlr:
+-	spi_controller_put(ctlr);
+-	return ret;
+ }
+ 
+ static struct sprd_adi_data sc9860_data = {
+-- 
+2.51.0
+
 
 
 
