@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-212492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEJ1OQE0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:25 +0100
+	id 8D3eL+8vemkc4gEAu9opvQ
+	(envelope-from <stable+bounces-212316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE23A514F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2656AA4783
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 904EA30AF63A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B65C305F6DF
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5901E301465;
-	Wed, 28 Jan 2026 15:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D9E324B06;
+	Wed, 28 Jan 2026 15:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRyvuyRa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXgTJysJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6E52857CD;
-	Wed, 28 Jan 2026 15:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5174D32470D;
+	Wed, 28 Jan 2026 15:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615698; cv=none; b=olEGG/rrDMiqzxCEQs5sFQg8UouaKyxxv7w6PkyIewH6mdUmt6WJudpuvyk88YdrPheIAU1Nv57z5x00exJ7wj+WiHcJ3uJpuYwLoEGOAmc2T78xTcrZ5JBsxSBPCxLu34lNxdvA5UhsuTdfxWOhgVvQFNRHLUShvDtQNaIpdg8=
+	t=1769615109; cv=none; b=BIXE3NdSQTZx7QWMmlgSP1M/NvFj2h5XKJvD5RBWyods9xk3+pD4rh7lEq0NtzXlodhJX8zi+/wVk0dJ2e6SW9m03sg9t3h3XKy02fpfs8wjRVdzRFhIvANWw3Gzl98gurOUrY/hj7IL2tBs84mum9jdpuXEEey/6dhXZ2dMTbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615698; c=relaxed/simple;
-	bh=+v9xhxd+nsnwJgyDJn8UStmI9kxd1dfAEu7X7TBXptg=;
+	s=arc-20240116; t=1769615109; c=relaxed/simple;
+	bh=VH1ZUqNShe7EENACYi+aGySGb7CRrQJhpNTztSvdeFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mr0s4BG464PwMzIdyYlPLt/DQOwDR7Jy5Dycam6lLLynXatotAV8YT86bFVqxJLHOExZfT4CR/cDrjYfT9MDIVHqFIR0t4SWFS9VV7eys3TXzpAp42WKRQaqnSs+M9PM/DL2LIiK2Sy25WQ5DKRIbVicJgoCPFohtjYevlD6bW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRyvuyRa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837BEC4CEF1;
-	Wed, 28 Jan 2026 15:54:57 +0000 (UTC)
+	 MIME-Version; b=U2fGe50NabUKD1NeR+ayqJeSA2CFyoMKsk+8wWXQO4WnPq89IvelnR6RY/MytOqhc0Rzz4AH/vFzODKTmMPbD10HdKlGnNkEiZ+lKkLDIxq2Oz80BVYqnHSErQX1vBPg8tvuMEkq0SK0TZcZv49kNMJaGof+9esUpsj3kbCLonY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXgTJysJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD2DC4CEF1;
+	Wed, 28 Jan 2026 15:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615698;
-	bh=+v9xhxd+nsnwJgyDJn8UStmI9kxd1dfAEu7X7TBXptg=;
+	s=korg; t=1769615109;
+	bh=VH1ZUqNShe7EENACYi+aGySGb7CRrQJhpNTztSvdeFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRyvuyRa418CUR/RblTihmR1hrd0asxxTFZLNZtWScbFvyIwviy1LXha7gYdw5pzQ
-	 Af8k9rgeW53XKTBgSnW+hS/JjPO/DFI4u9Uipc5lVI6KZexecFBVx2DmsD7aUCEPi/
-	 t3Emc/wYRlNM1+7CErh1YWmSoHVql87pIuzfqDqY=
+	b=MXgTJysJ1UjTAXFQTlXr6rofuzljdYhS2GajXCKfNtE59GttE8C74BvDHZRQ4rAho
+	 drJIQ6wiBE+8kywcLVogk2l7HCs2aFjQSqluBw6q572bxxmcVIrjMzV2yfb1fD6+0B
+	 VJIkzK6G1KuNXtiOVxVYL4YIpzrWLCJY+pnR3TXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arusekk <floss@arusekk.pl>,
-	Nicolas Schier <nsc@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 087/227] kconfig: fix static linking of nconf
+	feng <alec.jiang@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.12 049/169] Input: i8042 - add quirk for ASUS Zenbook UX425QA_UM425QA
 Date: Wed, 28 Jan 2026 16:22:12 +0100
-Message-ID: <20260128145347.468540301@linuxfoundation.org>
+Message-ID: <20260128145335.781663804@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212492-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212316-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arusekk.pl:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 5DE23A514F
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.990];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2656AA4783
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arkadiusz Kozdra <floss@arusekk.pl>
+From: feng <alec.jiang@gmail.com>
 
-[ Upstream commit baaecfcac559bcac73206df447eb5c385fa22f2a ]
+commit 2934325f56150ad8dab8ab92cbe2997242831396 upstream.
 
-When running make nconfig with a static linking host toolchain,
-the libraries are linked in an incorrect order,
-resulting in errors similar to the following:
+The ASUS Zenbook UX425QA_UM425QA fails to initialize the keyboard after
+a cold boot.
 
-$ MAKEFLAGS='HOSTCC=cc\ -static' make nconfig
-/usr/bin/ld: /usr/lib64/gcc/x86_64-unknown-linux-gnu/14.2.1/../../../../lib64/libpanel.a(p_new.o): in function `new_panel':
-(.text+0x13): undefined reference to `_nc_panelhook_sp'
-/usr/bin/ld: (.text+0x6c): undefined reference to `_nc_panelhook_sp'
+A quirk already exists for "ZenBook UX425", but some Zenbooks report
+"Zenbook" with a lowercase 'b'. Since DMI matching is case-sensitive,
+the existing quirk is not applied to these "extra special" Zenbooks.
 
-Fixes: 1c5af5cf9308 ("kconfig: refactor ncurses package checks for building mconf and nconf")
-Signed-off-by: Arusekk <floss@arusekk.pl>
-Link: https://patch.msgid.link/20260110114808.22595-1-floss@arusekk.pl
-[nsc: Added comment about library order]
-Signed-off-by: Nicolas Schier <nsc@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Testing confirms that this model needs the same quirks as the ZenBook
+UX425 variants.
+
+Signed-off-by: feng <alec.jiang@gmail.com>
+Link: https://patch.msgid.link/20260122013957.11184-1-alec.jiang@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/nconf-cfg.sh | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/scripts/kconfig/nconf-cfg.sh b/scripts/kconfig/nconf-cfg.sh
-index a20290b1a37d8..4d08453f9bdb7 100755
---- a/scripts/kconfig/nconf-cfg.sh
-+++ b/scripts/kconfig/nconf-cfg.sh
-@@ -6,8 +6,9 @@ set -eu
- cflags=$1
- libs=$2
- 
--PKG="ncursesw menuw panelw"
--PKG2="ncurses menu panel"
-+# Keep library order for static linking (HOSTCC='cc -static')
-+PKG="menuw panelw ncursesw"
-+PKG2="menu panel ncurses"
- 
- if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
- 	if ${HOSTPKG_CONFIG} --exists $PKG; then
-@@ -28,19 +29,19 @@ fi
- # find ncurses by pkg-config.)
- if [ -f /usr/include/ncursesw/ncurses.h ]; then
- 	echo -D_GNU_SOURCE -I/usr/include/ncursesw > ${cflags}
--	echo -lncursesw -lmenuw -lpanelw > ${libs}
-+	echo -lmenuw -lpanelw -lncursesw > ${libs}
- 	exit 0
- fi
- 
- if [ -f /usr/include/ncurses/ncurses.h ]; then
- 	echo -D_GNU_SOURCE -I/usr/include/ncurses > ${cflags}
--	echo -lncurses -lmenu -lpanel > ${libs}
-+	echo -lmenu -lpanel -lncurses > ${libs}
- 	exit 0
- fi
- 
- if [ -f /usr/include/ncurses.h ]; then
- 	echo -D_GNU_SOURCE > ${cflags}
--	echo -lncurses -lmenu -lpanel > ${libs}
-+	echo -lmenu -lpanel -lncurses > ${libs}
- 	exit 0
- fi
- 
--- 
-2.51.0
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -116,6 +116,17 @@ static const struct dmi_system_id i8042_
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_NEVER)
+ 	},
+ 	{
++		/*
++		 * ASUS Zenbook UX425QA_UM425QA
++		 * Some Zenbooks report "Zenbook" with a lowercase b.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Zenbook UX425QA_UM425QA"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_PROBE_DEFER | SERIO_QUIRK_RESET_NEVER)
++	},
++	{
+ 		/* ASUS ZenBook UX425UA/QA */
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
