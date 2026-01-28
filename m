@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-212437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +K16Kl0zeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:41 +0100
+	id wO65Ldgtemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4113A4FE9
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19787A429D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 801B231ABC25
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:52:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA8DE327089A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E448830BB82;
-	Wed, 28 Jan 2026 15:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B17271450;
+	Wed, 28 Jan 2026 15:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1RT3hCg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcNe3ZWo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FA72FE044;
-	Wed, 28 Jan 2026 15:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1731B26ED40;
+	Wed, 28 Jan 2026 15:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615516; cv=none; b=YtPpRhA6BlL8RxfaM357NR3lKd7Stenxv/ZqeOBllutvBcJGqpviJKKGhPi4OrA5co+2wDL7fzCqSorBgsIrYyNgaLe3F5pCZBpX0ja9EVp18PXQUgCFoBTwJIui4e8091HkC0xJHcrk15EqZSgv1eKb5Y95n4OR50kpLd3g+Gg=
+	t=1769614243; cv=none; b=giHzPNPnP2e7cPMVgoHhb7beiy9ySLYJfJLyL+uVlaLtptxqkes38aOmHK7kjulxf6XduX757vroiAurAzJcCmvpcUv/X/B3cqhkX3+i6lyRV7XumxfOdWoZs4HLx8vHc2AlB2vWI+ANYJ08IDhqMlPBYWyqPrP29IxKgexiMbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615516; c=relaxed/simple;
-	bh=wX/n5cUz+Ef5S6VhDcd4Wv34MCMxyTtAsfsstFwhIWg=;
+	s=arc-20240116; t=1769614243; c=relaxed/simple;
+	bh=h8UZdqi+zDqL49nxiQ516CTF5LlXrcl6KH75Y0bsb+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fa+NEKavlRErN5Z/Rp6KGmPWtEBxZpBke4V9wy6PcoPsrGr5AwbSAnENOD+VK9GZTBszvio5iyPMnEQJa4fc8NHUZ5xMZ34+JBzNIluc5sFv2gbd6Iz0lJDJXGNnfbRGqu4rB97ZSW2UUG5yVIShz+T+Jp1nHCGzAefMzNHBGOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1RT3hCg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA936C4CEF1;
-	Wed, 28 Jan 2026 15:51:55 +0000 (UTC)
+	 MIME-Version; b=Qa9yPQweNxd59B0S8OJVWBohtqozM060fqofBOp3zs13hvCBfX+iOfBnL/j1Ccld4PHWpNkYxoecemXHnjaHshPifg8EPBge5JIUzJVuxnfiVMRVVcEx7I8lfq+jXUjxpdg1awZscv0gL2BTSpVqpXVL+glu5QSfMvWh/rE0XJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcNe3ZWo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C704C2BC9E;
+	Wed, 28 Jan 2026 15:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615516;
-	bh=wX/n5cUz+Ef5S6VhDcd4Wv34MCMxyTtAsfsstFwhIWg=;
+	s=korg; t=1769614243;
+	bh=h8UZdqi+zDqL49nxiQ516CTF5LlXrcl6KH75Y0bsb+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L1RT3hCgiOzGlaIGncUasvch5hYKXvCx0iid5DEDL6odHu7/RpaJr3x6kFN8DijGA
-	 uYQbCTFqa4ettAaGN1o13T07VL+4PYUsBwm+PAo1Q3wS04St2gFeyaWMAlfOFL0mjZ
-	 Wboup2uM+OYmXeuneEuaT5Zu6HlkELoWQNvzxcFI=
+	b=QcNe3ZWobok/gv6Li6SWjhMrj1/tpGyQDpssU/npNAhxU5zsh8Bv/dORXdBiGh177
+	 Tmv1XDzHmSReaBBmr2SIITCHAd92NXaDaj1Ba1bkDHsBu5y20TxaIPWEyixiLRbfol
+	 HHCqccatP6gY1Bjb4MQ+1NbFLmVY0fUsGwoSCnL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 008/227] dt-bindings: power: qcom,rpmpd: Add SC8280XP_MXC_AO
-Date: Wed, 28 Jan 2026 16:20:53 +0100
-Message-ID: <20260128145344.639570383@linuxfoundation.org>
+	Neal Gompa <neal@gompa.dev>,
+	Janne Grunau <j@jannau.net>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 078/254] dmaengine: apple-admac: Add "apple,t8103-admac" compatible
+Date: Wed, 28 Jan 2026 16:20:54 +0100
+Message-ID: <20260128145347.500874853@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,68 +69,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212437-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212053-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B4113A4FE9
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,jannau.net:email]
+X-Rspamd-Queue-Id: 19787A429D
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit 45e1be5ddec98db71e7481fa7a3005673200d85c ]
+commit 76cba1e60b69c9cd53b9127d017a7dc5945455b1 upstream.
 
-Not sure how useful it's gonna be in practice, but the definition is
-missing (unlike the previously-unused SC8280XP_MXC-non-_AO), so add it
-to allow the driver to create the corresponding pmdomain.
+After discussion with the devicetree maintainers we agreed to not extend
+lists with the generic compatible "apple,admac" anymore [1]. Use
+"apple,t8103-admac" as base compatible as it is the SoC the driver and
+bindings were written for.
 
-Fixes: dbfb5f94e084 ("dt-bindings: power: rpmpd: Add sc8280xp RPMh power-domains")
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20251202-topic-8280_mxc-v2-1-46cdf47a829e@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]: https://lore.kernel.org/asahi/12ab93b7-1fc2-4ce0-926e-c8141cfe81bf@kernel.org/
+
+Fixes: b127315d9a78 ("dmaengine: apple-admac: Add Apple ADMAC driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Janne Grunau <j@jannau.net>
+Link: https://patch.msgid.link/20251231-apple-admac-t8103-base-compat-v1-1-ec24a3708f76@jannau.net
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/dt-bindings/power/qcom,rpmhpd.h | 1 +
+ drivers/dma/apple-admac.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/dt-bindings/power/qcom,rpmhpd.h b/include/dt-bindings/power/qcom,rpmhpd.h
-index 73cceb88953f7..269b73ff866a8 100644
---- a/include/dt-bindings/power/qcom,rpmhpd.h
-+++ b/include/dt-bindings/power/qcom,rpmhpd.h
-@@ -261,5 +261,6 @@
- #define SC8280XP_NSP		13
- #define SC8280XP_QPHY		14
- #define SC8280XP_XO		15
-+#define SC8280XP_MXC_AO		16
+--- a/drivers/dma/apple-admac.c
++++ b/drivers/dma/apple-admac.c
+@@ -938,6 +938,7 @@ static int admac_remove(struct platform_
+ }
  
- #endif
--- 
-2.51.0
-
+ static const struct of_device_id admac_of_match[] = {
++	{ .compatible = "apple,t8103-admac", },
+ 	{ .compatible = "apple,admac", },
+ 	{ }
+ };
 
 
 
