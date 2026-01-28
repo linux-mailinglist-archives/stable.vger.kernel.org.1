@@ -1,69 +1,57 @@
-Return-Path: <stable+bounces-212214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id VMT9OTEwemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:09 +0100
+	id UFuTG284eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21278A4826
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 161D4A596D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CDD531A37D3
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5E90314A8F0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D3D2F260C;
-	Wed, 28 Jan 2026 15:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B173033E4;
+	Wed, 28 Jan 2026 15:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZsL4IGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1v29mh/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359B32F25EF;
-	Wed, 28 Jan 2026 15:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558DF2F745C;
+	Wed, 28 Jan 2026 15:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614767; cv=none; b=akaKb0bGp908fxzqi+XYtV8Qintkaa0j5RBSaacYV7mF0Yc+pnNAgLDZ5yVjjbwJXLqCehncYeOvWOEOFHtfMq8A19REQ9x+NropxqzRNOIyARjsMthdkYDsb/3n5VrBDWumJwW5TdUl9pIA+AyXKR/81icRIhtRaLkMn+ehX/s=
+	t=1769615266; cv=none; b=MTbCelh81+A3wmdgluWFWz7KHsRl9+Nne2miP3Yuci7o3x273bOGfkzeXqJMRY0YC4Q6/ft99SDKiExp0zQ3JihV/LdYcLUkzToISGh/cLun7v5k0nl9cWYy9ogO/FZ2uAOWTVO78d4sqgVcyaAP1gR6OOnR7cLxaSxT0kv4bYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614767; c=relaxed/simple;
-	bh=xwVCd46eEgPx9GBzhzJBeTIoxUHOd5gZ0oKouq2uTSo=;
+	s=arc-20240116; t=1769615266; c=relaxed/simple;
+	bh=belpQmkD0F4btS/KjNRkUKI+JG/TxQ1Z/FWxrSWqkMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cWNknEQu3bKknD+pfAy2EFP+7KOo+w5MKA9wXtW4T2wCfyAV8z7mDLpxpvNY5/2aXmrPmdLZYHoDGZS6PQXLOfn9TaHSnfYB5IPOm3QsHLCFCDCHDd50gOqwGraUlNdcUh/VMwmKGwCYZGVPMhcixFJM7yJQKjGgMXE3IO2jURQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZsL4IGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EFB6C4CEF1;
-	Wed, 28 Jan 2026 15:39:26 +0000 (UTC)
+	 MIME-Version; b=PUqD6bd3vmyRej+BQUlMZE85SIsZh9Sebv4DIjv5hqnHzY2B7dmiIGDpBnKoLUsVeIsoqCdaC/F/glITt1EVbWYzC9925IIfTJkAPQtgH6wqSK1FjCVIrpQk2sWxEUfcKcYyHF5yQqiF/gcSRjaCXvWcfU52fmEmjZFglo9wHsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1v29mh/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB298C4CEF1;
+	Wed, 28 Jan 2026 15:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614766;
-	bh=xwVCd46eEgPx9GBzhzJBeTIoxUHOd5gZ0oKouq2uTSo=;
+	s=korg; t=1769615266;
+	bh=belpQmkD0F4btS/KjNRkUKI+JG/TxQ1Z/FWxrSWqkMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZsL4IGtfKrVftZSdTZredrHrkIFWYEzUbsbvIPRk50sytk1c9a0tT+uJkEqyD4t4
-	 Zu8rCaNG5ypL627KGX+KSQrHvKZRWbegnYnw2A6NRB6jBgwuax3As8manfuY4DmLUY
-	 08jMu/lWC5+7PZDn1pmVwDDljJI/wn5eYaPFlJLQ=
+	b=e1v29mh/NALvGHmUNQBSxj9AR63oXEDRLhY6t+RncLy6aA3SH/2MuCCBLFNBYmDdk
+	 h7t2QWXQ4RuviGlXrM+LFEZnG1ZNZnylfqCwYdG8H1Vr720cvDNeAKFSGcgAByqqmh
+	 tbCZ0JU75wyHkOSqEBvVE2h94NauSeLbpsHPB87Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>,
-	kernel test robot <oliver.sang@intel.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>
-Subject: [PATCH 6.6 235/254] mm/page_alloc: prevent pcp corruption with SMP=n
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.12 128/169] mei: trace: treat reg parameter as string
 Date: Wed, 28 Jan 2026 16:23:31 +0100
-Message-ID: <20260128145353.248755629@linuxfoundation.org>
+Message-ID: <20260128145338.615711083@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -84,15 +72,15 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212362-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212214-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -101,177 +89,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,intel.com:email,suse.cz:email,infradead.org:email,techsingularity.net:email]
-X-Rspamd-Queue-Id: 21278A4826
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 161D4A596D
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlastimil Babka <vbabka@suse.cz>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 038a102535eb49e10e93eafac54352fcc5d78847 ]
+commit 06d5a7afe1d0b47102936d8fba568572c2b4b941 upstream.
 
-The kernel test robot has reported:
+The commit
+afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
+forbids to emit event with a plain char* without a wrapper.
 
- BUG: spinlock trylock failure on UP on CPU#0, kcompactd0/28
-  lock: 0xffff888807e35ef0, .magic: dead4ead, .owner: kcompactd0/28, .owner_cpu: 0
- CPU: 0 UID: 0 PID: 28 Comm: kcompactd0 Not tainted 6.18.0-rc5-00127-ga06157804399 #1 PREEMPT  8cc09ef94dcec767faa911515ce9e609c45db470
- Call Trace:
-  <IRQ>
-  __dump_stack (lib/dump_stack.c:95)
-  dump_stack_lvl (lib/dump_stack.c:123)
-  dump_stack (lib/dump_stack.c:130)
-  spin_dump (kernel/locking/spinlock_debug.c:71)
-  do_raw_spin_trylock (kernel/locking/spinlock_debug.c:?)
-  _raw_spin_trylock (include/linux/spinlock_api_smp.h:89 kernel/locking/spinlock.c:138)
-  __free_frozen_pages (mm/page_alloc.c:2973)
-  ___free_pages (mm/page_alloc.c:5295)
-  __free_pages (mm/page_alloc.c:5334)
-  tlb_remove_table_rcu (include/linux/mm.h:? include/linux/mm.h:3122 include/asm-generic/tlb.h:220 mm/mmu_gather.c:227 mm/mmu_gather.c:290)
-  ? __cfi_tlb_remove_table_rcu (mm/mmu_gather.c:289)
-  ? rcu_core (kernel/rcu/tree.c:?)
-  rcu_core (include/linux/rcupdate.h:341 kernel/rcu/tree.c:2607 kernel/rcu/tree.c:2861)
-  rcu_core_si (kernel/rcu/tree.c:2879)
-  handle_softirqs (arch/x86/include/asm/jump_label.h:36 include/trace/events/irq.h:142 kernel/softirq.c:623)
-  __irq_exit_rcu (arch/x86/include/asm/jump_label.h:36 kernel/softirq.c:725)
-  irq_exit_rcu (kernel/softirq.c:741)
-  sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1052)
-  </IRQ>
-  <TASK>
- RIP: 0010:_raw_spin_unlock_irqrestore (arch/x86/include/asm/preempt.h:95 include/linux/spinlock_api_smp.h:152 kernel/locking/spinlock.c:194)
-  free_pcppages_bulk (mm/page_alloc.c:1494)
-  drain_pages_zone (include/linux/spinlock.h:391 mm/page_alloc.c:2632)
-  __drain_all_pages (mm/page_alloc.c:2731)
-  drain_all_pages (mm/page_alloc.c:2747)
-  kcompactd (mm/compaction.c:3115)
-  kthread (kernel/kthread.c:465)
-  ? __cfi_kcompactd (mm/compaction.c:3166)
-  ? __cfi_kthread (kernel/kthread.c:412)
-  ret_from_fork (arch/x86/kernel/process.c:164)
-  ? __cfi_kthread (kernel/kthread.c:412)
-  ret_from_fork_asm (arch/x86/entry/entry_64.S:255)
-  </TASK>
+The reg parameter always passed as static string and wrapper
+is not strictly required, contrary to dev parameter.
+Use the string wrapper anyway to check sanity of the reg parameters,
+store it value independently and prevent internal kernel data leaks.
 
-Matthew has analyzed the report and identified that in drain_page_zone()
-we are in a section protected by spin_lock(&pcp->lock) and then get an
-interrupt that attempts spin_trylock() on the same lock.  The code is
-designed to work this way without disabling IRQs and occasionally fail the
-trylock with a fallback.  However, the SMP=n spinlock implementation
-assumes spin_trylock() will always succeed, and thus it's normally a
-no-op.  Here the enabled lock debugging catches the problem, but otherwise
-it could cause a corruption of the pcp structure.
+Since some code refactoring has taken place, explicit backporting may
+be needed for kernels older than 6.10.
 
-The problem has been introduced by commit 574907741599 ("mm/page_alloc:
-leave IRQs enabled for per-cpu page allocations").  The pcp locking scheme
-recognizes the need for disabling IRQs to prevent nesting spin_trylock()
-sections on SMP=n, but the need to prevent the nesting in spin_lock() has
-not been recognized.  Fix it by introducing local wrappers that change the
-spin_lock() to spin_lock_iqsave() with SMP=n and use them in all places
-that do spin_lock(&pcp->lock).
-
-[vbabka@suse.cz: add pcp_ prefix to the spin_lock_irqsave wrappers, per Steven]
-Link: https://lkml.kernel.org/r/20260105-fix-pcp-up-v1-1-5579662d2071@suse.cz
-Fixes: 574907741599 ("mm/page_alloc: leave IRQs enabled for per-cpu page allocations")
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202512101320.e2f2dd6f-lkp@intel.com
-Analyzed-by: Matthew Wilcox <willy@infradead.org>
-Link: https://lore.kernel.org/all/aUW05pyc9nZkvY-1@casper.infradead.org/
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ drop changes to decay_pcp_high() and zone_pcp_update_cacheinfo() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org  # v6.11+
+Fixes: a0a927d06d79 ("mei: me: add io register tracing")
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20260111145125.1754912-1-alexander.usyskin@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |   37 +++++++++++++++++++++++++++++++++----
- 1 file changed, 33 insertions(+), 4 deletions(-)
+ drivers/misc/mei/mei-trace.h |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -160,6 +160,33 @@ static DEFINE_MUTEX(pcp_batch_high_lock)
- #define pcp_spin_unlock(ptr)						\
- 	pcpu_spin_unlock(lock, ptr)
+--- a/drivers/misc/mei/mei-trace.h
++++ b/drivers/misc/mei/mei-trace.h
+@@ -21,18 +21,18 @@ TRACE_EVENT(mei_reg_read,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev);
+-		__entry->reg  = reg;
++		__assign_str(reg);
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] read %s:[%#x] = %#x",
+-		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
+ );
  
-+/*
-+ * With the UP spinlock implementation, when we spin_lock(&pcp->lock) (for i.e.
-+ * a potentially remote cpu drain) and get interrupted by an operation that
-+ * attempts pcp_spin_trylock(), we can't rely on the trylock failure due to UP
-+ * spinlock assumptions making the trylock a no-op. So we have to turn that
-+ * spin_lock() to a spin_lock_irqsave(). This works because on UP there are no
-+ * remote cpu's so we can only be locking the only existing local one.
-+ */
-+#if defined(CONFIG_SMP) || defined(CONFIG_PREEMPT_RT)
-+static inline void __flags_noop(unsigned long *flags) { }
-+#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
-+({							\
-+	 __flags_noop(&(flags));			\
-+	 spin_lock(&(ptr)->lock);			\
-+})
-+#define pcp_spin_unlock_maybe_irqrestore(ptr, flags)	\
-+({							\
-+	 spin_unlock(&(ptr)->lock);			\
-+	 __flags_noop(&(flags));			\
-+})
-+#else
-+#define pcp_spin_lock_maybe_irqsave(ptr, flags)		\
-+		spin_lock_irqsave(&(ptr)->lock, flags)
-+#define pcp_spin_unlock_maybe_irqrestore(ptr, flags)	\
-+		spin_unlock_irqrestore(&(ptr)->lock, flags)
-+#endif
-+
- #ifdef CONFIG_USE_PERCPU_NUMA_NODE_ID
- DEFINE_PER_CPU(int, numa_node);
- EXPORT_PER_CPU_SYMBOL(numa_node);
-@@ -2181,14 +2208,15 @@ static int rmqueue_bulk(struct zone *zon
-  */
- void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp)
- {
-+	unsigned long UP_flags;
- 	int to_drain, batch;
+ TRACE_EVENT(mei_reg_write,
+@@ -40,18 +40,18 @@ TRACE_EVENT(mei_reg_write,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev);
+-		__entry->reg = reg;
++		__assign_str(reg);
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] write %s[%#x] = %#x",
+-		  __get_str(dev), __entry->reg,  __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg),  __entry->offs, __entry->val)
+ );
  
- 	batch = READ_ONCE(pcp->batch);
- 	to_drain = min(pcp->count, batch);
- 	if (to_drain > 0) {
--		spin_lock(&pcp->lock);
-+		pcp_spin_lock_maybe_irqsave(pcp, UP_flags);
- 		free_pcppages_bulk(zone, to_drain, pcp, 0);
--		spin_unlock(&pcp->lock);
-+		pcp_spin_unlock_maybe_irqrestore(pcp, UP_flags);
- 	}
- }
- #endif
-@@ -2199,10 +2227,11 @@ void drain_zone_pages(struct zone *zone,
- static void drain_pages_zone(unsigned int cpu, struct zone *zone)
- {
- 	struct per_cpu_pages *pcp = per_cpu_ptr(zone->per_cpu_pageset, cpu);
-+	unsigned long UP_flags;
- 	int count;
+ TRACE_EVENT(mei_pci_cfg_read,
+@@ -59,18 +59,18 @@ TRACE_EVENT(mei_pci_cfg_read,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev);
+-		__entry->reg  = reg;
++		__assign_str(reg);
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] pci cfg read %s:[%#x] = %#x",
+-		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
+ );
  
- 	do {
--		spin_lock(&pcp->lock);
-+		pcp_spin_lock_maybe_irqsave(pcp, UP_flags);
- 		count = pcp->count;
- 		if (count) {
- 			int to_drain = min(count,
-@@ -2211,7 +2240,7 @@ static void drain_pages_zone(unsigned in
- 			free_pcppages_bulk(zone, to_drain, pcp, 0);
- 			count -= to_drain;
- 		}
--		spin_unlock(&pcp->lock);
-+		pcp_spin_unlock_maybe_irqrestore(pcp, UP_flags);
- 	} while (count);
- }
- 
+ #endif /* _MEI_TRACE_H_ */
 
 
 
