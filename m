@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212612-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KI1qHBsxemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:03 +0100
+	id OM3aGos6emlN4wEAu9opvQ
+	(envelope-from <stable+bounces-212612-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:34:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B8BA4ABB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF8DA5D4C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:34:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0CC830A1403
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:26 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 18A833043861
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D1E2FDC5D;
-	Wed, 28 Jan 2026 15:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7643033C4;
+	Wed, 28 Jan 2026 16:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTF/MSee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMVmxjno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E84308F1D;
-	Wed, 28 Jan 2026 15:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78EA81AA8;
+	Wed, 28 Jan 2026 16:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615299; cv=none; b=sjBG50TZY4tXwiVZeE7+IhRkFFZ/tuH7s4sfOycSU3zYzc0Ropo61qvS3U0f8hu0j3pb/q77qiXsudAZk/zzXsmAno1W7RL0m6JpfaTy+Rbay7o6BWb6pxIPUV8/3XXa58vijP/kfttlfcCX2wwCsoKQQkY74aIFffGQcFQhgDI=
+	t=1769616103; cv=none; b=ayJQlz6Vhp6bB5JCwdd/vwp/FMrqWS7ecZmtwDVXJu3syY1tM9RkRxZ++9O5hfwfxQ1rcfPjZV316T8XWDiS/YaLRjXZ20qq9mxlE0cHfWp9B77Em8Q0JjkLG0N1cIYgrhX5hbaQ9Ws8AoqLa0Z7r56VWix270V4pbetfLXdmZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615299; c=relaxed/simple;
-	bh=1sEumzKNBDl9k/ek/iePFiALEqIKtp0rAwkcDKllBEo=;
+	s=arc-20240116; t=1769616103; c=relaxed/simple;
+	bh=Wdry6PtqB5khVJJU/9jGoCdZoRVcvr4X4WRfJjPwA1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KhlVwIct/nTUygBTKtRMJMazFeTU2LlqMi38s+b1KfRvuUJx0c13HMOqHWY+pxUtO3dWr4HLEw012rhHOxAUIgIzn/3The6FTaG4/m5kIL04UKBRFj7zcRUNoGY8Pe+BBCvYh876cjApTcm0Kh2uXkFrA8ebzQWmxHnHFJ1lS2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTF/MSee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179CAC4CEF1;
-	Wed, 28 Jan 2026 15:48:18 +0000 (UTC)
+	 MIME-Version; b=qTRTs9TlIeJoy0pefIqOeVnGUvEbDyQAZEo0+QuB7yUYZc7tgVO2U5FcFRqaeqQA1LcxoiLrU0LtAj9Vm96iX2bxaCi0tE4lPEjWPNP8hDmR/acdr2fQycmUiCfxgKVfZO82sgxXBR/GW1VOgpunhsJ/g0JZpzF79sKAJq1Fgs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMVmxjno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39491C4CEF1;
+	Wed, 28 Jan 2026 16:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615299;
-	bh=1sEumzKNBDl9k/ek/iePFiALEqIKtp0rAwkcDKllBEo=;
+	s=korg; t=1769616103;
+	bh=Wdry6PtqB5khVJJU/9jGoCdZoRVcvr4X4WRfJjPwA1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JTF/MSeeZ0mFAbGqwgYr29fTeRiWtznpjskLyin+XWZ4dcRVSd1PHsUSP9x4Izu7x
-	 ozlP/DCaPCb7h6FX/jSt/i5xtBlKJH89qrbSzbN0axhD6hZ3aUzbDVRadsOxAI2Z5r
-	 XlcNy+QXICr7OY+unPWfqRTked3Pbxz9iqi/1Vlw=
+	b=hMVmxjno+vgqUvJY/gJmww6X0r0G2yK3iqTjNzxsLl5XWmIUEa6viOtgBORCbQ8K8
+	 EHA6ZEtvS6XmD02xDNq4zZjPk2NMrRuWzI0bczHYoWcqfmVlaKE6uSrLUC7uaCyj05
+	 IxMYNJCRxFyPdqdQ4VzaKyw1A4bite3oWzyUKCwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?Jan=20H . =20Sch=C3=B6nherr?=" <jschoenh@amazon.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Fernand Sieber <sieberf@amazon.com>
-Subject: [PATCH 6.12 137/169] perf/x86/intel: Do not enable BTS for guests
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.18 175/227] wifi: ath12k: fix dma_free_coherent() pointer
 Date: Wed, 28 Jan 2026 16:23:40 +0100
-Message-ID: <20260128145338.938017302@linuxfoundation.org>
+Message-ID: <20260128145350.747048431@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-212612-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212372-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+]
-X-Rspamd-Queue-Id: C3B8BA4ABB
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8BF8DA5D4C
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernand Sieber <sieberf@amazon.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 91dcfae0ff2b9b9ab03c1ec95babaceefbffb9f4 upstream.
+commit bb97131fbf9b708dd9616ac2bdc793ad102b5c48 upstream.
 
-By default when users program perf to sample branch instructions
-(PERF_COUNT_HW_BRANCH_INSTRUCTIONS) with a sample period of 1, perf
-interprets this as a special case and enables BTS (Branch Trace Store)
-as an optimization to avoid taking an interrupt on every branch.
+dma_alloc_coherent() allocates a DMA mapped buffer and stores the
+addresses in XXX_unaligned fields.  Those should be reused when freeing
+the buffer rather than the aligned addresses.
 
-Since BTS doesn't virtualize, this optimization doesn't make sense when
-the request originates from a guest. Add an additional check that
-prevents this optimization for virtualized events (exclude_host).
-
-Reported-by: Jan H. Schönherr <jschoenh@amazon.de>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Fernand Sieber <sieberf@amazon.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251211183604.868641-1-sieberf@amazon.com
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260106084905.18622-2-fourier.thomas@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/perf_event.h |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/ce.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1513,13 +1513,22 @@ static inline bool intel_pmu_has_bts_per
- 	struct hw_perf_event *hwc = &event->hw;
- 	unsigned int hw_event, bts_event;
- 
--	if (event->attr.freq)
-+	/*
-+	 * Only use BTS for fixed rate period==1 events.
-+	 */
-+	if (event->attr.freq || period != 1)
-+		return false;
-+
-+	/*
-+	 * BTS doesn't virtualize.
-+	 */
-+	if (event->attr.exclude_host)
- 		return false;
- 
- 	hw_event = hwc->config & INTEL_ARCH_EVENT_MASK;
- 	bts_event = x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
- 
--	return hw_event == bts_event && period == 1;
-+	return hw_event == bts_event;
- }
- 
- static inline bool intel_pmu_has_bts(struct perf_event *event)
+--- a/drivers/net/wireless/ath/ath12k/ce.c
++++ b/drivers/net/wireless/ath/ath12k/ce.c
+@@ -984,8 +984,8 @@ void ath12k_ce_free_pipes(struct ath12k_
+ 			dma_free_coherent(ab->dev,
+ 					  pipe->src_ring->nentries * desc_sz +
+ 					  CE_DESC_RING_ALIGN,
+-					  pipe->src_ring->base_addr_owner_space,
+-					  pipe->src_ring->base_addr_ce_space);
++					  pipe->src_ring->base_addr_owner_space_unaligned,
++					  pipe->src_ring->base_addr_ce_space_unaligned);
+ 			kfree(pipe->src_ring);
+ 			pipe->src_ring = NULL;
+ 		}
+@@ -995,8 +995,8 @@ void ath12k_ce_free_pipes(struct ath12k_
+ 			dma_free_coherent(ab->dev,
+ 					  pipe->dest_ring->nentries * desc_sz +
+ 					  CE_DESC_RING_ALIGN,
+-					  pipe->dest_ring->base_addr_owner_space,
+-					  pipe->dest_ring->base_addr_ce_space);
++					  pipe->dest_ring->base_addr_owner_space_unaligned,
++					  pipe->dest_ring->base_addr_ce_space_unaligned);
+ 			kfree(pipe->dest_ring);
+ 			pipe->dest_ring = NULL;
+ 		}
+@@ -1007,8 +1007,8 @@ void ath12k_ce_free_pipes(struct ath12k_
+ 			dma_free_coherent(ab->dev,
+ 					  pipe->status_ring->nentries * desc_sz +
+ 					  CE_DESC_RING_ALIGN,
+-					  pipe->status_ring->base_addr_owner_space,
+-					  pipe->status_ring->base_addr_ce_space);
++					  pipe->status_ring->base_addr_owner_space_unaligned,
++					  pipe->status_ring->base_addr_ce_space_unaligned);
+ 			kfree(pipe->status_ring);
+ 			pipe->status_ring = NULL;
+ 		}
 
 
 
