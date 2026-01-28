@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-212475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOsbMLIzeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:06 +0100
+	id 4NW9CeMzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 518BDA508F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB21A5108
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BBCDA30A35F8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D513731CCC08
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBA32DF155;
-	Wed, 28 Jan 2026 15:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CA0302741;
+	Wed, 28 Jan 2026 15:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15JTAM9I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpYbK68x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F2C1D6AA;
-	Wed, 28 Jan 2026 15:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8092857CD;
+	Wed, 28 Jan 2026 15:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615644; cv=none; b=MpiME9qJY2jtVDCC4M+Fes0kjPfzR6v4TLNArGryw09EKBqgCBDMgKFc4JGI12GWFnsAexjqJdjc5knFkqKWgWMpUeIuj34LK77WHjcBZsmjOTPCbRPzmfrCJ+ECmOkvEWgap7jSFgiTZvWcL19RKDb+M63EiF6ugVuVeZNqdlw=
+	t=1769615678; cv=none; b=fwHTowmfETD5cNCd2+LSWzT8Yunc06vpGAKqEMOklVtQ8365fOZ3GnF8irnLoPO5yLRrw0dzOmZEKWd0yJHgiqDxTVE6jTLAWaThjykNWKniEkkSxlmyYa65w4EppTJDz4rmldkkTMUY6ZrMjQPfBMzrJljjdCB743smrado7rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615644; c=relaxed/simple;
-	bh=owshqcYQPU1z+wM3uxkJVKPbsFNNFErLCBYtNOpLEZQ=;
+	s=arc-20240116; t=1769615678; c=relaxed/simple;
+	bh=06VOZPNSo0B7Ujb7CIIhIXuG/+nv1GZWlGQ3dgsHBOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NpgGBJ5lTTmQePZSSmgCFEUR2KRgrSE0kqoKmmb6Yo5zww+9L24X1A7z1M51RpEzaHvIO5cgLKPFo/g9qxAFaw3RiGRMtgXiJ5mwhr+GtDA34eseOa+R3ajrPvdZMaGyBd/vGClA/nL2lqhkrHnOcMbn1G5ePrXSdW7TJVfQlBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15JTAM9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A347FC4CEF1;
-	Wed, 28 Jan 2026 15:54:03 +0000 (UTC)
+	 MIME-Version; b=XknvcTfoPYb6kcckZe+S03oGWV3yrmcbreHM7ukQMCvYhpc6pHUpSkBsEsmLzyJvHqiZh0uMM6DLPErUkZgXU8E/gZIKORXeGnt+1H0iIx2MDgxG8riykvOt5l3iEIy2w+miv7THaKNZcsuZ079Cw9em9zyuiaUHqD/HZYVyfjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpYbK68x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44987C4CEF7;
+	Wed, 28 Jan 2026 15:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615644;
-	bh=owshqcYQPU1z+wM3uxkJVKPbsFNNFErLCBYtNOpLEZQ=;
+	s=korg; t=1769615678;
+	bh=06VOZPNSo0B7Ujb7CIIhIXuG/+nv1GZWlGQ3dgsHBOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15JTAM9Iz+FyLD5cjh9/vJh8S8WC+YuqKHDduXMvYafr4R32DqtjSGyEWEMA8I9WD
-	 xnXHr8Z8VuY3oW/pdaaSJ+KNa+89WhlzMY8CnG1zEAMgBu0ItUxAcSO0/8pFOE2y9t
-	 qMDAEAqW5ojEI5zf94cLa+QUqEMhRyY8QbYAUbH4=
+	b=JpYbK68xgrkq+XxApjs2b4ILv4Q8R51QtVQkXRkNTMNsWXBs2KNhPhOtZCXz56Ieh
+	 8PY1Q6VnBfAv0HBYnrTMX8Ib+WZs7TUrCDx2fHid0zVhRC9I9uUcb2IP15dIORW5nE
+	 X6pdiKa7+pyb875WQKYbkHIRq7M+1OgS9kC0C1YQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Geraldo Nascimento <geraldogabriel@gmail.com>,
+	Ondrej Jirman <megi@xff.cz>,
+	Rudraksha Gupta <guptarud@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>,
 	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.18 063/227] arm64: dts: rockchip: remove dangerous max-link-speed from helios64
-Date: Wed, 28 Jan 2026 16:21:48 +0100
-Message-ID: <20260128145346.609529485@linuxfoundation.org>
+Subject: [PATCH 6.18 064/227] arm64: dts: rockchip: Fix voltage threshold for volume keys for Pinephone Pro
+Date: Wed, 28 Jan 2026 16:21:49 +0100
+Message-ID: <20260128145346.645020168@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
 References: <20260128145344.331957407@linuxfoundation.org>
@@ -70,71 +70,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,rock-chips.com,manjaro.org,gmail.com,sntech.de];
-	TAGGED_FROM(0.00)[bounces-212475-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,xff.cz,gmail.com,ucw.cz,sntech.de];
+	TAGGED_FROM(0.00)[bounces-212486-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.985];
+	NEURAL_HAM(-0.00)[-0.992];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sntech.de:email,manjaro.org:email,rock-chips.com:email]
-X-Rspamd-Queue-Id: 518BDA508F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sntech.de:email,xff.cz:email,ucw.cz:email]
+X-Rspamd-Queue-Id: 6CB21A5108
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geraldo Nascimento <geraldogabriel@gmail.com>
+From: Ondrej Jirman <megi@xff.cz>
 
-commit 0368e4afcf20f377c81fa77b1c7d0dee4a625a44 upstream.
+commit 5497ffe305b2ea31ae62d4a311d7cabfb671f54a upstream.
 
-Shawn Lin from Rockchip strongly discourages attempts to use their
-RK3399 PCIe core at 5.0 GT/s speed, citing concerns about catastrophic
-failures that may happen. Even if the odds are low, drop from last user
-of this non-default property for the RK3399 platform, helios64 board
-dts.
+Previously sometimes pressing the volume-down button would register as
+a volume-up button. Match the thresholds as shown in the Pinephone Pro
+schematic.
 
-Fixes: 755fff528b1b ("arm64: dts: rockchip: add variables for pcie completion to helios64")
-Link: https://lore.kernel.org/all/e8524bf8-a90c-423f-8a58-9ef05a3db1dd@rock-chips.com/
+Tests:
+
+~ $ evtest
+    // Mashed the volume down ~100 times with varying intensity
+    Event: time xxx, type 1 (EV_KEY), code 114 (KEY_VOLUMEDOWN), value 1
+    Event: time xxx, type 1 (EV_KEY), code 114 (KEY_VOLUMEDOWN), value 0
+    // Mashed the volume up ~100 times with varying intensity
+    Event: time xxx, type 1 (EV_KEY), code 115 (KEY_VOLUMEUP), value 1
+    Event: time xxx, type 1 (EV_KEY), code 115 (KEY_VOLUMEUP), value 0
+
+Fixes: d3150ed53580 ("arm64: dts: rockchip: Add support for volume keys to rk3399-pinephone-pro")
 Cc: stable@vger.kernel.org
-Reported-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/43bb639c120f599106fca2deee6c6599b2692c5c.1763415706.git.geraldogabriel@gmail.com
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
+Signed-off-by: Rudraksha Gupta <guptarud@gmail.com>
+Reviewed-by: Pavel Machek <pavel@ucw.cz>
+Link: https://patch.msgid.link/20251124-ppp_light_accel_mag_vol-down-v5-4-f9a10a0a50eb@gmail.com
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts |    1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
-@@ -424,7 +424,6 @@
+--- a/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-pinephone-pro.dts
+@@ -40,13 +40,13 @@
+ 		button-up {
+ 			label = "Volume Up";
+ 			linux,code = <KEY_VOLUMEUP>;
+-			press-threshold-microvolt = <100000>;
++			press-threshold-microvolt = <2000>;
+ 		};
  
- &pcie0 {
- 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
--	max-link-speed = <2>;
- 	num-lanes = <2>;
- 	pinctrl-names = "default";
- 	status = "okay";
+ 		button-down {
+ 			label = "Volume Down";
+ 			linux,code = <KEY_VOLUMEDOWN>;
+-			press-threshold-microvolt = <600000>;
++			press-threshold-microvolt = <300000>;
+ 		};
+ 	};
+ 
 
 
 
