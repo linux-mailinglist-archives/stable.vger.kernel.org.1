@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDIXO7Iwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212350-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:18 +0100
+	id SAfWAm41eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908DDA4997
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EB4A545B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 318983086D13
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9738322FC0B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F213033D0;
-	Wed, 28 Jan 2026 15:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767012E1C63;
+	Wed, 28 Jan 2026 15:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCLA11q0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Whz3ubS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9567530C60D;
-	Wed, 28 Jan 2026 15:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E842E06ED;
+	Wed, 28 Jan 2026 15:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615224; cv=none; b=eps1cMyzKUUg7tmi7w8dHk7zCNkx0tMFgn2YjC7lPWSctwpmKzV8R0YdMzhCLtWd8MZKWMKT82HkkVGTcdotxL/EuxoSyZfWSvXEv/pvGlRqamFq3WjddDvK8T0rlQCDIjLwmkBSD23utZFeFFQsGiQz3ZnUNUhOp8BnbFu4l9s=
+	t=1769614612; cv=none; b=uO5vjVfV1crOYNILJFOtMUY9e+1uxlPp/tZk0/OLpYsYmKEwS56NXZGB7ag94IWct82U1u8lgdPSkqh9P9AMfMp6ZV77LESjYXEe0YTncMSTm2XnN6PK3lEjwPsp7gVt/L5uPgN6bY9mzyF/3oNtTnghCgusYE5foolG0kQYu2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615224; c=relaxed/simple;
-	bh=6mI8EGMTbn5dMs4toKz0YSEPfn+bIJ4JzF05Mlbj+c8=;
+	s=arc-20240116; t=1769614612; c=relaxed/simple;
+	bh=5IuL+YEThGIZfXNlo50ol9DkjnJi23lHfPA+Ck04LSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kTDXSKf3PmiLXFjmsCq0ltJ0o1r5CZ0KAm1gl0hsnfdQ6IdiRPvRcyDpGsrLrzGxndivWh9Z5vAHEzaBOnRqO3jT9o/lvRgbu4V1+MsAvwwRxGVyCN1PdsRTPan399LuGAoH/RiIQZBonT0ge0cmW3F1rzmsKNAyjgjShpbViXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCLA11q0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094CFC4CEF1;
-	Wed, 28 Jan 2026 15:47:03 +0000 (UTC)
+	 MIME-Version; b=An6R4HD7MlO5zg8uC5O2nKjLyD9PNwF4CfL6oss+uzbop2hBG03GBaQf7eT44W9Ci9l4VvQl1hbhlHqWzKI5oWcbfIhO77kWmBio4EsWlRB5W66WSQSQ3oy6m1onepwOg4XIxqc/GcmWgkSO/j+ovhhgd9XjlAuwFuYatY6ZW6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Whz3ubS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ABBFC4CEF1;
+	Wed, 28 Jan 2026 15:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615224;
-	bh=6mI8EGMTbn5dMs4toKz0YSEPfn+bIJ4JzF05Mlbj+c8=;
+	s=korg; t=1769614611;
+	bh=5IuL+YEThGIZfXNlo50ol9DkjnJi23lHfPA+Ck04LSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCLA11q02a+B2gBm4Hu2t4s/yk0W2jvBEZnPs0BpVGvZlLsikZN1x2O8q0aT444jU
-	 WKHLfiJk7NbF2YpgDgjb7QPHkoh0EBm/1My/lJNe2qrOmq6q7OQlXoyfkFtGpK9puT
-	 Sd8+FGwFs8srw1e1dmn3mBIwOtBJ0FZIfxGGupuM=
+	b=0Whz3ubSdjU3QviCzSqBa2q52CpMZabZAtwd3D50zyoJtsm0327eX2vUUcx2Rgu1k
+	 WsUcwMozL2fs9UkvgICvy1E05FQ7iNXyBkUvYL6ybcnZ1fXtbxWsPVMrND2hrruqHp
+	 HqekAV7RQW+1G5WYi0ht8lEIBNhiG/NmFNyi+fSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/169] drm/amd/pm: Dont clear SI SMC table when setting power limit
+	Fiona Klute <fiona.klute@gmx.de>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 190/254] iio: chemical: scd4x: fix reported channel endianness
 Date: Wed, 28 Jan 2026 16:22:46 +0100
-Message-ID: <20260128145336.992468999@linuxfoundation.org>
+Message-ID: <20260128145351.636745067@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +63,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212350-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212167-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,baylibre.com,huawei.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.961];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
-X-Rspamd-Queue-Id: 908DDA4997
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gmx.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,baylibre.com:email]
+X-Rspamd-Queue-Id: 60EB4A545B
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Fiona Klute <fiona.klute@gmx.de>
 
-[ Upstream commit d5077426e1a76d269e518e048bde2e9fc49b32ad ]
+commit 81d5a5366d3c20203fb9d7345e1aa46d668445a2 upstream.
 
-There is no reason to clear the SMC table.
-We also don't need to recalculate the power limit then.
+The driver converts values read from the sensor from BE to CPU
+endianness in scd4x_read_meas(). The result is then pushed into the
+buffer in scd4x_trigger_handler(), so on LE architectures parsing the
+buffer using the reported BE type gave wrong results.
 
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e214d626253f5b180db10dedab161b7caa41f5e9)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+scd4x_read_raw() which provides sysfs *_raw values is not affected, it
+used the values returned by scd4x_read_meas() without further
+conversion.
+
+Fixes: 49d22b695cbb6 ("drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor")
+Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/iio/chemical/scd4x.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index f6ba54cf701e7..45bde4f4c8515 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -2257,8 +2257,6 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
- 		if (scaling_factor == 0)
- 			return -EINVAL;
- 
--		memset(smc_table, 0, sizeof(SISLANDS_SMC_STATETABLE));
--
- 		ret = si_calculate_adjusted_tdp_limits(adev,
- 						       false, /* ??? */
- 						       adev->pm.dpm.tdp_adjustment,
-@@ -2312,16 +2310,8 @@ static int si_populate_smc_tdp_limits_2(struct amdgpu_device *adev,
- 
- 	if (ni_pi->enable_power_containment) {
- 		SISLANDS_SMC_STATETABLE *smc_table = &si_pi->smc_statetable;
--		u32 scaling_factor = si_get_smc_power_scaling_factor(adev);
- 		int ret;
- 
--		memset(smc_table, 0, sizeof(SISLANDS_SMC_STATETABLE));
--
--		smc_table->dpm2Params.NearTDPLimit =
--			cpu_to_be32(si_scale_power_for_smc(adev->pm.dpm.near_tdp_limit_adjusted, scaling_factor) * 1000);
--		smc_table->dpm2Params.SafePowerLimit =
--			cpu_to_be32(si_scale_power_for_smc((adev->pm.dpm.near_tdp_limit_adjusted * SISLANDS_DPM2_TDP_SAFE_LIMIT_PERCENT) / 100, scaling_factor) * 1000);
--
- 		ret = amdgpu_si_copy_bytes_to_smc(adev,
- 						  (si_pi->state_table_start +
- 						   offsetof(SISLANDS_SMC_STATETABLE, dpm2Params) +
--- 
-2.51.0
-
+--- a/drivers/iio/chemical/scd4x.c
++++ b/drivers/iio/chemical/scd4x.c
+@@ -585,7 +585,7 @@ static const struct iio_chan_spec scd4x_
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_BE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ 	{
+@@ -600,7 +600,7 @@ static const struct iio_chan_spec scd4x_
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_BE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ 	{
+@@ -613,7 +613,7 @@ static const struct iio_chan_spec scd4x_
+ 			.sign = 'u',
+ 			.realbits = 16,
+ 			.storagebits = 16,
+-			.endianness = IIO_BE,
++			.endianness = IIO_CPU,
+ 		},
+ 	},
+ };
 
 
 
