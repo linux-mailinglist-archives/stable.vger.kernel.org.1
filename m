@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-212393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLVoDasyemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:43 +0100
+	id EEcFIfU7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80E9A4E99
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDCFAA5F9A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B96E3231178
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C49363233EDC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2592FE044;
-	Wed, 28 Jan 2026 15:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E34D302779;
+	Wed, 28 Jan 2026 16:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cvEf4Xz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="suyfHHiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D2B288C22;
-	Wed, 28 Jan 2026 15:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42875285C8D;
+	Wed, 28 Jan 2026 16:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615368; cv=none; b=tTxDXo+0DdgNsTkL63PFnN4bfBLu6CispfRR+UvDd+XAqJEzm057DBM4fyIy5wbQkvcYctlzVMyOX9sUJZk1RU9xpap7O/8l7i07DWTyaepWXKf2HnqlkW3JpUFKjpn6nVDEXceIVn7+FeZ3zcQGGJOm06YNBAodo5VILEIF/Rc=
+	t=1769616073; cv=none; b=EVO0nKNmwhyahoSbEjVrs+z8fOpJX/QIJ5DvhrLRR5M1fmDvCRYqAycHYcgFpoMhAeeYpiYD3buQ01K3kbtQEdnGv6oXBaHR+3lHl4N/nCgy5He3oClGTIHG2VZYfaS3YOnzw+BKS+5qtNQW0KBqXFKQ3X116l0fR8hYezRUqf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615368; c=relaxed/simple;
-	bh=HhpcPdl9Ey0qY70Ppn0aqqD4uVGHclelhEjb2QmaHZo=;
+	s=arc-20240116; t=1769616073; c=relaxed/simple;
+	bh=KazoVGPvM4jY12gtOQUZSZV47BMsYUgJIsb4rr014KI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqHGgnaGlD3k8PF5Zd5aI0zxpmMD7b+bYTlfDOnUJR3L4o+OXcWhnK33b3+tq2W0KD32kPxHDXSihexlfKoK1o2Q30hXe2ZpvNIWQmWn+is2oNTT6yoA4MI6L4+uAWaHSkBmVqKKjVUMnfM3AqF1fzd+l8R8jVNo1CAXXKO7zIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cvEf4Xz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86673C4CEF1;
-	Wed, 28 Jan 2026 15:49:27 +0000 (UTC)
+	 MIME-Version; b=I8KF7q29ojkcwjx/fxqX4ar+pU7DiQxPhYnELySCtshYPRnZTg4P5qlHsIRlY5uNHj1vFQntDOTptrRwcwWc1zIq30KBav9iYP8wHEAg/ATVzskOvahPghVtrur+TmkmFXdUgqIRzomthwNi5ML4r1DbDpQAP591MDQ7kobGh0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=suyfHHiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CFBC4CEF7;
+	Wed, 28 Jan 2026 16:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615367;
-	bh=HhpcPdl9Ey0qY70Ppn0aqqD4uVGHclelhEjb2QmaHZo=;
+	s=korg; t=1769616073;
+	bh=KazoVGPvM4jY12gtOQUZSZV47BMsYUgJIsb4rr014KI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2cvEf4XzvrpMaDMgYt03Bd7v0xwyrCXDGh98jbx8A7Fw6RAsVcvfqnF8h1RGpjbcT
-	 tkkw5o1UFSc8/fuzYgiYbJ2mvnQ6NijtWi/jjwX09Tokg8KR7lcvMrqdhC8Y1btw9u
-	 6vMaD4cuBIDR3mN2CflR1uqSfQD9mg0dctNKcCbw=
+	b=suyfHHizC2fuIe3Q3rJmIMVsZyrUy5MHY3cshKDJgwOVyJxFJBpxun5E4U7g9psjy
+	 zzqswUtUK9tnTE4ycnRHlVlHOSzQEU7KFJKfDeF6SXnVxO7xC5FNj8ZKjNtYBPlprS
+	 RWnU1OX2czdIDUzLF2YJbbVNPRtPmWH563A7Be2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.12 159/169] accel/ivpu: Fix race condition when unbinding BOs
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.18 197/227] pmdomain: imx8m-blk-ctrl: Remove separate rst and clk mask for 8mq vpu
 Date: Wed, 28 Jan 2026 16:24:02 +0100
-Message-ID: <20260128145339.738143653@linuxfoundation.org>
+Message-ID: <20260128145351.532756232@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,85 +69,91 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,oss.qualcomm.com,linux.intel.com,163.com];
-	TAGGED_FROM(0.00)[bounces-212393-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212603-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.990];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RSPAMD_EMAILBL_FAIL(0.00)[karol.wachowski.linux.intel.com:query timed out,jeff.hugo.oss.qualcomm.com:query timed out,tomasz.rusinowicz.intel.com:query timed out];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D80E9A4E99
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email]
+X-Rspamd-Queue-Id: EDCFAA5F9A
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-[ Upstream commit 00812636df370bedf4e44a0c81b86ea96bca8628 ]
+commit 3de49966499634454fd59e0e6fecd50baab7febd upstream.
 
-Fix 'Memory manager not clean during takedown' warning that occurs
-when ivpu_gem_bo_free() removes the BO from the BOs list before it
-gets unmapped. Then file_priv_unbind() triggers a warning in
-drm_mm_takedown() during context teardown.
+For i.MX8MQ platform, the ADB in the VPUMIX domain has no separate reset
+and clock enable bits, but is ungated and reset together with the VPUs.
+So we can't reset G1 or G2 separately, it may led to the system hang.
+Remove rst_mask and clk_mask of imx8mq_vpu_blk_ctl_domain_data.
+Let imx8mq_vpu_power_notifier() do really vpu reset.
 
-Protect the unmapping sequence with bo_list_lock to ensure the BO is
-always fully unmapped when removed from the list. This ensures the BO
-is either fully unmapped at context teardown time or present on the
-list and unmapped by file_priv_unbind().
-
-Fixes: 48aea7f2a2ef ("accel/ivpu: Fix locking in ivpu_bo_remove_all_bos_from_context()")
-Signed-off-by: Tomasz Rusinowicz <tomasz.rusinowicz@intel.com>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Link: https://patch.msgid.link/20251029071451.184243-1-karol.wachowski@linux.intel.com
-[ The context change is due to the commit e0c0891cd63b
-("accel/ivpu: Rework bind/unbind of imported buffers")
-and the proper adoption is done. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Fixes: 608d7c325e85 ("soc: imx: imx8m-blk-ctrl: add i.MX8MQ VPU blk-ctrl")
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_gem.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pmdomain/imx/imx8m-blk-ctrl.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/accel/ivpu/ivpu_gem.c
-+++ b/drivers/accel/ivpu/ivpu_gem.c
-@@ -240,7 +240,6 @@ static void ivpu_gem_bo_free(struct drm_
+--- a/drivers/pmdomain/imx/imx8m-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8m-blk-ctrl.c
+@@ -846,22 +846,25 @@ static int imx8mq_vpu_power_notifier(str
+ 	return NOTIFY_OK;
+ }
  
- 	mutex_lock(&vdev->bo_list_lock);
- 	list_del(&bo->bo_list_node);
--	mutex_unlock(&vdev->bo_list_lock);
- 
- 	drm_WARN_ON(&vdev->drm, !drm_gem_is_imported(&bo->base.base) &&
- 		    !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
-@@ -248,6 +247,8 @@ static void ivpu_gem_bo_free(struct drm_
- 	drm_WARN_ON(&vdev->drm, bo->base.vaddr);
- 
- 	ivpu_bo_unbind_locked(bo);
-+	mutex_unlock(&vdev->bo_list_lock);
-+
- 	drm_WARN_ON(&vdev->drm, bo->mmu_mapped);
- 	drm_WARN_ON(&vdev->drm, bo->ctx);
++/*
++ * For i.MX8MQ, the ADB in the VPUMIX domain has no separate reset and clock
++ * enable bits, but is ungated and reset together with the VPUs.
++ * Resetting G1 or G2 separately may led to system hang.
++ * Remove the rst_mask and clk_mask from the domain data of G1 and G2,
++ * Let imx8mq_vpu_power_notifier() do really vpu reset.
++ */
+ static const struct imx8m_blk_ctrl_domain_data imx8mq_vpu_blk_ctl_domain_data[] = {
+ 	[IMX8MQ_VPUBLK_PD_G1] = {
+ 		.name = "vpublk-g1",
+ 		.clk_names = (const char *[]){ "g1", },
+ 		.num_clks = 1,
+ 		.gpc_name = "g1",
+-		.rst_mask = BIT(1),
+-		.clk_mask = BIT(1),
+ 	},
+ 	[IMX8MQ_VPUBLK_PD_G2] = {
+ 		.name = "vpublk-g2",
+ 		.clk_names = (const char *[]){ "g2", },
+ 		.num_clks = 1,
+ 		.gpc_name = "g2",
+-		.rst_mask = BIT(0),
+-		.clk_mask = BIT(0),
+ 	},
+ };
  
 
 
