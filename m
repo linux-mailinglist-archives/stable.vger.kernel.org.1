@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-212363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212614-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPq8L6Uzeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:53 +0100
+	id eP0mO+kzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212614-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD5EA5079
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B35A8A5117
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7E0E5306C90B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 56F17303C096
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21E0303A15;
-	Wed, 28 Jan 2026 15:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F9830CDBE;
+	Wed, 28 Jan 2026 16:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0UKmiWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCwPc+IJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A528B242D7F;
-	Wed, 28 Jan 2026 15:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0E130C37E;
+	Wed, 28 Jan 2026 16:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615269; cv=none; b=D5/hewVnMn8bfk19t0NeG16HIYqG+hTNIGCCfPVrC/IVb+jvqW7hFsnB8TYx2ZxR0yjyImiaTesDPLzbr/HWo6nQYds2Ou8gb1K/7qSQkSoMj9B9Bq1yj6mgevRbQDmC66AsSQ7MME1RPTM9x+Mna2Io+LKe7xTk0L3uhejeub8=
+	t=1769616110; cv=none; b=EqHJrYjDzHYQ5fY7V82LN1bqQ8SHLKUyOntdPeVdNMzzQ2kEUIP2c0AKYcfhl2sAvHwwlWvOW0Uh8cjRdcIIJGNPg4saU57Dqn3pu+z528NQYN7YFfUCBWHfVlfSbNNZ6S6b9tw54iwcKllpAwl9zAR0smI5ueue4uzs0YXcax4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615269; c=relaxed/simple;
-	bh=UGkgN0We3p0cNpJoQMa0fwKJy8zieScxVXqgyP2vGgI=;
+	s=arc-20240116; t=1769616110; c=relaxed/simple;
+	bh=njMYHPSmA8oQctWqjJaLd5GmBXebTX0wybmrY0c8ygA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OG66L11xEmfwTObAxpzhHVCocfbOB38XPRwo8eNP+mMkbRw8ugpuo1UicBkKea2z8HdYJ/8jbb1aOt+E9/md44LHsg3bmpq8QlkvsQUAvetk5qm7xa4JnEf7KKonh4MSGFy/idnLuZAXsqHXFBcP541VqQ3Qlac7+ck5mS/+stQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0UKmiWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5357C4CEF1;
-	Wed, 28 Jan 2026 15:47:48 +0000 (UTC)
+	 MIME-Version; b=PfDdv1rSqCG0GeVaXnOdy9luarKb8Nh1hauXQlBI95nEe/bJxQ43jjp/dvoGG4bg2aQ5UaUW8GTGvr48Ha9hIGHX7BItx2GCs7hPVTXBAPxZ8drukUgrDQK5jBH+Nlsl9fzpmQ7/oCrlMIxNVNyfrFKFwg8X0QlzcUVJuakYT1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCwPc+IJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5371C4CEF1;
+	Wed, 28 Jan 2026 16:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615269;
-	bh=UGkgN0We3p0cNpJoQMa0fwKJy8zieScxVXqgyP2vGgI=;
+	s=korg; t=1769616110;
+	bh=njMYHPSmA8oQctWqjJaLd5GmBXebTX0wybmrY0c8ygA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0UKmiWgK8GWe+3uhFz0p2ovAzzhhshB0CyZbkmbtPH8O9++kWhZ+wfkHPcHBUxYI
-	 HIFBMyoUh+ZWlumNjpk58JNtabYlcZS0cj4zFsEfOhDuA5QtnuIalY4mTlpjwROcF8
-	 XpTDRy5rBuZKaXBq0ptQxA3AG9+oBf6xPWJducNc=
+	b=dCwPc+IJqZTP/r86wQ459CzMzywGZGMIW9pPMnDh6p5aoqdhdlMzludUcvnRTnzhC
+	 fiObNuHEoNiEHVRDYyA2NpEhBxr/HXC1jPCRhMusSnhc3L2ywFngVgqyEl05xoOUNn
+	 44LPpwLLhN9zYHSEYXHS2CVSty5cbj0bxH9WD7C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.12 129/169] s390/ap: Fix wrong APQN fill calculation
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 167/227] ALSA: hda/realtek: Add quirk for Samsung 730QED to fix headphone
 Date: Wed, 28 Jan 2026 16:23:32 +0100
-Message-ID: <20260128145338.651897043@linuxfoundation.org>
+Message-ID: <20260128145350.461677001@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212363-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212614-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,64 +87,44 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CFD5EA5079
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,kylinos.cn:email]
+X-Rspamd-Queue-Id: B35A8A5117
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-commit 3317785a8803db629efc759d811d0f589d3a0b2d upstream.
+commit c45385ed624eecc5305ff165e1ac5dfa7548bcd5 upstream.
 
-The upper limit of the firmware queue fill state for each APQN
-is reported by the hwinfo.qd field. This field shows the
-numbers 0-7 for 1-8 queue spaces available. But the exploiting
-code assumed the real boundary is stored there and thus stoppes
-queuing in messages one tick too early.
+After applying this quirk for the ALC256 audio codec, the headphone
+audio path functions normally; otherwise, headphones produce no sound.
 
-Correct the limit calculation and thus offer a boost
-of 12.5% performance for high traffic on one APQN.
-
-Fixes: d4c53ae8e4948 ("s390/ap: store TAPQ hwinfo in struct ap_card")
-Cc: stable@vger.kernel.org
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220574
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260122085240.3163975-1-zhangheng@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/ap_card.c  |    2 +-
- drivers/s390/crypto/ap_queue.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ sound/hda/codecs/realtek/alc269.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/s390/crypto/ap_card.c
-+++ b/drivers/s390/crypto/ap_card.c
-@@ -44,7 +44,7 @@ static ssize_t depth_show(struct device
- {
- 	struct ap_card *ac = to_ap_card(dev);
- 
--	return sysfs_emit(buf, "%d\n", ac->hwinfo.qd);
-+	return sysfs_emit(buf, "%d\n", ac->hwinfo.qd + 1);
- }
- 
- static DEVICE_ATTR_RO(depth);
---- a/drivers/s390/crypto/ap_queue.c
-+++ b/drivers/s390/crypto/ap_queue.c
-@@ -268,7 +268,7 @@ static enum ap_sm_wait ap_sm_write(struc
- 		list_move_tail(&ap_msg->list, &aq->pendingq);
- 		aq->requestq_count--;
- 		aq->pendingq_count++;
--		if (aq->queue_count < aq->card->hwinfo.qd) {
-+		if (aq->queue_count < aq->card->hwinfo.qd + 1) {
- 			aq->sm_state = AP_SM_STATE_WORKING;
- 			return AP_SM_WAIT_AGAIN;
- 		}
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6906,6 +6906,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x144d, 0xc812, "Samsung Notebook Pen S (NT950SBE-X58)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc830, "Samsung Galaxy Book Ion (NT950XCJ-X716A)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc832, "Samsung Galaxy Book Flex Alpha (NP730QCJ)", ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
++	SND_PCI_QUIRK(0x144d, 0xc876, "Samsung 730QED (NP730QED-KA2US)", ALC256_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xca03, "Samsung Galaxy Book2 Pro 360 (NP930QED)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xca06, "Samsung Galaxy Book3 360 (NP730QFG)", ALC298_FIXUP_SAMSUNG_HEADPHONE_VERY_QUIET),
+ 	SND_PCI_QUIRK(0x144d, 0xc868, "Samsung Galaxy Book2 Pro (NP930XED)", ALC298_FIXUP_SAMSUNG_AMP),
 
 
 
