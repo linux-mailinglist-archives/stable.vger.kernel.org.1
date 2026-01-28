@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-212031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212032-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AIinEd0semnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:57 +0100
+	id KJM6D60temnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212032-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:25 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDDE6A408A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:35:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C97A422E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBF2331EA1BD
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC97431ED421
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A76236B07E;
-	Wed, 28 Jan 2026 15:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100AA369960;
+	Wed, 28 Jan 2026 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g148Azxv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ug1BIqxh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D273369960;
-	Wed, 28 Jan 2026 15:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7EE32517AC;
+	Wed, 28 Jan 2026 15:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614167; cv=none; b=goM5qk97ag24EUg81wFDs91522W+QRKHILThaGbtqRuQUT17jjJ8D9akv3vjfpF6n3/CJd8PiITNpFY2Mcw+GMEB9xivbRZuWPDkPJzevsl/yRhDpoQfxWkC79LuxUHddg11ZCAP5bAMobf5Pg2aenaH4gkOEOBOiJ7mNVnT2gs=
+	t=1769614170; cv=none; b=mP/WCO6FuPeS+cknWtwGnpdexDjcCUEQvvC2BmEjc6m/yEvDITjkb7tLiRekXBFNOVZMpXX/lZfuqh25UWPRvDrVQGoZT5oSpeDwTSDEINM4BcoX8p544+AZi5HxDYi89b5Mol+zisYFMx389aaiFfBxHJ0bbCKRKikde8qDRoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614167; c=relaxed/simple;
-	bh=usuxPJPHK1/7fvby/4EWVd5py0wn/BZXLZNGG/BMbuU=;
+	s=arc-20240116; t=1769614170; c=relaxed/simple;
+	bh=6pRY4tJmNwpm+XlLWZckD0FJcC7PKfpQfhcYlm69kPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3GCOAFHB5Oo6fXqpYVqrmuHYECm2vzf/fDBTuAr1kKpWJLX/OjTdDZQOKFdxuprPVk5aN5gvVR0pve5ye03QgXh9wvTN8ub1C1etR8oGsf6WkQiGB71uJqd4V51kqIiUyFaZjRiWzWdJi+CciHHCfAix19P0XDnWDsN9aTw8RA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g148Azxv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DE3C4CEF1;
-	Wed, 28 Jan 2026 15:29:26 +0000 (UTC)
+	 MIME-Version; b=Axgq5yd52LVAv83bL5RmXEz53lhGW/73CvCr8Xbu3VfOwYhjNMFsUed2GT0uA/3lZMBhdn+E6jeKsRO3iw2uYNMdQDprbqnygpCDIpMWlTOn/yyqH59PQiFsBGhhBklqL5uNzJTlmnfhaYP/PHku4WP05NSB+eA/rf8m57aM0Yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ug1BIqxh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D00C4CEF1;
+	Wed, 28 Jan 2026 15:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614167;
-	bh=usuxPJPHK1/7fvby/4EWVd5py0wn/BZXLZNGG/BMbuU=;
+	s=korg; t=1769614170;
+	bh=6pRY4tJmNwpm+XlLWZckD0FJcC7PKfpQfhcYlm69kPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g148AzxvIA/hhvYdnIex97zncOhX2lSsJSQ/n0mCdIZDag48GwZ8YN7ZRBBPVJ4E7
-	 QRZ1Kiwm2RLrkBR13mbPhgRTMWj7Pcs1dSBJseaJwSztxBm6xhFotfK9mEs5sWKqep
-	 FfCkMcFBpnssgsZ6SGDIjHuIHZKDnza8nnRidATI=
+	b=ug1BIqxh3M+XHoGE9jfyDHZVEzA86AHMzg88yGOJdntTtLANA946TDaF5d4PzGLqJ
+	 icnf8R1cp0XWeYJTKS9uRwGlt3CmYWd734FBxuONQBN8XHenCP1DS9KpkhgiSVoB50
+	 OzWO7mbBqbZYsGiub/o/llUqCWZBoHw9qwPD91V0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wayne Chang <waynec@nvidia.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 055/254] phy: tegra: xusb: Explicitly configure HS_DISCON_LEVEL to 0x7
-Date: Wed, 28 Jan 2026 16:20:31 +0100
-Message-ID: <20260128145346.680070115@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 056/254] usb: dwc3: Check for USB4 IP_NAME
+Date: Wed, 28 Jan 2026 16:20:32 +0100
+Message-ID: <20260128145346.715420429@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -73,71 +72,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212032-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212031-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: CDDE6A408A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,synopsys.com:email]
+X-Rspamd-Queue-Id: B2C97A422E
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit b246caa68037aa495390a60d080acaeb84f45fff upstream.
+commit 0ed91d47959cb7573c17e06487f0fb891d59dfb3 upstream.
 
-The USB2 Bias Pad Control register manages analog parameters for signal
-detection. Previously, the HS_DISCON_LEVEL relied on hardware reset
-values, which may lead to the detection failure.
+Synopsys renamed DWC_usb32 IP to DWC_usb4 as of IP version 1.30. No
+functional change except checking for the IP_NAME here. The driver will
+treat the new IP_NAME as if it's DWC_usb32. Additional features for USB4
+will be introduced and checked separately.
 
-Explicitly configure HS_DISCON_LEVEL to 0x7. This ensures the disconnect
-threshold is sufficient to guarantee reliable detection.
-
-Fixes: bbf711682cd5 ("phy: tegra: xusb: Add Tegra186 support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Link: https://patch.msgid.link/20251212032116.768307-1-waynec@nvidia.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/e6f1827754c7a7ddc5eb7382add20bfe3a9b312f.1767390747.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/tegra/xusb-tegra186.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/dwc3/core.c |    2 ++
+ drivers/usb/dwc3/core.h |    1 +
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/phy/tegra/xusb-tegra186.c
-+++ b/drivers/phy/tegra/xusb-tegra186.c
-@@ -84,6 +84,7 @@
- #define XUSB_PADCTL_USB2_BIAS_PAD_CTL0		0x284
- #define  BIAS_PAD_PD				BIT(11)
- #define  HS_SQUELCH_LEVEL(x)			(((x) & 0x7) << 0)
-+#define  HS_DISCON_LEVEL(x)			(((x) & 0x7) << 3)
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -892,6 +892,8 @@ static bool dwc3_core_is_valid(struct dw
  
- #define XUSB_PADCTL_USB2_BIAS_PAD_CTL1		0x288
- #define  USB2_TRK_START_TIMER(x)		(((x) & 0x7f) << 12)
-@@ -623,6 +624,8 @@ static void tegra186_utmi_bias_pad_power
- 	value &= ~BIAS_PAD_PD;
- 	value &= ~HS_SQUELCH_LEVEL(~0);
- 	value |= HS_SQUELCH_LEVEL(priv->calib.hs_squelch);
-+	value &= ~HS_DISCON_LEVEL(~0);
-+	value |= HS_DISCON_LEVEL(0x7);
- 	padctl_writel(padctl, value, XUSB_PADCTL_USB2_BIAS_PAD_CTL0);
+ 	reg = dwc3_readl(dwc->regs, DWC3_GSNPSID);
+ 	dwc->ip = DWC3_GSNPS_ID(reg);
++	if (dwc->ip == DWC4_IP)
++		dwc->ip = DWC32_IP;
  
- 	udelay(1);
+ 	/* This should read as U3 followed by revision number */
+ 	if (DWC3_IP_IS(DWC3)) {
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1221,6 +1221,7 @@ struct dwc3 {
+ #define DWC3_IP			0x5533
+ #define DWC31_IP		0x3331
+ #define DWC32_IP		0x3332
++#define DWC4_IP			0x3430
+ 
+ 	u32			revision;
+ 
 
 
 
