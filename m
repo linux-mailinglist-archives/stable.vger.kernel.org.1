@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-212404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sF08Kf84eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:43 +0100
+	id yEmqJSM0eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12AE9A5A71
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:43 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4AFA51A0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DBEE43150CB1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18DDD301079B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F192EA172;
-	Wed, 28 Jan 2026 15:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E88B2D1F7B;
+	Wed, 28 Jan 2026 16:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BUG/nt2q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXBe9mdB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3765527FD4A;
-	Wed, 28 Jan 2026 15:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D641081AA8;
+	Wed, 28 Jan 2026 16:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615404; cv=none; b=Z1rjWtOpwOloNokQHQ4J1APl3BD3zGkzPk6XwnQuybBPpqQVsXaEAwsImkpvOnfeni7Saw97XXoe6XNufq2GOdu6vBwn4EH8a81ZsOxDQgDDCQ+zzwDic12H2hME6siGRheHjt74fvFUpuK/Cj4RWOH5wFqN9eCGfazk470/i1I=
+	t=1769616186; cv=none; b=C5U0nmV3EVsSp0asO2kwXa6hSrFnkym8CBIaAGtjmsVQLrf1vTHbzwspZGlEijtztqjy2G/iLPtfx/X1Pu8/0G6/WVaMveNOBp/RZsANvPcp0R8L3nR7FMgpZoZM2NCOoMbRUcyl6XYwmC6cWkCkZQi+0kMwlfl/VXM3oQwfjlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615404; c=relaxed/simple;
-	bh=b7QE6wx5e9mfyr4iQuOpoZIz+PZ6eHKNcjSe1rkoiKI=;
+	s=arc-20240116; t=1769616186; c=relaxed/simple;
+	bh=Qwdqtz42dWwdRYyZrN4kBZ/LNj+N35d3UC+MhuFVIx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bp/tSuG7l8chh/t+R0t/v/K1G4F+aSNc7cu1WhMgmyBktye048OAc5G3Wwy50HHI9Lmz3YO4olaywRQ/IfCYko3nnWAPr6ImKDYk2yGgx7ppzY9p6H1SWGlEVZKF9FKV+b9BnBAKrCvEDVf5Za17kXORb7X9K1TsJyaG66Jj+jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BUG/nt2q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B029C4CEF1;
-	Wed, 28 Jan 2026 15:50:03 +0000 (UTC)
+	 MIME-Version; b=qGX/zCCPZTuOD9JiO7jhrFPdtTrA8gqBt1jSWBt2bl6aAEJUSlq++ZGYxhoWs6fbn48ll8ixbj1pIqK2Z4kCOw6PCmFpZUpJf68YlHVPROcku10urZNyrNOwfe7pkgnO7H3lGNadNUYJZKcsa6G1/WU8TLiHmPmNwFaBzPowwsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXBe9mdB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A51AC4CEF1;
+	Wed, 28 Jan 2026 16:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615404;
-	bh=b7QE6wx5e9mfyr4iQuOpoZIz+PZ6eHKNcjSe1rkoiKI=;
+	s=korg; t=1769616186;
+	bh=Qwdqtz42dWwdRYyZrN4kBZ/LNj+N35d3UC+MhuFVIx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BUG/nt2qZwv0hmNkKPrF1fi3B0ZlACWjJ6SQnMFHbknVt+PFYOH0f87iv2OCCHyTl
-	 m7Jblq6oC+MaDFSuJR0PBO/BqY5fBpLt/+GILRWWAajzNibwMtmUMqqIAIqNfyvvMg
-	 oQRTgeu6P3mBHaI4PNqFQr+Zv/b7qckVjuJt6DF0=
+	b=mXBe9mdBjNKm0DG00i/VRI4rspihTuoS0D47d6egPNEAsaofH1E/CnUiDQXNqMxGf
+	 JQOTrWaN5ehI4iv3PeLnX31pSaz3U2mBEK9gFbRxvoIGPNwB7te8zxdEnfsdXntZK/
+	 sXfjbDCtW11b3y+nke459SSkF9kICVEeq9KPx8dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Wang <jasowang@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	syzbot+b4d960daf7a3c7c2b7b1@syzkaller.appspotmail.com,
-	Will Deacon <will@kernel.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Heitor Alves de Siqueira <halves@igalia.com>
-Subject: [PATCH 6.12 169/169] vsock/virtio: Fix message iterator handling on transmit path
-Date: Wed, 28 Jan 2026 16:24:12 +0100
-Message-ID: <20260128145340.112425445@linuxfoundation.org>
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.18 208/227] can: esd_usb: esd_usb_read_bulk_callback(): fix URB memory leak
+Date: Wed, 28 Jan 2026 16:24:13 +0100
+Message-ID: <20260128145351.921361863@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,110 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212404-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-212636-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,b4d960daf7a3c7c2b7b1];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: 12AE9A5A71
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email]
+X-Rspamd-Queue-Id: 4B4AFA51A0
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[Upstream commit 7fb1291257ea1e27dbc3f34c6a37b4d640aafdd7]
+commit 5a4391bdc6c8357242f62f22069c865b792406b3 upstream.
 
-Commit 6693731487a8 ("vsock/virtio: Allocate nonlinear SKBs for handling
-large transmit buffers") converted the virtio vsock transmit path to
-utilise nonlinear SKBs when handling large buffers. As part of this
-change, virtio_transport_fill_skb() was updated to call
-skb_copy_datagram_from_iter() instead of memcpy_from_msg() as the latter
-expects a single destination buffer and cannot handle nonlinear SKBs
-correctly.
+Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
+gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-Unfortunately, during this conversion, I overlooked the error case when
-the copying function returns -EFAULT due to a fault on the input buffer
-in userspace. In this case, memcpy_from_msg() reverts the iterator to
-its initial state thanks to copy_from_iter_full() whereas
-skb_copy_datagram_from_iter() leaves the iterator partially advanced.
-This results in a WARN_ONCE() from the vsock code, which expects the
-iterator to stay in sync with the number of bytes transmitted so that
-virtio_transport_send_pkt_info() can return -EFAULT when it is called
-again:
+In esd_usb_open(), the URBs for USB-in transfers are allocated, added to
+the dev->rx_submitted anchor and submitted. In the complete callback
+esd_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
+esd_usb_close() the URBs are freed by calling
+usb_kill_anchored_urbs(&dev->rx_submitted).
 
-  ------------[ cut here ]------------
-  'send_pkt()' returns 0, but 65536 expected
-  WARNING: CPU: 0 PID: 5503 at net/vmw_vsock/virtio_transport_common.c:428 virtio_transport_send_pkt_info+0xd11/0xf00 net/vmw_vsock/virtio_transport_common.c:426
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 5503 Comm: syz.0.17 Not tainted 6.16.0-syzkaller-12063-g37816488247d #0 PREEMPT(full)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in esd_usb_close().
 
-Call virtio_transport_fill_skb_full() to restore the previous iterator
-behaviour.
+Fix the memory leak by anchoring the URB in the
+esd_usb_read_bulk_callback() to the dev->rx_submitted anchor.
 
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>
-Fixes: 6693731487a8 ("vsock/virtio: Allocate nonlinear SKBs for handling large transmit buffers")
-Reported-by: syzbot+b4d960daf7a3c7c2b7b1@syzkaller.appspotmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://patch.msgid.link/20250818180355.29275-3-will@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[halves: adjust __zerocopy_sg_from_iter() parameters]
-Signed-off-by: Heitor Alves de Siqueira <halves@igalia.com>
+Fixes: 96d8e90382dc ("can: Add driver for esd CAN-USB/2 device")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-2-4b8cb2915571@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/virtio_transport_common.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/can/usb/esd_usb.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -106,13 +106,15 @@ static int virtio_transport_fill_skb(str
- 				     size_t len,
- 				     bool zcopy)
- {
-+	struct msghdr *msg = info->msg;
+--- a/drivers/net/can/usb/esd_usb.c
++++ b/drivers/net/can/usb/esd_usb.c
+@@ -541,13 +541,20 @@ resubmit_urb:
+ 			  urb->transfer_buffer, ESD_USB_RX_BUFFER_SIZE,
+ 			  esd_usb_read_bulk_callback, dev);
+ 
++	usb_anchor_urb(urb, &dev->rx_submitted);
 +
- 	if (zcopy)
--		return __zerocopy_sg_from_iter(info->msg, NULL, skb,
--					       &info->msg->msg_iter,
-+		return __zerocopy_sg_from_iter(msg, NULL, skb,
-+					       &msg->msg_iter,
- 					       len);
- 
- 	virtio_vsock_skb_put(skb, len);
--	return skb_copy_datagram_from_iter(skb, 0, &info->msg->msg_iter, len);
-+	return skb_copy_datagram_from_iter_full(skb, 0, &msg->msg_iter, len);
- }
- 
- static void virtio_transport_init_hdr(struct sk_buff *skb,
+ 	err = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!err)
++		return;
++
++	usb_unanchor_urb(urb);
++
+ 	if (err == -ENODEV) {
+ 		for (i = 0; i < dev->net_count; i++) {
+ 			if (dev->nets[i])
+ 				netif_device_detach(dev->nets[i]->netdev);
+ 		}
+-	} else if (err) {
++	} else {
+ 		dev_err(dev->udev->dev.parent,
+ 			"failed resubmitting read bulk urb: %pe\n", ERR_PTR(err));
+ 	}
 
 
 
