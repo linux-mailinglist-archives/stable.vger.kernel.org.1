@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-212365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEb9FOcwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212365-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:11 +0100
+	id CK4NHkQ6emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:33:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2EC0A4A25
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF1FAA5CD6
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:33:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 94EB43093043
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8F7E7303E507
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EC93033C3;
-	Wed, 28 Jan 2026 15:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE503033C4;
+	Wed, 28 Jan 2026 16:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LQoTLX0L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxmPIb5m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A87F2DF155;
-	Wed, 28 Jan 2026 15:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E59E81AA8;
+	Wed, 28 Jan 2026 16:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615276; cv=none; b=tkO/0a+kaeVuQfrTb92dprYy7oDlQ7MJX7NwjJFnLXTa0KFc6jS09spe4Npvh1VWtVASCf/kyPQaguOMmyUjaQ74ygIhhzwRpbq862J90uQcC9RvVSW5H7lkxAf+2RmRUULZWd1bWVHnRHyB7qTuKqFK0iLDZGbrYXRHP5P5LYE=
+	t=1769616032; cv=none; b=sjp1DplyepKE4NyP+6OIdmb/+EhtImq2DnxjekDCgpLxZ+1PykRSorgixpAFgw0dCpRM2V+V27HqYiKMdGB0tp9ZR05MzbPlZZqctjC7YfERNsr4Q5yrsXsfNLecyZ/yuq01Ou3L/QMwi3ekQXFx7tQxagdtpRAJTn0O7mzgBsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615276; c=relaxed/simple;
-	bh=FIxOqBiq65TWqMj4SCnOXKmjVwxY8GYfbZepMxnzrvI=;
+	s=arc-20240116; t=1769616032; c=relaxed/simple;
+	bh=n5T5sj9akrOY3vUqhs5kWrQVF9cNlGotAUwcaFlmWbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UB4jkJ31Dk0w/7NfKDmSyy2JJZ0CLYKhFhIHSmqlLmf2CrAbvazR2epUiDoPDYxhAh1dko0jG8Y5pgAPbOPL+HQbMLruf2Tw1ORBFGg1mf/6SSAT0TuSi7eOykej0k+FZDTzbNaue8V60glxdTjOvhvrqI/6XT3plcw9EbnBSQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LQoTLX0L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B440C4CEF1;
-	Wed, 28 Jan 2026 15:47:55 +0000 (UTC)
+	 MIME-Version; b=MKVyl0Yl7rV3WXX9Lb8MhobcgxIh/6inZzCFnvWpqjbRmEHqd/JzZo0ahuYdlqQeMSzLKUwInNjy17emeyUgjdzqj2zKJnr9K2ZQi2b3b9wSs40pyLMRuHUT7Q/wHpkMvV2PSeBiBDRaAbp0Hwjx3Qf3oLagEX6wn8mY1/vR27I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxmPIb5m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FF5C4CEF1;
+	Wed, 28 Jan 2026 16:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615275;
-	bh=FIxOqBiq65TWqMj4SCnOXKmjVwxY8GYfbZepMxnzrvI=;
+	s=korg; t=1769616032;
+	bh=n5T5sj9akrOY3vUqhs5kWrQVF9cNlGotAUwcaFlmWbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LQoTLX0LDZrPsA27fp7pSiL6gzeFDx8Dn8dcMJEUpPn0ywWNSd8QRnMTGacKch70p
-	 navg5C5fpEOQeIzeeH0BkTxyGY60cg5gqtacAJRduAn+Xw7x+gM13ti5uuKG7UTqPk
-	 is8nU8IOdINgpmsmNNmGmhmUDcb4iFxzlGfLMYpU=
+	b=CxmPIb5mHqKMJZaEkO/DLMFDIXFNg0cxmRpZ4D1oHwNiSBl9IsKbUxrnJifZpBtDn
+	 xGj+2lGGJ0HOg3KuP4DoAkU89p9KhUFcj/Hbk5lYFASzJo3l934jaDT+DeLEhrkCgY
+	 b8GRFYgn1AHuhqyl25T1/EynpoAJyGD8NZrEOJdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 6.12 131/169] uacce: fix isolate sysfs check condition
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Berk Cem Goksel <berkcgoksel@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 169/227] ALSA: usb-audio: Fix use-after-free in snd_usb_mixer_free()
 Date: Wed, 28 Jan 2026 16:23:34 +0100
-Message-ID: <20260128145338.723352088@linuxfoundation.org>
+Message-ID: <20260128145350.532794387@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +67,99 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212591-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212365-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E2EC0A4A25
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: AF1FAA5CD6
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Berk Cem Goksel <berkcgoksel@gmail.com>
 
-commit 98eec349259b1fd876f350b1c600403bcef8f85d upstream.
+commit 930e69757b74c3ae083b0c3c7419bfe7f0edc7b2 upstream.
 
-uacce supports the device isolation feature. If the driver
-implements the isolate_err_threshold_read and
-isolate_err_threshold_write callback functions, uacce will create
-sysfs files now. Users can read and configure the isolation policy
-through sysfs. Currently, sysfs files are created as long as either
-isolate_err_threshold_read or isolate_err_threshold_write callback
-functions are present.
+When snd_usb_create_mixer() fails, snd_usb_mixer_free() frees
+mixer->id_elems but the controls already added to the card still
+reference the freed memory. Later when snd_card_register() runs,
+the OSS mixer layer calls their callbacks and hits a use-after-free read.
 
-However, accessing a non-existent callback function may cause the
-system to crash. Therefore, intercept the creation of sysfs if
-neither read nor write exists; create sysfs if either is supported,
-but intercept unsupported operations at the call site.
+Call trace:
+  get_ctl_value+0x63f/0x820 sound/usb/mixer.c:411
+  get_min_max_with_quirks.isra.0+0x240/0x1f40 sound/usb/mixer.c:1241
+  mixer_ctl_feature_info+0x26b/0x490 sound/usb/mixer.c:1381
+  snd_mixer_oss_build_test+0x174/0x3a0 sound/core/oss/mixer_oss.c:887
+  ...
+  snd_card_register+0x4ed/0x6d0 sound/core/init.c:923
+  usb_audio_probe+0x5ef/0x2a90 sound/usb/card.c:1025
 
-Fixes: e3e289fbc0b5 ("uacce: supports device isolation feature")
+Fix by calling snd_ctl_remove() for all mixer controls before freeing
+id_elems. We save the next pointer first because snd_ctl_remove()
+frees the current element.
+
+Fixes: 6639b6c2367f ("[ALSA] usb-audio - add mixer control notifications")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-3-huangchenghai2@huawei.com
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
+Link: https://patch.msgid.link/20260120102855.7300-1-berkcgoksel@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/uacce/uacce.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/usb/mixer.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -382,6 +382,9 @@ static ssize_t isolate_strategy_show(str
- 	struct uacce_device *uacce = to_uacce_device(dev);
- 	u32 val;
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -2945,10 +2945,23 @@ static int parse_audio_unit(struct mixer
  
-+	if (!uacce->ops->isolate_err_threshold_read)
-+		return -ENOENT;
+ static void snd_usb_mixer_free(struct usb_mixer_interface *mixer)
+ {
++	struct usb_mixer_elem_list *list, *next;
++	int id;
 +
- 	val = uacce->ops->isolate_err_threshold_read(uacce);
+ 	/* kill pending URBs */
+ 	snd_usb_mixer_disconnect(mixer);
  
- 	return sysfs_emit(buf, "%u\n", val);
-@@ -394,6 +397,9 @@ static ssize_t isolate_strategy_store(st
- 	unsigned long val;
- 	int ret;
- 
-+	if (!uacce->ops->isolate_err_threshold_write)
-+		return -ENOENT;
-+
- 	if (kstrtoul(buf, 0, &val) < 0)
- 		return -EINVAL;
- 
+-	kfree(mixer->id_elems);
++	/* Unregister controls first, snd_ctl_remove() frees the element */
++	if (mixer->id_elems) {
++		for (id = 0; id < MAX_ID_ELEMS; id++) {
++			for (list = mixer->id_elems[id]; list; list = next) {
++				next = list->next_id_elem;
++				if (list->kctl)
++					snd_ctl_remove(mixer->chip->card, list->kctl);
++			}
++		}
++		kfree(mixer->id_elems);
++	}
+ 	if (mixer->urb) {
+ 		kfree(mixer->urb->transfer_buffer);
+ 		usb_free_urb(mixer->urb);
 
 
 
