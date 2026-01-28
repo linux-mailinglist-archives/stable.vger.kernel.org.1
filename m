@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-212245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212446-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJ9JL/Evemkc4gEAu9opvQ
-	(envelope-from <stable+bounces-212245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:05 +0100
+	id AJcpMIIzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212446-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F846A478B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B140A5031
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 774A3302AD82
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46B2B30C2323
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF16C2F7444;
-	Wed, 28 Jan 2026 15:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CC33043CE;
+	Wed, 28 Jan 2026 15:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpJ8CSLT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diSZUy2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9FD2F692C;
-	Wed, 28 Jan 2026 15:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1CE27BF79;
+	Wed, 28 Jan 2026 15:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614870; cv=none; b=ZQ9kngb1ZnNLk/xtnn51AS1GCjIy0D6CZYu+Q9vtf9spjnEbHbLUFsfsVJGeV9WnaUdOqzhnuoyF2rEtRnInA7uMTClBhHfsQ6zlh20HoUemzRY53WvY3iJpikiYL24Fl/4c4lg8RReoZTR91JcFprIGGb+35QEk4+KEzqZglL8=
+	t=1769615547; cv=none; b=pt7tAtRoELqvy1aci1UWC6aZWelhbVDPJRFCCL62mvYt9QY+MtZFlYqaIi/Bib9U7I+GE5xTgv7x3ebk2xIZloeJ5HO2XvrqgMfjB/YjcRfkc5p/80oB5SQTRld6t2nbo33QhEqiroBACjf5TI3Oz0DJv3Zbpp0hWj4AzHb4DcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614870; c=relaxed/simple;
-	bh=OUlvegC9xxurRvZJPEFDK3ZuTiYWQ762XN/fnEgjuh8=;
+	s=arc-20240116; t=1769615547; c=relaxed/simple;
+	bh=m41ATWGUgjPIoRiZx89yK+H+wMGHZ919IwLKy37397Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Umf7eDinCiEpsX2RpaEnyNr4ThlKP0Dp2jc9KR9Vf/4UbChiP1Jv7pd79S7ykVOa+iS6ck2nbfgHsYe0pWOPJRLQoC0nNZCC/pA8rN1ki6ELevbT5Qq32oiAccZ5WvwdscvYxoSnVix4jSAfAgwNCwmhm4xFSS5Wg0Q1CFSBY+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpJ8CSLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE364C4CEF1;
-	Wed, 28 Jan 2026 15:41:09 +0000 (UTC)
+	 MIME-Version; b=B3VIh9r9K14agiCe3PvJzOzK6wZsrsEWZzVTmecKlm+jMN0Gr0NNuC3XOfsyuO2zCNhufaH9WKaKxZS44AK28uxiAQsYxwkLKMpzCIm/w12XlGlHg9BDWzBTMNc19bhlk6BtMvYFX9p1cRrH63k6EllGaIEp/+/hVM/H8L9vf08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diSZUy2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C81FC4CEF7;
+	Wed, 28 Jan 2026 15:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614870;
-	bh=OUlvegC9xxurRvZJPEFDK3ZuTiYWQ762XN/fnEgjuh8=;
+	s=korg; t=1769615547;
+	bh=m41ATWGUgjPIoRiZx89yK+H+wMGHZ919IwLKy37397Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpJ8CSLTsysqHvGy0NsN9RbpLTOUKEPvb9PkqY0tj9+TUuXWOIRjYSnStpxzXGz5R
-	 dk0X+T6XXZWFVLysBzN59Q/pMcL7dz/rrZ2jaaDdNt0VdQlQpz6Y61IpGn2Oazchc+
-	 uL3ntihharrbG5aGF2v0HyXq878LqVzxTb6Ncx0U=
+	b=diSZUy2pYHO4zPIfDHOrhgh0PeEl0IswiWTRNpWZqRdIOBm65zifzSZUv2nDblM2w
+	 Br1vxcXpU1w+7XbneIUEOig4efWiTBVAvdsJEy4Qe4OhV3ZY5vp1JIS72c5zitxGlA
+	 wd5VaNF+O1k7HKz5o1omB6wsoNE3JS5cqPdzZTBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Wojtek Wasko <wwasko@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	James Chapman <jchapman@katalix.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/169] testptp: Add option to open PHC in readonly mode
+Subject: [PATCH 6.18 042/227] l2tp: avoid one data-race in l2tp_tunnel_del_work()
 Date: Wed, 28 Jan 2026 16:21:27 +0100
-Message-ID: <20260128145334.171288227@linuxfoundation.org>
+Message-ID: <20260128145345.856851269@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,153 +68,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com,davemloft.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212245-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212446-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.957];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,7312e82745f7fa2526db];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linux.dev:email,nvidia.com:email,davemloft.net:email]
-X-Rspamd-Queue-Id: 5F846A478B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,katalix.com:email]
+X-Rspamd-Queue-Id: 4B140A5031
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojtek Wasko <wwasko@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 76868642e42795353106197abf9c607ad80f4c9e ]
+[ Upstream commit 7a29f6bf60f2590fe5e9c4decb451e19afad2bcf ]
 
-PTP Hardware Clocks no longer require WRITE permission to perform
-readonly operations, such as listing device capabilities or listening to
-EXTTS events once they have been enabled by a process with WRITE
-permissions.
+We should read sk->sk_socket only when dealing with kernel sockets.
 
-Add '-r' option to testptp to open the PHC in readonly mode instead of
-the default read-write mode. Skip enabling EXTTS if readonly mode is
-requested.
+syzbot reported the following data-race:
 
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+BUG: KCSAN: data-race in l2tp_tunnel_del_work / sk_common_release
+
+write to 0xffff88811c182b20 of 8 bytes by task 5365 on cpu 0:
+  sk_set_socket include/net/sock.h:2092 [inline]
+  sock_orphan include/net/sock.h:2118 [inline]
+  sk_common_release+0xae/0x230 net/core/sock.c:4003
+  udp_lib_close+0x15/0x20 include/net/udp.h:325
+  inet_release+0xce/0xf0 net/ipv4/af_inet.c:437
+  __sock_release net/socket.c:662 [inline]
+  sock_close+0x6b/0x150 net/socket.c:1455
+  __fput+0x29b/0x650 fs/file_table.c:468
+  ____fput+0x1c/0x30 fs/file_table.c:496
+  task_work_run+0x131/0x1a0 kernel/task_work.c:233
+  resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+  __exit_to_user_mode_loop kernel/entry/common.c:44 [inline]
+  exit_to_user_mode_loop+0x1fe/0x740 kernel/entry/common.c:75
+  __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
+  syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
+  syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
+  syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
+  do_syscall_64+0x1e1/0x2b0 arch/x86/entry/syscall_64.c:100
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff88811c182b20 of 8 bytes by task 827 on cpu 1:
+  l2tp_tunnel_del_work+0x2f/0x1a0 net/l2tp/l2tp_core.c:1418
+  process_one_work kernel/workqueue.c:3257 [inline]
+  process_scheduled_works+0x4ce/0x9d0 kernel/workqueue.c:3340
+  worker_thread+0x582/0x770 kernel/workqueue.c:3421
+  kthread+0x489/0x510 kernel/kthread.c:463
+  ret_from_fork+0x149/0x290 arch/x86/kernel/process.c:158
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+
+value changed: 0xffff88811b818000 -> 0x0000000000000000
+
+Fixes: d00fa9adc528 ("l2tp: fix races with tunnel socket close")
+Reported-by: syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6968b029.050a0220.58bed.0016.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: James Chapman <jchapman@katalix.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Link: https://patch.msgid.link/20260115092139.3066180-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 37 +++++++++++++++++----------
- 1 file changed, 23 insertions(+), 14 deletions(-)
+ net/l2tp/l2tp_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index 58064151f2c89..edc08a4433fd4 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -140,6 +140,7 @@ static void usage(char *progname)
- 		" -H val     set output phase to 'val' nanoseconds (requires -p)\n"
- 		" -w val     set output pulse width to 'val' nanoseconds (requires -p)\n"
- 		" -P val     enable or disable (val=1|0) the system clock PPS\n"
-+		" -r         open the ptp clock in readonly mode\n"
- 		" -s         set the ptp clock time from the system time\n"
- 		" -S         set the system time from the ptp clock time\n"
- 		" -t val     shift the ptp clock time by 'val' seconds\n"
-@@ -188,6 +189,7 @@ int main(int argc, char *argv[])
- 	int pin_index = -1, pin_func;
- 	int pps = -1;
- 	int seconds = 0;
-+	int readonly = 0;
- 	int settime = 0;
- 	int channel = -1;
- 	clockid_t ext_clockid = CLOCK_REALTIME;
-@@ -200,7 +202,7 @@ int main(int argc, char *argv[])
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index d6f4bef0236dc..a0682e63fc637 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -1416,8 +1416,6 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
+ {
+ 	struct l2tp_tunnel *tunnel = container_of(work, struct l2tp_tunnel,
+ 						  del_work);
+-	struct sock *sk = tunnel->sock;
+-	struct socket *sock = sk->sk_socket;
  
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xy:z"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -252,6 +254,9 @@ int main(int argc, char *argv[])
- 		case 'P':
- 			pps = atoi(optarg);
- 			break;
-+		case 'r':
-+			readonly = 1;
-+			break;
- 		case 's':
- 			settime = 1;
- 			break;
-@@ -308,7 +313,7 @@ int main(int argc, char *argv[])
- 		}
- 	}
+ 	l2tp_tunnel_closeall(tunnel);
  
--	fd = open(device, O_RDWR);
-+	fd = open(device, readonly ? O_RDONLY : O_RDWR);
- 	if (fd < 0) {
- 		fprintf(stderr, "opening %s: %s\n", device, strerror(errno));
- 		return -1;
-@@ -436,14 +441,16 @@ int main(int argc, char *argv[])
- 	}
- 
- 	if (extts) {
--		memset(&extts_request, 0, sizeof(extts_request));
--		extts_request.index = index;
--		extts_request.flags = PTP_ENABLE_FEATURE;
--		if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
--			perror("PTP_EXTTS_REQUEST");
--			extts = 0;
--		} else {
--			puts("external time stamp request okay");
-+		if (!readonly) {
-+			memset(&extts_request, 0, sizeof(extts_request));
-+			extts_request.index = index;
-+			extts_request.flags = PTP_ENABLE_FEATURE;
-+			if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
-+				perror("PTP_EXTTS_REQUEST");
-+				extts = 0;
-+			} else {
-+				puts("external time stamp request okay");
-+			}
- 		}
- 		for (; extts; extts--) {
- 			cnt = read(fd, &event, sizeof(event));
-@@ -455,10 +462,12 @@ int main(int argc, char *argv[])
- 			       event.t.sec, event.t.nsec);
- 			fflush(stdout);
- 		}
--		/* Disable the feature again. */
--		extts_request.flags = 0;
--		if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
--			perror("PTP_EXTTS_REQUEST");
-+		if (!readonly) {
-+			/* Disable the feature again. */
-+			extts_request.flags = 0;
-+			if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
-+				perror("PTP_EXTTS_REQUEST");
-+			}
- 		}
- 	}
- 
+@@ -1425,6 +1423,8 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
+ 	 * the sk API to release it here.
+ 	 */
+ 	if (tunnel->fd < 0) {
++		struct socket *sock = tunnel->sock->sk_socket;
++
+ 		if (sock) {
+ 			kernel_sock_shutdown(sock, SHUT_RDWR);
+ 			sock_release(sock);
 -- 
 2.51.0
 
