@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDHJKFs0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:55 +0100
+	id 2NLWFPAsemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:36:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C724A5216
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD7FA40DF
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F208B31FE903
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 40F703021594
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B2630CDBE;
-	Wed, 28 Jan 2026 15:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0CC2D6605;
+	Wed, 28 Jan 2026 15:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="US8KuVJb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVElD2yz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18962874FE;
-	Wed, 28 Jan 2026 15:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8B32D5408;
+	Wed, 28 Jan 2026 15:35:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615796; cv=none; b=A4WicPATVNTDQobgz8NiDymOzoeqrXsqEHgAU1KbdQWXa634OJG5i20LuoaHry+4/qtP5DCksvPJz2dKWtmNJdFngMF93L7oBy7BUi9NSLsOrM7NRHQjCdlyqs7NbpZb1tGJ9PZZMO89RhezkZ8LhyWk5E3hnSwLCKlDVjAtUhs=
+	t=1769614545; cv=none; b=bqRscucTYlzUC2ytU2RBiS7JpIvGklJxjEfA1du4goJiqmEgExvb7DgkmxgOyFbbrcfNQOSHa7SXO/9WH77q2FmAqerpg4WFpMe2lK2ZNebxNnji0+e2WyD5TkD9kPCc2T/Qm+ZY4WsYfRSEPHqUhUG6VhXuEwiOvBTmC/1Srds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615796; c=relaxed/simple;
-	bh=ds59UJqtC1tRaznlPt4icHJkG4uCXyM4XPUO7ZckUZI=;
+	s=arc-20240116; t=1769614545; c=relaxed/simple;
+	bh=/VLHWouTnQ2RfbAE1kqhevZUteCjkeaOyDy0SX23oZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RZOZq634lWktQvvI/EU6PN+2zPUlrmlKmaz8Bk7qduEczW6QgIqPG2c8eLRwkID8adxAkQLmK76qspeE7qFLUJN5YzjTTAnkVHwSOeLpYM/q+7cKpkpU2A8+or/QsM3zAaGZ3xbznNR7l63Z1pI38f5AMLklFOG5zTw96WrLGqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=US8KuVJb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F8FC4CEF1;
-	Wed, 28 Jan 2026 15:56:35 +0000 (UTC)
+	 MIME-Version; b=oVOHVhgnGJ45LXI5ET10duZWkJwNLI/5cyW/mEzzQOK0zQ9/to0Yat3wa9eCaIPIkGRPTThDP2gEtA2IfUmQV4LsEuMrMwjbLn8efpzMVq78cxWaHc99xsMrPmJ1t+Y/GeqMU7+j+r0tv04NQFsa/ck3GqYMy5VuEElHUiqUhC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nVElD2yz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1408FC4CEF1;
+	Wed, 28 Jan 2026 15:35:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615796;
-	bh=ds59UJqtC1tRaznlPt4icHJkG4uCXyM4XPUO7ZckUZI=;
+	s=korg; t=1769614545;
+	bh=/VLHWouTnQ2RfbAE1kqhevZUteCjkeaOyDy0SX23oZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=US8KuVJbUSGS6WYx+Q3wdU4PpPlpHRctWqeXzmXMRdFtaCcpPUpxr16rw8nw4IXEw
-	 Cxr3WoIKY/KcRFiUI1fJhTiJ0pSZeg8up5luv0Ct2CYm7E4gsGvDBOp9x8ms18vFwU
-	 AIN/OULby5Fnp9c1gSuBQvp4vOBoS26qCXQDwfDE=
+	b=nVElD2yzxdTWj8Npkd7m9vZCUXNeHigjpOaKbVdDpOo3+mrbwX+nS7s1+not2QzLi
+	 mLTDDnaUPTQaOdFA5rW0MlMYUfTo8UKZ778gMEvjjnn/a6IcR+1oGVDG4GKmNRixSj
+	 eiSrqEm8qq+IrpCX8feUAnjUSfbzFJ/a0CKMTj0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 099/227] drm/xe: Disable timestamp WA on VFs
+Subject: [PATCH 6.6 168/254] mISDN: annotate data-race around dev->work
 Date: Wed, 28 Jan 2026 16:22:24 +0100
-Message-ID: <20260128145348.028961226@linuxfoundation.org>
+Message-ID: <20260128145350.853405803@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +64,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212521-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212146-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 0C724A5216
+	DBL_BLOCKED_OPENRESOLVER(0.00)[googlegroups.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: DCD7FA40DF
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit b886aa65eafe3098bbd691f0ca4a9abce03f9d03 ]
+[ Upstream commit 8175dbf174d487afab81e936a862a8d9b8a1ccb6 ]
 
-The timestamp WA does not work on a VF because it requires reading MMIO
-registers, which are inaccessible on a VF. This timestamp WA confuses
-LRC sampling on a VF during TDR, as the LRC timestamp would always read
-as 1 for any active context. Disable the timestamp WA on VFs to avoid
-this confusion.
+dev->work can re read locklessly in mISDN_read()
+and mISDN_poll(). Add READ_ONCE()/WRITE_ONCE() annotations.
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Fixes: 617d824c5323 ("drm/xe: Add WA BB to capture active context utilization")
-Link: https://patch.msgid.link/20260110012739.2888434-7-matthew.brost@intel.com
-(cherry picked from commit efffd56e4bd894e0935eea00e437f233b6cebc0d)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+BUG: KCSAN: data-race in mISDN_ioctl / mISDN_read
+
+write to 0xffff88812d848280 of 4 bytes by task 10864 on cpu 1:
+  misdn_add_timer drivers/isdn/mISDN/timerdev.c:175 [inline]
+  mISDN_ioctl+0x2fb/0x550 drivers/isdn/mISDN/timerdev.c:233
+  vfs_ioctl fs/ioctl.c:51 [inline]
+  __do_sys_ioctl fs/ioctl.c:597 [inline]
+  __se_sys_ioctl+0xce/0x140 fs/ioctl.c:583
+  __x64_sys_ioctl+0x43/0x50 fs/ioctl.c:583
+  x64_sys_call+0x14b0/0x3000 arch/x86/include/generated/asm/syscalls_64.h:17
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd8/0x2c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffff88812d848280 of 4 bytes by task 10857 on cpu 0:
+  mISDN_read+0x1f2/0x470 drivers/isdn/mISDN/timerdev.c:112
+  do_loop_readv_writev fs/read_write.c:847 [inline]
+  vfs_readv+0x3fb/0x690 fs/read_write.c:1020
+  do_readv+0xe7/0x210 fs/read_write.c:1080
+  __do_sys_readv fs/read_write.c:1165 [inline]
+  __se_sys_readv fs/read_write.c:1162 [inline]
+  __x64_sys_readv+0x45/0x50 fs/read_write.c:1162
+  x64_sys_call+0x2831/0x3000 arch/x86/include/generated/asm/syscalls_64.h:20
+  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+  do_syscall_64+0xd8/0x2c0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x00000000 -> 0x00000001
+
+Fixes: 1b2b03f8e514 ("Add mISDN core files")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260118132528.2349573-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_lrc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/isdn/mISDN/timerdev.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
-index 47e9df7750725..d77ef556e994e 100644
---- a/drivers/gpu/drm/xe/xe_lrc.c
-+++ b/drivers/gpu/drm/xe/xe_lrc.c
-@@ -1050,6 +1050,9 @@ static ssize_t setup_utilization_wa(struct xe_lrc *lrc,
- {
- 	u32 *cmd = batch;
- 
-+	if (IS_SRIOV_VF(gt_to_xe(lrc->gt)))
-+		return 0;
+diff --git a/drivers/isdn/mISDN/timerdev.c b/drivers/isdn/mISDN/timerdev.c
+index 83d6b484d3c6c..2ea1887ca2fa0 100644
+--- a/drivers/isdn/mISDN/timerdev.c
++++ b/drivers/isdn/mISDN/timerdev.c
+@@ -109,14 +109,14 @@ mISDN_read(struct file *filep, char __user *buf, size_t count, loff_t *off)
+ 		spin_unlock_irq(&dev->lock);
+ 		if (filep->f_flags & O_NONBLOCK)
+ 			return -EAGAIN;
+-		wait_event_interruptible(dev->wait, (dev->work ||
++		wait_event_interruptible(dev->wait, (READ_ONCE(dev->work) ||
+ 						     !list_empty(list)));
+ 		if (signal_pending(current))
+ 			return -ERESTARTSYS;
+ 		spin_lock_irq(&dev->lock);
+ 	}
+ 	if (dev->work)
+-		dev->work = 0;
++		WRITE_ONCE(dev->work, 0);
+ 	if (!list_empty(list)) {
+ 		timer = list_first_entry(list, struct mISDNtimer, list);
+ 		list_del(&timer->list);
+@@ -141,13 +141,16 @@ mISDN_poll(struct file *filep, poll_table *wait)
+ 	if (*debug & DEBUG_TIMER)
+ 		printk(KERN_DEBUG "%s(%p, %p)\n", __func__, filep, wait);
+ 	if (dev) {
++		u32 work;
 +
- 	if (xe_gt_WARN_ON(lrc->gt, max_len < 12))
- 		return -ENOSPC;
+ 		poll_wait(filep, &dev->wait, wait);
+ 		mask = 0;
+-		if (dev->work || !list_empty(&dev->expired))
++		work = READ_ONCE(dev->work);
++		if (work || !list_empty(&dev->expired))
+ 			mask |= (EPOLLIN | EPOLLRDNORM);
+ 		if (*debug & DEBUG_TIMER)
+ 			printk(KERN_DEBUG "%s work(%d) empty(%d)\n", __func__,
+-			       dev->work, list_empty(&dev->expired));
++			       work, list_empty(&dev->expired));
+ 	}
+ 	return mask;
+ }
+@@ -172,7 +175,7 @@ misdn_add_timer(struct mISDNtimerdev *dev, int timeout)
+ 	struct mISDNtimer	*timer;
  
+ 	if (!timeout) {
+-		dev->work = 1;
++		WRITE_ONCE(dev->work, 1);
+ 		wake_up_interruptible(&dev->wait);
+ 		id = 0;
+ 	} else {
 -- 
 2.51.0
 
