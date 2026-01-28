@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-212358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPJLA+Exemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212358-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:21 +0100
+	id wLaNKIg7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A14A4CAC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D17A5EDB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7B8FB301A601
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74C1C31930EC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9913093A8;
-	Wed, 28 Jan 2026 15:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CB03033C3;
+	Wed, 28 Jan 2026 15:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAxFYKbz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qz1CYxJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9E72C11FD;
-	Wed, 28 Jan 2026 15:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8F02874FE;
+	Wed, 28 Jan 2026 15:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615252; cv=none; b=XRfbtLGWBMFUI3b1gnp+2ybM5sBNLGl8chQ1LxWqxfmXXlWbbppigfWNHILy3d1s/jlSIymFR5+dwaB0tbffOHpYQQkLnM1BbREb0C+ZImspGsXPUgP5EmnM3UaU74gquHCa2M7SnfCT7Y73QmYKxy6DnN6G+BJapDfEaOEkoLU=
+	t=1769615954; cv=none; b=shM1D4cgDnLwsdtrSfKY32tvYIMYND9E8cTVSHkkMxkmNbByk5po+tn25OF7+YTxSvQDZXqm08bm75X3kI0uB4I2PjVxywSCH6KF5i+Nhr93hRXjU028WahaKlq64YvC/mrS96v4AaIVvIah/KlchjvnkefA5CXUGKW+obGLNEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615252; c=relaxed/simple;
-	bh=uPEuUKYYwtojhjAoM5achYlSUhyLEfF/RPBnnUmf5Hg=;
+	s=arc-20240116; t=1769615954; c=relaxed/simple;
+	bh=E7NPyEpMhe4wJW20KmoB20dfhcPNQ2eIFv63qrnI2zQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hi8g07/kNz0Y6XRb1db+/jp8hIIxKdOaw8TmpTF4Wg9xSHkYPdzebcquHkrO9zJtFdMUQgFdWqDLmoxoqalZMaScQUbZeLjEVcCUm+8jJJVoWO4E3lnMCNWWfCcxwMXUwXW3DWyLvCSvkSeniD7f+3fc5T94i4ySk6HHt8rc7ms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAxFYKbz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B28C4CEF1;
-	Wed, 28 Jan 2026 15:47:31 +0000 (UTC)
+	 MIME-Version; b=JytxP/TdUf1Jn+DmTqZx5RcFMCn3ajLZNV75AhA3FAHeIqgQ+i9J+Odqzhs/uRMi/nb4r1U7j+R7soJKanmtYefPctQ1r3BnHNP+HDuBTg7flrfdxam7qw7g45E+myJg1Nxr3eSb5xnZYAThXhEnYrXOczSD+caC73MmatoAxrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qz1CYxJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC8CC4CEF1;
+	Wed, 28 Jan 2026 15:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615252;
-	bh=uPEuUKYYwtojhjAoM5achYlSUhyLEfF/RPBnnUmf5Hg=;
+	s=korg; t=1769615954;
+	bh=E7NPyEpMhe4wJW20KmoB20dfhcPNQ2eIFv63qrnI2zQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fAxFYKbzu4TiHw3sFWldLgcm3U7ztUMSsIcw/mHwVZnsexishU2AasOROtj1tcLwH
-	 uU7wACf34u3uegLN3INQEmmui+TDRyfR8wPEtZqS21uNXwhR/V1cm0LlaaMrbJuY5N
-	 qwoN1bZ8UkgtKyYgkiVHG68zVDWg8SPiU8eI9oTI=
+	b=Qz1CYxJ5Eqd725QiGzUbmNjkm7V3p1moqwBYgJeq80KfUGaAuZCGyeuTI9dG9OCWV
+	 1MQuBjbtE2aaNgxB/UYlJQSiM4z3wHNPTnWBnYqYCA5OQ4gKxy8xiiiw1LdmKRZLiW
+	 QldZBBgnh7zPBeKQeQgYS8ALk+mbj02v14Wpyy6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 124/169] slimbus: core: fix runtime PM imbalance on report present
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.18 162/227] iio: adc: pac1934: Fix clamped value in pac1934_reg_snapshot
 Date: Wed, 28 Jan 2026 16:23:27 +0100
-Message-ID: <20260128145338.470250888@linuxfoundation.org>
+Message-ID: <20260128145350.283345867@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +66,71 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212358-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212568-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D4A14A4CAC
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 03D17A5EDB
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-commit 0eb4ff6596114aabba1070a66afa2c2f5593739f upstream.
+commit da934ef0fdff5ba21e82ec3ab3f95fe73137b0c9 upstream.
 
-Make sure to balance the runtime PM usage count in case slimbus device
-or address allocation fails on report present, which would otherwise
-prevent the controller from suspending.
+The local variable 'curr_energy' was never clamped to
+PAC_193X_MIN_POWER_ACC or PAC_193X_MAX_POWER_ACC because the return
+value of clamp() was not used. Fix this by assigning the clamped value
+back to 'curr_energy'.
 
-Fixes: 4b14e62ad3c9 ("slimbus: Add support for 'clock-pause' feature")
-Cc: stable@vger.kernel.org	# 4.16
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251126145329.5022-3-johan@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 0fb528c8255b ("iio: adc: adding support for PAC193x")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/slimbus/core.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/iio/adc/pac1934.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/slimbus/core.c
-+++ b/drivers/slimbus/core.c
-@@ -496,21 +496,23 @@ int slim_device_report_present(struct sl
- 	if (ctrl->sched.clk_state != SLIM_CLK_ACTIVE) {
- 		dev_err(ctrl->dev, "slim ctrl not active,state:%d, ret:%d\n",
- 				    ctrl->sched.clk_state, ret);
--		goto slimbus_not_active;
-+		goto out_put_rpm;
- 	}
+--- a/drivers/iio/adc/pac1934.c
++++ b/drivers/iio/adc/pac1934.c
+@@ -665,9 +665,9 @@ static int pac1934_reg_snapshot(struct p
+ 			/* add the power_acc field */
+ 			curr_energy += inc;
  
- 	sbdev = slim_get_device(ctrl, e_addr);
--	if (IS_ERR(sbdev))
--		return -ENODEV;
-+	if (IS_ERR(sbdev)) {
-+		ret = -ENODEV;
-+		goto out_put_rpm;
-+	}
- 
- 	if (sbdev->is_laddr_valid) {
- 		*laddr = sbdev->laddr;
--		return 0;
-+		ret = 0;
-+	} else {
-+		ret = slim_device_alloc_laddr(sbdev, true);
- 	}
- 
--	ret = slim_device_alloc_laddr(sbdev, true);
+-			clamp(curr_energy, PAC_193X_MIN_POWER_ACC, PAC_193X_MAX_POWER_ACC);
 -
--slimbus_not_active:
-+out_put_rpm:
- 	pm_runtime_mark_last_busy(ctrl->dev);
- 	pm_runtime_put_autosuspend(ctrl->dev);
- 	return ret;
+-			reg_data->energy_sec_acc[cnt] = curr_energy;
++			reg_data->energy_sec_acc[cnt] = clamp(curr_energy,
++							      PAC_193X_MIN_POWER_ACC,
++							      PAC_193X_MAX_POWER_ACC);
+ 		}
+ 
+ 		offset_reg_data_p += PAC1934_VPOWER_ACC_REG_LEN;
 
 
 
