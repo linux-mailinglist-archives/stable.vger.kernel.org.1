@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-212301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sAAIFb00eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212301-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:33 +0100
+	id yGv5CT41eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:11:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A84A52C1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F62A540C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:11:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4ED1531AC35F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 960E13149412
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C18C2F9D83;
-	Wed, 28 Jan 2026 15:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6675C2D77FF;
+	Wed, 28 Jan 2026 15:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ohjrlq3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npfur0n7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5772DE1E4;
-	Wed, 28 Jan 2026 15:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292CB2D0C62;
+	Wed, 28 Jan 2026 15:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615060; cv=none; b=TjVccvOKpfPMRF8o3lmWS1K0Vxzmkfufg5nS3k1xv4ZdkEqMiNKt/a5uOJAAXxOV5ikYRaVhcaoxNdovvv+sWkhh1pu08JF5eXYpMQO71yiCyfHnQlyralXIbRhuIBjGo8PizGhGAY1BYeH31pO8kiv8pC3YsQCMZUBVBV0fwSk=
+	t=1769614582; cv=none; b=eja6wBx21KOc2D9wQdrbfhsdZGo/OCf062O1YNowgdlVKPJbiaHfqLRFiVSIogTSu3Q4BzYk+gt6mtRX6JqvGQO6nRy6/wvyAnj8cbUjA+tHpYpv0RtnzPcrMGg0NND0JQzPicLc8xlTn602PdErQOwRLr1K+/KdJIdVpUxtmzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615060; c=relaxed/simple;
-	bh=gsbo0QS0njhCoJ46Z5ytLm6PGMQzeufSV4mA0kQn4t0=;
+	s=arc-20240116; t=1769614582; c=relaxed/simple;
+	bh=t7jV0OPIDOtbvMwb2WtJSuCcjPbj8UYOpc5uuT49gjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kFBsmslzH/d5TeTs5N/BhkDBnxyz7Ur3Td1yis9nI+YDbbdGGKY4iw1/hJnKMJi/msW5TjBUh6PMJvV8sWw2CF8Yqa2KgOsUnz5c60IwYRphmjGHt7hOruyTmlYu1rMSTT4hH0x0AYk9PKndxMfWphsURGm1CeK2SsBYW2/DQTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ohjrlq3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E8EC4CEF1;
-	Wed, 28 Jan 2026 15:44:19 +0000 (UTC)
+	 MIME-Version; b=OnIfcBGfYXwIcQ4VmABRQ91zNC5LVKDN0Rr9XD6YRswM+zUdssBIkvp/V8uTZQ5oPuMPjheGdsUIyQmq+CALqlVi4oSB5m7eoWohCvg5p9GqCY6vB0KPH2A+tHCFpea44WdLFAC+T2VogBYQwoKEoApDsYX9dvo7/GbvpkXAQvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npfur0n7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752BAC116C6;
+	Wed, 28 Jan 2026 15:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615059;
-	bh=gsbo0QS0njhCoJ46Z5ytLm6PGMQzeufSV4mA0kQn4t0=;
+	s=korg; t=1769614582;
+	bh=t7jV0OPIDOtbvMwb2WtJSuCcjPbj8UYOpc5uuT49gjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ohjrlq3QwMtIaA7pEEcj3d5vdG3oJz2OqkZvneyXmNDSN3M5u3bfN3ll30eul7B1Y
-	 AWHeUJ5cj4aerPiC4YLawWwKD4TTnjJtginQfpnCwBwQfidymq8t/g/uV+hOLlSw8K
-	 AcvPXV5WtDxLXPWa9q9mOjMBuyfcG4yUL4sJCFQQ=
+	b=npfur0n7PL+Gh1XzUQJIMdj4v/NLy9mEBYyxmwIo1qf4QqCiLMCtE1zupf8/W2V8j
+	 CqbLRUYIXM8g4/JWnW36i1bZh0J8BEHNaRur/Zp6tiCGoL0BwG/aLJF1CWsfy+dKTo
+	 FLYzN3ma9FBEBIK43WyymuClpZQUlh3o9vZUma5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiko Shimizu <naohiko.shimizu@gmail.com>,
-	Anup Patel <anup@brainfault.org>,
-	Paul Walmsley <pjw@kernel.org>,
+	Andrey Vatoropin <a.vatoropin@crpt.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/169] riscv: clocksource: Fix stimecmp update hazard on RV32
+Subject: [PATCH 6.6 173/254] be2net: Fix NULL pointer dereference in be_cmd_get_mac_from_list
 Date: Wed, 28 Jan 2026 16:22:29 +0100
-Message-ID: <20260128145336.384847485@linuxfoundation.org>
+Message-ID: <20260128145351.031725886@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212301-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,brainfault.org,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212157-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,brainfault.org:email]
-X-Rspamd-Queue-Id: 81A84A52C1
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,crpt.ru:email]
+X-Rspamd-Queue-Id: 88F62A540C
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiko Shimizu <naohiko.shimizu@gmail.com>
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-[ Upstream commit eaa9bb1d39d59e7c17b06cec12622b7c586ab629 ]
+[ Upstream commit 8215794403d264739cc676668087512950b2ff31 ]
 
-On RV32, updating the 64-bit stimecmp (or vstimecmp) CSR requires two
-separate 32-bit writes. A race condition exists if the timer triggers
-during these two writes.
+When the parameter pmac_id_valid argument of be_cmd_get_mac_from_list() is
+set to false, the driver may request the PMAC_ID from the firmware of the
+network card, and this function will store that PMAC_ID at the provided
+address pmac_id. This is the contract of this function.
 
-The RISC-V Privileged Specification (e.g., Section 3.2.1 for mtimecmp)
-recommends a specific 3-step sequence to avoid spurious interrupts
-when updating 64-bit comparison registers on 32-bit systems:
+However, there is a location within the driver where both
+pmac_id_valid == false and pmac_id == NULL are being passed. This could
+result in dereferencing a NULL pointer.
 
-1. Set the low-order bits (stimecmp) to all ones (ULONG_MAX).
-2. Set the high-order bits (stimecmph) to the desired value.
-3. Set the low-order bits (stimecmp) to the desired value.
+To resolve this issue, it is necessary to pass the address of a stub
+variable to the function.
 
-Current implementation writes the LSB first without ensuring a future
-value, which may lead to a transient state where the 64-bit comparison
-is incorrectly evaluated as "expired" by the hardware. This results in
-spurious timer interrupts.
-
-This patch adopts the spec-recommended 3-step sequence to ensure the
-intermediate 64-bit state is never smaller than the current time.
-
-Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
-Signed-off-by: Naohiko Shimizu <naohiko.shimizu@gmail.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Link: https://patch.msgid.link/20260104135938.524-2-naohiko.shimizu@gmail.com
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Fixes: 95046b927a54 ("be2net: refactor MAC-addr setup code")
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+Link: https://patch.msgid.link/20260120113734.20193-1-a.vatoropin@crpt.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-riscv.c | 3 ++-
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
-index 4d7cf338824a3..cfc4d83c42c03 100644
---- a/drivers/clocksource/timer-riscv.c
-+++ b/drivers/clocksource/timer-riscv.c
-@@ -50,8 +50,9 @@ static int riscv_clock_next_event(unsigned long delta,
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index 779f1324bb5f8..0cda78b78fb87 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -3797,6 +3797,7 @@ int be_cmd_get_perm_mac(struct be_adapter *adapter, u8 *mac)
+ {
+ 	int status;
+ 	bool pmac_valid = false;
++	u32 pmac_id;
  
- 	if (static_branch_likely(&riscv_sstc_available)) {
- #if defined(CONFIG_32BIT)
--		csr_write(CSR_STIMECMP, next_tval & 0xFFFFFFFF);
-+		csr_write(CSR_STIMECMP, ULONG_MAX);
- 		csr_write(CSR_STIMECMPH, next_tval >> 32);
-+		csr_write(CSR_STIMECMP, next_tval & 0xFFFFFFFF);
- #else
- 		csr_write(CSR_STIMECMP, next_tval);
- #endif
+ 	eth_zero_addr(mac);
+ 
+@@ -3809,7 +3810,7 @@ int be_cmd_get_perm_mac(struct be_adapter *adapter, u8 *mac)
+ 						       adapter->if_handle, 0);
+ 	} else {
+ 		status = be_cmd_get_mac_from_list(adapter, mac, &pmac_valid,
+-						  NULL, adapter->if_handle, 0);
++						  &pmac_id, adapter->if_handle, 0);
+ 	}
+ 
+ 	return status;
 -- 
 2.51.0
 
