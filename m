@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-212577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iGI8Gqk7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:05 +0100
+	id yGP/JFI1eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC172A5F2D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65D6A542F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:12:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8A303226F35
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 90A69306AE50
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA9C302779;
-	Wed, 28 Jan 2026 15:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F2E30BF7D;
+	Wed, 28 Jan 2026 15:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBVeZlI7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16ULM+Ol"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F17E2E2DF4;
-	Wed, 28 Jan 2026 15:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC449301465;
+	Wed, 28 Jan 2026 15:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615984; cv=none; b=muj4R/QkGm4GlY+rTQciRYr3Q+QRsk4YsevyHrqna/BHHYHeedM6DjzY2IxE3+FnSyqc3vjOhaIpxw8bzWR/gy/5z5KnqK5gNDWOCREpVuonpBfW0TS7jBtNr/atBlbF6oQwjqZpkCJ+Kv3sL8S2B2qLlxnPVY63Ty9O6uAcJHQ=
+	t=1769615180; cv=none; b=hvwscbPGXdklVSsNmfrm/Vs3EoFVg6DDClRW6iX3rGPuQUjqzoJav7QDjenQWz/kx/ezhhtJS7RbPXb0mj02Qzq1S5svR5wCjx97OyDqS3+omLRa7NPaJLGgPKR/vxRDxEbw+W/0AND9MmixnFOQhgrLbeFoFQwwK3GWZrpZ588=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615984; c=relaxed/simple;
-	bh=c7p+zTBO7YnQTke28NpFtFiZOMNV7xCnddtJtLxpCQo=;
+	s=arc-20240116; t=1769615180; c=relaxed/simple;
+	bh=xerMyxEx3Qzge01mSxFhsdQpDjh66uTpQ93x2898dCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YvBkAuY/Hx2D8Ll7zzlRjpVyZ99iwX0yS74GSqFCjkwf64gnpn4lquuYGKSsCbjIGXUkiGwsauzYhc1BazgbRE8DkywYMFOfg0meEPumi1tjOctLDUPK96tSUhw9nNbHRWPgFJO0ytRXP14wAtI1phUdpt4tPtLLxXyO2BdRECU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBVeZlI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECFDC4CEF1;
-	Wed, 28 Jan 2026 15:59:43 +0000 (UTC)
+	 MIME-Version; b=NtWGI4sUQ+yCXEix8YCX8wJsEBCa2QXy0GgsaHOyakap0kTKM88NA70d6B+h7OGYQZ7/jolJIh35PqS59BZ1JMjT0medlweKi+s/sG8HAFisUocILdu4am1HlfVBbX6rqvg3YHTjML6qKGp2QOd4HT0VvyGTkq2Kfh07QSDeux0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16ULM+Ol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB17C4CEF1;
+	Wed, 28 Jan 2026 15:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615984;
-	bh=c7p+zTBO7YnQTke28NpFtFiZOMNV7xCnddtJtLxpCQo=;
+	s=korg; t=1769615180;
+	bh=xerMyxEx3Qzge01mSxFhsdQpDjh66uTpQ93x2898dCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBVeZlI7lGHP+sOAU0OgnpX+WViIM1XHuo//0LcunyAAi0H4EMhMfaluL7gTubfF1
-	 ohCAsdbjdavxglx579ZHJ4KvFeUZMg/bkSMuX9lcFZjLqPt0nLZtW685Y+Qg3mN2mf
-	 UKJYPq1eUSPXwsMh5F7fc5oYQeFru5JIT5sUpxYw=
+	b=16ULM+OlDQjPhQx/weE/JANgheYUOypQ6wN1kqWyjYHia9E3Esim3YUUQa3UIXxFZ
+	 uIDkqo4emlQmvGv5VCSR0JV7EiKyWn7Q3UcMVEtKQOLpBfgnHx6eBLUewHoD3rgOKa
+	 9fi11/SXEpCeGk7kN36lQ8hxb7BtP8WvA676oiWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 140/227] net: pcs: pcs-mtk-lynxi: report in-band capability for 2500Base-X
+	Weigang He <geoffreyhe2@gmail.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.12 102/169] of: fix reference count leak in of_alias_scan()
 Date: Wed, 28 Jan 2026 16:23:05 +0100
-Message-ID: <20260128145349.497854726@linuxfoundation.org>
+Message-ID: <20260128145337.679876007@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +66,83 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212337-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212577-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.987];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,makrotopia.org:email]
-X-Rspamd-Queue-Id: CC172A5F2D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D65D6A542F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Weigang He <geoffreyhe2@gmail.com>
 
-[ Upstream commit e8ca461f7d19464b47c64fe4cf2f83162421bcc0 ]
+commit 81122fba08fa3ccafab6ed272a5c6f2203923a7e upstream.
 
-It turns out that 2500Base-X actually works fine with in-band status on
-MediaTek's LynxI PCS -- I wrongly concluded it didn't because it is
-broken in all the copper SFP modules and GPON sticks I used for testing.
+of_find_node_by_path() returns a device_node with its refcount
+incremented. When kstrtoint() fails or dt_alloc() fails, the function
+continues to the next iteration without calling of_node_put(), causing
+a reference count leak.
 
-Hence report LINK_INBAND_ENABLE also for 2500Base-X mode.
+Add of_node_put(np) before continue on both error paths to properly
+release the device_node reference.
 
-This reverts most of commit a003c38d9bbb ("net: pcs: pcs-mtk-lynxi:
-correctly report in-band status capabilities").
-
-The removal of the QSGMII interface mode was correct and is left
-untouched.
-
-Link: https://github.com/openwrt/openwrt/issues/21436
-Fixes: a003c38d9bbb ("net: pcs: pcs-mtk-lynxi: correctly report in-band status capabilities")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/b1cf26157b63fee838be09ae810497fb22fd8104.1768961746.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 611cad720148 ("dt: add of_alias_scan and of_alias_get_id")
+Cc: stable@vger.kernel.org
+Signed-off-by: Weigang He <geoffreyhe2@gmail.com>
+Link: https://patch.msgid.link/20260117091238.481243-1-geoffreyhe2@gmail.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/pcs/pcs-mtk-lynxi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/of/base.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/pcs/pcs-mtk-lynxi.c b/drivers/net/pcs/pcs-mtk-lynxi.c
-index 149ddf51d7856..87df3a9dfc9bc 100644
---- a/drivers/net/pcs/pcs-mtk-lynxi.c
-+++ b/drivers/net/pcs/pcs-mtk-lynxi.c
-@@ -93,12 +93,10 @@ static unsigned int mtk_pcs_lynxi_inband_caps(struct phylink_pcs *pcs,
- {
- 	switch (interface) {
- 	case PHY_INTERFACE_MODE_1000BASEX:
-+	case PHY_INTERFACE_MODE_2500BASEX:
- 	case PHY_INTERFACE_MODE_SGMII:
- 		return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1822,13 +1822,17 @@ void of_alias_scan(void * (*dt_alloc)(u6
+ 			end--;
+ 		len = end - start;
  
--	case PHY_INTERFACE_MODE_2500BASEX:
--		return LINK_INBAND_DISABLE;
--
- 	default:
- 		return 0;
- 	}
--- 
-2.51.0
-
+-		if (kstrtoint(end, 10, &id) < 0)
++		if (kstrtoint(end, 10, &id) < 0) {
++			of_node_put(np);
+ 			continue;
++		}
+ 
+ 		/* Allocate an alias_prop with enough space for the stem */
+ 		ap = dt_alloc(sizeof(*ap) + len + 1, __alignof__(*ap));
+-		if (!ap)
++		if (!ap) {
++			of_node_put(np);
+ 			continue;
++		}
+ 		memset(ap, 0, sizeof(*ap) + len + 1);
+ 		ap->alias = start;
+ 		of_alias_add(ap, np, id, start, len);
 
 
 
