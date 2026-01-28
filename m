@@ -1,168 +1,180 @@
-Return-Path: <stable+bounces-212685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJUoNNSNemls7wEAu9opvQ
-	(envelope-from <stable+bounces-212685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:29:40 +0100
+	id U8fZCCiPemmz7wEAu9opvQ
+	(envelope-from <stable+bounces-212686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:35:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35955A98FE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:29:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D32A9A08
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:35:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 600FD3025D3C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:29:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5DB2F30416C9
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96464344046;
-	Wed, 28 Jan 2026 22:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB1E344046;
+	Wed, 28 Jan 2026 22:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJyx5ETe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="np86+uKI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55447284689;
-	Wed, 28 Jan 2026 22:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D5C34320A;
+	Wed, 28 Jan 2026 22:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769639372; cv=none; b=srvNUv60M6nUe9lSb6MyKLqgavjDy+48VAbvhrpHI4Ej5cInlCbaQjBLQJyXtkZ/K57cMdXtrxRpWy9iguyRfajIwk1bVeHEekDZusQvUcbe8Tqj/0Dyan1yHpKUNtOKwPYodrU6On2iaVv+vWyt4jmlDOKyN8d9uDYr7KGM2qU=
+	t=1769639615; cv=none; b=lB9aOyfrqsNHro4F3kKg6Si35/3hktM1ue7l5Hm6rMpyys2H04Jz1k+mJ0OSnXjVaJraNr9h9u5/N1khFMiUp8F4J82qMNq6OKVNUsho37UgGWWQSS2AGz3bCcQNdpUP3VP4Lgr5aJG6K/izHdb6ryWbm59RfMsqKPZgZKWWS4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769639372; c=relaxed/simple;
-	bh=a0Ddc1sM8tlaUXYOPYAnFNHQc1jvPGEdsW9X+42V578=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=EUAVWmgOBKM8sFxkPNYahzWSgutv0PZn/FFwRciPfNQGI4etKwtSMW+gphcQe3BA1o/c69TYQsF+IFLhdIHQuhUM+sA6zuAK1izmGfhN6GfbV7AQCts4n5Zzfi53s5PnAgXFwbbEekY+JDuwvs7IFotEDpQTwLjzJmoqSeDmW2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJyx5ETe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE12CC4CEF1;
-	Wed, 28 Jan 2026 22:29:29 +0000 (UTC)
+	s=arc-20240116; t=1769639615; c=relaxed/simple;
+	bh=SxiNVeutUJnMn/FhT8q4x184T0tOPDLPqI9mPIgaTlo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C9jGKPvcJxlIyOiAwgeVlzBwvlRUk0u8bOp3Uj3tgLmOi9HZCzMGqnKriVvxv3bU9eNLDdtSfJHgYfcdk59KR4VpKhrBG5cuqgnYvANFv2QkNHRxvqP4G/k4Q1jpwjT9VsWwefYqSae+s0aYjCcyIB3d/RTJpN/h+ANMmuqohVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=np86+uKI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11700C4CEF1;
+	Wed, 28 Jan 2026 22:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769639372;
-	bh=a0Ddc1sM8tlaUXYOPYAnFNHQc1jvPGEdsW9X+42V578=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SJyx5ETeeFXIxljN9Qea1B15cBU8SVVXXIgRbVrSN8RYjlmz3AsJtHksRpsq2/l/9
-	 wXETTKIpwrHDCDTMLmcAHuNPj2ai/z0XUZFCurH8/aMUwhPj+jeK1nd/iteefYsNnP
-	 NKKxn3lw7S06muMLmmBnMTzWEI5We/FZXnhDKpz8D+UyQlWYinllyxSGH6wb1hTS0D
-	 S7LOiZL++0aRDRJ/4EXK4GXEfzHw5IfW2urOGVxWoI5kAOFcWWYh2XcKDyxcpGE39Z
-	 fZOyZwQlXEhalzhJA+5k+7dJZdk9WhK8Pl9ini9Vu3vahXYAvRK1jC0gsG/Qo1AF3N
-	 oUVSIpSiYDGHA==
-Date: Thu, 29 Jan 2026 07:29:28 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa
- <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, Adrian Hunter
- <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, Andrii
- Nakryiko <andrii@kernel.org>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] uprobes: fix incorrect lockdep condition in
- filter_chain()
-Message-Id: <20260129072928.da41ab0a2e71da86dd4cd4b8@kernel.org>
-In-Reply-To: <20260128-uprobe_rcu-v2-1-994ea6d32730@debian.org>
-References: <20260128-uprobe_rcu-v2-1-994ea6d32730@debian.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=k20201202; t=1769639615;
+	bh=SxiNVeutUJnMn/FhT8q4x184T0tOPDLPqI9mPIgaTlo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=np86+uKI+zP7JQOP31JzxwVMgki5FKDcJTbk4k4XI2f7NCvrXgpyAFHhTHWMESnSc
+	 YRwNo+HAwaxehIoBIprym7FWI2dtD4QOThCJSPPO5PPcmz6rL2dDX8joX8YxdmwUJm
+	 WPCQuOlZnnFMqXlZd0R39f1nb64Q3iCKEK2zLZ0waBQlplkvZN5MV6HWYuMpi2mMbQ
+	 U4R3StJ0n0alO3cHrglRJi5TUIvfhB6nxEjklT/TcKXm6TBc8MPcJYDVPBKhw6D8ro
+	 GckmmtT2Cy8rvnQwjx40rDlWUa9ynA/OwGl0Aljk3xy331f97ZALjJ3rU3dzj96tEK
+	 u1rhcS43+FF0Q==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	sbinding@opensource.cirrus.com,
+	kailang@realtek.com,
+	chris.chiu@canonical.com,
+	edip@medip.dev
+Subject: [PATCH AUTOSEL 6.18-5.10] ALSA: hda/realtek: Fix headset mic for TongFang X6AR55xU
+Date: Wed, 28 Jan 2026 17:32:59 -0500
+Message-ID: <20260128223332.2806589-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212685-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212686-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 35955A98FE
+X-Rspamd-Queue-Id: 84D32A9A08
 X-Rspamd-Action: no action
 
-On Wed, 28 Jan 2026 10:16:11 -0800
-Breno Leitao <leitao@debian.org> wrote:
+From: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
 
-> The list_for_each_entry_rcu() in filter_chain() uses
-> rcu_read_lock_trace_held() as the lockdep condition, but the function
-> holds consumer_rwsem, not the RCU trace lock.
-> 
-> This gives me the following output when running with some locking debug
-> option enabled:
-> 
->   kernel/events/uprobes.c:1141 RCU-list traversed in non-reader section!!
->     filter_chain
->     register_for_each_vma
->     uprobe_unregister_nosync
->     __probe_event_disable
-> 
-> Remove the incorrect lockdep condition since the rwsem provides
-> sufficient protection for the list traversal.
-> 
+[ Upstream commit b48fe9af1e60360baf09ca6b7a3cd6541f16e611 ]
 
-Looks good to me.
+Add a PCI quirk to enable microphone detection on the headphone jack of
+TongFang X6AR55xU devices.
 
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Tim Guttzeit <t.guttzeit@tuxedocomputers.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Link: https://patch.msgid.link/20260119151626.35481-1-wse@tuxedocomputers.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-Thanks,
+LLM Generated explanations, may be completely bogus:
 
-> Cc: stable@vger.kernel.org
-> Fixes: cc01bd044e6a ("uprobes: travers uprobe's consumer list locklessly under SRCU protection")
-> Acked-by: Oleg Nesterov <oleg@redhat.com>
-> Acked-by: Andrii Nakryiko <andrii@kernel.org>
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
-> Changes in v2:
-> - updated the "fixes" tag (Oleg)
-> - Link to v1: https://patch.msgid.link/20260128-uprobe_rcu-v1-1-d41316763799@debian.org
-> ---
->  kernel/events/uprobes.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-> index d546d32390a81..726d13b375f3d 100644
-> --- a/kernel/events/uprobes.c
-> +++ b/kernel/events/uprobes.c
-> @@ -1138,7 +1138,7 @@ static bool filter_chain(struct uprobe *uprobe, struct mm_struct *mm)
->  	bool ret = false;
->  
->  	down_read(&uprobe->consumer_rwsem);
-> -	list_for_each_entry_rcu(uc, &uprobe->consumers, cons_node, rcu_read_lock_trace_held()) {
-> +	list_for_each_entry(uc, &uprobe->consumers, cons_node) {
->  		ret = consumer_filter(uc, mm);
->  		if (ret)
->  			break;
-> 
-> ---
-> base-commit: 1f97d9dcf53649c41c33227b345a36902cbb08ad
-> change-id: 20260128-uprobe_rcu-e21867ab4c1b
-> 
-> Best regards,
-> --  
-> Breno Leitao <leitao@debian.org>
-> 
+The `ALC274_FIXUP_HP_HEADSET_MIC` fixup was added in October 2020, so it
+exists in all currently maintained stable trees (6.1.y, 6.6.y, 6.12.y,
+etc.). The new quirk entry will apply cleanly.
 
+### 8. SIMILAR COMMITS PATTERN
 
+This follows the exact same pattern as countless other HDA pin quirk
+additions that are routinely backported to stable. The HDA realtek
+driver has hundreds of similar entries in this table, all following the
+same format.
+
+---
+
+## Summary
+
+**What problem it solves:** Fixes non-functional headset microphone on
+TongFang X6AR55xU laptops by adding a pin quirk entry that applies an
+existing, proven fixup.
+
+**Meets stable kernel rules:**
+- ✅ Obviously correct - simple table entry addition following
+  established pattern
+- ✅ Fixes a real bug - hardware doesn't work without it
+- ✅ Small and contained - 4 lines, 1 file, no logic changes
+- ✅ No new features - uses existing `ALC274_FIXUP_HP_HEADSET_MIC` fixup
+- ✅ Falls under "hardware quirks/workarounds" exception
+
+**Risk vs Benefit:**
+- **Risk:** Essentially zero - only affects specific hardware, cannot
+  impact other devices
+- **Benefit:** High for affected users - enables basic audio
+  functionality
+
+**Concerns:** None. The fixup already exists in stable trees since 2020.
+The change applies cleanly with no dependencies.
+
+This is a textbook example of a backport-worthy commit: a minimal
+hardware quirk that fixes a real user-facing issue with zero risk to
+other systems.
+
+**YES**
+
+ sound/hda/codecs/realtek/alc269.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index b5aa8da1e50a8..c6dc44f5d3ab7 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7675,6 +7675,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
+ 		{0x12, 0x90a60140},
+ 		{0x19, 0x04a11030},
+ 		{0x21, 0x04211020}),
++	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1d05, "TongFang", ALC274_FIXUP_HP_HEADSET_MIC,
++		{0x17, 0x90170110},
++		{0x19, 0x03a11030},
++		{0x21, 0x03211020}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0282, 0x1025, "Acer", ALC282_FIXUP_ACER_DISABLE_LINEOUT,
+ 		ALC282_STANDARD_PINS,
+ 		{0x12, 0x90a609c0},
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+2.51.0
+
 
