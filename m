@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-212376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212236-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kCFGElsxemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212376-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:07 +0100
+	id 0NoIH2owemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212236-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27FEA4B78
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB292A48D5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6067730B4D37
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 11575307FC1D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C47130DD03;
-	Wed, 28 Jan 2026 15:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872352F25EF;
+	Wed, 28 Jan 2026 15:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhQpDJdy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Clpk/kUy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F97430C635;
-	Wed, 28 Jan 2026 15:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FABB2F1FFA;
+	Wed, 28 Jan 2026 15:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615313; cv=none; b=ByReRyavs7rW6WuXeRgAB7pRR9zJy6Q8UHNU43gS1tljWcCMzNJkHL10xi0059eXaolbGBmReFsQVjn9AB1Kkg5cbZsgYSXHWUkmSieR7rgdNd/5+pJY7kF5xQr+mOPfCDLV6lR67ILdWTuAe1RhNTt3R/brqESXriG2w66h1mA=
+	t=1769614840; cv=none; b=ZDAV23d3OpIZZ7vNcqLkYNdDkdRv/9bCEbwA6RDQxkCZkjxxMGA2gMRXZZ4Cy+KU9E2vYmamx9KxjjjxC1lg8zMKXpMkm7eul4vnaCfO2aKiXwBOciVr9N71qr43dRf53EYFLUL34Hvh3rymqpa04DW/GEJIUzXoYN/8D5GRC0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615313; c=relaxed/simple;
-	bh=bEsluN9Xy8DR08GgnYUWqMtSH+54tjBihUBmcyN2AkU=;
+	s=arc-20240116; t=1769614840; c=relaxed/simple;
+	bh=Jff65hMtM8Jmm2XCQ6tD/ctPCVwxQ4pBmalDFzfgMsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtbTxXUfymDdG5e2FX+IWpP4bI9Dn56+8H+mOra8uatsKkBjmwpvKi1SKX5PDA0OzKUEhx9TEAEPrfUH03E1slK64iCIFobuRFFw7Pa+uvOee2JBiEK0gxu7fC8GoJP6aiO6oXBCTKEMxcgWB6hyvnDMNCZyEP3ko77WUDwHsKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhQpDJdy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972DBC4CEF1;
-	Wed, 28 Jan 2026 15:48:32 +0000 (UTC)
+	 MIME-Version; b=d88WnEgBenZ5X5wHI5mGoN7stVIDhVWiTxjLT0SjWG+QeLltpWNX38tlW7WEaUxNWbuhXE/Jm/+n3WNjMSHUfzbwnDoTYy1qINscqx2jed/Tl0MZfadydkfljVcJmYdi4HZEaSP0fjrriszZ8hB9WHc/JHNvfaFVsJ3qanNSzkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Clpk/kUy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C95AC4CEF7;
+	Wed, 28 Jan 2026 15:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615313;
-	bh=bEsluN9Xy8DR08GgnYUWqMtSH+54tjBihUBmcyN2AkU=;
+	s=korg; t=1769614840;
+	bh=Jff65hMtM8Jmm2XCQ6tD/ctPCVwxQ4pBmalDFzfgMsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dhQpDJdyzdxG2lA5Luzr8EFa6hTwRjSPSZTvwKIdxySwvbd60mfyAxLwPaFJ7vkfC
-	 qVUPmKCm1rQIgzBXTVC13zNJ2gIqMfAbivkpxpT4K9rkaaKoBkx3jfbBOMqHR9zHFS
-	 s8jN8LGt6P90N+Oav0uSeejVsJBDl+gpC3mC/QFg=
+	b=Clpk/kUyh/wGzUv0WEM3uAoc4JC8quejNu2VECW3N0Mbcoh/M70UQmynkDOq39BKQ
+	 mNY35/7d2O85HibhJ4V/2zWjHM2vuVx33opMTSNJ9CJ93M41cqIf8gwM8Bos3zTCMj
+	 7fe8vs1j2WibGhlQpWKlka8Ivhomaa2iA0cl4cFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.12 141/169] can: kvaser_usb: kvaser_usb_read_bulk_callback(): fix URB memory leak
+	syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com,
+	syzbot+0399100e525dd9696764@syzkaller.appspotmail.com,
+	Khalid Aziz <khalid@kernel.org>,
+	Bartlomiej Kubik <kubik.bartlomiej@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.6 248/254] fs/ntfs3: Initialize allocated memory before use
 Date: Wed, 28 Jan 2026 16:23:44 +0100
-Message-ID: <20260128145339.079561641@linuxfoundation.org>
+Message-ID: <20260128145353.723087716@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +68,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212376-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212236-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,kernel.org,gmail.com,paragon-software.com,139.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,332bd4e9d148f11a87dc,0399100e525dd9696764];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A27FEA4B78
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,139.com:email]
+X-Rspamd-Queue-Id: CB292A48D5
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
 
-commit 248e8e1a125fa875158df521b30f2cc7e27eeeaa upstream.
+[ Upstream commit a8a3ca23bbd9d849308a7921a049330dc6c91398 ]
 
-Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
-gs_usb_receive_bulk_callback(): fix URB memory leak").
+KMSAN reports: Multiple uninitialized values detected:
 
-In kvaser_usb_set_{,data_}bittiming() -> kvaser_usb_setup_rx_urbs(), the
-URBs for USB-in transfers are allocated, added to the dev->rx_submitted
-anchor and submitted. In the complete callback
-kvaser_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
-kvaser_usb_remove_interfaces() the URBs are freed by calling
-usb_kill_anchored_urbs(&dev->rx_submitted).
+- KMSAN: uninit-value in ntfs_read_hdr (3)
+- KMSAN: uninit-value in bcmp (3)
 
-However, this does not take into account that the USB framework unanchors
-the URB before the complete function is called. This means that once an
-in-URB has been completed, it is no longer anchored and is ultimately not
-released in usb_kill_anchored_urbs().
+Memory is allocated by __getname(), which is a wrapper for
+kmem_cache_alloc(). This memory is used before being properly
+cleared. Change kmem_cache_alloc() to kmem_cache_zalloc() to
+properly allocate and clear memory before use.
 
-Fix the memory leak by anchoring the URB in the
-kvaser_usb_read_bulk_callback() to the dev->rx_submitted anchor.
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
+Tested-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
+Reported-by: syzbot+332bd4e9d148f11a87dc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=332bd4e9d148f11a87dc
 
-Fixes: 080f40a6fa28 ("can: kvaser_usb: Add support for Kvaser CAN/USB devices")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-3-4b8cb2915571@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Fixes: 78ab59fee07f ("fs/ntfs3: Rework file operations")
+Tested-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
+Reported-by: syzbot+0399100e525dd9696764@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0399100e525dd9696764
+
+Reviewed-by: Khalid Aziz <khalid@kernel.org>
+Signed-off-by: Bartlomiej Kubik <kubik.bartlomiej@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/ntfs3/inode.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-+++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
-@@ -361,7 +361,14 @@ resubmit_urb:
- 			  urb->transfer_buffer, KVASER_USB_RX_BUFFER_SIZE,
- 			  kvaser_usb_read_bulk_callback, dev);
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -1327,7 +1327,7 @@ struct inode *ntfs_create_inode(struct m
+ 		fa |= FILE_ATTRIBUTE_READONLY;
  
-+	usb_anchor_urb(urb, &dev->rx_submitted);
-+
- 	err = usb_submit_urb(urb, GFP_ATOMIC);
-+	if (!err)
-+		return;
-+
-+	usb_unanchor_urb(urb);
-+
- 	if (err == -ENODEV) {
- 		for (i = 0; i < dev->nchannels; i++) {
- 			if (!dev->nets[i])
-@@ -369,7 +376,7 @@ resubmit_urb:
+ 	/* Allocate PATH_MAX bytes. */
+-	new_de = __getname();
++	new_de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
+ 	if (!new_de) {
+ 		err = -ENOMEM;
+ 		goto out1;
+@@ -1756,10 +1756,9 @@ int ntfs_link_inode(struct inode *inode,
+ 	struct NTFS_DE *de;
  
- 			netif_device_detach(dev->nets[i]->netdev);
- 		}
--	} else if (err) {
-+	} else {
- 		dev_err(&dev->intf->dev,
- 			"Failed resubmitting read bulk urb: %d\n", err);
- 	}
+ 	/* Allocate PATH_MAX bytes. */
+-	de = __getname();
++	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
+ 	if (!de)
+ 		return -ENOMEM;
+-	memset(de, 0, PATH_MAX);
+ 
+ 	/* Mark rw ntfs as dirty. It will be cleared at umount. */
+ 	ntfs_set_state(sbi, NTFS_DIRTY_DIRTY);
+@@ -1795,7 +1794,7 @@ int ntfs_unlink_inode(struct inode *dir,
+ 		return -EINVAL;
+ 
+ 	/* Allocate PATH_MAX bytes. */
+-	de = __getname();
++	de = kmem_cache_zalloc(names_cachep, GFP_KERNEL);
+ 	if (!de)
+ 		return -ENOMEM;
+ 
 
 
 
