@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-212217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELOnA1svemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:35 +0100
+	id 8I5oNo0xemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5756A4613
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:46:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA270A4BE7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 76F9C30819D2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4775430D1E9F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDA22F3C02;
-	Wed, 28 Jan 2026 15:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C232E62A8;
+	Wed, 28 Jan 2026 15:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMgrYq25"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wO7IaTHZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCD52E6CA0;
-	Wed, 28 Jan 2026 15:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555A323EA92;
+	Wed, 28 Jan 2026 15:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614776; cv=none; b=MyN0+YPJAW+bVvWblThQQr3muTKXCDXYHUJ7/gg++lSxFPrxZwR9AukSvqwlXXvD/K8gOywR7XtQtA176P13LF5QET/y+qFefROyJUAC53FFeds1gaN2oEw7pG0IuaoLxAthQUOa+U1T80qVvt47EJ0GRorqmTJR/hm1rouTYQY=
+	t=1769614797; cv=none; b=PVaWtUEzTgRdf7/6fo1+bjuEMNNCO0GqmE5X8KvDwz46ix3q/Nj7SjsVDeYLVLdurr2ABddxWjj4WeNhvlB60GyGP7Wg6Tj/v3sEK8YvHzlLaMeMrc2Xep2lYqALBc5eISjOAhiSTm7E4jQrUWmpDggKr5t7W6aIdu+GrQVDpbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614776; c=relaxed/simple;
-	bh=V6T7mrc8B6PICpPb6z7zGfWmASvLosrP53kUSfGK4XE=;
+	s=arc-20240116; t=1769614797; c=relaxed/simple;
+	bh=XbexPGJBLGsjGJbUhiHSo14NMuAatsYtNko8vEKUuGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjxuZhC6GD+HBssfP/6WjZvWsCtkRqx7PbwH8OcWmLZMGL78IhO765EjQy8ZDX7MJoPpP9l6QBHQqe3FImkSl4QSYtX2r0saia3dewOb0LTUVASEM5U/EvknfEF96qUKsCibL6PUvaQy0zusY/Ggnj0apjjAXrWTuntMHZ/ZTEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMgrYq25; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA92C4CEF1;
-	Wed, 28 Jan 2026 15:39:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R9wPriD2hyf1+ZwbLSu3HUf2c8VflngPfalzcevtb+YvR9CDIcPjt/+k330fRh/IgYFrqZPymkwVEdq0AgyqQHh0GqALNy4alQzum5VXMcvF5IJr+BQbkPa4Y0I9fbxr2Q6Of8maq7FfE2AoOktEZ2lFVNqN/DSQCVuEzpSHwQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wO7IaTHZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81132C4CEF1;
+	Wed, 28 Jan 2026 15:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614776;
-	bh=V6T7mrc8B6PICpPb6z7zGfWmASvLosrP53kUSfGK4XE=;
+	s=korg; t=1769614797;
+	bh=XbexPGJBLGsjGJbUhiHSo14NMuAatsYtNko8vEKUuGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EMgrYq25pWyGpqwtLCca2xHEv+w3gRhKIiCmD7i5o+gtD5FSjU73xCFENW1NxAd6F
-	 j57EIWk3/gv7VXeca2WsH7PNExfK5rdFC30JhPbpiVwxUZEiJ4TWFde7tzuOtt62Ao
-	 HMXkB4esrpJ6/iYyzOvitSAiKgaEvSr87TE0+2eM=
+	b=wO7IaTHZJ+BN6QRU0g+CUZy49vUcph49lg782j99qEil8Y27jazaFEYwyV8IgOrJg
+	 w3HHQAVNHt9gVHL5ADShp5lD1cMcVlVnw9ASJ+AKWdH4h/usMP5EcC2MrVNtElN5HF
+	 T6mTGhXF0WLMm+y6UsSK5OFRhVAWHgt0Tgffr1Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+999115c3bf275797dc27@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 211/254] netrom: fix double-free in nr_route_frame()
-Date: Wed, 28 Jan 2026 16:23:07 +0100
-Message-ID: <20260128145352.385415543@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.6 212/254] platform/x86: hp-bioscfg: Fix automatic module loading
+Date: Wed, 28 Jan 2026 16:23:08 +0100
+Message-ID: <20260128145352.421085955@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -63,108 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212217-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.988];
-	TAGGED_RCPT(0.00)[stable,999115c3bf275797dc27];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: D5756A4613
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212223-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+]
+X-Rspamd-Queue-Id: DA270A4BE7
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ba1096c315283ee3292765f6aea4cca15816c4f7 upstream.
+commit 467d4afc6caa64b84a6db1634f8091e931f4a7cb upstream.
 
-In nr_route_frame(), old_skb is immediately freed without checking if
-nr_neigh->ax25 pointer is NULL. Therefore, if nr_neigh->ax25 is NULL,
-the caller function will free old_skb again, causing a double-free bug.
+hp-bioscfg has a MODULE_DEVICE_TABLE with a GUID in it that looks
+plausible, but the module doesn't automatically load on applicable
+systems.
 
-Therefore, to prevent this, we need to modify it to check whether
-nr_neigh->ax25 is NULL before freeing old_skb.
+This is because the GUID has some lower case characters and so it
+doesn't match the modalias during boot. Update the GUIDs to be all
+uppercase.
 
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+999115c3bf275797dc27@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0029.GAE@google.com/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://patch.msgid.link/20260119063359.10604-1-aha310510@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5f94f181ca25 ("platform/x86: hp-bioscfg: bioscfg-h")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20260115203725.828434-4-mario.limonciello@amd.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netrom/nr_route.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/netrom/nr_route.c
-+++ b/net/netrom/nr_route.c
-@@ -752,7 +752,7 @@ int nr_route_frame(struct sk_buff *skb,
- 	unsigned char *dptr;
- 	ax25_cb *ax25s;
- 	int ret;
--	struct sk_buff *skbn;
-+	struct sk_buff *nskb, *oskb;
+--- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.h
++++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.h
+@@ -57,14 +57,14 @@ enum mechanism_values {
  
- 	/*
- 	 * Reject malformed packets early. Check that it contains at least 2
-@@ -811,14 +811,16 @@ int nr_route_frame(struct sk_buff *skb,
- 	/* We are going to change the netrom headers so we should get our
- 	   own skb, we also did not know until now how much header space
- 	   we had to reserve... - RXQ */
--	if ((skbn=skb_copy_expand(skb, dev->hard_header_len, 0, GFP_ATOMIC)) == NULL) {
-+	nskb = skb_copy_expand(skb, dev->hard_header_len, 0, GFP_ATOMIC);
-+
-+	if (!nskb) {
- 		nr_node_unlock(nr_node);
- 		nr_node_put(nr_node);
- 		dev_put(dev);
- 		return 0;
- 	}
--	kfree_skb(skb);
--	skb=skbn;
-+	oskb = skb;
-+	skb = nskb;
- 	skb->data[14]--;
+ #define PASSWD_MECHANISM_TYPES "password"
  
- 	dptr  = skb_push(skb, 1);
-@@ -837,6 +839,9 @@ int nr_route_frame(struct sk_buff *skb,
- 	nr_node_unlock(nr_node);
- 	nr_node_put(nr_node);
+-#define HP_WMI_BIOS_GUID		"5FB7F034-2C63-45e9-BE91-3D44E2C707E4"
++#define HP_WMI_BIOS_GUID		"5FB7F034-2C63-45E9-BE91-3D44E2C707E4"
  
-+	if (ret)
-+		kfree_skb(oskb);
-+
- 	return ret;
- }
+-#define HP_WMI_BIOS_STRING_GUID		"988D08E3-68F4-4c35-AF3E-6A1B8106F83C"
++#define HP_WMI_BIOS_STRING_GUID		"988D08E3-68F4-4C35-AF3E-6A1B8106F83C"
+ #define HP_WMI_BIOS_INTEGER_GUID	"8232DE3D-663D-4327-A8F4-E293ADB9BF05"
+ #define HP_WMI_BIOS_ENUMERATION_GUID	"2D114B49-2DFB-4130-B8FE-4A3C09E75133"
+ #define HP_WMI_BIOS_ORDERED_LIST_GUID	"14EA9746-CE1F-4098-A0E0-7045CB4DA745"
+ #define HP_WMI_BIOS_PASSWORD_GUID	"322F2028-0F84-4901-988E-015176049E2D"
+-#define HP_WMI_SET_BIOS_SETTING_GUID	"1F4C91EB-DC5C-460b-951D-C7CB9B4B8D5E"
++#define HP_WMI_SET_BIOS_SETTING_GUID	"1F4C91EB-DC5C-460B-951D-C7CB9B4B8D5E"
  
+ enum hp_wmi_spm_commandtype {
+ 	HPWMI_SECUREPLATFORM_GET_STATE  = 0x10,
 
 
 
