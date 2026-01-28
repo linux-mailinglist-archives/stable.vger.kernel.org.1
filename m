@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-212427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212068-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMCyBiUyemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:58:29 +0100
+	id kIBoIo0uemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212068-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 860B1A4D70
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:58:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9AA5A4480
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4F883307D013
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:51:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C0F631B3E6B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C1E2F25EF;
-	Wed, 28 Jan 2026 15:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0711E9B1A;
+	Wed, 28 Jan 2026 15:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enCD3KpE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBZYXGdw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9149C2FF178;
-	Wed, 28 Jan 2026 15:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8D513B7A3;
+	Wed, 28 Jan 2026 15:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615482; cv=none; b=E5O/eNrp+9HX/lDDhE4UVGnkOaJxG0EPVXnlBwPxBlHttSGk2PSroscwKTAU7wsa/JhdS3hagDsIam10c56at8VFjnEVi7GALDjY7IcXxKSSi//5Q0/iiOo8fTeyUSaSMp5G/Hhp2qSYVaPtRhF9qDt30nFSznniGaqTMzfCb3M=
+	t=1769614293; cv=none; b=C/XHwUBTk30TYkmcxBFUBaHTnFmX5PdzKIFQm22Xka6ZoKnKMDfV5Mgs3hWZ4MUSNFYGxOAMNVH29fIm7WSNULKh7UaaZsdpqqM/eJeujEgsFhjpnr5pcP+3BxIFE7lGzjYqkg35sQIktdDQHs+YPFY8C6Qk16plh1olxdtCz4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615482; c=relaxed/simple;
-	bh=DBEiV5vtjLuTG031YEWCLkXQeqqD4fNV6MkoWtoTTlQ=;
+	s=arc-20240116; t=1769614293; c=relaxed/simple;
+	bh=hxqO7FpZgOt4+RjxXmhQyM61cs0QE0a/7AfB5qe4P0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RW3oVDr3sT8CPhL5CRJPMQWTTOBAgHWAWRb+1SMJB95tDQiuzi37J2neZEY5r6kox6uR8psXYizMqb98nOoe3ApTnPSjWOvZJPmDjYHs2r/IluaYgtvyJLPD8DEPVpQ07rCnzLyDRVRrraCuNH0o9eHmvxjU+2JdWr1cIiRqnDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enCD3KpE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED06C4CEF7;
-	Wed, 28 Jan 2026 15:51:21 +0000 (UTC)
+	 MIME-Version; b=OLI1M2puweQhEUnEWLAHyZg/QFfFTki9806Q0GDNaltGPM35qhfcKLfAlMYs1DhykG8QD/H9Q3aLfKgJVxhRiWxMDCFaYqwOIFqbHBqRIE8fYAZr5s52LB1HmuZTfu/K68KrAAPB8nZDaZcomSoDS0Qti2NBLzUEjHEn44Lipcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBZYXGdw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36CFC4CEF1;
+	Wed, 28 Jan 2026 15:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615482;
-	bh=DBEiV5vtjLuTG031YEWCLkXQeqqD4fNV6MkoWtoTTlQ=;
+	s=korg; t=1769614293;
+	bh=hxqO7FpZgOt4+RjxXmhQyM61cs0QE0a/7AfB5qe4P0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enCD3KpEP1WD8kfjwBQF6x5ipKF/CsHh4j1CQGRz+4/gwE1e1XYPmYK+cwbVu551s
-	 2R42U6A7Lgi+hUpsQz81yiq2bBbBnvk11I5+rWzReQpmeE8wEGYaUkLi7mEd7Aa0rW
-	 L1Rykm5deW/qLt1V/iwdZmnDuPv9U5H5YjYlXM9Q=
+	b=lBZYXGdw36AtHEOhrDukAR2Zdy6pxn5bUtHg7MplhhDbLKbbp8q9PFKev6WV1BFzh
+	 50mVBH2GsP00SGJl32KQxFqteaz1bw0SYNX1D4H2SbqvAE0tf/7J8t8E55isatc/Ot
+	 kAAAjAb2XxKIM85t+RRRvsekufvuYaQwPnzBjQ5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.18 022/227] ice: Avoid detrimental cleanup for bond during interface stop
-Date: Wed, 28 Jan 2026 16:21:07 +0100
-Message-ID: <20260128145345.142820618@linuxfoundation.org>
+	Rohit Keshri <rkeshri@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 092/254] Fix memory leak in posix_clock_open()
+Date: Wed, 28 Jan 2026 16:21:08 +0100
+Message-ID: <20260128145348.138420769@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,104 +73,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212427-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212068-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 860B1A4D70
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,davemloft.net:email,linutronix.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B9AA5A4480
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Ertman <david.m.ertman@intel.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit a9d45c22ed120cdd15ff56d0a6e4700c46451901 ]
+[ Upstream commit 5b4cdd9c5676559b8a7c944ac5269b914b8c0bb8 ]
 
-When the user issues an administrative down to an interface that is the
-primary for an aggregate bond, the prune lists are being purged. This
-breaks communication to the secondary interface, which shares a prune
-list on the main switch block while bonded together.
+If the clk ops.open() function returns an error, we don't release the
+pccontext we allocated for this clock.
 
-For the primary interface of an aggregate, avoid deleting these prune
-lists during stop, and since they are hardcoded to specific values for
-the default vlan and QinQ vlans, the attempt to re-add them during the
-up phase will quietly fail without any additional problem.
+Re-organize the code slightly to make it all more obvious.
 
-Fixes: 1e0f9881ef79 ("ice: Flesh out implementation of support for SRIOV on bonded interface")
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reported-by: Rohit Keshri <rkeshri@redhat.com>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Fixes: 60c6946675fc ("posix-clock: introduce posix_clock_context concept")
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Linus Torvalds <torvalds@linuxfoundation.org>
+Stable-dep-of: e859d375d169 ("posix-clock: Store file pointer in struct posix_clock_context")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c | 25 ++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ kernel/time/posix-clock.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index c0d221d4b4f47..5a3e7d6697325 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3810,22 +3810,31 @@ int ice_vsi_add_vlan_zero(struct ice_vsi *vsi)
- int ice_vsi_del_vlan_zero(struct ice_vsi *vsi)
- {
- 	struct ice_vsi_vlan_ops *vlan_ops = ice_get_compat_vsi_vlan_ops(vsi);
-+	struct ice_pf *pf = vsi->back;
- 	struct ice_vlan vlan;
- 	int err;
- 
--	vlan = ICE_VLAN(0, 0, 0);
--	err = vlan_ops->del_vlan(vsi, &vlan);
--	if (err && err != -EEXIST)
--		return err;
-+	if (pf->lag && pf->lag->primary) {
-+		dev_dbg(ice_pf_to_dev(pf), "Interface is primary in aggregate - not deleting prune list\n");
-+	} else {
-+		vlan = ICE_VLAN(0, 0, 0);
-+		err = vlan_ops->del_vlan(vsi, &vlan);
-+		if (err && err != -EEXIST)
-+			return err;
-+	}
- 
- 	/* in SVM both VLAN 0 filters are identical */
- 	if (!ice_is_dvm_ena(&vsi->back->hw))
- 		return 0;
- 
--	vlan = ICE_VLAN(ETH_P_8021Q, 0, 0);
--	err = vlan_ops->del_vlan(vsi, &vlan);
--	if (err && err != -EEXIST)
--		return err;
-+	if (pf->lag && pf->lag->primary) {
-+		dev_dbg(ice_pf_to_dev(pf), "Interface is primary in aggregate - not deleting QinQ prune list\n");
-+	} else {
-+		vlan = ICE_VLAN(ETH_P_8021Q, 0, 0);
-+		err = vlan_ops->del_vlan(vsi, &vlan);
-+		if (err && err != -EEXIST)
-+			return err;
-+	}
- 
- 	/* when deleting the last VLAN filter, make sure to disable the VLAN
- 	 * promisc mode so the filter isn't left by accident
+diff --git a/kernel/time/posix-clock.c b/kernel/time/posix-clock.c
+index 706559ed75793..a6487a9d60853 100644
+--- a/kernel/time/posix-clock.c
++++ b/kernel/time/posix-clock.c
+@@ -129,15 +129,17 @@ static int posix_clock_open(struct inode *inode, struct file *fp)
+ 		goto out;
+ 	}
+ 	pccontext->clk = clk;
+-	fp->private_data = pccontext;
+-	if (clk->ops.open)
++	if (clk->ops.open) {
+ 		err = clk->ops.open(pccontext, fp->f_mode);
+-	else
+-		err = 0;
+-
+-	if (!err) {
+-		get_device(clk->dev);
++		if (err) {
++			kfree(pccontext);
++			goto out;
++		}
+ 	}
++
++	fp->private_data = pccontext;
++	get_device(clk->dev);
++	err = 0;
+ out:
+ 	up_read(&clk->rwsem);
+ 	return err;
 -- 
 2.51.0
 
