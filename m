@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-212279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212127-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EQEDzMxemlT4gEAu9opvQ
-	(envelope-from <stable+bounces-212279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:27 +0100
+	id GCs8DaEsemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212127-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:34:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E74BDA4B0C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:54:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D11C3A400F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 45A163130F53
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:44:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 35F0E3013A42
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D3930E0D3;
-	Wed, 28 Jan 2026 15:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B865C2741C9;
+	Wed, 28 Jan 2026 15:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvVj3KeR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYG1f2Nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE46830E0D6;
-	Wed, 28 Jan 2026 15:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F39A2741DF;
+	Wed, 28 Jan 2026 15:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614986; cv=none; b=iTg6hOubMWGz6oVavUAE3QBdMMIsSycs6atrZs9yD82WdXRVO4e/RlyWYCt8K4kjize9nbjhcNQudS05KwtjSM6c7w9j0dLQj6sLUO1PypVXJ04h1c8ICXmbCSoH7zc4eaTuCJlDX+o8pts3ggFzF+fzEIF/7Y5yp/Unbw578go=
+	t=1769614484; cv=none; b=awC+rY0pzP+IKt2XQNlUUNOxFPPVbEg1jRkeNccMFO0hO7JqdEDhIHYhIp0GQXamnP8BOBT2Sun8t2kx8HiJGfhqUEgcE+EvU6hLjHz38MHw4e3tA8p7KJChX8o/swUvVm1VFLMD9UXx3clk0xkDG+ArAl8l7OzZPVjjGVpZWOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614986; c=relaxed/simple;
-	bh=EOixVpeE+RsakAkpdpjpryhTBVE/oo5/E+k1ESd9AV8=;
+	s=arc-20240116; t=1769614484; c=relaxed/simple;
+	bh=eCFxp1f8fJ5ryytwPDsgcecy6vP0mO830l27zy6smNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPFMu+eHwOmOBxfiiYyBw2Y7DzaQo/UosZG70yuJzls2YlZ1pXpk+VWmY3toieU8FVNCvHYy/HwSm5p7y621DIjcSCi+8z28TQjXVwHpAare2MKr6JKxGxB+14myb9hjdQF60vuAC29KSN/V9q8bX6UHz814yp2UqiuEQTpcEt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvVj3KeR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EBAC4CEF7;
-	Wed, 28 Jan 2026 15:43:05 +0000 (UTC)
+	 MIME-Version; b=uQtwX7y1Elkv7BaHOPCXPDw89IU3opllDx6ekEK/p6BJekTUndMlUrcFktIVIG7RLUG78DoNXy0lCnct4SouHckWPBMSmUWgBT+XwmUvycR8XyqYq0YWiyo+clUiU/NfOaL5HF8iIp0zjaTIq6GB4qFkzWynaEaCnxOA595UC1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYG1f2Nx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5BAC4CEF1;
+	Wed, 28 Jan 2026 15:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614986;
-	bh=EOixVpeE+RsakAkpdpjpryhTBVE/oo5/E+k1ESd9AV8=;
+	s=korg; t=1769614483;
+	bh=eCFxp1f8fJ5ryytwPDsgcecy6vP0mO830l27zy6smNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvVj3KeREcp8m/hqOY7Csf5Vu2WrVA/15LFGdy8rH57fgbNZfpP34F7O1Q5VZ6lsc
-	 dcPezRucPyL02hIAs69TvT5TcIMWCept3G6nHIw9W22fvhQUmDf1Nb9ujER1Hejdw5
-	 mU7aHSVkkKNhdTy1A1eN6vsuHsKMfdzon9WG5Apk=
+	b=BYG1f2NxtdkZMoCfN2oS7cjFG62uNEqpgw+tbEC5DeC2PTVPxBXcAeOSCd5UDD0PR
+	 JIOL3qqgdTRhc7cEee8aS75KpkoD2UuvCgvwrAzFhpiZDF3KaVFFsNhVbHuU8uJ98N
+	 3AZjrJv7WUJquNWgJx9IaT0weYlg8QQAJX5Ysc3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Marnix Rijnart <marnix.rijnart@iwell.eu>
-Subject: [PATCH 6.12 043/169] serial: 8250_pci: Fix broken RS485 for F81504/508/512
-Date: Wed, 28 Jan 2026 16:22:06 +0100
-Message-ID: <20260128145335.569121457@linuxfoundation.org>
+	Francesco Lavra <flavra@baylibre.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 151/254] iio: imu: st_lsm6dsx: fix iio_chan_spec for sensors without event detection
+Date: Wed, 28 Jan 2026 16:22:07 +0100
+Message-ID: <20260128145350.245235220@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +68,100 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212279-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212127-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E74BDA4B0C
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email]
+X-Rspamd-Queue-Id: D11C3A400F
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marnix Rijnart <marnix.rijnart@iwell.eu>
+From: Francesco Lavra <flavra@baylibre.com>
 
-commit 27aff0a56b3c77ea1a73641c9b3c4172a8f7238f upstream.
+commit c34e2e2d67b3bb8d5a6d09b0d6dac845cdd13fb3 upstream.
 
-Fintek F81504/508/512 can support both RTS_ON_SEND and RTS_AFTER_SEND,
-but pci_fintek_rs485_supported only announces the former.
+The st_lsm6dsx_acc_channels array of struct iio_chan_spec has a non-NULL
+event_spec field, indicating support for IIO events. However, event
+detection is not supported for all sensors, and if userspace tries to
+configure accelerometer wakeup events on a sensor device that does not
+support them (e.g. LSM6DS0), st_lsm6dsx_write_event() dereferences a NULL
+pointer when trying to write to the wakeup register.
+Define an additional struct iio_chan_spec array whose members have a NULL
+event_spec field, and use this array instead of st_lsm6dsx_acc_channels for
+sensors without event detection capability.
 
-This makes it impossible to unset SER_RS485_RTS_ON_SEND from
-userspace because of uart_sanitize_serial_rs485(). Some devices
-with these chips need RTS low on TX, so they are effectively broken.
-
-Fix this by announcing the support for SER_RS485_RTS_AFTER_SEND,
-similar to commit 068d35a7be65 ("serial: sc16is7xx: announce support
-for SER_RS485_RTS_ON_SEND").
-
-Fixes: 4afeced55baa ("serial: core: fix sanitizing check for RTS settings")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Marnix Rijnart <marnix.rijnart@iwell.eu>
-Link: https://patch.msgid.link/20260112000931.61703-1-marnix.rijnart@iwell.eu
+Fixes: b5969abfa8b8 ("iio: imu: st_lsm6dsx: add motion events")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -1641,7 +1641,7 @@ static int pci_fintek_rs485_config(struc
- }
- 
- static const struct serial_rs485 pci_fintek_rs485_supported = {
--	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND,
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND,
- 	/* F81504/508/512 does not support RTS delay before or after send */
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -84,6 +84,13 @@ static const struct iio_chan_spec st_lsm
+ 	IIO_CHAN_SOFT_TIMESTAMP(3),
  };
  
++static const struct iio_chan_spec st_lsm6ds0_acc_channels[] = {
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x28, IIO_MOD_X, 0),
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2a, IIO_MOD_Y, 1),
++	ST_LSM6DSX_CHANNEL(IIO_ACCEL, 0x2c, IIO_MOD_Z, 2),
++	IIO_CHAN_SOFT_TIMESTAMP(3),
++};
++
+ static const struct iio_chan_spec st_lsm6dsx_gyro_channels[] = {
+ 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x22, IIO_MOD_X, 0),
+ 	ST_LSM6DSX_CHANNEL(IIO_ANGL_VEL, 0x24, IIO_MOD_Y, 1),
+@@ -125,8 +132,8 @@ static const struct st_lsm6dsx_settings
+ 		},
+ 		.channels = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+-				.chan = st_lsm6dsx_acc_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
++				.chan = st_lsm6ds0_acc_channels,
++				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.chan = st_lsm6ds0_gyro_channels,
+@@ -1428,8 +1435,8 @@ static const struct st_lsm6dsx_settings
+ 		},
+ 		.channels = {
+ 			[ST_LSM6DSX_ID_ACC] = {
+-				.chan = st_lsm6dsx_acc_channels,
+-				.len = ARRAY_SIZE(st_lsm6dsx_acc_channels),
++				.chan = st_lsm6ds0_acc_channels,
++				.len = ARRAY_SIZE(st_lsm6ds0_acc_channels),
+ 			},
+ 			[ST_LSM6DSX_ID_GYRO] = {
+ 				.chan = st_lsm6dsx_gyro_channels,
 
 
 
