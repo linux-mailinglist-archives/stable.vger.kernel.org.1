@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-212583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCpJCcI7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212583-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:30 +0100
+	id IPITG3IxemlT4gEAu9opvQ
+	(envelope-from <stable+bounces-212377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B7EAA5F43
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF03A4B9F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:55:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91CF3322A6A5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 74D3230BC662
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CA33081A4;
-	Wed, 28 Jan 2026 16:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FB830DED4;
+	Wed, 28 Jan 2026 15:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UG+M7LP6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9YAFLE3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6B13033C4;
-	Wed, 28 Jan 2026 16:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B002230DEC4;
+	Wed, 28 Jan 2026 15:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616004; cv=none; b=XelZiZnl+BwXTkxCt5imBQgDTIU6Kj72qPx5Gb+afOu7EF8zO6cGdMfbXBS/ryDm9Y7+Abbqjht/w84UsN8/xvxpLwrmsjTuBLcyNesCP7bMAybuxOZpaCwY9i4u2VUG26uMWfqmqukI5sD460F64IlA27Vij0c0ZTTqqpBjtOE=
+	t=1769615316; cv=none; b=Cf7y37YG/5tlvPKY0Kx2PPKt31NZ7DTJFcuRcsHJwnHLVCNqeUkdf0Gspw6bPB+vLmBPw7dvjhM1I5z3A7Dly73bvDeTe6uKwt7CNHsO57+UtzuP6k1x9Y7CyowDaT+s7RugarLaXsIYlGNctulWcy3PiulUc1EYJKhKo/dXS5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616004; c=relaxed/simple;
-	bh=Ld/e5sfamjc+W1cRUXRIdKPnwI08JEneE5knxsop7x8=;
+	s=arc-20240116; t=1769615316; c=relaxed/simple;
+	bh=ShfTXfzATBySTQ22lPxJ1FJf+2zLWcHi2AOw+tzWRLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7n7HyzvM+0Itayv7HEywIX3tgblVL2fRTj+nBDnxZBvG/CKIFFtUuK1s7nlwXbo52GH2Ex8x9JalUYHYCIObwEsmSKUTn7TlsYo73d9gK5zum9pUs4OMuVFKmTp4oSCX5JsQSQ2Hzwrjf8iWCxAZ6iAxFVexOAD7QtSEqWRhGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UG+M7LP6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3DCC4CEF1;
-	Wed, 28 Jan 2026 16:00:03 +0000 (UTC)
+	 MIME-Version; b=dcdIxSXlD4DXq/VlayBWgmm96NJoXjxKN7Hyn5XXgi3R0AfFUHEIlfZrAEzb8k1gOt06oi5XOg4DYzCi1ukWmQpiR2vTgsTkjRd9Vg5NSl+Z4py6e0NI8AKRbH8j0o6Djwtl8CYUcIvrQgTw1kL6xm93f9hMEGSm997/sdhVcMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9YAFLE3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D84C4CEF1;
+	Wed, 28 Jan 2026 15:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616004;
-	bh=Ld/e5sfamjc+W1cRUXRIdKPnwI08JEneE5knxsop7x8=;
+	s=korg; t=1769615316;
+	bh=ShfTXfzATBySTQ22lPxJ1FJf+2zLWcHi2AOw+tzWRLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UG+M7LP6YiVBweBkK1N25nkgFZMBzy1tZRZrDxYBoaHa7c1nd2ne0bTnEMpLF5Yuz
-	 26DLepx7YvswvBWAsjrTeXOJwCbxJWd9tU4W6pgF/t+A47cj7x+VvFJ97dhMfd5Xjo
-	 3Lpjnr4Pqp/mKdLav40EYgxeko+/0KM0LLCJ0z7U=
+	b=W9YAFLE3Pvx5fTQs/F6oAEyBJAvB4t62bA+Xhx3MhYmitumickElljiZE1Ukl/1ZZ
+	 pG4pvG0XcqaMrAawzRrX4BGVjPC8q0vle1/qGC5C1QGTfIEuKt/NtTTzSj3ho8QUbI
+	 rcxLVWA3nK8UDkHPFMdT8NIdkL9nnb7QEgSVc6hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.18 179/227] arm64/fpsimd: signal: Allocate SSVE storage when restoring ZA
-Date: Wed, 28 Jan 2026 16:23:44 +0100
-Message-ID: <20260128145350.889800901@linuxfoundation.org>
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 142/169] can: mcba_usb: mcba_usb_read_bulk_callback(): fix URB memory leak
+Date: Wed, 28 Jan 2026 16:23:45 +0100
+Message-ID: <20260128145339.115473452@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,129 +67,85 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212377-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212583-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 7B7EAA5F43
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BCF03A4B9F
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit ea8ccfddbce0bee6310da4f3fc560ad520f5e6b4 upstream.
+commit 710a7529fb13c5a470258ff5508ed3c498d54729 upstream.
 
-The code to restore a ZA context doesn't attempt to allocate the task's
-sve_state before setting TIF_SME. Consequently, restoring a ZA context
-can place a task into an invalid state where TIF_SME is set but the
-task's sve_state is NULL.
+Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
+gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-In legitimate but uncommon cases where the ZA signal context was NOT
-created by the kernel in the context of the same task (e.g. if the task
-is saved/restored with something like CRIU), we have no guarantee that
-sve_state had been allocated previously. In these cases, userspace can
-enter streaming mode without trapping while sve_state is NULL, causing a
-later NULL pointer dereference when the kernel attempts to store the
-register state:
+In mcba_usb_probe() -> mcba_usb_start(), the URBs for USB-in transfers are
+allocated, added to the priv->rx_submitted anchor and submitted. In the
+complete callback mcba_usb_read_bulk_callback(), the URBs are processed and
+resubmitted. In mcba_usb_close() -> mcba_urb_unlink() the URBs are freed by
+calling usb_kill_anchored_urbs(&priv->rx_submitted).
 
-| # ./sigreturn-za
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-| Mem abort info:
-|   ESR = 0x0000000096000046
-|   EC = 0x25: DABT (current EL), IL = 32 bits
-|   SET = 0, FnV = 0
-|   EA = 0, S1PTW = 0
-|   FSC = 0x06: level 2 translation fault
-| Data abort info:
-|   ISV = 0, ISS = 0x00000046, ISS2 = 0x00000000
-|   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-|   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-| user pgtable: 4k pages, 52-bit VAs, pgdp=0000000101f47c00
-| [0000000000000000] pgd=08000001021d8403, p4d=0800000102274403, pud=0800000102275403, pmd=0000000000000000
-| Internal error: Oops: 0000000096000046 [#1]  SMP
-| Modules linked in:
-| CPU: 0 UID: 0 PID: 153 Comm: sigreturn-za Not tainted 6.19.0-rc1 #1 PREEMPT
-| Hardware name: linux,dummy-virt (DT)
-| pstate: 214000c9 (nzCv daIF +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-| pc : sve_save_state+0x4/0xf0
-| lr : fpsimd_save_user_state+0xb0/0x1c0
-| sp : ffff80008070bcc0
-| x29: ffff80008070bcc0 x28: fff00000c1ca4c40 x27: 63cfa172fb5cf658
-| x26: fff00000c1ca5228 x25: 0000000000000000 x24: 0000000000000000
-| x23: 0000000000000000 x22: fff00000c1ca4c40 x21: fff00000c1ca4c40
-| x20: 0000000000000020 x19: fff00000ff6900f0 x18: 0000000000000000
-| x17: fff05e8e0311f000 x16: 0000000000000000 x15: 028fca8f3bdaf21c
-| x14: 0000000000000212 x13: fff00000c0209f10 x12: 0000000000000020
-| x11: 0000000000200b20 x10: 0000000000000000 x9 : fff00000ff69dcc0
-| x8 : 00000000000003f2 x7 : 0000000000000001 x6 : fff00000c1ca5b48
-| x5 : fff05e8e0311f000 x4 : 0000000008000000 x3 : 0000000000000000
-| x2 : 0000000000000001 x1 : fff00000c1ca5970 x0 : 0000000000000440
-| Call trace:
-|  sve_save_state+0x4/0xf0 (P)
-|  fpsimd_thread_switch+0x48/0x198
-|  __switch_to+0x20/0x1c0
-|  __schedule+0x36c/0xce0
-|  schedule+0x34/0x11c
-|  exit_to_user_mode_loop+0x124/0x188
-|  el0_interrupt+0xc8/0xd8
-|  __el0_irq_handler_common+0x18/0x24
-|  el0t_64_irq_handler+0x10/0x1c
-|  el0t_64_irq+0x198/0x19c
-| Code: 54000040 d51b4408 d65f03c0 d503245f (e5bb5800)
-| ---[ end trace 0000000000000000 ]---
+However, this does not take into account that the USB framework unanchors
+the URB before the complete function is called. This means that once an
+in-URB has been completed, it is no longer anchored and is ultimately not
+released in usb_kill_anchored_urbs().
 
-Fix this by having restore_za_context() ensure that the task's sve_state
-is allocated, matching what we do when taking an SME trap. Any live
-SVE/SSVE state (which is restored earlier from a separate signal
-context) must be preserved, and hence this is not zeroed.
+Fix the memory leak by anchoring the URB in the
+mcba_usb_read_bulk_callback()to the priv->rx_submitted anchor.
 
-Fixes: 39782210eb7e ("arm64/sme: Implement ZA signal handling")
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: <stable@vger.kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 51f3baad7de9 ("can: mcba_usb: Add support for Microchip CAN BUS Analyzer")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260116-can_usb-fix-memory-leak-v2-4-4b8cb2915571@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/signal.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/can/usb/mcba_usb.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/signal.c
-+++ b/arch/arm64/kernel/signal.c
-@@ -576,6 +576,10 @@ static int restore_za_context(struct use
- 	if (user->za_size < ZA_SIG_CONTEXT_SIZE(vq))
- 		return -EINVAL;
+--- a/drivers/net/can/usb/mcba_usb.c
++++ b/drivers/net/can/usb/mcba_usb.c
+@@ -608,11 +608,17 @@ resubmit_urb:
+ 			  urb->transfer_buffer, MCBA_USB_RX_BUFF_SIZE,
+ 			  mcba_usb_read_bulk_callback, priv);
  
-+	sve_alloc(current, false);
-+	if (!current->thread.sve_state)
-+		return -ENOMEM;
++	usb_anchor_urb(urb, &priv->rx_submitted);
 +
- 	sme_alloc(current, true);
- 	if (!current->thread.sme_state) {
- 		current->thread.svcr &= ~SVCR_ZA_MASK;
+ 	retval = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!retval)
++		return;
++
++	usb_unanchor_urb(urb);
+ 
+ 	if (retval == -ENODEV)
+ 		netif_device_detach(netdev);
+-	else if (retval)
++	else
+ 		netdev_err(netdev, "failed resubmitting read bulk urb: %d\n",
+ 			   retval);
+ }
 
 
 
