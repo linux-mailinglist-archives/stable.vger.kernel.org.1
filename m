@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-212578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212546-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNOHGqg7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212578-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:04 +0100
+	id ICy3Gjo7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212546-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:37:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E08A5F26
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E131AA5E43
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:37:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE4AA3227B36
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C72532F1558
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B04302779;
-	Wed, 28 Jan 2026 15:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E508A3033E4;
+	Wed, 28 Jan 2026 15:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGP1eOiw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/zv2Qf9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777052F25EF;
-	Wed, 28 Jan 2026 15:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81C32FF178;
+	Wed, 28 Jan 2026 15:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615987; cv=none; b=lPV/ldAlEEYdCZ7P4V9KzKch6sA9PBBdVMtx6e3q1L9agnsvQJxJ2uo2qVjU9fmJ69bUOneT2zJMmNH5geo5yGKX/EnuYu07/R+JoewhVEPfXUe9oroi4J48RoLnfFCnF/U0UrS884MEI5H8lk9b/ZHjIDprqX8OoRL0RjWcwOs=
+	t=1769615881; cv=none; b=rYCBb7W1Ayk3r5yFLX2LW60dSBM000mBdIfIHpP9itmrbLzd6K05g7ayFNBYZM5HxfeeZW2kBTGS9A+CrQ86Sw6wmAjXv2BaFO+B2QxiI9YaaRPafKTc6ofqVx+QrQkUo86JNluxVUspv1tqgqgBwYxCPD9VaRjWPCLolT+h6Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615987; c=relaxed/simple;
-	bh=w1MXEpi5xntaDZdvlP8zOBSoNWOwx+b18tqyJ2EUs5U=;
+	s=arc-20240116; t=1769615881; c=relaxed/simple;
+	bh=OvHseY/A9D3AKACAg9LjkQQHln/d7VtcuRYzEb0Bbt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pS0WlTZ92pJWCb+UiKNy6ZeUpqXTeXVBUBNw7gU5WY1ODNbXPK4q++3rla42ZdPS4nLcDG9xysr1b73kfE/LpTkfGYfGzGpH/fEnSJFRQ6cZump6rye8zFAFMZVFsGphVtwFvUOiAFY6zzpqVWhWLWe/1wTM0hNAlE6HCp1pYTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGP1eOiw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4CDC4CEF1;
-	Wed, 28 Jan 2026 15:59:46 +0000 (UTC)
+	 MIME-Version; b=gd66H9yfN4+YV3jyc6hmkv7iSrYD7UOEnzoOtFC40Q7MTG+w7lmMk3OmCg2Ifvw9ebrsYJoM++5OCI9oVksl7uNv3Yg3medbr1dC/LO0WGZwz/zs4ER0pRA+h840LhjqwZHC/QytC6fO/hXbUTy1jjbS9Stv9vZ87quWCsvwhU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/zv2Qf9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD790C4CEF1;
+	Wed, 28 Jan 2026 15:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615987;
-	bh=w1MXEpi5xntaDZdvlP8zOBSoNWOwx+b18tqyJ2EUs5U=;
+	s=korg; t=1769615881;
+	bh=OvHseY/A9D3AKACAg9LjkQQHln/d7VtcuRYzEb0Bbt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGP1eOiwpaLYjT5dSmRPCTGy7qVkLwm4n14hKKtYb0lIBl3hg+KLeTtZczXwf6IGx
-	 f9wKlFayuAZCqpzXU5MK5T3gPN8Eb/NF55t4O5TSExu0j1ssgjbMuFj/CteKLoHZrK
-	 aQvZU84VzBVl/xcNpRDAfH3ULwTHgWaMgC3Rxbuo=
+	b=S/zv2Qf9mNRCW1P3CLr9L+2pL2LdVZ1v9tQLLFIVTOpsicgWFBXJ2ElUuYcMjvrgM
+	 b1SvGflHmZIh9eEnaMmdVJLt17NLN8mSmzW5cdPNk+Xp6l5AFK7az/qvkPRZ0F91an
+	 JLtomNmDhIPObiOUqg6kXGVgExNh43PB1ay1NHBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ratheesh Kannoth <rkannoth@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Yang <mmyangfl@gmail.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 141/227] octeontx2-af: Fix error handling
-Date: Wed, 28 Jan 2026 16:23:06 +0100
-Message-ID: <20260128145349.533662116@linuxfoundation.org>
+Subject: [PATCH 6.18 142/227] net: openvswitch: fix data race in ovs_vport_get_upcall_stats
+Date: Wed, 28 Jan 2026 16:23:07 +0100
+Message-ID: <20260128145349.569521208@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
 References: <20260128145344.331957407@linuxfoundation.org>
@@ -69,216 +72,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,ovn.org,google.com,redhat.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212546-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212578-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.991];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,marvell.com:email]
-X-Rspamd-Queue-Id: E6E08A5F26
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E131AA5E43
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: David Yang <mmyangfl@gmail.com>
 
-[ Upstream commit 19e4175e997a5b85eab97d522f00cc99abd1873c ]
+[ Upstream commit cc4816bdb08639e5cd9acb295a02d6f0f09736b4 ]
 
-This commit adds error handling and rollback logic to
-rvu_mbox_handler_attach_resources() to properly clean up partially
-attached resources when rvu_attach_block() fails.
+In ovs_vport_get_upcall_stats(), some statistics protected by
+u64_stats_sync, are read and accumulated in ignorance of possible
+u64_stats_fetch_retry() events. These statistics are already accumulated
+by u64_stats_inc(). Fix this by reading them into temporary variables
+first.
 
-Fixes: 746ea74241fa0 ("octeontx2-af: Add RVU block LF provisioning support")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Link: https://patch.msgid.link/20260121033934.1900761-1-rkannoth@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1933ea365aa7 ("net: openvswitch: Add support to count upcall packets")
+Signed-off-by: David Yang <mmyangfl@gmail.com>
+Acked-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20260121072932.2360971-1-mmyangfl@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/rvu.c   | 86 ++++++++++++++-----
- 1 file changed, 64 insertions(+), 22 deletions(-)
+ net/openvswitch/vport.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 2d78e08f985f0..747fbdf2a908f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -1551,8 +1551,8 @@ static int rvu_get_attach_blkaddr(struct rvu *rvu, int blktype,
- 	return -ENODEV;
- }
- 
--static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
--			     int num_lfs, struct rsrc_attach *attach)
-+static int rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
-+			    int num_lfs, struct rsrc_attach *attach)
+diff --git a/net/openvswitch/vport.c b/net/openvswitch/vport.c
+index 6bbbc16ab7780..f0ce8ce1dce0e 100644
+--- a/net/openvswitch/vport.c
++++ b/net/openvswitch/vport.c
+@@ -310,22 +310,23 @@ void ovs_vport_get_stats(struct vport *vport, struct ovs_vport_stats *stats)
+  */
+ int ovs_vport_get_upcall_stats(struct vport *vport, struct sk_buff *skb)
  {
- 	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
- 	struct rvu_hwinfo *hw = rvu->hw;
-@@ -1562,21 +1562,21 @@ static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
- 	u64 cfg;
++	u64 tx_success = 0, tx_fail = 0;
+ 	struct nlattr *nla;
+ 	int i;
  
- 	if (!num_lfs)
--		return;
-+		return -EINVAL;
+-	__u64 tx_success = 0;
+-	__u64 tx_fail = 0;
+-
+ 	for_each_possible_cpu(i) {
+ 		const struct vport_upcall_stats_percpu *stats;
++		u64 n_success, n_fail;
+ 		unsigned int start;
  
- 	blkaddr = rvu_get_attach_blkaddr(rvu, blktype, pcifunc, attach);
- 	if (blkaddr < 0)
--		return;
-+		return -EFAULT;
- 
- 	block = &hw->block[blkaddr];
- 	if (!block->lf.bmap)
--		return;
-+		return -ESRCH;
- 
- 	for (slot = 0; slot < num_lfs; slot++) {
- 		/* Allocate the resource */
- 		lf = rvu_alloc_rsrc(&block->lf);
- 		if (lf < 0)
--			return;
-+			return -EFAULT;
- 
- 		cfg = (1ULL << 63) | (pcifunc << 8) | slot;
- 		rvu_write64(rvu, blkaddr, block->lfcfg_reg |
-@@ -1587,6 +1587,8 @@ static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
- 		/* Set start MSIX vector for this LF within this PF/VF */
- 		rvu_set_msix_offset(rvu, pfvf, block, lf);
- 	}
-+
-+	return 0;
- }
- 
- static int rvu_check_rsrc_availability(struct rvu *rvu,
-@@ -1724,22 +1726,31 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
- 	int err;
- 
- 	/* If first request, detach all existing attached resources */
--	if (!attach->modify)
--		rvu_detach_rsrcs(rvu, NULL, pcifunc);
-+	if (!attach->modify) {
-+		err = rvu_detach_rsrcs(rvu, NULL, pcifunc);
-+		if (err)
-+			return err;
-+	}
- 
- 	mutex_lock(&rvu->rsrc_lock);
- 
- 	/* Check if the request can be accommodated */
- 	err = rvu_check_rsrc_availability(rvu, attach, pcifunc);
- 	if (err)
--		goto exit;
-+		goto fail1;
- 
- 	/* Now attach the requested resources */
--	if (attach->npalf)
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_NPA, 1, attach);
-+	if (attach->npalf) {
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NPA, 1, attach);
-+		if (err)
-+			goto fail1;
-+	}
- 
--	if (attach->nixlf)
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
-+	if (attach->nixlf) {
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
-+		if (err)
-+			goto fail2;
-+	}
- 
- 	if (attach->sso) {
- 		/* RVU func doesn't know which exact LF or slot is attached
-@@ -1749,33 +1760,64 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
- 		 */
- 		if (attach->modify)
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
--				 attach->sso, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
-+				       attach->sso, attach);
-+		if (err)
-+			goto fail3;
+ 		stats = per_cpu_ptr(vport->upcall_stats, i);
+ 		do {
+ 			start = u64_stats_fetch_begin(&stats->syncp);
+-			tx_success += u64_stats_read(&stats->n_success);
+-			tx_fail += u64_stats_read(&stats->n_fail);
++			n_success = u64_stats_read(&stats->n_success);
++			n_fail = u64_stats_read(&stats->n_fail);
+ 		} while (u64_stats_fetch_retry(&stats->syncp, start));
++		tx_success += n_success;
++		tx_fail += n_fail;
  	}
  
- 	if (attach->ssow) {
- 		if (attach->modify)
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
--				 attach->ssow, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
-+				       attach->ssow, attach);
-+		if (err)
-+			goto fail4;
- 	}
- 
- 	if (attach->timlfs) {
- 		if (attach->modify)
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
--				 attach->timlfs, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
-+				       attach->timlfs, attach);
-+		if (err)
-+			goto fail5;
- 	}
- 
- 	if (attach->cptlfs) {
- 		if (attach->modify &&
- 		    rvu_attach_from_same_block(rvu, BLKTYPE_CPT, attach))
- 			rvu_detach_block(rvu, pcifunc, BLKTYPE_CPT);
--		rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
--				 attach->cptlfs, attach);
-+		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
-+				       attach->cptlfs, attach);
-+		if (err)
-+			goto fail6;
- 	}
- 
--exit:
-+	mutex_unlock(&rvu->rsrc_lock);
-+	return 0;
-+
-+fail6:
-+	if (attach->timlfs)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
-+
-+fail5:
-+	if (attach->ssow)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
-+
-+fail4:
-+	if (attach->sso)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
-+
-+fail3:
-+	if (attach->nixlf)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_NIX);
-+
-+fail2:
-+	if (attach->npalf)
-+		rvu_detach_block(rvu, pcifunc, BLKTYPE_NPA);
-+
-+fail1:
- 	mutex_unlock(&rvu->rsrc_lock);
- 	return err;
- }
+ 	nla = nla_nest_start_noflag(skb, OVS_VPORT_ATTR_UPCALL_STATS);
 -- 
 2.51.0
 
