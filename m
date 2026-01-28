@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ItbGd4temnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212088-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:14 +0100
+	id 0BY6Khs3eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A60A42A5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC3CA56C7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 69E18300BEBA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:32:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D1053113F22
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EEF23E358;
-	Wed, 28 Jan 2026 15:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E1D2DFA3A;
+	Wed, 28 Jan 2026 15:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXor8ZfI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waUrxV2A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED250155757;
-	Wed, 28 Jan 2026 15:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E4123EA92;
+	Wed, 28 Jan 2026 15:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614361; cv=none; b=Q8oK5WnkgzmxTGjl19D8bwPXHwfvgk34ltONe5bmkDRX+jEJcgM6Niu1zL3G64zyztZZehb7XLBvXcRGDo0e4A2/zKfOTSyUPwhhF5UegvtQVO6lUIF5bft9KpBlb34zvbpL0VUJpbuCW/sjDormTN7ZOElePbiHlK96FbyzlWY=
+	t=1769614877; cv=none; b=DKBCckNxxCzXsrCNew5wjQmW8EpXp8icPGVmTfmPpba0Se8g+qS8e0ZgLIOWhG2O1Thnw/EZDE21ND2pnw/SgkpK37Isf+eOMJM2rGBHfTckeBN/ZhM0mDdhcB+/7mNCuq/iVno7sRfSytej3aoEmMtfHgZgq0KS8Rr5DI2v3IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614361; c=relaxed/simple;
-	bh=NrgUM5w7qE0qZBORCy4LaVJPgbs/yNjQVDExmCkjPLE=;
+	s=arc-20240116; t=1769614877; c=relaxed/simple;
+	bh=+GC4k6c9FRKHLCzhQoGFfNLlPRhePnUzHHVPc0oQ2uE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a20wIptHPMeHXO2Z5oBWQPpM+2XGYTXgoPfV4foWiRQCVfE/Aniw9NQPzNaSPcD8fETaFTwllRW2LvN+NEZrdt1sbxhoqrWB3BmW9JOWqbgY2F5MxKnIETyRhx48icKhlyxG8dq3Pt1oziyx3uExizS6zyKd6vQblPhAYa6fnrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXor8ZfI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A74DC4CEF1;
-	Wed, 28 Jan 2026 15:32:40 +0000 (UTC)
+	 MIME-Version; b=ECjm/HEzeUqeQ+I0DYa2/0g7YCtko/yuuJbxPNSf7SeL7WTI8wNqNLj8AG3ZK1iD+WiluymqNBSjCsutkEcHzwcKsQDz6qFYqtgvZ7sSJVtVTqJR6LCG26zDzZDh8mBJpT7IbKYDXuEzdkz7EySHkhJGiG965DstCtzt2yL6aok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waUrxV2A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EF2C4CEF1;
+	Wed, 28 Jan 2026 15:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614360;
-	bh=NrgUM5w7qE0qZBORCy4LaVJPgbs/yNjQVDExmCkjPLE=;
+	s=korg; t=1769614877;
+	bh=+GC4k6c9FRKHLCzhQoGFfNLlPRhePnUzHHVPc0oQ2uE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JXor8ZfIkGkmOCKMZNf9AgK+G73azc3WolhKvVVlGBay4WWx5LSGJkjmyMpQsKnrH
-	 Rs2IwbbdoML5nKQeM3nU0m6tb1HbIeBDzxSmlNSDSbBKdY4grDB/vg1MtaxlFFMR4f
-	 PUiCXbnN/IAM5ly9adVEQGP22MvsC3LCUCbdokCk=
+	b=waUrxV2AZ6f7memm5hdyP179Gl4yDdOgCrdQLEL89SzVGHMfvhcspyycfoMaMRHaP
+	 dKtvVm8NnYzF9EVAYHjxV7jdXxzN/J7yh7U7lGRUNL9FLSWY19EPAEKVclQV0SNiSy
+	 3zRNt3DXuxD0o4w4HZ5uKksavG/rpM9cbizukvYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Wolf <wolf@yoxt.cc>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/254] ata: libata: Call ata_dev_config_lpm() for ATAPI devices
+Subject: [PATCH 6.12 006/169] dt-bindings: power: qcom,rpmpd: add Turbo L5 corner
 Date: Wed, 28 Jan 2026 16:21:29 +0100
-Message-ID: <20260128145348.890170268@linuxfoundation.org>
+Message-ID: <20260128145334.242705093@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212088-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212247-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,59 +87,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,yoxt.cc:email]
-X-Rspamd-Queue-Id: B9A60A42A5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,patchwork.freedesktop.org:url,linaro.org:email]
+X-Rspamd-Queue-Id: 0DC3CA56C7
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 8f3fb33f8f3f825c708ece800c921977c157f9b6 ]
+[ Upstream commit 1c402295c10891988fb2a6fc658e6e95d4852a20 ]
 
-Commit d360121832d8 ("ata: libata-core: Introduce ata_dev_config_lpm()")
-introduced ata_dev_config_lpm(). However, it only called this function for
-ATA_DEV_ATA and ATA_DEV_ZAC devices, not for ATA_DEV_ATAPI devices.
+Update the RPMH level definitions to include TURBO_L5 corner.
 
-Additionally, commit d99a9142e782 ("ata: libata-core: Move device LPM quirk
-settings to ata_dev_config_lpm()") moved the LPM quirk application from
-ata_dev_configure() to ata_dev_config_lpm(), causing LPM quirks for ATAPI
-devices to no longer be applied.
-
-Call ata_dev_config_lpm() also for ATAPI devices, such that LPM quirks are
-applied for ATAPI devices with an entry in __ata_dev_quirks once again.
-
-Fixes: d360121832d8 ("ata: libata-core: Introduce ata_dev_config_lpm()")
-Fixes: d99a9142e782 ("ata: libata-core: Move device LPM quirk settings to ata_dev_config_lpm()")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Tested-by: Wolf <wolf@yoxt.cc>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Stable-dep-of: c8c6fb886f57 ("ata: libata: Print features also for ATAPI devices")
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/661840/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Stable-dep-of: 5bc3e720e725 ("pmdomain: qcom: rpmhpd: Add MXC to SC8280XP")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/dt-bindings/power/qcom-rpmpd.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index b748c8ead39de..e51a27ae0a7d2 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -3047,6 +3047,8 @@ int ata_dev_configure(struct ata_device *dev)
- 				     ata_mode_string(xfer_mask),
- 				     cdb_intr_string, atapi_an_string,
- 				     dma_dir_string);
-+
-+		ata_dev_config_lpm(dev);
- 	}
+diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
+index df599bf462207..5bc4735fb3e6e 100644
+--- a/include/dt-bindings/power/qcom-rpmpd.h
++++ b/include/dt-bindings/power/qcom-rpmpd.h
+@@ -240,6 +240,7 @@
+ #define RPMH_REGULATOR_LEVEL_TURBO_L2		432
+ #define RPMH_REGULATOR_LEVEL_TURBO_L3		448
+ #define RPMH_REGULATOR_LEVEL_TURBO_L4		452
++#define RPMH_REGULATOR_LEVEL_TURBO_L5		456
+ #define RPMH_REGULATOR_LEVEL_SUPER_TURBO 	464
+ #define RPMH_REGULATOR_LEVEL_SUPER_TURBO_NO_CPR	480
  
- 	/* determine max_sectors */
 -- 
 2.51.0
 
