@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212172-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iA++GMEwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:33 +0100
+	id wCD/Lnotemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212172-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8998AA49BB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B447A41CE
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7C4B308B079
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7E4B13028781
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DAF52F261C;
-	Wed, 28 Jan 2026 15:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11F32D77FE;
+	Wed, 28 Jan 2026 15:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsmtB6ma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbKJDIhC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E992C11FD;
-	Wed, 28 Jan 2026 15:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39EF286D57;
+	Wed, 28 Jan 2026 15:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615238; cv=none; b=lLsh6v5QuIihu+h2q9+NjkN7MUXjK2rnEchSRMwUSrZS2Au7wrhn35HZ+nptrKKYQUifmy/8YY5lRQoUvPz+cXCeXpFq455cQKcWYVy69AJziV0/XMJTZ6L8npSoyGS3lXuWHdxMRkFdmfITxeVreyxbpiMeuAf08pDeYMsC77E=
+	t=1769614628; cv=none; b=C9Xay5+UhsQZ2xl10hwn/EVrW9AwUITTuY/zK1v2oTMA+HDGcKXgC0iVrt5KpLTpsqmsckQ4KJj1y3cogWTRJknixNy5GpamQaWx0T+i5se96xyWndSVl6Nt7cK6a2k36bfOQmAVuQqjmPnIQKNpEfwn6e7Fgjih7IUiJf+6U20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615238; c=relaxed/simple;
-	bh=HEp0tmb9b+RMXn48eQJuMjBQVODDwfrBIBxh2r3j9H8=;
+	s=arc-20240116; t=1769614628; c=relaxed/simple;
+	bh=zy5GJVsTOad7f/1P60JvZKoP6MiFmQ8FbQgmBsyzs94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNX/JnEExfmFvS9hL1iCiXkBBp1g3/c+ee3j3Mqs5QkT94ifTRpl1EeNFZAvbrC1NclECj1wQxA2Zhkh+HQzC3l8O7cIVrH6zUaQbc4V1twHBpO4X6y6aUbiHB5i6gUjXSFHy0NWS/RH+0ZSA4r39wu/P/Pg2AawgCO2s07YaQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsmtB6ma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5D1C4CEF1;
-	Wed, 28 Jan 2026 15:47:17 +0000 (UTC)
+	 MIME-Version; b=PySCzv2yGxtwwB51U/frSmUF86gW22IlUGTGZwu1REO80qFbT6keEurrh4xX/1xpWCVfu1VyUgN6sFws7oVyUug82UUbVDlNBd9KpXpg/kHjFsRcM6EdRcluby34dE7D500TZUTk1HrnM22HlSV2K3p8XBz/fvQ3oMsIc8ofI40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbKJDIhC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5F9C16AAE;
+	Wed, 28 Jan 2026 15:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615238;
-	bh=HEp0tmb9b+RMXn48eQJuMjBQVODDwfrBIBxh2r3j9H8=;
+	s=korg; t=1769614628;
+	bh=zy5GJVsTOad7f/1P60JvZKoP6MiFmQ8FbQgmBsyzs94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HsmtB6maNy8jMDA67ZOTMRWWMNEGo+ENA1kDaHpxHL9+NssA7wjYOgPJrECzsbE1j
-	 Q5Fd3CRFgsdbX1nFclZa2m9gXXKJajdNgXUxrukGH20Xhr+OOQv83zH/n1jaiq2UJP
-	 r8+yRRC8ft5lI3bBd+2LflxnzSROCwroQuCB5WWw=
+	b=XbKJDIhCh+6expq97+nlHL4sAAjWcyX3t9o0c/EU8KA70g65lfDQsW734jDwb/W81
+	 x6JOw2pu/5EZlID8KTtumOZeGhtSQYV0ffzLsPOqScSsa1bsdf1cYMz0QTmY5B5eYZ
+	 6NPQKw9A7RoNUBkZec4N0kxTrsAqmJZIZS3CZdgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/169] be2net: Fix NULL pointer dereference in be_cmd_get_mac_from_list
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Ricky WU <ricky_wu@realtek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 194/254] mmc: rtsx_pci_sdmmc: implement sdmmc_card_busy function
 Date: Wed, 28 Jan 2026 16:22:50 +0100
-Message-ID: <20260128145337.138040844@linuxfoundation.org>
+Message-ID: <20260128145351.778906771@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +69,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212354-lists,stable=lfdr.de];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.7.a.0.0.1.0.0.e.9.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212172-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,crpt.ru:email]
-X-Rspamd-Queue-Id: 8998AA49BB
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6B447A41CE
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-[ Upstream commit 8215794403d264739cc676668087512950b2ff31 ]
+commit 122610220134b32c742cc056eaf64f7017ac8cd9 upstream.
 
-When the parameter pmac_id_valid argument of be_cmd_get_mac_from_list() is
-set to false, the driver may request the PMAC_ID from the firmware of the
-network card, and this function will store that PMAC_ID at the provided
-address pmac_id. This is the contract of this function.
+rtsx_pci_sdmmc does not have an sdmmc_card_busy function, so any voltage
+switches cause a kernel warning, "mmc0: cannot verify signal voltage
+switch."
 
-However, there is a location within the driver where both
-pmac_id_valid == false and pmac_id == NULL are being passed. This could
-result in dereferencing a NULL pointer.
+Copy the sdmmc_card_busy function from rtsx_pci_usb to rtsx_pci_sdmmc to
+fix this.
 
-To resolve this issue, it is necessary to pass the address of a stub
-variable to the function.
-
-Fixes: 95046b927a54 ("be2net: refactor MAC-addr setup code")
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Link: https://patch.msgid.link/20260120113734.20193-1-a.vatoropin@crpt.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ff984e57d36e ("mmc: Add realtek pcie sdmmc host driver")
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Tested-by: Ricky WU <ricky_wu@realtek.com>
+Reviewed-by: Ricky WU <ricky_wu@realtek.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/emulex/benet/be_cmds.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/host/rtsx_pci_sdmmc.c |   41 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
-index 779f1324bb5f8..0cda78b78fb87 100644
---- a/drivers/net/ethernet/emulex/benet/be_cmds.c
-+++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
-@@ -3797,6 +3797,7 @@ int be_cmd_get_perm_mac(struct be_adapter *adapter, u8 *mac)
+--- a/drivers/mmc/host/rtsx_pci_sdmmc.c
++++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+@@ -1307,6 +1307,46 @@ out:
+ 	return err;
+ }
+ 
++static int sdmmc_card_busy(struct mmc_host *mmc)
++{
++	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
++	struct rtsx_pcr *pcr = host->pcr;
++	int err;
++	u8 stat;
++	u8 mask = SD_DAT3_STATUS | SD_DAT2_STATUS | SD_DAT1_STATUS
++	| SD_DAT0_STATUS;
++
++	mutex_lock(&pcr->pcr_mutex);
++
++	rtsx_pci_start_run(pcr);
++
++	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
++				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP,
++			       SD_CLK_TOGGLE_EN);
++	if (err)
++		goto out;
++
++	mdelay(1);
++
++	err = rtsx_pci_read_register(pcr, SD_BUS_STAT, &stat);
++	if (err)
++		goto out;
++
++	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
++				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP, 0);
++out:
++	mutex_unlock(&pcr->pcr_mutex);
++
++	if (err)
++		return err;
++
++	/* check if any pin between dat[0:3] is low */
++	if ((stat & mask) != mask)
++		return 1;
++	else
++		return 0;
++}
++
+ static int sdmmc_execute_tuning(struct mmc_host *mmc, u32 opcode)
  {
- 	int status;
- 	bool pmac_valid = false;
-+	u32 pmac_id;
- 
- 	eth_zero_addr(mac);
- 
-@@ -3809,7 +3810,7 @@ int be_cmd_get_perm_mac(struct be_adapter *adapter, u8 *mac)
- 						       adapter->if_handle, 0);
- 	} else {
- 		status = be_cmd_get_mac_from_list(adapter, mac, &pmac_valid,
--						  NULL, adapter->if_handle, 0);
-+						  &pmac_id, adapter->if_handle, 0);
- 	}
- 
- 	return status;
--- 
-2.51.0
-
+ 	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
+@@ -1405,6 +1445,7 @@ static const struct mmc_host_ops realtek
+ 	.get_ro = sdmmc_get_ro,
+ 	.get_cd = sdmmc_get_cd,
+ 	.start_signal_voltage_switch = sdmmc_switch_voltage,
++	.card_busy = sdmmc_card_busy,
+ 	.execute_tuning = sdmmc_execute_tuning,
+ 	.init_sd_express = sdmmc_init_sd_express,
+ };
 
 
 
