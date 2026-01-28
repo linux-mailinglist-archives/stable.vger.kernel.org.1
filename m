@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-212073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212451-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id o/7mOrEuemmO3wEAu9opvQ
-	(envelope-from <stable+bounces-212073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:45 +0100
+	id qLjsNHw4emkd4wEAu9opvQ
+	(envelope-from <stable+bounces-212451-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B8AA44F7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:43:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09372A599B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:25:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 198AD30DA442
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C9B2E307CA88
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF8A242D7F;
-	Wed, 28 Jan 2026 15:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88192857CD;
+	Wed, 28 Jan 2026 15:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hx8A8Rv6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsUlJ+eR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E9F10A1E;
-	Wed, 28 Jan 2026 15:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7603B305E2E;
+	Wed, 28 Jan 2026 15:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614310; cv=none; b=PQua2HkQNqDFvOlDPrUw4Md+HS6glDywIcEI/AdEpXx4kpVQswiY6eg0WJENEqpGefC9XQwpNEXdtA+Gypte8o/qkZ8ZrwaP8UOj7Ea7Ama/7iU63wOZwYeG6R62FqZFBbdhgEyqF5rohaXA/D5rWRLWEKCSgkTJ0IBfBDG9UB4=
+	t=1769615564; cv=none; b=hvFE0PHEKx0wVLKvWhCiQuPUqv0jpZzyuKawkDupzeDN5J6ZHUGY56uc1QH4i51JwWjEvudblrunAqzMgDslH3qjZnrsdcTaWZfpFZNA66KzCuZaync+cJQBHcITQpLUyqSC3D7PbqIk38OSY1EzJwS/G4ddQZyHAIZ2OLkUyBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614310; c=relaxed/simple;
-	bh=hMlTLxWenfTe9+6MUM7uzWCpjvfU8GA3tk7i5A7PYP4=;
+	s=arc-20240116; t=1769615564; c=relaxed/simple;
+	bh=ytUou+EXtdYa4NKJvCj2Z+z4urSbpGz7lC81gXRWc7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O63OeXhZKVW1E3MBGB0LUN+pJ7aiDCWYJRLDufkzwsYzi8vs3xV42HIaqwI3YhORLd5IawG5LzVWam+oouiex5RNyaVSNEfbtcjzpFOWbgQZ/NRXyU561vQi5JeQN9fP5FI+bm6QqwAaXZJ+/2k8ddsbSjG8G+Q15Q9Q6zUaqMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hx8A8Rv6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB595C4CEF1;
-	Wed, 28 Jan 2026 15:31:49 +0000 (UTC)
+	 MIME-Version; b=CTZyBCIAISIKOsZWeG7MV6eW0IGTgXnSMLdizkKnwHkEwM72vOpdlM9Gs2ttPKOOAVQ9mnWGIHtTRcqlGyFY5obgNU+XpCle89yOvTja3qt0wEkz54jmK4wsPe8HXGPUxKQxsxqf10dUZPvXT313CiOf+VrhqlxwHHLiwWPOT/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsUlJ+eR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8C2C4CEF1;
+	Wed, 28 Jan 2026 15:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614310;
-	bh=hMlTLxWenfTe9+6MUM7uzWCpjvfU8GA3tk7i5A7PYP4=;
+	s=korg; t=1769615564;
+	bh=ytUou+EXtdYa4NKJvCj2Z+z4urSbpGz7lC81gXRWc7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hx8A8Rv64Sa1ZdAaaO0WXWSveSx//294VqZbNyCfmveEMnzMKMpRYh+S4hArgUHkC
-	 oryfTMYEF92Yr49+1fo1XkHunqclMk+28vKBwDLl4XW2aK7GT77pjIyPOrMOslFH2Y
-	 xDy+W/+OU2hB0PGGReMK5zgaG7bbGeKaqG45bfxA=
+	b=gsUlJ+eRXfNHoG6WjojuToohfOleG/7AHX9yTvsvrHH/zu5ChXMl3+l6XuqHccWd1
+	 up4ICfVAteCq1D3BNZQrZSrjcYUqPRuCyk66LtlJruVGWancxK8a7mbR/OfP+e63KP
+	 tnEL0wc0juTEWY9N08C2p/sC9kkQOuPkQ+M5wm7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Wojtek Wasko <wwasko@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot+9c081b17773615f24672@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/254] testptp: Add option to open PHC in readonly mode
-Date: Wed, 28 Jan 2026 16:21:13 +0100
-Message-ID: <20260128145348.317865496@linuxfoundation.org>
+Subject: [PATCH 6.18 029/227] bonding: limit BOND_MODE_8023AD to Ethernet devices
+Date: Wed, 28 Jan 2026 16:21:14 +0100
+Message-ID: <20260128145345.393271103@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,152 +68,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,nvidia.com,davemloft.net,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212073-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212451-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,9c081b17773615f24672,netdev];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,davemloft.net:email]
-X-Rspamd-Queue-Id: 79B8AA44F7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,appspotmail.com:email,jvosburgh.net:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 09372A599B
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojtek Wasko <wwasko@nvidia.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 76868642e42795353106197abf9c607ad80f4c9e ]
+[ Upstream commit c84fcb79e5dbde0b8d5aeeaf04282d2149aebcf6 ]
 
-PTP Hardware Clocks no longer require WRITE permission to perform
-readonly operations, such as listing device capabilities or listening to
-EXTTS events once they have been enabled by a process with WRITE
-permissions.
+BOND_MODE_8023AD makes sense for ARPHRD_ETHER only.
 
-Add '-r' option to testptp to open the PHC in readonly mode instead of
-the default read-write mode. Skip enabling EXTTS if readonly mode is
-requested.
+syzbot reported:
 
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Signed-off-by: Wojtek Wasko <wwasko@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+ BUG: KASAN: global-out-of-bounds in __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
+ BUG: KASAN: global-out-of-bounds in __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
+Read of size 16 at addr ffffffff8bf94040 by task syz.1.3580/19497
+
+CPU: 1 UID: 0 PID: 19497 Comm: syz.1.3580 Tainted: G             L      syzkaller #0 PREEMPT(full)
+Tainted: [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
+Call Trace:
+ <TASK>
+  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+  print_address_description mm/kasan/report.c:378 [inline]
+  print_report+0xca/0x240 mm/kasan/report.c:482
+  kasan_report+0x118/0x150 mm/kasan/report.c:595
+ check_region_inline mm/kasan/generic.c:-1 [inline]
+  kasan_check_range+0x2b0/0x2c0 mm/kasan/generic.c:200
+  __asan_memcpy+0x29/0x70 mm/kasan/shadow.c:105
+  __hw_addr_create net/core/dev_addr_lists.c:63 [inline]
+  __hw_addr_add_ex+0x25d/0x760 net/core/dev_addr_lists.c:118
+  __dev_mc_add net/core/dev_addr_lists.c:868 [inline]
+  dev_mc_add+0xa1/0x120 net/core/dev_addr_lists.c:886
+  bond_enslave+0x2b8b/0x3ac0 drivers/net/bonding/bond_main.c:2180
+  do_set_master+0x533/0x6d0 net/core/rtnetlink.c:2963
+  do_setlink+0xcf0/0x41c0 net/core/rtnetlink.c:3165
+  rtnl_changelink net/core/rtnetlink.c:3776 [inline]
+  __rtnl_newlink net/core/rtnetlink.c:3935 [inline]
+  rtnl_newlink+0x161c/0x1c90 net/core/rtnetlink.c:4072
+  rtnetlink_rcv_msg+0x7cf/0xb70 net/core/rtnetlink.c:6958
+  netlink_rcv_skb+0x208/0x470 net/netlink/af_netlink.c:2550
+  netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+  netlink_unicast+0x82f/0x9e0 net/netlink/af_netlink.c:1344
+  netlink_sendmsg+0x805/0xb30 net/netlink/af_netlink.c:1894
+  sock_sendmsg_nosec net/socket.c:727 [inline]
+  __sock_sendmsg+0x21c/0x270 net/socket.c:742
+  ____sys_sendmsg+0x505/0x820 net/socket.c:2592
+  ___sys_sendmsg+0x21f/0x2a0 net/socket.c:2646
+  __sys_sendmsg+0x164/0x220 net/socket.c:2678
+  do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+  __do_fast_syscall_32+0x1dc/0x560 arch/x86/entry/syscall_32.c:307
+  do_fast_syscall_32+0x34/0x80 arch/x86/entry/syscall_32.c:332
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+ </TASK>
+
+The buggy address belongs to the variable:
+ lacpdu_mcast_addr+0x0/0x40
+
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Reported-by: syzbot+9c081b17773615f24672@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6966946b.a70a0220.245e30.0002.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20260113191201.3970737-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 37 +++++++++++++++++----------
- 1 file changed, 23 insertions(+), 14 deletions(-)
+ drivers/net/bonding/bond_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index 58064151f2c89..edc08a4433fd4 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -140,6 +140,7 @@ static void usage(char *progname)
- 		" -H val     set output phase to 'val' nanoseconds (requires -p)\n"
- 		" -w val     set output pulse width to 'val' nanoseconds (requires -p)\n"
- 		" -P val     enable or disable (val=1|0) the system clock PPS\n"
-+		" -r         open the ptp clock in readonly mode\n"
- 		" -s         set the ptp clock time from the system time\n"
- 		" -S         set the system time from the ptp clock time\n"
- 		" -t val     shift the ptp clock time by 'val' seconds\n"
-@@ -188,6 +189,7 @@ int main(int argc, char *argv[])
- 	int pin_index = -1, pin_func;
- 	int pps = -1;
- 	int seconds = 0;
-+	int readonly = 0;
- 	int settime = 0;
- 	int channel = -1;
- 	clockid_t ext_clockid = CLOCK_REALTIME;
-@@ -200,7 +202,7 @@ int main(int argc, char *argv[])
- 
- 	progname = strrchr(argv[0], '/');
- 	progname = progname ? 1+progname : argv[0];
--	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:sSt:T:w:x:Xy:z"))) {
-+	while (EOF != (c = getopt(argc, argv, "cd:e:f:F:ghH:i:k:lL:n:o:p:P:rsSt:T:w:x:Xy:z"))) {
- 		switch (c) {
- 		case 'c':
- 			capabilities = 1;
-@@ -252,6 +254,9 @@ int main(int argc, char *argv[])
- 		case 'P':
- 			pps = atoi(optarg);
- 			break;
-+		case 'r':
-+			readonly = 1;
-+			break;
- 		case 's':
- 			settime = 1;
- 			break;
-@@ -308,7 +313,7 @@ int main(int argc, char *argv[])
- 		}
- 	}
- 
--	fd = open(device, O_RDWR);
-+	fd = open(device, readonly ? O_RDONLY : O_RDWR);
- 	if (fd < 0) {
- 		fprintf(stderr, "opening %s: %s\n", device, strerror(errno));
- 		return -1;
-@@ -436,14 +441,16 @@ int main(int argc, char *argv[])
- 	}
- 
- 	if (extts) {
--		memset(&extts_request, 0, sizeof(extts_request));
--		extts_request.index = index;
--		extts_request.flags = PTP_ENABLE_FEATURE;
--		if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
--			perror("PTP_EXTTS_REQUEST");
--			extts = 0;
--		} else {
--			puts("external time stamp request okay");
-+		if (!readonly) {
-+			memset(&extts_request, 0, sizeof(extts_request));
-+			extts_request.index = index;
-+			extts_request.flags = PTP_ENABLE_FEATURE;
-+			if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
-+				perror("PTP_EXTTS_REQUEST");
-+				extts = 0;
-+			} else {
-+				puts("external time stamp request okay");
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 5abef8a3b7758..c66cb2d43dcf1 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1953,6 +1953,12 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+ 	 */
+ 	if (!bond_has_slaves(bond)) {
+ 		if (bond_dev->type != slave_dev->type) {
++			if (slave_dev->type != ARPHRD_ETHER &&
++			    BOND_MODE(bond) == BOND_MODE_8023AD) {
++				SLAVE_NL_ERR(bond_dev, slave_dev, extack,
++					     "8023AD mode requires Ethernet devices");
++				return -EINVAL;
 +			}
- 		}
- 		for (; extts; extts--) {
- 			cnt = read(fd, &event, sizeof(event));
-@@ -455,10 +462,12 @@ int main(int argc, char *argv[])
- 			       event.t.sec, event.t.nsec);
- 			fflush(stdout);
- 		}
--		/* Disable the feature again. */
--		extts_request.flags = 0;
--		if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
--			perror("PTP_EXTTS_REQUEST");
-+		if (!readonly) {
-+			/* Disable the feature again. */
-+			extts_request.flags = 0;
-+			if (ioctl(fd, PTP_EXTTS_REQUEST, &extts_request)) {
-+				perror("PTP_EXTTS_REQUEST");
-+			}
- 		}
- 	}
+ 			slave_dbg(bond_dev, slave_dev, "change device type from %d to %d\n",
+ 				  bond_dev->type, slave_dev->type);
  
 -- 
 2.51.0
