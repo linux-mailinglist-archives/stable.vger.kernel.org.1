@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-212557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212200-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILZMKL80eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:35 +0100
+	id CJSNOqcwemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212200-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1124AA52CA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C05A8A4970
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C27A93212A97
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C195D305E0B9
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FB8242D7F;
-	Wed, 28 Jan 2026 15:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1C32F360A;
+	Wed, 28 Jan 2026 15:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CA7NCz85"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOvyjqYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5913081BA;
-	Wed, 28 Jan 2026 15:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58722EC096;
+	Wed, 28 Jan 2026 15:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615918; cv=none; b=oOjmpeKnvys2ygXDig9Rfjq/6xIMmXqthxF2XaOvovtQf/CFXaEDfR4HszTTNvJ+Wn21Lh3xR6IHqiBILHkh4n58Dd5Xd/iiI6uuocYhB+gn2ORaYeJGyC5Wjm5sax/WAZ5Ox9tWZurcqChX9Bx43fSbXyNjEVcMlRiJJw00fpI=
+	t=1769614720; cv=none; b=GSvRArJWOhFW80pMeEmJfkfIiFzuoqFSgKvIor/G2wJ3cp+l8mLMBqAlb/CaQQXA/B5M+8iGdQ+Csrk4h7/PzWAxxIAQrKtsnRofI5CxryyXFPHUk0cbJlff//pKuJDb4F3IZMxWQVe4E/0PyrB7QF8WxcwtwHyvqymfdfhD5l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615918; c=relaxed/simple;
-	bh=acjSUe6s4OXQs6Y63e7tyoeKUjkLToLX8YkyNMAIBdI=;
+	s=arc-20240116; t=1769614720; c=relaxed/simple;
+	bh=GHS/wrrsh13UViQLe63rmJ5LcFsnwaIlaeU5f21ZOVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=INsegt+mCrbYgkfM8BYOF8DhbRkxFA+XEG8u2AMYfMuT5wfPMN0w8bHVVSCDxlC16qPyZNqROYeVR5fi1Nq1qZECsU0bI9PH7zP8XEB3i+N9cOXbgx9KKuK0TbeKQTVvVL74LFwJQLrGiFwCIwfuQxbb1dyrUaT6lQtLKpPS/n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CA7NCz85; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7763EC4CEF7;
-	Wed, 28 Jan 2026 15:58:37 +0000 (UTC)
+	 MIME-Version; b=KminQqoIfkQsQbBY78+nKj9fQnI4t3OKoSzQ8vNAE4CwY4o+k0LXiWu25N2FHiLhUdJIxjvxBxhbDVvYyxL+zraEUIOaWcrTJQ5W6YvvdIM8F65joZH3tkqrXY351Nt5bTH3mKhKFInLu7d6tbjEigZz9Tp5B2AUAalYy6BLU7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOvyjqYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A6FC4CEF7;
+	Wed, 28 Jan 2026 15:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615918;
-	bh=acjSUe6s4OXQs6Y63e7tyoeKUjkLToLX8YkyNMAIBdI=;
+	s=korg; t=1769614719;
+	bh=GHS/wrrsh13UViQLe63rmJ5LcFsnwaIlaeU5f21ZOVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CA7NCz85XpI9fHlPHln0CBW2SN0KqHAdM3rLPtfAQwewhhb1qbmTW9VS287EeINMd
-	 fFWPkUXkbPNS7mFyBLdqjLJYcjl0xvOhIhwPjwX9N7dyeIWxUyFMkzg7LU1F6N1UHK
-	 V2qaK8VSLUe+4/0K2LWPcXmUQAaK+m+JQu+SBUnM=
+	b=oOvyjqYQhueSpMgLqltMCvmXHWhFA3wEKwsrYCYF/mK9CeLspv0j7xrSPj3P3lltF
+	 a2+7j8iEFHJxqBeG7Qf/uek4/ZH/QAmay3NoHjyUkI+5p5AHuDSPihy1vmxtMoBDLb
+	 SKy4Uxolr8v7CnMTdBtIpq9I0CTBWQoGmcDsufTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Sebastian Reichel <sre@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.18 152/227] leds: led-class: Only Add LED to leds_list when it is fully ready
-Date: Wed, 28 Jan 2026 16:23:17 +0100
-Message-ID: <20260128145349.924598294@linuxfoundation.org>
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.6 222/254] bpf: Do not let BPF test infra emit invalid GSO types to stack
+Date: Wed, 28 Jan 2026 16:23:18 +0100
+Message-ID: <20260128145352.775480825@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,111 +72,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212200-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212557-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 1124AA52CA
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,hust.edu.cn:email]
+X-Rspamd-Queue-Id: C05A8A4970
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit d1883cefd31752f0504b94c3bcfa1f6d511d6e87 upstream.
+commit 04a899573fb87273a656f178b5f920c505f68875 upstream.
 
-Before this change the LED was added to leds_list before led_init_core()
-gets called adding it the list before led_classdev.set_brightness_work gets
-initialized.
+Yinhao et al. reported that their fuzzer tool was able to trigger a
+skb_warn_bad_offload() from netif_skb_features() -> gso_features_check().
+When a BPF program - triggered via BPF test infra - pushes the packet
+to the loopback device via bpf_clone_redirect() then mentioned offload
+warning can be seen. GSO-related features are then rightfully disabled.
 
-This leaves a window where led_trigger_register() of a LED's default
-trigger will call led_trigger_set() which calls led_set_brightness()
-which in turn will end up queueing the *uninitialized*
-led_classdev.set_brightness_work.
+We get into this situation due to convert___skb_to_skb() setting
+gso_segs and gso_size but not gso_type. Technically, it makes sense
+that this warning triggers since the GSO properties are malformed due
+to the gso_type. Potentially, the gso_type could be marked non-trustworthy
+through setting it at least to SKB_GSO_DODGY without any other specific
+assumptions, but that also feels wrong given we should not go further
+into the GSO engine in the first place.
 
-This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
-2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
-succession. The first led_classdev_register() causes an async modprobe of
-snd_ctl_led to run and that async modprobe manages to exactly hit
-the window where the second LED is on the leds_list without led_init_core()
-being called for it, resulting in:
+The checks were added in 121d57af308d ("gso: validate gso_type in GSO
+handlers") because there were malicious (syzbot) senders that combine
+a protocol with a non-matching gso_type. If we would want to drop such
+packets, gso_features_check() currently only returns feature flags via
+netif_skb_features(), so one location for potentially dropping such skbs
+could be validate_xmit_unreadable_skb(), but then otoh it would be
+an additional check in the fast-path for a very corner case. Given
+bpf_clone_redirect() is the only place where BPF test infra could emit
+such packets, lets reject them right there.
 
- ------------[ cut here ]------------
- WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
- Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
- ...
- Call trace:
-  __flush_work+0x344/0x390 (P)
-  flush_work+0x2c/0x50
-  led_trigger_set+0x1c8/0x340
-  led_trigger_register+0x17c/0x1c0
-  led_trigger_register_simple+0x84/0xe8
-  snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
-  do_one_initcall+0x5c/0x318
-  do_init_module+0x9c/0x2b8
-  load_module+0x7e0/0x998
-
-Close the race window by moving the adding of the LED to leds_list to
-after the led_init_core() call.
-
-Cc: stable@vger.kernel.org
-Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Reviewed-by: Sebastian Reichel <sre@kernel.org>
-Link: https://patch.msgid.link/20251211163727.366441-1-johannes.goede@oss.qualcomm.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 850a88cc4096 ("bpf: Expose __sk_buff wire_len/gso_segs to BPF_PROG_TEST_RUN")
+Fixes: cf62089b0edd ("bpf: Add gso_size to __sk_buff")
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20251020075441.127980-1-daniel@iogearbox.net
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/led-class.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ net/bpf/test_run.c |    5 +++++
+ net/core/filter.c  |    7 +++++++
+ 2 files changed, 12 insertions(+)
 
---- a/drivers/leds/led-class.c
-+++ b/drivers/leds/led-class.c
-@@ -560,11 +560,6 @@ int led_classdev_register_ext(struct dev
- #ifdef CONFIG_LEDS_BRIGHTNESS_HW_CHANGED
- 	led_cdev->brightness_hw_changed = -1;
- #endif
--	/* add to the list of leds */
--	down_write(&leds_list_lock);
--	list_add_tail(&led_cdev->node, &leds_list);
--	up_write(&leds_list_lock);
--
- 	if (!led_cdev->max_brightness)
- 		led_cdev->max_brightness = LED_FULL;
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -914,6 +914,11 @@ static int convert___skb_to_skb(struct s
  
-@@ -574,6 +569,11 @@ int led_classdev_register_ext(struct dev
- 
- 	led_init_core(led_cdev);
- 
-+	/* add to the list of leds */
-+	down_write(&leds_list_lock);
-+	list_add_tail(&led_cdev->node, &leds_list);
-+	up_write(&leds_list_lock);
+ 	if (__skb->gso_segs > GSO_MAX_SEGS)
+ 		return -EINVAL;
 +
- #ifdef CONFIG_LEDS_TRIGGERS
- 	led_trigger_set_default(led_cdev);
- #endif
++	/* Currently GSO type is zero/unset. If this gets extended with
++	 * a small list of accepted GSO types in future, the filter for
++	 * an unset GSO type in bpf_clone_redirect() can be lifted.
++	 */
+ 	skb_shinfo(skb)->gso_segs = __skb->gso_segs;
+ 	skb_shinfo(skb)->gso_size = __skb->gso_size;
+ 	skb_shinfo(skb)->hwtstamps.hwtstamp = __skb->hwtstamp;
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2451,6 +2451,13 @@ BPF_CALL_3(bpf_clone_redirect, struct sk
+ 	if (unlikely(flags & (~(BPF_F_INGRESS) | BPF_F_REDIRECT_INTERNAL)))
+ 		return -EINVAL;
+ 
++	/* BPF test infra's convert___skb_to_skb() can create type-less
++	 * GSO packets. gso_features_check() will detect this as a bad
++	 * offload. However, lets not leak them out in the first place.
++	 */
++	if (unlikely(skb_is_gso(skb) && !skb_shinfo(skb)->gso_type))
++		return -EBADMSG;
++
+ 	dev = dev_get_by_index_rcu(dev_net(skb->dev), ifindex);
+ 	if (unlikely(!dev))
+ 		return -EINVAL;
 
 
 
