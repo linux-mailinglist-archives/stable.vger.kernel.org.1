@@ -1,254 +1,223 @@
-Return-Path: <stable+bounces-212198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHD1BEk2emnn4gEAu9opvQ
-	(envelope-from <stable+bounces-212198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:16:09 +0100
+	id yN8TOsQwemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2F76A55B0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:16:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D2FA49C9
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B99F30DC794
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0671231A8AF3
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286342EA754;
-	Wed, 28 Jan 2026 15:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35662ED17B;
+	Wed, 28 Jan 2026 15:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dihCKWU8"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DDE02DE1E4
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 15:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D99F1E1DFC;
+	Wed, 28 Jan 2026 15:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614715; cv=none; b=MY1cUys5kMS7YcYFpcPQezFByvQ8HdU6IpVMf+orzOXaKed8WHJwvNg7HcBa/NHDhhL6LE8ShuoUomXfb107gbW+tf4gF4WXhe1jMlGB99mMUJV7GZbkQJD8Jvbw4t3nf1kHCYj/N1gsxXUnPfXylDCqQeRdp/WcElwCFwCRQLk=
+	t=1769614931; cv=none; b=awW9aU6j9T8ss1u9tYyuFKg1fUsJ2kuc2llou46VSBcsGhXnOqa2Ql74NQp1+DGtH6FgfDMncyFTRpxWph7NufJE/BrHJ27UBOUPT0Y7w9NgxtobobIVIHHzEe87jTtXlQF/gGKLLWqhNv6Rfqgz1Frp4wGtnKfAgfCpQeFqDpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614715; c=relaxed/simple;
-	bh=RHOU9dUVe54OGDF08RNJXpmM7veA3wiGV0eWtzH1qJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rYRCSclPgFF/XdnJMQ6kSmqNTv08EjqX4425IcB0Wx6XYV4zgR3tWTH10yMlMVfk0NZYjEI30iUjz41YBdHy28nehNUODHtBif2c98Ex7Jq84+tP741cFwR16UwXFpGUMPJfyxH5axYphMDGzsHqd5UkV1ciLCqMBNghhtR2iIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vl7cg-0003op-Nh; Wed, 28 Jan 2026 16:38:26 +0100
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vl7cg-002wSK-2P;
-	Wed, 28 Jan 2026 16:38:26 +0100
-Received: from ore by dude04 with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1vl7cf-0000000FR9k-4BYT;
-	Wed, 28 Jan 2026 16:38:25 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	stable@vger.kernel.org,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Andy Shevchenko <andy@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	David Jander <david@protonic.nl>
-Subject: [PATCH v3 1/8] iio: dac: ds4424: fix -128 rejection and refactor raw access
-Date: Wed, 28 Jan 2026 16:38:17 +0100
-Message-ID: <20260128153824.3679187-2-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260128153824.3679187-1-o.rempel@pengutronix.de>
-References: <20260128153824.3679187-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1769614931; c=relaxed/simple;
+	bh=ykiUC42NdLn0dRmPnKVJ+6bAyPr9KKLz87bjgYi8dSs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ch62pCSiH6R7vAJ5uPUkS+O5IkIwq8to3pMIsDx5Ab2bHgCFzRJQgSAJWz+c9Hc/2Eijw4Pizp9mNcKelzsOByrfal7niRODByTscDtTje4CmsMndwF7Sa8FItb3YrnS4NIi4LdSjoOX/lI7o8tbBjuMW0I5/dcI9aVPhFthK44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dihCKWU8; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769614930; x=1801150930;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ykiUC42NdLn0dRmPnKVJ+6bAyPr9KKLz87bjgYi8dSs=;
+  b=dihCKWU80o50wKkHaFTbzfnart+Kz7nso1WnWEzYDDDFML/e2InAR7Sq
+   7sD5yz5fSAs5jFN6kjDALgnne3YPOOScMz3hPTHfYZr+N4sERBgOt8sfW
+   tt2sfIV/utnCzV8mmXBqANWUdqRDEsHpbw8AthcYgZK/XZBKBcpaoFGkW
+   lRE0/Pb1upfJZAmi4UQ8pr4YAFHZSgBYeag5lcou41Fzvv5wORMCAFqP1
+   UrcOFXW0UjXNy6+/upT24mEdGNWOQG4z8bOC9nxzPXDc5hpnzvo3xreHN
+   jAAg8jNgXYzjqX8Rnnmj5ZTyeIkdvCfu2NQoFb6yQ9gBsJLu8qbvzW5oW
+   A==;
+X-CSE-ConnectionGUID: u1Blkm0kQPiYB2F6SbWa9Q==
+X-CSE-MsgGUID: 9Rs8vtRBQbqc/IiaO9uAHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="70735867"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="70735867"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 07:42:09 -0800
+X-CSE-ConnectionGUID: 0yHbjRRtScWxHhvrYujYSg==
+X-CSE-MsgGUID: dHS8ni7BQGmt06rmWNfTAA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="208315572"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.57])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 07:42:05 -0800
+Date: Wed, 28 Jan 2026 17:42:02 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>, linux-serial@vger.kernel.org,
+	qianfan Zhao <qianfanguijin@163.com>,
+	Adriana Nicolae <adriana@arista.com>,
+	Tim Kryger <tim.kryger@linaro.org>,
+	Matt Porter <matt.porter@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Markus Mayer <markus.mayer@linaro.org>,
+	Jamie Iles <jamie@jamieiles.com>, linux-kernel@vger.kernel.org,
+	"Bandal, Shankar" <shankar.bandal@intel.com>,
+	"Murthy, Shanth" <shanth.murthy@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 7/7] serial: 8250_dw: Ensure BUSY is deasserted
+Message-ID: <aXouStgDF635dYya@smile.fi.intel.com>
+References: <20260128105301.1869-1-ilpo.jarvinen@linux.intel.com>
+ <20260128105301.1869-8-ilpo.jarvinen@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+In-Reply-To: <20260128105301.1869-8-ilpo.jarvinen@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212198-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,163.com,arista.com,linaro.org,linux.intel.com,jamieiles.com,intel.com];
+	TAGGED_FROM(0.00)[bounces-212263-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:mid,pengutronix.de:email]
-X-Rspamd-Queue-Id: A2F76A55B0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,smile.fi.intel.com:mid]
+X-Rspamd-Queue-Id: 68D2FA49C9
 X-Rspamd-Action: no action
 
-The DS442x DAC uses sign-magnitude encoding, so -128 cannot be represented.
-Previously, passing -128 resulted in a truncated value that programmed 0mA.
+On Wed, Jan 28, 2026 at 12:53:01PM +0200, Ilpo Järvinen wrote:
+> DW UART cannot write to LCR, DLL, and DLH while BUSY is asserted.
+> Existance of BUSY depends on uart_16550_compatible, if UART HW is
+> configured with it those registers can always be written.
+> 
+> There currently is dw8250_force_idle() which attempts to achieve
+> non-BUSY state by disabling FIFO, however, the solution is unreliable
+> when Rx keeps getting more and more characters.
+> 
+> Create a sequence of operations that ensures UART cannot keep BUSY
+> asserted indefinitely. The new sequence relies on enabling loopback mode
+> temporarily to prevent incoming Rx characters keeping UART BUSY.
+> 
+> Ensure no Tx in ongoing while the UART is switches into the loopback
+> mode (requires exporting serial8250_fifo_wait_for_lsr_thre() and adding
+> DMA Tx pause/resume functions).
+> 
+> According to tests performed by Adriana Nicolae <adriana@arista.com>,
+> simply disabling FIFO or clearing FIFOs only once does not always
+> ensure BUSY is deasserted but up to two tries may be needed. This could
+> be related to ongoing Rx of a character (a guess, not known for sure).
+> Therefore, retry FIFO clearing a few times (retry limit 4 is arbitrary
+> number but using, e.g., p->fifosize seems overly large). Tests
+> performed by others did not exhibit similar challenge but it does not
+> seem harmful to leave the FIFO clearing loop in place for all DW UARTs
+> with BUSY functionality.
+> 
+> Use the new dw8250_idle_enter/exit() to do divisor writes and LCR
+> writes. In case of plain LCR writes, opportunistically try to update
+> LCR first and only invoke dw8250_idle_enter() if the write did not
+> succeed (it has been observed that in practice most LCR writes do
+> succeed without complications).
+> 
+> This issue was first reported by qianfan Zhao who put lots of debugging
+> effort into understanding the solution space.
 
-Fix this by validating the input against the 7-bit magnitude limit.
-Additionally, refactor the raw access logic to use symmetrical bitwise
-operations, replacing the union structure.
+Some nit-picks below, otherwise seems good to go
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Fixes: d632a2bd8ffc ("iio: dac: ds4422/ds4424 dac driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-changes v3:
-- Remove "Rebase on top of regmap" note as this is now patch 1/8.
-- Add #include <linux/bits.h>
-- Clarify 0mA sink/source behavior in comments
-- Remove redundant blank line in write_raw
-changes v2:
-- Replace S8_MIN/MAX checks with abs() > DS4424_DAC_MASK to enforce the
-  correct [-127, 127] physical range.
-- Refactor read_raw/write_raw to use symmetrical bitwise operations,
-  removing the custom bitfield union.
-- Rebase on top of regmap port
----
- drivers/iio/dac/ds4424.c | 55 +++++++++++++++-------------------------
- 1 file changed, 21 insertions(+), 34 deletions(-)
+...
 
-diff --git a/drivers/iio/dac/ds4424.c b/drivers/iio/dac/ds4424.c
-index a8198ba4f98a..596ff5999271 100644
---- a/drivers/iio/dac/ds4424.c
-+++ b/drivers/iio/dac/ds4424.c
-@@ -5,6 +5,7 @@
-  * Copyright (C) 2017 Maxim Integrated
-  */
- 
-+#include <linux/bits.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/i2c.h>
-@@ -19,9 +20,10 @@
- #define DS4422_MAX_DAC_CHANNELS		2
- #define DS4424_MAX_DAC_CHANNELS		4
- 
-+#define DS4424_DAC_MASK			GENMASK(6, 0)
-+#define DS4424_DAC_SOURCE		BIT(7)
-+
- #define DS4424_DAC_ADDR(chan)   ((chan) + 0xf8)
--#define DS4424_SOURCE_I		1
--#define DS4424_SINK_I		0
- 
- #define DS4424_CHANNEL(chan) { \
- 	.type = IIO_CURRENT, \
-@@ -31,22 +33,6 @@
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
- }
- 
--/*
-- * DS4424 DAC control register 8 bits
-- * [7]		0: to sink; 1: to source
-- * [6:0]	steps to sink/source
-- * bit[7] looks like a sign bit, but the value of the register is
-- * not a two's complement code considering the bit[6:0] is a absolute
-- * distance from the zero point.
-- */
--union ds4424_raw_data {
--	struct {
--		u8 dx:7;
--		u8 source_bit:1;
--	};
--	u8 bits;
--};
--
- enum ds4424_device_ids {
- 	ID_DS4422,
- 	ID_DS4424,
-@@ -108,21 +94,21 @@ static int ds4424_read_raw(struct iio_dev *indio_dev,
- 			   struct iio_chan_spec const *chan,
- 			   int *val, int *val2, long mask)
- {
--	union ds4424_raw_data raw;
--	int ret;
-+	int ret, regval;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = ds4424_get_value(indio_dev, val, chan->channel);
-+		ret = ds4424_get_value(indio_dev, &regval, chan->channel);
- 		if (ret < 0) {
- 			pr_err("%s : ds4424_get_value returned %d\n",
- 							__func__, ret);
- 			return ret;
- 		}
--		raw.bits = *val;
--		*val = raw.dx;
--		if (raw.source_bit == DS4424_SINK_I)
-+
-+		*val = regval & DS4424_DAC_MASK;
-+		if (!(regval & DS4424_DAC_SOURCE))
- 			*val = -*val;
-+
- 		return IIO_VAL_INT;
- 
- 	default:
-@@ -134,25 +120,26 @@ static int ds4424_write_raw(struct iio_dev *indio_dev,
- 			     struct iio_chan_spec const *chan,
- 			     int val, int val2, long mask)
- {
--	union ds4424_raw_data raw;
-+	unsigned int abs_val;
- 
- 	if (val2 != 0)
- 		return -EINVAL;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		if (val < S8_MIN || val > S8_MAX)
-+		abs_val = abs(val);
-+		if (abs_val > DS4424_DAC_MASK)
- 			return -EINVAL;
- 
--		if (val > 0) {
--			raw.source_bit = DS4424_SOURCE_I;
--			raw.dx = val;
--		} else {
--			raw.source_bit = DS4424_SINK_I;
--			raw.dx = -val;
--		}
-+		/*
-+		 * Currents exiting the IC (Source) are positive. 0 is a valid
-+		 * value for no current flow; the direction bit (Source vs Sink)
-+		 * is treated as don't-care by the hardware at 0.
-+		 */
-+		if (val > 0)
-+			abs_val |= DS4424_DAC_SOURCE;
- 
--		return ds4424_set_value(indio_dev, raw.bits, chan);
-+		return ds4424_set_value(indio_dev, abs_val, chan);
- 
- 	default:
- 		return -EINVAL;
+> Reported-by: qianfan Zhao <qianfanguijin@163.com>
+> Link: https://lore.kernel.org/linux-serial/289bb78a-7509-1c5c-2923-a04ed3b6487d@163.com/
+> Reported-by: Adriana Nicolae <adriana@arista.com>
+> Link: https://lore.kernel.org/linux-serial/20250819182322.3451959-1-adriana@arista.com/
+
+Shouldn't these Link:s be Closes: tags?
+
+...
+
+> +	struct dw8250_data *d = to_dw8250_data(p->private_data);
+>  	struct uart_8250_port *up = up_to_u8250p(p);
+> +	unsigned int usr_reg = DW_UART_USR;
+> +	int retries;
+> +	u32 lsr;
+
+
+> +	if (d->pdata)
+> +		usr_reg = d->pdata->usr_reg;
+
+I would unite this with definition above:
+
+	unsigned int usr_reg = d->pdata ? d->pdata->usr_reg : DW_UART_USR;
+
+...
+
+> +	lsr = serial_lsr_in(up);
+
+> +	if (lsr & UART_LSR_DR) {
+> +		serial_port_in(p, UART_RX);
+> +		up->lsr_saved_flags = 0;
+>  	}
+
+This seems repeating a top of serial8250_read_char(). Perhaps we can do it
+in a helper at some point?
+
+...
+
+> +	if (d->in_idle) {
+
+> +		/*
+> +		 * FIXME: this deadlocks if port->lock is already held
+> +		 * dev_err(p->dev, "Couldn't set LCR to %d\n", value);
+> +		 */
+
+Does it make sense to print an error here (assuming it will work with nbcon)?
+If so, maybe leave it at the end of the function, after dw8250_idle_exit()
+and goto there?
+
+> +		return;
+> +	}
+
 -- 
-2.47.3
+With Best Regards,
+Andy Shevchenko
+
 
 
