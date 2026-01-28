@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHVOCoAuemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212063-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:56 +0100
+	id IBwgAwQzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:02:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997BBA445B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D685A4F5C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:02:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D19C930BA7C1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:31:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 11B8B32458AE
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3EC242D7F;
-	Wed, 28 Jan 2026 15:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D2B304968;
+	Wed, 28 Jan 2026 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXDECCgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4/XFkD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D703155757;
-	Wed, 28 Jan 2026 15:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D863043B2;
+	Wed, 28 Jan 2026 15:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614276; cv=none; b=H5/uR7xYjLGNN8yMtc6dZFsjEGpoBKR1gs5CCEzti/7ZK8CPW4saehs+ggDDdSu6JAqS1mpNg/ko/+F4MgvY6TZ6J8jdjcPuSsgzogZ+J1ovrKd9PZCnrzi5fPuAzpEyYGUU7lWybHApoPCLOxECBTDf+rjRIRxhRiaH9XVzOm0=
+	t=1769615472; cv=none; b=bPTv5Hy972afnOf92uUmt9/Yf7B75E+zECoOfFDq+VlfE2MbY+M6Y/FwBamN8uVZzob8Tt19uniE75cmmzkzYQm/Jku9qXu+dykio49KDiDWlrl9cQ5qWn1PxFZVKb98ewHm+A8ygCJWFqQTX3gD5kbowY+ULYADKeN0jcMzirc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614276; c=relaxed/simple;
-	bh=gpeNHWzhI7tzEw+Ps3MIod7zh1+FfBmpSZL557ANRq4=;
+	s=arc-20240116; t=1769615472; c=relaxed/simple;
+	bh=KfDapkdmXOemZPdIkN057Tl/bKsDqTELtIaF3U9Dwfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQEHk8POCSVWO7nk+LapPQY9YSfqFpUPVUeY2kDj84w3nIfOAHY9/b09pkrtfyo65oA3ZkpGqJ3h1AIUD1aHrR0mJ8pG9iU5KnIRiDYgeBL4vi4BkVFe0vtwU71YB0uMMJCHudlDUhfJAD95ZzGlwHGKm0tKAyXWFKDVmbK0tbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXDECCgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3998C4CEF1;
-	Wed, 28 Jan 2026 15:31:15 +0000 (UTC)
+	 MIME-Version; b=R5Xpt45xy4trlsW+2X1au6l5tHYz488Hp5kCN5KPRJEhrp6oRwiDiO/B3tOUKy2dPz7tIVL2qdmpJ4gWEoonCufO5UW+vlyW84w36ZXWX1yJh1H2o4YmTLYR5oji9X/8LmCw+NSORiJuzMjjSmj5kIZrmLMelJooY4ipd2OTGdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4/XFkD4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04088C2BC86;
+	Wed, 28 Jan 2026 15:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614276;
-	bh=gpeNHWzhI7tzEw+Ps3MIod7zh1+FfBmpSZL557ANRq4=;
+	s=korg; t=1769615472;
+	bh=KfDapkdmXOemZPdIkN057Tl/bKsDqTELtIaF3U9Dwfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXDECCgEpOUBncQiCcwv8Rzofelni987QFLKcc/mPgvzrJ4U+auGU5YXODwfGfCQO
-	 yts8hNHIPjRbNQY85BOrfwZcYLHdtsLMQCpPtaRqbYVSSPtw8StqyY1s/ngYdJ3PAe
-	 OC4laICTJAMrO/WDimdxYxNiv2wSmUlDxr+XZ+xA=
+	b=U4/XFkD4v6F9FFhu6pp7mANNT1ipG0WBPxB2QH1CmExrRpYjWtK6MglsLU3hXPMDz
+	 /2oDs2mCUvlCj2y1Y5ifiFgMssRdsd9+mxHgqDxihxVNBPqpetKF9UPjb70IxH/sQo
+	 AfceqzfdbxTSykZ3FjQVgGZgA/IaARJlvK6k1Y0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	chongjiapeng <jiapeng.chong@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 070/254] mm/damon/sysfs: cleanup attrs subdirs on context dir setup failure
-Date: Wed, 28 Jan 2026 16:20:46 +0100
-Message-ID: <20260128145347.215359414@linuxfoundation.org>
+	Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 002/227] arm64: dts: qcom: sm8550: Fix compile warnings in USB controller node
+Date: Wed, 28 Jan 2026 16:20:47 +0100
+Message-ID: <20260128145344.424953610@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,74 +75,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212424-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212063-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_URIBL_FAIL(0.00)[0.0.0.0:query timed out,a600000:query timed out,qualcomm.com:query timed out];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,alibaba.com:email,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 997BBA445B
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RSPAMD_EMAILBL_FAIL(0.00)[soc.0.0.0.0:query timed out,krishna.kurapati.oss.qualcomm.com:query timed out];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9D685A4F5C
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
 
-commit 9814cc832b88bd040fc2a1817c2b5469d0f7e862 upstream.
+[ Upstream commit 9dbc9bed01837717b8ab755cf5067a6f8d35b00f ]
 
-When a context DAMON sysfs directory setup is failed after setup of attrs/
-directory, subdirectories of attrs/ directory are not cleaned up.  As a
-result, DAMON sysfs interface is nearly broken until the system reboots,
-and the memory for the unremoved directory is leaked.
+With W=1, the following error comes up:
 
-Cleanup the directories under such failures.
+Warning (avoid_unnecessary_addr_size): /soc@0/usb@a600000: unnecessary #address-cells/#size-cells without "ranges", "dma-ranges" or child "reg" or "ranges" property
 
-Link: https://lkml.kernel.org/r/20251225023043.18579-3-sj@kernel.org
-Fixes: c951cd3b8901 ("mm/damon: implement a minimal stub for sysfs-based DAMON interface")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: chongjiapeng <jiapeng.chong@linux.alibaba.com>
-Cc: <stable@vger.kernel.org> # 5.18.x
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is because the child node being removed during flattening and moving
+to latest bindings.
+
+Fixes: 33450878adfc ("arm64: dts: qcom: sm8550: Flatten the USB nodes")
+Signed-off-by: Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251203144856.2711440-2-krishna.kurapati@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/sysfs.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -716,7 +716,7 @@ static int damon_sysfs_context_add_dirs(
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index 7724dba75db79..e294dc9c68c9a 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -4097,8 +4097,6 @@ usb_dp_qmpphy_dp_in: endpoint {
+ 		usb_1: usb@a600000 {
+ 			compatible = "qcom,sm8550-dwc3", "qcom,snps-dwc3";
+ 			reg = <0x0 0x0a600000 0x0 0xfc100>;
+-			#address-cells = <1>;
+-			#size-cells = <0>;
  
- 	err = damon_sysfs_context_set_targets(context);
- 	if (err)
--		goto put_attrs_out;
-+		goto rmdir_put_attrs_out;
- 
- 	err = damon_sysfs_context_set_schemes(context);
- 	if (err)
-@@ -726,7 +726,8 @@ static int damon_sysfs_context_add_dirs(
- put_targets_attrs_out:
- 	kobject_put(&context->targets->kobj);
- 	context->targets = NULL;
--put_attrs_out:
-+rmdir_put_attrs_out:
-+	damon_sysfs_attrs_rm_dirs(context->attrs);
- 	kobject_put(&context->attrs->kobj);
- 	context->attrs = NULL;
- 	return err;
+ 			clocks = <&gcc GCC_CFG_NOC_USB3_PRIM_AXI_CLK>,
+ 				 <&gcc GCC_USB30_PRIM_MASTER_CLK>,
+-- 
+2.51.0
+
 
 
 
