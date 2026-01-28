@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-212330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFJmJkw1eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212330-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:11:56 +0100
+	id 2CsGIw02emnn4gEAu9opvQ
+	(envelope-from <stable+bounces-212182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD1FA5428
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:11:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1DD4A5528
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9CFF2305393F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA0EE316E054
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8B336C588;
-	Wed, 28 Jan 2026 15:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACF62DB784;
+	Wed, 28 Jan 2026 15:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPQrEfIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6SS15uy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE66F36C587;
-	Wed, 28 Jan 2026 15:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CFC32D8760;
+	Wed, 28 Jan 2026 15:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615156; cv=none; b=jXVMngCkTuawTr7bTJJAiARQRRAXqGAZacR9BXgbLjycg3sZyX2esBgeSx4ZQR9cXqCp1ikETu1NqzhLl9wEbAWittuJVgrlbElLAACBiU5DTmwaRcWPboiVUvz3vHBCw5o5uV+MRgj2kvhcQSI8/jI9cdjyYHmZpegD3DxEaJo=
+	t=1769614663; cv=none; b=L5pOYE5nBF63YZ890upGIe39HhAWB4pQzX9IIE6i3nXFJ+0JDnA+V63BQcsooUPEc1QXA221Ch2V6sZA9R82k6QUHq6SVPUdfEePwD+MYDAUoOMf1mycmjbvoqJsCWn6lTSwqYBAO+KNqcW/cA7OS5j8qKZjKQxdauxcMlMU04A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615156; c=relaxed/simple;
-	bh=hC1fQC4ElZQbfledHi+wcTj2AD1EWipmL3mJvkcpV68=;
+	s=arc-20240116; t=1769614663; c=relaxed/simple;
+	bh=1trXuZd451CI71XM3CycCQHgucChLjU9/r3QtVeagY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SV412n1CdsGR/VrY+ySqj5Hc73dyBcMFEa+0sh7sqhHe9yzglFes40j5YAbcp3i0Ik7Wo1516u9NBtQn1oip4icHSqs2rgo0rbITehd4lkTXKi9zG2ot1f3SQl9lDPYR1NpnZtbkb3MG1InSsRfYCtCxJjy+Mo/1vfq/Z5C5BZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPQrEfIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ACBC4CEF1;
-	Wed, 28 Jan 2026 15:45:55 +0000 (UTC)
+	 MIME-Version; b=ormOanaIm44uqDloRERScHE7s1dCPBTvfQaV+AcrJ3Qsz7PoYvlftJC7sFMalnLW7p1GP5TuQHEzfM0fxv/dAsQ6Iywslk9NwuBnbYcuLMFGtJWXDAEoe/qw+tPyzUka4lCkaDu++sl6RV57FRRH3wcc8XLpnHrTlzqIZIuZInE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6SS15uy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA661C116C6;
+	Wed, 28 Jan 2026 15:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615156;
-	bh=hC1fQC4ElZQbfledHi+wcTj2AD1EWipmL3mJvkcpV68=;
+	s=korg; t=1769614663;
+	bh=1trXuZd451CI71XM3CycCQHgucChLjU9/r3QtVeagY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HPQrEfIL9xLN1N9WyxrMs3qbc3Bpu8xcLcxqAE9flW08WzzytIM+d80Pi5swhV5M7
-	 buVKID3P1e0HK0d/b4z7Uy+/LWRKXXj/K5tN9IuMdjr3hTFURZekTRCZnv9oTnXfoh
-	 2RKlAKm/jbKU4LdaZLDsGPgMBCmWE0oWMU/ljaMY=
+	b=B6SS15uygJNAD4s66ewRTo9Jc1jhLTkZXp/IQrmVcMB15le3wuXI1KW08u83q9Jqq
+	 SEvc9pxFu7lsEWBDgAHWlH/2cC4cQdiGgqkQHw6Q0u36IYYRJD2szsu1taG92CxOiU
+	 EhLCXsioXaxohBM6I/RZNsAFhnH+YJ1Brl8EE30Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Yotam Gigi <yotam.gi@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/169] net/sched: act_ife: avoid possible NULL deref
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 203/254] slimbus: core: fix runtime PM imbalance on report present
 Date: Wed, 28 Jan 2026 16:22:59 +0100
-Message-ID: <20260128145337.463379715@linuxfoundation.org>
+Message-ID: <20260128145352.099236788@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,119 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212330-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,gmail.com,mojatatu.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212182-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,5cf914f193dffde3bd3c];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,mojatatu.com:email]
-X-Rspamd-Queue-Id: BDD1FA5428
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: F1DD4A5528
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 27880b0b0d35ad1c98863d09788254e36f874968 ]
+commit 0eb4ff6596114aabba1070a66afa2c2f5593739f upstream.
 
-tcf_ife_encode() must make sure ife_encode() does not return NULL.
+Make sure to balance the runtime PM usage count in case slimbus device
+or address allocation fails on report present, which would otherwise
+prevent the controller from suspending.
 
-syzbot reported:
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
- RIP: 0010:ife_tlv_meta_encode+0x41/0xa0 net/ife/ife.c:166
-CPU: 3 UID: 0 PID: 8990 Comm: syz.0.696 Not tainted syzkaller #0 PREEMPT(full)
-Call Trace:
- <TASK>
-  ife_encode_meta_u32+0x153/0x180 net/sched/act_ife.c:101
-  tcf_ife_encode net/sched/act_ife.c:841 [inline]
-  tcf_ife_act+0x1022/0x1de0 net/sched/act_ife.c:877
-  tc_act include/net/tc_wrapper.h:130 [inline]
-  tcf_action_exec+0x1c0/0xa20 net/sched/act_api.c:1152
-  tcf_exts_exec include/net/pkt_cls.h:349 [inline]
-  mall_classify+0x1a0/0x2a0 net/sched/cls_matchall.c:42
-  tc_classify include/net/tc_wrapper.h:197 [inline]
-  __tcf_classify net/sched/cls_api.c:1764 [inline]
-  tcf_classify+0x7f2/0x1380 net/sched/cls_api.c:1860
-  multiq_classify net/sched/sch_multiq.c:39 [inline]
-  multiq_enqueue+0xe0/0x510 net/sched/sch_multiq.c:66
-  dev_qdisc_enqueue+0x45/0x250 net/core/dev.c:4147
-  __dev_xmit_skb net/core/dev.c:4262 [inline]
-  __dev_queue_xmit+0x2998/0x46c0 net/core/dev.c:4798
-
-Fixes: 295a6e06d21e ("net/sched: act_ife: Change to use ife module")
-Reported-by: syzbot+5cf914f193dffde3bd3c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6970d61d.050a0220.706b.0010.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Yotam Gigi <yotam.gi@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260121133724.3400020-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4b14e62ad3c9 ("slimbus: Add support for 'clock-pause' feature")
+Cc: stable@vger.kernel.org	# 4.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251126145329.5022-3-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ife.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/slimbus/core.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
-index 7c6975632fc2e..c7ab25642d997 100644
---- a/net/sched/act_ife.c
-+++ b/net/sched/act_ife.c
-@@ -821,6 +821,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 	/* could be stupid policy setup or mtu config
- 	 * so lets be conservative.. */
- 	if ((action == TC_ACT_SHOT) || exceed_mtu) {
-+drop:
- 		qstats_drop_inc(this_cpu_ptr(ife->common.cpu_qstats));
- 		return TC_ACT_SHOT;
+--- a/drivers/slimbus/core.c
++++ b/drivers/slimbus/core.c
+@@ -496,21 +496,23 @@ int slim_device_report_present(struct sl
+ 	if (ctrl->sched.clk_state != SLIM_CLK_ACTIVE) {
+ 		dev_err(ctrl->dev, "slim ctrl not active,state:%d, ret:%d\n",
+ 				    ctrl->sched.clk_state, ret);
+-		goto slimbus_not_active;
++		goto out_put_rpm;
  	}
-@@ -829,6 +830,8 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 		skb_push(skb, skb->dev->hard_header_len);
  
- 	ife_meta = ife_encode(skb, metalen);
-+	if (!ife_meta)
-+		goto drop;
+ 	sbdev = slim_get_device(ctrl, e_addr);
+-	if (IS_ERR(sbdev))
+-		return -ENODEV;
++	if (IS_ERR(sbdev)) {
++		ret = -ENODEV;
++		goto out_put_rpm;
++	}
  
- 	spin_lock(&ife->tcf_lock);
- 
-@@ -844,8 +847,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 		if (err < 0) {
- 			/* too corrupt to keep around if overwritten */
- 			spin_unlock(&ife->tcf_lock);
--			qstats_drop_inc(this_cpu_ptr(ife->common.cpu_qstats));
--			return TC_ACT_SHOT;
-+			goto drop;
- 		}
- 		skboff += err;
+ 	if (sbdev->is_laddr_valid) {
+ 		*laddr = sbdev->laddr;
+-		return 0;
++		ret = 0;
++	} else {
++		ret = slim_device_alloc_laddr(sbdev, true);
  	}
--- 
-2.51.0
-
+ 
+-	ret = slim_device_alloc_laddr(sbdev, true);
+-
+-slimbus_not_active:
++out_put_rpm:
+ 	pm_runtime_mark_last_busy(ctrl->dev);
+ 	pm_runtime_put_autosuspend(ctrl->dev);
+ 	return ret;
 
 
 
