@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-212550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFmoHK00eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212550-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:17 +0100
+	id cBQgGgsyemlo4gEAu9opvQ
+	(envelope-from <stable+bounces-212343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:58:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2244A528C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3400A4D24
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:58:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2D7230F7692
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACABF320B13B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A9C1D6AA;
-	Wed, 28 Jan 2026 15:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EE93043B2;
+	Wed, 28 Jan 2026 15:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWc3Mowc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9a0dauF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CACF146D53;
-	Wed, 28 Jan 2026 15:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FC42F6183;
+	Wed, 28 Jan 2026 15:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615895; cv=none; b=AIRtv4l+IgyvtexK4Kf/8bzCTB2cOHuE0jByhp4cebEzCoQ+nQwDWsoV/xp53Ea3jv0GCOG9krcn5IrRjg73B2hjLiXCpzvW3QcHKRFSVBLXahnBNEA4KRE2yPsAs0Xh085RuxfeRAyXuCadMJE09eRiJPbgTWSI782zMy50WAQ=
+	t=1769615200; cv=none; b=QBLaIDLIj5IdSEycQsan9i2meWFvlXpeOp+GfdJXYaBdSFSHo6B7bEoiyLO4UKJoiH5OkCV4xYK76lMSsivbEZHou3H4P5L9i7AehfzaTHG73gdVG3ngA0AOI1FjZH05MDuJ6dPKGv/4mXvW8OeklKKpX8tigrrqv6h5WFfSosE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615895; c=relaxed/simple;
-	bh=PzGJxdZS05MHU366gbiqvgRULcrtQJGkzSNzz7XvYjU=;
+	s=arc-20240116; t=1769615200; c=relaxed/simple;
+	bh=YfOU81XQkEJKYAVESOB1GR1xUF3GHDc31N69AH0pAEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gw8y2PhiGDj7ygyrT0euPlla0x4U1mNFZ9g9g/mbvJnrBqvsSsy7ExleqRnjLh4uoFRFl8E6zW7Dak29gKuhsfYQCZ/rLxJwGqWofUX3JurWN/JozSzKum696JkyPN/xRzT9xiqH1Kya7eAaJu9lYvlxeCUEp6w+9YskyK2mz8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWc3Mowc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94ECC4CEF1;
-	Wed, 28 Jan 2026 15:58:14 +0000 (UTC)
+	 MIME-Version; b=QUsQaUx0E1v0IooNvS18mY60kyL784dYh8ArzqvoHVUegk18EvrsP8yggX8JaOAzUfD8cedi/YQLnLCFA1p/ZDAcvqzrfr2TtpHhnHC34T8VP/7v/5+d9XM6r0pFyp9DP5IgfCATR3fNA0CYdP3vLqFf+RyTYZoR11O6hlbXQec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9a0dauF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7695C4CEF7;
+	Wed, 28 Jan 2026 15:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615895;
-	bh=PzGJxdZS05MHU366gbiqvgRULcrtQJGkzSNzz7XvYjU=;
+	s=korg; t=1769615200;
+	bh=YfOU81XQkEJKYAVESOB1GR1xUF3GHDc31N69AH0pAEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWc3Mowc67XwYoHkj7ENPSc6TQ/45dE7f8ijHOeR4wAjPuNVNCU2FjVOwH30ncGPr
-	 dt86IiHEKHUnYaiUdX8ckJaUgTF5jgBey7q0I2i0HQFqpITbtxnCAGeF+D0sx5F7ec
-	 F5YLWhCe2BrHsrT5x0YCC+/KZbkGLm8uMD+axEl4=
+	b=Q9a0dauFwDUxbc5U+yVCv0YyX9BBq3iRmbghANKnVTyRVmlazr6VOAtRQ6JzH2NMA
+	 rYFeeOPx82zqrFakre3pOXM3/+2AN11+DSX81bFxDmbxo1qBX0Y8HOsShrH0bGw9dq
+	 RrJNpuT0dHc7bpP4fcD9qCcE9Dwfnh7jaMkSooUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yikai <zhuyikai1@h-partners.com>,
-	Fan Gong <gongfan1@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 146/227] hinic3: Fix netif_queue_set_napi queue_index input parameter error
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 108/169] iio: adc: pac1934: Fix clamped value in pac1934_reg_snapshot
 Date: Wed, 28 Jan 2026 16:23:11 +0100
-Message-ID: <20260128145349.711949061@linuxfoundation.org>
+Message-ID: <20260128145337.894761380@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,123 +66,70 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212550-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212343-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,h-partners.com:email]
-X-Rspamd-Queue-Id: A2244A528C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B3400A4D24
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Gong <gongfan1@huawei.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit fb2bb2a1ebf7b9514c32b03bb5c3be5d518d437b ]
+commit da934ef0fdff5ba21e82ec3ab3f95fe73137b0c9 upstream.
 
-Incorrectly transmitted interrupt number instead of queue number
-when using netif_queue_set_napi. Besides, move this to appropriate
-code location to set napi.
+The local variable 'curr_energy' was never clamped to
+PAC_193X_MIN_POWER_ACC or PAC_193X_MAX_POWER_ACC because the return
+value of clamp() was not used. Fix this by assigning the clamped value
+back to 'curr_energy'.
 
-Remove redundant netif_stop_subqueue beacuase it is not part of the
-hinic3_send_one_skb process.
-
-Fixes: 17fcb3dc12bb ("hinic3: module initialization and tx/rx logic")
-Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
-Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
-Link: https://patch.msgid.link/7b8e4eb5c53cbd873ee9aaefeb3d9dbbaff52deb.1769070766.git.zhuyikai1@h-partners.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0fb528c8255b ("iio: adc: adding support for PAC193x")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/huawei/hinic3/hinic3_irq.c   | 22 +++++++++++--------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/iio/adc/pac1934.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-index a69b361225e90..84bee5d6e638e 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_irq.c
-@@ -43,21 +43,12 @@ static void qp_add_napi(struct hinic3_irq_cfg *irq_cfg)
- 	struct hinic3_nic_dev *nic_dev = netdev_priv(irq_cfg->netdev);
+--- a/drivers/iio/adc/pac1934.c
++++ b/drivers/iio/adc/pac1934.c
+@@ -665,9 +665,9 @@ static int pac1934_reg_snapshot(struct p
+ 			/* add the power_acc field */
+ 			curr_energy += inc;
  
- 	netif_napi_add(nic_dev->netdev, &irq_cfg->napi, hinic3_poll);
--	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
--			     NETDEV_QUEUE_TYPE_RX, &irq_cfg->napi);
--	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
--			     NETDEV_QUEUE_TYPE_TX, &irq_cfg->napi);
- 	napi_enable(&irq_cfg->napi);
- }
- 
- static void qp_del_napi(struct hinic3_irq_cfg *irq_cfg)
- {
- 	napi_disable(&irq_cfg->napi);
--	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
--			     NETDEV_QUEUE_TYPE_RX, NULL);
--	netif_queue_set_napi(irq_cfg->netdev, irq_cfg->irq_id,
--			     NETDEV_QUEUE_TYPE_TX, NULL);
--	netif_stop_subqueue(irq_cfg->netdev, irq_cfg->irq_id);
- 	netif_napi_del(&irq_cfg->napi);
- }
- 
-@@ -150,6 +141,11 @@ int hinic3_qps_irq_init(struct net_device *netdev)
- 			goto err_release_irqs;
+-			clamp(curr_energy, PAC_193X_MIN_POWER_ACC, PAC_193X_MAX_POWER_ACC);
+-
+-			reg_data->energy_sec_acc[cnt] = curr_energy;
++			reg_data->energy_sec_acc[cnt] = clamp(curr_energy,
++							      PAC_193X_MIN_POWER_ACC,
++							      PAC_193X_MAX_POWER_ACC);
  		}
  
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_RX, &irq_cfg->napi);
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_TX, &irq_cfg->napi);
-+
- 		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
- 						irq_cfg->msix_entry_idx,
- 						HINIC3_SET_MSIX_AUTO_MASK);
-@@ -164,6 +160,10 @@ int hinic3_qps_irq_init(struct net_device *netdev)
- 		q_id--;
- 		irq_cfg = &nic_dev->q_params.irq_cfg[q_id];
- 		qp_del_napi(irq_cfg);
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_RX, NULL);
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_TX, NULL);
- 		hinic3_set_msix_state(nic_dev->hwdev, irq_cfg->msix_entry_idx,
- 				      HINIC3_MSIX_DISABLE);
- 		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
-@@ -184,6 +184,10 @@ void hinic3_qps_irq_uninit(struct net_device *netdev)
- 	for (q_id = 0; q_id < nic_dev->q_params.num_qps; q_id++) {
- 		irq_cfg = &nic_dev->q_params.irq_cfg[q_id];
- 		qp_del_napi(irq_cfg);
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_RX, NULL);
-+		netif_queue_set_napi(irq_cfg->netdev, q_id,
-+				     NETDEV_QUEUE_TYPE_TX, NULL);
- 		hinic3_set_msix_state(nic_dev->hwdev, irq_cfg->msix_entry_idx,
- 				      HINIC3_MSIX_DISABLE);
- 		hinic3_set_msix_auto_mask_state(nic_dev->hwdev,
--- 
-2.51.0
-
+ 		offset_reg_data_p += PAC1934_VPOWER_ACC_REG_LEN;
 
 
 
