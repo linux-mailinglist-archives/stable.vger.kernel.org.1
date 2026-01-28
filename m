@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CzBBa4vemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:58 +0100
+	id YD8dNG8yeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62A4A46DC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:47:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F3DA4E23
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B031030A5976
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36F14322A536
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8300A2EA172;
-	Wed, 28 Jan 2026 15:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A222F6183;
+	Wed, 28 Jan 2026 15:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SW42jWSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEqQcEsP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101D72E2299;
-	Wed, 28 Jan 2026 15:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94ED5306B06;
+	Wed, 28 Jan 2026 15:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614828; cv=none; b=VEE96yrF2xT68sL4FvIgHGVGEa2/fuVwG7sx6V3aaHAodBdhWkZOvzpWKi5LUtU/eBhgZ/rWoF0GHKWnv9mdTU6NfvZf4uFdS7hwbbHskLFhRGRR4YgRjRfwx0BcZc65jyUEMWISW8J9ni645L9k9/oXMTYC17jaK0pg68aotsA=
+	t=1769615335; cv=none; b=c3sitKOZQHbTroUeFmZSSO4/T2xZrPsKXZAjV9q1d+wqF0rQmTbX4PgQssYtH6tXv9Mf3dUfv4I4msvKdT9R/8K5zjlg5puxo+SwONlLh0Qe7bLeeJo3gyFp31pi6N+hHIn28ilOIQgXRinEc4upsEwzl7BSXGKb/Lidqg4CtS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614828; c=relaxed/simple;
-	bh=xRgGuSE53cqGx8RSeO9sdv8zRLAhUaQ/pvL0ljeqGzs=;
+	s=arc-20240116; t=1769615335; c=relaxed/simple;
+	bh=8yQtMjg1urh581Z4KcnZvf8aDkJ8njQ3AQVy87zFM/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XtdNO8y2mCXSIRvbAD0+6qNI4nPzXVE5uDiSTHBqqgEqovE1+PCjwq7qDupGipLWgi5whw+JmkRie0FciYdDod+uglYsb1SVXd7IY5hPnAL39OwzRg/TO3kcp5MNBjQ9oAh5beDmcodFrgpnaFNfjLp98Nm4+9Ov2nRjsCjkZwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SW42jWSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2FDC4CEF7;
-	Wed, 28 Jan 2026 15:40:26 +0000 (UTC)
+	 MIME-Version; b=QbSWOFeZM2zVJMBScm8SBxtJOLfMnSlcryDOVJ1GsEuYzP+XmPfF1rs3LuxBt6q1TYSQ6eQdCl0wfKbHxr9IQcCh1RM4Iy8fs6OcMO6md9ybIsojIfYhBub4W1pmj+FCZ9S/UHYSB8PGUECPk/ZVDmHw1lNp26W2h3agn0mDdGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IEqQcEsP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0906C4CEF1;
+	Wed, 28 Jan 2026 15:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614827;
-	bh=xRgGuSE53cqGx8RSeO9sdv8zRLAhUaQ/pvL0ljeqGzs=;
+	s=korg; t=1769615335;
+	bh=8yQtMjg1urh581Z4KcnZvf8aDkJ8njQ3AQVy87zFM/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SW42jWSpXlQ7fNSFZkWDD1Y5M1ih8yfbgMq3cggPFGbOmS+L+wTURM0ljVAy7KHFJ
-	 6fDuGHmjnbJnSIcEeunB1ZQ42V/tYwojaTQCfmB3j1lMH18O55URqECtU3y/pUHIND
-	 2hSktrkv+7GGI5PpS6tsxCTktyCQjKQjohTrHYW4=
+	b=IEqQcEsP9CoSX0VTGSmYmvGT/u+VpIDS/3ZQovVe94RgYeN/sZ2xXIiPAWZdUCxkr
+	 3oTpt09rF1Nk8AOKPOUVBqDnc0VBmGk0kFYrYtCyoWAwhp50BSNgTVeGdEQK4Fsc7i
+	 dwg8r/ToOsTiId9Mhn8lZjJSLOXhfI1zM93cSErk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rajani Kantha <681739313@139.com>
-Subject: [PATCH 6.6 254/254] net: phy: fix phy_uses_state_machine()
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sai Sree Kartheek Adivi <s-adivi@ti.com>
+Subject: [PATCH 6.12 147/169] dmaengine: ti: k3-udma: Enable second resource range for BCDMA and PKTDMA
 Date: Wed, 28 Jan 2026 16:23:50 +0100
-Message-ID: <20260128145353.940562420@linuxfoundation.org>
+Message-ID: <20260128145339.295740565@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,111 +69,137 @@ X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212232-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,armlinux.org.uk,kernel.org,139.com];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ti.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212383-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,nxp.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,armlinux.org.uk:email]
-X-Rspamd-Queue-Id: A62A4A46DC
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 41F3DA4E23
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit e0d1c55501d377163eb57feed863777ed1c973ad ]
+commit 566beb347eded7a860511164a7a163bc882dc4d0 upstream.
 
-The blamed commit changed the conditions which phylib uses to stop
-and start the state machine in the suspend and resume paths, and
-while improving it, has caused two issues.
+The SoC DMA resources for UDMA, BCDMA and PKTDMA can be described via a
+combination of up to two resource ranges. The first resource range handles
+the default partitioning wherein all resources belonging to that range are
+allocated to a single entity and form a continuous range. For use-cases
+where the resources are shared across multiple entities and require to be
+described via discontinuous ranges, a second resource range is required.
 
-The original code used this test:
+Currently, udma_setup_resources() supports handling resources that belong
+to the second range. Extend bcdma_setup_resources() and
+pktdma_setup_resources() to support the same.
 
-	phydev->attached_dev && phydev->adjust_link
-
-and if true, the paths would handle the PHY state machine. This test
-evaluates true for normal drivers that are using phylib directly
-while the PHY is attached to the network device, but false in all
-other cases, which include the following cases:
-
-- when the PHY has never been attached to a network device.
-- when the PHY has been detached from a network device (as phy_detach()
-   sets phydev->attached_dev to NULL, phy_disconnect() calls
-   phy_detach() and additionally sets phydev->adjust_link NULL.)
-- when phylink is using the driver (as phydev->adjust_link is NULL.)
-
-Only the third case was incorrect, and the blamed commit attempted to
-fix this by changing this test to (simplified for brevity, see
-phy_uses_state_machine()):
-
-	phydev->phy_link_change == phy_link_change ?
-		phydev->attached_dev && phydev->adjust_link : true
-
-However, this also incorrectly evaluates true in the first two cases.
-
-Fix the first case by ensuring that phy_uses_state_machine() returns
-false when phydev->phy_link_change is NULL.
-
-Fix the second case by ensuring that phydev->phy_link_change is set to
-NULL when phy_detach() is called.
-
-Reported-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20250806082931.3289134-1-xu.yang_2@nxp.com
-Fixes: fc75ea20ffb4 ("net: phy: allow MDIO bus PM ops to start/stop state machine for phylink-controlled PHY")
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/E1uvMEz-00000003Aoe-3qWe@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rajani Kantha <681739313@139.com>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20250205121805.316792-1-s-vadapalli@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Tested-by: Sai Sree Kartheek Adivi <s-adivi@ti.com>
+Signed-off-by: Sai Sree Kartheek Adivi <s-adivi@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phy_device.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/dma/ti/k3-udma.c |   36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -304,8 +304,7 @@ static bool phy_uses_state_machine(struc
- 	if (phydev->phy_link_change == phy_link_change)
- 		return phydev->attached_dev && phydev->adjust_link;
- 
--	/* phydev->phy_link_change is implicitly phylink_phy_change() */
--	return true;
-+	return !!phydev->phy_link_change;
- }
- 
- static bool mdio_bus_phy_may_suspend(struct phy_device *phydev)
-@@ -1853,6 +1852,8 @@ void phy_detach(struct phy_device *phyde
- 		phydev->attached_dev->phydev = NULL;
- 		phydev->attached_dev = NULL;
- 	}
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -4876,6 +4876,12 @@ static int bcdma_setup_resources(struct
+ 				irq_res.desc[i].start = rm_res->desc[i].start +
+ 							oes->bcdma_bchan_ring;
+ 				irq_res.desc[i].num = rm_res->desc[i].num;
 +
-+	phydev->phy_link_change = NULL;
- 	phydev->phylink = NULL;
- 
- 	if (!phydev->is_on_sfp_module)
++				if (rm_res->desc[i].num_sec) {
++					irq_res.desc[i].start_sec = rm_res->desc[i].start_sec +
++									oes->bcdma_bchan_ring;
++					irq_res.desc[i].num_sec = rm_res->desc[i].num_sec;
++				}
+ 			}
+ 		}
+ 	} else {
+@@ -4899,6 +4905,15 @@ static int bcdma_setup_resources(struct
+ 				irq_res.desc[i + 1].start = rm_res->desc[j].start +
+ 							oes->bcdma_tchan_ring;
+ 				irq_res.desc[i + 1].num = rm_res->desc[j].num;
++
++				if (rm_res->desc[j].num_sec) {
++					irq_res.desc[i].start_sec = rm_res->desc[j].start_sec +
++									oes->bcdma_tchan_data;
++					irq_res.desc[i].num_sec = rm_res->desc[j].num_sec;
++					irq_res.desc[i + 1].start_sec = rm_res->desc[j].start_sec +
++									oes->bcdma_tchan_ring;
++					irq_res.desc[i + 1].num_sec = rm_res->desc[j].num_sec;
++				}
+ 			}
+ 		}
+ 	}
+@@ -4919,6 +4934,15 @@ static int bcdma_setup_resources(struct
+ 				irq_res.desc[i + 1].start = rm_res->desc[j].start +
+ 							oes->bcdma_rchan_ring;
+ 				irq_res.desc[i + 1].num = rm_res->desc[j].num;
++
++				if (rm_res->desc[j].num_sec) {
++					irq_res.desc[i].start_sec = rm_res->desc[j].start_sec +
++									oes->bcdma_rchan_data;
++					irq_res.desc[i].num_sec = rm_res->desc[j].num_sec;
++					irq_res.desc[i + 1].start_sec = rm_res->desc[j].start_sec +
++									oes->bcdma_rchan_ring;
++					irq_res.desc[i + 1].num_sec = rm_res->desc[j].num_sec;
++				}
+ 			}
+ 		}
+ 	}
+@@ -5053,6 +5077,12 @@ static int pktdma_setup_resources(struct
+ 			irq_res.desc[i].start = rm_res->desc[i].start +
+ 						oes->pktdma_tchan_flow;
+ 			irq_res.desc[i].num = rm_res->desc[i].num;
++
++			if (rm_res->desc[i].num_sec) {
++				irq_res.desc[i].start_sec = rm_res->desc[i].start_sec +
++								oes->pktdma_tchan_flow;
++				irq_res.desc[i].num_sec = rm_res->desc[i].num_sec;
++			}
+ 		}
+ 	}
+ 	rm_res = tisci_rm->rm_ranges[RM_RANGE_RFLOW];
+@@ -5064,6 +5094,12 @@ static int pktdma_setup_resources(struct
+ 			irq_res.desc[i].start = rm_res->desc[j].start +
+ 						oes->pktdma_rchan_flow;
+ 			irq_res.desc[i].num = rm_res->desc[j].num;
++
++			if (rm_res->desc[j].num_sec) {
++				irq_res.desc[i].start_sec = rm_res->desc[j].start_sec +
++								oes->pktdma_rchan_flow;
++				irq_res.desc[i].num_sec = rm_res->desc[j].num_sec;
++			}
+ 		}
+ 	}
+ 	ret = ti_sci_inta_msi_domain_alloc_irqs(ud->dev, &irq_res);
 
 
 
