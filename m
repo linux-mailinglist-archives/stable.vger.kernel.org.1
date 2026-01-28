@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-212526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212350-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Pr7D280eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212526-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:08:15 +0100
+	id gDIXO7Iwemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212350-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FFBA522B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:08:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908DDA4997
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 24E5C32BBF18
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 318983086D13
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5BF3090CF;
-	Wed, 28 Jan 2026 15:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F213033D0;
+	Wed, 28 Jan 2026 15:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="op/C/DkA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCLA11q0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFD9305057;
-	Wed, 28 Jan 2026 15:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9567530C60D;
+	Wed, 28 Jan 2026 15:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615814; cv=none; b=npeDOXARCOHNLUpFXSFe2r9x+d37Gy4fuw/rBnrCv6lc32VCKzFhRBJ2GYyaaNcSenwDKcZs6vKVIhlimr2Wgz6udYROZ6NRE8/efrlauSkfWNvHG4u5ogOs01iPQxu6ioauqYbhIGM0SygQMkV/NcDbZblFVrAsmWRVcqyNhyU=
+	t=1769615224; cv=none; b=eps1cMyzKUUg7tmi7w8dHk7zCNkx0tMFgn2YjC7lPWSctwpmKzV8R0YdMzhCLtWd8MZKWMKT82HkkVGTcdotxL/EuxoSyZfWSvXEv/pvGlRqamFq3WjddDvK8T0rlQCDIjLwmkBSD23utZFeFFQsGiQz3ZnUNUhOp8BnbFu4l9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615814; c=relaxed/simple;
-	bh=UnM8/ko445BlkBQviDxXwOQVzWqjiDkpmnMfIo5CLPA=;
+	s=arc-20240116; t=1769615224; c=relaxed/simple;
+	bh=6mI8EGMTbn5dMs4toKz0YSEPfn+bIJ4JzF05Mlbj+c8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uBzPVBGYD5wolQxXMRVMys2BA7TUxYq9i2UXfY2lII75ypbyfx+sHmznaCrQlxbB02YxxL5tFzWxEhQv7VZA0Ru0gKXtJLrx47W1WY4ATq1tJPbopYoKUt1FLz4jsbf/p8PO46XbK2rQg8Z3A99yDE4VJkbJVDHf9bmdUf6O6LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=op/C/DkA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A67C4CEF7;
-	Wed, 28 Jan 2026 15:56:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kTDXSKf3PmiLXFjmsCq0ltJ0o1r5CZ0KAm1gl0hsnfdQ6IdiRPvRcyDpGsrLrzGxndivWh9Z5vAHEzaBOnRqO3jT9o/lvRgbu4V1+MsAvwwRxGVyCN1PdsRTPan399LuGAoH/RiIQZBonT0ge0cmW3F1rzmsKNAyjgjShpbViXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCLA11q0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094CFC4CEF1;
+	Wed, 28 Jan 2026 15:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615813;
-	bh=UnM8/ko445BlkBQviDxXwOQVzWqjiDkpmnMfIo5CLPA=;
+	s=korg; t=1769615224;
+	bh=6mI8EGMTbn5dMs4toKz0YSEPfn+bIJ4JzF05Mlbj+c8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=op/C/DkA2o3GDRqX2ObeJox6J6oCx1idykHmL3KYAAdda0Dn3ZrZLK9yfMKQBn2Oe
-	 ftqgBhUEknMgaoVdQriaW2e0Y2FDwjSxov7OM7BwsCe49LrzvrloaVI/Uo7FD+0WNM
-	 JQjqPFkrpBsMBOyv2lJgw0jivHTk12Zwk+a7nn2E=
+	b=mCLA11q02a+B2gBm4Hu2t4s/yk0W2jvBEZnPs0BpVGvZlLsikZN1x2O8q0aT444jU
+	 WKHLfiJk7NbF2YpgDgjb7QPHkoh0EBm/1My/lJNe2qrOmq6q7OQlXoyfkFtGpK9puT
+	 Sd8+FGwFs8srw1e1dmn3mBIwOtBJ0FZIfxGGupuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gustavo Sousa <gustavo.sousa@intel.com>,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 121/227] drm/xe/pm: Add scope-based cleanup helper for runtime PM
+Subject: [PATCH 6.12 083/169] drm/amd/pm: Dont clear SI SMC table when setting power limit
 Date: Wed, 28 Jan 2026 16:22:46 +0100
-Message-ID: <20260128145348.819333250@linuxfoundation.org>
+Message-ID: <20260128145336.992468999@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,173 +66,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212526-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212350-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:mid,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 92FFBA522B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,amd.com:email]
+X-Rspamd-Queue-Id: 908DDA4997
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Timur Kristóf <timur.kristof@gmail.com>
 
-[ Upstream commit 50a59230fa63989d59253622a8dd6386cca0db07 ]
+[ Upstream commit d5077426e1a76d269e518e048bde2e9fc49b32ad ]
 
-Add a scope-based helpers for runtime PM that may be used to simplify
-cleanup logic and potentially avoid goto-based cleanup.
+There is no reason to clear the SMC table.
+We also don't need to recalculate the power limit then.
 
-For example, using
-
-        guard(xe_pm_runtime)(xe);
-
-will get runtime PM and cause a corresponding put to occur automatically
-when the current scope is exited.  'xe_pm_runtime_noresume' can be used
-as a guard replacement for the corresponding 'noresume' variant.
-There's also an xe_pm_runtime_ioctl conditional guard that can be used
-as a replacement for xe_runtime_ioctl():
-
-        ACQUIRE(xe_pm_runtime_ioctl, pm)(xe);
-        if ((ret = ACQUIRE_ERR(xe_pm_runtime_ioctl, &pm)) < 0)
-                /* failed */
-
-In a few rare cases (such as gt_reset_worker()) we need to ensure that
-runtime PM is dropped when the function is exited by any means
-(including error paths), but the function does not need to acquire
-runtime PM because that has already been done earlier by a different
-function.  For these special cases, an 'xe_pm_runtime_release_only'
-guard can be used to handle the release without doing an acquisition.
-
-These guards will be used in future patches to eliminate some of our
-goto-based cleanup.
-
-v2:
- - Specify success condition for xe_pm runtime_ioctl as _RET >= 0 so
-   that positive values will be properly identified as success and
-   trigger destructor cleanup properly.
-
-v3:
- - Add comments to the kerneldoc for the existing 'get' functions
-   indicating that scope-based handling should be preferred where
-   possible.  (Gustavo)
-
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-Reviewed-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Link: https://patch.msgid.link/20251118164338.3572146-31-matthew.d.roper@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-(cherry picked from commit 59e7528dbfd52efbed05e0f11b2143217a12bc74)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Stable-dep-of: f262015b9797 ("drm/xe: Update wedged.mode only after successful reset policy change")
+Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e214d626253f5b180db10dedab161b7caa41f5e9)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pm.c | 21 +++++++++++++++++++++
- drivers/gpu/drm/xe/xe_pm.h | 17 +++++++++++++++++
- 2 files changed, 38 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index 2c5a44377994b..a58bf004aee73 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -660,6 +660,13 @@ static void xe_pm_runtime_lockdep_prime(void)
- /**
-  * xe_pm_runtime_get - Get a runtime_pm reference and resume synchronously
-  * @xe: xe device instance
-+ *
-+ * When possible, scope-based runtime PM (through guard(xe_pm_runtime)) is
-+ * be preferred over direct usage of this function.  Manual get/put handling
-+ * should only be used when the function contains goto-based logic which
-+ * can break scope-based handling, or when the lifetime of the runtime PM
-+ * reference does not match a specific scope (e.g., runtime PM obtained in one
-+ * function and released in a different one).
-  */
- void xe_pm_runtime_get(struct xe_device *xe)
- {
-@@ -692,6 +699,13 @@ void xe_pm_runtime_put(struct xe_device *xe)
-  * xe_pm_runtime_get_ioctl - Get a runtime_pm reference before ioctl
-  * @xe: xe device instance
-  *
-+ * When possible, scope-based runtime PM (through
-+ * ACQUIRE(xe_pm_runtime_ioctl, ...)) is be preferred over direct usage of this
-+ * function.  Manual get/put handling should only be used when the function
-+ * contains goto-based logic which can break scope-based handling, or when the
-+ * lifetime of the runtime PM reference does not match a specific scope (e.g.,
-+ * runtime PM obtained in one function and released in a different one).
-+ *
-  * Returns: Any number greater than or equal to 0 for success, negative error
-  * code otherwise.
-  */
-@@ -761,6 +775,13 @@ static bool xe_pm_suspending_or_resuming(struct xe_device *xe)
-  * It will warn if not protected.
-  * The reference should be put back after this function regardless, since it
-  * will always bump the usage counter, regardless.
-+ *
-+ * When possible, scope-based runtime PM (through guard(xe_pm_runtime_noresume))
-+ * is be preferred over direct usage of this function.  Manual get/put handling
-+ * should only be used when the function contains goto-based logic which can
-+ * break scope-based handling, or when the lifetime of the runtime PM reference
-+ * does not match a specific scope (e.g., runtime PM obtained in one function
-+ * and released in a different one).
-  */
- void xe_pm_runtime_get_noresume(struct xe_device *xe)
- {
-diff --git a/drivers/gpu/drm/xe/xe_pm.h b/drivers/gpu/drm/xe/xe_pm.h
-index 59678b310e55f..e8005775be39e 100644
---- a/drivers/gpu/drm/xe/xe_pm.h
-+++ b/drivers/gpu/drm/xe/xe_pm.h
-@@ -6,6 +6,7 @@
- #ifndef _XE_PM_H_
- #define _XE_PM_H_
+diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+index f6ba54cf701e7..45bde4f4c8515 100644
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -2257,8 +2257,6 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
+ 		if (scaling_factor == 0)
+ 			return -EINVAL;
  
-+#include <linux/cleanup.h>
- #include <linux/pm_runtime.h>
+-		memset(smc_table, 0, sizeof(SISLANDS_SMC_STATETABLE));
+-
+ 		ret = si_calculate_adjusted_tdp_limits(adev,
+ 						       false, /* ??? */
+ 						       adev->pm.dpm.tdp_adjustment,
+@@ -2312,16 +2310,8 @@ static int si_populate_smc_tdp_limits_2(struct amdgpu_device *adev,
  
- #define DEFAULT_VRAM_THRESHOLD 300 /* in MB */
-@@ -35,4 +36,20 @@ bool xe_rpm_reclaim_safe(const struct xe_device *xe);
- struct task_struct *xe_pm_read_callback_task(struct xe_device *xe);
- int xe_pm_module_init(void);
+ 	if (ni_pi->enable_power_containment) {
+ 		SISLANDS_SMC_STATETABLE *smc_table = &si_pi->smc_statetable;
+-		u32 scaling_factor = si_get_smc_power_scaling_factor(adev);
+ 		int ret;
  
-+static inline void __xe_pm_runtime_noop(struct xe_device *xe) {}
-+
-+DEFINE_GUARD(xe_pm_runtime, struct xe_device *,
-+	     xe_pm_runtime_get(_T), xe_pm_runtime_put(_T))
-+DEFINE_GUARD(xe_pm_runtime_noresume, struct xe_device *,
-+	     xe_pm_runtime_get_noresume(_T), xe_pm_runtime_put(_T))
-+DEFINE_GUARD_COND(xe_pm_runtime, _ioctl, xe_pm_runtime_get_ioctl(_T), _RET >= 0)
-+
-+/*
-+ * Used when a function needs to release runtime PM in all possible cases
-+ * and error paths, but the wakeref was already acquired by a different
-+ * function (i.e., get() has already happened so only a put() is needed).
-+ */
-+DEFINE_GUARD(xe_pm_runtime_release_only, struct xe_device *,
-+	     __xe_pm_runtime_noop(_T), xe_pm_runtime_put(_T));
-+
- #endif
+-		memset(smc_table, 0, sizeof(SISLANDS_SMC_STATETABLE));
+-
+-		smc_table->dpm2Params.NearTDPLimit =
+-			cpu_to_be32(si_scale_power_for_smc(adev->pm.dpm.near_tdp_limit_adjusted, scaling_factor) * 1000);
+-		smc_table->dpm2Params.SafePowerLimit =
+-			cpu_to_be32(si_scale_power_for_smc((adev->pm.dpm.near_tdp_limit_adjusted * SISLANDS_DPM2_TDP_SAFE_LIMIT_PERCENT) / 100, scaling_factor) * 1000);
+-
+ 		ret = amdgpu_si_copy_bytes_to_smc(adev,
+ 						  (si_pi->state_table_start +
+ 						   offsetof(SISLANDS_SMC_STATETABLE, dpm2Params) +
 -- 
 2.51.0
 
