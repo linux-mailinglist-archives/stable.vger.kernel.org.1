@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-212446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJcpMIIzeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:18 +0100
+	id mJ7iHYUwemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B140A5031
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF4CA490C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 46B2B30C2323
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:53:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 537C13106238
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CC33043CE;
-	Wed, 28 Jan 2026 15:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC85F2F5A2D;
+	Wed, 28 Jan 2026 15:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diSZUy2p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWb8LJaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1CE27BF79;
-	Wed, 28 Jan 2026 15:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B045A2D9EDB;
+	Wed, 28 Jan 2026 15:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615547; cv=none; b=pt7tAtRoELqvy1aci1UWC6aZWelhbVDPJRFCCL62mvYt9QY+MtZFlYqaIi/Bib9U7I+GE5xTgv7x3ebk2xIZloeJ5HO2XvrqgMfjB/YjcRfkc5p/80oB5SQTRld6t2nbo33QhEqiroBACjf5TI3Oz0DJv3Zbpp0hWj4AzHb4DcE=
+	t=1769614873; cv=none; b=X7GPnrSLKcRvy3isMBbUpZnVAa2UNswof9SJb9JgJ6YjoNqiUR5J6QjQLMdkM3jIcjAbEMWRXMq1SK0NKwYMkSfkwzukO+0nKSC+hR2sVFXdLYy1BUsyRnsWz+mBssgN7lG6q1HtMrdZ/Q7kLNciNubV70sdh9z0+LqrEzPochc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615547; c=relaxed/simple;
-	bh=m41ATWGUgjPIoRiZx89yK+H+wMGHZ919IwLKy37397Q=;
+	s=arc-20240116; t=1769614873; c=relaxed/simple;
+	bh=BGPrXTYJ2kk2MHtgj6v/2HiCg8vikPmT2PWi4S03Dt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3VIh9r9K14agiCe3PvJzOzK6wZsrsEWZzVTmecKlm+jMN0Gr0NNuC3XOfsyuO2zCNhufaH9WKaKxZS44AK28uxiAQsYxwkLKMpzCIm/w12XlGlHg9BDWzBTMNc19bhlk6BtMvYFX9p1cRrH63k6EllGaIEp/+/hVM/H8L9vf08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=diSZUy2p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C81FC4CEF7;
-	Wed, 28 Jan 2026 15:52:26 +0000 (UTC)
+	 MIME-Version; b=TvmCzmgPLFDpc2Hbh9a5zpPy8UQ7ZqFFZq5m1LdFnLqZM1mTliMHyOoagrCtefhcEXVdnPepSJ7PY9zzpOv+brpEOlfGN9Pi4Ay34RO9phNdMfBhgbzvNmhRYESOlHLuzzpgUotv2bskXR59DU1xTIvhyHNeeVyEGE9nEELjulE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWb8LJaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB2FC4CEF1;
+	Wed, 28 Jan 2026 15:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615547;
-	bh=m41ATWGUgjPIoRiZx89yK+H+wMGHZ919IwLKy37397Q=;
+	s=korg; t=1769614873;
+	bh=BGPrXTYJ2kk2MHtgj6v/2HiCg8vikPmT2PWi4S03Dt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=diSZUy2pYHO4zPIfDHOrhgh0PeEl0IswiWTRNpWZqRdIOBm65zifzSZUv2nDblM2w
-	 Br1vxcXpU1w+7XbneIUEOig4efWiTBVAvdsJEy4Qe4OhV3ZY5vp1JIS72c5zitxGlA
-	 wd5VaNF+O1k7HKz5o1omB6wsoNE3JS5cqPdzZTBU=
+	b=BWb8LJaR+XQoo95CjcNKZy++2HWVGmNVkR6E6+FBedXzBTQLaQgAkkTj9ew9aILe6
+	 ffX5GEeQmRWlYe70hZM3KTh2iNIMhJPIj6ofYWY/RGH1G1HynsELccDhBptcI6edEc
+	 XjFE1uHZlqvjvJZEG6DoD/NfNAiM6zB+4rCA4AKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	James Chapman <jchapman@katalix.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Jishnu Prakash <quic_jprakash@quicinc.com>,
+	Melody Olvera <quic_molvera@quicinc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 042/227] l2tp: avoid one data-race in l2tp_tunnel_del_work()
-Date: Wed, 28 Jan 2026 16:21:27 +0100
-Message-ID: <20260128145345.856851269@linuxfoundation.org>
+Subject: [PATCH 6.12 005/169] dt-bindings: power: qcom,rpmpd: document the SM8750 RPMh Power Domains
+Date: Wed, 28 Jan 2026 16:21:28 +0100
+Message-ID: <20260128145334.206644122@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,118 +67,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-212446-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212246-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,7312e82745f7fa2526db];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,katalix.com:email]
-X-Rspamd-Queue-Id: 4B140A5031
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,quicinc.com:email]
+X-Rspamd-Queue-Id: CAF4CA490C
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit 7a29f6bf60f2590fe5e9c4decb451e19afad2bcf ]
+[ Upstream commit 134e9d035d830aabd1121bcda89f7ee9a476d3a3 ]
 
-We should read sk->sk_socket only when dealing with kernel sockets.
+Document the RPMh Power Domains on the SM8750 Platform.
 
-syzbot reported the following data-race:
-
-BUG: KCSAN: data-race in l2tp_tunnel_del_work / sk_common_release
-
-write to 0xffff88811c182b20 of 8 bytes by task 5365 on cpu 0:
-  sk_set_socket include/net/sock.h:2092 [inline]
-  sock_orphan include/net/sock.h:2118 [inline]
-  sk_common_release+0xae/0x230 net/core/sock.c:4003
-  udp_lib_close+0x15/0x20 include/net/udp.h:325
-  inet_release+0xce/0xf0 net/ipv4/af_inet.c:437
-  __sock_release net/socket.c:662 [inline]
-  sock_close+0x6b/0x150 net/socket.c:1455
-  __fput+0x29b/0x650 fs/file_table.c:468
-  ____fput+0x1c/0x30 fs/file_table.c:496
-  task_work_run+0x131/0x1a0 kernel/task_work.c:233
-  resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
-  __exit_to_user_mode_loop kernel/entry/common.c:44 [inline]
-  exit_to_user_mode_loop+0x1fe/0x740 kernel/entry/common.c:75
-  __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
-  syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
-  syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
-  syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
-  do_syscall_64+0x1e1/0x2b0 arch/x86/entry/syscall_64.c:100
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff88811c182b20 of 8 bytes by task 827 on cpu 1:
-  l2tp_tunnel_del_work+0x2f/0x1a0 net/l2tp/l2tp_core.c:1418
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0x4ce/0x9d0 kernel/workqueue.c:3340
-  worker_thread+0x582/0x770 kernel/workqueue.c:3421
-  kthread+0x489/0x510 kernel/kthread.c:463
-  ret_from_fork+0x149/0x290 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-value changed: 0xffff88811b818000 -> 0x0000000000000000
-
-Fixes: d00fa9adc528 ("l2tp: fix races with tunnel socket close")
-Reported-by: syzbot+7312e82745f7fa2526db@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6968b029.050a0220.58bed.0016.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: James Chapman <jchapman@katalix.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20260115092139.3066180-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+Signed-off-by: Melody Olvera <quic_molvera@quicinc.com>
+Message-ID: <20241112002444.2802092-2-quic_molvera@quicinc.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 5bc3e720e725 ("pmdomain: qcom: rpmhpd: Add MXC to SC8280XP")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/power/qcom,rpmpd.yaml | 1 +
+ include/dt-bindings/power/qcom-rpmpd.h                  | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
-index d6f4bef0236dc..a0682e63fc637 100644
---- a/net/l2tp/l2tp_core.c
-+++ b/net/l2tp/l2tp_core.c
-@@ -1416,8 +1416,6 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
- {
- 	struct l2tp_tunnel *tunnel = container_of(work, struct l2tp_tunnel,
- 						  del_work);
--	struct sock *sk = tunnel->sock;
--	struct socket *sock = sk->sk_socket;
+diff --git a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
+index 929b7ef9c1bcd..d55758a759717 100644
+--- a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
++++ b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
+@@ -58,6 +58,7 @@ properties:
+           - qcom,sm8450-rpmhpd
+           - qcom,sm8550-rpmhpd
+           - qcom,sm8650-rpmhpd
++          - qcom,sm8750-rpmhpd
+           - qcom,x1e80100-rpmhpd
+       - items:
+           - enum:
+diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
+index 608087fb9a3d9..df599bf462207 100644
+--- a/include/dt-bindings/power/qcom-rpmpd.h
++++ b/include/dt-bindings/power/qcom-rpmpd.h
+@@ -218,6 +218,7 @@
+ /* SDM845 Power Domain performance levels */
+ #define RPMH_REGULATOR_LEVEL_RETENTION		16
+ #define RPMH_REGULATOR_LEVEL_MIN_SVS		48
++#define RPMH_REGULATOR_LEVEL_LOW_SVS_D3		50
+ #define RPMH_REGULATOR_LEVEL_LOW_SVS_D2		52
+ #define RPMH_REGULATOR_LEVEL_LOW_SVS_D1		56
+ #define RPMH_REGULATOR_LEVEL_LOW_SVS_D0		60
+@@ -238,6 +239,7 @@
+ #define RPMH_REGULATOR_LEVEL_TURBO_L1		416
+ #define RPMH_REGULATOR_LEVEL_TURBO_L2		432
+ #define RPMH_REGULATOR_LEVEL_TURBO_L3		448
++#define RPMH_REGULATOR_LEVEL_TURBO_L4		452
+ #define RPMH_REGULATOR_LEVEL_SUPER_TURBO 	464
+ #define RPMH_REGULATOR_LEVEL_SUPER_TURBO_NO_CPR	480
  
- 	l2tp_tunnel_closeall(tunnel);
- 
-@@ -1425,6 +1423,8 @@ static void l2tp_tunnel_del_work(struct work_struct *work)
- 	 * the sk API to release it here.
- 	 */
- 	if (tunnel->fd < 0) {
-+		struct socket *sock = tunnel->sock->sk_socket;
-+
- 		if (sock) {
- 			kernel_sock_shutdown(sock, SHUT_RDWR);
- 			sock_release(sock);
 -- 
 2.51.0
 
