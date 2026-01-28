@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-212679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMgcO1SBemnx7AEAu9opvQ
-	(envelope-from <stable+bounces-212679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:36:20 +0100
+	id WOIpBZSBemnx7AEAu9opvQ
+	(envelope-from <stable+bounces-212680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:37:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 535B4A924D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:36:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A36FA9264
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:37:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B0EB302C916
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:36:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 58A2C3015A77
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870AC32FA37;
-	Wed, 28 Jan 2026 21:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6E43358A7;
+	Wed, 28 Jan 2026 21:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dy+FTfP4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sIiX5Por"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE6332D0C2
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 21:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C190532E732
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 21:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769636177; cv=none; b=aGqvh/ec/fVBEcefw81Kd0vYVfdLMretZlerwqFzXUxZxsT+PxLdbhBqkkmIma65PAA6RHzcIHAvbRw4Bwp3nqGTkYwdFR2Y2GplKqa/5axQSSgQ1zMZEzxJm2dCdbeREo6OADLqGeFJKzgWY2fDIae4IREvIXQmBZP4ilvE6Xs=
+	t=1769636239; cv=none; b=ONbW05n9idhJdED/iVpcHKu/W6v4ao3ulSevjzlj9WEHCKYr1Hh2l6snlFhqIgYbH4f55YJWwoAiHLdsvhxKb0kyQrCOzjmMUXqfKwwCJV4XXRDIHII7Igq58tDNrMGeeQcokvTdZnVfwyvCKhRRRJ2/L1ZmUH3FlYa9B/sBsNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769636177; c=relaxed/simple;
-	bh=G2nQbwBYdPkwqlDO0zbjT8kHXIsntzXatt3xDRUOKNs=;
+	s=arc-20240116; t=1769636239; c=relaxed/simple;
+	bh=eCGNoY5ogB0FfeEz2Px+RGrXDWkUuEPHExhqoKYc3/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1iRHXyqLNOtWQIQb463CS0ydub14500qDaTtUlNrh/pqk0MlbcPWNhgNqBENGq/J9DMXO7uxF+w5pmV8DVHuO6G4Hhbfv7wRUwmXPEJs2iLbri3Gnq9SR2oQ6ehRT3IUl1GJxM8Xv8EQ35w/O2QLllwnGIY11wwsAi9eo2HUGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dy+FTfP4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ECB7C4CEF1;
-	Wed, 28 Jan 2026 21:36:16 +0000 (UTC)
+	 MIME-Version; b=E5Qv9nwwbvsQS/6X2hDqf0OjwqmJbD+Lae+VPKYFvcKc+AmK0+jZMvlIoxxkp4DKdezrAwejYX0CT2IgzaGODMvxWw7oK5RcUXQvbtDUi+Nom6a4Yspm92pUiXDod2E8RyE5PmN5aEua7TSeo7/MLod/7i4BKOLgwwEKFumEbHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sIiX5Por; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AC6C4CEF1;
+	Wed, 28 Jan 2026 21:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769636176;
-	bh=G2nQbwBYdPkwqlDO0zbjT8kHXIsntzXatt3xDRUOKNs=;
+	s=k20201202; t=1769636239;
+	bh=eCGNoY5ogB0FfeEz2Px+RGrXDWkUuEPHExhqoKYc3/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dy+FTfP4mMxtdUcVQTLYyWPxpBetkKX8cigaOR4yJvDEADddXaCmAs5bMphfjEG6s
-	 GhXj5VYMmQm3o6XVwZePkBlqLEFWE+/fN4oUduBke/DmTZfht48n0fhZ/NjbeHxFi7
-	 PBFWBm7XFccmHsBpYU8JqhijBKH5/cs79uNXqsPK6H0S3BkDHYu3FrFitA+NBtdF6S
-	 kK0BfFnI52+vpe4tBZu2/96ISgycIrCddSbxJMKcYMReA+O/e91H+y9X8pAFaY/E/V
-	 K7NEMPhROdPiUVvWPPuCZZglv0/z+bh3JefWoviCeByMGPtZK1YOAdFbXzodnl9zN3
-	 3J83J4oXlZNLQ==
+	b=sIiX5PorIj2znDZKBuC+ExNsUwSP5kUmbIH2t9hfCCPBnJkfqYkOwb3xkywqFr8YS
+	 fcRIdf8S/kP/jEccVuzLFmEsWIvYQBPbsfqiZ46/LdoJpvsOasc4E/hBZKsUJR7bRV
+	 AOAqmdAoAlIULaTmjhYnexXIamBpyJiYEvYiE7l9tymv/AR4QkNHprFm8ngl2hXCTC
+	 SF3upesu05TY2EAsRPdXxv/paf8u+8PEyhQCUFWvroU1D/XyS1B3wMUebawfaooyiy
+	 uJSrr5pSjvhqC4ivml2r7C+Bk8qLHeHfKSXHNxtOn2kl6xdgvDzRGIbU9ngsLOdiVC
+	 dMT3aFeoLFBgA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] ksmbd: smbd: fix dma_unmap_sg() nents
-Date: Wed, 28 Jan 2026 16:36:14 -0500
-Message-ID: <20260128213614.2762269-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] arm64/fpsimd: signal: Fix restoration of SVE context
+Date: Wed, 28 Jan 2026 16:37:16 -0500
+Message-ID: <20260128213716.2763076-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026012756-unpack-hatchet-f3fe@gregkh>
-References: <2026012756-unpack-hatchet-f3fe@gregkh>
+In-Reply-To: <2026012704-gleeful-cartel-2745@gregkh>
+References: <2026012704-gleeful-cartel-2745@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,103 +65,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,microsoft.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212679-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212680-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 535B4A924D
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[svcr.sm:url,arm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7A36FA9264
 X-Rspamd-Action: no action
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 98e3e2b561bc88f4dd218d1c05890672874692f6 ]
+[ Upstream commit d2907cbe9ea0a54cbe078076f9d089240ee1e2d9 ]
 
-The dma_unmap_sg() functions should be called with the same nents as the
-dma_map_sg(), not the value the map function returned.
+When SME is supported, Restoring SVE signal context can go wrong in a
+few ways, including placing the task into an invalid state where the
+kernel may read from out-of-bounds memory (and may potentially take a
+fatal fault) and/or may kill the task with a SIGKILL.
 
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+(1) Restoring a context with SVE_SIG_FLAG_SM set can place the task into
+    an invalid state where SVCR.SM is set (and sve_state is non-NULL)
+    but TIF_SME is clear, consequently resuting in out-of-bounds memory
+    reads and/or killing the task with SIGKILL.
+
+    This can only occur in unusual (but legitimate) cases where the SVE
+    signal context has either been modified by userspace or was saved in
+    the context of another task (e.g. as with CRIU), as otherwise the
+    presence of an SVE signal context with SVE_SIG_FLAG_SM implies that
+    TIF_SME is already set.
+
+    While in this state, task_fpsimd_load() will NOT configure SMCR_ELx
+    (leaving some arbitrary value configured in hardware) before
+    restoring SVCR and attempting to restore the streaming mode SVE
+    registers from memory via sve_load_state(). As the value of
+    SMCR_ELx.LEN may be larger than the task's streaming SVE vector
+    length, this may read memory outside of the task's allocated
+    sve_state, reading unrelated data and/or triggering a fault.
+
+    While this can result in secrets being loaded into streaming SVE
+    registers, these values are never exposed. As TIF_SME is clear,
+    fpsimd_bind_task_to_cpu() will configure CPACR_ELx.SMEN to trap EL0
+    accesses to streaming mode SVE registers, so these cannot be
+    accessed directly at EL0. As fpsimd_save_user_state() verifies the
+    live vector length before saving (S)SVE state to memory, no secret
+    values can be saved back to memory (and hence cannot be observed via
+    ptrace, signals, etc).
+
+    When the live vector length doesn't match the expected vector length
+    for the task, fpsimd_save_user_state() will send a fatal SIGKILL
+    signal to the task. Hence the task may be killed after executing
+    userspace for some period of time.
+
+(2) Restoring a context with SVE_SIG_FLAG_SM clear does not clear the
+    task's SVCR.SM. If SVCR.SM was set prior to restoring the context,
+    then the task will be left in streaming mode unexpectedly, and some
+    register state will be combined inconsistently, though the task will
+    be left in legitimate state from the kernel's PoV.
+
+    This can only occur in unusual (but legitimate) cases where ptrace
+    has been used to set SVCR.SM after entry to the sigreturn syscall,
+    as syscall entry clears SVCR.SM.
+
+    In these cases, the the provided SVE register data will be loaded
+    into the task's sve_state using the non-streaming SVE vector length
+    and the FPSIMD registers will be merged into this using the
+    streaming SVE vector length.
+
+Fix (1) by setting TIF_SME when setting SVCR.SM. This also requires
+ensuring that the task's sme_state has been allocated, but as this could
+contain live ZA state, it should not be zeroed. Fix (2) by clearing
+SVCR.SM when restoring a SVE signal context with SVE_SIG_FLAG_SM clear.
+
+For consistency, I've pulled the manipulation of SVCR, TIF_SVE, TIF_SME,
+and fp_type earlier, immediately after the allocation of
+sve_state/sme_state, before the restore of the actual register state.
+This makes it easier to ensure that these are always modified
+consistently, even if a fault is taken while reading the register data
+from the signal context. I do not expect any software to depend on the
+exact state restored when a fault is taken while reading the context.
+
+Fixes: 85ed24dad290 ("arm64/sme: Implement streaming SVE signal handling")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Context ]
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ adapted sme_state to za_state ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_rdma.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/arm64/kernel/signal.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 91e85a1a154fd..4bab3f89d2c87 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -1108,14 +1108,12 @@ static int get_sg_list(void *buf, int size, struct scatterlist *sg_list, int nen
+diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
+index 2461bbffe7d47..6146dfca2cc0c 100644
+--- a/arch/arm64/kernel/signal.c
++++ b/arch/arm64/kernel/signal.c
+@@ -317,12 +317,28 @@ static int restore_sve_fpsimd_context(struct user_ctxs *user)
+ 	fpsimd_flush_task_state(current);
+ 	/* From now, fpsimd_thread_switch() won't touch thread.sve_state */
  
- static int get_mapped_sg_list(struct ib_device *device, void *buf, int size,
- 			      struct scatterlist *sg_list, int nentries,
--			      enum dma_data_direction dir)
-+			      enum dma_data_direction dir, int *npages)
- {
--	int npages;
++	if (sve.flags & SVE_SIG_FLAG_SM) {
++		sme_alloc(current, false);
++		if (!current->thread.za_state)
++			return -ENOMEM;
++	}
++
+ 	sve_alloc(current, true);
+ 	if (!current->thread.sve_state) {
+ 		clear_thread_flag(TIF_SVE);
+ 		return -ENOMEM;
+ 	}
+ 
++	if (sve.flags & SVE_SIG_FLAG_SM) {
++		current->thread.svcr |= SVCR_SM_MASK;
++		set_thread_flag(TIF_SME);
++	} else {
++		current->thread.svcr &= ~SVCR_SM_MASK;
++		set_thread_flag(TIF_SVE);
++	}
++
++	current->thread.fp_type = FP_STATE_SVE;
++
+ 	err = __copy_from_user(current->thread.sve_state,
+ 			       (char __user const *)user->sve +
+ 					SVE_SIG_REGS_OFFSET,
+@@ -330,12 +346,6 @@ static int restore_sve_fpsimd_context(struct user_ctxs *user)
+ 	if (err)
+ 		return -EFAULT;
+ 
+-	if (sve.flags & SVE_SIG_FLAG_SM)
+-		current->thread.svcr |= SVCR_SM_MASK;
+-	else
+-		set_thread_flag(TIF_SVE);
+-	current->thread.fp_type = FP_STATE_SVE;
 -
--	npages = get_sg_list(buf, size, sg_list, nentries);
--	if (npages < 0)
-+	*npages = get_sg_list(buf, size, sg_list, nentries);
-+	if (*npages < 0)
- 		return -EINVAL;
--	return ib_dma_map_sg(device, sg_list, npages, dir);
-+	return ib_dma_map_sg(device, sg_list, *npages, dir);
- }
- 
- static int post_sendmsg(struct smb_direct_transport *t,
-@@ -1184,12 +1182,13 @@ static int smb_direct_post_send_data(struct smb_direct_transport *t,
- 	for (i = 0; i < niov; i++) {
- 		struct ib_sge *sge;
- 		int sg_cnt;
-+		int npages;
- 
- 		sg_init_table(sg, SMB_DIRECT_MAX_SEND_SGES - 1);
- 		sg_cnt = get_mapped_sg_list(t->cm_id->device,
- 					    iov[i].iov_base, iov[i].iov_len,
- 					    sg, SMB_DIRECT_MAX_SEND_SGES - 1,
--					    DMA_TO_DEVICE);
-+					    DMA_TO_DEVICE, &npages);
- 		if (sg_cnt <= 0) {
- 			pr_err("failed to map buffer\n");
- 			ret = -ENOMEM;
-@@ -1197,7 +1196,7 @@ static int smb_direct_post_send_data(struct smb_direct_transport *t,
- 		} else if (sg_cnt + msg->num_sge > SMB_DIRECT_MAX_SEND_SGES) {
- 			pr_err("buffer not fitted into sges\n");
- 			ret = -E2BIG;
--			ib_dma_unmap_sg(t->cm_id->device, sg, sg_cnt,
-+			ib_dma_unmap_sg(t->cm_id->device, sg, npages,
- 					DMA_TO_DEVICE);
- 			goto err;
- 		}
+ fpsimd_only:
+ 	/* copy the FP and status/control registers */
+ 	/* restore_sigframe() already checked that user->fpsimd != NULL. */
 -- 
 2.51.0
 
