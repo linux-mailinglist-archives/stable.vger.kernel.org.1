@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212578-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNDTHhEvemmO3wEAu9opvQ
-	(envelope-from <stable+bounces-212206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:21 +0100
+	id CNOHGqg7emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212578-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CDAA4583
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E08A5F26
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B073E3035C18
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE4AA3227B36
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC322E5D17;
-	Wed, 28 Jan 2026 15:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B04302779;
+	Wed, 28 Jan 2026 15:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phW9y+2T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGP1eOiw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13912D8379;
-	Wed, 28 Jan 2026 15:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777052F25EF;
+	Wed, 28 Jan 2026 15:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614740; cv=none; b=XPzr5Np057J8awMyjzbFZ21pO6E4WPpNJf4KPFDSXxrUgJmpPGnlWphhpje988VsOzktIqCr6hjpyHBg1EDvt3qghRm4kfZrTMsje9V+RX7uFDWnT4rS9TALVCtE7vdGRUpFVXhtohA/XlJiaB+cxR4zC2HPgePFMaBN0G3tILU=
+	t=1769615987; cv=none; b=lPV/ldAlEEYdCZ7P4V9KzKch6sA9PBBdVMtx6e3q1L9agnsvQJxJ2uo2qVjU9fmJ69bUOneT2zJMmNH5geo5yGKX/EnuYu07/R+JoewhVEPfXUe9oroi4J48RoLnfFCnF/U0UrS884MEI5H8lk9b/ZHjIDprqX8OoRL0RjWcwOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614740; c=relaxed/simple;
-	bh=qoxSuvg88uzT/fh4NrnSL1FUQEu3OV2XwTVSbMzoCvc=;
+	s=arc-20240116; t=1769615987; c=relaxed/simple;
+	bh=w1MXEpi5xntaDZdvlP8zOBSoNWOwx+b18tqyJ2EUs5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQ2RTrzyrBFiQsX9V9n3xCid3EqB144avJY+EuInNSAE+R7UnVE+4rtiJ143xE6vIt6atXr2vgQJv8dNcYnrKxsJkiRjIY3nOWSWfCSgssD3k/SpcymZaZGI2MloqReqOprB73BB3yAL+RTmGE8MECqFYKjf55tVm/CRGWmZqCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phW9y+2T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A682C4CEF1;
-	Wed, 28 Jan 2026 15:38:59 +0000 (UTC)
+	 MIME-Version; b=pS0WlTZ92pJWCb+UiKNy6ZeUpqXTeXVBUBNw7gU5WY1ODNbXPK4q++3rla42ZdPS4nLcDG9xysr1b73kfE/LpTkfGYfGzGpH/fEnSJFRQ6cZump6rye8zFAFMZVFsGphVtwFvUOiAFY6zzpqVWhWLWe/1wTM0hNAlE6HCp1pYTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGP1eOiw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4CDC4CEF1;
+	Wed, 28 Jan 2026 15:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614740;
-	bh=qoxSuvg88uzT/fh4NrnSL1FUQEu3OV2XwTVSbMzoCvc=;
+	s=korg; t=1769615987;
+	bh=w1MXEpi5xntaDZdvlP8zOBSoNWOwx+b18tqyJ2EUs5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phW9y+2T1IRWlS9H00aoN2SRWd2pC/3kGAGey91EkCWI28OP0GDhnuTF16M5kOMNk
-	 2fW0noKs1+c4B2ZdyBYbJ39LyNNd+VsTOsQxRBQutca7lKGS8mrvy6DS18omuekgCy
-	 bApSbRO7dR0ktcNEHE+xcV5Cd9s8C6dXboQFl1vw=
+	b=kGP1eOiwpaLYjT5dSmRPCTGy7qVkLwm4n14hKKtYb0lIBl3hg+KLeTtZczXwf6IGx
+	 f9wKlFayuAZCqpzXU5MK5T3gPN8Eb/NF55t4O5TSExu0j1ssgjbMuFj/CteKLoHZrK
+	 aQvZU84VzBVl/xcNpRDAfH3ULwTHgWaMgC3Rxbuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Yang Shen <shenyang39@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 6.6 210/254] uacce: ensure safe queue release with state management
+	Ratheesh Kannoth <rkannoth@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 141/227] octeontx2-af: Fix error handling
 Date: Wed, 28 Jan 2026 16:23:06 +0100
-Message-ID: <20260128145352.350384577@linuxfoundation.org>
+Message-ID: <20260128145349.533662116@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212206-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212578-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,99 +90,198 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 29CDAA4583
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,marvell.com:email]
+X-Rspamd-Queue-Id: E6E08A5F26
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Ratheesh Kannoth <rkannoth@marvell.com>
 
-commit 26c08dabe5475d99a13f353d8dd70e518de45663 upstream.
+[ Upstream commit 19e4175e997a5b85eab97d522f00cc99abd1873c ]
 
-Directly calling `put_queue` carries risks since it cannot
-guarantee that resources of `uacce_queue` have been fully released
-beforehand. So adding a `stop_queue` operation for the
-UACCE_CMD_PUT_Q command and leaving the `put_queue` operation to
-the final resource release ensures safety.
+This commit adds error handling and rollback logic to
+rvu_mbox_handler_attach_resources() to properly clean up partially
+attached resources when rvu_attach_block() fails.
 
-Queue states are defined as follows:
-- UACCE_Q_ZOMBIE: Initial state
-- UACCE_Q_INIT: After opening `uacce`
-- UACCE_Q_STARTED: After `start` is issued via `ioctl`
-
-When executing `poweroff -f` in virt while accelerator are still
-working, `uacce_fops_release` and `uacce_remove` may execute
-concurrently. This can cause `uacce_put_queue` within
-`uacce_fops_release` to access a NULL `ops` pointer. Therefore, add
-state checks to prevent accessing freed pointers.
-
-Fixes: 015d239ac014 ("uacce: add uacce driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Yang Shen <shenyang39@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-5-huangchenghai2@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 746ea74241fa0 ("octeontx2-af: Add RVU block LF provisioning support")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Link: https://patch.msgid.link/20260121033934.1900761-1-rkannoth@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/uacce/uacce.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ .../net/ethernet/marvell/octeontx2/af/rvu.c   | 86 ++++++++++++++-----
+ 1 file changed, 64 insertions(+), 22 deletions(-)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -37,20 +37,34 @@ static int uacce_start_queue(struct uacc
- 	return 0;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 2d78e08f985f0..747fbdf2a908f 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -1551,8 +1551,8 @@ static int rvu_get_attach_blkaddr(struct rvu *rvu, int blktype,
+ 	return -ENODEV;
  }
  
--static int uacce_put_queue(struct uacce_queue *q)
-+static int uacce_stop_queue(struct uacce_queue *q)
+-static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
+-			     int num_lfs, struct rsrc_attach *attach)
++static int rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
++			    int num_lfs, struct rsrc_attach *attach)
  {
- 	struct uacce_device *uacce = q->uacce;
+ 	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
+ 	struct rvu_hwinfo *hw = rvu->hw;
+@@ -1562,21 +1562,21 @@ static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
+ 	u64 cfg;
  
--	if ((q->state == UACCE_Q_STARTED) && uacce->ops->stop_queue)
-+	if (q->state != UACCE_Q_STARTED)
-+		return 0;
-+
-+	if (uacce->ops->stop_queue)
- 		uacce->ops->stop_queue(q);
+ 	if (!num_lfs)
+-		return;
++		return -EINVAL;
  
--	if ((q->state == UACCE_Q_INIT || q->state == UACCE_Q_STARTED) &&
--	     uacce->ops->put_queue)
-+	q->state = UACCE_Q_INIT;
+ 	blkaddr = rvu_get_attach_blkaddr(rvu, blktype, pcifunc, attach);
+ 	if (blkaddr < 0)
+-		return;
++		return -EFAULT;
+ 
+ 	block = &hw->block[blkaddr];
+ 	if (!block->lf.bmap)
+-		return;
++		return -ESRCH;
+ 
+ 	for (slot = 0; slot < num_lfs; slot++) {
+ 		/* Allocate the resource */
+ 		lf = rvu_alloc_rsrc(&block->lf);
+ 		if (lf < 0)
+-			return;
++			return -EFAULT;
+ 
+ 		cfg = (1ULL << 63) | (pcifunc << 8) | slot;
+ 		rvu_write64(rvu, blkaddr, block->lfcfg_reg |
+@@ -1587,6 +1587,8 @@ static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
+ 		/* Set start MSIX vector for this LF within this PF/VF */
+ 		rvu_set_msix_offset(rvu, pfvf, block, lf);
+ 	}
 +
 +	return 0;
-+}
-+
-+static void uacce_put_queue(struct uacce_queue *q)
-+{
-+	struct uacce_device *uacce = q->uacce;
-+
-+	uacce_stop_queue(q);
-+
-+	if (q->state != UACCE_Q_INIT)
-+		return;
-+
-+	if (uacce->ops->put_queue)
- 		uacce->ops->put_queue(q);
- 
- 	q->state = UACCE_Q_ZOMBIE;
--
--	return 0;
  }
  
- static long uacce_fops_unl_ioctl(struct file *filep,
-@@ -77,7 +91,7 @@ static long uacce_fops_unl_ioctl(struct
- 		ret = uacce_start_queue(q);
- 		break;
- 	case UACCE_CMD_PUT_Q:
--		ret = uacce_put_queue(q);
-+		ret = uacce_stop_queue(q);
- 		break;
- 	default:
- 		if (uacce->ops->ioctl)
+ static int rvu_check_rsrc_availability(struct rvu *rvu,
+@@ -1724,22 +1726,31 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
+ 	int err;
+ 
+ 	/* If first request, detach all existing attached resources */
+-	if (!attach->modify)
+-		rvu_detach_rsrcs(rvu, NULL, pcifunc);
++	if (!attach->modify) {
++		err = rvu_detach_rsrcs(rvu, NULL, pcifunc);
++		if (err)
++			return err;
++	}
+ 
+ 	mutex_lock(&rvu->rsrc_lock);
+ 
+ 	/* Check if the request can be accommodated */
+ 	err = rvu_check_rsrc_availability(rvu, attach, pcifunc);
+ 	if (err)
+-		goto exit;
++		goto fail1;
+ 
+ 	/* Now attach the requested resources */
+-	if (attach->npalf)
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_NPA, 1, attach);
++	if (attach->npalf) {
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NPA, 1, attach);
++		if (err)
++			goto fail1;
++	}
+ 
+-	if (attach->nixlf)
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
++	if (attach->nixlf) {
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
++		if (err)
++			goto fail2;
++	}
+ 
+ 	if (attach->sso) {
+ 		/* RVU func doesn't know which exact LF or slot is attached
+@@ -1749,33 +1760,64 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
+ 		 */
+ 		if (attach->modify)
+ 			rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
+-				 attach->sso, attach);
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
++				       attach->sso, attach);
++		if (err)
++			goto fail3;
+ 	}
+ 
+ 	if (attach->ssow) {
+ 		if (attach->modify)
+ 			rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
+-				 attach->ssow, attach);
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
++				       attach->ssow, attach);
++		if (err)
++			goto fail4;
+ 	}
+ 
+ 	if (attach->timlfs) {
+ 		if (attach->modify)
+ 			rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
+-				 attach->timlfs, attach);
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
++				       attach->timlfs, attach);
++		if (err)
++			goto fail5;
+ 	}
+ 
+ 	if (attach->cptlfs) {
+ 		if (attach->modify &&
+ 		    rvu_attach_from_same_block(rvu, BLKTYPE_CPT, attach))
+ 			rvu_detach_block(rvu, pcifunc, BLKTYPE_CPT);
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
+-				 attach->cptlfs, attach);
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
++				       attach->cptlfs, attach);
++		if (err)
++			goto fail6;
+ 	}
+ 
+-exit:
++	mutex_unlock(&rvu->rsrc_lock);
++	return 0;
++
++fail6:
++	if (attach->timlfs)
++		rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
++
++fail5:
++	if (attach->ssow)
++		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
++
++fail4:
++	if (attach->sso)
++		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
++
++fail3:
++	if (attach->nixlf)
++		rvu_detach_block(rvu, pcifunc, BLKTYPE_NIX);
++
++fail2:
++	if (attach->npalf)
++		rvu_detach_block(rvu, pcifunc, BLKTYPE_NPA);
++
++fail1:
+ 	mutex_unlock(&rvu->rsrc_lock);
+ 	return err;
+ }
+-- 
+2.51.0
+
 
 
 
