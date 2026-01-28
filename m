@@ -1,205 +1,194 @@
-Return-Path: <stable+bounces-212703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDifBv6Oeml+7wEAu9opvQ
-	(envelope-from <stable+bounces-212703-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:34:38 +0100
+	id oP6YIgSRemmz7wEAu9opvQ
+	(envelope-from <stable+bounces-212704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:43:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC519A99D8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:34:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE00BA9B4F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 23:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F4D2302D5B5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:34:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C36533017275
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D457C344DA6;
-	Wed, 28 Jan 2026 22:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F210834253C;
+	Wed, 28 Jan 2026 22:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Iq8isnPJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rM9EU8jL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F6934106D;
-	Wed, 28 Jan 2026 22:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A507D3191C9
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 22:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769639644; cv=none; b=OAeCrLH9bUpE3CYgSi6/5z+kPMr2m1DevZ6MPf9c8uTKY8JgW/nJlthk3ldrQCgccRVR3KJZD4uJfRruhPGyKXCO6e30VUPlIBtyGSa4rp52842BuL+n8vR/I9IzZLgzm1KUzqBkaNvHEZzMweRZNnnEMjq5Px49ppmotoaX4wA=
+	t=1769640021; cv=none; b=faFOYwUhjlO/Z9eVNWTUuLmNJKxWRn76nHYX2hRyZmeCMMQdOQSf+BuKsxZS9hx+z0rHvybotRn/CiUyhxGszc8y9WwjLEHfeoiWYrraixozKsaG3THlIJVR/9Sd+zgECBBbm//P/C9A8BhQpP5Av2VedBX/tLGpnV10TUqEsRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769639644; c=relaxed/simple;
-	bh=rLGrE+MaErxQW3OluWWITCG7Jv6qU44Pywclqiz3Ero=;
+	s=arc-20240116; t=1769640021; c=relaxed/simple;
+	bh=f9SD+LKm8hXxX434r1CNxoBHcRwO42bKv4C+Q6zLDhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cvl6jvgcdVk8e51SqQ1ClP+nPzxeo31hS8UogwWIxATKksot22JAiVZrgpJ+5Ki3lNfwJHppvDPJZwulfol+iacD9FD0OX++HpkHHc+e6PSbkQit2I9yy8Xpy60b9YsRUihXK1uHsgDwepEmLr6Z4qRJoD0XFmp+NkwmOrwFHGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Iq8isnPJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F27C4CEF1;
-	Wed, 28 Jan 2026 22:34:03 +0000 (UTC)
+	 MIME-Version; b=W7jBETrSgOFMPPi88pMcV6yHFFLmieyqBvmj/enByujBpdt7yNrj5G8yBJVESYFCgs0Wj8KjeAkpM4lUnDhRoxW7UWYcrcumSALsgAytUadxpCSbHkpRyoCaxGg7e3DATb/b4NYj7LvUAAm9HyiMjZSDHf72vmHwmxGJkcQ1S4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rM9EU8jL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6489C4CEF1;
+	Wed, 28 Jan 2026 22:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769639644;
-	bh=rLGrE+MaErxQW3OluWWITCG7Jv6qU44Pywclqiz3Ero=;
+	s=k20201202; t=1769640021;
+	bh=f9SD+LKm8hXxX434r1CNxoBHcRwO42bKv4C+Q6zLDhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iq8isnPJeEQ9FlyLr5jVlx950KuIxAnpFnDgawomVe2ycqr2ZE884i3shii0qfYXY
-	 hwsuipY51sk2UPQk4nfoMuN3HCagh8ust0fZ1Yxhsncj7ZFqjv7nUbWOo1xsSqO0Bk
-	 mSjJdpvIXLdNJL1Zn5DMux8dU06FBa+rAA6XLJy3+fK+IHQgr1MnJPwamgEM6obtt2
-	 4/YjJNRpowPFfiPttKuEEFbKnSBNURNcWRjWIc+oErWxDVqefH07rHJHpYmPhvZOCO
-	 N5n0U1M2Zwq5xAC9o2jK4WR26VJhlohZ++EtnhtlhufH7w2/ZaRBw0B30yVctxaiFy
-	 G+cst5ly1Hw4A==
+	b=rM9EU8jLtxoLhdkrDq1b1rav4F2JBKScnkWEayH/KoSYyTFt7939MKhvCFDcFcMkz
+	 q8KGIluWqbBWFSBUrnSlrLR3kU6yrJBQowclQHt06qi7iIPKZCpFz2FQfuGQmg7xST
+	 zMJNpyRoRcBklNggekidCxGZGplT4nw17fziAdgCh5aETz9GQ1TC1u881VCRDcHRns
+	 UI2dSHwnNM2E36o/AvYjlSJxmqJVy4E7RshOPpdQLze9eGW4GJuf3ZzTkHTUuX8Pmv
+	 nAnN6rczi+/U7lcM8TZR+ql71bfd+VR09EzR+ZqVCpgYEOAiuvEX4LkKci5JzIj3k3
+	 fI5sB8ZNxjj1w==
 From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Ian Rogers <irogers@google.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] tracing: Avoid possible signed 64-bit truncation
-Date: Wed, 28 Jan 2026 17:33:16 -0500
-Message-ID: <20260128223332.2806589-18-sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] mei: trace: treat reg parameter as string
+Date: Wed, 28 Jan 2026 17:40:18 -0500
+Message-ID: <20260128224019.2809980-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260128223332.2806589-1-sashal@kernel.org>
-References: <20260128223332.2806589-1-sashal@kernel.org>
+In-Reply-To: <2026012709-cleft-animosity-5c8d@gregkh>
+References: <2026012709-cleft-animosity-5c8d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.7
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212703-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212704-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: CC519A99D8
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DE00BA9B4F
 X-Rspamd-Action: no action
 
-From: Ian Rogers <irogers@google.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 00f13e28a9c3acd40f0551cde7e9d2d1a41585bf ]
+[ Upstream commit 06d5a7afe1d0b47102936d8fba568572c2b4b941 ]
 
-64-bit truncation to 32-bit can result in the sign of the truncated
-value changing. The cmp_mod_entry is used in bsearch and so the
-truncation could result in an invalid search order. This would only
-happen were the addresses more than 2GB apart and so unlikely, but
-let's fix the potentially broken compare anyway.
+The commit
+afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
+forbids to emit event with a plain char* without a wrapper.
 
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260108002625.333331-1-irogers@google.com
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+The reg parameter always passed as static string and wrapper
+is not strictly required, contrary to dev parameter.
+Use the string wrapper anyway to check sanity of the reg parameters,
+store it value independently and prevent internal kernel data leaks.
+
+Since some code refactoring has taken place, explicit backporting may
+be needed for kernels older than 6.10.
+
+Cc: stable@vger.kernel.org  # v6.11+
+Fixes: a0a927d06d79 ("mei: me: add io register tracing")
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20260111145125.1754912-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ adapted __assign_str() calls to use two arguments ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ drivers/misc/mei/mei-trace.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-LLM Generated explanations, may be completely bogus:
-
-The original buggy code was introduced in v6.15 and later. It's only
-present in 6.15+ kernels.
-
-### 8. SUMMARY OF ANALYSIS
-
-**The Bug:**
-- The `cmp_mod_entry()` function uses subtraction of two `unsigned long`
-  values and returns the result as `int`
-- On 64-bit systems, if addresses differ by more than 2^31 (~2GB), the
-  truncation from 64-bit to 32-bit can flip the sign
-- This would cause `bsearch()` to make wrong decisions about search
-  direction
-- Result: potentially incorrect module address lookups in trace data
-
-**The Fix:**
-- Replaces arithmetic subtraction with simple comparisons
-- Returns -1, 0, or 1 directly based on comparisons
-- No overflow or truncation possible with the new code
-- Logic is more readable and provably correct
-
-**Stable Criteria Evaluation:**
-1. ✅ **Obviously correct and tested**: Simple logic, reviewed by
-   maintainers
-2. ✅ **Fixes a real bug**: Yes, a potential comparator correctness bug
-3. ⚠️ **Important issue**: Moderate - unlikely to trigger (requires >2GB
-   address separation) but could cause incorrect trace output
-4. ✅ **Small and contained**: Only changes one function body (~6 lines)
-5. ✅ **No new features**: Pure bug fix
-6. ✅ **Applies cleanly**: Should apply to 6.15+ kernels where this code
-   exists
-
-**Risk Assessment:**
-- Very low risk - the change is small and the new logic is simpler
-- The original code has a provable bug (integer overflow on truncation)
-- The new code has no such issues
-
-**Concerns:**
-- The code only exists in 6.15+ kernels (introduced March 2025)
-- The bug is "unlikely" per the author (requires addresses >2GB apart)
-- No known real-world reports of this actually causing issues
-
-### DECISION
-
-This is a valid bug fix that:
-- Fixes a real (though unlikely to trigger) bug in the comparator
-  function
-- Is very small and self-contained
-- Has been reviewed and acked by the tracing maintainers
-- Has near-zero regression risk
-- Applies to 6.15+ kernels only
-
-The fix is surgical, obviously correct, and addresses a potential
-correctness issue. While the bug is unlikely to trigger in practice
-(addresses must be >2GB apart), it could cause silent data corruption in
-trace output when it does trigger. The fix is trivial and risk-free.
-
-**YES**
-
- kernel/trace/trace.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 142e3b737f0bc..907923d5f8bbb 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6061,10 +6061,10 @@ static int cmp_mod_entry(const void *key, const void *pivot)
- 	unsigned long addr = (unsigned long)key;
- 	const struct trace_mod_entry *ent = pivot;
+diff --git a/drivers/misc/mei/mei-trace.h b/drivers/misc/mei/mei-trace.h
+index fe46ff2b9d69f..770e7897b88cc 100644
+--- a/drivers/misc/mei/mei-trace.h
++++ b/drivers/misc/mei/mei-trace.h
+@@ -21,18 +21,18 @@ TRACE_EVENT(mei_reg_read,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev, dev_name(dev));
+-		__entry->reg  = reg;
++		__assign_str(reg, reg);
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] read %s:[%#x] = %#x",
+-		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
+ );
  
--	if (addr >= ent[0].mod_addr && addr < ent[1].mod_addr)
--		return 0;
--	else
--		return addr - ent->mod_addr;
-+	if (addr < ent[0].mod_addr)
-+		return -1;
-+
-+	return addr >= ent[1].mod_addr;
- }
+ TRACE_EVENT(mei_reg_write,
+@@ -40,18 +40,18 @@ TRACE_EVENT(mei_reg_write,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev, dev_name(dev));
+-		__entry->reg = reg;
++		__assign_str(reg, reg);
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] write %s[%#x] = %#x",
+-		  __get_str(dev), __entry->reg,  __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg),  __entry->offs, __entry->val)
+ );
  
- /**
+ TRACE_EVENT(mei_pci_cfg_read,
+@@ -59,18 +59,18 @@ TRACE_EVENT(mei_pci_cfg_read,
+ 	TP_ARGS(dev, reg, offs, val),
+ 	TP_STRUCT__entry(
+ 		__string(dev, dev_name(dev))
+-		__field(const char *, reg)
++		__string(reg, reg)
+ 		__field(u32, offs)
+ 		__field(u32, val)
+ 	),
+ 	TP_fast_assign(
+ 		__assign_str(dev, dev_name(dev));
+-		__entry->reg  = reg;
++		__assign_str(reg, reg);
+ 		__entry->offs = offs;
+ 		__entry->val = val;
+ 	),
+ 	TP_printk("[%s] pci cfg read %s:[%#x] = %#x",
+-		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
++		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
+ );
+ 
+ #endif /* _MEI_TRACE_H_ */
 -- 
 2.51.0
 
