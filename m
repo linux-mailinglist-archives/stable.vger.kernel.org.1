@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-212592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8I1EAd47emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:58 +0100
+	id ACbaJ+A4eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42064A5F67
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F06A2A5A37
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 50F56323115E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 34A303141E56
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82F9286D4B;
-	Wed, 28 Jan 2026 16:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF90305057;
+	Wed, 28 Jan 2026 15:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkKD9A7C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0eInfSA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CABB81AA8;
-	Wed, 28 Jan 2026 16:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2256D288C22;
+	Wed, 28 Jan 2026 15:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616035; cv=none; b=c6/S3cyPUBXtJB8wHyjX0Dy1+6QDm/XlFfWKYmNlLgP6C9wykU04+nsTuAN4vYIzBoi3EEPEZFJxEaQNSwJjxhK35AzKBAIsyXTdRCT20enSwmvEJgrcQV4uyKenpr+KTYIbwN1mBKJck2QL+1i7aF9zWBwdhcJqLng+oBEu/D8=
+	t=1769615365; cv=none; b=huMWOqGau2+763+OHHfDuEOas7gq5a2Nsrhw5nL5Sjzp5N3D8gbPnZv+eHyBTbWJS8GqGLd8X+lZwZ+M5RzwWlFxO3gbc7ihtyjjtY6PPy8wPhIQTKiAarbb2hipv6GBuYq1vCfMvJTpCCcxCMBvcEHQObsheoFQGs6pZFF+JZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616035; c=relaxed/simple;
-	bh=lD0QduN87EJ/+R32hA+u3D/v8/+B9rOZ8lb2frC1VRY=;
+	s=arc-20240116; t=1769615365; c=relaxed/simple;
+	bh=t6LyVt5vNooo02jx/vha1Ct3nCPWpT5EPHO8vhS1qpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmcVPZg/52aBvDCMlcVQtCtjSolAAWNtpzCogqcDcsSooobCIsJiT/SQpaou1IiSco9TBWQT+AYg2xQYCZ+IxSCWY7oF3EWpUEzXdTggqGOey82ZQ3OTyqWzrMl8Xo3mEn6vIcO4e+Ie+7lIBn+XZupwGO9ZHTWR+mqq1UpFU3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkKD9A7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD02C4CEF1;
-	Wed, 28 Jan 2026 16:00:34 +0000 (UTC)
+	 MIME-Version; b=YhtVdT+vf9Ds08QZJ081+hvKwB7Mk9tgEofrS3vujfe+RqOxEruF6czSLcoQtLo97cl7wSmz3aCrwjiTIXH1ra3fHxIiToaMSPkHtVWoGsQOz3SgvBM8wcyuPeYuM+nBlMVdYsM6lsrqgGL7BNlLIHH4ZTovfEIuTAPzq+0NF+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0eInfSA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C34C116C6;
+	Wed, 28 Jan 2026 15:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616035;
-	bh=lD0QduN87EJ/+R32hA+u3D/v8/+B9rOZ8lb2frC1VRY=;
+	s=korg; t=1769615365;
+	bh=t6LyVt5vNooo02jx/vha1Ct3nCPWpT5EPHO8vhS1qpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkKD9A7ChjoJAsO4OGzQOQ16VY09hRUgEyzTaJsYhxGD9r2zRut0r2weo42bXJ94m
-	 JVQ/w7QJN/w0gzBy5Fq6xUEyULNK6lPOfjeLBNn/Yoe4jueJVSX7OT13G0DtPcU4wj
-	 jRlm9ygJnHj6A9o0tC6+FXgtkareyF0O9xt4SYMQ=
+	b=Y0eInfSAkpaUNehwNgDx06RKdlcrWLQHle82OG+XLSFQexkZTjatMkpll4gZKTcb5
+	 LmCb+0C0Eqw0d52bztb92A+sIiuBBwhjq5BAohK/6ZhBtsGn9WLAfKoDeL/ChKIN+N
+	 Sqa2zcE8J8FqCEbgIo7FTCEcTWI48E917f3JSCEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ma Ke <make24@iscas.ac.cn>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.18 187/227] intel_th: fix device leak on output open()
-Date: Wed, 28 Jan 2026 16:23:52 +0100
-Message-ID: <20260128145351.174564265@linuxfoundation.org>
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Dongliang Mu <dzm91@hust.edu.cn>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.12 150/169] bpf: Do not let BPF test infra emit invalid GSO types to stack
+Date: Wed, 28 Jan 2026 16:23:53 +0100
+Message-ID: <20260128145339.403235211@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,95 +77,104 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212392-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212592-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 42064A5F67
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iogearbox.net:email]
+X-Rspamd-Queue-Id: F06A2A5A37
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 95fc36a234da24bbc5f476f8104a5a15f99ed3e3 upstream.
+commit 04a899573fb87273a656f178b5f920c505f68875 upstream.
 
-Make sure to drop the reference taken when looking up the th device
-during output device open() on errors and on close().
+Yinhao et al. reported that their fuzzer tool was able to trigger a
+skb_warn_bad_offload() from netif_skb_features() -> gso_features_check().
+When a BPF program - triggered via BPF test infra - pushes the packet
+to the loopback device via bpf_clone_redirect() then mentioned offload
+warning can be seen. GSO-related features are then rightfully disabled.
 
-Note that a recent commit fixed the leak in a couple of open() error
-paths but not all of them, and the reference is still leaking on
-successful open().
+We get into this situation due to convert___skb_to_skb() setting
+gso_segs and gso_size but not gso_type. Technically, it makes sense
+that this warning triggers since the GSO properties are malformed due
+to the gso_type. Potentially, the gso_type could be marked non-trustworthy
+through setting it at least to SKB_GSO_DODGY without any other specific
+assumptions, but that also feels wrong given we should not go further
+into the GSO engine in the first place.
 
-Fixes: 39f4034693b7 ("intel_th: Add driver infrastructure for Intel(R) Trace Hub devices")
-Fixes: 6d5925b667e4 ("intel_th: Fix error handling in intel_th_output_open")
-Cc: stable@vger.kernel.org	# 4.4: 6d5925b667e4
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251208153524.68637-2-johan@kernel.org
+The checks were added in 121d57af308d ("gso: validate gso_type in GSO
+handlers") because there were malicious (syzbot) senders that combine
+a protocol with a non-matching gso_type. If we would want to drop such
+packets, gso_features_check() currently only returns feature flags via
+netif_skb_features(), so one location for potentially dropping such skbs
+could be validate_xmit_unreadable_skb(), but then otoh it would be
+an additional check in the fast-path for a very corner case. Given
+bpf_clone_redirect() is the only place where BPF test infra could emit
+such packets, lets reject them right there.
+
+Fixes: 850a88cc4096 ("bpf: Expose __sk_buff wire_len/gso_segs to BPF_PROG_TEST_RUN")
+Fixes: cf62089b0edd ("bpf: Add gso_size to __sk_buff")
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20251020075441.127980-1-daniel@iogearbox.net
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/core.c |   19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ net/bpf/test_run.c |    5 +++++
+ net/core/filter.c  |    7 +++++++
+ 2 files changed, 12 insertions(+)
 
---- a/drivers/hwtracing/intel_th/core.c
-+++ b/drivers/hwtracing/intel_th/core.c
-@@ -810,9 +810,12 @@ static int intel_th_output_open(struct i
- 	int err;
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -944,6 +944,11 @@ static int convert___skb_to_skb(struct s
  
- 	dev = bus_find_device_by_devt(&intel_th_bus, inode->i_rdev);
--	if (!dev || !dev->driver) {
-+	if (!dev)
-+		return -ENODEV;
+ 	if (__skb->gso_segs > GSO_MAX_SEGS)
+ 		return -EINVAL;
 +
-+	if (!dev->driver) {
- 		err = -ENODEV;
--		goto out_no_device;
-+		goto out_put_device;
- 	}
++	/* Currently GSO type is zero/unset. If this gets extended with
++	 * a small list of accepted GSO types in future, the filter for
++	 * an unset GSO type in bpf_clone_redirect() can be lifted.
++	 */
+ 	skb_shinfo(skb)->gso_segs = __skb->gso_segs;
+ 	skb_shinfo(skb)->gso_size = __skb->gso_size;
+ 	skb_shinfo(skb)->hwtstamps.hwtstamp = __skb->hwtstamp;
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2466,6 +2466,13 @@ BPF_CALL_3(bpf_clone_redirect, struct sk
+ 	if (unlikely(flags & (~(BPF_F_INGRESS) | BPF_F_REDIRECT_INTERNAL)))
+ 		return -EINVAL;
  
- 	thdrv = to_intel_th_driver(dev->driver);
-@@ -836,12 +839,22 @@ static int intel_th_output_open(struct i
- 
- out_put_device:
- 	put_device(dev);
--out_no_device:
++	/* BPF test infra's convert___skb_to_skb() can create type-less
++	 * GSO packets. gso_features_check() will detect this as a bad
++	 * offload. However, lets not leak them out in the first place.
++	 */
++	if (unlikely(skb_is_gso(skb) && !skb_shinfo(skb)->gso_type))
++		return -EBADMSG;
 +
- 	return err;
- }
- 
-+static int intel_th_output_release(struct inode *inode, struct file *file)
-+{
-+	struct intel_th_device *thdev = file->private_data;
-+
-+	put_device(&thdev->dev);
-+
-+	return 0;
-+}
-+
- static const struct file_operations intel_th_output_fops = {
- 	.open	= intel_th_output_open,
-+	.release = intel_th_output_release,
- 	.llseek	= noop_llseek,
- };
- 
+ 	dev = dev_get_by_index_rcu(dev_net(skb->dev), ifindex);
+ 	if (unlikely(!dev))
+ 		return -EINVAL;
 
 
 
