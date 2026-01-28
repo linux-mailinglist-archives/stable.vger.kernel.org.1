@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-212006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHeEKFAtemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:37:52 +0100
+	id CAaPDaAsemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:34:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC169A4193
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:37:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E1EA4008
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:34:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 388CF308CDE6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:28:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 700E73164714
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFF536C0AD;
-	Wed, 28 Jan 2026 15:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA4D36BCF7;
+	Wed, 28 Jan 2026 15:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRyS07d1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QM5zEFvp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBCA356A37;
-	Wed, 28 Jan 2026 15:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B3936B07E;
+	Wed, 28 Jan 2026 15:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614082; cv=none; b=QWtLaOywXxmElCAE6m3623VZgV8O7MhCMKaFjPV2MOIeppGXoro2rYtlNe+EHy8J0nINV6OL2smC8KQYNN2LxWacN36jTCkDA3XT+aBz5TMkrqNBOWEcLISoLk9brf94axElJuejaEsE5+LN7AVY6ooInvx9uFa0KaAF7jLqOGE=
+	t=1769614099; cv=none; b=UMY8EWNxsXXpqjEy5Sos7gecGZHzEg5ChpKj54w0lnZAHGsDBUFwK3AjYyulyepe5hGppjYciyJoLtXEnlvgNxvb+VS5oRrhOfDJTm3jLdq3SCADnqe8SzG9i9uBxIPNDamE6ZZyGTigwzUFcgaQD0q9gTUIrdDMjkeqZP9crAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614082; c=relaxed/simple;
-	bh=616oOGs6FtdMqQ4MP3FiPeaGQbafvTzy36RiE1NWmcQ=;
+	s=arc-20240116; t=1769614099; c=relaxed/simple;
+	bh=CvdzRGdff/5bJV1hKiR9eSebu6KPnaEgJBdRfzPKiic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HOcoVTSghG5CuC3HRqCE/rZN23dfwT4DCsBaqLFQgkJdzo80iZxIwPwftBQ0aGrVBlngVI6jQvAl4tNef8q94P3RQV9nz4zMBx+wcvdhGXWb96DcZpzUghrbpQi9RTTaTro+KayMpOdKWPxQoq/0uk1zqaQyzlHNWytvOi0E3dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRyS07d1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2EB8C16AAE;
-	Wed, 28 Jan 2026 15:28:01 +0000 (UTC)
+	 MIME-Version; b=rlrogcncgE+Q1tRaGjtrVkQ3y6QDQ7OECnN3cK88lFfZTwsmGzwxb8XuzvoKYjNrESgSKnLtl74dk6EXdRssGWZzXTlmprRAKIG6bDaEgqPksOmjHNe3Uqnm1CZKIchuZrn7FOWzf5ud8paWhaE2h9xadtZlOHJTNY8JCqvqELU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QM5zEFvp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DBCAC16AAE;
+	Wed, 28 Jan 2026 15:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614082;
-	bh=616oOGs6FtdMqQ4MP3FiPeaGQbafvTzy36RiE1NWmcQ=;
+	s=korg; t=1769614098;
+	bh=CvdzRGdff/5bJV1hKiR9eSebu6KPnaEgJBdRfzPKiic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRyS07d1cOcCiHs/DrvchLXEfiYq63ysvxHCSCCQeNiwcljnVkWLfRISPoQrPOnF+
-	 BGTkAk+SaNMZyslU4EuExG0GIJt1/BN3tQhih6kU72+yhWVUAQX+qeDHz+MTz3ml7t
-	 RHOoVdCMJ7PzekbI1ZF5Epzh4eDlXjOEvTBOQ+r0=
+	b=QM5zEFvp2xtuCU1t+a6R2GuU9+yyTlCD0enPbslOJ1mCURorB8ZoTTKVgolKcgth7
+	 +eDfEBNTc6mq6bpESGR3EAnXnCc6tev2C2g0lI5vnwZsWew6HY46510wSqelaSnw3W
+	 rNq33s9ZraGr/yYSphmCBSex+RM32qS+aGR05k9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 6.6 003/254] Revert "gfs2: Fix use of bio_chain"
-Date: Wed, 28 Jan 2026 16:19:39 +0100
-Message-ID: <20260128145344.826528915@linuxfoundation.org>
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 004/254] ASoC: codecs: wsa884x: fix codec initialisation
+Date: Wed, 28 Jan 2026 16:19:40 +0100
+Message-ID: <20260128145344.862117668@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -67,67 +71,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212006-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212011-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: EC169A4193
+	RCPT_COUNT_SEVEN(0.00)[8];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 99E1EA4008
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 469d71512d135907bf5ea0972dfab8c420f57848 upstream.
+commit 120f3e6ff76209ee2f62a64e5e7e9d70274df42b upstream.
 
-This reverts commit 8a157e0a0aa5143b5d94201508c0ca1bb8cfb941.
+The soundwire update_status() callback may be called multiple times with
+the same ATTACHED status but initialisation should only be done when
+transitioning from UNATTACHED to ATTACHED.
 
-That commit incorrectly assumed that the bio_chain() arguments were
-swapped in gfs2.  However, gfs2 intentionally constructs bio chains so
-that the first bio's bi_end_io callback is invoked when all bios in the
-chain have completed, unlike bio chains where the last bio's callback is
-invoked.
+Fix the inverted hw_init flag which was set to false instead of true
+after initialisation which defeats its purpose and may result in
+repeated unnecessary initialisation.
 
-Fixes: 8a157e0a0aa5 ("gfs2: Fix use of bio_chain")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Similarly, the initial state of the flag was also inverted so that the
+codec would only be initialised and brought out of regmap cache only
+mode if its status first transitions to UNATTACHED.
+
+Fixes: aa21a7d4f68a ("ASoC: codecs: wsa884x: Add WSA884x family of speakers")
+Cc: stable@vger.kernel.org	# 6.5
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260102111413.9605-4-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/lops.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/wsa884x.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/gfs2/lops.c
-+++ b/fs/gfs2/lops.c
-@@ -492,7 +492,7 @@ static struct bio *gfs2_chain_bio(struct
- 	new = bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP_NOIO);
- 	bio_clone_blkg_association(new, prev);
- 	new->bi_iter.bi_sector = bio_end_sector(prev);
--	bio_chain(prev, new);
-+	bio_chain(new, prev);
- 	submit_bio(prev);
- 	return new;
+--- a/sound/soc/codecs/wsa884x.c
++++ b/sound/soc/codecs/wsa884x.c
+@@ -1482,7 +1482,7 @@ static void wsa884x_init(struct wsa884x_
+ 
+ 	wsa884x_set_gain_parameters(wsa884x);
+ 
+-	wsa884x->hw_init = false;
++	wsa884x->hw_init = true;
  }
+ 
+ static int wsa884x_update_status(struct sdw_slave *slave,
+@@ -1884,7 +1884,6 @@ static int wsa884x_probe(struct sdw_slav
+ 
+ 	/* Start in cache-only until device is enumerated */
+ 	regcache_cache_only(wsa884x->regmap, true);
+-	wsa884x->hw_init = true;
+ 
+ 	pm_runtime_set_autosuspend_delay(dev, 3000);
+ 	pm_runtime_use_autosuspend(dev);
 
 
 
