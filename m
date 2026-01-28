@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-212305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8AncFaAxemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212305-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:16 +0100
+	id SLaRGhEuemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05D4A4C02
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:56:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFC1A42FB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3751E310515A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:46:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A19493025E0B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E09B30E834;
-	Wed, 28 Jan 2026 15:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3CB2D9ED1;
+	Wed, 28 Jan 2026 15:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ed0P4bMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+IXJgGO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22FC30DD1E;
-	Wed, 28 Jan 2026 15:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF1C2D6E63;
+	Wed, 28 Jan 2026 15:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615072; cv=none; b=uWPDVr88TD9D0Fv3YZZhkijyqszIvcZdNfJEsODxSo+cntMghsWir1DPIbjorV5Pg/dkYbEb+X0yPvvjKRuD4n+/4R/+6qIv/7h3wrDx78aNt/5fUH2GFft7wm5Rg/2yCgb2/613qnzpn0V1cjVnlCVsD/0Y8QJ3cCEiD46IPy4=
+	t=1769614682; cv=none; b=ifld7v4wu16GHNRjZCAVkOLZvqkeJG585OzhBi6Rzu6wGQnN4XbTNoq5iRhI+rv8J1HSTwwizmaH11+m8ySbPsNaxHNlcb0KzLJLALNF9qtJcUXqa+eXHQGjZSksFEds48vnHXR70SJy7BbfAnyEDRlMVuZ5NlE30Kg/6QjwlFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615072; c=relaxed/simple;
-	bh=O7+LTkgBRLG5/nCsHlB624BvfUEr3zDYsZTDSAO4eRk=;
+	s=arc-20240116; t=1769614682; c=relaxed/simple;
+	bh=tzj65TQwXlzHoI6SFdNoc9pREtyZJpmBqlomrGDsf3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxBlLPT8XURui3G2yqUvuV0jnYr3/9RXQBS/88qSFdA6ubGG9fxAS9T4sslOFu4tgtLwL5dWJXPmiu4MDUQeOggk0cwcxSMxjxxHMCAww9imic9sNPb51CdexofWxulz6/Z/9Ddpyh2VEzme58+C4DBsbbFLv3ULP42dtEvdQU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ed0P4bMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AEFC4CEF1;
-	Wed, 28 Jan 2026 15:44:32 +0000 (UTC)
+	 MIME-Version; b=mVF5T+jcOHox0jSC+l1htn8gmHq45QTYZqFbJ5ixU/IYtZ+eOpk5O9Cd01eJ+lu03oW+kPFMdUx0AZCAwgj4/H1Wkus07OKr4k1elvz0iO3zPzfmwhxFYp4bCCX0wKzU6PPYnM0tlmGAa4df4lKgH3P6PaCzuyqagVbt4c9p1NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+IXJgGO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEC9C4CEF1;
+	Wed, 28 Jan 2026 15:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615072;
-	bh=O7+LTkgBRLG5/nCsHlB624BvfUEr3zDYsZTDSAO4eRk=;
+	s=korg; t=1769614682;
+	bh=tzj65TQwXlzHoI6SFdNoc9pREtyZJpmBqlomrGDsf3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ed0P4bMy8bgcgMQNRfAYnvVusrcj6TRPYP+G8nXYDw3uoDDL4V5mc/WFr1ld0/HnP
-	 zBITpqcmkrs7E3eUDCm4eniUQ+flBFpdvqzTKKjLK/jHfMOIgbb+y9ZVKgGJGJtaSL
-	 z/EjyQ+DQPIDUOmfk4Lkl4CJcwruZtRQtP7k7vLY=
+	b=e+IXJgGOUoYoQ6i/00RZOs4zJWG0P79ftqXI5igupZACoikY+3ibUCGq9Mw3HRCMP
+	 w0S1yffx+lK5d0uscAbx7FaXbsuGehaeaiel9juzTMlxI/h63PSO7mxJ5YTszp+lhz
+	 o/MGA/TWBR1S32eJuUpJJdbcaH7jaWXVOlhGGGtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	Arun Raghavan <arunr@valvesoftware.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ratheesh Kannoth <rkannoth@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/169] ALSA: usb: Increase volume range that triggers a warning
+Subject: [PATCH 6.6 177/254] octeontx2-af: Fix error handling
 Date: Wed, 28 Jan 2026 16:22:33 +0100
-Message-ID: <20260128145336.526246805@linuxfoundation.org>
+Message-ID: <20260128145351.174774954@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,74 +69,216 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212305-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212188-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B05D4A4C02
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,marvell.com:email]
+X-Rspamd-Queue-Id: 2AFC1A42FB
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arun Raghavan <arunr@valvesoftware.com>
+From: Ratheesh Kannoth <rkannoth@marvell.com>
 
-[ Upstream commit 6b971191fcfc9e3c2c0143eea22534f1f48dbb62 ]
+[ Upstream commit 19e4175e997a5b85eab97d522f00cc99abd1873c ]
 
-On at least the HyperX Cloud III, the range is 18944 (-18944 -> 0 in
-steps of 1), so the original check for 255 steps is definitely obsolete.
-Let's give ourselves a little more headroom before we emit a warning.
+This commit adds error handling and rollback logic to
+rvu_mbox_handler_attach_resources() to properly clean up partially
+attached resources when rvu_attach_block() fails.
 
-Fixes: 80acefff3bc7 ("ALSA: usb-audio - Add volume range check and warn if it too big")
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org
-Signed-off-by: Arun Raghavan <arunr@valvesoftware.com>
-Link: https://patch.msgid.link/20260116225804.3845935-1-arunr@valvesoftware.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 746ea74241fa0 ("octeontx2-af: Add RVU block LF provisioning support")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Link: https://patch.msgid.link/20260121033934.1900761-1-rkannoth@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ .../net/ethernet/marvell/octeontx2/af/rvu.c   | 86 ++++++++++++++-----
+ 1 file changed, 64 insertions(+), 22 deletions(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 7307e29c60b75..577f9121971e8 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1807,11 +1807,10 @@ static void __build_feature_ctl(struct usb_mixer_interface *mixer,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 67e6d755b30ec..846049b6c4d60 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -1541,8 +1541,8 @@ static int rvu_get_attach_blkaddr(struct rvu *rvu, int blktype,
+ 	return -ENODEV;
+ }
  
- 	range = (cval->max - cval->min) / cval->res;
- 	/*
--	 * Are there devices with volume range more than 255? I use a bit more
--	 * to be sure. 384 is a resolution magic number found on Logitech
--	 * devices. It will definitively catch all buggy Logitech devices.
-+	 * There are definitely devices with a range of ~20,000, so let's be
-+	 * conservative and allow for a bit more.
- 	 */
--	if (range > 384) {
-+	if (range > 65535) {
- 		usb_audio_warn(mixer->chip,
- 			       "Warning! Unlikely big volume range (=%u), cval->res is probably wrong.",
- 			       range);
+-static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
+-			     int num_lfs, struct rsrc_attach *attach)
++static int rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
++			    int num_lfs, struct rsrc_attach *attach)
+ {
+ 	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
+ 	struct rvu_hwinfo *hw = rvu->hw;
+@@ -1552,21 +1552,21 @@ static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
+ 	u64 cfg;
+ 
+ 	if (!num_lfs)
+-		return;
++		return -EINVAL;
+ 
+ 	blkaddr = rvu_get_attach_blkaddr(rvu, blktype, pcifunc, attach);
+ 	if (blkaddr < 0)
+-		return;
++		return -EFAULT;
+ 
+ 	block = &hw->block[blkaddr];
+ 	if (!block->lf.bmap)
+-		return;
++		return -ESRCH;
+ 
+ 	for (slot = 0; slot < num_lfs; slot++) {
+ 		/* Allocate the resource */
+ 		lf = rvu_alloc_rsrc(&block->lf);
+ 		if (lf < 0)
+-			return;
++			return -EFAULT;
+ 
+ 		cfg = (1ULL << 63) | (pcifunc << 8) | slot;
+ 		rvu_write64(rvu, blkaddr, block->lfcfg_reg |
+@@ -1577,6 +1577,8 @@ static void rvu_attach_block(struct rvu *rvu, int pcifunc, int blktype,
+ 		/* Set start MSIX vector for this LF within this PF/VF */
+ 		rvu_set_msix_offset(rvu, pfvf, block, lf);
+ 	}
++
++	return 0;
+ }
+ 
+ static int rvu_check_rsrc_availability(struct rvu *rvu,
+@@ -1714,22 +1716,31 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
+ 	int err;
+ 
+ 	/* If first request, detach all existing attached resources */
+-	if (!attach->modify)
+-		rvu_detach_rsrcs(rvu, NULL, pcifunc);
++	if (!attach->modify) {
++		err = rvu_detach_rsrcs(rvu, NULL, pcifunc);
++		if (err)
++			return err;
++	}
+ 
+ 	mutex_lock(&rvu->rsrc_lock);
+ 
+ 	/* Check if the request can be accommodated */
+ 	err = rvu_check_rsrc_availability(rvu, attach, pcifunc);
+ 	if (err)
+-		goto exit;
++		goto fail1;
+ 
+ 	/* Now attach the requested resources */
+-	if (attach->npalf)
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_NPA, 1, attach);
++	if (attach->npalf) {
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NPA, 1, attach);
++		if (err)
++			goto fail1;
++	}
+ 
+-	if (attach->nixlf)
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
++	if (attach->nixlf) {
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_NIX, 1, attach);
++		if (err)
++			goto fail2;
++	}
+ 
+ 	if (attach->sso) {
+ 		/* RVU func doesn't know which exact LF or slot is attached
+@@ -1739,33 +1750,64 @@ int rvu_mbox_handler_attach_resources(struct rvu *rvu,
+ 		 */
+ 		if (attach->modify)
+ 			rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
+-				 attach->sso, attach);
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSO,
++				       attach->sso, attach);
++		if (err)
++			goto fail3;
+ 	}
+ 
+ 	if (attach->ssow) {
+ 		if (attach->modify)
+ 			rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
+-				 attach->ssow, attach);
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_SSOW,
++				       attach->ssow, attach);
++		if (err)
++			goto fail4;
+ 	}
+ 
+ 	if (attach->timlfs) {
+ 		if (attach->modify)
+ 			rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
+-				 attach->timlfs, attach);
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_TIM,
++				       attach->timlfs, attach);
++		if (err)
++			goto fail5;
+ 	}
+ 
+ 	if (attach->cptlfs) {
+ 		if (attach->modify &&
+ 		    rvu_attach_from_same_block(rvu, BLKTYPE_CPT, attach))
+ 			rvu_detach_block(rvu, pcifunc, BLKTYPE_CPT);
+-		rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
+-				 attach->cptlfs, attach);
++		err = rvu_attach_block(rvu, pcifunc, BLKTYPE_CPT,
++				       attach->cptlfs, attach);
++		if (err)
++			goto fail6;
+ 	}
+ 
+-exit:
++	mutex_unlock(&rvu->rsrc_lock);
++	return 0;
++
++fail6:
++	if (attach->timlfs)
++		rvu_detach_block(rvu, pcifunc, BLKTYPE_TIM);
++
++fail5:
++	if (attach->ssow)
++		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSOW);
++
++fail4:
++	if (attach->sso)
++		rvu_detach_block(rvu, pcifunc, BLKTYPE_SSO);
++
++fail3:
++	if (attach->nixlf)
++		rvu_detach_block(rvu, pcifunc, BLKTYPE_NIX);
++
++fail2:
++	if (attach->npalf)
++		rvu_detach_block(rvu, pcifunc, BLKTYPE_NPA);
++
++fail1:
+ 	mutex_unlock(&rvu->rsrc_lock);
+ 	return err;
+ }
 -- 
 2.51.0
 
