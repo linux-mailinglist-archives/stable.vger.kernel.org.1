@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-212537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yITYNDgzeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:03:04 +0100
+	id gJuZGDcwemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B704FA4FA4
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:02:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7AEBA484A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AFBBE306D298
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8BFDE306EC7F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8843081BA;
-	Wed, 28 Jan 2026 15:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C77A366815;
+	Wed, 28 Jan 2026 15:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKa7Ex/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zB4sjlaf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B339F302779;
-	Wed, 28 Jan 2026 15:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3F7367F42;
+	Wed, 28 Jan 2026 15:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615851; cv=none; b=fiMw5ov0m4HSwDZWyunyyR+YH6j6ziBKw7Wc4G4Ot9j3yc9f7xIZffx9qyi6ge+eYblIplDRmyiD/p17mxTb/9cZ4EmKcvJut4nUTowDRxqWETyofX8dr+riuEqVcx3ocgB05SUWR7AYeU8zUEhx4LZi7eGXg+JUTp1ztTEWNSY=
+	t=1769615147; cv=none; b=un3jy0GFGZTzmaiQrzevd1v8DKmOCr8uAJcpoPzoKGkckrdVBFo+fbTgez9XlIPKM/SJmeBmvLL8G5bKzhbE6jvUs5jS90XOi7uWPRNATMhhARMXett8dVfxz3sElLul/J4D4rOTc0GAHW4c4RSpv6RBQJO4zf9QZrAf98Q1icI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615851; c=relaxed/simple;
-	bh=uslLRsxhBpHs8Z0mXsZiAGABmX6kcDn/VLv11ST2Bfo=;
+	s=arc-20240116; t=1769615147; c=relaxed/simple;
+	bh=Y9X1BD488DY2vdsmyNjo8FE+snTmIRVDOFEquCfAp6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B1VZ3Wx8KRKNyYz6CKeV99Cz9uwhLV73UamM9jxsYYA6Njd2QHBZYFj2MDqHIxXJ3VIfsEvXFtMbJjlgCUo8/uUUixdq8HK44IKnh4EJ0mzUYO6M7w1cfAKwI90lSvgOQWq0XNYxg+jzw9pWSCSMkAWmpCRJAveBKYDOfCYP5C4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKa7Ex/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4087C4CEF1;
-	Wed, 28 Jan 2026 15:57:30 +0000 (UTC)
+	 MIME-Version; b=bfq5aka+vH2LUF3gDE7czAn9lPHAg/YNWLd3WYpMAnqhOi/ChA4Z4Ii0KJPfMsqcoE0O4O1QTcIq8Ryk87sbySCkRS/FxTD0c6hy1F1lM1ues2iZ1jAB+VlcwvzIRa4SltwWUV4IyNEl9qxWJH4KzUJU/KduUi38xXr1d5hC/AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zB4sjlaf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B09C4CEF1;
+	Wed, 28 Jan 2026 15:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615851;
-	bh=uslLRsxhBpHs8Z0mXsZiAGABmX6kcDn/VLv11ST2Bfo=;
+	s=korg; t=1769615147;
+	bh=Y9X1BD488DY2vdsmyNjo8FE+snTmIRVDOFEquCfAp6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SKa7Ex/yL6eT84FCHEMAnW+uEiUsBPQ4IMSQLxPLlBL1HYmAoWQByupQYO7B7yTVM
-	 cBey33s1aXJMyDh8PJPfFfvgxJjSXXtCy82L+sbya2cOiCgz5VjKI5fCPbIU5mPTTl
-	 XJmvAK3DJ69JbQq8Gb/E1D+znOGAeZJmfrMj25y0=
+	b=zB4sjlafuKh7DTj/XSOUSpuVT84z02W0HObi6lyYAn9xHdHrU3cMHMkJXMSf2KUxF
+	 8PDPsQVPMn2PTKdXCH5KDD4RNdQCgp2fogz9GiU0ssXgbMgQi6TovtokQbaRV3TBW8
+	 yN58pwC6S2yYlrf55gTw9VHqPJtPg8SzUD7YYoLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Melbin K Mathew <mlbnkm1@gmail.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 131/227] drm/amd/pm: Workaround SI powertune issue on Radeon 430 (v2)
+Subject: [PATCH 6.12 093/169] vsock/virtio: fix potential underflow in virtio_transport_get_credit()
 Date: Wed, 28 Jan 2026 16:22:56 +0100
-Message-ID: <20260128145349.174903574@linuxfoundation.org>
+Message-ID: <20260128145337.353888450@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +66,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212537-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212327-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[amd.com:query timed out];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: B704FA4FA4
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: E7AEBA484A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Melbin K Mathew <mlbnkm1@gmail.com>
 
-[ Upstream commit 764a90eb02268a23b1bb98be5f4a13671346804a ]
+[ Upstream commit 3ef3d52a1a9860d094395c7a3e593f3aa26ff012 ]
 
-Radeon 430 and 520 are OEM GPUs from 2016~2017
-They have the same device id: 0x6611 and revision: 0x87
+The credit calculation in virtio_transport_get_credit() uses unsigned
+arithmetic:
 
-On the Radeon 430, powertune is buggy and throttles the GPU,
-never allowing it to reach its maximum SCLK. Work around this
-bug by raising the TDP limits we program to the SMC from
-24W (specified by the VBIOS on Radeon 430) to 32W.
+  ret = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
 
-Disabling powertune entirely is	not a viable workaround,
-because	it causes the Radeon 520 to heat up above 100 C,
-which I prefer to avoid.
+If the peer shrinks its advertised buffer (peer_buf_alloc) while bytes
+are in flight, the subtraction can underflow and produce a large
+positive value, potentially allowing more data to be queued than the
+peer can handle.
 
-Additionally, revise the maximum SCLK limit. Considering the
-above issue, these GPUs never reached a high SCLK on Linux,
-and the workarounds were added before the GPUs were released,
-so the workaround likely didn't target these specifically.
-Use 780 MHz (the maximum SCLK according to the VBIOS on the
-Radeon 430). Note that the Radeon 520 VBIOS has a higher
-maximum SCLK: 905 MHz, but in practice it doesn't seem to
-perform better with the higher clock, only heats up more.
+Reuse virtio_transport_has_space() which already handles this case and
+add a comment to make it clear why we are doing that.
 
-v2:
-Move the workaround to si_populate_smc_tdp_limits.
-
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 966d70f1e160bdfdecaf7ff2b3f22ad088516e9f)
+Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
+[Stefano: use virtio_transport_has_space() instead of duplicating the code]
+[Stefano: tweak the commit message]
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Link: https://patch.msgid.link/20260121093628.9941-2-sgarzare@redhat.com
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ net/vmw_vsock/virtio_transport_common.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-index 08ffa79154111..a1da3e5812ce3 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -2281,6 +2281,12 @@ static int si_populate_smc_tdp_limits(struct amdgpu_device *adev,
- 		if (ret)
- 			return ret;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 4e8a9771a04d6..dfb8cad4259c2 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -28,6 +28,7 @@
  
-+		if (adev->pdev->device == 0x6611 && adev->pdev->revision == 0x87) {
-+			/* Workaround buggy powertune on Radeon 430 and 520. */
-+			tdp_limit = 32;
-+			near_tdp_limit = 28;
-+		}
-+
- 		smc_table->dpm2Params.TDPLimit =
- 			cpu_to_be32(si_scale_power_for_smc(tdp_limit, scaling_factor) * 1000);
- 		smc_table->dpm2Params.NearTDPLimit =
-@@ -3468,10 +3474,15 @@ static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- 		    (adev->pdev->revision == 0x80) ||
- 		    (adev->pdev->revision == 0x81) ||
- 		    (adev->pdev->revision == 0x83) ||
--		    (adev->pdev->revision == 0x87) ||
-+		    (adev->pdev->revision == 0x87 &&
-+				adev->pdev->device != 0x6611) ||
- 		    (adev->pdev->device == 0x6604) ||
- 		    (adev->pdev->device == 0x6605)) {
- 			max_sclk = 75000;
-+		} else if (adev->pdev->revision == 0x87 &&
-+				adev->pdev->device == 0x6611) {
-+			/* Radeon 430 and 520 */
-+			max_sclk = 78000;
- 		}
- 	}
+ static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
+ 					       bool cancel_timeout);
++static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs);
  
+ static const struct virtio_transport *
+ virtio_transport_get_ops(struct vsock_sock *vsk)
+@@ -497,9 +498,7 @@ u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 credit)
+ 		return 0;
+ 
+ 	spin_lock_bh(&vvs->tx_lock);
+-	ret = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
+-	if (ret > credit)
+-		ret = credit;
++	ret = min_t(u32, credit, virtio_transport_has_space(vvs));
+ 	vvs->tx_cnt += ret;
+ 	vvs->bytes_unsent += ret;
+ 	spin_unlock_bh(&vvs->tx_lock);
+@@ -875,11 +874,14 @@ u32 virtio_transport_seqpacket_has_data(struct vsock_sock *vsk)
+ }
+ EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_has_data);
+ 
+-static s64 virtio_transport_has_space(struct vsock_sock *vsk)
++static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
+ {
+-	struct virtio_vsock_sock *vvs = vsk->trans;
+ 	s64 bytes;
+ 
++	/* Use s64 arithmetic so if the peer shrinks peer_buf_alloc while
++	 * we have bytes in flight (tx_cnt - peer_fwd_cnt), the subtraction
++	 * does not underflow.
++	 */
+ 	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
+ 	if (bytes < 0)
+ 		bytes = 0;
+@@ -893,7 +895,7 @@ s64 virtio_transport_stream_has_space(struct vsock_sock *vsk)
+ 	s64 bytes;
+ 
+ 	spin_lock_bh(&vvs->tx_lock);
+-	bytes = virtio_transport_has_space(vsk);
++	bytes = virtio_transport_has_space(vvs);
+ 	spin_unlock_bh(&vvs->tx_lock);
+ 
+ 	return bytes;
+@@ -1507,7 +1509,7 @@ static bool virtio_transport_space_update(struct sock *sk,
+ 	spin_lock_bh(&vvs->tx_lock);
+ 	vvs->peer_buf_alloc = le32_to_cpu(hdr->buf_alloc);
+ 	vvs->peer_fwd_cnt = le32_to_cpu(hdr->fwd_cnt);
+-	space_available = virtio_transport_has_space(vsk);
++	space_available = virtio_transport_has_space(vvs);
+ 	spin_unlock_bh(&vvs->tx_lock);
+ 	return space_available;
+ }
 -- 
 2.51.0
 
