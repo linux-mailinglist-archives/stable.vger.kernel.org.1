@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-212327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212179-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJuZGDcwemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:15 +0100
+	id QNGCFp8temnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212179-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7AEBA484A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:50:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16E6A420F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:39:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8BFDE306EC7F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BAC02300EDE8
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C77A366815;
-	Wed, 28 Jan 2026 15:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 138C92D77FE;
+	Wed, 28 Jan 2026 15:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zB4sjlaf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqV8soqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3F7367F42;
-	Wed, 28 Jan 2026 15:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86DF2D6400;
+	Wed, 28 Jan 2026 15:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615147; cv=none; b=un3jy0GFGZTzmaiQrzevd1v8DKmOCr8uAJcpoPzoKGkckrdVBFo+fbTgez9XlIPKM/SJmeBmvLL8G5bKzhbE6jvUs5jS90XOi7uWPRNATMhhARMXett8dVfxz3sElLul/J4D4rOTc0GAHW4c4RSpv6RBQJO4zf9QZrAf98Q1icI=
+	t=1769614652; cv=none; b=rbPbtKe/Jw2EV9I2O0I2ZHVFgY7KoLmOF4KrCbQ5HPxwNwRHYLQ81xx1j2DAq08HRUROBhpd0EeiJ3SES+bXNE31BXczIl1JP1p/NvaHNK/xpBldm0+zuOd+I0Kr947e4snJXDpKyWChhwUqM0uWnYgSH4zRRow3lWBjycjhNLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615147; c=relaxed/simple;
-	bh=Y9X1BD488DY2vdsmyNjo8FE+snTmIRVDOFEquCfAp6k=;
+	s=arc-20240116; t=1769614652; c=relaxed/simple;
+	bh=cHxIjlquuWqZt+STES+620zVyt6I2LENoTbgCOlxynw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bfq5aka+vH2LUF3gDE7czAn9lPHAg/YNWLd3WYpMAnqhOi/ChA4Z4Ii0KJPfMsqcoE0O4O1QTcIq8Ryk87sbySCkRS/FxTD0c6hy1F1lM1ues2iZ1jAB+VlcwvzIRa4SltwWUV4IyNEl9qxWJH4KzUJU/KduUi38xXr1d5hC/AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zB4sjlaf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B09C4CEF1;
-	Wed, 28 Jan 2026 15:45:46 +0000 (UTC)
+	 MIME-Version; b=OaaN9oWsCxf4cRUcpuu2bfKQaOv5WRTbtYYCzS7KMBdKetZnXHXMfVr65jnh6XewHI75l3frqO39dC8nNW5VZ5QFOHVI39XA0KnkvmLHUyBKiAJDL1c7HW6RwcKLf1vN+44uXf85Nyt92xZa6JueGgM50mTDp3Rfd6f6hssK7yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqV8soqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E7DC4CEF1;
+	Wed, 28 Jan 2026 15:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615147;
-	bh=Y9X1BD488DY2vdsmyNjo8FE+snTmIRVDOFEquCfAp6k=;
+	s=korg; t=1769614652;
+	bh=cHxIjlquuWqZt+STES+620zVyt6I2LENoTbgCOlxynw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zB4sjlafuKh7DTj/XSOUSpuVT84z02W0HObi6lyYAn9xHdHrU3cMHMkJXMSf2KUxF
-	 8PDPsQVPMn2PTKdXCH5KDD4RNdQCgp2fogz9GiU0ssXgbMgQi6TovtokQbaRV3TBW8
-	 yN58pwC6S2yYlrf55gTw9VHqPJtPg8SzUD7YYoLY=
+	b=lqV8soqW1SKnvgyRMdI8ImkbmsIofg3qkSzZvfW1VEtwr6AnYdMj7oMWiQCUa1BBK
+	 0V7+gqE0qzrspsF5M7m8B9n3HmH6CDJMEzq2rbeRv79vmEzLK3Y6cLelBumWayzbbe
+	 Ts7BnGIsONO6hXBY1v+Ko9ERzuooc0bHHA5sT/P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Melbin K Mathew <mlbnkm1@gmail.com>,
-	Luigi Leonardi <leonardi@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/169] vsock/virtio: fix potential underflow in virtio_transport_get_credit()
-Date: Wed, 28 Jan 2026 16:22:56 +0100
-Message-ID: <20260128145337.353888450@linuxfoundation.org>
+	Jeson Gao <jeson.gao@unisoc.com>,
+	Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.6 201/254] arm64: Set __nocfi on swsusp_arch_resume()
+Date: Wed, 28 Jan 2026 16:22:57 +0100
+Message-ID: <20260128145352.027890713@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,130 +71,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212179-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212327-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.7.a.0.0.1.0.0.e.9.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: E7AEBA484A
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F16E6A420F
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melbin K Mathew <mlbnkm1@gmail.com>
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-[ Upstream commit 3ef3d52a1a9860d094395c7a3e593f3aa26ff012 ]
+commit e2f8216ca2d8e61a23cb6ec355616339667e0ba6 upstream.
 
-The credit calculation in virtio_transport_get_credit() uses unsigned
-arithmetic:
+A DABT is reported[1] on an android based system when resume from hiberate.
+This happens because swsusp_arch_suspend_exit() is marked with SYM_CODE_*()
+and does not have a CFI hash, but swsusp_arch_resume() will attempt to
+verify the CFI hash when calling a copy of swsusp_arch_suspend_exit().
 
-  ret = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
+Given that there's an existing requirement that the entrypoint to
+swsusp_arch_suspend_exit() is the first byte of the .hibernate_exit.text
+section, we cannot fix this by marking swsusp_arch_suspend_exit() with
+SYM_FUNC_*(). The simplest fix for now is to disable the CFI check in
+swsusp_arch_resume().
 
-If the peer shrinks its advertised buffer (peer_buf_alloc) while bytes
-are in flight, the subtraction can underflow and produce a large
-positive value, potentially allowing more data to be queued than the
-peer can handle.
+Mark swsusp_arch_resume() as __nocfi to disable the CFI check.
 
-Reuse virtio_transport_has_space() which already handles this case and
-add a comment to make it clear why we are doing that.
+[1]
+[   22.991934][    T1] Unable to handle kernel paging request at virtual address 0000000109170ffc
+[   22.991934][    T1] Mem abort info:
+[   22.991934][    T1]   ESR = 0x0000000096000007
+[   22.991934][    T1]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   22.991934][    T1]   SET = 0, FnV = 0
+[   22.991934][    T1]   EA = 0, S1PTW = 0
+[   22.991934][    T1]   FSC = 0x07: level 3 translation fault
+[   22.991934][    T1] Data abort info:
+[   22.991934][    T1]   ISV = 0, ISS = 0x00000007, ISS2 = 0x00000000
+[   22.991934][    T1]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   22.991934][    T1]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   22.991934][    T1] [0000000109170ffc] user address but active_mm is swapper
+[   22.991934][    T1] Internal error: Oops: 0000000096000007 [#1] PREEMPT SMP
+[   22.991934][    T1] Dumping ftrace buffer:
+[   22.991934][    T1]    (ftrace buffer empty)
+[   22.991934][    T1] Modules linked in:
+[   22.991934][    T1] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.98-android15-8-g0b1d2aee7fc3-dirty-4k #1 688c7060a825a3ac418fe53881730b355915a419
+[   22.991934][    T1] Hardware name: Unisoc UMS9360-base Board (DT)
+[   22.991934][    T1] pstate: 804000c5 (Nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   22.991934][    T1] pc : swsusp_arch_resume+0x2ac/0x344
+[   22.991934][    T1] lr : swsusp_arch_resume+0x294/0x344
+[   22.991934][    T1] sp : ffffffc08006b960
+[   22.991934][    T1] x29: ffffffc08006b9c0 x28: 0000000000000000 x27: 0000000000000000
+[   22.991934][    T1] x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000820
+[   22.991934][    T1] x23: ffffffd0817e3000 x22: ffffffd0817e3000 x21: 0000000000000000
+[   22.991934][    T1] x20: ffffff8089171000 x19: ffffffd08252c8c8 x18: ffffffc080061058
+[   22.991934][    T1] x17: 00000000529c6ef0 x16: 00000000529c6ef0 x15: 0000000000000004
+[   22.991934][    T1] x14: ffffff8178c88000 x13: 0000000000000006 x12: 0000000000000000
+[   22.991934][    T1] x11: 0000000000000015 x10: 0000000000000001 x9 : ffffffd082533000
+[   22.991934][    T1] x8 : 0000000109171000 x7 : 205b5d3433393139 x6 : 392e32322020205b
+[   22.991934][    T1] x5 : 000000010916f000 x4 : 000000008164b000 x3 : ffffff808a4e0530
+[   22.991934][    T1] x2 : ffffffd08058e784 x1 : 0000000082326000 x0 : 000000010a283000
+[   22.991934][    T1] Call trace:
+[   22.991934][    T1]  swsusp_arch_resume+0x2ac/0x344
+[   22.991934][    T1]  hibernation_restore+0x158/0x18c
+[   22.991934][    T1]  load_image_and_restore+0xb0/0xec
+[   22.991934][    T1]  software_resume+0xf4/0x19c
+[   22.991934][    T1]  software_resume_initcall+0x34/0x78
+[   22.991934][    T1]  do_one_initcall+0xe8/0x370
+[   22.991934][    T1]  do_initcall_level+0xc8/0x19c
+[   22.991934][    T1]  do_initcalls+0x70/0xc0
+[   22.991934][    T1]  do_basic_setup+0x1c/0x28
+[   22.991934][    T1]  kernel_init_freeable+0xe0/0x148
+[   22.991934][    T1]  kernel_init+0x20/0x1a8
+[   22.991934][    T1]  ret_from_fork+0x10/0x20
+[   22.991934][    T1] Code: a9400a61 f94013e0 f9438923 f9400a64 (b85fc110)
 
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Melbin K Mathew <mlbnkm1@gmail.com>
-[Stefano: use virtio_transport_has_space() instead of duplicating the code]
-[Stefano: tweak the commit message]
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
-Link: https://patch.msgid.link/20260121093628.9941-2-sgarzare@redhat.com
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Co-developed-by: Jeson Gao <jeson.gao@unisoc.com>
+Signed-off-by: Jeson Gao <jeson.gao@unisoc.com>
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Acked-by: Will Deacon <will@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Cc: <stable@vger.kernel.org>
+[catalin.marinas@arm.com: commit log updated by Mark Rutland]
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ arch/arm64/kernel/hibernate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 4e8a9771a04d6..dfb8cad4259c2 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -28,6 +28,7 @@
- 
- static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
- 					       bool cancel_timeout);
-+static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs);
- 
- static const struct virtio_transport *
- virtio_transport_get_ops(struct vsock_sock *vsk)
-@@ -497,9 +498,7 @@ u32 virtio_transport_get_credit(struct virtio_vsock_sock *vvs, u32 credit)
- 		return 0;
- 
- 	spin_lock_bh(&vvs->tx_lock);
--	ret = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
--	if (ret > credit)
--		ret = credit;
-+	ret = min_t(u32, credit, virtio_transport_has_space(vvs));
- 	vvs->tx_cnt += ret;
- 	vvs->bytes_unsent += ret;
- 	spin_unlock_bh(&vvs->tx_lock);
-@@ -875,11 +874,14 @@ u32 virtio_transport_seqpacket_has_data(struct vsock_sock *vsk)
- }
- EXPORT_SYMBOL_GPL(virtio_transport_seqpacket_has_data);
- 
--static s64 virtio_transport_has_space(struct vsock_sock *vsk)
-+static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs)
+--- a/arch/arm64/kernel/hibernate.c
++++ b/arch/arm64/kernel/hibernate.c
+@@ -396,7 +396,7 @@ int swsusp_arch_suspend(void)
+  * Memory allocated by get_safe_page() will be dealt with by the hibernate code,
+  * we don't need to free it here.
+  */
+-int swsusp_arch_resume(void)
++int __nocfi swsusp_arch_resume(void)
  {
--	struct virtio_vsock_sock *vvs = vsk->trans;
- 	s64 bytes;
- 
-+	/* Use s64 arithmetic so if the peer shrinks peer_buf_alloc while
-+	 * we have bytes in flight (tx_cnt - peer_fwd_cnt), the subtraction
-+	 * does not underflow.
-+	 */
- 	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
- 	if (bytes < 0)
- 		bytes = 0;
-@@ -893,7 +895,7 @@ s64 virtio_transport_stream_has_space(struct vsock_sock *vsk)
- 	s64 bytes;
- 
- 	spin_lock_bh(&vvs->tx_lock);
--	bytes = virtio_transport_has_space(vsk);
-+	bytes = virtio_transport_has_space(vvs);
- 	spin_unlock_bh(&vvs->tx_lock);
- 
- 	return bytes;
-@@ -1507,7 +1509,7 @@ static bool virtio_transport_space_update(struct sock *sk,
- 	spin_lock_bh(&vvs->tx_lock);
- 	vvs->peer_buf_alloc = le32_to_cpu(hdr->buf_alloc);
- 	vvs->peer_fwd_cnt = le32_to_cpu(hdr->fwd_cnt);
--	space_available = virtio_transport_has_space(vsk);
-+	space_available = virtio_transport_has_space(vvs);
- 	spin_unlock_bh(&vvs->tx_lock);
- 	return space_available;
- }
--- 
-2.51.0
-
+ 	int rc;
+ 	void *zero_page;
 
 
 
