@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-212098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wLfZAx8uemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212098-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:19 +0100
+	id kM01FyUuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50DE2A4320
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058BBA4347
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:41:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F0AC314A065
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A77830FB0F6
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A4D26ED40;
-	Wed, 28 Jan 2026 15:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D11F25332E;
+	Wed, 28 Jan 2026 15:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIlKqyn1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBiGrAd1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067FA13B7A3;
-	Wed, 28 Jan 2026 15:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49C8242D86;
+	Wed, 28 Jan 2026 15:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614394; cv=none; b=g+1NaBHO742Zm4OZ0MoJtckkYyXrvGRpHPuX5pC50UUJtoFPCKvnUCJchOirg05ygNWfvMqNvbLFnnbXgs0o/DIxCnvkXcfLRmP1aN5cZD5UW/XGjmMPX018sA3tdq9qT1S/fYL1yoiskIbr8/154jXLKbNbqH/Nv6DtCr9rDv4=
+	t=1769614429; cv=none; b=PxQ60orySH3VB7bw6Ep/Uydk1bsP/7Jwzct7K453RFHov6DHuvX3MCK4MmvafSlSEK17oPp8+OiPaA6bb5q3CtsvsgVMgLOvHhTFQm6TOzotM405qJLqQTqNj1ghz5hhy1I47vmkWlH+2Qz3pNMBgFTdhgohF5B0W1yGfEcrycQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614394; c=relaxed/simple;
-	bh=f9JynRnRtDieaoSsnjbCk/AjA1AV++jkeTUL+sNEx+E=;
+	s=arc-20240116; t=1769614429; c=relaxed/simple;
+	bh=Eed6dwRhcr1dn/XH2jAuprsVU7k+olDSWNTeM2A3W+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/rnuIbMjNgKy2rCZ7h1/5h4uPrurptMiTTcRPKjWd5j4rsxjIgj2ZukgjWavuruZN0lAn7fUQ0aTbfuWG1ps3XBOPtlh1hwHSTbFaC+Mp29AzB8o4aymLyfXxTmYd1hECXt/H+hnzL1BNDKNfK9FocIXWVhswFhiabQyfFYPfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIlKqyn1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3A2C4CEF1;
-	Wed, 28 Jan 2026 15:33:13 +0000 (UTC)
+	 MIME-Version; b=DknULZmdItrv4cLfbs0OvtZB3w4rJ+yhPZ6x/8zAz2NKpZLbgFoJTBVvKJc+hSN8XF4ifjm4Yl2bIeAIBShk5lSfUtuYcrSLSU03DYeYFBn+gb/jcIuXlwP1l0tX5432WzHuW7/GzxmdH9KeXo0XY0cfcDVseVV/boXIWnbtJBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBiGrAd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9D1C4CEF1;
+	Wed, 28 Jan 2026 15:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614393;
-	bh=f9JynRnRtDieaoSsnjbCk/AjA1AV++jkeTUL+sNEx+E=;
+	s=korg; t=1769614429;
+	bh=Eed6dwRhcr1dn/XH2jAuprsVU7k+olDSWNTeM2A3W+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIlKqyn1+dA13NtuVfTEcyk8v5cRwmkKSekf9ikQ5jKRUcbaqy/XQJGRrepi+J7E+
-	 HlKuHgbEXHzeporpmSE7QbJIm8nGY+HPdWJU07yZoshVOAUC9QMDOvYnGxHsq9Po0X
-	 NF9aXMdXTmQqQT8GFW2rkBb+pkneMVgIqDCAZ8SU=
+	b=vBiGrAd1sdXEeUEtr67kJ+aCL3MjKOFo0gqkU9zfTvgaTvZlD5Kh7YH8tFv6YpHyw
+	 E6o9Y+Rcj+aTIsObUgqriyo188LRBkxyQI9Yu0wxD7wa0rrIZQjD7flBYnvlcPxdkn
+	 AfDj94TR6dtEGkJJq+JrBe2Z2u86TO97eacpY7V4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Jishnu Prakash <quic_jprakash@quicinc.com>,
+	Melody Olvera <quic_molvera@quicinc.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/254] dt-bindings: power: rpmpd: Update part number to X1E80100
-Date: Wed, 28 Jan 2026 16:21:21 +0100
-Message-ID: <20260128145348.604414300@linuxfoundation.org>
+Subject: [PATCH 6.6 106/254] dt-bindings: power: qcom,rpmpd: document the SM8750 RPMh Power Domains
+Date: Wed, 28 Jan 2026 16:21:22 +0100
+Message-ID: <20260128145348.640209932@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
 References: <20260128145344.698118637@linuxfoundation.org>
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212098-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212110-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,51 +88,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,linaro.org:email]
-X-Rspamd-Queue-Id: 50DE2A4320
+X-Rspamd-Queue-Id: 058BBA4347
 X-Rspamd-Action: no action
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sibi Sankar <quic_sibis@quicinc.com>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit 3d123f513af055b4c085b555f9c856bbd7390536 ]
+[ Upstream commit 134e9d035d830aabd1121bcda89f7ee9a476d3a3 ]
 
-There was a recent part number update from SC8380XP to X1E80100 and as
-a result of which the SC8380xp rpmpd bindings introduced is no longer
-correct. Given that it currently has no users, it was agreed that it
-can be updated to the correct part number (X1E80100) without causing
-any binding breakage.
+Document the RPMh Power Domains on the SM8750 Platform.
 
-Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231123100021.10918-2-quic_sibis@quicinc.com
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Signed-off-by: Jishnu Prakash <quic_jprakash@quicinc.com>
+Signed-off-by: Melody Olvera <quic_molvera@quicinc.com>
+Message-ID: <20241112002444.2802092-2-quic_molvera@quicinc.com>
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Stable-dep-of: 45e1be5ddec9 ("dt-bindings: power: qcom,rpmpd: Add SC8280XP_MXC_AO")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  Documentation/devicetree/bindings/power/qcom,rpmpd.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ include/dt-bindings/power/qcom-rpmpd.h                  | 2 ++
+ 2 files changed, 3 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-index 2803f7d568217..2ff246cf8b81d 100644
+index 2ff246cf8b81d..bb01bf5663f37 100644
 --- a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
 +++ b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
 @@ -56,6 +56,7 @@ properties:
            - qcom,sm8450-rpmhpd
            - qcom,sm8550-rpmhpd
            - qcom,sm8650-rpmhpd
-+          - qcom,x1e80100-rpmhpd
++          - qcom,sm8750-rpmhpd
+           - qcom,x1e80100-rpmhpd
        - items:
            - enum:
-               - qcom,msm8937-rpmpd
+diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
+index 7f4e2983a4c57..ced784a8afc12 100644
+--- a/include/dt-bindings/power/qcom-rpmpd.h
++++ b/include/dt-bindings/power/qcom-rpmpd.h
+@@ -218,6 +218,7 @@
+ /* SDM845 Power Domain performance levels */
+ #define RPMH_REGULATOR_LEVEL_RETENTION		16
+ #define RPMH_REGULATOR_LEVEL_MIN_SVS		48
++#define RPMH_REGULATOR_LEVEL_LOW_SVS_D3		50
+ #define RPMH_REGULATOR_LEVEL_LOW_SVS_D2		52
+ #define RPMH_REGULATOR_LEVEL_LOW_SVS_D1		56
+ #define RPMH_REGULATOR_LEVEL_LOW_SVS_D0		60
+@@ -238,6 +239,7 @@
+ #define RPMH_REGULATOR_LEVEL_TURBO_L1		416
+ #define RPMH_REGULATOR_LEVEL_TURBO_L2		432
+ #define RPMH_REGULATOR_LEVEL_TURBO_L3		448
++#define RPMH_REGULATOR_LEVEL_TURBO_L4		452
+ #define RPMH_REGULATOR_LEVEL_SUPER_TURBO 	464
+ #define RPMH_REGULATOR_LEVEL_SUPER_TURBO_NO_CPR	480
+ 
 -- 
 2.51.0
 
