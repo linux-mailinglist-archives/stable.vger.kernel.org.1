@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-212364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212580-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHEEEuQwemkx4gEAu9opvQ
-	(envelope-from <stable+bounces-212364-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:08 +0100
+	id AFrkFqAzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212580-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7232A4A1E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:53:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F373CA506B
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:04:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 093B6309254E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D61F6302EA57
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171D13043CE;
-	Wed, 28 Jan 2026 15:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4D42F25EF;
+	Wed, 28 Jan 2026 15:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IAbiPg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G39aousu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6B82DF155;
-	Wed, 28 Jan 2026 15:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53A71D6AA;
+	Wed, 28 Jan 2026 15:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615272; cv=none; b=oWYkY8bUrBXigeQqiIBzfOUh0odDG6bguJm3tnffq/vcF4p5u55y2kre/BamfyqqO/OhA8blbN50G78Ei2zjArhiouVvO7aNYZWsB1AtbYtL6OtuX7lR8gXSUFrAKcntaSoRsdhUXRLOKGO+LzdJOQnnbl56/0+DPZ51fSCZneQ=
+	t=1769615993; cv=none; b=rFw7H8roqf/bE5uo/vC0O+/w3XRMlg3IV8kqJf7WY/XUWKThDxnTXZZTRpArCPuz5OYTGSmMKBZZX6ErZmtYfgxI8uSPpggiGBtk8FNStPdVTjCnIXB8I/e0fByagYXowqgk49wa6NOpvP/WG1MF1zBDnvZICpsPztkmQp7araw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615272; c=relaxed/simple;
-	bh=4ikcEW48rDG0AJyynYPtwhXv2bTBedLUM9lGkjGAnTM=;
+	s=arc-20240116; t=1769615993; c=relaxed/simple;
+	bh=cs5inTYcZ3ecUvzwf/n8HqrBvY4oNRFHh1GxKucC3AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjLh+QIGvdlt6U3D5IuQtLalxMihKiGu8fP2qPqt61tshOBOZh59jCA+vJsmyuDPFXyE57WiLBDjHWftZw2yHF3Jm4O8CPce5DkobauBks09eYnexjUqNYhJ+1yWRj18NQ/PfSEAeU+6VDdhvIgrBY25P2gHvGHb3LbvSUiYA04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IAbiPg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA5DC4CEF7;
-	Wed, 28 Jan 2026 15:47:52 +0000 (UTC)
+	 MIME-Version; b=Y3wgAeeVEkBvZlanA/I6t0qboBEcnFbGqPtU0XyZEXpEghnmfS9rtl3yLc3825WKPaWYzIV74XFo8jngb5eHdlGsehmUt/knz3ILKcccK14g1v+hkE69u22G67LO7sWcSz3lTLb738hcemutW0dwr6vh+TqMA4SIIeaOrdu3Wzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G39aousu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B25C4CEF1;
+	Wed, 28 Jan 2026 15:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615272;
-	bh=4ikcEW48rDG0AJyynYPtwhXv2bTBedLUM9lGkjGAnTM=;
+	s=korg; t=1769615993;
+	bh=cs5inTYcZ3ecUvzwf/n8HqrBvY4oNRFHh1GxKucC3AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1IAbiPg8g56D5kDQijwML5YIFOCMsZWB9mIapr2Hbld6W9W1i9PpRS+u520qx5DcF
-	 MTFcMkOQaul04lL4SsxQInQ15ki+pbsOlNgcFeEKYNmuSfEis3HVVKdCf6kMj4UeqL
-	 nVgYYj/y4fH9zc5Dht/zDg2U7S1Aj/XR+CxWRvbY=
+	b=G39aousu1VNiQqFW1r/9OD9wKULS6jj4i5cYcpIIywog3JiRw1u35ufgydsLeHVGM
+	 1+fHd8CE9TsC2OZNarBTa+gd1WQXMRSCl7CbVX8oo8ea814DOY5ej9X/er2WBKRo6A
+	 AeQJ7ca/yXcCs70EafYQTTYdpiIRnt/kNCjZTwGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenkai Lin <linwenkai6@hisilicon.com>,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>
-Subject: [PATCH 6.12 130/169] uacce: fix cdev handling in the cleanup path
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 168/227] ALSA: scarlett2: Fix buffer overflow in config retrieval
 Date: Wed, 28 Jan 2026 16:23:33 +0100
-Message-ID: <20260128145338.688005823@linuxfoundation.org>
+Message-ID: <20260128145350.497322893@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,82 +66,84 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212364-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212580-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B7232A4A1E
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: F373CA506B
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenkai Lin <linwenkai6@hisilicon.com>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-commit a3bece3678f6c88db1f44c602b2a63e84b4040ac upstream.
+commit 6f5c69f72e50d51be3a8c028ae7eda42c82902cb upstream.
 
-When cdev_device_add fails, it internally releases the cdev memory,
-and if cdev_device_del is then executed, it will cause a hang error.
-To fix it, we check the return value of cdev_device_add() and clear
-uacce->cdev to avoid calling cdev_device_del in the uacce_remove.
+The scarlett2_usb_get_config() function has a logic error in the
+endianness conversion code that can cause buffer overflows when
+count > 1.
 
-Fixes: 015d239ac014 ("uacce: add uacce driver")
+The code checks `if (size == 2)` where `size` is the total buffer size in
+bytes, then loops `count` times treating each element as u16 (2 bytes).
+This causes the loop to access `count * 2` bytes when the buffer only
+has `size` bytes allocated.
+
+Fix by checking the element size (config_item->size) instead of the
+total buffer size. This ensures the endianness conversion matches the
+actual element type.
+
+Fixes: ac34df733d2d ("ALSA: usb-audio: scarlett2: Update get_config to do endian conversion")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wenkai Lin <linwenkai6@hisilicon.com>
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Acked-by: Zhangfei Gao <zhangfei.gao@linaro.org>
-Link: https://patch.msgid.link/20251202061256.4158641-2-huangchenghai2@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Link: https://patch.msgid.link/20260117012706.1715574-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/uacce/uacce.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/usb/mixer_scarlett2.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/misc/uacce/uacce.c
-+++ b/drivers/misc/uacce/uacce.c
-@@ -556,6 +556,8 @@ EXPORT_SYMBOL_GPL(uacce_alloc);
-  */
- int uacce_register(struct uacce_device *uacce)
- {
-+	int ret;
-+
- 	if (!uacce)
- 		return -ENODEV;
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -2533,13 +2533,13 @@ static int scarlett2_usb_get_config(
+ 		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
+ 		if (err < 0)
+ 			return err;
+-		if (size == 2) {
++		if (config_item->size == 16) {
+ 			u16 *buf_16 = buf;
  
-@@ -566,7 +568,11 @@ int uacce_register(struct uacce_device *
- 	uacce->cdev->ops = &uacce_fops;
- 	uacce->cdev->owner = THIS_MODULE;
+ 			for (i = 0; i < count; i++, buf_16++)
+ 				*buf_16 = le16_to_cpu(*(__le16 *)buf_16);
+-		} else if (size == 4) {
+-			u32 *buf_32 = buf;
++		} else if (config_item->size == 32) {
++			u32 *buf_32 = (u32 *)buf;
  
--	return cdev_device_add(uacce->cdev, &uacce->dev);
-+	ret = cdev_device_add(uacce->cdev, &uacce->dev);
-+	if (ret)
-+		uacce->cdev = NULL;
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(uacce_register);
- 
+ 			for (i = 0; i < count; i++, buf_32++)
+ 				*buf_32 = le32_to_cpu(*(__le32 *)buf_32);
 
 
 
