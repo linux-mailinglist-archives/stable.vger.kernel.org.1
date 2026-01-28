@@ -1,164 +1,269 @@
-Return-Path: <stable+bounces-211957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211958-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KhwCKfueWm41AEAu9opvQ
-	(envelope-from <stable+bounces-211957-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 12:10:31 +0100
+	id IL+zIXnyeWns1AEAu9opvQ
+	(envelope-from <stable+bounces-211958-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 12:26:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F85CA0173
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 12:10:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AAF6A0553
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 12:26:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 11A5330086FB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 11:10:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5E99130338A0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 11:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBFF2EAD1B;
-	Wed, 28 Jan 2026 11:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B764234A76E;
+	Wed, 28 Jan 2026 11:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="e7TIY0mV"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GHKb8nJn"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83C8278E5D
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 11:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B40034A3D0
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 11:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769598622; cv=none; b=AI7hXuiijCPCQqHiTQFb9cIEY7/kmChbPfCGmzoHj00aFMmmW/3xLv0d0itWc3T6EsYM7RWwYIusaHbbFanOBoeyf6rtuWdzqrItqCdazbdGWATyxGVT/ZXQ10ReYg9NQX9UHmoc2Lrz2BajNbQZLx2BYDZXkC5KuZ05UpCX6y0=
+	t=1769599485; cv=none; b=dCyirayJp5SfZzhAawEl1JRrvAzfeyOJqDVHLd8ipDN+YfMZ5VGuF8W7cshU94pfEt4jXa0mLRqmeAWpmqneJZMMcErJPD+1CO68m+cUF4qD4FTyGFJMv43sj27pH55a0Tzpmugjfes9W5KZq4WULJLcc1QOsVurOb0KJtrwoDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769598622; c=relaxed/simple;
-	bh=vbouGZx3a175eMpkN5/+6+Ii1sJexF9yeGBH8vqfnRM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=fNOu5FvEcVqtyPEZbACtDeLeEQjDm96p59wI3peAV0MVn8mKdiLXm9q+8HKtI5gvm+U2mcvm3dHbtlLLOMpL1A47/7Vc1rK3gjig4f023wNwMDr3EjAjRVpNoKv9UxSr9vDCKsEZZpEYrVmDIB+PX1E/bhLSva9QUUb3ww3dLLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=e7TIY0mV; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20260128111012euoutp02a1f3bfbb72ede4bb88ade1c15ea2f563~O4I-zQse21029010290euoutp02Q
-	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 11:10:12 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20260128111012euoutp02a1f3bfbb72ede4bb88ade1c15ea2f563~O4I-zQse21029010290euoutp02Q
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1769598612;
-	bh=45jaImfVH7kr/nS0FqB71oJKgUEPUgwMAJFDZ02gS2I=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=e7TIY0mVVbHRZJQwi+WMMav97sC49+KwDu2GGaWW+C4sNN0zeUrKZUzpkRdRKQvkw
-	 pHI9z2tl4ich1br8bHnxz0ndvvkghRdfemCwwnPSD6jHa2qm4m+aRTMOnow5zvN4O0
-	 mdJv583zDVUIh3mIu+McfZ/J0GXG6r57pO1WsQn0=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20260128111011eucas1p2b98d9b06481ae6d47968b83ec0ed491c~O4I-SdpCE2976529765eucas1p2U;
-	Wed, 28 Jan 2026 11:10:11 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260128111011eusmtip1807cf713c50c74db811a812a02bdb2e4~O4I_kWAQE1268412684eusmtip1Y;
-	Wed, 28 Jan 2026 11:10:11 +0000 (GMT)
-Message-ID: <b05f6b30-04b7-4b88-b0b0-40dfdea4944b@samsung.com>
-Date: Wed, 28 Jan 2026 12:10:10 +0100
+	s=arc-20240116; t=1769599485; c=relaxed/simple;
+	bh=25g4O43N1bLtkrkr1+uCwDw4ELnJ91ur3lmZvPxN5OU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l4YxhXN+QzBNFDzFxNzQM1kxYtoNwS10bft++umg0CypMmao9fCTYNKi9M9ME7CTd2uu/6N/WB5g8+wFZYRGybl5KDlFcPL2K8dZSqQZ08T434MVjaOOfQPxkb/cAmUxky5jxZ4/AbGpdhHiYyo3Byf4o9+tVazbJyMx/3hR4q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GHKb8nJn; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b885e8c679bso821218866b.1
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 03:24:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1769599480; x=1770204280; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FSYBM9xI9IDMaIPF6q/FwBQXTfrdcuEntAVRYe57nxg=;
+        b=GHKb8nJn9vcjA/qBENC7/KZ75xw/WdgFJCTpY7/GUH5D8NxI6lWMq209bN16S6k2iz
+         EDQiZyKWA0nSRNQ9N0chp5TeY8ErGrHUXU5++PPq1Hor1P+NWyQdjPNvxVR/7gGJDnHW
+         2z0mVc+3H7OOJnCay6WtPtitrzyx8SCsVhlCadxvCVRqREOEvTaROJN++dStvZzVvgVu
+         O1pYOodmAHsMh0EQUE6NuTw2Ekj3cOJsq5tNaJrYclr++GqEKMQMQxAx61mK0C8OMyoU
+         k/hUBNFLfkb8SPz9E9+FO+sVS9XmkB1iOT3Ln8bAv/s0i1Edi4BaGH23b7Hh6KjnKydr
+         KMxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769599480; x=1770204280;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FSYBM9xI9IDMaIPF6q/FwBQXTfrdcuEntAVRYe57nxg=;
+        b=NLnaPdKiCSLVfFYkML60uLGlT+wPJ7XobaOJdS/ZEgv8m3p/XahunsOPjWeRSgSO7I
+         0pZmNdcWz54qgRrzdKvA5PYn1A0DzGVQ0W8y0Ig5GrP6yq7yIVamlrJyFIVyeqUsYJUA
+         1hvI/XNO0HtDsnLxY3PU9+eAWXymEl8HMfFa5wDDKznRgAn1+8OAEZwFOqY66NJNRk6z
+         /A02ra5mmQMHBkAo9I/QVAFE+N83Zb9fJm9K7Ip6inuz4ZhiD3rY9zCXkeElrAW1zTIz
+         +Lke2MXQMnbCcE+pGm8z0xPxjVUUMVZbmI2eIMeyoW/NJYNOmsOU+/gU9GtLZn8+T/FG
+         KHtw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4I36/ZQn8ZyXTIE6mcB9UkH2pk6Q3LcvKZ/UuEBqP6LZWUFRG6jAOPJyZ4jH+ZnOVU2+nBDY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2NTnNUMLy7pw7yEN7FaspuVU/UOHP6L+Ctxe+HxU6XEu6QfJ3
+	GJnXAr1fpzfBmVO7d2OrOUipRLQISUnXN0d3kqg6a1wHzW8GgQx6mRB8/Kabh5PGoDY=
+X-Gm-Gg: AZuq6aK0uUObmFJ+gI09huWAaab/mZRVVd4t8FcBvxKj6T6srRHCG2piE1c6QysDWD5
+	bXqHeTLJWzHAmrd++1zDnoM90hm5wt+8dwVMIYMd+KwKGFDeCksR1IBnmP/0vNqlhhwzppmoX+1
+	Hej/jSOheuwAXeL7uD8sOyh1get1zGPXsWHF95qaWajKMUlOynJ/beSy+Py2KAzyin9rPzeANh+
+	R21jfs3Aybdeoha2637eLEyC2P8E41n2meXmOxQhH+o32Xu+epPWop8XnNVV9EICqJNlPOKtHqe
+	ED9ruyV1fUkgc2p3K81wF49y6rLSHKe2M30NSSFT8G1eu9xz6buTHsmkWK/9ycWLn4m6qF4rhcn
+	mlU3BdyIwu0rH+lgbOKk0/Fe0vOo9NLNtJXm5plLyF3hW3k485jnJHJaIVXM4AkX0ACyWUFrDlj
+	4l4T68zoTHTuznriGYF2Z72rziRr9cRncX810SNMM6ddeo3f4cOPJw2VDH51QO1/w=
+X-Received: by 2002:a17:907:2d26:b0:b87:7042:9aea with SMTP id a640c23a62f3a-b8dab1b52d7mr359022166b.18.1769599480450;
+        Wed, 28 Jan 2026 03:24:40 -0800 (PST)
+Received: from [192.168.0.40] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbf1baa42sm113930766b.46.2026.01.28.03.24.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Jan 2026 03:24:39 -0800 (PST)
+Message-ID: <efcd8387-22d0-413d-9631-f392a2e7f98d@linaro.org>
+Date: Wed, 28 Jan 2026 11:24:38 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 0/3] Fixes and enhancements for Exynos (7870) DSIM
- bridge driver
-To: Kaustabh Chakraborty <kauschluss@disroot.org>, Inki Dae
-	<inki.dae@samsung.com>, Jagan Teki <jagan@amarulasolutions.com>, Andrzej
-	Hajda <andrzej.hajda@intel.com>, Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>, Laurent Pinchart
-	<Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, Jernej
-	Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] media: i2c: ov02c10: Correct power-on sequence and
+ timing
+To: Saikiran B <bjsaikiran@gmail.com>
+Cc: Bryan O'Donoghue <bod@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>, linux-media@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, rfoss@kernel.org, todor.too@gmail.com,
+ vladimir.zapolskiy@linaro.org, Hans de Goede <hansg@kernel.org>,
+ mchehab@kernel.org, stable@vger.kernel.org
+References: <20260127165024.46156-1-bjsaikiran@gmail.com>
+ <20260127165024.46156-3-bjsaikiran@gmail.com>
+ <aXjwtBey0MRP0c7f@kekkonen.localdomain>
+ <hAXW76sxpszN3JpApVO_ntI28dSyCTiDXIE-S1AJDCa7Mbp8-pHbGqhFhTh2FGPdj3TxO9AowyRRan2u8TTO6Q==@protonmail.internalid>
+ <CAAFDt1vJtJc+C_J9Gv3SYjs_2zWFXsWqwq29=ig1o2_kSkjwLg@mail.gmail.com>
+ <dbf73780-a33a-4fbf-8569-321b4f4e0a88@kernel.org>
+ <MZajBkG4hU2kIZFDZbpq0WZOF_tJmASpmGr-7IH_qheO0We0Z45KNZPrQY4UmoqsWKOX3lSx1W_hnLtfKocXPw==@protonmail.internalid>
+ <CAAFDt1vmXg9L6axsDN6kpCQKZifOCRxtQeDpmRpHyejS1ORR+Q@mail.gmail.com>
+ <92131a67-471e-41e8-83d6-4f802103db7b@kernel.org>
+ <CAAFDt1sqh=O-CpxbdcWueyqbiq4qyCrJHVH-_SS+KjEC9CyRhg@mail.gmail.com>
+ <6692ca5f-216f-428c-96b2-511fdd769f04@linaro.org>
+ <CAAFDt1u0uV+KpPxrhtwbvWgAYQET3HLg1nu4u7JgaNPFAKNLWg@mail.gmail.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20260124-exynos-dsim-fixes-v1-0-122d047a23d1@disroot.org>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260128111011eucas1p2b98d9b06481ae6d47968b83ec0ed491c
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260124172131eucas1p2bd0fa9cde2981c87238deb67cf5f0554
-X-EPHeader: CA
-X-CMS-RootMailID: 20260124172131eucas1p2bd0fa9cde2981c87238deb67cf5f0554
-References: <CGME20260124172131eucas1p2bd0fa9cde2981c87238deb67cf5f0554@eucas1p2.samsung.com>
-	<20260124-exynos-dsim-fixes-v1-0-122d047a23d1@disroot.org>
+In-Reply-To: <CAAFDt1u0uV+KpPxrhtwbvWgAYQET3HLg1nu4u7JgaNPFAKNLWg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.65 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211957-lists,stable=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[disroot.org:query timed out];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,linux.intel.com,vger.kernel.org,gmail.com,linaro.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[disroot.org,samsung.com,amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211958-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[m.szyprowski@samsung.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[samsung.com:+];
+	FROM_NEQ_ENVFROM(0.00)[bryan.odonoghue@linaro.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,samsung.com:dkim,samsung.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5F85CA0173
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linaro.org:dkim,linaro.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0AAF6A0553
 X-Rspamd-Action: no action
 
-On 24.01.2026 18:20, Kaustabh Chakraborty wrote:
-> Since v6.17, there were a few regressive changes for the Exynos 7870
-> DSIM driver. These changes resulted in weird artifacts on the display,
-> such as random RGB channel swaps and random aberration (the occurrences
-> of both were mutually exclusive).
->
-> The first two commits of this patch series address the aforementioned
-> changes.
->
-> The third patch replaces an implicit loop for waiting for PLL
-> stabilization with an interrupt-based solution, which should be more
-> reliable. This solution was suggested by Inki Dae in a discussion of an
-> earlier patch series sent by me. For further details, refer to its
-> commit description.
->
-> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+On 28/01/2026 11:06, Saikiran B wrote:
+> On Wed, Jan 28, 2026 at 4:11 PM Bryan O'Donoghue
+> <bryan.odonoghue@linaro.org> wrote:
+>>
+>> On 28/01/2026 10:19, Saikiran B wrote:
+>>>   > Just to be difficult - I'm specifically asking to test never switching
+>>>   > the regulator off - not having a long delay.
+>>>
+>>> To be absolutely clear:
+>>>
+>>> ***I have tested exactly this.***
+>>>
+>>> In my local v2 testing, I modified the driver to keep the regulators
+>>> permanently ENABLED and only toggled the software standby/reset lines.
+>>>
+>>> Result: The camera was 100% stable over hundreds of cycles.
+>>>
+>>> This isolates the issue:
+>>> 1. CCI Leaking? No. If CCI were leaking, the "Always On" test would
+>>> eventually
+>>>      fail or show instability. It did not.
+>>
+>> I have to say, I'm not an electrical engineer by profession but, I don't
+>> believe you can make this blanket statement.
+>>
+>> What is the problem with testing the hypothesis ?
+>>
+>>> 2. XSHUTDOWN Floating? No. The "Always On" test relies on XSHUTDOWN working
+>>>      correctly to wake the sensor. It worked perfectly.
+>>
+>> Yes I agree there, if always-on shows no failure then XSHUTDOWN isnt'
+>> floating.
+>>
+>> In which case this patch can be dropped, its not helping.
+>>
+>>> The instability ***only*** appears when we physically toggle the PMIC rail.
+>>>
+>>>   > Do not believe we have root caused a regulator brown out
+>>>   > Believe we should interrogate the LDO settings
+>>>
+>>> I cannot easily dump raw SPMI registers on my personal machine, but
+>>> we can derive the LDO state physically from the discharge curve (RC Time
+>>> Constant).
+>>
+>> ?
+>>
+>> I gave you code to do just that. If you can iterate sensor and DTS
+>> changes - you can use that code to dump out the requested LDO states.
+>>
+>>> We know the physics of the PM8550 PMIC:
+>>> - Active Discharge Resistor (R_active): ~1 kΩ (Typical)
+>>> - Bulk Capacitance (C_bulk): ~10 µF (Estimated for this rail)
+>>>
+>>> Scenario A: If Active Discharge IS set:
+>>>      Time Constant (T) = R * C = 1000 * 10e-6 = 0.01s (10ms)
+>>>      Complete discharge (5T) would happen in ~50ms.
+>>>
+>>> Scenario B: If Active Discharge is NOT set (Passive Leakage):
+>>>      The rail discharges through the high-impedance sensor (~200kΩ+).
+>>>      Time Constant (T) = 200,000 * 10e-6 = 2.0s.
+>>>
+>>> My measurements show the rail takes ~2.0s to reach the Brownout Threshold
+>>> (failure point) and ~2.3s to reach a clean 0V (success point).
+>>>
+>>> This 2.3s duration is physically impossible if the Active Discharge bit
+>>> was set.
+>>> It mathematically proves the LDO is in High-Z mode (Passive Discharge).
+>>>
+>>> Here are the specific logs capturing the failure at exactly the 2.0s mark.
+>> That's great. We should be able to interrogate the PMIC regs and see the
+>> state of the LDO configuration - code I've shared with you.
+>>
+>> If they show active-state isn't set on one or more of our LDOs then we
+>> can write some platform quirk code to set them.
+>>
+>> A 2.3 second delay on every start/stop stream is not an acceptable
+>> upstream fix.
+>>
+>> And please stop top posting !
+>>
+>> ---
+>> bod
+> 
+> Regarding the register dump code you shared:
+> 
+> I have already attempted to use it. It fails to read the registers on this
+> device. This is a consumer laptop secured by the Gunyah hypervisor
+> and TrustZone, not an open development board. The SPMI transactions to raw
+> PMIC addresses are firewalled by the firmware; the Linux HLOS is physically
+> blocked from reading them.
+> 
+> You mentioned in your previous reply that you are not an electrical engineer.
+> 
+> I am an Electronics Engineer.
+> 
+> The assertion that a 2.3s discharge time proves the absence of Active
+> Discharge is not a "blanket statement" - it is a fundamental calculation based
+> on the RC time constant. A 1kΩ active discharge path cannot physically sustain
+> voltage for 2.3 seconds against a 10µF load; it would drain in milliseconds.
+> Rejecting this derived data because it relies on physics rather than a
+> register bit (which the hardware prevents us from reading) is scientifically
+> unsound.
+> 
+> I have a full-time job and have spent significant personal time debugging this
+> to the millisecond.
+> 
+> Since we have reached an impasse where the physical
+> evidence is rejected in favor of impossible diagnostics, I am stopping here.
+> 
+> I will keep my patches in my local tree as now my laptop is usable to me.
+> 
+> I am withdrawing this patchset from upstream consideration.
+> 
+> Thank you.
+> 
+> Regards,
+> Saikiran
 
-Works fine on legacy Exynos based boards in my test lab.
+That's a shame.
 
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-
-> ---
-> Kaustabh Chakraborty (3):
->        drm/bridge: samsung-dsim: move bridge init sequence to atomic_enable
->        drm/bridge: samsung-dsim: enable MFLUSH_VS for Exynos 7870 DSIM
->        drm/bridge: samsung-dsim: use DSIM interrupt to wait for PLL stability
->
->   drivers/gpu/drm/bridge/samsung-dsim.c | 61 +++++++++++++++++++++++------------
->   include/drm/bridge/samsung-dsim.h     |  1 +
->   2 files changed, 42 insertions(+), 20 deletions(-)
-> ---
-> base-commit: ca3a02fda4da8e2c1cb6baee5d72352e9e2cfaea
-> change-id: 20260124-exynos-dsim-fixes-5383d6a6f073
->
-> Best regards,
-
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+---
+bod
 
