@@ -1,307 +1,301 @@
-Return-Path: <stable+bounces-212675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212676-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WCroDQl1emmE6wEAu9opvQ
-	(envelope-from <stable+bounces-212675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:43:53 +0100
+	id yOBAL7x5emkC7AEAu9opvQ
+	(envelope-from <stable+bounces-212676-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:03:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28C2A8C1D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:43:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39AE1A8E8D
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 22:03:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8E142300794B
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 20:43:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3113D30166CB
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 21:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965B8374191;
-	Wed, 28 Jan 2026 20:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE87376486;
+	Wed, 28 Jan 2026 21:03:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VDBBleUP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PQuvBTQE"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12ED27510B;
-	Wed, 28 Jan 2026 20:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769633028; cv=none; b=c6cz1DvyD/SiUu9SW2Tj5n5rQB2QCB7TupffFbcF0/tcqWubSoRwryntnaU7Nki1xuNbpozX6YNdSNrKfrwHc1YCUn7bTgU7cwNhSSun5AlB/xzFYFbIR8QXiZUzPRFMVan8tej3xfBgPGEi5MLKS5ARdB3JibRV43Err8GAUjw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769633028; c=relaxed/simple;
-	bh=0HFSJLD3DmydJ6eojx9Gl+2ZASNcQ0OUSNmFOnheJcs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZqMXvbQHfRc+AdxA+gkGWqB58EBOsGS6hzCohfOtbz2SwtsMATL4NbrGQgn+rOHLryjRUZ6cLRkhigWLw1Jjd4vQQERhlbAEiyiGWDFrSL6rlKCyi22PPmTCHp5MdjLxboF4V2t01eCc77W/Goy/RfO+17gRq0snNLEduiL0YBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VDBBleUP; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994B8304968;
+	Wed, 28 Jan 2026 21:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769634234; cv=fail; b=D8Rj7twNWisLF/gEdz0XUPfAqjhqaaRZpP8ObvsxQKOsoe0JNXTMu7of6TPH74mEjbgk07uCqCzygQDrodAxa+C3D6Hp5rluhQ2kKMCJ1g93ygPtqtMg0eT2WBmgXUNXcc5Awi1M1sFjp++pVdQOQZFKqSMYdRFV8Wg0Z4Z5GMI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769634234; c=relaxed/simple;
+	bh=fvPtHThox4hAqsR/JWbRuXFFSOcPESh7qRGO+eDM/Vo=;
+	h=From:Date:To:CC:Message-ID:In-Reply-To:References:Subject:
+	 Content-Type:MIME-Version; b=svmaGjuAfeBI9ggBDz1j6OnQNDR6/h0wwbYfEdsMgp7ucWgOg5zlvB9ZB9+hBxvn5mzrr545zZibhUtOhgOs2L9pMMWJTRD4i4jJfIF5xfYl4zIkkgQMZLqQei52jDvuBPGluZ3dJmviMjM4Fkp0LQnGxGnvaNds/UySABJ+P5o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PQuvBTQE; arc=fail smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769633027; x=1801169027;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:to:cc;
-  bh=0HFSJLD3DmydJ6eojx9Gl+2ZASNcQ0OUSNmFOnheJcs=;
-  b=VDBBleUPOz7F+aDKbCeKPDTNBoONienYDfavM7GgwQRN9tYk0Zcd6KxH
-   iInKi7mMSnlk6erMcDqqKq+Xbmz9MaeMvk2ByuQa4N7ac9JHMrUAMN5+K
-   6IHv4nH1z/Vy1h3OwSTYEXFRalcffiexguNRO23jaM4BHSZqzxldDyRLg
-   qfrd2PYlKBzwMpf7tk3ga6uoJsT0rxKQ0mPibQmHcuEjfdub3xNADz+P2
-   tAyD3ruR2/xUNR40KIwCgNBKkVwNemjv3G5qwL+gIsiGXUO987RSXeoZR
-   u63W+Cyli6eTpJkusToeW7AfVtp5urYM72jk6XFCUlmYNWP/IfNrEmxjj
-   A==;
-X-CSE-ConnectionGUID: k04nvJvpSLGARkmxYOutRA==
-X-CSE-MsgGUID: jkP1Z3k3RYWdLls6nCByFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="81972472"
+  t=1769634233; x=1801170233;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=fvPtHThox4hAqsR/JWbRuXFFSOcPESh7qRGO+eDM/Vo=;
+  b=PQuvBTQEP0g0S56vyvagmvrEq2hSYmZzPKljeXIXDf5Lwqijx5NKEDsQ
+   bFRIQALHTa17DPxCQ7oZMn7e56vhcsz9i27P5gewNspfnMudRck2cm4l2
+   Ck+d+HI+ix1epzubjIhiD/D46xqmehD03X4IuH/R3ShL5nv1XO0AsLFU3
+   vVbuHu5PMoWqIEN//Zg9E0cbaVfvzx+3lKa9vn79dWP6sLmutOelRJgi3
+   nAS+/65y/FXvJ1M1+GHK1QimJp2SMtjeOJNTggYeoi8w1t3jo6F3Iry5E
+   RHZSZcn+RR2wECFU+C1O9nhPSC8MeXuOH7M06j17PSmzIJg/CNeRpMSmT
+   g==;
+X-CSE-ConnectionGUID: MBcjjxURRKeX2+kYZ4DWmA==
+X-CSE-MsgGUID: amUKBTYWQv+U3vASOiCe7w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="82228969"
 X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
-   d="scan'208";a="81972472"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 12:43:43 -0800
-X-CSE-ConnectionGUID: 9AtC1YS7QSmCD9OhJ6eVMw==
-X-CSE-MsgGUID: frHkT0xGRJuqlmSv1fIECg==
+   d="scan'208";a="82228969"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 13:03:48 -0800
+X-CSE-ConnectionGUID: Ajhi6w4CS0O4WOinIif8jg==
+X-CSE-MsgGUID: 3iXf9iJaSyaI0nnz+dzSNA==
 X-ExtLoop1: 1
-Received: from orcnseosdtjek.jf.intel.com (HELO [10.166.28.109]) ([10.166.28.109])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 12:43:41 -0800
-From: Jacob Keller <jacob.e.keller@intel.com>
-Date: Wed, 28 Jan 2026 12:41:35 -0800
-Subject: [PATCH] drm/mgag200: sleep instead of busy wait for BMC
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="208395926"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 13:03:48 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 28 Jan 2026 13:03:47 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Wed, 28 Jan 2026 13:03:47 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.10) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 28 Jan 2026 13:03:47 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WAlD8Mifx3FrDx/MsFJh1/PMkpX4CkobxGzFqBwntkFHanVW/iSpdBCCAAVw/PQnP1Gs5mUZvlg5tvnoq5Ifff4xPy9nCM6jUY8gOf2qvZ9INorFkoESzs6eXApy0INCnJd/TSzaWx5xFJVRoGj5BW+5KbZrgi7EWKMrFE9Jo7pfxXJCebaw5h/XgpOV1iXwXKGmadaurFPsmQXVDmqDW1uloSV3xch5GUWXBo47Z/vOg0fDt187SNSUFF9iI563o2ZoY73Zwnbb+pvC6CiYY6uLMHBootVQQ4ndi3HeChI3PfG5sv1O7tOFSEiCWU6zFfLViiL+lctd2uFrRMkmhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GCR4KyEf1BedE7553ZRX2n4Q48ie8sSQ9fAK+ZgzJAQ=;
+ b=ul+wgnOuW7w8vukH3flgMq068TlWFMe7OW+cXMNYizn1BKYWFnFsGKahAh4O78zdaFC2dlVfyi/JRo7VHhp1qlqrQ5A/Oe0hDLip4uUt6UrjBhSC0ChmpDbRsqkwx1yDTwBRV2BIpzq52HgmwDZuA3rPQLlbu72dpGbZvxzcureHizdHpOpK7Uaur4SuWq7Zk1ibNwSuacsBdD+92R8BYXOrwIM8RaBzznZ3m+TLF0wkyWyQuOTElsS874xEPUhSEe8Np6sRNpFZcjYFTwLMZrLgQyN3urVZqzA6FJkAhm7ybaTJBlhTHqf5M1kP1M+cY21neTmu+u4vG+xTRRkBbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by IA0PR11MB7355.namprd11.prod.outlook.com (2603:10b6:208:433::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Wed, 28 Jan
+ 2026 21:03:45 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff%6]) with mapi id 15.20.9564.006; Wed, 28 Jan 2026
+ 21:03:45 +0000
+From: <dan.j.williams@intel.com>
+Date: Wed, 28 Jan 2026 13:03:43 -0800
+To: Jinhui Guo <guojinhui.liam@bytedance.com>, <bhelgaas@google.com>,
+	<dan.j.williams@intel.com>, <dave.jiang@intel.com>,
+	<ilpo.jarvinen@linux.intel.com>, <kbusch@kernel.org>
+CC: <guojinhui.liam@bytedance.com>, <linux-kernel@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>, <stable@vger.kernel.org>
+Message-ID: <697a79af45154_3095100b4@dwillia2-mobl4.notmuch>
+In-Reply-To: <20251212145528.2555-1-guojinhui.liam@bytedance.com>
+References: <20251212133737.2367-1-guojinhui.liam@bytedance.com>
+ <20251212145528.2555-1-guojinhui.liam@bytedance.com>
+Subject: Re: [RESEND PATCH v2] PCI: Fix incorrect unlocking in
+ pci_slot_trylock()
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BY5PR17CA0069.namprd17.prod.outlook.com
+ (2603:10b6:a03:167::46) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-jk-mgag200-fix-bad-udelay-v1-1-db02e04c343d@intel.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQrCMBAAv1L27MImkQb9inhYzZpu1bQkWCohf
- zd4HJiZCkWySoHzUCHLpkWX1MEcBrhPnKKghs5gyY5krMf5ie/I0RLhQ3e8ccBPkBd/8Ugn45z
- 3XhxD79cs3fi/L9fWfhLf/tNrAAAA
-X-Change-ID: 20260127-jk-mgag200-fix-bad-udelay-409133777e3a
-To: Dave Airlie <airlied@redhat.com>, Jocelyn Falempe <jfalempe@redhat.com>, 
- Thomas Zimmermann <tzimmermann@suse.de>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>
-Cc: Pasi Vaananen <pvaanane@redhat.com>, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Jacob Keller <jacob.e.keller@intel.com>
-X-Mailer: b4 0.15-dev-f4b34
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7622;
- i=jacob.e.keller@intel.com; h=from:subject:message-id;
- bh=0HFSJLD3DmydJ6eojx9Gl+2ZASNcQ0OUSNmFOnheJcs=;
- b=owGbwMvMwCWWNS3WLp9f4wXjabUkhsyqkr8aZq1l6dkqWo+1c1jfmM55Oafk7gH5ezO/XeSPf
- MC5f8OsjlIWBjEuBlkxRRYFh5CV140nhGm9cZaDmcPKBDKEgYtTACaicYXhn33dtR+PN07iLHRS
- 4ElQaJ2VYMrsvUDv+j2Ppdo9S9WS7jD8U/SYoN/3r5X7ddXTKUnfPfxnMufe/8hz4vG3APtoZ6k
- //AA=
-X-Developer-Key: i=jacob.e.keller@intel.com; a=openpgp;
- fpr=204054A9D73390562AEC431E6A965D3E6F0F28E8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|IA0PR11MB7355:EE_
+X-MS-Office365-Filtering-Correlation-Id: 37bb07d3-a928-4814-5ac7-08de5eb0b931
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SThMRjVuNkRweFk3bzE3N3ZzaFphV0RCUG12MEtmSzVGQ0pYVXRVWkx6MjFB?=
+ =?utf-8?B?ZDFyWTAxUkpMakg5eExnOTdxZlpFbWptZGM2TnFkVDROZDFkcElhOVRHKzI2?=
+ =?utf-8?B?b3U5UVlXWlV0VFRKbnNZalc0RGFaTUtlUVB1MlZkWk1Sd3Myc0NucVdSeFBM?=
+ =?utf-8?B?MTRvcUJSejhxL0pVMlBpSlZzK0prS1ZaMlEzQlYyZnh1c2NPQnczVnJ4b3Zq?=
+ =?utf-8?B?dnJZRUJwcXJyVmlleVRySWphMUlBLzh5cHRRNmt2a0ZIN1JoN1c2dFRCN1Ey?=
+ =?utf-8?B?Sjk3clgvSmxiaGFyMS8xYWZTelJVWDhpUUlXOGwwcFFKTThCZWN6V2RodWdO?=
+ =?utf-8?B?UkNlUENYUUY5eVJ3UnEvaVltTXNVcE4yTHBiSFgrNXBLYjI3dWNjYk5XQUQ2?=
+ =?utf-8?B?WjQzTEY0LzI4ZlpOT0RLdlVkaFd1LzFjU1NsSFRVM0FsQ0xxUVlyeEZCWjZu?=
+ =?utf-8?B?MlhRMm81cG9PRmV5M3hoNVVyWGZHOWV1MHVNMnBEYzhWTk5KckZ5T1BURm5t?=
+ =?utf-8?B?Zk5rQ3hWTWI2dytkMmtYbW5zSUo5UEl6ZlFqT0laM3R0bTdvaVpzSWQyWXVN?=
+ =?utf-8?B?czZtWEJaL1NUaEc3bkh4UlMxd2o0S0w5aGpyVGIzbTRsNXNiMjlDcm9VLy8w?=
+ =?utf-8?B?bVpsa2I3aEJtaUhpMzN3VXAyc2VTaVJ6L1RzaWEraVpOc1pES3RBdE9HTFdz?=
+ =?utf-8?B?Rm9RRjE5b2t4b1BoeDg2YjBhdnNuU1NnaGxCTmJLMGNseWZ5MGkycEMzOExm?=
+ =?utf-8?B?eGp6UUIzSzVTdHhtcXMzd0s1MDVvVm5YZVpxYzZ4VUVXcHdsQXh2MEZTL3V0?=
+ =?utf-8?B?Q1ljSnA5OWdCMUhCK3I3c2lPdjJJZWd6RUpXeGVEbGhjdEhkT2d0RTVjSlRx?=
+ =?utf-8?B?R0Vjd3ozS1NwQi84ZW1DREo0VlJVR3BOOVJkaUxsS0N5V0JhQ1liSkI2VGtn?=
+ =?utf-8?B?aXhYTHQxSlJHTWVJck40c3JPaWRqd0p2UnY2RjhyR04xNEhmTUV5SHdUZXhx?=
+ =?utf-8?B?bkwwK2ZKVjVLRXRNN3g2MDV5MGg4bnFwTysrOXZZRXVlYSt2RDZnRUMyT0Zu?=
+ =?utf-8?B?c2UraWJwM2Yyelc3dkRmL2tjQWJhNU5Cd0lUSG1DaHZXN21BMWg0cnRtdDFa?=
+ =?utf-8?B?a21xcm9KenhqTS9DMWVGc09WRlg4YVVpV2s3cDNlOFFmSy9EcDNFTnVLalpH?=
+ =?utf-8?B?WTh4ck0rZ0lrTCszdFFhd0FMRFI1VVg4ZEU2VWcwWVdwSi8yZURQRXl0NUtv?=
+ =?utf-8?B?MmdyOVpmMEN1YllteXBlQUdsc09oc0syZ2tnQW1ROVQ4ekpIUVJRbjR1YlFw?=
+ =?utf-8?B?ZHdLanhWbUNIanFjTm1qMVVwVjNva21PWEhoNmFhc2F5UWlVOTV4a3BqV2pr?=
+ =?utf-8?B?VWdoc0hiUWNwRHB0dDY0ZE1VWWJKTVJnUU16Q2FRUjNlZVZDSUJEak53R2kx?=
+ =?utf-8?B?UEJPM1FCb1o4d0F4d0lMRE1ZcGdZZENReGJTWTFtRXRScjdkVXVRVXVsRE8z?=
+ =?utf-8?B?T2RQNm8rVTZtMUtlQ3FqS0ZiS3k0OXR4d3VSbjVDMGV2U1VacWtWSXJ5czd3?=
+ =?utf-8?B?eC9OTVpyNmtEbHpYNmRFb25FSnY5QW5xakc0Q0ZiZk94M0pyQW1FQzh3WTBt?=
+ =?utf-8?B?N3hpSzVRRGZrYXR4TEsySnVyeG9LSVpKQkI0ZDBoL3JhUUJ1dkZjUlFSWVpr?=
+ =?utf-8?B?OGd5dU9hTGt3Z0U4T0Q1bjU1RnBMN1ppM2FrVDJSNTR5bHc2alg2Z0h2TTgv?=
+ =?utf-8?B?MDdPaERhWEpzVERzMEVuMFBQTHRrd29GYStjZnFPSXhjTFJ3NTVia0dPeFlu?=
+ =?utf-8?B?S2xtOStpNHMrMzlvSEZiSXBEenRvNTh0Uk9RMTBuam82MVpvUW1hUFFTSllF?=
+ =?utf-8?B?ZXlpZXNNajREZDdDTllxMkxxcXNlOWZ2MHU3RlpUcjd2MmpSdy9BaU5TNDYv?=
+ =?utf-8?B?TVVWVGdUQkk4YlcwR2dZOEc5eEU3MGVNZURPc0hSV054MjFGUzhMZ3AzVExR?=
+ =?utf-8?B?NjVqWU5FcGowM1dRL1Eyd2NlWlhOa09mb0wyTmZkaHNlWmlieTZndVIzRGFF?=
+ =?utf-8?B?T2ZrMHNta2IvMXZzY0JjSmFhM3d6d3dTSldBRjBFQmppNVh1dDFDS2xvek5w?=
+ =?utf-8?Q?1o5/MFEsaTmnbMKibN16wA9Yi?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bldlUFJjUUoyd2RKSEVTdXRLQWxXVWMrcUhyVHVkNWVWdWoxK2dtYWlLNDFj?=
+ =?utf-8?B?b1h6OVVPU1FSU1NoVFlvc01BQWJqaDQyK3NMalhYaE1ZQVhINlAzcVhKcUFM?=
+ =?utf-8?B?VDRndHBoZ29hSHd1eGJOQnVGWU9NcytBM21wcFNFMmQ5MmxBRkp4UVBiQXZm?=
+ =?utf-8?B?NDBMalBZeXB0TGNBdjdmZE0zWUM4ZHRWWStJMEwvOUhoTTlLOE0yMUIwQTl4?=
+ =?utf-8?B?UGozc3FxSFlKLzF6WVVsQXVYcUZNUGl1dHM3UG1uUWtiTnlKbWk4VXVTVW5F?=
+ =?utf-8?B?SUYveDR3SUtGbEN1V1JKalNZdGlOL1ZtVXNFSTBHb3ovdERNUmhPbGdWZmF4?=
+ =?utf-8?B?OTlkakdXU1JjcTFIRjRDallEc3FnajR2Qm1wWW0xb1pydHdzaXBMa3JRTGtU?=
+ =?utf-8?B?QkZkcmpKUDNZN2NXVU5EMkR6YVBpbHJwL3NFZ3pHaUN4dlY1WUl3M3YvalNB?=
+ =?utf-8?B?aGIvRVJLYXdTeC9RMTN5ZU1UTjdQbno1NHUxcnY2YmdPTnZ6QWpUUW4rSndN?=
+ =?utf-8?B?eVJrM2JPKzAyRVlKamlUZGRnR1d5NjVuY0xtUlo2bUQrTFIybldyZTZMd2s1?=
+ =?utf-8?B?dWNHR0lmaUwvTll5OHJFUmF3b09RNG9ySmdwbDRwWVV5bUVBKy9ad0s1R25q?=
+ =?utf-8?B?ZE5Sd1UwSzRzbWNCQ3UzQ1BHQ1NvWUxiNEFYeEE5VXFEMjJyRGswZ3dEZWxk?=
+ =?utf-8?B?SlhSMXJCR0V4aTBITzh5WDFWejd0c0s2YlZOczVSdXFXZWFtVmRUWlRHTXUr?=
+ =?utf-8?B?Z3AxUjdHaVJnR1hoaUlLQmdrVUtXaDNtZXRReHNUcDhHOEk1M1ZBRGxCRHJ2?=
+ =?utf-8?B?eFhibDRiZnNydEdvRm1yU3BWVWpCZ1hZMjFrZGFJcHN1Q1doUHNQVWswYm1G?=
+ =?utf-8?B?dllHSWVEQnI1RFZuTXp6b2o4QmgwSHZRTDFIUnNzSVZxUXhyaE5MbkxFcDEr?=
+ =?utf-8?B?QzQwQmZlTkhJa09XVDFDb3NUQWJMT042aHFuRkJHOTdIWVFOTGF1SkN0QVBL?=
+ =?utf-8?B?NzExS3lBcHZob3kyY3BRV2VqY21HTU40bFdUelBqSERUYlZXSW5ReFdFaVEr?=
+ =?utf-8?B?dEpJY1Q0YnJQTUhGZVlWVlhkc0lqSnEyRjdRUjd4c1RsSjJ0NUt3Q2NieU0w?=
+ =?utf-8?B?QWF3Wmk5eDg1dGNqampNMXkzVGFwcThkYkVKWVdUbWpJSmZuWFVXczdtVjQ1?=
+ =?utf-8?B?UVpZVE1wcXdRdm43eUFRclQzSlVHcFFjSzJBY01XaDdUZ2NsSDBRUU1BOGl5?=
+ =?utf-8?B?ZzFQbkYwRVIwQnFrK1ZlUUViclZyekJWMk1rSFlab1pMc2lIeWJrTHlZbjE5?=
+ =?utf-8?B?UGR0M2oycmJDS2hUeVZxd1pJWXRYWXRnYU1BeFY1bmh3ZGk5Z0V3Y1BVb2dH?=
+ =?utf-8?B?ZjkxRDlZeXNzeU85Tzg5Vms4eTFpZ0R0NS9mOGJ5OWVQdk50SXhtdkRwUXZT?=
+ =?utf-8?B?NDU0Yjk2Q1RGdHpTOGhUR0x5ZlRiNFRwV1NiRUU1MVFmV3dXdUtnSnVQSGtO?=
+ =?utf-8?B?MWJoSGJXOG1DalZlTXQ0d2lUZXFUT3F0QUZrV0paSVFkaHVHcUFOTUVkR1NW?=
+ =?utf-8?B?NG1tTFhXekV3dVpEK3BIRmJFdE5TOUlWRVJpdlAwdWNaZEF3MzZlZ3BqbDVa?=
+ =?utf-8?B?YlAxOFdEUWdNN1hYZ1ZTcnplTjNpSGhLQU9UZ1N5TUkwMTBvd3E0eHRybk9M?=
+ =?utf-8?B?WTVjR0o3Yy9WM3lZN2F4UCtuNFUxK2JHaWlsdnM2ZC9BcWkrZXVBOUROb0VL?=
+ =?utf-8?B?eEZxcVZqOHFOa2o5d0hZUC9kdTZLMjlWNEpQbUFDMDhKOGF2OTNwSW43Wmk0?=
+ =?utf-8?B?eVJmb3RNRFFYcHJlcUxMcVRvUmhTZ0tZclhYZnNydUU4RmYzOEU1Tmk4OUF4?=
+ =?utf-8?B?aEFyckVzZVE2RzhUM1R2eFZabXRxanJJNDQ3RS9zYUZCZlpVWTdSWFBuYXZo?=
+ =?utf-8?B?ZWJxbG1qbytBRlU3MjVmcE16bS9CKzNsMXdYbldHMGF1NmErWFduNWZlSUlB?=
+ =?utf-8?B?MlBWVnJyTG5FVUpOOGRvcVh6VmJXZ0IycElMc2hmQ2d5aEZpRnZHaG1XczBs?=
+ =?utf-8?B?TzNmbkkxRGdDTjg1U3pJbXN1aEpOSzdEU3VNVm5ueEJZUG9wUHBVTkcvTVZp?=
+ =?utf-8?B?cEJDU3ZvakZ1VXZFOXluUlZlbzZnS0lva1hEVTFmVmlGY0dMUzU3bE9Wekp1?=
+ =?utf-8?B?OWQzZzM4b1E3UmRjbHBIaTN3dzBxVXNtK0lNUEQ5MjNLOGxBVHFvVmVqdVJB?=
+ =?utf-8?B?L1BOL3hPWGxJLzJKRjNpeElicnR5TDhqdElLN3JwdksrZ0RFQjdvbTdpcU5H?=
+ =?utf-8?B?Tmxhajhtb215dXd6UlhZUU9pUnMvQ2tsRXBnaVZJTGtpK0tuWlBXSVdMbnFL?=
+ =?utf-8?Q?OxjK/S0LUrQQ/mHY=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37bb07d3-a928-4814-5ac7-08de5eb0b931
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 21:03:44.9424
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nJ8wuvcopX9UMZcyy7bnZqhTdbCM7cvU5XSzrsq6qSwQgpUVh2pbmclCytuC/+qADWmRW7acJLwrdzm1Jd2iicqwXEkvRJsK7CFjIk27dEE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7355
+X-OriginatorOrg: intel.com
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212676-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,dwillia2-mobl4.notmuch:mid];
 	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212675-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jacob.e.keller@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NO_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dan.j.williams@intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: A28C2A8C1D
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 39AE1A8E8D
 X-Rspamd-Action: no action
 
-The mgag200_bmc_stop_scanout() function is called by the .atomic_disable()
-handler for the MGA G200 VGA BMC encoder. This function performs a few
-register writes to inform the BMC of an upcoming mode change, and then
-polls to wait until the BMC actually stops.
+Jinhui Guo wrote:
+> Commit a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
+> delegates the bridge device's pci_dev_trylock() to pci_bus_trylock() in
+> pci_slot_trylock(), but it forgets to remove the corresponding
+> pci_dev_unlock() when pci_bus_trylock() fails.
+>=20
+> Before the commit, the code did:
+>=20
+>   if (!pci_dev_trylock(dev)) /* <- lock bridge device */
+>     goto unlock;
+>   if (dev->subordinate) {
+>     if (!pci_bus_trylock(dev->subordinate)) {
+>       pci_dev_unlock(dev);   /* <- unlock bridge device */
+>       goto unlock;
+>     }
+>   }
+>=20
+> After the commit the bridge-device lock is no longer taken, but the
+> pci_dev_unlock(dev) on the failure path was left in place, leading to
+> the bug.
+>=20
+> This yields one of two errors:
+> 1. A warning that the lock is being unlocked when no one holds it.
+> 2. An incorrect unlock of a lock that belongs to another thread.
+>=20
+> Fix it by removing the now-redundant pci_dev_unlock(dev) on the failure
+> path.
+>=20
+> Fixes: a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+> ---
+>=20
+> Hi, all
+>=20
+> Resent v2 to drop the Acked-by tag; no code changes. Sorry for the noise =
+again.
+>=20
+> v1: https://lore.kernel.org/all/20251211123635.2215-1-guojinhui.liam@byte=
+dance.com/
+>=20
+> Changelog in v1 -> v2
+>  - The v1 commit message was too brief, so I=E2=80=99ve sent v2 with more=
+ detail.
+>  - Remove the braces from the if (!pci_bus_trylock(dev->subordinate)) sta=
+tement.
+>=20
+> Best Regards,
+> Jinhui
 
-The polling is implemented using a busy loop with udelay() and an iteration
-timeout of 300, resulting in the function blocking for 300 milliseconds.
+I ended up also reviewing Keith's version of the same [1], but since this
+one was posted earlier, go with this one.
 
-The function gets called ultimately by the output_poll_execute work thread
-for the DRM output change polling thread of the mgag200 driver:
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 
-kworker/0:0-mm_    3528 [000]  4555.315364:
-        ffffffffaa0e25b3 delay_halt.part.0+0x33
-        ffffffffc03f6188 mgag200_bmc_stop_scanout+0x178
-        ffffffffc087ae7a disable_outputs+0x12a
-        ffffffffc087c12a drm_atomic_helper_commit_tail+0x1a
-        ffffffffc03fa7b6 mgag200_mode_config_helper_atomic_commit_tail+0x26
-        ffffffffc087c9c1 commit_tail+0x91
-        ffffffffc087d51b drm_atomic_helper_commit+0x11b
-        ffffffffc0509694 drm_atomic_commit+0xa4
-        ffffffffc05105e8 drm_client_modeset_commit_atomic+0x1e8
-        ffffffffc0510ce6 drm_client_modeset_commit_locked+0x56
-        ffffffffc0510e24 drm_client_modeset_commit+0x24
-        ffffffffc088a743 __drm_fb_helper_restore_fbdev_mode_unlocked+0x93
-        ffffffffc088a683 drm_fb_helper_hotplug_event+0xe3
-        ffffffffc050f8aa drm_client_dev_hotplug+0x9a
-        ffffffffc088555a output_poll_execute+0x29a
-        ffffffffa9b35924 process_one_work+0x194
-        ffffffffa9b364ee worker_thread+0x2fe
-        ffffffffa9b3ecad kthread+0xdd
-        ffffffffa9a08549 ret_from_fork+0x29
-
-On a server running ptp4l with the mgag200 driver loaded, we found that
-ptp4l would sometimes get blocked from execution because of this busy
-waiting loop.
-
-Every so often, approximately once every 20 minutes though with large
-variance, the output_poll_execute() thread would detect some sort of change
-that required performing a hotplug event which results in attempting to
-stop the BMC scanout, resulting in a 300msec delay on one CPU.
-
-On this system, ptp4l was pinned to a single CPU. When the
-output_poll_execute() thread ran on that CPU, it blocked ptp4l from
-executing for its 300millisecond duration.
-
-This resulted in PTP service disruptions such as failure to send a SYNC
-message on time, failure to handle ANNOUNCE messages on time, and clock
-check warnings from the application. All of this despite the application
-being configured with FIFO_RT and a higher priority than the background
-workqueue tasks. (However, note that the kernel did not use
-CONFIG_PREEMPT...)
-
-It is unclear if the event is due to a faulty VGA connection, another bug,
-or actual events causing a change in the connection. At least on the system
-under test it is not a one-time event and consistently causes disruption to
-the time sensitive applications.
-
-Reading through other DRM driver implementations, it does not appear that
-the .atomic_enable or .atomic_disable handlers need to delay instead of
-sleep. For example, the ast_astdp_encoder_helper_atomic_disable() function
-calls ast_dp_set_phy_sleep() which uses msleep(). The "atomic" in the name
-is referring to the atomic modesetting support, which is the support to
-enable atomic configuration from userspace, and not to the "atomic context"
-of the kernel.
-
-Replace the busy wait with a sleeping loop based on read_poll_timeout().
-This ensures that other time sensitive operations are not blocked from
-executing while the work thread is waiting for the BMC hardware.
-
-Note the RREG_DAC is implemented using a statement expression to allow
-working properly with the read_poll_timeout family of functions. The other
-RREG_<TYPE> macros ought to be cleaned up to have better semantics, and
-several places in the mgag200 driver could make use of RREG_DAC or similar
-RREG_* macros should likely be cleaned up for better semantics as well, but
-that task has been left as a future cleanup for a non-bugfix.
-
-Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
----
-We still do not know if the reconfiguration is caused by a different
-bug or by a faulty VGA connector or something else. However, there is no
-reason that this function should be spinning instead of sleeping while
-waiting for the BMC scan to stop.
-
-It is known that removing the mgag200 module avoids the issue. It is also
-likely that use of CONFIG_PREEMPT (or CONFIG_PREEMPT_RT) could allow the
-high priority process to preempt the kernel thread even while it is
-delaying. However, it is better to let the process sleep() so that other
-tasks can execute even if these steps are not taken.
-
-There are multiple other udelay() which likely could safely be converted to
-usleep_range(). However they are all short, and I felt that the smallest
-targeted fix made the most sense. They could perhaps be cleaned up in a
-non-fix commit or series along with other improvements like fixing the
-other RREG_* macros.
----
- drivers/gpu/drm/mgag200/mgag200_drv.h |  6 ++++++
- drivers/gpu/drm/mgag200/mgag200_bmc.c | 27 ++++++++++-----------------
- 2 files changed, 16 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
-index f4bf40cd7c88..a875c4bf8cbe 100644
---- a/drivers/gpu/drm/mgag200/mgag200_drv.h
-+++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
-@@ -111,6 +111,12 @@
- #define DAC_INDEX 0x3c00
- #define DAC_DATA 0x3c0a
- 
-+#define RREG_DAC(reg)						\
-+	({							\
-+		WREG8(DAC_INDEX, reg);				\
-+		RREG8(DAC_DATA);				\
-+	})							\
-+
- #define WREG_DAC(reg, v)					\
- 	do {							\
- 		WREG8(DAC_INDEX, reg);				\
-diff --git a/drivers/gpu/drm/mgag200/mgag200_bmc.c b/drivers/gpu/drm/mgag200/mgag200_bmc.c
-index a689c71ff165..599b710bab9b 100644
---- a/drivers/gpu/drm/mgag200/mgag200_bmc.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_bmc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
- #include <linux/delay.h>
-+#include <linux/iopoll.h>
- 
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_edid.h>
-@@ -12,7 +13,7 @@
- void mgag200_bmc_stop_scanout(struct mga_device *mdev)
- {
- 	u8 tmp;
--	int iter_max;
-+	int ret;
- 
- 	/*
- 	 * 1 - The first step is to inform the BMC of an upcoming mode
-@@ -44,28 +45,20 @@ void mgag200_bmc_stop_scanout(struct mga_device *mdev)
- 	 * 3a- The third step is to verify if there is an active scan.
- 	 * We are waiting for a 0 on remhsyncsts <XSPAREREG<0>).
- 	 */
--	iter_max = 300;
--	while (!(tmp & 0x1) && iter_max) {
--		WREG8(DAC_INDEX, MGA1064_SPAREREG);
--		tmp = RREG8(DAC_DATA);
--		udelay(1000);
--		iter_max--;
--	}
-+	ret = read_poll_timeout(RREG_DAC, tmp, !(tmp & 0x1),
-+				1000, 300000, false,
-+				MGA1064_SPAREREG);
-+	if (ret == -ETIMEDOUT)
-+		return;
- 
- 	/*
- 	 * 3b- This step occurs only if the remove is actually
- 	 * scanning. We are waiting for the end of the frame which is
- 	 * a 1 on remvsyncsts (XSPAREREG<1>)
- 	 */
--	if (iter_max) {
--		iter_max = 300;
--		while ((tmp & 0x2) && iter_max) {
--			WREG8(DAC_INDEX, MGA1064_SPAREREG);
--			tmp = RREG8(DAC_DATA);
--			udelay(1000);
--			iter_max--;
--		}
--	}
-+	(void)read_poll_timeout(RREG_DAC, tmp, (tmp & 0x2),
-+				1000, 300000, false,
-+				MGA1064_SPAREREG);
- }
- 
- void mgag200_bmc_start_scanout(struct mga_device *mdev)
-
----
-base-commit: e535c23513c63f02f67e3e09e0787907029efeaf
-change-id: 20260127-jk-mgag200-fix-bad-udelay-409133777e3a
-
-Best regards,
---  
-Jacob Keller <jacob.e.keller@intel.com>
-
+[1]: http://lore.kernel.org/20260116184150.3013258-1-kbusch@meta.com=
 
