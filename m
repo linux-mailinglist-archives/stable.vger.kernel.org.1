@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-212109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sESADV4semnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:33:50 +0100
+	id AOsbMLIzeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C749A3FB0
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:33:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 518BDA508F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:05:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2FA0D3013890
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BBCDA30A35F8
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAC626ED40;
-	Wed, 28 Jan 2026 15:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBA32DF155;
+	Wed, 28 Jan 2026 15:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gTAYO0W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15JTAM9I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D602C1885A5;
-	Wed, 28 Jan 2026 15:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F2C1D6AA;
+	Wed, 28 Jan 2026 15:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614426; cv=none; b=LHN6uvfXwO5Kas986HaYqFTKDeYoT+iGdFWz727C7GJWPyuZs31HDBwtOp6Z6uWbEtowKcPHitJUlUYXSDtmRx7RO7Vy4irG62oWiZ2Ed/xFXlkHI6QiYrxTxvRT9EvRyTybPXZYfBaBLTTWYQbec/ytux8NvVIvqwXzqp/fkZE=
+	t=1769615644; cv=none; b=MpiME9qJY2jtVDCC4M+Fes0kjPfzR6v4TLNArGryw09EKBqgCBDMgKFc4JGI12GWFnsAexjqJdjc5knFkqKWgWMpUeIuj34LK77WHjcBZsmjOTPCbRPzmfrCJ+ECmOkvEWgap7jSFgiTZvWcL19RKDb+M63EiF6ugVuVeZNqdlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614426; c=relaxed/simple;
-	bh=2htp+r6577cV9rPedJfoM9uWwzPh/g2x62+RlTwcFu8=;
+	s=arc-20240116; t=1769615644; c=relaxed/simple;
+	bh=owshqcYQPU1z+wM3uxkJVKPbsFNNFErLCBYtNOpLEZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BlDlN6sG4A3C+EZV1FyYDThdI1qoo3oXb1xYEnU/fXPhT46G4lstwNrbmjCb814KXuH4xLJd0CIX5LRPgi3iVpF0p2NaaVraGtmI5TlwQT7nyG15SIk0/hCnk1zA0qupNJCijfiFDim+KZ+8YG6wDXivFhr/ZxSaZ92nYbeizOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gTAYO0W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3D2C4CEF1;
-	Wed, 28 Jan 2026 15:33:46 +0000 (UTC)
+	 MIME-Version; b=NpgGBJ5lTTmQePZSSmgCFEUR2KRgrSE0kqoKmmb6Yo5zww+9L24X1A7z1M51RpEzaHvIO5cgLKPFo/g9qxAFaw3RiGRMtgXiJ5mwhr+GtDA34eseOa+R3ajrPvdZMaGyBd/vGClA/nL2lqhkrHnOcMbn1G5ePrXSdW7TJVfQlBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15JTAM9I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A347FC4CEF1;
+	Wed, 28 Jan 2026 15:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614426;
-	bh=2htp+r6577cV9rPedJfoM9uWwzPh/g2x62+RlTwcFu8=;
+	s=korg; t=1769615644;
+	bh=owshqcYQPU1z+wM3uxkJVKPbsFNNFErLCBYtNOpLEZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2gTAYO0WQWF++c6PHqc6g4DluBije01ZkPqe5Lnb8sPS1S0HMSQB2w+4nzMX+7owE
-	 3vIv4F6I00fkXjgisMHlaVvs9R1GgRzO3Fi8TUdeGVBCvr9qb1QHYlWE8ENuU2f0xf
-	 R7SUHUZBd86wpna0q2lcvTMRPuaSVgJ18VU1HqmY=
+	b=15JTAM9Iz+FyLD5cjh9/vJh8S8WC+YuqKHDduXMvYafr4R32DqtjSGyEWEMA8I9WD
+	 xnXHr8Z8VuY3oW/pdaaSJ+KNa+89WhlzMY8CnG1zEAMgBu0ItUxAcSO0/8pFOE2y9t
+	 qMDAEAqW5ojEI5zf94cLa+QUqEMhRyY8QbYAUbH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/254] net/sched: Enforce that teql can only be used as root qdisc
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Geraldo Nascimento <geraldogabriel@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.18 063/227] arm64: dts: rockchip: remove dangerous max-link-speed from helios64
 Date: Wed, 28 Jan 2026 16:21:48 +0100
-Message-ID: <20260128145349.571050659@linuxfoundation.org>
+Message-ID: <20260128145346.609529485@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +64,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212109-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,rock-chips.com,manjaro.org,gmail.com,sntech.de];
+	TAGGED_FROM(0.00)[bounces-212475-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.985];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9C749A3FB0
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sntech.de:email,manjaro.org:email,rock-chips.com:email]
+X-Rspamd-Queue-Id: 518BDA508F
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Geraldo Nascimento <geraldogabriel@gmail.com>
 
-[ Upstream commit 50da4b9d07a7a463e2cfb738f3ad4cff6b2c9c3b ]
+commit 0368e4afcf20f377c81fa77b1c7d0dee4a625a44 upstream.
 
-Design intent of teql is that it is only supposed to be used as root qdisc.
-We need to check for that constraint.
+Shawn Lin from Rockchip strongly discourages attempts to use their
+RK3399 PCIe core at 5.0 GT/s speed, citing concerns about catastrophic
+failures that may happen. Even if the odds are low, drop from last user
+of this non-default property for the RK3399 platform, helios64 board
+dts.
 
-Although not important, I will describe the scenario that unearthed this
-issue for the curious.
-
-GangMin Kim <km.kim1503@gmail.com> managed to concot a scenario as follows:
-
-ROOT qdisc 1:0 (QFQ)
-  ├── class 1:1 (weight=15, lmax=16384) netem with delay 6.4s
-  └── class 1:2 (weight=1, lmax=1514) teql
-
-GangMin sends a packet which is enqueued to 1:1 (netem).
-Any invocation of dequeue by QFQ from this class will not return a packet
-until after 6.4s. In the meantime, a second packet is sent and it lands on
-1:2. teql's enqueue will return success and this will activate class 1:2.
-Main issue is that teql only updates the parent visible qlen (sch->q.qlen)
-at dequeue. Since QFQ will only call dequeue if peek succeeds (and teql's
-peek always returns NULL), dequeue will never be called and thus the qlen
-will remain as 0. With that in mind, when GangMin updates 1:2's lmax value,
-the qfq_change_class calls qfq_deact_rm_from_agg. Since the child qdisc's
-qlen was not incremented, qfq fails to deactivate the class, but still
-frees its pointers from the aggregate. So when the first packet is
-rescheduled after 6.4 seconds (netem's delay), a dangling pointer is
-accessed causing GangMin's causing a UAF.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260114160243.913069-2-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 755fff528b1b ("arm64: dts: rockchip: add variables for pcie completion to helios64")
+Link: https://lore.kernel.org/all/e8524bf8-a90c-423f-8a58-9ef05a3db1dd@rock-chips.com/
+Cc: stable@vger.kernel.org
+Reported-by: Shawn Lin <shawn.lin@rock-chips.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://patch.msgid.link/43bb639c120f599106fca2deee6c6599b2692c5c.1763415706.git.geraldogabriel@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_teql.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index 7721239c185fb..0a7856e14a975 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -178,6 +178,11 @@ static int teql_qdisc_init(struct Qdisc *sch, struct nlattr *opt,
- 	if (m->dev == dev)
- 		return -ELOOP;
+--- a/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
+@@ -424,7 +424,6 @@
  
-+	if (sch->parent != TC_H_ROOT) {
-+		NL_SET_ERR_MSG_MOD(extack, "teql can only be used as root");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	q->m = m;
- 
- 	skb_queue_head_init(&q->q);
--- 
-2.51.0
-
+ &pcie0 {
+ 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
+-	max-link-speed = <2>;
+ 	num-lanes = <2>;
+ 	pinctrl-names = "default";
+ 	status = "okay";
 
 
 
