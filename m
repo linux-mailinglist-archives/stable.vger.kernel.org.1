@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UH4CDPwvemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:16 +0100
+	id cFXFFXsuemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E754A47AE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:49:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78191A442F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A380D3062CEC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 476F5302CCF8
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098623101DC;
-	Wed, 28 Jan 2026 15:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D442D7D2E;
+	Wed, 28 Jan 2026 15:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvklVon2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfwVzux5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09E730C373;
-	Wed, 28 Jan 2026 15:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 514BB2D59FA;
+	Wed, 28 Jan 2026 15:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615119; cv=none; b=IuK+LktMpcMckuRKTyAly6DO5evuhuCZlcRfSN8u7uqc5bV5s6ifLk3Cuw4GKBc88e7eQCseqIu6RPdU2lQSt78nFVInWLpDWkcetAmO7bJx3XAYGdCqJPF7tfDc3GBUpxQakQftWqWh/cjgk6wBOx1l8AdkzLwNRWQvfD4AWYY=
+	t=1769614515; cv=none; b=lP/Ac/m2V/BK/Z0LyrFvF5dJ2yg7dXs2kLh/6q6lD093Ir6sFlFzi17LUwA7yLsFuWQlkxb1sBdGInhO+e7XJvzh1Qs4ZM65odYsWm0GuyamTUuhyu0eQ/vFH5PoGyBUUzpwZ83+Pleg+GaupLnB74gm+HylRXOCcilq4DmAXd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615119; c=relaxed/simple;
-	bh=XBLZZj/r43MYR/zhwOIRE843S8+zGU6msDf2Kv8BHIY=;
+	s=arc-20240116; t=1769614515; c=relaxed/simple;
+	bh=SyAVyjpcgYnfGAfPfP2qdd4ZFu0IefZHgikI+xwnza4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9iIG/gLrud/k25cvz/DBVlfwy2toobYO5rT62gamb9JfnbcZgclGqNdsFGOyTurYco32ferdchOAFEARA7FVny4V+MgJ9O8WkFLgl6xDKOnmdWXIlBsISezgdIrUyf4dokYmAp2b4e127DA4cfX1gsSBGHR/cfHx410XqqU65M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvklVon2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293E6C4CEF1;
-	Wed, 28 Jan 2026 15:45:18 +0000 (UTC)
+	 MIME-Version; b=OHBG/Q/lcZ+V2HYuAkwwWt3w3NYQ+sxkPoH/Agssw6O8JULk+ZyVhnhAEHOoXyYoQ89EKL8ySCWwZLiNiWpMILPezqwB8sqLWHvSyO+4DyIyxDdw8t6isJgFFYZGUdNm3G63H8yeK2bOkt14d8PgM++MXLcfEmFL4UC4gsOHM9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfwVzux5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC186C4CEF1;
+	Wed, 28 Jan 2026 15:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615119;
-	bh=XBLZZj/r43MYR/zhwOIRE843S8+zGU6msDf2Kv8BHIY=;
+	s=korg; t=1769614515;
+	bh=SyAVyjpcgYnfGAfPfP2qdd4ZFu0IefZHgikI+xwnza4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PvklVon2ilXXLNsAnc0ClJWu4mjrCwe9P5mD0GYCPJaKcJScQJwrze9dxqkxeGFhc
-	 k77ZxJfIq4MkFoYr5Z5xmNYr0rLTSqsvgm/iyd8MtU2IW66Vvyo6Y2XTAL29m8qNZ3
-	 oDbam3Tl0umvbDUV/cWWoE13nPyvRrCDSkplGd1w=
+	b=yfwVzux5ovjZv9na9C1u/qt9pGm2EclVcBFNmioSAJ5jm/qLthJrXKPqaC96+oscQ
+	 Bs56C1dlZKP1+BEU1wpi0Jpt05CLOvf5pr9MNnr9hgzlx25tdFPEeSH0ghz2Yunx1R
+	 lXPai8BI8ek+0C0f0+72Rak+Cfs5dOnkVDoxS1nU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Geraldo Nascimento <geraldogabriel@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.12 052/169] arm64: dts: rockchip: remove dangerous max-link-speed from helios64
-Date: Wed, 28 Jan 2026 16:22:15 +0100
-Message-ID: <20260128145335.887889658@linuxfoundation.org>
+	David Jeffery <djeffery@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 160/254] scsi: core: Wake up the error handler when final completions race against each other
+Date: Wed, 28 Jan 2026 16:22:16 +0100
+Message-ID: <20260128145350.568316491@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,70 +70,126 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,rock-chips.com,manjaro.org,gmail.com,sntech.de];
-	TAGGED_FROM(0.00)[bounces-212319-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212137-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.976];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sntech.de:email,manjaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 8E754A47AE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[acm.org:email,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 78191A442F
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geraldo Nascimento <geraldogabriel@gmail.com>
+From: David Jeffery <djeffery@redhat.com>
 
-commit 0368e4afcf20f377c81fa77b1c7d0dee4a625a44 upstream.
+[ Upstream commit fe2f8ad6f0999db3b318359a01ee0108c703a8c3 ]
 
-Shawn Lin from Rockchip strongly discourages attempts to use their
-RK3399 PCIe core at 5.0 GT/s speed, citing concerns about catastrophic
-failures that may happen. Even if the odds are low, drop from last user
-of this non-default property for the RK3399 platform, helios64 board
-dts.
+The fragile ordering between marking commands completed or failed so
+that the error handler only wakes when the last running command
+completes or times out has race conditions. These race conditions can
+cause the SCSI layer to fail to wake the error handler, leaving I/O
+through the SCSI host stuck as the error state cannot advance.
 
-Fixes: 755fff528b1b ("arm64: dts: rockchip: add variables for pcie completion to helios64")
-Link: https://lore.kernel.org/all/e8524bf8-a90c-423f-8a58-9ef05a3db1dd@rock-chips.com/
-Cc: stable@vger.kernel.org
-Reported-by: Shawn Lin <shawn.lin@rock-chips.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/43bb639c120f599106fca2deee6c6599b2692c5c.1763415706.git.geraldogabriel@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+First, there is an memory ordering issue within scsi_dec_host_busy().
+The write which clears SCMD_STATE_INFLIGHT may be reordered with reads
+counting in scsi_host_busy(). While the local CPU will see its own
+write, reordering can allow other CPUs in scsi_dec_host_busy() or
+scsi_eh_inc_host_failed() to see a raised busy count, causing no CPU to
+see a host busy equal to the host_failed count.
+
+This race condition can be prevented with a memory barrier on the error
+path to force the write to be visible before counting host busy
+commands.
+
+Second, there is a general ordering issue with scsi_eh_inc_host_failed(). By
+counting busy commands before incrementing host_failed, it can race with a
+final command in scsi_dec_host_busy(), such that scsi_dec_host_busy() does
+not see host_failed incremented but scsi_eh_inc_host_failed() counts busy
+commands before SCMD_STATE_INFLIGHT is cleared by scsi_dec_host_busy(),
+resulting in neither waking the error handler task.
+
+This needs the call to scsi_host_busy() to be moved after host_failed is
+incremented to close the race condition.
+
+Fixes: 6eb045e092ef ("scsi: core: avoid host-wide host_busy counter for scsi_mq")
+Signed-off-by: David Jeffery <djeffery@redhat.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260113161036.6730-1-djeffery@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/scsi/scsi_error.c | 11 ++++++++++-
+ drivers/scsi/scsi_lib.c   |  8 ++++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-kobol-helios64.dts
-@@ -424,7 +424,6 @@
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index 5882b5f80c049..c4c05cf38aa55 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -282,11 +282,20 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
+ {
+ 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
+ 	struct Scsi_Host *shost = scmd->device->host;
+-	unsigned int busy = scsi_host_busy(shost);
++	unsigned int busy;
+ 	unsigned long flags;
  
- &pcie0 {
- 	ep-gpios = <&gpio2 RK_PD4 GPIO_ACTIVE_HIGH>;
--	max-link-speed = <2>;
- 	num-lanes = <2>;
- 	pinctrl-names = "default";
- 	status = "okay";
+ 	spin_lock_irqsave(shost->host_lock, flags);
+ 	shost->host_failed++;
++	spin_unlock_irqrestore(shost->host_lock, flags);
++	/*
++	 * The counting of busy requests needs to occur after adding to
++	 * host_failed or after the lock acquire for adding to host_failed
++	 * to prevent a race with host unbusy and missing an eh wakeup.
++	 */
++	busy = scsi_host_busy(shost);
++
++	spin_lock_irqsave(shost->host_lock, flags);
+ 	scsi_eh_wakeup(shost, busy);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+ }
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index bd75e3ebc14da..efd1f1d6e4e9b 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -278,6 +278,14 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
+ 	rcu_read_lock();
+ 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
+ 	if (unlikely(scsi_host_in_recovery(shost))) {
++		/*
++		 * Ensure the clear of SCMD_STATE_INFLIGHT is visible to
++		 * other CPUs before counting busy requests. Otherwise,
++		 * reordering can cause CPUs to race and miss an eh wakeup
++		 * when no CPU sees all busy requests as done or timed out.
++		 */
++		smp_mb();
++
+ 		unsigned int busy = scsi_host_busy(shost);
+ 
+ 		spin_lock_irqsave(shost->host_lock, flags);
+-- 
+2.51.0
+
 
 
 
