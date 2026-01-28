@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-212210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMtGCzMvemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212210-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:55 +0100
+	id eCZaINMwemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32EFA45BD
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98C9A49F3
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 50FF530389E7
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D3522308E823
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552312E3AF1;
-	Wed, 28 Jan 2026 15:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E752F2D3EC7;
+	Wed, 28 Jan 2026 15:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1lunQ5f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEB6pdPH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1352A2DC77F;
-	Wed, 28 Jan 2026 15:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB6430F555;
+	Wed, 28 Jan 2026 15:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614754; cv=none; b=uF+z6x9XQTTUJSxx5vabYiSm2f1nOtrZ+h/Sl17Tr4TpyFzE0px+uGhgl5cwQQLo1sv2HyFLNl3tbUrMFBfdhxqLeJSmiWDhTmTAdr8xdSqGCXojJI87uhkqXMDLJHMZ7E23rmJZAl1jo9gIx47JBLRu9+cTZDkUJPNDnIneIEo=
+	t=1769615256; cv=none; b=PHRczBnb+lizU7iL+X2+12/ok4ye5+1LG6OuZSwdt9UgFcksBxCg4JyO9jRiEyhEdjq3JIi/3PDd1YkykC8Mh3F6Tq6W8z/2BE/WHsT8foqVOHE+ayWImVOukTIxO17UGq8FPdYQ+nqw8sPAw+j2Wm6cpCUSo5x+6lvqoep7/i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614754; c=relaxed/simple;
-	bh=tjA+2dE87MOGAkz0mADc4XXfNH1VV3/VYH1+HaocH9k=;
+	s=arc-20240116; t=1769615256; c=relaxed/simple;
+	bh=L5NZj+j9uX5+EiqzZ2GS3Sp2kH7vxOQJJdtoba0Aowk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fn1Gp09QzuydETGPvVamaeuE6jFVhAnpGLCuK/vq6kjFvn8/hh8ivP6zQmn88V0yiu0PkrcPExQew0Jwsw7TWj9NIf1lBgWaPk+pJXopvNejFmDhBiXdFf2/C1FY+/39LsiM5oGPvPGiMlXof14iW///SDTYSntg08HB4G1YGvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1lunQ5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330B0C4CEF1;
-	Wed, 28 Jan 2026 15:39:12 +0000 (UTC)
+	 MIME-Version; b=OcYHdaDzrgcaRYZxJPpJ06xJwldt5XAuqhCSVB9WiE+9v0BTLQ3Z32LdVMGOUSFYuVsdDtwkzK07nDRPkzlak3l4CEtgULhmzll3Jt28rJlMCLUmUq6QyDAfzLVFR63JT8pyJUAugZgo2XtG/gUZD/X6+8cnYDAeirvUNlQY5Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEB6pdPH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4528FC4CEF1;
+	Wed, 28 Jan 2026 15:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614753;
-	bh=tjA+2dE87MOGAkz0mADc4XXfNH1VV3/VYH1+HaocH9k=;
+	s=korg; t=1769615256;
+	bh=L5NZj+j9uX5+EiqzZ2GS3Sp2kH7vxOQJJdtoba0Aowk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x1lunQ5fVVdw+++svyQoBug5YQNELiDVZKzYqgurmiyqjUznB3L4PQkoi68+PBeMa
-	 /BQSr7h8CDSfVvNSSND4giQGQXXxeQKqgBFsb9DyvyoXAK0fyEXYqbwVVo/BK1KAHp
-	 TJtJRflVsGPR6I7eA6++NE3r4QeTMNjXyfAsf42I=
+	b=VEB6pdPHddIMG0Y24174YQx9B6iO2/LQAs0ypYN5oswn68hErw2OsT7eEgj2tFyHQ
+	 DmjDP0B+O9GM6TUGDnee4hN6igwk4yh4CbOPl2Il7jr/3mVKJuKFfEWWTff/YjWbSY
+	 c7n9ZxavawLcbNIQWzr9GkpL8B5VCT+onkuPVa+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/254] ALSA: scarlett2: Fix buffer overflow in config retrieval
-Date: Wed, 28 Jan 2026 16:23:27 +0100
-Message-ID: <20260128145353.101247089@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.12 125/169] slimbus: core: fix device reference leak on report present
+Date: Wed, 28 Jan 2026 16:23:28 +0100
+Message-ID: <20260128145338.506940615@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +67,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212359-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212210-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F32EFA45BD
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D98C9A49F3
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 6f5c69f72e50d51be3a8c028ae7eda42c82902cb ]
+commit 9391380eb91ea5ac792aae9273535c8da5b9aa01 upstream.
 
-The scarlett2_usb_get_config() function has a logic error in the
-endianness conversion code that can cause buffer overflows when
-count > 1.
+Slimbus devices can be allocated dynamically upon reception of
+report-present messages.
 
-The code checks `if (size == 2)` where `size` is the total buffer size in
-bytes, then loops `count` times treating each element as u16 (2 bytes).
-This causes the loop to access `count * 2` bytes when the buffer only
-has `size` bytes allocated.
+Make sure to drop the reference taken when looking up already registered
+devices.
 
-Fix by checking the element size (config_item->size) instead of the
-total buffer size. This ensures the endianness conversion matches the
-actual element type.
+Note that this requires taking an extra reference in case the device has
+not yet been registered and has to be allocated.
 
-Fixes: ac34df733d2d ("ALSA: usb-audio: scarlett2: Update get_config to do endian conversion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Link: https://patch.msgid.link/20260117012706.1715574-1-samasth.norway.ananda@oracle.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ add 32-bit handling block ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 46a2bb5a7f7e ("slimbus: core: Add slim controllers support")
+Cc: stable@vger.kernel.org	# 4.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20251126145329.5022-4-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett2.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/slimbus/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -1408,11 +1408,16 @@ static int scarlett2_usb_get_config(
- 		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
- 		if (err < 0)
- 			return err;
--		if (size == 2) {
-+		if (config_item->size == 16) {
- 			u16 *buf_16 = buf;
- 
- 			for (i = 0; i < count; i++, buf_16++)
- 				*buf_16 = le16_to_cpu(*(__le16 *)buf_16);
-+		} else if (config_item->size == 32) {
-+			u32 *buf_32 = (u32 *)buf;
+--- a/drivers/slimbus/core.c
++++ b/drivers/slimbus/core.c
+@@ -378,6 +378,8 @@ struct slim_device *slim_get_device(stru
+ 		sbdev = slim_alloc_device(ctrl, e_addr, NULL);
+ 		if (!sbdev)
+ 			return ERR_PTR(-ENOMEM);
 +
-+			for (i = 0; i < count; i++, buf_32++)
-+				*buf_32 = le32_to_cpu(*(__le32 *)buf_32);
- 		}
- 		return 0;
++		get_device(&sbdev->dev);
  	}
+ 
+ 	return sbdev;
+@@ -512,6 +514,7 @@ int slim_device_report_present(struct sl
+ 		ret = slim_device_alloc_laddr(sbdev, true);
+ 	}
+ 
++	put_device(&sbdev->dev);
+ out_put_rpm:
+ 	pm_runtime_mark_last_busy(ctrl->dev);
+ 	pm_runtime_put_autosuspend(ctrl->dev);
 
 
 
