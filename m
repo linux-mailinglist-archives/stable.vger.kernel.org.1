@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-212333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PWoDlA4eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:24:48 +0100
+	id +Al+IPE6emlB4wEAu9opvQ
+	(envelope-from <stable+bounces-212524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:36:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B53F5A5933
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:24:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C4A8A5DDC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:36:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91BCF320829F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0F3632B605F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3189A36E498;
-	Wed, 28 Jan 2026 15:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693F230F7F1;
+	Wed, 28 Jan 2026 15:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUT/oCST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09RBjNWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C8636E47C;
-	Wed, 28 Jan 2026 15:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B23307AF2;
+	Wed, 28 Jan 2026 15:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615167; cv=none; b=sQV1W4Qn056O3z7gAYIHZV5+kZj90exlxJlfaldW1SsqHmK6Ka8t1j60QeWu3p+5FHI0i3J3R3UzHVIXi/Gj9lVsYh5H2wNBLF3jueDNdF2bCDzaOaFOq5CoZ/0veChI+zxw6v0oJwVJw1L4DS0w9lf/jK+uF13mnRg1+Wjq0IU=
+	t=1769615807; cv=none; b=pxRzyoXiAf2mQ2Uyl76p2oxzE74hT+aUQXPRQrjGP8pqU0YJR4CD7mR/XIsvlIOK5pp0Xk6BrOb2j1M202DnqQ8xU+F+TifaOSZFooCCAHZQElVXo8f6XT79Xu9SoVcAS6eGIPy6kHwQPwgNky3fqsJIovTOkwa4ZRS2isUQXNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615167; c=relaxed/simple;
-	bh=gh2YZswktUbR45h+IcFsren2jDznuo6P9flR7jEnW+I=;
+	s=arc-20240116; t=1769615807; c=relaxed/simple;
+	bh=/ISYKaWQxpkDbXSDpSIistEIs9OTAOSdBXLY1aCqSNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zowd+neF3jii0dq8zAitlx3adlWECO+aYEJemUEXZpLvw83mpuHlzvJayVGc+N2h3tLmOLHcD+0/1NZ58DyPnXgkyYvdHWb3Yr97Qv1dl0kirIswbsIav+lCiu9KTfUnAS9SFFsCvLVwcXXaLFXq/ijboLlfB/8ay50aisZma9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUT/oCST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0FEC4CEF1;
-	Wed, 28 Jan 2026 15:46:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K4f3VTtDbSFTB3F1kDhxtPLVndePbDU6F/ILGyYSMHah7MFAJP/xdPp18Tfbg2nmKSa9lULGgphxNhRFcuR322VrjybHsHN+0vkIyiwAqsu9RtfEQz+DkbTmeZKe08/evjoPLJ2oOFdyr4vwG8KfaYfP2mRQyX+4LDdZ+vwjFrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09RBjNWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F09C4CEF1;
+	Wed, 28 Jan 2026 15:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615166;
-	bh=gh2YZswktUbR45h+IcFsren2jDznuo6P9flR7jEnW+I=;
+	s=korg; t=1769615807;
+	bh=/ISYKaWQxpkDbXSDpSIistEIs9OTAOSdBXLY1aCqSNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LUT/oCSTiGzKzUf6ubEccxwrg25BhUrsGOb8j3/VtctwhJWvMbREQnul4Is8z8t/i
-	 rV74QiRAw1umlGYHFQQzHrr6yURG0lBC6QFsj0RynxSUhMljoaIEIvwAdHukslQH1B
-	 PI1d6Hk528ytse246e7JvH7nqxjPdulPc3LI7tJg=
+	b=09RBjNWgGuCHkaAbQCSukXyGuxW01Bunr8uvvN7WqdVEgIWQMqS2X1AI/lmMm7Qe/
+	 7r6gOvQK9UYBsSQNfUIqKpO6qPf2lL3EfV6RnBseFNX0WjtgoCWq/uFAVrhKyHzNtp
+	 c4PJwL8JMpTHelq8xMc+jrLxZ1hFXkK0CqGiEM4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel J Blueman <daniel@quora.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Carl Zhang <carl.zhang@intel.com>,
+	Arvind Yadav <arvind.yadav@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/169] clocksource: Reduce watchdog readout delay limit to prevent false positives
+Subject: [PATCH 6.18 119/227] drm/xe/uapi: disallow bind queue sharing
 Date: Wed, 28 Jan 2026 16:22:44 +0100
-Message-ID: <20260128145336.921068633@linuxfoundation.org>
+Message-ID: <20260128145348.746238056@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +68,246 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212333-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212524-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url]
-X-Rspamd-Queue-Id: B53F5A5933
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 9C4A8A5DDC
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit c06343be0b4e03fe319910dd7a5d5b9929e1c0cb ]
+[ Upstream commit 6f4b7aed61817624250e590ba0ef304146d34614 ]
 
-The "valid" readout delay between the two reads of the watchdog is larger
-than the valid delta between the resulting watchdog and clocksource
-intervals, which results in false positive watchdog results.
+Currently this is very broken if someone attempts to create a bind
+queue and share it across multiple VMs. For example currently we assume
+it is safe to acquire the user VM lock to protect some of the bind queue
+state, but if allow sharing the bind queue with multiple VMs then this
+quickly breaks down.
 
-Assume TSC is the clocksource and HPET is the watchdog and both have a
-uncertainty margin of 250us (default). The watchdog readout does:
+To fix this reject using a bind queue with any VM that is not the same
+VM that was originally passed when creating the bind queue. This a uAPI
+change, however this was more of an oversight on kernel side that we
+didn't reject this, and expectation is that userspace shouldn't be using
+bind queues in this way, so in theory this change should go unnoticed.
 
-  1) wdnow = read(HPET);
-  2) csnow = read(TSC);
-  3) wdend = read(HPET);
+Based on a patch from Matt Brost.
 
-The valid window for the delta between #1 and #3 is calculated by the
-uncertainty margins of the watchdog and the clocksource:
+v2 (Matt B):
+  - Hold the vm lock over queue create, to ensure it can't be closed as
+    we attach the user_vm to the queue.
+  - Make sure we actually check for NULL user_vm in destruction path.
+v3:
+  - Fix error path handling.
 
-   m = 2 * watchdog.uncertainty_margin + cs.uncertainty margin;
-
-which results in 750us for the TSC/HPET case.
-
-The actual interval comparison uses a smaller margin:
-
-   m = watchdog.uncertainty_margin + cs.uncertainty margin;
-
-which results in 500us for the TSC/HPET case.
-
-That means the following scenario will trigger the watchdog:
-
- Watchdog cycle N:
-
- 1)       wdnow[N] = read(HPET);
- 2)       csnow[N] = read(TSC);
- 3)       wdend[N] = read(HPET);
-
-Assume the delay between #1 and #2 is 100us and the delay between #1 and
-
- Watchdog cycle N + 1:
-
- 4)       wdnow[N + 1] = read(HPET);
- 5)       csnow[N + 1] = read(TSC);
- 6)       wdend[N + 1] = read(HPET);
-
-If the delay between #4 and #6 is within the 750us margin then any delay
-between #4 and #5 which is larger than 600us will fail the interval check
-and mark the TSC unstable because the intervals are calculated against the
-previous value:
-
-    wd_int = wdnow[N + 1] - wdnow[N];
-    cs_int = csnow[N + 1] - csnow[N];
-
-Putting the above delays in place this results in:
-
-    cs_int = (wdnow[N + 1] + 610us) - (wdnow[N] + 100us);
- -> cs_int = wd_int + 510us;
-
-which is obviously larger than the allowed 500us margin and results in
-marking TSC unstable.
-
-Fix this by using the same margin as the interval comparison. If the delay
-between two watchdog reads is larger than that, then the readout was either
-disturbed by interconnect congestion, NMIs or SMIs.
-
-Fixes: 4ac1dd3245b9 ("clocksource: Set cs_watchdog_read() checks based on .uncertainty_margin")
-Reported-by: Daniel J Blueman <daniel@quora.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Tested-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/lkml/20250602223251.496591-1-daniel@quora.org/
-Link: https://patch.msgid.link/87bjjxc9dq.ffs@tglx
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Reported-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: José Roberto de Souza <jose.souza@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Carl Zhang <carl.zhang@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Acked-by: José Roberto de Souza <jose.souza@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Arvind Yadav <arvind.yadav@intel.com>
+Acked-by: Michal Mrozek <michal.mrozek@intel.com>
+Link: https://patch.msgid.link/20260120110609.77958-3-matthew.auld@intel.com
+(cherry picked from commit 9dd08fdecc0c98d6516c2d2d1fa189c1332f8dab)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Stable-dep-of: 772157f626d0 ("drm/xe/migrate: fix job lock assert")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/clocksource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_exec_queue.c       | 32 +++++++++++++++++++++++-
+ drivers/gpu/drm/xe/xe_exec_queue.h       |  1 +
+ drivers/gpu/drm/xe/xe_exec_queue_types.h |  6 +++++
+ drivers/gpu/drm/xe/xe_sriov_vf_ccs.c     |  2 +-
+ drivers/gpu/drm/xe/xe_vm.c               |  7 +++++-
+ 5 files changed, 45 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index ae862ad9642cb..df386912f9613 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -244,7 +244,7 @@ enum wd_read_status {
- 
- static enum wd_read_status cs_watchdog_read(struct clocksource *cs, u64 *csnow, u64 *wdnow)
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index cb5f204c08ed6..231d1fbe5eefa 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -284,6 +284,7 @@ struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe
+  * @xe: Xe device.
+  * @tile: tile which bind exec queue belongs to.
+  * @flags: exec queue creation flags
++ * @user_vm: The user VM which this exec queue belongs to
+  * @extensions: exec queue creation extensions
+  *
+  * Normalize bind exec queue creation. Bind exec queue is tied to migration VM
+@@ -297,6 +298,7 @@ struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe
+  */
+ struct xe_exec_queue *xe_exec_queue_create_bind(struct xe_device *xe,
+ 						struct xe_tile *tile,
++						struct xe_vm *user_vm,
+ 						u32 flags, u64 extensions)
  {
--	int64_t md = 2 * watchdog->uncertainty_margin;
-+	int64_t md = watchdog->uncertainty_margin;
- 	unsigned int nretries, max_retries;
- 	int64_t wd_delay, wd_seq_delay;
- 	u64 wd_end, wd_end2;
+ 	struct xe_gt *gt = tile->primary_gt;
+@@ -333,6 +335,9 @@ struct xe_exec_queue *xe_exec_queue_create_bind(struct xe_device *xe,
+ 			xe_exec_queue_put(q);
+ 			return ERR_PTR(err);
+ 		}
++
++		if (user_vm)
++			q->user_vm = xe_vm_get(user_vm);
+ 	}
+ 
+ 	return q;
+@@ -357,6 +362,11 @@ void xe_exec_queue_destroy(struct kref *ref)
+ 			xe_exec_queue_put(eq);
+ 	}
+ 
++	if (q->user_vm) {
++		xe_vm_put(q->user_vm);
++		q->user_vm = NULL;
++	}
++
+ 	q->ops->destroy(q);
+ }
+ 
+@@ -692,6 +702,22 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
+ 		    XE_IOCTL_DBG(xe, eci[0].engine_instance != 0))
+ 			return -EINVAL;
+ 
++		vm = xe_vm_lookup(xef, args->vm_id);
++		if (XE_IOCTL_DBG(xe, !vm))
++			return -ENOENT;
++
++		err = down_read_interruptible(&vm->lock);
++		if (err) {
++			xe_vm_put(vm);
++			return err;
++		}
++
++		if (XE_IOCTL_DBG(xe, xe_vm_is_closed_or_banned(vm))) {
++			up_read(&vm->lock);
++			xe_vm_put(vm);
++			return -ENOENT;
++		}
++
+ 		for_each_tile(tile, xe, id) {
+ 			struct xe_exec_queue *new;
+ 
+@@ -699,9 +725,11 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
+ 			if (id)
+ 				flags |= EXEC_QUEUE_FLAG_BIND_ENGINE_CHILD;
+ 
+-			new = xe_exec_queue_create_bind(xe, tile, flags,
++			new = xe_exec_queue_create_bind(xe, tile, vm, flags,
+ 							args->extensions);
+ 			if (IS_ERR(new)) {
++				up_read(&vm->lock);
++				xe_vm_put(vm);
+ 				err = PTR_ERR(new);
+ 				if (q)
+ 					goto put_exec_queue;
+@@ -713,6 +741,8 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
+ 				list_add_tail(&new->multi_gt_list,
+ 					      &q->multi_gt_link);
+ 		}
++		up_read(&vm->lock);
++		xe_vm_put(vm);
+ 	} else {
+ 		logical_mask = calc_validate_logical_mask(xe, eci,
+ 							  args->width,
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.h b/drivers/gpu/drm/xe/xe_exec_queue.h
+index 15ec852e7f7e7..5343c1b8cab54 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.h
++++ b/drivers/gpu/drm/xe/xe_exec_queue.h
+@@ -24,6 +24,7 @@ struct xe_exec_queue *xe_exec_queue_create_class(struct xe_device *xe, struct xe
+ 						 u32 flags, u64 extensions);
+ struct xe_exec_queue *xe_exec_queue_create_bind(struct xe_device *xe,
+ 						struct xe_tile *tile,
++						struct xe_vm *user_vm,
+ 						u32 flags, u64 extensions);
+ 
+ void xe_exec_queue_fini(struct xe_exec_queue *q);
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue_types.h b/drivers/gpu/drm/xe/xe_exec_queue_types.h
+index df1c69dc81f17..38906cb7608ca 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
++++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
+@@ -54,6 +54,12 @@ struct xe_exec_queue {
+ 	struct kref refcount;
+ 	/** @vm: VM (address space) for this exec queue */
+ 	struct xe_vm *vm;
++	/**
++	 * @user_vm: User VM (address space) for this exec queue (bind queues
++	 * only)
++	 */
++	struct xe_vm *user_vm;
++
+ 	/** @class: class of this exec queue */
+ 	enum xe_engine_class class;
+ 	/**
+diff --git a/drivers/gpu/drm/xe/xe_sriov_vf_ccs.c b/drivers/gpu/drm/xe/xe_sriov_vf_ccs.c
+index 8dec616c37c98..739a3eb180b53 100644
+--- a/drivers/gpu/drm/xe/xe_sriov_vf_ccs.c
++++ b/drivers/gpu/drm/xe/xe_sriov_vf_ccs.c
+@@ -276,7 +276,7 @@ int xe_sriov_vf_ccs_init(struct xe_device *xe)
+ 		flags = EXEC_QUEUE_FLAG_KERNEL |
+ 			EXEC_QUEUE_FLAG_PERMANENT |
+ 			EXEC_QUEUE_FLAG_MIGRATE;
+-		q = xe_exec_queue_create_bind(xe, tile, flags, 0);
++		q = xe_exec_queue_create_bind(xe, tile, NULL, flags, 0);
+ 		if (IS_ERR(q)) {
+ 			err = PTR_ERR(q);
+ 			goto err_ret;
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 747aa8cff60d4..145cd9ffa36b3 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1590,7 +1590,7 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags, struct xe_file *xef)
+ 			if (!vm->pt_root[id])
+ 				continue;
+ 
+-			q = xe_exec_queue_create_bind(xe, tile, create_flags, 0);
++			q = xe_exec_queue_create_bind(xe, tile, vm, create_flags, 0);
+ 			if (IS_ERR(q)) {
+ 				err = PTR_ERR(q);
+ 				goto err_close;
+@@ -3536,6 +3536,11 @@ int xe_vm_bind_ioctl(struct drm_device *dev, void *data, struct drm_file *file)
+ 		}
+ 	}
+ 
++	if (XE_IOCTL_DBG(xe, q && vm != q->user_vm)) {
++		err = -EINVAL;
++		goto put_exec_queue;
++	}
++
+ 	/* Ensure all UNMAPs visible */
+ 	xe_svm_flush(vm);
+ 
 -- 
 2.51.0
 
