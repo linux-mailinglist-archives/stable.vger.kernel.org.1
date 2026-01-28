@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-212199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLq8LGguemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:32 +0100
+	id 6P9NAaYyeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69ABDA43D1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4789A4E95
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 844C8301DBB3
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:38:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1857E3230E00
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EC72E5D17;
-	Wed, 28 Jan 2026 15:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32263064B3;
+	Wed, 28 Jan 2026 15:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ry1hHE5i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdhfqOeI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5312D6E63;
-	Wed, 28 Jan 2026 15:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60B6288C22;
+	Wed, 28 Jan 2026 15:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614717; cv=none; b=Ve3jhKX94R39sUubsku867M+b+NS91PmcGmhAWckVF9xl5a22Invq01J76262GXJbEH/GKfJsCKk+HoKdiXUljcH2McfAROwYIqqtf3lnbNMXE+lhiZxzfIa1nk4SZNZUlwlKWZc7c1vS0L+UFPbp7SstW+6BwJ6V2GXOQdsTFY=
+	t=1769615361; cv=none; b=O/VP9CYlez5Lau0d68VxtR3ioPpNcXliOOwoiiGK0CrpVu0K9U3THhonwviaK6u0Qgg1dVNly119W+o3m5FSF+6SM8gMcu/QDZuF8+Fq8W71jtJrsqgF6mGUk0LVaGDmG6ZVOH3IvzHzF+zlDIi+A5NEhNpJz0MyFQPtDwwn4+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614717; c=relaxed/simple;
-	bh=TN73Z+vUolQIibn6Oa4B2+sTFD2adKZaMty5aMxI0IQ=;
+	s=arc-20240116; t=1769615361; c=relaxed/simple;
+	bh=hbizAjs2WfZZ9OCqgC4G1/JYVeHvDournV4zhJqNLPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hw9gj6y4p3UVVfLxWgF78h4zUvh2socP9P/NYOEEm28WyBaGLy6ck6uAgEtB7raqToHFwokuQZuXVIh7PYCedjx4Am6fQqtdkBg7YZBlpBlcBLmBtONs/t0aIC3+RvlB88qb6zh3SLybnPjPzqGZxTOHjdI6dHmjh8Omak9Slv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ry1hHE5i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F95BC4AF09;
-	Wed, 28 Jan 2026 15:38:35 +0000 (UTC)
+	 MIME-Version; b=ZcHZyjt4dfpjeddawsZmZpJN8b6l5BYyjV48QYe1E0WFN7GfE1FBPRfwEaTe2Wcaef5Voc3KbfpiSpu4XKWr5S1DUh9sqYqePWHb8EIyj9zZOqbmsn7iJQO2DyyRCiXK2lnIoryF9yYmCclnUMXu38GXn6IXu7+zX5Si7Te5FXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdhfqOeI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43576C4CEF1;
+	Wed, 28 Jan 2026 15:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614716;
-	bh=TN73Z+vUolQIibn6Oa4B2+sTFD2adKZaMty5aMxI0IQ=;
+	s=korg; t=1769615361;
+	bh=hbizAjs2WfZZ9OCqgC4G1/JYVeHvDournV4zhJqNLPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ry1hHE5i+vsx3rRzjObgyodwcIFzgvB+pwJyoX/24nr0VYcMts81XEGrEp4rTLnpC
-	 iyrX0s4BlvLUIkwE86oTqcNj83UpZFNe/BsUxCft/3+CTExZU7kAH4gsyXFLiMa5r7
-	 63UkCxs8WK+jL5vuLK0twGYUBaGg04sH74i9z2x8=
+	b=FdhfqOeI00QER/TR6qpErZ848JtIYU01pRkqTWzEXA9tHz3OFfNkO9KgahWD+tNjR
+	 J9NLSBHLrPRZ4dmxxoNUYNZcMf+rJX7rKur4M9IxOT8Rm2ZBWC8m46E0hNo7Dy22Cj
+	 50PBIDNBDlXxEHFx8ehhwx0JVmwDflne3kUhUpls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihor Solodrai <ihor.solodrai@pm.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.6 221/254] selftests/bpf: Check for timeout in perf_link test
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Ricky WU <ricky_wu@realtek.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 114/169] mmc: rtsx_pci_sdmmc: implement sdmmc_card_busy function
 Date: Wed, 28 Jan 2026 16:23:17 +0100
-Message-ID: <20260128145352.739990201@linuxfoundation.org>
+Message-ID: <20260128145338.107099578@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,105 +67,117 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212391-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212199-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[ulf.hansson.linaro.org:query timed out];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email,pm.me:email]
-X-Rspamd-Queue-Id: 69ABDA43D1
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A4789A4E95
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ihor Solodrai <ihor.solodrai@pm.me>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-commit e6c209da7e0e9aaf955a7b59e91ed78c2b6c96fb upstream.
+commit 122610220134b32c742cc056eaf64f7017ac8cd9 upstream.
 
-Recently perf_link test started unreliably failing on libbpf CI:
-  * https://github.com/libbpf/libbpf/actions/runs/11260672407/job/31312405473
-  * https://github.com/libbpf/libbpf/actions/runs/11260992334/job/31315514626
-  * https://github.com/libbpf/libbpf/actions/runs/11263162459/job/31320458251
+rtsx_pci_sdmmc does not have an sdmmc_card_busy function, so any voltage
+switches cause a kernel warning, "mmc0: cannot verify signal voltage
+switch."
 
-Part of the test is running a dummy loop for a while and then checking
-for a counter incremented by the test program.
+Copy the sdmmc_card_busy function from rtsx_pci_usb to rtsx_pci_sdmmc to
+fix this.
 
-Instead of waiting for an arbitrary number of loop iterations once,
-check for the test counter in a loop and use get_time_ns() helper to
-enforce a 100ms timeout.
-
-v1: https://lore.kernel.org/bpf/zuRd072x9tumn2iN4wDNs5av0nu5nekMNV4PkR-YwCT10eFFTrUtZBRkLWFbrcCe7guvLStGQlhibo8qWojCO7i2-NGajes5GYIyynexD-w=@pm.me/
-
-Signed-off-by: Ihor Solodrai <ihor.solodrai@pm.me>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20241011153104.249800-1-ihor.solodrai@pm.me
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Fixes: ff984e57d36e ("mmc: Add realtek pcie sdmmc host driver")
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Tested-by: Ricky WU <ricky_wu@realtek.com>
+Reviewed-by: Ricky WU <ricky_wu@realtek.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/perf_link.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/mmc/host/rtsx_pci_sdmmc.c |   41 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
---- a/tools/testing/selftests/bpf/prog_tests/perf_link.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_link.c
-@@ -4,8 +4,12 @@
- #include <pthread.h>
- #include <sched.h>
- #include <test_progs.h>
-+#include "testing_helpers.h"
- #include "test_perf_link.skel.h"
+--- a/drivers/mmc/host/rtsx_pci_sdmmc.c
++++ b/drivers/mmc/host/rtsx_pci_sdmmc.c
+@@ -1308,6 +1308,46 @@ out:
+ 	return err;
+ }
  
-+#define BURN_TIMEOUT_MS 100
-+#define BURN_TIMEOUT_NS BURN_TIMEOUT_MS * 1000000
++static int sdmmc_card_busy(struct mmc_host *mmc)
++{
++	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
++	struct rtsx_pcr *pcr = host->pcr;
++	int err;
++	u8 stat;
++	u8 mask = SD_DAT3_STATUS | SD_DAT2_STATUS | SD_DAT1_STATUS
++	| SD_DAT0_STATUS;
 +
- static void burn_cpu(void)
++	mutex_lock(&pcr->pcr_mutex);
++
++	rtsx_pci_start_run(pcr);
++
++	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
++				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP,
++			       SD_CLK_TOGGLE_EN);
++	if (err)
++		goto out;
++
++	mdelay(1);
++
++	err = rtsx_pci_read_register(pcr, SD_BUS_STAT, &stat);
++	if (err)
++		goto out;
++
++	err = rtsx_pci_write_register(pcr, SD_BUS_STAT,
++				      SD_CLK_TOGGLE_EN | SD_CLK_FORCE_STOP, 0);
++out:
++	mutex_unlock(&pcr->pcr_mutex);
++
++	if (err)
++		return err;
++
++	/* check if any pin between dat[0:3] is low */
++	if ((stat & mask) != mask)
++		return 1;
++	else
++		return 0;
++}
++
+ static int sdmmc_execute_tuning(struct mmc_host *mmc, u32 opcode)
  {
- 	volatile int j = 0;
-@@ -32,6 +36,7 @@ void serial_test_perf_link(void)
- 	int run_cnt_before, run_cnt_after;
- 	struct bpf_link_info info;
- 	__u32 info_len = sizeof(info);
-+	__u64 timeout_time_ns;
- 
- 	/* create perf event */
- 	memset(&attr, 0, sizeof(attr));
-@@ -63,8 +68,14 @@ void serial_test_perf_link(void)
- 	ASSERT_GT(info.prog_id, 0, "link_prog_id");
- 
- 	/* ensure we get at least one perf_event prog execution */
--	burn_cpu();
--	ASSERT_GT(skel->bss->run_cnt, 0, "run_cnt");
-+	timeout_time_ns = get_time_ns() + BURN_TIMEOUT_NS;
-+	while (true) {
-+		burn_cpu();
-+		if (skel->bss->run_cnt > 0)
-+			break;
-+	        if (!ASSERT_LT(get_time_ns(), timeout_time_ns, "run_cnt_timeout"))
-+			break;
-+	}
- 
- 	/* perf_event is still active, but we close link and BPF program
- 	 * shouldn't be executed anymore
+ 	struct realtek_pci_sdmmc *host = mmc_priv(mmc);
+@@ -1420,6 +1460,7 @@ static const struct mmc_host_ops realtek
+ 	.get_ro = sdmmc_get_ro,
+ 	.get_cd = sdmmc_get_cd,
+ 	.start_signal_voltage_switch = sdmmc_switch_voltage,
++	.card_busy = sdmmc_card_busy,
+ 	.execute_tuning = sdmmc_execute_tuning,
+ 	.init_sd_express = sdmmc_init_sd_express,
+ };
 
 
 
