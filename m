@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212406-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GIKKCOM7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:03 +0100
+	id aED4MRA2eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212406-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689F2A5F7D
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6ACEA5531
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:15:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E1A0330868A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 507663058B7F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A64F2DF138;
-	Wed, 28 Jan 2026 16:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4B92FDC5D;
+	Wed, 28 Jan 2026 15:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWjycgHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1J9Co1G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B2081AA8;
-	Wed, 28 Jan 2026 16:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BE82E2DF4;
+	Wed, 28 Jan 2026 15:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616045; cv=none; b=P0AaWMM3h+nzWsTJMBI8Cd942i+zJ9IGjDfsN/3SzppqgRexIVIW9EpaYez/xhWDBLhyrjopJUeHWh3mrBzs9QQwDyu7wQ47//uiE0dY34NGYFmMXsd/DL8wT+lI4IP9KxeZB09qK07K4w8Y5XWR1QRFF9VnPhfxmCoW8SbucXw=
+	t=1769615411; cv=none; b=QQF2KeGbNQAQAH8Y3aECa2pfnR4/LKLzbI1wGpX/15HcAoSWXiDYndQXRqdYbKtb7A1H4T5b4uX7Lh4AnQDO9C7DFejCC7Ebi3PSQYVYlSeliXnN2MSEAJtl/vrne9iLSHvjMoEY12IZhS2qtFx9WYwSJnxbJdjKQE1+4n0KBHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616045; c=relaxed/simple;
-	bh=U5U+Dxyzbkv+frTwShZe3aDQQauM75213JRjwrOXeAA=;
+	s=arc-20240116; t=1769615411; c=relaxed/simple;
+	bh=Wd5wK3NIU2+XlIwKkhAPVzAmR2rdbeaaWUNT8ZGfJQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5ArjUfH4tF4zngiPnM8Xzr6VMXW7e4m6xGtvPhmAHc2deTwM7JOmkOWua8V9MknEE26fIhvZ1wV5qUf9UgIGNjZNdl3+9l/bLiMqAwlPSnP66m/uDA3SpJS+/C3HI0odafaDjNtg31j6fS4kPIykLN69T4vmnC/0eOiRPCdpHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWjycgHg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4697AC4CEF1;
-	Wed, 28 Jan 2026 16:00:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ciUvNR0ERGMCelhbqieqP8uCQ9y8C1QsOpBNwzwFgLu4/QaA3sU1+A86rfMzw0xN11n2p+f7BD2uxN0DYTKijrzGWFzqde9Mj/pxlQmUUCEdanZjN7W7nP+8tJJ1+BnZ4o2HmHoISbnys/RWMKsWr5PQ42o003ibdUFt2rywXYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1J9Co1G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69EC0C4CEF1;
+	Wed, 28 Jan 2026 15:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616045;
-	bh=U5U+Dxyzbkv+frTwShZe3aDQQauM75213JRjwrOXeAA=;
+	s=korg; t=1769615410;
+	bh=Wd5wK3NIU2+XlIwKkhAPVzAmR2rdbeaaWUNT8ZGfJQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iWjycgHgYG2B4oC1GG7Me4OmzbcKpQWNey7EdZM/YucXiq89YkmmkTrR3KKPk96z+
-	 arfJVLs21zaBfxgJvQwIKbqFFkXbCcbtcX9x1GyI/hYBRwYJgcpXHVXt/k7nb1zdHG
-	 FIbfunXBg7iOVJGssLqDgetEBRwnUMRyosNHSHQA=
+	b=x1J9Co1GdfGZPW8LrmOdSdoNfeUR9FhXwyU327fMS78Wk5kXRNucdMsa0r/1TJ3+P
+	 cRpinIsRZJ1j8+BOdxfiY8EBy6e1huPu2/iJfZayF4szBg45vU+Zw/4TNEluo4+zYW
+	 HtMvoXzyR6cAKz8ZeEiH3IyE9CDwvcOVrUAvrmbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Egorenkov <egorenar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.18 190/227] s390/boot/vmlinux.lds.S: Ensure bzImage ends with SecureBoot trailer
-Date: Wed, 28 Jan 2026 16:23:55 +0100
-Message-ID: <20260128145351.282542187@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 153/169] iio: core: Replace lockdep_set_class() + mutex_init() by combined call
+Date: Wed, 28 Jan 2026 16:23:56 +0100
+Message-ID: <20260128145339.514394625@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212406-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212595-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 689F2A5F7D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,analog.com:email,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E6ACEA5531
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Egorenkov <egorenar@linux.ibm.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit ddc6cbef3ef10359b5640b4ee810a520edc73586 upstream.
+[ Upstream commit c76ba4b2644424b8dbacee80bb40991eac29d39e ]
 
-Since commit 3e86e4d74c04 ("kbuild: keep .modinfo section in
-vmlinux.unstripped") the .modinfo section which has SHF_ALLOC ends up
-in bzImage after the SecureBoot trailer. This breaks SecureBoot because
-the bootloader can no longer find the SecureBoot trailer with kernel's
-signature at the expected location in bzImage. To fix the bug,
-move discarded sections before the ELF_DETAILS macro and discard
-the .modinfo section which is not needed by the decompressor.
+Replace lockdep_set_class() + mutex_init() by combined call
+mutex_init_with_key().
 
-Fixes: 3e86e4d74c04 ("kbuild: keep .modinfo section in vmlinux.unstripped")
-Cc: stable@vger.kernel.org
-Suggested-by: Vasily Gorbik <gor@linux.ibm.com>
-Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
-Tested-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Alexander Egorenkov <egorenar@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 9910159f0659 ("iio: core: add separate lockdep class for info_exist_lock")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/boot/vmlinux.lds.S |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/iio/industrialio-core.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/s390/boot/vmlinux.lds.S
-+++ b/arch/s390/boot/vmlinux.lds.S
-@@ -137,6 +137,15 @@ SECTIONS
- 	}
- 	_end = .;
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -1696,9 +1696,8 @@ struct iio_dev *iio_device_alloc(struct
+ 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
  
-+	/* Sections to be discarded */
-+	/DISCARD/ : {
-+		COMMON_DISCARDS
-+		*(.eh_frame)
-+		*(*__ksymtab*)
-+		*(___kcrctab*)
-+		*(.modinfo)
-+	}
-+
- 	DWARF_DEBUG
- 	ELF_DETAILS
+ 	lockdep_register_key(&iio_dev_opaque->mlock_key);
+-	lockdep_set_class(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
  
-@@ -161,12 +170,4 @@ SECTIONS
- 		*(.rela.*) *(.rela_*)
- 	}
- 	ASSERT(SIZEOF(.rela.dyn) == 0, "Unexpected run-time relocations (.rela) detected!")
--
--	/* Sections to be discarded */
--	/DISCARD/ : {
--		COMMON_DISCARDS
--		*(.eh_frame)
--		*(*__ksymtab*)
--		*(___kcrctab*)
--	}
- }
+-	mutex_init(&iio_dev_opaque->mlock);
++	mutex_init_with_key(&iio_dev_opaque->mlock, &iio_dev_opaque->mlock_key);
+ 	mutex_init(&iio_dev_opaque->info_exist_lock);
+ 
+ 	return indio_dev;
 
 
 
