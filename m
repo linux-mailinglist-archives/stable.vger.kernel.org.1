@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-212568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212210-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wLaNKIg7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:32 +0100
+	id iMtGCzMvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212210-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D17A5EDB
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:38:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F32EFA45BD
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74C1C31930EC
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 50FF530389E7
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9CB03033C3;
-	Wed, 28 Jan 2026 15:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552312E3AF1;
+	Wed, 28 Jan 2026 15:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qz1CYxJ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1lunQ5f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8F02874FE;
-	Wed, 28 Jan 2026 15:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1352A2DC77F;
+	Wed, 28 Jan 2026 15:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615954; cv=none; b=shM1D4cgDnLwsdtrSfKY32tvYIMYND9E8cTVSHkkMxkmNbByk5po+tn25OF7+YTxSvQDZXqm08bm75X3kI0uB4I2PjVxywSCH6KF5i+Nhr93hRXjU028WahaKlq64YvC/mrS96v4AaIVvIah/KlchjvnkefA5CXUGKW+obGLNEY=
+	t=1769614754; cv=none; b=uF+z6x9XQTTUJSxx5vabYiSm2f1nOtrZ+h/Sl17Tr4TpyFzE0px+uGhgl5cwQQLo1sv2HyFLNl3tbUrMFBfdhxqLeJSmiWDhTmTAdr8xdSqGCXojJI87uhkqXMDLJHMZ7E23rmJZAl1jo9gIx47JBLRu9+cTZDkUJPNDnIneIEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615954; c=relaxed/simple;
-	bh=E7NPyEpMhe4wJW20KmoB20dfhcPNQ2eIFv63qrnI2zQ=;
+	s=arc-20240116; t=1769614754; c=relaxed/simple;
+	bh=tjA+2dE87MOGAkz0mADc4XXfNH1VV3/VYH1+HaocH9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JytxP/TdUf1Jn+DmTqZx5RcFMCn3ajLZNV75AhA3FAHeIqgQ+i9J+Odqzhs/uRMi/nb4r1U7j+R7soJKanmtYefPctQ1r3BnHNP+HDuBTg7flrfdxam7qw7g45E+myJg1Nxr3eSb5xnZYAThXhEnYrXOczSD+caC73MmatoAxrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qz1CYxJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC8CC4CEF1;
-	Wed, 28 Jan 2026 15:59:13 +0000 (UTC)
+	 MIME-Version; b=fn1Gp09QzuydETGPvVamaeuE6jFVhAnpGLCuK/vq6kjFvn8/hh8ivP6zQmn88V0yiu0PkrcPExQew0Jwsw7TWj9NIf1lBgWaPk+pJXopvNejFmDhBiXdFf2/C1FY+/39LsiM5oGPvPGiMlXof14iW///SDTYSntg08HB4G1YGvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1lunQ5f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330B0C4CEF1;
+	Wed, 28 Jan 2026 15:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615954;
-	bh=E7NPyEpMhe4wJW20KmoB20dfhcPNQ2eIFv63qrnI2zQ=;
+	s=korg; t=1769614753;
+	bh=tjA+2dE87MOGAkz0mADc4XXfNH1VV3/VYH1+HaocH9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qz1CYxJ5Eqd725QiGzUbmNjkm7V3p1moqwBYgJeq80KfUGaAuZCGyeuTI9dG9OCWV
-	 1MQuBjbtE2aaNgxB/UYlJQSiM4z3wHNPTnWBnYqYCA5OQ4gKxy8xiiiw1LdmKRZLiW
-	 QldZBBgnh7zPBeKQeQgYS8ALk+mbj02v14Wpyy6Y=
+	b=x1lunQ5fVVdw+++svyQoBug5YQNELiDVZKzYqgurmiyqjUznB3L4PQkoi68+PBeMa
+	 /BQSr7h8CDSfVvNSSND4giQGQXXxeQKqgBFsb9DyvyoXAK0fyEXYqbwVVo/BK1KAHp
+	 TJtJRflVsGPR6I7eA6++NE3r4QeTMNjXyfAsf42I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 162/227] iio: adc: pac1934: Fix clamped value in pac1934_reg_snapshot
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 231/254] ALSA: scarlett2: Fix buffer overflow in config retrieval
 Date: Wed, 28 Jan 2026 16:23:27 +0100
-Message-ID: <20260128145350.283345867@linuxfoundation.org>
+Message-ID: <20260128145353.101247089@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212568-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212210-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,50 +88,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 03D17A5EDB
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F32EFA45BD
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 
-commit da934ef0fdff5ba21e82ec3ab3f95fe73137b0c9 upstream.
+[ Upstream commit 6f5c69f72e50d51be3a8c028ae7eda42c82902cb ]
 
-The local variable 'curr_energy' was never clamped to
-PAC_193X_MIN_POWER_ACC or PAC_193X_MAX_POWER_ACC because the return
-value of clamp() was not used. Fix this by assigning the clamped value
-back to 'curr_energy'.
+The scarlett2_usb_get_config() function has a logic error in the
+endianness conversion code that can cause buffer overflows when
+count > 1.
 
+The code checks `if (size == 2)` where `size` is the total buffer size in
+bytes, then loops `count` times treating each element as u16 (2 bytes).
+This causes the loop to access `count * 2` bytes when the buffer only
+has `size` bytes allocated.
+
+Fix by checking the element size (config_item->size) instead of the
+total buffer size. This ensures the endianness conversion matches the
+actual element type.
+
+Fixes: ac34df733d2d ("ALSA: usb-audio: scarlett2: Update get_config to do endian conversion")
 Cc: stable@vger.kernel.org
-Fixes: 0fb528c8255b ("iio: adc: adding support for PAC193x")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Link: https://patch.msgid.link/20260117012706.1715574-1-samasth.norway.ananda@oracle.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[ add 32-bit handling block ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/pac1934.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/usb/mixer_scarlett2.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/pac1934.c
-+++ b/drivers/iio/adc/pac1934.c
-@@ -665,9 +665,9 @@ static int pac1934_reg_snapshot(struct p
- 			/* add the power_acc field */
- 			curr_energy += inc;
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -1408,11 +1408,16 @@ static int scarlett2_usb_get_config(
+ 		err = scarlett2_usb_get(mixer, config_item->offset, buf, size);
+ 		if (err < 0)
+ 			return err;
+-		if (size == 2) {
++		if (config_item->size == 16) {
+ 			u16 *buf_16 = buf;
  
--			clamp(curr_energy, PAC_193X_MIN_POWER_ACC, PAC_193X_MAX_POWER_ACC);
--
--			reg_data->energy_sec_acc[cnt] = curr_energy;
-+			reg_data->energy_sec_acc[cnt] = clamp(curr_energy,
-+							      PAC_193X_MIN_POWER_ACC,
-+							      PAC_193X_MAX_POWER_ACC);
+ 			for (i = 0; i < count; i++, buf_16++)
+ 				*buf_16 = le16_to_cpu(*(__le16 *)buf_16);
++		} else if (config_item->size == 32) {
++			u32 *buf_32 = (u32 *)buf;
++
++			for (i = 0; i < count; i++, buf_32++)
++				*buf_32 = le32_to_cpu(*(__le32 *)buf_32);
  		}
- 
- 		offset_reg_data_p += PAC1934_VPOWER_ACC_REG_LEN;
+ 		return 0;
+ 	}
 
 
 
