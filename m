@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-212121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPvuL1wuemnd3gEAu9opvQ
-	(envelope-from <stable+bounces-212121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:20 +0100
+	id +ISuH2M3eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:20:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0358A43A5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C403AA5745
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:20:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AFD22301429E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:34:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 280143023B46
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BF32512FF;
-	Wed, 28 Jan 2026 15:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBD82F6183;
+	Wed, 28 Jan 2026 15:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6s0hTxe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9PYn43K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D71C10A1E;
-	Wed, 28 Jan 2026 15:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C599242D7F;
+	Wed, 28 Jan 2026 15:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614464; cv=none; b=msKpfejESTMe9WFFhgfWNEDKW6tqame+7BOoXIxe+Xrcct8OGMa6XBDVrvGUYc61bZvgSRm71i44StP+4mkKjMRRATLwjw3Axqo0Fs4jXMjOf0xq3OXq8BqdSb/2W5s0PRermhdEjojt6hZAD9KWlafMwKd0EZNYzA481DFjp5Y=
+	t=1769615631; cv=none; b=RlHZkMt+tkPMlTcgTFuk1BFrwZ7/aQ0+8iM7+SqkqlKBT8Igo76nS+aE9wXklEuxBTuGPCp5m/TldsPRNgPM79eRtVZh3vHa5nFkg1CwEoi+KCzZouENdmBrpUTSPKnKDNJOFrWDBPAYszmAfHVAa8WA2QsHg9rqnHgS8FuKJkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614464; c=relaxed/simple;
-	bh=pCQJeh3dCgOVUoP9SO3fzJ1OvrxpOkl6h+fEtp4QCMc=;
+	s=arc-20240116; t=1769615631; c=relaxed/simple;
+	bh=fzS1vHdpRSqQ2Z3wpUxA/J/eBxabEmFmZDRgS8uZ5A4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EUjPCGPJpqrrKR/bmrijkRyFaXt7Egw0Mm2gXji8oYEb15XZ0gz9NYz9tcszPOIzQUi2LaYoK5XbCidwd43D3dz/KTuq0AJnOKaFoBMKxQfhVuSA+zDwxiAUyLZ+bpD4YjDapMU+Furxfv3SLGfYMsop4DQdelkZ7FvVmWrIlDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6s0hTxe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB88C4CEF1;
-	Wed, 28 Jan 2026 15:34:23 +0000 (UTC)
+	 MIME-Version; b=CCa26SzqosyZZ+5B4026K/m4gcyiZ2fzNlN3rXUbOWABJ6S4UtTdBpFKzTGFSS2ZH7vxa1ru8itWprUTbpoE+eegv0hibsERSbvtsQLimvx7E2Yl0RWM08ujEDxhpoQutkQdkV7ODS04U1meBq9bqSrftOVa6oYb9Hi+6hwbifc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9PYn43K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3306C4CEF1;
+	Wed, 28 Jan 2026 15:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614464;
-	bh=pCQJeh3dCgOVUoP9SO3fzJ1OvrxpOkl6h+fEtp4QCMc=;
+	s=korg; t=1769615631;
+	bh=fzS1vHdpRSqQ2Z3wpUxA/J/eBxabEmFmZDRgS8uZ5A4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t6s0hTxetykD3yYFJCT2nuAMUsgdLbLpXm/cxW2Y8F2yJQjJ3O97vjpm7gxC0C/CJ
-	 tUrAI0DbAEdG4cVDyCO98gi4ueZMffU3x5siVmoG2ngGGyJcurTeh5kRSMthOshnJs
-	 PwO+kaeUedH3eP0T5K/Fdmodo5uKG6eIH32xkL1g=
+	b=t9PYn43KhhkGGyS0WkVgdbuDnG+WfqDN1ybR+wJDrywkAm6OHEi0T9hpr+gBJ/AnM
+	 83RKMFwDT6C5M7eN352Rz9gcSzMfcvDGmaCE1VP/yYIxqP02bmHLoW4tOvQytXDi22
+	 QljNOjCWt8fs8FxW3UCf5fQMMGnzjGhuv/WxZKTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Otto=20Pfl=C3=BCger?= <otto.pflueger@abscue.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Zhen Chen <chenzhen126@huawei.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/254] dt-bindings: power: rpmpd: Add MSM8917, MSM8937 and QM215
+Subject: [PATCH 6.18 034/227] sctp: move SCTP_CMD_ASSOC_SHKEY right after SCTP_CMD_PEER_INIT
 Date: Wed, 28 Jan 2026 16:21:19 +0100
-Message-ID: <20260128145348.531864982@linuxfoundation.org>
+Message-ID: <20260128145345.571651087@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,191 +64,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212121-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212471-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F0358A43A5
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,huawei.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C403AA5745
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Otto Pflüger <otto.pflueger@abscue.de>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 61848698288d93a230cab9c0585e726df66f2402 ]
+[ Upstream commit a80c9d945aef55b23b54838334345f20251dad83 ]
 
-The MSM8917, MSM8937 and QM215 SoCs have VDDCX and VDDMX power domains
-controlled in voltage level mode. Define the MSM8937 and QM215 power
-domains as aliases because these SoCs are similar to MSM8917 and may
-share some parts of the device tree.
+A null-ptr-deref was reported in the SCTP transmit path when SCTP-AUTH key
+initialization fails:
 
-Also add the compatibles for these SoCs to the documentation, with
-qcom,msm8937-rpmpd using qcom,msm8917-rpmpd as a fallback compatible
-because there are no known differences. QM215 is not compatible with
-these because it uses different regulators.
+  ==================================================================
+  KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+  CPU: 0 PID: 16 Comm: ksoftirqd/0 Tainted: G W 6.6.0 #2
+  RIP: 0010:sctp_packet_bundle_auth net/sctp/output.c:264 [inline]
+  RIP: 0010:sctp_packet_append_chunk+0xb36/0x1260 net/sctp/output.c:401
+  Call Trace:
 
-Signed-off-by: Otto Pflüger <otto.pflueger@abscue.de>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231014133823.14088-2-otto.pflueger@abscue.de
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 45e1be5ddec9 ("dt-bindings: power: qcom,rpmpd: Add SC8280XP_MXC_AO")
+  sctp_packet_transmit_chunk+0x31/0x250 net/sctp/output.c:189
+  sctp_outq_flush_data+0xa29/0x26d0 net/sctp/outqueue.c:1111
+  sctp_outq_flush+0xc80/0x1240 net/sctp/outqueue.c:1217
+  sctp_cmd_interpreter.isra.0+0x19a5/0x62c0 net/sctp/sm_sideeffect.c:1787
+  sctp_side_effects net/sctp/sm_sideeffect.c:1198 [inline]
+  sctp_do_sm+0x1a3/0x670 net/sctp/sm_sideeffect.c:1169
+  sctp_assoc_bh_rcv+0x33e/0x640 net/sctp/associola.c:1052
+  sctp_inq_push+0x1dd/0x280 net/sctp/inqueue.c:88
+  sctp_rcv+0x11ae/0x3100 net/sctp/input.c:243
+  sctp6_rcv+0x3d/0x60 net/sctp/ipv6.c:1127
+
+The issue is triggered when sctp_auth_asoc_init_active_key() fails in
+sctp_sf_do_5_1C_ack() while processing an INIT_ACK. In this case, the
+command sequence is currently:
+
+- SCTP_CMD_PEER_INIT
+- SCTP_CMD_TIMER_STOP (T1_INIT)
+- SCTP_CMD_TIMER_START (T1_COOKIE)
+- SCTP_CMD_NEW_STATE (COOKIE_ECHOED)
+- SCTP_CMD_ASSOC_SHKEY
+- SCTP_CMD_GEN_COOKIE_ECHO
+
+If SCTP_CMD_ASSOC_SHKEY fails, asoc->shkey remains NULL, while
+asoc->peer.auth_capable and asoc->peer.peer_chunks have already been set by
+SCTP_CMD_PEER_INIT. This allows a DATA chunk with auth = 1 and shkey = NULL
+to be queued by sctp_datamsg_from_user().
+
+Since command interpretation stops on failure, no COOKIE_ECHO should been
+sent via SCTP_CMD_GEN_COOKIE_ECHO. However, the T1_COOKIE timer has already
+been started, and it may enqueue a COOKIE_ECHO into the outqueue later. As
+a result, the DATA chunk can be transmitted together with the COOKIE_ECHO
+in sctp_outq_flush_data(), leading to the observed issue.
+
+Similar to the other places where it calls sctp_auth_asoc_init_active_key()
+right after sctp_process_init(), this patch moves the SCTP_CMD_ASSOC_SHKEY
+immediately after SCTP_CMD_PEER_INIT, before stopping T1_INIT and starting
+T1_COOKIE. This ensures that if shared key generation fails, authenticated
+DATA cannot be sent. It also allows the T1_INIT timer to retransmit INIT,
+giving the client another chance to process INIT_ACK and retry key setup.
+
+Fixes: 730fc3d05cd4 ("[SCTP]: Implete SCTP-AUTH parameter processing")
+Reported-by: Zhen Chen <chenzhen126@huawei.com>
+Tested-by: Zhen Chen <chenzhen126@huawei.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/44881224b375aa8853f5e19b4055a1a56d895813.1768324226.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/power/qcom,rpmpd.yaml | 81 ++++++++++---------
- include/dt-bindings/power/qcom-rpmpd.h        | 21 +++++
- 2 files changed, 65 insertions(+), 37 deletions(-)
+ net/sctp/sm_statefuns.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-index 53886f02d98a9..d38c762e12804 100644
---- a/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-+++ b/Documentation/devicetree/bindings/power/qcom,rpmpd.yaml
-@@ -15,43 +15,50 @@ description:
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 3755ba079d077..7b823d7591419 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -603,6 +603,11 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
+ 	sctp_add_cmd_sf(commands, SCTP_CMD_PEER_INIT,
+ 			SCTP_PEER_INIT(initchunk));
  
- properties:
-   compatible:
--    enum:
--      - qcom,mdm9607-rpmpd
--      - qcom,msm8226-rpmpd
--      - qcom,msm8909-rpmpd
--      - qcom,msm8916-rpmpd
--      - qcom,msm8939-rpmpd
--      - qcom,msm8953-rpmpd
--      - qcom,msm8976-rpmpd
--      - qcom,msm8994-rpmpd
--      - qcom,msm8996-rpmpd
--      - qcom,msm8998-rpmpd
--      - qcom,qcm2290-rpmpd
--      - qcom,qcs404-rpmpd
--      - qcom,qdu1000-rpmhpd
--      - qcom,sa8155p-rpmhpd
--      - qcom,sa8540p-rpmhpd
--      - qcom,sa8775p-rpmhpd
--      - qcom,sdm660-rpmpd
--      - qcom,sc7180-rpmhpd
--      - qcom,sc7280-rpmhpd
--      - qcom,sc8180x-rpmhpd
--      - qcom,sc8280xp-rpmhpd
--      - qcom,sdm670-rpmhpd
--      - qcom,sdm845-rpmhpd
--      - qcom,sdx55-rpmhpd
--      - qcom,sdx65-rpmhpd
--      - qcom,sdx75-rpmhpd
--      - qcom,sm6115-rpmpd
--      - qcom,sm6125-rpmpd
--      - qcom,sm6350-rpmhpd
--      - qcom,sm6375-rpmpd
--      - qcom,sm7150-rpmhpd
--      - qcom,sm8150-rpmhpd
--      - qcom,sm8250-rpmhpd
--      - qcom,sm8350-rpmhpd
--      - qcom,sm8450-rpmhpd
--      - qcom,sm8550-rpmhpd
-+    oneOf:
-+      - enum:
-+          - qcom,mdm9607-rpmpd
-+          - qcom,msm8226-rpmpd
-+          - qcom,msm8909-rpmpd
-+          - qcom,msm8916-rpmpd
-+          - qcom,msm8917-rpmpd
-+          - qcom,msm8939-rpmpd
-+          - qcom,msm8953-rpmpd
-+          - qcom,msm8976-rpmpd
-+          - qcom,msm8994-rpmpd
-+          - qcom,msm8996-rpmpd
-+          - qcom,msm8998-rpmpd
-+          - qcom,qcm2290-rpmpd
-+          - qcom,qcs404-rpmpd
-+          - qcom,qdu1000-rpmhpd
-+          - qcom,qm215-rpmpd
-+          - qcom,sa8155p-rpmhpd
-+          - qcom,sa8540p-rpmhpd
-+          - qcom,sa8775p-rpmhpd
-+          - qcom,sc7180-rpmhpd
-+          - qcom,sc7280-rpmhpd
-+          - qcom,sc8180x-rpmhpd
-+          - qcom,sc8280xp-rpmhpd
-+          - qcom,sdm660-rpmpd
-+          - qcom,sdm670-rpmhpd
-+          - qcom,sdm845-rpmhpd
-+          - qcom,sdx55-rpmhpd
-+          - qcom,sdx65-rpmhpd
-+          - qcom,sdx75-rpmhpd
-+          - qcom,sm6115-rpmpd
-+          - qcom,sm6125-rpmpd
-+          - qcom,sm6350-rpmhpd
-+          - qcom,sm6375-rpmpd
-+          - qcom,sm7150-rpmhpd
-+          - qcom,sm8150-rpmhpd
-+          - qcom,sm8250-rpmhpd
-+          - qcom,sm8350-rpmhpd
-+          - qcom,sm8450-rpmhpd
-+          - qcom,sm8550-rpmhpd
-+      - items:
-+          - enum:
-+              - qcom,msm8937-rpmpd
-+          - const: qcom,msm8917-rpmpd
++	/* SCTP-AUTH: generate the association shared keys so that
++	 * we can potentially sign the COOKIE-ECHO.
++	 */
++	sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_SHKEY, SCTP_NULL());
++
+ 	/* Reset init error count upon receipt of INIT-ACK.  */
+ 	sctp_add_cmd_sf(commands, SCTP_CMD_INIT_COUNTER_RESET, SCTP_NULL());
  
-   '#power-domain-cells':
-     const: 1
-diff --git a/include/dt-bindings/power/qcom-rpmpd.h b/include/dt-bindings/power/qcom-rpmpd.h
-index 83be996cb5eb9..7f4e2983a4c57 100644
---- a/include/dt-bindings/power/qcom-rpmpd.h
-+++ b/include/dt-bindings/power/qcom-rpmpd.h
-@@ -278,6 +278,27 @@
- #define MSM8909_VDDMX		MSM8916_VDDMX
- #define MSM8909_VDDMX_AO	MSM8916_VDDMX_AO
+@@ -617,11 +622,6 @@ enum sctp_disposition sctp_sf_do_5_1C_ack(struct net *net,
+ 	sctp_add_cmd_sf(commands, SCTP_CMD_NEW_STATE,
+ 			SCTP_STATE(SCTP_STATE_COOKIE_ECHOED));
  
-+/* MSM8917 Power Domain Indexes */
-+#define MSM8917_VDDCX		0
-+#define MSM8917_VDDCX_AO	1
-+#define MSM8917_VDDCX_VFL	2
-+#define MSM8917_VDDMX		3
-+#define MSM8917_VDDMX_AO	4
-+
-+/* MSM8937 Power Domain Indexes */
-+#define MSM8937_VDDCX		MSM8917_VDDCX
-+#define MSM8937_VDDCX_AO	MSM8917_VDDCX_AO
-+#define MSM8937_VDDCX_VFL	MSM8917_VDDCX_VFL
-+#define MSM8937_VDDMX		MSM8917_VDDMX
-+#define MSM8937_VDDMX_AO	MSM8917_VDDMX_AO
-+
-+/* QM215 Power Domain Indexes */
-+#define QM215_VDDCX		MSM8917_VDDCX
-+#define QM215_VDDCX_AO		MSM8917_VDDCX_AO
-+#define QM215_VDDCX_VFL		MSM8917_VDDCX_VFL
-+#define QM215_VDDMX		MSM8917_VDDMX
-+#define QM215_VDDMX_AO		MSM8917_VDDMX_AO
-+
- /* MSM8953 Power Domain Indexes */
- #define MSM8953_VDDMD		0
- #define MSM8953_VDDMD_AO	1
+-	/* SCTP-AUTH: generate the association shared keys so that
+-	 * we can potentially sign the COOKIE-ECHO.
+-	 */
+-	sctp_add_cmd_sf(commands, SCTP_CMD_ASSOC_SHKEY, SCTP_NULL());
+-
+ 	/* 5.1 C) "A" shall then send the State Cookie received in the
+ 	 * INIT ACK chunk in a COOKIE ECHO chunk, ...
+ 	 */
 -- 
 2.51.0
 
