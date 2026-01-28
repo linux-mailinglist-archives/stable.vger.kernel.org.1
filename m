@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-212594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212403-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CggMOE7emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:01 +0100
+	id sOJUCfs4eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212403-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA50A5F76
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:40:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E78A5A6A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:27:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8768319F022
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:00:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4EBC30AF210
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1AD2DF138;
-	Wed, 28 Jan 2026 16:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566D32EA172;
+	Wed, 28 Jan 2026 15:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Py44ZQHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVt0AOGl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6165C25783A;
-	Wed, 28 Jan 2026 16:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1CC2DF138;
+	Wed, 28 Jan 2026 15:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616042; cv=none; b=AHX+DFOt41A9QMkEwqYCiTdS8DXSWLjTqnrWNyZUvfGrh/nvpgDvbqAFps7pqFudX8QsnVcA8bHlY904noSm0fNhYbnOK4Vu5Ah6S36WfN6d1k31Idu3Hp5A6XYdwJBJB0FasPGKJJEd+65qxj80BR9mH06JUirmA0elZY0Qy0A=
+	t=1769615401; cv=none; b=URqmfRs89Ypm+SnpcoB7jDci8eztWSHxCikM5E3DDl2D6CSXxKKwIsrfBJy8OH26hmn6OY2WVa/aeHGtYIEF5MDywEWFCbN+uVc28V46G5zsDannWN/0t4lBAFd29nJojUrFuevEKHDGYJptbiEdF5cU8v6e3Q/y/djL9uKxpag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616042; c=relaxed/simple;
-	bh=3gss+Hwjr+/ztrTunU2GXG/ljS4+2VMGAB6vddMfxp0=;
+	s=arc-20240116; t=1769615401; c=relaxed/simple;
+	bh=AYZUS5vQOrSM7zEsodlzPCC+Q4Q/8BL4NRNoval4g3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJKCm4/WHROST7RDsBXD8wwdtSPmQ3JFi8w+QsDMPydUHp+f4CbjtLeN5DukPW9zVmt3CRSqkD/7MZGfg6OogVsrgnMtRF6b1aucAWPPM/uQfKT60BZk2uI+SH44e6ApyeRTYfW9j+fyBqAq1yB4TDOsw9XMd7cmP1dF83vmY6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Py44ZQHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9DFC4CEF7;
-	Wed, 28 Jan 2026 16:00:41 +0000 (UTC)
+	 MIME-Version; b=i9yDUXC+JlwBNu4A1HV426bAx3oF9qO8fJHjJSv3dmQHJ5sFoEXt/sHfhDs+Bo4RNhqeFeKyDuIQK+Rg9fBmc7A1zky+imsBRggVxD9EZP0++IDuIlOt3NqeCIZg7J6Wz4QgRW1QrrT0H/K3YBF2qcS2wjrbqBR7IEIVLM7CGCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVt0AOGl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D802C4CEF1;
+	Wed, 28 Jan 2026 15:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616042;
-	bh=3gss+Hwjr+/ztrTunU2GXG/ljS4+2VMGAB6vddMfxp0=;
+	s=korg; t=1769615400;
+	bh=AYZUS5vQOrSM7zEsodlzPCC+Q4Q/8BL4NRNoval4g3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Py44ZQHSiSBqie6xRTywK6KoloC4EK1uv1aSW7SWn4lLlzh/w/A4h448kLi5xX1Th
-	 nJzC/SnAVHtiFD9LhydWy1go1bXsfWj35hcazxKIrzTLBERdY/EjxHOAL9FSYiAMkI
-	 aRgifX1ksMTK+lCF3sJufyFmZPQHELlXhzggu/qQ=
+	b=KVt0AOGl10vqQAXdPVYKZl3HbUbQzUBjaYMjb5NJeNvzEd+R0ouNE4gDO+VVM+OEP
+	 KUSGwRffL3v+ADRq5BlkO3XkdhPt/e0hsDmGnM4+Gu4DZd64/LA0cCwqsGltZvz/v4
+	 UEX9Y7PmaMp5AO6W4LYdTqxEbExSah4mA/iyybwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.18 189/227] s390/ap: Fix wrong APQN fill calculation
+	Dragan Simic <dsimic@manjaro.org>,
+	Geraldo Nascimento <geraldogabriel@gmail.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 151/169] arm64: dts: rockchip: remove redundant max-link-speed from nanopi-r4s
 Date: Wed, 28 Jan 2026 16:23:54 +0100
-Message-ID: <20260128145351.247387591@linuxfoundation.org>
+Message-ID: <20260128145339.439136743@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +71,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,manjaro.org,gmail.com,rock-chips.com,sntech.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212403-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212594-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3CA50A5F76
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,rock-chips.com:email,manjaro.org:email]
+X-Rspamd-Queue-Id: 84E78A5A6A
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Geraldo Nascimento <geraldogabriel@gmail.com>
 
-commit 3317785a8803db629efc759d811d0f589d3a0b2d upstream.
+[ Upstream commit ce652c98a7bfa0b7c675ef5cd85c44c186db96af ]
 
-The upper limit of the firmware queue fill state for each APQN
-is reported by the hwinfo.qd field. This field shows the
-numbers 0-7 for 1-8 queue spaces available. But the exploiting
-code assumed the real boundary is stored there and thus stoppes
-queuing in messages one tick too early.
+This is already the default in rk3399-base.dtsi, remove redundant
+declaration from rk3399-nanopi-r4s.dtsi.
 
-Correct the limit calculation and thus offer a boost
-of 12.5% performance for high traffic on one APQN.
-
-Fixes: d4c53ae8e4948 ("s390/ap: store TAPQ hwinfo in struct ap_card")
+Fixes: db792e9adbf8 ("rockchip: rk3399: Add support for FriendlyARM NanoPi R4S")
 Cc: stable@vger.kernel.org
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reported-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Signed-off-by: Geraldo Nascimento <geraldogabriel@gmail.com>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Link: https://patch.msgid.link/6694456a735844177c897581f785cc00c064c7d1.1763415706.git.geraldogabriel@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+[ adapted file path from rk3399-nanopi-r4s.dtsi to rk3399-nanopi-r4s.dts ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/ap_card.c  |    2 +-
- drivers/s390/crypto/ap_queue.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/s390/crypto/ap_card.c
-+++ b/drivers/s390/crypto/ap_card.c
-@@ -44,7 +44,7 @@ static ssize_t depth_show(struct device
- {
- 	struct ap_card *ac = to_ap_card(dev);
+--- a/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-nanopi-r4s.dts
+@@ -73,7 +73,6 @@
+ };
  
--	return sysfs_emit(buf, "%d\n", ac->hwinfo.qd);
-+	return sysfs_emit(buf, "%d\n", ac->hwinfo.qd + 1);
- }
- 
- static DEVICE_ATTR_RO(depth);
---- a/drivers/s390/crypto/ap_queue.c
-+++ b/drivers/s390/crypto/ap_queue.c
-@@ -269,7 +269,7 @@ static enum ap_sm_wait ap_sm_write(struc
- 		list_move_tail(&ap_msg->list, &aq->pendingq);
- 		aq->requestq_count--;
- 		aq->pendingq_count++;
--		if (aq->queue_count < aq->card->hwinfo.qd) {
-+		if (aq->queue_count < aq->card->hwinfo.qd + 1) {
- 			aq->sm_state = AP_SM_STATE_WORKING;
- 			return AP_SM_WAIT_AGAIN;
- 		}
+ &pcie0 {
+-	max-link-speed = <1>;
+ 	num-lanes = <1>;
+ 	vpcie3v3-supply = <&vcc3v3_sys>;
+ };
 
 
 
