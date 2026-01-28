@@ -1,158 +1,182 @@
-Return-Path: <stable+bounces-211941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8N50FsffeWm50gEAu9opvQ
-	(envelope-from <stable+bounces-211941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 11:07:03 +0100
+	id cBy0D7bfeWm50gEAu9opvQ
+	(envelope-from <stable+bounces-211942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 11:06:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9659F3A6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 11:07:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CEC9F38F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 11:06:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27F383068D6F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 09:58:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87A4D306FCC1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 09:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2833434D3A1;
-	Wed, 28 Jan 2026 09:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B713E34DB4E;
+	Wed, 28 Jan 2026 09:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZgjrPHI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DgOFXUPs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA74E222565;
-	Wed, 28 Jan 2026 09:58:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E122A29A9E9;
+	Wed, 28 Jan 2026 09:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769594324; cv=none; b=CS6CUSD7FpcRdJPD8hJ/7O9rZlD1aZc2zmdno8J5XJYbV8qwJYvQfdlhY2H8pPwHCEOYWNvIXruFeVNdBCmYGC71TUvZxE/Mo1szZz3QW6hNyPp2B54rRcZlIggI3mgeh8kMmpiseB6DgnCMw19dosvw6PnVamfqSM0lhkziw1M=
+	t=1769594365; cv=none; b=rBPRnmJLRHGOmqLkfn/5xOjmTo0NpB4yoU0MwE2RikkUdIYGtDjG5SsFgeG98X0lGBTogYGy6E+EuS3DICDUtNV/w1LwscuqazVw4/Bad8pEDXF6LdaD8jrG9SzeGFtFpbGQu1mXWKIQvYaXdi8ONcJ0JwpWjeBp6yp6/7liDH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769594324; c=relaxed/simple;
-	bh=S+kzbsUAv+9ZIJ9gROnXWuYdug3mDJrjsfqbJmx1oyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BBUfdnHurUXmZJLbSICbPLHMHqWpJR1w7p3TEMg6ao5bsa40ZYTL3twsLZd10dQbnX9nmDXxY1pqsaCSLxFi3OQ2A3txVzCFw4JZc4GibOENIKoHW6T2eK0JTB4uc6oIecNt/DdwaqTljBWhd0aeFqTFkNyn8Jlp5OoEjnTEoeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZgjrPHI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA03C4CEF1;
-	Wed, 28 Jan 2026 09:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769594324;
-	bh=S+kzbsUAv+9ZIJ9gROnXWuYdug3mDJrjsfqbJmx1oyo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EZgjrPHIvRauCS4zCGzFR/1kiUJjREfmbeFXQIh8TesIeDPKJayOjWs5vEge8LVF+
-	 AZ7vfN10DR3Loc0192AuZzHRoBJiOnyU7LW+isLs+n81+AOjS2cM3+t4npaX3c46RE
-	 7muag92gaobKB7dJQrwUEIG59sgcX4czzchjkHXURZaH/d92/oYCnWivqjm7+NisEA
-	 Q4umbhq3/ujNgDHoUrCccTc15QfZVI5MvSYHGCVBWuXw/REnZAduQP7Lu/HS/3B0yX
-	 f0f1O3hwrF4bNEyTwlTGsVwG3ArXaOQOFEEqpsUTZaouOIRVdCZdHnJlxmIxOKKl6i
-	 0OX+DlyrGosmQ==
-Date: Wed, 28 Jan 2026 10:58:41 +0100
-From: Maxime Ripard <mripard@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org, 
-	imx@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Frank Li <Frank.Li@nxp.com>
-Subject: Re: [PATCH v2] drm/imx/tve: fix probe device leak
-Message-ID: <20260128-inchworm-of-fascinating-enthusiasm-de5ab2@houat>
-References: <20251030163456.15807-1-johan@kernel.org>
- <aR8TWJurF1a0LLGJ@hovoldconsulting.com>
- <aWd2xizOQAnVRaSs@hovoldconsulting.com>
- <aXjg2C0XeVGEtdDy@hovoldconsulting.com>
+	s=arc-20240116; t=1769594365; c=relaxed/simple;
+	bh=GFqWwOFWu6EfwFIO+uiYxjYWzWm9ptu6E09Y3VXHuY0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dWCzEDCS+T2jsPk7g09WqSnljRRP23dV2mTBhrjaVFmLEc3iV/ftvPUzGxl+o2LobhCVQtDwsSZ3MGTQzYSTJceWAl3dkCjde3rM3XgX6GSHZkJQ9JLdu5FtzfCA6lt8EKBj2KPtjdMg37v9dFc5Yef3ZFdY80qaVPxYxugGAk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DgOFXUPs; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769594364; x=1801130364;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=GFqWwOFWu6EfwFIO+uiYxjYWzWm9ptu6E09Y3VXHuY0=;
+  b=DgOFXUPsvaSTq/2JbIqaUp5KAYLnp4pIx+bXbA19DsxDoZaWVPtd77kL
+   pLzjQEnVN7xT2AZbAgquTvShH1nq8c5SViL0ayhOdslS1JuCHR5e4YDSN
+   W5Tu15NBxJTF6PGfhSgNB9PjomkZjr6k8uNpTSWw2IIMWtcd6hhtz9c8M
+   NEXkpU2tP16uzgwR47LLpI+zqOQRZip250E1fCkZCbckBrkVdaywoyxKC
+   dDSEB7T3fJqs6vIlYHk7nEzppmqdRjJ43QOW9mBVtm096QG6qt2xIpesx
+   1IU/w6CMv+vRjGcGfUxxcVQNkaa37ySiFq0ydoTuXfV5PQfdfkTgEI/h7
+   g==;
+X-CSE-ConnectionGUID: /gaD70/fSbO0EuaaJ480EQ==
+X-CSE-MsgGUID: d5G2Km52Si6tU2/vnqL4Tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="81525515"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="81525515"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 01:59:23 -0800
+X-CSE-ConnectionGUID: /oN1U4XtR0GqvSPucNfz4g==
+X-CSE-MsgGUID: gCpjuyiPRwa3E9soUPLX8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="212329002"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by orviesa003.jf.intel.com with ESMTP; 28 Jan 2026 01:59:20 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 68E9595; Wed, 28 Jan 2026 10:59:19 +0100 (CET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	linux-gpio@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Mika Westerberg <westeri@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/1] gpiolib: acpi: Fix potential out-of-boundary left shift
+Date: Wed, 28 Jan 2026 10:58:54 +0100
+Message-ID: <20260128095918.4157491-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha384;
-	protocol="application/pgp-signature"; boundary="lpelexmbpijxrpns"
-Content-Disposition: inline
-In-Reply-To: <aXjg2C0XeVGEtdDy@hovoldconsulting.com>
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-3.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-211941-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-211942-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[pengutronix.de,linux.intel.com,suse.de,gmail.com,ffwll.ch,lists.freedesktop.org,lists.linux.dev,vger.kernel.org,nxp.com];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mripard@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[intel.com:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email]
-X-Rspamd-Queue-Id: 9E9659F3A6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,intel.com:email,intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 74CEC9F38F
 X-Rspamd-Action: no action
 
+GPIO Address Space handler gets a pointer to the in or out value.
+This value is supposed to be at least 64-bit, but it's not limited
+to be exactly 64-bit. When ACPI tables are being parsed, for
+the bigger Connection():s ACPICA creates a Buffer instead of regular
+Integer object. The Buffer exists as long as Namespace holds
+the certain Connection(). Hence we can access the necessary bits
+without worrying. On the other hand, the left shift, used in
+the code, is limited by 31 (on 32-bit platforms) and otherwise
+considered to be Undefined Behaviour. Also the code uses only
+the first 64-bit word for the value, and anything bigger than 63
+will be also subject to UB. Fix all this by modifying the code
+to correctly set or clear the respective bit in the bitmap constructed
+of 64-bit words.
 
---lpelexmbpijxrpns
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2] drm/imx/tve: fix probe device leak
-MIME-Version: 1.0
+Fixes: 59084c564c41 ("gpiolib: acpi: use BIT_ULL() for u64 mask in address space handler")
+Fixes: 2c4d00cb8fc5 ("gpiolib: acpi: Use BIT() macro to increase readability")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v3: added requested and given tags (Bart, Mika)
+ drivers/gpio/gpiolib-acpi-core.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-Hi,
+diff --git a/drivers/gpio/gpiolib-acpi-core.c b/drivers/gpio/gpiolib-acpi-core.c
+index d42f769eeb11..9627b3a9c7f3 100644
+--- a/drivers/gpio/gpiolib-acpi-core.c
++++ b/drivers/gpio/gpiolib-acpi-core.c
+@@ -1104,6 +1104,7 @@ acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,
+ 		unsigned int pin = agpio->pin_table[i];
+ 		struct acpi_gpio_connection *conn;
+ 		struct gpio_desc *desc;
++		u16 word, shift;
+ 		bool found;
+ 
+ 		mutex_lock(&achip->conn_lock);
+@@ -1158,10 +1159,22 @@ acpi_gpio_adr_space_handler(u32 function, acpi_physical_address address,
+ 
+ 		mutex_unlock(&achip->conn_lock);
+ 
+-		if (function == ACPI_WRITE)
+-			gpiod_set_raw_value_cansleep(desc, !!(*value & BIT_ULL(i)));
+-		else
+-			*value |= (u64)gpiod_get_raw_value_cansleep(desc) << i;
++		/*
++		 * For the cases when OperationRegion() consists of more than
++		 * 64 bits calculate the word and bit shift to use that one to
++		 * access the value.
++		 */
++		word = i / 64;
++		shift = i % 64;
++
++		if (function == ACPI_WRITE) {
++			gpiod_set_raw_value_cansleep(desc, value[word] & BIT_ULL(shift));
++		} else {
++			if (gpiod_get_raw_value_cansleep(desc))
++				value[word] |= BIT_ULL(shift);
++			else
++				value[word] &= ~BIT_ULL(shift);
++		}
+ 	}
+ 
+ out:
+-- 
+2.50.1
 
-On Tue, Jan 27, 2026 at 04:59:20PM +0100, Johan Hovold wrote:
-> On Wed, Jan 14, 2026 at 11:58:14AM +0100, Johan Hovold wrote:
-> > On Thu, Nov 20, 2025 at 02:10:48PM +0100, Johan Hovold wrote:
-> > > On Thu, Oct 30, 2025 at 05:34:56PM +0100, Johan Hovold wrote:
-> > > > Make sure to drop the reference taken to the DDC device during prob=
-e on
-> > > > probe failure (e.g. probe deferral) and on driver unbind.
-> > > >=20
-> > > > Fixes: fcbc51e54d2a ("staging: drm/imx: Add support for Television =
-Encoder (TVEv2)")
-> > > > Cc: stable@vger.kernel.org	# 3.10
-> > > > Cc: Philipp Zabel <p.zabel@pengutronix.de>
-> > > > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > > ---
-> > > >=20
-> > > > Changes in v2:
-> > > >  - add missing NULL ddc check
-> > >=20
-> > > Can this one be picked up for 6.19?
-> >=20
-> > It's been two more months so sending another reminder.
-> >=20
-> > Can this one be merged now?
->=20
-> Can someone please merge this for 6.20?
-
-I'm not sure what went wrong, but I just applied it. It should end up in
-6.19.
-
-Maxime
-
---lpelexmbpijxrpns
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJUEABMJAB0WIQTkHFbLp4ejekA/qfgnX84Zoj2+dgUCaXnd0QAKCRAnX84Zoj2+
-dsV1AX9BFigou9HGowx/ngN6YjSXQ5Rff4NddhPSZcqx3xHqGrrWdRHACfLWnB2l
-Jgv0sXUBfjNJajMrRR/Xk+iEilujyUH/t0vyCgIuBps5wF4bv3JnenqhEhH6FomS
-GvuA1Y2Hvw==
-=rF9r
------END PGP SIGNATURE-----
-
---lpelexmbpijxrpns--
 
