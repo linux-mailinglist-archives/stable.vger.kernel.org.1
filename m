@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-212640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPdKIHU8emlB4wEAu9opvQ
-	(envelope-from <stable+bounces-212640-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:42:29 +0100
+	id sA2LJQM0eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADC7A6050
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:42:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5175EA5157
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:06:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 70507325AF8A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:03:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EF14B3044C9F
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4F63033E0;
-	Wed, 28 Jan 2026 16:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A1F30F7F1;
+	Wed, 28 Jan 2026 16:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNqLJ819"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZjTDCci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41B726ED40;
-	Wed, 28 Jan 2026 16:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B5F309F1F;
+	Wed, 28 Jan 2026 16:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616200; cv=none; b=lD7kVwgsdnDLjxU7Y/FtAGp9wSpPxuRVCuQRlKXcAtVhEQ07mRL+6MJHs7KKtB1cLIBWp8w02T3paBouAwaYbnIgfh421eUj4YpXcYg4uP+ST+3qnHvU8QhdgfS6BVypQFbQmujbcqWrr2ifNdJt5J5/5FmYvw5WZtrRTk2Aex0=
+	t=1769616114; cv=none; b=lnTpc1R8CSNm9dVezUnOnr92+Se2ujQJXMq/QzsuJ/a9mrFdFcxFrjOOuT/cOEgmSX1nRPZUp4M2xn1OVRpUCy5s6t9IJXe7cNONooeCwA3Al+K7222Z3LViHTJ2HMuQzTEToC3e958O9JxJRjTdfNvTkCR5Ao3VucM30w8/5Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616200; c=relaxed/simple;
-	bh=h9N2ABVMtYg2gPgDJbk0TmEmuNXo/Mo01E3Ejh37tCU=;
+	s=arc-20240116; t=1769616114; c=relaxed/simple;
+	bh=S1YtUIadwpAAD7eeqt7bJ/f5ZsM2OnRn6bjhgJ58/kQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=npElpQi2xSBsGISmC1uTCvd93iOCwbRCiYFLCFmQdKdlMQe8PxQGdGNXVqbdjGO8tiXDyQtFM1nIBIHGXBqdOvzAIJjFoN2kkXNj7H/lLM9xY/RcNRSsdQ4NzkwADx9R35dKjiuzOvQK1ArVEwwQdWhPvIK8ef3Y1kTlaTT10L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNqLJ819; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0395CC4CEF1;
-	Wed, 28 Jan 2026 16:03:19 +0000 (UTC)
+	 MIME-Version; b=NukqCmwmKJG853fKljS3Vbq5fuLKGcq+kAzfYgHgDe4hP0kWSdgD7875YdJ/wMaK8KAID+CsOs/Z58z0y0hiD72Cc/O+DesfqPB4tCVAhRIC946mcots6Z8nxKeHH9qcOApWyvfEI7H9FMBtwGya+O/neswM5Syxvh95SltksOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZjTDCci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793A5C4CEF7;
+	Wed, 28 Jan 2026 16:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769616200;
-	bh=h9N2ABVMtYg2gPgDJbk0TmEmuNXo/Mo01E3Ejh37tCU=;
+	s=korg; t=1769616114;
+	bh=S1YtUIadwpAAD7eeqt7bJ/f5ZsM2OnRn6bjhgJ58/kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FNqLJ819OOyJWmVk6JD105hB2fU8cdoufJQ3Glj66u2CxdXxQNQkaxMeMHbLIz2+2
-	 BpX9JwIzTPzltPc1mfE71dCA1qH7DDFMMsjT/9be5LbP/3wVHywP9MQX4RV+bXmLQL
-	 45zsfVSz8/YBb8JDe1W9dDpHZ0kh4vRnZMnkX2Os=
+	b=AZjTDCcidHc1xIcepwSDdPFR+L0dNSpC5mXMpY00c1ALlvPQUdLonQjb7+Z5N1J4q
+	 VkKpu5vJoo0SKX9dg+JDIODNEqfOS9oxvt7RqIKbz0CKiY3YR4ZDSnaBnVB5ffxf43
+	 JM/Byz0FYvQ0C+1fXc1itthOFQXDl3hMvuH5ckaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?Jan=20H . =20Sch=C3=B6nherr?=" <jschoenh@amazon.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Fernand Sieber <sieberf@amazon.com>
-Subject: [PATCH 6.18 202/227] perf/x86/intel: Do not enable BTS for guests
-Date: Wed, 28 Jan 2026 16:24:07 +0100
-Message-ID: <20260128145351.709203836@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.18 203/227] irqchip/gic-v3-its: Avoid truncating memory addresses
+Date: Wed, 28 Jan 2026 16:24:08 +0100
+Message-ID: <20260128145351.744724659@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
 References: <20260128145344.331957407@linuxfoundation.org>
@@ -63,93 +63,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212640-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212615-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amazon.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EADC7A6050
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5175EA5157
 X-Rspamd-Action: no action
 
 6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernand Sieber <sieberf@amazon.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 91dcfae0ff2b9b9ab03c1ec95babaceefbffb9f4 upstream.
+commit 8d76a7d89c12d08382b66e2f21f20d0627d14859 upstream.
 
-By default when users program perf to sample branch instructions
-(PERF_COUNT_HW_BRANCH_INSTRUCTIONS) with a sample period of 1, perf
-interprets this as a special case and enables BTS (Branch Trace Store)
-as an optimization to avoid taking an interrupt on every branch.
+On 32-bit machines with CONFIG_ARM_LPAE, it is possible for lowmem
+allocations to be backed by addresses physical memory above the 32-bit
+address limit, as found while experimenting with larger VMSPLIT
+configurations.
 
-Since BTS doesn't virtualize, this optimization doesn't make sense when
-the request originates from a guest. Add an additional check that
-prevents this optimization for virtualized events (exclude_host).
+This caused the qemu virt model to crash in the GICv3 driver, which
+allocates the 'itt' object using GFP_KERNEL. Since all memory below
+the 4GB physical address limit is in ZONE_DMA in this configuration,
+kmalloc() defaults to higher addresses for ZONE_NORMAL, and the
+ITS driver stores the physical address in a 32-bit 'unsigned long'
+variable.
 
-Reported-by: Jan H. Schönherr <jschoenh@amazon.de>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Fernand Sieber <sieberf@amazon.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20251211183604.868641-1-sieberf@amazon.com
+Change the itt_addr variable to the correct phys_addr_t type instead,
+along with all other variables in this driver that hold a physical
+address.
+
+The gicv5 driver correctly uses u64 variables, while all other irqchip
+drivers don't call virt_to_phys or similar interfaces. It's expected that
+other device drivers have similar issues, but fixing this one is
+sufficient for booting a virtio based guest.
+
+Fixes: cc2d3216f53c ("irqchip: GICv3: ITS command queue")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260119201603.2713066-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/perf_event.h |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/events/perf_event.h
-+++ b/arch/x86/events/perf_event.h
-@@ -1558,13 +1558,22 @@ static inline bool intel_pmu_has_bts_per
- 	struct hw_perf_event *hwc = &event->hw;
- 	unsigned int hw_event, bts_event;
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -709,7 +709,7 @@ static struct its_collection *its_build_
+ 						 struct its_cmd_block *cmd,
+ 						 struct its_cmd_desc *desc)
+ {
+-	unsigned long itt_addr;
++	phys_addr_t itt_addr;
+ 	u8 size = ilog2(desc->its_mapd_cmd.dev->nr_ites);
  
--	if (event->attr.freq)
-+	/*
-+	 * Only use BTS for fixed rate period==1 events.
-+	 */
-+	if (event->attr.freq || period != 1)
-+		return false;
-+
-+	/*
-+	 * BTS doesn't virtualize.
-+	 */
-+	if (event->attr.exclude_host)
- 		return false;
+ 	itt_addr = virt_to_phys(desc->its_mapd_cmd.dev->itt);
+@@ -879,7 +879,7 @@ static struct its_vpe *its_build_vmapp_c
+ 					   struct its_cmd_desc *desc)
+ {
+ 	struct its_vpe *vpe = valid_vpe(its, desc->its_vmapp_cmd.vpe);
+-	unsigned long vpt_addr, vconf_addr;
++	phys_addr_t vpt_addr, vconf_addr;
+ 	u64 target;
+ 	bool alloc;
  
- 	hw_event = hwc->config & INTEL_ARCH_EVENT_MASK;
- 	bts_event = x86_pmu.event_map(PERF_COUNT_HW_BRANCH_INSTRUCTIONS);
+@@ -2477,10 +2477,10 @@ retry_baser:
+ 	baser->psz = psz;
+ 	tmp = indirect ? GITS_LVL1_ENTRY_SIZE : esz;
  
--	return hw_event == bts_event && period == 1;
-+	return hw_event == bts_event;
- }
+-	pr_info("ITS@%pa: allocated %d %s @%lx (%s, esz %d, psz %dK, shr %d)\n",
++	pr_info("ITS@%pa: allocated %d %s @%llx (%s, esz %d, psz %dK, shr %d)\n",
+ 		&its->phys_base, (int)(PAGE_ORDER_TO_SIZE(order) / (int)tmp),
+ 		its_base_type_string[type],
+-		(unsigned long)virt_to_phys(base),
++		(u64)virt_to_phys(base),
+ 		indirect ? "indirect" : "flat", (int)esz,
+ 		psz / SZ_1K, (int)shr >> GITS_BASER_SHAREABILITY_SHIFT);
  
- static inline bool intel_pmu_has_bts(struct perf_event *event)
 
 
 
