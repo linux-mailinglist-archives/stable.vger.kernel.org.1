@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-212552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212346-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHXFGa80eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212552-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:19 +0100
+	id UGu6G54wemkx4gEAu9opvQ
+	(envelope-from <stable+bounces-212346-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC248A529A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E621AA4945
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A04C832F48E5
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C9A123082CC1
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5214A301465;
-	Wed, 28 Jan 2026 15:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B0230EF76;
+	Wed, 28 Jan 2026 15:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MtrrPeFs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EEoD3aV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165192F25EF;
-	Wed, 28 Jan 2026 15:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8ED12FB085;
+	Wed, 28 Jan 2026 15:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615902; cv=none; b=NkOGsKNkxfiut8YSewfVZWHyluMUoGp6czirNe84CTuUK9Mv3kBzRAS9WaxejDxFzRKrbQj7HqOU230k6iwNhuvyh0FfZe2UgWyXknwCM6M2LJBi0OUPeCXe1JHsLjK4aAC3pH3T7bDRbrZLYF8Ev8rzY+vCCHcit04Ec95u2WQ=
+	t=1769615210; cv=none; b=TFrPh12o4KSEmRG4dp9nsyC+ojlw1rWRojILOynZlg8PtPfH/V9ZkOEOTOfnxLjXTcgnA09J5bxF5xfGZv9H2hPce8tIvaYUaxvLjKWM16AzaH2gXYfSQ0Vptt7tGABxF8W7Gv+Z7Uv5UA4QTQwAMIPcRvOnUOhRAimNUc9lbGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615902; c=relaxed/simple;
-	bh=jcLFlCmQswCHJQeSdohlRJlhDDhS1AIgOtuHgDAgSe8=;
+	s=arc-20240116; t=1769615210; c=relaxed/simple;
+	bh=qw2WbEAzyypuxVChHLBNTZc7OXiOXf4NlrGPE+aOmkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxiGMHAfHgbZ7MsftsIIW+6Tc2gaFI/nnDgSDPGv3N3qG7McN4ZXAf9kS4R7kOC0WzjSnEpVg2ISJTRvuQy342MDNdhy/HcBuIOot+Hagig+kmxzGZ6nkWUpYIS28qowFP8Dar4IJ5ZhanG0sWKMow2NqhLj3RHk/5QNy2AX50M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MtrrPeFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503BDC4CEF1;
-	Wed, 28 Jan 2026 15:58:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s1O3Fvd/zqvNfJTHl3sh+8WVKIo6aMJ68FoThfq+J5cwjI+GgQdj9QUDHBMseDUachEqas9ujjnbrEXpZmkhZfmk7mfNRtwwSyqWzEYeqpfiSFt8CE/szjgdt305bo0oLqXsy1xiqRAHRjJYW15mg6FTY4fj3tzOrlrSImo844A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0EEoD3aV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18655C4CEF1;
+	Wed, 28 Jan 2026 15:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615901;
-	bh=jcLFlCmQswCHJQeSdohlRJlhDDhS1AIgOtuHgDAgSe8=;
+	s=korg; t=1769615210;
+	bh=qw2WbEAzyypuxVChHLBNTZc7OXiOXf4NlrGPE+aOmkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MtrrPeFshl1erXVX4AV13TCG7RrJiGPjhkr62f42Mno73w21G5sawy4YdB7yAXlTW
-	 LcbiBYSZpVng3wx3+kXJqDFFPi6gIM5yenCXvtcU2/t3KbFs6uU8HC9454rrbmhKwx
-	 xINVzk+xh8JPJpomlztDWTzDwQMxXmzwcgVycbME=
+	b=0EEoD3aVty7Xs9YlwoxJLj/zxzdAFb46qMn0nghGiX6subQg4CoOGfnce+sizhkYO
+	 0x6+19MHZTVMvH57HOHwXJUGtvUuhFaEYuLE5I8ZE4eP7Mdhe6aulm3nvR5/EP82ym
+	 gG5A0elFNiDWMhXC02mf+BKE9K/4Mn/qN3DG8VBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 148/227] dpll: Prevent duplicate registrations
+	=?UTF-8?q?Andreas=20K=C3=BCbrich?= <andreas.kuebrich@spektra-dresden.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 110/169] iio: dac: ad5686: add AD5695R to ad5686_chip_info_tbl
 Date: Wed, 28 Jan 2026 16:23:13 +0100
-Message-ID: <20260128145349.782687869@linuxfoundation.org>
+Message-ID: <20260128145337.966090556@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212552-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212346-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linux.dev:email]
-X-Rspamd-Queue-Id: CC248A529A
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,spektra-dresden.de:email]
+X-Rspamd-Queue-Id: E621AA4945
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Kübrich, Andreas <andreas.kuebrich@spektra-dresden.de>
 
-[ Upstream commit f3ddbaaaaf4d0633b40482f471753f9c71294a4a ]
+commit 441ac29923c9172bc5e4b2c4f52ae756192f5715 upstream.
 
-Modify the internal registration helpers dpll_xa_ref_{dpll,pin}_add()
-to reject duplicate registration attempts.
+The chip info for this variant (I2C, four channels, 14 bit, internal
+reference) seems to have been left out due to oversight, so
+ad5686_chip_info_tbl[ID_AD5695R] is all zeroes. Initialisation of an
+AD5695R still succeeds, but the resulting IIO device has no channels and no
+/dev/iio:device* node.
 
-Previously, if a caller attempted to register the same pin multiple
-times (with the same ops, priv, and cookie) on the same device, the core
-silently increments the reference count and return success. This behavior
-is incorrect because if the caller makes these duplicate registrations
-then for the first one dpll_pin_registration is allocated and for others
-the associated dpll_pin_ref.refcount is incremented. During the first
-unregistration the associated dpll_pin_registration is freed and for
-others WARN is fired.
+Add the missing chip info to the table.
 
-Fix this by updating the logic to return `-EEXIST` if a matching
-registration is found to enforce a strict "register once" policy.
-
-Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260121130012.112606-1-ivecera@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4177381b4401 ("iio:dac:ad5686: Add AD5671R/75R/94/94R/95R/96/96R support")
+Signed-off-by: Andreas Kübrich <andreas.kuebrich@spektra-dresden.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dpll/dpll_core.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/iio/dac/ad5686.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-index a461095efd8ac..8879a72351561 100644
---- a/drivers/dpll/dpll_core.c
-+++ b/drivers/dpll/dpll_core.c
-@@ -83,10 +83,8 @@ dpll_xa_ref_pin_add(struct xarray *xa_pins, struct dpll_pin *pin,
- 		if (ref->pin != pin)
- 			continue;
- 		reg = dpll_pin_registration_find(ref, ops, priv, cookie);
--		if (reg) {
--			refcount_inc(&ref->refcount);
--			return 0;
--		}
-+		if (reg)
-+			return -EEXIST;
- 		ref_exists = true;
- 		break;
- 	}
-@@ -164,10 +162,8 @@ dpll_xa_ref_dpll_add(struct xarray *xa_dplls, struct dpll_device *dpll,
- 		if (ref->dpll != dpll)
- 			continue;
- 		reg = dpll_pin_registration_find(ref, ops, priv, cookie);
--		if (reg) {
--			refcount_inc(&ref->refcount);
--			return 0;
--		}
-+		if (reg)
-+			return -EEXIST;
- 		ref_exists = true;
- 		break;
- 	}
--- 
-2.51.0
-
+--- a/drivers/iio/dac/ad5686.c
++++ b/drivers/iio/dac/ad5686.c
+@@ -434,6 +434,12 @@ static const struct ad5686_chip_info ad5
+ 		.num_channels = 4,
+ 		.regmap_type = AD5686_REGMAP,
+ 	},
++	[ID_AD5695R] = {
++		.channels = ad5685r_channels,
++		.int_vref_mv = 2500,
++		.num_channels = 4,
++		.regmap_type = AD5686_REGMAP,
++	},
+ 	[ID_AD5696] = {
+ 		.channels = ad5686_channels,
+ 		.num_channels = 4,
 
 
 
