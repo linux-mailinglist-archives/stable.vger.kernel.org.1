@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-212200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212357-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJSNOqcwemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:07 +0100
+	id aE5PMcswemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212357-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C05A8A4970
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 468B3A49E5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C195D305E0B9
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:39:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4FED301FC87
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1C32F360A;
-	Wed, 28 Jan 2026 15:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06FA2C2346;
+	Wed, 28 Jan 2026 15:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOvyjqYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2RoCSDy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58722EC096;
-	Wed, 28 Jan 2026 15:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717E71E1DFC;
+	Wed, 28 Jan 2026 15:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614720; cv=none; b=GSvRArJWOhFW80pMeEmJfkfIiFzuoqFSgKvIor/G2wJ3cp+l8mLMBqAlb/CaQQXA/B5M+8iGdQ+Csrk4h7/PzWAxxIAQrKtsnRofI5CxryyXFPHUk0cbJlff//pKuJDb4F3IZMxWQVe4E/0PyrB7QF8WxcwtwHyvqymfdfhD5l4=
+	t=1769615248; cv=none; b=WCRYnfCmfpVqsK+v4hHGbRgopW0lzY7vrAmZEVvNeNRVuZBgZ5JGbdzZjdH4Y093otS3MVan1M4KfcEHbhliBDAx2BDSCmZqxIY8KH1z03TEvudPMkMrOkn/JDG6Xfbx3Wn1gJfkeggvutyud2UhGCeepki7VTLeal4cSZPRFGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614720; c=relaxed/simple;
-	bh=GHS/wrrsh13UViQLe63rmJ5LcFsnwaIlaeU5f21ZOVY=;
+	s=arc-20240116; t=1769615248; c=relaxed/simple;
+	bh=RqL5IlyZqgV8cmmE8bcqTspQK3ytk4OIreGjW4Wji6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KminQqoIfkQsQbBY78+nKj9fQnI4t3OKoSzQ8vNAE4CwY4o+k0LXiWu25N2FHiLhUdJIxjvxBxhbDVvYyxL+zraEUIOaWcrTJQ5W6YvvdIM8F65joZH3tkqrXY351Nt5bTH3mKhKFInLu7d6tbjEigZz9Tp5B2AUAalYy6BLU7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oOvyjqYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A6FC4CEF7;
-	Wed, 28 Jan 2026 15:38:39 +0000 (UTC)
+	 MIME-Version; b=gesSHPcbUH5CeAFFxr9EEGnn3XcvYuXNo1/ugfGynihM6EfUvSwj9KDMGOxSjwKceW8RTLw6qy1dLCTdJxBmOdhjf2GiAWxD55GjbiJE15YJd0ESATgyGIX78L2FIdCOPNujsuXq4em1BdBCclOryp8BHAg+H5jDtRoMnOLu85w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2RoCSDy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F006EC4CEF1;
+	Wed, 28 Jan 2026 15:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614719;
-	bh=GHS/wrrsh13UViQLe63rmJ5LcFsnwaIlaeU5f21ZOVY=;
+	s=korg; t=1769615248;
+	bh=RqL5IlyZqgV8cmmE8bcqTspQK3ytk4OIreGjW4Wji6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOvyjqYQhueSpMgLqltMCvmXHWhFA3wEKwsrYCYF/mK9CeLspv0j7xrSPj3P3lltF
-	 a2+7j8iEFHJxqBeG7Qf/uek4/ZH/QAmay3NoHjyUkI+5p5AHuDSPihy1vmxtMoBDLb
-	 SKy4Uxolr8v7CnMTdBtIpq9I0CTBWQoGmcDsufTE=
+	b=k2RoCSDyJ2bTt9gejI9mDRDlV+0WhhQNk658HVVHkf7Pbw6eHsgGMtcadbuIzW8UG
+	 QoDM25hcvk7y9ueXC+3wB1M1yihOkujZFO7ztiE9YyfEppMky7ni0Gl7bnack3E0gL
+	 kLTWjyzw5sdUov2QDkzp5v6OH0z8rk4tf/6QS9lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.6 222/254] bpf: Do not let BPF test infra emit invalid GSO types to stack
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Yifeng Zhao <yifeng.zhao@rock-chips.com>,
+	Shawn Lin <shawn.lin@rock-chips.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 115/169] mmc: sdhci-of-dwcmshc: Prevent illegal clock reduction in HS200/HS400 mode
 Date: Wed, 28 Jan 2026 16:23:18 +0100
-Message-ID: <20260128145352.775480825@linuxfoundation.org>
+Message-ID: <20260128145338.142909660@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,101 +78,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212200-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212357-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,hust.edu.cn:email]
-X-Rspamd-Queue-Id: C05A8A4970
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email,debian:email]
+X-Rspamd-Queue-Id: 468B3A49E5
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Shawn Lin <shawn.lin@rock-chips.com>
 
-commit 04a899573fb87273a656f178b5f920c505f68875 upstream.
+commit 3009738a855cf938bbfc9078bec725031ae623a4 upstream.
 
-Yinhao et al. reported that their fuzzer tool was able to trigger a
-skb_warn_bad_offload() from netif_skb_features() -> gso_features_check().
-When a BPF program - triggered via BPF test infra - pushes the packet
-to the loopback device via bpf_clone_redirect() then mentioned offload
-warning can be seen. GSO-related features are then rightfully disabled.
+When operating in HS200 or HS400 timing modes, reducing the clock frequency
+below 52MHz will lead to link broken as the Rockchip DWC MSHC controller
+requires maintaining a minimum clock of 52MHz in these modes.
 
-We get into this situation due to convert___skb_to_skb() setting
-gso_segs and gso_size but not gso_type. Technically, it makes sense
-that this warning triggers since the GSO properties are malformed due
-to the gso_type. Potentially, the gso_type could be marked non-trustworthy
-through setting it at least to SKB_GSO_DODGY without any other specific
-assumptions, but that also feels wrong given we should not go further
-into the GSO engine in the first place.
+Add a check to prevent illegal clock reduction through debugfs:
 
-The checks were added in 121d57af308d ("gso: validate gso_type in GSO
-handlers") because there were malicious (syzbot) senders that combine
-a protocol with a non-matching gso_type. If we would want to drop such
-packets, gso_features_check() currently only returns feature flags via
-netif_skb_features(), so one location for potentially dropping such skbs
-could be validate_xmit_unreadable_skb(), but then otoh it would be
-an additional check in the fast-path for a very corner case. Given
-bpf_clone_redirect() is the only place where BPF test infra could emit
-such packets, lets reject them right there.
+root@debian:/# echo 50000000 > /sys/kernel/debug/mmc0/clock
+root@debian:/# [   30.090146] mmc0: running CQE recovery
+mmc0: cqhci: Failed to halt
+mmc0: cqhci: spurious TCN for tag 0
+WARNING: drivers/mmc/host/cqhci-core.c:797 at cqhci_irq+0x254/0x818, CPU#1: kworker/1:0H/24
+Modules linked in:
+CPU: 1 UID: 0 PID: 24 Comm: kworker/1:0H Not tainted 6.19.0-rc1-00001-g09db0998649d-dirty #204 PREEMPT
+Hardware name: Rockchip RK3588 EVB1 V10 Board (DT)
+Workqueue: kblockd blk_mq_run_work_fn
+pstate: 604000c9 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : cqhci_irq+0x254/0x818
+lr : cqhci_irq+0x254/0x818
+...
 
-Fixes: 850a88cc4096 ("bpf: Expose __sk_buff wire_len/gso_segs to BPF_PROG_TEST_RUN")
-Fixes: cf62089b0edd ("bpf: Add gso_size to __sk_buff")
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reported-by: Dongliang Mu <dzm91@hust.edu.cn>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20251020075441.127980-1-daniel@iogearbox.net
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Fixes: c6f361cba51c ("mmc: sdhci-of-dwcmshc: add support for rk3588")
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: Yifeng Zhao <yifeng.zhao@rock-chips.com>
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bpf/test_run.c |    5 +++++
- net/core/filter.c  |    7 +++++++
- 2 files changed, 12 insertions(+)
+ drivers/mmc/host/sdhci-of-dwcmshc.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -914,6 +914,11 @@ static int convert___skb_to_skb(struct s
+--- a/drivers/mmc/host/sdhci-of-dwcmshc.c
++++ b/drivers/mmc/host/sdhci-of-dwcmshc.c
+@@ -650,6 +650,13 @@ static void dwcmshc_rk3568_set_clock(str
+ 	sdhci_writel(host, extra, reg);
  
- 	if (__skb->gso_segs > GSO_MAX_SEGS)
- 		return -EINVAL;
+ 	if (clock <= 52000000) {
++		if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
++		    host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
++			dev_err(mmc_dev(host->mmc),
++				"Can't reduce the clock below 52MHz in HS200/HS400 mode");
++			return;
++		}
 +
-+	/* Currently GSO type is zero/unset. If this gets extended with
-+	 * a small list of accepted GSO types in future, the filter for
-+	 * an unset GSO type in bpf_clone_redirect() can be lifted.
-+	 */
- 	skb_shinfo(skb)->gso_segs = __skb->gso_segs;
- 	skb_shinfo(skb)->gso_size = __skb->gso_size;
- 	skb_shinfo(skb)->hwtstamps.hwtstamp = __skb->hwtstamp;
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2451,6 +2451,13 @@ BPF_CALL_3(bpf_clone_redirect, struct sk
- 	if (unlikely(flags & (~(BPF_F_INGRESS) | BPF_F_REDIRECT_INTERNAL)))
- 		return -EINVAL;
- 
-+	/* BPF test infra's convert___skb_to_skb() can create type-less
-+	 * GSO packets. gso_features_check() will detect this as a bad
-+	 * offload. However, lets not leak them out in the first place.
-+	 */
-+	if (unlikely(skb_is_gso(skb) && !skb_shinfo(skb)->gso_type))
-+		return -EBADMSG;
-+
- 	dev = dev_get_by_index_rcu(dev_net(skb->dev), ifindex);
- 	if (unlikely(!dev))
- 		return -EINVAL;
+ 		/*
+ 		 * Disable DLL and reset both of sample and drive clock.
+ 		 * The bypass bit and start bit need to be set if DLL is not locked.
 
 
 
