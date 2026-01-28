@@ -1,334 +1,199 @@
-Return-Path: <stable+bounces-212660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMczFa5aemm35QEAu9opvQ
-	(envelope-from <stable+bounces-212660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:51:26 +0100
+	id QLaoBn5cemm35QEAu9opvQ
+	(envelope-from <stable+bounces-212662-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:59:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4BEA7E59
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:51:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B55EA7FEE
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 19:59:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4F2630156C8
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:51:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 146F73035D63
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 18:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873E337107B;
-	Wed, 28 Jan 2026 18:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0A1350A30;
+	Wed, 28 Jan 2026 18:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="V/b07Qc/"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="pfv/pxwT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f193.google.com (mail-dy1-f193.google.com [74.125.82.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A017333434;
-	Wed, 28 Jan 2026 18:51:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB8F313520
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 18:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769626281; cv=none; b=hJMLbZjKch9tc1zBVIhy8tC/wR/BCwHs/r2BAWI8K4tfWkvvELlL9WSgrAEWpKKcq8kUWp4m1lOlv8k9VjUsgOqQ4Wk8hmllyOz8TrwEtOiKE27b/xRtp9nmZe2GlbvLEAwI4LV26189tT795DvJLGnTqGk2LKyPt0IsQg8/JCM=
+	t=1769626747; cv=none; b=mg+wYHM6DPE2pbH0kk3EHzmiiUxePXv5TMQueYZ3K+c5gPsvEeyRg5XZIlQ9fFNw2IXeTLduGkJK2VKqcji7gZfHsqHiJeMbvfIrVaAvFL5+0GyFEXPxRsbsAsv7cynOAGD/6Jc+DwSCi26/W2NVbqBfZYcWz4jb5F5ASlcd7aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769626281; c=relaxed/simple;
-	bh=2JteLNZWbgn3Y5odURnxdDZXXw9T4BZLG6a8Tj8TThc=;
-	h=Date:To:From:Subject:Message-Id; b=H3eOYCM9RmQr+EWsYhtI4ZxIUaw6u2nHkjqrUNiVaJ4bwJQ0x1PJp26taTmH2vLw4xW3jZtq0Qx2X8TdHGP8nsws3ZoEyIdIooNU3nm90JIHaJrhWy26RyaoE1dHxmlUza3PqMdbR4eI/Ic6yxKrlC/mNm9HvdbVTzHjq8hsTig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=V/b07Qc/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3608C4CEF1;
-	Wed, 28 Jan 2026 18:51:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769626280;
-	bh=2JteLNZWbgn3Y5odURnxdDZXXw9T4BZLG6a8Tj8TThc=;
-	h=Date:To:From:Subject:From;
-	b=V/b07Qc//aaYTw96Mgr/GbCckyYSrwviAKKM04l/VnjkTnud+bunmPImUOG+r6TLi
-	 uahbUX5Jg+0ZAGXIs4YZdGEcv4P0OMSsDP5ALMTt8jfAKOjS8cViOjPW3l/ezwtE3h
-	 OQ4ttNUNdX7gqodsgnoWglok8sncCURUfjXVToQk=
-Date: Wed, 28 Jan 2026 10:51:20 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,Liam.Howlett@Oracle.com,andrii@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + procfs-avoid-fetching-build-id-while-holding-vma-lock.patch added to mm-nonmm-unstable branch
-Message-Id: <20260128185120.D3608C4CEF1@smtp.kernel.org>
+	s=arc-20240116; t=1769626747; c=relaxed/simple;
+	bh=kOHkqzbMq7qzJ7DQzP2qllMA9SvSS1txt22NfUufw9M=;
+	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=raNPaNJU4H44JQMh527qoIMPp+1CbKMxmvscpHwk/li3hJRZM0g8nvHy7fPRFs77V4TKNdVcet9FQQKtG7mlLQth+aIEFkqKnT3It/g3g1i7Lg0u+mobrDkMOym6a5HGbKRAgbuRQJj7XJMt/cUW3XGeOhVkCRU6sSLJrKUcQcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=pfv/pxwT; arc=none smtp.client-ip=74.125.82.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-dy1-f193.google.com with SMTP id 5a478bee46e88-2b1981ca515so280895eec.1
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 10:59:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1769626745; x=1770231545; darn=vger.kernel.org;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0tKz0gxtMQFNX4V24OkEbuVzzp2fjgGzDGjGLRRNNfA=;
+        b=pfv/pxwTaU39fUnghiOmb452zWGOIlllvlLrikeSZWGqeMceg4YSctxBvF4Y+aXqDI
+         GtXXqC6AADg3dNvteVO+km/oyUe68yiUU+zKE9kGhgQHChZOUnh6sZEKrOJUNIA7w4hS
+         823BAS1nck5TdP2oTVstjT91gcyLZjyxJqNRF+gPSZ74yC5Hk38xI++OLN1w9Bp9oLBW
+         ubJiGHhKIjwqpqRjCAQeR9BcB5xqoLnpFM3vXUb9ha5fXx2kJLHnsCzUYjmaYKEl8bEk
+         3JvXShZKjr4yg66B9mNfNmXyGq/LLPZ/F70VasPEhUkawK5dT2Nq0JMRPTxftOU7a+Tc
+         ovXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769626745; x=1770231545;
+        h=message-id:date:reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0tKz0gxtMQFNX4V24OkEbuVzzp2fjgGzDGjGLRRNNfA=;
+        b=QpXpV1skWG3mXR3AGU5AqqxXNLmpiTFa0bUaG9b7sIQo7tgLJ6kuOvzgkbG/BPSPoN
+         zPKcIsobSFaIrH7q2Fzafu4NasaxTwdut2WYcur5rukjWv0R+MqsIpevuztwicjLtWau
+         hrv1ck5/Zgb3bqmqup5D46e19PFiajmQj1jkA66jQZ9OUHq1JgOaJOSncEkjBC2ndbjR
+         YYsfYuHQs9L/KfOAhNC3cEp2bDdJTcDpga2T4zZN/JCFYkrypJb5XhzIUSHfySREEcCu
+         q8rW3vYMZYCK4HDZj/P59yF82EruqnCoOfxk937o+5+icJBp/tyGshA3SupcfyfNO5HT
+         n+kA==
+X-Forwarded-Encrypted: i=1; AJvYcCXahYFklG48rpfJQD9B0Rudb04vkZJbqAnjpGrsMYk8eQke9jzWpVpMDJ6Afus1/DSPuZiiXIM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBo5nydl3YrOHSfEKTrOsDaqLZAv4R8sJW2zbNL7z9ndPPR1q7
+	Jr/+gP8NsNRWfCgl6D+QU/cnan2Kpsweel1m15d9BiI9NkBxTa62qAOxPKyLN9cHW0s3zvceXMQ
+	Z+u13YFo=
+X-Gm-Gg: AZuq6aLJUusZR44g9swkxc6XK+A2pMt6PerZZePGvIOqY8BswtblpghOBMRq0Yz2zDs
+	ksEVC9/539KSofylYX4MGzLp/IocyRUHKeoisQ44CDTZAJyoc3OS3HgX5OjG2OdC49YW7uXrl6b
+	DpFMkHeezN2J+B4N4pMtOGiCkpw1I3MaNDDVJclmZwxsvnJ009Skl/aUBr9z3kHTGxRMh7QjBAh
+	N7AUAm0GxMU3BhYlgpD0Zz4qE0LPl/LerJb3qfACp51buLyLmHSSS1wnJ6eJ6G+HQuu1muAj6BI
+	WFUSaYX+AcugSkK7LhqAAuTh01ZxEdWfB7bDsX7CcY9QS9JVOxqPzBxaoZusasreDhzLcrRXY4y
+	xTU4AqzBhxdVMbbMXPlK5Gurepj62zIlNVA+YJ8LL9Rd1b2Dtr1iCmHLBtHGMZZOZ2OzE+ZbhR3
+	4yur3+
+X-Received: by 2002:a05:7300:dc14:b0:2b0:6a03:e620 with SMTP id 5a478bee46e88-2b78d9fdc33mr3876716eec.24.1769626744633;
+        Wed, 28 Jan 2026 10:59:04 -0800 (PST)
+Received: from 22d5995788c3 ([20.38.40.137])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a16cfaa8sm3685826eec.4.2026.01.28.10.59.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 10:59:03 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: [REGRESSION] stable-rc/linux-5.10.y: (build) passing 'const void *'
+ to
+ parameter of type 'void *' discards qual...
+From: KernelCI bot <bot@kernelci.org>
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Reply-To: kernelci@lists.linux.dev
+Date: Wed, 28 Jan 2026 18:59:03 -0000
+Message-ID: <176962674334.3769.2151907495073629925@22d5995788c3>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	URI_HIDDEN_PATH(1.00)[https://files.kernelci.org/kbuild-clang-21-i386-allmodconfig-697a296b1908a6300d9ba36f/.config];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernelci-org.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212660-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212662-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kernelci.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernelci-org.20230601.gappssmtp.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email,linux-foundation.org:dkim,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: BD4BEA7E59
+	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,kernelci.org:url,kernelci.org:email,kernelci-org.20230601.gappssmtp.com:dkim]
+X-Rspamd-Queue-Id: 6B55EA7FEE
 X-Rspamd-Action: no action
 
 
-The patch titled
-     Subject: procfs: avoid fetching build ID while holding VMA lock
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     procfs-avoid-fetching-build-id-while-holding-vma-lock.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/procfs-avoid-fetching-build-id-while-holding-vma-lock.patch
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Hello,
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+New build issue found on stable-rc/linux-5.10.y:
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Andrii Nakryiko <andrii@kernel.org>
-Subject: procfs: avoid fetching build ID while holding VMA lock
-Date: Wed, 28 Jan 2026 10:32:32 -0800
-
-Fix PROCMAP_QUERY to fetch optional build ID only after dropping mmap_lock
-or per-VMA lock, whichever was used to lock VMA under question, to avoid
-deadlock reported by syzbot:
-
- -> #1 (&mm->mmap_lock){++++}-{4:4}:
-        __might_fault+0xed/0x170
-        _copy_to_iter+0x118/0x1720
-        copy_page_to_iter+0x12d/0x1e0
-        filemap_read+0x720/0x10a0
-        blkdev_read_iter+0x2b5/0x4e0
-        vfs_read+0x7f4/0xae0
-        ksys_read+0x12a/0x250
-        do_syscall_64+0xcb/0xf80
-        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
- -> #0 (&sb->s_type->i_mutex_key#8){++++}-{4:4}:
-        __lock_acquire+0x1509/0x26d0
-        lock_acquire+0x185/0x340
-        down_read+0x98/0x490
-        blkdev_read_iter+0x2a7/0x4e0
-        __kernel_read+0x39a/0xa90
-        freader_fetch+0x1d5/0xa80
-        __build_id_parse.isra.0+0xea/0x6a0
-        do_procmap_query+0xd75/0x1050
-        procfs_procmap_ioctl+0x7a/0xb0
-        __x64_sys_ioctl+0x18e/0x210
-        do_syscall_64+0xcb/0xf80
-        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
- other info that might help us debug this:
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   rlock(&mm->mmap_lock);
-                                lock(&sb->s_type->i_mutex_key#8);
-                                lock(&mm->mmap_lock);
-   rlock(&sb->s_type->i_mutex_key#8);
-
-  *** DEADLOCK ***
-
-To make this safe, we need to grab file refcount while VMA is still
-locked, but other than that everything is pretty straightforward. 
-Internal build_id_parse() API assumes VMA is passed, but it only needs the
-underlying file reference, so just add another variant
-build_id_parse_file() that expects file passed directly.
-
-Link: https://lkml.kernel.org/r/20260128183232.2854138-1-andrii@kernel.org
-Fixes: ed5d583a88a9 ("fs/procfs: implement efficient VMA querying API for /proc/<pid>/maps")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reported-by: syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com
-Cc: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+ passing 'const void *' to parameter of type 'void *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers] in drivers/net/bonding/bond_main.o (drivers/net/bonding/bond_main.c) [logspec:kbuild,kbuild.compiler.error]
 ---
 
- fs/proc/task_mmu.c      |   42 ++++++++++++++++++++++++--------------
- include/linux/buildid.h |    3 ++
- lib/buildid.c           |   34 +++++++++++++++++++++++-------
- 3 files changed, 56 insertions(+), 23 deletions(-)
+- dashboard: https://d.kernelci.org/i/maestro:98842e43083cea8565d90b0299d8137e4a217c13
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  4eafbd6b7c0c9f7c63aba0ded0cfcfe0ee9a5868
 
---- a/fs/proc/task_mmu.c~procfs-avoid-fetching-build-id-while-holding-vma-lock
-+++ a/fs/proc/task_mmu.c
-@@ -656,6 +656,7 @@ static int do_procmap_query(struct mm_st
- 	struct proc_maps_locking_ctx lock_ctx = { .mm = mm };
- 	struct procmap_query karg;
- 	struct vm_area_struct *vma;
-+	struct file *vm_file = NULL;
- 	const char *name = NULL;
- 	char build_id_buf[BUILD_ID_SIZE_MAX], *name_buf = NULL;
- 	__u64 usize;
-@@ -727,21 +728,6 @@ static int do_procmap_query(struct mm_st
- 		karg.inode = 0;
- 	}
- 
--	if (karg.build_id_size) {
--		__u32 build_id_sz;
--
--		err = build_id_parse(vma, build_id_buf, &build_id_sz);
--		if (err) {
--			karg.build_id_size = 0;
--		} else {
--			if (karg.build_id_size < build_id_sz) {
--				err = -ENAMETOOLONG;
--				goto out;
--			}
--			karg.build_id_size = build_id_sz;
--		}
--	}
--
- 	if (karg.vma_name_size) {
- 		size_t name_buf_sz = min_t(size_t, PATH_MAX, karg.vma_name_size);
- 		const struct path *path;
-@@ -775,10 +761,34 @@ static int do_procmap_query(struct mm_st
- 		karg.vma_name_size = name_sz;
- 	}
- 
-+	if (karg.build_id_size && vma->vm_file)
-+		vm_file = get_file(vma->vm_file);
-+
- 	/* unlock vma or mmap_lock, and put mm_struct before copying data to user */
- 	query_vma_teardown(&lock_ctx);
- 	mmput(mm);
- 
-+	if (karg.build_id_size) {
-+		__u32 build_id_sz;
-+
-+		if (vm_file)
-+			err = build_id_parse_file(vm_file, build_id_buf, &build_id_sz);
-+		else
-+			err = -ENOENT;
-+		if (err) {
-+			karg.build_id_size = 0;
-+		} else {
-+			if (karg.build_id_size < build_id_sz) {
-+				err = -ENAMETOOLONG;
-+				goto out;
-+			}
-+			karg.build_id_size = build_id_sz;
-+		}
-+	}
-+
-+	if (vm_file)
-+		fput(vm_file);
-+
- 	if (karg.vma_name_size && copy_to_user(u64_to_user_ptr(karg.vma_name_addr),
- 					       name, karg.vma_name_size)) {
- 		kfree(name_buf);
-@@ -798,6 +808,8 @@ static int do_procmap_query(struct mm_st
- out:
- 	query_vma_teardown(&lock_ctx);
- 	mmput(mm);
-+	if (vm_file)
-+		fput(vm_file);
- 	kfree(name_buf);
- 	return err;
- }
---- a/include/linux/buildid.h~procfs-avoid-fetching-build-id-while-holding-vma-lock
-+++ a/include/linux/buildid.h
-@@ -7,7 +7,10 @@
- #define BUILD_ID_SIZE_MAX 20
- 
- struct vm_area_struct;
-+struct file;
-+
- int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size);
-+int build_id_parse_file(struct file *file, unsigned char *build_id, __u32 *size);
- int build_id_parse_nofault(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size);
- int build_id_parse_buf(const void *buf, unsigned char *build_id, u32 buf_size);
- 
---- a/lib/buildid.c~procfs-avoid-fetching-build-id-while-holding-vma-lock
-+++ a/lib/buildid.c
-@@ -279,7 +279,7 @@ static int get_build_id_64(struct freade
- /* enough for Elf64_Ehdr, Elf64_Phdr, and all the smaller requests */
- #define MAX_FREADER_BUF_SZ 64
- 
--static int __build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
-+static int __build_id_parse(struct file *file, unsigned char *build_id,
- 			    __u32 *size, bool may_fault)
- {
- 	const Elf32_Ehdr *ehdr;
-@@ -287,11 +287,7 @@ static int __build_id_parse(struct vm_ar
- 	char buf[MAX_FREADER_BUF_SZ];
- 	int ret;
- 
--	/* only works for page backed storage  */
--	if (!vma->vm_file)
--		return -EINVAL;
--
--	freader_init_from_file(&r, buf, sizeof(buf), vma->vm_file, may_fault);
-+	freader_init_from_file(&r, buf, sizeof(buf), file, may_fault);
- 
- 	/* fetch first 18 bytes of ELF header for checks */
- 	ehdr = freader_fetch(&r, 0, offsetofend(Elf32_Ehdr, e_type));
-@@ -332,7 +328,10 @@ out:
-  */
- int build_id_parse_nofault(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size)
- {
--	return __build_id_parse(vma, build_id, size, false /* !may_fault */);
-+	if (!vma->vm_file)
-+		return -EINVAL;
-+
-+	return __build_id_parse(vma->vm_file, build_id, size, false /* !may_fault */);
- }
- 
- /*
-@@ -348,7 +347,26 @@ int build_id_parse_nofault(struct vm_are
-  */
- int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size)
- {
--	return __build_id_parse(vma, build_id, size, true /* may_fault */);
-+	if (!vma->vm_file)
-+		return -EINVAL;
-+
-+	return __build_id_parse(vma->vm_file, build_id, size, true /* may_fault */);
-+}
-+
-+/*
-+ * Parse build ID of ELF file
-+ * @vma:      file object
-+ * @build_id: buffer to store build id, at least BUILD_ID_SIZE long
-+ * @size:     returns actual build id size in case of success
-+ *
-+ * Assumes faultable context and can cause page faults to bring in file data
-+ * into page cache.
-+ *
-+ * Return: 0 on success; negative error, otherwise
-+ */
-+int build_id_parse_file(struct file *file, unsigned char *build_id, __u32 *size)
-+{
-+	return __build_id_parse(file, build_id, size, true /* may_fault */);
- }
- 
- /**
-_
 
-Patches currently in -mm which might be from andrii@kernel.org are
+Please include the KernelCI tag when submitting a fix:
 
-procfs-avoid-fetching-build-id-while-holding-vma-lock.patch
+Reported-by: kernelci.org bot <bot@kernelci.org>
 
+
+Log excerpt:
+=====================================================
+drivers/net/bonding/bond_main.c:3653:66: error: passing 'const void *' to parameter of type 'void *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+ 3653 |                 fk->ports.ports = __skb_flow_get_ports(skb, *nhoff, *ip_proto, data, hlen);
+      |                                                                                ^~~~
+./include/linux/skbuff.h:1291:14: note: passing argument to parameter 'data' here
+ 1291 |                             void *data, int hlen_proto);
+      |                                   ^
+drivers/net/bonding/bond_main.c:3696:32: error: passing 'const void *' to parameter of type 'void *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+ 3696 |                                           &flow_keys_bonding, fk, data,
+      |                                                                   ^~~~
+./include/linux/skbuff.h:1311:10: note: passing argument to parameter 'data' here
+ 1311 |                         void *data, __be16 proto, int nhoff, int hlen,
+      |                               ^
+drivers/net/bonding/bond_main.c:3713:41: error: passing 'const void *' to parameter of type 'void *' discards qualifiers [-Werror,-Wincompatible-pointer-types-discards-qualifiers]
+ 3713 |                 skb_flow_get_icmp_tci(skb, &fk->icmp, data, nhoff, hlen);
+      |                                                       ^~~~
+./include/net/flow_dissector.h:371:13: note: passing argument to parameter 'data' here
+  371 |                            void *data, int thoff, int hlen);
+      |                                  ^
+  CC [M]  drivers/net/ethernet/freescale/fman/fman_dtsec.o
+3 errors generated.
+
+=====================================================
+
+
+# Builds where the incident occurred:
+
+## defconfig+allmodconfig on (arm64):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-arm64-allmodconfig-697a29371908a6300d9ba33d/.config
+- dashboard: https://d.kernelci.org/build/maestro:697a29371908a6300d9ba33d
+
+## i386_defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (i386):
+- compiler: clang-21
+- config: https://files.kernelci.org/kbuild-clang-21-i386-allmodconfig-697a296b1908a6300d9ba36f/.config
+- dashboard: https://d.kernelci.org/build/maestro:697a296b1908a6300d9ba36f
+
+
+#kernelci issue maestro:98842e43083cea8565d90b0299d8137e4a217c13
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
