@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-212138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wI+dHH0uemlq3wEAu9opvQ
-	(envelope-from <stable+bounces-212138-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:53 +0100
+	id cJVhFskyeml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:01:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7939EA443E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:42:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF05A4EE4
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0A69D302D33E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:35:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A76B73040C0C
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEFB2D5408;
-	Wed, 28 Jan 2026 15:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEC5310774;
+	Wed, 28 Jan 2026 15:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMyYjlCx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lha5LU0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4982C237E;
-	Wed, 28 Jan 2026 15:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689A630FC1B;
+	Wed, 28 Jan 2026 15:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614518; cv=none; b=OY2b6NccD2q3U7l+Mf6sjk/WL7joKseVMOwYPeZvgIbpNk9Px/YK6vTOQL6K0WzdkL/8L2cH49HEdRtliJ6sGA0iErvNmyTus+ixLaAI7Dx2Mex46fbMvlB7zKhmkP7NxbeAkc3MjPiYtVdBLSwtSXG5R6ViXz4lF8a+2pfnXm8=
+	t=1769615017; cv=none; b=tgDV4WEv1BqWYsv2RuUfVdfrllEJSRMqApezLVzi33a15wddoXalF6hdZSmzhp8whxf5UKHrecb92S2Ri11Qv27/Cc8epEFjKC24aAocw02ytlrB5pO1mKVyMcDQtTSJTupMxYPgX5LWfLsyF5ie6aNK3uAI5I+OP402gfXURKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614518; c=relaxed/simple;
-	bh=BUF4jHEYV0108bEFMUwOC7RPnYt5ou0gd53lKs/iAD8=;
+	s=arc-20240116; t=1769615017; c=relaxed/simple;
+	bh=sBf1R5SchPsXqpaQGuDwzTIlyG+7KQzBgFHbpjStzIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzXsZdHZYI3c1WcPmzQpjOGl2+wMShytJ73SszTwBjYErydiwTk4f4mNyrK/r++dyeRXTnz21sNYIXeGMAFpr9jDP8y0NooUrdrFtaLJ/EuqZ3X2Hgd8YZWPYYgTmqjdqHQtHLNh3QVRDnTdxsBTQBZJZQpe5mCfUWf+dZco/uI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMyYjlCx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2B6C4CEF1;
-	Wed, 28 Jan 2026 15:35:17 +0000 (UTC)
+	 MIME-Version; b=Nli6mXjPN5n1Jg/RR3dKuYFI3XugEiSyljQqK6YhbMdmkauPq9i3bKNfW9WMi7fx+9THmStiytK03mZKo3Y7Bcqy0oABV9NOCjxyIgGvCTpbjk0MnwlOcKbWz6i9YdkWuoDFyuX2Dgdhm8jlLxn3syqDeoI0xIoJt/nH3xt6UhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lha5LU0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFBBC4CEF1;
+	Wed, 28 Jan 2026 15:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614518;
-	bh=BUF4jHEYV0108bEFMUwOC7RPnYt5ou0gd53lKs/iAD8=;
+	s=korg; t=1769615017;
+	bh=sBf1R5SchPsXqpaQGuDwzTIlyG+7KQzBgFHbpjStzIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aMyYjlCx0lISTnsA0YbYCHEuFy/y9V/7bNQUSR7Uc7LYRMsast5pijgDQseCaw80a
-	 3zFPK+g0nFgwqfLdqAfVR2cTYWVTP0aZ4G3RyTXcI9Z9KMVRVjZJvyL1fXFkGq0MKE
-	 QRX/TGaoVMy26BT7hFwITRgwRjlntKRcooSu65jk=
+	b=Lha5LU0T6HS4WuG+aoChsuT8DyJ8lBIjF/A4g416ZJN5/aoJBEPfKXGfJjgFpZBl/
+	 uVQ5X8fNx24lLiW9/JA8FYkUwq1NMZgPlB8kpord1+QSrK4suX7c335zLxI5EyYvpN
+	 zBwNxK+9DvbNRH3e3kMHzpL/vAVvWPMI00w9J2n4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Himanshu Madhani <hmadhani2024@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/254] scsi: qla2xxx: Sanitize payload size to prevent member overflow
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Marco Elver <elver@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Jann Horn <jannh@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 054/169] x86/kfence: avoid writing L1TF-vulnerable PTEs
 Date: Wed, 28 Jan 2026 16:22:17 +0100
-Message-ID: <20260128145350.603840664@linuxfoundation.org>
+Message-ID: <20260128145335.958425389@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,95 +75,148 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oracle.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212138-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212288-lists,stable=lfdr.de];
+	RSPAMD_URIBL_FAIL(0.00)[citrix.com:query timed out,intel.com:query timed out,zytor.com:query timed out,linux-foundation.org:query timed out];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[dvyukov.google.com:query timed out,andrew.cooper3.citrix.com:query timed out,bp.alien8.de:query timed out,glider.google.com:query timed out,mingo.redhat.com:query timed out,dave.hansen.linux.intel.com:query timed out,akpm.linux-foundation.org:query timed out,elver.google.com:query timed out,tglx.linutronix.de:query timed out,jannh.google.com:query timed out,hpa.zytor.com:query timed out];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: 7939EA443E
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BFF05A4EE4
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Andrew Cooper <andrew.cooper3@citrix.com>
 
-[ Upstream commit 19bc5f2a6962dfaa0e32d0e0bc2271993d85d414 ]
+commit b505f1944535f83d369ae68813e7634d11b990d3 upstream.
 
-In qla27xx_copy_fpin_pkt() and qla27xx_copy_multiple_pkt(), the frame_size
-reported by firmware is used to calculate the copy length into
-item->iocb. However, the iocb member is defined as a fixed-size 64-byte
-array within struct purex_item.
+For native, the choice of PTE is fine.  There's real memory backing the
+non-present PTE.  However, for XenPV, Xen complains:
 
-If the reported frame_size exceeds 64 bytes, subsequent memcpy calls will
-overflow the iocb member boundary. While extra memory might be allocated,
-this cross-member write is unsafe and triggers warnings under
-CONFIG_FORTIFY_SOURCE.
+  (XEN) d1 L1TF-vulnerable L1e 8010000018200066 - Shadowing
 
-Fix this by capping total_bytes to the size of the iocb member (64 bytes)
-before allocation and copying. This ensures all copies remain within the
-bounds of the destination structure member.
+To explain, some background on XenPV pagetables:
 
-Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
-Link: https://patch.msgid.link/20260106205344.18031-1-jiashengjiangcool@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Xen PV guests are control their own pagetables; they choose the new
+  PTE value, and use hypercalls to make changes so Xen can audit for
+  safety.
+
+  In addition to a regular reference count, Xen also maintains a type
+  reference count.  e.g.  SegDesc (referenced by vGDT/vLDT), Writable
+  (referenced with _PAGE_RW) or L{1..4} (referenced by vCR3 or a lower
+  pagetable level).  This is in order to prevent e.g.  a page being
+  inserted into the pagetables for which the guest has a writable mapping.
+
+  For non-present mappings, all other bits become software accessible,
+  and typically contain metadata rather a real frame address.  There is
+  nothing that a reference count could sensibly be tied to.  As such, even
+  if Xen could recognise the address as currently safe, nothing would
+  prevent that frame from changing owner to another VM in the future.
+
+  When Xen detects a PV guest writing a L1TF-PTE, it responds by
+  activating shadow paging.  This is normally only used for the live phase
+  of migration, and comes with a reasonable overhead.
+
+KFENCE only cares about getting #PF to catch wild accesses; it doesn't
+care about the value for non-present mappings.  Use a fully inverted PTE,
+to avoid hitting the slow path when running under Xen.
+
+While adjusting the logic, take the opportunity to skip all actions if the
+PTE is already in the right state, half the number PVOps callouts, and
+skip TLB maintenance on a !P -> P transition which benefits non-Xen cases
+too.
+
+Link: https://lkml.kernel.org/r/20260106180426.710013-1-andrew.cooper3@citrix.com
+Fixes: 1dc0da6e9ec0 ("x86, kfence: enable KFENCE for x86")
+Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Tested-by: Marco Elver <elver@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_isr.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/include/asm/kfence.h |   29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
-index a85d3a40ee490..ae2bea27a18a6 100644
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -878,6 +878,9 @@ qla27xx_copy_multiple_pkt(struct scsi_qla_host *vha, void **pkt,
- 		payload_size = sizeof(purex->els_frame_payload);
- 	}
+--- a/arch/x86/include/asm/kfence.h
++++ b/arch/x86/include/asm/kfence.h
+@@ -42,10 +42,34 @@ static inline bool kfence_protect_page(u
+ {
+ 	unsigned int level;
+ 	pte_t *pte = lookup_address(addr, &level);
++	pteval_t val;
  
-+	if (total_bytes > sizeof(item->iocb.iocb))
-+		total_bytes = sizeof(item->iocb.iocb);
-+
- 	pending_bytes = total_bytes;
- 	no_bytes = (pending_bytes > payload_size) ? payload_size :
- 		   pending_bytes;
-@@ -1163,6 +1166,10 @@ qla27xx_copy_fpin_pkt(struct scsi_qla_host *vha, void **pkt,
+ 	if (WARN_ON(!pte || level != PG_LEVEL_4K))
+ 		return false;
  
- 	total_bytes = (le16_to_cpu(purex->frame_size) & 0x0FFF)
- 	    - PURX_ELS_HEADER_SIZE;
++	val = pte_val(*pte);
 +
-+	if (total_bytes > sizeof(item->iocb.iocb))
-+		total_bytes = sizeof(item->iocb.iocb);
++	/*
++	 * protect requires making the page not-present.  If the PTE is
++	 * already in the right state, there's nothing to do.
++	 */
++	if (protect != !!(val & _PAGE_PRESENT))
++		return true;
 +
- 	pending_bytes = total_bytes;
- 	entry_count = entry_count_remaining = purex->entry_count;
- 	no_bytes = (pending_bytes > sizeof(purex->els_frame_payload))  ?
--- 
-2.51.0
-
++	/*
++	 * Otherwise, invert the entire PTE.  This avoids writing out an
++	 * L1TF-vulnerable PTE (not present, without the high address bits
++	 * set).
++	 */
++	set_pte(pte, __pte(~val));
++
++	/*
++	 * If the page was protected (non-present) and we're making it
++	 * present, there is no need to flush the TLB at all.
++	 */
++	if (!protect)
++		return true;
++
+ 	/*
+ 	 * We need to avoid IPIs, as we may get KFENCE allocations or faults
+ 	 * with interrupts disabled. Therefore, the below is best-effort, and
+@@ -53,11 +77,6 @@ static inline bool kfence_protect_page(u
+ 	 * lazy fault handling takes care of faults after the page is PRESENT.
+ 	 */
+ 
+-	if (protect)
+-		set_pte(pte, __pte(pte_val(*pte) & ~_PAGE_PRESENT));
+-	else
+-		set_pte(pte, __pte(pte_val(*pte) | _PAGE_PRESENT));
+-
+ 	/*
+ 	 * Flush this CPU's TLB, assuming whoever did the allocation/free is
+ 	 * likely to continue running on this CPU.
 
 
 
