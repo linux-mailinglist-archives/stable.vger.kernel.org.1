@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-212569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212211-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OIhD0c0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212569-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:35 +0100
+	id 2F/5ADYvemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212211-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC2EA51F1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:07:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CFDA45D2
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EC39B3047DFE
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:59:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B2AB63075CB0
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5E32FF178;
-	Wed, 28 Jan 2026 15:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183862D9797;
+	Wed, 28 Jan 2026 15:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OOdlz/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqsVJO+a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A461D6AA;
-	Wed, 28 Jan 2026 15:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECFC2DE1E4;
+	Wed, 28 Jan 2026 15:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615958; cv=none; b=Sj2q4Sse3/dcM/b14GleC2npn+DM8XFA8dR02/FI2Fb/NTzpjsU1JKWJv5nd7hxyDdDp63JySzsvXGKzvmAPO8in6uzditiMVDchXCQaXi04D+p4RaT8YBnoStWzytPFh3lb3n4ryNI0tNZGtarFAzvY8jgFeS1IcTdfUsTy/ro=
+	t=1769614757; cv=none; b=V89ZDKCwU4EbgBCoqMAheuc8oasN3yovMmbDEXwgDC/C2mvE++w4v5b7iXEm3DBojV4lsKeYHt/qPQYbA5T7bLApyG7B0TdMIrb0kU/vwOVlwwHrhzoITnTM0ak9+M2SrOTcUe8PnR+M9T7WmrSrlUBW9AwPQ4ZOygmfTJxcmG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615958; c=relaxed/simple;
-	bh=To0/PcCE7ai5CZr7QEFT4B3r3v7OQv6j/Yr9cEiMcc4=;
+	s=arc-20240116; t=1769614757; c=relaxed/simple;
+	bh=7StxKRwwJgDmfX3uNum2BW9KF1IDAG1zSn5euXBKmO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cckGpPhCdQfSG6PfLs00RNwhEZa06m6n6NVMthh3UDiQIaftTA+MkfeF440mhsna0ljQaH7ml0Fqy/x+64ORC0LEWSiFnvppgMySdUpX8/NaPvSIbkTmpq5yfLW/T0ti+HTEIi20wN0EiN/cBSklY5jVSAeL34g8SFVqSAtnPIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OOdlz/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47246C4CEF1;
-	Wed, 28 Jan 2026 15:59:17 +0000 (UTC)
+	 MIME-Version; b=bRca0VssHYZWEc2ID89jVatkAMJvqNr5vVPyVo64/sIjDwoCIXbGCpftbYNlh2F5Yk4atrarEjvhE2Ft5ECqZoIAZPvziTTHTFYXJhAe9wc0Hpe5ZTdxJMKS2rW9Vm7nH+X5MGHDGjmrPZD2HwsNt1pPgXo3lUlrrjLH/Xzc/xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GqsVJO+a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CD4C4CEF1;
+	Wed, 28 Jan 2026 15:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615957;
-	bh=To0/PcCE7ai5CZr7QEFT4B3r3v7OQv6j/Yr9cEiMcc4=;
+	s=korg; t=1769614757;
+	bh=7StxKRwwJgDmfX3uNum2BW9KF1IDAG1zSn5euXBKmO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0OOdlz/a4lwefXsGIA9BK4T96nWq1DL4b67G3M15isGUMNyPaqrv68HXEng2DMXIz
-	 RomXjLaFdVuHDjWaFsWcuctAjfW7zY8s44l3P7ayxGhIpOU/NSe+PURlbwa4UmpDKd
-	 gDqSGB1EKKCUQpOjIbaVIKZUzAgUWX3D/revvhZ8=
+	b=GqsVJO+aGxBI+K95tZgm0ULcIhGAz8mdHOyPyBOOwG3SprneV50AmtvZiHr2nXC+I
+	 PhesJRJFYxICO+06zURCPSMSbpIaJEyY92rHL4lXxivIiAxwCyzmsC2YcnqWZWd80m
+	 b4U7Fw7QWnK9DDDq42Ux2S8CSO/UzVWAUuyR13eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Klute <fiona.klute@gmx.de>,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.18 163/227] iio: chemical: scd4x: fix reported channel endianness
+	Johan Hovold <johan@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 232/254] iio: adc: exynos_adc: fix OF populate on driver rebind
 Date: Wed, 28 Jan 2026 16:23:28 +0100
-Message-ID: <20260128145350.318497224@linuxfoundation.org>
+Message-ID: <20260128145353.137607277@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,91 +68,99 @@ Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212569-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,baylibre.com,huawei.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212211-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.995];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[baylibre.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,gmx.de:email,huawei.com:email]
-X-Rspamd-Queue-Id: 9DC2EA51F1
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C3CFDA45D2
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fiona Klute <fiona.klute@gmx.de>
+From: Johan Hovold <johan@kernel.org>
 
-commit 81d5a5366d3c20203fb9d7345e1aa46d668445a2 upstream.
+[ Upstream commit ea6b4feba85e996e840e0b661bc42793df6eb701 ]
 
-The driver converts values read from the sensor from BE to CPU
-endianness in scd4x_read_meas(). The result is then pushed into the
-buffer in scd4x_trigger_handler(), so on LE architectures parsing the
-buffer using the reported BE type gave wrong results.
+Since commit c6e126de43e7 ("of: Keep track of populated platform
+devices") child devices will not be created by of_platform_populate()
+if the devices had previously been deregistered individually so that the
+OF_POPULATED flag is still set in the corresponding OF nodes.
 
-scd4x_read_raw() which provides sysfs *_raw values is not affected, it
-used the values returned by scd4x_read_meas() without further
-conversion.
+Switch to using of_platform_depopulate() instead of open coding so that
+the child devices are created if the driver is rebound.
 
-Fixes: 49d22b695cbb6 ("drivers: iio: chemical: Add support for Sensirion SCD4x CO2 sensor")
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <stable@vger.kernel.org>
+Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+Cc: stable@vger.kernel.org	# 3.16
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/scd4x.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/adc/exynos_adc.c |   13 ++-----------
+ 1 file changed, 2 insertions(+), 11 deletions(-)
 
---- a/drivers/iio/chemical/scd4x.c
-+++ b/drivers/iio/chemical/scd4x.c
-@@ -584,7 +584,7 @@ static const struct iio_chan_spec scd4x_
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_BE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- 	{
-@@ -599,7 +599,7 @@ static const struct iio_chan_spec scd4x_
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_BE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
- 	{
-@@ -612,7 +612,7 @@ static const struct iio_chan_spec scd4x_
- 			.sign = 'u',
- 			.realbits = 16,
- 			.storagebits = 16,
--			.endianness = IIO_BE,
-+			.endianness = IIO_CPU,
- 		},
- 	},
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -721,14 +721,7 @@ static const struct iio_chan_spec exynos
+ 	ADC_CHANNEL(9, "adc9"),
  };
+ 
+-static int exynos_adc_remove_devices(struct device *dev, void *c)
+-{
+-	struct platform_device *pdev = to_platform_device(dev);
+-
+-	platform_device_unregister(pdev);
+ 
+-	return 0;
+-}
+ 
+ static int exynos_adc_ts_open(struct input_dev *dev)
+ {
+@@ -929,8 +922,7 @@ static int exynos_adc_probe(struct platf
+ 	return 0;
+ 
+ err_of_populate:
+-	device_for_each_child(&indio_dev->dev, NULL,
+-				exynos_adc_remove_devices);
++	of_platform_depopulate(&indio_dev->dev);
+ 	if (has_ts) {
+ 		input_unregister_device(info->input);
+ 		free_irq(info->tsirq, info);
+@@ -959,8 +951,7 @@ static int exynos_adc_remove(struct plat
+ 		free_irq(info->tsirq, info);
+ 		input_unregister_device(info->input);
+ 	}
+-	device_for_each_child(&indio_dev->dev, NULL,
+-				exynos_adc_remove_devices);
++	of_platform_depopulate(&indio_dev->dev);
+ 	iio_device_unregister(indio_dev);
+ 	free_irq(info->irq, info);
+ 	if (info->data->exit_hw)
 
 
 
