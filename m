@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-212262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFX2BkY3eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:20:22 +0100
+	id CA4FCAQuemnd3gEAu9opvQ
+	(envelope-from <stable+bounces-212093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F28BA571F
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:20:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16CBFA42ED
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:40:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E9C330E0D28
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:42:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 83ACB301996A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9012EC095;
-	Wed, 28 Jan 2026 15:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C281A273D6D;
+	Wed, 28 Jan 2026 15:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqXRUYlj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8KG+T8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A421A1E1DFC;
-	Wed, 28 Jan 2026 15:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8625726CE3F;
+	Wed, 28 Jan 2026 15:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614928; cv=none; b=tJ0jozxW6bA+uuzeA94PVS7s925S4oZjFQe2+lxSLKOSaywW7z/yWSJAk277p3ALMn7c4Yn96PMo7yF0t12WDRQFS9OnUnLY7OY/fEWiuVvBOT42EzhEgwaPV+IU7r9faRPeozm7r8xqwtmcXsz0sN4Mg5lL66xoXQRsFG6kjG8=
+	t=1769614377; cv=none; b=UMnJNy2P9Ja0baeQz7oPXb120ZtimcNHq0no1ni0Cu88MKTPvAe0xwmYIA9i96A6O3vjVugTABa+Yy3BnpBpnhrq7ttW00oBg4K+fBjhhWcRm+A+PunSh1M9LqcllhwndFZGytR6hpMOOMpWrzm6zQUBurReA4U0oVNEXv9iz18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614928; c=relaxed/simple;
-	bh=iigL5eXVL4/0ZjOSYpoqnmAbxz0YZs4IFehEzOe3tT8=;
+	s=arc-20240116; t=1769614377; c=relaxed/simple;
+	bh=whyeRVAFjqlq4uAb4kNjGOdk9aDlnzkLZdKDb4DpYGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkTQC8Y7AqiW9BOOEr51nO1ZaZ5mfzfgG6s0kHw7FVjSnwuRUDSvRKM9Gy9R4X1YYwtvMN3Q6kW/sxj5r8bdXclrjLSo1W4loG7OVHvJ4iv7f7A+1ipZpAR1wsbcPmX2uDlAjNADX5yBA/6+N+ZGXxGHvnDMd6ZDyPHMJgUB9XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqXRUYlj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B86C4CEF1;
-	Wed, 28 Jan 2026 15:42:07 +0000 (UTC)
+	 MIME-Version; b=ZIcHcziUL3jOHictrMrcltavwB2yQT391xUB84YgPr/vhkCOqfTmq58+T5O8z+4hV5NDoF0jNdfZrHJ8+HVHizuUxe2yXjqhJYpb/Xf8R9gFTPMQrL59AMoCR1/+rTeXx5WVQDpkhR7IPzUjzMfof5oJcPcs0nMaHEgW9bTPAgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8KG+T8d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E95C4CEF7;
+	Wed, 28 Jan 2026 15:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614928;
-	bh=iigL5eXVL4/0ZjOSYpoqnmAbxz0YZs4IFehEzOe3tT8=;
+	s=korg; t=1769614377;
+	bh=whyeRVAFjqlq4uAb4kNjGOdk9aDlnzkLZdKDb4DpYGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RqXRUYljsqeqbk11wVVqFymuMgBfcFv9/mOH332WZ9b1tu1dse02xBdVgw8Et07EN
-	 /emM66fVSvBcrhHZ4JPVeFVkhmbxHEfaWfZTaSgJ+mJlbSVZDjO+Y9i5uTa297Muip
-	 EvdkMGt8bBTg5IDZSuvMDypJPfrGdvymEbeBWVjU=
+	b=t8KG+T8dPT53MLveO82UHK+iryjnMrweMY+PV20qNsidbZSu+VNRatUg1YKHUJf/1
+	 7ObVwcWgebQPygkh3Q17IHvfET/862GsQzkgEPNVq/K/30xCv+eJd3J5nlWgKfklav
+	 1WvHvbQa9NNTZgCbD5vXoYgVW2/MIp7EjSM1PgIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Roman Kisel <vdso@mailbox.org>,
-	Wei Liu <wei.liu@kernel.org>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/169] Drivers: hv: Always do Hyper-V panic notification in hv_kmsg_dump()
+Subject: [PATCH 6.6 118/254] net: usb: dm9601: remove broken SR9700 support
 Date: Wed, 28 Jan 2026 16:21:34 +0100
-Message-ID: <20260128145334.422274791@linuxfoundation.org>
+Message-ID: <20260128145349.070281941@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
-References: <20260128145334.006287341@linuxfoundation.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,99 +70,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,intel.com,linaro.org,outlook.com,mailbox.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-212262-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,korsgaard.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-212093-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
+	NEURAL_HAM(-0.00)[-0.993];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linaro.org:email,linuxfoundation.org:mid,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,mailbox.org:email]
-X-Rspamd-Queue-Id: 8F28BA571F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:mid,linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 16CBFA42ED
 X-Rspamd-Action: no action
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
-[ Upstream commit 49f49d47af67f8a7b221db1d758fc634242dc91a ]
+[ Upstream commit 7d7dbafefbe74f5a25efc4807af093b857a7612e ]
 
-hv_kmsg_dump() currently skips the panic notification entirely if it
-doesn't get any message bytes to pass to Hyper-V due to an error from
-kmsg_dump_get_buffer(). Skipping the notification is undesirable because
-it leaves the Hyper-V host uncertain about the state of a panic'ed guest.
+The SR9700 chip sends more than one packet in a USB transaction,
+like the DM962x chips can optionally do, but the dm9601 driver does not
+support this mode, and the hardware does not have the DM962x
+MODE_CTL register to disable it, so this driver drops packets on SR9700
+devices. The sr9700 driver correctly handles receiving more than one
+packet per transaction.
 
-Fix this by always doing the panic notification, even if bytes_written
-is zero. Also ensure that bytes_written is initialized, which fixes a
-kernel test robot warning. The warning is actually bogus because
-kmsg_dump_get_buffer() happens to set bytes_written even if it fails, and
-in the kernel test robot's CONFIG_PRINTK not set case, hv_kmsg_dump() is
-never called. But do the initialization for robustness and to quiet the
-static checker.
+While the dm9601 driver could be improved to handle this, the easiest
+way to fix this issue in the short term is to remove the SR9700 device
+ID from the dm9601 driver so the sr9700 driver is always used. This
+device ID should not have been in more than one driver to begin with.
 
-Fixes: 9c318a1d9b50 ("Drivers: hv: move panic report code from vmbus to hv early init code")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/202512172103.OcUspn1Z-lkp@intel.com/
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Roman Kisel <vdso@mailbox.org>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+The "Fixes" commit was chosen so that the patch is automatically
+included in all kernels that have the sr9700 driver, even though the
+issue affects dm9601.
+
+Fixes: c9b37458e956 ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://patch.msgid.link/20260113063924.74464-1-enelsonmoore@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/hv_common.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/usb/dm9601.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
-index 7a35c82976e0f..f69dd08475114 100644
---- a/drivers/hv/hv_common.c
-+++ b/drivers/hv/hv_common.c
-@@ -218,13 +218,15 @@ static void hv_kmsg_dump(struct kmsg_dumper *dumper,
- 
- 	/*
- 	 * Write dump contents to the page. No need to synchronize; panic should
--	 * be single-threaded.
-+	 * be single-threaded. Ignore failures from kmsg_dump_get_buffer() since
-+	 * panic notification should be done even if there is no message data.
-+	 * Don't assume bytes_written is set in case of failure, so initialize it.
- 	 */
- 	kmsg_dump_rewind(&iter);
--	kmsg_dump_get_buffer(&iter, false, hv_panic_page, HV_HYP_PAGE_SIZE,
-+	bytes_written = 0;
-+	(void)kmsg_dump_get_buffer(&iter, false, hv_panic_page, HV_HYP_PAGE_SIZE,
- 			     &bytes_written);
--	if (!bytes_written)
--		return;
-+
- 	/*
- 	 * P3 to contain the physical address of the panic page & P4 to
- 	 * contain the size of the panic data in that page. Rest of the
-@@ -233,7 +235,7 @@ static void hv_kmsg_dump(struct kmsg_dumper *dumper,
- 	hv_set_msr(HV_MSR_CRASH_P0, 0);
- 	hv_set_msr(HV_MSR_CRASH_P1, 0);
- 	hv_set_msr(HV_MSR_CRASH_P2, 0);
--	hv_set_msr(HV_MSR_CRASH_P3, virt_to_phys(hv_panic_page));
-+	hv_set_msr(HV_MSR_CRASH_P3, bytes_written ? virt_to_phys(hv_panic_page) : 0);
- 	hv_set_msr(HV_MSR_CRASH_P4, bytes_written);
- 
- 	/*
+diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
+index 8b6d6a1b3c2ec..2b4716ccf0c5b 100644
+--- a/drivers/net/usb/dm9601.c
++++ b/drivers/net/usb/dm9601.c
+@@ -603,10 +603,6 @@ static const struct usb_device_id products[] = {
+ 	USB_DEVICE(0x0fe6, 0x8101),	/* DM9601 USB to Fast Ethernet Adapter */
+ 	.driver_info = (unsigned long)&dm9601_info,
+ 	 },
+-	{
+-	 USB_DEVICE(0x0fe6, 0x9700),	/* DM9601 USB to Fast Ethernet Adapter */
+-	 .driver_info = (unsigned long)&dm9601_info,
+-	 },
+ 	{
+ 	 USB_DEVICE(0x0a46, 0x9000),	/* DM9000E */
+ 	 .driver_info = (unsigned long)&dm9601_info,
 -- 
 2.51.0
 
