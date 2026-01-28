@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-212517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +NlFAZkyeml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212517-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:25 +0100
+	id YGImNc4xemlo4gEAu9opvQ
+	(envelope-from <stable+bounces-212312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89E3A4E7E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B76A7A4C90
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:57:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE3AA3013DBA
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:56:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C0570308013E
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C50D1D6AA;
-	Wed, 28 Jan 2026 15:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61DA63054D8;
+	Wed, 28 Jan 2026 15:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJuPFCMY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuQFkTW3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2E318027;
-	Wed, 28 Jan 2026 15:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2314E2F0C70;
+	Wed, 28 Jan 2026 15:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615783; cv=none; b=iNtmGEKIJ0Byk5UL7HEb30GI8zXBN3LtXgBHPcmhZoqIt06dkJsICw6S9RF1ibL/9rHYEkMY7mxw2bH20S1ev/KOz9U065yOcmfAyJ6TtxFuCfet84BF/5zNvX+fHXYIWpdhdtAYrVX8enz2FYREMEM7pr0/aocFQDNNBDM5PeI=
+	t=1769615096; cv=none; b=OmmRvwtjnlPVbcoL+83wJyBHFWRzfQrD5FyIAWZvG7oBdBHc/+mSihSis4dzDaKCCP4SB7cjDS5UL8Bs4dxaBs9yFZvJKFOJUfX+Eojlg8TPCAiiO1UfMMg2J9YVQO13fVDSjsfQhWu38AGTD+XpBM2bkDCQTmVKRtJBXdoGo7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615783; c=relaxed/simple;
-	bh=jmFEt0qEt6/LiQyMcvmpWZaPgKDIz25AE+ht5ezpTNI=;
+	s=arc-20240116; t=1769615096; c=relaxed/simple;
+	bh=1jlyYbgMp7J3Pxb8hICz0i2f5+B7W1SE3FYLwJ0+djU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XMzf0Xt7yuTMH3VDTa8hCKRUOkhImHeVVtwaU3TxaX+Rkdi1RDrkdYjXP2DkITXcSG8REan0YhFA9hHG839Tvpkqu1hFp8eeomvkFP+ETYHRgML8yNoVRP2zY67mD8TU4owKLbMOAJ+fZe4/JSlxEXsCaWV+nwAn/+3Cj5GC5EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJuPFCMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E6AC4CEF1;
-	Wed, 28 Jan 2026 15:56:21 +0000 (UTC)
+	 MIME-Version; b=s3lXvan1wEyvA2xDI7mJybvtTrMQYe0Mdv4ch0Hy4nt26VEmbjBQv/KYwQOc8D3D61I61mWDWElOtD2TN5Aec1by+MBY7baBW1x+GZ1dBqyjvinmZeVFTxtH4Bo6YsUBP5wfc8lZPkRfjuM3R5WH5/n2piBDYKfTUUrSNm8ZiW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuQFkTW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCF0C116C6;
+	Wed, 28 Jan 2026 15:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615782;
-	bh=jmFEt0qEt6/LiQyMcvmpWZaPgKDIz25AE+ht5ezpTNI=;
+	s=korg; t=1769615096;
+	bh=1jlyYbgMp7J3Pxb8hICz0i2f5+B7W1SE3FYLwJ0+djU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJuPFCMYV4oX7v+XNQiruawm8EH2M6rOG9/651bJXyGfJ2Qs5rBmp9tRFfmlBN3JP
-	 mus+nREF8w1C1Xj/jKOBEEyQ7zcq6N8J7H5WzS932fL44Qckh9C297LyqmNL3KVDYE
-	 5hIT7oVbtyI8kIGkopFl0FnNMT6N+oI+DaKUQHfg=
+	b=TuQFkTW3xDEkeTHRZX+B56gGWLYWc/KH3glpcZa283Bq+dtakXEXVCt4qtvwV+/IT
+	 /bLB19YjuJGYEb2Np2ormu0HOaJYkiGCM5i6Nq/53OSVCL2xMQPe6TvU8FErdaQfgj
+	 WZpME5Yv9RxUy8rPEVzGTas3d4FcuWJZjjaVojEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jijie Shao <shaojijie@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 113/227] net: hns3: fix the HCLGE_FD_AD_NXT_KEY error setting issue
-Date: Wed, 28 Jan 2026 16:22:38 +0100
-Message-ID: <20260128145348.532362509@linuxfoundation.org>
+Subject: [PATCH 6.12 076/169] net: hns3: fix wrong GENMASK() for HCLGE_FD_AD_COUNTER_NUM_M
+Date: Wed, 28 Jan 2026 16:22:39 +0100
+Message-ID: <20260128145336.742996417@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212517-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212312-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,41 +91,45 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B89E3A4E7E
+X-Rspamd-Queue-Id: B76A7A4C90
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit f87e034d16e43af984380a95c32c25201b7759a7 ]
+[ Upstream commit d57c67c956a1bad15115eba6e59d77a6dfeba01d ]
 
-Use next_input_key instead of counter_id to set HCLGE_FD_AD_NXT_KEY.
+HCLGE_FD_AD_COUNTER_NUM_M should be at GENMASK(19, 13),
+rather than at GENMASK(20, 13), because bit 20 is
+HCLGE_FD_AD_NXT_STEP_B.
+
+This patch corrects the wrong definition.
 
 Fixes: 117328680288 ("net: hns3: Add input key and action config support for flow director")
 Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20260119132840.410513-3-shaojijie@huawei.com
+Link: https://patch.msgid.link/20260119132840.410513-2-shaojijie@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 1b103d1154da9..5cc5ee9dcd982 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -5690,7 +5690,7 @@ static int hclge_fd_ad_config(struct hclge_dev *hdev, u8 stage, int loc,
- 			HCLGE_FD_AD_COUNTER_NUM_S, action->counter_id);
- 	hnae3_set_bit(ad_data, HCLGE_FD_AD_NXT_STEP_B, action->use_next_stage);
- 	hnae3_set_field(ad_data, HCLGE_FD_AD_NXT_KEY_M, HCLGE_FD_AD_NXT_KEY_S,
--			action->counter_id);
-+			action->next_input_key);
- 
- 	req->ad_data = cpu_to_le64(ad_data);
- 	ret = hclge_cmd_send(&hdev->hw, &desc, 1);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
+index 9bb708fa42f24..416e02e7b995f 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
+@@ -731,7 +731,7 @@ struct hclge_fd_tcam_config_3_cmd {
+ #define HCLGE_FD_AD_QID_M		GENMASK(11, 2)
+ #define HCLGE_FD_AD_USE_COUNTER_B	12
+ #define HCLGE_FD_AD_COUNTER_NUM_S	13
+-#define HCLGE_FD_AD_COUNTER_NUM_M	GENMASK(20, 13)
++#define HCLGE_FD_AD_COUNTER_NUM_M	GENMASK(19, 13)
+ #define HCLGE_FD_AD_NXT_STEP_B		20
+ #define HCLGE_FD_AD_NXT_KEY_S		21
+ #define HCLGE_FD_AD_NXT_KEY_M		GENMASK(25, 21)
 -- 
 2.51.0
 
