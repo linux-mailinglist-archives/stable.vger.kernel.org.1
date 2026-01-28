@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-212506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212267-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJCZJUsyemlo4gEAu9opvQ
-	(envelope-from <stable+bounces-212506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:07 +0100
+	id kPiLBEEyemlo4gEAu9opvQ
+	(envelope-from <stable+bounces-212267-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:58:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C62A4DE2
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:59:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B2FA4DCC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 03708302ED0C
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:56:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2980C3106834
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8072857CD;
-	Wed, 28 Jan 2026 15:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CF13054D8;
+	Wed, 28 Jan 2026 15:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P69JdpNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbOg1+hX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BBB3033F4;
-	Wed, 28 Jan 2026 15:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1288301000;
+	Wed, 28 Jan 2026 15:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615747; cv=none; b=nTtKcHCk+jjmwBa+a+LC7UdkCXpD4mVOSxnsZh56vqEd/TUubme22PDv9gjzaeg2VoiMF4N/XaBCUUiuUfQWHqcEhE2APhc5yO2MgptVSlkgCpno2BLx/oWfjCiTYo3niQVCR2gfIMgREvluYiQKz2C5jyaOmY1g4rUOHQciAP8=
+	t=1769614944; cv=none; b=O3ljiiBSVkCQTgd5S2KKG/0yNRcWcq2caSAfvEbe/93mnR0PsvH6AVfnMXyWF8uOHVKB9pZY+m1GrcD/Z9ZhELhjiiQPbXCgE+knygEabtUfNFXSiWepUN8tBT6qy71QXsXqqr8dUe9aTqDysEJHd2+lUHjRgxwi1aNbI8+8R4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615747; c=relaxed/simple;
-	bh=CnyOi5V25s2N7gskAcNF8EsCYV9QC1GdlAdsUB6cFRY=;
+	s=arc-20240116; t=1769614944; c=relaxed/simple;
+	bh=j2BIBMXsDfNqNzuHTAhclhzlZpy1QWM2WHWV2y7dEfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mazaYRNRvjMnf3AT6MGmKuu79uvC1+AtUIcCwTXaIa6AI2ajd/cjaQk1dGmzz16b5Tl+9QaeKutCpZATsIII+pOl6aVbMQ2P1AkNXkz+CE4wuDRnAoBK/XINe5eG7jIXkc1nuLuFK6/WLSx37C5scUWs0CnMpk1bePiBbYH/zZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P69JdpNc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17389C4CEF1;
-	Wed, 28 Jan 2026 15:55:45 +0000 (UTC)
+	 MIME-Version; b=DxpDMsUiyeAZlB6pNyKqDmDkdoSFxJLQbAhk5LnRLnEArJ6L1NAQcxvpNMbWYrK9ajRC6vAtqkBSH1q+xZo5hfhYH9Eu3qHTmz3x3ra1JiLe6dGeV15CrS0vNSZxlDwDIL29mWCFK4Idyc1Qa5PvdtK0kHRhd9b/eh9KzwxHBEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbOg1+hX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9AAC4CEF1;
+	Wed, 28 Jan 2026 15:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615746;
-	bh=CnyOi5V25s2N7gskAcNF8EsCYV9QC1GdlAdsUB6cFRY=;
+	s=korg; t=1769614944;
+	bh=j2BIBMXsDfNqNzuHTAhclhzlZpy1QWM2WHWV2y7dEfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P69JdpNc0ixJbm31Fy3/pRZPKZivfrHl5GrSeOu0j3rsNBHxfzYCAeQ/88CCR3SwB
-	 5V1zRMWEZzL+l+b86/mtfRcK6G9DU3DXjlHzv2pjUaka4QChMtGJJ3J5GmvKg7XKEZ
-	 bsEmDCNcChEp8DYeevAnZBUydiFYpcsnKbzyCXho=
+	b=FbOg1+hXwpqjCg5eO0HNv63X2H+RSVlN73lX1lxNx76g0xhPtC0/xbXOdrHnt389K
+	 vLBRr26sIxuf+vo/62BtzepL4VofgMf7enkaxMr5FZUPbx3vD2tByEDmKQRURbJGA1
+	 /19/2+Y61Myf2QL5bFEr5Mcp4wl4JVc0W5fz8gRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faith <faith@zellic.io>,
-	Pumpkin Chang <pumpkin@devco.re>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Nir Ohfeld <niro@wiz.io>,
-	Willy Tarreau <w@1wt.eu>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 069/227] rxrpc: Fix recvmsg() unconditional requeue
-Date: Wed, 28 Jan 2026 16:21:54 +0100
-Message-ID: <20260128145346.823162493@linuxfoundation.org>
+	syzbot+4d8c7d16b0e95c0d0f0d@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 032/169] gue: Fix skb memleak with inner IP protocol 0.
+Date: Wed, 28 Jan 2026 16:21:55 +0100
+Message-ID: <20260128145335.178351523@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,135 +67,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212506-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212267-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,4d8c7d16b0e95c0d0f0d];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 02C62A4DE2
+X-Rspamd-Queue-Id: 33B2FA4DCC
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 2c28769a51deb6022d7fbd499987e237a01dd63a upstream.
+[ Upstream commit 9a56796ad258786d3624eef5aefba394fc9bdded ]
 
-If rxrpc_recvmsg() fails because MSG_DONTWAIT was specified but the call at
-the front of the recvmsg queue already has its mutex locked, it requeues
-the call - whether or not the call is already queued.  The call may be on
-the queue because MSG_PEEK was also passed and so the call was not dequeued
-or because the I/O thread requeued it.
+syzbot reported skb memleak below. [0]
 
-The unconditional requeue may then corrupt the recvmsg queue, leading to
-things like UAFs or refcount underruns.
+The repro generated a GUE packet with its inner protocol 0.
 
-Fix this by only requeuing the call if it isn't already on the queue - and
-moving it to the front if it is already queued.  If we don't queue it, we
-have to put the ref we obtained by dequeuing it.
+gue_udp_recv() returns -guehdr->proto_ctype for "resubmit"
+in ip_protocol_deliver_rcu(), but this only works with
+non-zero protocol number.
 
-Also, MSG_PEEK doesn't dequeue the call so shouldn't call
-rxrpc_notify_socket() for the call if we didn't use up all the data on the
-queue, so fix that also.
+Let's drop such packets.
 
-Fixes: 540b1c48c37a ("rxrpc: Fix deadlock between call creation and sendmsg/recvmsg")
-Reported-by: Faith <faith@zellic.io>
-Reported-by: Pumpkin Chang <pumpkin@devco.re>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Marc Dionne <marc.dionne@auristor.com>
-cc: Nir Ohfeld <niro@wiz.io>
-cc: Willy Tarreau <w@1wt.eu>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/95163.1768428203@warthog.procyon.org.uk
+Note that 0 is a valid number (IPv6 Hop-by-Hop Option).
+
+I think it is not practical to encap HOPOPT in GUE, so once
+someone starts to complain, we could pass down a resubmit
+flag pointer to distinguish two zeros from the upper layer:
+
+  * no error
+  * resubmit HOPOPT
+
+[0]
+BUG: memory leak
+unreferenced object 0xffff888109695a00 (size 240):
+  comm "syz.0.17", pid 6088, jiffies 4294943096
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 40 c2 10 81 88 ff ff 00 00 00 00 00 00 00 00  .@..............
+  backtrace (crc a84b336f):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    kmem_cache_alloc_noprof+0x3b4/0x590 mm/slub.c:5270
+    __build_skb+0x23/0x60 net/core/skbuff.c:474
+    build_skb+0x20/0x190 net/core/skbuff.c:490
+    __tun_build_skb drivers/net/tun.c:1541 [inline]
+    tun_build_skb+0x4a1/0xa40 drivers/net/tun.c:1636
+    tun_get_user+0xc12/0x2030 drivers/net/tun.c:1770
+    tun_chr_write_iter+0x71/0x120 drivers/net/tun.c:1999
+    new_sync_write fs/read_write.c:593 [inline]
+    vfs_write+0x45d/0x710 fs/read_write.c:686
+    ksys_write+0xa7/0x170 fs/read_write.c:738
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 37dd0247797b1 ("gue: Receive side for Generic UDP Encapsulation")
+Reported-by: syzbot+4d8c7d16b0e95c0d0f0d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/6965534b.050a0220.38aacd.0001.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260115172533.693652-2-kuniyu@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/rxrpc.h |    4 ++++
- net/rxrpc/recvmsg.c          |   19 +++++++++++++++----
- 2 files changed, 19 insertions(+), 4 deletions(-)
+ net/ipv4/fou_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/trace/events/rxrpc.h
-+++ b/include/trace/events/rxrpc.h
-@@ -322,6 +322,7 @@
- 	EM(rxrpc_call_put_kernel,		"PUT kernel  ") \
- 	EM(rxrpc_call_put_poke,			"PUT poke    ") \
- 	EM(rxrpc_call_put_recvmsg,		"PUT recvmsg ") \
-+	EM(rxrpc_call_put_recvmsg_peek_nowait,	"PUT peek-nwt") \
- 	EM(rxrpc_call_put_release_recvmsg_q,	"PUT rls-rcmq") \
- 	EM(rxrpc_call_put_release_sock,		"PUT rls-sock") \
- 	EM(rxrpc_call_put_release_sock_tba,	"PUT rls-sk-a") \
-@@ -340,6 +341,9 @@
- 	EM(rxrpc_call_see_input,		"SEE input   ") \
- 	EM(rxrpc_call_see_notify_released,	"SEE nfy-rlsd") \
- 	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
-+	EM(rxrpc_call_see_recvmsg_requeue,	"SEE recv-rqu") \
-+	EM(rxrpc_call_see_recvmsg_requeue_first, "SEE recv-rqF") \
-+	EM(rxrpc_call_see_recvmsg_requeue_move,	"SEE recv-rqM") \
- 	EM(rxrpc_call_see_release,		"SEE release ") \
- 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
- 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
---- a/net/rxrpc/recvmsg.c
-+++ b/net/rxrpc/recvmsg.c
-@@ -518,7 +518,8 @@ try_again:
- 	if (rxrpc_call_has_failed(call))
- 		goto call_failed;
+diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
+index 3e30745e2c09a..0e173998f1d7a 100644
+--- a/net/ipv4/fou_core.c
++++ b/net/ipv4/fou_core.c
+@@ -215,6 +215,9 @@ static int gue_udp_recv(struct sock *sk, struct sk_buff *skb)
+ 		return gue_control_message(skb, guehdr);
  
--	if (!skb_queue_empty(&call->recvmsg_queue))
-+	if (!(flags & MSG_PEEK) &&
-+	    !skb_queue_empty(&call->recvmsg_queue))
- 		rxrpc_notify_socket(call);
- 	goto not_yet_complete;
+ 	proto_ctype = guehdr->proto_ctype;
++	if (unlikely(!proto_ctype))
++		goto drop;
++
+ 	__skb_pull(skb, sizeof(struct udphdr) + hdrlen);
+ 	skb_reset_transport_header(skb);
  
-@@ -549,11 +550,21 @@ error_unlock_call:
- error_requeue_call:
- 	if (!(flags & MSG_PEEK)) {
- 		spin_lock_irq(&rx->recvmsg_lock);
--		list_add(&call->recvmsg_link, &rx->recvmsg_q);
--		spin_unlock_irq(&rx->recvmsg_lock);
-+		if (list_empty(&call->recvmsg_link)) {
-+			list_add(&call->recvmsg_link, &rx->recvmsg_q);
-+			rxrpc_see_call(call, rxrpc_call_see_recvmsg_requeue);
-+			spin_unlock_irq(&rx->recvmsg_lock);
-+		} else if (list_is_first(&call->recvmsg_link, &rx->recvmsg_q)) {
-+			spin_unlock_irq(&rx->recvmsg_lock);
-+			rxrpc_put_call(call, rxrpc_call_see_recvmsg_requeue_first);
-+		} else {
-+			list_move(&call->recvmsg_link, &rx->recvmsg_q);
-+			spin_unlock_irq(&rx->recvmsg_lock);
-+			rxrpc_put_call(call, rxrpc_call_see_recvmsg_requeue_move);
-+		}
- 		trace_rxrpc_recvmsg(call_debug_id, rxrpc_recvmsg_requeue, 0);
- 	} else {
--		rxrpc_put_call(call, rxrpc_call_put_recvmsg);
-+		rxrpc_put_call(call, rxrpc_call_put_recvmsg_peek_nowait);
- 	}
- error_no_call:
- 	release_sock(&rx->sk);
+-- 
+2.51.0
+
 
 
 
