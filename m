@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-212541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212302-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KOEIKqI0eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212541-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:06 +0100
+	id CO7AL/c3eml+4gEAu9opvQ
+	(envelope-from <stable+bounces-212302-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:19 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB3BA5267
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 242E3A5853
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07CB132EE9B6
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:58:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60D2830F4748
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BBD30E836;
-	Wed, 28 Jan 2026 15:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D83E2FD7D5;
+	Wed, 28 Jan 2026 15:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gs6TDxuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3s1h/55"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175302874FE;
-	Wed, 28 Jan 2026 15:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D63A2F9DBB;
+	Wed, 28 Jan 2026 15:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615865; cv=none; b=QsdgU3OxjTBUC4n5M28CALLm+95G4xNi+WKyIpS8ghlXcXe3/pJNeD4XGFhMQT2ITH9Efv536dFrokyMIRZ+PfRIuEV97JrDJqv1M14ZP5M76k80rHdThyNJD8/eaM0BprMoWmyA50wqh+fDuGXiCBVi69lHKiPhdM5L8u+4mOA=
+	t=1769615063; cv=none; b=tOqbQ4jlFFgI5FgMZGojMmAgJLWG88d3chXwlrKwKy+LSiBaqgvtk+3pZQtznNtHZmVxwqp1CP/HpZzz4UJvrmdyCYIpX8WL5KLVYPP2oJ80Ve+sImc7JDRblq+EZM6AuGeJy4Ham8Y2r3c4UZkYw4ZT946ESul+uEMnyfjEj90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615865; c=relaxed/simple;
-	bh=gyagi02eS/b7bh42eGLvYLwCecnfP7g/ZV8QgxfG6Ws=;
+	s=arc-20240116; t=1769615063; c=relaxed/simple;
+	bh=llQp3lcH21ses7/jvRpBi8yBPTjOJ47WFOByeWJN8j0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fg++hppaH9M6E2KY3kZyS58HQjiSI8nMYmrkUpnpB0ltHUnYhzD2B7u/kFzEv/oqQk1zlLpvKXiU4xgCir56B1PabiB7c4LgaT2v8LAdukQMrmnxYK/bEhSOZTssMZC1rmLwsh88Yy/SwXdCicNYNUpQHzp1A3whwz81glicf8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gs6TDxuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3909BC4CEF1;
-	Wed, 28 Jan 2026 15:57:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fh4xS5eCXYL0dSRBWcZEU9eTOL7go8mvherN7Anri2fQB08PXt2679spTnaZfev0n2I2xCDQr/XGsnRYs72fREmvGybqgtG7jQVYlKAipNoliyRDbXuI+CSb37187TqTO47qW2rxKRDVpGmB9aP+z+Tc4Izle520GYQB3iuQJRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3s1h/55; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03A7C4CEF1;
+	Wed, 28 Jan 2026 15:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769615864;
-	bh=gyagi02eS/b7bh42eGLvYLwCecnfP7g/ZV8QgxfG6Ws=;
+	s=korg; t=1769615063;
+	bh=llQp3lcH21ses7/jvRpBi8yBPTjOJ47WFOByeWJN8j0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gs6TDxuzdVPgfXD6872F6wCn3A3X70T47Il3v4eHrfNUEjVG6SfawNtXV85B+BDg3
-	 hfeWtURYyADQ3svMLcIBd2vtCgCdWu0YnAJNnOoCpUYbZ4y2EObxmgffqPEDf+Gu1m
-	 p+e8j2rehhZEvJyX1dj4xBWzt+AK4Tys6FJTOYcc=
+	b=g3s1h/55Ac5/1igc0CYrZvKXCvdks2M+hsCAOb8whETuyNOaKf/3LcngRk8G842SV
+	 ZGDI8wcGGEIZBwTR4Rwl71wrRwB4pzrB2oloZhpjOYOjU/35HbyCIu3/HAiO8MNBay
+	 jLkqg3OI84mF53rorELBduedCsPiLU+C61QtORlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cody Haas <chaas@riotgames.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.18 104/227] ice: Fix persistent failure in ice_get_rxfh
-Date: Wed, 28 Jan 2026 16:22:29 +0100
-Message-ID: <20260128145348.205817679@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jianhao Xu <jianhao.xu@seu.edu.cn>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 067/169] platform/x86/amd: Fix memory leak in wbrf_record()
+Date: Wed, 28 Jan 2026 16:22:30 +0100
+Message-ID: <20260128145336.420645347@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,138 +64,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212541-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-212302-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,intel.com:email,riotgames.com:email]
-X-Rspamd-Queue-Id: 0FB3BA5267
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:mid,linuxfoundation.org:dkim,seu.edu.cn:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 242E3A5853
 X-Rspamd-Action: no action
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cody Haas <chaas@riotgames.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit f406220eb8e227ca344eef1a6d30aff53706b196 ]
+[ Upstream commit 2bf1877b7094c684e1d652cac6912cfbc507ad3e ]
 
-Several ioctl functions have the ability to call ice_get_rxfh, however
-all of these ioctl functions do not provide all of the expected
-information in ethtool_rxfh_param. For example, ethtool_get_rxfh_indir does
-not provide an rss_key. This previously caused ethtool_get_rxfh_indir to
-always fail with -EINVAL.
+The tmp buffer is allocated using kcalloc() but is not freed if
+acpi_evaluate_dsm() fails. This causes a memory leak in the error path.
 
-This change draws inspiration from i40e_get_rss to handle this
-situation, by only calling the appropriate rss helpers when the
-necessary information has been provided via ethtool_rxfh_param.
+Fix this by explicitly freeing the tmp buffer in the error handling
+path of acpi_evaluate_dsm().
 
-Fixes: b66a972abb6b ("ice: Refactor ice_set/get_rss into LUT and key specific functions")
-Signed-off-by: Cody Haas <chaas@riotgames.com>
-Closes: https://lore.kernel.org/intel-wired-lan/CAH7f-UKkJV8MLY7zCdgCrGE55whRhbGAXvgkDnwgiZ9gUZT7_w@mail.gmail.com/
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 58e82a62669d ("platform/x86/amd: Add support for AMD ACPI based Wifi band RFI mitigation feature")
+Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
+Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://patch.msgid.link/20260106091318.747019-1-zilin@seu.edu.cn
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice.h         |  1 +
- drivers/net/ethernet/intel/ice/ice_ethtool.c |  6 +----
- drivers/net/ethernet/intel/ice/ice_main.c    | 28 ++++++++++++++++++++
- 3 files changed, 30 insertions(+), 5 deletions(-)
+ drivers/platform/x86/amd/wbrf.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 9ee596773f34e..a23ccd4ba08d2 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -977,6 +977,7 @@ void ice_map_xdp_rings(struct ice_vsi *vsi);
- int
- ice_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
- 	     u32 flags);
-+int ice_get_rss(struct ice_vsi *vsi, u8 *seed, u8 *lut, u16 lut_size);
- int ice_set_rss_lut(struct ice_vsi *vsi, u8 *lut, u16 lut_size);
- int ice_get_rss_lut(struct ice_vsi *vsi, u8 *lut, u16 lut_size);
- int ice_set_rss_key(struct ice_vsi *vsi, u8 *seed);
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index dc131779d4267..06b5677e9bff8 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3621,11 +3621,7 @@ ice_get_rxfh(struct net_device *netdev, struct ethtool_rxfh_param *rxfh)
- 	if (!lut)
- 		return -ENOMEM;
+diff --git a/drivers/platform/x86/amd/wbrf.c b/drivers/platform/x86/amd/wbrf.c
+index dd197b3aebe06..0f58d252b620a 100644
+--- a/drivers/platform/x86/amd/wbrf.c
++++ b/drivers/platform/x86/amd/wbrf.c
+@@ -104,8 +104,10 @@ static int wbrf_record(struct acpi_device *adev, uint8_t action, struct wbrf_ran
+ 	obj = acpi_evaluate_dsm(adev->handle, &wifi_acpi_dsm_guid,
+ 				WBRF_REVISION, WBRF_RECORD, &argv4);
  
--	err = ice_get_rss_key(vsi, rxfh->key);
--	if (err)
--		goto out;
--
--	err = ice_get_rss_lut(vsi, lut, vsi->rss_table_size);
-+	err = ice_get_rss(vsi, rxfh->key, lut, vsi->rss_table_size);
- 	if (err)
- 		goto out;
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index b0f8a96c13b47..6c392495f4a76 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -8002,6 +8002,34 @@ int ice_get_rss_key(struct ice_vsi *vsi, u8 *seed)
- 	return status;
- }
- 
-+/**
-+ * ice_get_rss - Get RSS LUT and/or key
-+ * @vsi: Pointer to VSI structure
-+ * @seed: Buffer to store the key in
-+ * @lut: Buffer to store the lookup table entries
-+ * @lut_size: Size of buffer to store the lookup table entries
-+ *
-+ * Return: 0 on success, negative on failure
-+ */
-+int ice_get_rss(struct ice_vsi *vsi, u8 *seed, u8 *lut, u16 lut_size)
-+{
-+	int err;
-+
-+	if (seed) {
-+		err = ice_get_rss_key(vsi, seed);
-+		if (err)
-+			return err;
+-	if (!obj)
++	if (!obj) {
++		kfree(tmp);
+ 		return -EINVAL;
 +	}
-+
-+	if (lut) {
-+		err = ice_get_rss_lut(vsi, lut, lut_size);
-+		if (err)
-+			return err;
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * ice_set_rss_hfunc - Set RSS HASH function
-  * @vsi: Pointer to VSI structure
+ 
+ 	if (obj->type != ACPI_TYPE_INTEGER) {
+ 		ret = -EINVAL;
 -- 
 2.51.0
 
