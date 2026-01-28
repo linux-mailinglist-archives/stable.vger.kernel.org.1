@@ -1,268 +1,118 @@
-Return-Path: <stable+bounces-211937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-211938-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KARZNBnKeWkezgEAu9opvQ
-	(envelope-from <stable+bounces-211937-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 09:34:33 +0100
+	id aBYwFerQeWk0zwEAu9opvQ
+	(envelope-from <stable+bounces-211938-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 10:03:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A5A9E41A
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 09:34:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E1F9E9B5
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 10:03:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4F99D3013014
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 08:34:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0DDB0300722A
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 09:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC25EAE7;
-	Wed, 28 Jan 2026 08:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="kcT79GNB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A01933C515;
+	Wed, 28 Jan 2026 09:02:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9B5126BF7;
-	Wed, 28 Jan 2026 08:34:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A974033CE83
+	for <stable@vger.kernel.org>; Wed, 28 Jan 2026 09:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769589268; cv=none; b=d8YIMSYn8WBpB9CJM6O81zJEaIg5vyaC5QJImOqe7uZehgFNFOkz1iTbafzzg6kJtUi/cj9Wp4/dEYhzT7EM2lY2rayeUVMZmMnEMNE2Q8csNZ4/Oa1H19uU2HnKYlx/k+K1wej28pDIkPJkCqF4E0XfBsJ9cymhAcyWwy06/Q0=
+	t=1769590954; cv=none; b=QFzmVRAmsLjHbqfVjBHhpWn5zd2ikZYH5HV3soQLr7Q0brXZKvFi6y/zxHTiuuFkrF2fYX5uZNRX56U8zAz0rrvyu/sTPL6tCQMtu9O5S/Tu9DPAR3Q0C1YVsveHwAlzhQanwgxkWkowfSG0PuklDxCdvpvB1C97sKep9OsEN8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769589268; c=relaxed/simple;
-	bh=TqTACZK3OBk0pUKATcGn6BWuIvsrzEnP8cmnnv4HbA4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gGdKR2KBUdOuG2AcFPw55CjDpYqVNjgBqM93TvavEsiprqwNFBzw9/SYZ9l14MMICdtvqNf7Nu1r+ovJK5q/LThbAm14LXdO5eqtdiFLUTABGsZehiZO7kKEBuJ62rz9Ana1UJwjMdKHIjU1MJTQdoRlHTkkZNpnUmg6XdnJMC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=kcT79GNB; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=uT
-	jphfMycXIDAOSyBJrJwCxg71drU2hua4RoaxHISfk=; b=kcT79GNB+E0QAEvv2N
-	8LSYl25SBRxnBAp4ZPo8RpcAQd2Ry6bZ0Rai/vsEk7WfoLLQ+O5he0v8NrYl0of0
-	GFwLW+R+HxStND/1AM++OdS9BzMoWC9NuQmyfLiTFFZ2v4E3AaoFh+1NoYxQnful
-	LnTrvs//5FoHwRhmcFZgVirqI=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wCntKjfyXlpCRVXIQ--.830S2;
-	Wed, 28 Jan 2026 16:33:37 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
-To: gregkh@linuxfoundation.org,
+	s=arc-20240116; t=1769590954; c=relaxed/simple;
+	bh=EZz+pGtBTRFMUHeN7JwNEPsyWIh/kR7Xa0eLxtxIZw0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=auOJLBhNddzKo0RWa0cF6vPLQw195pGcFeXaQD02VE3jrX4yWnti2S3R9CqlXAqOESQazUc7HVe/x1iIfbfp2HzPgVe3gw5UtuwdPpD5GwAkjL9mp/HCA0bHDEoGORcUODkDAXkDJd5pMKGQ5Ku1yLyxPMueD2N3b7X9HTrkDR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD3951515;
+	Wed, 28 Jan 2026 01:02:19 -0800 (PST)
+Received: from localhost (e132581.arm.com [10.1.196.87])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D6F673F73F;
+	Wed, 28 Jan 2026 01:02:25 -0800 (PST)
+Date: Wed, 28 Jan 2026 09:02:23 +0000
+From: Leo Yan <leo.yan@arm.com>
+To: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: gregkh@linuxfoundation.org, irogers@google.com, james.clark@linaro.org,
+	namhyung@kernel.org, patches@lists.linux.dev, sashal@kernel.org,
 	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Maninder Singh <maninder1.s@samsung.com>,
-	Shubham Rana <s9.rana@samsung.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1.y] NFSD: fix race between nfsd registration and exports_proc
-Date: Wed, 28 Jan 2026 16:33:34 +0800
-Message-Id: <20260128083334.2450566-1-black.hawk@163.com>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH 6.6 176/737] perf arm-spe: Extend branch operations
+Message-ID: <20260128090223.GD1339236@e132581.arm.com>
+References: <20260109112140.649989422@linuxfoundation.org>
+ <20260127183832.458213-1-hamzamahfooz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wCntKjfyXlpCRVXIQ--.830S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3AFWrGF4UCFWrur1xAFy3twb_yoW7Xry8pa
-	n3urW5Kr4vqw1UGa15Jan0yF10qF4kKay8u3s3WaySvwsIg3sFv3WFvF4q9FyDArW8XayD
-	Gw1UKF4F9w1ruaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zKiiDbUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC+QFj-Gl5yeEFrwAA31
+In-Reply-To: <20260127183832.458213-1-hamzamahfooz@linux.microsoft.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.36 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-211937-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,samsung.com,kernel.org,oracle.com,163.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-211938-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,samsung.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 30A5A9E41A
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[leo.yan@arm.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,e132581.arm.com:mid]
+X-Rspamd-Queue-Id: 71E1F9E9B5
 X-Rspamd-Action: no action
 
-From: Maninder Singh <maninder1.s@samsung.com>
+Hi,
 
-[ Upstream commit f7fb730cac9aafda8b9813b55d04e28a9664d17c ]
+[ + Arnaldo ]
 
-As of now nfsd calls create_proc_exports_entry() at start of init_nfsd
-and cleanup by remove_proc_entry() at last of exit_nfsd.
+On Tue, Jan 27, 2026 at 10:38:30AM -0800, Hamza Mahfooz wrote:
 
-Which causes kernel OOPs if there is race between below 2 operations:
-(i) exportfs -r
-(ii) mount -t nfsd none /proc/fs/nfsd
+> Hi,
+> 
+> It appears that this patch broke the build, see:
+> 
+> In file included from util/arm-spe-decoder/arm-spe-pkt-decoder.h:10,
+>                  from util/arm-spe-decoder/arm-spe-pkt-decoder.c:14:
+> linux/tools/include/linux/bitfield.h: In function ‘le16_encode_bits’:
+> linux/tools/include/linux/bitfield.h:166:38: error: implicit declaration of function ‘cpu_to_le16’ [-Wimplicit-function-declaration]
+>   166 |         ____MAKE_OP(le##size,u##size,cpu_to_le##size,le##size##_to_cpu) \
+>       |                                      ^~~~~~~~~
+> linux/tools/include/linux/bitfield.h:149:16: note: in definition of macro ‘____MAKE_OP’
+>   149 |         return to((v & field_mask(field)) * field_multiplier(field));   \
+>       |                ^~
+> linux/tools/include/linux/bitfield.h:170:1: note: in expansion of macro ‘__MAKE_OP’
+>   170 | __MAKE_OP(16)
+>       | ^~~~~~~~~
 
-for 5.4 kernel ARM64:
+FYI, the fix has been sent out:
+https://lore.kernel.org/linux-perf-users/20260123-perf_fix_bitfield-h-v2-1-cc8f8752607c@arm.com/
 
-CPU 1:
-el1_irq+0xbc/0x180
-arch_counter_get_cntvct+0x14/0x18
-running_clock+0xc/0x18
-preempt_count_add+0x88/0x110
-prep_new_page+0xb0/0x220
-get_page_from_freelist+0x2d8/0x1778
-__alloc_pages_nodemask+0x15c/0xef0
-__vmalloc_node_range+0x28c/0x478
-__vmalloc_node_flags_caller+0x8c/0xb0
-kvmalloc_node+0x88/0xe0
-nfsd_init_net+0x6c/0x108 [nfsd]
-ops_init+0x44/0x170
-register_pernet_operations+0x114/0x270
-register_pernet_subsys+0x34/0x50
-init_nfsd+0xa8/0x718 [nfsd]
-do_one_initcall+0x54/0x2e0
-
-CPU 2 :
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-
-PC is at : exports_net_open+0x50/0x68 [nfsd]
-
-Call trace:
-exports_net_open+0x50/0x68 [nfsd]
-exports_proc_open+0x2c/0x38 [nfsd]
-proc_reg_open+0xb8/0x198
-do_dentry_open+0x1c4/0x418
-vfs_open+0x38/0x48
-path_openat+0x28c/0xf18
-do_filp_open+0x70/0xe8
-do_sys_open+0x154/0x248
-
-Sometimes it crashes at exports_net_open() and sometimes cache_seq_next_rcu().
-
-and same is happening on latest 6.14 kernel as well:
-
-[    0.000000] Linux version 6.14.0-rc5-next-20250304-dirty
-...
-[  285.455918] Unable to handle kernel paging request at virtual address 00001f4800001f48
-...
-[  285.464902] pc : cache_seq_next_rcu+0x78/0xa4
-...
-[  285.469695] Call trace:
-[  285.470083]  cache_seq_next_rcu+0x78/0xa4 (P)
-[  285.470488]  seq_read+0xe0/0x11c
-[  285.470675]  proc_reg_read+0x9c/0xf0
-[  285.470874]  vfs_read+0xc4/0x2fc
-[  285.471057]  ksys_read+0x6c/0xf4
-[  285.471231]  __arm64_sys_read+0x1c/0x28
-[  285.471428]  invoke_syscall+0x44/0x100
-[  285.471633]  el0_svc_common.constprop.0+0x40/0xe0
-[  285.471870]  do_el0_svc_compat+0x1c/0x34
-[  285.472073]  el0_svc_compat+0x2c/0x80
-[  285.472265]  el0t_32_sync_handler+0x90/0x140
-[  285.472473]  el0t_32_sync+0x19c/0x1a0
-[  285.472887] Code: f9400885 93407c23 937d7c27 11000421 (f86378a3)
-[  285.473422] ---[ end trace 0000000000000000 ]---
-
-It reproduced simply with below script:
-while [ 1 ]
-do
-/exportfs -r
-done &
-
-while [ 1 ]
-do
-insmod /nfsd.ko
-mount -t nfsd none /proc/fs/nfsd
-umount /proc/fs/nfsd
-rmmod nfsd
-done &
-
-So exporting interfaces to user space shall be done at last and
-cleanup at first place.
-
-With change there is no Kernel OOPs.
-
-Co-developed-by: Shubham Rana <s9.rana@samsung.com>
-Signed-off-by: Shubham Rana <s9.rana@samsung.com>
-Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ The context change is due to the commit bd9d6a3efa97
-("NFSD: add rpc_status netlink support") in v6.7
-and the proper adoption is done. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
----
- fs/nfsd/nfsctl.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
-
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 07e5b1b23c91..ba2eaf3744ef 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1511,12 +1511,9 @@ static int __init init_nfsd(void)
- 	if (retval)
- 		goto out_free_pnfs;
- 	nfsd_lockd_init();	/* lockd->nfsd callbacks */
--	retval = create_proc_exports_entry();
--	if (retval)
--		goto out_free_lockd;
- 	retval = register_pernet_subsys(&nfsd_net_ops);
- 	if (retval < 0)
--		goto out_free_exports;
-+		goto out_free_lockd;
- 	retval = register_cld_notifier();
- 	if (retval)
- 		goto out_free_subsys;
-@@ -1524,18 +1521,20 @@ static int __init init_nfsd(void)
- 	if (retval)
- 		goto out_free_cld;
- 	retval = register_filesystem(&nfsd_fs_type);
-+	if (retval)
-+		goto out_free_nfsd4;
-+	retval = create_proc_exports_entry();
- 	if (retval)
- 		goto out_free_all;
- 	return 0;
- out_free_all:
-+	unregister_filesystem(&nfsd_fs_type);
-+out_free_nfsd4:
- 	nfsd4_destroy_laundry_wq();
- out_free_cld:
- 	unregister_cld_notifier();
- out_free_subsys:
- 	unregister_pernet_subsys(&nfsd_net_ops);
--out_free_exports:
--	remove_proc_entry("fs/nfs/exports", NULL);
--	remove_proc_entry("fs/nfs", NULL);
- out_free_lockd:
- 	nfsd_lockd_shutdown();
- 	nfsd_drc_slab_free();
-@@ -1548,13 +1547,13 @@ static int __init init_nfsd(void)
- 
- static void __exit exit_nfsd(void)
- {
-+	remove_proc_entry("fs/nfs/exports", NULL);
-+	remove_proc_entry("fs/nfs", NULL);
- 	unregister_filesystem(&nfsd_fs_type);
- 	nfsd4_destroy_laundry_wq();
- 	unregister_cld_notifier();
- 	unregister_pernet_subsys(&nfsd_net_ops);
- 	nfsd_drc_slab_free();
--	remove_proc_entry("fs/nfs/exports", NULL);
--	remove_proc_entry("fs/nfs", NULL);
- 	nfsd_lockd_shutdown();
- 	nfsd4_free_slabs();
- 	nfsd4_exit_pnfs();
--- 
-2.34.1
-
+Thanks,
+Leo
 
