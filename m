@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-212156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CckLJ01eml+4gEAu9opvQ
-	(envelope-from <stable+bounces-212156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:13:17 +0100
+	id ML5CLn8wemlq3wEAu9opvQ
+	(envelope-from <stable+bounces-212266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109F2A547E
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 17:13:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BB2A48FC
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 16:51:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CB6530421D1
-	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:36:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 27FA930515DD
+	for <lists+stable@lfdr.de>; Wed, 28 Jan 2026 15:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076182D77F7;
-	Wed, 28 Jan 2026 15:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787283033E4;
+	Wed, 28 Jan 2026 15:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDDOC4in"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xa6gcOjs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09862C237E;
-	Wed, 28 Jan 2026 15:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600923033C3;
+	Wed, 28 Jan 2026 15:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769614578; cv=none; b=Rc88GoONkdj0n9JMvcaK/cNlqkLYyEiCAnJFVT0B0s5ak/c/IkG12/DTHIapEg0whK6UY0RTbEZe/PeXRwQ4xV/mj5HX1z8cebpyPEnsKaf8tE5UOrFQ2sjCSDtQLHTvJSqql1jOeYzyrSnmjib6YNBg1S8W4wqm7lkmyr6oHNo=
+	t=1769614941; cv=none; b=tXeB1/VXnQGWr4Dym801USweq2u38Fuq0trrnpOOZVfcy2KbCtMcLIotC1//JpaIMgzOMu3mlUB65cB39nzJOVYSOhJTCpfw9OZvcH9Fz1WA8ofWnA6UJ0P6BgsCosJGwyofzYFqPhRzLOftJBbb4Devs13M3sR0R/Ztyp/CMno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769614578; c=relaxed/simple;
-	bh=LqpUMjJSwdOGXPJ833opjmcoxKVNmsM+muNxX+wrHLI=;
+	s=arc-20240116; t=1769614941; c=relaxed/simple;
+	bh=w7m5ql6wFXlk/OxAsuTayhdk+1vA/UIBSuBxVwnnD2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ritjxwr2lj2MoNWAL65KRvkSHkITrCTuqtyfVxk29kTUYbl4ZFhNR6PAs+4YykZd7oDv54i+E7jBRzBKigM7nggELLDMmyJhna9dXKi7mYcAWfTvR+7FtZW1yLb6dh+q22JXD1L55dod954oSW3sF4DOwVzFa9oajwHSo7FFtoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDDOC4in; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE3AC4CEF1;
-	Wed, 28 Jan 2026 15:36:17 +0000 (UTC)
+	 MIME-Version; b=WItlvYX16UYbFvcxijAGDoTUaM5tl7zNWKN/do/oUXXltfPaant9iRaz4jbx0vgMSL1+IkHn5DD1YqbkVztxvdcs0vUIrh8dS+oc80/Nf6tBIEQKPvDRx1rv0PX0tiNXtZ4ej2n5g0/6d1Av1iTjWCum6HLip51KHihUngpcevc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xa6gcOjs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4867AC4CEF7;
+	Wed, 28 Jan 2026 15:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1769614578;
-	bh=LqpUMjJSwdOGXPJ833opjmcoxKVNmsM+muNxX+wrHLI=;
+	s=korg; t=1769614940;
+	bh=w7m5ql6wFXlk/OxAsuTayhdk+1vA/UIBSuBxVwnnD2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDDOC4inBY0tPqCxe2b/A3TODMu9oQc0ql6+gJhiRZ0l1n+A6MGWj1DTXpV90XwcT
-	 4SQKYXq1x56ehZm/89Y8LAnkI7qmjyZwY60DmqRwhUPSdpWPRijM+jHFphVTomk55K
-	 9t/kBQ+NJk0X1ef+cnz5ehjoiVliU3y98Hek+BHs=
+	b=xa6gcOjsAK88ROgDKVQzTdUWWLGbfegA0DG5dtd4XWmTLO0TvCUlW/5QX1V6dTiW7
+	 OXMBi5w1Xlu0z1Sjt2Ibo+npOlDiaw1tZ4X17TGsmHn4RQCXniNG9GKljf+Q8FFZWP
+	 43z2NL0kz0Y7bgwKQ9Y6aQbqHz75huS9RVFIjY18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [PATCH 6.6 137/254] w1: therm: Fix off-by-one buffer overflow in alarms_store
-Date: Wed, 28 Jan 2026 16:21:53 +0100
-Message-ID: <20260128145349.748311089@linuxfoundation.org>
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 031/169] amd-xgbe: avoid misleading per-packet error log
+Date: Wed, 28 Jan 2026 16:21:54 +0100
+Message-ID: <20260128145335.142324373@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
-References: <20260128145344.698118637@linuxfoundation.org>
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+References: <20260128145334.006287341@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212156-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212266-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,144 +88,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linux.dev:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 109F2A547E
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:mid,linuxfoundation.org:dkim,msgid.link:url,amd.com:email]
+X-Rspamd-Queue-Id: 80BB2A48FC
 X-Rspamd-Action: no action
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-commit 761fcf46a1bd797bd32d23f3ea0141ffd437668a upstream.
+[ Upstream commit c158f985cf6c2c36c99c4f67af2ff3f5ebe09f8f ]
 
-The sysfs buffer passed to alarms_store() is allocated with 'size + 1'
-bytes and a NUL terminator is appended. However, the 'size' argument
-does not account for this extra byte. The original code then allocated
-'size' bytes and used strcpy() to copy 'buf', which always writes one
-byte past the allocated buffer since strcpy() copies until the NUL
-terminator at index 'size'.
+On the receive path, packet can be damaged because of buffer
+overflow in Rx FIFO. Avoid misleading per-packet error log when
+packet->errors is set, this can flood the log. Instead, rely on the
+standard rtnl_link_stats64 stats.
 
-Fix this by parsing the 'buf' parameter directly using simple_strtoll()
-without allocating any intermediate memory or string copying. This
-removes the overflow while simplifying the code.
-
-Cc: stable@vger.kernel.org
-Fixes: e2c94d6f5720 ("w1_therm: adding alarm sysfs entry")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Link: https://patch.msgid.link/20251216145007.44328-2-thorsten.blum@linux.dev
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Link: https://patch.msgid.link/20260114163037.2062606-1-Raju.Rangoju@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/w1/slaves/w1_therm.c |   60 +++++++++++++------------------------------
- 1 file changed, 19 insertions(+), 41 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/w1/slaves/w1_therm.c
-+++ b/drivers/w1/slaves/w1_therm.c
-@@ -1846,53 +1846,35 @@ static ssize_t alarms_store(struct devic
- 	struct w1_slave *sl = dev_to_w1_slave(device);
- 	struct therm_info info;
- 	u8 new_config_register[3];	/* array of data to be written */
--	int temp, ret;
--	char *token = NULL;
-+	long long temp;
-+	int ret = 0;
- 	s8 tl, th;	/* 1 byte per value + temp ring order */
--	char *p_args, *orig;
-+	const char *p = buf;
-+	char *endp;
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+index 32a6d52614242..e6a2492360227 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+@@ -2105,7 +2105,7 @@ static void xgbe_get_stats64(struct net_device *netdev,
+ 	s->multicast = pstats->rxmulticastframes_g;
+ 	s->rx_length_errors = pstats->rxlengtherror;
+ 	s->rx_crc_errors = pstats->rxcrcerror;
+-	s->rx_fifo_errors = pstats->rxfifooverflow;
++	s->rx_over_errors = pstats->rxfifooverflow;
  
--	p_args = orig = kmalloc(size, GFP_KERNEL);
--	/* Safe string copys as buf is const */
--	if (!p_args) {
--		dev_warn(device,
--			"%s: error unable to allocate memory %d\n",
--			__func__, -ENOMEM);
--		return size;
--	}
--	strcpy(p_args, buf);
--
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--
--	/* Convert 1st entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp || *endp != ' ')
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
- 	}
+ 	s->tx_packets = pstats->txframecount_gb;
+ 	s->tx_bytes = pstats->txoctetcount_gb;
+@@ -2559,9 +2559,6 @@ static int xgbe_rx_poll(struct xgbe_channel *channel, int budget)
+ 			goto read_again;
  
- 	tl = int_to_short(temp);
- 
--	/* Split string using space char */
--	token = strsep(&p_args, " ");
--	if (!token)	{
--		dev_info(device,
--			"%s: error parsing args %d\n", __func__, -EINVAL);
--		goto free_m;
--	}
--	/* Convert 2nd entry to int */
--	ret = kstrtoint (token, 10, &temp);
-+	p = endp + 1;
-+	temp = simple_strtoll(p, &endp, 10);
-+	if (p == endp)
-+		ret = -EINVAL;
-+	else if (temp < INT_MIN || temp > INT_MAX)
-+		ret = -ERANGE;
- 	if (ret) {
- 		dev_info(device,
- 			"%s: error parsing args %d\n", __func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	/* Prepare to cast to short by eliminating out of range values */
-@@ -1915,7 +1897,7 @@ static ssize_t alarms_store(struct devic
- 		dev_info(device,
- 			"%s: error reading from the slave device %d\n",
- 			__func__, ret);
--		goto free_m;
-+		return size;
- 	}
- 
- 	/* Write data in the device RAM */
-@@ -1923,7 +1905,7 @@ static ssize_t alarms_store(struct devic
- 		dev_info(device,
- 			"%s: Device not supported by the driver %d\n",
- 			__func__, -ENODEV);
--		goto free_m;
-+		return size;
- 	}
- 
- 	ret = SLAVE_SPECIFIC_FUNC(sl)->write_data(sl, new_config_register);
-@@ -1932,10 +1914,6 @@ static ssize_t alarms_store(struct devic
- 			"%s: error writing to the slave device %d\n",
- 			__func__, ret);
- 
--free_m:
--	/* free allocated memory */
--	kfree(orig);
--
- 	return size;
- }
- 
+ 		if (error || packet->errors) {
+-			if (packet->errors)
+-				netif_err(pdata, rx_err, netdev,
+-					  "error in received packet\n");
+ 			dev_kfree_skb(skb);
+ 			goto next_packet;
+ 		}
+-- 
+2.51.0
+
 
 
 
