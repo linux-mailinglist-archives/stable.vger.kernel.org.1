@@ -1,241 +1,289 @@
-Return-Path: <stable+bounces-212754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJpTDrIne2nRBwIAu9opvQ
-	(envelope-from <stable+bounces-212754-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 10:26:10 +0100
+	id 8K89HfYne2nRBwIAu9opvQ
+	(envelope-from <stable+bounces-212755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 10:27:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6793AAE1C0
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 10:26:09 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B152AE1D6
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 10:27:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D587300A76C
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 09:26:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D7CF63001381
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 09:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A186137F0F2;
-	Thu, 29 Jan 2026 09:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CF83783A5;
+	Thu, 29 Jan 2026 09:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="MDHp6KJV"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C95E37B3ED
-	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 09:26:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4A3378D8F;
+	Thu, 29 Jan 2026 09:27:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769678767; cv=none; b=L2KkWk+W2bJoT8pok5ryQBIoN8eQjnHBI54B1TgzWanSQHLfxZipq6iqbUHt6teelh3kd57OL8RYSp6A4VtIVCEZKogxDa6JK2ZUXGU0h7BP+AAS97RmLgzBXBXys5BRQEMgIHgIEWGgMoVd37EpWHq7NWkQO5F02ChcXKtmIC0=
+	t=1769678833; cv=none; b=JGUQfBzpjqiYcKuiryCIJx8S0b631tD1rwtiO2Y5mvMBWzAmz6sc6pkxTDLE4muudsVmmu7WzbZoWeruX1kaqX2KFUh4N3m6RMh1IXrHCQaicIk5dgZS3rdnCUvB9M+WJG6A+TeRfpnvQaYykK53wA2xh7lHi9RlJ5mX/XLRXik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769678767; c=relaxed/simple;
-	bh=BmIb9S0/2tcoL8kGs+4kMQvymt/6iFbYwRlAgQibhMg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TFrbSfvmear15bUkqlIBu5EpYmg3i7FDUUqvnin7iTsTb7OnCDpBT+ueQf48u4Pke+brLDATE4LF0A/34FVaPw5sgbjrfYnWHjsa02zNSRvAt9dEVbYc0YcZIvEkJYI87VXtE6lp+m+lm0JCaQEhHxKQbw8l02mj6p3LFaRVH3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 484841516;
-	Thu, 29 Jan 2026 01:25:59 -0800 (PST)
-Received: from e127648.cambridge.arm.com (e127648.arm.com [10.1.33.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0FB033F73F;
-	Thu, 29 Jan 2026 01:26:03 -0800 (PST)
-From: Christian Loehle <christian.loehle@arm.com>
-To: stable@vger.kernel.org,
-	tj@kernel.org
-Cc: arighi@nvidia.com,
-	void@manifault.com,
-	sched-ext@lists.linux.dev,
-	Wen-Fang Liu <liuwenfang@honor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Christian Loehle <christian.loehle@arm.com>
-Subject: [PATCH 2/2] sched_ext: Fix SCX_KICK_WAIT to work reliably
-Date: Thu, 29 Jan 2026 09:25:46 +0000
-Message-Id: <20260129092546.49128-3-christian.loehle@arm.com>
+	s=arc-20240116; t=1769678833; c=relaxed/simple;
+	bh=FDJrsU/htVFcP8rdlh9hG9yd7Dl0StW8tP02rPBWEdU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=hL5aXg3KYWqOt8BaFc+laxdFVMa6n1xBVKrBEj+fLKOflAzb5Hh9p2kbNj4gpZLR0els2hzZVSz8/PLphzZI9TMb6u63y2omR4aKMs4e+HhLx0J1GVfiuqJhrjbul1EO95jh0Knx/jruzUgajw1Mest8ekVyKIoTXVELLTUHf+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=MDHp6KJV; arc=none smtp.client-ip=120.232.169.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=MDHp6KJVMWP+O9hPvernCxw40sh50SQTtqee9BvqtJK8SU7tf5dfmt6PN0BklnLiP+9CQBsljfxFZ
+	 OGNWB6ZAO4kiVZC9g8Xz1cGcc+qUFFXfQmvqtkBr0q8ymmyAJ3wW7ZnAQI/xojNiaAG7p0QZF5G9N0
+	 fLcZnhwIncfCzi/0=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-20-12023 (RichMail) with SMTP id 2ef7697b27e49b7-019de;
+	Thu, 29 Jan 2026 17:27:03 +0800 (CST)
+X-RM-TRANSID:2ef7697b27e49b7-019de
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	srinivasan.shanmugam@amd.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	sashal@kernel.org,
+	mario.limonciello@amd.com,
+	superm1@kernel.org,
+	Jun.Ma2@amd.com,
+	Zhigang.Luo@amd.com,
+	Hawking.Zhang@amd.com,
+	Jesse.Zhang@amd.com,
+	victor.skvortsov@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	lin.cao@amd.com,
+	Jingwen.Chen2@amd.com
+Subject: [PATCH 6.1.y] drm/amdgpu: Replace Mutex with Spinlock for RLCG register access to avoid Priority Inversion in SRIOV
+Date: Thu, 29 Jan 2026 17:27:02 +0800
+Message-Id: <20260129092702.3671189-1-1468888505@139.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260129092546.49128-1-christian.loehle@arm.com>
-References: <20260129092546.49128-1-christian.loehle@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.14 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.54 / 15.00];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212754-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,amd.com,gmail.com,ffwll.ch,kernel.org,lists.freedesktop.org];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212755-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[139.com];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[christian.loehle@arm.com,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:mid,arm.com:email,honor.com:email]
-X-Rspamd-Queue-Id: 6793AAE1C0
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email,139.com:mid,139.com:email]
+X-Rspamd-Queue-Id: 9B152AE1D6
 X-Rspamd-Action: no action
 
-From: Tejun Heo <tj@kernel.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit a379fa1e2cae15d7422b4eead83a6366f2f445cb upstream.
+[ Upstream commit dc0297f3198bd60108ccbd167ee5d9fa4af31ed0 ]
 
-SCX_KICK_WAIT is used to synchronously wait for the target CPU to complete
-a reschedule and can be used to implement operations like core scheduling.
+RLCG Register Access is a way for virtual functions to safely access GPU
+registers in a virtualized environment., including TLB flushes and
+register reads. When multiple threads or VFs try to access the same
+registers simultaneously, it can lead to race conditions. By using the
+RLCG interface, the driver can serialize access to the registers. This
+means that only one thread can access the registers at a time,
+preventing conflicts and ensuring that operations are performed
+correctly. Additionally, when a low-priority task holds a mutex that a
+high-priority task needs, ie., If a thread holding a spinlock tries to
+acquire a mutex, it can lead to priority inversion. register access in
+amdgpu_virt_rlcg_reg_rw especially in a fast code path is critical.
 
-This used to be implemented by scx_next_task_picked() incrementing pnt_seq,
-which was always called when a CPU picks the next task to run, allowing
-SCX_KICK_WAIT to reliably wait for the target CPU to enter the scheduler and
-pick the next task.
+The call stack shows that the function amdgpu_virt_rlcg_reg_rw is being
+called, which attempts to acquire the mutex. This function is invoked
+from amdgpu_sriov_wreg, which in turn is called from
+gmc_v11_0_flush_gpu_tlb.
 
-However, commit b999e365c298 ("sched_ext: Replace scx_next_task_picked()
-with switch_class()") replaced scx_next_task_picked() with the
-switch_class() callback, which is only called when switching between sched
-classes. This broke SCX_KICK_WAIT because pnt_seq would no longer be
-reliably incremented unless the previous task was SCX and the next task was
-not.
+The [ BUG: Invalid wait context ] indicates that a thread is trying to
+acquire a mutex while it is in a context that does not allow it to sleep
+(like holding a spinlock).
 
-This fix leverages commit 4c95380701f5 ("sched/ext: Fold balance_scx() into
-pick_task_scx()") which refactored the pick path making put_prev_task_scx()
-the natural place to track task switches for SCX_KICK_WAIT. The fix moves
-pnt_seq increment to put_prev_task_scx() and also increments it in
-pick_task_scx() to handle cases where the same task is re-selected, whether
-by BPF scheduler decision or slice refill. The semantics: If the current
-task on the target CPU is SCX, SCX_KICK_WAIT waits until the CPU enters the
-scheduling path. This provides sufficient guarantee for use cases like core
-scheduling while keeping the operation self-contained within SCX.
+Fixes the below:
 
-v2: - Also increment pnt_seq in pick_task_scx() to handle same-task
-      re-selection (Andrea Righi).
-    - Use smp_cond_load_acquire() for the busy-wait loop for better
-      architecture optimization (Peter Zijlstra).
+[  253.013423] =============================
+[  253.013434] [ BUG: Invalid wait context ]
+[  253.013446] 6.12.0-amdstaging-drm-next-lol-050225 #14 Tainted: G     U     OE
+[  253.013464] -----------------------------
+[  253.013475] kworker/0:1/10 is trying to lock:
+[  253.013487] ffff9f30542e3cf8 (&adev->virt.rlcg_reg_lock){+.+.}-{3:3}, at: amdgpu_virt_rlcg_reg_rw+0xf6/0x330 [amdgpu]
+[  253.013815] other info that might help us debug this:
+[  253.013827] context-{4:4}
+[  253.013835] 3 locks held by kworker/0:1/10:
+[  253.013847]  #0: ffff9f3040050f58 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x3f5/0x680
+[  253.013877]  #1: ffffb789c008be40 ((work_completion)(&wfc.work)){+.+.}-{0:0}, at: process_one_work+0x1d6/0x680
+[  253.013905]  #2: ffff9f3054281838 (&adev->gmc.invalidate_lock){+.+.}-{2:2}, at: gmc_v11_0_flush_gpu_tlb+0x198/0x4f0 [amdgpu]
+[  253.014154] stack backtrace:
+[  253.014164] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Tainted: G     U     OE      6.12.0-amdstaging-drm-next-lol-050225 #14
+[  253.014189] Tainted: [U]=USER, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[  253.014203] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/18/2024
+[  253.014224] Workqueue: events work_for_cpu_fn
+[  253.014241] Call Trace:
+[  253.014250]  <TASK>
+[  253.014260]  dump_stack_lvl+0x9b/0xf0
+[  253.014275]  dump_stack+0x10/0x20
+[  253.014287]  __lock_acquire+0xa47/0x2810
+[  253.014303]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  253.014321]  lock_acquire+0xd1/0x300
+[  253.014333]  ? amdgpu_virt_rlcg_reg_rw+0xf6/0x330 [amdgpu]
+[  253.014562]  ? __lock_acquire+0xa6b/0x2810
+[  253.014578]  __mutex_lock+0x85/0xe20
+[  253.014591]  ? amdgpu_virt_rlcg_reg_rw+0xf6/0x330 [amdgpu]
+[  253.014782]  ? sched_clock_noinstr+0x9/0x10
+[  253.014795]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  253.014808]  ? local_clock_noinstr+0xe/0xc0
+[  253.014822]  ? amdgpu_virt_rlcg_reg_rw+0xf6/0x330 [amdgpu]
+[  253.015012]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  253.015029]  mutex_lock_nested+0x1b/0x30
+[  253.015044]  ? mutex_lock_nested+0x1b/0x30
+[  253.015057]  amdgpu_virt_rlcg_reg_rw+0xf6/0x330 [amdgpu]
+[  253.015249]  amdgpu_sriov_wreg+0xc5/0xd0 [amdgpu]
+[  253.015435]  gmc_v11_0_flush_gpu_tlb+0x44b/0x4f0 [amdgpu]
+[  253.015667]  gfx_v11_0_hw_init+0x499/0x29c0 [amdgpu]
+[  253.015901]  ? __pfx_smu_v13_0_update_pcie_parameters+0x10/0x10 [amdgpu]
+[  253.016159]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  253.016173]  ? smu_hw_init+0x18d/0x300 [amdgpu]
+[  253.016403]  amdgpu_device_init+0x29ad/0x36a0 [amdgpu]
+[  253.016614]  amdgpu_driver_load_kms+0x1a/0xc0 [amdgpu]
+[  253.017057]  amdgpu_pci_probe+0x1c2/0x660 [amdgpu]
+[  253.017493]  local_pci_probe+0x4b/0xb0
+[  253.017746]  work_for_cpu_fn+0x1a/0x30
+[  253.017995]  process_one_work+0x21e/0x680
+[  253.018248]  worker_thread+0x190/0x330
+[  253.018500]  ? __pfx_worker_thread+0x10/0x10
+[  253.018746]  kthread+0xe7/0x120
+[  253.018988]  ? __pfx_kthread+0x10/0x10
+[  253.019231]  ret_from_fork+0x3c/0x60
+[  253.019468]  ? __pfx_kthread+0x10/0x10
+[  253.019701]  ret_from_fork_asm+0x1a/0x30
+[  253.019939]  </TASK>
 
-Reported-by: Wen-Fang Liu <liuwenfang@honor.com>
-Link: http://lkml.kernel.org/r/228ebd9e6ed3437996dffe15735a9caa@honor.com
-Cc: Peter Zijlstra <peterz@infradead.org>
-Reviewed-by: Andrea Righi <arighi@nvidia.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+v2: s/spin_trylock/spin_lock_irqsave to be safe (Christian).
+
+Fixes: e864180ee49b ("drm/amdgpu: Add lock around VF RLCG interface")
+Cc: lin cao <lin.cao@amd.com>
+Cc: Jingwen Chen <Jingwen.Chen2@amd.com>
+Cc: Victor Skvortsov <victor.skvortsov@amd.com>
+Cc: Zhigang Luo <zhigang.luo@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Suggested-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
 ---
- kernel/sched/ext.c          | 46 +++++++++++++++++++++----------------
- kernel/sched/ext_internal.h |  6 +++--
- 2 files changed, 30 insertions(+), 22 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c   | 5 +++--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h   | 3 ++-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 3d53b2232937..2ff7034841c7 100644
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -2306,12 +2306,6 @@ static void switch_class(struct rq *rq, struct task_struct *next)
- 	struct scx_sched *sch = scx_root;
- 	const struct sched_class *next_class = next->sched_class;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 38b81ae236cb..535cc74c5880 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3652,7 +3652,6 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	mutex_init(&adev->grbm_idx_mutex);
+ 	mutex_init(&adev->mn_lock);
+ 	mutex_init(&adev->virt.vf_errors.lock);
+-	mutex_init(&adev->virt.rlcg_reg_lock);
+ 	hash_init(adev->mn_hash);
+ 	mutex_init(&adev->psp.mutex);
+ 	mutex_init(&adev->notifier_lock);
+@@ -3674,6 +3673,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	spin_lock_init(&adev->se_cac_idx_lock);
+ 	spin_lock_init(&adev->audio_endpt_idx_lock);
+ 	spin_lock_init(&adev->mm_stats.lock);
++	spin_lock_init(&adev->virt.rlcg_reg_lock);
  
--	/*
--	 * Pairs with the smp_load_acquire() issued by a CPU in
--	 * kick_cpus_irq_workfn() who is waiting for this CPU to perform a
--	 * resched.
--	 */
--	smp_store_release(&rq->scx.pnt_seq, rq->scx.pnt_seq + 1);
- 	if (!(sch->ops.flags & SCX_OPS_HAS_CPU_PREEMPT))
- 		return;
+ 	INIT_LIST_HEAD(&adev->shadow_list);
+ 	mutex_init(&adev->shadow_list_lock);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index c626ed88e642..d300f7710ebb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -965,6 +965,7 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
+ 	void *scratch_reg2;
+ 	void *scratch_reg3;
+ 	void *spare_int;
++	unsigned long flags;
  
-@@ -2351,6 +2345,10 @@ static void put_prev_task_scx(struct rq *rq, struct task_struct *p,
- 			      struct task_struct *next)
- {
- 	struct scx_sched *sch = scx_root;
-+
-+	/* see kick_cpus_irq_workfn() */
-+	smp_store_release(&rq->scx.pnt_seq, rq->scx.pnt_seq + 1);
-+
- 	update_curr_scx(rq);
+ 	if (!adev->gfx.rlc.rlcg_reg_access_supported) {
+ 		dev_err(adev->dev,
+@@ -978,7 +979,7 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
+ 	scratch_reg2 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg2;
+ 	scratch_reg3 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg3;
  
- 	/* see dequeue_task_scx() on why we skip when !QUEUED */
-@@ -2404,6 +2402,9 @@ static struct task_struct *pick_task_scx(struct rq *rq)
- 	bool keep_prev = rq->scx.flags & SCX_RQ_BAL_KEEP;
- 	bool kick_idle = false;
+-	mutex_lock(&adev->virt.rlcg_reg_lock);
++	spin_lock_irqsave(&adev->virt.rlcg_reg_lock, flags);
  
-+	/* see kick_cpus_irq_workfn() */
-+	smp_store_release(&rq->scx.pnt_seq, rq->scx.pnt_seq + 1);
-+
- 	/*
- 	 * WORKAROUND:
- 	 *
-@@ -5186,8 +5187,12 @@ static bool kick_one_cpu(s32 cpu, struct rq *this_rq, unsigned long *pseqs)
- 		}
+ 	if (reg_access_ctrl->spare_int)
+ 		spare_int = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->spare_int;
+@@ -1034,7 +1035,7 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
  
- 		if (cpumask_test_cpu(cpu, this_scx->cpus_to_wait)) {
--			pseqs[cpu] = rq->scx.pnt_seq;
--			should_wait = true;
-+			if (cur_class == &ext_sched_class) {
-+				pseqs[cpu] = rq->scx.pnt_seq;
-+				should_wait = true;
-+			} else {
-+				cpumask_clear_cpu(cpu, this_scx->cpus_to_wait);
-+			}
- 		}
+ 	ret = readl(scratch_reg0);
  
- 		resched_curr(rq);
-@@ -5248,18 +5253,19 @@ static void kick_cpus_irq_workfn(struct irq_work *irq_work)
- 	for_each_cpu(cpu, this_scx->cpus_to_wait) {
- 		unsigned long *wait_pnt_seq = &cpu_rq(cpu)->scx.pnt_seq;
+-	mutex_unlock(&adev->virt.rlcg_reg_lock);
++	spin_unlock_irqrestore(&adev->virt.rlcg_reg_lock, flags);
  
--		if (cpu != cpu_of(this_rq)) {
--			/*
--			 * Pairs with smp_store_release() issued by this CPU in
--			 * switch_class() on the resched path.
--			 *
--			 * We busy-wait here to guarantee that no other task can
--			 * be scheduled on our core before the target CPU has
--			 * entered the resched path.
--			 */
--			while (smp_load_acquire(wait_pnt_seq) == pseqs[cpu])
--				cpu_relax();
--		}
-+		/*
-+		 * Busy-wait until the task running at the time of kicking is no
-+		 * longer running. This can be used to implement e.g. core
-+		 * scheduling.
-+		 *
-+		 * smp_cond_load_acquire() pairs with store_releases in
-+		 * pick_task_scx() and put_prev_task_scx(). The former breaks
-+		 * the wait if SCX's scheduling path is entered even if the same
-+		 * task is picked subsequently. The latter is necessary to break
-+		 * the wait when $cpu is taken by a higher sched class.
-+		 */
-+		if (cpu != cpu_of(this_rq))
-+			smp_cond_load_acquire(wait_pnt_seq, VAL != pseqs[cpu]);
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+index fc2859726f0a..9267e792c4cf 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+@@ -264,7 +264,8 @@ struct amdgpu_virt {
+ 	/* the ucode id to signal the autoload */
+ 	uint32_t autoload_ucode_id;
  
- 		cpumask_clear_cpu(cpu, this_scx->cpus_to_wait);
- 	}
-diff --git a/kernel/sched/ext_internal.h b/kernel/sched/ext_internal.h
-index b3617abed510..601cfae8cc76 100644
---- a/kernel/sched/ext_internal.h
-+++ b/kernel/sched/ext_internal.h
-@@ -986,8 +986,10 @@ enum scx_kick_flags {
- 	SCX_KICK_PREEMPT	= 1LLU << 1,
- 
- 	/*
--	 * Wait for the CPU to be rescheduled. The scx_bpf_kick_cpu() call will
--	 * return after the target CPU finishes picking the next task.
-+	 * The scx_bpf_kick_cpu() call will return after the current SCX task of
-+	 * the target CPU switches out. This can be used to implement e.g. core
-+	 * scheduling. This has no effect if the current task on the target CPU
-+	 * is not on SCX.
- 	 */
- 	SCX_KICK_WAIT		= 1LLU << 2,
+-	struct mutex rlcg_reg_lock;
++	/* Spinlock to protect access to the RLCG register interface */
++	spinlock_t rlcg_reg_lock;
  };
+ 
+ struct amdgpu_video_codec_info;
 -- 
 2.34.1
+
 
 
