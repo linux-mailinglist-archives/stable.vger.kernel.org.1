@@ -1,240 +1,319 @@
-Return-Path: <stable+bounces-212714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212715-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FypKH2lemmN8wEAu9opvQ
-	(envelope-from <stable+bounces-212714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 01:10:37 +0100
+	id yB/aM5Glemmw8wEAu9opvQ
+	(envelope-from <stable+bounces-212715-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 01:10:57 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A4DAA1F6
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 01:10:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03910AA20C
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 01:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7970E3004412
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 00:10:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75CA93002D33
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 00:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337061A294;
-	Thu, 29 Jan 2026 00:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8FBB67E;
+	Thu, 29 Jan 2026 00:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R1ZwhSgu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ahYpMWDy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945493EBF04
-	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 00:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769645433; cv=pass; b=m/Lnu9ypdLybiGAZyqC5TpvmTfY3G8dCjVfBAHdP7UXjg9ljDrCIncMx9aBhDCvbJKBFn3Z15v2oEuBh7HlxgJURHNWa9OujvJQBhNZIjYUE97TuIyDZv0TS/h0yGgnxSTofHOjyA7KOqO28Ucvr1i5sDRuazIcstuIGVebsk6U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769645433; c=relaxed/simple;
-	bh=CRea/sHGoU31RRDtXpjn0kXbvznYwwDits66631/iI4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VxXmHrM6zECch4kWBIphIcMbSnRwN3qrYQ0WzryUtJ1IjZx1jqU1zPEl3qVSK6xFSKQ9XdyimQoTeLvGfOFCSOqPeYb4pQJC5CO2IkYpqaaWaZYZMeSaLdwvjl5qMs80A52sSNT5tjMmRd9WJkQdvvP7zr9T6UEnohdU9EKzrUo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R1ZwhSgu; arc=pass smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-432755545fcso294245f8f.1
-        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 16:10:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769645430; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kjWdp0eFSAQwgeDgHn74tIROho2D1niWMQrTTYmawJI+pBNHfc1PxxGAHgROYxQiz/
-         1wx6wqv4/Qd+THWppIoaPtJyFFqHdvNU8rtelfQvUNpijJ9yt3oTdBddXgCaTy7gY5Nr
-         TUdPOkf6W9pDUqBSDVQX8kNt03ACqHuf6PFWXYgqGlof06q9UYkxoKSthdl0mIyPpAJU
-         quZwxwIJeOUOu1LLOOEgQNRRx5io2vdPBmTF/CAfxeJ2kPG0YVEVtYIC3CWcgWAoZXOy
-         zLK/eRnujSMz8hdvIWDboG87q1YSsIbCaUKnEyTg3FHINBicLRHMrP77adZ2yeD5Md5p
-         oJ/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uqJ0WvFK3b9iPhiYy6g2qTs0iQN4YJvVeIc2JBueXkU=;
-        fh=MTJgx31A20PyqMg5lclN6scNXRKiU5PII70SnqKm9HI=;
-        b=HbwTUm0kKQXlnm+eZ9gbQ8o7lVQT06FjtNpAv8tTRm+uN0S9AYWsjhcHTEy31SyfzE
-         3dfPM19Y2uQ943DJUARZRNDI6RpeFtWUcbEoHVIwNAwsydAITvdQK4L2kj/5ZmC4Aa43
-         Ny7OV0t0htCUtC7wE8ypm1RjoHA3ByuBDXWmlLtMAEAG6xZ7sqBdIfBgULYhi4MQqD9k
-         /NcDQJu+TJcp35/lytWXMfsseSDv9LDDD4AnQfipNryMRFFSz1KTuX+tfdGI3xq+wiO7
-         lJT0DhKUyDnWrFfjYRJdiXo9kkL+Z1QvNkNYHE5Cq8TgCBlwiayNVdhxiYPaRHRaGVs3
-         CI/g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769645430; x=1770250230; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uqJ0WvFK3b9iPhiYy6g2qTs0iQN4YJvVeIc2JBueXkU=;
-        b=R1ZwhSgukAbK11t8YuLgthPzrOe0KGWQcNzWQXg9hTRAaoc57OM5Rn6kUaUnMbaE1w
-         ya8GN8L7p1yaF9w5d4kgIOwRw9SFyUnDIojLvHcjqA3Tf7JreFNBYO4qsEgLcgvPxG3l
-         mtkyog+60vKQshjDziB0XHtgQFOhPQzhXGEmzLskNnoq+6tnfuWearO94+QlKo+n+Njm
-         WuV/kl8Ijye2mJfEmNJgg8arvdHzQZgxFQXgaBBex9MFqlDJn70phWH3GoqiLpSF7fFB
-         6+Ha3asIcuGOSPO4Jxw6H8krt8CpNGuZGmp+UksvGN3HJqwJZ+sM9N//Eht5l8wlfSAY
-         jScg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769645430; x=1770250230;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uqJ0WvFK3b9iPhiYy6g2qTs0iQN4YJvVeIc2JBueXkU=;
-        b=rXYjoddwgPrMcKhJTrgYmjhTF4wmoopwE1eaaq65t+opoWblMTHSUvC/UsyLWHd9q0
-         piQ9AOgoubf7+0cQrGi/DiMqdoquQE15C1PH0NBmhS6YRe6SIYuBHgCuro5jesAiaEBQ
-         Yqe+Otg7KyRHWoXX8p8i5D5wj68AzKx+Y1LUJyP1Dq1FSGGuqEOSfPITgsY9/ITbTJXf
-         qq/7bxJuDz/940qagDqiQ1rza23/bshno8HV6OwSpOcvpmt6tdXsjF1qnf8Bvlp1disO
-         2fnfN8LM/ZphjTHevCmfyfwoRIGUWUNMGKTxX4AC6FfLsjS+odSim/CUGykyfPpOSs5E
-         y2tA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPehrX32SUKL2lXUdpAPVZRDpvAT0lzOZOvcRiJDeHJ3XEQDSxkOOQJysDum++8W2I9aJ0UXQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwepmMOTIEdgH6cZUdOFe3uCR7kasprI28P9Wh2+xYeFjMkXuK
-	yv9W2tdYw9W9mUeZ64zxpE2qxG/BzBLu6Iee/cdivG9C2hkHfBKPlOqfuy8pIe/ugm8fgNtvm/f
-	cwAUJkz2qarCz1Rafv7Rtnb45nMwr3u0=
-X-Gm-Gg: AZuq6aIq7SoRvVFOaHyPp083UH6JNT3QikuMiaq1aI+bnt0tPMIi7pcIcYeL8NMDdXV
-	1lcGCWdgeF5CEJC3SBAUGgPJ3iQXmYj80exqxLHD6ia21bPzdq7bESqTlnXEdZwaYca3R3hUlIq
-	QQ3frhJC6O+MiTYAg531SIxT2WOjmVqf2+qQneOptl47U9qAM3VTutDTNpJIWPCVNLHtoKmkKmc
-	Ra9n+nUYj2lMpYzQCelYW3pVD2b8dxtfSG2ebg1/O8fnS/cDRMvp/AxIjRZ8Hd/iOHdCZ9+DzA+
-	WXZcV/X9sdrAOpg3S5aBs1wqi3w=
-X-Received: by 2002:a05:6000:2310:b0:432:ca6c:7b03 with SMTP id
- ffacd0b85a97d-435dd073c8dmr10943655f8f.26.1769645429765; Wed, 28 Jan 2026
- 16:10:29 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110FF12B93
+	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 00:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769645453; cv=none; b=DRPUH9IyFSXvE8w5pzoC9IiKoogARAVuAS1+AgkSjWoblJPp4853upObfYYOkD01fiNTobS6FyF0JjrJJhg3C6qiwMFrZYrg0U7b01Sh6ybbebOzC9L7PM4CCgni6G+smHaM5RQmcNF6F9mTW4M85Z4GCn/3D6nj5BWF6/e6HXU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769645453; c=relaxed/simple;
+	bh=BVgRqlDYh+3oOecYjAF8iQUKmATREbpksWqqReZk5Jk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Uzp0pfbbjpRCkXPa5tmBfJdhLZ2H/zF9cAZisWlbPCWbJVEs4tieE1LYPU6tisOCYH5CUgN4Q16DA7pN7i+Wupq0yj9Vd1SaDK4V2/JpqpeBZ2QWYE+3UEjlZl4quOuuNUYeWW2OS+RKKfq3Yve3/IGE+Iz49fF8+78EUEVa6Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ahYpMWDy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC1C9C4CEF1;
+	Thu, 29 Jan 2026 00:10:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769645452;
+	bh=BVgRqlDYh+3oOecYjAF8iQUKmATREbpksWqqReZk5Jk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ahYpMWDyhQwwKxAjWa/5Vvq4fX3eOWrM4coRpiQfh7OLcasHEpLfhSNBa+H3zJHfu
+	 FYoqtO8vbynoEmVJkkC149zmaJ1sPeHzV+S7AdmQxWZOHoAZ/rziDDfiKfTu6IShea
+	 Yle5Z/0HcXZVt/i9eb8FyZqUxLLsfpjxf7t35YSDBhzrJWH5TQ1QMpNUqO3vabPSne
+	 xhoSDHw5Sb81zWlxjjokmSDmzu9otd5S3cfdmbCuqppG/tFJ9Xz/SokTgwoZBJDpyM
+	 82LiLWkTZXGPG6Itb9ISAWWwwxTK++y2P+mJ8+5ZqFF6p8y4dwoO8BvMwr7XQCfGdR
+	 /jIORKViT/YGw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	syzbot+6182afad5045e6703b3d@syzkaller.appspotmail.com,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] rxrpc: Fix data-race warning and potential load/store tearing
+Date: Wed, 28 Jan 2026 19:10:48 -0500
+Message-ID: <20260129001048.2933922-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026012755-value-visa-db01@gregkh>
+References: <2026012755-value-visa-db01@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260126022715.404984-1-CFSworks@gmail.com> <20260126022715.404984-2-CFSworks@gmail.com>
- <f351a9235ec9da785af840beb28db0513aa66ba6.camel@ibm.com>
-In-Reply-To: <f351a9235ec9da785af840beb28db0513aa66ba6.camel@ibm.com>
-From: Sam Edwards <cfsworks@gmail.com>
-Date: Wed, 28 Jan 2026 16:10:18 -0800
-X-Gm-Features: AZwV_QguMmRDCrhJq0NR6nex3VxA2VLwfomnVytdVwhjNkrsdUh2ngEaeAZktgA
-Message-ID: <CAH5Ym4hUiVHgHQQA15r2ZRaq8KNg4xLs2Ub5fFs1FaPOcgHZbg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ceph: free page array when ceph_submit_write() fails
-To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Cc: Xiubo Li <xiubli@redhat.com>, "idryomov@gmail.com" <idryomov@gmail.com>, 
-	Milind Changire <mchangir@redhat.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"ceph-devel@vger.kernel.org" <ceph-devel@vger.kernel.org>, "brauner@kernel.org" <brauner@kernel.org>, 
-	"jlayton@kernel.org" <jlayton@kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212714-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[redhat.com,gmail.com,vger.kernel.org,kernel.org];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212715-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cfsworks@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: D0A4DAA1F6
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,6182afad5045e6703b3d];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 03910AA20C
 X-Rspamd-Action: no action
 
-On Mon, Jan 26, 2026 at 2:51=E2=80=AFPM Viacheslav Dubeyko
-<Slava.Dubeyko@ibm.com> wrote:
->
-> On Sun, 2026-01-25 at 18:27 -0800, Sam Edwards wrote:
-> > If `locked_pages` is zero, the page array must not be allocated:
-> > ceph_process_folio_batch() uses `locked_pages` to decide when to
-> > allocate `pages`, and redundant allocations trigger
-> > ceph_allocate_page_array()'s BUG_ON(), resulting in a worker oops (and
-> > writeback stall) or even a kernel panic. Consequently, the main loop in
-> > ceph_writepages_start() assumes that the lifetime of `pages` is confine=
-d
-> > to a single iteration.
-> >
-> > The ceph_submit_write() function claims ownership of the page array on
-> > success (it is later freed when the write concludes). But failures only
-> > redirty/unlock the pages and fail to free the array, making the failure
-> > case in ceph_submit_write() fatal.
-> >
-> > Free the page array (and reset locked_pages) in ceph_submit_write()'s
-> > error-handling 'if' block so that the caller's invariant (that the arra=
-y
-> > does not remain in ceph_wbc) is maintained unconditionally, making
-> > failures in ceph_submit_write() recoverable as originally intended.
-> >
-> > Fixes: 1551ec61dc55 ("ceph: introduce ceph_submit_write() method")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Sam Edwards <CFSworks@gmail.com>
-> > ---
-> >  fs/ceph/addr.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> >
-> > diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-> > index 63b75d214210..c3e0b5b429ea 100644
-> > --- a/fs/ceph/addr.c
-> > +++ b/fs/ceph/addr.c
-> > @@ -1470,6 +1470,14 @@ int ceph_submit_write(struct address_space *mapp=
-ing,
-> >                       unlock_page(page);
-> >               }
-> >
-> > +             if (ceph_wbc->from_pool) {
-> > +                     mempool_free(ceph_wbc->pages, ceph_wb_pagevec_poo=
-l);
-> > +                     ceph_wbc->from_pool =3D false;
-> > +             } else
-> > +                     kfree(ceph_wbc->pages);
-> > +             ceph_wbc->pages =3D NULL;
-> > +             ceph_wbc->locked_pages =3D 0;
-> > +
->
->
-> I see the completely identical code pattern in two patches:
+From: David Howells <dhowells@redhat.com>
 
-The second patch only contains that pattern because it is moving it to
-a separate function, patch 2 isn't introducing any *new* code.
+[ Upstream commit 5d5fe8bcd331f1e34e0943ec7c18432edfcf0e8b ]
 
->
-> +       if (ceph_wbc->from_pool) {
-> +               mempool_free(ceph_wbc->pages, ceph_wb_pagevec_pool);
-> +               ceph_wbc->from_pool =3D false;
-> +       } else
-> +               kfree(ceph_wbc->pages);
-> +       ceph_wbc->pages =3D NULL;
-> +       ceph_wbc->locked_pages =3D 0;
->
-> I believe we need to introduce the inline function that can be reused in =
-two
-> places.
+Fix the following:
 
-Patch 2 is introducing that inline function as requested -- but that
-function is not actually used in two places: for now (in this series),
-it is only split out for better readability.
+        BUG: KCSAN: data-race in rxrpc_peer_keepalive_worker / rxrpc_send_data_packet
 
-These patches are organized like this because of kernel development
-norms: bugfixes intended for stable (such as this patch) should
-consist of minimal, backport-friendly and correctness-focused changes.
-Moving existing code to a new function is a separate change and does
-not constitute a bugfix, so it needs to go in its own patch that isn't
-Cc: stable.
+which is reporting an issue with the reads and writes to ->last_tx_at in:
 
-Cheers,
-Sam
+        conn->peer->last_tx_at = ktime_get_seconds();
 
->
-> Thanks,
-> Slava.
->
-> >               ceph_osdc_put_request(req);
-> >               return -EIO;
-> >       }
+and:
+
+        keepalive_at = peer->last_tx_at + RXRPC_KEEPALIVE_TIME;
+
+The lockless accesses to these to values aren't actually a problem as the
+read only needs an approximate time of last transmission for the purposes
+of deciding whether or not the transmission of a keepalive packet is
+warranted yet.
+
+Also, as ->last_tx_at is a 64-bit value, tearing can occur on a 32-bit
+arch.
+
+Fix both of these by switching to an unsigned int for ->last_tx_at and only
+storing the LSW of the time64_t.  It can then be reconstructed at need
+provided no more than 68 years has elapsed since the last transmission.
+
+Fixes: ace45bec6d77 ("rxrpc: Fix firewall route keepalive")
+Reported-by: syzbot+6182afad5045e6703b3d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/695e7cfb.050a0220.1c677c.036b.GAE@google.com/
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/1107124.1768903985@warthog.procyon.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ different struct fields (peer->mtu, peer->srtt_us, peer->rto_us) and different output.c code structure ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/rxrpc/ar-internal.h |  9 ++++++++-
+ net/rxrpc/conn_event.c  |  2 +-
+ net/rxrpc/output.c      | 10 +++++-----
+ net/rxrpc/peer_event.c  | 17 ++++++++++++++++-
+ net/rxrpc/proc.c        |  4 ++--
+ net/rxrpc/rxkad.c       |  4 ++--
+ 6 files changed, 34 insertions(+), 12 deletions(-)
+
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index 6b036c0564c7a..1494d162444dd 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -335,7 +335,7 @@ struct rxrpc_peer {
+ 	struct hlist_head	error_targets;	/* targets for net error distribution */
+ 	struct rb_root		service_conns;	/* Service connections */
+ 	struct list_head	keepalive_link;	/* Link in net->peer_keepalive[] */
+-	time64_t		last_tx_at;	/* Last time packet sent here */
++	unsigned int		last_tx_at;	/* Last time packet sent here (time64_t LSW) */
+ 	seqlock_t		service_conn_lock;
+ 	spinlock_t		lock;		/* access lock */
+ 	unsigned int		if_mtu;		/* interface MTU for this peer */
+@@ -1161,6 +1161,13 @@ void rxrpc_transmit_one(struct rxrpc_call *call, struct rxrpc_txbuf *txb);
+ void rxrpc_input_error(struct rxrpc_local *, struct sk_buff *);
+ void rxrpc_peer_keepalive_worker(struct work_struct *);
+ 
++/* Update the last transmission time on a peer for keepalive purposes. */
++static inline void rxrpc_peer_mark_tx(struct rxrpc_peer *peer)
++{
++	/* To avoid tearing on 32-bit systems, we only keep the LSW. */
++	WRITE_ONCE(peer->last_tx_at, ktime_get_seconds());
++}
++
+ /*
+  * peer_object.c
+  */
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index c4eb7986efddf..c8df12d80c7ce 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -180,7 +180,7 @@ void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
+ 	}
+ 
+ 	ret = kernel_sendmsg(conn->local->socket, &msg, iov, ioc, len);
+-	conn->peer->last_tx_at = ktime_get_seconds();
++	rxrpc_peer_mark_tx(conn->peer);
+ 	if (ret < 0)
+ 		trace_rxrpc_tx_fail(chan->call_debug_id, serial, ret,
+ 				    rxrpc_tx_point_call_final_resend);
+diff --git a/net/rxrpc/output.c b/net/rxrpc/output.c
+index ccfae607c9bb7..ad7e61066d2b5 100644
+--- a/net/rxrpc/output.c
++++ b/net/rxrpc/output.c
+@@ -209,7 +209,7 @@ static void rxrpc_send_ack_packet(struct rxrpc_call *call, struct rxrpc_txbuf *t
+ 	iov_iter_kvec(&msg.msg_iter, WRITE, txb->kvec, txb->nr_kvec, txb->len);
+ 	rxrpc_local_dont_fragment(conn->local, false);
+ 	ret = do_udp_sendmsg(conn->local->socket, &msg, txb->len);
+-	call->peer->last_tx_at = ktime_get_seconds();
++	rxrpc_peer_mark_tx(call->peer);
+ 	if (ret < 0) {
+ 		trace_rxrpc_tx_fail(call->debug_id, txb->serial, ret,
+ 				    rxrpc_tx_point_call_ack);
+@@ -310,7 +310,7 @@ int rxrpc_send_abort_packet(struct rxrpc_call *call)
+ 
+ 	iov_iter_kvec(&msg.msg_iter, WRITE, iov, 1, sizeof(pkt));
+ 	ret = do_udp_sendmsg(conn->local->socket, &msg, sizeof(pkt));
+-	conn->peer->last_tx_at = ktime_get_seconds();
++	rxrpc_peer_mark_tx(conn->peer);
+ 	if (ret < 0)
+ 		trace_rxrpc_tx_fail(call->debug_id, serial, ret,
+ 				    rxrpc_tx_point_call_abort);
+@@ -486,7 +486,7 @@ static int rxrpc_send_data_packet(struct rxrpc_call *call, struct rxrpc_txbuf *t
+ 	 */
+ 	rxrpc_inc_stat(call->rxnet, stat_tx_data_send);
+ 	ret = do_udp_sendmsg(conn->local->socket, &msg, len);
+-	conn->peer->last_tx_at = ktime_get_seconds();
++	rxrpc_peer_mark_tx(conn->peer);
+ 
+ 	if (ret < 0) {
+ 		rxrpc_inc_stat(call->rxnet, stat_tx_data_send_fail);
+@@ -573,7 +573,7 @@ void rxrpc_send_conn_abort(struct rxrpc_connection *conn)
+ 
+ 	trace_rxrpc_tx_packet(conn->debug_id, &whdr, rxrpc_tx_point_conn_abort);
+ 
+-	conn->peer->last_tx_at = ktime_get_seconds();
++	rxrpc_peer_mark_tx(conn->peer);
+ }
+ 
+ /*
+@@ -692,7 +692,7 @@ void rxrpc_send_keepalive(struct rxrpc_peer *peer)
+ 		trace_rxrpc_tx_packet(peer->debug_id, &whdr,
+ 				      rxrpc_tx_point_version_keepalive);
+ 
+-	peer->last_tx_at = ktime_get_seconds();
++	rxrpc_peer_mark_tx(peer);
+ 	_leave("");
+ }
+ 
+diff --git a/net/rxrpc/peer_event.c b/net/rxrpc/peer_event.c
+index 5d0842efde69f..adcfb3eb9f511 100644
+--- a/net/rxrpc/peer_event.c
++++ b/net/rxrpc/peer_event.c
+@@ -224,6 +224,21 @@ static void rxrpc_distribute_error(struct rxrpc_peer *peer, struct sk_buff *skb,
+ 	spin_unlock(&peer->lock);
+ }
+ 
++/*
++ * Reconstruct the last transmission time.  The difference calculated should be
++ * valid provided no more than ~68 years elapsed since the last transmission.
++ */
++static time64_t rxrpc_peer_get_tx_mark(const struct rxrpc_peer *peer, time64_t base)
++{
++	s32 last_tx_at = READ_ONCE(peer->last_tx_at);
++	s32 base_lsw = base;
++	s32 diff = last_tx_at - base_lsw;
++
++	diff = clamp(diff, -RXRPC_KEEPALIVE_TIME, RXRPC_KEEPALIVE_TIME);
++
++	return diff + base;
++}
++
+ /*
+  * Perform keep-alive pings.
+  */
+@@ -252,7 +267,7 @@ static void rxrpc_peer_keepalive_dispatch(struct rxrpc_net *rxnet,
+ 		spin_unlock_bh(&rxnet->peer_hash_lock);
+ 
+ 		if (use) {
+-			keepalive_at = peer->last_tx_at + RXRPC_KEEPALIVE_TIME;
++			keepalive_at = rxrpc_peer_get_tx_mark(peer, base) + RXRPC_KEEPALIVE_TIME;
+ 			slot = keepalive_at - base;
+ 			_debug("%02x peer %u t=%d {%pISp}",
+ 			       cursor, peer->debug_id, slot, &peer->srx.transport);
+diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
+index 263a2251e3d24..ca85ac764f82b 100644
+--- a/net/rxrpc/proc.c
++++ b/net/rxrpc/proc.c
+@@ -299,13 +299,13 @@ static int rxrpc_peer_seq_show(struct seq_file *seq, void *v)
+ 	now = ktime_get_seconds();
+ 	seq_printf(seq,
+ 		   "UDP   %-47.47s %-47.47s %3u"
+-		   " %3u %5u %6llus %8u %8u\n",
++		   " %3u %5u %6ds %8u %8u\n",
+ 		   lbuff,
+ 		   rbuff,
+ 		   refcount_read(&peer->ref),
+ 		   peer->cong_ssthresh,
+ 		   peer->mtu,
+-		   now - peer->last_tx_at,
++		   (s32)now - (s32)READ_ONCE(peer->last_tx_at),
+ 		   peer->srtt_us >> 3,
+ 		   peer->rto_us);
+ 
+diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
+index 48a1475e6b063..a8426335e401a 100644
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -676,7 +676,7 @@ static int rxkad_issue_challenge(struct rxrpc_connection *conn)
+ 		return -EAGAIN;
+ 	}
+ 
+-	conn->peer->last_tx_at = ktime_get_seconds();
++	rxrpc_peer_mark_tx(conn->peer);
+ 	trace_rxrpc_tx_packet(conn->debug_id, &whdr,
+ 			      rxrpc_tx_point_rxkad_challenge);
+ 	_leave(" = 0");
+@@ -734,7 +734,7 @@ static int rxkad_send_response(struct rxrpc_connection *conn,
+ 		return -EAGAIN;
+ 	}
+ 
+-	conn->peer->last_tx_at = ktime_get_seconds();
++	rxrpc_peer_mark_tx(conn->peer);
+ 	_leave(" = 0");
+ 	return 0;
+ }
+-- 
+2.51.0
+
 
