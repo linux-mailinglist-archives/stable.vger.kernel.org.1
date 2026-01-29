@@ -1,144 +1,268 @@
-Return-Path: <stable+bounces-212724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODR6DwzCemk3+QEAu9opvQ
-	(envelope-from <stable+bounces-212724-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:12:28 +0100
+	id qA36EtvEemmY+QEAu9opvQ
+	(envelope-from <stable+bounces-212725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:24:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978D7AB0D1
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:12:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF905AB16B
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:24:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3AD3304CA49
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 02:10:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 79DBF3014101
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 02:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0305E33123C;
-	Thu, 29 Jan 2026 02:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4E533F361;
+	Thu, 29 Jan 2026 02:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="c4lWHZlP"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="c1dvKHkE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E86634FF41
-	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 02:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A5B54739;
+	Thu, 29 Jan 2026 02:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769652651; cv=none; b=tqvTJvQ0K6LuXxEmnli6MmHrLS73PuSmThdMFDxxmJN+7ZDKx/jxFGHwQMzzsHMAVt6Fl+yO9fqP/jEzPP+ZIMHl7T0+4Ux/fWn6A1bHeE9hcnpMi0Ku371SPPeqMheHRV2ojvr9G/HUcbMQ4Tvkd4GQCvcx77NTGLC5qr0K2Wk=
+	t=1769653460; cv=none; b=Vm07h4yK1FwzhInS0Mn+PKLt/m9Uz6UUoLxMEKKKfrKBf1eU9+UYZ1A+OpCqAo2EwG3GRX9in9NxfqeAKxSdaOWFoPrEgKRFoWYqT0tpH+gFF+kwAcjXIAKuTRtwX1mYaV16VSFNPBVQ1R70aDZZzgZoJNuIVVRGDUuKCBdRkcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769652651; c=relaxed/simple;
-	bh=zFWk1e3r/M1fMXJm3gZiS7LuAom9jGmiJSVg7tfkmC0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G48BPA9vKiqUP1dl3xPIfViiE1Tcn4LcgurhpiS8O9HX1NAUt1tJ9XTxkhyfbxzXayPXBo5DOM0LlBymxb0wPXfOZS+cJ6SzRH8ckzaHGITbTdmo65KKpKlGWSgHt1E7ok9qSPBgOLG9unAjR+yjcrek6zRiIoKzkpYeySXkQvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=c4lWHZlP; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-42fbc305882so334257f8f.0
-        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 18:10:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769652644; x=1770257444; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mdo4aXnLBT/iiMTMoK69hkdn68r1wpFyn2j8vkuRgng=;
-        b=c4lWHZlPeN17is7qKVd7bEhPpP+uuUla4dmzQIOZen6uomK4qk0xQEdd1rs3eg0pVS
-         OlfR0re+RHu97dgRxnGbMZOSm7m6/fydX1eRgAkgVLKnTaEwSnvkGEcqz9Rx3/0htOWn
-         wlctpiN6CwKwGq1hLSLO+cfTVZyoZJrljGiz+Zj628Tczqq1fT9HPNGyO0nGl7O8W54A
-         S/jo3aU2yMod1fL62V/RLHJpolZqh36Dpc1lCx+oCJbUfSaRCHKw0nW5fkmMkItipg2l
-         UXQNle/Ked9OQl1ifoZ16Z6sHrsb7nfkK28crnGoKkpl83/vgNso7aO2HjEd0jTAojbj
-         HqCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769652644; x=1770257444;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mdo4aXnLBT/iiMTMoK69hkdn68r1wpFyn2j8vkuRgng=;
-        b=spxOWJqPYX1dfp8vOATz5uTixwFeI+60+6eOHUolhl2JuXR7NbwBnGNW17QkLxYxAr
-         bnL/c+o67ZltEOh9HcnaqcyKXqOnx2YQr0UGuOEB6NSorQyowE0au2cJhtfgIXhWxr5M
-         SyTwL22DUG6vuPXuUvmEt3TrrvRzSLIKKG9WVsf7njJUKF+Y39QVIs5aMn0s8WLJgO2k
-         mlPikoSya3Cn5DP2VkepQcMTXCnzdtbYs85wbg9PIpDcosB31/Oto02bnIsVfj3gFD1d
-         /pZMvnwsxKm9FZrmhFHkDIQnlTnekOdKiCkMvYpO3JVSqpbqRFsHlurYR+y557WvaVkn
-         pP4g==
-X-Gm-Message-State: AOJu0YxsFIGJZnj7kiV6PYTsiM4sA9yYLx8h6bJsToXpuA1eUJvPuSpe
-	5VhogPxcAdN52e9bVy3GqfYWW3SUvVumu9Yo98Qpvs4jIrU4f2uBCa/Xg5aB382SwB1Kztjxtui
-	IdPpH
-X-Gm-Gg: AZuq6aK3ppdR7CAnEwfYePGnP7BieETTzpnLQ/hP1KMSWGicW9foQiPvLhOMh81KOVi
-	GLzxy5MKmFTLo+8BWawbltiOEBzNBJLQac+IuaDLGbuSElcnKdC/gxolcP/22riu12563nx5KbY
-	9Z5fBdVvFA2rHE/69E0IAdf3TektGpa0k2nO/S3y0zQqVB5FQTO2yMoLa5vF5UkGVXUH4eKhMSk
-	2MWsHtQV1j3wH2A5lvSGP8yXE3QZiAe9eI4UoqlxMeBWATyl/Ij+EWh015/jGb/NECQEsH+auN6
-	pNQ5tIYZjKEpz7zyDT2kNF9jIwEgVBq6Zjyp7E2b5yV1dBJdJIWovCmUb0CohY/v9XmCJRaQ8zg
-	BPdNtlQ/rvcJga/YVNjTVhj0EbDrc6vnegyfuBcAfTVr3eFQHj2FMqnsNSExDeeeZg4Wz6W6Ilr
-	sUORO/pZwUDVPT1Ejk
-X-Received: by 2002:a05:600c:8b2b:b0:479:3a86:dc1e with SMTP id 5b1f17b1804b1-48069c73ce1mr90022925e9.36.1769652643751;
-        Wed, 28 Jan 2026 18:10:43 -0800 (PST)
-Received: from u94a ([2401:e180:8dfc:3cc3:8fe9:e99:6cdf:244e])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379c50fccsm3650437b3a.60.2026.01.28.18.10.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 18:10:43 -0800 (PST)
-Date: Thu, 29 Jan 2026 10:10:36 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 000/254] 6.6.122-rc1 review
-Message-ID: <potwu6hrwb2gnasbsl55jzamqrh5rieyld6xokftzhm2q6bhpn@i6wipgeac65k>
-References: <20260128145344.698118637@linuxfoundation.org>
+	s=arc-20240116; t=1769653460; c=relaxed/simple;
+	bh=TqTACZK3OBk0pUKATcGn6BWuIvsrzEnP8cmnnv4HbA4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EgbFaFdXy4fukQexJdpxj/oxN93acDQuoCXaLTGXkfJYzSwlZg0d6697dRPsoRINL4dPSE8H583ia3I72JVZwQE/CGVy9kYedf7xuypnXZrmStNQFOqowZDKNL3r8mqOgsQdn4JCFl5lO1sEMJ7TSEJr+7ER8KpZolsEYDVS5Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=c1dvKHkE; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=uT
+	jphfMycXIDAOSyBJrJwCxg71drU2hua4RoaxHISfk=; b=c1dvKHkEfoqhMa15AN
+	VcF103e6gTRYRQDuGrNX9O/eV6EqHW/Q1JNm8I0qW0xl5kfUgQoU0lUHdaU+kMjn
+	5fOGfNWc+Nd4Zm+xUtKq+88+O1MKOpZdAZnkzhfKGze/Aeof79qp40L32VT22z+9
+	seQxAZcTNuIQq65hIaahzLeBo=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgB3pOGJxHppT9JsMQ--.31620S2;
+	Thu, 29 Jan 2026 10:23:08 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Maninder Singh <maninder1.s@samsung.com>,
+	Shubham Rana <s9.rana@samsung.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 5.15.y] NFSD: fix race between nfsd registration and exports_proc
+Date: Thu, 29 Jan 2026 10:23:04 +0800
+Message-Id: <20260129022304.1232425-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgB3pOGJxHppT9JsMQ--.31620S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3AFWrGF4UCFWrur1xAFy3twb_yoW7Xry8pa
+	n3urW5Kr4vqw1UGa15Jan0yF10qF4kKay8u3s3WaySvwsIg3sFv3WFvF4q9FyDArW8XayD
+	Gw1UKF4F9w1ruaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0p_dbbdUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3gxN5ml6xIwSjQAA39
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212724-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,samsung.com,kernel.org,oracle.com,163.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-212725-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 978D7AB0D1
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[163.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CF905AB16B
 X-Rspamd-Action: no action
 
-On Wed, Jan 28, 2026 at 04:19:36PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.122 release.
-> There are 254 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+From: Maninder Singh <maninder1.s@samsung.com>
 
-test_progs, test_progs-no_alu32, test_progs-cpuv4, test_maps,
-test_verifier in BPF selftests all passes[1] on x86_64.
+[ Upstream commit f7fb730cac9aafda8b9813b55d04e28a9664d17c ]
 
-Tested-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+As of now nfsd calls create_proc_exports_entry() at start of init_nfsd
+and cleanup by remove_proc_entry() at last of exit_nfsd.
 
-1: https://github.com/shunghsiyu/libbpf/actions/runs/21450963930/job/61779347519
+Which causes kernel OOPs if there is race between below 2 operations:
+(i) exportfs -r
+(ii) mount -t nfsd none /proc/fs/nfsd
+
+for 5.4 kernel ARM64:
+
+CPU 1:
+el1_irq+0xbc/0x180
+arch_counter_get_cntvct+0x14/0x18
+running_clock+0xc/0x18
+preempt_count_add+0x88/0x110
+prep_new_page+0xb0/0x220
+get_page_from_freelist+0x2d8/0x1778
+__alloc_pages_nodemask+0x15c/0xef0
+__vmalloc_node_range+0x28c/0x478
+__vmalloc_node_flags_caller+0x8c/0xb0
+kvmalloc_node+0x88/0xe0
+nfsd_init_net+0x6c/0x108 [nfsd]
+ops_init+0x44/0x170
+register_pernet_operations+0x114/0x270
+register_pernet_subsys+0x34/0x50
+init_nfsd+0xa8/0x718 [nfsd]
+do_one_initcall+0x54/0x2e0
+
+CPU 2 :
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
+
+PC is at : exports_net_open+0x50/0x68 [nfsd]
+
+Call trace:
+exports_net_open+0x50/0x68 [nfsd]
+exports_proc_open+0x2c/0x38 [nfsd]
+proc_reg_open+0xb8/0x198
+do_dentry_open+0x1c4/0x418
+vfs_open+0x38/0x48
+path_openat+0x28c/0xf18
+do_filp_open+0x70/0xe8
+do_sys_open+0x154/0x248
+
+Sometimes it crashes at exports_net_open() and sometimes cache_seq_next_rcu().
+
+and same is happening on latest 6.14 kernel as well:
+
+[    0.000000] Linux version 6.14.0-rc5-next-20250304-dirty
+...
+[  285.455918] Unable to handle kernel paging request at virtual address 00001f4800001f48
+...
+[  285.464902] pc : cache_seq_next_rcu+0x78/0xa4
+...
+[  285.469695] Call trace:
+[  285.470083]  cache_seq_next_rcu+0x78/0xa4 (P)
+[  285.470488]  seq_read+0xe0/0x11c
+[  285.470675]  proc_reg_read+0x9c/0xf0
+[  285.470874]  vfs_read+0xc4/0x2fc
+[  285.471057]  ksys_read+0x6c/0xf4
+[  285.471231]  __arm64_sys_read+0x1c/0x28
+[  285.471428]  invoke_syscall+0x44/0x100
+[  285.471633]  el0_svc_common.constprop.0+0x40/0xe0
+[  285.471870]  do_el0_svc_compat+0x1c/0x34
+[  285.472073]  el0_svc_compat+0x2c/0x80
+[  285.472265]  el0t_32_sync_handler+0x90/0x140
+[  285.472473]  el0t_32_sync+0x19c/0x1a0
+[  285.472887] Code: f9400885 93407c23 937d7c27 11000421 (f86378a3)
+[  285.473422] ---[ end trace 0000000000000000 ]---
+
+It reproduced simply with below script:
+while [ 1 ]
+do
+/exportfs -r
+done &
+
+while [ 1 ]
+do
+insmod /nfsd.ko
+mount -t nfsd none /proc/fs/nfsd
+umount /proc/fs/nfsd
+rmmod nfsd
+done &
+
+So exporting interfaces to user space shall be done at last and
+cleanup at first place.
+
+With change there is no Kernel OOPs.
+
+Co-developed-by: Shubham Rana <s9.rana@samsung.com>
+Signed-off-by: Shubham Rana <s9.rana@samsung.com>
+Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ The context change is due to the commit bd9d6a3efa97
+("NFSD: add rpc_status netlink support") in v6.7
+and the proper adoption is done. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+---
+ fs/nfsd/nfsctl.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
+
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 07e5b1b23c91..ba2eaf3744ef 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1511,12 +1511,9 @@ static int __init init_nfsd(void)
+ 	if (retval)
+ 		goto out_free_pnfs;
+ 	nfsd_lockd_init();	/* lockd->nfsd callbacks */
+-	retval = create_proc_exports_entry();
+-	if (retval)
+-		goto out_free_lockd;
+ 	retval = register_pernet_subsys(&nfsd_net_ops);
+ 	if (retval < 0)
+-		goto out_free_exports;
++		goto out_free_lockd;
+ 	retval = register_cld_notifier();
+ 	if (retval)
+ 		goto out_free_subsys;
+@@ -1524,18 +1521,20 @@ static int __init init_nfsd(void)
+ 	if (retval)
+ 		goto out_free_cld;
+ 	retval = register_filesystem(&nfsd_fs_type);
++	if (retval)
++		goto out_free_nfsd4;
++	retval = create_proc_exports_entry();
+ 	if (retval)
+ 		goto out_free_all;
+ 	return 0;
+ out_free_all:
++	unregister_filesystem(&nfsd_fs_type);
++out_free_nfsd4:
+ 	nfsd4_destroy_laundry_wq();
+ out_free_cld:
+ 	unregister_cld_notifier();
+ out_free_subsys:
+ 	unregister_pernet_subsys(&nfsd_net_ops);
+-out_free_exports:
+-	remove_proc_entry("fs/nfs/exports", NULL);
+-	remove_proc_entry("fs/nfs", NULL);
+ out_free_lockd:
+ 	nfsd_lockd_shutdown();
+ 	nfsd_drc_slab_free();
+@@ -1548,13 +1547,13 @@ static int __init init_nfsd(void)
+ 
+ static void __exit exit_nfsd(void)
+ {
++	remove_proc_entry("fs/nfs/exports", NULL);
++	remove_proc_entry("fs/nfs", NULL);
+ 	unregister_filesystem(&nfsd_fs_type);
+ 	nfsd4_destroy_laundry_wq();
+ 	unregister_cld_notifier();
+ 	unregister_pernet_subsys(&nfsd_net_ops);
+ 	nfsd_drc_slab_free();
+-	remove_proc_entry("fs/nfs/exports", NULL);
+-	remove_proc_entry("fs/nfs", NULL);
+ 	nfsd_lockd_shutdown();
+ 	nfsd4_free_slabs();
+ 	nfsd4_exit_pnfs();
+-- 
+2.34.1
+
 
