@@ -1,273 +1,203 @@
-Return-Path: <stable+bounces-212726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGroIo/FemmY+QEAu9opvQ
-	(envelope-from <stable+bounces-212726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:27:27 +0100
+	id CBdwKs7FemmY+QEAu9opvQ
+	(envelope-from <stable+bounces-212727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:28:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF706AB1D1
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:27:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F8DAB1E8
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BCE4300E3BF
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 02:27:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1CE2B301C6E1
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 02:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7614B355059;
-	Thu, 29 Jan 2026 02:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4D435503C;
+	Thu, 29 Jan 2026 02:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="A7n8oLFl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A9I/wtM2"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0AD1F0E34;
-	Thu, 29 Jan 2026 02:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90F454739
+	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 02:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769653643; cv=none; b=q1aOJU64mBM78psvl5awYLfMM1zzNnapTiqmiCu8bty00JCq5E2TKY9VoR8MMwQrq53HLE00szxDvhYXCz6K/1d4WV/i6HRiYAS8tcsQnlr1aitT+xeQ/AvO3w+VFV03hILPOY4jECj5XXN2lBCLzBuppZIgFwBYDFsvsN0DtbA=
+	t=1769653708; cv=none; b=Y7JGEEsZd5K850ezpgTzE9z7GRc4BSQbBc5qXFpEi2NdX+YPYCXejoRsdfLgYGBBYWGT5wqBqGH6cussHXk8G5a5gMFLIvPM+/aFt3U5rAm3ax+E/v+NwQmarpMyQvxbdb7ov7c7BHe0IcHRM3tuAKtl8QQ1pqy5ikZzQLuwNcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769653643; c=relaxed/simple;
-	bh=Kt+U9etTlRK7FPmd+yjpvcZQ/Gu3ew0Zc/m2PNdE7V0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZhIWiTFR/mFuBSYN1C1H6SAKg6Kkjt9EF3Hqo+yb/prYc1P5LhvZ0BIRLJjiMtMmyEROt4Fo2wDMvTQe7Mq8LIu1o0DIdRg1IGZQKNRlDoU/bZrzhq+A7N+hpGOuUZnc3yF3gLesg6TdEFA7XciE/K3JKP2h76n73OsgKzKxvcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=A7n8oLFl; arc=none smtp.client-ip=115.124.30.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1769653632; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Vb061Q+F4cvQBZq/IQQ6DiA8ZyO7PXBJm0zl3HtzTo4=;
-	b=A7n8oLFlHuB6s1jqrz9q1y67HBWNvp6Lx6y6KmWSlx9P0PGlRMyTrBzPHJ8LSIs6ZYmnVaataIdO2HFCoWv9IPiHtxH8T3xF2TdT3pTo9wWYtirS06AVVSGEgEDO6ISLseRoDokXA3/YIaDSfPCu292Pt/qELWcutrvt1O0E4Q0=
-Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wy5ZpTV_1769653630 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 29 Jan 2026 10:27:10 +0800
-Message-ID: <5db265de-b069-41c0-b8c2-a119dfb83485@linux.alibaba.com>
-Date: Thu, 29 Jan 2026 10:27:09 +0800
+	s=arc-20240116; t=1769653708; c=relaxed/simple;
+	bh=jke16qGYYZ/PPyh9bOnhUq/mxF6cZ5UQRXZewvQRH2s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HZjxhGHhIf2dLvRc6cEnH41KE3Ltlpi0qD9S23F87qPtPEyHFy5fS0bJOLZS8y/r11W7oTrB6rYQ9dQaXZRsY7dKGpxub623PswkX4H5/r1va8XZeozTVYpwpwRCf5Cjj0d8sOo7M7sfBYr8KQHYvhqkwJyirkNu7WH5YEs36PU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A9I/wtM2; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3530715386cso275371a91.2
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 18:28:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769653706; x=1770258506; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EGo4hoj4EdUYYd7PUFglCgfUu6wH660sspS1uAlnjzA=;
+        b=A9I/wtM2D33VPGlfxefNG3u0gT3CwNkAa8x5jOre22yqRWd60pST4xhQZZbrl1EDrr
+         ktWYj+y0ff7XB/3F4bUL/R0cAJkx0E1QEXxnfOLhirTXOL5OZrTsRnjaAYFSOwOko8v/
+         C2mHp2K3v8DvGlUvdkyB3IkYQCjW/7FuXkD4omg/I3eZYon8a1Jfher6KCCANEJzP92H
+         2+Xzh0fmvxSCzT2/n+AXS/1erIblWNfVhJyf6GwEysv5Ay9SsR/DkmwV6mkuFPyAMBNg
+         Yr5X1CnoVZDI8EchD7FiPfSJ5H/PZ1ubiTRGr0X0oL3xewkBH01kjxA0eNm3UhUKCuaT
+         ewEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769653706; x=1770258506;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EGo4hoj4EdUYYd7PUFglCgfUu6wH660sspS1uAlnjzA=;
+        b=pqBNIyfQ9OR4KLQuJx8BH5f0+KcMWAFQz2G0iGNHhVO9HfxDC4cJjZYMp0kFlpRvmK
+         lL09cTbCtzatX8IK0EYcQKrcT/jrA/2TgyWDV/e3BlvsrUpJaWBmxuqxf6hEsIPIcMAv
+         NzeJza+BaOfC/XQyUCG/rIqf+buFy5Ky0nJOSKRT7oxUbcsssAzm8uzYtv1CByWoo3AR
+         8xpfGXRHUe1g16ssNkl3h06v3bLchBWJVi4YTjQlAZbS9RIlCe81pu94AvsGF3AKEwoU
+         6pHcUXyYDzo4Fre6SkJhaE0bWikRz+gHtWXHTGAiLskOfczlC9n4z9+NGDwsj5Uyfytl
+         kt2g==
+X-Forwarded-Encrypted: i=1; AJvYcCWINpn5F41WUslly50/SuSN2YPOxu8/LEPLsiJylL4lfGlQ8rAquGhGoGsst9yQnIbodIodnxM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuSJrJkjjNT70cJ9Sc2BdFzoyw64TDzkur/8W3ifz1OkX1Dsg4
+	c/Rqj2j7vSHgq0CDymkDtBl0q8W7k6NBexmy2N2a/Gftsyt6k3ldt6wF
+X-Gm-Gg: AZuq6aLd1XbiXZYXGdXN8KM+w6UMGkM+9pgTTBeJbidQQGWEWJkOCaX5EDcV22mfSb4
+	OolWKoQPC+MHSNzaonWNo4w1Bkhjl6tWXSTynGhOtaQb3/drfVJWiNq8XqTJvRspM/1F2Zsct7D
+	+JINGhlZWTWv/Ww9zotLOMTyV7CVcd2p4DmMMXFErSiS9ONfrqaPR52P3zHTx+yZf1r6sgsPNYa
+	bQm31eQd1H17Ydnhig1phapWY3+PWGCvsIYyLCHAC1qBHTrroO/YFPgop/DMMHJci1hiFc6pI9b
+	eTq0rkBZ3x+ArBYNCUMSMfo85imFbGvjtCXYfWGevtbOtuom8c61Qp0u6Z4FfTX16XbevoUnrz3
+	t+V3VWN58lt18Qw3dWdNtxPilayWY6ViLN4QATQI9KDinfrhScMK5RSoslwYyYGLUYJizL0ZkdX
+	TDSEudfjwLvFIdh/7i23rBJ+LbPYXjkGBX7WmXuuuI
+X-Received: by 2002:a17:90b:544b:b0:335:2eef:4ca8 with SMTP id 98e67ed59e1d1-353fed907d7mr6446368a91.33.1769653706068;
+        Wed, 28 Jan 2026 18:28:26 -0800 (PST)
+Received: from BM5220 (118-232-8-190.dynamic.kbronet.com.tw. [118.232.8.190])
+        by smtp.googlemail.com with ESMTPSA id 98e67ed59e1d1-353f61e0230sm6783867a91.11.2026.01.28.18.28.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 18:28:25 -0800 (PST)
+From: Zenm Chen <zenmchen@gmail.com>
+To: marcel@holtmann.org,
+	luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: pkshih@realtek.com,
+	max.chou@realtek.com,
+	hildawu@realtek.com,
+	rtl8821cerfe2@gmail.com,
+	zenmchen@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] Bluetooth: btusb: Add USB ID 7392:e611 for Edimax EW-7611UXB
+Date: Thu, 29 Jan 2026 10:28:19 +0800
+Message-ID: <20260129022819.61290-1-zenmchen@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/shmem, swap: fix race of truncate and swap entry
- split
-To: Kairui Song <ryncsn@gmail.com>, Chris Mason <clm@meta.com>,
- linux-mm@kvack.org
-Cc: Hugh Dickins <hughd@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
- stable@vger.kernel.org
-References: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
- <20260128130336.727049-1-clm@meta.com> <aXo6ltB5iqAKJzY8@KASONG-MC4>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <aXo6ltB5iqAKJzY8@KASONG-MC4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-9.16 / 15.00];
-	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212726-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,meta.com,kvack.org];
-	FREEMAIL_CC(0.00)[google.com,linux-foundation.org,huaweicloud.com,gmail.com,kernel.org,redhat.com,vger.kernel.org,tencent.com];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[realtek.com,gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-212727-lists,stable=lfdr.de];
+	TO_DN_NONE(0.00)[];
+	FREEMAIL_TO(0.00)[holtmann.org,gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zenmchen@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[baolin.wang@linux.alibaba.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.alibaba.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: DF706AB1D1
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 24F8DAB1E8
 X-Rspamd-Action: no action
 
+Add USB ID 7392:e611 for Edimax EW-7611UXB which is RTL8851BU-based
+Wi-Fi + Bluetooth adapter.
 
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below:
 
-On 1/29/26 12:52 AM, Kairui Song wrote:
-> On Wed, Jan 28, 2026 at 05:02:34AM +0800, Chris Mason wrote:
->>
->>> diff --git a/mm/shmem.c b/mm/shmem.c
->>> --- a/mm/shmem.c
->>> +++ b/mm/shmem.c
->>
->> [ ... ]
->>
->>> @@ -1191,12 +1203,23 @@
->>>   		folio = fbatch.folios[i];
->>>
->>>   		if (xa_is_value(folio)) {
->>> +			int order;
->>>   			long swaps_freed;
->>>
->>>   			if (unfalloc)
->>>   				continue;
->>> -			swaps_freed = shmem_free_swap(mapping, indices[i], folio);
->>> +			swaps_freed = shmem_free_swap(mapping, indices[i],
->>> +						      end - 1, folio);
->>>   			if (!swaps_freed) {
->>> +				/*
->>> +				 * If found a large swap entry cross the end border,
->>> +				 * skip it as the truncate_inode_partial_folio above
->>> +				 * should have at least zerod its content once.
->>> +				 */
->>> +				order = shmem_confirm_swap(mapping, indices[i],
->>> +							   radix_to_swp_entry(folio));
->>> +				if (order > 0 && indices[i] + (1 << order) > end)
->>> +					continue;
->>>   				/* Swap was replaced by page: retry */
->>>   				index = indices[i];
->>>   				break;
->>
->> Could this code infinite loop if a large swap entry crosses the START
->> boundary instead of the END boundary?
-> 
-> Thanks for the review! It's really helpful :)
-> 
->> When shmem_free_swap() returns 0, it could be either because:
->> (a) The entry was replaced by a page, or
->> (b) The entry failed the boundary check (base < index ||
->>      base + nr_pages - 1 > end)
->>
->> The boundary check here only handles case (b) for entries crossing the
->> END boundary:
->>
->>      if (order > 0 && indices[i] + (1 << order) > end)
->>          continue;
->>
->> But what happens if the entry crosses the START boundary? If
->> find_get_entries() returns a large swap entry at indices[i] where
->> the entry's base (calculated as indices[i] & ~((1 << order) - 1)) is
->> less than the truncation start point, then shmem_free_swap() will
->> return 0 due to the "base < index" check. The code will then call
->> shmem_confirm_swap(), get the order, check if it crosses the END
->> boundary (which it doesn't), and retry with the same index:
->>
->>      index = indices[i];
->>      break;
->>
->> The next iteration will find the same entry again at the same index,
->> leading to an infinite loop. For example:
->>
->> - Truncating range [18, 30]
->> - Large swap entry at [16, 23] (order 3, 8 pages)
->> - indices[i] = 18
->> - shmem_free_swap() sees base=16 < index=18, returns 0
->> - Check: 18 + 8 > 30 is false (26 <= 30)
->> - Retries with index=18
->> - Loop repeats indefinitely
-> 
-> I think this is a valid issue. And it's worse than that, during the `while (index < end)` loop a new large entry can land anywhere in the range, if one interaction's starting `index` points to the middle of any large entry, an infinite loop will occur: indices[0] are always equal to the `index` iteration value of that moments, shmem_free_swap will fail because the swap entry's index doesn't match indices[0], and so the `index = indices[i]; break;` keep it loop forever.
-> 
-> The chance seems very low though.
-> 
->> Should the boundary check also handle the START case, perhaps:
->>
->>      if (order > 0) {
->>          pgoff_t base = indices[i] & ~((1UL << order) - 1);
->>          if (base + (1 << order) - 1 > end || base < start)
->>              continue;
->>      }
-> 
-> This still doesn't cover the case when a new large entry somehow lands in the range during the loop.
-> 
->> where 'start' is preserved from before the loop?
-> 
-> How about following patch:
-> 
->  From 863f38c757ee0898b6b7f0f8c695f551a1380ce8 Mon Sep 17 00:00:00 2001
-> From: Kairui Song <kasong@tencent.com>
-> Date: Thu, 29 Jan 2026 00:19:23 +0800
-> Subject: [PATCH] mm, shmem: prevent infinite loop on truncate race
-> 
-> When truncating a large swap entry, shmem_free_swap() returns 0 when the
-> entry's index doesn't match the given index due to lookup alignment. The
-> failure fallback path checks if the entry crosses the end border and
-> aborts when it happens, so truncate won't erase an unexpected entry or
-> range. But one scenario was ignored.
-> 
-> When `index` points to the middle of a large swap entry, and the large
-> swap entry doesn't go across the end border, find_get_entries() will
-> return that large swap entry as the first item in the batch with
-> `indices[0]` equal to `index`. The entry's base index will be smaller
-> than `indices[0]`, so shmem_free_swap() will fail and return 0 due to
-> the "base < index" check. The code will then call shmem_confirm_swap(),
-> get the order, check if it crosses the END boundary (which it doesn't),
-> and retry with the same index.
-> 
-> The next iteration will find the same entry again at the same index with
-> same indices, leading to an infinite loop.
-> 
-> Fix this by retrying with a round-down index, and abort if the index is
-> smaller than the truncate range.
-> 
-> Reported-by: Chris Mason <clm@meta.com>
-> Closes: https://lore.kernel.org/linux-mm/20260128130336.727049-1-clm@meta.com/
-> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-> Fixes: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry split")
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  6 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=7392 ProdID=e611 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=802.11ax WLAN Adapter
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 3 Cfg#= 1 Atr=e0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=01
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:* If#= 2 Alt= 0 #EPs= 8 Cls=ff(vend.) Sub=ff Prot=ff Driver=rtw89_8851bu_git
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=07(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=09(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Thanks. The fix looks good to me.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: stable@vger.kernel.org # 6.6.x
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+---
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-(BTW, I think we can simplify the logic by moving the boundary 
-validation into shmem_free_swap() in the future).
-
->   mm/shmem.c | 23 ++++++++++++++---------
->   1 file changed, 14 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index b9ddd38621a0..fe3719eb5a3c 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1211,17 +1211,22 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->   				swaps_freed = shmem_free_swap(mapping, indices[i],
->   							      end - 1, folio);
->   				if (!swaps_freed) {
-> -					/*
-> -					 * If found a large swap entry cross the end border,
-> -					 * skip it as the truncate_inode_partial_folio above
-> -					 * should have at least zerod its content once.
-> -					 */
-> +					pgoff_t base = indices[i];
-> +
->   					order = shmem_confirm_swap(mapping, indices[i],
->   								   radix_to_swp_entry(folio));
-> -					if (order > 0 && indices[i] + (1 << order) > end)
-> -						continue;
-> -					/* Swap was replaced by page: retry */
-> -					index = indices[i];
-> +					/*
-> +					 * If found a large swap entry cross the end or start
-> +					 * border, skip it as the truncate_inode_partial_folio
-> +					 * above should have at least zerod its content once.
-> +					 */
-> +					if (order > 0) {
-> +						base = round_down(base, 1 << order);
-> +						if (base < start || base + (1 << order) > end)
-> +							continue;
-> +					}
-> +					/* Swap was replaced by page or extended, retry */
-> +					index = base;
->   					break;
->   				}
->   				nr_swaps_freed += swaps_freed;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 8c34a17ed..fcec8e589 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -529,6 +529,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x2001, 0x332a), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x7392, 0xe611), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 
+ 	/* Realtek 8852AE Bluetooth devices */
+ 	{ USB_DEVICE(0x0bda, 0x2852), .driver_info = BTUSB_REALTEK |
+-- 
+2.52.0
 
 
