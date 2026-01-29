@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-212814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212815-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEZsHNK5e2k0IAIAu9opvQ
-	(envelope-from <stable+bounces-212814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 20:49:38 +0100
+	id QHDXDlnEe2mDIQIAu9opvQ
+	(envelope-from <stable+bounces-212815-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 21:34:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EC6B4174
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 20:49:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F540B4415
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 21:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2EC23025D3F
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 19:49:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D183F301FA49
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 20:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA0B329C6C;
-	Thu, 29 Jan 2026 19:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF42352C51;
+	Thu, 29 Jan 2026 20:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="c8Lr72JS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sEP36gJ5"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5A22F3C3F;
-	Thu, 29 Jan 2026 19:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5DB25D216;
+	Thu, 29 Jan 2026 20:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769716173; cv=none; b=i0rkWGj8Hpo9xmSdlUgAZ+eRSE/UTO766InICbpViN0umSpwhRYqdjQv35x0BxJRk4JZ3D9IxyiMesg4SAxZwA2eEiuqe1U9Ar8UjWCx1z0LIUcZD9tCblyNkSq/41UbgWja4UwZiVORzAVBcArCY4P1a1mbZuAesqZuMGME3Sg=
+	t=1769718868; cv=none; b=bHgYuzXV5eFlguSG1c43tS4lNAvyHKch1pA79Kh5emGd9qgnykc0P6OV979S01pHTRxH8LzzpTYWnfBZ9yNeGjZCOTdkq0GsuZbLr9G/5BLkiP0WDpJNBJOAdGITlHbGx5Vh+TKhR7ozWuqvQ7g9MuS5yTzsBCvXdrjO49lwddM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769716173; c=relaxed/simple;
-	bh=Xz0XrW7WMoHDP9Mj9wNbclt8JPeZeXpGWFCXCT5vKsE=;
+	s=arc-20240116; t=1769718868; c=relaxed/simple;
+	bh=lpREL73FoGx1jd4AkVf/RAlMgzzI570dNOqypN4JHwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=civ91KQU8eGehlObf3sXNMpzKUvht3dQ967FF14rRSnN2Hj1k7/o5IFubq3KPFed+DECLQqDrEb2ebrPqSmNN60yBofdg8wxzQmEsqmBwvnSwKhv4LJasFMiJbvMsQ8qxk8mzOMVIGEvO8EeO1nQ4an9FulXrzhmcZOnly1CuYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=c8Lr72JS; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1158)
-	id 36A5E20B7167; Thu, 29 Jan 2026 11:49:32 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 36A5E20B7167
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1769716172;
-	bh=Xz0XrW7WMoHDP9Mj9wNbclt8JPeZeXpGWFCXCT5vKsE=;
+	 MIME-Version; b=i6HpjYSe2jXgyaxCi9BLxQerReS4PJMTFFqmqT06r7CKbrE2L2vo1tIYYG7Uilb4syKAlf9id97Chm1KciVKzV9I1oFDcTPWxCQEgNJbWRElCU0NqjmamH+G8AONim6z+VyKEQbYrK+yiVfJsu+ORi/eAoLAnxfrIxcxrR8jMtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sEP36gJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9AB6C4CEF7;
+	Thu, 29 Jan 2026 20:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769718868;
+	bh=lpREL73FoGx1jd4AkVf/RAlMgzzI570dNOqypN4JHwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8Lr72JSuD5KqTGYGe2LgntFcYPDR5l6hceAK2ePxwVAgVbVjy36/47tm9XISV1ID
-	 cM348j5I1WkjkZ7MOOBggwmbBi4G+QqCDfb09DFoRVz6NOe/HPdzNk5hOttBT4e/nX
-	 1PR/8vzjW9gL1Lhh7YbhFn4gRaBWkZW5F9O8Ptxs=
-From: Hardik Garg <hargar@linux.microsoft.com>
+	b=sEP36gJ5Y41vimrwk+6WEDGFByGi430jaUNl1xM+4pKPnMb6dmdh0YkqobgNwLs3W
+	 gCtKmT1ze6w/Df9IRROFXqVPHJWGXMJpPH9gdkcR31vMCws/d1OTP3FJX9oreV0mbv
+	 LmBiXr5VF+RxBp/yaKw3/xhvF2UNMxpV56fDhC8mG5WZWZklt0tgQPVF9wFCpjH4BW
+	 w2iFUSDjNhVOAgeMKQ9GI6DpR0qFYEa3O7eJ/QAeQNyOzham+ZyR8kQxMCmQVdTh12
+	 BHsVb3gK5l+ExLZzCC9H8JmgoF4cHNvIYQzOmfXsEveUqWJYd7+l1c5i3TrL5SJM8q
+	 nYEU302XUY5dA==
+From: Miguel Ojeda <ojeda@kernel.org>
 To: gregkh@linuxfoundation.org
 Cc: achill@achill.org,
 	akpm@linux-foundation.org,
@@ -63,13 +65,12 @@ Cc: achill@achill.org,
 	stable@vger.kernel.org,
 	sudipm.mukherjee@gmail.com,
 	torvalds@linux-foundation.org,
-	Hardik Garg <hargar@linux.microsoft.com>
-Subject: Re: [PATCH 6.18 000/227] 6.18.8-rc1 review
-Date: Thu, 29 Jan 2026 11:49:30 -0800
-Message-ID: <20260129194930.582689-1-hargar@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
-References: <20260128145344.331957407@linuxfoundation.org>
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: Re: [PATCH 6.6 000/254] 6.6.122-rc1 review
+Date: Thu, 29 Jan 2026 21:34:13 +0100
+Message-ID: <20260129203413.45705-1-ojeda@kernel.org>
+In-Reply-To: <20260128145344.698118637@linuxfoundation.org>
+References: <20260128145344.698118637@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,40 +83,51 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,denx.de,gmx.de,sladewatkins.com];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-212815-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212814-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,denx.de,gmx.de,sladewatkins.com,linux.microsoft.com];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hargar@linux.microsoft.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.microsoft.com:mid,linux.microsoft.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 12EC6B4174
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9F540B4415
 X-Rspamd-Action: no action
 
-The kernel, bpf tool, perf tool, and kselftest builds fine for
-v6.18.8-rc1 on x86 and arm64 Azure VM.
+On Wed, 28 Jan 2026 16:19:36 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.122 release.
+> There are 254 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 30 Jan 2026 14:53:02 +0000.
+> Anything received after that time might be too late.
 
+Boot-tested under QEMU for Rust x86_64:
 
-Tested-by: Hardik Garg <hargar@linux.microsoft.com>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
+Thanks!
 
-Thanks,
-Hardik
+Cheers,
+Miguel
 
