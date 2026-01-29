@@ -1,178 +1,190 @@
-Return-Path: <stable+bounces-212728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212729-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4PcpNWTHemn5+QEAu9opvQ
-	(envelope-from <stable+bounces-212728-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:35:16 +0100
+	id qjXGNRjNemnU+gEAu9opvQ
+	(envelope-from <stable+bounces-212729-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:59:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67467AB29A
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:35:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BC2AB490
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 03:59:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5DD973008C09
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 02:35:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B94713004D07
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 02:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DB3344029;
-	Thu, 29 Jan 2026 02:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24D5356A12;
+	Thu, 29 Jan 2026 02:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="flqcJGWk"
+	dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b="kSbJmV8V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0763563CA
-	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 02:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769654113; cv=none; b=ZSRwqDR4HCzCLoAlkBc1OGooWAsJv71JB4S8NzofFSF3szbtC2w3I20tcskHj8zkl6VuowlgvvFsxnU0jBTbA8bdm7XQLpjJLIzHzQ9Ld+SQcjPvIvGnobZdcGGpupZf3fUOA+vVM7Up6E9vFyPj7YWIg0OAfdvP2jXMEUOQV+k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769654113; c=relaxed/simple;
-	bh=cq0C40x8xqtlj6tVIRva7pIl6JIfrs8DSEIyTNNQXno=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cbs4m5qPIJipX0Y4NV/1mDsj4Mhvy8IRM++7om21bBZTMPwaWWavucgFVmP3G0IhVbhfUBqui4N9SrDuzUG4XdMaTdl81IsGiR/1bKI1n74Rk6fM+MyxLyWdcymFh2HjD/4T1uAcuoC7M5WnKNdixwYq4ug4Vx9sPc6VusuIpgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=flqcJGWk; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4806b43beb6so3451805e9.3
-        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 18:35:12 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8504B153BE9
+	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 02:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769655572; cv=pass; b=ZVtYMDwQjkRuQbjiGR5bNpKIU685QzO8gMCYB3ezGYEJ2nF4nrML6RQ9Qu+pclAPxmEjDlQZYLGYDEJvqyorVIlIY7+1QCHyYuT3bBW5xSN5ZCglSo/FMvs5xtMVm+3+SEa+bE1Ew3vIEHfLIhGV22bT/Cw17xFxvst7foLM228=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769655572; c=relaxed/simple;
+	bh=d8cztXYczvSOszr3V7pMy5PpP3cnZAjkRbR9QfTDyWg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hVpYRKWTDQHLOz2rjSUeDDjO+FLUNIf1oahHOT0Zzxw8nig6q/xVHOIud2ZxNY9sBNDIhgyAF+RzY+ep0j6L2t0qJaBJJa4pSs6vHRiqA46Jz/cAL02cHFIYisgDMqReOdDw5nPktl8YIxdDnwWmiBADzdeneJse4hTH35Hl4WA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl.com header.i=@futuring-girl.com header.b=kSbJmV8V; arc=pass smtp.client-ip=74.125.82.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=futuring-girl.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2b785801c93so1326399eec.0
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 18:59:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769655568; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LYowUUJxa2Ibqg+/9nTs0LRrPNihU/gBfMoYlIhqUzKcbD7heOBjvbAo6jPRiETSkI
+         n6SetztGCgeRSHozaBMw0LnyqDLcx1xUJbPnlnkASZZMfw8CKvbGEuzLdcTvbuzXFr03
+         1vgNU0fk6xC+qGvLdtFhYH82gWGtd4UKinTfz6IsNPP7HFogKGRjq27slWYgMkjKpY/q
+         h2wetsMYEVp6OdGUWj+hKhXQGMwJmQakkWyDglWZzKZHHLfP0MAg1xU5sk11AvmJsyY1
+         +pLtv1n7wXNgfXh0XXpLp4p9g+5rNmYvrot6Xz/xwB1ocuNh3BENgvwyvGSsphdCBHAX
+         Bgdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=b1/1hgdrdOtGYjDRlu3dvktHWpc4PrVZjEiQ0nlClDM=;
+        fh=bN1N9u37F9sfpeWZ2mDRMBHW5qqsdrFlcOzPW13gTq4=;
+        b=aBmcl/7TpIxNjcaSGomGDbVuR+T3YFrq1QwKPAj/gGc3bTl0MZ1BQj4hZSJu0vKikW
+         KhulG/KIQyIwsndAdqMWZ9ZTXqTw4kUeVIlO6DhBFROHAgyAlP5xZnshQSmoE22o4kbw
+         TYvkkhSbkuqnOHvtevtAMeuMmTYOF4s+d/9eTwufxRcPK3s5TivtxR2jHiEl9o8iQZqt
+         wqQyx9P/d6+9qfDq0jiHspNe55rayvAfQlE7BGlWBx9Ljp++piJbhgUUKWpty/RCdP4G
+         p2ltxtOV0nLPL47JRuK1oMrOVhnl3Vmpn0ybzFh9nI4h+C4Ua3WrRVlLAF/DnuXWHmbL
+         yS3A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769654110; x=1770258910; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ug5QsrXZMAl0mYiTus8LnoHqNOGGvt+sQsGC1V10xGg=;
-        b=flqcJGWkZv7nNMi+bv+zqPv0CStnPHfE4klIXWC41Qk/vra0vqz9wjLNwTF/9unhOa
-         ONKWiCG7LFkjAIiJEiB+4cu75oKAvDU8K+FVkrRUmpfPffU72YczI5td5TH2r+Vxv+Z8
-         GeEJKu/XIGWfOiziRCj8vlExbBA1mfSGlEf0IeYHMl1p7/j4XUFyaRz3npCVgR+Gvc5V
-         plqCHDEGaeVxIWZmS020ro2cc66cWHgMVzfiklLOPfJTVsozRZK1skUx5ZyVSuQpfC43
-         n1jJVKtzE+evW6bD9C8GE+cwsGzrhpGvs3xFdUZL+5jDSSdaQ9dxptS9tNwSqcavtzNv
-         U1uA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769654110; x=1770258910;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=futuring-girl.com; s=google; t=1769655568; x=1770260368; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ug5QsrXZMAl0mYiTus8LnoHqNOGGvt+sQsGC1V10xGg=;
-        b=M1wGsTsZ3rKPHoCSG95f5tie8VQH3AQvDvJY1gU1+8Q8VfVIF+66m5mOJNGGa7pUX9
-         VuiMfk9nH3t4kjKvf0wxMIIMoKCoWw5KVmsl/MkcZCB1VKtx5j6UubLvuDhAjbWoDVT+
-         OzVGQ2sGwYE5S0kUYn4i2GO5rYOh4vl6Uq2kBxcPxFdiIZGkL61QHLQGq7lXchYlBEGE
-         e8Y+kkKjVT9GcyvEQvAPGhgSqvhlEpEZombe4wQ14GV3JIqENDcnSGpT6r2N/wu/9POi
-         KpV56zUDHPIktPaquJDCS1HXiI6pYiEiisTAptB9gT0hLirVgVH/NZzL2C3sV9vgS4qo
-         pquw==
-X-Gm-Message-State: AOJu0Yy4mKo1PHYV0G9dirtb7WkxEGu4afMgtsQ75+VSMNWCVcB1w1IZ
-	JJBPfai4M2rR3o+r3ffbB1iEDl/awqRouPMpFJci48xMvq3Vwp5/MRV5UXWB4mumUWWlgs54h4h
-	sNLbE
-X-Gm-Gg: AZuq6aKrCDTpjnc9XIN235G6Hy9sDAvQXfop+w5Yd8GmsLNDmn3gtmcuIruoi931H1C
-	BmRNRvI+X4k9DxQ4UTeT7Z5JQcCfMYOPtUr99xHg1U+tiVrwSaYzX88s5TeQBzeUnlbP6we9Cp4
-	kdSYvIpTNxguQSkQrNoPCa757cvTSxFFyV0jUk5r+3ZxAfHNXo8v/lI4RcbmHi01Nz7UhSstsB7
-	p40dynHMC6CUD/wf9/jOtR2oAF48dUEMePE3tgm2OzOh/kuKYZbKtbRNkjmVsBdyFuc3AHUmjgK
-	KY8jBGF8nItqT4XEjjteB4XT9OzifORi4R0m8JOtXx8T4/O3kDTCpKvZ3mm7u2oAKtPceyluxiB
-	RY5Sqcbzbx4SYGdtazNVU/9ZZKTP1V/jA1kNqMWuNodbKGLxDO4765eh2qKr0A6knAylAxLF6fV
-	QzaSjZZy/8X57n
-X-Received: by 2002:a05:600c:1c17:b0:480:462e:d640 with SMTP id 5b1f17b1804b1-48069c7f78cmr96225185e9.36.1769654110457;
-        Wed, 28 Jan 2026 18:35:10 -0800 (PST)
-Received: from localhost ([2401:e180:8dfc:3cc3:8fe9:e99:6cdf:244e])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b5d9a70sm34555865ad.77.2026.01.28.18.35.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 18:35:09 -0800 (PST)
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Alexis=20Lothor=C3=A9=20=28eBPF=20Foundation=29?= <alexis.lothore@bootlin.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH stable 1/1] bpf/selftests: test_select_reuseport_kern: Remove unused header
-Date: Thu, 29 Jan 2026 10:35:02 +0800
-Message-ID: <20260129023504.11686-1-shung-hsi.yu@suse.com>
-X-Mailer: git-send-email 2.52.0
+        bh=b1/1hgdrdOtGYjDRlu3dvktHWpc4PrVZjEiQ0nlClDM=;
+        b=kSbJmV8VGQZMwuvj1mzLdjIxOgeVXAmM8d47kl02/Jo92J83OSc7G0/PLfuaI6D+Hu
+         sJ6oP9sNS+LNSrIAM6zfpOBSzeVoFfxjUmffLi+pnKFjnWOsqBUg+wlDyB9f9xzajoxs
+         u/e6P8JnavNMrB2hnzmCN3Fd6EBf2WAEiPkxeSUyrZT4wNOf4YjCSiQbasKk2wwDvhJP
+         IBsNuVJ7qjXWFdIYhgH0a09/pFz3vfcrbM3QhnfNRN7jdOkOi7d0xj72bkxFuspq3pii
+         VqdBU0Z2uBBQeb1Vy9N+Rw+8hC+vJ/rcGi8xHUgYaZXEwZpCMaL0/whBFo1jqXj6SjCw
+         cFHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769655568; x=1770260368;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=b1/1hgdrdOtGYjDRlu3dvktHWpc4PrVZjEiQ0nlClDM=;
+        b=v7ChFimmCPmh75nNuWnezJ6k/Rt/UMhD5vObijGkHWXIe6Dr4deXB88beUdUDtVr1O
+         Dr1BgNxJ9B8ZaTZgwN6PcXCEfv8nacs8KLyqI8jo4JUwdlYnIbaBsFoX0SjevdFp2pgO
+         ufurM8uqVqIpEHxKQn8wXOhDUcsyey6k86trrFcmFBB1vEDBAe2q/o0oimos/9mtNUAs
+         xtdMJ8Usl90GvrdUV/K6XM1CPAv8uwXUtpiCQd0P/tWQ24BFp3pD2yP8iiYcPh65GGzQ
+         8hlPokHAz3PudF76/soQf0UQjUS/VGn3+CipsejI1jVUHMLW7+ARrqTW3fEhaXf21YdM
+         y2wQ==
+X-Gm-Message-State: AOJu0YwVSB6EOI2T6NEkeySYMoxpbmniagPOTRbdCpRZsVhKnifthnr7
+	7Hm4PMElJto2/YSs3NkQYt4BSxaHfX94Mmz6V+roLtH8GB/kchZfi4JUPGrjBLyr8UCOJ4f5DMP
+	ZTvo7Qt+Z2mh+AptamlDPkvLmf/GKgcZMWG5yLqAErw==
+X-Gm-Gg: AZuq6aJEaapaJq+2x4PamggVuFHYit3Xa5S5RXC1yflHYR31j5J5pe0baA/nPoqJ8/f
+	mC69D7PBfRxBpc7JAF1uMGVXIoHDhjAk0XqiX5jVH0jmmRDL6lA736CVpRnkc5XFA6RGg9Xh8Bq
+	Qk8rl8GABFkHnqiAbZYoVp7sHxXdW1dUZvXHYh4Sp1eMvIK2dwMqKWKD2iQ8GKZxnKv0g7rVKqb
+	hSTJEEdyMuxThnKjTWL0yVTnjdij6mp7Ygvs5gRG5IFsc/KA01oF6dW6v8i3xt5Hl/cIzkT
+X-Received: by 2002:a05:7022:7a4:b0:11b:ceee:b78a with SMTP id
+ a92af1059eb24-124a00aaff5mr4519762c88.19.1769655567618; Wed, 28 Jan 2026
+ 18:59:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260128145344.331957407@linuxfoundation.org>
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date: Thu, 29 Jan 2026 11:59:10 +0900
+X-Gm-Features: AZwV_QhApBiJkDbKT_aFAZUil7LKIchbu9gATA5R1VL45l1QkcwrVx9tfXGG0m4
+Message-ID: <CAKL4bV7BeCwHonkdgtO9cHyWKW9Jc7R-uhxrnWsoVSjTOg1pdQ@mail.gmail.com>
+Subject: Re: [PATCH 6.18 000/227] 6.18.8-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[futuring-girl.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_DKIM_ALLOW(-0.20)[futuring-girl.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212728-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212729-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shung-hsi.yu@suse.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[takeshi.ogasawara@futuring-girl.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[futuring-girl.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 67467AB29A
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 75BC2AB490
 X-Rspamd-Action: no action
 
-From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+Hi Greg
 
-commit 93cf4e537ed0c5bd9ba6cbdb2c33864547c1442f upstream.
+On Thu, Jan 29, 2026 at 1:18=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.18.8 release.
+> There are 227 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 30 Jan 2026 14:53:02 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.18.8-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.18.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-test_select_reuseport_kern.c is currently including <stdlib.h>, but it
-does not use any definition from there.
+6.18.8-rc1 tested.
 
-Remove stdlib.h inclusion from test_select_reuseport_kern.c
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250227-remove_wrong_header-v1-1-bc94eb4e2f73@bootlin.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[shung-hsi.yu: Fix compilation error mentioned in footer of Alexis'
-patch with newer glibc header:
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-  [...]
-    CLNG-BPF [test_progs-cpuv4] test_select_reuseport_kern.bpf.o
-  In file included from progs/test_select_reuseport_kern.c:4:
-  /usr/include/bits/floatn.h:83:52: error: unsupported machine mode
-  '__TC__'
-     83 | typedef _Complex float __cfloat128 __attribute__ ((__mode__
-  (__TC__)));
-        |                                                    ^
-  /usr/include/bits/floatn.h:97:9: error: __float128 is not supported on
-  this target
-     97 | typedef __float128 _Float128;
+[    0.000000] Linux version 6.18.8-rc1rv-gc0a52e9c6618
+(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 15.2.1 20260103, GNU ld (GNU
+Binutils) 2.45.1) #1 SMP PREEMPT_DYNAMIC Thu Jan 29 11:35:00 JST 2026
 
-I'm not certain when the problem starts to occur, but I'm quite sure
-test_select_reuseport_kern.c were not meant to be using the C standard
-library in the first place.]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
----
-Tested to apply in 6.12 and 6.6. Possibly applicable further back.
----
- tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c | 1 -
- 1 file changed, 1 deletion(-)
+Thanks
 
-diff --git a/tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c b/tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c
-index 5eb25c6ad75b..a5be3267dbb0 100644
---- a/tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c
-+++ b/tools/testing/selftests/bpf/progs/test_select_reuseport_kern.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright (c) 2018 Facebook */
- 
--#include <stdlib.h>
- #include <linux/in.h>
- #include <linux/ip.h>
- #include <linux/ipv6.h>
--- 
-2.52.0
-
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
