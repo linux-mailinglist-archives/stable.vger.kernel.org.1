@@ -1,211 +1,199 @@
-Return-Path: <stable+bounces-212734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHWiBW3wemkiAAIAu9opvQ
-	(envelope-from <stable+bounces-212734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 06:30:21 +0100
+	id 4IwxESL/emmnAQIAu9opvQ
+	(envelope-from <stable+bounces-212735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 07:33:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B396EABECB
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 06:30:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0221AC3F2
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 07:33:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B2EF3014109
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 05:30:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB9DE3019F0C
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 06:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0B52DB79A;
-	Thu, 29 Jan 2026 05:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDFA378815;
+	Thu, 29 Jan 2026 06:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a3TyB+L8"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4ED2D9797;
-	Thu, 29 Jan 2026 05:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106BE2D640D
+	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 06:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769664599; cv=none; b=k4ItmG7l3yRN2TaI46ZXJnIPAEVtdCONL+FA/sIq/70I4TYWbx/Jts9BIUQswiUOhE0EwUhph/3hfatHEELY8pBtbYZWnz5hu6diT/nXkqQ91XRF8vDL1OvCRMNOD/rvhW4CWi6PEllnYq4kS0BGaJj+81vXXAEh0WZTOWzb1P8=
+	t=1769668377; cv=none; b=dyS+pvSgr0N7q0vLhuRMQKxQw0RoBAUcfU6iUYLj//M0fw2q4HWTjMdJ1odzj/dIblygxsQ32wXCGKaiTWFKhV7MQk9Ft9SDPOYX5fdivcqSyst6bq/MlYTNW/zoXZYR0w5LPMXFwXTZS56CsdUaF43FctKQsmsswPDHOeqSmeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769664599; c=relaxed/simple;
-	bh=30+imTi0yv9XJyqLeLF4BtuFVz4ZSuLiBHlKCiyICQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XosbDX8YUaqSgcWWi67AJ4ExFxDPy5a87jDh2ilFpGYN98F/R+90FoxwC/Mj3mnKDmaC77d/PTUJiG6AKm7r0Mdh7n/BtfFOGaT9xJhI+CRRcHFDG9w2lVz5HfHKGKChh/o0mB+SzN/abh0GQoz8b8LkU1Q/lAgziuq1qJ15q40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [10.213.22.141] (unknown [210.73.43.101])
-	by APP-01 (Coremail) with SMTP id qwCowAAHr2pB8HppvVmpBg--.14477S2;
-	Thu, 29 Jan 2026 13:29:39 +0800 (CST)
-Message-ID: <11bd0685-8665-45ef-bec1-8ccf9e38ad6c@iscas.ac.cn>
-Date: Thu, 29 Jan 2026 13:29:37 +0800
+	s=arc-20240116; t=1769668377; c=relaxed/simple;
+	bh=RsIslKyhpSjxmdr4itF3eXtAKvRSlKn0Fu9krmPg2aE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CyvQgL0FjdPyJIeIZRiE7xh0SLjbyOLZ82JXaZv5c6+zPMlqUboXHZ4sNsYntWKJ+MKn0sxZ95iBZNK8lS3g0Y4s/TptE9vrow+Wr9to977LEB77eAQtNP/qOcQcmcIjLFqR4QOBo8lFy65J5R8LfTSYtSuFOqC94UdMMf/FIkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a3TyB+L8; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5032e951106so5905801cf.0
+        for <stable@vger.kernel.org>; Wed, 28 Jan 2026 22:32:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769668375; x=1770273175; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RsIslKyhpSjxmdr4itF3eXtAKvRSlKn0Fu9krmPg2aE=;
+        b=a3TyB+L8FFn8Z/vqcnQrlVoFRY60o9KUNvbChUMhrFZONlqNGrLL9Ey/l6b/s/e0KG
+         XTG6nZBuDafUnZFaDn9yieLlLDrXDTXXH+XA/LOH+8zJhIadmfvDDJ71Ok07sj2Pf4Nj
+         xIFb4Fo1WWN1Yga+IEvJdVJ9bXTtYtq0qGKrjUg1XYRL/8qQCHr0ftPVGgMVJ9tqf6II
+         +27zo+O13cLZMZ4c3RDy50hbtoKMRynfP4MNx25zuIDu5hlz9aGWhowqzyU8tw8GJIWV
+         hLvmdHi1Q12K01O/O6shMpBPFHdPRga99wX8yt/IqFP9DE0LG/RkGvsYeakkvaC4ybPV
+         GlTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769668375; x=1770273175;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RsIslKyhpSjxmdr4itF3eXtAKvRSlKn0Fu9krmPg2aE=;
+        b=dUSY4Y+BsQEmN2KZaAzRS9hEE40Hj7KqHLve40Q+dfn9u2U1HlGVK3t0bW+V6pXefE
+         4tmIBNed1iGijqDqQB2GnL2dLbGf+tbb0UTxltPgVuv4pGLg6OrXOA9IBZlZ3YEpXQul
+         Ry1Cx3EMiTZ2IxRAvrTR0DPnoii1A/notjrLRXmH35A9dit/WsEImRKYYNGgGGwBhgFF
+         MSzUTZimacWhl2TsHOmufAeLJrlSPiKY/PDSHttJ73s60H0tDWz0xANLO6BnauVDhgUy
+         T+8euzyzpZ562LGG35xkln7kp43AZweoj13cwYUHttBWqd9rlvfcstOgOKIFD0hDCKFM
+         2EkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXj6zgMIh072i0yC+Mda5UaR8ecuptnKJ8RkmLaDQ/8DJvEfgrtOXgvmwVpUdHTPldWyiCaJrM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yza8Fx2uSv9E37OKl3k/5gaPOgd25bhxkNNJw8XuFZ9yIV3YYLB
+	1dmj/RaIVtQPXYeg9LbLoI7tG4biSqazN00amNDOFTgwRoHW46V3cLSq83hLBg==
+X-Gm-Gg: AZuq6aJTDRZlhHmJKuD/TFFilkQXwK2RNkY4c4hPdOKwTpaI8d3E/fC1B/WoZJW41O8
+	nOYBx5N9GULRK54khIWzD4OcKJct6UDG/KdIeC/OuTCAD5m5LXEo6su6evfJ3Dsoc2RhbCDh7+Q
+	OtZyQkB1vQnj+q/p1NGiClUYeX66NaQpBgmeTH41q77XoR4U1QHQrRzi6bj3ORUSSppwc3jSPry
+	DwkOsPQIjam2bsu+wra9loIi32KVhGwRXayph7C70dClIgGT4gENGWGHSLiyO7AggLJm5Jk0BeG
+	1ldRn8CHEUPLB0EVskc9mh2TRGvQq4HrFlRlTMZxEiGXfZsHWcCVvvivgYKX5sAoOHxCgLGCrQy
+	jLUVAg/j82Sllz9QmVxj3/7Hexqmg36VUTVrzYR2+r3gSf4ZTAxixYmEKO8Wp+j3NI371nAOK4f
+	HXE+8pwZ6JQogCCwR+RQ==
+X-Received: by 2002:ac8:5e14:0:b0:501:3df2:fd60 with SMTP id d75a77b69052e-5032f7704c8mr95104321cf.12.1769668374785;
+        Wed, 28 Jan 2026 22:32:54 -0800 (PST)
+Received: from pek-khao-d3 ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5033745c4f0sm35829361cf.1.2026.01.28.22.32.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 22:32:54 -0800 (PST)
+Date: Thu, 29 Jan 2026 14:32:44 +0800
+From: Kevin Hao <haokexin@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>, linux-omap@vger.kernel.org
+Subject: Re: [PATCH net v3] net: cpsw_new: Execute ndo_set_rx_mode callback
+ in a work queue
+Message-ID: <aXr_DNapxeHpuWt1@pek-khao-d3>
+References: <20260127-bbb-v3-1-5e71f340c1e9@gmail.com>
+ <20260127190836.6a420768@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] net: spacemit: k1-emac: fix jumbo frame support
-To: Tomas Hlavacek <tmshlvck@gmail.com>, netdev@vger.kernel.org
-Cc: linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, dlan@kernel.org, stable@vger.kernel.org
-References: <20260129042908.410326-1-tmshlvck@gmail.com>
-Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <20260129042908.410326-1-tmshlvck@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:qwCowAAHr2pB8HppvVmpBg--.14477S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAw47Zr1UWrWrAr43ZF15CFg_yoWrAF1kpF
-	4Y9F90krs0yrn2k3Z2ya18tFn8ta17Wr10k3yjv3y8Z3sFkr9rGrnxKrW3Cr9rurWkWF1F
-	9a4UZrnruFWDXrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvlb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwV
-	C2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7
-	MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-	67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-	x0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvj
-	DU0xZFpf9x07betCcUUUUU=
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="UH1uIraS6vl8AKuT"
+Content-Disposition: inline
+In-Reply-To: <20260127190836.6a420768@kernel.org>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-2.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212735-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212734-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wangruikang@iscas.ac.cn,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[haokexin@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B396EABECB
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A0221AC3F2
 X-Rspamd-Action: no action
 
-On 1/29/26 12:29, Tomas Hlavacek wrote:
-> The driver never programs the MAC frame size and jabber registers,
-> causing the hardware to reject frames larger than the default 1518
-> bytes even when larger DMA buffers are allocated.
->
-> Program MAC_MAXIMUM_FRAME_SIZE, MAC_TRANSMIT_JABBER_SIZE, and
-> MAC_RECEIVE_JABBER_SIZE based on the configured MTU. Also fix the
-> maximum buffer size from 4096 to 4095, since the descriptor buffer
-> size field is only 12 bits. Account for double VLAN tags in frame
-> size calculations.
->
-> Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tomas Hlavacek <tmshlvck@gmail.com>
-> ---
-> v3:
-> - Set all three frame/jabber registers, fix 12-bit buffer size field
->   overflow, use actual frame size with VLAN headroom consistently.
->
-> v2: https://lore.kernel.org/netdev/20260126171449.83288-1-tmshlvck@gmail.com/
-> - Added Fixes tag and Cc stable.
->
-> v1: https://lore.kernel.org/netdev/20260126135919.77168-1-tmshlvck@gmail.com/
-> ---
->  drivers/net/ethernet/spacemit/k1_emac.c | 21 +++++++++++++++------
->  1 file changed, 15 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
-> index 220eb5ce7583..cd6879d7434c 100644
-> --- a/drivers/net/ethernet/spacemit/k1_emac.c
-> +++ b/drivers/net/ethernet/spacemit/k1_emac.c
-> @@ -12,6 +12,7 @@
->  #include <linux/dma-mapping.h>
->  #include <linux/etherdevice.h>
->  #include <linux/ethtool.h>
-> +#include <linux/if_vlan.h>
->  #include <linux/interrupt.h>
->  #include <linux/io.h>
->  #include <linux/iopoll.h>
-> @@ -38,7 +39,7 @@
->  
->  #define EMAC_DEFAULT_BUFSIZE		1536
->  #define EMAC_RX_BUF_2K			2048
-> -#define EMAC_RX_BUF_4K			4096
-> +#define EMAC_RX_BUF_MAX			FIELD_MAX(RX_DESC_1_BUFFER_SIZE_1_MASK)
->  
->  /* Tuning parameters from SpacemiT */
->  #define EMAC_TX_FRAMES			64
-> @@ -202,8 +203,7 @@ static void emac_init_hw(struct emac_priv *priv)
->  {
->  	/* Destination address for 802.3x Ethernet flow control */
->  	u8 fc_dest_addr[ETH_ALEN] = { 0x01, 0x80, 0xc2, 0x00, 0x00, 0x01 };
-> -
-> -	u32 rxirq = 0, dma = 0;
-> +	u32 rxirq = 0, dma = 0, frame_sz;
->  
->  	regmap_set_bits(priv->regmap_apmu,
->  			priv->regmap_apmu_offset + APMU_EMAC_CTRL_REG,
-> @@ -228,6 +228,15 @@ static void emac_init_hw(struct emac_priv *priv)
->  		DEFAULT_TX_THRESHOLD);
->  	emac_wr(priv, MAC_RECEIVE_PACKET_START_THRESHOLD, DEFAULT_RX_THRESHOLD);
->  
-> +	/* Set maximum frame size and jabber size based on configured MTU,
-> +	 * accounting for Ethernet header, double VLAN tags, and FCS.
-> +	 */
-> +	frame_sz = priv->ndev->mtu + ETH_HLEN + 2 * VLAN_HLEN + ETH_FCS_LEN;
-> +
-> +	emac_wr(priv, MAC_MAXIMUM_FRAME_SIZE, frame_sz);
-> +	emac_wr(priv, MAC_TRANSMIT_JABBER_SIZE, frame_sz);
-> +	emac_wr(priv, MAC_RECEIVE_JABBER_SIZE, frame_sz);
-> +
->  	/* Configure flow control (enabled in emac_adjust_link() later) */
->  	emac_set_mac_addr_reg(priv, fc_dest_addr, MAC_FC_SOURCE_ADDRESS_HIGH);
->  	emac_wr(priv, MAC_FC_PAUSE_HIGH_THRESHOLD, DEFAULT_FC_FIFO_HIGH);
-> @@ -924,14 +933,14 @@ static int emac_change_mtu(struct net_device *ndev, int mtu)
->  		return -EBUSY;
->  	}
->  
-> -	frame_len = mtu + ETH_HLEN + ETH_FCS_LEN;
-> +	frame_len = mtu + ETH_HLEN + 2 * VLAN_HLEN + ETH_FCS_LEN;
->  
->  	if (frame_len <= EMAC_DEFAULT_BUFSIZE)
->  		priv->dma_buf_sz = EMAC_DEFAULT_BUFSIZE;
->  	else if (frame_len <= EMAC_RX_BUF_2K)
->  		priv->dma_buf_sz = EMAC_RX_BUF_2K;
->  	else
-> -		priv->dma_buf_sz = EMAC_RX_BUF_4K;
-> +		priv->dma_buf_sz = EMAC_RX_BUF_MAX;
->  
->  	ndev->mtu = mtu;
->  
-> @@ -2005,7 +2014,7 @@ static int emac_probe(struct platform_device *pdev)
->  	ndev->hw_features = NETIF_F_SG;
->  	ndev->features |= ndev->hw_features;
->  
-> -	ndev->max_mtu = EMAC_RX_BUF_4K - (ETH_HLEN + ETH_FCS_LEN);
-> +	ndev->max_mtu = EMAC_RX_BUF_MAX - (ETH_HLEN + 2 * VLAN_HLEN + ETH_FCS_LEN);
->  	ndev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
->  
->  	priv = netdev_priv(ndev);
 
-Thanks for the fix. This essentially matches what I've been testing as well.
+--UH1uIraS6vl8AKuT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Vivian Wang <wangruikang@iscas.ac.cn>
+On Tue, Jan 27, 2026 at 07:08:36PM -0800, Jakub Kicinski wrote:
+> On Tue, 27 Jan 2026 16:02:07 +0800 Kevin Hao wrote:
+> > To resolve this issue, we opt to execute the actual processing within
+> > a work queue, following the approach used by the icssg-prueth driver.
+>=20
+> Code looks good now, but why are you creating a workqueue for this one
+> work? Can't you use the system wq and just cancel it sync where you had
+> the wq destroy?
 
+This implementation was adapted from the icssg-prueth driver. After reviewi=
+ng
+the git history, I found no explicit rationale for using a dedicated workqu=
+eue.
+In my opinion, if we were to use the system wq and rely on cancel_work_sync=
+()
+before unregister_netdev(), a race condition could arise between these two =
+calls.
+Specifically, cpsw_ndo_set_rx_mode_work() might be scheduled during this in=
+terval
+and run after the net device is unregistered, leading to a use-after-free b=
+ug.
 
+While reviewing the code, I noticed that in the current implementation, we =
+may
+need to move the destroy_workqueue() call after unregister_netdev(). Otherw=
+ise,
+there is a risk of encountering a use-after-free bug related to the dedicat=
+ed workqueue.
+
+>=20
+> BTW you're fixing drivers/net/ethernet/ti/cpsw_new.c I think
+> drivers/net/ethernet/ti/cpsw.c has an identical bug, no?
+
+Yes, as noted in the patch comment area, I plan to address the same issue in
+drivers/net/ethernet/ti/cpsw.c once this patch is approved.
+
+Thanks,
+Kevin
+
+--UH1uIraS6vl8AKuT
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEHc6qFoLCZqgJD98Zk1jtMN6usXEFAml6/wsACgkQk1jtMN6u
+sXGeSwgApr6OFmEUX234PpjrEIQIlnM3m7PzdD7CUzcQ03K8vr+EeScd9bBSUt3W
+s/Ap+TOHLKbv9AcOnWn3jZLNWNYb5xJpzM4+iU+Hl2IkVayaOPwYTGCevMiSnlfH
+3RKxR9yh2TuFhYlnPZpeD2bdKXX1P1DPZV464MD6etTY6xJxqLpMVLw2CLxHEQFn
+L/dKEngjlRvvKtULu0fVUQ5t4+sjne8nthMmuagnzqzzoXq1Vg5v7w8sqG3WXYN/
+dwz5qjBJUGgn0+u/vBOZ0/dUFsxci2/sAlUUjsyRfqexotFyXtt3276QkwgpGLJ6
+b/CVzZXLQAk9YoAGRyrZsTThYFpELA==
+=gJCM
+-----END PGP SIGNATURE-----
+
+--UH1uIraS6vl8AKuT--
 
