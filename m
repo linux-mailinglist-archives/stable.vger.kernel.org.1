@@ -1,176 +1,420 @@
-Return-Path: <stable+bounces-212747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFAhKJQTe2nLBAIAu9opvQ
-	(envelope-from <stable+bounces-212747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 09:00:20 +0100
+	id 0EdTIVMae2msBQIAu9opvQ
+	(envelope-from <stable+bounces-212748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 09:29:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CDBAD0E4
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 09:00:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA88AD80E
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 09:29:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A48703020FF6
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 08:00:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 87CC5300844A
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 08:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D7637BE62;
-	Thu, 29 Jan 2026 08:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A32A37A4BE;
+	Thu, 29 Jan 2026 08:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="MZFnfoew"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="se+bll9A";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OUN40Cxq";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="se+bll9A";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OUN40Cxq"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD94B37AA9A;
-	Thu, 29 Jan 2026 08:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F486377579
+	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 08:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769673606; cv=none; b=R5HZjrD4JKr6IoAvk++JThIibc02lzJPmD9xSPB6Npl5FIDPe3YutRV5z041hQpWHewehoQB2yCPZ9Z+OhApaHxwaBQN887zsA9BHgq6RuN9oc8pkZGQL3wfl5FQmDbdN8ldDhgbxazYMc3mtrzBZdHZlRoua6jbxQzx1IJixXY=
+	t=1769674562; cv=none; b=to3Fk3y6ZHfy0LF5QlCMnmb5qAIYlSJ5+9pFve9MiXRWBmYhUZ0mLK3C4Hg+rPpcXIvEZfuD4QB4GBEfEm1ysidP1t4y2BlX6QrPVpH2mAU3UITrNvoIDAsi0CJW3p7aFtia/Sx5Ui3H8LjeEpjf3/qr+qDH7xqcOgHI94CE2n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769673606; c=relaxed/simple;
-	bh=BX22US3w6B54wa3HdAMVVUnwnXndC+cpS0cG/lGQlw4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JaSPCvd4sIUHzg2AeYgWX1syU0dTqtBoxwLsdUIe7DrcV0xaHok/5qAXaFAgSReyuRit511nbm+Wg4JsR35TNedHgzH4NrXrK1OEu7Dn4SGZwDUJGjbZLo3/T4qtw95ofBwMSblLyQp4l915kmI0rvao+zLc7V0AOiYLo1/mSrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=MZFnfoew; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=QL
-	3dUcAYKfEP61hZSUlNgqsKyHH43mt+E+rasKcdcC8=; b=MZFnfoewHONzFmqF62
-	p3hrGEWfo/JaacF4/ZUL6bI8vVPgYh7BfeV9Q7mHrrLt7GjNUsQpV6gXLbZ2RXh8
-	eToJ9hmgACkMrGLHl+lGkrD+4uDIsH+6MG+Gh8P9zEehYAjhpMbNZ/IGxk6YN3eR
-	6UPcJSzO8rnLRaJ1QKnl4jYzA=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wB3K5Y_E3tp9UGSIg--.376S2;
-	Thu, 29 Jan 2026 15:58:56 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Zqiang <qiang.zhang@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1.y] usbnet: Fix using smp_processor_id() in preemptible code warnings
-Date: Thu, 29 Jan 2026 15:58:54 +0800
-Message-Id: <20260129075854.2945271-1-black.hawk@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1769674562; c=relaxed/simple;
+	bh=DeK5wrSPNov6fuxmvLTO7ubJHuR4hbsffsBGXLqxJqM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cAlFuwoHsWVGvH3Z0GitMNtk+0zhN62Ag1wkMtuGlzQrd4K+x/dp8lyzn0AsDtqjvTebLeJMWgCj9Qu0bfrIj5z3UdrG1yTmIcMLQiDQGYGmxYqIZ6Gn8yQRQ2E49ddWA3Avh11Auq/Kzd9XjRBLF+4Urr2HW4rqgTkGfloGBFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=se+bll9A; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OUN40Cxq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=se+bll9A; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OUN40Cxq; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B33E034023;
+	Thu, 29 Jan 2026 08:15:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1769674552; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=v9d/MEoV7myrZ+rWj2IPTvfVA5M+BaGg3bhUppV229Q=;
+	b=se+bll9AM3pqqWlOERJO8xzyszD+sqUEEmmKIw9/z5KAsa2nMrMGlzbVxUR8Ej5l+nkbBE
+	KggyyblXuxIR3pTPXnGsAFjNpqzCGAuEHEvw5hjYCkZyES+7M/uJt+LPXQKp8+dTck5a0w
+	aRhNvZt//E61KhQc5ApwUZTBVeCBMP8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1769674552;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=v9d/MEoV7myrZ+rWj2IPTvfVA5M+BaGg3bhUppV229Q=;
+	b=OUN40CxqXhOQS+T0gaNG5dSmD35ewy+jORif0hZn+eAZAwVrBd31gGotSFeHxPFANyAEIe
+	cOQK3SJkdI1kpSBA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=se+bll9A;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OUN40Cxq
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1769674552; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=v9d/MEoV7myrZ+rWj2IPTvfVA5M+BaGg3bhUppV229Q=;
+	b=se+bll9AM3pqqWlOERJO8xzyszD+sqUEEmmKIw9/z5KAsa2nMrMGlzbVxUR8Ej5l+nkbBE
+	KggyyblXuxIR3pTPXnGsAFjNpqzCGAuEHEvw5hjYCkZyES+7M/uJt+LPXQKp8+dTck5a0w
+	aRhNvZt//E61KhQc5ApwUZTBVeCBMP8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1769674552;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=v9d/MEoV7myrZ+rWj2IPTvfVA5M+BaGg3bhUppV229Q=;
+	b=OUN40CxqXhOQS+T0gaNG5dSmD35ewy+jORif0hZn+eAZAwVrBd31gGotSFeHxPFANyAEIe
+	cOQK3SJkdI1kpSBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6436C3EA61;
+	Thu, 29 Jan 2026 08:15:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Q49CFzgXe2kUVgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 29 Jan 2026 08:15:52 +0000
+Message-ID: <338ff7cf-1c7d-48da-b1b8-37aac440fed0@suse.de>
+Date: Thu, 29 Jan 2026 09:15:51 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/mgag200: sleep instead of busy wait for BMC
+To: Jacob Keller <jacob.e.keller@intel.com>, Dave Airlie
+ <airlied@redhat.com>, Jocelyn Falempe <jfalempe@redhat.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>
+Cc: Pasi Vaananen <pvaanane@redhat.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260128-jk-mgag200-fix-bad-udelay-v1-1-db02e04c343d@intel.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260128-jk-mgag200-fix-bad-udelay-v1-1-db02e04c343d@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wB3K5Y_E3tp9UGSIg--.376S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCF4Dtr45Zryxur13CrykXwb_yoW5Zr45pF
-	WrGr15Ar4UXF4vqayfta1IqryrZa1DJrZrGrWS9wn8ZF9xA34UXF1F93WI9F1qkr40gFyj
-	qF4qv3y3Xw1rZa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pElkItUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3QEOp2l7E0HnRAAA3W
+X-Spam-Score: -4.51
+X-Spam-Level: 
+X-Spam-Flag: NO
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212747-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.dev,kernel.org,redhat.com,163.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.de:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212748-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,msgid.link:url]
-X-Rspamd-Queue-Id: 26CDBAD0E4
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.de:email,suse.de:dkim,suse.de:mid]
+X-Rspamd-Queue-Id: CCA88AD80E
 X-Rspamd-Action: no action
 
-From: Zqiang <qiang.zhang@linux.dev>
+Hi,
 
-[ Upstream commit 327cd4b68b4398b6c24f10eb2b2533ffbfc10185 ]
+thanks for the patch. If I'm not mistaken, you have fixed a 
+long-standing bug. See my comments below.
 
-Syzbot reported the following warning:
+Please double check my comments and, if valid, integrate them into the 
+commit description.
 
-BUG: using smp_processor_id() in preemptible [00000000] code: dhcpcd/2879
-caller is usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
-CPU: 1 UID: 0 PID: 2879 Comm: dhcpcd Not tainted 6.15.0-rc4-syzkaller-00098-g615dca38c2ea #0 PREEMPT(voluntary)
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
- check_preemption_disabled+0xd0/0xe0 lib/smp_processor_id.c:49
- usbnet_skb_return+0x74/0x490 drivers/net/usb/usbnet.c:331
- usbnet_resume_rx+0x4b/0x170 drivers/net/usb/usbnet.c:708
- usbnet_change_mtu+0x1be/0x220 drivers/net/usb/usbnet.c:417
- __dev_set_mtu net/core/dev.c:9443 [inline]
- netif_set_mtu_ext+0x369/0x5c0 net/core/dev.c:9496
- netif_set_mtu+0xb0/0x160 net/core/dev.c:9520
- dev_set_mtu+0xae/0x170 net/core/dev_api.c:247
- dev_ifsioc+0xa31/0x18d0 net/core/dev_ioctl.c:572
- dev_ioctl+0x223/0x10e0 net/core/dev_ioctl.c:821
- sock_do_ioctl+0x19d/0x280 net/socket.c:1204
- sock_ioctl+0x42f/0x6a0 net/socket.c:1311
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl fs/ioctl.c:892 [inline]
- __x64_sys_ioctl+0x190/0x200 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Am 28.01.26 um 21:41 schrieb Jacob Keller:
+> The mgag200_bmc_stop_scanout() function is called by the .atomic_disable()
+> handler for the MGA G200 VGA BMC encoder. This function performs a few
+> register writes to inform the BMC of an upcoming mode change, and then
+> polls to wait until the BMC actually stops.
+>
+> The polling is implemented using a busy loop with udelay() and an iteration
+> timeout of 300, resulting in the function blocking for 300 milliseconds.
+>
+> The function gets called ultimately by the output_poll_execute work thread
+> for the DRM output change polling thread of the mgag200 driver:
+>
+> kworker/0:0-mm_    3528 [000]  4555.315364:
+>          ffffffffaa0e25b3 delay_halt.part.0+0x33
+>          ffffffffc03f6188 mgag200_bmc_stop_scanout+0x178
+>          ffffffffc087ae7a disable_outputs+0x12a
+>          ffffffffc087c12a drm_atomic_helper_commit_tail+0x1a
+>          ffffffffc03fa7b6 mgag200_mode_config_helper_atomic_commit_tail+0x26
+>          ffffffffc087c9c1 commit_tail+0x91
+>          ffffffffc087d51b drm_atomic_helper_commit+0x11b
+>          ffffffffc0509694 drm_atomic_commit+0xa4
+>          ffffffffc05105e8 drm_client_modeset_commit_atomic+0x1e8
+>          ffffffffc0510ce6 drm_client_modeset_commit_locked+0x56
+>          ffffffffc0510e24 drm_client_modeset_commit+0x24
+>          ffffffffc088a743 __drm_fb_helper_restore_fbdev_mode_unlocked+0x93
+>          ffffffffc088a683 drm_fb_helper_hotplug_event+0xe3
+>          ffffffffc050f8aa drm_client_dev_hotplug+0x9a
+>          ffffffffc088555a output_poll_execute+0x29a
+>          ffffffffa9b35924 process_one_work+0x194
+>          ffffffffa9b364ee worker_thread+0x2fe
+>          ffffffffa9b3ecad kthread+0xdd
+>          ffffffffa9a08549 ret_from_fork+0x29
+>
+> On a server running ptp4l with the mgag200 driver loaded, we found that
+> ptp4l would sometimes get blocked from execution because of this busy
+> waiting loop.
+>
+> Every so often, approximately once every 20 minutes though with large
+> variance, the output_poll_execute() thread would detect some sort of change
+> that required performing a hotplug event which results in attempting to
+> stop the BMC scanout, resulting in a 300msec delay on one CPU.
+>
+> On this system, ptp4l was pinned to a single CPU. When the
+> output_poll_execute() thread ran on that CPU, it blocked ptp4l from
+> executing for its 300millisecond duration.
+>
+> This resulted in PTP service disruptions such as failure to send a SYNC
+> message on time, failure to handle ANNOUNCE messages on time, and clock
+> check warnings from the application. All of this despite the application
+> being configured with FIFO_RT and a higher priority than the background
+> workqueue tasks. (However, note that the kernel did not use
+> CONFIG_PREEMPT...)
+>
+> It is unclear if the event is due to a faulty VGA connection, another bug,
+> or actual events causing a change in the connection. At least on the system
+> under test it is not a one-time event and consistently causes disruption to
+> the time sensitive applications.
 
-For historical and portability reasons, the netif_rx() is usually
-run in the softirq or interrupt context, this commit therefore add
-local_bh_disable/enable() protection in the usbnet_resume_rx().
+I'm not surprised. The drivers for some of the server chipsets have been 
+imported from old Xorg's user-space code, so that there's something to 
+work with in the kernel. We've since been fixing them to better 
+integrate with the kernel.
 
-Fixes: 43daa96b166c ("usbnet: Stop RX Q on MTU change")
-Link: https://syzkaller.appspot.com/bug?id=81f55dfa587ee544baaaa5a359a060512228c1e1
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Zqiang <qiang.zhang@linux.dev>
-Link: https://patch.msgid.link/20251011070518.7095-1-qiang.zhang@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ The context change is due to the commit 2c04d279e857
-("net: usb: Convert tasklet API to new bottom half workqueue mechanism")
-in v6.17 which is irrelevant to the logic of this patch.]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
----
- drivers/net/usb/usbnet.c | 2 ++
- 1 file changed, 2 insertions(+)
+Not busy waiting for the BMC is also a little improvement to any other 
+workload.
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 6bdf035e35f5..9a058f7c6fcd 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -704,6 +704,7 @@ void usbnet_resume_rx(struct usbnet *dev)
- 	struct sk_buff *skb;
- 	int num = 0;
- 
-+	local_bh_disable();
- 	clear_bit(EVENT_RX_PAUSED, &dev->flags);
- 
- 	while ((skb = skb_dequeue(&dev->rxq_pause)) != NULL) {
-@@ -712,6 +713,7 @@ void usbnet_resume_rx(struct usbnet *dev)
- 	}
- 
- 	tasklet_schedule(&dev->bh);
-+	local_bh_enable();
- 
- 	netif_dbg(dev, rx_status, dev->net,
- 		  "paused rx queue disabled, %d skbs requeued\n", num);
+>
+> Reading through other DRM driver implementations, it does not appear that
+> the .atomic_enable or .atomic_disable handlers need to delay instead of
+> sleep. For example, the ast_astdp_encoder_helper_atomic_disable() function
+> calls ast_dp_set_phy_sleep() which uses msleep(). The "atomic" in the name
+> is referring to the atomic modesetting support, which is the support to
+> enable atomic configuration from userspace, and not to the "atomic context"
+> of the kernel.
+
+Yes. "Atomic" means "apply all changes to hardware, or none".
+
+>
+> Replace the busy wait with a sleeping loop based on read_poll_timeout().
+> This ensures that other time sensitive operations are not blocked from
+> executing while the work thread is waiting for the BMC hardware.
+>
+> Note the RREG_DAC is implemented using a statement expression to allow
+> working properly with the read_poll_timeout family of functions. The other
+> RREG_<TYPE> macros ought to be cleaned up to have better semantics, and
+> several places in the mgag200 driver could make use of RREG_DAC or similar
+> RREG_* macros should likely be cleaned up for better semantics as well, but
+> that task has been left as a future cleanup for a non-bugfix.
+>
+> Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
+> Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+
+> ---
+> We still do not know if the reconfiguration is caused by a different
+> bug or by a faulty VGA connector or something else. However, there is no
+> reason that this function should be spinning instead of sleeping while
+> waiting for the BMC scan to stop.
+>
+> It is known that removing the mgag200 module avoids the issue. It is also
+> likely that use of CONFIG_PREEMPT (or CONFIG_PREEMPT_RT) could allow the
+> high priority process to preempt the kernel thread even while it is
+> delaying. However, it is better to let the process sleep() so that other
+> tasks can execute even if these steps are not taken.
+>
+> There are multiple other udelay() which likely could safely be converted to
+> usleep_range(). However they are all short, and I felt that the smallest
+> targeted fix made the most sense. They could perhaps be cleaned up in a
+> non-fix commit or series along with other improvements like fixing the
+> other RREG_* macros.
+> ---
+>   drivers/gpu/drm/mgag200/mgag200_drv.h |  6 ++++++
+>   drivers/gpu/drm/mgag200/mgag200_bmc.c | 27 ++++++++++-----------------
+>   2 files changed, 16 insertions(+), 17 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
+> index f4bf40cd7c88..a875c4bf8cbe 100644
+> --- a/drivers/gpu/drm/mgag200/mgag200_drv.h
+> +++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
+> @@ -111,6 +111,12 @@
+>   #define DAC_INDEX 0x3c00
+>   #define DAC_DATA 0x3c0a
+>   
+> +#define RREG_DAC(reg)						\
+> +	({							\
+> +		WREG8(DAC_INDEX, reg);				\
+> +		RREG8(DAC_DATA);				\
+> +	})							\
+> +
+>   #define WREG_DAC(reg, v)					\
+>   	do {							\
+>   		WREG8(DAC_INDEX, reg);				\
+> diff --git a/drivers/gpu/drm/mgag200/mgag200_bmc.c b/drivers/gpu/drm/mgag200/mgag200_bmc.c
+> index a689c71ff165..599b710bab9b 100644
+> --- a/drivers/gpu/drm/mgag200/mgag200_bmc.c
+> +++ b/drivers/gpu/drm/mgag200/mgag200_bmc.c
+> @@ -1,6 +1,7 @@
+>   // SPDX-License-Identifier: GPL-2.0-only
+>   
+>   #include <linux/delay.h>
+> +#include <linux/iopoll.h>
+>   
+>   #include <drm/drm_atomic_helper.h>
+>   #include <drm/drm_edid.h>
+> @@ -12,7 +13,7 @@
+>   void mgag200_bmc_stop_scanout(struct mga_device *mdev)
+>   {
+>   	u8 tmp;
+> -	int iter_max;
+> +	int ret;
+>   
+>   	/*
+>   	 * 1 - The first step is to inform the BMC of an upcoming mode
+> @@ -44,28 +45,20 @@ void mgag200_bmc_stop_scanout(struct mga_device *mdev)
+>   	 * 3a- The third step is to verify if there is an active scan.
+>   	 * We are waiting for a 0 on remhsyncsts <XSPAREREG<0>).
+>   	 */
+
+Either these comments or the original test seems incorrect.
+
+The test below is supposed to detect whether the BMC is scanning out 
+from the framebuffer. While it reads a horizontal scanline the bit 
+should be 0. That's what the test is for, but it gets the condition wrong.
+
+> -	iter_max = 300;
+> -	while (!(tmp & 0x1) && iter_max) {
+> -		WREG8(DAC_INDEX, MGA1064_SPAREREG);
+> -		tmp = RREG8(DAC_DATA);
+> -		udelay(1000);
+> -		iter_max--;
+> -	}
+> +	ret = read_poll_timeout(RREG_DAC, tmp, !(tmp & 0x1),
+> +				1000, 300000, false,
+> +				MGA1064_SPAREREG);
+
+The original while loop ran as long as "!(tmp & 0x1)".  And now the test 
+stops if "!(tmp & 0x1)" AFAICT.  This (accidentally?) fixes the test and 
+makes the comment correct.
+
+
+> +	if (ret == -ETIMEDOUT)
+> +		return;
+>   
+>   	/*
+>   	 * 3b- This step occurs only if the remove is actually
+
+Since you're at it, maybe fix this comment to say
+
+'... only if the remote BMC is ...'
+
+>   	 * scanning. We are waiting for the end of the frame which is
+>   	 * a 1 on remvsyncsts (XSPAREREG<1>)
+>   	 */
+> -	if (iter_max) {
+> -		iter_max = 300;
+> -		while ((tmp & 0x2) && iter_max) {
+> -			WREG8(DAC_INDEX, MGA1064_SPAREREG);
+> -			tmp = RREG8(DAC_DATA);
+> -			udelay(1000);
+> -			iter_max--;
+> -		}
+> -	}
+> +	(void)read_poll_timeout(RREG_DAC, tmp, (tmp & 0x2),
+> +				1000, 300000, false,
+> +				MGA1064_SPAREREG);
+
+Again, the comment and original code disagree and the original test 
+condition appears to be inverted. It whats to test of the BMC has 
+finished scanning out the final frame. The bit should turn 1. Instead it 
+tests if the bit is already 1, which is likely true. Hence that's 
+probably where your 300 msec delays comes from.
+
+Best regards
+Thomas
+
+>   }
+>   
+>   void mgag200_bmc_start_scanout(struct mga_device *mdev)
+>
+> ---
+> base-commit: e535c23513c63f02f67e3e09e0787907029efeaf
+> change-id: 20260127-jk-mgag200-fix-bad-udelay-409133777e3a
+>
+> Best regards,
+> --
+> Jacob Keller <jacob.e.keller@intel.com>
+>
+
 -- 
-2.34.1
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
 
 
