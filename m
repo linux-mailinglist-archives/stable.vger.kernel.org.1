@@ -1,169 +1,289 @@
-Return-Path: <stable+bounces-212750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212751-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mAF2Iuoge2lPBgIAu9opvQ
-	(envelope-from <stable+bounces-212750-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 09:57:14 +0100
+	id IAOQMzEle2nXBgIAu9opvQ
+	(envelope-from <stable+bounces-212751-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 10:15:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AE3ADE05
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 09:57:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 206A2AE066
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 10:15:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BDBD530097DE
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 08:56:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2C5303003817
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 09:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2F9344D91;
-	Thu, 29 Jan 2026 08:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7983B37C0F5;
+	Thu, 29 Jan 2026 09:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TEnUrwcg"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="S4nqc7Fc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2742C08D1
-	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 08:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528EB376BD6;
+	Thu, 29 Jan 2026 09:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769677002; cv=none; b=sGnkQbozchi3D/phEiqmC8345u1LdIO/Dg15Hap/vfgbWrZVNOP0qIWNdDu+VM4f+FoF8yBLRgPVKqHqPxB00RH0cye/JxeVKY1LzcwfMd8C7XfpSEWdl1sEazP80oV2nTnsejVOdIv+pVMzITwkIlt/1/NBHXO1sCUZtsoAyIc=
+	t=1769678023; cv=none; b=Y3GyiJUz5ZoBij3oUZIn1RJ8kMt3hhG326lIDX5vBsKCZrrIOPMB00fAZLZG7LtHTqgIBigtMry6rzHk15LuzN7pgUmhy9kw7/ucWyVbrE4oDvOSinhYXmwqgvGreIU7BMMm3MuPmLaUyfrwWcFtpdDbiaEQqkz+WfpAjTNt2aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769677002; c=relaxed/simple;
-	bh=Jc+itJLFI7nZrOGiVGvgpQwW4Pcfy6oWEaHovGrRsyI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EXomC8mir7jp5x/FTqONeFDjXvX1Mk9YTn1Bwkwxf+dAJ5Ef2UE0V8et0tAuASTUGJjJYDWkQekKd7iqoAUOafdsfqhrVoit6vdeHnA4IcGuXTjrzbibHp908z7Ik9akp2key6WL2UIg7bsRt/I9h1MNdJf8SOyw1ePGY4Sh3H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TEnUrwcg; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59dcdf60427so812447e87.3
-        for <stable@vger.kernel.org>; Thu, 29 Jan 2026 00:56:41 -0800 (PST)
+	s=arc-20240116; t=1769678023; c=relaxed/simple;
+	bh=JbktDqKSXzklE26RGiNL4bCCl1CKSowtHRewb9NcX4c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=DxcdFmMMymSiDuxJ8Z4mOsOgb/sImp/008WbqwYe3bxl6zn62NaGzDA4wNU0NjyuqO7T1NZJn60bOaDNOXXwqE6VBQSLfgIS8+F54ft66SdEeRMPLFGKhn/EPQnCz8Nh8ZP8gjhQOap2hLIu+202II5CkmrVkiNWQKOraTuOJUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=S4nqc7Fc; arc=none smtp.client-ip=120.232.169.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769676999; x=1770281799; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KG9xWqkx9/gF4du2pqNNAT1bO7cWgGHdinzUlqAxblE=;
-        b=TEnUrwcgzvqUEfeMUFi8oGZgANM0sLjjtuudMaMHNkHgNpzOy5YpPoxQBlv39UVSkX
-         UVjEZohWgzfZc2C3I5oZcQXAaSnKEo3MGSxImtNh/WGDtYz7CZtMyvjHqPRturs3doOo
-         U7nrbpQfGhRfKeeJXxhRL3kW/zONl47O0PHS4UvPk6NEJKgua6g3ZzHHrAanZ/GO+kv0
-         hf0bOEMS593C8RDwcHniT5Hn+pZ6H3kmLxw8+nj7kT/YOONV9BKuotwE5YrRxplTO4U0
-         S1wQXRUlk8epcsQ1SuPwJ1O2RqnKZrgkDY/U809s+3tQnTB7YAg7DR8TVJ86ne4/usNd
-         HwNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769676999; x=1770281799;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KG9xWqkx9/gF4du2pqNNAT1bO7cWgGHdinzUlqAxblE=;
-        b=g84gZ83UOCV734EJ3E4JQ3bWbdwvMUgSxdLLihm/eDn3JAXP7rsRvXNG0PcjMDxibN
-         fjmPclBOiu2v+ZO/t9tjvI8Mx+I5tlp39zGPJ+5ltshrXjY35/x3CZL5vVzbOSSFvzNQ
-         6pP3VQiNaooomaN51Lx6atHpck/Ajuc7NPo0uU7H73afyzg1n3lbZsiSRyz2HBF7DYzJ
-         h1i4Y0goqwqaNe/4vVD+sMll3Nh5P3a8AsxuaZlvzTjNs64ixdNwD8/ftlRBV/Hy0/6W
-         X6OEyzoIqR937uFXkHWBxda/oi2FQEUi1asV8v98pObwlV8Hk0OlKFxY1HAfT2X3ZlgK
-         vr5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWP1mRPRZRAX996UYK6W+EOClygKTa5KMV/PTokGP3FoMItpMqtMuGk+G19uh5wFkf9fzh3zes=@vger.kernel.org
-X-Gm-Message-State: AOJu0YycbodU0XjA0tAr/rqmQ9MBKIjqsmmwGV2B7hc45RKFR8NO2HkQ
-	xUc0zUc/Z5U/W8vOj6SSquVrrnXYIXKtAOFuSKZCM1ZhdFXpKKKzwiMf
-X-Gm-Gg: AZuq6aK6mpVQbabbNkkbgPPXpEgA1ZR11m0vSZ1HrJrPOe0GVj4KARuywix7OYqsbDr
-	gwGKzvpbllsWN7w8nk/aYLfHTRHcbNQMgoeL/PpjUUBSHniQ/ThsKCfFJ9IX3rzJUV8/E0VHItA
-	AAG7aPdPvyQP0x/Xh6EXmxJksv6Nd7Y1hTLYOZgh8DQ0UbIBsr+x5CsEeGadwoLmFv8LtXvMZs3
-	mY5bamcRSrbqNSQKP5I6H967V+chCN0KG4M/E+qWDC+vQDZ3GbE1rbFYIz1ob3YHMPVSun2eS8S
-	yVN+Z5FPZt98y87naH5SLpwg8bd7hNm1pg4n1gLfitupv7Qvhnlw3ydj+JUEgdkVvq2OCdZO80k
-	Kx29bVxnZfOK/869fr8HCezxpNnvWsMmL0frj4vEFo+iVKT0oWKEp6t333s+BwZUwCFu655c1P2
-	Yufd5mre2+dDB2vWQqpoSpdbM=
-X-Received: by 2002:a05:6512:159b:b0:59d:d342:88af with SMTP id 2adb3069b0e04-59e04017dc1mr3548716e87.16.1769676999124;
-        Thu, 29 Jan 2026 00:56:39 -0800 (PST)
-Received: from foxbook (bgw148.neoplus.adsl.tpnet.pl. [83.28.86.148])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38625fcd5bfsm7575811fa.47.2026.01.29.00.56.38
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Thu, 29 Jan 2026 00:56:38 -0800 (PST)
-Date: Thu, 29 Jan 2026 09:56:34 +0100
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Zilin Guan <zilin@seu.edu.cn>
-Cc: mathias.nyman@intel.com, gregkh@linuxfoundation.org,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- jianhao.xu@seu.edu.cn, stable@vger.kernel.org
-Subject: Re: [PATCH v3] usb: xhci: Fix memory leak in xhci_disable_slot()
-Message-ID: <20260129095634.0775dc40.michal.pecio@gmail.com>
-In-Reply-To: <20260109045410.1532614-1-zilin@seu.edu.cn>
-References: <20260109045410.1532614-1-zilin@seu.edu.cn>
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=S4nqc7FcSohhJvalh1BxGGC/0wnK575uL6Bc0d0NThsl96D2a9wU/IwkAwHIzIrhXD+6CC3cE5sGy
+	 ljN+eE6z1xWjlK+SVb9tYS5Svjwl2iKIx5NP+OzzhreX0yPGRpawrqezs/nk8POg5bTL9Gr/f3YFiC
+	 shlt4EEoO/+vt8vo=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-16-12015 (RichMail) with SMTP id 2eef697b24b99e2-009f0;
+	Thu, 29 Jan 2026 17:13:32 +0800 (CST)
+X-RM-TRANSID:2eef697b24b99e2-009f0
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	srinivasan.shanmugam@amd.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	sashal@kernel.org,
+	mario.limonciello@amd.com,
+	superm1@kernel.org,
+	Jun.Ma2@amd.com,
+	Zhigang.Luo@amd.com,
+	Hawking.Zhang@amd.com,
+	Jesse.Zhang@amd.com,
+	victor.skvortsov@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	lin.cao@amd.com,
+	Jingwen.Chen2@amd.com
+Subject: [PATCH 6.6.y] drm/amdgpu: Replace Mutex with Spinlock for RLCG register access to avoid Priority Inversion in SRIOV
+Date: Thu, 29 Jan 2026 17:13:25 +0800
+Message-Id: <20260129091325.3637010-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.54 / 15.00];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-212750-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,amd.com,gmail.com,ffwll.ch,kernel.org,lists.freedesktop.org];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212751-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DMARC_NA(0.00)[139.com];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D7AE3ADE05
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,139.com:mid,139.com:email]
+X-Rspamd-Queue-Id: 206A2AE066
 X-Rspamd-Action: no action
 
-On Fri,  9 Jan 2026 04:54:10 +0000, Zilin Guan wrote:
-> xhci_alloc_command() allocates a command structure and, when the
-> second argument is true, also allocates a completion structure.
-> Currently, the error handling path in xhci_disable_slot() only frees
-> the command structure using kfree(), causing the completion structure
-> to leak.
-> 
-> Use xhci_free_command() instead of kfree(). xhci_free_command()
-> correctly frees both the command structure and the associated
-> completion structure. Since the command structure is allocated with
-> zero-initialization, command->in_ctx is NULL and will not be
-> erroneously freed by xhci_free_command().
-> 
-> This bug was found using an experimental static analysis tool we are
-> developing. The tool is based on the LLVM framework and is
-> specifically designed to detect memory management issues. It is
-> currently under active development and not yet publicly available,
-> but we plan to open-source it after our research is published.
-> 
-> The bug was originally detected on v6.13-rc1 using our static analysis
-> tool, and we have verified that the issue persists in the latest
-> mainline kernel.
-> 
-> We performed build testing on x86_64 with allyesconfig using
-> GCC=11.4.0. Since triggering these error paths in xhci_disable_slot()
-> requires specific hardware conditions or abnormal state, we were
-> unable to construct a test case to reliably trigger these specific
-> error paths at runtime.
-> 
-> Fixes: 7faac1953ed1 ("xhci: avoid race between disable slot command
-> and host runtime suspend") CC: stable@vger.kernel.org
-> Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-This looks like correct fix to an actual bug, but it seems that it has
-been missed? I see it neither in usb-next nor usb-linus or mainline.
+[ Upstream commit dc0297f3198bd60108ccbd167ee5d9fa4af31ed0 ]
 
-The leak is still there, even if arguably a small and rare one.
+RLCG Register Access is a way for virtual functions to safely access GPU
+registers in a virtualized environment., including TLB flushes and
+register reads. When multiple threads or VFs try to access the same
+registers simultaneously, it can lead to race conditions. By using the
+RLCG interface, the driver can serialize access to the registers. This
+means that only one thread can access the registers at a time,
+preventing conflicts and ensuring that operations are performed
+correctly. Additionally, when a low-priority task holds a mutex that a
+high-priority task needs, ie., If a thread holding a spinlock tries to
+acquire a mutex, it can lead to priority inversion. register access in
+amdgpu_virt_rlcg_reg_rw especially in a fast code path is critical.
 
-Regards,
-Michal
+The call stack shows that the function amdgpu_virt_rlcg_reg_rw is being
+called, which attempts to acquire the mutex. This function is invoked
+from amdgpu_sriov_wreg, which in turn is called from
+gmc_v11_0_flush_gpu_tlb.
+
+The [ BUG: Invalid wait context ] indicates that a thread is trying to
+acquire a mutex while it is in a context that does not allow it to sleep
+(like holding a spinlock).
+
+Fixes the below:
+
+[  253.013423] =============================
+[  253.013434] [ BUG: Invalid wait context ]
+[  253.013446] 6.12.0-amdstaging-drm-next-lol-050225 #14 Tainted: G     U     OE
+[  253.013464] -----------------------------
+[  253.013475] kworker/0:1/10 is trying to lock:
+[  253.013487] ffff9f30542e3cf8 (&adev->virt.rlcg_reg_lock){+.+.}-{3:3}, at: amdgpu_virt_rlcg_reg_rw+0xf6/0x330 [amdgpu]
+[  253.013815] other info that might help us debug this:
+[  253.013827] context-{4:4}
+[  253.013835] 3 locks held by kworker/0:1/10:
+[  253.013847]  #0: ffff9f3040050f58 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work+0x3f5/0x680
+[  253.013877]  #1: ffffb789c008be40 ((work_completion)(&wfc.work)){+.+.}-{0:0}, at: process_one_work+0x1d6/0x680
+[  253.013905]  #2: ffff9f3054281838 (&adev->gmc.invalidate_lock){+.+.}-{2:2}, at: gmc_v11_0_flush_gpu_tlb+0x198/0x4f0 [amdgpu]
+[  253.014154] stack backtrace:
+[  253.014164] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Tainted: G     U     OE      6.12.0-amdstaging-drm-next-lol-050225 #14
+[  253.014189] Tainted: [U]=USER, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+[  253.014203] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 11/18/2024
+[  253.014224] Workqueue: events work_for_cpu_fn
+[  253.014241] Call Trace:
+[  253.014250]  <TASK>
+[  253.014260]  dump_stack_lvl+0x9b/0xf0
+[  253.014275]  dump_stack+0x10/0x20
+[  253.014287]  __lock_acquire+0xa47/0x2810
+[  253.014303]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  253.014321]  lock_acquire+0xd1/0x300
+[  253.014333]  ? amdgpu_virt_rlcg_reg_rw+0xf6/0x330 [amdgpu]
+[  253.014562]  ? __lock_acquire+0xa6b/0x2810
+[  253.014578]  __mutex_lock+0x85/0xe20
+[  253.014591]  ? amdgpu_virt_rlcg_reg_rw+0xf6/0x330 [amdgpu]
+[  253.014782]  ? sched_clock_noinstr+0x9/0x10
+[  253.014795]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  253.014808]  ? local_clock_noinstr+0xe/0xc0
+[  253.014822]  ? amdgpu_virt_rlcg_reg_rw+0xf6/0x330 [amdgpu]
+[  253.015012]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  253.015029]  mutex_lock_nested+0x1b/0x30
+[  253.015044]  ? mutex_lock_nested+0x1b/0x30
+[  253.015057]  amdgpu_virt_rlcg_reg_rw+0xf6/0x330 [amdgpu]
+[  253.015249]  amdgpu_sriov_wreg+0xc5/0xd0 [amdgpu]
+[  253.015435]  gmc_v11_0_flush_gpu_tlb+0x44b/0x4f0 [amdgpu]
+[  253.015667]  gfx_v11_0_hw_init+0x499/0x29c0 [amdgpu]
+[  253.015901]  ? __pfx_smu_v13_0_update_pcie_parameters+0x10/0x10 [amdgpu]
+[  253.016159]  ? srso_alias_return_thunk+0x5/0xfbef5
+[  253.016173]  ? smu_hw_init+0x18d/0x300 [amdgpu]
+[  253.016403]  amdgpu_device_init+0x29ad/0x36a0 [amdgpu]
+[  253.016614]  amdgpu_driver_load_kms+0x1a/0xc0 [amdgpu]
+[  253.017057]  amdgpu_pci_probe+0x1c2/0x660 [amdgpu]
+[  253.017493]  local_pci_probe+0x4b/0xb0
+[  253.017746]  work_for_cpu_fn+0x1a/0x30
+[  253.017995]  process_one_work+0x21e/0x680
+[  253.018248]  worker_thread+0x190/0x330
+[  253.018500]  ? __pfx_worker_thread+0x10/0x10
+[  253.018746]  kthread+0xe7/0x120
+[  253.018988]  ? __pfx_kthread+0x10/0x10
+[  253.019231]  ret_from_fork+0x3c/0x60
+[  253.019468]  ? __pfx_kthread+0x10/0x10
+[  253.019701]  ret_from_fork_asm+0x1a/0x30
+[  253.019939]  </TASK>
+
+v2: s/spin_trylock/spin_lock_irqsave to be safe (Christian).
+
+Fixes: e864180ee49b ("drm/amdgpu: Add lock around VF RLCG interface")
+Cc: lin cao <lin.cao@amd.com>
+Cc: Jingwen Chen <Jingwen.Chen2@amd.com>
+Cc: Victor Skvortsov <victor.skvortsov@amd.com>
+Cc: Zhigang Luo <zhigang.luo@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Suggested-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c   | 5 +++--
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h   | 3 ++-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index c1b9333d7b78..584f9bcbe294 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3582,7 +3582,6 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	mutex_init(&adev->grbm_idx_mutex);
+ 	mutex_init(&adev->mn_lock);
+ 	mutex_init(&adev->virt.vf_errors.lock);
+-	mutex_init(&adev->virt.rlcg_reg_lock);
+ 	hash_init(adev->mn_hash);
+ 	mutex_init(&adev->psp.mutex);
+ 	mutex_init(&adev->notifier_lock);
+@@ -3604,6 +3603,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	spin_lock_init(&adev->se_cac_idx_lock);
+ 	spin_lock_init(&adev->audio_endpt_idx_lock);
+ 	spin_lock_init(&adev->mm_stats.lock);
++	spin_lock_init(&adev->virt.rlcg_reg_lock);
+ 
+ 	INIT_LIST_HEAD(&adev->shadow_list);
+ 	mutex_init(&adev->shadow_list_lock);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index 5a4b1b625f03..0f4661d1f23b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -1007,6 +1007,7 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
+ 	void *scratch_reg2;
+ 	void *scratch_reg3;
+ 	void *spare_int;
++	unsigned long flags;
+ 
+ 	if (!adev->gfx.rlc.rlcg_reg_access_supported) {
+ 		dev_err(adev->dev,
+@@ -1028,7 +1029,7 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
+ 	scratch_reg2 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg2;
+ 	scratch_reg3 = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->scratch_reg3;
+ 
+-	mutex_lock(&adev->virt.rlcg_reg_lock);
++	spin_lock_irqsave(&adev->virt.rlcg_reg_lock, flags);
+ 
+ 	if (reg_access_ctrl->spare_int)
+ 		spare_int = (void __iomem *)adev->rmmio + 4 * reg_access_ctrl->spare_int;
+@@ -1086,7 +1087,7 @@ static u32 amdgpu_virt_rlcg_reg_rw(struct amdgpu_device *adev, u32 offset, u32 v
+ 
+ 	ret = readl(scratch_reg0);
+ 
+-	mutex_unlock(&adev->virt.rlcg_reg_lock);
++	spin_unlock_irqrestore(&adev->virt.rlcg_reg_lock, flags);
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+index 891713757a8f..bffbb7ef40d2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+@@ -267,7 +267,8 @@ struct amdgpu_virt {
+ 	/* the ucode id to signal the autoload */
+ 	uint32_t autoload_ucode_id;
+ 
+-	struct mutex rlcg_reg_lock;
++	/* Spinlock to protect access to the RLCG register interface */
++	spinlock_t rlcg_reg_lock;
+ };
+ 
+ struct amdgpu_video_codec_info;
+-- 
+2.34.1
+
+
 
