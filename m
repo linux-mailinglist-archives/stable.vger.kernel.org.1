@@ -1,123 +1,133 @@
-Return-Path: <stable+bounces-212771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBdEOpZZe2m5EAIAu9opvQ
-	(envelope-from <stable+bounces-212771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 13:59:02 +0100
+	id aLraAr5fe2kdEQIAu9opvQ
+	(envelope-from <stable+bounces-212772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 14:25:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E023B033C
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 13:59:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5A9B05D3
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 14:25:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D280830131E5
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 12:58:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 849373004051
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 13:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A646438885D;
-	Thu, 29 Jan 2026 12:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD0A1EB1AA;
+	Thu, 29 Jan 2026 13:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FxAXmH6Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAzecf9V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF0019F135
-	for <stable@vger.kernel.org>; Thu, 29 Jan 2026 12:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F52C2749E0;
+	Thu, 29 Jan 2026 13:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769691539; cv=none; b=EiiF6ygfcAeE9qXNkr1jNDWiF/6cUY+guUXNJB2CxcYvS3apYe6sKQTz59ICAbBljjKjb/h32JNGvyS3yS9how+B1F/D4DlwS+xQ+O2FHnJH3vzf0ae1Xqjabd6TcC/IRcm0pVxO5aHaOaBCCbv6XE2l0CDy32YcMzzym+NOE5w=
+	t=1769693110; cv=none; b=jXUq9OJxMI0X9EyeqyJrxNJgdqOunC+uceXJ2EJncCQWt+X4bs728Ivl9JWJ0U6si+whcm4hKSImeBmASTu9alyVjSN53lJH2tW5KqxyIsxuiaLYZ93224ZzPUme1hqTmXww6MH9MzGBAAFkbhU1DAM39Zd+NzS9fob0IR07CRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769691539; c=relaxed/simple;
-	bh=1Fj+r2uLORJAG+zkGC7tWDcZ0ldnTD7zhdJQF3oY6Pk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NZHRvbKfVvCY7m4bcZu6w1QPhzQdprDR6F4DvVaEid5zP2K+d/uPi/9kg0zZsIa7CNT8Qsy1RgO10lNw0zPS85Iy8G6pYNOKxfaYu2C3/4UnXekPqEqyKa6JghzJ9kDeBOiqmy4M7WSpaOQ31L+TmBRAEkYj/j6w+wmt4BwTRJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FxAXmH6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2AFC116D0;
-	Thu, 29 Jan 2026 12:58:56 +0000 (UTC)
+	s=arc-20240116; t=1769693110; c=relaxed/simple;
+	bh=UJc7W0rSKjG1HH182YpZFctSb5yKFUYMvFMq4UEpWzs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eWibB0cv/H33uTelFn9uziRI/EqwkEbYSXd2RZilqcVWaKNsQ93Fg/TyEg+TMDvKuVJB9vLWgWrSoHaTsUJE4cf1PvtpbEm8rYW0HHS7uLoBySENugDASLt4JM6oj3eN0qQyzN1idVVjKPcHPqtOYoLO6gzwIVHk/vQ9x2PZyqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAzecf9V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60F2C4CEF7;
+	Thu, 29 Jan 2026 13:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769691539;
-	bh=1Fj+r2uLORJAG+zkGC7tWDcZ0ldnTD7zhdJQF3oY6Pk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FxAXmH6Qvbo3zRUvnJ+U9dGn5nYLCWC5pdy6422pyarQsDG4fRggiQKjpeTGHrkSU
-	 NCeT9Hzc2j2GU0huuHzHiQpV3zFTy0cbvSRkbe4kyz7KLrm/opkyogJ6W3bbmljQB+
-	 ynBRzGOm8unqEMXHOuFXzxP79EAqfnXbNa8omxsvKPCyeY7109hzyeHjvE01hjQeBS
-	 c/Tx1hE1KWL+6JEweAp1gK7mVl/gFYfDVr7IEXkBfdJlyd/5SP0YkRRb2mK/Sal9Pt
-	 lgrEfouv7x740CtmXTrsHysTfo/To1i9+0MGzAAbMtDwMyhbwLSiAjQNHytDYJsw5R
-	 DsauZy485BHHw==
-From: Will Deacon <will@kernel.org>
-To: linux-arm-kernel@lists.infradead.org,
-	Joey Gouly <joey.gouly@arm.com>
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	david.spickett@arm.com,
-	kevin.brodsky@arm.com,
-	mark.rutland@arm.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: poe: fix stale POR_EL0 values for ptrace
-Date: Thu, 29 Jan 2026 12:58:51 +0000
-Message-ID: <176961836556.4090706.13306795344334749447.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260127133926.2677180-1-joey.gouly@arm.com>
-References: <20260127133926.2677180-1-joey.gouly@arm.com>
+	s=k20201202; t=1769693110;
+	bh=UJc7W0rSKjG1HH182YpZFctSb5yKFUYMvFMq4UEpWzs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hAzecf9VOMcevT9n7spAOAEuxG3kIyiT5xPBZtlEmVbuWNmZhmgkf7tVOaZdddImn
+	 EO4WZWhgbOnixHilMM06E54aT890aGVAnUxr396y0bLXsUvQDti9Rwl0Ob93lm10Co
+	 uK9ahDjNswr1w4TfHhhkzNZ//jcj1QgTFaYQZQrrJSeTEqEc3yZT8e9OmCED/kpShi
+	 AYbXzNkLHADyheA5jjC5Evk/gCoSL5jWXbVo+qqoOuJ0GXoGQiUbzhymGiK/77NHwt
+	 TNwWZ+9g85yk7kPZ0/YdvykVtPHzg5ZswepjhEmcEPg7clJ7pkllAcRsny0NHHYl5n
+	 CXJhofYXGAa1A==
+Date: Thu, 29 Jan 2026 13:25:04 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.12 000/169] 6.12.68-rc1 review
+Message-ID: <f5a961cc-82dd-4b59-baf1-53a116db6cf6@sirena.org.uk>
+References: <20260128145334.006287341@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="P5fqAE329sMLrlGf"
+Content-Disposition: inline
+In-Reply-To: <20260128145334.006287341@linuxfoundation.org>
+X-Cookie: You have taken yourself too seriously.
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212771-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212772-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[will@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3E023B033C
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sirena.org.uk:mid]
+X-Rspamd-Queue-Id: 2F5A9B05D3
 X-Rspamd-Action: no action
 
-On Tue, 27 Jan 2026 13:39:26 +0000, Joey Gouly wrote:
-> If a process wrote to POR_EL0 and then crashed before a context switch
-> happened, the coredump would contain an incorrect value for POR_EL0.
-> 
-> The value read in poe_get() would be a stale value left in thread.por_el0.  Fix
-> this by reading the value from the system register, if the target thread is the
-> current thread.
-> 
-> [...]
 
-Applied to arm64 (for-next/cpufeature), thanks!
+--P5fqAE329sMLrlGf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-[1/1] arm64: poe: fix stale POR_EL0 values for ptrace
-      https://git.kernel.org/arm64/c/1f3b950492db
+On Wed, Jan 28, 2026 at 04:21:23PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.68 release.
+> There are 169 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Cheers,
--- 
-Will
+Tested-by: Mark Brown <broonie@kernel.org>
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+--P5fqAE329sMLrlGf
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAml7X68ACgkQJNaLcl1U
+h9CWEQf+N8XE+NVT/ZzglYnmEKEs8i4+Vv4GO3HM11tOMuHRGo+ZVX6CfZWz0XYa
+vaBfp+7XJC/ZsOvVJyFaCwft2LI4uzz6TCOlf+hMfISKho9JOT97bJ2c8JmYneir
+33/OTO3QPMSWQuCLajTtJmZh5U+LFyBe2KK5ya3YYRQU2GC4Cn6PbOEuX7TCNGIk
+whHPttn7Hysd+Jg4FvLeY7wdp5czUUZ0lf8qb4780z7iO+/uWbHy3g/drV1rqyPk
+6IzwakqCIL2eXwJKV+fAoRjYNBHC6rxBRKvEwrLsfae1G3UDijpNA1byCHlb2oh4
+5rpOBZzRyQZCvcKjFX9SopFTXMX03w==
+=gEmw
+-----END PGP SIGNATURE-----
+
+--P5fqAE329sMLrlGf--
 
