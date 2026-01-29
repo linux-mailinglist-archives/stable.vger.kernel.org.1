@@ -1,136 +1,133 @@
-Return-Path: <stable+bounces-212778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212779-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MO7zJKpqe2lEEgIAu9opvQ
-	(envelope-from <stable+bounces-212778-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 15:11:54 +0100
+	id iIPDDSlre2mMEgIAu9opvQ
+	(envelope-from <stable+bounces-212779-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 15:14:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09E0B0C3A
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 15:11:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92273B0C95
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 15:14:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 014AF300683E
-	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 14:11:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7E91301F983
+	for <lists+stable@lfdr.de>; Thu, 29 Jan 2026 14:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 811F13803EC;
-	Thu, 29 Jan 2026 14:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502E43803DE;
+	Thu, 29 Jan 2026 14:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j7Zb4fOs"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47FC37AA70;
-	Thu, 29 Jan 2026 14:11:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1280126CE32;
+	Thu, 29 Jan 2026 14:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769695893; cv=none; b=WkQ/7DmhIUk1athXn7ZTJiZXe1+AmXutCl68sPqWSL8hvPE7zHYCafSziIK80fnzxWgYM3yE5VS6jV6YoRtYRcnI8B8anautNVGA6Appegb/lXNKytOLlU/ZRIIIEZ2FFnLJ58dCqNKLcf8WdB/ZgrVI70PJoUEDLQapTEG46sk=
+	t=1769696030; cv=none; b=E4R4tKkMo4SzjSFAwQvdeyPBbJbGyc70rgCO0Snr0DyWqg7BKosO0jntMGk1bFZEsOJf0/jXAUxUwMuUHK9fnYNzd7D+EIWUpOMxzj5NNlQSEWc5bab/teQ1RQZr8i8SeunYsjKZ+EGZ5n9LmqYG1ZFl0k0VpIK1TBew25zcT4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769695893; c=relaxed/simple;
-	bh=gHdrcK22mMTcKmS5KE5T2X1eP/pvYTGNaERVzSFninY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mQu2lR+16fBUt/WdOzBJWZ6/9yFiVsgLbtpglRBQyzMc+7lB+9Lg0Li/xssUcqwujG9XwVg1LKHNSS8FRHqzNEvhE5wiG6sEFYkYBRz3Mw9Nr3HLMldLf+1/zNborYH6UwGminwzL91o5lhAgffXouunzR0HvkjbQfJzDijnSjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 21A3F153B;
-	Thu, 29 Jan 2026 06:11:24 -0800 (PST)
-Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.85])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id BF4BE3F632;
-	Thu, 29 Jan 2026 06:11:29 -0800 (PST)
-From: Robin Murphy <robin.murphy@arm.com>
-To: will@kernel.org
-Cc: mark.rutland@arm.com,
-	linux-perf-users@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: [PATCH] perf/arm-cmn: Reject unsupported hardware configurations
-Date: Thu, 29 Jan 2026 14:11:22 +0000
-Message-Id: <bb47722fc593baf1e1cc0f944089592a4ec708da.1769695523.git.robin.murphy@arm.com>
-X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
+	s=arc-20240116; t=1769696030; c=relaxed/simple;
+	bh=Hq2Vpiy0GSkZPJbZueLObr3TtGa7NiSLSIE/ZQxX+WM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KOQm6DKRL1FaZzIuWu54oGbVlN1DAqY7RWnWncrWsGq/RhttYY8opZraOcd57YSntgC8ZAXLzXnPM1aWaRxUFnDzFgL380llP1Lvcn4vDWo713eyC3sjmrZ76F2uuiFj0faVSgF+6tPy8OCmySqtmaBKh2BVMjoOnh/GU4ZFyaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j7Zb4fOs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284FBC4CEF7;
+	Thu, 29 Jan 2026 14:13:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769696029;
+	bh=Hq2Vpiy0GSkZPJbZueLObr3TtGa7NiSLSIE/ZQxX+WM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j7Zb4fOsffuJ8ishTFh6Exd49h2BPVCpKdYolqhp/BYhL9o8ud82EhumPP/zAMDZC
+	 sL+QoYzARPGZ7+SjidOoyTtxlz7b6q9X9E5t4bedIkwdXATGC/y+Wt2FpN2H5ahYJQ
+	 dm86KsaE4sVmleRQTTsVhGuvHEqKjmHhoSDundua1x5QJSAMmuSQPFwfrsHn7ekhe/
+	 lxJQ6Qh/FBZB2eClsiV2s3xaoM6xeR6bau0JSS70my9F7HXziqN785ApeXW9pWIoM9
+	 iTLQShdxg0leYpUX9P/vN/MUo+XktjTV54pb+hp8YawBn1lLnyyj5DFV5/ij+OWqc2
+	 nDKcJZG39N3KQ==
+Date: Thu, 29 Jan 2026 14:13:43 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.18 000/227] 6.18.8-rc1 review
+Message-ID: <1eee350c-314c-49bb-a8d4-5336c93f4171@sirena.org.uk>
+References: <20260128145344.331957407@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="b9F5Nxf2e5QGaNLS"
+Content-Disposition: inline
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+X-Cookie: You have taken yourself too seriously.
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.14 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212778-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212779-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
-	TO_DN_NONE(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:mid,arm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A09E0B0C3A
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 92273B0C95
 X-Rspamd-Action: no action
 
-So far we've been fairly lax about accepting both unknown CMN models
-(at least with a warning), and unknown revisions of those which we
-do know, as although things do frequently change between releases,
-typically enough remains the same to be somewhat useful for at least
-some basic bringup checks. However, we also make assumptions of the
-maximum supported sizes and numbers of things in various places, and
-there's no guarantee that something new might not be bigger and lead
-to nasty array overflows. Make sure we only try to run on things that
-actually match our assumptions and so will not risk memory corruption.
 
-Cc: stable@vger.kernel.org
-Fixes: 7819e05a0dce ("perf/arm-cmn: Revamp model detection")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
----
- drivers/perf/arm-cmn.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+--b9F5Nxf2e5QGaNLS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
-index 2903e01f951f..24fec53ceccc 100644
---- a/drivers/perf/arm-cmn.c
-+++ b/drivers/perf/arm-cmn.c
-@@ -2422,6 +2422,15 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 			arm_cmn_init_node_info(cmn, reg & CMN_CHILD_NODE_ADDR, dn);
- 			dn->portid_bits = xp->portid_bits;
- 			dn->deviceid_bits = xp->deviceid_bits;
-+			/*
-+			 * Logical IDs are assigned from 0 per node type, so as
-+			 * soon as we one bigger than expected, we can assume
-+			 * there are more than we can cope with.
-+			 */
-+			if (dn->logid > CMN_MAX_NODES_PER_EVENT) {
-+				dev_err(cmn->dev, "Invalid node number: %d\n", dn->logid);
-+				return -ENODEV;
-+			}
- 
- 			switch (dn->type) {
- 			case CMN_TYPE_DTC:
-@@ -2499,6 +2508,10 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
- 		cmn->mesh_x = cmn->num_xps;
- 	cmn->mesh_y = cmn->num_xps / cmn->mesh_x;
- 
-+	if (max(cmn->mesh_x, cmn->mesh_y) > CMN_MAX_DIMENSION) {
-+		dev_err(cmn->dev, "Invalid mesh size: %dx%d\n", cmn->mesh_x, cmn->mesh_y);
-+		return -ENODEV;
-+	}
- 	/* 1x1 config plays havoc with XP event encodings */
- 	if (cmn->num_xps == 1)
- 		dev_warn(cmn->dev, "1x1 config not fully supported, translate XP events manually\n");
--- 
-2.39.2.101.g768bb238c484.dirty
+On Wed, Jan 28, 2026 at 04:20:45PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.8 release.
+> There are 227 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
+Tested-by: Mark Brown <broonie@kernel.org>
+
+--b9F5Nxf2e5QGaNLS
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAml7axYACgkQJNaLcl1U
+h9A14Qf/bMKI9bDuq6QibCRW6QofOHgpH1iOaN2W4ctvby16hcIi0rwVTA8+M0Dm
+76GPzJ7vEmFoZQDZ5/GFjJIZoyL9jQLCEeZr2IWonugvefmzOuXOBVQRWCpomCLt
+V3y5pk4EaJRw7ApsMWDdBk/SVUpqXcI3uDculpwMkHC5duWZpqkrQAsKQU4G1k9k
+7F1X2kfgbX4CX5gAfLbqtxsACMjpZkXi2pwZLdP8pPf+F8+NfMsGzPJ/WL/szXGl
+B8U+AF3d1WS7+F3gDOE7OTAd+EOQ1y1U8CXYOPQnmF9Xo7NipqUgVXuT8NAY4VVy
+OsPEWf9i5uHDVBk6DsF6p+kWwJD5eQ==
+=E3+7
+-----END PGP SIGNATURE-----
+
+--b9F5Nxf2e5QGaNLS--
 
