@@ -1,162 +1,162 @@
-Return-Path: <stable+bounces-212843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cB4jNZZSfGmwLwIAu9opvQ
-	(envelope-from <stable+bounces-212843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:41:26 +0100
+	id svNJAM5VfGnpLwIAu9opvQ
+	(envelope-from <stable+bounces-212844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:55:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A62B7AA4
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:41:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE82B7B54
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 557353003BD1
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 06:41:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C31B3014C46
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 06:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FDA33890E;
-	Fri, 30 Jan 2026 06:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332AE32F762;
+	Fri, 30 Jan 2026 06:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Z+U+ny+o"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="U0X3OgcI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3295D3314AE
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 06:41:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769755278; cv=pass; b=Odfhfns5t/bJii/zH3xcUM/XDrIUNrkAFE8HN197s3YLBUxWMjlWyKAH/GTqMF4ooo5EIApMDyQMuDlBMWtJZH0jVEzKlhxxZ8AHnrdqEo8yEPSoHFSZ/GZ8EUdpRSoK6zJOA1RQlRZhhACFKKiAe0o/BPfZvyM+On2YZ98/POw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769755278; c=relaxed/simple;
-	bh=e92lWZPVFugVAMygpaYDs5ATJ6LSykDjIR5hT6LiqIY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Pqz8f27CXqwW4g3jHB3Fzw+payFWgdhGUjxNbylo6P749zBdQ+Go81I7yBC9RraSkbhK08z/xu55I/IHHCpJKT2so7a21zd1Jd/HgTnzTCOKiDKSWXOmR92LuN0SDyolkl+UIcAhY6b86loxc+L+UB5X4CAs1BwBV1yt5IE2yN0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Z+U+ny+o; arc=pass smtp.client-ip=209.85.160.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-4094fbd1808so715071fac.1
-        for <stable@vger.kernel.org>; Thu, 29 Jan 2026 22:41:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769755276; cv=none;
-        d=google.com; s=arc-20240605;
-        b=f+k3CgF8Dw6ShZlD4M+j1Q3dx71UJa++2SUPHdipJUTIPcXfW6ataKrPwP6EVQBwNj
-         gKwSDlOAPksIAEdfr7XkhgEva43fjqzK6NqyyTJqYKrzX3bhn+qh9QDyyLjhYnzNCTy0
-         P0WVCB/vt27sNhwL8jYC3/B1X8PpgccyPIFKSWHrc7fNZho08UEAAn0ikmQ+Ea/dpbNL
-         FfrBkg+yHE5BnW/syP7/Egn8I+tyv6zgrmYQmI/iTsQxn6fRhDw9LNykNV+OPWAIJHUD
-         0vqbYLeU8FWLykLJa65zl23U+T8KPU+dWMZABMyZcd60JX9qL1puZ14Lkf0Vxrn45nDs
-         GQyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=e92lWZPVFugVAMygpaYDs5ATJ6LSykDjIR5hT6LiqIY=;
-        fh=W65YBmETc133tNim6mzvjyl99T/KtxMOPkoB3NSIT7w=;
-        b=STMk4sYuT092oCs7fpKJczW5MQ5D6Hx6frLjcoAZLGm5Vz9us9a+HFxduLWoQj6EtH
-         oUynTkqRXupGMZsvErpKH5OU0dQCdEw8cq6ABEz0dLPoCZJz1Vu+tHgI59F1XqZTH41y
-         AALzI2NmdThtMLixmyD9S9KFDTfH8LOn/n/JBnu7zPXz9yP6oRUnG2Zw4OC4sOwOVs4c
-         jM7MreKvJqpUMhFpaXw58p/Ko6Ll1zuvYJHwBS2U0Gc5rnSf+l+R55hIoScPxQ2CUC6E
-         1/Lf6jeWMw+pH7VtiKcqU+uwGBBak5cLygHky67wQ20tHWuRDuHP9iTMUeGaG8fRahew
-         PMxQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1769755276; x=1770360076; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e92lWZPVFugVAMygpaYDs5ATJ6LSykDjIR5hT6LiqIY=;
-        b=Z+U+ny+ozVR309fDpfHAkgiuhKmVmcmA9RFHV9cr+kETaUpQtabsqT9anfREO2JCVu
-         mER6ZEVWk9yB7tgv4uPT7Ei1ikBbROd/SP+0Serpk1n55/HsNiSfRV3anp4mb7phmHdn
-         GYPrrK5iTto9GOIOzZrniLCkogETBT0F8cOBhn3z0VWCE9f7qd/PTHuZcAuuVY+7vTcT
-         7ZIbKz5ZUTwuf2gkbcvLsK845QpLArMKS2avwyi/JTFL/e0xJVlYgO+LerWDZ343z6Kp
-         lixUieRJ344Zv/5g9N2z8K5hfJbsbH1xA+LF4VdxaVensy2xJ6b6oxWLSh8Q2wvcUNN3
-         f5pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769755276; x=1770360076;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=e92lWZPVFugVAMygpaYDs5ATJ6LSykDjIR5hT6LiqIY=;
-        b=FVInDbDvS/lgZdtjOTUACtyQVDP3Rej2/B5Ctk1k2G9SGf84v1ZFez1XB+VBFLFHTI
-         7I4soWYgT4D0PnRA3ENoCMBNSuIbSYNC3U15LjdBc+Eg9h2sQl/MmuLwPLbKyOIuWNeL
-         7hG0aeq8dbWyPwcg7wWQgXBfR4FHVc2O32SrR6YRliZObpFE5eGTJ66l4WVj0fUem5hj
-         93MWhUI3grAZCe3AE8IemcjPPHQ+z9d7DYHN2TjUhvvIbmOL063HnDiz/Xr+pYRgw3Tv
-         F26RXMgSgV4vM/mpFoUY7/eDiBbsx/68yP+e1x5GKAGQo6hCFDfWWY+n/Z2/7TNqQeS4
-         X/1w==
-X-Forwarded-Encrypted: i=1; AJvYcCUGmVRO5Vl00LbLN8TLHzzq4cce8P6nOk+/ILKDR+8h8JP0FiSnvRz8LKJ+6R68EcCXLUMbgVY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6dUjE5Br1S9kqgg9nVwfrqTiHiJapCD8HAf+7K1Io4ENxjTIL
-	yNj29Kybpg1kTiK0k72LLJKv2FRwiiyzwLXaD/BDxeHmwlmqL9SqTPCudTVmqBbCuGmJtq2FRyM
-	QKYSQBVQyLSSFupGJOzR4FXECR/gmu/8dMmFNLGKh
-X-Gm-Gg: AZuq6aJypspqZjiRSNvaKuZ0uPPckLLyQLK2uB+kVTcAqKxSvhPhtU+TvRQ0iakiopI
-	wPnnRzr2Yq5YT5HANvVZvWEOAZvv6L+yF+xwbIL512vnHKJAoFNMLGoOpLN2/IH2AVCs4IdEKSj
-	F8WykdFTGz0wYF4tWepYKletzXm3lrg7e7+yw0E9w4GRpBgbgw2wRAjyMdh0CKJHs4ZYcMbcciA
-	d2rMak12yQ6cF01t21L+Hgqrv1qpXGRThQ8B7CBCDMkokwfefhE5rPN0sEbARrxH68M8jdPSI7G
-	dWFauDE=
-X-Received: by 2002:a4a:ee0d:0:b0:663:c8a:f14d with SMTP id
- 006d021491bc7-6630f34ec68mr804679eaf.29.1769755276000; Thu, 29 Jan 2026
- 22:41:16 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF44D515;
+	Fri, 30 Jan 2026 06:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769756102; cv=none; b=FADCmyVHhEEfpQv7PeIEwcSaIsXQ+yp9HjdGb5vfWShM8rLCHPVTQj0DzDPbnn9O1TdmeMGWScQaKcswKtXql9LinaYW2ENeqYM3NKhd4Kc3w3oP4H/PcqK0xJoXE93DHrElykTPfzHoiP322bFruvEHAe5Rkpv1XkcE/OY8Wcw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769756102; c=relaxed/simple;
+	bh=XLJozLWOl6TGjHJ1WrpoN3RzHY2N2fGnUUj1ZXLiliU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ZSdKaHxj0JPYLvOft0Uw5/zk0PZv9jup8ZFqppIQImvfFgccPtPG/iy7jn9PUhDcHIfWNTN0O69kPlwvVHPVfCJv652QpPmiY74+WaW0JeaZOWIODSWcmkGNmm6hsKLMbRZIMF1Cr8rQV3zxagIlyQWpLWmWVV9/tgHPWYt58vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=U0X3OgcI; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=+wua0zpuAHVWedBGGNR9+BMvTiyVLv2mDbaZ5iHalvk=;
+	b=U0X3OgcI3wWFfnVWR0+sFx6fs6N9kaUJ4qX86NycBswkPZkQdlamZSoPC1/Qk7
+	Gq/Faf8hkqtL9QR/mGoRnK2H5bzazHiOfH4yV92w7kcpgASu/9aDDK//mkB1QWPR
+	GpOg9ejuQjRz+E++/nO5lCUhpCh8eeHYpRB1jGCF8pEsw=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgAH8_KiVXxpqq_8MQ--.20222S2;
+	Fri, 30 Jan 2026 14:54:28 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 5.15.y] net: stmmac: make sure that ptp_rate is not 0 before configuring EST
+Date: Fri, 30 Jan 2026 14:54:23 +0800
+Message-Id: <20260130065423.3362339-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260130050750.4050-1-jasowang@redhat.com>
-In-Reply-To: <20260130050750.4050-1-jasowang@redhat.com>
-From: Yongji Xie <xieyongji@bytedance.com>
-Date: Fri, 30 Jan 2026 14:41:05 +0800
-X-Gm-Features: AZwV_QjZWXvGY6fbhwTXsBsPoSEryCiwjIw8p9jgzeUbuJsf6rP1qz6KrDl9010
-Message-ID: <CACycT3tVT5x3hoDrtuzqMgLgmw_1JbDtQwwJQ2o4mV2xUkFc9w@mail.gmail.com>
-Subject: Re: [PATCH] VDUSE: avoid leaking information to userspace
-To: Jason Wang <jasowang@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, virtualization@lists.linux.dev, 
-	linux-kernel <linux-kernel@vger.kernel.org>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio Perez Martin <eperezma@redhat.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PCgvCgAH8_KiVXxpqq_8MQ--.20222S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGr47ArW7Aw4xJr4UKw4xXrb_yoW5Gr1DpF
+	W7AFyFvr97tF1xJ3WkJr4kXF98Way7trWDWryfKr4fuFWav3yqqr9avFyFyF1jyrs8ZFW3
+	tr4jkr17G3Z8urUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEMmhDUUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3QX3kWl8VaWY0QAA3S
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[bytedance.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[bytedance.com:s=google];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212843-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,bootlin.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-212844-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[bytedance.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xieyongji@bytedance.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[163.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,bytedance.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 05A62B7AA4
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 5EE82B7B54
 X-Rspamd-Action: no action
 
-On Fri, Jan 30, 2026 at 1:08=E2=80=AFPM Jason Wang <jasowang@redhat.com> wr=
-ote:
->
-> The bounceing is not necessarily page aligned, so current VDUSE can
-> leak kernel information through mapping bounce pages to
-> userspace. Allocate bounce pages with __GFP_ZERO to avoid leaking
-> information to userspace.
->
-> Fixes: 8c773d53fb7b ("vduse: Implement an MMU-based software IOTLB")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jason Wang <jasowang@redhat.com>
+From: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-Thanks for catching this!
+[ Upstream commit cbefe2ffa7784525ec5d008ba87c7add19ec631a ]
 
-Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
+If the ptp_rate recorded earlier in the driver happens to be 0, this
+bogus value will propagate up to EST configuration, where it will
+trigger a division by 0.
 
-Thanks,
-Yongji
+Prevent this division by 0 by adding the corresponding check and error
+code.
+
+Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Fixes: 8572aec3d0dc ("net: stmmac: Add basic EST support for XGMAC")
+Link: https://patch.msgid.link/20250529-stmmac_tstamp_div-v4-2-d73340a794d5@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ The context change is due to the commit c3f3b97238f6
+("net: stmmac: Refactor EST implementation")
+and the proper adoption is done. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/dwmac5.c        | 5 +++++
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c | 5 +++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac5.c b/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
+index 8fd167501fa0..0afd4644a985 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
+@@ -597,6 +597,11 @@ int dwmac5_est_configure(void __iomem *ioaddr, struct stmmac_est *cfg,
+ 	int i, ret = 0x0;
+ 	u32 ctrl;
+ 
++	if (!ptp_rate) {
++		pr_warn("Dwmac5: Invalid PTP rate");
++		return -EINVAL;
++	}
++
+ 	ret |= dwmac5_est_write(ioaddr, BTR_LOW, cfg->btr[0], false);
+ 	ret |= dwmac5_est_write(ioaddr, BTR_HIGH, cfg->btr[1], false);
+ 	ret |= dwmac5_est_write(ioaddr, TER, cfg->ter, false);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index 813327d04c56..ce0c470915bc 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -1494,6 +1494,11 @@ static int dwxgmac3_est_configure(void __iomem *ioaddr, struct stmmac_est *cfg,
+ 	int i, ret = 0x0;
+ 	u32 ctrl;
+ 
++	if (!ptp_rate) {
++		pr_warn("Dwxgmac2: Invalid PTP rate");
++		return -EINVAL;
++	}
++
+ 	ret |= dwxgmac3_est_write(ioaddr, XGMAC_BTR_LOW, cfg->btr[0], false);
+ 	ret |= dwxgmac3_est_write(ioaddr, XGMAC_BTR_HIGH, cfg->btr[1], false);
+ 	ret |= dwxgmac3_est_write(ioaddr, XGMAC_TER, cfg->ter, false);
+-- 
+2.34.1
+
 
