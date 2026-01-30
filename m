@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-212875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212876-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMYtGEiyfGmbOQIAu9opvQ
-	(envelope-from <stable+bounces-212875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 14:29:44 +0100
+	id MEnbN2CyfGmbOQIAu9opvQ
+	(envelope-from <stable+bounces-212876-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 14:30:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D170ABB049
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 14:29:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9F1BB067
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 14:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 02E593029602
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 13:29:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54C5430157FC
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 13:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2602E092E;
-	Fri, 30 Jan 2026 13:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A822E172D;
+	Fri, 30 Jan 2026 13:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kzBQ9nD5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OcL0n2Mu"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD9E2D7395;
-	Fri, 30 Jan 2026 13:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5132E03F5;
+	Fri, 30 Jan 2026 13:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769779763; cv=none; b=qsjztNtwr+uqtu2q+gOdK9+3tUywZCHEO8AeeOPzetHsHjQ2kmSirrzvZDZwGeSpdgu+1W4G6IHyoMTh+WhKaWRcFvggol6fLRVBIeTPRHP+4YEde3vdjlf2Kxk8TRahW5gTYp0kGWc2Ainb3uofo0ShA9mozu1AJp4SGNLIbKY=
+	t=1769779772; cv=none; b=VxdgeIFkSD7lxBtIFCT1KDblCyHxMNiUJRosHKjZ2QxRhi5rkMdjRcOahp4waoq1LQIuJD7sF4lROtGR8QZBioz5O/IFmK8NPPYM3xYTT0koG8SbEnNsIdcVfEf/xpISkj6sAzgE4lyFfsOJcP2+VFp+Rjm364YapFJlsI5mk+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769779763; c=relaxed/simple;
-	bh=v9MIggMZQHwM4Mc3G2t1gkLl/CS706f7qBG7EVvk9Cc=;
+	s=arc-20240116; t=1769779772; c=relaxed/simple;
+	bh=SDHf+A0k6bK0v2kpFgTGPbdfB2E7Jjwj09y2K2i+MZA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LyGjLMPSQl+POb2K9A1GUl6CbMkceAO4bOgc3WL8yv/l/TWphFb5tLA3NU96+e777qR38KPEb12ep4MkqNgPJyviQ/ckjDXsQk8O9SBMv+EPJcwLOuZBdEQrCcWb9zIWohNRjAYaxPItOoL/5EONNryosOqIoREqkVF/1SCfBpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kzBQ9nD5; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version:Content-Type; b=owLhsvrZ96yOpraRMrkKsMWf66VK60R8e1zOYj7IUg/BTlToOtWEnjlWHdt/cVEjXVSqRCuS827Zpe+A+msj7S1ZI/r9aTygHFbZXEtWKWIBQJjtR40bHRukwF/EGmWeHk5WI/018yZgu7rqtynanltHVQpnHZ0dn1/fRErsk8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OcL0n2Mu; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769779762; x=1801315762;
+  t=1769779772; x=1801315772;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=v9MIggMZQHwM4Mc3G2t1gkLl/CS706f7qBG7EVvk9Cc=;
-  b=kzBQ9nD51XnMxgJkvXcDMR/Ck9n6ib2HAO9vvD1i7uegvzaSFE2v+FZi
-   RlEcoOEq1oAieWJqfur78VbOmfgTw2p9ALvpirlOrXADgF1RtL2lUADgw
-   5jcieEvZ122A1V7qkORp7tolIVC3928byuliq0h8z1MtENKohQinEt5oo
-   wtRyGTn1sn6madSCMK4h+dLTy/ZWvS6hojg+J4uBp56dYce4/upVndv56
-   M+jcqFhiZlNa8Pmsl6tpLgx8gh+qYT9mkYGXUkiLsqgWvNiwj7TpKqaki
-   IiZWwH3MyaW7M0yw5lBnx03De7Lbnwe/vFg1aZnVPbCDdMvhjwcSKhw+F
+  bh=SDHf+A0k6bK0v2kpFgTGPbdfB2E7Jjwj09y2K2i+MZA=;
+  b=OcL0n2MuAg0787YXYFn1f0oT64gb8d82e9g29l5mzdKG3zid6JCkd1ea
+   o2BwK47mC/yHOgu0XYvJgbv/Hm2OwbXU1P4EhnTjXaXOKYbyaoUvI6Hlc
+   AKLKotsHIOafEiQL0+6tXP9UWkvm1toOC4pR6twSnH95g5/M5MkY9WdN4
+   GTqAZu8u6HjKp5xPUls2tsOWf3FIwLljJl3gaqoNvsZ/FWsLLYFZuGxEW
+   2Fgi3bv6Rc8eboyRY3uNFmHgzDCY3LoTyCDTn2nuDDiB907fNE/IPz82B
+   E2K0Xsjb5Hyc8pK4+Mb99bh/ZdnT7d5N+te7Apc4IcpMkk9NvRFLImi3C
    g==;
-X-CSE-ConnectionGUID: iCBJZyRmQqSWJMqQFN/JJg==
-X-CSE-MsgGUID: 5XYsoIwzTcWrRv2C3SUfvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="74882370"
+X-CSE-ConnectionGUID: McNdTPuZSXGSeem3vAopBA==
+X-CSE-MsgGUID: uSVxfOLgSC6hAwQ8MQeHvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="74882377"
 X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="74882370"
+   d="scan'208";a="74882377"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 05:29:22 -0800
-X-CSE-ConnectionGUID: 0nNuhRVFSTmpL29B2MboCQ==
-X-CSE-MsgGUID: 063ooe+VROiEE0Ia1o+DOQ==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 05:29:31 -0800
+X-CSE-ConnectionGUID: E1nYXLZ2RwmhlZnzJMWnUQ==
+X-CSE-MsgGUID: u3n5sBqJSR238SW7NRpFDA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="209103784"
+   d="scan'208";a="209103796"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.54])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 05:29:18 -0800
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 05:29:26 -0800
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiri Slaby <jirislaby@kernel.org>,
@@ -68,14 +68,14 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	qianfan Zhao <qianfanguijin@163.com>,
 	Adriana Nicolae <adriana@arista.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	linux-kernel@vger.kernel.org
 Cc: "Bandal, Shankar" <shankar.bandal@intel.com>,
 	"Murthy, Shanth" <shanth.murthy@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 1/7] serial: 8250: Protect LCR write in shutdown
-Date: Fri, 30 Jan 2026 15:28:51 +0200
-Message-Id: <20260130132857.13124-2-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v3 2/7] serial: 8250_dw: Avoid unnecessary LCR writes
+Date: Fri, 30 Jan 2026 15:28:52 +0200
+Message-Id: <20260130132857.13124-3-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20260130132857.13124-1-ilpo.jarvinen@linux.intel.com>
 References: <20260130132857.13124-1-ilpo.jarvinen@linux.intel.com>
@@ -93,18 +93,18 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212875-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212876-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_TO(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,linux.intel.com,163.com,arista.com];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
@@ -113,17 +113,18 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D170ABB049
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim]
+X-Rspamd-Queue-Id: 5D9F1BB067
 X-Rspamd-Action: no action
 
-The 8250_dw driver needs to potentially perform very complex operations
-during LCR writes because its BUSY handling prevents updates to LCR
-while UART is BUSY (which is not fully under our control without those
-complex operations). Thus, LCR writes should occur under port's lock.
+When DW UART is configured with BUSY flag, LCR writes may not always
+succeed which can make any LCR write complex and very expensive.
+Performing write directly can trigger IRQ and the driver has to perform
+complex and distruptive sequence while retrying the write.
 
-Move LCR write under port's lock in serial8250_do_shutdown(). Also
-split the LCR RMW so that the logic is on a separate line for clarity.
+Therefore, it's better to avoid doing LCR write that would not change
+the value of the LCR register. Add LCR write avoidance code into the
+8250_dw driver's .serial_out() functions.
 
 Reported-by: "Bandal, Shankar" <shankar.bandal@intel.com>
 Tested-by: "Bandal, Shankar" <shankar.bandal@intel.com>
@@ -132,40 +133,85 @@ Cc: stable@vger.kernel.org
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/tty/serial/8250/8250_port.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 719faf92aa8a..f7a3c5555204 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2350,6 +2350,7 @@ static int serial8250_startup(struct uart_port *port)
- void serial8250_do_shutdown(struct uart_port *port)
- {
- 	struct uart_8250_port *up = up_to_u8250p(port);
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index 27af83f0ff46..7500b1ff1ac1 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -181,6 +181,22 @@ static void dw8250_check_lcr(struct uart_port *p, unsigned int offset, u32 value
+ 	 */
+ }
+ 
++/*
++ * With BUSY, LCR writes can be very expensive (IRQ + complex retry logic).
++ * If the write does not change the value of the LCR register, skip it entirely.
++ */
++static bool dw8250_can_skip_reg_write(struct uart_port *p, unsigned int offset, u32 value)
++{
++	struct dw8250_data *d = to_dw8250_data(p->private_data);
 +	u32 lcr;
- 
- 	serial8250_rpm_get(up);
- 	/*
-@@ -2376,13 +2377,13 @@ void serial8250_do_shutdown(struct uart_port *port)
- 			port->mctrl &= ~TIOCM_OUT2;
- 
- 		serial8250_set_mctrl(port, port->mctrl);
 +
-+		/* Disable break condition */
-+		lcr = serial_port_in(port, UART_LCR);
-+		lcr &= ~UART_LCR_SBC;
-+		serial_port_out(port, UART_LCR, lcr);
- 	}
++	if (offset != UART_LCR || d->uart_16550_compatible)
++		return false;
++
++	lcr = serial_port_in(p, offset);
++	return lcr == value;
++}
++
+ /* Returns once the transmitter is empty or we run out of retries */
+ static void dw8250_tx_wait_empty(struct uart_port *p)
+ {
+@@ -207,12 +223,18 @@ static void dw8250_tx_wait_empty(struct uart_port *p)
  
--	/*
--	 * Disable break condition and FIFOs
--	 */
--	serial_port_out(port, UART_LCR,
--			serial_port_in(port, UART_LCR) & ~UART_LCR_SBC);
- 	serial8250_clear_fifos(up);
+ static void dw8250_serial_out(struct uart_port *p, unsigned int offset, u32 value)
+ {
++	if (dw8250_can_skip_reg_write(p, offset, value))
++		return;
++
+ 	writeb(value, p->membase + (offset << p->regshift));
+ 	dw8250_check_lcr(p, offset, value);
+ }
  
- 	rsa_disable(up);
+ static void dw8250_serial_out38x(struct uart_port *p, unsigned int offset, u32 value)
+ {
++	if (dw8250_can_skip_reg_write(p, offset, value))
++		return;
++
+ 	/* Allow the TX to drain before we reconfigure */
+ 	if (offset == UART_LCR)
+ 		dw8250_tx_wait_empty(p);
+@@ -237,6 +259,9 @@ static u32 dw8250_serial_inq(struct uart_port *p, unsigned int offset)
+ 
+ static void dw8250_serial_outq(struct uart_port *p, unsigned int offset, u32 value)
+ {
++	if (dw8250_can_skip_reg_write(p, offset, value))
++		return;
++
+ 	value &= 0xff;
+ 	__raw_writeq(value, p->membase + (offset << p->regshift));
+ 	/* Read back to ensure register write ordering. */
+@@ -248,6 +273,9 @@ static void dw8250_serial_outq(struct uart_port *p, unsigned int offset, u32 val
+ 
+ static void dw8250_serial_out32(struct uart_port *p, unsigned int offset, u32 value)
+ {
++	if (dw8250_can_skip_reg_write(p, offset, value))
++		return;
++
+ 	writel(value, p->membase + (offset << p->regshift));
+ 	dw8250_check_lcr(p, offset, value);
+ }
+@@ -261,6 +289,9 @@ static u32 dw8250_serial_in32(struct uart_port *p, unsigned int offset)
+ 
+ static void dw8250_serial_out32be(struct uart_port *p, unsigned int offset, u32 value)
+ {
++	if (dw8250_can_skip_reg_write(p, offset, value))
++		return;
++
+ 	iowrite32be(value, p->membase + (offset << p->regshift));
+ 	dw8250_check_lcr(p, offset, value);
+ }
 -- 
 2.39.5
 
