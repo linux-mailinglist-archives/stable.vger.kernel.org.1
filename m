@@ -1,187 +1,221 @@
-Return-Path: <stable+bounces-212916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212917-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MKWWOb8kfWnxQQIAu9opvQ
-	(envelope-from <stable+bounces-212916-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 22:38:07 +0100
+	id uiQHHcQrfWmPQgIAu9opvQ
+	(envelope-from <stable+bounces-212917-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 23:08:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90115BED29
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 22:38:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4CF8BF052
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 23:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 406D4301724A
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 21:38:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6B25F3011852
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 22:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF6A350A0E;
-	Fri, 30 Jan 2026 21:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CDF3502AE;
+	Fri, 30 Jan 2026 22:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WsjlDWcu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fuFO6BzM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88CA346FB7;
-	Fri, 30 Jan 2026 21:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429FE2D23B6
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 22:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769809083; cv=none; b=tdqtOhonO3OFFW2qohfDZN2IOaI6EwLbAa2zhbS4llSja+OnFIiIyd7NLjSibFPEjgS3kq+/yfxTPuMVnt6NhspIpAZ3Ul3PPcBe+lbBZ+W1gSWvUfZwPYqIWd1bmx2SmnkdjQLbTPZu8FTWn56B8/HrG5Rd5ihFZU4BMYwLQjs=
+	t=1769810881; cv=none; b=tyZB6CzjredteGVJTde09u1pKzt4JTivl70Ea894x1Z2OspOys8F8aL/LZZvXme2tyS2DETMqZKjzNhgiRQmYIEqdf3vbIUAhwUJ+VzrO7pqjZUF3tU1tst0BxBSbecLQ3ksZnRlRoknwng8aX8XRIMxkwqpMKEcvOpA1vyMEqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769809083; c=relaxed/simple;
-	bh=hG/FMFjw+Bsjjqf6+oGgdTmtU6Rj6R39FcIG0oxjB4g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=S7A8kagxYchLSMT+yxQGfSk+pkt0HIEkwOO2wP8zxH/C2HUJX5laoNZxThE0/8IPSR5W9eEkH4juX08FaCsg1kDe3E05zIFkjTf6XdDgTPcTHrK9jSBJnCBcd6G9x7nrw4+8sfGGw5N97kk+hBSE4noL6cYetNoRN7mOMd8R2a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WsjlDWcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC43AC4CEF7;
-	Fri, 30 Jan 2026 21:38:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769809082;
-	bh=hG/FMFjw+Bsjjqf6+oGgdTmtU6Rj6R39FcIG0oxjB4g=;
-	h=From:Date:Subject:To:Cc:From;
-	b=WsjlDWcuspRPbESmBhstfkK56VpUEZUT92aisw++uiwRD4OKUnC2X8DKECtzIiUP2
-	 2tqIyEXoCUlglp1bnkKp9uAyMt0TJJ9MX1XKZK3F65QJyn7Y+lR5Lk2Kl8xg+h5Sb8
-	 aZrKCBq+PZbswnML9coHYmWvjHmP6wOwpvGF1s1Kpy76dl6r56jnfrpcpAMpNJZTKA
-	 NMxbjf2zXMXI/NM/zMDXS8E3iW/V4Rns4kurM00r9Te84Qfirk9IYxT0DPPEJEmpHf
-	 tzKqUuoCRxGpAy3NBvUnu/lUYHy+Q8V3d5A4g30YVwfx61wYqt5HifZ48C7+2ccE9X
-	 ugSdkZ5dlNQ5Q==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Fri, 30 Jan 2026 14:37:47 -0700
-Subject: [PATCH] kbuild: Do not run kernel-doc when building external
- modules
+	s=arc-20240116; t=1769810881; c=relaxed/simple;
+	bh=Dg+h7Tev3AkPmB+X8QR61HHPpOAMika6IoT9ZBEYiNI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hdSAwPkR9lKDJvmp1J+JwHQwPquQo6b7dKm+RQfmvl2rWuMiUTz15iUc666G2NqTghQjtrQ/6Rdt8Mlv7ywAH7xpBMOxuTeWd/CutJDS/Jvfb246AVG66PXwmj/McabPTmPxB57FppnJGyDcIFGpd4S0jpuEUE5DREmEGVYOrs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fuFO6BzM; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769810880; x=1801346880;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Dg+h7Tev3AkPmB+X8QR61HHPpOAMika6IoT9ZBEYiNI=;
+  b=fuFO6BzMsrTwqeJIejHk/SvGbTCn3xkmUNCm7uB6uZ52QiZBJwyAbUKV
+   OVLlV4uz0OML62jdWCMOv01pid/R1kvd0EjmM4QxmNJRoZ4TXWcOkboVU
+   3xZ8tfjJbHXwqhZ8BIYqKpP/XS7RPOOyeW9W29lmM1KiJhsr+V5ZE7lmK
+   NTYukm98sbfL4c+qrMXakAhOvBbNBPei6rgTi7cUcwZ/kSvXM2v6hntSQ
+   9kSJ7aXvAAPx4lNc+tLonBTVbVbL4G+vobhIm+WnNa8MKifLk8HUKSKT+
+   4kvjX7EwaNZWeedIW9iCFj6OcWTMSvGo5KLS93/v155ClrW08xwdPFeQr
+   w==;
+X-CSE-ConnectionGUID: 7czJqK+ATd+FatyPsfiI4Q==
+X-CSE-MsgGUID: 4JgZ45zDQyWnjZjWIUjCDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11687"; a="81800203"
+X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
+   d="scan'208";a="81800203"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 14:08:00 -0800
+X-CSE-ConnectionGUID: DionjiCNSe2Jtsk607jDBw==
+X-CSE-MsgGUID: OBuSjlPCRnGavi+Z2H5EJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
+   d="scan'208";a="213459060"
+Received: from dut6094bmgfrd.fm.intel.com ([10.80.55.45])
+  by fmviesa005.fm.intel.com with ESMTP; 30 Jan 2026 14:07:59 -0800
+From: Jia Yao <jia.yao@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Jia Yao <jia.yao@intel.com>,
+	stable@vger.kernel.org,
+	Mathew Alwin <alwin.mathew@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH v3] drm/xe/uapi: Reject coh_none PAT index for CPU cached memory in madvise
+Date: Fri, 30 Jan 2026 22:07:49 +0000
+Message-ID: <20260130220750.573838-1-jia.yao@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260129000147.339361-1-jia.yao@intel.com>
+References: <20260129000147.339361-1-jia.yao@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260130-kbuild-skip-kernel-doc-extmod-v1-1-58443d60131a@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CMBAF0KuQWTtJqQjGqxgWtv3qWGxJC4SEc
- HerLt/mbZSRBJku1UYJi2SJoaA+VGSft/AAiysmrXSr6qNib2YZHGcvI3ukgIFdtIx1ekfHumt
- P5wad0UZROcaEu6y//9r/nWfzgp2+Ke37By0QqAGBAAAA
-X-Change-ID: 20260130-kbuild-skip-kernel-doc-extmod-276584e7b2b0
-To: Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nsc@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>
-Cc: linux-kbuild@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Rong Zhang <i@rong.moe>, Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3283; i=nathan@kernel.org;
- h=from:subject:message-id; bh=hG/FMFjw+Bsjjqf6+oGgdTmtU6Rj6R39FcIG0oxjB4g=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDJm1KjvqVhdnRG95sMfWl01Q86Jq6XKWE2Vu3LqZr2oPT
- fiqXu3YUcrCIMbFICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACbSls3wh7d8m2vrhFfH6ybw
- WH9bukDgxqkF5y7wz5Zgtazweekue5yRob2lT54n5/QSWb4n/OEnGCyPPU7NL7EJvtQvLcjm/ng
- CHwA=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-212916-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212917-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[jia.yao@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rong.moe:email,kernel-doc.py:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 90115BED29
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid]
+X-Rspamd-Queue-Id: C4CF8BF052
 X-Rspamd-Action: no action
 
-After commit 778b8ebe5192 ("docs: Move the python libraries to
-tools/lib/python"), building an external module with any value of W=
-against the output of install-extmod-build fails with:
+Add validation in xe_vm_madvise_ioctl() to reject PAT indices with
+XE_COH_NONE coherency mode when applied to CPU cached memory.
 
-  $ make -C /usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build M=$PWD W=1
-  make: Entering directory '/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build'
-  make[1]: Entering directory '...'
-    CC [M] ...
-  Traceback (most recent call last):
-    File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts/kernel-doc.py", line 339, in <module>
-      main()
-      ~~~~^^
-    File "/usr/lib/modules/6.19.0-rc7-00108-g4d310797262f/build/scripts/kernel-doc.py", line 295, in main
-      from kdoc.kdoc_files import KernelFiles             # pylint: disable=C0415
-      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  ModuleNotFoundError: No module named 'kdoc'
+Using coh_none with CPU cached buffers is a security issue. When the
+kernel clears pages before reallocation, the clear operation stays in
+CPU cache (dirty). GPU with coh_none can bypass CPU caches and read
+stale sensitive data directly from DRAM, potentially leaking data from
+previously freed pages of other processes.
 
-scripts/lib was included in the build directory from find_in_scripts but
-after the move to tools/lib/python, it is no longer included, breaking
-kernel-doc.py.
+This aligns with the existing validation in vm_bind path
+(xe_vm_bind_ioctl_validate_bo).
 
-Commit eba6ffd126cd ("docs: kdoc: move kernel-doc to tools/docs") breaks
-this even further by moving kernel-doc outside of scripts as well, so it
-cannot be found when called by cmd_checkdoc.
+v2(Matthew brost)
+- Add fixes
+- Move one debug print to better place
 
-  $ make -C /usr/lib/modules/6.19.0-rc7-next-20260130/build M=$PWD W=1
-  make: Entering directory '/usr/lib/modules/6.19.0-rc7-next-20260130/build'
-  make[1]: Entering directory '...'
-    CC [M]  ...
-  python3: can't open file '/usr/lib/modules/6.19.0-rc7-next-20260130/build/tools/docs/kernel-doc': [Errno 2] No such file or directory
+v3(Matthew Auld)
+- Should be drm/xe/uapi
+- More Cc
 
-While kernel-doc could be useful for external modules, it is more useful
-for in-tree documentation that will be build and included in htmldocs.
-Rather than including it in install-extmod-build, just skip running
-kernel-doc for the external module build.
-
-Cc: stable@vger.kernel.org
-Fixes: 778b8ebe5192 ("docs: Move the python libraries to tools/lib/python")
-Reported-by: Rong Zhang <i@rong.moe>
-Closes: https://lore.kernel.org/20260129175321.415295-1-i@rong.moe/
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: ada7486c5668 ("drm/xe: Implement madvise ioctl for xe")
+Cc: stable@vger.kernel.org # v6.18
+Cc: Mathew Alwin <alwin.mathew@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Jia Yao <jia.yao@intel.com>
 ---
-This is an alternative to Rong's proposed fix for the first error:
+ drivers/gpu/drm/xe/xe_vm_madvise.c | 47 ++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-  https://lore.kernel.org/20260129175321.415295-1-i@rong.moe/
-
-I noticed the second one by inspection of -next and further testing.
----
- scripts/Makefile.build | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 5037f4715d74..f01d7957edf7 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -166,11 +166,13 @@ else ifeq ($(KBUILD_CHECKSRC),2)
-         cmd_force_checksrc = $(CHECK) $(CHECKFLAGS) $(c_flags) $<
- endif
+diff --git a/drivers/gpu/drm/xe/xe_vm_madvise.c b/drivers/gpu/drm/xe/xe_vm_madvise.c
+index add9a6ca2390..50b82e821da7 100644
+--- a/drivers/gpu/drm/xe/xe_vm_madvise.c
++++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
+@@ -352,6 +352,44 @@ static void xe_madvise_details_fini(struct xe_madvise_details *details)
+ 	drm_pagemap_put(details->dpagemap);
+ }
  
-+ifeq ($(KBUILD_EXTMOD),)
- ifneq ($(KBUILD_EXTRA_WARN),)
-   cmd_checkdoc = PYTHONDONTWRITEBYTECODE=1 $(PYTHON3) $(KERNELDOC) -none $(KDOCFLAGS) \
-         $(if $(findstring 2, $(KBUILD_EXTRA_WARN)), -Wall) \
-         $<
- endif
-+endif
++static bool check_pat_args_are_sane(struct xe_device *xe,
++				    struct xe_vmas_in_madvise_range *madvise_range,
++				    u16 pat_index)
++{
++	u16 coh_mode = xe_pat_index_get_coh_mode(xe, pat_index);
++	int i;
++
++	/*
++	 * Using coh_none with CPU cached buffers is not allowed.
++	 * Otherwise CPU page clearing can be bypassed, which is a
++	 * security issue. GPU can directly access system memory and
++	 * bypass CPU caches, potentially reading stale sensitive data
++	 * from previously freed pages.
++	 */
++	if (coh_mode != XE_COH_NONE)
++		return true;
++
++	for (i = 0; i < madvise_range->num_vmas; i++) {
++		struct xe_vma *vma = madvise_range->vmas[i];
++		struct xe_bo *bo = xe_vma_bo(vma);
++
++		if (bo) {
++			/* BO with WB caching + COH_NONE is not allowed */
++			if (XE_IOCTL_DBG(xe, bo->cpu_caching == DRM_XE_GEM_CPU_CACHING_WB))
++				return false;
++			/* Imported dma-buf without caching info, assume cached */
++			if (XE_IOCTL_DBG(xe, !bo->cpu_caching))
++				return false;
++		} else if (XE_IOCTL_DBG(xe, xe_vma_is_cpu_addr_mirror(vma)) ||
++			   xe_vma_is_userptr(vma)) {
++			/* System memory (userptr/SVM) is always CPU cached */
++			return false;
++		}
++	}
++
++	return true;
++}
++
+ static bool check_bo_args_are_sane(struct xe_vm *vm, struct xe_vma **vmas,
+ 				   int num_vmas, u32 atomic_val)
+ {
+@@ -442,6 +480,14 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
+ 	if (err || !madvise_range.num_vmas)
+ 		goto madv_fini;
  
- # Compile C sources (.c)
- # ---------------------------------------------------------------------------
-
----
-base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
-change-id: 20260130-kbuild-skip-kernel-doc-extmod-276584e7b2b0
-
-Best regards,
---  
-Nathan Chancellor <nathan@kernel.org>
++	if (args->type == DRM_XE_MEM_RANGE_ATTR_PAT) {
++		if (!check_pat_args_are_sane(xe, &madvise_range,
++					     args->pat_index.val)) {
++			err = -EINVAL;
++			goto free_vmas;
++		}
++	}
++
+ 	if (madvise_range.has_bo_vmas) {
+ 		if (args->type == DRM_XE_MEM_RANGE_ATTR_ATOMIC) {
+ 			if (!check_bo_args_are_sane(vm, madvise_range.vmas,
+@@ -485,6 +531,7 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
+ err_fini:
+ 	if (madvise_range.has_bo_vmas)
+ 		drm_exec_fini(&exec);
++free_vmas:
+ 	kfree(madvise_range.vmas);
+ 	madvise_range.vmas = NULL;
+ madv_fini:
+-- 
+2.43.0
 
 
