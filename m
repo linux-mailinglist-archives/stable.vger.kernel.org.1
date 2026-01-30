@@ -1,322 +1,241 @@
-Return-Path: <stable+bounces-212831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IiIKnQdfGmAKgIAu9opvQ
-	(envelope-from <stable+bounces-212831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 03:54:44 +0100
+	id WKNGNoogfGmgKgIAu9opvQ
+	(envelope-from <stable+bounces-212832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 04:07:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2B9B69E2
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 03:54:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52CC7B6B63
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 04:07:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 537F3301185A
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 02:54:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3EE3F300F16E
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 03:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B01F329E49;
-	Fri, 30 Jan 2026 02:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220DA34679C;
+	Fri, 30 Jan 2026 03:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b="YCizOgPA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XWxjmgIG"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94D02857CD;
-	Fri, 30 Jan 2026 02:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2743F3446C0
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 03:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769741657; cv=pass; b=nSqlKSgER0G9MaELxeEF2V6LDY+b70Tr8CtpqXvRb6IO5jnOgT25JJUb9pmP+1S80a97n81gdx5ZpIxyVGg7MqMfHt89vTPpYgIj7puVGS0Pi2AoG7GIhNwlEvm5r8JeeJsq0U4GrQbx8EZ3UTLQiyGHS8B6QcsuExGrTushPN8=
+	t=1769742471; cv=pass; b=YNh8O5EmVoFACnZpvujSahwYBthVR56HYy2bb4bZ99I3yR225Hst7zD7FN377XflmYGMpthKSM53gLjp4SR22AkW0V1UjDINLbL6yXAzJOS0AkNY0Aiz/GbSSDKROznLV1RwYYJx6ViF5B/k07ZiUBxyJ2I90YqA38ZgGmNpQow=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769741657; c=relaxed/simple;
-	bh=a5dN0Xu8DJxd3sNMaQXDz2ZIZSc5MBE29j8IhPW7vho=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ls9OuFz6Ew/IM7sjtjRwjN1K6ZbHGqBp2hqpe+oXLavEgNeOXVxGDwdgLmfrKP2sWDiaU8wxEy6k1Ah0v9F49CZnYwZyO0tXrmriq0dy1eEQv2IQexliFu7tyZp0/RHA2mDGSS1lwhF6QUIZWVBHIR2AKY9NLnO1MQwwzSxlvbw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty; spf=pass smtp.mailfrom=linux.beauty; dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b=YCizOgPA; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.beauty
-ARC-Seal: i=1; a=rsa-sha256; t=1769741642; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=TlODcD7nNHdKFKM69eTMgnXy+RYcsSiBVgZ4j0JTqErAzjuWjvwiAUxjOiuuzDcm8qWW8sZreZYCBi+pobceMUINW7LYbOdVwfRRfS8upA4NWfEJPa9ItjXsmyYnm2ansB44PHsxpgDXdTejWGSAZMJWIdPjA8ftcb3PUd+VlM0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1769741642; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ebI4xhDb6SkWVwcy5gJUx4SwgAuJlbz3kPPE7oXcNoc=; 
-	b=TOrjtXRkmlCc6iOnaoUynk2zJyIn1+Cj+akFQJKeOKTTB5pdJwloyoY+yw0aB24Nbbqmoi7fUums7p7ROrN8+gjxWIzBtTQirQv3nZEqvj4xd/K5bPLpz++iLNks42aHOuSIZNfxZFQZuFDh2hBfNH1pSIkZ18SbVB1j5V1+i6E=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=linux.beauty;
-	spf=pass  smtp.mailfrom=me@linux.beauty;
-	dmarc=pass header.from=<me@linux.beauty>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1769741641;
-	s=zmail; d=linux.beauty; i=me@linux.beauty;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=ebI4xhDb6SkWVwcy5gJUx4SwgAuJlbz3kPPE7oXcNoc=;
-	b=YCizOgPARcpHbSxIYUck4K4nT9t5sztcD4PmIsABjTjfY9aJOvP6ImyJfNZlOEJF
-	YML2Xzg8m6iur7FAJXxbEV6r8CbFNrgBI6es83XL3ZUK0QicAoE60dsBPVJ+6oR4kDE
-	HiCJWQnNMO/SO+XFn7AEscLaNdYN1O0HBm7qx1G8=
-Received: by mx.zohomail.com with SMTPS id 1769741638174199.07500266504655;
-	Thu, 29 Jan 2026 18:53:58 -0800 (PST)
-From: Li Chen <me@linux.beauty>
-To: "Theodore Ts'o" <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jan Kara <jack@suse.cz>,
-	linux-ext4@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Li Chen <me@linux.beauty>
-Subject: [PATCH v2] ext4: publish jinode after initialization
-Date: Fri, 30 Jan 2026 10:53:38 +0800
-Message-ID: <20260130025339.51519-1-me@linux.beauty>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1769742471; c=relaxed/simple;
+	bh=s/STLv4aZCVQPadjwS93+FSLU3JM9aAkolAS61wE/sg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d2+NPhcQWMFCxVuwZUGf8GInebfUjTmt98Crb18cH76XDnRItuQe05s2WYx0Iyt0ejivXv71gSkX52CQlyY3RzUPpsdaFzLGnJOB0D+/x6cro9BM4wW1eDFdqoD3EH2sYwZgfDvOclD7EUCjZYPgjh/4lRCXhidoRHXTkq6qavw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XWxjmgIG; arc=pass smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a0834769f0so10755165ad.2
+        for <stable@vger.kernel.org>; Thu, 29 Jan 2026 19:07:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769742468; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gf9EWSi5MwOEL8R9p8arStaLxUqu51hmuiYoqIZeP+JS3I/5LfuxWrtpxcceZzO1HG
+         oZu+HuYfyAuSDsARR9dRJGSH/Mhyqtx2ouDAxRifeeW1/zIXIHGLIzavIiTG0B/pBHt4
+         FqGnFfnhRYZNucxJqXAjDtbJRx4RiNKQlqtqkOSzGu7TxG57m3cUO3kAsIWZdbVk89ZB
+         lE2/Qf9gsdTFIJlDnAhG/jnONi1lG2j72Usy8V+ZpcGIaAQXo42i/CGWAcQadNKSsQJ3
+         wvvXlbsFQINav/1h55sNb2zPBoQWYx7ORLyaiDULDSlg62Xqd3hFrIm9h2dmWXSloGbq
+         dm7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:dkim-signature;
+        bh=l3mlnZZ9VIBVNPrLG6woBCVSdTzsbdrDbnf9ljSQpmA=;
+        fh=8z6FHqQuzZZqntRs4k6cxQyKLqt6OqnZsn8BbS2uS+0=;
+        b=QuLqmBAM55+jOaQyCHnZbNZnYjIDOHF7PyO43N7TBwIjkk4hoX6leeJPA8akto3tTU
+         4zS6c0q3Omu4EcdaEpvA7yUPJEfl2/Y6i96CT1YGpge97jY1Bosb8VmN5Svh2oFkajvT
+         jaRhktN7ZFTfFOmtMVTPGPPWGz1XB9HofxhGtF8GgsWi/lbwEDr363km/cjO75bc0nB5
+         4DJSf/QeoDAkqn/yvizFsgXbLvxcVkFv9Vlh2V76qhtywcxBDDMFPfARgVAxh/N7xa6s
+         RrZHczsTp9OTpeFViSfiAYCpnDOgyee9x731WlB1N2k7AAw+MMaLJP6Qk8We0f9AC/9H
+         L2yA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769742468; x=1770347268; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=l3mlnZZ9VIBVNPrLG6woBCVSdTzsbdrDbnf9ljSQpmA=;
+        b=XWxjmgIGNtUBTjd3PL1TphWtJWP3h/q2V/mD2tJ3NZ9mdFMuFi2y7XVh6IfcJi8Gg/
+         7WPTJ32TVE7g0AsrPw4kxFYkUsFXOkUeAmqb6UjZbla8Wb8VTcDiSoCqRe4KgotbqNOw
+         n3b6mk0zsqiIlTsNJLGJuKzEm80AIK3EmYaLXzvV+PHPl+gYc0hUaUCmo1pYAl4J22wI
+         scn/E6bt+D3ft+4Y0c8CLe//ExNfYBAMwOBXMwI7LjsNDePOe+x8a8J8a0GmdpTTd4lR
+         rkG6zSesXmNs+R1L+hgKC3MCSMckGFfYoIfIsz7VZjKTlnoYDyQDFUyut4jl9Vkc3LF7
+         Z/Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769742468; x=1770347268;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=l3mlnZZ9VIBVNPrLG6woBCVSdTzsbdrDbnf9ljSQpmA=;
+        b=pirwQgY2q7amWOacj0+8OySZr6bH7H16dDtrDOImOBUPfJJHpD6DTrkDdJl6ODA01g
+         6ywHJcZrUZPN+sunqbn775nhJam00b/1algYsSA871srNYcDYqIp74PnyHYmvUfFjiDa
+         kDfch8/5C2Cq2n33JbqLchu4SvjRbScQ5XUbtig1nH3Ks1yB7uK09uV3knwQyZSJTszx
+         KjD7WPiHDvio7n9NOauXeEKSMQuv4qlqcV7TJMNbaU9HUN7/VsmjpuOgGaxjDUEOJ4Is
+         VwiBb6+OW1O0CmMhDmoabyDqlrTXSrrGHZLlXpN4U2JJixy6yNqa4C+7FHUpH7vWtZBI
+         zqzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV8UQLBwFNMwFt8kZYPRWjok3in+tJzVhlgA2ez/bNzSO0Mme3yoqBVmUalkyw4K5oK1Tu0+HY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YygtU9wSIswqvhcK54d9KIAaCRkFcVxgNk2LlIam1DXwLizkzAv
+	RSg0fhRaZipkOLPtnTiDtCIBMGx3Ei9phzfkRFwuC07JLAHR8zkX1bOJ+UXgOC04vMK5NP8CSVZ
+	9M0OxrkFB9UsX319ptZtDUxlaynYkF7Y=
+X-Gm-Gg: AZuq6aJ3tml9d1mBA4FTk3z5TBGmwTmIRN4+h96KsT5VgnP1mUwBFa5aJrDXL3zTF6x
+	pKVe52s+weYtMjFYwh/leoB8kQQUPq7mkiudvnwZm3E2ef6edXPMXBnhepWgQ/++yMha3W4UziJ
+	lwYxGXJ0lQH1SLWcz2bEHQlgaoXvx9NWruECJtvDsovzgmOqKiOKY4UfDJTHbIjqigzgrGE1raR
+	LQ+i7qsyDawu9ta5LAH187a7Xzg0Mvz/Yo7x9r4qy64JTELE6rtqRjU+CsSWO/6VxKtXw==
+X-Received: by 2002:a17:903:1b67:b0:2a8:dc02:8939 with SMTP id
+ d9443c01a7336-2a8dc028b56mr9687905ad.0.1769742467629; Thu, 29 Jan 2026
+ 19:07:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+References: <20260129233703.407404-1-xjdeng@buaa.edu.cn> <ie3hipmp5nqappyuwnxm2kpgscnl6qe42cwf2sep4inwunb5th@gontu4foua6q>
+In-Reply-To: <ie3hipmp5nqappyuwnxm2kpgscnl6qe42cwf2sep4inwunb5th@gontu4foua6q>
+Reply-To: micro6947@gmail.com
+From: Xingjing Deng <micro6947@gmail.com>
+Date: Fri, 30 Jan 2026 11:07:38 +0800
+X-Gm-Features: AZwV_QiqnwM7-hO72ct3vp6624JxKkDGHIKb9BztZJXrs6IyvANn95QXzsWnLaE
+Message-ID: <CAK+ZN9oaUh5PPBx5QPCya=hqDM42CQptD2-MrJvMZsypNuZ66A@mail.gmail.com>
+Subject: Re: [PATCH v7] misc: fastrpc: check qcom_scm_assign_mem() return in rpmsg_probe
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: srini@kernel.org, amahesh@qti.qualcomm.com, arnd@arndb.de, 
+	gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Xingjing Deng <xjdeng@buaa.edu.cn>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.beauty:s=zmail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212831-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212832-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[linux.beauty];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linux.beauty:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[me@linux.beauty,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[micro6947@gmail.com,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.beauty:email,linux.beauty:dkim,linux.beauty:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0F2B9B69E2
+	RCPT_COUNT_SEVEN(0.00)[10];
+	HAS_REPLYTO(0.00)[micro6947@gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,buaa.edu.cn:email]
+X-Rspamd-Queue-Id: 52CC7B6B63
 X-Rspamd-Action: no action
 
-ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
-It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
-allowing a reader to observe a non-NULL jinode with i_vfs_inode
-still unset.
+Yes, I found that.
+I will release patch v8.
 
-The fast commit flush path can then pass this jinode to
-jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
-may crash.
-
-Below is the crash I observe:
-```
-BUG: unable to handle page fault for address: 000000010beb47f4
-PGD 110e51067 P4D 110e51067 PUD 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
-RIP: 0010:xas_find_marked+0x3d/0x2e0
-Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
-RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
-RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
-RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
-RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
-R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
-R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
-FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
-<TASK>
-filemap_get_folios_tag+0x87/0x2a0
-__filemap_fdatawait_range+0x5f/0xd0
-? srso_alias_return_thunk+0x5/0xfbef5
-? __schedule+0x3e7/0x10c0
-? srso_alias_return_thunk+0x5/0xfbef5
-? srso_alias_return_thunk+0x5/0xfbef5
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-? cap_safe_nice+0x37/0x70
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-filemap_fdatawait_range_keep_errors+0x12/0x40
-ext4_fc_commit+0x697/0x8b0
-? ext4_file_write_iter+0x64b/0x950
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-? srso_alias_return_thunk+0x5/0xfbef5
-? vfs_write+0x356/0x480
-? srso_alias_return_thunk+0x5/0xfbef5
-? preempt_count_sub+0x5f/0x80
-ext4_sync_file+0xf7/0x370
-do_fsync+0x3b/0x80
-? syscall_trace_enter+0x108/0x1d0
-__x64_sys_fdatasync+0x16/0x20
-do_syscall_64+0x62/0x2c0
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-...
-```
-
-Fix this by initializing the jbd2_inode first.
-Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
-initialization. Readers use READ_ONCE() to fetch the pointer.
-
-Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Chen <me@linux.beauty>
----
-
-Changes since v1:
-- Publish EXT4_I(inode)->jinode with smp_wmb() + WRITE_ONCE(), and fetch it
-  with READ_ONCE() (instead of smp_store_release()/smp_load_acquire()), as
-  suggeted by Jan.
-
- fs/ext4/ext4_jbd2.h   | 16 ++++++++++++----
- fs/ext4/fast_commit.c |  7 +++++--
- fs/ext4/inode.c       | 15 +++++++++++----
- fs/ext4/super.c       | 11 +++++++----
- 4 files changed, 35 insertions(+), 14 deletions(-)
-
-diff --git a/fs/ext4/ext4_jbd2.h b/fs/ext4/ext4_jbd2.h
-index 63d17c5201b5..2d5343441b71 100644
---- a/fs/ext4/ext4_jbd2.h
-+++ b/fs/ext4/ext4_jbd2.h
-@@ -336,18 +336,26 @@ static inline int ext4_journal_force_commit(journal_t *journal)
- static inline int ext4_jbd2_inode_add_write(handle_t *handle,
- 		struct inode *inode, loff_t start_byte, loff_t length)
- {
--	if (ext4_handle_valid(handle))
-+	if (ext4_handle_valid(handle)) {
-+		struct jbd2_inode *jinode;
-+
-+		jinode = READ_ONCE(EXT4_I(inode)->jinode);
- 		return jbd2_journal_inode_ranged_write(handle,
--				EXT4_I(inode)->jinode, start_byte, length);
-+				jinode, start_byte, length);
-+	}
- 	return 0;
- }
- 
- static inline int ext4_jbd2_inode_add_wait(handle_t *handle,
- 		struct inode *inode, loff_t start_byte, loff_t length)
- {
--	if (ext4_handle_valid(handle))
-+	if (ext4_handle_valid(handle)) {
-+		struct jbd2_inode *jinode;
-+
-+		jinode = READ_ONCE(EXT4_I(inode)->jinode);
- 		return jbd2_journal_inode_ranged_wait(handle,
--				EXT4_I(inode)->jinode, start_byte, length);
-+				jinode, start_byte, length);
-+	}
- 	return 0;
- }
- 
-diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
-index f575751f1cae..a80ed2d6df81 100644
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -972,16 +972,19 @@ static int ext4_fc_flush_data(journal_t *journal)
- 	struct super_block *sb = journal->j_private;
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	struct ext4_inode_info *ei;
-+	struct jbd2_inode *jinode;
- 	int ret = 0;
- 
- 	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
--		ret = jbd2_submit_inode_data(journal, ei->jinode);
-+		jinode = READ_ONCE(ei->jinode);
-+		ret = jbd2_submit_inode_data(journal, jinode);
- 		if (ret)
- 			return ret;
- 	}
- 
- 	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
--		ret = jbd2_wait_inode_data(journal, ei->jinode);
-+		jinode = READ_ONCE(ei->jinode);
-+		ret = jbd2_wait_inode_data(journal, jinode);
- 		if (ret)
- 			return ret;
- 	}
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index da96db5f2345..d99296d7315f 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -128,6 +128,8 @@ void ext4_inode_csum_set(struct inode *inode, struct ext4_inode *raw,
- static inline int ext4_begin_ordered_truncate(struct inode *inode,
- 					      loff_t new_size)
- {
-+	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
-+
- 	trace_ext4_begin_ordered_truncate(inode, new_size);
- 	/*
- 	 * If jinode is zero, then we never opened the file for
-@@ -135,10 +137,10 @@ static inline int ext4_begin_ordered_truncate(struct inode *inode,
- 	 * jbd2_journal_begin_ordered_truncate() since there's no
- 	 * outstanding writes we need to flush.
- 	 */
--	if (!EXT4_I(inode)->jinode)
-+	if (!jinode)
- 		return 0;
- 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
--						   EXT4_I(inode)->jinode,
-+						   jinode,
- 						   new_size);
- }
- 
-@@ -4478,8 +4480,13 @@ int ext4_inode_attach_jinode(struct inode *inode)
- 			spin_unlock(&inode->i_lock);
- 			return -ENOMEM;
- 		}
--		ei->jinode = jinode;
--		jbd2_journal_init_jbd_inode(ei->jinode, inode);
-+		jbd2_journal_init_jbd_inode(jinode, inode);
-+		/*
-+		 * Publish ->jinode only after it is fully initialized so that
-+		 * readers never observe a partially initialized jbd2_inode.
-+		 */
-+		smp_wmb();
-+		WRITE_ONCE(ei->jinode, jinode);
- 		jinode = NULL;
- 	}
- 	spin_unlock(&inode->i_lock);
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 69eb63dde983..5cf6c2b54bbb 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1526,17 +1526,20 @@ static void destroy_inodecache(void)
- 
- void ext4_clear_inode(struct inode *inode)
- {
-+	struct jbd2_inode *jinode;
-+
- 	ext4_fc_del(inode);
- 	invalidate_inode_buffers(inode);
- 	clear_inode(inode);
- 	ext4_discard_preallocations(inode);
- 	ext4_es_remove_extent(inode, 0, EXT_MAX_BLOCKS);
- 	dquot_drop(inode);
--	if (EXT4_I(inode)->jinode) {
-+	jinode = READ_ONCE(EXT4_I(inode)->jinode);
-+	if (jinode) {
- 		jbd2_journal_release_jbd_inode(EXT4_JOURNAL(inode),
--					       EXT4_I(inode)->jinode);
--		jbd2_free_inode(EXT4_I(inode)->jinode);
--		EXT4_I(inode)->jinode = NULL;
-+					       jinode);
-+		jbd2_free_inode(jinode);
-+		WRITE_ONCE(EXT4_I(inode)->jinode, NULL);
- 	}
- 	fscrypt_put_encryption_info(inode);
- 	fsverity_cleanup_inode(inode);
--- 
-2.52.0
-
+Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com> =E4=BA=8E2026=E5=B9=B4=
+1=E6=9C=8830=E6=97=A5=E5=91=A8=E4=BA=94 10:38=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Fri, Jan 30, 2026 at 07:37:03AM +0800, Xingjing Deng wrote:
+> > In the SDSP probe path, qcom_scm_assign_mem() is used to assign the
+> > reserved memory to the configured VMIDs, but its return value was not c=
+hecked.
+> >
+> > Fail the probe if the SCM call fails to avoid continuing with an
+> > unexpected/incorrect memory permission configuration.
+> >
+> > This issue was found by an in-house analysis workflow that extracts AST=
+-based
+> > information and runs static checks, with LLM assistance for triage, and=
+ was
+> > confirmed by manual code review.
+> > No hardware testing was performed.
+> >
+> > Fixes: c3c0363bc72d4 ("misc: fastrpc: support complete DMA pool access =
+to the DSP")
+> > Cc: stable@vger.kernel.org # 6.11-rc1
+> > Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
+> > ---
+> > v7:
+> > - Add the detail description of how the tool detect.
+> > - Link to v6: https://lore.kernel.org/linux-arm-msm/20260128033454.2614=
+886-1-xjdeng@buaa.edu.cn/
+> >
+> > v6:
+> > - Add description of the detection tool.
+> > - Link to v5: https://lore.kernel.org/linux-arm-msm/20260117140351.8755=
+11-1-xjdeng@buaa.edu.cn/T/#u
+> >
+> > v5:
+> > - Squash the functional change and indentation fix into a single patch.
+> > - Link to v4: https://lore.kernel.org/linux-arm-msm/2026011637-statute-=
+showy-2c3f@gregkh/T/#t
+> >
+> > v4:
+> > - Format the indentation
+> > - Link to v3: https://lore.kernel.org/linux-arm-msm/20260113084352.72it=
+rloj5w7qb5o3@hu-mojha-hyd.qualcomm.com/T/#t
+> >
+> > v3:
+> > - Add missing linux-kernel@vger.kernel.org to cc list.
+> > - Standarlize changelog placement/format.
+> > - Link to v2: https://lore.kernel.org/linux-arm-msm/20260113063618.e2ke=
+47gy3hnfi67e@hu-mojha-hyd.qualcomm.com/T/#t
+> >
+> > v2:
+> > - Add Fixes: and Cc: stable tags.
+> > - Link to v1: https://lore.kernel.org/linux-arm-msm/20260113022550.4029=
+635-1-xjdeng@buaa.edu.cn/T/#u
+> > ---
+> >  drivers/misc/fastrpc.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+> > index ee652ef01534..8bac2216cb20 100644
+> > --- a/drivers/misc/fastrpc.c
+> > +++ b/drivers/misc/fastrpc.c
+> > @@ -2337,8 +2337,11 @@ static int fastrpc_rpmsg_probe(struct rpmsg_devi=
+ce *rpdev)
+> >               if (!err) {
+> >                       src_perms =3D BIT(QCOM_SCM_VMID_HLOS);
+> >
+> > -                     qcom_scm_assign_mem(res.start, resource_size(&res=
+), &src_perms,
+> > +                     err =3D qcom_scm_assign_mem(res.start, resource_s=
+ize(&res), &src_perms,
+> >                                   data->vmperms, data->vmcount);
+> > +                     if (err) {
+> > +                             goto err_free_data;
+> > +                     }
+>
+> I think, checkpatch should warn here about unnecessary braces.
+>
+> >               }
+> >
+> >       }
+> > --
+> > 2.25.1
+> >
+>
+> --
+> With best wishes
+> Dmitry
 
