@@ -1,170 +1,203 @@
-Return-Path: <stable+bounces-212890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UJcTBZ/QfGlbOwIAu9opvQ
-	(envelope-from <stable+bounces-212890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 16:39:11 +0100
+	id KBXKOTnXfGlbOwIAu9opvQ
+	(envelope-from <stable+bounces-212891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 17:07:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8DDBC1C3
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 16:39:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C6FBC624
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 17:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0962A3011B72
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 15:39:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5613305289B
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 16:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A0F32E6BF;
-	Fri, 30 Jan 2026 15:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D245B339861;
+	Fri, 30 Jan 2026 16:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CSYHkMnH"
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="g7xVbLZU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B3533ADB0;
-	Fri, 30 Jan 2026 15:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769787539; cv=none; b=oNrJRDJwUOHAYPyCjTH6ckeqDTQDCF8hwjAqf2/Gy5Gw6Gb5FWpCaf2eB4xN2Jh61iSEXzJTGY0pdYbZVDeUycbbyZn/7KKz8hhglsiamFebNvDa6GimU4uBpS35Jc008240Ihgwm5NfD0wVj0XwSJ2Ueu/pnNy5SSfAJpJypFE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769787539; c=relaxed/simple;
-	bh=iHiJRrjTly3jAX19XuLPgUXslc9svIoVKTSGZtd3tF0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PciZy1XueEQwVXNjncwm4Sol8Dw/ZxDGBuX/fQNJgvFg9ZjJan5zlaGbOLLLuLUDu59m2oDBt5ADDE+sjqedGvHjoY/+lp3gXbWGckMiM7xtl5j66GEuXOoQEHJOYXx9PX07UjR+2enAtYVWE12A0PAlNyBAIDsuC5LY7p7wqwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CSYHkMnH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CE97FC4CEF7;
-	Fri, 30 Jan 2026 15:38:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769787538;
-	bh=iHiJRrjTly3jAX19XuLPgUXslc9svIoVKTSGZtd3tF0=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=CSYHkMnHV6UEcDoRGjoNkOZNiFFpFERcMXL4OZnYGkW6tyELpjdTH5dNhHzhUDK4J
-	 ll6jYi4bsiid6qdeJXKj2Ws8TWufZ0vfUPRY96YCCXHxvClob9zHe3hGxL82LYs9Ko
-	 SExe2YuPTY3flWa3xF9kedfrWL6c1VMhZiVqZSvLsuLcVTlD4CnG/A8QG7ahiWuiXJ
-	 rIr8X6LuXhxJlVns9H4H6IA5Yg36i4pRKgTfoucpFwLMNeMNnMeLreyco7an09B3u9
-	 rfhxJkGCiMoke9R6bgme18WLrCcMsaEWsFkswpg57eBagaDLhAXDbH9yw6n/MB9hPB
-	 lERXt/nw2rSRw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF536E6BF20;
-	Fri, 30 Jan 2026 15:38:58 +0000 (UTC)
-From: Jean-Baptiste Maneyrol via B4 Relay <devnull+jean-baptiste.maneyrol.tdk.com@kernel.org>
-Date: Fri, 30 Jan 2026 16:38:47 +0100
-Subject: [PATCH] iio: imu: inv_icm42600: fix odr switch to the same value
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0484C2F4A05
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 16:05:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769789157; cv=pass; b=TXplPu7XlkiuSVWITWkvqR7N5vYGbx6WHi9ywpehFV23IGBz+ekv+O+IS20eQr5GlVst5Ry3DuCFqxiwRTpznu0ALNOkwppcxKsD5Ebq2qbJgeLXrc2QJzmHcXle0N9UhBCE7dNapIiWRWfwpbYGqg0QY1oOUn8T7u3WviDdJnU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769789157; c=relaxed/simple;
+	bh=4fZnjyFgpIMGJkogD0zANpcfWLMkds61W8vMRGryR5M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qbl9NdU9JWAzsW6lMhTSMNnZ2qwnRUjeZpkhrarN+rhz9HdB/DAtrT0M8VVunFPsO3q4/8Rc4yWlvWgCpoBkVTMaic841V05jS8g8G+71kI/ROvcoXy9AJ/4sF1EmqzOzgVSZN0g9s4WAk4qc9/Y8heOql0FznG6ytFjand+FtE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=g7xVbLZU; arc=pass smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-35338b3dd31so1059780a91.2
+        for <stable@vger.kernel.org>; Fri, 30 Jan 2026 08:05:54 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769789154; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T3h57w7p3yGFqxarhfxGJaPBWMcX5nSXzHkOc7rSKlK1ZEUiMOdwcx17bYbDNMTlF+
+         y8RaH6q0qE2CSq012vtOrp27l7zHup3w+5B//QZkbNwllwXEW2AE8Y904LSb3haLTByA
+         3Hw59FqkJYB1NAjy/xiJUhTfEMQhgzkHWxUi6NdMDQV6DyKZS9LmlSinVhmGJ4IVLor0
+         66cJ5RWbYSxZAG2J2sPrwZ1U1r22g4ywBLboGNxfUsInIKD1hr5yoRiCntHp1C29dlvP
+         1Go2pJFA+/HbWuZmmQ+dgORQDdKio6IF8ZfEbtn0dP9wfAkJo8iZ22v3ewwC9Iq5pPaI
+         bUGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6lu90wruAlZ/DKcHeoEbrM8yaNL3EZpGp52qKmrPyac=;
+        fh=DPKOOJYuylj9zu8RvOBSgRa8ZNAa9no6zbdIFv9+5K0=;
+        b=Cz0T9OKIuep5q4kmc7x0FNvZ8ooRuHb1at/2p+q6vGIJV30Xtuw9Kf91v0l6+k972b
+         hwyw16jMe26xcIvq1rZwrV8vBwN0nUjy9tXGZXP9p3mbfe2BG63zFWEOHTOJx1TCFvrk
+         MNRxgDa1C5W7zByWaTHARgCSolCSXLlGTzSIMOPR4RsCf4TFYgT2bp1UraE0qm1iTk8z
+         ceE/4JbVYnDLctwbVsKTlx9bJ3ZboUEpFDcrCDjQGCdCcUfJDSbniSXK9ioZs7kIfYDF
+         tI2Xc/FxyIr1qI62gHNXd3AhQZ7sjitJAiJ0PA/yuoaoG6dggEdw4pKFUsRDRm8Jwg8E
+         1yfw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1769789154; x=1770393954; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6lu90wruAlZ/DKcHeoEbrM8yaNL3EZpGp52qKmrPyac=;
+        b=g7xVbLZUMoMrhOceMCNCgSIv7TMA36rASU+rz5mipEyuiOpZHQyiBakLY4zV3XCwXB
+         SnhA3v9/kG0YKbYuZ1si08BSTmq3f4i9prrSTL8ImtQkYqxMyos8vjKXXA93HvgTKJIu
+         LlVAJK5WjJgOfeTocAVbLXXvxGdwYWb+H/mr+LVznJ+AJkc7ZkzZbF82cTXXer1gR8aw
+         90Ome3al+H9nkJY7Uc2YLygV+jEjabPG97Vots0O5x8hlDfJOTawnwm/z1NhJUq49wiS
+         uRRrlehs9/2yvFiHeRmVdRoLG/qoCzR5K31cqCievyPyNWxCC0x6Ur6NmDJB0S/y1wbO
+         S/cA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769789154; x=1770393954;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6lu90wruAlZ/DKcHeoEbrM8yaNL3EZpGp52qKmrPyac=;
+        b=B8CkVjuusidtEyVKtBGhh2g8mBREIAnm7beyFMZehIt4Y6BNZCUXlNcfpk/ovnGq+Y
+         cF9b4bSamNLDMlWpc5vZXPKlpNpNxHBvMqrFprNparAZP2quG5b1S/E1mhdwrwOAynGE
+         Q8G4LH6i+ZtMKXVxwf4sHnzqGKv3YdaJxDPkJdwsS6Tih55LPU6iqzQ8qD23xDfBNMO6
+         L+MpyYrYxL0nBbMrjmzaPvVqi5U1rJytPVrpPiS2m91saquct1Nu9twahOtazgRzEOP3
+         Eqfvu87vjGOJUiIM/+oHpLvs098gxf47QlxMIbR18y2blnBsVkVWSGbUQtgoNdcIKcUT
+         VyFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVyfMFeYCNNpB+wcfCfjAN3VGSk+u5R+pHYbtKhCafxHKmZueWnuiIhXqG2PhwnDUxjCUcgAPw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUYMGofnImYVPvRGA/D7BewlcfpmduO8Fe4I+fY1PcgQtQlxAo
+	70RRPRe8BXvaSLiLTMB81eSH5vPb8S5K74zByFvRXMVnjEla+oSbTepe3Tl61bMk/ow/yXQhnMT
+	9CHvvktSCWABeFdCig8T/pxlmG0pc3In2huOSQSd4
+X-Gm-Gg: AZuq6aKDFvFZBw9lVvSCYGx/Auev/WXYrbAd8vWaNzminO+yhcHoiNd34XURlz7vQSc
+	ClL0WA12bV+FQF48lwBhwvKnwB0ES+sAwVt+V5lH2iEB+8JwpoGHioVY9wyh5+s14w7jEHIMs4G
+	e+Yq5D3NEOD8O9XK6u4uPincmwyzlb6f5cj9IotE/sbRDGAVoWoPGrAtsT6r39kVK+JBFMZClAz
+	hC6gJ0o2uu1chnk0zD9hm4h8M79lzbqxjhBf8vCuQEN3WsglvnjC7zbrhAE+slqBL7JWLfyvh5Z
+	PRE=
+X-Received: by 2002:a17:90b:3b8a:b0:335:2823:3683 with SMTP id
+ 98e67ed59e1d1-3543b2fbda0mr3441568a91.9.1769789154162; Fri, 30 Jan 2026
+ 08:05:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260130-inv-icm42600-fix-odr-change-v1-1-347a03a57fa1@tdk.com>
-X-B4-Tracking: v=1; b=H4sIAIbQfGkC/y3MSwqAMAwA0atI1gb6Q9CriAu1UbOwlRaKULy7Q
- Vw+GKZCpsSUYWgqJCqcOQaBbhtYjznshOzFYJTplLYKORTk9XRChRvfGH3CP+0NuU0vnpzVIIc
- rkRTffZye5wVAScWLbQAAAA==
-X-Change-ID: 20260130-inv-icm42600-fix-odr-change-92e4f1bde431
-To: Jonathan Cameron <jic23@kernel.org>, 
- David Lechner <dlechner@baylibre.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Andy Shevchenko <andy@kernel.org>
-Cc: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769787537; l=2088;
- i=jean-baptiste.maneyrol@tdk.com; s=20240923; h=from:subject:message-id;
- bh=rFQH6wdMXA8+FMQIBC/54JO8ilgcnHM/BrtDPx5h0/I=;
- b=EGAnytWi+eEGCX/Rq8LlqGxsO1BaSuO5nPpnqPMeEIYUH+ECk/7ptVeJpA58dvB4B6wHh2hYK
- p3BOUUpf/rXCBzfZtxlYUknVBw8p6piQ2na0IwiDZ1HBUYkFY1pPYd1
-X-Developer-Key: i=jean-baptiste.maneyrol@tdk.com; a=ed25519;
- pk=bRqF1WYk0hR3qrnAithOLXSD0LvSu8DUd+quKLxCicI=
-X-Endpoint-Received: by B4 Relay for
- jean-baptiste.maneyrol@tdk.com/20240923 with auth_id=218
-X-Original-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Reply-To: jean-baptiste.maneyrol@tdk.com
+References: <20260130134220.305757-1-p@1g4.org>
+In-Reply-To: <20260130134220.305757-1-p@1g4.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 30 Jan 2026 11:05:43 -0500
+X-Gm-Features: AZwV_QjDngoIYar1a9pR5LAAkzFxuVZSfOhxk3xHVuv5DzUlcanElVS2Kqsrro8
+Message-ID: <CAM0EoMkS2Uoarr+551wNe7zvmPTGFZxdb-otKYLBPF5+2s+FEg@mail.gmail.com>
+Subject: Re: [PATCH net] net: sched: act_api: size RTM_GETACTION reply by fill size
+To: Paul Moses <p@1g4.org>
+Cc: netdev@vger.kernel.org, xiyou.wangcong@gmail.com, jiri@resnulli.us, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[mojatatu-com.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-212890-lists,stable=lfdr.de,jean-baptiste.maneyrol.tdk.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-212891-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[mojatatu.com];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,resnulli.us,davemloft.net,google.com,kernel.org,redhat.com];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jhs@mojatatu.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[mojatatu-com.20230601.gappssmtp.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	HAS_REPLYTO(0.00)[jean-baptiste.maneyrol@tdk.com]
-X-Rspamd-Queue-Id: BF8DDBC1C3
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mojatatu-com.20230601.gappssmtp.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,1g4.org:email]
+X-Rspamd-Queue-Id: 54C6FBC624
 X-Rspamd-Action: no action
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+On Fri, Jan 30, 2026 at 8:43=E2=80=AFAM Paul Moses <p@1g4.org> wrote:
+>
+> tcf_action_fill_size() already computes the required dump size, but
+> RTM_GETACTION replies always allocate NLMSG_GOODSIZE. Large action
+> state can overrun that skb and make dumps fail.
+>
+> Use the computed reply size for RTM_GETACTION replies so large actions
+> can be dumped, while still keeping NLMSG_GOODSIZE as a floor.
+>
+> Fixes: 4e76e75d6aba ("net sched actions: calculate add/delete event messa=
+ge size")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paul Moses <p@1g4.org>
+> ---
+>  net/sched/act_api.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+> index e1ab0faeb8113..8ab016d352850 100644
+> --- a/net/sched/act_api.c
+> +++ b/net/sched/act_api.c
+> @@ -1685,12 +1685,12 @@ static int tca_get_fill(struct sk_buff *skb, stru=
+ct tc_action *actions[],
+>
+>  static int
+>  tcf_get_notify(struct net *net, u32 portid, struct nlmsghdr *n,
+> -              struct tc_action *actions[], int event,
+> +              struct tc_action *actions[], int event, size_t attr_size,
+>                struct netlink_ext_ack *extack)
+>  {
+>         struct sk_buff *skb;
+>
+> -       skb =3D alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
+> +       skb =3D alloc_skb(max_t(size_t, attr_size, NLMSG_GOODSIZE), GFP_K=
+ERNEL);
+>         if (!skb)
+>                 return -ENOBUFS;
+>         if (tca_get_fill(skb, actions, portid, n->nlmsg_seq, 0, event,
+> @@ -2041,7 +2041,8 @@ tca_action_gd(struct net *net, struct nlattr *nla, =
+struct nlmsghdr *n,
+>         attr_size =3D tcf_action_full_attrs_size(attr_size);
+>
+>         if (event =3D=3D RTM_GETACTION)
+> -               ret =3D tcf_get_notify(net, portid, n, actions, event, ex=
+tack);
+> +               ret =3D tcf_get_notify(net, portid, n, actions, event,
+> +                                    attr_size, extack);
+>         else { /* delete */
+>                 ret =3D tcf_del_notify(net, n, actions, portid, attr_size=
+, extack);
+>                 if (ret)
 
-ODR switch is done in 2 steps when FIFO is on : change the ODR register
-value and acknowledge change when reading the FIFO ODR change flag.
-When we are switching to the same odr value, we end up waiting for a
-FIFO ODR flag that is never happening.
+dunno. Is this based on some issue you found? This is a common pattern
+in a lot of places in the stack and has not caused any issues (afaik).
 
-Fix the issue by doing nothing and exiting properly when we are
-switching to the same ODR value.
-
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: stable@vger.kernel.org
----
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c | 2 ++
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  | 2 ++
- 2 files changed, 4 insertions(+)
-
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-index 54760d8f92a279334338fd09e3ab74b2d939a46d..0ab6eddf0543feeb51170271d766a732d1e45544 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -651,6 +651,8 @@ static int inv_icm42600_accel_write_odr(struct iio_dev *indio_dev,
- 		return -EINVAL;
- 
- 	conf.odr = inv_icm42600_accel_odr_conv[idx / 2];
-+	if (conf.odr == st->conf.accel.odr)
-+		return 0;
- 
- 	pm_runtime_get_sync(dev);
- 	mutex_lock(&st->lock);
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-index 7ef0a25ec74f6b005ca6e86058d67d0be67327df..11339ddf1da36c85e56de6c4a95486713cbd182a 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -358,6 +358,8 @@ static int inv_icm42600_gyro_write_odr(struct iio_dev *indio_dev,
- 		return -EINVAL;
- 
- 	conf.odr = inv_icm42600_gyro_odr_conv[idx / 2];
-+	if (conf.odr == st->conf.gyro.odr)
-+		return 0;
- 
- 	pm_runtime_get_sync(dev);
- 	mutex_lock(&st->lock);
-
----
-base-commit: 62b44ebc1f2c71db3ca2d4737c52e433f6f03038
-change-id: 20260130-inv-icm42600-fix-odr-change-92e4f1bde431
-
-Best regards,
--- 
-Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-
-
+cheers,
+jamal
 
