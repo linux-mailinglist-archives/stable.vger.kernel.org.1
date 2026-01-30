@@ -1,200 +1,236 @@
-Return-Path: <stable+bounces-212862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHvUMr+CfGlwNgIAu9opvQ
-	(envelope-from <stable+bounces-212862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 11:06:55 +0100
+	id yBsQOReHfGmbNgIAu9opvQ
+	(envelope-from <stable+bounces-212863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 11:25:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5C8B928C
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 11:06:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4256CB9528
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 11:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFD07300953A
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 10:06:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0AAD300E726
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 10:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40743396E9;
-	Fri, 30 Jan 2026 10:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB0635E52D;
+	Fri, 30 Jan 2026 10:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="I6ouKihC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jiLYhVmy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8726531ED6B
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 10:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B69523E23C
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 10:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769767589; cv=none; b=o6mtClhpnkcWX9zMTMdwiSPuZy0F/rd6YPnPi7rj8K3JaGGG7LN+qPrSjaidr2aXmuoEyCTPvb5eChx+aGdx/SqCOL3fKEZHiSeFxVaiz6JrH5y4YAwe8kgEUUzoHbiOludONgqd6Bdbrb7JuKQKkNoMk7APfISpH5I1qMHjmEs=
+	t=1769768587; cv=none; b=Nbi1qsUxwdEFBV/LTeCFI4AGhfpiBqnHmJL8arpiBpZqTuznf2XAM8uuYzjKg5Ix1GYhylGLPi+9BCGe388yDsxMJo6vRbDJFUyUy1GMuygG1ZNsOlgFSQEa01kFeS83ZFgcIf7No4+RwwynAoq72iGNO0YQLAKl25ZlmBwj4pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769767589; c=relaxed/simple;
-	bh=7jyevZFZLAcUnXqqzxI4skDEIwGmnlSZapSWB8fMnM4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Te96+kKzkyAkyd7UVfZw8zlcMns3zFTTfswTH7dCM0+0uSxQNGupHOrZRGUUvqucFyG0sE7vm+aOVNiU3e3r1suJSUGzYlK+m9U6rAUOuthsEg8wIvdygBrHtZyaXYEBbgyjynGhEn/uNMcQQCMaTQr4STM22XEPjPvrtbWxq78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=I6ouKihC; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 2A1B3C22F5B;
-	Fri, 30 Jan 2026 10:06:28 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C600A6075A;
-	Fri, 30 Jan 2026 10:06:24 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C0895119A8875;
-	Fri, 30 Jan 2026 11:06:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769767584; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=hLDn2ySiB0Tpsta6+/1jzi+11wm+hKE7qMJ6g6qxnDY=;
-	b=I6ouKihC9TXTAqhV7SESHA6UzNTAdelgUUQMpbavPT6LcMzm4iCLTJO7lODJuPjQ7FYNqL
-	rPD8Ze+K226nL0tAfoqV7NUlrfsa/GrchxiQt/agvOsCH+Xvm6/qzdQbOjugQooWHY8MJt
-	EM1MkRT3a2E1C5C05peULv/uhIp9Nogc+qRKEwawCeqEIiRns5rK70Wnh4QTlxkeJc2xbn
-	dvtI3+TRYS+DZaRK8KG/83coh2acMC2lyKtLWuu2EnL6OTJOO+2mNQ/c9qzQ49QXCr3Hbf
-	SiSBJQAYPaM5WS5+/bkA1iPfqrjoyxzgTp3yUXAqwf0Mv0wvqiNNWRmq6x6Blg==
-From: "Thomas Richard (TI)" <thomas.richard@bootlin.com>
-Date: Fri, 30 Jan 2026 11:05:45 +0100
-Subject: [PATCH] usb: cdns3: fix role switching during resume
+	s=arc-20240116; t=1769768587; c=relaxed/simple;
+	bh=umLeoIezuuzWDN9KcyKP6hmewbYcA3GAdo8L2bv2ZrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gpZA1u+gyUkgTkhApnbXe+vHm2j8JpHh27Xx+8l9kYdT5oJ15DzBiKoJKDoqr/AeHdPXOuI0Y9ndE98zcbNv69N5QPUTMoFwHhHRGLLajNCoHkFKMvPwlnXnHO8l/HeMnu6dk6J/55fZuIrHAU3BNRfdG4ne/wFFRwu9ekG0jK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jiLYhVmy; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-47ee937ecf2so16268105e9.0
+        for <stable@vger.kernel.org>; Fri, 30 Jan 2026 02:23:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769768584; x=1770373384; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nLsfEdXp1ghYI/zV3x1liW6kVNIuPDvLp5lPLO4doYE=;
+        b=jiLYhVmygo9Tyxkcsmn6jFIm88tSbrtwxfJr7EcLlsPBmGamlBk3ZVBh9wnwgIXCiK
+         RpIv73T5gaNqq4yTZ3Db3KftgNlFcNnDo38ib6MQvjyBIBsp1d+AnISTOz4zI18XQYXZ
+         tCoCDT22kqjKADaefnzF6uGN1FqpE0eEX84qNQMZPQqSqVkLJCb5m/1jZYJKcZp6jQxH
+         PgeGonqA7mpMN0xyR4frZu65lBA7fz12t5Cz+xV6MCsEQ3rLgc2204HDBXRANRw3lxhT
+         NT6TWeDZd3W1eWG41u3UbwaqS8OT1ONcS1e7IqrsRmrP1JsGwDaxVTOrTqGHwhTjNp8u
+         u7yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769768584; x=1770373384;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nLsfEdXp1ghYI/zV3x1liW6kVNIuPDvLp5lPLO4doYE=;
+        b=px5HAuquSai0HG9+LkDpDvSqRaknqVByyTlG1+8ej313/YNpgcGqHfxxh4zpRHUGDV
+         ws+yy4Isn95efvhy5DEdrpoVrdGgdZ77BKB1c8Lwr7QvH3iYm9bx6DVd0RWY3GI0K79n
+         mCUF+yTN6yNgV5n4wYz8S1GjLjmq6xE3sfTkpYjd1u9zfU340c+7CBnY6T4c7mm0SxiA
+         0QIC/AFs48HTru7Z+ANcsoPMdj3fFozX4BIbBgRy+4nz5hvGqNj6LRI7sF9vjM64FoBT
+         lZLrVM5F+nYBGr3PQzlKpUYY8RVE4QE89tPz2Ftfcwym9y/UHs1/j4077SKWy8L0BaoL
+         vZQw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2FBgZVBkqRTkPUbPUWMkZ4JMWm9dAmL029I8+luQjqWBJqJCJbaXWYg4X5Dc3CeGKyZa1v48=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKIOEULun1uZjGtv8gZot3HLuP4RH8ouSTh/FZCl/bE8bRVDm5
+	vdaNkbMWy2am+0V5gMom5AS1tt6s644AWMIYQaGHQuaHlFyFuLuOxvg=
+X-Gm-Gg: AZuq6aJ8+gy87X27ZpTQjx0sr6eZyReL6NB/DD1okC46+8xMOk390XfnQIMbvJezlY8
+	xk5ciN11GmxC27nskVlBbM2gu7AFyOeulw/xMB9FVyq0DugdltZL5M7jnCnEID6J70lcL2lJADk
+	nO/nJV56zgWqR1iB/EXOqNbLswzyMldykZVAFsd4GerVlipOxle3d5tgGt7IOIjmFHcs3X7rrfN
+	YYnLqhuaZpL/OVLPgbL/C91FrIMKEon7/ZSnD7ivyuZoTYJUx9IzeJXLEznFcY8bkv4ZQ4Jslv1
+	40DhCoa2GWUUwSwGtybOzBTB6adE7VT8ybIKaApo4LTlFl2Ze9y9GAjFEPxoYnBaIZqbm3WUsEz
+	dFLQjZUABk2zjhGX5Wc+Q+PPeB9W79tkbas2pK+gYIxejOWJDGl09a5hR8YJhjplQzy2oAFEi5c
+	hV99W7
+X-Received: by 2002:a05:600c:354c:b0:479:13e9:3d64 with SMTP id 5b1f17b1804b1-482db493a87mr25887295e9.15.1769768584156;
+        Fri, 30 Jan 2026 02:23:04 -0800 (PST)
+Received: from localhost ([2a02:169:c219:1:2541:8fc0:4fcf:ba6e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4806cddffc0sm230093875e9.5.2026.01.30.02.23.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 02:23:03 -0800 (PST)
+From: Tomas Hlavacek <tmshlvck@gmail.com>
+To: netdev@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	dlan@kernel.org,
+	wangruikang@iscas.ac.cn,
+	stable@vger.kernel.org,
+	Tomas Hlavacek <tmshlvck@gmail.com>
+Subject: [PATCH net v3] net: spacemit: k1-emac: fix jumbo frame support
+Date: Fri, 30 Jan 2026 11:23:01 +0100
+Message-ID: <20260130102301.477514-1-tmshlvck@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260130-usb-cdns3-fix-role-switching-during-resume-v1-1-44c456852b52@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAHiCfGkC/y2N2w6CQAxEf4X02SbLQlT8FeOD7BZooou2rJIQ/
- p16eZqcSWbOAkrCpHAqFhB6sfKYDMpdAWG4pp6QozF45/eu9A1mbTHEpBV2PKOMN0J98xQGTj3
- GLJ8Q0nwnjFV3bOp4oLZ2YIcPIdt8ZefLj4We2ZzTv1zXDbcUbPmRAAAA
-X-Change-ID: 20260129-usb-cdns3-fix-role-switching-during-resume-d3f894d7eb40
-To: Pawel Laszczak <pawell@cadence.com>, Peter Chen <peter.chen@kernel.org>, 
- Roger Quadros <rogerq@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, theo.lebrun@bootlin.com, 
- Frank Li <frank.li@nxp.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, richard.genoud@bootlin.com, 
- Udit Kumar <u-kumar1@ti.com>, Prasanth Mantena <p-mantena@ti.com>, 
- Abhash Kumar <a-kumar2@ti.com>, linux-usb@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Peter Chen <peter.chen@nxp.com>, 
- stable@vger.kernel.org, "Thomas Richard (TI)" <thomas.richard@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212862-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.infradead.org,lists.linux.dev,davemloft.net,google.com,kernel.org,redhat.com,iscas.ac.cn,vger.kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-212863-lists,stable=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.richard@bootlin.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[tmshlvck@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,bootlin.com:dkim,bootlin.com:mid]
-X-Rspamd-Queue-Id: 3A5C8B928C
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4256CB9528
 X-Rspamd-Action: no action
 
-If the role change while we are suspended, the cdns3 driver switches to the
-new mode during resume. However, switching to host mode in this context
-causes a NULL pointer dereference.
+The driver never programs the MAC frame size and jabber registers,
+causing the hardware to reject frames larger than the default 1518
+bytes even when larger DMA buffers are allocated.
 
-The host role's start() operation registers a xhci-hcd device, but its
-probe is deferred while we are in the resume path. The host role's resume()
-operation assumes the xhci-hcd device is already probed, which is not the
-case, leading to the dereference. Since the start() operation of the new
-role is already called, the resume operation can be skipped.
+Program MAC_MAXIMUM_FRAME_SIZE, MAC_TRANSMIT_JABBER_SIZE, and
+MAC_RECEIVE_JABBER_SIZE based on the configured MTU. Also fix the
+maximum buffer size from 4096 to 4095, since the descriptor buffer
+size field is only 12 bits. Account for double VLAN tags in frame
+size calculations.
 
-So skip the resume operation for the new role if a role switch occurs
-during resume. Once the resume sequence is complete, the xhci-hcd device
-can be probed in case of host mode.
-
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000208
-Mem abort info:
-...
-Data abort info:
-...
-[0000000000000208] pgd=0000000000000000, p4d=0000000000000000
-Internal error: Oops: 0000000096000004 [#1]  SMP
-Modules linked in:
-CPU: 0 UID: 0 PID: 146 Comm: sh Not tainted
-6.19.0-rc7-00013-g6e64f4aabfae-dirty #135 PREEMPT
-Hardware name: Texas Instruments J7200 EVM (DT)
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : usb_hcd_is_primary_hcd+0x0/0x1c
-lr : cdns_host_resume+0x24/0x5c
-...
-Call trace:
- usb_hcd_is_primary_hcd+0x0/0x1c (P)
- cdns_resume+0x6c/0xbc
- cdns3_controller_resume.isra.0+0xe8/0x17c
- cdns3_plat_resume+0x18/0x24
- platform_pm_resume+0x2c/0x68
- dpm_run_callback+0x90/0x248
- device_resume+0x100/0x24c
- dpm_resume+0x190/0x2ec
- dpm_resume_end+0x18/0x34
- suspend_devices_and_enter+0x2b0/0xa44
- pm_suspend+0x16c/0x5fc
- state_store+0x80/0xec
- kobj_attr_store+0x18/0x2c
- sysfs_kf_write+0x7c/0x94
- kernfs_fop_write_iter+0x130/0x1dc
- vfs_write+0x240/0x370
- ksys_write+0x70/0x108
- __arm64_sys_write+0x1c/0x28
- invoke_syscall+0x48/0x10c
- el0_svc_common.constprop.0+0x40/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x34/0x108
- el0t_64_sync_handler+0xa0/0xe4
- el0t_64_sync+0x198/0x19c
-Code: 52800003 f9407ca5 d63f00a0 17ffffe4 (f9410401)
----[ end trace 0000000000000000 ]---
-
+Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
 Cc: stable@vger.kernel.org
-Fixes: 2cf2581cd229 ("usb: cdns3: add power lost support for system resume")
-Signed-off-by: Thomas Richard (TI) <thomas.richard@bootlin.com>
+Signed-off-by: Tomas Hlavacek <tmshlvck@gmail.com>
 ---
-This patch is related to the following discussion:
-https://lore.kernel.org/all/8743fec1-301d-46e1-89bf-7952c73faa86@bootlin.com/
----
- drivers/usb/cdns3/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v3:
+- Set all three frame/jabber registers, fix 12-bit buffer size field
+  overflow, use actual frame size with VLAN headroom consistently.
 
-diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index 1243a5cea91b..f0e32227c0b7 100644
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -551,7 +551,7 @@ int cdns_resume(struct cdns *cdns)
- 		}
+v2: https://lore.kernel.org/netdev/20260126171449.83288-1-tmshlvck@gmail.com/
+- Added Fixes tag and Cc stable.
+
+v1: https://lore.kernel.org/netdev/20260126135919.77168-1-tmshlvck@gmail.com/
+---
+ drivers/net/ethernet/spacemit/k1_emac.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+index 220eb5ce7583..cd6879d7434c 100644
+--- a/drivers/net/ethernet/spacemit/k1_emac.c
++++ b/drivers/net/ethernet/spacemit/k1_emac.c
+@@ -12,6 +12,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/etherdevice.h>
+ #include <linux/ethtool.h>
++#include <linux/if_vlan.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+@@ -38,7 +39,7 @@
+ 
+ #define EMAC_DEFAULT_BUFSIZE		1536
+ #define EMAC_RX_BUF_2K			2048
+-#define EMAC_RX_BUF_4K			4096
++#define EMAC_RX_BUF_MAX			FIELD_MAX(RX_DESC_1_BUFFER_SIZE_1_MASK)
+ 
+ /* Tuning parameters from SpacemiT */
+ #define EMAC_TX_FRAMES			64
+@@ -202,8 +203,7 @@ static void emac_init_hw(struct emac_priv *priv)
+ {
+ 	/* Destination address for 802.3x Ethernet flow control */
+ 	u8 fc_dest_addr[ETH_ALEN] = { 0x01, 0x80, 0xc2, 0x00, 0x00, 0x01 };
+-
+-	u32 rxirq = 0, dma = 0;
++	u32 rxirq = 0, dma = 0, frame_sz;
+ 
+ 	regmap_set_bits(priv->regmap_apmu,
+ 			priv->regmap_apmu_offset + APMU_EMAC_CTRL_REG,
+@@ -228,6 +228,15 @@ static void emac_init_hw(struct emac_priv *priv)
+ 		DEFAULT_TX_THRESHOLD);
+ 	emac_wr(priv, MAC_RECEIVE_PACKET_START_THRESHOLD, DEFAULT_RX_THRESHOLD);
+ 
++	/* Set maximum frame size and jabber size based on configured MTU,
++	 * accounting for Ethernet header, double VLAN tags, and FCS.
++	 */
++	frame_sz = priv->ndev->mtu + ETH_HLEN + 2 * VLAN_HLEN + ETH_FCS_LEN;
++
++	emac_wr(priv, MAC_MAXIMUM_FRAME_SIZE, frame_sz);
++	emac_wr(priv, MAC_TRANSMIT_JABBER_SIZE, frame_sz);
++	emac_wr(priv, MAC_RECEIVE_JABBER_SIZE, frame_sz);
++
+ 	/* Configure flow control (enabled in emac_adjust_link() later) */
+ 	emac_set_mac_addr_reg(priv, fc_dest_addr, MAC_FC_SOURCE_ADDRESS_HIGH);
+ 	emac_wr(priv, MAC_FC_PAUSE_HIGH_THRESHOLD, DEFAULT_FC_FIFO_HIGH);
+@@ -924,14 +933,14 @@ static int emac_change_mtu(struct net_device *ndev, int mtu)
+ 		return -EBUSY;
  	}
  
--	if (cdns->roles[cdns->role]->resume)
-+	if (!role_changed && cdns->roles[cdns->role]->resume)
- 		cdns->roles[cdns->role]->resume(cdns, power_lost);
+-	frame_len = mtu + ETH_HLEN + ETH_FCS_LEN;
++	frame_len = mtu + ETH_HLEN + 2 * VLAN_HLEN + ETH_FCS_LEN;
  
- 	return 0;
-
----
-base-commit: 9ff530af7fe2b44c93784641540d5b79fc9fe315
-change-id: 20260129-usb-cdns3-fix-role-switching-during-resume-d3f894d7eb40
-
-Best regards,
+ 	if (frame_len <= EMAC_DEFAULT_BUFSIZE)
+ 		priv->dma_buf_sz = EMAC_DEFAULT_BUFSIZE;
+ 	else if (frame_len <= EMAC_RX_BUF_2K)
+ 		priv->dma_buf_sz = EMAC_RX_BUF_2K;
+ 	else
+-		priv->dma_buf_sz = EMAC_RX_BUF_4K;
++		priv->dma_buf_sz = EMAC_RX_BUF_MAX;
+ 
+ 	ndev->mtu = mtu;
+ 
+@@ -2005,7 +2014,7 @@ static int emac_probe(struct platform_device *pdev)
+ 	ndev->hw_features = NETIF_F_SG;
+ 	ndev->features |= ndev->hw_features;
+ 
+-	ndev->max_mtu = EMAC_RX_BUF_4K - (ETH_HLEN + ETH_FCS_LEN);
++	ndev->max_mtu = EMAC_RX_BUF_MAX - (ETH_HLEN + 2 * VLAN_HLEN + ETH_FCS_LEN);
+ 	ndev->pcpu_stat_type = NETDEV_PCPU_STAT_DSTATS;
+ 
+ 	priv = netdev_priv(ndev);
 -- 
-Thomas Richard (TI) <thomas.richard@bootlin.com>
+2.52.0
 
 
