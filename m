@@ -1,158 +1,154 @@
-Return-Path: <stable+bounces-212838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212839-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CFT3OLQ4fGnSLQIAu9opvQ
-	(envelope-from <stable+bounces-212838-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 05:51:00 +0100
+	id gPN5Dcc8fGkXLgIAu9opvQ
+	(envelope-from <stable+bounces-212839-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 06:08:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5654BB7295
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 05:51:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9113B732B
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 06:08:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 00FF430166F6
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 04:50:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8EF493014945
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 05:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A513148A6;
-	Fri, 30 Jan 2026 04:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4EB335564;
+	Fri, 30 Jan 2026 05:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="MTZFazTp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UyqiHs3I"
 X-Original-To: stable@vger.kernel.org
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A602A2F12D6
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 04:50:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FC831355C
+	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 05:08:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769748639; cv=none; b=ALvsr9UwCnoo+jEfwZl2Sa1dNlffJuHSPMxsQLz80vLzlU1tgPjRAUss7ScnterSOv3O1jfoSppbSVb7eKftVkgD6MD84o0LWh8DwThkEiCXnPtjfME8awpbeJngKyFXQHl5angbsHIK+7bM/ozErzkzYud+H+CvDUPxYfe2u3U=
+	t=1769749689; cv=none; b=Sa4OYxhcv+xB3tgbHG/vD2/rtlBuwmgo4PY9LCrtG95sra0djb2WZJul2WeE7QOp2ebh0i1XoK/aZ7M4Z1io40/zX+88i9AcpMkHxHa9m+bHseWOp9fWukJ5t126JVBQBDa1/p6bKyXaOjGnoj1LNDQIMVKlp4m1kCs96g8ty8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769748639; c=relaxed/simple;
-	bh=7K/XRomBO5tGOJNCNL9IdnL/8/ejIP4nyJZzLwfzat4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b8c9w9V93cbG6fsTWiVYh8DiTdO7uH4urWok23uif/asdyyKISgJtcESXsqeV0IR1d+x+udnbuJW13oZAui0MsJWgf4gJA9p6g5A+itS3m5iWytbI0uO8Q1Irr7aN7KfI6SQKJmczi4Lx643+x8ZeLKLlGOElYkDH2cdJAh9GDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=MTZFazTp; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Fri, 30 Jan 2026 12:50:14 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769748624;
+	s=arc-20240116; t=1769749689; c=relaxed/simple;
+	bh=Jj+LXlJqQOlKkxRPXbwCJJTijkMOPwxHoRAkNl14xYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CbFI0GI878wu+O/Xvfg2/hlrrUVDfy4CwiNyxhLmCUxAXzlARdYx+6zTTf6HC/K1cdU+9A34HQ9vJkIDRRmgmqvq1n16Rpj52H3N6KHVoF10vR5f/arW7Oi+Dr1wdeRRsSQyn4dCBu6gu9saQuME2VOI+qzvYBA9gjJkTjqI8xU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UyqiHs3I; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769749686;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o0LolDkIeVgydx+lUvvnJuU5rTPe49ECMjoBW0cqVvs=;
-	b=MTZFazTpwQLBt1p5zzHs+rma+lbyv5QWgJkSiS9D4crkD4svGk6zMNRkBBOlfbtGIM7EBl
-	x3t9H03Th8ZE0Qej3gyM1d7zBQMDVKS4xaOXnWVv32LGA+bR+zq9bmeU3zks099YfXMfZN
-	kTbWJy/VQ4TwieXIANt3LxLHCreyKqM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
-	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v4 00/22] slab: replace cpu (partial) slabs with sheaves
-Message-ID: <pdmjsvpkl5nsntiwfwguplajq27ak3xpboq3ab77zrbu763pq7@la3hyiqigpir>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <imzzlzuzjmlkhxc7hszxh5ba7jksvqcieg5rzyryijkkdhai5q@l2t4ye5quozb>
- <390d6318-08f3-403b-bf96-4675a0d1fe98@suse.cz>
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=IMJwRxEHfAIl5OOD17eYG7N79bWeNFHiCLhK3OOmj9I=;
+	b=UyqiHs3Ih9TQs15FSuDy7oZZc0PXNEbX+sKiOvBIOmvhNCTZGtvbD9Cft5VGss9Zwhntx1
+	9GrcTSFD0XhspBYltahKZs+J4E7nqy4z65+LRFBF96VRWVyVLj3EZikOofcgV1fBmj4zYZ
+	633kqc1AcfozJWl13Cxf5ygxegLP1qM=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-318-kRpMC9QlMMCWjgSra_knDg-1; Fri,
+ 30 Jan 2026 00:08:01 -0500
+X-MC-Unique: kRpMC9QlMMCWjgSra_knDg-1
+X-Mimecast-MFC-AGG-ID: kRpMC9QlMMCWjgSra_knDg_1769749680
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 94B391954B14;
+	Fri, 30 Jan 2026 05:07:59 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.72.120.11])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5E7C31956056;
+	Fri, 30 Jan 2026 05:07:53 +0000 (UTC)
+From: Jason Wang <jasowang@redhat.com>
+To: mst@redhat.com,
+	jasowang@redhat.com,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: xuanzhuo@linux.alibaba.com,
+	eperezma@redhat.com,
+	xieyongji@bytedance.com,
+	stable@vger.kernel.org
+Subject: [PATCH] VDUSE: avoid leaking information to userspace
+Date: Fri, 30 Jan 2026 13:07:50 +0800
+Message-ID: <20260130050750.4050-1-jasowang@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <390d6318-08f3-403b-bf96-4675a0d1fe98@suse.cz>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212838-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jasowang@redhat.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-212839-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[oracle.com,suse.com,gentwo.org,google.com,linux.dev,linux-foundation.org,gmail.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hao.li@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:dkim]
-X-Rspamd-Queue-Id: 5654BB7295
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C9113B732B
 X-Rspamd-Action: no action
 
-On Thu, Jan 29, 2026 at 04:28:01PM +0100, Vlastimil Babka wrote:
-> 
-> So previously those would become kind of double
-> cached by both sheaves and cpu (partial) slabs (and thus hopefully benefited
-> more than they should) since sheaves introduction in 6.18, and now they are
-> not double cached anymore?
-> 
+The bounceing is not necessarily page aligned, so current VDUSE can
+leak kernel information through mapping bounce pages to
+userspace. Allocate bounce pages with __GFP_ZERO to avoid leaking
+information to userspace.
 
-I've conducted new tests, and here are the details of three scenarios:
+Fixes: 8c773d53fb7b ("vduse: Implement an MMU-based software IOTLB")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+---
+ drivers/vdpa/vdpa_user/iova_domain.c | 2 +-
+ drivers/vdpa/vdpa_user/vduse_dev.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-  1. Checked out commit 9d4e6ab865c4, which represents the state before the
-     introduction of the sheaves mechanism.
-  2. Tested with 6.19-rc5, which includes sheaves but does not yet apply the
-     "sheaves for all" patchset.
-  3. Applied the "sheaves for all" patchset and also included the "avoid
-     list_lock contention" patch.
-
-
-Results:
-
-For scenario 2 (with sheaves but without "sheaves for all"), there is a
-noticeable performance improvement compared to scenario 1:
-
-will-it-scale.128.processes +34.3%
-will-it-scale.192.processes +35.4%
-will-it-scale.64.processes +31.5%
-will-it-scale.per_process_ops +33.7%
-
-For scenario 3 (after applying "sheaves for all"), performance slightly
-regressed compared to scenario 1:
-
-will-it-scale.128.processes -1.3%
-will-it-scale.192.processes -4.2%
-will-it-scale.64.processes -1.2%
-will-it-scale.per_process_ops -2.1%
-
-Analysis:
-
-So when the sheaf size for maple nodes is set to 32 by default, the performance
-of fully adopting the sheaves mechanism roughly matches the performance of the
-previous approach that relied solely on the percpu slab partial list.
-
-The performance regression observed with the "sheaves for all" patchset can
-actually be explained as follows: moving from scenario 1 to scenario 2
-introduces an additional cache layer, which boosts performance temporarily.
-When moving from scenario 2 to scenario 3, this additional cache layer is
-removed, then performance reverted to its original level.
-
-So I think the performance of the percpu partial list and the sheaves mechanism
-is roughly the same, which is consistent with our expectations.
-
+diff --git a/drivers/vdpa/vdpa_user/iova_domain.c b/drivers/vdpa/vdpa_user/iova_domain.c
+index 0a9f668467a8..ec743bed361c 100644
+--- a/drivers/vdpa/vdpa_user/iova_domain.c
++++ b/drivers/vdpa/vdpa_user/iova_domain.c
+@@ -124,7 +124,7 @@ static int vduse_domain_map_bounce_page(struct vduse_iova_domain *domain,
+ 		if (!map->bounce_page) {
+ 			head_map = &domain->bounce_maps[(iova & PAGE_MASK) >> BOUNCE_MAP_SHIFT];
+ 			if (!head_map->bounce_page) {
+-				tmp_page = alloc_page(GFP_ATOMIC);
++				tmp_page = alloc_page(GFP_ATOMIC | __GFP_ZERO);
+ 				if (!tmp_page)
+ 					return -ENOMEM;
+ 				if (cmpxchg(&head_map->bounce_page, NULL, tmp_page))
+diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
+index 73d1d517dc6c..57a40a821c65 100644
+--- a/drivers/vdpa/vdpa_user/vduse_dev.c
++++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+@@ -976,7 +976,7 @@ static void *vduse_dev_alloc_coherent(union virtio_map token, size_t size,
+ 	if (!token.group)
+ 		return NULL;
+ 
+-	addr = alloc_pages_exact(size, flag);
++	addr = alloc_pages_exact(size, flag | __GFP_ZERO);
+ 	if (!addr)
+ 		return NULL;
+ 
 -- 
-Thanks,
-Hao
+2.34.1
+
 
