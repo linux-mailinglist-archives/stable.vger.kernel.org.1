@@ -1,58 +1,70 @@
-Return-Path: <stable+bounces-212844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id svNJAM5VfGnpLwIAu9opvQ
-	(envelope-from <stable+bounces-212844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:55:10 +0100
+	id eJpYK4tZfGkYMAIAu9opvQ
+	(envelope-from <stable+bounces-212845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:11:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE82B7B54
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:55:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC9FB7CCB
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 08:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C31B3014C46
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 06:55:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4CBAC3019531
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 07:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332AE32F762;
-	Fri, 30 Jan 2026 06:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46B6307491;
+	Fri, 30 Jan 2026 07:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="U0X3OgcI"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="YSYYQWsT"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF44D515;
-	Fri, 30 Jan 2026 06:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A946A21883E;
+	Fri, 30 Jan 2026 07:10:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769756102; cv=none; b=FADCmyVHhEEfpQv7PeIEwcSaIsXQ+yp9HjdGb5vfWShM8rLCHPVTQj0DzDPbnn9O1TdmeMGWScQaKcswKtXql9LinaYW2ENeqYM3NKhd4Kc3w3oP4H/PcqK0xJoXE93DHrElykTPfzHoiP322bFruvEHAe5Rkpv1XkcE/OY8Wcw=
+	t=1769757056; cv=none; b=RWEYikg/8HLTLH35WapGZHhxbD5FwP7CDKZyEPxbtkoq2MMPIiN8Iu7cLfctOTya4A8pYjNLwkMk7IvxqD3/h/xhwYXYNWlqThYBldKO2aw8q1NXQGAhwFduHD3c8sFmK2n52BPesutzrVJsLMjEDiYl6rwFa7ACGlZgX+mDQyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769756102; c=relaxed/simple;
-	bh=XLJozLWOl6TGjHJ1WrpoN3RzHY2N2fGnUUj1ZXLiliU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ZSdKaHxj0JPYLvOft0Uw5/zk0PZv9jup8ZFqppIQImvfFgccPtPG/iy7jn9PUhDcHIfWNTN0O69kPlwvVHPVfCJv652QpPmiY74+WaW0JeaZOWIODSWcmkGNmm6hsKLMbRZIMF1Cr8rQV3zxagIlyQWpLWmWVV9/tgHPWYt58vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=U0X3OgcI; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=+wua0zpuAHVWedBGGNR9+BMvTiyVLv2mDbaZ5iHalvk=;
-	b=U0X3OgcI3wWFfnVWR0+sFx6fs6N9kaUJ4qX86NycBswkPZkQdlamZSoPC1/Qk7
-	Gq/Faf8hkqtL9QR/mGoRnK2H5bzazHiOfH4yV92w7kcpgASu/9aDDK//mkB1QWPR
-	GpOg9ejuQjRz+E++/nO5lCUhpCh8eeHYpRB1jGCF8pEsw=
-Received: from pek-lpg-core6.wrs.com (unknown [])
-	by gzsmtp1 (Coremail) with SMTP id PCgvCgAH8_KiVXxpqq_8MQ--.20222S2;
-	Fri, 30 Jan 2026 14:54:28 +0800 (CST)
-From: Rahul Sharma <black.hawk@163.com>
+	s=arc-20240116; t=1769757056; c=relaxed/simple;
+	bh=KyGofQA+yPanct2ad1s/4EMe4J4e3sxY1/iZhzeXLDE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dY9yJGgDo0o+nfJ0Ep96MdoEhegMlv+cM1wQItr14gp226XUBJmFsQ0DAmavdegWNTRUi9klueGXjNT28F635Q5FyJnlHPSarMxjXiWUPJjkHM8qKmtZlBV0E1kFKyedG94Qy6xZAHEK3JIe9kUUyVzuuRLOpqKJtxCZjiPp+Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=YSYYQWsT; arc=none smtp.client-ip=120.232.169.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=YSYYQWsTrYbAoBDC46vtwuLGbtuuVniXpbR6fiTZCtjrq+fGx2gcc21OSKet3JUHn3hi812bEzFHB
+	 OPH57CG8w4wvEIXe2MR35pxLZIo49HD6ocTrXxnzGsF3ZFl6khv27HqtOys1Zlo5sjokQM7OfrMWzB
+	 zgK6DNvkun82xGmE=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-09-12087 (RichMail) with SMTP id 2f37697c5978bec-04c4d;
+	Fri, 30 Jan 2026 15:10:54 +0800 (CST)
+X-RM-TRANSID:2f37697c5978bec-04c4d
+From: Li hongliang <1468888505@139.com>
 To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 5.15.y] net: stmmac: make sure that ptp_rate is not 0 before configuring EST
-Date: Fri, 30 Jan 2026 14:54:23 +0800
-Message-Id: <20260130065423.3362339-1-black.hawk@163.com>
+	stable@vger.kernel.org,
+	lucien.xin@gmail.com
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	vyasevich@gmail.com,
+	nhorman@tuxdriver.com,
+	marcelo.leitner@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH 6.1.y] sctp: linearize cloned gso packets in sctp_rcv
+Date: Fri, 30 Jan 2026 15:10:38 +0800
+Message-Id: <20260130071038.3931297-1-1468888505@139.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,103 +72,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PCgvCgAH8_KiVXxpqq_8MQ--.20222S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGr47ArW7Aw4xJr4UKw4xXrb_yoW5Gr1DpF
-	W7AFyFvr97tF1xJ3WkJr4kXF98Way7trWDWryfKr4fuFWav3yqqr9avFyFyF1jyrs8ZFW3
-	tr4jkr17G3Z8urUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEMmhDUUUUU=
-X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3QX3kWl8VaWY0QAA3S
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-212845-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,bootlin.com,kernel.org,163.com];
-	TAGGED_FROM(0.00)[bounces-212844-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[139.com];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,gmail.com,tuxdriver.com,davemloft.net,google.com,kernel.org,redhat.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[139.com:-];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[black.hawk@163.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[163.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 5EE82B7B54
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0FC9FB7CCB
 X-Rspamd-Action: no action
 
-From: Alexis Lothoré <alexis.lothore@bootlin.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit cbefe2ffa7784525ec5d008ba87c7add19ec631a ]
+[ Upstream commit fd60d8a086191fe33c2d719732d2482052fa6805 ]
 
-If the ptp_rate recorded earlier in the driver happens to be 0, this
-bogus value will propagate up to EST configuration, where it will
-trigger a division by 0.
+A cloned head skb still shares these frag skbs in fraglist with the
+original head skb. It's not safe to access these frag skbs.
 
-Prevent this division by 0 by adding the corresponding check and error
-code.
+syzbot reported two use-of-uninitialized-memory bugs caused by this:
 
-Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Fixes: 8572aec3d0dc ("net: stmmac: Add basic EST support for XGMAC")
-Link: https://patch.msgid.link/20250529-stmmac_tstamp_div-v4-2-d73340a794d5@bootlin.com
+  BUG: KMSAN: uninit-value in sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
+   sctp_inq_pop+0x15b7/0x1920 net/sctp/inqueue.c:211
+   sctp_assoc_bh_rcv+0x1a7/0xc50 net/sctp/associola.c:998
+   sctp_inq_push+0x2ef/0x380 net/sctp/inqueue.c:88
+   sctp_backlog_rcv+0x397/0xdb0 net/sctp/input.c:331
+   sk_backlog_rcv+0x13b/0x420 include/net/sock.h:1122
+   __release_sock+0x1da/0x330 net/core/sock.c:3106
+   release_sock+0x6b/0x250 net/core/sock.c:3660
+   sctp_wait_for_connect+0x487/0x820 net/sctp/socket.c:9360
+   sctp_sendmsg_to_asoc+0x1ec1/0x1f00 net/sctp/socket.c:1885
+   sctp_sendmsg+0x32b9/0x4a80 net/sctp/socket.c:2031
+   inet_sendmsg+0x25a/0x280 net/ipv4/af_inet.c:851
+   sock_sendmsg_nosec net/socket.c:718 [inline]
+
+and
+
+  BUG: KMSAN: uninit-value in sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
+   sctp_assoc_bh_rcv+0x34e/0xbc0 net/sctp/associola.c:987
+   sctp_inq_push+0x2a3/0x350 net/sctp/inqueue.c:88
+   sctp_backlog_rcv+0x3c7/0xda0 net/sctp/input.c:331
+   sk_backlog_rcv+0x142/0x420 include/net/sock.h:1148
+   __release_sock+0x1d3/0x330 net/core/sock.c:3213
+   release_sock+0x6b/0x270 net/core/sock.c:3767
+   sctp_wait_for_connect+0x458/0x820 net/sctp/socket.c:9367
+   sctp_sendmsg_to_asoc+0x223a/0x2260 net/sctp/socket.c:1886
+   sctp_sendmsg+0x3910/0x49f0 net/sctp/socket.c:2032
+   inet_sendmsg+0x269/0x2a0 net/ipv4/af_inet.c:851
+   sock_sendmsg_nosec net/socket.c:712 [inline]
+
+This patch fixes it by linearizing cloned gso packets in sctp_rcv().
+
+Fixes: 90017accff61 ("sctp: Add GSO support")
+Reported-by: syzbot+773e51afe420baaf0e2b@syzkaller.appspotmail.com
+Reported-by: syzbot+70a42f45e76bede082be@syzkaller.appspotmail.com
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Link: https://patch.msgid.link/dd7dc337b99876d4132d0961f776913719f7d225.1754595611.git.lucien.xin@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ The context change is due to the commit c3f3b97238f6
-("net: stmmac: Refactor EST implementation")
-and the proper adoption is done. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac5.c        | 5 +++++
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c | 5 +++++
- 2 files changed, 10 insertions(+)
+This patch is lost/missing, as it has already been added
+into stable branches less than and greater than 6.1. Previous patch in
+https://lore.kernel.org/stable/20251022075549.195012-1-kovalev@altlinux.org/ is still not added.
+So I resent it again.
+---
+---
+ net/sctp/input.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac5.c b/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
-index 8fd167501fa0..0afd4644a985 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
-@@ -597,6 +597,11 @@ int dwmac5_est_configure(void __iomem *ioaddr, struct stmmac_est *cfg,
- 	int i, ret = 0x0;
- 	u32 ctrl;
+diff --git a/net/sctp/input.c b/net/sctp/input.c
+index 4ee9374dcfb9..182898cb754a 100644
+--- a/net/sctp/input.c
++++ b/net/sctp/input.c
+@@ -114,7 +114,7 @@ int sctp_rcv(struct sk_buff *skb)
+ 	 * it's better to just linearize it otherwise crc computing
+ 	 * takes longer.
+ 	 */
+-	if ((!is_gso && skb_linearize(skb)) ||
++	if (((!is_gso || skb_cloned(skb)) && skb_linearize(skb)) ||
+ 	    !pskb_may_pull(skb, sizeof(struct sctphdr)))
+ 		goto discard_it;
  
-+	if (!ptp_rate) {
-+		pr_warn("Dwmac5: Invalid PTP rate");
-+		return -EINVAL;
-+	}
-+
- 	ret |= dwmac5_est_write(ioaddr, BTR_LOW, cfg->btr[0], false);
- 	ret |= dwmac5_est_write(ioaddr, BTR_HIGH, cfg->btr[1], false);
- 	ret |= dwmac5_est_write(ioaddr, TER, cfg->ter, false);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index 813327d04c56..ce0c470915bc 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -1494,6 +1494,11 @@ static int dwxgmac3_est_configure(void __iomem *ioaddr, struct stmmac_est *cfg,
- 	int i, ret = 0x0;
- 	u32 ctrl;
- 
-+	if (!ptp_rate) {
-+		pr_warn("Dwxgmac2: Invalid PTP rate");
-+		return -EINVAL;
-+	}
-+
- 	ret |= dwxgmac3_est_write(ioaddr, XGMAC_BTR_LOW, cfg->btr[0], false);
- 	ret |= dwxgmac3_est_write(ioaddr, XGMAC_BTR_HIGH, cfg->btr[1], false);
- 	ret |= dwxgmac3_est_write(ioaddr, XGMAC_TER, cfg->ter, false);
 -- 
 2.34.1
+
 
 
