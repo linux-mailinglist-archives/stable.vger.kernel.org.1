@@ -1,245 +1,322 @@
-Return-Path: <stable+bounces-212830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAkQJd8ZfGlgKgIAu9opvQ
-	(envelope-from <stable+bounces-212830-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 03:39:27 +0100
+	id 2IiIKnQdfGmAKgIAu9opvQ
+	(envelope-from <stable+bounces-212831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 03:54:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF43B6845
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 03:39:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2B9B69E2
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 03:54:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A0AB3013A7F
-	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 02:38:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 537F3301185A
+	for <lists+stable@lfdr.de>; Fri, 30 Jan 2026 02:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24031331A5F;
-	Fri, 30 Jan 2026 02:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B01F329E49;
+	Fri, 30 Jan 2026 02:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fM6VQ2nm";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="EctdeNpf"
+	dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b="YCizOgPA"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B371E1024
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 02:38:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769740725; cv=none; b=nDauomB0ij6uSnnMSYb6jfJNmBushDbK/oCOfePt0ewlY+bIyYiE+PIr9/UFUypmhSKzeiuWuzTEjyY925gIrsY4GpSIY7GTQ3L/GOAJQ3pFaaM3TIkXFDhd/g51nkHxhbDgndSh/QLvxj/TduVKz7901DO6VLhtqtahzrWnzME=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769740725; c=relaxed/simple;
-	bh=JnFBL+9V8/JBHBzdXwhO2xwJEtpLOKOZ5XiUEV7JSEE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DqFujmAGg0WmuSifrMjksDnB64DqddQVEMvuuxOJaeuaaYnTV6brAAuCeCCTpXR+HAgc/V9A4rSDxF3qVFDvKJ0J7Oy4NjBsICR1uyEiekjIRbgH7N5qawMfbKUEBSFKLePTGiUSi54tgV05v2xklLH74lui2G/lIoLWFQ6Ce0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fM6VQ2nm; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EctdeNpf; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60TJ0R5p1949117
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 02:38:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=HcDaTxd00FsQjxgCY5XTLK8c
-	zak37LqC5DSMKVJvXbU=; b=fM6VQ2nmuyDmhrCq4s6mv0jHql7R2VFbt+vd0W7d
-	mkXlVrxBHh5xP5XWqQCG8ZDjYyuRD1AHyp6wB9Uc6YD/1RxNNxaPemycLDDiOauM
-	yX0CJAojEpW/h60uu/xomjpVYJ4Dk+ceblo6fVVh5r/BJHr8Jo5sUxrnCfVq+NoQ
-	6z8BwblpnTlk7SnuwZAjmUifCs4Z2F36Yf786tuxt3KAMZ00AEWwD5cRrlWZXkbb
-	IwA5XAXnQrJnlbkRb9/1WVBycoTRb+jdY2pTTFSlBvKmHt1HHfRQoR4gLYwPl2A5
-	d12DCtCRBBsSZqIty3CI+hpKTyZF6mwa67WXPAEaQwLQkQ==
-Received: from mail-ua1-f69.google.com (mail-ua1-f69.google.com [209.85.222.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4c0db1h3kd-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Fri, 30 Jan 2026 02:38:43 +0000 (GMT)
-Received: by mail-ua1-f69.google.com with SMTP id a1e0cc1a2514c-93f4ff789c5so5180383241.3
-        for <stable@vger.kernel.org>; Thu, 29 Jan 2026 18:38:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1769740721; x=1770345521; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HcDaTxd00FsQjxgCY5XTLK8czak37LqC5DSMKVJvXbU=;
-        b=EctdeNpfZ5DhUfxcFSmiXoW2eNryTNwmfZhKH5hcJwn8r5MCGPXsnntyKfmS0kDiuP
-         UkQK1mgtjATg8VBVlMBOC5HSeF3o9x6NfuO7V331/imJWny4GfzBg6Ja8kcMvd3snQTz
-         O1i+GHJWL+maxA5N6W+3Oh7GcY8LNvg0vFhVHs+71OYVQZnCOMhfJS6e69QA43z3l2M1
-         qQhX6Z6hrGr+droYUZB8+siOQIRi3pJmITfb1BMvm/GkEHW+ukFDnxMYZ+ufVD9NiXSP
-         rG9vl/d7CnajJ082XoTJWm5Ot8RL+u6gHpgkjQ+B8QP/ry7tULFtHpY0HP69pgc+WVcT
-         AjZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769740721; x=1770345521;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HcDaTxd00FsQjxgCY5XTLK8czak37LqC5DSMKVJvXbU=;
-        b=npwUbD0l+NKvBHcgIAFW16h/0VVPeS19uyG5j3F9FPTGtm5hTwo7tTC7ODEmfhZKgv
-         CizMzGyXVTPAekPykbyDJuai475e0sWaP83ZCw9ySoJI/zj//TYm7RxEOyBfegxxruOT
-         17CqsEyjzf7gwjVLdmKhI4zXjZtRQyyTnvxiC7k3tzKRsnS7JoFpLBANRxuVHUYBgPSX
-         z8EPMdFLYjwvDsLipIVzMrB6zT4gcs+FlK0khifPwtRhzTJtC6BrUrnEOaeOI2018kJz
-         L77Lgj7u4F9RkxN82OddL9QdYSn4StfrO+9FY89TTf/C8mZiZ7RPGEPCsLLyDgHGc4xK
-         0v1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXDS9v0z8il8NDeAThV22Kn/jEnWt0mv6KJQa2hjUCIyxXfpauSFgwC6hhiTU+8ZXZtHLaaRZE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbT0+3r8nj5rwY64tF3HOp3+e33V9zICPbngviyLZhDyXaf2l2
-	UuNsEm98tJEV33WMc434Gkr2qdKUClwGzqmKPDe7tma4d9KeYxf4mcrcEGOblGHeR5uOvLuWhX3
-	6hbQrKfo2c9WbZ6FWfbxTaQnHpue0uGQR0G78TazWL/Rq3+FDvTlF20UuZWTf8KBqrnE=
-X-Gm-Gg: AZuq6aIO0ypXQ8EFKqv5N5K+X3f0Ly4a0c/MhNmHZxSCHyRcpJ/q1qM4+9EnoLtGr1c
-	Sm/iR0vkSUwqblkIcZ6UHhM7OloHZr2/fKKwIAUztuZJF33vhi3bJlJXdYkUPxlxaA9U/xc3n+u
-	LxmJswJVpo4UGNOhVPGM2rF6atHfTr5DVB05GCntNpMldCBKfXGq2uIt+brk8hpytC4fKJhLq66
-	SDxpQB0oWYBGfw2CpRWNwTVj2IHX9OrHMKWrd7tDJjWlAfpaXpg5CqtOY2+wEbLGRp5wuMiajHH
-	0nApPmRa6bVhbVFRFVcu6DkCt2EOzZWzf+3XbFL5Hp/hq5o0qiVg2ARlkwhV34no9lgwMSS7jBY
-	NDAdZCXup9ccPbmjLW4jCQHqXQbHFlE5DRVVoR4Mc1fFvCQ5GyS5tH0sBkkvYRBRAq0a6BLVJko
-	Hdr94Y+Jo1gcDJ+OSUc/N+8Mg=
-X-Received: by 2002:a05:6102:d8b:b0:5ee:a590:6b11 with SMTP id ada2fe7eead31-5f8e2607eb7mr529945137.36.1769740720988;
-        Thu, 29 Jan 2026 18:38:40 -0800 (PST)
-X-Received: by 2002:a05:6102:d8b:b0:5ee:a590:6b11 with SMTP id ada2fe7eead31-5f8e2607eb7mr529936137.36.1769740720593;
-        Thu, 29 Jan 2026 18:38:40 -0800 (PST)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59e074bbe0bsm1433749e87.83.2026.01.29.18.38.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jan 2026 18:38:40 -0800 (PST)
-Date: Fri, 30 Jan 2026 04:38:38 +0200
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Xingjing Deng <micro6947@gmail.com>
-Cc: srini@kernel.org, amahesh@qti.qualcomm.com, arnd@arndb.de,
-        gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Xingjing Deng <xjdeng@buaa.edu.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH v7] misc: fastrpc: check qcom_scm_assign_mem() return in
- rpmsg_probe
-Message-ID: <ie3hipmp5nqappyuwnxm2kpgscnl6qe42cwf2sep4inwunb5th@gontu4foua6q>
-References: <20260129233703.407404-1-xjdeng@buaa.edu.cn>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94D02857CD;
+	Fri, 30 Jan 2026 02:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769741657; cv=pass; b=nSqlKSgER0G9MaELxeEF2V6LDY+b70Tr8CtpqXvRb6IO5jnOgT25JJUb9pmP+1S80a97n81gdx5ZpIxyVGg7MqMfHt89vTPpYgIj7puVGS0Pi2AoG7GIhNwlEvm5r8JeeJsq0U4GrQbx8EZ3UTLQiyGHS8B6QcsuExGrTushPN8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769741657; c=relaxed/simple;
+	bh=a5dN0Xu8DJxd3sNMaQXDz2ZIZSc5MBE29j8IhPW7vho=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ls9OuFz6Ew/IM7sjtjRwjN1K6ZbHGqBp2hqpe+oXLavEgNeOXVxGDwdgLmfrKP2sWDiaU8wxEy6k1Ah0v9F49CZnYwZyO0tXrmriq0dy1eEQv2IQexliFu7tyZp0/RHA2mDGSS1lwhF6QUIZWVBHIR2AKY9NLnO1MQwwzSxlvbw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty; spf=pass smtp.mailfrom=linux.beauty; dkim=pass (1024-bit key) header.d=linux.beauty header.i=me@linux.beauty header.b=YCizOgPA; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux.beauty
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.beauty
+ARC-Seal: i=1; a=rsa-sha256; t=1769741642; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=TlODcD7nNHdKFKM69eTMgnXy+RYcsSiBVgZ4j0JTqErAzjuWjvwiAUxjOiuuzDcm8qWW8sZreZYCBi+pobceMUINW7LYbOdVwfRRfS8upA4NWfEJPa9ItjXsmyYnm2ansB44PHsxpgDXdTejWGSAZMJWIdPjA8ftcb3PUd+VlM0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1769741642; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ebI4xhDb6SkWVwcy5gJUx4SwgAuJlbz3kPPE7oXcNoc=; 
+	b=TOrjtXRkmlCc6iOnaoUynk2zJyIn1+Cj+akFQJKeOKTTB5pdJwloyoY+yw0aB24Nbbqmoi7fUums7p7ROrN8+gjxWIzBtTQirQv3nZEqvj4xd/K5bPLpz++iLNks42aHOuSIZNfxZFQZuFDh2hBfNH1pSIkZ18SbVB1j5V1+i6E=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=linux.beauty;
+	spf=pass  smtp.mailfrom=me@linux.beauty;
+	dmarc=pass header.from=<me@linux.beauty>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1769741641;
+	s=zmail; d=linux.beauty; i=me@linux.beauty;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=ebI4xhDb6SkWVwcy5gJUx4SwgAuJlbz3kPPE7oXcNoc=;
+	b=YCizOgPARcpHbSxIYUck4K4nT9t5sztcD4PmIsABjTjfY9aJOvP6ImyJfNZlOEJF
+	YML2Xzg8m6iur7FAJXxbEV6r8CbFNrgBI6es83XL3ZUK0QicAoE60dsBPVJ+6oR4kDE
+	HiCJWQnNMO/SO+XFn7AEscLaNdYN1O0HBm7qx1G8=
+Received: by mx.zohomail.com with SMTPS id 1769741638174199.07500266504655;
+	Thu, 29 Jan 2026 18:53:58 -0800 (PST)
+From: Li Chen <me@linux.beauty>
+To: "Theodore Ts'o" <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Jan Kara <jack@suse.cz>,
+	linux-ext4@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Li Chen <me@linux.beauty>
+Subject: [PATCH v2] ext4: publish jinode after initialization
+Date: Fri, 30 Jan 2026 10:53:38 +0800
+Message-ID: <20260130025339.51519-1-me@linux.beauty>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260129233703.407404-1-xjdeng@buaa.edu.cn>
-X-Proofpoint-ORIG-GUID: SsGnUH_-Uuuu_-n_OHSWsGDB1adgdXXC
-X-Proofpoint-GUID: SsGnUH_-Uuuu_-n_OHSWsGDB1adgdXXC
-X-Authority-Analysis: v=2.4 cv=VMTQXtPX c=1 sm=1 tr=0 ts=697c19b3 cx=c_pps
- a=UbhLPJ621ZpgOD2l3yZY1w==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=UE2EgE-5dsTTq3FBrnAA:9 a=CjuIK1q_8ugA:10
- a=TOPH6uDL9cOC6tEoww4z:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDAxOSBTYWx0ZWRfX5qIWjHT7LaMu
- hFpaCjYNE0BU9MT9DE1YfnmiJZwl79bE+hxiUWduX0S+cqk6OlXuZaqOas/SZXe1ZZIxspyVe8z
- UMdBm8+vpJf+bQesAGdYrWBk7GAvqPQEC9cXpLXzG6HsXN8+ldy84RWSIvoyHX1iIbJ8F0h9DrH
- i7XOyqXNNIWpvqvyCaW9nQtzpA0smRI1bFpBA0GzeJSwHuMTleTf6WCc0wcOTyZPp8m0tpl2wiu
- gh7+unuNkUufpnC2xMw9tqgxApq5J5j0qsvT6mhhOwQHfPNU7IBVeDUOpXQGPHsJtAEtdSAt/Xg
- 3dUFaOB5g+hr6SpAwEkvLqaLvCCuCsG7Ygl9Ovfrm/hiCTzS2gXAmzxh80zocTzhfcrnwixFDE6
- yRXzF6ifQQqGg2Evio4rbyZ6bCs+MYuCieayxgwFzBw9TzqGZPrp34Qrtdvjm/ioSUluCSeaJYZ
- czX2tldsvAjDyAwU+sw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-29_03,2026-01-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 bulkscore=0 lowpriorityscore=0
- impostorscore=0 adultscore=0 phishscore=0 suspectscore=0 spamscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2601300019
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux.beauty:s=zmail];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-212830-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-212831-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,buaa.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:dkim];
-	FREEMAIL_TO(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[linux.beauty];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux.beauty:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[me@linux.beauty,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: EBF43B6845
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.beauty:email,linux.beauty:dkim,linux.beauty:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0F2B9B69E2
 X-Rspamd-Action: no action
 
-On Fri, Jan 30, 2026 at 07:37:03AM +0800, Xingjing Deng wrote:
-> In the SDSP probe path, qcom_scm_assign_mem() is used to assign the
-> reserved memory to the configured VMIDs, but its return value was not checked.
-> 
-> Fail the probe if the SCM call fails to avoid continuing with an
-> unexpected/incorrect memory permission configuration.
-> 
-> This issue was found by an in-house analysis workflow that extracts AST-based
-> information and runs static checks, with LLM assistance for triage, and was
-> confirmed by manual code review.
-> No hardware testing was performed.
-> 
-> Fixes: c3c0363bc72d4 ("misc: fastrpc: support complete DMA pool access to the DSP")
-> Cc: stable@vger.kernel.org # 6.11-rc1
-> Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
-> ---
-> v7:
-> - Add the detail description of how the tool detect.
-> - Link to v6: https://lore.kernel.org/linux-arm-msm/20260128033454.2614886-1-xjdeng@buaa.edu.cn/
-> 
-> v6:
-> - Add description of the detection tool.
-> - Link to v5: https://lore.kernel.org/linux-arm-msm/20260117140351.875511-1-xjdeng@buaa.edu.cn/T/#u
-> 
-> v5:
-> - Squash the functional change and indentation fix into a single patch.
-> - Link to v4: https://lore.kernel.org/linux-arm-msm/2026011637-statute-showy-2c3f@gregkh/T/#t
-> 
-> v4:
-> - Format the indentation
-> - Link to v3: https://lore.kernel.org/linux-arm-msm/20260113084352.72itrloj5w7qb5o3@hu-mojha-hyd.qualcomm.com/T/#t
-> 
-> v3:
-> - Add missing linux-kernel@vger.kernel.org to cc list.
-> - Standarlize changelog placement/format.
-> - Link to v2: https://lore.kernel.org/linux-arm-msm/20260113063618.e2ke47gy3hnfi67e@hu-mojha-hyd.qualcomm.com/T/#t
-> 
-> v2:
-> - Add Fixes: and Cc: stable tags.
-> - Link to v1: https://lore.kernel.org/linux-arm-msm/20260113022550.4029635-1-xjdeng@buaa.edu.cn/T/#u
-> ---
->  drivers/misc/fastrpc.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-> index ee652ef01534..8bac2216cb20 100644
-> --- a/drivers/misc/fastrpc.c
-> +++ b/drivers/misc/fastrpc.c
-> @@ -2337,8 +2337,11 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
->  		if (!err) {
->  			src_perms = BIT(QCOM_SCM_VMID_HLOS);
->  
-> -			qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
-> +			err = qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
->  				    data->vmperms, data->vmcount);
-> +			if (err) {
-> +				goto err_free_data;
-> +			}
+ext4_inode_attach_jinode() publishes ei->jinode to concurrent users.
+It used to set ei->jinode before jbd2_journal_init_jbd_inode(),
+allowing a reader to observe a non-NULL jinode with i_vfs_inode
+still unset.
 
-I think, checkpatch should warn here about unnecessary braces.
+The fast commit flush path can then pass this jinode to
+jbd2_wait_inode_data(), which dereferences i_vfs_inode->i_mapping and
+may crash.
 
->  		}
->  
->  	}
-> -- 
-> 2.25.1
-> 
+Below is the crash I observe:
+```
+BUG: unable to handle page fault for address: 000000010beb47f4
+PGD 110e51067 P4D 110e51067 PUD 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+CPU: 1 UID: 0 PID: 4850 Comm: fc_fsync_bench_ Not tainted 6.18.0-00764-g795a690c06a5 #1 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.17.0-2-2 04/01/2014
+RIP: 0010:xas_find_marked+0x3d/0x2e0
+Code: e0 03 48 83 f8 02 0f 84 f0 01 00 00 48 8b 47 08 48 89 c3 48 39 c6 0f 82 fd 01 00 00 48 85 c9 74 3d 48 83 f9 03 77 63 4c 8b 0f <49> 8b 71 08 48 c7 47 18 00 00 00 00 48 89 f1 83 e1 03 48 83 f9 02
+RSP: 0018:ffffbbee806e7bf0 EFLAGS: 00010246
+RAX: 000000000010beb4 RBX: 000000000010beb4 RCX: 0000000000000003
+RDX: 0000000000000001 RSI: 0000002000300000 RDI: ffffbbee806e7c10
+RBP: 0000000000000001 R08: 0000002000300000 R09: 000000010beb47ec
+R10: ffff9ea494590090 R11: 0000000000000000 R12: 0000002000300000
+R13: ffffbbee806e7c90 R14: ffff9ea494513788 R15: ffffbbee806e7c88
+FS: 00007fc2f9e3e6c0(0000) GS:ffff9ea6b1444000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000010beb47f4 CR3: 0000000119ac5000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+<TASK>
+filemap_get_folios_tag+0x87/0x2a0
+__filemap_fdatawait_range+0x5f/0xd0
+? srso_alias_return_thunk+0x5/0xfbef5
+? __schedule+0x3e7/0x10c0
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? cap_safe_nice+0x37/0x70
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+filemap_fdatawait_range_keep_errors+0x12/0x40
+ext4_fc_commit+0x697/0x8b0
+? ext4_file_write_iter+0x64b/0x950
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+? srso_alias_return_thunk+0x5/0xfbef5
+? vfs_write+0x356/0x480
+? srso_alias_return_thunk+0x5/0xfbef5
+? preempt_count_sub+0x5f/0x80
+ext4_sync_file+0xf7/0x370
+do_fsync+0x3b/0x80
+? syscall_trace_enter+0x108/0x1d0
+__x64_sys_fdatasync+0x16/0x20
+do_syscall_64+0x62/0x2c0
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+...
+```
 
+Fix this by initializing the jbd2_inode first.
+Use smp_wmb() and WRITE_ONCE() to publish ei->jinode after
+initialization. Readers use READ_ONCE() to fetch the pointer.
+
+Fixes: a361293f5fede ("jbd2: Fix oops in jbd2_journal_file_inode()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Chen <me@linux.beauty>
+---
+
+Changes since v1:
+- Publish EXT4_I(inode)->jinode with smp_wmb() + WRITE_ONCE(), and fetch it
+  with READ_ONCE() (instead of smp_store_release()/smp_load_acquire()), as
+  suggeted by Jan.
+
+ fs/ext4/ext4_jbd2.h   | 16 ++++++++++++----
+ fs/ext4/fast_commit.c |  7 +++++--
+ fs/ext4/inode.c       | 15 +++++++++++----
+ fs/ext4/super.c       | 11 +++++++----
+ 4 files changed, 35 insertions(+), 14 deletions(-)
+
+diff --git a/fs/ext4/ext4_jbd2.h b/fs/ext4/ext4_jbd2.h
+index 63d17c5201b5..2d5343441b71 100644
+--- a/fs/ext4/ext4_jbd2.h
++++ b/fs/ext4/ext4_jbd2.h
+@@ -336,18 +336,26 @@ static inline int ext4_journal_force_commit(journal_t *journal)
+ static inline int ext4_jbd2_inode_add_write(handle_t *handle,
+ 		struct inode *inode, loff_t start_byte, loff_t length)
+ {
+-	if (ext4_handle_valid(handle))
++	if (ext4_handle_valid(handle)) {
++		struct jbd2_inode *jinode;
++
++		jinode = READ_ONCE(EXT4_I(inode)->jinode);
+ 		return jbd2_journal_inode_ranged_write(handle,
+-				EXT4_I(inode)->jinode, start_byte, length);
++				jinode, start_byte, length);
++	}
+ 	return 0;
+ }
+ 
+ static inline int ext4_jbd2_inode_add_wait(handle_t *handle,
+ 		struct inode *inode, loff_t start_byte, loff_t length)
+ {
+-	if (ext4_handle_valid(handle))
++	if (ext4_handle_valid(handle)) {
++		struct jbd2_inode *jinode;
++
++		jinode = READ_ONCE(EXT4_I(inode)->jinode);
+ 		return jbd2_journal_inode_ranged_wait(handle,
+-				EXT4_I(inode)->jinode, start_byte, length);
++				jinode, start_byte, length);
++	}
+ 	return 0;
+ }
+ 
+diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
+index f575751f1cae..a80ed2d6df81 100644
+--- a/fs/ext4/fast_commit.c
++++ b/fs/ext4/fast_commit.c
+@@ -972,16 +972,19 @@ static int ext4_fc_flush_data(journal_t *journal)
+ 	struct super_block *sb = journal->j_private;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	struct ext4_inode_info *ei;
++	struct jbd2_inode *jinode;
+ 	int ret = 0;
+ 
+ 	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
+-		ret = jbd2_submit_inode_data(journal, ei->jinode);
++		jinode = READ_ONCE(ei->jinode);
++		ret = jbd2_submit_inode_data(journal, jinode);
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+ 	list_for_each_entry(ei, &sbi->s_fc_q[FC_Q_MAIN], i_fc_list) {
+-		ret = jbd2_wait_inode_data(journal, ei->jinode);
++		jinode = READ_ONCE(ei->jinode);
++		ret = jbd2_wait_inode_data(journal, jinode);
+ 		if (ret)
+ 			return ret;
+ 	}
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index da96db5f2345..d99296d7315f 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -128,6 +128,8 @@ void ext4_inode_csum_set(struct inode *inode, struct ext4_inode *raw,
+ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+ 					      loff_t new_size)
+ {
++	struct jbd2_inode *jinode = READ_ONCE(EXT4_I(inode)->jinode);
++
+ 	trace_ext4_begin_ordered_truncate(inode, new_size);
+ 	/*
+ 	 * If jinode is zero, then we never opened the file for
+@@ -135,10 +137,10 @@ static inline int ext4_begin_ordered_truncate(struct inode *inode,
+ 	 * jbd2_journal_begin_ordered_truncate() since there's no
+ 	 * outstanding writes we need to flush.
+ 	 */
+-	if (!EXT4_I(inode)->jinode)
++	if (!jinode)
+ 		return 0;
+ 	return jbd2_journal_begin_ordered_truncate(EXT4_JOURNAL(inode),
+-						   EXT4_I(inode)->jinode,
++						   jinode,
+ 						   new_size);
+ }
+ 
+@@ -4478,8 +4480,13 @@ int ext4_inode_attach_jinode(struct inode *inode)
+ 			spin_unlock(&inode->i_lock);
+ 			return -ENOMEM;
+ 		}
+-		ei->jinode = jinode;
+-		jbd2_journal_init_jbd_inode(ei->jinode, inode);
++		jbd2_journal_init_jbd_inode(jinode, inode);
++		/*
++		 * Publish ->jinode only after it is fully initialized so that
++		 * readers never observe a partially initialized jbd2_inode.
++		 */
++		smp_wmb();
++		WRITE_ONCE(ei->jinode, jinode);
+ 		jinode = NULL;
+ 	}
+ 	spin_unlock(&inode->i_lock);
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 69eb63dde983..5cf6c2b54bbb 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -1526,17 +1526,20 @@ static void destroy_inodecache(void)
+ 
+ void ext4_clear_inode(struct inode *inode)
+ {
++	struct jbd2_inode *jinode;
++
+ 	ext4_fc_del(inode);
+ 	invalidate_inode_buffers(inode);
+ 	clear_inode(inode);
+ 	ext4_discard_preallocations(inode);
+ 	ext4_es_remove_extent(inode, 0, EXT_MAX_BLOCKS);
+ 	dquot_drop(inode);
+-	if (EXT4_I(inode)->jinode) {
++	jinode = READ_ONCE(EXT4_I(inode)->jinode);
++	if (jinode) {
+ 		jbd2_journal_release_jbd_inode(EXT4_JOURNAL(inode),
+-					       EXT4_I(inode)->jinode);
+-		jbd2_free_inode(EXT4_I(inode)->jinode);
+-		EXT4_I(inode)->jinode = NULL;
++					       jinode);
++		jbd2_free_inode(jinode);
++		WRITE_ONCE(EXT4_I(inode)->jinode, NULL);
+ 	}
+ 	fscrypt_put_encryption_info(inode);
+ 	fsverity_cleanup_inode(inode);
 -- 
-With best wishes
-Dmitry
+2.52.0
+
 
